@@ -6,9 +6,8 @@ export const config = {
     aliases: {},
     settings: {
         fees: {},
-        map: {},
-        lot: {},
-        lotOccupancy: {},
+        cemeteries: {},
+        contracts: {},
         workOrders: {},
         adminCleanup: {},
         printPdf: {},

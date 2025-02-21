@@ -2,7 +2,7 @@ import path from 'node:path';
 import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer';
 import camelcase from 'camelcase';
 import { renderFile as renderEjsFile } from 'ejs';
-import { getConfigProperty } from '../../helpers/functions.config.js';
+import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getPdfPrintConfig, getReportData } from '../../helpers/functions.print.js';
 const attachmentOrInline = getConfigProperty('settings.printPdf.contentDisposition');
 export async function handler(request, response, next) {

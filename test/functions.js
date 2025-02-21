@@ -1,19 +1,11 @@
 import assert from 'node:assert';
 import fs from 'node:fs';
-import { lotNameSortNameFunction } from '../data/config.cemetery.ssm.js';
 // skipcq: JS-C1003 - Testing functions
 import * as cacheFunctions from '../helpers/functions.cache.js';
 // skipcq: JS-C1003 - Testing functions
 import * as sqlFilterFunctions from '../helpers/functions.sqlFilters.js';
 // skipcq: JS-C1003 - Testing functions
 import * as userFunctions from '../helpers/functions.user.js';
-describe('config.cemetery.ssm', () => {
-    it('Sorts burial site names', () => {
-        const grave2 = 'XX-B1-G2A';
-        const grave10 = 'XX-B1-G10';
-        assert.ok(lotNameSortNameFunction(grave2) < lotNameSortNameFunction(grave10));
-    });
-});
 describe('functions.cache', () => {
     const badId = -3;
     // eslint-disable-next-line no-secrets/no-secrets

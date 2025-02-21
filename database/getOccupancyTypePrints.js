@@ -1,4 +1,4 @@
-import { getConfigProperty } from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { acquireConnection } from './pool.js';
 const availablePrints = getConfigProperty('settings.lotOccupancy.prints');
 // eslint-disable-next-line @typescript-eslint/naming-convention

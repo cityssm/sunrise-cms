@@ -12,11 +12,12 @@ import createError from 'http-errors'
 import FileStore from 'session-file-store'
 
 import { useTestDatabases } from './data/databasePaths.js'
+import { DEBUG_NAMESPACE } from './debug.config.js'
 import * as permissionHandlers from './handlers/permissions.js'
 import { getSafeRedirectURL } from './helpers/functions.authentication.js'
-import * as configFunctions from './helpers/functions.config.js'
+import * as configFunctions from './helpers/config.helpers.js'
 import * as printFunctions from './helpers/functions.print.js'
-import { initializeDatabase } from './helpers/initializer.database.js'
+import { initializeDatabase } from './helpers/helpers.database.js'
 import routerAdmin from './routes/admin.js'
 import routerApi from './routes/api.js'
 import routerDashboard from './routes/dashboard.js'
@@ -29,13 +30,13 @@ import routerReports from './routes/reports.js'
 import routerWorkOrders from './routes/workOrders.js'
 import { version } from './version.js'
 
-const debug = Debug(`lot-occupancy-system:app:${process.pid}`)
+const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid}`)
 
 /*
  * INITIALIZE THE DATABASE
  */
 
-initializeDatabase()
+await initializeDatabase()
 
 /*
  * INITIALIZE APP
@@ -150,7 +151,7 @@ app.use(
   session({
     store: new FileStoreSession({
       path: './data/sessions',
-      logFn: Debug(`lot-occupancy-system:session:${process.pid}`),
+      logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid}`),
       retries: 20
     }),
     name: sessionCookieName,
@@ -227,11 +228,7 @@ app.get(`${urlPrefix}/`, sessionChecker, (_request, response) => {
 
 app.use(`${urlPrefix}/dashboard`, sessionChecker, routerDashboard)
 
-app.use(
-  `${urlPrefix}/api/:apiKey`,
-  permissionHandlers.apiGetHandler,
-  routerApi
-)
+app.use(`${urlPrefix}/api/:apiKey`, permissionHandlers.apiGetHandler, routerApi)
 
 app.use(`${urlPrefix}/print`, sessionChecker, routerPrint)
 app.use(`${urlPrefix}/maps`, sessionChecker, routerMaps)

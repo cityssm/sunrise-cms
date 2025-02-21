@@ -1,6 +1,6 @@
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import { getConfigProperty } from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 
 import { acquireConnection } from './pool.js'
 

@@ -1,8 +1,8 @@
 import type { PoolConnection } from 'better-sqlite-pool';
 import type { FeeCategory } from '../types/recordTypes.js';
 interface GetFeeCategoriesFilters {
-    occupancyTypeId?: number | string;
-    lotTypeId?: number | string;
+    contractTypeId?: number | string;
+    burialSiteTypeId?: number | string;
     feeCategoryId?: number | string;
 }
 interface GetFeeCategoriesOptions {

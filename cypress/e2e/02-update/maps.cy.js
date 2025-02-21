@@ -1,4 +1,4 @@
-import { getConfigProperty } from '../../../helpers/functions.config.js';
+import { getConfigProperty } from '../../../helpers/config.helpers.js';
 import { testUpdate } from '../../../test/_globals.js';
 import { login, logout } from '../../support/index.js';
 describe('Update - Maps', () => {

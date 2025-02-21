@@ -321,25 +321,19 @@
                     </div>
                 </div>
                 <div class="control">
-                    <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
-                        <i class="fas fa-unlock" aria-hidden="true"></i>
-                    </button>
+                  <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
+                    <i class="fas fa-unlock" aria-hidden="true"></i>
+                  </button>
                 </div>
             </div>
     
             <div class="field">
-                <label class="label" for="lot--mapKey">
-                    <%= configFunctions.getConfigProperty("aliases.map") %> SVG ID
-                </label>
-                <div class="control">
-                    <input class="input" id="lot--mapKey" name="mapKey" value="<%= lot.mapKey %>" maxlength="100" pattern="^[\d\w-]*$" />
-                </div>
-                <p class="help">
-                    <a href="https://cityssm.github.io/lot-occupancy-system/docs/mapImages.html" target="_blank" rel="noreferrer">
-                        <i class="fa fa-question-circle" aria-hidden="true"></i>
-                        What is the SVG ID?
-                    </a>
-                </p>
+              <label class="label" for="lot--mapKey">
+                <%= configFunctions.getConfigProperty("aliases.map") %> SVG ID
+              </label>
+              <div class="control">
+                <input class="input" id="lot--mapKey" name="mapKey" value="<%= lot.mapKey %>" maxlength="100" pattern="^[\d\w-]*$" />
+              </div>
             </div>
         </div>
       </div>

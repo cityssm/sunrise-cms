@@ -8,10 +8,11 @@ import { secondsToMillis } from '@cityssm/to-millis'
 import Debug from 'debug'
 import exitHook from 'exit-hook'
 
-import { getConfigProperty } from '../helpers/functions.config.js'
+import { DEBUG_NAMESPACE } from '../debug.config.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import type { WorkerMessage } from '../types/applicationTypes.js'
 
-const debug = Debug(`lot-occupancy-system:www:${process.pid}`)
+const debug = Debug(`${DEBUG_NAMESPACE}:www:${process.pid}`)
 
 const directoryName = path.dirname(fileURLToPath(import.meta.url))
 

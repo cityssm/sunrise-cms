@@ -1,5 +1,5 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
-import { getConfigProperty } from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { getLotNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import { acquireConnection } from './pool.js';
 function buildWhereClause(filters) {

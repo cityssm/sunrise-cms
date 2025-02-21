@@ -1,8 +1,8 @@
 import { Router } from 'express'
 
+import handler_burialSiteTypes from '../handlers/admin-get/burialSiteTypes.js'
 import handler_database from '../handlers/admin-get/database.js'
 import handler_fees from '../handlers/admin-get/fees.js'
-import handler_lotTypes from '../handlers/admin-get/lotTypes.js'
 import handler_ntfyStartup from '../handlers/admin-get/ntfyStartup.js'
 import handler_occupancyTypes from '../handlers/admin-get/occupancyTypes.js'
 import handler_tables from '../handlers/admin-get/tables.js'
@@ -144,7 +144,7 @@ router.post('/doDeleteOccupancyTypePrint', handler_doDeleteOccupancyTypePrint)
  * Lot Type Management
  */
 
-router.get('/lotTypes', handler_lotTypes)
+router.get('/lotTypes', handler_burialSiteTypes)
 
 router.post('/doAddLotType', handler_doAddLotType)
 

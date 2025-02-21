@@ -1,5 +1,5 @@
 import { dateIntegerToString, timeIntegerToString } from '@cityssm/utils-datetime';
-import { getConfigProperty } from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { getDynamicsGPDocument } from '../helpers/functions.dynamicsGP.js';
 import { acquireConnection } from './pool.js';
 export default async function getLotOccupancyTransactions(lotOccupancyId, options, connectedDatabase) {

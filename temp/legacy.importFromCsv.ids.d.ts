@@ -3,9 +3,9 @@ export declare const preneedOwnerLotOccupantTypeId: number;
 export declare const funeralDirectorLotOccupantTypeId: number;
 export declare const deceasedLotOccupantTypeId: number;
 export declare const purchaserLotOccupantTypeId: number;
-export declare const availableLotStatusId: number;
-export declare const reservedLotStatusId: number;
-export declare const takenLotStatusId: number;
+export declare const availableLotStatusId: any;
+export declare const reservedLotStatusId: any;
+export declare const takenLotStatusId: any;
 export declare function getLotTypeId(dataRow: {
     cemetery: string;
 }): number;

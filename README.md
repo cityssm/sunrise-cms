@@ -1,27 +1,13 @@
-# Lot Occupancy System
+# Sunrise Cemetery Management System (CMS)
 
-[![DeepSource](https://app.deepsource.com/gh/cityssm/lot-occupancy-system.svg/?label=active+issues&show_trend=true&token=8rYoZ1g7FoZHstfQmOzvlBn7)](https://app.deepsource.com/gh/cityssm/lot-occupancy-system/)
-[![Maintainability](https://api.codeclimate.com/v1/badges/11a8975b332f66e6eec7/maintainability)](https://codeclimate.com/github/cityssm/lot-occupancy-system/maintainability)
-[![codecov](https://codecov.io/gh/cityssm/lot-occupancy-system/branch/main/graph/badge.svg?token=1M38ZVCLKE)](https://codecov.io/gh/cityssm/lot-occupancy-system)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cityssm/lot-occupancy-system/coverage.yml?branch=main)](https://github.com/cityssm/lot-occupancy-system/actions/workflows/coverage.yml)
-[![lot-occupancy-system](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/xya1fn&style=flat&logo=cypress)](https://cloud.cypress.io/projects/xya1fn/runs)
+🚧 **In development** 🚧
 
-**In development**
+**A web-based application that allows cemetery managers to manage their cemetery records**
 
-![Lot View](docs/images/lotView.png)
-
-A system for managing the occupancy of lots.
-
-Built with **cemetery management** in mind, but flexible enough to handle marinas and campgrounds as well.
-
-[**User Documentation**](docs/) (In The Works)
-
-## Key Features
-
-**Maps are optional!**<br />
-Many systems of this type start with a map, and drill down into the data from it.
-This can result in a huge amount of effort to get started.
-This system can run "out-of-the-box" without maps, with the option to add them when it makes sense.
+This is a major refactoring of the 
+[Lot Occupancy System](https://github.com/cityssm/lot-occupancy-system),
+originally built with multiple focuses. This fork reworks the project to focus exculsively
+on cemetery management.
 
 ## About this Project
 

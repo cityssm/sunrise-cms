@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 import ical, { ICalEventStatus } from 'ical-generator';
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
-import { getConfigProperty } from '../../helpers/functions.config.js';
+import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getPrintConfig } from '../../helpers/functions.print.js';
 const calendarCompany = 'cityssm.github.io';
 const calendarProduct = getConfigProperty('application.applicationName');

@@ -1,7 +1,7 @@
 import { dateToInteger } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import { getConfigProperty } from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { getLotNameWhereClause } from '../helpers/functions.sqlFilters.js'
 import type { Lot } from '../types/recordTypes.js'
 

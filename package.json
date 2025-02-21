@@ -1,36 +1,36 @@
 {
-  "name": "lot-occupancy-system",
-  "version": "1.0.0-alpha.14",
+  "name": "sunrise-cms",
+  "version": "1.0.0-dev",
   "type": "module",
-  "description": "A system for managing the occupancy of lots. (i.e. Cemetery management)",
+  "description": "Sunrise Cemetery Management System, a web-based application that allows cemetery managers to manage their cemetery records.",
   "exports": "./app.js",
   "engines": {
     "node": ">=18.0.0"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./bin/www.js",
-    "dev:test": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:*,dynamics-gp:* TEST_DATABASES=true nodemon --inspect ./bin/www.js",
-    "dev:test:process": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true nodemon --inspect ./bin/wwwProcess.js",
-    "dev:live": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* nodemon --inspect ./bin/www.js",
+    "dev:test": "cross-env NODE_ENV=dev DEBUG=sunrise:*,dynamics-gp:* TEST_DATABASES=true nodemon --inspect ./bin/www.js",
+    "dev:test:process": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true nodemon --inspect ./bin/wwwProcess.js",
+    "dev:live": "cross-env NODE_ENV=dev DEBUG=sunrise:* nodemon --inspect ./bin/www.js",
     "cy:open": "cypress open --config-file cypress.config.js",
     "cy:run": "cypress run --config-file cypress.config.js",
     "cy:run:firefox": "cypress run --config-file cypress.config.js --browser firefox",
-    "test": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true mocha --timeout 30000 --exit",
-    "test:startup": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true STARTUP_TEST=true node ./bin/www.js",
-    "coverage": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 30000 --exit",
-    "temp:legacy:importFromCsv": "cross-env NODE_ENV=dev DEBUG=lot-occupancy-system:* TEST_DATABASES=true node ./temp/legacy.importFromCsv.js",
+    "test": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true mocha --timeout 30000 --exit",
+    "test:startup": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true STARTUP_TEST=true node ./bin/www.js",
+    "coverage": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 30000 --exit",
+    "temp:legacy:importFromCsv": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node ./temp/legacy.importFromCsv.js",
     "temp:so:exportMaps": "node ./temp/so.exportMaps.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cityssm/lot-occupancy-manager.git"
+    "url": "git+https://github.com/cityssm/sunrise-cms.git"
   },
   "author": "The Corporation of the City of Sault Ste. Marie",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cityssm/lot-occupancy-manager/issues"
+    "url": "https://github.com/cityssm/sunrise-cms/issues"
   },
-  "homepage": "https://github.com/cityssm/lot-occupancy-manager#readme",
+  "homepage": "https://github.com/cityssm/sunrise-cms#readme",
   "private": true,
   "dependencies": {
     "@cityssm/bulma-js": "^0.5.0",

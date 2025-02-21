@@ -5,8 +5,8 @@ import type { ServiceConfig } from 'node-windows'
 const _dirname = '.'
 
 export const serviceConfig: ServiceConfig = {
-  name: 'Lot Occupancy Manager',
+  name: 'Sunrise CMS',
   description:
-    'A system for managing the occupancy of lots. (i.e. Cemetery management)',
+    'Sunrise Cemetery Management System, a web-based application that allows cemetery managers to manage their cemetery records.',
   script: path.join(_dirname, 'bin', 'www.js')
 }

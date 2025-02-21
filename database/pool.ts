@@ -2,9 +2,10 @@ import { Pool, type PoolConnection } from 'better-sqlite-pool'
 import Debug from 'debug'
 import exitHook from 'exit-hook'
 
-import { lotOccupancyDB as databasePath } from '../data/databasePaths.js'
+import { DEBUG_NAMESPACE } from '../debug.config.js'
+import { sunriseDB as databasePath } from '../helpers/database.helpers.js'
 
-const debug = Debug('lot-occupancy-system:lotOccupancyDB:pool')
+const debug = Debug(`${DEBUG_NAMESPACE}:sunriseDB:pool`)
 
 const pool = new Pool(databasePath)
 

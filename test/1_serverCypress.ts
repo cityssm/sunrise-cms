@@ -34,7 +34,7 @@ function runCypress(browser: 'chrome' | 'firefox', done: () => void): void {
   })
 }
 
-describe('lot-occupancy-system', () => {
+describe('sunrise-cms', () => {
   const httpServer = http.createServer(app)
 
   let serverStarted = false

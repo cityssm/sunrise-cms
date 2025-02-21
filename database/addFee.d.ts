@@ -3,15 +3,15 @@ export interface AddFeeForm {
     feeName: string;
     feeDescription: string;
     feeAccount: string;
-    occupancyTypeId: string;
-    lotTypeId: string;
+    contractTypeId: string;
+    burialSiteTypeId: string;
     feeAmount?: string;
-    feeFunction: string;
+    feeFunction?: string;
     taxAmount?: string;
     taxPercentage?: string;
-    includeQuantity: '' | '1';
+    includeQuantity?: '' | '1';
     quantityUnit?: string;
-    isRequired: '' | '1';
+    isRequired?: '' | '1';
     orderNumber?: number;
 }
 export default function addFee(feeForm: AddFeeForm, user: User): Promise<number>;

@@ -1,6 +1,6 @@
 import ActiveDirectory from 'activedirectory2'
 
-import { getConfigProperty } from './functions.config.js'
+import { getConfigProperty } from './config.helpers.js'
 
 const userDomain = getConfigProperty('application.userDomain')
 

@@ -4,7 +4,7 @@ import {
 } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import { getConfigProperty } from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { getDynamicsGPDocument } from '../helpers/functions.dynamicsGP.js'
 import type { LotOccupancyTransaction } from '../types/recordTypes.js'
 

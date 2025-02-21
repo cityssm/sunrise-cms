@@ -10,77 +10,77 @@ export interface Record {
     recordDelete_timeMillis?: number;
     recordDelete_dateString?: string;
 }
-export interface MapRecord extends Record {
-    mapId?: number;
-    mapName?: string;
-    mapDescription?: string;
-    mapLatitude?: number;
-    mapLongitude?: number;
-    mapSVG?: string;
-    mapAddress1?: string;
-    mapAddress2?: string;
-    mapCity?: string;
-    mapProvince?: string;
-    mapPostalCode?: string;
-    mapPhoneNumber?: string;
-    lotCount?: number;
+export interface CemeteryRecord extends Record {
+    cemeteryId?: number;
+    cemeteryName?: string;
+    cemeteryDescription?: string;
+    cemeteryLatitude?: number;
+    cemeteryLongitude?: number;
+    cemeterySvg?: string;
+    cemeteryAddress1?: string;
+    cemeteryAddress2?: string;
+    cemeteryCity?: string;
+    cemeteryProvince?: string;
+    cemeteryPostalCode?: string;
+    cemeteryPhoneNumber?: string;
+    burialSiteCount?: number;
 }
-export interface LotType extends Record {
-    lotTypeId: number;
-    lotType: string;
+export interface BurialSiteType extends Record {
+    burialSiteTypeId: number;
+    burialSiteType: string;
     orderNumber?: number;
-    lotTypeFields?: LotTypeField[];
+    burialSiteTypeFields?: BurialSiteTypeField[];
 }
-export interface LotTypeField extends Record {
-    lotTypeFieldId: number;
-    lotTypeField?: string;
-    lotTypeId?: number;
-    lotType: LotType;
+export interface BurialSiteTypeField extends Record {
+    burialSiteTypeFieldId: number;
+    burialSiteTypeField?: string;
+    burialSiteTypeId?: number;
+    burialSiteType: BurialSiteType;
     fieldType: string;
-    lotTypeFieldValues?: string;
+    fieldValues?: string;
     isRequired?: boolean;
     pattern?: string;
     minimumLength?: number;
     maximumLength?: number;
     orderNumber?: number;
 }
-export interface LotStatus extends Record {
-    lotStatusId: number;
-    lotStatus: string;
+export interface BurialSiteStatus extends Record {
+    burialSiteStatusId: number;
+    burialSiteStatus: string;
     orderNumber?: number;
 }
-export interface Lot extends Record {
-    lotId: number;
-    lotName?: string;
-    lotTypeId?: number;
-    lotType?: string;
-    mapId?: number;
-    mapName?: string;
-    map?: MapRecord;
-    mapSVG?: string;
-    mapKey?: string;
-    lotLatitude?: number;
-    lotLongitude?: number;
-    lotStatusId?: number;
-    lotStatus?: string;
-    lotFields?: LotField[];
-    lotOccupancyCount?: number;
-    lotOccupancies?: LotOccupancy[];
-    lotComments?: LotComment[];
+export interface BurialSite extends Record {
+    burialSiteId: number;
+    burialSiteName?: string;
+    burialSiteTypeId?: number;
+    burialSiteType?: string;
+    cemeteryId?: number;
+    cemeteryName?: string;
+    cemetery?: CemeteryRecord;
+    cemeterySvg?: string;
+    cemeterySvgId?: string;
+    burialSiteLatitude?: number;
+    burialSiteLongitude?: number;
+    burialSiteStatusId?: number;
+    burialSiteStatus?: string;
+    burialSiteFields?: LotField[];
+    burialSiteContractCount?: number;
+    burialSiteContracts?: LotOccupancy[];
+    burialSiteComments?: BurialSiteComment[];
 }
-export interface LotComment extends Record {
-    lotCommentId?: number;
-    lotId?: number;
-    lotCommentDate?: number;
-    lotCommentDateString?: string;
-    lotCommentTime?: number;
-    lotCommentTimeString?: string;
-    lotCommentTimePeriodString?: string;
-    lotComment?: string;
+export interface BurialSiteComment extends Record {
+    burialSiteCommentId?: number;
+    burialSiteId?: number;
+    commentDate?: number;
+    commentDateString?: string;
+    commentTime?: number;
+    commentTimeString?: string;
+    commentTimePeriodString?: string;
+    comment?: string;
 }
-export interface LotField extends LotTypeField, Record {
-    lotId?: number;
-    lotFieldValue?: string;
+export interface LotField extends BurialSiteTypeField, Record {
+    burialSiteId?: number;
+    burialSiteFieldValue?: string;
 }
 export interface OccupancyType extends Record {
     occupancyTypeId: number;

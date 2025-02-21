@@ -7,9 +7,10 @@ import Debug from 'debug'
 import exitHook from 'exit-hook'
 
 import { app } from '../app.js'
-import { getConfigProperty } from '../helpers/functions.config.js'
+import { DEBUG_NAMESPACE } from '../debug.config.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 
-const debug = Debug(`lot-occupancy-system:wwwProcess:${process.pid}`)
+const debug = Debug(`${DEBUG_NAMESPACE}:wwwProcess:${process.pid}`)
 
 interface ServerError extends Error {
   syscall: string
@@ -57,9 +58,7 @@ function onListening(server: http.Server): void {
  * Initialize HTTP
  */
 
-process.title = `${getConfigProperty(
-  'application.applicationName'
-)} (Worker)`
+process.title = `${getConfigProperty('application.applicationName')} (Worker)`
 
 const httpPort = getConfigProperty('application.httpPort')
 

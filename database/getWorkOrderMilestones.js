@@ -1,5 +1,5 @@
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
-import { getConfigProperty } from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import getLotOccupancies from './getLotOccupancies.js';
 import getLots from './getLots.js';
 import { acquireConnection } from './pool.js';

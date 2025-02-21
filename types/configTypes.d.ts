@@ -15,15 +15,6 @@ export interface Config {
         isAdmin?: string[];
     };
     aliases: {
-        lot?: string;
-        lots?: string;
-        map?: string;
-        maps?: string;
-        occupancy?: string;
-        occupancies?: string;
-        occupancyStartDate?: string;
-        occupant?: string;
-        occupants?: string;
         externalReceiptNumber?: string;
         workOrderOpenDate?: string;
         workOrderCloseDate?: string;
@@ -32,20 +23,14 @@ export interface Config {
         fees: {
             taxPercentageDefault?: number;
         };
-        map: {
-            mapCityDefault?: string;
-            mapProvinceDefault?: string;
+        cemeteries: {
+            cityDefault?: string;
+            provinceDefault?: string;
         };
-        lot: {
-            lotNamePattern?: RegExp;
-            lotNameHelpText?: string;
-            lotNameSortNameFunction?: (lotName: string) => string;
-        };
-        lotOccupancy: {
-            lotIdIsRequired?: boolean;
-            occupancyEndDateIsRequired?: boolean;
-            occupantCityDefault?: string;
-            occupantProvinceDefault?: string;
+        contracts: {
+            burialSiteIdIsRequired?: boolean;
+            cityDefault?: string;
+            provinceDefault?: string;
             prints?: string[];
         };
         workOrders: {

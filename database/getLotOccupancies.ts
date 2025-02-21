@@ -6,7 +6,7 @@ import {
 import type { PoolConnection } from 'better-sqlite-pool'
 
 import { getOccupancyTypeById } from '../helpers/functions.cache.js'
-import { getConfigProperty } from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import {
   getLotNameWhereClause,
   getOccupancyTimeWhereClause,

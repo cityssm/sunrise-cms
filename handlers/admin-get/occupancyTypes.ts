@@ -4,7 +4,7 @@ import {
   getAllOccupancyTypeFields,
   getOccupancyTypes
 } from '../../helpers/functions.cache.js'
-import { getConfigProperty } from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getPrintConfig } from '../../helpers/functions.print.js'
 
 export default async function handler(

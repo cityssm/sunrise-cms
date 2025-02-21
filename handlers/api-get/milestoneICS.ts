@@ -6,7 +6,7 @@ import ical, { type ICalEventData, ICalEventStatus } from 'ical-generator'
 import getWorkOrderMilestones, {
   type WorkOrderMilestoneFilters
 } from '../../database/getWorkOrderMilestones.js'
-import { getConfigProperty } from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getPrintConfig } from '../../helpers/functions.print.js'
 import type { WorkOrderMilestone } from '../../types/recordTypes.js'
 

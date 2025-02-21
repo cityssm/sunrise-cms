@@ -1,15 +1,16 @@
 import Debug from 'debug'
 import { type Request, type Response, Router } from 'express'
 
-import { useTestDatabases } from '../data/databasePaths.js'
+import { DEBUG_NAMESPACE } from '../debug.config.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
+import { useTestDatabases } from '../helpers/database.helpers.js'
 import { getApiKey } from '../helpers/functions.api.js'
 import {
   authenticate,
   getSafeRedirectURL
 } from '../helpers/functions.authentication.js'
-import { getConfigProperty } from '../helpers/functions.config.js'
 
-const debug = Debug('lot-occupancy-system:login')
+const debug = Debug(`${DEBUG_NAMESPACE}:login`)
 
 export const router = Router()
 

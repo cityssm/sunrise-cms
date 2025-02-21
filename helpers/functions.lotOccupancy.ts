@@ -2,7 +2,7 @@ import type {
   LotOccupancy,
   LotOccupancyFee,
   LotOccupancyOccupant
-} from '../types/recordTypes'
+} from '../types/recordTypes.js'
 
 export function filterOccupantsByLotOccupantType(
   lotOccupancy: LotOccupancy,

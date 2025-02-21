@@ -5,7 +5,7 @@ import getLotOccupancy from '../database/getLotOccupancy.js'
 import getWorkOrder from '../database/getWorkOrder.js'
 import type { Lot, LotOccupancy, WorkOrder } from '../types/recordTypes.js'
 
-import * as configFunctions from './functions.config.js'
+import * as configFunctions from './config.helpers.js'
 import * as lotOccupancyFunctions from './functions.lotOccupancy.js'
 
 interface PrintConfig {

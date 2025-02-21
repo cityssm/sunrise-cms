@@ -21,15 +21,6 @@ export declare const configDefaultValues: {
     'users.canLogin': string[];
     'users.canUpdate': string[];
     'users.isAdmin': string[];
-    'aliases.lot': string;
-    'aliases.lots': string;
-    'aliases.map': string;
-    'aliases.maps': string;
-    'aliases.occupancy': string;
-    'aliases.occupancies': string;
-    'aliases.occupancyStartDate': string;
-    'aliases.occupant': string;
-    'aliases.occupants': string;
     'aliases.externalReceiptNumber': string;
     'aliases.workOrderOpenDate': string;
     'aliases.workOrderCloseDate': string;

@@ -1,7 +1,7 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable unicorn/no-await-expression-member */
 import sqlite from 'better-sqlite3';
-import { lotOccupancyDB as databasePath } from '../data/databasePaths.js';
+import { sunriseDB as databasePath } from '../data/databasePaths.js';
 import * as cacheFunctions from '../helpers/functions.cache.js';
 /*
  * Fee IDs

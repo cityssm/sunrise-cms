@@ -1,4 +1,4 @@
-import { getConfigProperty } from '../../helpers/functions.config.js';
+import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getReportData, getScreenPrintConfig } from '../../helpers/functions.print.js';
 export default async function handler(request, response) {
     const printName = request.params.printName;

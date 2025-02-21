@@ -6,7 +6,7 @@ export default async function addFee(feeForm, user) {
         .prepare(`insert into Fees (
         feeCategoryId,
         feeName, feeDescription, feeAccount,
-        occupancyTypeId, lotTypeId,
+        contractTypeId, burialSiteTypeId,
         feeAmount, feeFunction,
         taxAmount, taxPercentage,
         includeQuantity, quantityUnit,
@@ -14,7 +14,7 @@ export default async function addFee(feeForm, user) {
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(feeForm.feeCategoryId, feeForm.feeName, feeForm.feeDescription, feeForm.feeAccount, feeForm.occupancyTypeId === '' ? undefined : feeForm.occupancyTypeId, feeForm.lotTypeId === '' ? undefined : feeForm.lotTypeId, feeForm.feeAmount ?? undefined, feeForm.feeFunction ?? undefined, feeForm.taxAmount ?? undefined, feeForm.taxPercentage ?? undefined, (feeForm.includeQuantity ?? '') === '' ? 0 : 1, feeForm.quantityUnit, (feeForm.isRequired ?? '') === '' ? 0 : 1, feeForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run(feeForm.feeCategoryId, feeForm.feeName, feeForm.feeDescription, feeForm.feeAccount, feeForm.contractTypeId === '' ? undefined : feeForm.contractTypeId, feeForm.burialSiteTypeId === '' ? undefined : feeForm.burialSiteTypeId, feeForm.feeAmount ?? undefined, feeForm.feeFunction ?? undefined, feeForm.taxAmount ?? undefined, feeForm.taxPercentage ?? undefined, (feeForm.includeQuantity ?? '') === '' ? 0 : 1, feeForm.quantityUnit, (feeForm.isRequired ?? '') === '' ? 0 : 1, feeForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     database.release();
     return result.lastInsertRowid;
 }

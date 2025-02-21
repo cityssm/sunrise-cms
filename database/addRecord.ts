@@ -3,20 +3,20 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 import { acquireConnection } from './pool.js'
 
 type RecordTable =
-  | 'LotStatuses'
-  | 'LotTypes'
-  | 'OccupancyTypes'
+  | 'BurialSiteStatuses'
+  | 'BurialSiteTypes'
+  | 'ContractTypes'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
 
 const recordNameColumns = new Map<RecordTable, string>()
-recordNameColumns.set('LotStatuses', 'lotStatus')
-recordNameColumns.set('LotTypes', 'lotType')
-recordNameColumns.set('OccupancyTypes', 'occupancyType')
+recordNameColumns.set('BurialSiteStatuses', 'burialSiteStatus')
+recordNameColumns.set('BurialSiteTypes', 'burialSiteType')
+recordNameColumns.set('ContractTypes', 'contractType')
 recordNameColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneType')
 recordNameColumns.set('WorkOrderTypes', 'workOrderType')
 
-export async function addRecord(
+export default async function addRecord(
   recordTable: RecordTable,
   recordName: string,
   orderNumber: number | string,

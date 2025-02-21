@@ -2,8 +2,8 @@ import fs from 'node:fs/promises'
 
 import {
   backupFolder,
-  lotOccupancyDB as databasePath
-} from '../data/databasePaths.js'
+  sunriseDB as databasePath
+} from '../helpers/database.helpers.js'
 
 export async function backupDatabase(): Promise<string | false> {
   const databasePathSplit = databasePath.split(/[/\\]/)

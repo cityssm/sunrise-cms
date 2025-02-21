@@ -6,7 +6,7 @@ import {
   getWorkOrderMilestoneTypes,
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
-import { getConfigProperty } from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/config.helpers.js'
 
 export default async function handler(
   request: Request,

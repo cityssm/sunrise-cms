@@ -1,4 +1,6 @@
-import { getConfigProperty } from '../helpers/functions.config.js'
+import { daysToMillis } from '@cityssm/to-millis'
+
+import { getConfigProperty } from '../helpers/config.helpers.js'
 
 import { acquireConnection } from './pool.js'
 
@@ -10,9 +12,7 @@ export default async function cleanupDatabase(
   const rightNowMillis = Date.now()
   const recordDeleteTimeMillisMin =
     rightNowMillis -
-    getConfigProperty('settings.adminCleanup.recordDeleteAgeDays') *
-      86_400 *
-      1000
+    daysToMillis(getConfigProperty('settings.adminCleanup.recordDeleteAgeDays'))
 
   let inactivatedRecordCount = 0
   let purgedRecordCount = 0
@@ -37,12 +37,12 @@ export default async function cleanupDatabase(
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Work Order Lot Occupancies
+   * Work Order Burial Site Contracts
    */
 
   inactivatedRecordCount += database
     .prepare(
-      `update WorkOrderLotOccupancies
+      `update WorkOrderBurialSiteContracts
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
@@ -53,17 +53,17 @@ export default async function cleanupDatabase(
 
   purgedRecordCount += database
     .prepare(
-      'delete from WorkOrderLotOccupancies where recordDelete_timeMillis <= ?'
+      'delete from WorkOrderBurialSiteContracts where recordDelete_timeMillis <= ?'
     )
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Work Order Lots
+   * Work Order Burial Sites
    */
 
   inactivatedRecordCount += database
     .prepare(
-      `update WorkOrderLots
+      `update WorkOrderBurialSites
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
@@ -73,7 +73,9 @@ export default async function cleanupDatabase(
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare('delete from WorkOrderLots where recordDelete_timeMillis <= ?')
+    .prepare(
+      'delete from WorkOrderBurialSites where recordDelete_timeMillis <= ?'
+    )
     .run(recordDeleteTimeMillisMin).changes
 
   /*
@@ -106,8 +108,8 @@ export default async function cleanupDatabase(
       `delete from WorkOrders
         where recordDelete_timeMillis <= ?
         and workOrderId not in (select workOrderId from WorkOrderComments)
-        and workOrderId not in (select workOrderId from WorkOrderLotOccupancies)
-        and workOrderId not in (select workOrderId from WorkOrderLots)
+        and workOrderId not in (select workOrderId from WorkOrderBurialSiteContracts)
+        and workOrderId not in (select workOrderId from WorkOrderBurialSites)
         and workOrderId not in (select workOrderId from WorkOrderMilestones)`
     )
     .run(recordDeleteTimeMillisMin).changes
@@ -138,95 +140,77 @@ export default async function cleanupDatabase(
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Lot Occupancy Comments
+   * Burial Site Contract Comments
    */
 
   inactivatedRecordCount += database
     .prepare(
-      `update LotOccupancyComments
+      `update BurialSiteContractComments
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and lotOccupancyId in (
-          select lotOccupancyId from LotOccupancies where recordDelete_timeMillis is not null)`
+        and burialSiteContractId in (
+          select burialSiteContractId from BurialSiteContracts where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
-      'delete from LotOccupancyComments where recordDelete_timeMillis <= ?'
+      'delete from BurialSiteContractComments where recordDelete_timeMillis <= ?'
     )
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Lot Occupancy Fields
+   * Burial Site Contract Fields
    */
 
   inactivatedRecordCount += database
     .prepare(
-      `update LotOccupancyFields
+      `update BurialSiteContractFields
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and lotOccupancyId in (select lotOccupancyId from LotOccupancies where recordDelete_timeMillis is not null)`
+        and burialSiteContractId in (select burialSiteContractId from BurialSiteContracts where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
-      'delete from LotOccupancyFields where recordDelete_timeMillis <= ?'
+      'delete from BurialSiteContractFields where recordDelete_timeMillis <= ?'
     )
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Lot Occupancy Occupants
-   */
-
-  inactivatedRecordCount += database
-    .prepare(
-      `update LotOccupancyOccupants
-        set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
-        where recordDelete_timeMillis is null
-        and lotOccupancyId in (select lotOccupancyId from LotOccupancies where recordDelete_timeMillis is not null)`
-    )
-    .run(user.userName, rightNowMillis).changes
-
-  purgedRecordCount += database
-    .prepare(
-      'delete from LotOccupancyOccupants where recordDelete_timeMillis <= ?'
-    )
-    .run(recordDeleteTimeMillisMin).changes
-
-  /*
-   * Lot Occupancy Fees/Transactions
+   * Burial Site Contract Fees/Transactions
    * - Maintain financials, do not delete related.
    */
 
   purgedRecordCount += database
-    .prepare('delete from LotOccupancyFees where recordDelete_timeMillis <= ?')
+    .prepare(
+      'delete from BurialSiteContractFees where recordDelete_timeMillis <= ?'
+    )
     .run(recordDeleteTimeMillisMin).changes
 
   purgedRecordCount += database
     .prepare(
-      'delete from LotOccupancyTransactions where recordDelete_timeMillis <= ?'
+      'delete from BurialSiteContractTransactions where recordDelete_timeMillis <= ?'
     )
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Lot Occupancies
+   * Burial Site Contracts
    */
 
   purgedRecordCount += database
     .prepare(
-      `delete from LotOccupancies
+      `delete from BurialSiteContracts
         where recordDelete_timeMillis <= ?
-        and lotOccupancyId not in (select lotOccupancyId from LotOccupancyComments)
-        and lotOccupancyId not in (select lotOccupancyId from LotOccupancyFees)
-        and lotOccupancyId not in (select lotOccupancyId from LotOccupancyFields)
-        and lotOccupancyId not in (select lotOccupancyId from LotOccupancyOccupants)
-        and lotOccupancyId not in (select lotOccupancyId from LotOccupancyTransactions)
-        and lotOccupancyId not in (select lotOccupancyId from WorkOrderLotOccupancies)`
+        and burialSiteContractId not in (select burialSiteContractId from BurialSiteContractComments)
+        and burialSiteContractId not in (select burialSiteContractId from BurialSiteContractFees)
+        and burialSiteContractId not in (select burialSiteContractId from BurialSiteContractFields)
+        and burialSiteContractId not in (select burialSiteContractId from BurialSiteContractInterments)
+        and burialSiteContractId not in (select burialSiteContractId from BurialSiteContractTransactions)
+        and burialSiteContractId not in (select burialSiteContractId from WorkOrderBurialSiteContracts)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -248,7 +232,7 @@ export default async function cleanupDatabase(
     .prepare(
       `delete from Fees
         where recordDelete_timeMillis <= ?
-        and feeId not in (select feeId from LotOccupancyFees)`
+        and feeId not in (select feeId from BurialSiteContractFees)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -265,24 +249,24 @@ export default async function cleanupDatabase(
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Occupancy Type Fields
+   * Contract Type Fields
    */
 
   inactivatedRecordCount += database
     .prepare(
-      `update OccupancyTypeFields
+      `update ContractTypeFields
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and occupancyTypeId in (select occupancyTypeId from OccupancyTypes where recordDelete_timeMillis is not null)`
+        and contractTypeId in (select contractTypeId from ContractTypes where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
-      `delete from OccupancyTypeFields
+      `delete from ContractTypeFields
         where recordDelete_timeMillis <= ?
-        and occupancyTypeFieldId not in (select occupancyTypeFieldId from LotOccupancyFields)`
+        and contractTypeFieldId not in (select contractTypeFieldId from BurialSiteContractFields)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -292,151 +276,141 @@ export default async function cleanupDatabase(
 
   inactivatedRecordCount += database
     .prepare(
-      `update OccupancyTypePrints
+      `update ContractTypePrints
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and occupancyTypeId in (select occupancyTypeId from OccupancyTypes where recordDelete_timeMillis is not null)`
+        and contractTypeId in (select contractTypeId from ContractTypes where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
-      'delete from OccupancyTypePrints where recordDelete_timeMillis <= ?'
+      'delete from ContractTypePrints where recordDelete_timeMillis <= ?'
     )
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Occupancy Types
+   * Contract Types
    */
 
   purgedRecordCount += database
     .prepare(
-      `delete from OccupancyTypes
+      `delete from ContractTypes
         where recordDelete_timeMillis <= ?
-        and occupancyTypeId not in (select occupancyTypeId from OccupancyTypeFields)
-        and occupancyTypeId not in (select occupancyTypeId from OccupancyTypePrints)
-        and occupancyTypeId not in (select occupancyTypeId from LotOccupancies)
-        and occupancyTypeId not in (select occupancyTypeId from Fees)`
+        and contractTypeId not in (select contractTypeId from ContractTypeFields)
+        and contractTypeId not in (select contractTypeId from ContractTypePrints)
+        and contractTypeId not in (select contractTypeId from BurialSiteContracts)
+        and contractTypeId not in (select contractTypeId from Fees)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Lot Occupant Types
-   */
-
-  purgedRecordCount += database
-    .prepare(
-      `delete from LotOccupantTypes
-        where recordDelete_timeMillis <= ?
-        and lotOccupantTypeId not in (select lotOccupantTypeId from LotOccupancyOccupants)`
-    )
-    .run(recordDeleteTimeMillisMin).changes
-
-  /*
-   * Lot Comments
+   * Burial Site Comments
    */
 
   inactivatedRecordCount += database
     .prepare(
-      `update LotComments
+      `update BurialSiteComments
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and lotId in (select lotId from Lots where recordDelete_timeMillis is not null)`
+        and burialSiteId in (select burialSiteId from BurialSites where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare('delete from LotComments where recordDelete_timeMillis <= ?')
+    .prepare(
+      'delete from BurialSiteComments where recordDelete_timeMillis <= ?'
+    )
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Lot Fields
+   * Burial Site Fields
    */
 
   inactivatedRecordCount += database
     .prepare(
-      `update LotFields
+      `update BurialSiteFields
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and lotId in (select lotId from Lots where recordDelete_timeMillis is not null)`
+        and burialSiteId in (select burialSiteId from BurialSites where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare('delete from LotFields where recordDelete_timeMillis <= ?')
+    .prepare('delete from BurialSiteFields where recordDelete_timeMillis <= ?')
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Lots
+   * Burial Sites
    */
 
   inactivatedRecordCount += database
     .prepare(
-      `update Lots
+      `update BurialSites
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and mapId in (select mapId from Maps where recordDelete_timeMillis is not null)`
+        and cemeteryId in (select cemeteryId from Cemeteries where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
-      `delete from Lots
+      `delete from BurialSites
         where recordDelete_timeMillis <= ?
-        and lotId not in (select lotId from LotComments)
-        and lotId not in (select lotId from LotFields)
-        and lotId not in (select lotId from LotOccupancies)
-        and lotId not in (select lotId from WorkOrderLots)`
+        and burialSiteId not in (select burialSiteId from BurialSiteComments)
+        and burialSiteId not in (select burialSiteId from BurialSiteFields)
+        and burialSiteId not in (select burialSiteId from BurialSiteContracts)
+        and burialSiteId not in (select burialSiteId from WorkOrderLots)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Lot Statuses
+   * Burial Site Statuses
    */
 
   purgedRecordCount += database
     .prepare(
-      `delete from LotStatuses
+      `delete from BurialSiteStatuses
         where recordDelete_timeMillis <= ?
-        and lotStatusId not in (select lotStatusId from Lots)`
+        and burialSiteStatusId not in (select burialSiteStatusId from BurialSites)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Lot Type Fields
+   * Burial Site Type Fields
    */
 
   inactivatedRecordCount += database
     .prepare(
-      `update LotTypeFields
+      `update BurialSiteTypeFields
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and lotTypeId in (select lotTypeId from LotTypes where recordDelete_timeMillis is not null)`
+        and burialSiteTypeId in (select burialSiteTypeId from BurialSiteTypes where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
     .prepare(
-      `delete from LotTypeFields
+      `delete from BurialSiteTypeFields
         where recordDelete_timeMillis <= ?
-        and lotTypeFieldId not in (select lotTypeFieldId from LotFields)`
+        and burialSiteTypeFieldId not in (select burialSiteTypeFieldId from BurialSiteFields)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Lot Types
+   * Burial Site Types
    */
 
   purgedRecordCount += database
     .prepare(
-      `delete from LotTypes
+      `delete from BurialSiteTypes
         where recordDelete_timeMillis <= ?
-        and lotTypeId not in (select lotTypeId from Lots)`
+        and burialSiteTypeId not in (select burialSiteTypeId from BurialSites)`
     )
     .run(recordDeleteTimeMillisMin).changes
 

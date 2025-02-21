@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises';
-import { backupFolder, lotOccupancyDB as databasePath } from '../data/databasePaths.js';
+import { backupFolder, sunriseDB as databasePath } from '../helpers/database.helpers.js';
 export async function backupDatabase() {
     const databasePathSplit = databasePath.split(/[/\\]/);
     const backupDatabasePath = `${backupFolder}/${databasePathSplit.at(-1)}.${Date.now().toString()}`;

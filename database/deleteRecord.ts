@@ -5,17 +5,16 @@ import { acquireConnection } from './pool.js'
 type RecordTable =
   | 'FeeCategories'
   | 'Fees'
-  | 'Lots'
-  | 'LotComments'
-  | 'LotOccupancies'
-  | 'LotOccupancyComments'
-  | 'LotOccupantTypes'
-  | 'LotStatuses'
-  | 'LotTypes'
-  | 'LotTypeFields'
-  | 'Maps'
-  | 'OccupancyTypes'
-  | 'OccupancyTypeFields'
+  | 'BurialSites'
+  | 'BurialSiteComments'
+  | 'BurialSiteContracts'
+  | 'BurialSiteContractComments'
+  | 'BurialSiteStatuses'
+  | 'BurialSiteTypes'
+  | 'BurialSiteTypeFields'
+  | 'Cemeteries'
+  | 'ContractTypes'
+  | 'ContractTypeFields'
   | 'WorkOrders'
   | 'WorkOrderComments'
   | 'WorkOrderMilestones'
@@ -25,17 +24,16 @@ type RecordTable =
 const recordIdColumns = new Map<RecordTable, string>()
 recordIdColumns.set('FeeCategories', 'feeCategoryId')
 recordIdColumns.set('Fees', 'feeId')
-recordIdColumns.set('Lots', 'lotId')
-recordIdColumns.set('LotComments', 'lotCommentId')
-recordIdColumns.set('LotOccupancies', 'lotOccupancyId')
-recordIdColumns.set('LotOccupancyComments', 'lotOccupancyCommentId')
-recordIdColumns.set('LotOccupantTypes', 'lotOccupantTypeId')
-recordIdColumns.set('LotStatuses', 'lotStatusId')
-recordIdColumns.set('LotTypes', 'lotTypeId')
-recordIdColumns.set('LotTypeFields', 'lotTypeId')
-recordIdColumns.set('Maps', 'mapId')
-recordIdColumns.set('OccupancyTypes', 'occupancyTypeId')
-recordIdColumns.set('OccupancyTypeFields', 'occupancyTypeFieldId')
+recordIdColumns.set('BurialSites', 'burialSiteId')
+recordIdColumns.set('BurialSiteComments', 'burialSiteCommentId')
+recordIdColumns.set('BurialSiteContracts', 'burialSiteContractId')
+recordIdColumns.set('BurialSiteContractComments', 'burialSiteContractCommentId')
+recordIdColumns.set('BurialSiteStatuses', 'burialSiteStatusId')
+recordIdColumns.set('BurialSiteTypes', 'burialSiteTypeId')
+recordIdColumns.set('BurialSiteTypeFields', 'burialSiteFieldTypeId')
+recordIdColumns.set('Cemeteries', 'cemeteryId')
+recordIdColumns.set('ContractTypes', 'contractTypeId')
+recordIdColumns.set('ContractTypeFields', 'contractTypeFieldId')
 recordIdColumns.set('WorkOrders', 'workOrderId')
 recordIdColumns.set('WorkOrderComments', 'workOrderCommentId')
 recordIdColumns.set('WorkOrderMilestones', 'workOrderMilestoneId')
@@ -44,18 +42,14 @@ recordIdColumns.set('WorkOrderTypes', 'workOrderTypeId')
 
 const relatedTables = new Map<RecordTable, string[]>()
 relatedTables.set('FeeCategories', ['Fees'])
-relatedTables.set('Lots', ['LotFields', 'LotComments'])
-relatedTables.set('LotOccupancies', [
-  'LotOccupancyOccupants',
-  'LotOccupancyFields',
-  'LotOccupancyComments'
+relatedTables.set('BurialSites', ['BurialSiteFields', 'BurialSiteComments'])
+relatedTables.set('BurialSiteContracts', [
+  'BurialSiteContractFields',
+  'BurialSiteContractComments'
 ])
-relatedTables.set('LotTypes', ['LotTypeFields'])
-relatedTables.set('Maps', ['Lots'])
-relatedTables.set('OccupancyTypes', [
-  'OccupancyTypePrints',
-  'OccupancyTypeFields'
-])
+relatedTables.set('BurialSiteTypes', ['BurialSiteTypeFields'])
+relatedTables.set('Cemeteries', ['BurialSites'])
+relatedTables.set('ContractTypes', ['ContractTypePrints', 'ContractTypeFields'])
 relatedTables.set('WorkOrders', [
   'WorkOrderMilestones',
   'WorkOrderLots',

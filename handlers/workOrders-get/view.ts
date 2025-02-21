@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import getWorkOrder from '../../database/getWorkOrder.js'
-import { getConfigProperty } from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/config.helpers.js'
 
 export default async function handler(
   request: Request,

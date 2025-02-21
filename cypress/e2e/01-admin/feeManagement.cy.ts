@@ -1,4 +1,4 @@
-import { getConfigProperty } from '../../../helpers/functions.config.js'
+import { getConfigProperty } from '../../../helpers/config.helpers.js'
 import { testAdmin } from '../../../test/_globals.js'
 import type { Fee } from '../../../types/recordTypes.js'
 import { ajaxDelayMillis, login, logout } from '../../support/index.js'

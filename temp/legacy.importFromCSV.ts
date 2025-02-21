@@ -9,7 +9,7 @@ import {
 import sqlite from 'better-sqlite3'
 import papa from 'papaparse'
 
-import { lotOccupancyDB as databasePath } from '../data/databasePaths.js'
+import { sunriseDB as databasePath } from '../data/databasePaths.js'
 import addLot from '../database/addLot.js'
 import addLotOccupancy from '../database/addLotOccupancy.js'
 import addLotOccupancyComment from '../database/addLotOccupancyComment.js'
@@ -31,7 +31,6 @@ import getWorkOrder, {
 } from '../database/getWorkOrder.js'
 import reopenWorkOrder from '../database/reopenWorkOrder.js'
 import { updateLotStatus } from '../database/updateLot.js'
-// eslint-disable-next-line import/namespace
 import type * as recordTypes from '../types/recordTypes.js'
 
 import * as importData from './legacy.importFromCsv.data.js'
@@ -600,9 +599,7 @@ async function importFromMasterCSV(): Promise<void> {
             {
               lotOccupancyId: deceasedLotOccupancyId,
               occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
-                (occupancyTypeField) => {
-                  return occupancyTypeField.occupancyTypeField === 'Death Date'
-                }
+                (occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Date'
               )!.occupancyTypeFieldId!,
               lotOccupancyFieldValue
             },
@@ -615,9 +612,7 @@ async function importFromMasterCSV(): Promise<void> {
             {
               lotOccupancyId: deceasedLotOccupancyId,
               occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
-                (occupancyTypeField) => {
-                  return occupancyTypeField.occupancyTypeField === 'Death Age'
-                }
+                (occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Age'
               )!.occupancyTypeFieldId!,
               lotOccupancyFieldValue: masterRow.CM_AGE
             },
@@ -632,11 +627,9 @@ async function importFromMasterCSV(): Promise<void> {
             {
               lotOccupancyId: deceasedLotOccupancyId,
               occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
-                (occupancyTypeField) => {
-                  return (
+                (occupancyTypeField) => (
                     occupancyTypeField.occupancyTypeField === 'Death Age Period'
                   )
-                }
               )!.occupancyTypeFieldId!,
               lotOccupancyFieldValue: period
             },
@@ -694,11 +687,9 @@ async function importFromMasterCSV(): Promise<void> {
             {
               lotOccupancyId: deceasedLotOccupancyId,
               occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
-                (occupancyTypeField) => {
-                  return (
+                (occupancyTypeField) => (
                     occupancyTypeField.occupancyTypeField === 'Funeral Date'
                   )
-                }
               )!.occupancyTypeFieldId!,
               lotOccupancyFieldValue
             },
@@ -712,11 +703,9 @@ async function importFromMasterCSV(): Promise<void> {
               {
                 lotOccupancyId: deceasedLotOccupancyId,
                 occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
-                  (occupancyTypeField) => {
-                    return (
+                  (occupancyTypeField) => (
                       occupancyTypeField.occupancyTypeField === 'Container Type'
                     )
-                  }
                 )!.occupancyTypeFieldId!,
                 lotOccupancyFieldValue: masterRow.CM_CONTAINER_TYPE
               },
@@ -735,11 +724,9 @@ async function importFromMasterCSV(): Promise<void> {
               {
                 lotOccupancyId: deceasedLotOccupancyId,
                 occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
-                  (occupancyTypeField) => {
-                    return (
+                  (occupancyTypeField) => (
                       occupancyTypeField.occupancyTypeField === 'Committal Type'
                     )
-                  }
                 )!.occupancyTypeFieldId!,
                 lotOccupancyFieldValue: commitalType
               },
@@ -921,8 +908,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         }
       }
 
-      if (!lotOccupancyId) {
-        lotOccupancyId = await addLotOccupancy(
+      lotOccupancyId ||= await addLotOccupancy(
           {
             lotId: lot ? lot.lotId : '',
             occupancyTypeId: importIds.preneedOccupancyType.occupancyTypeId,
@@ -930,8 +916,7 @@ async function importFromPrepaidCSV(): Promise<void> {
             occupancyEndDateString: ''
           },
           user
-        )
-      }
+        );
 
       await addLotOccupancyOccupant(
         {
@@ -1240,9 +1225,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         }
 
         const workOrderContainsLot = workOrder.workOrderLots!.find(
-          (possibleLot) => {
-            return (possibleLot.lotId = lot.lotId)
-          }
+          (possibleLot) => (possibleLot.lotId = lot.lotId)
         )
 
         if (!workOrderContainsLot) {
@@ -1310,9 +1293,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
           {
             lotOccupancyId,
             occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
-              (occupancyTypeField) => {
-                return occupancyTypeField.occupancyTypeField === 'Death Date'
-              }
+              (occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Date'
             )!.occupancyTypeFieldId!,
             lotOccupancyFieldValue
           },
@@ -1325,9 +1306,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
           {
             lotOccupancyId,
             occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
-              (occupancyTypeField) => {
-                return occupancyTypeField.occupancyTypeField === 'Death Place'
-              }
+              (occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Place'
             )!.occupancyTypeFieldId!,
             lotOccupancyFieldValue: workOrderRow.WO_DEATH_PLACE
           },
@@ -1340,9 +1319,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
           {
             lotOccupancyId,
             occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
-              (occupancyTypeField) => {
-                return occupancyTypeField.occupancyTypeField === 'Death Age'
-              }
+              (occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Age'
             )!.occupancyTypeFieldId!,
             lotOccupancyFieldValue: workOrderRow.WO_AGE
           },
@@ -1357,11 +1334,9 @@ async function importFromWorkOrderCSV(): Promise<void> {
           {
             lotOccupancyId,
             occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
-              (occupancyTypeField) => {
-                return (
+              (occupancyTypeField) => (
                   occupancyTypeField.occupancyTypeField === 'Death Age Period'
                 )
-              }
             )!.occupancyTypeFieldId!,
             lotOccupancyFieldValue: period
           },
@@ -1417,9 +1392,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
           {
             lotOccupancyId,
             occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
-              (occupancyTypeField) => {
-                return occupancyTypeField.occupancyTypeField === 'Funeral Date'
-              }
+              (occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Funeral Date'
             )!.occupancyTypeFieldId!,
             lotOccupancyFieldValue
           },
@@ -1433,11 +1406,9 @@ async function importFromWorkOrderCSV(): Promise<void> {
             {
               lotOccupancyId,
               occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
-                (occupancyTypeField) => {
-                  return (
+                (occupancyTypeField) => (
                     occupancyTypeField.occupancyTypeField === 'Container Type'
                   )
-                }
               )!.occupancyTypeFieldId!,
               lotOccupancyFieldValue: workOrderRow.WO_CONTAINER_TYPE
             },
@@ -1456,11 +1427,9 @@ async function importFromWorkOrderCSV(): Promise<void> {
             {
               lotOccupancyId,
               occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
-                (occupancyTypeField) => {
-                  return (
+                (occupancyTypeField) => (
                     occupancyTypeField.occupancyTypeField === 'Committal Type'
                   )
-                }
               )!.occupancyTypeFieldId!,
               lotOccupancyFieldValue: commitalType
             },

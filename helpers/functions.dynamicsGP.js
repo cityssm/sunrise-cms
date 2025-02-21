@@ -1,5 +1,5 @@
 import { DynamicsGP } from '@cityssm/dynamics-gp';
-import { getConfigProperty } from './functions.config.js';
+import { getConfigProperty } from './config.helpers.js';
 // eslint-disable-next-line @typescript-eslint/init-declarations
 let gp;
 if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {

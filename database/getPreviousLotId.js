@@ -1,4 +1,4 @@
-import { getConfigProperty } from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { acquireConnection } from './pool.js';
 export default async function getPreviousLotId(lotId) {
     const database = await acquireConnection();

@@ -7,12 +7,12 @@ export interface ClearCacheWorkerMessage extends WorkerMessage {
     messageType: 'clearCache';
     tableName: string;
 }
-export interface CacheLotIdsWorkerMessage extends WorkerMessage {
-    messageType: 'cacheLotIds';
-    lotId: number;
-    nextLotId: number;
+export interface CacheBurialSiteIdsWorkerMessage extends WorkerMessage {
+    messageType: 'cacheBurialSiteIds';
+    burialSiteId: number;
+    nextBurialSiteId: number;
 }
-export interface ClearNextPreviousLotIdsCacheWorkerMessage extends WorkerMessage {
-    messageType: 'clearNextPreviousLotIdCache';
-    lotId: number;
+export interface ClearNextPreviousBurialSiteIdsCacheWorkerMessage extends WorkerMessage {
+    messageType: 'clearNextPreviousBurialSiteIdCache';
+    burialSiteId: number;
 }

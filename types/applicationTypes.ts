@@ -9,15 +9,15 @@ export interface ClearCacheWorkerMessage extends WorkerMessage {
   tableName: string
 }
 
-export interface CacheLotIdsWorkerMessage extends WorkerMessage {
-  messageType: 'cacheLotIds'
-  lotId: number
-  nextLotId: number
+export interface CacheBurialSiteIdsWorkerMessage extends WorkerMessage {
+  messageType: 'cacheBurialSiteIds'
+  burialSiteId: number
+  nextBurialSiteId: number
 }
 
-export interface ClearNextPreviousLotIdsCacheWorkerMessage
+export interface ClearNextPreviousBurialSiteIdsCacheWorkerMessage
   extends WorkerMessage {
   // eslint-disable-next-line no-secrets/no-secrets
-  messageType: 'clearNextPreviousLotIdCache'
-  lotId: number
+  messageType: 'clearNextPreviousBurialSiteIdCache'
+  burialSiteId: number
 }

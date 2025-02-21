@@ -23,7 +23,7 @@ function runCypress(browser, done) {
         done();
     });
 }
-describe('lot-occupancy-system', () => {
+describe('sunrise-cms', () => {
     const httpServer = http.createServer(app);
     let serverStarted = false;
     before(() => {

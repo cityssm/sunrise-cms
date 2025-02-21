@@ -7,8 +7,8 @@ import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 interface GetFeeCategoriesFilters {
-  occupancyTypeId?: number | string
-  lotTypeId?: number | string
+  contractTypeId?: number | string
+  burialSiteTypeId?: number | string
   feeCategoryId?: number | string
 }
 
@@ -22,7 +22,7 @@ export default async function getFeeCategories(
   connectedDatabase?: PoolConnection
 ): Promise<FeeCategory[]> {
   const updateOrderNumbers =
-    !(filters.lotTypeId || filters.occupancyTypeId) && options.includeFees
+    !(filters.burialSiteTypeId || filters.contractTypeId) && options.includeFees
 
   const database = await acquireConnection()
 
@@ -30,18 +30,18 @@ export default async function getFeeCategories(
 
   const sqlParameters: unknown[] = []
 
-  if ((filters.occupancyTypeId ?? '') !== '') {
+  if ((filters.contractTypeId ?? '') !== '') {
     sqlWhereClause += ` and feeCategoryId in (
-        select feeCategoryId from Fees where recordDelete_timeMillis is null and (occupancyTypeId is null or occupancyTypeId = ?))`
+        select feeCategoryId from Fees where recordDelete_timeMillis is null and (contractTypeId is null or contractTypeId = ?))`
 
-    sqlParameters.push(filters.occupancyTypeId)
+    sqlParameters.push(filters.contractTypeId)
   }
 
-  if ((filters.lotTypeId ?? '') !== '') {
+  if ((filters.burialSiteTypeId ?? '') !== '') {
     sqlWhereClause += ` and feeCategoryId in (
-        select feeCategoryId from Fees where recordDelete_timeMillis is null and (lotTypeId is null or lotTypeId = ?))`
+        select feeCategoryId from Fees where recordDelete_timeMillis is null and (burialSiteTypeId is null or burialSiteTypeId = ?))`
 
-    sqlParameters.push(filters.lotTypeId)
+    sqlParameters.push(filters.burialSiteTypeId)
   }
 
   const feeCategories = database

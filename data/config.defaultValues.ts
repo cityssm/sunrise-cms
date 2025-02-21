@@ -10,7 +10,7 @@ import type {
 export const configDefaultValues = {
   activeDirectory: undefined as unknown as ConfigActiveDirectory,
 
-  'application.applicationName': 'Lot Occupancy System',
+  'application.applicationName': 'Sunrise CMS',
   'application.backgroundURL': '/images/cemetery-background.jpg',
   'application.logoURL': '/images/cemetery-logo.png',
   'application.httpPort': 7000,
@@ -24,8 +24,8 @@ export const configDefaultValues = {
   'reverseProxy.disableEtag': false,
   'reverseProxy.urlPrefix': '',
 
-  'session.cookieName': 'lot-occupancy-system-user-sid',
-  'session.secret': 'cityssm/lot-occupancy-system',
+  'session.cookieName': 'sunrise-user-sid',
+  'session.secret': 'cityssm/sunrise',
   'session.maxAgeMillis': hoursToMillis(1),
   'session.doKeepAlive': false,
 
@@ -34,19 +34,9 @@ export const configDefaultValues = {
   'users.canUpdate': [] as string[],
   'users.isAdmin': ['administrator'],
 
-  'aliases.lot': 'Lot',
-  'aliases.lots': 'Lots',
-  'aliases.map': 'Map',
-  'aliases.maps': 'Maps',
-  'aliases.occupancy': 'Occupancy',
-  'aliases.occupancies': 'Occupancies',
-  'aliases.occupancyStartDate': 'Start Date',
-  'aliases.occupant': 'Occupant',
-  'aliases.occupants': 'Occupants',
-
   'aliases.externalReceiptNumber': 'External Receipt Number',
-  'aliases.workOrderOpenDate': 'Open Date',
-  'aliases.workOrderCloseDate': 'Close Date',
+  'aliases.workOrderOpenDate': 'Order Date',
+  'aliases.workOrderCloseDate': 'Completion Date',
 
   'settings.map.mapCityDefault': '',
   'settings.map.mapProvinceDefault': '',

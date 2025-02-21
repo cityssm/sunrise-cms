@@ -1,5 +1,5 @@
 import ActiveDirectory from 'activedirectory2';
-import { getConfigProperty } from './functions.config.js';
+import { getConfigProperty } from './config.helpers.js';
 const userDomain = getConfigProperty('application.userDomain');
 const activeDirectoryConfig = getConfigProperty('activeDirectory');
 async function authenticateViaActiveDirectory(userName, password) {

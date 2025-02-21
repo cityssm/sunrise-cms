@@ -4,8 +4,9 @@ import http from 'node:http';
 import Debug from 'debug';
 import exitHook from 'exit-hook';
 import { app } from '../app.js';
-import { getConfigProperty } from '../helpers/functions.config.js';
-const debug = Debug(`lot-occupancy-system:wwwProcess:${process.pid}`);
+import { DEBUG_NAMESPACE } from '../debug.config.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
+const debug = Debug(`${DEBUG_NAMESPACE}:wwwProcess:${process.pid}`);
 function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;

@@ -8,7 +8,7 @@ import {
 import type { DynamicsGPLookup } from '../types/configTypes.js'
 import type { DynamicsGPDocument } from '../types/recordTypes.js'
 
-import { getConfigProperty } from './functions.config.js'
+import { getConfigProperty } from './config.helpers.js'
 
 // eslint-disable-next-line @typescript-eslint/init-declarations
 let gp: DynamicsGP

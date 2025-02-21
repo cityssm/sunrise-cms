@@ -1,3 +1,3 @@
-type RecordTable = 'LotStatuses' | 'LotTypes' | 'OccupancyTypes' | 'WorkOrderMilestoneTypes' | 'WorkOrderTypes';
-export declare function addRecord(recordTable: RecordTable, recordName: string, orderNumber: number | string, user: User): Promise<number>;
+type RecordTable = 'BurialSiteStatuses' | 'BurialSiteTypes' | 'ContractTypes' | 'WorkOrderMilestoneTypes' | 'WorkOrderTypes';
+export default function addRecord(recordTable: RecordTable, recordName: string, orderNumber: number | string, user: User): Promise<number>;
 export {};

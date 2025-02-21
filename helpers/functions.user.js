@@ -1,5 +1,5 @@
 import { getUserNameFromApiKey } from './functions.api.js';
-import { getConfigProperty } from './functions.config.js';
+import { getConfigProperty } from './config.helpers.js';
 export function userIsAdmin(request) {
     return request.session?.user?.userProperties?.isAdmin ?? false;
 }

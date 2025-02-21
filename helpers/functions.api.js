@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises';
 import Debug from 'debug';
 import { v4 as uuidV4 } from 'uuid';
-const debug = Debug('lot-occupancy-system:functions.api');
+import { DEBUG_NAMESPACE } from '../debug.config.js';
+const debug = Debug(`${DEBUG_NAMESPACE}:functions.api`);
 const apiKeyPath = 'data/apiKeys.json';
 let apiKeys;
 async function loadApiKeys() {

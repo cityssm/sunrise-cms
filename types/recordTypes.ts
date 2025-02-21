@@ -14,44 +14,44 @@ export interface Record {
 }
 
 /*
- * LOT OCCUPANCY DB TYPES
+ * SUNRISE DB TYPES
  */
 
-export interface MapRecord extends Record {
-  mapId?: number
-  mapName?: string
-  mapDescription?: string
+export interface CemeteryRecord extends Record {
+  cemeteryId?: number
+  cemeteryName?: string
+  cemeteryDescription?: string
 
-  mapLatitude?: number
-  mapLongitude?: number
-  mapSVG?: string
+  cemeteryLatitude?: number
+  cemeteryLongitude?: number
+  cemeterySvg?: string
 
-  mapAddress1?: string
-  mapAddress2?: string
-  mapCity?: string
-  mapProvince?: string
-  mapPostalCode?: string
-  mapPhoneNumber?: string
+  cemeteryAddress1?: string
+  cemeteryAddress2?: string
+  cemeteryCity?: string
+  cemeteryProvince?: string
+  cemeteryPostalCode?: string
+  cemeteryPhoneNumber?: string
 
-  lotCount?: number
+  burialSiteCount?: number
 }
 
-export interface LotType extends Record {
-  lotTypeId: number
-  lotType: string
+export interface BurialSiteType extends Record {
+  burialSiteTypeId: number
+  burialSiteType: string
   orderNumber?: number
-  lotTypeFields?: LotTypeField[]
+  burialSiteTypeFields?: BurialSiteTypeField[]
 }
 
-export interface LotTypeField extends Record {
-  lotTypeFieldId: number
-  lotTypeField?: string
+export interface BurialSiteTypeField extends Record {
+  burialSiteTypeFieldId: number
+  burialSiteTypeField?: string
 
-  lotTypeId?: number
-  lotType: LotType
+  burialSiteTypeId?: number
+  burialSiteType: BurialSiteType
 
   fieldType: string
-  lotTypeFieldValues?: string
+  fieldValues?: string
   isRequired?: boolean
   pattern?: string
   minimumLength?: number
@@ -60,56 +60,56 @@ export interface LotTypeField extends Record {
   orderNumber?: number
 }
 
-export interface LotStatus extends Record {
-  lotStatusId: number
-  lotStatus: string
+export interface BurialSiteStatus extends Record {
+  burialSiteStatusId: number
+  burialSiteStatus: string
   orderNumber?: number
 }
 
-export interface Lot extends Record {
-  lotId: number
-  lotName?: string
+export interface BurialSite extends Record {
+  burialSiteId: number
+  burialSiteName?: string
 
-  lotTypeId?: number
-  lotType?: string
+  burialSiteTypeId?: number
+  burialSiteType?: string
 
-  mapId?: number
-  mapName?: string
-  map?: MapRecord
-  mapSVG?: string
-  mapKey?: string
+  cemeteryId?: number
+  cemeteryName?: string
+  cemetery?: CemeteryRecord
+  cemeterySvg?: string
+  cemeterySvgId?: string
 
-  lotLatitude?: number
-  lotLongitude?: number
+  burialSiteLatitude?: number
+  burialSiteLongitude?: number
 
-  lotStatusId?: number
-  lotStatus?: string
+  burialSiteStatusId?: number
+  burialSiteStatus?: string
 
-  lotFields?: LotField[]
+  burialSiteFields?: LotField[]
 
-  lotOccupancyCount?: number
-  lotOccupancies?: LotOccupancy[]
+  burialSiteContractCount?: number
+  burialSiteContracts?: LotOccupancy[]
 
-  lotComments?: LotComment[]
+  burialSiteComments?: BurialSiteComment[]
 }
 
-export interface LotComment extends Record {
-  lotCommentId?: number
-  lotId?: number
+export interface BurialSiteComment extends Record {
+  burialSiteCommentId?: number
+  burialSiteId?: number
 
-  lotCommentDate?: number
-  lotCommentDateString?: string
+  commentDate?: number
+  commentDateString?: string
 
-  lotCommentTime?: number
-  lotCommentTimeString?: string
-  lotCommentTimePeriodString?: string
+  commentTime?: number
+  commentTimeString?: string
+  commentTimePeriodString?: string
 
-  lotComment?: string
+  comment?: string
 }
 
-export interface LotField extends LotTypeField, Record {
-  lotId?: number
-  lotFieldValue?: string
+export interface LotField extends BurialSiteTypeField, Record {
+  burialSiteId?: number
+  burialSiteFieldValue?: string
 }
 
 export interface OccupancyType extends Record {

@@ -1,188 +1,142 @@
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToString } from '@cityssm/utils-datetime';
-import camelCase from 'camelcase';
-import { getConfigProperty } from '../helpers/functions.config.js';
 import { acquireConnection } from './pool.js';
-const mapCamelCase = camelCase(getConfigProperty('aliases.map'));
-const mapNameAlias = `${mapCamelCase}Name`;
-const mapDescriptionAlias = `${mapCamelCase}Description`;
-const mapAddress1Alias = `${mapCamelCase}Address1`;
-const mapAddress2Alias = `${mapCamelCase}Address2`;
-const mapCityAlias = `${mapCamelCase}City`;
-const mapProvinceAlias = `${mapCamelCase}Province`;
-const mapPostalCodeAlias = `${mapCamelCase}PostalCode`;
-const mapPhoneNumberAlias = `${mapCamelCase}PhoneNumber`;
-const lotCamelCase = camelCase(getConfigProperty('aliases.lot'));
-const lotIdAlias = `${lotCamelCase}Id`;
-const lotNameAlias = `${lotCamelCase}Name`;
-const lotTypeAlias = `${lotCamelCase}Type`;
-const lotStatusAlias = `${lotCamelCase}Status`;
-const occupancyCamelCase = camelCase(getConfigProperty('aliases.occupancy'));
-const lotOccupancyIdAlias = `${occupancyCamelCase}Id`;
-const occupancyTypeAlias = `${occupancyCamelCase}Type`;
-const occupancyStartDateAlias = `${occupancyCamelCase}StartDate`;
-const occupancyEndDateAlias = `${occupancyCamelCase}EndDate`;
-const occupantCamelCase = camelCase(getConfigProperty('aliases.occupant'));
-const lotOccupantIndexAlias = `${occupantCamelCase}Index`;
-const lotOccupantTypeAlias = `${occupantCamelCase}Type`;
-const occupantNameAlias = `${occupantCamelCase}Name`;
-const occupantFamilyNameAlias = `${occupantCamelCase}FamilyName`;
-const occupantAddress1Alias = `${occupantCamelCase}Address1`;
-const occupantAddress2Alias = `${occupantCamelCase}Address2`;
-const occupantCityAlias = `${occupantCamelCase}City`;
-const occupantProvinceAlias = `${occupantCamelCase}Province`;
-const occupantPostalCodeAlias = `${occupantCamelCase}PostalCode`;
-const occupantPhoneNumberAlias = `${occupantCamelCase}PhoneNumber`;
-const occupantEmailAddressAlias = `${occupantCamelCase}EmailAddress`;
-const occupantCommentTitleAlias = `${occupantCamelCase}CommentTitle`;
-const occupantCommentAlias = `${occupantCamelCase}Comment`;
+// eslint-disable-next-line complexity
 export default async function getReportData(reportName, reportParameters = {}) {
     let sql = '';
     const sqlParameters = [];
-    // eslint-disable-next-line sonarjs/max-switch-cases
     switch (reportName) {
-        case 'maps-all': {
+        case 'cemeteries-all': {
             sql = 'select * from Maps';
             break;
         }
-        case 'maps-formatted': {
-            sql = `select mapName as ${mapNameAlias},
-        mapDescription as ${mapDescriptionAlias},
-        mapAddress1 as ${mapAddress1Alias},
-        mapAddress2 as ${mapAddress2Alias},
-        mapCity as ${mapCityAlias},
-        mapProvince as ${mapProvinceAlias},
-        mapPostalCode as ${mapPostalCodeAlias},
-        mapPhoneNumber as ${mapPhoneNumberAlias}
-        from Maps
+        case 'cemeteries-formatted': {
+            sql = `select cemeteryName,
+        cemeteryDescription,
+        cemeteryAddress1, cemeteryAddress2,
+        cemeteryCity, cemeteryProvince,
+        cemeteryPostalCode,
+        cemeteryPhoneNumber
+        from Cemeteries
         where recordDelete_timeMillis is null
-        order by mapName`;
+        order by cemeteryName`;
             break;
         }
-        case 'lots-all': {
-            sql = 'select * from Lots';
+        case 'burialSites-all': {
+            sql = 'select * from BurialSites';
             break;
         }
-        case 'lots-byLotTypeId': {
-            sql = `select l.lotId as ${lotIdAlias},
-        m.mapName as ${mapNameAlias},
-        l.lotName as ${lotNameAlias},
-        t.lotType as ${lotTypeAlias},
-        s.lotStatus as ${lotStatusAlias}
-        from Lots l
-        left join LotTypes t on l.lotTypeId = t.lotTypeId
-        left join LotStatuses s on l.lotStatusId = s.lotStatusId
-        left join Maps m on l.mapId = m.mapId
+        case 'burialSites-byBurialSiteTypeId': {
+            sql = `select l.burialSiteId,
+        m.cemeteryName,
+        l.burialSiteNameSegment1,
+        l.burialSiteNameSegment2,
+        l.burialSiteNameSegment3,
+        l.burialSiteNameSegment4,
+        l.burialSiteNameSegment5,
+        t.burialSiteType,
+        s.burialSiteStatus
+        from BurialSites l
+        left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
+        left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
+        left join Cemeteries m on l.cemeteryId = m.cemeteryId
         where l.recordDelete_timeMillis is null
-        and l.lotTypeId = ?`;
-            sqlParameters.push(reportParameters.lotTypeId);
+        and l.burialSiteTypeId = ?`;
+            sqlParameters.push(reportParameters.burialSiteTypeId);
             break;
         }
-        case 'lots-byLotStatusId': {
-            sql = `select l.lotId as ${lotIdAlias},
-        m.mapName as ${mapNameAlias},
-        l.lotName as ${lotNameAlias},
-        t.lotType as ${lotTypeAlias},
-        s.lotStatus as ${lotStatusAlias}
-        from Lots l
-        left join LotTypes t on l.lotTypeId = t.lotTypeId
-        left join LotStatuses s on l.lotStatusId = s.lotStatusId
-        left join Maps m on l.mapId = m.mapId
+        case 'burialSites-byBurialSiteStatusId': {
+            sql = `select l.burialSiteId,
+        m.cemeteryName,
+        l.burialSiteNameSegment1,
+        l.burialSiteNameSegment2,
+        l.burialSiteNameSegment3,
+        l.burialSiteNameSegment4,
+        l.burialSiteNameSegment5,
+        t.burialSiteType,
+        s.burialSiteStatus
+        from BurialSites l
+        left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
+        left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
+        left join Cemeteries m on l.cemeteryId = m.cemeteryId
         where l.recordDelete_timeMillis is null
-        and l.lotStatusId = ?`;
-            sqlParameters.push(reportParameters.lotStatusId);
+        and l.burialSiteStatusId = ?`;
+            sqlParameters.push(reportParameters.burialSiteStatusId);
             break;
         }
-        case 'lots-byMapId': {
-            sql = `select l.lotId as ${lotIdAlias},
-        m.mapName as ${mapNameAlias},
-        l.lotName as ${lotNameAlias},
-        t.lotType as ${lotTypeAlias},
-        s.lotStatus as ${lotStatusAlias}
-        from Lots l
-        left join LotTypes t on l.lotTypeId = t.lotTypeId
-        left join LotStatuses s on l.lotStatusId = s.lotStatusId
-        left join Maps m on l.mapId = m.mapId
+        case 'burialSites-byCemeteryId': {
+            sql = `select l.burialSiteId,
+        m.cemeteryName,
+        l.burialSiteNameSegment1,
+        l.burialSiteNameSegment2,
+        l.burialSiteNameSegment3,
+        l.burialSiteNameSegment4,
+        l.burialSiteNameSegment5,
+        t.burialSiteType,
+        s.burialSiteStatus
+        from BurialSites l
+        left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
+        left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
+        left join Cemeteries m on l.cemeteryId = m.cemeteryId
         where l.recordDelete_timeMillis is null
-        and l.mapId = ?`;
-            sqlParameters.push(reportParameters.mapId);
+        and l.cemeteryId = ?`;
+            sqlParameters.push(reportParameters.cemeteryId);
             break;
         }
-        case 'lotComments-all': {
-            sql = 'select * from LotComments';
+        case 'burialSiteComments-all': {
+            sql = 'select * from BurialSiteComments';
             break;
         }
-        case 'lotFields-all': {
-            sql = 'select * from LotFields';
+        case 'burialSiteFields-all': {
+            sql = 'select * from BurialSiteFields';
             break;
         }
-        case 'lotOccupancies-all': {
-            sql = 'select * from LotOccupancies';
+        case 'burialSiteContracts-all': {
+            sql = 'select * from BurialSiteContracts';
             break;
         }
-        case 'lotOccupancies-current-byMapId': {
-            sql = `select o.lotOccupancyId as ${lotOccupancyIdAlias},
-        l.lotName as ${lotNameAlias},
-        m.mapName as ${mapNameAlias},
-        ot.occupancyType as ${occupancyTypeAlias},
-        o.occupancyStartDate as ${occupancyStartDateAlias},
-        o.occupancyEndDate as ${occupancyEndDateAlias}
-        from LotOccupancies o
-        left join OccupancyTypes ot on o.occupancyTypeId = ot.occupancyTypeId
-        left join Lots l on o.lotId = l.lotId
-        left join Maps m on l.mapId = m.mapId
+        case 'burialSiteContracts-current-byCemeteryId': {
+            sql = `select o.burialSiteContractId,
+        l.burialSiteNameSegment1,
+        l.burialSiteNameSegment2,
+        l.burialSiteNameSegment3,
+        l.burialSiteNameSegment4,
+        l.burialSiteNameSegment5,
+        m.cemeteryName,
+        ot.contractType,
+        o.contractStartDate,
+        o.contractEndDate
+        from BurialSiteContracts o
+        left join ContractTypes ot on o.contractTypeId = ot.contractTypeId
+        left join BurialSites l on o.burialSiteId = l.burialSiteId
+        left join Cemeteries m on l.cemeteryId = m.cemeteryId
         where o.recordDelete_timeMillis is null
-        and (o.occupancyEndDate is null or o.occupancyEndDate >= ?)
-        and l.mapId = ?`;
-            sqlParameters.push(dateToInteger(new Date()), reportParameters.mapId);
+        and (o.contractEndDate is null or o.contractEndDate >= ?)
+        and l.cemeteryId = ?`;
+            sqlParameters.push(dateToInteger(new Date()), reportParameters.cemeteryId);
             break;
         }
-        case 'lotOccupancyComments-all': {
-            sql = 'select * from LotOccupancyComments';
+        case 'burialSiteContractComments-all': {
+            sql = 'select * from BurialSiteContractComments';
             break;
         }
-        case 'lotOccupancyFees-all': {
-            sql = 'select * from LotOccupancyFees';
+        case 'burialSiteContractFees-all': {
+            sql = 'select * from BurialSiteContractFees';
             break;
         }
-        case 'lotOccupancyFields-all': {
-            sql = 'select * from LotOccupancyFields';
+        case 'burialSiteContractFields-all': {
+            sql = 'select * from BurialSiteContractFields';
             break;
         }
-        case 'lotOccupancyOccupants-all': {
-            sql = 'select * from LotOccupancyOccupants';
+        case 'burialSiteContractTransactions-all': {
+            sql = 'select * from BurialSiteContractTransactions';
             break;
         }
-        case 'lotOccupancyOccupants-byLotOccupancyId': {
-            sql = `select o.lotOccupantIndex as ${lotOccupantIndexAlias},
-        t.lotOccupantType as ${lotOccupantTypeAlias},
-        o.occupantName as ${occupantNameAlias},
-        o.occupantFamilyName as ${occupantFamilyNameAlias},
-        o.occupantAddress1 as ${occupantAddress1Alias},
-        o.occupantAddress2 as ${occupantAddress2Alias},
-        o.occupantCity as ${occupantCityAlias},
-        o.occupantProvince as ${occupantProvinceAlias},
-        o.occupantPostalCode as ${occupantPostalCodeAlias},
-        o.occupantPhoneNumber as ${occupantPhoneNumberAlias},
-        o.occupantEmailAddress as ${occupantEmailAddressAlias},
-        t.occupantCommentTitle as ${occupantCommentTitleAlias},
-        o.occupantComment as ${occupantCommentAlias}
-        from LotOccupancyOccupants o
-        left join LotOccupantTypes t on o.lotOccupantTypeId = t.lotOccupantTypeId
-        where o.recordDelete_timeMillis is null
-        and o.lotOccupancyId = ?`;
-            sqlParameters.push(reportParameters.lotOccupancyId);
-            break;
-        }
-        case 'lotOccupancyTransactions-all': {
-            sql = 'select * from LotOccupancyTransactions';
-            break;
-        }
-        case 'lotOccupancyTransactions-byTransactionDateString': {
-            sql = `select t.lotOccupancyId, t.transactionIndex,
+        case 'burialSiteContractTransactions-byTransactionDateString': {
+            sql = `select t.burialSiteContractId, t.transactionIndex,
         t.transactionDate, t.transactionTime,
         t.transactionAmount,
         t.externalReceiptNumber, t.transactionNote
-        from LotOccupancyTransactions t
+        from BurialSiteContractTransactions t
         where t.recordDelete_timeMillis is null
         and t.transactionDate = ?`;
             sqlParameters.push(dateStringToInteger(reportParameters.transactionDateString));
@@ -245,28 +199,24 @@ export default async function getReportData(reportName, reportParameters = {}) {
             sql = 'select * from FeeCategories';
             break;
         }
-        case 'lotTypes-all': {
-            sql = 'select * from LotTypes';
+        case 'burialSiteTypes-all': {
+            sql = 'select * from BurialSiteTypes';
             break;
         }
-        case 'lotTypeFields-all': {
-            sql = 'select * from LotTypeFields';
+        case 'burialSiteTypeFields-all': {
+            sql = 'select * from BurialSiteTypeFields';
             break;
         }
-        case 'lotStatuses-all': {
-            sql = 'select * from LotStatuses';
+        case 'burialSiteStatuses-all': {
+            sql = 'select * from BurialSiteStatuses';
             break;
         }
-        case 'occupancyTypes-all': {
-            sql = 'select * from OccupancyTypes';
+        case 'contractTypes-all': {
+            sql = 'select * from ContractTypes';
             break;
         }
-        case 'occupancyTypeFields-all': {
-            sql = 'select * from OccupancyTypeFields';
-            break;
-        }
-        case 'lotOccupantTypes-all': {
-            sql = 'select * from LotOccupantTypes';
+        case 'contractTypeFields-all': {
+            sql = 'select * from ContractTypeFields';
             break;
         }
         case 'workOrderTypes-all': {

@@ -5,15 +5,15 @@ export interface AddFeeForm {
   feeName: string
   feeDescription: string
   feeAccount: string
-  occupancyTypeId: string
-  lotTypeId: string
+  contractTypeId: string
+  burialSiteTypeId: string
   feeAmount?: string
-  feeFunction: string
+  feeFunction?: string
   taxAmount?: string
   taxPercentage?: string
-  includeQuantity: '' | '1'
+  includeQuantity?: '' | '1'
   quantityUnit?: string
-  isRequired: '' | '1'
+  isRequired?: '' | '1'
   orderNumber?: number
 }
 
@@ -30,7 +30,7 @@ export default async function addFee(
       `insert into Fees (
         feeCategoryId,
         feeName, feeDescription, feeAccount,
-        occupancyTypeId, lotTypeId,
+        contractTypeId, burialSiteTypeId,
         feeAmount, feeFunction,
         taxAmount, taxPercentage,
         includeQuantity, quantityUnit,
@@ -44,8 +44,8 @@ export default async function addFee(
       feeForm.feeName,
       feeForm.feeDescription,
       feeForm.feeAccount,
-      feeForm.occupancyTypeId === '' ? undefined : feeForm.occupancyTypeId,
-      feeForm.lotTypeId === '' ? undefined : feeForm.lotTypeId,
+      feeForm.contractTypeId === '' ? undefined : feeForm.contractTypeId,
+      feeForm.burialSiteTypeId === '' ? undefined : feeForm.burialSiteTypeId,
       feeForm.feeAmount ?? undefined,
       feeForm.feeFunction ?? undefined,
       feeForm.taxAmount ?? undefined,

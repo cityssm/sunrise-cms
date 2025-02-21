@@ -9,8 +9,9 @@ import getOccupancyTypeFieldsFromDatabase from '../database/getOccupancyTypeFiel
 import getOccupancyTypesFromDatabase from '../database/getOccupancyTypes.js';
 import getWorkOrderMilestoneTypesFromDatabase from '../database/getWorkOrderMilestoneTypes.js';
 import getWorkOrderTypesFromDatabase from '../database/getWorkOrderTypes.js';
-import { getConfigProperty } from './functions.config.js';
-const debug = Debug(`lot-occupancy-system:functions.cache:${process.pid}`);
+import { DEBUG_NAMESPACE } from '../debug.config.js';
+import { getConfigProperty } from './config.helpers.js';
+const debug = Debug(`${DEBUG_NAMESPACE}:functions.cache:${process.pid}`);
 /*
  * Lot Occupant Types
  */
