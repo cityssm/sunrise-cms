@@ -8,13 +8,13 @@ export default async function handler(
   response: Response
 ): Promise<void> {
   const success = await deleteLotOccupancyFee(
-    request.body.lotOccupancyId,
+    request.body.burialSiteContractId,
     request.body.feeId,
     request.session.user as User
   )
 
   const lotOccupancyFees = await getLotOccupancyFees(
-    request.body.lotOccupancyId
+    request.body.burialSiteContractId
   )
 
   response.json({

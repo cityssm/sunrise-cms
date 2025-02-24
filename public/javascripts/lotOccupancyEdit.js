@@ -400,17 +400,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const regex = exports.lotNamePattern;
                     modalElement.querySelector('#lotCreate--lotName').pattern = regex.source;
                 }
-                const lotTypeElement = modalElement.querySelector('#lotCreate--lotTypeId');
+                const lotTypeElement = modalElement.querySelector('#lotCreate--burialSiteTypeId');
                 for (const lotType of exports.lotTypes) {
                     const optionElement = document.createElement('option');
-                    optionElement.value = lotType.lotTypeId.toString();
+                    optionElement.value = lotType.burialSiteTypeId.toString();
                     optionElement.textContent = lotType.lotType;
                     lotTypeElement.append(optionElement);
                 }
-                const lotStatusElement = modalElement.querySelector('#lotCreate--lotStatusId');
+                const lotStatusElement = modalElement.querySelector('#lotCreate--burialSiteStatusId');
                 for (const lotStatus of exports.lotStatuses) {
                     const optionElement = document.createElement('option');
-                    optionElement.value = lotStatus.lotStatusId.toString();
+                    optionElement.value = lotStatus.burialSiteStatusId.toString();
                     optionElement.textContent = lotStatus.lotStatus;
                     lotStatusElement.append(optionElement);
                 }

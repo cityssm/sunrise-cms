@@ -1,12 +1,12 @@
 import type { Request, Response } from 'express'
 
-import getLotOccupancies from '../../database/getLotOccupancies.js'
+import getBurialSiteContracts from '../../database/getLotOccupancies.js'
 
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const result = await getLotOccupancies(request.body, {
+  const result = await getBurialSiteContracts(request.body, {
     limit: request.body.limit,
     offset: request.body.offset,
     includeOccupants: true,

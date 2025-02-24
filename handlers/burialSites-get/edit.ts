@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 
 import getLot from '../../database/getLot.js'
 import getMaps from '../../database/getMaps.js'
-import { getLotStatuses, getLotTypes } from '../../helpers/functions.cache.js'
+import { getLotStatuses, getBurialSiteTypes } from '../../helpers/functions.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 
 export default async function handler(
@@ -19,7 +19,7 @@ export default async function handler(
   }
 
   const maps = await getMaps()
-  const lotTypes = await getLotTypes()
+  const lotTypes = await getBurialSiteTypes()
   const lotStatuses = await getLotStatuses()
 
   response.render('lot-edit', {

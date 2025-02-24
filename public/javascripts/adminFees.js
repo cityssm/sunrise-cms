@@ -85,7 +85,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 panelBlockElement.dataset.feeId = fee.feeId.toString();
                 const hasTagsBlock = (fee.isRequired ?? false) ||
                     fee.occupancyTypeId !== undefined ||
-                    fee.lotTypeId !== undefined;
+                    fee.burialSiteTypeId !== undefined;
                 // eslint-disable-next-line no-unsanitized/property
                 panelBlockElement.innerHTML = `<div class="columns">
           <div class="column is-half">
@@ -110,7 +110,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
                         <span>${cityssm.escapeHTML(fee.occupancyType ?? '')}</span>
                         </span>`}
-                    ${(fee.lotTypeId ?? -1) === -1
+                    ${(fee.burialSiteTypeId ?? -1) === -1
                         ? ''
                         : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Lot} Type Filter">
                         <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
@@ -351,10 +351,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     optionElement.textContent = occupancyType.occupancyType;
                     occupancyTypeElement.append(optionElement);
                 }
-                const lotTypeElement = modalElement.querySelector('#feeAdd--lotTypeId');
+                const lotTypeElement = modalElement.querySelector('#feeAdd--burialSiteTypeId');
                 for (const lotType of exports.lotTypes) {
                     const optionElement = document.createElement('option');
-                    optionElement.value = lotType.lotTypeId.toString();
+                    optionElement.value = lotType.burialSiteTypeId.toString();
                     optionElement.textContent = lotType.lotType;
                     lotTypeElement.append(optionElement);
                 }
@@ -576,12 +576,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                     occupancyTypeElement.append(optionElement);
                 }
-                const lotTypeElement = modalElement.querySelector('#feeEdit--lotTypeId');
+                const lotTypeElement = modalElement.querySelector('#feeEdit--burialSiteTypeId');
                 for (const lotType of exports.lotTypes) {
                     const optionElement = document.createElement('option');
-                    optionElement.value = lotType.lotTypeId.toString();
+                    optionElement.value = lotType.burialSiteTypeId.toString();
                     optionElement.textContent = lotType.lotType;
-                    if (lotType.lotTypeId === fee.lotTypeId) {
+                    if (lotType.burialSiteTypeId === fee.burialSiteTypeId) {
                         optionElement.selected = true;
                     }
                     lotTypeElement.append(optionElement);

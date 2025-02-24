@@ -53,7 +53,7 @@ relatedTables.set('ContractTypes', ['ContractTypePrints', 'ContractTypeFields'])
 relatedTables.set('WorkOrders', [
   'WorkOrderMilestones',
   'WorkOrderLots',
-  'WorkOrderLotOccupancies',
+  'WorkOrderBurialSiteContracts',
   'WorkOrderComments'
 ])
 

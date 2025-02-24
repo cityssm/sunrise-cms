@@ -1,10 +1,10 @@
-import { getOccupancyTypeById, getAllOccupancyTypeFields } from '../../helpers/functions.cache.js';
+import { getContractTypeById, getAllContractTypeFields } from '../../helpers/functions.cache.js';
 export default async function handler(request, response) {
-    const allOccupancyTypeFields = await getAllOccupancyTypeFields();
-    const result = (await getOccupancyTypeById(Number.parseInt(request.body.occupancyTypeId, 10)));
-    const occupancyTypeFields = [...allOccupancyTypeFields];
-    occupancyTypeFields.push(...(result.occupancyTypeFields ?? []));
+    const allContractTypeFields = await getAllContractTypeFields();
+    const result = (await getContractTypeById(Number.parseInt(request.body.contractTypeId, 10)));
+    const ContractTypeFields = [...allContractTypeFields];
+    ContractTypeFields.push(...(result.ContractTypeFields ?? []));
     response.json({
-        occupancyTypeFields
+        ContractTypeFields
     });
 }

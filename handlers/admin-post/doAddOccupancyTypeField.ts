@@ -4,26 +4,26 @@ import addOccupancyTypeField, {
   type AddOccupancyTypeFieldForm
 } from '../../database/addOccupancyTypeField.js'
 import {
-  getAllOccupancyTypeFields,
-  getOccupancyTypes
+  getAllContractTypeFields,
+  getContractTypes
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const occupancyTypeFieldId = await addOccupancyTypeField(
+  const contractTypeFieldId = await addOccupancyTypeField(
     request.body as AddOccupancyTypeFieldForm,
     request.session.user as User
   )
 
-  const occupancyTypes = await getOccupancyTypes()
-  const allOccupancyTypeFields = await getAllOccupancyTypeFields()
+  const occupancyTypes = await getContractTypes()
+  const allContractTypeFields = await getAllContractTypeFields()
 
   response.json({
     success: true,
-    occupancyTypeFieldId,
+    contractTypeFieldId,
     occupancyTypes,
-    allOccupancyTypeFields
+    allContractTypeFields
   })
 }

@@ -1,7 +1,7 @@
 import type { PoolConnection } from 'better-sqlite-pool';
 import type { WorkOrder } from '../types/recordTypes.js';
 interface WorkOrderOptions {
-    includeLotsAndLotOccupancies: boolean;
+    includeBurialSites: boolean;
     includeComments: boolean;
     includeMilestones: boolean;
 }

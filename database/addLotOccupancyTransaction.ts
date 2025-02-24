@@ -8,7 +8,7 @@ import {
 import { acquireConnection } from './pool.js'
 
 export interface AddLotOccupancyTransactionForm {
-  lotOccupancyId: string | number
+  burialSiteContractId: string | number
   transactionDateString?: string
   transactionTimeString?: string
   transactionAmount: string | number
@@ -28,11 +28,11 @@ export default async function addLotOccupancyTransaction(
     .prepare(
       `select transactionIndex
         from LotOccupancyTransactions
-        where lotOccupancyId = ?
+        where burialSiteContractId = ?
         order by transactionIndex desc
         limit 1`
     )
-    .get(lotOccupancyTransactionForm.lotOccupancyId) as
+    .get(lotOccupancyTransactionForm.burialSiteContractId) as
     | { transactionIndex: number }
     | undefined
 
@@ -53,7 +53,7 @@ export default async function addLotOccupancyTransaction(
   database
     .prepare(
       `insert into LotOccupancyTransactions (
-        lotOccupancyId, transactionIndex,
+        burialSiteContractId, transactionIndex,
         transactionDate, transactionTime,
         transactionAmount, externalReceiptNumber, transactionNote,
         recordCreate_userName, recordCreate_timeMillis,
@@ -61,7 +61,7 @@ export default async function addLotOccupancyTransaction(
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
-      lotOccupancyTransactionForm.lotOccupancyId,
+      lotOccupancyTransactionForm.burialSiteContractId,
       transactionIndex,
       transactionDate,
       transactionTime,

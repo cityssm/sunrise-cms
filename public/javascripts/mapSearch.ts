@@ -34,7 +34,7 @@ declare const exports: Record<string, unknown>
       .split(' ')
 
     for (const map of maps) {
-      const mapSearchString = `${map.mapName ?? ''} ${
+      const mapSearchString = `${map.cemeteryName ?? ''} ${
         map.mapDescription ?? ''
       } ${map.mapAddress1 ?? ''} ${map.mapAddress2 ?? ''}`.toLowerCase()
 
@@ -58,9 +58,9 @@ declare const exports: Record<string, unknown>
         'beforeend',
         `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${los.getMapURL(map.mapId)}">
+            <a class="has-text-weight-bold" href="${los.getMapURL(map.cemeteryId)}">
               ${cityssm.escapeHTML(
-                (map.mapName ?? '') === '' ? '(No Name)' : map.mapName ?? ''
+                (map.cemeteryName ?? '') === '' ? '(No Name)' : map.cemeteryName ?? ''
               )}
             </a><br />
             <span class="is-size-7">
@@ -104,7 +104,7 @@ declare const exports: Record<string, unknown>
                 : '<span data-tooltip="Has Image"><i class="fas fa-image" role="img" aria-label="Has Image"></i></span>'
             }
           </td><td class="has-text-right">
-            <a href="${los.urlPrefix}/lots?mapId=${map.mapId}">${map.lotCount}</a>
+            <a href="${los.urlPrefix}/lots?cemeteryId=${map.cemeteryId}">${map.lotCount}</a>
           </td>
           </tr>`
       )

@@ -52,14 +52,14 @@ declare const exports: Record<string, unknown>
       let occupancyTimeHTML = ''
 
       if (
-        lotOccupancy.occupancyStartDateString! <= nowDateString &&
-        (lotOccupancy.occupancyEndDateString === '' ||
-          lotOccupancy.occupancyEndDateString! >= nowDateString)
+        lotOccupancy.contractStartDateString! <= nowDateString &&
+        (lotOccupancy.contractEndDateString === '' ||
+          lotOccupancy.contractEndDateString! >= nowDateString)
       ) {
         occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Current ${los.escapedAliases.Occupancy}">
           <i class="fas fa-play" aria-label="Current ${los.escapedAliases.Occupancy}"></i>
           </span>`
-      } else if (lotOccupancy.occupancyStartDateString! > nowDateString) {
+      } else if (lotOccupancy.contractStartDateString! > nowDateString) {
         occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Future ${los.escapedAliases.Occupancy}">
           <i class="fas fa-fast-forward" aria-label="Future ${los.escapedAliases.Occupancy}"></i>
           </span>`
@@ -125,23 +125,23 @@ declare const exports: Record<string, unknown>
             ${occupancyTimeHTML}
           </td><td>
             <a class="has-text-weight-bold"
-              href="${los.getLotOccupancyURL(lotOccupancy.lotOccupancyId)}">
+              href="${los.getLotOccupancyURL(lotOccupancy.burialSiteContractId)}">
               ${cityssm.escapeHTML(lotOccupancy.occupancyType ?? '')}
             </a><br />
-            <span class="is-size-7">#${lotOccupancy.lotOccupancyId}</span>
+            <span class="is-size-7">#${lotOccupancy.burialSiteContractId}</span>
           </td><td>
             ${
               (lotOccupancy.lotId ?? -1) === -1
                 ? `<span class="has-text-grey">(No ${los.escapedAliases.Lot})</span>`
                 : `<a class="has-tooltip-right" data-tooltip="${cityssm.escapeHTML(lotOccupancy.lotType ?? '')}" href="${los.getLotURL(lotOccupancy.lotId)}">${cityssm.escapeHTML(lotOccupancy.lotName ?? '')}</a>`
             }<br />
-            <span class="is-size-7">${cityssm.escapeHTML(lotOccupancy.mapName ?? '')}</span>
+            <span class="is-size-7">${cityssm.escapeHTML(lotOccupancy.cemeteryName ?? '')}</span>
           </td><td>
-            ${lotOccupancy.occupancyStartDateString}
+            ${lotOccupancy.contractStartDateString}
           </td><td>
             ${
-              lotOccupancy.occupancyEndDate
-                ? lotOccupancy.occupancyEndDateString
+              lotOccupancy.contractEndDate
+                ? lotOccupancy.contractEndDateString
                 : '<span class="has-text-grey">(No End Date)</span>'
             }
           </td><td>
@@ -156,7 +156,7 @@ declare const exports: Record<string, unknown>
             ${
               lotOccupancy.printEJS
                 ? `<a class="button is-small" data-tooltip="Print"
-                    href="${los.urlPrefix}/print/${lotOccupancy.printEJS}/?lotOccupancyId=${lotOccupancy.lotOccupancyId.toString()}" target="_blank">
+                    href="${los.urlPrefix}/print/${lotOccupancy.printEJS}/?burialSiteContractId=${lotOccupancy.burialSiteContractId.toString()}" target="_blank">
                     <i class="fas fa-print" aria-label="Print"></i>
                     </a>`
                 : ''
@@ -170,7 +170,7 @@ declare const exports: Record<string, unknown>
       <th class="has-width-1"></th>
       <th>${los.escapedAliases.Occupancy} Type</th>
       <th>${los.escapedAliases.Lot}</th>
-      <th>${los.escapedAliases.OccupancyStartDate}</th>
+      <th>${los.escapedAliases.contractStartDate}</th>
       <th>End Date</th>
       <th>${los.escapedAliases.Occupants}</th>
       <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>

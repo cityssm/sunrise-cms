@@ -31,26 +31,26 @@ type ResponseJSON =
 
   const expandedLotTypes = new Set<number>()
 
-  function toggleLotTypeFields(clickEvent: Event): void {
+  function toggleBurialSiteTypeFields(clickEvent: Event): void {
     const toggleButtonElement = clickEvent.currentTarget as HTMLButtonElement
 
     const lotTypeElement = toggleButtonElement.closest(
       '.container--lotType'
     ) as HTMLElement
 
-    const lotTypeId = Number.parseInt(
-      lotTypeElement.dataset.lotTypeId ?? '',
+    const burialSiteTypeId = Number.parseInt(
+      lotTypeElement.dataset.burialSiteTypeId ?? '',
       10
     )
 
-    if (expandedLotTypes.has(lotTypeId)) {
-      expandedLotTypes.delete(lotTypeId)
+    if (expandedLotTypes.has(burialSiteTypeId)) {
+      expandedLotTypes.delete(burialSiteTypeId)
     } else {
-      expandedLotTypes.add(lotTypeId)
+      expandedLotTypes.add(burialSiteTypeId)
     }
 
     // eslint-disable-next-line no-unsanitized/property
-    toggleButtonElement.innerHTML = expandedLotTypes.has(lotTypeId)
+    toggleButtonElement.innerHTML = expandedLotTypes.has(burialSiteTypeId)
       ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
       : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
 
@@ -78,12 +78,12 @@ type ResponseJSON =
   }
 
   function deleteLotType(clickEvent: Event): void {
-    const lotTypeId = Number.parseInt(
+    const burialSiteTypeId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--lotType'
         ) as HTMLElement
-      ).dataset.lotTypeId ?? '',
+      ).dataset.burialSiteTypeId ?? '',
       10
     )
 
@@ -91,7 +91,7 @@ type ResponseJSON =
       cityssm.postJSON(
         `${los.urlPrefix}/admin/doDeleteLotType`,
         {
-          lotTypeId
+          burialSiteTypeId
         },
         lotTypeResponseHandler
       )
@@ -109,17 +109,17 @@ type ResponseJSON =
   }
 
   function openEditLotType(clickEvent: Event): void {
-    const lotTypeId = Number.parseInt(
+    const burialSiteTypeId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--lotType'
         ) as HTMLElement
-      ).dataset.lotTypeId ?? '',
+      ).dataset.burialSiteTypeId ?? '',
       10
     )
 
     const lotType = lotTypes.find(
-      (currentLotType) => lotTypeId === currentLotType.lotTypeId
+      (currentLotType) => burialSiteTypeId === currentLotType.burialSiteTypeId
     ) as LotType
 
     let editCloseModalFunction: () => void
@@ -146,9 +146,9 @@ type ResponseJSON =
         los.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
-            '#lotTypeEdit--lotTypeId'
+            '#lotTypeEdit--burialSiteTypeId'
           ) as HTMLInputElement
-        ).value = lotTypeId.toString()
+        ).value = burialSiteTypeId.toString()
         ;(
           modalElement.querySelector(
             '#lotTypeEdit--lotType'
@@ -174,12 +174,12 @@ type ResponseJSON =
   }
 
   function openAddLotTypeField(clickEvent: Event): void {
-    const lotTypeId = Number.parseInt(
+    const burialSiteTypeId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--lotType'
         ) as HTMLElement
-      ).dataset.lotTypeId ?? '',
+      ).dataset.burialSiteTypeId ?? '',
       10
     )
 
@@ -194,13 +194,13 @@ type ResponseJSON =
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
 
-          expandedLotTypes.add(lotTypeId)
+          expandedLotTypes.add(burialSiteTypeId)
           lotTypeResponseHandler(responseJSON)
 
           if (responseJSON.success) {
             addCloseModalFunction()
             openEditLotTypeField(
-              lotTypeId,
+              burialSiteTypeId,
               responseJSON.lotTypeFieldId as number
             )
           }
@@ -212,12 +212,12 @@ type ResponseJSON =
       onshow(modalElement) {
         los.populateAliases(modalElement)
 
-        if (lotTypeId) {
+        if (burialSiteTypeId) {
           ;(
             modalElement.querySelector(
-              '#lotTypeFieldAdd--lotTypeId'
+              '#lotTypeFieldAdd--burialSiteTypeId'
             ) as HTMLInputElement
-          ).value = lotTypeId.toString()
+          ).value = burialSiteTypeId.toString()
         }
       },
       onshown(modalElement, closeModalFunction) {
@@ -241,9 +241,9 @@ type ResponseJSON =
   function moveLotType(clickEvent: MouseEvent): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
-    const lotTypeId = (
+    const burialSiteTypeId = (
       buttonElement.closest('.container--lotType') as HTMLElement
-    ).dataset.lotTypeId
+    ).dataset.burialSiteTypeId
 
     cityssm.postJSON(
       `${los.urlPrefix}/admin/${
@@ -252,7 +252,7 @@ type ResponseJSON =
           : 'doMoveLotTypeDown'
       }`,
       {
-        lotTypeId,
+        burialSiteTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
       lotTypeResponseHandler
@@ -260,14 +260,14 @@ type ResponseJSON =
   }
 
   function openEditLotTypeField(
-    lotTypeId: number,
+    burialSiteTypeId: number,
     lotTypeFieldId: number
   ): void {
     const lotType = lotTypes.find(
-      (currentLotType) => currentLotType.lotTypeId === lotTypeId
+      (currentLotType) => currentLotType.burialSiteTypeId === burialSiteTypeId
     ) as LotType
 
-    const lotTypeField = (lotType.lotTypeFields ?? []).find(
+    const lotTypeField = (lotType.BurialSiteTypeFields ?? []).find(
       (currentLotTypeField) =>
         currentLotTypeField.lotTypeFieldId === lotTypeFieldId
     ) as LotTypeField
@@ -447,16 +447,16 @@ type ResponseJSON =
       10
     )
 
-    const lotTypeId = Number.parseInt(
+    const burialSiteTypeId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
           '.container--lotType'
         ) as HTMLElement
-      ).dataset.lotTypeId ?? '',
+      ).dataset.burialSiteTypeId ?? '',
       10
     )
 
-    openEditLotTypeField(lotTypeId, lotTypeFieldId)
+    openEditLotTypeField(burialSiteTypeId, lotTypeFieldId)
   }
 
   function moveLotTypeField(clickEvent: MouseEvent): void {
@@ -480,27 +480,27 @@ type ResponseJSON =
     )
   }
 
-  function renderLotTypeFields(
+  function renderBurialSiteTypeFields(
     panelElement: HTMLElement,
-    lotTypeId: number,
-    lotTypeFields: LotTypeField[]
+    burialSiteTypeId: number,
+    BurialSiteTypeFields: LotTypeField[]
   ): void {
-    if (lotTypeFields.length === 0) {
+    if (BurialSiteTypeFields.length === 0) {
       // eslint-disable-next-line no-unsanitized/method
       panelElement.insertAdjacentHTML(
         'beforeend',
         `<div class="panel-block is-block
-          ${expandedLotTypes.has(lotTypeId) ? '' : ' is-hidden'}">
+          ${expandedLotTypes.has(burialSiteTypeId) ? '' : ' is-hidden'}">
           <div class="message is-info"><p class="message-body">There are no additional fields.</p></div>
           </div>`
       )
     } else {
-      for (const lotTypeField of lotTypeFields) {
+      for (const lotTypeField of BurialSiteTypeFields) {
         const panelBlockElement = document.createElement('div')
         panelBlockElement.className =
           'panel-block is-block container--lotTypeField'
 
-        if (!expandedLotTypes.has(lotTypeId)) {
+        if (!expandedLotTypes.has(burialSiteTypeId)) {
           panelBlockElement.classList.add('is-hidden')
         }
 
@@ -565,16 +565,16 @@ type ResponseJSON =
 
       lotTypeContainer.className = 'panel container--lotType'
 
-      lotTypeContainer.dataset.lotTypeId = lotType.lotTypeId.toString()
+      lotTypeContainer.dataset.burialSiteTypeId = lotType.burialSiteTypeId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
       lotTypeContainer.innerHTML = `<div class="panel-heading">
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <button class="button is-small button--toggleLotTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
+              <button class="button is-small button--toggleBurialSiteTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
               ${
-                expandedLotTypes.has(lotType.lotTypeId)
+                expandedLotTypes.has(lotType.burialSiteTypeId)
                   ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
                   : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
               }
@@ -613,15 +613,15 @@ type ResponseJSON =
         </div>
         </div>`
 
-      renderLotTypeFields(
+      renderBurialSiteTypeFields(
         lotTypeContainer,
-        lotType.lotTypeId,
-        lotType.lotTypeFields ?? []
+        lotType.burialSiteTypeId,
+        lotType.BurialSiteTypeFields ?? []
       )
 
       lotTypeContainer
-        .querySelector('.button--toggleLotTypeFields')
-        ?.addEventListener('click', toggleLotTypeFields)
+        .querySelector('.button--toggleBurialSiteTypeFields')
+        ?.addEventListener('click', toggleBurialSiteTypeFields)
 
       lotTypeContainer
         .querySelector('.button--deleteLotType')

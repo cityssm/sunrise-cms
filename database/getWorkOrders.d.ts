@@ -6,12 +6,12 @@ export interface GetWorkOrdersFilters {
     workOrderOpenDateString?: string;
     occupantName?: string;
     lotName?: string;
-    lotOccupancyId?: number | string;
+    burialSiteContractId?: number | string;
 }
 interface GetWorkOrdersOptions {
     limit: number;
     offset: number;
-    includeLotsAndLotOccupancies?: boolean;
+    includeLotsAndBurialSiteContracts?: boolean;
     includeComments?: boolean;
     includeMilestones?: boolean;
 }

@@ -8,7 +8,7 @@ export default async function handler(
 ): Promise<void> {
   const success = await deleteRecord(
     'LotOccupancies',
-    request.body.lotOccupancyId as string,
+    request.body.burialSiteContractId as string,
     request.session.user as User
   )
 

@@ -16,26 +16,10 @@ export interface LOS {
   populateAliases: (containerElement: HTMLElement) => void
 
   escapedAliases: {
-    Map: string
-    map: string
-    Maps: string
-    maps: string
-    Lot: string
-    lot: string
-    Lots: string
-    lots: string
-    Occupancy: string
-    occupancy: string
-    Occupancies: string
-    occupancies: string
-    Occupant: string
-    occupant: string
-    Occupants: string
-    occupants: string
     ExternalReceiptNumber: string
     externalReceiptNumber: string
-    OccupancyStartDate: string
-    occupancyStartDate: string
+    contractStartDate: string
+    contractStartDate: string
     WorkOrderOpenDate: string
     workOrderOpenDate: string
     WorkOrderCloseDate: string
@@ -62,10 +46,10 @@ export interface LOS {
     count: number
   ) => string
 
-  getMapURL: (mapId?: number | string, edit?: boolean, time?: boolean) => string
+  getMapURL: (cemeteryId?: number | string, edit?: boolean, time?: boolean) => string
   getLotURL: (lotId?: number | string, edit?: boolean, time?: boolean) => string
   getLotOccupancyURL: (
-    lotOccupancyId?: number | string,
+    burialSiteContractId?: number | string,
     edit?: boolean,
     time?: boolean
   ) => string

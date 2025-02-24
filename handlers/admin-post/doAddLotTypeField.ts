@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import addLotTypeField, {
   type AddLotTypeFieldForm
 } from '../../database/addLotTypeField.js'
-import { getLotTypes } from '../../helpers/functions.cache.js'
+import { getBurialSiteTypes } from '../../helpers/functions.cache.js'
 
 export default async function handler(
   request: Request,
@@ -14,7 +14,7 @@ export default async function handler(
     request.session.user as User
   )
 
-  const lotTypes = await getLotTypes()
+  const lotTypes = await getBurialSiteTypes()
 
   response.json({
     success: true,

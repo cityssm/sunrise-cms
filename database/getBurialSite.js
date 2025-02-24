@@ -1,6 +1,6 @@
-import getLotComments from './getLotComments.js';
-import getLotFields from './getLotFields.js';
-import getBurialSiteInterments from './getLotOccupancies.js';
+import getBurialSiteComments from './getBurialSiteComments.js';
+import getBurialSiteInterments from './getBurialSiteContracts.js';
+import getBurialSiteFields from './getBurialSiteFields.js';
 import { acquireConnection } from './pool.js';
 const baseSQL = `select l.burialSiteId,
   l.burialSiteTypeId, t.burialSiteType,
@@ -23,8 +23,8 @@ async function _getBurialSite(sql, burialSiteIdOrLotName) {
     const database = await acquireConnection();
     const burialSite = database.prepare(sql).get(burialSiteIdOrLotName);
     if (burialSite !== undefined) {
-        const lotOccupancies = await getBurialSiteInterments({
-            lotId: burialSite.lotId
+        const BurialSiteContracts = await getBurialSiteInterments({
+            burialSiteId: burialSite.burialSiteId
         }, {
             includeOccupants: true,
             includeFees: false,
@@ -32,9 +32,9 @@ async function _getBurialSite(sql, burialSiteIdOrLotName) {
             limit: -1,
             offset: 0
         }, database);
-        burialSite.lotOccupancies = lotOccupancies.lotOccupancies;
-        burialSite.lotFields = await getLotFields(burialSite.lotId, database);
-        burialSite.lotComments = await getLotComments(burialSite.lotId, database);
+        burialSite.burialSiteContracts = BurialSiteContracts.BurialSiteContracts;
+        burialSite.burialSiteFields = await getBurialSiteFields(burialSite.burialSiteId, database);
+        burialSite.burialSiteComments = await getBurialSiteComments(burialSite.burialSiteId, database);
     }
     database.release();
     return burialSite;

@@ -221,7 +221,7 @@
                   </div>
                 </div>
             </form>
-            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byLotTypeId">
+            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byburialSiteTypeId">
                 <div class="has-text-centered my-2 ml-2 mr-3">
                     <span class="icon has-text-info">
                         <i class="fas fa-2x fa-file" aria-hidden="true"></i>
@@ -232,15 +232,15 @@
                     <h2 class="title is-5 is-marginless"><%= configFunctions.getConfigProperty("aliases.lots") %> By Type</h2>
                     <div class="field has-addons mt-2">
                         <div class="control">
-                            <label class="button is-small is-static" for="lots-byLotTypeId--lotTypeId">
+                            <label class="button is-small is-static" for="lots-byburialSiteTypeId--burialSiteTypeId">
                                 <%= configFunctions.getConfigProperty("aliases.lot") %> Type
                             </label>
                         </div>
                         <div class="control is-expanded">
                             <div class="select is-small is-fullwidth">
-                                <select id="lots-byLotTypeId--lotTypeId" name="lotTypeId">
+                                <select id="lots-byburialSiteTypeId--burialSiteTypeId" name="burialSiteTypeId">
                                     <% for (const lotType of lotTypes) { %>
-                                        <option value="<%= lotType.lotTypeId %>">
+                                        <option value="<%= lotType.burialSiteTypeId %>">
                                             <%= lotType.lotType %>
                                         </option>
                                     <% } %>
@@ -255,7 +255,7 @@
                     </div>
                 </div>
             </form>
-            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byLotStatusId">
+            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byburialSiteStatusId">
                 <div class="has-text-centered my-2 ml-2 mr-3">
                     <span class="icon has-text-info">
                         <i class="fas fa-2x fa-file" aria-hidden="true"></i>
@@ -266,15 +266,15 @@
                     <h2 class="title is-5 is-marginless"><%= configFunctions.getConfigProperty("aliases.lots") %> By Status</h2>
                     <div class="field has-addons mt-2">
                         <div class="control">
-                            <label class="button is-small is-static" for="lots-byLotStatusId--lotStatusId">
+                            <label class="button is-small is-static" for="lots-byburialSiteStatusId--burialSiteStatusId">
                                 <%= configFunctions.getConfigProperty("aliases.lot") %> Status
                             </label>
                         </div>
                         <div class="control is-expanded">
                             <div class="select is-small is-fullwidth">
-                                <select id="lots-byLotStatusId--lotStatusId" name="lotStatusId">
+                                <select id="lots-byburialSiteStatusId--burialSiteStatusId" name="burialSiteStatusId">
                                     <% for (const lotStatus of lotStatuses) { %>
-                                        <option value="<%= lotStatus.lotStatusId %>">
+                                        <option value="<%= lotStatus.burialSiteStatusId %>">
                                             <%= lotStatus.lotStatus %>
                                         </option>
                                     <% } %>

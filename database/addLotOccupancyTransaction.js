@@ -6,10 +6,10 @@ export default async function addLotOccupancyTransaction(lotOccupancyTransaction
     const maxIndexResult = database
         .prepare(`select transactionIndex
         from LotOccupancyTransactions
-        where lotOccupancyId = ?
+        where burialSiteContractId = ?
         order by transactionIndex desc
         limit 1`)
-        .get(lotOccupancyTransactionForm.lotOccupancyId);
+        .get(lotOccupancyTransactionForm.burialSiteContractId);
     if (maxIndexResult !== undefined) {
         transactionIndex = maxIndexResult.transactionIndex + 1;
     }
@@ -22,13 +22,13 @@ export default async function addLotOccupancyTransaction(lotOccupancyTransaction
         : dateToTimeInteger(rightNow);
     database
         .prepare(`insert into LotOccupancyTransactions (
-        lotOccupancyId, transactionIndex,
+        burialSiteContractId, transactionIndex,
         transactionDate, transactionTime,
         transactionAmount, externalReceiptNumber, transactionNote,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(lotOccupancyTransactionForm.lotOccupancyId, transactionIndex, transactionDate, transactionTime, lotOccupancyTransactionForm.transactionAmount, lotOccupancyTransactionForm.externalReceiptNumber, lotOccupancyTransactionForm.transactionNote, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
+        .run(lotOccupancyTransactionForm.burialSiteContractId, transactionIndex, transactionDate, transactionTime, lotOccupancyTransactionForm.transactionAmount, lotOccupancyTransactionForm.externalReceiptNumber, lotOccupancyTransactionForm.transactionNote, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     database.release();
     return transactionIndex;
 }

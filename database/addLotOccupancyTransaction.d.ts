@@ -1,5 +1,5 @@
 export interface AddLotOccupancyTransactionForm {
-    lotOccupancyId: string | number;
+    burialSiteContractId: string | number;
     transactionDateString?: string;
     transactionTimeString?: string;
     transactionAmount: string | number;

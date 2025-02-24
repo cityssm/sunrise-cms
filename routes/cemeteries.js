@@ -6,7 +6,7 @@ import handler_previous from '../handlers/cemeteries-get/previous.js';
 import handler_search from '../handlers/cemeteries-get/search.js';
 import handler_view from '../handlers/cemeteries-get/view.js';
 import handler_doCreateMap from '../handlers/cemeteries-post/doCreateCemetery.js';
-import handler_doDeleteMap from '../handlers/cemeteries-post/doDeleteMap.js';
+import handler_doDeleteMap from '../handlers/cemeteries-post/doDeleteCemetery.js';
 import handler_doUpdateMap from '../handlers/cemeteries-post/doUpdateMap.js';
 import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js';
 export const router = Router();

@@ -6,14 +6,14 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lotOccupancyId = await copyLotOccupancy(
-    request.body.lotOccupancyId as string,
+  const burialSiteContractId = await copyLotOccupancy(
+    request.body.burialSiteContractId as string,
     request.session.user as User
   )
 
   response.json({
     success: true,
-    lotOccupancyId
+    burialSiteContractId
   })
 }
 

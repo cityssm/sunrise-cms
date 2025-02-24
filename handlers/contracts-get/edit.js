@@ -1,24 +1,24 @@
 import getLotOccupancy from '../../database/getLotOccupancy.js';
 import getMaps from '../../database/getMaps.js';
-import { getLotOccupantTypes, getLotStatuses, getLotTypes, getOccupancyTypePrintsById, getOccupancyTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
+import { getLotOccupantTypes, getLotStatuses, getBurialSiteTypes, getContractTypePrintsById, getContractTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 export default async function handler(request, response) {
-    const lotOccupancy = await getLotOccupancy(request.params.lotOccupancyId);
+    const lotOccupancy = await getLotOccupancy(request.params.burialSiteContractId);
     if (lotOccupancy === undefined) {
-        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/lotOccupancies/?error=lotOccupancyIdNotFound`);
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/lotOccupancies/?error=burialSiteContractIdNotFound`);
         return;
     }
-    const occupancyTypePrints = await getOccupancyTypePrintsById(lotOccupancy.occupancyTypeId);
-    const occupancyTypes = await getOccupancyTypes();
+    const ContractTypePrints = await getContractTypePrintsById(lotOccupancy.contractTypeId);
+    const occupancyTypes = await getContractTypes();
     const lotOccupantTypes = await getLotOccupantTypes();
-    const lotTypes = await getLotTypes();
+    const lotTypes = await getBurialSiteTypes();
     const lotStatuses = await getLotStatuses();
     const maps = await getMaps();
     const workOrderTypes = await getWorkOrderTypes();
     response.render('lotOccupancy-edit', {
         headTitle: `${getConfigProperty('aliases.occupancy')} Update`,
         lotOccupancy,
-        occupancyTypePrints,
+        ContractTypePrints,
         occupancyTypes,
         lotOccupantTypes,
         lotTypes,

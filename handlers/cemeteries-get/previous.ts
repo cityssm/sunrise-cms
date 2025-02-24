@@ -1,21 +1,21 @@
 import type { Request, Response } from 'express'
 
-import getPreviousMapId from '../../database/getPreviousMapId.js'
+import getPreviouscemeteryId from '../../database/getPreviouscemeteryId.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const mapId = Number.parseInt(request.params.mapId, 10)
+  const cemeteryId = Number.parseInt(request.params.cemeteryId, 10)
 
-  const previousMapId = await getPreviousMapId(mapId)
+  const previouscemeteryId = await getPreviouscemeteryId(cemeteryId)
 
-  if (previousMapId === undefined) {
+  if (previouscemeteryId === undefined) {
     response.redirect(
       `${getConfigProperty(
         'reverseProxy.urlPrefix'
-      )}/maps/?error=noPreviousMapIdFound`
+      )}/maps/?error=noPreviouscemeteryIdFound`
     )
     return
   }
@@ -23,6 +23,6 @@ export default async function handler(
   response.redirect(
     `${getConfigProperty(
       'reverseProxy.urlPrefix'
-    )}/maps/${previousMapId.toString()}`
+    )}/maps/${previouscemeteryId.toString()}`
   )
 }

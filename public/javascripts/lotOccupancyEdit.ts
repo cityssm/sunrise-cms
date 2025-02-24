@@ -25,10 +25,10 @@ declare const exports: Record<string, unknown>
 ;(() => {
   const los = exports.los as LOS
 
-  const lotOccupancyId = (
-    document.querySelector('#lotOccupancy--lotOccupancyId') as HTMLInputElement
+  const burialSiteContractId = (
+    document.querySelector('#lotOccupancy--burialSiteContractId') as HTMLInputElement
   ).value
-  const isCreate = lotOccupancyId === ''
+  const isCreate = burialSiteContractId === ''
 
   /*
    * Main form
@@ -63,7 +63,7 @@ declare const exports: Record<string, unknown>
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          lotOccupancyId?: number
+          burialSiteContractId?: number
           errorMessage?: string
         }
 
@@ -72,7 +72,7 @@ declare const exports: Record<string, unknown>
 
           if (isCreate || refreshAfterSave) {
             globalThis.location.href = los.getLotOccupancyURL(
-              responseJSON.lotOccupancyId,
+              responseJSON.burialSiteContractId,
               true,
               true
             )
@@ -103,20 +103,20 @@ declare const exports: Record<string, unknown>
     cityssm.postJSON(
       `${los.urlPrefix}/lotOccupancies/doCopyLotOccupancy`,
       {
-        lotOccupancyId
+        burialSiteContractId
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
           errorMessage?: string
-          lotOccupancyId?: number
+          burialSiteContractId?: number
         }
 
         if (responseJSON.success) {
           clearUnsavedChanges()
 
           globalThis.location.href = los.getLotOccupancyURL(
-            responseJSON.lotOccupancyId,
+            responseJSON.burialSiteContractId,
             true
           )
         } else {
@@ -163,7 +163,7 @@ declare const exports: Record<string, unknown>
         cityssm.postJSON(
           `${los.urlPrefix}/lotOccupancies/doDeleteLotOccupancy`,
           {
-            lotOccupancyId
+            burialSiteContractId
           },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
@@ -248,9 +248,9 @@ declare const exports: Record<string, unknown>
         onshow(modalElement) {
           ;(
             modalElement.querySelector(
-              '#workOrderCreate--lotOccupancyId'
+              '#workOrderCreate--burialSiteContractId'
             ) as HTMLInputElement
-          ).value = lotOccupancyId
+          ).value = burialSiteContractId
           ;(
             modalElement.querySelector(
               '#workOrderCreate--workOrderOpenDateString'
@@ -301,8 +301,8 @@ declare const exports: Record<string, unknown>
 
   // Occupancy Type
 
-  const occupancyTypeIdElement = document.querySelector(
-    '#lotOccupancy--occupancyTypeId'
+  const contractTypeIdElement = document.querySelector(
+    '#lotOccupancy--contractTypeId'
   ) as HTMLSelectElement
 
   if (isCreate) {
@@ -310,8 +310,8 @@ declare const exports: Record<string, unknown>
       '#container--lotOccupancyFields'
     ) as HTMLElement
 
-    occupancyTypeIdElement.addEventListener('change', () => {
-      if (occupancyTypeIdElement.value === '') {
+    contractTypeIdElement.addEventListener('change', () => {
+      if (contractTypeIdElement.value === '') {
         // eslint-disable-next-line no-unsanitized/property
         lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
           <p class="message-body">Select the ${los.escapedAliases.occupancy} type to load the available fields.</p>
@@ -321,16 +321,16 @@ declare const exports: Record<string, unknown>
       }
 
       cityssm.postJSON(
-        `${los.urlPrefix}/lotOccupancies/doGetOccupancyTypeFields`,
+        `${los.urlPrefix}/lotOccupancies/doGetContractTypeFields`,
         {
-          occupancyTypeId: occupancyTypeIdElement.value
+          contractTypeId: contractTypeIdElement.value
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            occupancyTypeFields: OccupancyTypeField[]
+            ContractTypeFields: OccupancyTypeField[]
           }
 
-          if (responseJSON.occupancyTypeFields.length === 0) {
+          if (responseJSON.ContractTypeFields.length === 0) {
             // eslint-disable-next-line no-unsanitized/property
             lotOccupancyFieldsContainerElement.innerHTML = `<div class="message is-info">
               <p class="message-body">There are no additional fields for this ${los.escapedAliases.occupancy} type.</p>
@@ -341,12 +341,12 @@ declare const exports: Record<string, unknown>
 
           lotOccupancyFieldsContainerElement.innerHTML = ''
 
-          let occupancyTypeFieldIds = ''
+          let contractTypeFieldIds = ''
 
-          for (const occupancyTypeField of responseJSON.occupancyTypeFields) {
-            occupancyTypeFieldIds += `,${occupancyTypeField.occupancyTypeFieldId.toString()}`
+          for (const occupancyTypeField of responseJSON.ContractTypeFields) {
+            contractTypeFieldIds += `,${occupancyTypeField.contractTypeFieldId.toString()}`
 
-            const fieldName = `lotOccupancyFieldValue_${occupancyTypeField.occupancyTypeFieldId.toString()}`
+            const fieldName = `lotOccupancyFieldValue_${occupancyTypeField.contractTypeFieldId.toString()}`
 
             const fieldId = `lotOccupancy--${fieldName}`
 
@@ -421,17 +421,17 @@ declare const exports: Record<string, unknown>
           lotOccupancyFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
             // eslint-disable-next-line no-secrets/no-secrets
-            `<input name="occupancyTypeFieldIds" type="hidden"
-              value="${cityssm.escapeHTML(occupancyTypeFieldIds.slice(1))}" />`
+            `<input name="contractTypeFieldIds" type="hidden"
+              value="${cityssm.escapeHTML(contractTypeFieldIds.slice(1))}" />`
           )
         }
       )
     })
   } else {
-    const originalOccupancyTypeId = occupancyTypeIdElement.value
+    const originalcontractTypeId = contractTypeIdElement.value
 
-    occupancyTypeIdElement.addEventListener('change', () => {
-      if (occupancyTypeIdElement.value !== originalOccupancyTypeId) {
+    contractTypeIdElement.addEventListener('change', () => {
+      if (contractTypeIdElement.value !== originalcontractTypeId) {
         bulmaJS.confirm({
           title: 'Confirm Change',
           message: `Are you sure you want to change the ${los.escapedAliases.occupancy} type?\n
@@ -446,7 +446,7 @@ declare const exports: Record<string, unknown>
           cancelButton: {
             text: 'Revert the Change',
             callbackFunction: () => {
-              occupancyTypeIdElement.value = originalOccupancyTypeId
+              contractTypeIdElement.value = originalcontractTypeId
             }
           }
         })
@@ -532,7 +532,7 @@ declare const exports: Record<string, unknown>
             panelBlockElement.innerHTML = `<div class="columns">
               <div class="column">
                 ${cityssm.escapeHTML(lot.lotName ?? '')}<br />
-                <span class="is-size-7">${cityssm.escapeHTML(lot.mapName ?? '')}</span>
+                <span class="is-size-7">${cityssm.escapeHTML(lot.cemeteryName ?? '')}</span>
               </div>
               <div class="column">
                 ${cityssm.escapeHTML(lot.lotStatus as string)}<br />
@@ -648,36 +648,36 @@ declare const exports: Record<string, unknown>
         }
 
         const lotTypeElement = modalElement.querySelector(
-          '#lotCreate--lotTypeId'
+          '#lotCreate--burialSiteTypeId'
         ) as HTMLSelectElement
 
         for (const lotType of exports.lotTypes as LotType[]) {
           const optionElement = document.createElement('option')
-          optionElement.value = lotType.lotTypeId.toString()
+          optionElement.value = lotType.burialSiteTypeId.toString()
           optionElement.textContent = lotType.lotType
           lotTypeElement.append(optionElement)
         }
 
         const lotStatusElement = modalElement.querySelector(
-          '#lotCreate--lotStatusId'
+          '#lotCreate--burialSiteStatusId'
         ) as HTMLSelectElement
 
         for (const lotStatus of exports.lotStatuses as LotStatus[]) {
           const optionElement = document.createElement('option')
-          optionElement.value = lotStatus.lotStatusId.toString()
+          optionElement.value = lotStatus.burialSiteStatusId.toString()
           optionElement.textContent = lotStatus.lotStatus
           lotStatusElement.append(optionElement)
         }
 
         const mapElement = modalElement.querySelector(
-          '#lotCreate--mapId'
+          '#lotCreate--cemeteryId'
         ) as HTMLSelectElement
 
         for (const map of exports.maps as MapRecord[]) {
           const optionElement = document.createElement('option')
-          optionElement.value = map.mapId!.toString()
+          optionElement.value = map.cemeteryId!.toString()
           optionElement.textContent =
-            (map.mapName ?? '') === '' ? '(No Name)' : map.mapName ?? ''
+            (map.cemeteryName ?? '') === '' ? '(No Name)' : map.cemeteryName ?? ''
           mapElement.append(optionElement)
         }
 
@@ -731,17 +731,17 @@ declare const exports: Record<string, unknown>
   los.initializeDatePickers(formElement)
 
   document
-    .querySelector('#lotOccupancy--occupancyStartDateString')
+    .querySelector('#lotOccupancy--contractStartDateString')
     ?.addEventListener('change', () => {
       const endDatePicker = (
         document.querySelector(
-          '#lotOccupancy--occupancyEndDateString'
+          '#lotOccupancy--contractEndDateString'
         ) as HTMLInputElement
       ).bulmaCalendar.datePicker
 
       endDatePicker.min = (
         document.querySelector(
-          '#lotOccupancy--occupancyStartDateString'
+          '#lotOccupancy--contractStartDateString'
         ) as HTMLInputElement
       ).value
 
@@ -810,9 +810,9 @@ declare const exports: Record<string, unknown>
           los.populateAliases(modalElement)
           ;(
             modalElement.querySelector(
-              '#lotOccupancyOccupantEdit--lotOccupancyId'
+              '#lotOccupancyOccupantEdit--burialSiteContractId'
             ) as HTMLInputElement
-          ).value = lotOccupancyId
+          ).value = burialSiteContractId
           ;(
             modalElement.querySelector(
               '#lotOccupancyOccupantEdit--lotOccupantIndex'
@@ -988,7 +988,7 @@ declare const exports: Record<string, unknown>
         cityssm.postJSON(
           `${los.urlPrefix}/lotOccupancies/doDeleteLotOccupancyOccupant`,
           {
-            lotOccupancyId,
+            burialSiteContractId,
             lotOccupantIndex
           },
           (rawResponseJSON) => {
@@ -1238,7 +1238,7 @@ declare const exports: Record<string, unknown>
             })
           } else {
             occupant.lotOccupantTypeId = Number.parseInt(lotOccupantTypeId, 10)
-            occupant.lotOccupancyId = Number.parseInt(lotOccupancyId, 10)
+            occupant.burialSiteContractId = Number.parseInt(burialSiteContractId, 10)
             addOccupant(occupant)
           }
         }
@@ -1326,9 +1326,9 @@ declare const exports: Record<string, unknown>
             los.populateAliases(modalElement)
             ;(
               modalElement.querySelector(
-                '#lotOccupancyOccupantAdd--lotOccupancyId'
+                '#lotOccupancyOccupantAdd--burialSiteContractId'
               ) as HTMLInputElement
-            ).value = lotOccupancyId
+            ).value = burialSiteContractId
 
             const lotOccupantTypeSelectElement = modalElement.querySelector(
               '#lotOccupancyOccupantAdd--lotOccupantTypeId'
@@ -1449,17 +1449,17 @@ declare const exports: Record<string, unknown>
       delete exports.lotOccupancyComments
 
       function openEditLotOccupancyComment(clickEvent: Event): void {
-        const lotOccupancyCommentId = Number.parseInt(
+        const burialSiteContractCommentId = Number.parseInt(
           (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-            .lotOccupancyCommentId ?? '',
+            .burialSiteContractCommentId ?? '',
           10
         )
 
         const lotOccupancyComment = lotOccupancyComments.find(
           (currentLotOccupancyComment) => {
             return (
-              currentLotOccupancyComment.lotOccupancyCommentId ===
-              lotOccupancyCommentId
+              currentLotOccupancyComment.burialSiteContractCommentId ===
+              burialSiteContractCommentId
             )
           }
         ) as LotOccupancyComment
@@ -1500,14 +1500,14 @@ declare const exports: Record<string, unknown>
             los.populateAliases(modalElement)
             ;(
               modalElement.querySelector(
-                '#lotOccupancyCommentEdit--lotOccupancyId'
+                '#lotOccupancyCommentEdit--burialSiteContractId'
               ) as HTMLInputElement
-            ).value = lotOccupancyId
+            ).value = burialSiteContractId
             ;(
               modalElement.querySelector(
-                '#lotOccupancyCommentEdit--lotOccupancyCommentId'
+                '#lotOccupancyCommentEdit--burialSiteContractCommentId'
               ) as HTMLInputElement
-            ).value = lotOccupancyCommentId.toString()
+            ).value = burialSiteContractCommentId.toString()
             ;(
               modalElement.querySelector(
                 '#lotOccupancyCommentEdit--lotOccupancyComment'
@@ -1560,9 +1560,9 @@ declare const exports: Record<string, unknown>
       }
 
       function deleteLotOccupancyComment(clickEvent: Event): void {
-        const lotOccupancyCommentId = Number.parseInt(
+        const burialSiteContractCommentId = Number.parseInt(
           (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-            .lotOccupancyCommentId ?? '',
+            .burialSiteContractCommentId ?? '',
           10
         )
 
@@ -1570,8 +1570,8 @@ declare const exports: Record<string, unknown>
           cityssm.postJSON(
             `${los.urlPrefix}/lotOccupancies/doDeleteLotOccupancyComment`,
             {
-              lotOccupancyId,
-              lotOccupancyCommentId
+              burialSiteContractId,
+              burialSiteContractCommentId
             },
             (rawResponseJSON) => {
               const responseJSON = rawResponseJSON as {
@@ -1629,8 +1629,8 @@ declare const exports: Record<string, unknown>
 
         for (const lotOccupancyComment of lotOccupancyComments) {
           const tableRowElement = document.createElement('tr')
-          tableRowElement.dataset.lotOccupancyCommentId =
-            lotOccupancyComment.lotOccupancyCommentId?.toString()
+          tableRowElement.dataset.burialSiteContractCommentId =
+            lotOccupancyComment.burialSiteContractCommentId?.toString()
 
           tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(lotOccupancyComment.recordCreate_userName ?? '')}</td>
       <td>
@@ -1710,9 +1710,9 @@ declare const exports: Record<string, unknown>
               los.populateAliases(modalElement)
               ;(
                 modalElement.querySelector(
-                  '#lotOccupancyCommentAdd--lotOccupancyId'
+                  '#lotOccupancyCommentAdd--burialSiteContractId'
                 ) as HTMLInputElement
-              ).value = lotOccupancyId
+              ).value = burialSiteContractId
             },
             onshown(modalElement, closeModalFunction) {
               bulmaJS.toggleHtmlClipped()
@@ -1812,9 +1812,9 @@ declare const exports: Record<string, unknown>
           onshow(modalElement) {
             ;(
               modalElement.querySelector(
-                '#lotOccupancyFeeQuantity--lotOccupancyId'
+                '#lotOccupancyFeeQuantity--burialSiteContractId'
               ) as HTMLInputElement
-            ).value = lotOccupancyId
+            ).value = burialSiteContractId
             ;(
               modalElement.querySelector(
                 '#lotOccupancyFeeQuantity--feeId'
@@ -1862,7 +1862,7 @@ declare const exports: Record<string, unknown>
           cityssm.postJSON(
             `${los.urlPrefix}/lotOccupancies/doDeleteLotOccupancyFee`,
             {
-              lotOccupancyId,
+              burialSiteContractId,
               feeId
             },
             (rawResponseJSON) => {
@@ -2046,7 +2046,7 @@ declare const exports: Record<string, unknown>
           cityssm.postJSON(
             `${los.urlPrefix}/lotOccupancies/doAddLotOccupancyFeeCategory`,
             {
-              lotOccupancyId,
+              burialSiteContractId,
               feeCategoryId
             },
             (rawResponseJSON) => {
@@ -2079,7 +2079,7 @@ declare const exports: Record<string, unknown>
           cityssm.postJSON(
             `${los.urlPrefix}/lotOccupancies/doAddLotOccupancyFee`,
             {
-              lotOccupancyId,
+              burialSiteContractId,
               feeId,
               quantity
             },
@@ -2287,7 +2287,7 @@ declare const exports: Record<string, unknown>
             cityssm.postJSON(
               `${los.urlPrefix}/lotOccupancies/doGetFees`,
               {
-                lotOccupancyId
+                burialSiteContractId
               },
               (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON as {
@@ -2382,9 +2382,9 @@ declare const exports: Record<string, unknown>
             los.populateAliases(modalElement)
             ;(
               modalElement.querySelector(
-                '#lotOccupancyTransactionEdit--lotOccupancyId'
+                '#lotOccupancyTransactionEdit--burialSiteContractId'
               ) as HTMLInputElement
-            ).value = lotOccupancyId
+            ).value = burialSiteContractId
             ;(
               modalElement.querySelector(
                 '#lotOccupancyTransactionEdit--transactionIndex'
@@ -2449,7 +2449,7 @@ declare const exports: Record<string, unknown>
           cityssm.postJSON(
             `${los.urlPrefix}/lotOccupancies/doDeleteLotOccupancyTransaction`,
             {
-              lotOccupancyId,
+              burialSiteContractId,
               transactionIndex
             },
             (rawResponseJSON) => {
@@ -2714,9 +2714,9 @@ declare const exports: Record<string, unknown>
             los.populateAliases(modalElement)
             ;(
               modalElement.querySelector(
-                '#lotOccupancyTransactionAdd--lotOccupancyId'
+                '#lotOccupancyTransactionAdd--burialSiteContractId'
               ) as HTMLInputElement
-            ).value = lotOccupancyId.toString()
+            ).value = burialSiteContractId.toString()
 
             const feeGrandTotal = getFeeGrandTotal()
             const transactionGrandTotal = getTransactionGrandTotal()

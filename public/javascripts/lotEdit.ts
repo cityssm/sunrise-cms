@@ -127,8 +127,8 @@ declare const exports: Record<string, unknown>
 
   // Lot Type
 
-  const lotTypeIdElement = document.querySelector(
-    '#lot--lotTypeId'
+  const burialSiteTypeIdElement = document.querySelector(
+    '#lot--burialSiteTypeId'
   ) as HTMLSelectElement
 
   if (isCreate) {
@@ -136,8 +136,8 @@ declare const exports: Record<string, unknown>
       '#container--lotFields'
     ) as HTMLElement
 
-    lotTypeIdElement.addEventListener('change', () => {
-      if (lotTypeIdElement.value === '') {
+    burialSiteTypeIdElement.addEventListener('change', () => {
+      if (burialSiteTypeIdElement.value === '') {
         // eslint-disable-next-line no-unsanitized/property
         lotFieldsContainerElement.innerHTML = `<div class="message is-info">
           <p class="message-body">Select the ${los.escapedAliases.lot} type to load the available fields.</p>
@@ -147,16 +147,16 @@ declare const exports: Record<string, unknown>
       }
 
       cityssm.postJSON(
-        `${los.urlPrefix}/lots/doGetLotTypeFields`,
+        `${los.urlPrefix}/lots/doGetBurialSiteTypeFields`,
         {
-          lotTypeId: lotTypeIdElement.value
+          burialSiteTypeId: burialSiteTypeIdElement.value
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            lotTypeFields: LotTypeField[]
+            BurialSiteTypeFields: LotTypeField[]
           }
 
-          if (responseJSON.lotTypeFields.length === 0) {
+          if (responseJSON.BurialSiteTypeFields.length === 0) {
             // eslint-disable-next-line no-unsanitized/property
             lotFieldsContainerElement.innerHTML = `<div class="message is-info">
               <p class="message-body">
@@ -171,7 +171,7 @@ declare const exports: Record<string, unknown>
 
           let lotTypeFieldIds = ''
 
-          for (const lotTypeField of responseJSON.lotTypeFields) {
+          for (const lotTypeField of responseJSON.BurialSiteTypeFields) {
             lotTypeFieldIds += `,${lotTypeField.lotTypeFieldId.toString()}`
 
             const fieldName = `lotFieldValue_${lotTypeField.lotTypeFieldId.toString()}`
@@ -246,10 +246,10 @@ declare const exports: Record<string, unknown>
       )
     })
   } else {
-    const originalLotTypeId = lotTypeIdElement.value
+    const originalburialSiteTypeId = burialSiteTypeIdElement.value
 
-    lotTypeIdElement.addEventListener('change', () => {
-      if (lotTypeIdElement.value !== originalLotTypeId) {
+    burialSiteTypeIdElement.addEventListener('change', () => {
+      if (burialSiteTypeIdElement.value !== originalburialSiteTypeId) {
         bulmaJS.confirm({
           title: 'Confirm Change',
           message: `Are you sure you want to change the ${los.escapedAliases.lot} type?\n
@@ -264,7 +264,7 @@ declare const exports: Record<string, unknown>
           cancelButton: {
             text: 'Revert the Change',
             callbackFunction() {
-              lotTypeIdElement.value = originalLotTypeId
+              burialSiteTypeIdElement.value = originalburialSiteTypeId
             }
           }
         })

@@ -1,31 +1,31 @@
 import type { Request, Response } from 'express'
 
 import getLotOccupancy from '../../database/getLotOccupancy.js'
-import { getOccupancyTypePrintsById } from '../../helpers/functions.cache.js'
+import { getContractTypePrintsById } from '../../helpers/functions.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lotOccupancy = await getLotOccupancy(request.params.lotOccupancyId)
+  const lotOccupancy = await getLotOccupancy(request.params.burialSiteContractId)
 
   if (lotOccupancy === undefined) {
     response.redirect(
       `${getConfigProperty(
         'reverseProxy.urlPrefix'
-      )}/lotOccupancies/?error=lotOccupancyIdNotFound`
+      )}/lotOccupancies/?error=burialSiteContractIdNotFound`
     )
     return
   }
 
-  const occupancyTypePrints = await getOccupancyTypePrintsById(
-    lotOccupancy.occupancyTypeId
+  const ContractTypePrints = await getContractTypePrintsById(
+    lotOccupancy.contractTypeId
   )
 
   response.render('lotOccupancy-view', {
     headTitle: `${getConfigProperty('aliases.occupancy')} View`,
     lotOccupancy,
-    occupancyTypePrints
+    ContractTypePrints
   })
 }

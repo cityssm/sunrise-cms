@@ -3,19 +3,19 @@ import getLotTypeSummary from '../../database/getLotTypeSummary.js';
 import getMap from '../../database/getMap.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 export default async function handler(request, response) {
-    const map = await getMap(request.params.mapId);
+    const map = await getMap(request.params.cemeteryId);
     if (map === undefined) {
-        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/maps/?error=mapIdNotFound`);
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/maps/?error=cemeteryIdNotFound`);
         return;
     }
     const lotTypeSummary = await getLotTypeSummary({
-        mapId: map.mapId
+        cemeteryId: map.cemeteryId
     });
     const lotStatusSummary = await getLotStatusSummary({
-        mapId: map.mapId
+        cemeteryId: map.cemeteryId
     });
     response.render('map-view', {
-        headTitle: map.mapName,
+        headTitle: map.cemeteryName,
         map,
         lotTypeSummary,
         lotStatusSummary

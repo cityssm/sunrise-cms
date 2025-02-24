@@ -1,7 +1,7 @@
 import { acquireConnection } from './pool.js'
 
 export interface UpdateLotOccupancyOccupantForm {
-  lotOccupancyId: string | number
+  burialSiteContractId: string | number
   lotOccupantIndex: string | number
   lotOccupantTypeId: string | number
   occupantName: string
@@ -39,7 +39,7 @@ export default async function updateLotOccupancyOccupant(
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and lotOccupancyId = ?
+        and burialSiteContractId = ?
         and lotOccupantIndex = ?`
     )
     .run(
@@ -56,7 +56,7 @@ export default async function updateLotOccupancyOccupant(
       lotOccupancyOccupantForm.lotOccupantTypeId,
       user.userName,
       Date.now(),
-      lotOccupancyOccupantForm.lotOccupancyId,
+      lotOccupancyOccupantForm.burialSiteContractId,
       lotOccupancyOccupantForm.lotOccupantIndex
     )
 

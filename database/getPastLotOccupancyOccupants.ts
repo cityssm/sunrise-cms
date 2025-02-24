@@ -49,15 +49,15 @@ export default async function getPastLotOccupancyOccupants(
       o.occupantAddress1, o.occupantAddress2,
       o.occupantCity, o.occupantProvince, o.occupantPostalCode,
       o.occupantPhoneNumber, o.occupantEmailAddress,
-      count(*) as lotOccupancyIdCount,
+      count(*) as burialSiteContractIdCount,
       max(o.recordUpdate_timeMillis) as recordUpdate_timeMillisMax
     from LotOccupancyOccupants o
-    left join LotOccupancies l on o.lotOccupancyId = l.lotOccupancyId
+    left join BurialSiteContracts l on o.burialSiteContractId = l.burialSiteContractId
     ${sqlWhereClause}
     group by occupantName, occupantAddress1, occupantAddress2,
       occupantCity, occupantProvince, occupantPostalCode,
       occupantPhoneNumber, occupantEmailAddress
-    order by lotOccupancyIdCount desc, recordUpdate_timeMillisMax desc
+    order by burialSiteContractIdCount desc, recordUpdate_timeMillisMax desc
     limit ${options.limit}`
 
   const lotOccupancyOccupants = database

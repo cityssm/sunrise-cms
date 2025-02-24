@@ -1,6 +1,6 @@
 import { dateIntegerToString, dateStringToInteger } from '@cityssm/utils-datetime';
 import { getLotNameWhereClause, getOccupantNameWhereClause } from '../helpers/functions.sqlFilters.js';
-import getLotOccupancies from './getLotOccupancies.js';
+import getBurialSiteContracts from './getBurialSiteContracts.js';
 import getLots from './getLots.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
@@ -28,10 +28,10 @@ function buildWhereClause(filters) {
     if (occupantNameFilters.sqlParameters.length > 0) {
         sqlWhereClause +=
             ` and w.workOrderId in (
-        select workOrderId from WorkOrderLotOccupancies o
+        select workOrderId from WorkOrderBurialSiteContracts o
         where recordDelete_timeMillis is null
-        and o.lotOccupancyId in (
-          select lotOccupancyId from LotOccupancyOccupants o where recordDelete_timeMillis is null
+        and o.burialSiteContractId in (
+          select burialSiteContractId from LotOccupancyOccupants o where recordDelete_timeMillis is null
           ${occupantNameFilters.sqlWhereClause}
         ))`;
         sqlParameters.push(...occupantNameFilters.sqlParameters);
@@ -49,10 +49,10 @@ function buildWhereClause(filters) {
         ))`;
         sqlParameters.push(...lotNameFilters.sqlParameters);
     }
-    if ((filters.lotOccupancyId ?? '') !== '') {
+    if ((filters.burialSiteContractId ?? '') !== '') {
         sqlWhereClause +=
-            ' and w.workOrderId in (select workOrderId from WorkOrderLotOccupancies where recordDelete_timeMillis is null and lotOccupancyId = ?)';
-        sqlParameters.push(filters.lotOccupancyId);
+            ' and w.workOrderId in (select workOrderId from WorkOrderBurialSiteContracts where recordDelete_timeMillis is null and burialSiteContractId = ?)';
+        sqlParameters.push(filters.burialSiteContractId);
     }
     return {
         sqlWhereClause,
@@ -63,7 +63,7 @@ async function addInclusions(workOrder, options, database) {
     if (options.includeComments ?? false) {
         workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);
     }
-    if (options.includeLotsAndLotOccupancies ?? false) {
+    if (options.includeLotsAndBurialSiteContracts ?? false) {
         if (workOrder.workOrderLotCount === 0) {
             workOrder.workOrderLots = [];
         }
@@ -77,7 +77,7 @@ async function addInclusions(workOrder, options, database) {
             }, database);
             workOrder.workOrderLots = workOrderLotsResults.lots;
         }
-        const lotOccupancies = await getLotOccupancies({
+        const BurialSiteContracts = await getBurialSiteContracts({
             workOrderId: workOrder.workOrderId
         }, {
             limit: -1,
@@ -86,7 +86,7 @@ async function addInclusions(workOrder, options, database) {
             includeFees: false,
             includeTransactions: false
         }, database);
-        workOrder.workOrderLotOccupancies = lotOccupancies.lotOccupancies;
+        workOrder.workOrderBurialSiteContracts = BurialSiteContracts.BurialSiteContracts;
     }
     if (options.includeMilestones ?? false) {
         workOrder.workOrderMilestones =
@@ -142,7 +142,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
             .all(sqlParameters);
     }
     const hasInclusions = (options.includeComments ?? false) ||
-        (options.includeLotsAndLotOccupancies ?? false) ||
+        (options.includeLotsAndBurialSiteContracts ?? false) ||
         (options.includeMilestones ?? false);
     if (hasInclusions) {
         for (const workOrder of workOrders) {

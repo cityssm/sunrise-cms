@@ -15,6 +15,6 @@ export default async function handler(
 
   response.json({
     success,
-    lotOccupancyId: request.body.lotOccupancyId as string
+    burialSiteContractId: request.body.burialSiteContractId as string
   })
 }

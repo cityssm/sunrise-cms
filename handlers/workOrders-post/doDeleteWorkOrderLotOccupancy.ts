@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import deleteWorkOrderLotOccupancy from '../../database/deleteWorkOrderLotOccupancy.js'
-import getLotOccupancies from '../../database/getLotOccupancies.js'
+import getBurialSiteContracts from '../../database/getLotOccupancies.js'
 
 export default async function handler(
   request: Request,
@@ -9,11 +9,11 @@ export default async function handler(
 ): Promise<void> {
   const success = await deleteWorkOrderLotOccupancy(
     request.body.workOrderId as string,
-    request.body.lotOccupancyId as string,
+    request.body.burialSiteContractId as string,
     request.session.user as User
   )
 
-  const workOrderLotOccupancies = await getLotOccupancies(
+  const workOrderLotOccupancies = await getBurialSiteContracts(
     {
       workOrderId: request.body.workOrderId as string
     },

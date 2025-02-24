@@ -1,5 +1,5 @@
 import { dateToString } from '@cityssm/utils-datetime';
-import getLotOccupancies from '../../database/getLotOccupancies.js';
+import getBurialSiteContracts from '../../database/getBurialSiteContracts.js';
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
 import { getWorkOrders } from '../../database/getWorkOrders.js';
 export default async function handler(_request, response) {
@@ -17,13 +17,13 @@ export default async function handler(_request, response) {
         limit: 1, // only using the count
         offset: 0
     });
-    const lotOccupancyResults = await getLotOccupancies({
-        occupancyStartDateString: currentDateString
+    const lotOccupancyResults = await getBurialSiteContracts({
+        contractStartDateString: currentDateString
     }, {
         limit: 1, // only using the count
         offset: 0,
         includeFees: false,
-        includeOccupants: false,
+        includeInterments: false,
         includeTransactions: false
     });
     response.render('dashboard', {

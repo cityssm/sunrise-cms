@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express'
 
 import {
-  getAllOccupancyTypeFields,
-  getOccupancyTypes
+  getAllContractTypeFields,
+  getContractTypes
 } from '../../helpers/functions.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getPrintConfig } from '../../helpers/functions.print.js'
@@ -11,14 +11,14 @@ export default async function handler(
   _request: Request,
   response: Response
 ): Promise<void> {
-  const occupancyTypes = await getOccupancyTypes()
-  const allOccupancyTypeFields = await getAllOccupancyTypeFields()
+  const occupancyTypes = await getContractTypes()
+  const allContractTypeFields = await getAllContractTypeFields()
 
-  const occupancyTypePrints = getConfigProperty('settings.lotOccupancy.prints')
+  const ContractTypePrints = getConfigProperty('settings.lotOccupancy.prints')
 
   const occupancyTypePrintTitles = {}
 
-  for (const printEJS of occupancyTypePrints) {
+  for (const printEJS of ContractTypePrints) {
     const printConfig = getPrintConfig(printEJS)
 
     if (printConfig !== undefined) {
@@ -29,7 +29,7 @@ export default async function handler(
   response.render('admin-occupancyTypes', {
     headTitle: `${getConfigProperty('aliases.occupancy')} Type Management`,
     occupancyTypes,
-    allOccupancyTypeFields,
+    allContractTypeFields,
     occupancyTypePrintTitles
   })
 }

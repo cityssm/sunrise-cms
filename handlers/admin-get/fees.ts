@@ -2,8 +2,8 @@ import type { Request, Response } from 'express'
 
 import getFeeCategories from '../../database/getFeeCategories.js'
 import {
-  getLotTypes,
-  getOccupancyTypes
+  getBurialSiteTypes,
+  getContractTypes
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
@@ -17,8 +17,8 @@ export default async function handler(
     }
   )
 
-  const occupancyTypes = await getOccupancyTypes()
-  const lotTypes = await getLotTypes()
+  const occupancyTypes = await getContractTypes()
+  const lotTypes = await getBurialSiteTypes()
 
   response.render('admin-fees', {
     headTitle: 'Fee Management',

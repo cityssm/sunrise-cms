@@ -53,10 +53,10 @@ declare const exports: Record<string, unknown>
               ${cityssm.escapeHTML(lot.lotName ?? '')}
             </a>
           </td><td>
-            <a href="${los.getMapURL(lot.mapId)}">
+            <a href="${los.getMapURL(lot.cemeteryId)}">
               ${
-                lot.mapName
-                  ? cityssm.escapeHTML(lot.mapName)
+                lot.cemeteryName
+                  ? cityssm.escapeHTML(lot.cemeteryName)
                   : '<span class="has-text-grey">(No Name)</span>'
               }
             </a>
@@ -64,7 +64,7 @@ declare const exports: Record<string, unknown>
             ${cityssm.escapeHTML(lot.lotType ?? '')}
           </td><td>
             ${
-              lot.lotStatusId
+              lot.burialSiteStatusId
                 ? cityssm.escapeHTML(lot.lotStatus ?? '')
                 : '<span class="has-text-grey">(No Status)</span>'
             }<br />

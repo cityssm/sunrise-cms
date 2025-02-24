@@ -14,6 +14,6 @@ export default async function addContractTypeField(addForm, user) {
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(addForm.contractTypeId ?? undefined, addForm.contractTypeField, addForm.fieldType ?? 'text', addForm.fieldValues ?? '', addForm.isRequired === '' ? 0 : 1, addForm.pattern ?? '', addForm.minimumLength ?? 0, addForm.maximumLength ?? 100, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     database.release();
-    clearCacheByTableName('OccupancyTypeFields');
+    clearCacheByTableName('ContractTypeFields');
     return result.lastInsertRowid;
 }

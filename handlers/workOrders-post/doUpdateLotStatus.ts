@@ -9,7 +9,7 @@ export default async function handler(
 ): Promise<void> {
   const success = await updateLotStatus(
     request.body.lotId as string,
-    request.body.lotStatusId as string,
+    request.body.burialSiteStatusId as string,
     request.session.user as User
   )
 

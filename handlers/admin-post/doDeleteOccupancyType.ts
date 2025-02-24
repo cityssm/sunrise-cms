@@ -2,26 +2,26 @@ import type { Request, Response } from 'express'
 
 import { deleteRecord } from '../../database/deleteRecord.js'
 import {
-  getAllOccupancyTypeFields,
-  getOccupancyTypes
+  getAllContractTypeFields,
+  getContractTypes
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request<unknown, unknown, { occupancyTypeId: string }>,
+  request: Request<unknown, unknown, { contractTypeId: string }>,
   response: Response
 ): Promise<void> {
   const success = await deleteRecord(
     'OccupancyTypes',
-    request.body.occupancyTypeId as string,
+    request.body.contractTypeId as string,
     request.session.user as User
   )
 
-  const occupancyTypes = await getOccupancyTypes()
-  const allOccupancyTypeFields = await getAllOccupancyTypeFields()
+  const occupancyTypes = await getContractTypes()
+  const allContractTypeFields = await getAllContractTypeFields()
 
   response.json({
     success,
     occupancyTypes,
-    allOccupancyTypeFields
+    allContractTypeFields
   })
 }

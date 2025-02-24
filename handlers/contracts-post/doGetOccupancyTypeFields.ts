@@ -1,26 +1,26 @@
 import type { Request, Response } from 'express'
 
 import {
-  getOccupancyTypeById,
-  getAllOccupancyTypeFields
+  getContractTypeById,
+  getAllContractTypeFields
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const allOccupancyTypeFields = await getAllOccupancyTypeFields()
+  const allContractTypeFields = await getAllContractTypeFields()
 
-  const result = (await getOccupancyTypeById(
-    Number.parseInt(request.body.occupancyTypeId, 10)
+  const result = (await getContractTypeById(
+    Number.parseInt(request.body.contractTypeId, 10)
   ))!
 
-  const occupancyTypeFields = [...allOccupancyTypeFields]
+  const ContractTypeFields = [...allContractTypeFields]
 
-  occupancyTypeFields.push(...(result.occupancyTypeFields ?? []))
+  ContractTypeFields.push(...(result.ContractTypeFields ?? []))
 
   response.json({
-    occupancyTypeFields
+    ContractTypeFields
   })
 }
 

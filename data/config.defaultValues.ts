@@ -38,17 +38,13 @@ export const configDefaultValues = {
   'aliases.workOrderOpenDate': 'Order Date',
   'aliases.workOrderCloseDate': 'Completion Date',
 
-  'settings.map.mapCityDefault': '',
-  'settings.map.mapProvinceDefault': '',
+  'settings.cemeteries.cityDefault': '',
+  'settings.cemeteries.provinceDefault': '',
 
-  'settings.lot.lotNamePattern': undefined as RegExp | undefined,
-  'settings.lot.lotNameHelpText': '',
-  'settings.lot.lotNameSortNameFunction': (lotName: string) => lotName,
-  // eslint-disable-next-line no-secrets/no-secrets
-  'settings.lotOccupancy.occupancyEndDateIsRequired': true,
-  'settings.lotOccupancy.occupantCityDefault': '',
-  'settings.lotOccupancy.occupantProvinceDefault': '',
-  'settings.lotOccupancy.prints': ['screen/lotOccupancy'],
+  'settings.contracts.burialSiteIdIsRequired': true,
+  'settings.contracts.cityDefault': '',
+  'settings.contracts.provinceDefault': '',
+  'settings.contracts.prints': ['screen/contract'],
 
   'settings.fees.taxPercentageDefault': 0,
 

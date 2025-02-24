@@ -142,8 +142,8 @@ declare const exports: Record<string, unknown>
 
         const hasTagsBlock =
           (fee.isRequired ?? false) ||
-          fee.occupancyTypeId !== undefined ||
-          fee.lotTypeId !== undefined
+          fee.contractTypeId !== undefined ||
+          fee.burialSiteTypeId !== undefined
 
         // eslint-disable-next-line no-unsanitized/property
         panelBlockElement.innerHTML = `<div class="columns">
@@ -168,7 +168,7 @@ declare const exports: Record<string, unknown>
                         : ''
                     }
                     ${
-                      (fee.occupancyTypeId ?? -1) === -1
+                      (fee.contractTypeId ?? -1) === -1
                         ? ''
                         : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Occupancy} Type Filter">
                         <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
@@ -176,7 +176,7 @@ declare const exports: Record<string, unknown>
                         </span>`
                     }
                     ${
-                      (fee.lotTypeId ?? -1) === -1
+                      (fee.burialSiteTypeId ?? -1) === -1
                         ? ''
                         : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Lot} Type Filter">
                         <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
@@ -543,23 +543,23 @@ declare const exports: Record<string, unknown>
         }
 
         const occupancyTypeElement = modalElement.querySelector(
-          '#feeAdd--occupancyTypeId'
+          '#feeAdd--contractTypeId'
         ) as HTMLSelectElement
 
         for (const occupancyType of exports.occupancyTypes as OccupancyType[]) {
           const optionElement = document.createElement('option')
-          optionElement.value = occupancyType.occupancyTypeId.toString()
+          optionElement.value = occupancyType.contractTypeId.toString()
           optionElement.textContent = occupancyType.occupancyType
           occupancyTypeElement.append(optionElement)
         }
 
         const lotTypeElement = modalElement.querySelector(
-          '#feeAdd--lotTypeId'
+          '#feeAdd--burialSiteTypeId'
         ) as HTMLSelectElement
 
         for (const lotType of exports.lotTypes as LotType[]) {
           const optionElement = document.createElement('option')
-          optionElement.value = lotType.lotTypeId.toString()
+          optionElement.value = lotType.burialSiteTypeId.toString()
           optionElement.textContent = lotType.lotType
           lotTypeElement.append(optionElement)
         }
@@ -907,15 +907,15 @@ declare const exports: Record<string, unknown>
         ).value = fee.feeDescription ?? ''
 
         const occupancyTypeElement = modalElement.querySelector(
-          '#feeEdit--occupancyTypeId'
+          '#feeEdit--contractTypeId'
         ) as HTMLSelectElement
 
         for (const occupancyType of exports.occupancyTypes as OccupancyType[]) {
           const optionElement = document.createElement('option')
-          optionElement.value = occupancyType.occupancyTypeId.toString()
+          optionElement.value = occupancyType.contractTypeId.toString()
           optionElement.textContent = occupancyType.occupancyType
 
-          if (occupancyType.occupancyTypeId === fee.occupancyTypeId) {
+          if (occupancyType.contractTypeId === fee.contractTypeId) {
             optionElement.selected = true
           }
 
@@ -923,15 +923,15 @@ declare const exports: Record<string, unknown>
         }
 
         const lotTypeElement = modalElement.querySelector(
-          '#feeEdit--lotTypeId'
+          '#feeEdit--burialSiteTypeId'
         ) as HTMLSelectElement
 
         for (const lotType of exports.lotTypes as LotType[]) {
           const optionElement = document.createElement('option')
-          optionElement.value = lotType.lotTypeId.toString()
+          optionElement.value = lotType.burialSiteTypeId.toString()
           optionElement.textContent = lotType.lotType
 
-          if (lotType.lotTypeId === fee.lotTypeId) {
+          if (lotType.burialSiteTypeId === fee.burialSiteTypeId) {
             optionElement.selected = true
           }
 

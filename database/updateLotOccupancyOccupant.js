@@ -17,9 +17,9 @@ export default async function updateLotOccupancyOccupant(lotOccupancyOccupantFor
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and lotOccupancyId = ?
+        and burialSiteContractId = ?
         and lotOccupantIndex = ?`)
-        .run(lotOccupancyOccupantForm.occupantName, lotOccupancyOccupantForm.occupantFamilyName, lotOccupancyOccupantForm.occupantAddress1, lotOccupancyOccupantForm.occupantAddress2, lotOccupancyOccupantForm.occupantCity, lotOccupancyOccupantForm.occupantProvince, lotOccupancyOccupantForm.occupantPostalCode, lotOccupancyOccupantForm.occupantPhoneNumber, lotOccupancyOccupantForm.occupantEmailAddress, lotOccupancyOccupantForm.occupantComment, lotOccupancyOccupantForm.lotOccupantTypeId, user.userName, Date.now(), lotOccupancyOccupantForm.lotOccupancyId, lotOccupancyOccupantForm.lotOccupantIndex);
+        .run(lotOccupancyOccupantForm.occupantName, lotOccupancyOccupantForm.occupantFamilyName, lotOccupancyOccupantForm.occupantAddress1, lotOccupancyOccupantForm.occupantAddress2, lotOccupancyOccupantForm.occupantCity, lotOccupancyOccupantForm.occupantProvince, lotOccupancyOccupantForm.occupantPostalCode, lotOccupancyOccupantForm.occupantPhoneNumber, lotOccupancyOccupantForm.occupantEmailAddress, lotOccupancyOccupantForm.occupantComment, lotOccupancyOccupantForm.lotOccupantTypeId, user.userName, Date.now(), lotOccupancyOccupantForm.burialSiteContractId, lotOccupancyOccupantForm.lotOccupantIndex);
     database.release();
     return results.changes > 0;
 }

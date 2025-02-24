@@ -8,13 +8,13 @@ export default async function handler(
   response: Response
 ): Promise<void> {
   const success = await deleteLotOccupancyTransaction(
-    request.body.lotOccupancyId,
+    request.body.burialSiteContractId,
     request.body.transactionIndex,
     request.session.user as User
   )
 
   const lotOccupancyTransactions = await getLotOccupancyTransactions(
-    request.body.lotOccupancyId,
+    request.body.burialSiteContractId,
     { includeIntegrations: true }
   )
 

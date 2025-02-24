@@ -7,11 +7,11 @@ export default async function handler(
   response: Response
 ): Promise<void> {
   const lotType = (await getLotTypeById(
-    Number.parseInt(request.body.lotTypeId, 10)
+    Number.parseInt(request.body.burialSiteTypeId, 10)
   ))!
 
   response.json({
-    lotTypeFields: lotType.lotTypeFields
+    BurialSiteTypeFields: lotType.BurialSiteTypeFields
   })
 }
 

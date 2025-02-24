@@ -1,11 +1,11 @@
-import getNextMapId from '../../database/getNextMapId.js';
+import getNextCemeteryId from '../../database/getNextCemeteryId.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 export default async function handler(request, response) {
-    const mapId = Number.parseInt(request.params.mapId, 10);
-    const nextMapId = await getNextMapId(mapId);
-    if (nextMapId === undefined) {
-        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/maps/?error=noNextMapIdFound`);
+    const cemeteryId = Number.parseInt(request.params.cemeteryId, 10);
+    const nextCemeteryId = await getNextCemeteryId(cemeteryId);
+    if (nextCemeteryId === undefined) {
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/cemeteries/?error=noNextCemeteryIdFound`);
         return;
     }
-    response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/maps/${nextMapId.toString()}`);
+    response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/cemeteries/${nextCemeteryId.toString()}`);
 }

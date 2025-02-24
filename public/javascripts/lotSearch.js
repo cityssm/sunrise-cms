@@ -32,7 +32,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </td><td>
             ${cityssm.escapeHTML(lot.lotType ?? '')}
           </td><td>
-            ${lot.lotStatusId
+            ${lot.burialSiteStatusId
                 ? cityssm.escapeHTML(lot.lotStatus ?? '')
                 : '<span class="has-text-grey">(No Status)</span>'}<br />
             ${(lot.lotOccupancyCount ?? 0) > 0

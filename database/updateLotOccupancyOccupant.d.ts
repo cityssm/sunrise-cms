@@ -1,5 +1,5 @@
 export interface UpdateLotOccupancyOccupantForm {
-    lotOccupancyId: string | number;
+    burialSiteContractId: string | number;
     lotOccupantIndex: string | number;
     lotOccupantTypeId: string | number;
     occupantName: string;

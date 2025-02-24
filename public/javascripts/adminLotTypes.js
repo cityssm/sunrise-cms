@@ -9,15 +9,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function toggleLotTypeFields(clickEvent) {
         const toggleButtonElement = clickEvent.currentTarget;
         const lotTypeElement = toggleButtonElement.closest('.container--lotType');
-        const lotTypeId = Number.parseInt(lotTypeElement.dataset.lotTypeId ?? '', 10);
-        if (expandedLotTypes.has(lotTypeId)) {
-            expandedLotTypes.delete(lotTypeId);
+        const burialSiteTypeId = Number.parseInt(lotTypeElement.dataset.burialSiteTypeId ?? '', 10);
+        if (expandedLotTypes.has(burialSiteTypeId)) {
+            expandedLotTypes.delete(burialSiteTypeId);
         }
         else {
-            expandedLotTypes.add(lotTypeId);
+            expandedLotTypes.add(burialSiteTypeId);
         }
         // eslint-disable-next-line no-unsanitized/property
-        toggleButtonElement.innerHTML = expandedLotTypes.has(lotTypeId)
+        toggleButtonElement.innerHTML = expandedLotTypes.has(burialSiteTypeId)
             ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
             : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>';
         const panelBlockElements = lotTypeElement.querySelectorAll('.panel-block');
@@ -40,10 +40,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     }
     function deleteLotType(clickEvent) {
-        const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.lotTypeId ?? '', 10);
+        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.burialSiteTypeId ?? '', 10);
         function doDelete() {
             cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteLotType`, {
-                lotTypeId
+                burialSiteTypeId
             }, lotTypeResponseHandler);
         }
         bulmaJS.confirm({
@@ -57,8 +57,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function openEditLotType(clickEvent) {
-        const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.lotTypeId ?? '', 10);
-        const lotType = lotTypes.find((currentLotType) => lotTypeId === currentLotType.lotTypeId);
+        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.burialSiteTypeId ?? '', 10);
+        const lotType = lotTypes.find((currentLotType) => burialSiteTypeId === currentLotType.burialSiteTypeId);
         let editCloseModalFunction;
         function doEdit(submitEvent) {
             submitEvent.preventDefault();
@@ -73,7 +73,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.openHtmlModal('adminLotTypes-editLotType', {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
-                modalElement.querySelector('#lotTypeEdit--lotTypeId').value = lotTypeId.toString();
+                modalElement.querySelector('#lotTypeEdit--burialSiteTypeId').value = burialSiteTypeId.toString();
                 modalElement.querySelector('#lotTypeEdit--lotType').value = lotType.lotType;
             },
             onshown(modalElement, closeModalFunction) {
@@ -88,26 +88,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function openAddLotTypeField(clickEvent) {
-        const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.lotTypeId ?? '', 10);
+        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.burialSiteTypeId ?? '', 10);
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(`${los.urlPrefix}/admin/doAddLotTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
-                expandedLotTypes.add(lotTypeId);
+                expandedLotTypes.add(burialSiteTypeId);
                 lotTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     addCloseModalFunction();
-                    openEditLotTypeField(lotTypeId, responseJSON.lotTypeFieldId);
+                    openEditLotTypeField(burialSiteTypeId, responseJSON.lotTypeFieldId);
                 }
             });
         }
         cityssm.openHtmlModal('adminLotTypes-addLotTypeField', {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
-                if (lotTypeId) {
+                if (burialSiteTypeId) {
                     ;
-                    modalElement.querySelector('#lotTypeFieldAdd--lotTypeId').value = lotTypeId.toString();
+                    modalElement.querySelector('#lotTypeFieldAdd--burialSiteTypeId').value = burialSiteTypeId.toString();
                 }
             },
             onshown(modalElement, closeModalFunction) {
@@ -123,16 +123,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function moveLotType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const lotTypeId = buttonElement.closest('.container--lotType').dataset.lotTypeId;
+        const burialSiteTypeId = buttonElement.closest('.container--lotType').dataset.burialSiteTypeId;
         cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveLotTypeUp'
             : 'doMoveLotTypeDown'}`, {
-            lotTypeId,
+            burialSiteTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, lotTypeResponseHandler);
     }
-    function openEditLotTypeField(lotTypeId, lotTypeFieldId) {
-        const lotType = lotTypes.find((currentLotType) => currentLotType.lotTypeId === lotTypeId);
+    function openEditLotTypeField(burialSiteTypeId, lotTypeFieldId) {
+        const lotType = lotTypes.find((currentLotType) => currentLotType.burialSiteTypeId === burialSiteTypeId);
         const lotTypeField = (lotType.lotTypeFields ?? []).find((currentLotTypeField) => currentLotTypeField.lotTypeFieldId === lotTypeFieldId);
         let fieldTypeElement;
         let minimumLengthElement;
@@ -242,8 +242,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function openEditLotTypeFieldByClick(clickEvent) {
         clickEvent.preventDefault();
         const lotTypeFieldId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotTypeField').dataset.lotTypeFieldId ?? '', 10);
-        const lotTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.lotTypeId ?? '', 10);
-        openEditLotTypeField(lotTypeId, lotTypeFieldId);
+        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.burialSiteTypeId ?? '', 10);
+        openEditLotTypeField(burialSiteTypeId, lotTypeFieldId);
     }
     function moveLotTypeField(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
@@ -255,11 +255,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
         }, lotTypeResponseHandler);
     }
-    function renderLotTypeFields(panelElement, lotTypeId, lotTypeFields) {
+    function renderLotTypeFields(panelElement, burialSiteTypeId, lotTypeFields) {
         if (lotTypeFields.length === 0) {
             // eslint-disable-next-line no-unsanitized/method
             panelElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block
-          ${expandedLotTypes.has(lotTypeId) ? '' : ' is-hidden'}">
+          ${expandedLotTypes.has(burialSiteTypeId) ? '' : ' is-hidden'}">
           <div class="message is-info"><p class="message-body">There are no additional fields.</p></div>
           </div>`);
         }
@@ -268,7 +268,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const panelBlockElement = document.createElement('div');
                 panelBlockElement.className =
                     'panel-block is-block container--lotTypeField';
-                if (!expandedLotTypes.has(lotTypeId)) {
+                if (!expandedLotTypes.has(burialSiteTypeId)) {
                     panelBlockElement.classList.add('is-hidden');
                 }
                 panelBlockElement.dataset.lotTypeFieldId =
@@ -309,14 +309,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
         for (const lotType of lotTypes) {
             const lotTypeContainer = document.createElement('div');
             lotTypeContainer.className = 'panel container--lotType';
-            lotTypeContainer.dataset.lotTypeId = lotType.lotTypeId.toString();
+            lotTypeContainer.dataset.burialSiteTypeId = lotType.burialSiteTypeId.toString();
             // eslint-disable-next-line no-unsanitized/property
             lotTypeContainer.innerHTML = `<div class="panel-heading">
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
               <button class="button is-small button--toggleLotTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
-              ${expandedLotTypes.has(lotType.lotTypeId)
+              ${expandedLotTypes.has(lotType.burialSiteTypeId)
                 ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
                 : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'}
               </button>
@@ -350,7 +350,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </div>
         </div>
         </div>`;
-            renderLotTypeFields(lotTypeContainer, lotType.lotTypeId, lotType.lotTypeFields ?? []);
+            renderLotTypeFields(lotTypeContainer, lotType.burialSiteTypeId, lotType.lotTypeFields ?? []);
             lotTypeContainer
                 .querySelector('.button--toggleLotTypeFields')
                 ?.addEventListener('click', toggleLotTypeFields);

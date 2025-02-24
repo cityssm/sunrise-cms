@@ -1,12 +1,11 @@
 const recordIdColumns = new Map();
 recordIdColumns.set('FeeCategories', 'feeCategoryId');
 recordIdColumns.set('Fees', 'feeId');
-recordIdColumns.set('LotOccupantTypes', 'lotOccupantTypeId');
-recordIdColumns.set('LotStatuses', 'lotStatusId');
-recordIdColumns.set('LotTypes', 'lotTypeId');
-recordIdColumns.set('LotTypeFields', 'lotTypeFieldId');
-recordIdColumns.set('OccupancyTypes', 'occupancyTypeId');
-recordIdColumns.set('OccupancyTypeFields', 'occupancyTypeFieldId');
+recordIdColumns.set('BurialSiteStatuses', 'burialSiteStatusId');
+recordIdColumns.set('BurialSiteTypes', 'burialSiteTypeId');
+recordIdColumns.set('BurialSiteTypeFields', 'burialSiteTypeFieldId');
+recordIdColumns.set('ContractTypes', 'contractTypeId');
+recordIdColumns.set('ContractTypeFields', 'contractTypeFieldId');
 recordIdColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId');
 recordIdColumns.set('WorkOrderTypes', 'workOrderTypeId');
 export function updateRecordOrderNumber(recordTable, recordId, orderNumber, connectedDatabase) {

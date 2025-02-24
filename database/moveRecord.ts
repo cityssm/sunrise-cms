@@ -7,19 +7,17 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 type RecordTable =
   | 'FeeCategories'
-  | 'LotOccupantTypes'
-  | 'LotStatuses'
-  | 'LotTypes'
-  | 'OccupancyTypes'
+  | 'BurialSiteStatuses'
+  | 'BurialSiteTypes'
+  | 'ContractTypes'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
 
 const recordIdColumns = new Map<RecordTable, string>()
 recordIdColumns.set('FeeCategories', 'feeCategoryId')
-recordIdColumns.set('LotOccupantTypes', 'lotOccupantTypeId')
-recordIdColumns.set('LotStatuses', 'lotStatusId')
-recordIdColumns.set('LotTypes', 'lotTypeId')
-recordIdColumns.set('OccupancyTypes', 'occupancyTypeId')
+recordIdColumns.set('BurialSiteStatuses', 'burialSiteStatusId')
+recordIdColumns.set('BurialSiteTypes', 'burialSiteTypeId')
+recordIdColumns.set('ContractTypes', 'contractTypeId')
 recordIdColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId')
 recordIdColumns.set('WorkOrderTypes', 'workOrderTypeId')
 

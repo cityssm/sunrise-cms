@@ -6,26 +6,10 @@ export interface LOS {
     initializeUnlockFieldButtons: (containerElement: HTMLElement) => void;
     populateAliases: (containerElement: HTMLElement) => void;
     escapedAliases: {
-        Map: string;
-        map: string;
-        Maps: string;
-        maps: string;
-        Lot: string;
-        lot: string;
-        Lots: string;
-        lots: string;
-        Occupancy: string;
-        occupancy: string;
-        Occupancies: string;
-        occupancies: string;
-        Occupant: string;
-        occupant: string;
-        Occupants: string;
-        occupants: string;
         ExternalReceiptNumber: string;
         externalReceiptNumber: string;
-        OccupancyStartDate: string;
-        occupancyStartDate: string;
+        contractStartDate: string;
+        contractStartDate: string;
         WorkOrderOpenDate: string;
         workOrderOpenDate: string;
         WorkOrderCloseDate: string;
@@ -39,8 +23,8 @@ export interface LOS {
     getMoveUpDownButtonFieldHTML: (upButtonClassNames: string, downButtonClassNames: string, isSmall?: boolean) => string;
     getLoadingParagraphHTML: (captionText?: string) => string;
     getSearchResultsPagerHTML: (limit: number, offset: number, count: number) => string;
-    getMapURL: (mapId?: number | string, edit?: boolean, time?: boolean) => string;
+    getMapURL: (cemeteryId?: number | string, edit?: boolean, time?: boolean) => string;
     getLotURL: (lotId?: number | string, edit?: boolean, time?: boolean) => string;
-    getLotOccupancyURL: (lotOccupancyId?: number | string, edit?: boolean, time?: boolean) => string;
+    getLotOccupancyURL: (burialSiteContractId?: number | string, edit?: boolean, time?: boolean) => string;
     getWorkOrderURL: (workOrderId?: number | string, edit?: boolean, time?: boolean) => string;
 }

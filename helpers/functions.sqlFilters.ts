@@ -65,22 +65,22 @@ export function getOccupancyTimeWhereClause(
 
   switch (occupancyTime ?? '') {
     case 'current': {
-      sqlWhereClause += ` and ${lotOccupanciesTableAlias}.occupancyStartDate <= ?
-        and (${lotOccupanciesTableAlias}.occupancyEndDate is null or ${lotOccupanciesTableAlias}.occupancyEndDate >= ?)`
+      sqlWhereClause += ` and ${lotOccupanciesTableAlias}.contractStartDate <= ?
+        and (${lotOccupanciesTableAlias}.contractEndDate is null or ${lotOccupanciesTableAlias}.contractEndDate >= ?)`
       sqlParameters.push(currentDateString, currentDateString)
       break
     }
 
     case 'past': {
       sqlWhereClause +=
-        ` and ${lotOccupanciesTableAlias}.occupancyEndDate < ?`
+        ` and ${lotOccupanciesTableAlias}.contractEndDate < ?`
       sqlParameters.push(currentDateString)
       break
     }
 
     case 'future': {
       sqlWhereClause +=
-        ` and ${lotOccupanciesTableAlias}.occupancyStartDate > ?`
+        ` and ${lotOccupanciesTableAlias}.contractStartDate > ?`
       sqlParameters.push(currentDateString)
       break
     }

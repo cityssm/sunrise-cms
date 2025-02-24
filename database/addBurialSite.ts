@@ -1,23 +1,28 @@
-import addOrUpdateLotField from './addOrUpdateLotField.js'
+import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js'
 import { acquireConnection } from './pool.js'
 
-export interface AddLotForm {
-  lotName: string
-  lotTypeId: string | number
-  lotStatusId: string | number
+export interface AddBurialSiteForm {
+  burialSiteNameSegment1: string
+  burialSiteNameSegment2?: string
+  burialSiteNameSegment3?: string
+  burialSiteNameSegment4?: string
+  burialSiteNameSegment5?: string
 
-  mapId: string | number
-  mapKey: string
+  burialSiteTypeId: string | number
+  burialSiteStatusId: string | number
 
-  lotLatitude: string
-  lotLongitude: string
+  cemeteryId: string | number
+  cemeterySvgId: string
 
-  lotTypeFieldIds?: string
-  [lotFieldValue_lotTypeFieldId: string]: unknown
+  burialSiteLatitude: string
+  burialSiteLongitude: string
+
+  burialSiteTypeFieldIds?: string
+  [fieldValue_burialSiteTypeFieldId: string]: unknown
 }
 
 export default async function addLot(
-  lotForm: AddLotForm,
+  burialSiteForm: AddBurialSiteForm,
   user: User
 ): Promise<number> {
   const database = await acquireConnection()
@@ -26,41 +31,53 @@ export default async function addLot(
 
   const result = database
     .prepare(
-      `insert into Lots (
-        lotName, lotTypeId, lotStatusId,
-        mapId, mapKey,
-        lotLatitude, lotLongitude,
+      `insert into BurialSites (
+        burialSiteNameSegment1,
+        burialSiteNameSegment2,
+        burialSiteNameSegment3,
+        burialSiteNameSegment4,
+        burialSiteNameSegment5,
+        burialSiteTypeId, burialSiteStatusId,
+        cemeteryId, cemeterySvgId,
+        burialSiteLatitude, burialSiteLongitude,
+
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis) 
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        values (?,
+          ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+          ?, ?, ?, ?)`
     )
     .run(
-      lotForm.lotName,
-      lotForm.lotTypeId,
-      lotForm.lotStatusId === '' ? undefined : lotForm.lotStatusId,
-      lotForm.mapId === '' ? undefined : lotForm.mapId,
-      lotForm.mapKey,
-      lotForm.lotLatitude === '' ? undefined : lotForm.lotLatitude,
-      lotForm.lotLongitude === '' ? undefined : lotForm.lotLongitude,
+      burialSiteForm.burialSiteNameSegment1,
+      burialSiteForm.burialSiteNameSegment2 ?? '',
+      burialSiteForm.burialSiteNameSegment3 ?? '',
+      burialSiteForm.burialSiteNameSegment4 ?? '',
+      burialSiteForm.burialSiteNameSegment5 ?? '',
+      burialSiteForm.burialSiteTypeId,
+      burialSiteForm.burialSiteStatusId === '' ? undefined : burialSiteForm.burialSiteStatusId,
+      burialSiteForm.cemeteryId === '' ? undefined : burialSiteForm.cemeteryId,
+      burialSiteForm.cemeterySvgId,
+      burialSiteForm.burialSiteLatitude === '' ? undefined : burialSiteForm.burialSiteLatitude,
+      burialSiteForm.burialSiteLongitude === '' ? undefined : burialSiteForm.burialSiteLongitude,
       user.userName,
       rightNowMillis,
       user.userName,
       rightNowMillis
     )
 
-  const lotId = result.lastInsertRowid as number
+  const burialSiteId = result.lastInsertRowid as number
 
-  const lotTypeFieldIds = (lotForm.lotTypeFieldIds ?? '').split(',')
+  const burialSiteTypeFieldIds = (burialSiteForm.burialSiteTypeFieldIds ?? '').split(',')
 
-  for (const lotTypeFieldId of lotTypeFieldIds) {
-    const lotFieldValue = lotForm[`lotFieldValue_${lotTypeFieldId}`] as string | undefined
+  for (const burialSiteTypeFieldId of burialSiteTypeFieldIds) {
+    const fieldValue = burialSiteForm[`burialSiteFieldValue_${burialSiteTypeFieldId}`] as string | undefined
 
-    if ((lotFieldValue ?? '') !== '') {
-      await addOrUpdateLotField(
+    if ((fieldValue ?? '') !== '') {
+      await addOrUpdateBurialSiteField(
         {
-          lotId,
-          lotTypeFieldId,
-          lotFieldValue: lotFieldValue ?? ''
+          burialSiteId,
+          burialSiteTypeFieldId,
+          fieldValue: fieldValue ?? ''
         },
         user,
         database
@@ -70,5 +87,5 @@ export default async function addLot(
 
   database.release()
 
-  return lotId
+  return burialSiteId
 }

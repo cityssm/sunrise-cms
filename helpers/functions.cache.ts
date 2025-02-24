@@ -5,11 +5,10 @@ import cluster from 'node:cluster'
 
 import Debug from 'debug'
 
-import getLotOccupantTypesFromDatabase from '../database/getLotOccupantTypes.js'
-import getLotStatusesFromDatabase from '../database/getLotStatuses.js'
-import getLotTypesFromDatabase from '../database/getLotTypes.js'
-import getOccupancyTypeFieldsFromDatabase from '../database/getOccupancyTypeFields.js'
-import getOccupancyTypesFromDatabase from '../database/getOccupancyTypes.js'
+import getBurialSiteStatusesFromDatabase from '../database/getBurialSiteStatuses.js'
+import getBurialSiteTypesFromDatabase from '../database/getBurialSiteTypes.js'
+import getContractTypeFieldsFromDatabase from '../database/getContractTypeFields.js'
+import getContractTypesFromDatabase from '../database/getContractTypes.js'
 import getWorkOrderMilestoneTypesFromDatabase from '../database/getWorkOrderMilestoneTypes.js'
 import getWorkOrderTypesFromDatabase from '../database/getWorkOrderTypes.js'
 import { DEBUG_NAMESPACE } from '../debug.config.js'
@@ -18,11 +17,10 @@ import type {
   WorkerMessage
 } from '../types/applicationTypes.js'
 import type {
-  LotOccupantType,
-  LotStatus,
-  LotType,
-  OccupancyType,
-  OccupancyTypeField,
+  BurialSiteStatus,
+  BurialSiteType,
+  ContractType,
+  ContractTypeField,
   WorkOrderMilestoneType,
   WorkOrderType
 } from '../types/recordTypes.js'
@@ -32,201 +30,152 @@ import { getConfigProperty } from './config.helpers.js'
 const debug = Debug(`${DEBUG_NAMESPACE}:functions.cache:${process.pid}`)
 
 /*
- * Lot Occupant Types
+ * Burial Site Statuses
  */
 
-let lotOccupantTypes: LotOccupantType[] | undefined
+let burialSiteStatuses: BurialSiteStatus[] | undefined
 
-export async function getLotOccupantTypes(): Promise<LotOccupantType[]> {
-  if (lotOccupantTypes === undefined) {
-    lotOccupantTypes = await getLotOccupantTypesFromDatabase()
+export async function getBurialSiteStatuses(): Promise<BurialSiteStatus[]> {
+  if (burialSiteStatuses === undefined) {
+    burialSiteStatuses = await getBurialSiteStatusesFromDatabase()
   }
 
-  return lotOccupantTypes
+  return burialSiteStatuses
 }
 
-export async function getLotOccupantTypeById(
-  lotOccupantTypeId: number
-): Promise<LotOccupantType | undefined> {
-  const cachedLotOccupantTypes = await getLotOccupantTypes()
+export async function getBurialSiteStatusById(
+  burialSiteStatusId: number
+): Promise<BurialSiteStatus | undefined> {
+  const cachedStatuses = await getBurialSiteStatuses()
 
-  return cachedLotOccupantTypes.find(
-    (currentLotOccupantType) =>
-      currentLotOccupantType.lotOccupantTypeId === lotOccupantTypeId
+  return cachedStatuses.find(
+    (currentStatus) => currentStatus.burialSiteStatusId === burialSiteStatusId
   )
 }
 
-export async function getLotOccupantTypeByLotOccupantType(
-  lotOccupantType: string
-): Promise<LotOccupantType | undefined> {
-  const cachedLotOccupantTypes = await getLotOccupantTypes()
+export async function getBurialSiteStatusByBurialSiteStatus(
+  burialSiteStatus: string
+): Promise<BurialSiteStatus | undefined> {
+  const cachedStatuses = await getBurialSiteStatuses()
 
-  const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase()
+  const statusLowerCase = burialSiteStatus.toLowerCase()
 
-  return cachedLotOccupantTypes.find(
-    (currentLotOccupantType) =>
-      currentLotOccupantType.lotOccupantType.toLowerCase() ===
-      lotOccupantTypeLowerCase
+  return cachedStatuses.find(
+    (currentStatus) =>
+      currentStatus.burialSiteStatus.toLowerCase() === statusLowerCase
   )
 }
 
-function clearLotOccupantTypesCache(): void {
-  lotOccupantTypes = undefined
+function clearBurialSiteStatusesCache(): void {
+  burialSiteStatuses = undefined
 }
 
 /*
- * Lot Statuses
+ * Burial Site Types
  */
 
-let lotStatuses: LotStatus[] | undefined
+let burialSiteTypes: BurialSiteType[] | undefined
 
-export async function getLotStatuses(): Promise<LotStatus[]> {
-  if (lotStatuses === undefined) {
-    lotStatuses = await getLotStatusesFromDatabase()
+export async function getBurialSiteTypes(): Promise<BurialSiteType[]> {
+  if (burialSiteTypes === undefined) {
+    burialSiteTypes = await getBurialSiteTypesFromDatabase()
   }
 
-  return lotStatuses
+  return burialSiteTypes
 }
 
-export async function getLotStatusById(
-  lotStatusId: number
-): Promise<LotStatus | undefined> {
-  const cachedLotStatuses = await getLotStatuses()
+export async function getBurialSiteTypeById(
+  burialSiteTypeId: number
+): Promise<BurialSiteType | undefined> {
+  const cachedTypes = await getBurialSiteTypes()
 
-  return cachedLotStatuses.find(
-    (currentLotStatus) => currentLotStatus.lotStatusId === lotStatusId
+  return cachedTypes.find(
+    (currentType) => currentType.burialSiteTypeId === burialSiteTypeId
   )
 }
 
-export async function getLotStatusByLotStatus(
-  lotStatus: string
-): Promise<LotStatus | undefined> {
-  const cachedLotStatuses = await getLotStatuses()
+export async function getBurialSiteTypesByBurialSiteType(
+  burialSiteType: string
+): Promise<BurialSiteType | undefined> {
+  const cachedTypes = await getBurialSiteTypes()
 
-  const lotStatusLowerCase = lotStatus.toLowerCase()
+  const typeLowerCase = burialSiteType.toLowerCase()
 
-  return cachedLotStatuses.find(
-    (currentLotStatus) =>
-      currentLotStatus.lotStatus.toLowerCase() === lotStatusLowerCase
+  return cachedTypes.find(
+    (currentType) => currentType.burialSiteType.toLowerCase() === typeLowerCase
   )
 }
 
-function clearLotStatusesCache(): void {
-  lotStatuses = undefined
+function clearBurialSiteTypesCache(): void {
+  burialSiteTypes = undefined
 }
 
 /*
- * Lot Types
+ * Contract Types
  */
 
-let lotTypes: LotType[] | undefined
+let contractTypes: ContractType[] | undefined
+let allContractTypeFields: ContractTypeField[] | undefined
 
-export async function getLotTypes(): Promise<LotType[]> {
-  if (lotTypes === undefined) {
-    lotTypes = await getLotTypesFromDatabase()
+export async function getContractTypes(): Promise<ContractType[]> {
+  if (contractTypes === undefined) {
+    contractTypes = await getContractTypesFromDatabase()
   }
 
-  return lotTypes
+  return contractTypes
 }
 
-export async function getLotTypeById(
-  lotTypeId: number
-): Promise<LotType | undefined> {
-  const cachedLotTypes = await getLotTypes()
-
-  return cachedLotTypes.find(
-    (currentLotType) => currentLotType.lotTypeId === lotTypeId
-  )
-}
-
-export async function getLotTypesByLotType(
-  lotType: string
-): Promise<LotType | undefined> {
-  const cachedLotTypes = await getLotTypes()
-
-  const lotTypeLowerCase = lotType.toLowerCase()
-
-  return cachedLotTypes.find(
-    (currentLotType) =>
-      currentLotType.lotType.toLowerCase() === lotTypeLowerCase
-  )
-}
-
-function clearLotTypesCache(): void {
-  lotTypes = undefined
-}
-
-/*
- * Occupancy Types
- */
-
-let occupancyTypes: OccupancyType[] | undefined
-let allOccupancyTypeFields: OccupancyTypeField[] | undefined
-
-export async function getOccupancyTypes(): Promise<OccupancyType[]> {
-  if (occupancyTypes === undefined) {
-    occupancyTypes = await getOccupancyTypesFromDatabase()
+export async function getAllContractTypeFields(): Promise<ContractTypeField[]> {
+  if (allContractTypeFields === undefined) {
+    allContractTypeFields = await getContractTypeFieldsFromDatabase()
   }
-
-  return occupancyTypes
+  return allContractTypeFields
 }
 
-export async function getAllOccupancyTypeFields(): Promise<
-  OccupancyTypeField[]
-> {
-  if (allOccupancyTypeFields === undefined) {
-    allOccupancyTypeFields = await getOccupancyTypeFieldsFromDatabase()
-  }
-  return allOccupancyTypeFields
-}
+export async function getContractTypeById(
+  contractTypeId: number
+): Promise<ContractType | undefined> {
+  const cachedTypes = await getContractTypes()
 
-export async function getOccupancyTypeById(
-  occupancyTypeId: number
-): Promise<OccupancyType | undefined> {
-  const cachedOccupancyTypes = await getOccupancyTypes()
-
-  return cachedOccupancyTypes.find(
-    (currentOccupancyType) =>
-      currentOccupancyType.occupancyTypeId === occupancyTypeId
+  return cachedTypes.find(
+    (currentType) => currentType.contractTypeId === contractTypeId
   )
 }
 
-export async function getOccupancyTypeByOccupancyType(
-  occupancyTypeString: string
-): Promise<OccupancyType | undefined> {
-  const cachedOccupancyTypes = await getOccupancyTypes()
+export async function getContractTypeByContractType(
+  contractTypeString: string
+): Promise<ContractType | undefined> {
+  const cachedTypes = await getContractTypes()
 
-  const occupancyTypeLowerCase = occupancyTypeString.toLowerCase()
+  const typeLowerCase = contractTypeString.toLowerCase()
 
-  return cachedOccupancyTypes.find(
-    (currentOccupancyType) =>
-      currentOccupancyType.occupancyType.toLowerCase() ===
-      occupancyTypeLowerCase
+  return cachedTypes.find(
+    (currentType) => currentType.contractType.toLowerCase() === typeLowerCase
   )
 }
 
-export async function getOccupancyTypePrintsById(
-  occupancyTypeId: number
+export async function getContractTypePrintsById(
+  contractTypeId: number
 ): Promise<string[]> {
-  const occupancyType = await getOccupancyTypeById(occupancyTypeId)
+  const contractType = await getContractTypeById(contractTypeId)
 
   if (
-    occupancyType?.occupancyTypePrints === undefined ||
-    occupancyType.occupancyTypePrints.length === 0
+    contractType?.contractTypePrints === undefined ||
+    contractType.contractTypePrints.length === 0
   ) {
     return []
   }
 
-  if (occupancyType.occupancyTypePrints.includes('*')) {
-    return getConfigProperty('settings.lotOccupancy.prints')
+  if (contractType.contractTypePrints.includes('*')) {
+    return getConfigProperty('settings.contracts.prints')
   }
 
-  return occupancyType.occupancyTypePrints ?? []
+  return contractType.contractTypePrints ?? []
 }
 
-function clearOccupancyTypesCache(): void {
-  occupancyTypes = undefined
-  allOccupancyTypeFields = undefined
+function clearContractTypesCache(): void {
+  contractTypes = undefined
+  allContractTypeFields = undefined
 }
 
 /*
@@ -303,19 +252,17 @@ export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
 
 export async function preloadCaches(): Promise<void> {
   debug('Preloading caches')
-  await getLotOccupantTypes()
-  await getLotStatuses()
-  await getLotTypes()
-  await getOccupancyTypes()
+  await getBurialSiteStatuses()
+  await getBurialSiteTypes()
+  await getContractTypes()
   await getWorkOrderTypes()
   await getWorkOrderMilestoneTypes()
 }
 
 export function clearCaches(): void {
-  clearLotOccupantTypesCache()
-  clearLotStatusesCache()
-  clearLotTypesCache()
-  clearOccupancyTypesCache()
+  clearBurialSiteStatusesCache()
+  clearBurialSiteTypesCache()
+  clearContractTypesCache()
   clearWorkOrderTypesCache()
   clearWorkOrderMilestoneTypesCache()
 }
@@ -329,26 +276,21 @@ export function clearCacheByTableName(
   relayMessage = true
 ): void {
   switch (tableName) {
-    case 'LotOccupantTypes': {
-      clearLotOccupantTypesCache()
+    case 'BurialSiteStatuses': {
+      clearBurialSiteStatusesCache()
       break
     }
 
-    case 'LotStatuses': {
-      clearLotStatusesCache()
+    case 'BurialSiteTypes':
+    case 'BurialSiteTypeFields': {
+      clearBurialSiteTypesCache()
       break
     }
 
-    case 'LotTypes':
-    case 'LotTypeFields': {
-      clearLotTypesCache()
-      break
-    }
-
-    case 'OccupancyTypes':
-    case 'OccupancyTypeFields':
-    case 'OccupancyTypePrints': {
-      clearOccupancyTypesCache()
+    case 'ContractTypes':
+    case 'ContractTypeFields':
+    case 'ContractTypePrints': {
+      clearContractTypesCache()
       break
     }
 

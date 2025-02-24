@@ -4,8 +4,8 @@ export interface UpdateFeeForm {
     feeName: string;
     feeDescription: string;
     feeAccount: string;
-    occupancyTypeId: string;
-    lotTypeId: string;
+    contractTypeId: string;
+    burialSiteTypeId: string;
     feeAmount?: string;
     feeFunction?: string;
     taxAmount?: string;

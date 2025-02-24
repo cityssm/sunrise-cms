@@ -10,9 +10,9 @@ declare const exports: Record<string, unknown>
 ;(() => {
   const los = exports.los as LOS
 
-  const mapId = (document.querySelector('#map--mapId') as HTMLInputElement)
+  const cemeteryId = (document.querySelector('#map--cemeteryId') as HTMLInputElement)
     .value
-  const isCreate = mapId === ''
+  const isCreate = cemeteryId === ''
 
   const mapForm = document.querySelector('#form--map') as HTMLFormElement
 
@@ -39,7 +39,7 @@ declare const exports: Record<string, unknown>
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          mapId?: number
+          cemeteryId?: number
           errorMessage?: string
         }
 
@@ -47,7 +47,7 @@ declare const exports: Record<string, unknown>
           clearUnsavedChanges()
 
           if (isCreate) {
-            globalThis.location.href = los.getMapURL(responseJSON.mapId, true)
+            globalThis.location.href = los.getMapURL(responseJSON.cemeteryId, true)
           } else {
             bulmaJS.alert({
               message: `${los.escapedAliases.Map} Updated Successfully`,
@@ -83,7 +83,7 @@ declare const exports: Record<string, unknown>
         cityssm.postJSON(
           `${los.urlPrefix}/maps/doDeleteMap`,
           {
-            mapId
+            cemeteryId
           },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {

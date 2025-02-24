@@ -4,8 +4,8 @@ import updateOccupancyTypeField, {
   type UpdateOccupancyTypeFieldForm
 } from '../../database/updateOccupancyTypeField.js'
 import {
-  getAllOccupancyTypeFields,
-  getOccupancyTypes
+  getAllContractTypeFields,
+  getContractTypes
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
@@ -17,12 +17,12 @@ export default async function handler(
     request.session.user as User
   )
 
-  const occupancyTypes = await getOccupancyTypes()
-  const allOccupancyTypeFields = await getAllOccupancyTypeFields()
+  const occupancyTypes = await getContractTypes()
+  const allContractTypeFields = await getAllContractTypeFields()
 
   response.json({
     success,
     occupancyTypes,
-    allOccupancyTypeFields
+    allContractTypeFields
   })
 }

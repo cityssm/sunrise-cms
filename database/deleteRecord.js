@@ -31,7 +31,7 @@ relatedTables.set('ContractTypes', ['ContractTypePrints', 'ContractTypeFields'])
 relatedTables.set('WorkOrders', [
     'WorkOrderMilestones',
     'WorkOrderLots',
-    'WorkOrderLotOccupancies',
+    'WorkOrderBurialSiteContracts',
     'WorkOrderComments'
 ]);
 export async function deleteRecord(recordTable, recordId, user) {

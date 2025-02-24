@@ -15,7 +15,7 @@ export default async function handler(
   )
 
   const lotOccupancyComments = await getLotOccupancyComments(
-    request.body.lotOccupancyId as string
+    request.body.burialSiteContractId as string
   )
 
   response.json({

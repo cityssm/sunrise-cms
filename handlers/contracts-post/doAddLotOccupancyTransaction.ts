@@ -15,7 +15,7 @@ export default async function handler(
   )
 
   const lotOccupancyTransactions = await getLotOccupancyTransactions(
-    request.body.lotOccupancyId,
+    request.body.burialSiteContractId,
     { includeIntegrations: true }
   )
 

@@ -35,46 +35,46 @@ export const purchaserLotOccupantTypeId = (await cacheFunctions.getLotOccupantTy
 /*
  * Lot Status IDs
  */
-export const availableLotStatusId = (await cacheFunctions.getLotStatusByLotStatus('Available')).lotStatusId;
-export const reservedLotStatusId = (await cacheFunctions.getLotStatusByLotStatus('Reserved')).lotStatusId;
-export const takenLotStatusId = (await cacheFunctions.getLotStatusByLotStatus('Taken')).lotStatusId;
+export const availableburialSiteStatusId = (await cacheFunctions.getLotStatusByLotStatus('Available')).burialSiteStatusId;
+export const reservedburialSiteStatusId = (await cacheFunctions.getLotStatusByLotStatus('Reserved')).burialSiteStatusId;
+export const takenburialSiteStatusId = (await cacheFunctions.getLotStatusByLotStatus('Taken')).burialSiteStatusId;
 /*
  * Lot Type IDs
  */
-const casketLotTypeId = (await cacheFunctions.getLotTypesByLotType('Casket Grave')).lotTypeId;
-const columbariumLotTypeId = (await cacheFunctions.getLotTypesByLotType('Columbarium')).lotTypeId;
-const crematoriumLotTypeId = (await cacheFunctions.getLotTypesByLotType('Crematorium')).lotTypeId;
-const mausoleumLotTypeId = (await cacheFunctions.getLotTypesByLotType('Mausoleum')).lotTypeId;
-const nicheWallLotTypeId = (await cacheFunctions.getLotTypesByLotType('Niche Wall')).lotTypeId;
-const urnGardenLotTypeId = (await cacheFunctions.getLotTypesByLotType('Urn Garden')).lotTypeId;
-export function getLotTypeId(dataRow) {
+const casketburialSiteTypeId = (await cacheFunctions.getBurialSiteTypesByBurialSiteType('Casket Grave')).burialSiteTypeId;
+const columbariumburialSiteTypeId = (await cacheFunctions.getBurialSiteTypesByBurialSiteType('Columbarium')).burialSiteTypeId;
+const crematoriumburialSiteTypeId = (await cacheFunctions.getBurialSiteTypesByBurialSiteType('Crematorium')).burialSiteTypeId;
+const mausoleumburialSiteTypeId = (await cacheFunctions.getBurialSiteTypesByBurialSiteType('Mausoleum')).burialSiteTypeId;
+const nicheWallburialSiteTypeId = (await cacheFunctions.getBurialSiteTypesByBurialSiteType('Niche Wall')).burialSiteTypeId;
+const urnGardenburialSiteTypeId = (await cacheFunctions.getBurialSiteTypesByBurialSiteType('Urn Garden')).burialSiteTypeId;
+export function getburialSiteTypeId(dataRow) {
     switch (dataRow.cemetery) {
         case '00': {
-            return crematoriumLotTypeId;
+            return crematoriumburialSiteTypeId;
         }
         case 'GC':
         case 'HC': {
-            return columbariumLotTypeId;
+            return columbariumburialSiteTypeId;
         }
         case 'MA': {
-            return mausoleumLotTypeId;
+            return mausoleumburialSiteTypeId;
         }
         case 'MN':
         case 'NW': {
-            return nicheWallLotTypeId;
+            return nicheWallburialSiteTypeId;
         }
         case 'UG': {
-            return urnGardenLotTypeId;
+            return urnGardenburialSiteTypeId;
         }
     }
-    return casketLotTypeId;
+    return casketburialSiteTypeId;
 }
 /*
  * Occupancy Type IDs
  */
-export const preneedOccupancyType = (await cacheFunctions.getOccupancyTypeByOccupancyType('Preneed'));
-export const deceasedOccupancyType = (await cacheFunctions.getOccupancyTypeByOccupancyType('Interment'));
-export const cremationOccupancyType = (await cacheFunctions.getOccupancyTypeByOccupancyType('Cremation'));
+export const preneedOccupancyType = (await cacheFunctions.getContractTypeByContractType('Preneed'));
+export const deceasedOccupancyType = (await cacheFunctions.getContractTypeByContractType('Interment'));
+export const cremationOccupancyType = (await cacheFunctions.getContractTypeByContractType('Cremation'));
 /*
  * Work Order Milestone Type IDs
  */

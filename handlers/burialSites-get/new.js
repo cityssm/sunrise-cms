@@ -1,5 +1,5 @@
 import getMaps from '../../database/getMaps.js';
-import { getLotStatuses, getLotTypes } from '../../helpers/functions.cache.js';
+import { getLotStatuses, getBurialSiteTypes } from '../../helpers/functions.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 export default async function handler(request, response) {
     const lot = {
@@ -7,17 +7,17 @@ export default async function handler(request, response) {
         lotOccupancies: []
     };
     const maps = await getMaps();
-    if (request.query.mapId !== undefined) {
-        const mapId = Number.parseInt(request.query.mapId, 10);
+    if (request.query.cemeteryId !== undefined) {
+        const cemeteryId = Number.parseInt(request.query.cemeteryId, 10);
         const map = maps.find((possibleMap) => {
-            return mapId === possibleMap.mapId;
+            return cemeteryId === possibleMap.cemeteryId;
         });
         if (map !== undefined) {
-            lot.mapId = map.mapId;
-            lot.mapName = map.mapName;
+            lot.cemeteryId = map.cemeteryId;
+            lot.cemeteryName = map.cemeteryName;
         }
     }
-    const lotTypes = await getLotTypes();
+    const lotTypes = await getBurialSiteTypes();
     const lotStatuses = await getLotStatuses();
     response.render('lot-edit', {
         headTitle: `Create a New ${getConfigProperty('aliases.lot')}`,

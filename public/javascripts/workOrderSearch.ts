@@ -52,7 +52,7 @@ declare const exports: Record<string, unknown>
 
       for (const lot of workOrder.workOrderLots ?? []) {
         relatedHTML += `<li class="has-tooltip-left"
-          data-tooltip="${cityssm.escapeHTML(lot.mapName ?? '')}">
+          data-tooltip="${cityssm.escapeHTML(lot.cemeteryName ?? '')}">
           <span class="fa-li">
             <i class="fas fa-fw fa-vector-square"
               aria-label="${los.escapedAliases.Lot}"></i>

@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import { clearNextPreviousLotIdCache } from '../../helpers/functions.lots.js'
 import { deleteRecord } from '../../database/deleteRecord.js'
+import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
 export default async function handler(
   request: Request,
@@ -9,7 +9,7 @@ export default async function handler(
 ): Promise<void> {
   const success = await deleteRecord(
     'Maps',
-    request.body.mapId,
+    request.body.cemeteryId,
     request.session.user as User
   )
 
@@ -18,7 +18,7 @@ export default async function handler(
   })
 
   response.on('finish', () => {
-    clearNextPreviousLotIdCache(-1)
+    clearNextPreviousBurialSiteIdCache(-1)
   })
 }
 

@@ -24,7 +24,7 @@ import addWorkOrderLotOccupancy from '../database/addWorkOrderLotOccupancy.js'
 import addWorkOrderMilestone from '../database/addWorkOrderMilestone.js'
 import closeWorkOrder from '../database/closeWorkOrder.js'
 import getLot, { getLotByLotName } from '../database/getLot.js'
-import getLotOccupancies from '../database/getLotOccupancies.js'
+import getBurialSiteContracts from '../database/getLotOccupancies.js'
 import getMapFromDatabase from '../database/getMap.js'
 import getWorkOrder, {
   getWorkOrderByWorkOrderNumber
@@ -266,7 +266,7 @@ function formatTimeString(hour: string, minute: string): TimeString {
   return `${formattedHour}:${formattedMinute}` as TimeString
 }
 
-const cemeteryToMapName = {
+const cemeteryTocemeteryName = {
   '00': 'Crematorium',
   GC: 'New Greenwood - Columbarium',
   HC: 'Holy Sepulchre - Columbarium',
@@ -303,9 +303,9 @@ async function getMap(dataRow: {
   if (!map) {
     console.log(`Creating map: ${dataRow.cemetery}`)
 
-    const mapId = await addMap(
+    const cemeteryId = await addMap(
       {
-        mapName: cemeteryToMapName[dataRow.cemetery] ?? dataRow.cemetery,
+        cemeteryName: cemeteryTocemeteryName[dataRow.cemetery] ?? dataRow.cemetery,
         mapDescription: dataRow.cemetery,
         mapSVG: '',
         mapLatitude: '',
@@ -320,7 +320,7 @@ async function getMap(dataRow: {
       user
     )
 
-    map = (await getMapFromDatabase(mapId)) as recordTypes.MapRecord
+    map = (await getMapFromDatabase(cemeteryId)) as recordTypes.MapRecord
   }
 
   mapCache.set(mapCacheKey, map)
@@ -363,7 +363,7 @@ async function importFromMasterCSV(): Promise<void> {
         interment: masterRow.CM_INTERMENT
       })
 
-      const lotTypeId = importIds.getLotTypeId({
+      const burialSiteTypeId = importIds.getburialSiteTypeId({
         cemetery: masterRow.CM_CEMETERY
       })!
 
@@ -373,34 +373,34 @@ async function importFromMasterCSV(): Promise<void> {
         lotId = await addLot(
           {
             lotName,
-            lotTypeId,
-            lotStatusId: importIds.availableLotStatusId,
-            mapId: map.mapId!,
+            burialSiteTypeId,
+            burialSiteStatusId: importIds.availableburialSiteStatusId,
+            cemeteryId: map.cemeteryId!,
             mapKey: lotName.includes(',') ? lotName.split(',')[0] : lotName,
-            lotLatitude: '',
-            lotLongitude: ''
+            burialSiteLatitude: '',
+            burialSiteLongitude: ''
           },
           user
         )
       }
 
-      let preneedOccupancyStartDateString: string
-      let preneedLotOccupancyId: number
+      let preneedcontractStartDateString: string
+      let preneedburialSiteContractId: number
 
       if (masterRow.CM_PRENEED_OWNER !== '' || masterRow.CM_STATUS === 'P') {
-        preneedOccupancyStartDateString = formatDateString(
+        preneedcontractStartDateString = formatDateString(
           masterRow.CM_PURCHASE_YR,
           masterRow.CM_PURCHASE_MON,
           masterRow.CM_PURCHASE_DAY
         )
 
-        let occupancyEndDateString = ''
+        let contractEndDateString = ''
 
         if (
           masterRow.CM_INTERMENT_YR !== '' &&
           masterRow.CM_INTERMENT_YR !== '0'
         ) {
-          occupancyEndDateString = formatDateString(
+          contractEndDateString = formatDateString(
             masterRow.CM_INTERMENT_YR,
             masterRow.CM_INTERMENT_MON,
             masterRow.CM_INTERMENT_DAY
@@ -409,19 +409,19 @@ async function importFromMasterCSV(): Promise<void> {
 
         // if purchase date unavailable
         if (
-          preneedOccupancyStartDateString === '0000-00-00' &&
-          occupancyEndDateString !== ''
+          preneedcontractStartDateString === '0000-00-00' &&
+          contractEndDateString !== ''
         ) {
-          preneedOccupancyStartDateString = occupancyEndDateString
+          preneedcontractStartDateString = contractEndDateString
         }
 
         // if end date unavailable
         if (
-          preneedOccupancyStartDateString === '0000-00-00' &&
+          preneedcontractStartDateString === '0000-00-00' &&
           masterRow.CM_DEATH_YR !== '' &&
           masterRow.CM_DEATH_YR !== '0'
         ) {
-          preneedOccupancyStartDateString = formatDateString(
+          preneedcontractStartDateString = formatDateString(
             masterRow.CM_DEATH_YR,
             masterRow.CM_DEATH_MON,
             masterRow.CM_DEATH_DAY
@@ -429,27 +429,27 @@ async function importFromMasterCSV(): Promise<void> {
 
           // if death took place, and there's no preneed end date
           if (
-            occupancyEndDateString === '0000-00-00' ||
-            occupancyEndDateString === ''
+            contractEndDateString === '0000-00-00' ||
+            contractEndDateString === ''
           ) {
-            occupancyEndDateString = preneedOccupancyStartDateString
+            contractEndDateString = preneedcontractStartDateString
           }
         }
 
         if (
-          preneedOccupancyStartDateString === '' ||
-          preneedOccupancyStartDateString === '0000-00-00'
+          preneedcontractStartDateString === '' ||
+          preneedcontractStartDateString === '0000-00-00'
         ) {
-          preneedOccupancyStartDateString = '0001-01-01'
+          preneedcontractStartDateString = '0001-01-01'
         }
 
-        preneedLotOccupancyId = await addLotOccupancy(
+        preneedburialSiteContractId = await addLotOccupancy(
           {
-            occupancyTypeId: importIds.preneedOccupancyType.occupancyTypeId,
+            contractTypeId: importIds.preneedOccupancyType.contractTypeId,
             lotId: lotId ?? '',
-            occupancyStartDateString: preneedOccupancyStartDateString,
-            occupancyEndDateString,
-            occupancyTypeFieldIds: ''
+            contractStartDateString: preneedcontractStartDateString,
+            contractEndDateString,
+            contractTypeFieldIds: ''
           },
           user
         )
@@ -459,7 +459,7 @@ async function importFromMasterCSV(): Promise<void> {
 
         await addLotOccupancyOccupant(
           {
-            lotOccupancyId: preneedLotOccupancyId,
+            burialSiteContractId: preneedburialSiteContractId,
             lotOccupantTypeId: importIds.preneedOwnerLotOccupantTypeId,
             occupantName: masterRow.CM_PRENEED_OWNER,
             occupantFamilyName: '',
@@ -477,8 +477,8 @@ async function importFromMasterCSV(): Promise<void> {
         if (masterRow.CM_REMARK1 !== '') {
           await addLotOccupancyComment(
             {
-              lotOccupancyId: preneedLotOccupancyId,
-              lotOccupancyCommentDateString: preneedOccupancyStartDateString,
+              burialSiteContractId: preneedburialSiteContractId,
+              lotOccupancyCommentDateString: preneedcontractStartDateString,
               lotOccupancyCommentTimeString: '00:00',
               lotOccupancyComment: masterRow.CM_REMARK1
             },
@@ -489,8 +489,8 @@ async function importFromMasterCSV(): Promise<void> {
         if (masterRow.CM_REMARK2 !== '') {
           await addLotOccupancyComment(
             {
-              lotOccupancyId: preneedLotOccupancyId,
-              lotOccupancyCommentDateString: preneedOccupancyStartDateString,
+              burialSiteContractId: preneedburialSiteContractId,
+              lotOccupancyCommentDateString: preneedcontractStartDateString,
               lotOccupancyCommentTimeString: '00:00',
               lotOccupancyComment: masterRow.CM_REMARK2
             },
@@ -501,8 +501,8 @@ async function importFromMasterCSV(): Promise<void> {
         if (masterRow.CM_WORK_ORDER.trim() !== '') {
           await addLotOccupancyComment(
             {
-              lotOccupancyId: preneedLotOccupancyId,
-              lotOccupancyCommentDateString: preneedOccupancyStartDateString,
+              burialSiteContractId: preneedburialSiteContractId,
+              lotOccupancyCommentDateString: preneedcontractStartDateString,
               lotOccupancyCommentTimeString: '00:00',
               lotOccupancyComment: `Imported Contract #${masterRow.CM_WORK_ORDER}`
             },
@@ -510,20 +510,20 @@ async function importFromMasterCSV(): Promise<void> {
           )
         }
 
-        if (occupancyEndDateString === '') {
+        if (contractEndDateString === '') {
           await updateLotStatus(
             lotId ?? '',
-            importIds.reservedLotStatusId,
+            importIds.reservedburialSiteStatusId,
             user
           )
         }
       }
 
-      let deceasedOccupancyStartDateString: string
-      let deceasedLotOccupancyId: number
+      let deceasedcontractStartDateString: string
+      let deceasedburialSiteContractId: number
 
       if (masterRow.CM_DECEASED_NAME !== '') {
-        deceasedOccupancyStartDateString = formatDateString(
+        deceasedcontractStartDateString = formatDateString(
           masterRow.CM_INTERMENT_YR,
           masterRow.CM_INTERMENT_MON,
           masterRow.CM_INTERMENT_DAY
@@ -531,11 +531,11 @@ async function importFromMasterCSV(): Promise<void> {
 
         // if interment date unavailable
         if (
-          deceasedOccupancyStartDateString === '0000-00-00' &&
+          deceasedcontractStartDateString === '0000-00-00' &&
           masterRow.CM_DEATH_YR !== '' &&
           masterRow.CM_DEATH_YR !== '0'
         ) {
-          deceasedOccupancyStartDateString = formatDateString(
+          deceasedcontractStartDateString = formatDateString(
             masterRow.CM_DEATH_YR,
             masterRow.CM_DEATH_MON,
             masterRow.CM_DEATH_DAY
@@ -543,27 +543,27 @@ async function importFromMasterCSV(): Promise<void> {
         }
 
         if (
-          deceasedOccupancyStartDateString === '' ||
-          deceasedOccupancyStartDateString === '0000-00-00'
+          deceasedcontractStartDateString === '' ||
+          deceasedcontractStartDateString === '0000-00-00'
         ) {
-          deceasedOccupancyStartDateString = '0001-01-01'
+          deceasedcontractStartDateString = '0001-01-01'
         }
 
-        const deceasedOccupancyEndDateString = lotId
+        const deceasedcontractEndDateString = lotId
           ? ''
-          : deceasedOccupancyStartDateString
+          : deceasedcontractStartDateString
 
         const occupancyType = lotId
           ? importIds.deceasedOccupancyType
           : importIds.cremationOccupancyType
 
-        deceasedLotOccupancyId = await addLotOccupancy(
+        deceasedburialSiteContractId = await addLotOccupancy(
           {
-            occupancyTypeId: occupancyType.occupancyTypeId,
+            contractTypeId: occupancyType.contractTypeId,
             lotId: lotId ?? '',
-            occupancyStartDateString: deceasedOccupancyStartDateString,
-            occupancyEndDateString: deceasedOccupancyEndDateString,
-            occupancyTypeFieldIds: ''
+            contractStartDateString: deceasedcontractStartDateString,
+            contractEndDateString: deceasedcontractEndDateString,
+            contractTypeFieldIds: ''
           },
           user
         )
@@ -573,7 +573,7 @@ async function importFromMasterCSV(): Promise<void> {
 
         await addLotOccupancyOccupant(
           {
-            lotOccupancyId: deceasedLotOccupancyId,
+            burialSiteContractId: deceasedburialSiteContractId,
             lotOccupantTypeId: importIds.deceasedLotOccupantTypeId,
             occupantName: masterRow.CM_DECEASED_NAME,
             occupantFamilyName: '',
@@ -597,10 +597,10 @@ async function importFromMasterCSV(): Promise<void> {
 
           await addOrUpdateLotOccupancyField(
             {
-              lotOccupancyId: deceasedLotOccupancyId,
-              occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
+              burialSiteContractId: deceasedburialSiteContractId,
+              contractTypeFieldId: occupancyType.ContractTypeFields!.find(
                 (occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Date'
-              )!.occupancyTypeFieldId!,
+              )!.contractTypeFieldId!,
               lotOccupancyFieldValue
             },
             user
@@ -610,10 +610,10 @@ async function importFromMasterCSV(): Promise<void> {
         if (masterRow.CM_AGE !== '') {
           await addOrUpdateLotOccupancyField(
             {
-              lotOccupancyId: deceasedLotOccupancyId,
-              occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
+              burialSiteContractId: deceasedburialSiteContractId,
+              contractTypeFieldId: occupancyType.ContractTypeFields!.find(
                 (occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Age'
-              )!.occupancyTypeFieldId!,
+              )!.contractTypeFieldId!,
               lotOccupancyFieldValue: masterRow.CM_AGE
             },
             user
@@ -625,12 +625,12 @@ async function importFromMasterCSV(): Promise<void> {
 
           await addOrUpdateLotOccupancyField(
             {
-              lotOccupancyId: deceasedLotOccupancyId,
-              occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
+              burialSiteContractId: deceasedburialSiteContractId,
+              contractTypeFieldId: occupancyType.ContractTypeFields!.find(
                 (occupancyTypeField) => (
                     occupancyTypeField.occupancyTypeField === 'Death Age Period'
                   )
-              )!.occupancyTypeFieldId!,
+              )!.contractTypeFieldId!,
               lotOccupancyFieldValue: period
             },
             user
@@ -645,7 +645,7 @@ async function importFromMasterCSV(): Promise<void> {
 
           await addLotOccupancyOccupant(
             {
-              lotOccupancyId: deceasedLotOccupancyId,
+              burialSiteContractId: deceasedburialSiteContractId,
               lotOccupantTypeId: funeralHomeOccupant.lotOccupantTypeId ?? '',
               occupantName: funeralHomeOccupant.occupantName ?? '',
               occupantFamilyName: '',
@@ -663,12 +663,12 @@ async function importFromMasterCSV(): Promise<void> {
           /*
             addOrUpdateLotOccupancyField(
               {
-                  lotOccupancyId: deceasedLotOccupancyId,
-                  occupancyTypeFieldId: allOccupancyTypeFields.find(
+                  burialSiteContractId: deceasedburialSiteContractId,
+                  contractTypeFieldId: allContractTypeFields.find(
                       (occupancyTypeField) => {
                           return occupancyTypeField.occupancyTypeField === "Funeral Home";
                       }
-                  ).occupancyTypeFieldId,
+                  ).contractTypeFieldId,
                   lotOccupancyFieldValue: masterRow.CM_FUNERAL_HOME
               },
               user
@@ -685,12 +685,12 @@ async function importFromMasterCSV(): Promise<void> {
 
           await addOrUpdateLotOccupancyField(
             {
-              lotOccupancyId: deceasedLotOccupancyId,
-              occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
+              burialSiteContractId: deceasedburialSiteContractId,
+              contractTypeFieldId: occupancyType.ContractTypeFields!.find(
                 (occupancyTypeField) => (
                     occupancyTypeField.occupancyTypeField === 'Funeral Date'
                   )
-              )!.occupancyTypeFieldId!,
+              )!.contractTypeFieldId!,
               lotOccupancyFieldValue
             },
             user
@@ -701,12 +701,12 @@ async function importFromMasterCSV(): Promise<void> {
           if (masterRow.CM_CONTAINER_TYPE !== '') {
             await addOrUpdateLotOccupancyField(
               {
-                lotOccupancyId: deceasedLotOccupancyId,
-                occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
+                burialSiteContractId: deceasedburialSiteContractId,
+                contractTypeFieldId: occupancyType.ContractTypeFields!.find(
                   (occupancyTypeField) => (
                       occupancyTypeField.occupancyTypeField === 'Container Type'
                     )
-                )!.occupancyTypeFieldId!,
+                )!.contractTypeFieldId!,
                 lotOccupancyFieldValue: masterRow.CM_CONTAINER_TYPE
               },
               user
@@ -722,12 +722,12 @@ async function importFromMasterCSV(): Promise<void> {
 
             await addOrUpdateLotOccupancyField(
               {
-                lotOccupancyId: deceasedLotOccupancyId,
-                occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
+                burialSiteContractId: deceasedburialSiteContractId,
+                contractTypeFieldId: occupancyType.ContractTypeFields!.find(
                   (occupancyTypeField) => (
                       occupancyTypeField.occupancyTypeField === 'Committal Type'
                     )
-                )!.occupancyTypeFieldId!,
+                )!.contractTypeFieldId!,
                 lotOccupancyFieldValue: commitalType
               },
               user
@@ -738,8 +738,8 @@ async function importFromMasterCSV(): Promise<void> {
         if (masterRow.CM_REMARK1 !== '') {
           await addLotOccupancyComment(
             {
-              lotOccupancyId: deceasedLotOccupancyId,
-              lotOccupancyCommentDateString: deceasedOccupancyStartDateString,
+              burialSiteContractId: deceasedburialSiteContractId,
+              lotOccupancyCommentDateString: deceasedcontractStartDateString,
               lotOccupancyCommentTimeString: '00:00',
               lotOccupancyComment: masterRow.CM_REMARK1
             },
@@ -750,8 +750,8 @@ async function importFromMasterCSV(): Promise<void> {
         if (masterRow.CM_REMARK2 !== '') {
           await addLotOccupancyComment(
             {
-              lotOccupancyId: deceasedLotOccupancyId,
-              lotOccupancyCommentDateString: deceasedOccupancyStartDateString,
+              burialSiteContractId: deceasedburialSiteContractId,
+              lotOccupancyCommentDateString: deceasedcontractStartDateString,
               lotOccupancyCommentTimeString: '00:00',
               lotOccupancyComment: masterRow.CM_REMARK2
             },
@@ -762,8 +762,8 @@ async function importFromMasterCSV(): Promise<void> {
         if (masterRow.CM_WORK_ORDER.trim() !== '') {
           await addLotOccupancyComment(
             {
-              lotOccupancyId: deceasedLotOccupancyId,
-              lotOccupancyCommentDateString: deceasedOccupancyStartDateString,
+              burialSiteContractId: deceasedburialSiteContractId,
+              lotOccupancyCommentDateString: deceasedcontractStartDateString,
               lotOccupancyCommentTimeString: '00:00',
               lotOccupancyComment: `Imported Contract #${masterRow.CM_WORK_ORDER}`
             },
@@ -771,12 +771,12 @@ async function importFromMasterCSV(): Promise<void> {
           )
         }
 
-        await updateLotStatus(lotId ?? '', importIds.takenLotStatusId, user)
+        await updateLotStatus(lotId ?? '', importIds.takenburialSiteStatusId, user)
 
         if (masterRow.CM_PRENEED_OWNER !== '') {
           await addLotOccupancyOccupant(
             {
-              lotOccupancyId: deceasedLotOccupancyId,
+              burialSiteContractId: deceasedburialSiteContractId,
               lotOccupantTypeId: importIds.preneedOwnerLotOccupantTypeId,
               occupantName: masterRow.CM_PRENEED_OWNER,
               occupantFamilyName: '',
@@ -852,19 +852,19 @@ async function importFromPrepaidCSV(): Promise<void> {
         lot = await getLotByLotName(lotName)
 
         if (!lot) {
-          const lotTypeId = importIds.getLotTypeId({
+          const burialSiteTypeId = importIds.getburialSiteTypeId({
             cemetery
           })
 
           const lotId = await addLot(
             {
               lotName,
-              lotTypeId,
-              lotStatusId: importIds.reservedLotStatusId,
-              mapId: map.mapId ?? '',
+              burialSiteTypeId,
+              burialSiteStatusId: importIds.reservedburialSiteStatusId,
+              cemeteryId: map.cemeteryId ?? '',
               mapKey: lotName.includes(',') ? lotName.split(',')[0] : lotName,
-              lotLatitude: '',
-              lotLongitude: ''
+              burialSiteLatitude: '',
+              burialSiteLongitude: ''
             },
             user
           )
@@ -873,25 +873,25 @@ async function importFromPrepaidCSV(): Promise<void> {
         }
       }
 
-      if (lot && lot.lotStatusId === importIds.availableLotStatusId) {
-        await updateLotStatus(lot.lotId, importIds.reservedLotStatusId, user)
+      if (lot && lot.burialSiteStatusId === importIds.availableburialSiteStatusId) {
+        await updateLotStatus(lot.lotId, importIds.reservedburialSiteStatusId, user)
       }
 
-      const occupancyStartDateString = formatDateString(
+      const contractStartDateString = formatDateString(
         prepaidRow.CMPP_PURCH_YR,
         prepaidRow.CMPP_PURCH_MON,
         prepaidRow.CMPP_PURCH_DAY
       )
 
-      let lotOccupancyId: number
+      let burialSiteContractId: number
 
       if (lot) {
-        const possibleLotOccupancies = await getLotOccupancies(
+        const possibleLotOccupancies = await getBurialSiteContracts(
           {
             lotId: lot.lotId,
-            occupancyTypeId: importIds.preneedOccupancyType.occupancyTypeId,
+            contractTypeId: importIds.preneedOccupancyType.contractTypeId,
             occupantName: prepaidRow.CMPP_PREPAID_FOR_NAME,
-            occupancyStartDateString
+            contractStartDateString
           },
           {
             includeOccupants: false,
@@ -903,24 +903,24 @@ async function importFromPrepaidCSV(): Promise<void> {
         )
 
         if (possibleLotOccupancies.lotOccupancies.length > 0) {
-          lotOccupancyId =
-            possibleLotOccupancies.lotOccupancies[0].lotOccupancyId!
+          burialSiteContractId =
+            possibleLotOccupancies.lotOccupancies[0].burialSiteContractId!
         }
       }
 
-      lotOccupancyId ||= await addLotOccupancy(
+      burialSiteContractId ||= await addLotOccupancy(
           {
             lotId: lot ? lot.lotId : '',
-            occupancyTypeId: importIds.preneedOccupancyType.occupancyTypeId,
-            occupancyStartDateString,
-            occupancyEndDateString: ''
+            contractTypeId: importIds.preneedOccupancyType.contractTypeId,
+            contractStartDateString,
+            contractEndDateString: ''
           },
           user
         );
 
       await addLotOccupancyOccupant(
         {
-          lotOccupancyId,
+          burialSiteContractId,
           lotOccupantTypeId: importIds.preneedOwnerLotOccupantTypeId,
           occupantName: prepaidRow.CMPP_PREPAID_FOR_NAME,
           occupantFamilyName: '',
@@ -938,7 +938,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       if (prepaidRow.CMPP_ARRANGED_BY_NAME) {
         await addLotOccupancyOccupant(
           {
-            lotOccupancyId,
+            burialSiteContractId,
             lotOccupantTypeId: importIds.purchaserLotOccupantTypeId,
             occupantName: prepaidRow.CMPP_ARRANGED_BY_NAME,
             occupantFamilyName: '',
@@ -957,7 +957,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       if (prepaidRow.CMPP_FEE_GRAV_SD !== '0.0') {
         await addLotOccupancyFee(
           {
-            lotOccupancyId,
+            burialSiteContractId,
             feeId: importIds.getFeeIdByFeeDescription('CMPP_FEE_GRAV_SD'),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_GRAV_SD,
@@ -970,7 +970,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       if (prepaidRow.CMPP_FEE_GRAV_DD !== '0.0') {
         await addLotOccupancyFee(
           {
-            lotOccupancyId,
+            burialSiteContractId,
             feeId: importIds.getFeeIdByFeeDescription('CMPP_FEE_GRAV_DD'),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_GRAV_DD,
@@ -983,7 +983,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       if (prepaidRow.CMPP_FEE_CHAP_SD !== '0.0') {
         await addLotOccupancyFee(
           {
-            lotOccupancyId,
+            burialSiteContractId,
             feeId: importIds.getFeeIdByFeeDescription('CMPP_FEE_CHAP_SD'),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_CHAP_SD,
@@ -996,7 +996,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       if (prepaidRow.CMPP_FEE_CHAP_DD !== '0.0') {
         await addLotOccupancyFee(
           {
-            lotOccupancyId,
+            burialSiteContractId,
             feeId: importIds.getFeeIdByFeeDescription('CMPP_FEE_CHAP_DD'),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_CHAP_DD,
@@ -1009,7 +1009,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       if (prepaidRow.CMPP_FEE_ENTOMBMENT !== '0.0') {
         await addLotOccupancyFee(
           {
-            lotOccupancyId,
+            burialSiteContractId,
             feeId: importIds.getFeeIdByFeeDescription('CMPP_FEE_ENTOMBMENT'),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_ENTOMBMENT,
@@ -1022,7 +1022,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       if (prepaidRow.CMPP_FEE_CREM !== '0.0') {
         await addLotOccupancyFee(
           {
-            lotOccupancyId,
+            burialSiteContractId,
             feeId: importIds.getFeeIdByFeeDescription('CMPP_FEE_CREM'),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_CREM,
@@ -1035,7 +1035,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       if (prepaidRow.CMPP_FEE_NICHE !== '0.0') {
         await addLotOccupancyFee(
           {
-            lotOccupancyId,
+            burialSiteContractId,
             feeId: importIds.getFeeIdByFeeDescription('CMPP_FEE_NICHE'),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_NICHE,
@@ -1051,7 +1051,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       ) {
         await addLotOccupancyFee(
           {
-            lotOccupancyId,
+            burialSiteContractId,
             feeId: importIds.getFeeIdByFeeDescription('CMPP_FEE_DISINTERMENT'),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_DISINTERMENT,
@@ -1089,10 +1089,10 @@ async function importFromPrepaidCSV(): Promise<void> {
 
       await addLotOccupancyTransaction(
         {
-          lotOccupancyId,
+          burialSiteContractId,
           externalReceiptNumber: '',
           transactionAmount,
-          transactionDateString: occupancyStartDateString,
+          transactionDateString: contractStartDateString,
           transactionNote: `Order Number: ${prepaidRow.CMPP_ORDER_NO}`
         },
         user
@@ -1101,8 +1101,8 @@ async function importFromPrepaidCSV(): Promise<void> {
       if (prepaidRow.CMPP_REMARK1) {
         await addLotOccupancyComment(
           {
-            lotOccupancyId,
-            lotOccupancyCommentDateString: occupancyStartDateString,
+            burialSiteContractId,
+            lotOccupancyCommentDateString: contractStartDateString,
             lotOccupancyComment: prepaidRow.CMPP_REMARK1
           },
           user
@@ -1112,8 +1112,8 @@ async function importFromPrepaidCSV(): Promise<void> {
       if (prepaidRow.CMPP_REMARK2) {
         await addLotOccupancyComment(
           {
-            lotOccupancyId,
-            lotOccupancyCommentDateString: occupancyStartDateString,
+            burialSiteContractId,
+            lotOccupancyCommentDateString: contractStartDateString,
             lotOccupancyComment: prepaidRow.CMPP_REMARK2
           },
           user
@@ -1200,23 +1200,23 @@ async function importFromWorkOrderCSV(): Promise<void> {
         lot = await getLotByLotName(lotName)
 
         if (lot) {
-          await updateLotStatus(lot.lotId, importIds.takenLotStatusId, user)
+          await updateLotStatus(lot.lotId, importIds.takenburialSiteStatusId, user)
         } else {
           const map = await getMap({ cemetery: workOrderRow.WO_CEMETERY })
 
-          const lotTypeId = importIds.getLotTypeId({
+          const burialSiteTypeId = importIds.getburialSiteTypeId({
             cemetery: workOrderRow.WO_CEMETERY
           })
 
           const lotId = await addLot(
             {
-              mapId: map.mapId!,
+              cemeteryId: map.cemeteryId!,
               lotName,
               mapKey: lotName.includes(',') ? lotName.split(',')[0] : lotName,
-              lotStatusId: importIds.takenLotStatusId,
-              lotTypeId,
-              lotLatitude: '',
-              lotLongitude: ''
+              burialSiteStatusId: importIds.takenburialSiteStatusId,
+              burialSiteTypeId,
+              burialSiteLatitude: '',
+              burialSiteLongitude: ''
             },
             user
           )
@@ -1241,10 +1241,10 @@ async function importFromWorkOrderCSV(): Promise<void> {
         }
       }
 
-      let occupancyStartDateString = workOrderOpenDateString
+      let contractStartDateString = workOrderOpenDateString
 
       if (workOrderRow.WO_INTERMENT_YR) {
-        occupancyStartDateString = formatDateString(
+        contractStartDateString = formatDateString(
           workOrderRow.WO_INTERMENT_YR,
           workOrderRow.WO_INTERMENT_MON,
           workOrderRow.WO_INTERMENT_DAY
@@ -1255,19 +1255,19 @@ async function importFromWorkOrderCSV(): Promise<void> {
         ? importIds.deceasedOccupancyType
         : importIds.cremationOccupancyType
 
-      const lotOccupancyId = await addLotOccupancy(
+      const burialSiteContractId = await addLotOccupancy(
         {
           lotId: lot ? lot.lotId : '',
-          occupancyTypeId: occupancyType.occupancyTypeId,
-          occupancyStartDateString,
-          occupancyEndDateString: ''
+          contractTypeId: occupancyType.contractTypeId,
+          contractStartDateString,
+          contractEndDateString: ''
         },
         user
       )
 
       await addLotOccupancyOccupant(
         {
-          lotOccupancyId,
+          burialSiteContractId,
           lotOccupantTypeId: importIds.deceasedLotOccupantTypeId,
           occupantName: workOrderRow.WO_DECEASED_NAME,
           occupantFamilyName: '',
@@ -1291,10 +1291,10 @@ async function importFromWorkOrderCSV(): Promise<void> {
 
         await addOrUpdateLotOccupancyField(
           {
-            lotOccupancyId,
-            occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
+            burialSiteContractId,
+            contractTypeFieldId: occupancyType.ContractTypeFields!.find(
               (occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Date'
-            )!.occupancyTypeFieldId!,
+            )!.contractTypeFieldId!,
             lotOccupancyFieldValue
           },
           user
@@ -1304,10 +1304,10 @@ async function importFromWorkOrderCSV(): Promise<void> {
       if (workOrderRow.WO_DEATH_PLACE !== '') {
         await addOrUpdateLotOccupancyField(
           {
-            lotOccupancyId,
-            occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
+            burialSiteContractId,
+            contractTypeFieldId: occupancyType.ContractTypeFields!.find(
               (occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Place'
-            )!.occupancyTypeFieldId!,
+            )!.contractTypeFieldId!,
             lotOccupancyFieldValue: workOrderRow.WO_DEATH_PLACE
           },
           user
@@ -1317,10 +1317,10 @@ async function importFromWorkOrderCSV(): Promise<void> {
       if (workOrderRow.WO_AGE !== '') {
         await addOrUpdateLotOccupancyField(
           {
-            lotOccupancyId,
-            occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
+            burialSiteContractId,
+            contractTypeFieldId: occupancyType.ContractTypeFields!.find(
               (occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Age'
-            )!.occupancyTypeFieldId!,
+            )!.contractTypeFieldId!,
             lotOccupancyFieldValue: workOrderRow.WO_AGE
           },
           user
@@ -1332,12 +1332,12 @@ async function importFromWorkOrderCSV(): Promise<void> {
 
         await addOrUpdateLotOccupancyField(
           {
-            lotOccupancyId,
-            occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
+            burialSiteContractId,
+            contractTypeFieldId: occupancyType.ContractTypeFields!.find(
               (occupancyTypeField) => (
                   occupancyTypeField.occupancyTypeField === 'Death Age Period'
                 )
-            )!.occupancyTypeFieldId!,
+            )!.contractTypeFieldId!,
             lotOccupancyFieldValue: period
           },
           user
@@ -1352,7 +1352,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
 
         await addLotOccupancyOccupant(
           {
-            lotOccupancyId,
+            burialSiteContractId,
             lotOccupantTypeId: funeralHomeOccupant.lotOccupantTypeId!,
             occupantName: funeralHomeOccupant.occupantName!,
             occupantFamilyName: '',
@@ -1370,10 +1370,10 @@ async function importFromWorkOrderCSV(): Promise<void> {
         /*
           addOrUpdateLotOccupancyField(
             {
-                lotOccupancyId: lotOccupancyId,
-                occupancyTypeFieldId: allOccupancyTypeFields.find((occupancyTypeField) => {
+                burialSiteContractId: burialSiteContractId,
+                contractTypeFieldId: allContractTypeFields.find((occupancyTypeField) => {
                     return occupancyTypeField.occupancyTypeField === "Funeral Home";
-                }).occupancyTypeFieldId,
+                }).contractTypeFieldId,
                 lotOccupancyFieldValue: workOrderRow.WO_FUNERAL_HOME
             },
             user
@@ -1390,10 +1390,10 @@ async function importFromWorkOrderCSV(): Promise<void> {
 
         await addOrUpdateLotOccupancyField(
           {
-            lotOccupancyId,
-            occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
+            burialSiteContractId,
+            contractTypeFieldId: occupancyType.ContractTypeFields!.find(
               (occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Funeral Date'
-            )!.occupancyTypeFieldId!,
+            )!.contractTypeFieldId!,
             lotOccupancyFieldValue
           },
           user
@@ -1404,12 +1404,12 @@ async function importFromWorkOrderCSV(): Promise<void> {
         if (workOrderRow.WO_CONTAINER_TYPE !== '') {
           await addOrUpdateLotOccupancyField(
             {
-              lotOccupancyId,
-              occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
+              burialSiteContractId,
+              contractTypeFieldId: occupancyType.ContractTypeFields!.find(
                 (occupancyTypeField) => (
                     occupancyTypeField.occupancyTypeField === 'Container Type'
                   )
-              )!.occupancyTypeFieldId!,
+              )!.contractTypeFieldId!,
               lotOccupancyFieldValue: workOrderRow.WO_CONTAINER_TYPE
             },
             user
@@ -1425,12 +1425,12 @@ async function importFromWorkOrderCSV(): Promise<void> {
 
           await addOrUpdateLotOccupancyField(
             {
-              lotOccupancyId,
-              occupancyTypeFieldId: occupancyType.occupancyTypeFields!.find(
+              burialSiteContractId,
+              contractTypeFieldId: occupancyType.ContractTypeFields!.find(
                 (occupancyTypeField) => (
                     occupancyTypeField.occupancyTypeField === 'Committal Type'
                   )
-              )!.occupancyTypeFieldId!,
+              )!.contractTypeFieldId!,
               lotOccupancyFieldValue: commitalType
             },
             user
@@ -1441,7 +1441,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
       await addWorkOrderLotOccupancy(
         {
           workOrderId: workOrder.workOrderId!,
-          lotOccupancyId
+          burialSiteContractId
         },
         user
       )

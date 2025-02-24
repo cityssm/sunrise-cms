@@ -562,13 +562,13 @@ declare const bulmaJS: BulmaJS
         'tr'
       ) as HTMLTableRowElement
 
-      const lotStatusId = tableRowElement.dataset.lotStatusId
+      const burialSiteStatusId = tableRowElement.dataset.burialSiteStatusId
 
       function doDelete(): void {
         cityssm.postJSON(
           `${los.urlPrefix}/admin/doDeleteLotStatus`,
           {
-            lotStatusId
+            burialSiteStatusId
           },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as ResponseJSON
@@ -615,7 +615,7 @@ declare const bulmaJS: BulmaJS
 
       const tableRowElement = buttonElement.closest('tr') as HTMLTableRowElement
 
-      const lotStatusId = tableRowElement.dataset.lotStatusId
+      const burialSiteStatusId = tableRowElement.dataset.burialSiteStatusId
 
       cityssm.postJSON(
         `${los.urlPrefix}/admin/${
@@ -624,7 +624,7 @@ declare const bulmaJS: BulmaJS
             : 'doMoveLotStatusDown'
         }`,
         {
-          lotStatusId,
+          burialSiteStatusId,
           moveToEnd: clickEvent.shiftKey ? '1' : '0'
         },
         (rawResponseJSON) => {
@@ -665,12 +665,12 @@ declare const bulmaJS: BulmaJS
       for (const lotStatus of lotStatuses) {
         const tableRowElement = document.createElement('tr')
 
-        tableRowElement.dataset.lotStatusId = lotStatus.lotStatusId.toString()
+        tableRowElement.dataset.burialSiteStatusId = lotStatus.burialSiteStatusId.toString()
 
         // eslint-disable-next-line no-unsanitized/property
         tableRowElement.innerHTML = `<td>
         <form>
-          <input name="lotStatusId" type="hidden" value="${lotStatus.lotStatusId.toString()}" />
+          <input name="burialSiteStatusId" type="hidden" value="${lotStatus.burialSiteStatusId.toString()}" />
           <div class="field has-addons">
             <div class="control">
               <input class="input" name="lotStatus" type="text"

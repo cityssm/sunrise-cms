@@ -3,10 +3,9 @@ import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 const recordIdColumns = new Map();
 recordIdColumns.set('FeeCategories', 'feeCategoryId');
-recordIdColumns.set('LotOccupantTypes', 'lotOccupantTypeId');
-recordIdColumns.set('LotStatuses', 'lotStatusId');
-recordIdColumns.set('LotTypes', 'lotTypeId');
-recordIdColumns.set('OccupancyTypes', 'occupancyTypeId');
+recordIdColumns.set('BurialSiteStatuses', 'burialSiteStatusId');
+recordIdColumns.set('BurialSiteTypes', 'burialSiteTypeId');
+recordIdColumns.set('ContractTypes', 'contractTypeId');
 recordIdColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId');
 recordIdColumns.set('WorkOrderTypes', 'workOrderTypeId');
 function getCurrentOrderNumber(recordTable, recordId, database) {

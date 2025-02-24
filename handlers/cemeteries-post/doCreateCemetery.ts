@@ -6,14 +6,14 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const mapId = await addMap(
+  const cemeteryId = await addMap(
     request.body as AddMapForm,
     request.session.user as User
   )
 
   response.json({
     success: true,
-    mapId
+    cemeteryId
   })
 }
 

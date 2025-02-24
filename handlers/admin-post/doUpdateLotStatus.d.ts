@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
 export default function handler(request: Request<unknown, unknown, {
-    lotStatusId: string;
+    burialSiteStatusId: string;
     lotStatus: string;
 }>, response: Response): Promise<void>;

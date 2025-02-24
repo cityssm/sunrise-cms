@@ -30,7 +30,7 @@ const screenPrintConfigs: Record<string, PrintConfig> = {
     title: `${configFunctions.getConfigProperty(
       'aliases.lot'
     )} ${configFunctions.getConfigProperty('aliases.occupancy')} Print`,
-    params: ['lotOccupancyId']
+    params: ['burialSiteContractId']
   }
 }
 
@@ -53,11 +53,11 @@ const pdfPrintConfigs: Record<string, PrintConfig> = {
   // Occupancy
   'ssm.cemetery.burialPermit': {
     title: 'Burial Permit',
-    params: ['lotOccupancyId']
+    params: ['burialSiteContractId']
   },
   'ssm.cemetery.contract': {
     title: 'Contract for Purchase of Interment Rights',
-    params: ['lotOccupancyId']
+    params: ['burialSiteContractId']
   }
 }
 
@@ -94,10 +94,10 @@ export async function getReportData(
   }
 
   if (
-    printConfig.params.includes('lotOccupancyId') &&
-    typeof requestQuery.lotOccupancyId === 'string'
+    printConfig.params.includes('burialSiteContractId') &&
+    typeof requestQuery.burialSiteContractId === 'string'
   ) {
-    const lotOccupancy = await getLotOccupancy(requestQuery.lotOccupancyId)
+    const lotOccupancy = await getLotOccupancy(requestQuery.burialSiteContractId)
 
     if (lotOccupancy !== undefined && (lotOccupancy.lotId ?? -1) !== -1) {
       reportData.lot = await getLot(lotOccupancy.lotId ?? -1)

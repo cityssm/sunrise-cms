@@ -2,7 +2,7 @@ import { dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
 import getMaps from '../../database/getMaps.js'
-import { getLotStatuses, getLotTypes } from '../../helpers/functions.cache.js'
+import { getLotStatuses, getBurialSiteTypes } from '../../helpers/functions.cache.js'
 
 export default async function handler(
   _request: Request,
@@ -11,7 +11,7 @@ export default async function handler(
   const rightNow = new Date()
 
   const maps = await getMaps()
-  const lotTypes = await getLotTypes()
+  const lotTypes = await getBurialSiteTypes()
   const lotStatuses = await getLotStatuses()
 
   response.render('report-search', {

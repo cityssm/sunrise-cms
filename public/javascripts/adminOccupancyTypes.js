@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
     const occupancyTypesContainerElement = document.querySelector('#container--occupancyTypes');
-    const occupancyTypePrintsContainerElement = document.querySelector('#container--occupancyTypePrints');
+    const ContractTypePrintsContainerElement = document.querySelector('#container--ContractTypePrints');
     let occupancyTypes = exports.occupancyTypes;
     delete exports.occupancyTypes;
     let allOccupancyTypeFields = exports.allOccupancyTypeFields;
@@ -374,8 +374,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
-    function renderOccupancyTypePrints(panelElement, occupancyTypeId, occupancyTypePrints) {
-        if (occupancyTypePrints.length === 0) {
+    function renderContractTypePrints(panelElement, occupancyTypeId, ContractTypePrints) {
+        if (ContractTypePrints.length === 0) {
             panelElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
           <div class="message is-info">
             <p class="message-body">There are no prints associated with this record.</p>
@@ -383,7 +383,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </div>`);
         }
         else {
-            for (const printEJS of occupancyTypePrints) {
+            for (const printEJS of ContractTypePrints) {
                 const panelBlockElement = document.createElement('div');
                 panelBlockElement.className =
                     'panel-block is-block container--occupancyTypePrint';
@@ -449,7 +449,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </div>
       </div>
       </div>`;
-        occupancyTypePrintsContainerElement.innerHTML = '';
+        ContractTypePrintsContainerElement.innerHTML = '';
         renderOccupancyTypeFields(occupancyTypesContainerElement.querySelector('#container--allOccupancyTypeFields'), undefined, allOccupancyTypeFields);
         occupancyTypesContainerElement
             .querySelector('.button--addOccupancyTypeField')
@@ -460,7 +460,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           <p class="message-body">There are no active ${los.escapedAliases.occupancy} types.</p>
           </div>`);
             // eslint-disable-next-line no-unsanitized/method
-            occupancyTypePrintsContainerElement.insertAdjacentHTML('afterbegin', `<div class="message is-warning>
+            ContractTypePrintsContainerElement.insertAdjacentHTML('afterbegin', `<div class="message is-warning>
           <p class="message-body">There are no active ${los.escapedAliases.occupancy} types.</p>
           </div>`);
             return;
@@ -554,11 +554,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </div>
         </div>
         </div>`;
-            renderOccupancyTypePrints(occupancyTypePrintContainer, occupancyType.occupancyTypeId, occupancyType.occupancyTypePrints ?? []);
+            renderContractTypePrints(occupancyTypePrintContainer, occupancyType.occupancyTypeId, occupancyType.ContractTypePrints ?? []);
             occupancyTypePrintContainer
                 .querySelector('.button--addOccupancyTypePrint')
                 ?.addEventListener('click', openAddOccupancyTypePrint);
-            occupancyTypePrintsContainerElement.append(occupancyTypePrintContainer);
+            ContractTypePrintsContainerElement.append(occupancyTypePrintContainer);
         }
     }
     document

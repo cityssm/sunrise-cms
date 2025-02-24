@@ -1,15 +1,15 @@
+import { getCemeterySVGs } from '../../helpers/cemeteries.helpers.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { getMapSVGs } from '../../helpers/functions.map.js';
 export default async function handler(_request, response) {
-    const map = {
-        mapCity: getConfigProperty('settings.map.mapCityDefault'),
-        mapProvince: getConfigProperty('settings.map.mapProvinceDefault')
+    const cemetery = {
+        cemeteryCity: getConfigProperty('settings.cemeteries.cityDefault'),
+        cemeteryProvince: getConfigProperty('settings.cemeteries.provinceDefault')
     };
-    const mapSVGs = await getMapSVGs();
+    const cemeterySVGs = await getCemeterySVGs();
     response.render('map-edit', {
-        headTitle: `${getConfigProperty('aliases.map')} Create`,
+        headTitle: `Create a Cemetery`,
         isCreate: true,
-        map,
-        mapSVGs
+        cemetery,
+        cemeterySVGs
     });
 }

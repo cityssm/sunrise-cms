@@ -10,7 +10,7 @@ export interface Record {
     recordDelete_timeMillis?: number;
     recordDelete_dateString?: string;
 }
-export interface CemeteryRecord extends Record {
+export interface Cemetery extends Record {
     cemeteryId?: number;
     cemeteryName?: string;
     cemeteryDescription?: string;
@@ -56,16 +56,16 @@ export interface BurialSite extends Record {
     burialSiteType?: string;
     cemeteryId?: number;
     cemeteryName?: string;
-    cemetery?: CemeteryRecord;
+    cemetery?: Cemetery;
     cemeterySvg?: string;
     cemeterySvgId?: string;
     burialSiteLatitude?: number;
     burialSiteLongitude?: number;
     burialSiteStatusId?: number;
     burialSiteStatus?: string;
-    burialSiteFields?: LotField[];
+    burialSiteFields?: BurialSiteField[];
     burialSiteContractCount?: number;
-    burialSiteContracts?: LotOccupancy[];
+    burialSiteContracts?: BurialSiteContract[];
     burialSiteComments?: BurialSiteComment[];
 }
 export interface BurialSiteComment extends Record {
@@ -78,34 +78,27 @@ export interface BurialSiteComment extends Record {
     commentTimePeriodString?: string;
     comment?: string;
 }
-export interface LotField extends BurialSiteTypeField, Record {
+export interface BurialSiteField extends BurialSiteTypeField, Record {
     burialSiteId?: number;
     burialSiteFieldValue?: string;
 }
-export interface OccupancyType extends Record {
-    occupancyTypeId: number;
-    occupancyType: string;
+export interface ContractType extends Record {
+    contractTypeId: number;
+    contractType: string;
     orderNumber?: number;
-    occupancyTypeFields?: OccupancyTypeField[];
-    occupancyTypePrints?: string[];
+    contractTypeFields?: ContractTypeField[];
+    contractTypePrints?: string[];
 }
-export interface OccupancyTypeField {
-    occupancyTypeFieldId: number;
-    occupancyTypeId?: number;
-    occupancyTypeField?: string;
+export interface ContractTypeField {
+    contractTypeFieldId: number;
+    contractTypeId?: number;
+    contractTypeField?: string;
     fieldType: string;
-    occupancyTypeFieldValues?: string;
+    fieldValues?: string;
     isRequired?: boolean;
     pattern?: string;
     minimumLength?: number;
     maximumLength?: number;
-    orderNumber?: number;
-}
-export interface LotOccupantType extends Record {
-    lotOccupantTypeId: number;
-    lotOccupantType: string;
-    fontAwesomeIconClass: string;
-    occupantCommentTitle: string;
     orderNumber?: number;
 }
 export interface FeeCategory extends Record {
@@ -122,10 +115,10 @@ export interface Fee extends Record {
     feeName?: string;
     feeDescription?: string;
     feeAccount?: string;
-    occupancyTypeId?: number;
-    occupancyType?: string;
-    lotTypeId?: number;
-    lotType?: string;
+    contractTypeId?: number;
+    contractType?: string;
+    burialSiteTypeId?: number;
+    burialSiteType?: string;
     includeQuantity?: boolean;
     quantityUnit?: string;
     feeAmount?: number;
@@ -134,14 +127,14 @@ export interface Fee extends Record {
     taxPercentage?: number;
     isRequired?: boolean;
     orderNumber: number;
-    lotOccupancyFeeCount?: number;
+    burialSiteContractFeeCount?: number;
 }
-export interface LotOccupancyFee extends Fee, Record {
-    lotOccupancyId?: number;
+export interface BurialSiteContractFee extends Fee, Record {
+    burialSiteContractId?: number;
     quantity?: number;
 }
-export interface LotOccupancyTransaction extends Record {
-    lotOccupancyId?: number;
+export interface BurialSiteContractTransaction extends Record {
+    burialSiteContractId?: number;
     transactionIndex?: number;
     transactionDate?: number;
     transactionDateString?: string;
@@ -159,61 +152,78 @@ export interface DynamicsGPDocument {
     documentDescription: string[];
     documentTotal: number;
 }
-export interface LotOccupancyOccupant extends Record {
-    lotOccupancyId?: number;
-    lotOccupantIndex?: number;
-    lotOccupantTypeId?: number;
-    lotOccupantType?: string;
-    fontAwesomeIconClass?: string;
-    occupantCommentTitle?: string;
-    occupantName?: string;
-    occupantFamilyName?: string;
-    occupantAddress1?: string;
-    occupantAddress2?: string;
-    occupantCity?: string;
-    occupantProvince?: string;
-    occupantPostalCode?: string;
-    occupantPhoneNumber?: string;
-    occupantEmailAddress?: string;
-    occupantComment?: string;
-    lotOccupancyIdCount?: number;
+export interface BurialSiteContractInterment extends Record {
+    burialSiteContractId?: number;
+    intermentNumber?: number;
+    isCremated?: boolean;
+    deceasedName?: string;
+    birthDate?: number;
+    birthDateString?: string;
+    birthPlace?: string;
+    deathDate?: number;
+    deathDateString?: string;
+    deathPlace?: string;
+    intermentDate?: number;
+    intermentDateString?: string;
+    intermentTime?: number;
+    intermentTimeString?: string;
+    intermentContainerTypeId?: number;
+    intermentContainerType?: string;
+    intermentCommittalTypeId?: number;
+    intermentCommittalType?: string;
+    burialSiteContractIdCount?: number;
     recordUpdate_timeMillisMax?: number;
 }
-export interface LotOccupancyComment extends Record {
-    lotOccupancyCommentId?: number;
-    lotOccupancyId?: number;
-    lotOccupancyCommentDate?: number;
-    lotOccupancyCommentDateString?: string;
-    lotOccupancyCommentTime?: number;
-    lotOccupancyCommentTimeString?: string;
-    lotOccupancyCommentTimePeriodString?: string;
-    lotOccupancyComment?: string;
+export interface BurialSiteContractComment extends Record {
+    burialSiteContractCommentId?: number;
+    burialSiteContractId?: number;
+    commentDate?: number;
+    commentDateString?: string;
+    commentTime?: number;
+    commentTimeString?: string;
+    commentTimePeriodString?: string;
+    comment?: string;
 }
-export interface LotOccupancyField extends OccupancyTypeField, Record {
-    lotOccupancyId: number;
-    occupancyTypeFieldId: number;
-    lotOccupancyFieldValue?: string;
+export interface BurialSiteContractField extends ContractTypeField, Record {
+    burialSiteContractId: number;
+    contractTypeFieldId: number;
+    fieldValue?: string;
 }
-export interface LotOccupancy extends Record {
-    lotOccupancyId: number;
-    occupancyTypeId: number;
-    occupancyType?: string;
+export interface BurialSiteContract extends Record {
+    burialSiteContractId: number;
+    contractTypeId: number;
+    contractType?: string;
     printEJS?: string;
-    lotId?: number;
-    lotTypeId?: number;
-    lotType?: string;
-    lotName?: string;
-    mapId?: number;
-    mapName?: string;
-    occupancyStartDate?: number;
-    occupancyStartDateString?: string;
-    occupancyEndDate?: number;
-    occupancyEndDateString?: string;
-    lotOccupancyFields?: LotOccupancyField[];
-    lotOccupancyComments?: LotOccupancyComment[];
-    lotOccupancyOccupants?: LotOccupancyOccupant[];
-    lotOccupancyFees?: LotOccupancyFee[];
-    lotOccupancyTransactions?: LotOccupancyTransaction[];
+    burialSiteId?: number;
+    burialSiteTypeId?: number;
+    burialSiteType?: string;
+    burialSiteNameSegment1?: string;
+    burialSiteNameSegment2?: string;
+    burialSiteNameSegment3?: string;
+    burialSiteNameSegment4?: string;
+    burialSiteNameSegment5?: string;
+    cemeteryId?: number;
+    cemeteryName?: string;
+    contractStartDate?: number;
+    contractStartDateString?: string;
+    contractEndDate?: number;
+    contractEndDateString?: string;
+    purchaserName?: string;
+    purchaserAddress1?: string;
+    purchaserAddress2?: string;
+    purchaserCity?: string;
+    purchaserProvince?: string;
+    purchaserPostalCode?: string;
+    purchaserPhoneNumber?: string;
+    purchaserEmail?: string;
+    funeralHomeId?: number;
+    funeralHomeDirectorName?: string;
+    funeralHomeName?: string;
+    burialSiteContractFields?: BurialSiteContractField[];
+    burialSiteContractComments?: BurialSiteContractComment[];
+    burialSiteContractInterments?: BurialSiteContractInterment[];
+    burialSiteContractFees?: BurialSiteContractFee[];
+    burialSiteContractTransactions?: BurialSiteContractTransaction[];
     workOrders?: WorkOrder[];
 }
 export interface WorkOrderType extends Record {
@@ -229,12 +239,12 @@ export interface WorkOrderMilestoneType extends Record {
 export interface WorkOrderComment extends Record {
     workOrderCommentId?: number;
     workOrderId?: number;
-    workOrderCommentDate?: number;
-    workOrderCommentDateString?: string;
-    workOrderCommentTime?: number;
-    workOrderCommentTimeString?: string;
-    workOrderCommentTimePeriodString?: string;
-    workOrderComment?: string;
+    commentDate?: number;
+    commentDateString?: string;
+    commentTime?: number;
+    commentTimeString?: string;
+    commentTimePeriodString?: string;
+    comment?: string;
 }
 export interface WorkOrderMilestone extends Record, WorkOrder {
     workOrderMilestoneId?: number;
@@ -267,9 +277,9 @@ export interface WorkOrder extends Record {
     workOrderMilestoneCount?: number;
     workOrderMilestoneCompletionCount?: number;
     workOrderComments?: WorkOrderComment[];
-    workOrderLots?: Lot[];
-    workOrderLotCount?: number;
-    workOrderLotOccupancies?: LotOccupancy[];
+    workOrderBurialSites?: BurialSite[];
+    workOrderBurialSiteCount?: number;
+    workOrderBurialSiteContract?: BurialSiteContract[];
 }
 declare global {
     export interface User {

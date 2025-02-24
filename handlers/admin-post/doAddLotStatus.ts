@@ -7,7 +7,7 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lotStatusId = await addRecord(
+  const burialSiteStatusId = await addRecord(
     'LotStatuses',
     request.body.lotStatus,
     request.body.orderNumber ?? -1,
@@ -18,7 +18,7 @@ export default async function handler(
 
   response.json({
     success: true,
-    lotStatusId,
+    burialSiteStatusId,
     lotStatuses
   })
 }

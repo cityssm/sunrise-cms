@@ -7,7 +7,7 @@ import * as lotOccupancyFunctions from './functions.lotOccupancy.js';
 const screenPrintConfigs = {
     lotOccupancy: {
         title: `${configFunctions.getConfigProperty('aliases.lot')} ${configFunctions.getConfigProperty('aliases.occupancy')} Print`,
-        params: ['lotOccupancyId']
+        params: ['burialSiteContractId']
     }
 };
 export function getScreenPrintConfig(printName) {
@@ -25,11 +25,11 @@ const pdfPrintConfigs = {
     // Occupancy
     'ssm.cemetery.burialPermit': {
         title: 'Burial Permit',
-        params: ['lotOccupancyId']
+        params: ['burialSiteContractId']
     },
     'ssm.cemetery.contract': {
         title: 'Contract for Purchase of Interment Rights',
-        params: ['lotOccupancyId']
+        params: ['burialSiteContractId']
     }
 };
 export function getPdfPrintConfig(printName) {
@@ -54,9 +54,9 @@ export async function getReportData(printConfig, requestQuery) {
         dateTimeFunctions,
         lotOccupancyFunctions
     };
-    if (printConfig.params.includes('lotOccupancyId') &&
-        typeof requestQuery.lotOccupancyId === 'string') {
-        const lotOccupancy = await getLotOccupancy(requestQuery.lotOccupancyId);
+    if (printConfig.params.includes('burialSiteContractId') &&
+        typeof requestQuery.burialSiteContractId === 'string') {
+        const lotOccupancy = await getLotOccupancy(requestQuery.burialSiteContractId);
         if (lotOccupancy !== undefined && (lotOccupancy.lotId ?? -1) !== -1) {
             reportData.lot = await getLot(lotOccupancy.lotId ?? -1);
         }

@@ -2,124 +2,99 @@
 /* eslint-disable @typescript-eslint/init-declarations */
 import cluster from 'node:cluster';
 import Debug from 'debug';
-import getLotOccupantTypesFromDatabase from '../database/getLotOccupantTypes.js';
-import getLotStatusesFromDatabase from '../database/getLotStatuses.js';
-import getLotTypesFromDatabase from '../database/getLotTypes.js';
-import getOccupancyTypeFieldsFromDatabase from '../database/getOccupancyTypeFields.js';
-import getOccupancyTypesFromDatabase from '../database/getOccupancyTypes.js';
+import getBurialSiteStatusesFromDatabase from '../database/getBurialSiteStatuses.js';
+import getBurialSiteTypesFromDatabase from '../database/getBurialSiteTypes.js';
+import getContractTypeFieldsFromDatabase from '../database/getContractTypeFields.js';
+import getContractTypesFromDatabase from '../database/getContractTypes.js';
 import getWorkOrderMilestoneTypesFromDatabase from '../database/getWorkOrderMilestoneTypes.js';
 import getWorkOrderTypesFromDatabase from '../database/getWorkOrderTypes.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from './config.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:functions.cache:${process.pid}`);
 /*
- * Lot Occupant Types
+ * Burial Site Statuses
  */
-let lotOccupantTypes;
-export async function getLotOccupantTypes() {
-    if (lotOccupantTypes === undefined) {
-        lotOccupantTypes = await getLotOccupantTypesFromDatabase();
+let burialSiteStatuses;
+export async function getBurialSiteStatuses() {
+    if (burialSiteStatuses === undefined) {
+        burialSiteStatuses = await getBurialSiteStatusesFromDatabase();
     }
-    return lotOccupantTypes;
+    return burialSiteStatuses;
 }
-export async function getLotOccupantTypeById(lotOccupantTypeId) {
-    const cachedLotOccupantTypes = await getLotOccupantTypes();
-    return cachedLotOccupantTypes.find((currentLotOccupantType) => currentLotOccupantType.lotOccupantTypeId === lotOccupantTypeId);
+export async function getBurialSiteStatusById(burialSiteStatusId) {
+    const cachedStatuses = await getBurialSiteStatuses();
+    return cachedStatuses.find((currentStatus) => currentStatus.burialSiteStatusId === burialSiteStatusId);
 }
-export async function getLotOccupantTypeByLotOccupantType(lotOccupantType) {
-    const cachedLotOccupantTypes = await getLotOccupantTypes();
-    const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase();
-    return cachedLotOccupantTypes.find((currentLotOccupantType) => currentLotOccupantType.lotOccupantType.toLowerCase() ===
-        lotOccupantTypeLowerCase);
+export async function getBurialSiteStatusByBurialSiteStatus(burialSiteStatus) {
+    const cachedStatuses = await getBurialSiteStatuses();
+    const statusLowerCase = burialSiteStatus.toLowerCase();
+    return cachedStatuses.find((currentStatus) => currentStatus.burialSiteStatus.toLowerCase() === statusLowerCase);
 }
-function clearLotOccupantTypesCache() {
-    lotOccupantTypes = undefined;
+function clearBurialSiteStatusesCache() {
+    burialSiteStatuses = undefined;
 }
 /*
- * Lot Statuses
+ * Burial Site Types
  */
-let lotStatuses;
-export async function getLotStatuses() {
-    if (lotStatuses === undefined) {
-        lotStatuses = await getLotStatusesFromDatabase();
+let burialSiteTypes;
+export async function getBurialSiteTypes() {
+    if (burialSiteTypes === undefined) {
+        burialSiteTypes = await getBurialSiteTypesFromDatabase();
     }
-    return lotStatuses;
+    return burialSiteTypes;
 }
-export async function getLotStatusById(lotStatusId) {
-    const cachedLotStatuses = await getLotStatuses();
-    return cachedLotStatuses.find((currentLotStatus) => currentLotStatus.lotStatusId === lotStatusId);
+export async function getBurialSiteTypeById(burialSiteTypeId) {
+    const cachedTypes = await getBurialSiteTypes();
+    return cachedTypes.find((currentType) => currentType.burialSiteTypeId === burialSiteTypeId);
 }
-export async function getLotStatusByLotStatus(lotStatus) {
-    const cachedLotStatuses = await getLotStatuses();
-    const lotStatusLowerCase = lotStatus.toLowerCase();
-    return cachedLotStatuses.find((currentLotStatus) => currentLotStatus.lotStatus.toLowerCase() === lotStatusLowerCase);
+export async function getBurialSiteTypesByBurialSiteType(burialSiteType) {
+    const cachedTypes = await getBurialSiteTypes();
+    const typeLowerCase = burialSiteType.toLowerCase();
+    return cachedTypes.find((currentType) => currentType.burialSiteType.toLowerCase() === typeLowerCase);
 }
-function clearLotStatusesCache() {
-    lotStatuses = undefined;
+function clearBurialSiteTypesCache() {
+    burialSiteTypes = undefined;
 }
 /*
- * Lot Types
+ * Contract Types
  */
-let lotTypes;
-export async function getLotTypes() {
-    if (lotTypes === undefined) {
-        lotTypes = await getLotTypesFromDatabase();
+let contractTypes;
+let allContractTypeFields;
+export async function getContractTypes() {
+    if (contractTypes === undefined) {
+        contractTypes = await getContractTypesFromDatabase();
     }
-    return lotTypes;
+    return contractTypes;
 }
-export async function getLotTypeById(lotTypeId) {
-    const cachedLotTypes = await getLotTypes();
-    return cachedLotTypes.find((currentLotType) => currentLotType.lotTypeId === lotTypeId);
-}
-export async function getLotTypesByLotType(lotType) {
-    const cachedLotTypes = await getLotTypes();
-    const lotTypeLowerCase = lotType.toLowerCase();
-    return cachedLotTypes.find((currentLotType) => currentLotType.lotType.toLowerCase() === lotTypeLowerCase);
-}
-function clearLotTypesCache() {
-    lotTypes = undefined;
-}
-/*
- * Occupancy Types
- */
-let occupancyTypes;
-let allOccupancyTypeFields;
-export async function getOccupancyTypes() {
-    if (occupancyTypes === undefined) {
-        occupancyTypes = await getOccupancyTypesFromDatabase();
+export async function getAllContractTypeFields() {
+    if (allContractTypeFields === undefined) {
+        allContractTypeFields = await getContractTypeFieldsFromDatabase();
     }
-    return occupancyTypes;
+    return allContractTypeFields;
 }
-export async function getAllOccupancyTypeFields() {
-    if (allOccupancyTypeFields === undefined) {
-        allOccupancyTypeFields = await getOccupancyTypeFieldsFromDatabase();
-    }
-    return allOccupancyTypeFields;
+export async function getContractTypeById(contractTypeId) {
+    const cachedTypes = await getContractTypes();
+    return cachedTypes.find((currentType) => currentType.contractTypeId === contractTypeId);
 }
-export async function getOccupancyTypeById(occupancyTypeId) {
-    const cachedOccupancyTypes = await getOccupancyTypes();
-    return cachedOccupancyTypes.find((currentOccupancyType) => currentOccupancyType.occupancyTypeId === occupancyTypeId);
+export async function getContractTypeByContractType(contractTypeString) {
+    const cachedTypes = await getContractTypes();
+    const typeLowerCase = contractTypeString.toLowerCase();
+    return cachedTypes.find((currentType) => currentType.contractType.toLowerCase() === typeLowerCase);
 }
-export async function getOccupancyTypeByOccupancyType(occupancyTypeString) {
-    const cachedOccupancyTypes = await getOccupancyTypes();
-    const occupancyTypeLowerCase = occupancyTypeString.toLowerCase();
-    return cachedOccupancyTypes.find((currentOccupancyType) => currentOccupancyType.occupancyType.toLowerCase() ===
-        occupancyTypeLowerCase);
-}
-export async function getOccupancyTypePrintsById(occupancyTypeId) {
-    const occupancyType = await getOccupancyTypeById(occupancyTypeId);
-    if (occupancyType?.occupancyTypePrints === undefined ||
-        occupancyType.occupancyTypePrints.length === 0) {
+export async function getContractTypePrintsById(contractTypeId) {
+    const contractType = await getContractTypeById(contractTypeId);
+    if (contractType?.contractTypePrints === undefined ||
+        contractType.contractTypePrints.length === 0) {
         return [];
     }
-    if (occupancyType.occupancyTypePrints.includes('*')) {
-        return getConfigProperty('settings.lotOccupancy.prints');
+    if (contractType.contractTypePrints.includes('*')) {
+        return getConfigProperty('settings.contracts.prints');
     }
-    return occupancyType.occupancyTypePrints ?? [];
+    return contractType.contractTypePrints ?? [];
 }
-function clearOccupancyTypesCache() {
-    occupancyTypes = undefined;
-    allOccupancyTypeFields = undefined;
+function clearContractTypesCache() {
+    contractTypes = undefined;
+    allContractTypeFields = undefined;
 }
 /*
  * Work Order Types
@@ -161,18 +136,16 @@ export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrde
 }
 export async function preloadCaches() {
     debug('Preloading caches');
-    await getLotOccupantTypes();
-    await getLotStatuses();
-    await getLotTypes();
-    await getOccupancyTypes();
+    await getBurialSiteStatuses();
+    await getBurialSiteTypes();
+    await getContractTypes();
     await getWorkOrderTypes();
     await getWorkOrderMilestoneTypes();
 }
 export function clearCaches() {
-    clearLotOccupantTypesCache();
-    clearLotStatusesCache();
-    clearLotTypesCache();
-    clearOccupancyTypesCache();
+    clearBurialSiteStatusesCache();
+    clearBurialSiteTypesCache();
+    clearContractTypesCache();
     clearWorkOrderTypesCache();
     clearWorkOrderMilestoneTypesCache();
 }
@@ -181,23 +154,19 @@ function clearWorkOrderMilestoneTypesCache() {
 }
 export function clearCacheByTableName(tableName, relayMessage = true) {
     switch (tableName) {
-        case 'LotOccupantTypes': {
-            clearLotOccupantTypesCache();
+        case 'BurialSiteStatuses': {
+            clearBurialSiteStatusesCache();
             break;
         }
-        case 'LotStatuses': {
-            clearLotStatusesCache();
+        case 'BurialSiteTypes':
+        case 'BurialSiteTypeFields': {
+            clearBurialSiteTypesCache();
             break;
         }
-        case 'LotTypes':
-        case 'LotTypeFields': {
-            clearLotTypesCache();
-            break;
-        }
-        case 'OccupancyTypes':
-        case 'OccupancyTypeFields':
-        case 'OccupancyTypePrints': {
-            clearOccupancyTypesCache();
+        case 'ContractTypes':
+        case 'ContractTypeFields':
+        case 'ContractTypePrints': {
+            clearContractTypesCache();
             break;
         }
         case 'WorkOrderMilestoneTypes': {

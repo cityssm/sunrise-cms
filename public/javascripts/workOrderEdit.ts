@@ -225,18 +225,18 @@ declare const exports: Record<string, unknown>
       delete exports.workOrderLotOccupancies
 
       function deleteLotOccupancy(clickEvent: Event): void {
-        const lotOccupancyId = (
+        const burialSiteContractId = (
           (clickEvent.currentTarget as HTMLElement).closest(
             '.container--lotOccupancy'
           ) as HTMLElement
-        ).dataset.lotOccupancyId
+        ).dataset.burialSiteContractId
 
         function doDelete(): void {
           cityssm.postJSON(
             `${los.urlPrefix}/workOrders/doDeleteWorkOrderLotOccupancy`,
             {
               workOrderId,
-              lotOccupancyId
+              burialSiteContractId
             },
             (rawResponseJSON) => {
               const responseJSON = rawResponseJSON as {
@@ -306,14 +306,14 @@ declare const exports: Record<string, unknown>
       }
 
       function addLotOccupancy(
-        lotOccupancyId: number | string,
+        burialSiteContractId: number | string,
         callbackFunction?: (success?: boolean) => void
       ): void {
         cityssm.postJSON(
           `${los.urlPrefix}/workOrders/doAddWorkOrderLotOccupancy`,
           {
             workOrderId,
-            lotOccupancyId
+            burialSiteContractId
           },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
@@ -372,7 +372,7 @@ declare const exports: Record<string, unknown>
             <th class="has-width-1"></th>
             <th>${los.escapedAliases.Occupancy} Type</th>
             <th>${los.escapedAliases.Lot}</th>
-            <th>${los.escapedAliases.OccupancyStartDate}</th>
+            <th>${los.escapedAliases.contractStartDate}</th>
             <th>End Date</th>
             <th>${los.escapedAliases.Occupants}</th>
             <th class="has-width-1"></th>
@@ -385,12 +385,12 @@ declare const exports: Record<string, unknown>
         for (const lotOccupancy of workOrderLotOccupancies) {
           const rowElement = document.createElement('tr')
           rowElement.className = 'container--lotOccupancy'
-          rowElement.dataset.lotOccupancyId =
-            lotOccupancy.lotOccupancyId.toString()
+          rowElement.dataset.burialSiteContractId =
+            lotOccupancy.burialSiteContractId.toString()
 
           const isActive = !(
-            lotOccupancy.occupancyEndDate &&
-            lotOccupancy.occupancyEndDateString! < currentDateString
+            lotOccupancy.contractEndDate &&
+            lotOccupancy.contractEndDateString! < currentDateString
           )
 
           const hasLotRecord =
@@ -405,10 +405,10 @@ declare const exports: Record<string, unknown>
           : `<i class="fas fa-stop" title="Previous ${los.escapedAliases.Occupancy}"></i>`
       }
       </td><td>
-        <a class="has-text-weight-bold" href="${los.getLotOccupancyURL(lotOccupancy.lotOccupancyId)}">
+        <a class="has-text-weight-bold" href="${los.getLotOccupancyURL(lotOccupancy.burialSiteContractId)}">
           ${cityssm.escapeHTML(lotOccupancy.occupancyType ?? '')}
         </a><br />
-        <span class="is-size-7">#${lotOccupancy.lotOccupancyId}</span>
+        <span class="is-size-7">#${lotOccupancy.burialSiteContractId}</span>
       </td>`
 
           if (lotOccupancy.lotId) {
@@ -458,11 +458,11 @@ declare const exports: Record<string, unknown>
           rowElement.insertAdjacentHTML(
             'beforeend',
             `<td>
-          ${lotOccupancy.occupancyStartDateString}
+          ${lotOccupancy.contractStartDateString}
         </td><td>
           ${
-            lotOccupancy.occupancyEndDate
-              ? lotOccupancy.occupancyEndDateString
+            lotOccupancy.contractEndDate
+              ? lotOccupancy.contractEndDateString
               : '<span class="has-text-grey">(No End Date)</span>'
           }
         </td><td>
@@ -549,32 +549,32 @@ declare const exports: Record<string, unknown>
             ).value = lot.lotName ?? ''
 
             const lotStatusElement = modalElement.querySelector(
-              '#lotStatusEdit--lotStatusId'
+              '#lotStatusEdit--burialSiteStatusId'
             ) as HTMLSelectElement
 
             let lotStatusFound = false
 
             for (const lotStatus of exports.lotStatuses as LotStatus[]) {
               const optionElement = document.createElement('option')
-              optionElement.value = lotStatus.lotStatusId.toString()
+              optionElement.value = lotStatus.burialSiteStatusId.toString()
               optionElement.textContent = lotStatus.lotStatus
 
-              if (lotStatus.lotStatusId === lot.lotStatusId) {
+              if (lotStatus.burialSiteStatusId === lot.burialSiteStatusId) {
                 lotStatusFound = true
               }
 
               lotStatusElement.append(optionElement)
             }
 
-            if (!lotStatusFound && lot.lotStatusId) {
+            if (!lotStatusFound && lot.burialSiteStatusId) {
               const optionElement = document.createElement('option')
-              optionElement.value = lot.lotStatusId.toString()
+              optionElement.value = lot.burialSiteStatusId.toString()
               optionElement.textContent = lot.lotStatus ?? ''
               lotStatusElement.append(optionElement)
             }
 
-            if (lot.lotStatusId) {
-              lotStatusElement.value = lot.lotStatusId.toString()
+            if (lot.burialSiteStatusId) {
+              lotStatusElement.value = lot.burialSiteStatusId.toString()
             }
 
             // eslint-disable-next-line no-unsanitized/method
@@ -690,12 +690,12 @@ declare const exports: Record<string, unknown>
                 ${cityssm.escapeHTML(lot.lotName ?? '')}
               </a>
             </td><td>
-              ${cityssm.escapeHTML(lot.mapName ?? '')}
+              ${cityssm.escapeHTML(lot.cemeteryName ?? '')}
             </td><td>
               ${cityssm.escapeHTML(lot.lotType ?? '')}
             </td><td>
               ${
-                lot.lotStatusId
+                lot.burialSiteStatusId
                   ? cityssm.escapeHTML(lot.lotStatus ?? '')
                   : '<span class="has-text-grey">(No Status)</span>'
               }
@@ -732,9 +732,9 @@ declare const exports: Record<string, unknown>
           'tr'
         ) as HTMLTableRowElement
 
-        const lotOccupancyId = rowElement.dataset.lotOccupancyId ?? ''
+        const burialSiteContractId = rowElement.dataset.burialSiteContractId ?? ''
 
-        addLotOccupancy(lotOccupancyId, (success) => {
+        addLotOccupancy(burialSiteContractId, (success) => {
           if (success) {
             rowElement.remove()
           }
@@ -778,7 +778,7 @@ declare const exports: Record<string, unknown>
                     <th class="has-width-1"></th>
                     <th>${los.escapedAliases.Occupancy} Type</th>
                     <th>${los.escapedAliases.Lot}</th>
-                    <th>${los.escapedAliases.OccupancyStartDate}</th>
+                    <th>${los.escapedAliases.contractStartDate}</th>
                     <th>End Date</th>
                     <th>${los.escapedAliases.Occupants}</th>
                   </tr></thead>
@@ -788,8 +788,8 @@ declare const exports: Record<string, unknown>
                 for (const lotOccupancy of responseJSON.lotOccupancies) {
                   const rowElement = document.createElement('tr')
                   rowElement.className = 'container--lotOccupancy'
-                  rowElement.dataset.lotOccupancyId =
-                    lotOccupancy.lotOccupancyId.toString()
+                  rowElement.dataset.burialSiteContractId =
+                    lotOccupancy.burialSiteContractId.toString()
 
                   rowElement.innerHTML = `<td class="has-text-centered">
                       <button class="button is-small is-success button--addLotOccupancy" data-tooltip="Add" type="button" aria-label="Add">
@@ -817,11 +817,11 @@ declare const exports: Record<string, unknown>
                   rowElement.insertAdjacentHTML(
                     'beforeend',
                     `<td>
-                  ${lotOccupancy.occupancyStartDateString}
+                  ${lotOccupancy.contractStartDateString}
                 </td><td>
                   ${
-                    lotOccupancy.occupancyEndDate
-                      ? lotOccupancy.occupancyEndDateString
+                    lotOccupancy.contractEndDate
+                      ? lotOccupancy.contractEndDateString
                       : '<span class="has-text-grey">(No End Date)</span>'
                   }
                 </td><td>
@@ -983,7 +983,7 @@ declare const exports: Record<string, unknown>
                     </td><td class="has-text-weight-bold">
                       ${cityssm.escapeHTML(lot.lotName ?? '')}
                     </td><td>
-                      ${cityssm.escapeHTML(lot.mapName ?? '')}
+                      ${cityssm.escapeHTML(lot.cemeteryName ?? '')}
                     </td><td>
                       ${cityssm.escapeHTML(lot.lotType ?? '')}
                     </td><td>
@@ -1020,12 +1020,12 @@ declare const exports: Record<string, unknown>
               ).value = workOrderId
 
               const lotStatusElement = modalElement.querySelector(
-                '#lotSearch--lotStatusId'
+                '#lotSearch--burialSiteStatusId'
               ) as HTMLSelectElement
 
               for (const lotStatus of exports.lotStatuses as LotStatus[]) {
                 const optionElement = document.createElement('option')
-                optionElement.value = lotStatus.lotStatusId.toString()
+                optionElement.value = lotStatus.burialSiteStatusId.toString()
                 optionElement.textContent = lotStatus.lotStatus
                 lotStatusElement.append(optionElement)
               }
@@ -1043,7 +1043,7 @@ declare const exports: Record<string, unknown>
               lotNameElement.focus()
 
               modalElement
-                .querySelector('#lotSearch--lotStatusId')
+                .querySelector('#lotSearch--burialSiteStatusId')
                 ?.addEventListener('change', doSearch)
 
               searchFormElement.addEventListener('submit', doSearch)

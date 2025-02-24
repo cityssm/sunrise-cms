@@ -8,14 +8,14 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lotOccupancyId = await addLotOccupancy(
+  const burialSiteContractId = await addLotOccupancy(
     request.body as AddLotOccupancyForm,
     request.session.user as User
   )
 
   response.json({
     success: true,
-    lotOccupancyId
+    burialSiteContractId
   })
 }
 

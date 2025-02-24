@@ -1,11 +1,11 @@
 import addWorkOrderLotOccupancy from '../../database/addWorkOrderLotOccupancy.js';
-import getLotOccupancies from '../../database/getLotOccupancies.js';
+import getBurialSiteContracts from '../../database/getLotOccupancies.js';
 export default async function handler(request, response) {
     const success = await addWorkOrderLotOccupancy({
         workOrderId: request.body.workOrderId,
-        lotOccupancyId: request.body.lotOccupancyId
+        burialSiteContractId: request.body.burialSiteContractId
     }, request.session.user);
-    const workOrderLotOccupanciesResults = await getLotOccupancies({
+    const workOrderLotOccupanciesResults = await getBurialSiteContracts({
         workOrderId: request.body.workOrderId
     }, {
         limit: -1,

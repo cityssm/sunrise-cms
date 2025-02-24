@@ -1,6 +1,6 @@
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import getLotOccupancies from './getLotOccupancies.js';
+import getBurialSiteContracts from './getBurialSiteContracts.js';
 import getLots from './getLots.js';
 import { acquireConnection } from './pool.js';
 // eslint-disable-next-line security/detect-unsafe-regex
@@ -129,7 +129,7 @@ export default async function getWorkOrderMilestones(filters, options, connected
                 includeLotOccupancyCount: false
             }, database);
             workOrderMilestone.workOrderLots = workOrderLotsResults.lots;
-            const lotOccupancies = await getLotOccupancies({
+            const BurialSiteContracts = await getBurialSiteContracts({
                 workOrderId: workOrderMilestone.workOrderId
             }, {
                 limit: -1,
@@ -138,7 +138,7 @@ export default async function getWorkOrderMilestones(filters, options, connected
                 includeFees: false,
                 includeTransactions: false
             }, database);
-            workOrderMilestone.workOrderLotOccupancies = lotOccupancies.lotOccupancies;
+            workOrderMilestone.workOrderBurialSiteContracts = BurialSiteContracts.BurialSiteContracts;
         }
     }
     if (connectedDatabase === undefined) {

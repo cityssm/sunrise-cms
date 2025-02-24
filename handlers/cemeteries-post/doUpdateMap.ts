@@ -13,6 +13,6 @@ export default async function handler(
 
   response.json({
     success,
-    mapId: request.body.mapId as string
+    cemeteryId: request.body.cemeteryId as string
   })
 }

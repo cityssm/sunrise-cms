@@ -59,7 +59,7 @@ function buildEventDescriptionHTML_occupancies(request, milestone) {
         for (const occupancy of milestone.workOrderLotOccupancies ?? []) {
             descriptionHTML += `<tr>
           <td>
-            <a href="${urlRoot}/lotOccupancies/${occupancy.lotOccupancyId}">
+            <a href="${urlRoot}/lotOccupancies/${occupancy.burialSiteContractId}">
               ${escapeHTML(occupancy.occupancyType ?? '')}
             </a>
           </td>
@@ -67,11 +67,11 @@ function buildEventDescriptionHTML_occupancies(request, milestone) {
             ${occupancy.lotName ? escapeHTML(occupancy.lotName) : '(Not Set)'}
           </td>
           <td>
-            ${occupancy.occupancyStartDateString}
+            ${occupancy.contractStartDateString}
           </td>
           <td>
-            ${occupancy.occupancyEndDate
-                ? occupancy.occupancyEndDateString
+            ${occupancy.contractEndDate
+                ? occupancy.contractEndDateString
                 : '(No End Date)'}
           </td>
           <td>`;
@@ -112,7 +112,7 @@ function buildEventDescriptionHTML_lots(request, milestone) {
             ${escapeHTML(lot.lotName ?? '')}
           </a>
         </td>
-        <td>${escapeHTML(lot.mapName ?? '')}</td>
+        <td>${escapeHTML(lot.cemeteryName ?? '')}</td>
         <td>${escapeHTML(lot.lotType ?? '')}</td>
         <td>${escapeHTML(lot.lotStatus ?? '')}</td>
         </tr>`;
@@ -166,7 +166,7 @@ function buildEventLocation(milestone) {
     const lotNames = [];
     if (milestone.workOrderLots.length > 0) {
         for (const lot of milestone.workOrderLots ?? []) {
-            lotNames.push(`${lot.mapName ?? ''}: ${lot.lotName ?? ''}`);
+            lotNames.push(`${lot.cemeteryName ?? ''}: ${lot.lotName ?? ''}`);
         }
     }
     return lotNames.join(', ');

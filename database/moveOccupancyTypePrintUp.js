@@ -1,50 +1,50 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
 import { acquireConnection } from './pool.js';
-export async function moveOccupancyTypePrintUp(occupancyTypeId, printEJS) {
+export async function moveOccupancyTypePrintUp(contractTypeId, printEJS) {
     const database = await acquireConnection();
     const currentOrderNumber = database
-        .prepare('select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?')
-        .get(occupancyTypeId, printEJS).orderNumber;
+        .prepare('select orderNumber from ContractTypePrints where contractTypeId = ? and printEJS = ?')
+        .get(contractTypeId, printEJS).orderNumber;
     if (currentOrderNumber <= 0) {
         database.release();
         return true;
     }
     database
-        .prepare(`update OccupancyTypePrints
+        .prepare(`update ContractTypePrints
         set orderNumber = orderNumber + 1
         where recordDelete_timeMillis is null
-        and occupancyTypeId = ?
+        and contractTypeId = ?
         and orderNumber = ? - 1`)
-        .run(occupancyTypeId, currentOrderNumber);
+        .run(contractTypeId, currentOrderNumber);
     const result = database
-        .prepare('update OccupancyTypePrints set orderNumber = ? - 1 where occupancyTypeId = ? and printEJS = ?')
-        .run(currentOrderNumber, occupancyTypeId, printEJS);
+        .prepare('update ContractTypePrints set orderNumber = ? - 1 where contractTypeId = ? and printEJS = ?')
+        .run(currentOrderNumber, contractTypeId, printEJS);
     database.release();
-    clearCacheByTableName('OccupancyTypePrints');
+    clearCacheByTableName('ContractTypePrints');
     return result.changes > 0;
 }
-export async function moveOccupancyTypePrintUpToTop(occupancyTypeId, printEJS) {
+export async function moveOccupancyTypePrintUpToTop(contractTypeId, printEJS) {
     const database = await acquireConnection();
     const currentOrderNumber = database
-        .prepare('select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?')
-        .get(occupancyTypeId, printEJS).orderNumber;
+        .prepare('select orderNumber from ContractTypePrints where contractTypeId = ? and printEJS = ?')
+        .get(contractTypeId, printEJS).orderNumber;
     if (currentOrderNumber > 0) {
         database
-            .prepare(`update OccupancyTypePrints
+            .prepare(`update ContractTypePrints
           set orderNumber = -1
-          where occupancyTypeId = ?
+          where contractTypeId = ?
           and printEJS = ?`)
-            .run(occupancyTypeId, printEJS);
+            .run(contractTypeId, printEJS);
         database
-            .prepare(`update OccupancyTypePrints
+            .prepare(`update ContractTypePrints
           set orderNumber = orderNumber + 1
           where recordDelete_timeMillis is null
-          and occupancyTypeId = ?
+          and contractTypeId = ?
           and orderNumber < ?`)
-            .run(occupancyTypeId, currentOrderNumber);
+            .run(contractTypeId, currentOrderNumber);
     }
     database.release();
-    clearCacheByTableName('OccupancyTypePrints');
+    clearCacheByTableName('ContractTypePrints');
     return true;
 }
 export default moveOccupancyTypePrintUp;

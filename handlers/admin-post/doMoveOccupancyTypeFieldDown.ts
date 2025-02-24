@@ -5,31 +5,31 @@ import {
   moveOccupancyTypeFieldDownToBottom
 } from '../../database/moveOccupancyTypeField.js'
 import {
-  getAllOccupancyTypeFields,
-  getOccupancyTypes
+  getAllContractTypeFields,
+  getContractTypes
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
   request: Request<
     unknown,
     unknown,
-    { occupancyTypeFieldId: string; moveToEnd: '0' | '1' }
+    { contractTypeFieldId: string; moveToEnd: '0' | '1' }
   >,
   response: Response
 ): Promise<void> {
   const success =
     request.body.moveToEnd === '1'
       ? await moveOccupancyTypeFieldDownToBottom(
-          request.body.occupancyTypeFieldId
+          request.body.contractTypeFieldId
         )
-      : await moveOccupancyTypeFieldDown(request.body.occupancyTypeFieldId)
+      : await moveOccupancyTypeFieldDown(request.body.contractTypeFieldId)
 
-  const occupancyTypes = await getOccupancyTypes()
-  const allOccupancyTypeFields = await getAllOccupancyTypeFields()
+  const occupancyTypes = await getContractTypes()
+  const allContractTypeFields = await getAllContractTypeFields()
 
   response.json({
     success,
     occupancyTypes,
-    allOccupancyTypeFields
+    allContractTypeFields
   })
 }

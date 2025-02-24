@@ -2,29 +2,29 @@ import type { Request, Response } from 'express'
 
 import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js'
 import {
-  getAllOccupancyTypeFields,
-  getOccupancyTypes
+  getAllContractTypeFields,
+  getContractTypes
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
   request: Request<
     unknown,
     unknown,
-    { occupancyTypeId: string; moveToEnd: '0' | '1' }
+    { contractTypeId: string; moveToEnd: '0' | '1' }
   >,
   response: Response
 ): Promise<void> {
   const success =
     request.body.moveToEnd === '1'
-      ? await moveRecordUpToTop('OccupancyTypes', request.body.occupancyTypeId)
-      : await moveRecordUp('OccupancyTypes', request.body.occupancyTypeId)
+      ? await moveRecordUpToTop('OccupancyTypes', request.body.contractTypeId)
+      : await moveRecordUp('OccupancyTypes', request.body.contractTypeId)
 
-  const occupancyTypes = await getOccupancyTypes()
-  const allOccupancyTypeFields = await getAllOccupancyTypeFields()
+  const occupancyTypes = await getContractTypes()
+  const allContractTypeFields = await getAllContractTypeFields()
 
   response.json({
     success,
     occupancyTypes,
-    allOccupancyTypeFields
+    allContractTypeFields
   })
 }

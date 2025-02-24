@@ -1,6 +1,6 @@
 import { dateIntegerToString } from '@cityssm/utils-datetime';
-import getLotOccupancies from './getLotOccupancies.js';
-import getLots from './getLots.js';
+import getBurialSiteContracts from './getBurialSiteContracts.js';
+import getBurialSites from './getBurialSites.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
 import { acquireConnection } from './pool.js';
@@ -18,16 +18,16 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const workOrder = database.prepare(sql).get(workOrderIdOrWorkOrderNumber);
     if (workOrder !== undefined) {
-        if (options.includeLotsAndLotOccupancies) {
-            const workOrderLotsResults = await getLots({
+        if (options.includeBurialSites) {
+            const burialSiteResults = await getBurialSites({
                 workOrderId: workOrder.workOrderId
             }, {
                 limit: -1,
                 offset: 0,
                 includeLotOccupancyCount: false
             }, database);
-            workOrder.workOrderLots = workOrderLotsResults.lots;
-            const workOrderLotOccupanciesResults = await getLotOccupancies({
+            workOrder.workOrderBurialSites = burialSiteResults.lots;
+            const workOrderBurialSiteContractsResults = await getBurialSiteContracts({
                 workOrderId: workOrder.workOrderId
             }, {
                 limit: -1,
@@ -36,8 +36,8 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
                 includeFees: false,
                 includeTransactions: false
             }, database);
-            workOrder.workOrderLotOccupancies =
-                workOrderLotOccupanciesResults.lotOccupancies;
+            workOrder.workOrderBurialSiteContracts =
+                workOrderBurialSiteContractsResults.BurialSiteContracts;
         }
         if (options.includeComments) {
             workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);
@@ -58,7 +58,7 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
 }
 export async function getWorkOrderByWorkOrderNumber(workOrderNumber) {
     return await _getWorkOrder(`${baseSQL} and w.workOrderNumber = ?`, workOrderNumber, {
-        includeLotsAndLotOccupancies: true,
+        includeBurialSites: true,
         includeComments: true,
         includeMilestones: true
     });

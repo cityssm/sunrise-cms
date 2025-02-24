@@ -7,14 +7,14 @@ export default async function handler(
   request: Request<
     unknown,
     unknown,
-    { lotStatusId: string; moveToEnd: '0' | '1' }
+    { burialSiteStatusId: string; moveToEnd: '0' | '1' }
   >,
   response: Response
 ): Promise<void> {
   const success =
     request.body.moveToEnd === '1'
-      ? await moveRecordUpToTop('LotStatuses', request.body.lotStatusId)
-      : await moveRecordUp('LotStatuses', request.body.lotStatusId)
+      ? await moveRecordUpToTop('LotStatuses', request.body.burialSiteStatusId)
+      : await moveRecordUp('LotStatuses', request.body.burialSiteStatusId)
 
   const lotStatuses = await getLotStatuses()
 

@@ -3,14 +3,14 @@ import type { PoolConnection } from 'better-sqlite-pool'
 
 import type { WorkOrder } from '../types/recordTypes.js'
 
-import getLotOccupancies from './getLotOccupancies.js'
-import getLots from './getLots.js'
+import getBurialSiteContracts from './getBurialSiteContracts.js'
+import getBurialSites from './getBurialSites.js'
 import getWorkOrderComments from './getWorkOrderComments.js'
 import getWorkOrderMilestones from './getWorkOrderMilestones.js'
 import { acquireConnection } from './pool.js'
 
 interface WorkOrderOptions {
-  includeLotsAndLotOccupancies: boolean
+  includeBurialSites: boolean
   includeComments: boolean
   includeMilestones: boolean
 }
@@ -40,8 +40,8 @@ async function _getWorkOrder(
     | undefined
 
   if (workOrder !== undefined) {
-    if (options.includeLotsAndLotOccupancies) {
-      const workOrderLotsResults = await getLots(
+    if (options.includeBurialSites) {
+      const burialSiteResults = await getBurialSites(
         {
           workOrderId: workOrder.workOrderId
         },
@@ -53,9 +53,9 @@ async function _getWorkOrder(
         database
       )
 
-      workOrder.workOrderLots = workOrderLotsResults.lots
+      workOrder.workOrderBurialSites = burialSiteResults.lots
 
-      const workOrderLotOccupanciesResults = await getLotOccupancies(
+      const workOrderBurialSiteContractsResults = await getBurialSiteContracts(
         {
           workOrderId: workOrder.workOrderId
         },
@@ -69,8 +69,8 @@ async function _getWorkOrder(
         database
       )
 
-      workOrder.workOrderLotOccupancies =
-        workOrderLotOccupanciesResults.lotOccupancies
+      workOrder.workOrderBurialSiteContracts =
+        workOrderBurialSiteContractsResults.BurialSiteContracts
     }
 
     if (options.includeComments) {
@@ -108,7 +108,7 @@ export async function getWorkOrderByWorkOrderNumber(
     `${baseSQL} and w.workOrderNumber = ?`,
     workOrderNumber,
     {
-      includeLotsAndLotOccupancies: true,
+      includeBurialSites: true,
       includeComments: true,
       includeMilestones: true
     }

@@ -6,8 +6,8 @@ export interface UpdateFeeForm {
   feeName: string
   feeDescription: string
   feeAccount: string
-  occupancyTypeId: string
-  lotTypeId: string
+  contractTypeId: string
+  burialSiteTypeId: string
   feeAmount?: string
   feeFunction?: string
   taxAmount?: string
@@ -30,8 +30,8 @@ export default async function updateFee(
         feeName = ?,
         feeDescription = ?,
         feeAccount = ?,
-        occupancyTypeId = ?,
-        lotTypeId = ?,
+        contractTypeId = ?,
+        burialSiteTypeId = ?,
         feeAmount = ?,
         feeFunction = ?,
         taxAmount = ?,
@@ -49,8 +49,8 @@ export default async function updateFee(
       feeForm.feeName,
       feeForm.feeDescription,
       feeForm.feeAccount,
-      feeForm.occupancyTypeId === '' ? undefined : feeForm.occupancyTypeId,
-      feeForm.lotTypeId === '' ? undefined : feeForm.lotTypeId,
+      feeForm.contractTypeId === '' ? undefined : feeForm.contractTypeId,
+      feeForm.burialSiteTypeId === '' ? undefined : feeForm.burialSiteTypeId,
       feeForm.feeAmount === undefined || feeForm.feeAmount === ''
         ? 0
         : feeForm.feeAmount,

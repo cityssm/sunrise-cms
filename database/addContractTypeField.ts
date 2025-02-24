@@ -51,7 +51,7 @@ export default async function addContractTypeField(
 
   database.release()
 
-  clearCacheByTableName('OccupancyTypeFields')
+  clearCacheByTableName('ContractTypeFields')
 
   return result.lastInsertRowid as number
 }

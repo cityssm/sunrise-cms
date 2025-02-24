@@ -1,11 +1,11 @@
 import getFeeCategories from '../../database/getFeeCategories.js';
-import { getLotTypes, getOccupancyTypes } from '../../helpers/functions.cache.js';
+import { getBurialSiteTypes, getContractTypes } from '../../helpers/functions.cache.js';
 export default async function handler(_request, response) {
     const feeCategories = await getFeeCategories({}, {
         includeFees: true
     });
-    const occupancyTypes = await getOccupancyTypes();
-    const lotTypes = await getLotTypes();
+    const occupancyTypes = await getContractTypes();
+    const lotTypes = await getBurialSiteTypes();
     response.render('admin-fees', {
         headTitle: 'Fee Management',
         feeCategories,

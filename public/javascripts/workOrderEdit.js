@@ -359,25 +359,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         los.populateAliases(modalElement);
                         modalElement.querySelector('#lotStatusEdit--lotId').value = lotId.toString();
                         modalElement.querySelector('#lotStatusEdit--lotName').value = lot.lotName ?? '';
-                        const lotStatusElement = modalElement.querySelector('#lotStatusEdit--lotStatusId');
+                        const lotStatusElement = modalElement.querySelector('#lotStatusEdit--burialSiteStatusId');
                         let lotStatusFound = false;
                         for (const lotStatus of exports.lotStatuses) {
                             const optionElement = document.createElement('option');
-                            optionElement.value = lotStatus.lotStatusId.toString();
+                            optionElement.value = lotStatus.burialSiteStatusId.toString();
                             optionElement.textContent = lotStatus.lotStatus;
-                            if (lotStatus.lotStatusId === lot.lotStatusId) {
+                            if (lotStatus.burialSiteStatusId === lot.burialSiteStatusId) {
                                 lotStatusFound = true;
                             }
                             lotStatusElement.append(optionElement);
                         }
-                        if (!lotStatusFound && lot.lotStatusId) {
+                        if (!lotStatusFound && lot.burialSiteStatusId) {
                             const optionElement = document.createElement('option');
-                            optionElement.value = lot.lotStatusId.toString();
+                            optionElement.value = lot.burialSiteStatusId.toString();
                             optionElement.textContent = lot.lotStatus ?? '';
                             lotStatusElement.append(optionElement);
                         }
-                        if (lot.lotStatusId) {
-                            lotStatusElement.value = lot.lotStatusId.toString();
+                        if (lot.burialSiteStatusId) {
+                            lotStatusElement.value = lot.burialSiteStatusId.toString();
                         }
                         // eslint-disable-next-line no-unsanitized/method
                         modalElement
@@ -462,7 +462,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             </td><td>
               ${cityssm.escapeHTML(lot.lotType ?? '')}
             </td><td>
-              ${lot.lotStatusId
+              ${lot.burialSiteStatusId
                         ? cityssm.escapeHTML(lot.lotStatus ?? '')
                         : '<span class="has-text-grey">(No Status)</span>'}
             </td><td class="is-nowrap">
@@ -671,10 +671,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         searchFormElement = modalElement.querySelector('form');
                         searchResultsContainerElement = modalElement.querySelector('#resultsContainer--lotAdd');
                         modalElement.querySelector('#lotSearch--notWorkOrderId').value = workOrderId;
-                        const lotStatusElement = modalElement.querySelector('#lotSearch--lotStatusId');
+                        const lotStatusElement = modalElement.querySelector('#lotSearch--burialSiteStatusId');
                         for (const lotStatus of exports.lotStatuses) {
                             const optionElement = document.createElement('option');
-                            optionElement.value = lotStatus.lotStatusId.toString();
+                            optionElement.value = lotStatus.burialSiteStatusId.toString();
                             optionElement.textContent = lotStatus.lotStatus;
                             lotStatusElement.append(optionElement);
                         }
@@ -686,7 +686,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         lotNameElement.addEventListener('change', doSearch);
                         lotNameElement.focus();
                         modalElement
-                            .querySelector('#lotSearch--lotStatusId')
+                            .querySelector('#lotSearch--burialSiteStatusId')
                             ?.addEventListener('change', doSearch);
                         searchFormElement.addEventListener('submit', doSearch);
                     },

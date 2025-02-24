@@ -369,10 +369,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         function deleteLotStatus(clickEvent) {
             const tableRowElement = clickEvent.currentTarget.closest('tr');
-            const lotStatusId = tableRowElement.dataset.lotStatusId;
+            const burialSiteStatusId = tableRowElement.dataset.burialSiteStatusId;
             function doDelete() {
                 cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteLotStatus`, {
-                    lotStatusId
+                    burialSiteStatusId
                 }, (rawResponseJSON) => {
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
@@ -412,11 +412,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function moveLotStatus(clickEvent) {
             const buttonElement = clickEvent.currentTarget;
             const tableRowElement = buttonElement.closest('tr');
-            const lotStatusId = tableRowElement.dataset.lotStatusId;
+            const burialSiteStatusId = tableRowElement.dataset.burialSiteStatusId;
             cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
                 ? 'doMoveLotStatusUp'
                 : 'doMoveLotStatusDown'}`, {
-                lotStatusId,
+                burialSiteStatusId,
                 moveToEnd: clickEvent.shiftKey ? '1' : '0'
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
@@ -447,11 +447,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             containerElement.innerHTML = '';
             for (const lotStatus of lotStatuses) {
                 const tableRowElement = document.createElement('tr');
-                tableRowElement.dataset.lotStatusId = lotStatus.lotStatusId.toString();
+                tableRowElement.dataset.burialSiteStatusId = lotStatus.burialSiteStatusId.toString();
                 // eslint-disable-next-line no-unsanitized/property
                 tableRowElement.innerHTML = `<td>
         <form>
-          <input name="lotStatusId" type="hidden" value="${lotStatus.lotStatusId.toString()}" />
+          <input name="burialSiteStatusId" type="hidden" value="${lotStatus.burialSiteStatusId.toString()}" />
           <div class="field has-addons">
             <div class="control">
               <input class="input" name="lotStatus" type="text"

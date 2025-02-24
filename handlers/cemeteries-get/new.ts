@@ -1,24 +1,24 @@
 import type { Request, Response } from 'express'
 
+import { getCemeterySVGs } from '../../helpers/cemeteries.helpers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import { getMapSVGs } from '../../helpers/functions.map.js'
-import type { MapRecord } from '../../types/recordTypes.js'
+import type { Cemetery } from '../../types/recordTypes.js'
 
 export default async function handler(
   _request: Request,
   response: Response
 ): Promise<void> {
-  const map: MapRecord = {
-    mapCity: getConfigProperty('settings.map.mapCityDefault'),
-    mapProvince: getConfigProperty('settings.map.mapProvinceDefault')
+  const cemetery: Cemetery = {
+    cemeteryCity: getConfigProperty('settings.cemeteries.cityDefault'),
+    cemeteryProvince: getConfigProperty('settings.cemeteries.provinceDefault')
   }
 
-  const mapSVGs = await getMapSVGs()
+  const cemeterySVGs = await getCemeterySVGs()
 
   response.render('map-edit', {
-    headTitle: `${getConfigProperty('aliases.map')} Create`,
+    headTitle: `Create a Cemetery`,
     isCreate: true,
-    map,
-    mapSVGs
+    cemetery,
+    cemeterySVGs
   })
 }

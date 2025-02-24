@@ -7,8 +7,8 @@ export default async function updateFee(feeForm, user) {
         feeName = ?,
         feeDescription = ?,
         feeAccount = ?,
-        occupancyTypeId = ?,
-        lotTypeId = ?,
+        contractTypeId = ?,
+        burialSiteTypeId = ?,
         feeAmount = ?,
         feeFunction = ?,
         taxAmount = ?,
@@ -20,7 +20,7 @@ export default async function updateFee(feeForm, user) {
         recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
         and feeId = ?`)
-        .run(feeForm.feeCategoryId, feeForm.feeName, feeForm.feeDescription, feeForm.feeAccount, feeForm.occupancyTypeId === '' ? undefined : feeForm.occupancyTypeId, feeForm.lotTypeId === '' ? undefined : feeForm.lotTypeId, feeForm.feeAmount === undefined || feeForm.feeAmount === ''
+        .run(feeForm.feeCategoryId, feeForm.feeName, feeForm.feeDescription, feeForm.feeAccount, feeForm.contractTypeId === '' ? undefined : feeForm.contractTypeId, feeForm.burialSiteTypeId === '' ? undefined : feeForm.burialSiteTypeId, feeForm.feeAmount === undefined || feeForm.feeAmount === ''
         ? 0
         : feeForm.feeAmount, feeForm.feeFunction ?? undefined, feeForm.taxAmount ?? undefined, feeForm.taxPercentage ?? undefined, feeForm.includeQuantity === '' ? 0 : 1, feeForm.quantityUnit, feeForm.isRequired === '' ? 0 : 1, user.userName, Date.now(), feeForm.feeId);
     database.release();

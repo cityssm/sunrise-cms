@@ -13,40 +13,19 @@ describe('functions.cache', () => {
     before(() => {
         cacheFunctions.clearCaches();
     });
-    describe('Lot Occupant Types', () => {
-        it('returns Lot Occupant Types', async () => {
-            cacheFunctions.clearCacheByTableName('LotOccupantTypes');
-            const lotOccupantTypes = await cacheFunctions.getLotOccupantTypes();
-            assert.ok(lotOccupantTypes.length > 0);
-            for (const lotOccupantType of lotOccupantTypes) {
-                const byId = await cacheFunctions.getLotOccupantTypeById(lotOccupantType.lotOccupantTypeId);
-                assert.strictEqual(lotOccupantType.lotOccupantTypeId, byId?.lotOccupantTypeId);
-                const byName = await cacheFunctions.getLotOccupantTypeByLotOccupantType(lotOccupantType.lotOccupantType);
-                assert.strictEqual(lotOccupantType.lotOccupantType, byName?.lotOccupantType);
-            }
-        });
-        it('returns undefined with a bad lotOccupantTypeId', async () => {
-            const byBadId = await cacheFunctions.getLotOccupantTypeById(badId);
-            assert.ok(byBadId === undefined);
-        });
-        it('returns undefined with a bad lotOccupantType', async () => {
-            const byBadName = await cacheFunctions.getLotOccupantTypeByLotOccupantType(badName);
-            assert.ok(byBadName === undefined);
-        });
-    });
     describe('Lot Statuses', () => {
         it('returns Lot Statuses', async () => {
             cacheFunctions.clearCacheByTableName('LotStatuses');
             const lotStatuses = await cacheFunctions.getLotStatuses();
             assert.ok(lotStatuses.length > 0);
             for (const lotStatus of lotStatuses) {
-                const byId = await cacheFunctions.getLotStatusById(lotStatus.lotStatusId);
-                assert.strictEqual(lotStatus.lotStatusId, byId?.lotStatusId);
+                const byId = await cacheFunctions.getLotStatusById(lotStatus.burialSiteStatusId);
+                assert.strictEqual(lotStatus.burialSiteStatusId, byId?.burialSiteStatusId);
                 const byName = await cacheFunctions.getLotStatusByLotStatus(lotStatus.lotStatus);
                 assert.strictEqual(lotStatus.lotStatus, byName?.lotStatus);
             }
         });
-        it('returns undefined with a bad lotStatusId', async () => {
+        it('returns undefined with a bad burialSiteStatusId', async () => {
             const byBadId = await cacheFunctions.getLotStatusById(badId);
             assert.ok(byBadId === undefined);
         });
@@ -58,42 +37,42 @@ describe('functions.cache', () => {
     describe('Lot Types', () => {
         it('returns Lot Types', async () => {
             cacheFunctions.clearCacheByTableName('LotTypes');
-            const lotTypes = await cacheFunctions.getLotTypes();
+            const lotTypes = await cacheFunctions.getBurialSiteTypes();
             assert.ok(lotTypes.length > 0);
             for (const lotType of lotTypes) {
-                const byId = await cacheFunctions.getLotTypeById(lotType.lotTypeId);
-                assert.strictEqual(lotType.lotTypeId, byId?.lotTypeId);
-                const byName = await cacheFunctions.getLotTypesByLotType(lotType.lotType);
+                const byId = await cacheFunctions.getLotTypeById(lotType.burialSiteTypeId);
+                assert.strictEqual(lotType.burialSiteTypeId, byId?.burialSiteTypeId);
+                const byName = await cacheFunctions.getBurialSiteTypesByBurialSiteType(lotType.lotType);
                 assert.strictEqual(lotType.lotType, byName?.lotType);
             }
         });
-        it('returns undefined with a bad lotTypeId', async () => {
+        it('returns undefined with a bad burialSiteTypeId', async () => {
             const byBadId = await cacheFunctions.getLotTypeById(badId);
             assert.ok(byBadId === undefined);
         });
         it('returns undefined with a bad lotType', async () => {
-            const byBadName = await cacheFunctions.getLotTypesByLotType(badName);
+            const byBadName = await cacheFunctions.getBurialSiteTypesByBurialSiteType(badName);
             assert.ok(byBadName === undefined);
         });
     });
     describe('Occupancy Types', () => {
         it('returns Occupancy Types', async () => {
             cacheFunctions.clearCacheByTableName('OccupancyTypes');
-            const occupancyTypes = await cacheFunctions.getOccupancyTypes();
+            const occupancyTypes = await cacheFunctions.getContractTypes();
             assert.ok(occupancyTypes.length > 0);
             for (const occupancyType of occupancyTypes) {
-                const byId = await cacheFunctions.getOccupancyTypeById(occupancyType.occupancyTypeId);
-                assert.strictEqual(occupancyType.occupancyTypeId, byId?.occupancyTypeId);
-                const byName = await cacheFunctions.getOccupancyTypeByOccupancyType(occupancyType.occupancyType);
+                const byId = await cacheFunctions.getContractTypeById(occupancyType.contractTypeId);
+                assert.strictEqual(occupancyType.contractTypeId, byId?.contractTypeId);
+                const byName = await cacheFunctions.getContractTypeByContractType(occupancyType.occupancyType);
                 assert.strictEqual(occupancyType.occupancyType, byName?.occupancyType);
             }
         });
-        it('returns undefined with a bad occupancyTypeId', async () => {
-            const byBadId = await cacheFunctions.getOccupancyTypeById(badId);
+        it('returns undefined with a bad contractTypeId', async () => {
+            const byBadId = await cacheFunctions.getContractTypeById(badId);
             assert.ok(byBadId === undefined);
         });
         it('returns undefined with a bad occupancyType', async () => {
-            const byBadName = await cacheFunctions.getOccupancyTypeByOccupancyType(badName);
+            const byBadName = await cacheFunctions.getContractTypeByContractType(badName);
             assert.ok(byBadName === undefined);
         });
     });

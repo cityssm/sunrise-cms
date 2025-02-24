@@ -86,11 +86,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     });
     // Lot Type
-    const lotTypeIdElement = document.querySelector('#lot--lotTypeId');
+    const burialSiteTypeIdElement = document.querySelector('#lot--burialSiteTypeId');
     if (isCreate) {
         const lotFieldsContainerElement = document.querySelector('#container--lotFields');
-        lotTypeIdElement.addEventListener('change', () => {
-            if (lotTypeIdElement.value === '') {
+        burialSiteTypeIdElement.addEventListener('change', () => {
+            if (burialSiteTypeIdElement.value === '') {
                 // eslint-disable-next-line no-unsanitized/property
                 lotFieldsContainerElement.innerHTML = `<div class="message is-info">
           <p class="message-body">Select the ${los.escapedAliases.lot} type to load the available fields.</p>
@@ -98,7 +98,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 return;
             }
             cityssm.postJSON(`${los.urlPrefix}/lots/doGetLotTypeFields`, {
-                lotTypeId: lotTypeIdElement.value
+                burialSiteTypeId: burialSiteTypeIdElement.value
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.lotTypeFields.length === 0) {
@@ -160,9 +160,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     else {
-        const originalLotTypeId = lotTypeIdElement.value;
-        lotTypeIdElement.addEventListener('change', () => {
-            if (lotTypeIdElement.value !== originalLotTypeId) {
+        const originalburialSiteTypeId = burialSiteTypeIdElement.value;
+        burialSiteTypeIdElement.addEventListener('change', () => {
+            if (burialSiteTypeIdElement.value !== originalburialSiteTypeId) {
                 bulmaJS.confirm({
                     title: 'Confirm Change',
                     message: `Are you sure you want to change the ${los.escapedAliases.lot} type?\n
@@ -177,7 +177,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     cancelButton: {
                         text: 'Revert the Change',
                         callbackFunction() {
-                            lotTypeIdElement.value = originalLotTypeId;
+                            burialSiteTypeIdElement.value = originalburialSiteTypeId;
                         }
                     }
                 });

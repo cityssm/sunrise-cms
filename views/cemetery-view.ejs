@@ -1,0 +1,230 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li>
+        <a href="<%= urlPrefix %>/maps">
+            <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
+            <span><%= configFunctions.getConfigProperty("aliases.maps") %></span>
+        </a>
+    </li>
+    <li class="is-active">
+        <a href="#" aria-current="page">
+            <%= map.mapName || "(No Name)" %>
+        </a>
+    </li>
+  </ul>
+</nav>
+
+<h1 class="title is-1">
+    <%= map.mapName || "(No Name)" %>
+</h1>
+
+
+<div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
+  <div class="level-left">
+    <span class="level-item has-text-weight-bold">
+      <%= map.mapName || "(No Name)" %>
+    </span>
+  </div>
+  <div class="level-right">
+    <div class="level-item">
+      <a class="button is-link is-outlined has-tooltip-left"
+          data-tooltip="Previous <%= configFunctions.getConfigProperty("aliases.map") %>"
+          href="<%= urlPrefix %>/maps/<%= map.mapId %>/previous"
+          accesskey=",">
+          <i class="fas fa-arrow-left" aria-hidden="true"></i>
+          <span class="sr-only">Previous <%= configFunctions.getConfigProperty("aliases.map") %></span>
+      </a>
+    </div>
+    <div class="level-item">
+      <a class="button is-link has-tooltip-left"
+          data-tooltip="Next <%= configFunctions.getConfigProperty("aliases.map") %>"
+          href="<%= urlPrefix %>/maps/<%= map.mapId %>/next"
+          accesskey=".">
+          <span>Next</span>
+          <span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+      </a>
+    </div>
+    <% if (user.userProperties.canUpdate) { %>
+      <div class="level-item">
+        <a class="button is-primary"
+            href="<%= urlPrefix %>/maps/<%= map.mapId %>/edit"
+            accesskey="e">
+            <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+            <span>Switch to Edit Mode</span>
+        </a>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<div class="panel">
+    <div class="panel-block is-block">
+        <div class="columns">
+            <% if (map.mapDescription && map.mapDescription !== "") { %>
+                <div class="column">
+                    <strong>Description</strong><br />
+                    <%= map.mapDescription %>
+                </div>
+            <% } %>
+            <div class="column">
+                <strong>Address</strong><br />
+                <% if (map.mapAddress1 !== "") { %>
+                    <%= map.mapAddress1 %><br />
+                <% } %>
+                <% if (map.mapAddress2 !== "") { %>
+                    <%= map.mapAddress2 %><br />
+                <% } %>
+                <%= map.mapCity %>, <%= map.mapProvince %><br />
+                <%= map.mapPostalCode %>
+            </div>
+            <% if (map.mapPhoneNumber !== "") { %>
+                <div class="column">
+                    <strong>Phone Number</strong><br />
+                    <%= map.mapPhoneNumber %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<div class="columns">
+    <div class="column">
+        <div class="panel">
+            <h2 class="panel-heading">Geographic Location</h2>
+            <div class="panel-block is-block">
+                <% if (map.mapLatitude && map.mapLongitude) { %>
+                    <div id="map--leaflet" data-map-latitude="<%= map.mapLatitude %>" data-map-longitude="<%= map.mapLongitude %>" style="height:300px"></div>
+                <% } else { %>
+                    <div class="message is-info">
+                        <p class="message-body">There are no geographic coordinates associated with this <%= configFunctions.getConfigProperty("aliases.map").toLowerCase() %>.</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="panel">
+            <h2 class="panel-heading">Image</h2>
+            <div class="panel-block is-block">
+                <% if (map.mapSVG) { %>
+                    <% const imageURL = urlPrefix + "/images/maps/" + map.mapSVG %>
+                    <a class="image" href="<%= urlPrefix %>/images/maps/<%= map.mapSVG %>" target="_blank">
+                        <%- include('../public/images/maps/' + map.mapSVG); -%>
+                    </a>
+                <% } else { %>
+                    <div class="message is-info">
+                        <p class="message-body">There are no image associated with this <%= configFunctions.getConfigProperty("aliases.map").toLowerCase() %>.</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% const lotSearchUrl = urlPrefix + "/lots?mapId=" + map.mapId; %>
+<div class="panel">
+    <div class="panel-heading">
+        <div class="level is-mobile">
+            <div class="level-left">
+                <div class="level-item">
+                    <h2 class="title is-5 has-text-weight-bold">
+                        <%= configFunctions.getConfigProperty("aliases.lot") %> Summaries
+                        <a class="tag is-link ml-2" href="<%= lotSearchUrl %>">
+                            <%= map.lotCount %>
+                        </a>
+                    </h2>
+                </div>
+            </div>
+            <div class="level-right">
+                <div class="level-item">
+                    <a class="button is-small is-link has-text-weight-normal" href="<%=urlPrefix %>/reports/lots-byMapId?mapId=<%= map.mapId %>" download>
+                        <span class="icon"><i class="fas fa-download" aria-hidden="true"></i></span>
+                        <span>Export All</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-block is-block">
+        <% if (map.lotCount === 0) { %>
+            <div class="message is-info">
+                <p class="message-body">
+                    There are no <%= configFunctions.getConfigProperty("aliases.lots").toLowerCase() %>
+                    associated with this <%= configFunctions.getConfigProperty("aliases.map").toLowerCase() %>.
+                </p>
+            </div>
+        <% } else { %>
+            <div class="columns">
+                <div class="column">
+                    <table class="table is-fullwidth is-striped is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th class="has-text-right">
+                                    <%= configFunctions.getConfigProperty("aliases.lot") %> Count
+                                </th>
+                                <th class="has-text-right">Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (const lotType of lotTypeSummary) { %>
+                                <tr>
+                                    <td>
+                                        <a class="has-text-weight-bold" href="<%= lotSearchUrl %>&burialSiteTypeId=<%= lotType.burialSiteTypeId %>">
+                                            <%= lotType.lotType %>
+                                        </a>
+                                    </td>
+                                    <td class="has-text-right">
+                                        <%= lotType.lotCount %>
+                                    </td>
+                                    <td class="has-text-right">
+                                        <%= ((lotType.lotCount / map.lotCount) * 100).toFixed(1) %>%
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="column">
+                    <table class="table is-fullwidth is-striped is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th class="has-text-right">
+                                    <%= configFunctions.getConfigProperty("aliases.lot") %> Count
+                                </th>
+                                <th class="has-text-right">Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (const lotStatus of lotStatusSummary) { %>
+                                <tr>
+                                    <td>
+                                        <a class="has-text-weight-bold" href="<%= lotSearchUrl %>&burialSiteStatusId=<%= lotStatus.burialSiteStatusId %>">
+                                            <%= lotStatus.lotStatus %>
+                                        </a>
+                                    </td>
+                                    <td class="has-text-right">
+                                        <%= lotStatus.lotCount %>
+                                    </td>
+                                    <td class="has-text-right">
+                                        <%= ((lotStatus.lotCount / map.lotCount) * 100).toFixed(1) %>%
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/mapView.js"></script>
+
+<%- include('_footerB'); -%>

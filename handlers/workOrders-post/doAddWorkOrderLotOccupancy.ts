@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import addWorkOrderLotOccupancy from '../../database/addWorkOrderLotOccupancy.js'
-import getLotOccupancies from '../../database/getLotOccupancies.js'
+import getBurialSiteContracts from '../../database/getLotOccupancies.js'
 
 export default async function handler(
   request: Request,
@@ -10,12 +10,12 @@ export default async function handler(
   const success = await addWorkOrderLotOccupancy(
     {
       workOrderId: request.body.workOrderId as string,
-      lotOccupancyId: request.body.lotOccupancyId as string
+      burialSiteContractId: request.body.burialSiteContractId as string
     },
     request.session.user as User
   )
 
-  const workOrderLotOccupanciesResults = await getLotOccupancies(
+  const workOrderLotOccupanciesResults = await getBurialSiteContracts(
     {
       workOrderId: request.body.workOrderId as string
     },

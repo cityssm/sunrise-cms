@@ -1,14 +1,14 @@
 import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js';
-import { getAllOccupancyTypeFields, getOccupancyTypes } from '../../helpers/functions.cache.js';
+import { getAllContractTypeFields, getContractTypes } from '../../helpers/functions.cache.js';
 export default async function handler(request, response) {
     const success = request.body.moveToEnd === '1'
-        ? await moveRecordUpToTop('OccupancyTypes', request.body.occupancyTypeId)
-        : await moveRecordUp('OccupancyTypes', request.body.occupancyTypeId);
-    const occupancyTypes = await getOccupancyTypes();
-    const allOccupancyTypeFields = await getAllOccupancyTypeFields();
+        ? await moveRecordUpToTop('OccupancyTypes', request.body.contractTypeId)
+        : await moveRecordUp('OccupancyTypes', request.body.contractTypeId);
+    const occupancyTypes = await getContractTypes();
+    const allContractTypeFields = await getAllContractTypeFields();
     response.json({
         success,
         occupancyTypes,
-        allOccupancyTypeFields
+        allContractTypeFields
     });
 }

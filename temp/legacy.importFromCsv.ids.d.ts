@@ -1,17 +1,17 @@
 export declare function getFeeIdByFeeDescription(feeDescription: string): number;
-export declare const preneedOwnerLotOccupantTypeId: number;
-export declare const funeralDirectorLotOccupantTypeId: number;
-export declare const deceasedLotOccupantTypeId: number;
-export declare const purchaserLotOccupantTypeId: number;
-export declare const availableLotStatusId: any;
-export declare const reservedLotStatusId: any;
-export declare const takenLotStatusId: any;
-export declare function getLotTypeId(dataRow: {
+export declare const preneedOwnerLotOccupantTypeId: any;
+export declare const funeralDirectorLotOccupantTypeId: any;
+export declare const deceasedLotOccupantTypeId: any;
+export declare const purchaserLotOccupantTypeId: any;
+export declare const availableburialSiteStatusId: any;
+export declare const reservedburialSiteStatusId: any;
+export declare const takenburialSiteStatusId: any;
+export declare function getburialSiteTypeId(dataRow: {
     cemetery: string;
 }): number;
-export declare const preneedOccupancyType: import("../types/recordTypes.js").OccupancyType;
-export declare const deceasedOccupancyType: import("../types/recordTypes.js").OccupancyType;
-export declare const cremationOccupancyType: import("../types/recordTypes.js").OccupancyType;
+export declare const preneedOccupancyType: import("../types/recordTypes.js").ContractType;
+export declare const deceasedOccupancyType: import("../types/recordTypes.js").ContractType;
+export declare const cremationOccupancyType: import("../types/recordTypes.js").ContractType;
 export declare const acknowledgedWorkOrderMilestoneTypeId: number | undefined;
 export declare const deathWorkOrderMilestoneTypeId: number | undefined;
 export declare const funeralWorkOrderMilestoneTypeId: number | undefined;

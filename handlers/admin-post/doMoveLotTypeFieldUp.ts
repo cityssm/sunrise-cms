@@ -4,7 +4,7 @@ import {
   moveLotTypeFieldUp,
   moveLotTypeFieldUpToTop
 } from '../../database/moveLotTypeField.js'
-import { getLotTypes } from '../../helpers/functions.cache.js'
+import { getBurialSiteTypes } from '../../helpers/functions.cache.js'
 
 export default async function handler(
   request: Request<
@@ -19,7 +19,7 @@ export default async function handler(
       ? await moveLotTypeFieldUpToTop(request.body.lotTypeFieldId)
       : await moveLotTypeFieldUp(request.body.lotTypeFieldId)
 
-  const lotTypes = await getLotTypes()
+  const lotTypes = await getBurialSiteTypes()
 
   response.json({
     success,

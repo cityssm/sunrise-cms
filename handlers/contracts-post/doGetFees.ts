@@ -7,14 +7,14 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lotOccupancyId = request.body.lotOccupancyId
+  const burialSiteContractId = request.body.burialSiteContractId
 
-  const lotOccupancy = (await getLotOccupancy(lotOccupancyId))!
+  const lotOccupancy = (await getLotOccupancy(burialSiteContractId))!
 
   const feeCategories = await getFeeCategories(
     {
-      occupancyTypeId: lotOccupancy.occupancyTypeId,
-      lotTypeId: lotOccupancy.lotTypeId
+      contractTypeId: lotOccupancy.contractTypeId,
+      burialSiteTypeId: lotOccupancy.burialSiteTypeId
     },
     {
       includeFees: true

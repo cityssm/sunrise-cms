@@ -11,7 +11,7 @@ import type { PoolConnection } from 'better-sqlite-pool'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import type { WorkOrderMilestone } from '../types/recordTypes.js'
 
-import getLotOccupancies from './getLotOccupancies.js'
+import getBurialSiteContracts from './getBurialSiteContracts.js'
 import getLots from './getLots.js'
 import { acquireConnection } from './pool.js'
 
@@ -218,7 +218,7 @@ export default async function getWorkOrderMilestones(
 
       workOrderMilestone.workOrderLots = workOrderLotsResults.lots
 
-      const lotOccupancies = await getLotOccupancies(
+      const BurialSiteContracts = await getBurialSiteContracts(
         {
           workOrderId: workOrderMilestone.workOrderId
         },
@@ -232,7 +232,7 @@ export default async function getWorkOrderMilestones(
         database
       )
 
-      workOrderMilestone.workOrderLotOccupancies = lotOccupancies.lotOccupancies
+      workOrderMilestone.workOrderBurialSiteContracts = BurialSiteContracts.BurialSiteContracts
     }
   }
 

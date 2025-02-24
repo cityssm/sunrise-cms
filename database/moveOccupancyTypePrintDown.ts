@@ -3,7 +3,7 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 import { acquireConnection } from './pool.js'
 
 export async function moveOccupancyTypePrintDown(
-  occupancyTypeId: number | string,
+  contractTypeId: number | string,
   printEJS: string
 ): Promise<boolean> {
   const database = await acquireConnection()
@@ -11,36 +11,36 @@ export async function moveOccupancyTypePrintDown(
   const currentOrderNumber = (
     database
       .prepare(
-        'select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?'
+        'select orderNumber from ContractTypePrints where contractTypeId = ? and printEJS = ?'
       )
-      .get(occupancyTypeId, printEJS) as { orderNumber: number }
+      .get(contractTypeId, printEJS) as { orderNumber: number }
   ).orderNumber
 
   database
     .prepare(
-      `update OccupancyTypePrints
+      `update ContractTypePrints
         set orderNumber = orderNumber - 1
         where recordDelete_timeMillis is null
-        and occupancyTypeId = ?
+        and contractTypeId = ?
         and orderNumber = ? + 1`
     )
-    .run(occupancyTypeId, currentOrderNumber)
+    .run(contractTypeId, currentOrderNumber)
 
   const result = database
     .prepare(
-      'update OccupancyTypePrints set orderNumber = ? + 1 where occupancyTypeId = ? and printEJS = ?'
+      'update ContractTypePrints set orderNumber = ? + 1 where contractTypeId = ? and printEJS = ?'
     )
-    .run(currentOrderNumber, occupancyTypeId, printEJS)
+    .run(currentOrderNumber, contractTypeId, printEJS)
 
   database.release()
 
-  clearCacheByTableName('OccupancyTypePrints')
+  clearCacheByTableName('ContractTypePrints')
 
   return result.changes > 0
 }
 
 export async function moveOccupancyTypePrintDownToBottom(
-  occupancyTypeId: number | string,
+  contractTypeId: number | string,
   printEJS: string
 ): Promise<boolean> {
   const database = await acquireConnection()
@@ -48,46 +48,46 @@ export async function moveOccupancyTypePrintDownToBottom(
   const currentOrderNumber = (
     database
       .prepare(
-        'select orderNumber from OccupancyTypePrints where occupancyTypeId = ? and printEJS = ?'
+        'select orderNumber from ContractTypePrints where contractTypeId = ? and printEJS = ?'
       )
-      .get(occupancyTypeId, printEJS) as { orderNumber: number }
+      .get(contractTypeId, printEJS) as { orderNumber: number }
   ).orderNumber
 
   const maxOrderNumber: number = (
     database
       .prepare(
         `select max(orderNumber) as maxOrderNumber
-        from OccupancyTypePrints
+        from ContractTypePrints
         where recordDelete_timeMillis is null
-        and occupancyTypeId = ?`
+        and contractTypeId = ?`
       )
-      .get(occupancyTypeId) as { maxOrderNumber: number }
+      .get(contractTypeId) as { maxOrderNumber: number }
   ).maxOrderNumber
 
   if (currentOrderNumber !== maxOrderNumber) {
     database
       .prepare(
-        `update OccupancyTypePrints
+        `update ContractTypePrints
           set orderNumber = ? + 1
-          where occupancyTypeId = ?
+          where contractTypeId = ?
           and printEJS = ?`
       )
-      .run(maxOrderNumber, occupancyTypeId, printEJS)
+      .run(maxOrderNumber, contractTypeId, printEJS)
 
     database
       .prepare(
-        `update OccupancyTypeFields
+        `update ContractTypeFields
           set orderNumber = orderNumber - 1
           where recordDelete_timeMillis is null
-          and occupancyTypeId = ?
+          and contractTypeId = ?
           and orderNumber > ?`
       )
-      .run(occupancyTypeId, currentOrderNumber)
+      .run(contractTypeId, currentOrderNumber)
   }
 
   database.release()
 
-  clearCacheByTableName('OccupancyTypePrints')
+  clearCacheByTableName('ContractTypePrints')
 
   return true
 }

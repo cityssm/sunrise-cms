@@ -9,25 +9,25 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const map = await getMap(request.params.mapId)
+  const map = await getMap(request.params.cemeteryId)
 
   if (map === undefined) {
     response.redirect(
-      `${getConfigProperty('reverseProxy.urlPrefix')}/maps/?error=mapIdNotFound`
+      `${getConfigProperty('reverseProxy.urlPrefix')}/maps/?error=cemeteryIdNotFound`
     )
     return
   }
 
   const lotTypeSummary = await getLotTypeSummary({
-    mapId: map.mapId
+    cemeteryId: map.cemeteryId
   })
 
   const lotStatusSummary = await getLotStatusSummary({
-    mapId: map.mapId
+    cemeteryId: map.cemeteryId
   })
 
   response.render('map-view', {
-    headTitle: map.mapName,
+    headTitle: map.cemeteryName,
     map,
     lotTypeSummary,
     lotStatusSummary

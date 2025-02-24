@@ -295,9 +295,9 @@ declare const exports: Record<string, unknown> & {
       exports.aliases.externalReceiptNumber.toLowerCase()
     ),
 
-    OccupancyStartDate: cityssm.escapeHTML(exports.aliases.occupancyStartDate),
-    occupancyStartDate: cityssm.escapeHTML(
-      exports.aliases.occupancyStartDate.toLowerCase()
+    contractStartDate: cityssm.escapeHTML(exports.aliases.contractStartDate),
+    contractStartDate: cityssm.escapeHTML(
+      exports.aliases.contractStartDate.toLowerCase()
     ),
 
     WorkOrderOpenDate: cityssm.escapeHTML(exports.aliases.workOrderOpenDate),
@@ -445,11 +445,11 @@ declare const exports: Record<string, unknown> & {
   }
 
   function getMapURL(
-    mapId: number | string = '',
+    cemeteryId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('maps', mapId, edit, time)
+    return getRecordURL('maps', cemeteryId, edit, time)
   }
 
   function getLotURL(
@@ -461,11 +461,11 @@ declare const exports: Record<string, unknown> & {
   }
 
   function getLotOccupancyURL(
-    lotOccupancyId: number | string = '',
+    burialSiteContractId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('lotOccupancies', lotOccupancyId, edit, time)
+    return getRecordURL('lotOccupancies', burialSiteContractId, edit, time)
   }
 
   function getWorkOrderURL(
