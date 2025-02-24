@@ -16,7 +16,7 @@ export default async function handler(request, response) {
     const burialSiteStatusSummary = await getBurialSiteStatusSummary({
         cemeteryId: cemetery.cemeteryId
     });
-    response.render('map-edit', {
+    response.render('cemetery-edit', {
         headTitle: cemetery.cemeteryName,
         isCreate: false,
         cemetery,

@@ -1,23 +1,23 @@
-import getLotStatusSummary from '../../database/getLotStatusSummary.js';
-import getLotTypeSummary from '../../database/getLotTypeSummary.js';
-import getMap from '../../database/getMap.js';
+import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js';
+import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js';
+import getCemetery from '../../database/getCemetery.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 export default async function handler(request, response) {
-    const map = await getMap(request.params.cemeteryId);
-    if (map === undefined) {
-        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/maps/?error=cemeteryIdNotFound`);
+    const cemetery = await getCemetery(request.params.cemeteryId);
+    if (cemetery === undefined) {
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/cemeteries/?error=cemeteryIdNotFound`);
         return;
     }
-    const lotTypeSummary = await getLotTypeSummary({
-        cemeteryId: map.cemeteryId
+    const burialSiteTypeSummary = await getBurialSiteTypeSummary({
+        cemeteryId: cemetery.cemeteryId
     });
-    const lotStatusSummary = await getLotStatusSummary({
-        cemeteryId: map.cemeteryId
+    const burialSiteStatusSummary = await getBurialSiteStatusSummary({
+        cemeteryId: cemetery.cemeteryId
     });
-    response.render('map-view', {
-        headTitle: map.cemeteryName,
-        map,
-        lotTypeSummary,
-        lotStatusSummary
+    response.render('cemetery-view', {
+        headTitle: cemetery.cemeteryName,
+        cemetery,
+        burialSiteTypeSummary,
+        burialSiteStatusSummary
     });
 }

@@ -6,7 +6,7 @@ export default async function handler(_request, response) {
         cemeteryProvince: getConfigProperty('settings.cemeteries.provinceDefault')
     };
     const cemeterySVGs = await getCemeterySVGs();
-    response.render('map-edit', {
+    response.render('cemetery-edit', {
         headTitle: `Create a Cemetery`,
         isCreate: true,
         cemetery,

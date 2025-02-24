@@ -1,13 +1,15 @@
 import type { Request, Response } from 'express'
 
-import addMap, { type AddMapForm } from '../../database/addMap.js'
+import addCemetery, {
+  type AddCemeteryForm
+} from '../../database/addCemetery.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<unknown, unknown, AddCemeteryForm>,
   response: Response
 ): Promise<void> {
-  const cemeteryId = await addMap(
-    request.body as AddMapForm,
+  const cemeteryId = await addCemetery(
+    request.body,
     request.session.user as User
   )
 
@@ -16,4 +18,3 @@ export default async function handler(
     cemeteryId
   })
 }
-

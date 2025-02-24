@@ -1,10 +1,14 @@
 import type { Request, Response } from 'express'
 
-import { addRecord } from '../../database/addRecord.js'
+import addRecord from '../../database/addRecord.js'
 import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<
+    unknown,
+    unknown,
+    { workOrderMilestoneType: string; orderNumber?: number | string }
+  >,
   response: Response
 ): Promise<void> {
   const workOrderMilestoneTypeId = await addRecord(

@@ -29,7 +29,7 @@ export default async function handler(
     cemeteryId: cemetery.cemeteryId
   })
 
-  response.render('map-edit', {
+  response.render('cemetery-edit', {
     headTitle: cemetery.cemeteryName,
     isCreate: false,
     cemetery,

@@ -1,2 +1,3 @@
 import type { Request, Response } from 'express';
-export default function handler(request: Request, response: Response): Promise<void>;
+import { type AddCemeteryForm } from '../../database/addCemetery.js';
+export default function handler(request: Request<unknown, unknown, AddCemeteryForm>, response: Response): Promise<void>;

@@ -9,7 +9,7 @@ import handler_doAddFee from '../handlers/admin-post/doAddFee.js';
 import handler_doAddFeeCategory from '../handlers/admin-post/doAddFeeCategory.js';
 import handler_doAddLotOccupantType from '../handlers/admin-post/doAddLotOccupantType.js';
 import handler_doAddLotStatus from '../handlers/admin-post/doAddLotStatus.js';
-import handler_doAddLotType from '../handlers/admin-post/doAddLotType.js';
+import handler_doAddLotType from '../handlers/admin-post/doAddBurialSiteType.js';
 import handler_doAddLotTypeField from '../handlers/admin-post/doAddLotTypeField.js';
 import handler_doAddOccupancyType from '../handlers/admin-post/doAddOccupancyType.js';
 import handler_doAddOccupancyTypeField from '../handlers/admin-post/doAddOccupancyTypeField.js';

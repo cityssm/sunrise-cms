@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express'
 
 import { getBurialSiteTypes } from '../../helpers/functions.cache.js'
-import { getConfigProperty } from '../../helpers/config.helpers.js'
 
 export default async function handler(
   _request: Request,
@@ -9,8 +8,8 @@ export default async function handler(
 ): Promise<void> {
   const lotTypes = await getBurialSiteTypes()
 
-  response.render('admin-lotTypes', {
-    headTitle: `${getConfigProperty('aliases.lot')} Type Management`,
+  response.render('admin-burialSiteTypes', {
+    headTitle: `Burial Site Type Management`,
     lotTypes
   })
 }
