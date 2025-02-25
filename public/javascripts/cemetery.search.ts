@@ -1,7 +1,8 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { LOS } from '../../types/globalTypes.js'
-import type { MapRecord } from '../../types/recordTypes.js'
+import type { Cemetery } from '../../types/recordTypes.js'
+
+import type { LOS } from './types.js'
 
 declare const cityssm: cityssmGlobal
 
@@ -9,20 +10,21 @@ declare const exports: Record<string, unknown>
 ;(() => {
   const los = exports.los as LOS
 
-  const maps = exports.maps as MapRecord[]
+  const cemeteries = exports.cemeteries as Cemetery[]
 
   const searchFilterElement = document.querySelector(
-    '#searchFilter--map'
+    '#searchFilter--cemetery'
   ) as HTMLInputElement
 
   const searchResultsContainerElement = document.querySelector(
     '#container--searchResults'
   ) as HTMLElement
 
+  // eslint-disable-next-line complexity
   function renderResults(): void {
     // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
-      `Loading ${los.escapedAliases.Maps}...`
+      `Loading Cemeteries...`
     )
 
     let searchResultCount = 0
@@ -33,21 +35,21 @@ declare const exports: Record<string, unknown>
       .toLowerCase()
       .split(' ')
 
-    for (const map of maps) {
-      const mapSearchString = `${map.cemeteryName ?? ''} ${
-        map.mapDescription ?? ''
-      } ${map.mapAddress1 ?? ''} ${map.mapAddress2 ?? ''}`.toLowerCase()
+    for (const cemetery of cemeteries) {
+      const cemeterySearchString = `${cemetery.cemeteryName ?? ''} ${
+        cemetery.cemeteryDescription ?? ''
+      } ${cemetery.cemeteryAddress1 ?? ''} ${cemetery.cemeteryAddress2 ?? ''}`.toLowerCase()
 
-      let showMap = true
+      let showCemetery = true
 
       for (const filterStringPiece of filterStringSplit) {
-        if (!mapSearchString.includes(filterStringPiece)) {
-          showMap = false
+        if (!cemeterySearchString.includes(filterStringPiece)) {
+          showCemetery = false
           break
         }
       }
 
-      if (!showMap) {
+      if (!showCemetery) {
         continue
       }
 
@@ -58,40 +60,40 @@ declare const exports: Record<string, unknown>
         'beforeend',
         `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${los.getMapURL(map.cemeteryId)}">
+            <a class="has-text-weight-bold" href="${los.getCemeteryURL(cemetery.cemeteryId)}">
               ${cityssm.escapeHTML(
-                (map.cemeteryName ?? '') === '' ? '(No Name)' : map.cemeteryName ?? ''
+                (cemetery.cemeteryName ?? '') === '' ? '(No Name)' : cemetery.cemeteryName ?? ''
               )}
             </a><br />
             <span class="is-size-7">
-              ${cityssm.escapeHTML(map.mapDescription ?? '')}
+              ${cityssm.escapeHTML(cemetery.cemeteryDescription ?? '')}
             </span>
           </td><td>
             ${
-              (map.mapAddress1 ?? '') === ''
+              (cemetery.cemeteryAddress1 ?? '') === ''
                 ? ''
-                : `${cityssm.escapeHTML(map.mapAddress1 ?? '')}<br />`
+                : `${cityssm.escapeHTML(cemetery.cemeteryAddress1 ?? '')}<br />`
             }
             ${
-              (map.mapAddress2 ?? '') === ''
+              (cemetery.cemeteryAddress2 ?? '') === ''
                 ? ''
-                : `${cityssm.escapeHTML(map.mapAddress2 ?? '')}<br />`
+                : `${cityssm.escapeHTML(cemetery.cemeteryAddress2 ?? '')}<br />`
             }
             ${
-              map.mapCity || map.mapProvince
-                ? `${cityssm.escapeHTML(map.mapCity ?? '')}, ${cityssm.escapeHTML(map.mapProvince ?? '')}<br />`
+              cemetery.cemeteryCity || cemetery.cemeteryProvince
+                ? `${cityssm.escapeHTML(cemetery.cemeteryCity ?? '')}, ${cityssm.escapeHTML(cemetery.cemeteryProvince ?? '')}<br />`
                 : ''
             }
             ${
-              (map.mapPostalCode ?? '') === ''
+              (cemetery.cemeteryPostalCode ?? '') === ''
                 ? ''
-                : cityssm.escapeHTML(map.mapPostalCode ?? '')
+                : cityssm.escapeHTML(cemetery.cemeteryPostalCode ?? '')
             }
           </td><td>
-            ${cityssm.escapeHTML(map.mapPhoneNumber ?? '')}
+            ${cityssm.escapeHTML(cemetery.cemeteryPhoneNumber ?? '')}
           </td><td class="has-text-centered">
             ${
-              map.mapLatitude && map.mapLongitude
+              cemetery.cemeteryLatitude && cemetery.cemeteryLongitude
                 ? `<span data-tooltip="Has Geographic Coordinates">
                     <i class="fas fa-map-marker-alt" role="img" aria-label="Has Geographic Coordinates"></i>
                     </span>`
@@ -99,12 +101,12 @@ declare const exports: Record<string, unknown>
             }
           </td><td class="has-text-centered">
             ${
-              (map.mapSVG ?? '') === ''
+              (cemetery.cemeterySvg ?? '') === ''
                 ? ''
                 : '<span data-tooltip="Has Image"><i class="fas fa-image" role="img" aria-label="Has Image"></i></span>'
             }
           </td><td class="has-text-right">
-            <a href="${los.urlPrefix}/lots?cemeteryId=${map.cemeteryId}">${map.lotCount}</a>
+            <a href="${los.urlPrefix}/burialSites?cemeteryId=${cemetery.cemeteryId}">${cemetery.burialSiteCount}</a>
           </td>
           </tr>`
       )
@@ -115,7 +117,7 @@ declare const exports: Record<string, unknown>
     if (searchResultCount === 0) {
       // eslint-disable-next-line no-unsanitized/property
       searchResultsContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no ${los.escapedAliases.maps} that meet the search criteria.</p>
+        <p class="message-body">There are no cemeteries that meet the search criteria.</p>
         </div>`
     } else {
       const searchResultsTableElement = document.createElement('table')
@@ -125,12 +127,12 @@ declare const exports: Record<string, unknown>
 
       // eslint-disable-next-line no-unsanitized/property
       searchResultsTableElement.innerHTML = `<thead><tr>
-        <th>${los.escapedAliases.Map}</th>
+        <th>Cemetery</th>
         <th>Address</th>
         <th>Phone Number</th>
         <th class="has-text-centered">Coordinates</th>
         <th class="has-text-centered">Image</th>
-        <th class="has-text-right">${los.escapedAliases.Lot} Count</th>
+        <th class="has-text-right">Burial Site Count</th>
         </tr></thead>`
 
       searchResultsTableElement.append(searchResultsTbodyElement)

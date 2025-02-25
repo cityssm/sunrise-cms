@@ -3,6 +3,7 @@ import { acquireConnection } from './pool.js'
 export interface UpdateCemeteryForm {
   cemeteryId: string
   cemeteryName: string
+  cemeteryKey: string
   cemeteryDescription: string
   cemeterySvg: string
   cemeteryLatitude: string
@@ -23,18 +24,19 @@ export default async function updateCemetery(
 
   const result = database
     .prepare(
-      `update Maps
+      `update Cemeteries
         set cemeteryName = ?,
-        mapDescription = ?,
-        mapSVG = ?,
-        mapLatitude = ?,
-        mapLongitude = ?,
-        mapAddress1 = ?,
-        mapAddress2 = ?,
-        mapCity = ?,
-        mapProvince = ?,
-        mapPostalCode = ?,
-        mapPhoneNumber = ?,
+        cemeteryKey = ?,
+        cemeteryDescription = ?,
+        cemeterySvg = ?,
+        cemeteryLatitude = ?,
+        cemeteryLongitude = ?,
+        cemeteryAddress1 = ?,
+        cemeteryAddress2 = ?,
+        cemeteryCity = ?,
+        cemeteryProvince = ?,
+        cemeteryPostalCode = ?,
+        cemeteryPhoneNumber = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where cemeteryId = ?
@@ -42,10 +44,15 @@ export default async function updateCemetery(
     )
     .run(
       updateForm.cemeteryName,
+      updateForm.cemeteryKey,
       updateForm.cemeteryDescription,
       updateForm.cemeterySvg,
-      updateForm.cemeteryLatitude === '' ? undefined : updateForm.cemeteryLatitude,
-      updateForm.cemeteryLongitude === '' ? undefined : updateForm.cemeteryLongitude,
+      updateForm.cemeteryLatitude === ''
+        ? undefined
+        : updateForm.cemeteryLatitude,
+      updateForm.cemeteryLongitude === ''
+        ? undefined
+        : updateForm.cemeteryLongitude,
       updateForm.cemeteryAddress1,
       updateForm.cemeteryAddress2,
       updateForm.cemeteryCity,

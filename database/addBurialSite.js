@@ -1,7 +1,7 @@
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
 import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js';
 import { acquireConnection } from './pool.js';
-export default async function addLot(burialSiteForm, user) {
+export default async function addBurialSite(burialSiteForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
     const burialSiteName = buildBurialSiteName(burialSiteForm);

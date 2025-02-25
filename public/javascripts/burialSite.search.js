@@ -20,13 +20,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // eslint-disable-next-line no-unsanitized/method
             resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${los.getLotURL(lot.lotId)}">
+            <a class="has-text-weight-bold" href="${los.getBurialSiteURL(lot.lotId)}">
               ${cityssm.escapeHTML(lot.lotName ?? '')}
             </a>
           </td><td>
-            <a href="${los.getMapURL(lot.mapId)}">
-              ${lot.mapName
-                ? cityssm.escapeHTML(lot.mapName)
+            <a href="${los.getCemeteryURL(lot.cemeteryId)}">
+              ${lot.cemeteryName
+                ? cityssm.escapeHTML(lot.cemeteryName)
                 : '<span class="has-text-grey">(No Name)</span>'}
             </a>
           </td><td>
@@ -35,7 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${lot.burialSiteStatusId
                 ? cityssm.escapeHTML(lot.lotStatus ?? '')
                 : '<span class="has-text-grey">(No Status)</span>'}<br />
-            ${(lot.lotOccupancyCount ?? 0) > 0
+            ${(lot.burialSiteContractCount ?? 0) > 0
                 ? '<span class="is-size-7">Currently Occupied</span>'
                 : ''}
           </td>
@@ -62,22 +62,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .querySelector("button[data-page='next']")
             ?.addEventListener('click', nextAndGetLots);
     }
-    function getLots() {
+    function getBurialSites() {
         // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading ${los.escapedAliases.Lots}...`);
-        cityssm.postJSON(`${los.urlPrefix}/lots/doSearchLots`, searchFilterFormElement, renderLots);
+        cityssm.postJSON(`${los.urlPrefix}/lots/doSearchBurialSites`, searchFilterFormElement, renderLots);
     }
     function resetOffsetAndGetLots() {
         offsetElement.value = '0';
-        getLots();
+        getBurialSites();
     }
     function previousAndGetLots() {
         offsetElement.value = Math.max(Number.parseInt(offsetElement.value, 10) - limit, 0).toString();
-        getLots();
+        getBurialSites();
     }
     function nextAndGetLots() {
         offsetElement.value = (Number.parseInt(offsetElement.value, 10) + limit).toString();
-        getLots();
+        getBurialSites();
     }
     const filterElements = searchFilterFormElement.querySelectorAll('input, select');
     for (const filterElement of filterElements) {
@@ -86,5 +86,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
     searchFilterFormElement.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
     });
-    getLots();
+    getBurialSites();
 })();

@@ -280,6 +280,7 @@ type CacheTableNames =
   | 'ContractTypePrints'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
+  | 'FeeCategories'
 
 export function clearCacheByTableName(
   tableName: CacheTableNames,
@@ -314,7 +315,6 @@ export function clearCacheByTableName(
       break
     }
 
-    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
     default: {
       return
     }

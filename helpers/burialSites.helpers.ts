@@ -8,7 +8,7 @@ import Debug from 'debug'
 import NodeCache from 'node-cache'
 
 import getNextBurialSiteIdFromDatabase from '../database/getNextBurialSiteId.js'
-import getPreviousLotIdFromDatabase from '../database/getPreviousLotId.js'
+import getPreviousBurialSiteIdFromDatabase from '../database/getPreviousBurialSiteId.js'
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 import type {
   CacheBurialSiteIdsWorkerMessage,
@@ -79,7 +79,7 @@ export async function getPreviousBurialSiteId(
     previousBurialSiteIdCache.get(burialSiteId)
 
   if (previousBurialSiteId === undefined) {
-    previousBurialSiteId = await getPreviousLotIdFromDatabase(burialSiteId)
+    previousBurialSiteId = await getPreviousBurialSiteIdFromDatabase(burialSiteId)
 
     if (previousBurialSiteId !== undefined) {
       cacheBurialSiteIds(previousBurialSiteId, burialSiteId)

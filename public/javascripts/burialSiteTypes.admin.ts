@@ -208,7 +208,7 @@ type ResponseJSON =
       )
     }
 
-    cityssm.openHtmlModal('adminLotTypes-addLotTypeField', {
+    cityssm.openHtmlModal('adminLotTypes-addBurialSiteTypeField', {
       onshow(modalElement) {
         los.populateAliases(modalElement)
 
@@ -598,7 +598,7 @@ type ResponseJSON =
               </button>
             </div>
             <div class="level-item">
-              <button class="button is-success is-small button--addLotTypeField" type="button">
+              <button class="button is-success is-small button--addBurialSiteTypeField" type="button">
                 <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
                 <span>Add Field</span>
               </button>
@@ -632,7 +632,7 @@ type ResponseJSON =
         ?.addEventListener('click', openEditLotType)
 
       lotTypeContainer
-        .querySelector('.button--addLotTypeField')
+        .querySelector('.button--addBurialSiteTypeField')
         ?.addEventListener('click', openAddLotTypeField)
       ;(
         lotTypeContainer.querySelector(
@@ -650,7 +650,7 @@ type ResponseJSON =
   }
 
   document
-    .querySelector('#button--addLotType')
+    .querySelector('#button--addBurialSiteType')
     ?.addEventListener('click', () => {
       let addCloseModalFunction: () => void
 
@@ -678,7 +678,7 @@ type ResponseJSON =
         )
       }
 
-      cityssm.openHtmlModal('adminLotTypes-addLotType', {
+      cityssm.openHtmlModal('adminLotTypes-addBurialSiteType', {
         onshow(modalElement) {
           los.populateAliases(modalElement)
         },

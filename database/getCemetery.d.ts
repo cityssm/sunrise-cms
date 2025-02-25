@@ -1,2 +1,2 @@
 import type { Cemetery } from '../types/recordTypes.js';
-export default function getMap(cemeteryId: number | string): Promise<Cemetery | undefined>;
+export default function getCemetery(cemeteryId: number | string): Promise<Cemetery | undefined>;

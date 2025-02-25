@@ -31,7 +31,7 @@ const createStatements = [
     ${recordColumns})`,
 
   `create index if not exists idx_BurialSiteTypes_orderNumber
-    on LotTypes (orderNumber, burialSiteType)`,
+    on BurialSiteTypes (orderNumber, burialSiteType)`,
 
   `create table if not exists BurialSiteTypeFields (
     burialSiteTypeFieldId integer not null primary key autoincrement,
@@ -129,7 +129,7 @@ const createStatements = [
     commentTime integer not null check (commentTime >= 0),
     comment text not null,
     ${recordColumns},
-    foreign key (lotId) references BurialSites (burialSiteId))`,
+    foreign key (burialSiteId) references BurialSites (burialSiteId))`,
 
   `create index if not exists idx_BurialSiteComments_datetime
     on BurialSiteComments (burialSiteId, commentDate, commentTime)`,
@@ -260,9 +260,9 @@ const createStatements = [
   `create table if not exists BurialSiteContractInterments (
     burialSiteContractId integer not null,
     intermentNumber integer not null,
-    isCremated bit not null default 0,
-
+    
     deceasedName varchar(50) not null,
+    isCremated bit not null default 0,
 
     birthDate integer,
     birthPlace varchar(100),
@@ -278,7 +278,7 @@ const createStatements = [
 
     ${recordColumns},
     primary key (burialSiteContractId, intermentNumber),
-    foreign key (burialSiteId) references BurialSites (burialSiteId),
+    foreign key (burialSiteContractId) references BurialSiteContracts (burialSiteContractId),
     foreign key (intermentContainerTypeId) references IntermentContainerTypes (intermentContainerTypeId),
     foreign key (intermentCommittalTypeId) references IntermentCommittalTypes (intermentCommittalTypeId)) without rowid`,
 

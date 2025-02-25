@@ -5,7 +5,7 @@ import { minutesToSeconds } from '@cityssm/to-millis';
 import Debug from 'debug';
 import NodeCache from 'node-cache';
 import getNextBurialSiteIdFromDatabase from '../database/getNextBurialSiteId.js';
-import getPreviousLotIdFromDatabase from '../database/getPreviousLotId.js';
+import getPreviousBurialSiteIdFromDatabase from '../database/getPreviousBurialSiteId.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from './config.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:burialSites.helpers:${process.pid}`);
@@ -46,7 +46,7 @@ export async function getNextBurialSiteId(burialSiteId) {
 export async function getPreviousBurialSiteId(burialSiteId) {
     let previousBurialSiteId = previousBurialSiteIdCache.get(burialSiteId);
     if (previousBurialSiteId === undefined) {
-        previousBurialSiteId = await getPreviousLotIdFromDatabase(burialSiteId);
+        previousBurialSiteId = await getPreviousBurialSiteIdFromDatabase(burialSiteId);
         if (previousBurialSiteId !== undefined) {
             cacheBurialSiteIds(previousBurialSiteId, burialSiteId);
         }

@@ -723,7 +723,7 @@ declare const bulmaJS: BulmaJS
       }
     }
     ;(
-      document.querySelector('#form--addLotStatus') as HTMLFormElement
+      document.querySelector('#form--addBurialSiteStatus') as HTMLFormElement
     ).addEventListener('submit', (submitEvent: SubmitEvent) => {
       submitEvent.preventDefault()
 
@@ -1010,7 +1010,7 @@ declare const bulmaJS: BulmaJS
       }
     }
     ;(
-      document.querySelector('#form--addLotOccupantType') as HTMLFormElement
+      document.querySelector('#form--addBurialSiteOccupantType') as HTMLFormElement
     ).addEventListener('submit', (submitEvent: SubmitEvent) => {
       submitEvent.preventDefault()
 

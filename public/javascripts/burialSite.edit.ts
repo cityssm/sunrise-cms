@@ -55,7 +55,7 @@ declare const exports: Record<string, unknown>
           clearUnsavedChanges()
 
           if (isCreate || refreshAfterSave) {
-            window.location.href = los.getLotURL(responseJSON.lotId, true, true)
+            window.location.href = los.getBurialSiteURL(responseJSON.lotId, true, true)
           } else {
             bulmaJS.alert({
               message: `${los.escapedAliases.Lot} Updated Successfully`,
@@ -102,7 +102,7 @@ declare const exports: Record<string, unknown>
 
             if (responseJSON.success) {
               clearUnsavedChanges()
-              window.location.href = los.getLotURL()
+              window.location.href = los.getBurialSiteURL()
             } else {
               bulmaJS.alert({
                 title: `Error Deleting ${los.escapedAliases.Lot}`,

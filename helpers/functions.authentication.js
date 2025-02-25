@@ -29,15 +29,15 @@ export async function authenticate(userName, password) {
 const safeRedirects = new Set([
     '/admin/cleanup',
     '/admin/fees',
-    '/admin/lottypes',
-    '/admin/occupancytypes',
+    '/admin/burialsitetypes',
+    '/admin/contracttypes',
     '/admin/tables',
-    '/lotoccupancies',
+    '/contracts',
     '/contracts/new',
-    '/lots',
-    '/lots/new',
-    '/maps',
-    '/maps/new',
+    '/burialSites',
+    '/burialSites/new',
+    '/cemeteries',
+    '/cemeteries/new',
     '/workorders',
     '/workorders/new',
     '/workorders/milestonecalendar',
@@ -45,7 +45,7 @@ const safeRedirects = new Set([
     '/reports'
 ]);
 /* eslint-enable @cspell/spellchecker */
-const recordUrl = /^\/(?:maps|lots|lotoccupancies|workorders)\/\d+(?:\/edit)?$/;
+const recordUrl = /^\/(?:cemeteries|burialSites|contracts|workorders)\/\d+(?:\/edit)?$/;
 const printUrl = /^\/print\/(?:pdf|screen)\/[\d/=?A-Za-z-]+$/;
 export function getSafeRedirectURL(possibleRedirectURL = '') {
     const urlPrefix = getConfigProperty('reverseProxy.urlPrefix');

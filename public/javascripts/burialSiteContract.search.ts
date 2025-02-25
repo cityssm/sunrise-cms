@@ -133,7 +133,7 @@ declare const exports: Record<string, unknown>
             ${
               (burialSiteContract.lotId ?? -1) === -1
                 ? `<span class="has-text-grey">(No ${los.escapedAliases.Lot})</span>`
-                : `<a class="has-tooltip-right" data-tooltip="${cityssm.escapeHTML(burialSiteContract.lotType ?? '')}" href="${los.getLotURL(burialSiteContract.lotId)}">${cityssm.escapeHTML(burialSiteContract.lotName ?? '')}</a>`
+                : `<a class="has-tooltip-right" data-tooltip="${cityssm.escapeHTML(burialSiteContract.lotType ?? '')}" href="${los.getBurialSiteURL(burialSiteContract.lotId)}">${cityssm.escapeHTML(burialSiteContract.lotName ?? '')}</a>`
             }<br />
             <span class="is-size-7">${cityssm.escapeHTML(burialSiteContract.cemeteryName ?? '')}</span>
           </td><td>

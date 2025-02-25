@@ -2,7 +2,7 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 import type { Options as BulmaCalendarOptions } from 'bulma-calendar'
 
-import type { LOS } from '../../types/globalTypes.js'
+import type { LOS } from './types.js'
 
 type RandomColorHue =
   | 'red'
@@ -64,7 +64,6 @@ declare const exports: Record<string, unknown> & {
     let svgId = mapKey
     let svgElementToHighlight: SVGElement | null
 
-    // eslint-disable-next-line no-constant-condition
     while (true) {
       svgElementToHighlight = mapContainerElement.querySelector(`#${svgId}`)
 
@@ -92,7 +91,6 @@ declare const exports: Record<string, unknown> & {
       '.field'
     ) as HTMLElement
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const inputOrSelectElement = fieldElement.querySelector(
       'input, select'
     ) as HTMLElement
@@ -230,74 +228,19 @@ declare const exports: Record<string, unknown> & {
       containerElement.querySelectorAll('.alias')
 
     for (const aliasElement of aliasElements) {
-      switch (aliasElement.dataset.alias) {
-        case 'Map': {
-          aliasElement.textContent = exports.aliases.map
-          break
-        }
-        case 'Lot': {
-          aliasElement.textContent = exports.aliases.lot
-          break
-        }
-        case 'lot': {
-          aliasElement.textContent = exports.aliases.lot.toLowerCase()
-          break
-        }
-        case 'Occupancy': {
-          aliasElement.textContent = exports.aliases.occupancy
-          break
-        }
-        case 'occupancy': {
-          aliasElement.textContent = exports.aliases.occupancy.toLowerCase()
-          break
-        }
-        case 'Occupant': {
-          aliasElement.textContent = exports.aliases.occupant
-          break
-        }
-        case 'occupant': {
-          aliasElement.textContent = exports.aliases.occupant.toLowerCase()
-          break
-        }
-        case 'ExternalReceiptNumber': {
-          aliasElement.textContent = exports.aliases.externalReceiptNumber
-          break
-        }
+      if (aliasElement.dataset.alias === 'ExternalReceiptNumber') {
+        aliasElement.textContent = exports.aliases.externalReceiptNumber
+        break
       }
     }
   }
 
   const escapedAliases = Object.freeze({
-    Map: cityssm.escapeHTML(exports.aliases.map),
-    map: cityssm.escapeHTML(exports.aliases.map.toLowerCase()),
-    Maps: cityssm.escapeHTML(exports.aliases.maps),
-    maps: cityssm.escapeHTML(exports.aliases.maps.toLowerCase()),
-
-    Lot: cityssm.escapeHTML(exports.aliases.lot),
-    lot: cityssm.escapeHTML(exports.aliases.lot.toLowerCase()),
-    Lots: cityssm.escapeHTML(exports.aliases.lots),
-    lots: cityssm.escapeHTML(exports.aliases.lots.toLowerCase()),
-
-    Occupancy: cityssm.escapeHTML(exports.aliases.occupancy),
-    occupancy: cityssm.escapeHTML(exports.aliases.occupancy.toLowerCase()),
-    Occupancies: cityssm.escapeHTML(exports.aliases.occupancies),
-    occupancies: cityssm.escapeHTML(exports.aliases.occupancies.toLowerCase()),
-
-    Occupant: cityssm.escapeHTML(exports.aliases.occupant),
-    occupant: cityssm.escapeHTML(exports.aliases.occupant.toLowerCase()),
-    Occupants: cityssm.escapeHTML(exports.aliases.occupants),
-    occupants: cityssm.escapeHTML(exports.aliases.occupants.toLowerCase()),
-
     ExternalReceiptNumber: cityssm.escapeHTML(
       exports.aliases.externalReceiptNumber
     ),
     externalReceiptNumber: cityssm.escapeHTML(
       exports.aliases.externalReceiptNumber.toLowerCase()
-    ),
-
-    contractStartDate: cityssm.escapeHTML(exports.aliases.contractStartDate),
-    contractStartDate: cityssm.escapeHTML(
-      exports.aliases.contractStartDate.toLowerCase()
     ),
 
     WorkOrderOpenDate: cityssm.escapeHTML(exports.aliases.workOrderOpenDate),
@@ -429,7 +372,7 @@ declare const exports: Record<string, unknown> & {
   const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
 
   function getRecordURL(
-    recordTypePlural: 'maps' | 'lots' | 'lotOccupancies' | 'workOrders',
+    recordTypePlural: 'cemeteries' | 'burialSites' | 'contracts' | 'workOrders',
     recordId: number | string,
     edit: boolean,
     time: boolean
@@ -444,20 +387,20 @@ declare const exports: Record<string, unknown> & {
     )
   }
 
-  function getMapURL(
+  function getCemeteryURL(
     cemeteryId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('maps', cemeteryId, edit, time)
+    return getRecordURL('cemeteries', cemeteryId, edit, time)
   }
 
-  function getLotURL(
-    lotId: number | string = '',
+  function getBurialSiteURL(
+    burialSiteId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('lots', lotId, edit, time)
+    return getRecordURL('burialSites', burialSiteId, edit, time)
   }
 
   function getBurialSiteContractURL(
@@ -465,7 +408,7 @@ declare const exports: Record<string, unknown> & {
     edit = false,
     time = false
   ): string {
-    return getRecordURL('lotOccupancies', burialSiteContractId, edit, time)
+    return getRecordURL('contracts', burialSiteContractId, edit, time)
   }
 
   function getWorkOrderURL(
@@ -508,8 +451,8 @@ declare const exports: Record<string, unknown> & {
     getLoadingParagraphHTML,
     getSearchResultsPagerHTML,
 
-    getMapURL,
-    getLotURL,
+    getCemeteryURL,
+    getBurialSiteURL,
     getBurialSiteContractURL,
     getWorkOrderURL
   }

@@ -42,20 +42,20 @@ export function getFeeIdByFeeDescription(feeDescription: string): number {
  */
 
 export const preneedOwnerLotOccupantTypeId =
-  (await cacheFunctions.getLotOccupantTypeByLotOccupantType('Preneed Owner'))!
+  (await cacheFunctions.getBurialSiteOccupantTypeByLotOccupantType('Preneed Owner'))!
     .lotOccupantTypeId
 
 export const funeralDirectorLotOccupantTypeId =
-  (await cacheFunctions.getLotOccupantTypeByLotOccupantType(
+  (await cacheFunctions.getBurialSiteOccupantTypeByLotOccupantType(
     'Funeral Director'
   ))!.lotOccupantTypeId
 
 export const deceasedLotOccupantTypeId =
-  (await cacheFunctions.getLotOccupantTypeByLotOccupantType('Deceased'))!
+  (await cacheFunctions.getBurialSiteOccupantTypeByLotOccupantType('Deceased'))!
     .lotOccupantTypeId
 
 export const purchaserLotOccupantTypeId =
-  (await cacheFunctions.getLotOccupantTypeByLotOccupantType('Purchaser'))!
+  (await cacheFunctions.getBurialSiteOccupantTypeByLotOccupantType('Purchaser'))!
     .lotOccupantTypeId
 
 /*
@@ -63,10 +63,10 @@ export const purchaserLotOccupantTypeId =
  */
 
 export const availableburialSiteStatusId =
-  (await cacheFunctions.getLotStatusByLotStatus('Available'))!.burialSiteStatusId
+  (await cacheFunctions.getBurialSiteStatusByLotStatus('Available'))!.burialSiteStatusId
 export const reservedburialSiteStatusId =
-  (await cacheFunctions.getLotStatusByLotStatus('Reserved'))!.burialSiteStatusId
-export const takenburialSiteStatusId = (await cacheFunctions.getLotStatusByLotStatus(
+  (await cacheFunctions.getBurialSiteStatusByLotStatus('Reserved'))!.burialSiteStatusId
+export const takenburialSiteStatusId = (await cacheFunctions.getBurialSiteStatusByLotStatus(
   'Taken'
 ))!.burialSiteStatusId
 

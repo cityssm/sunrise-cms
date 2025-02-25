@@ -1,18 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @cspell/spellchecker */
 import * as importIds from './legacy.importFromCsv.ids.js';
-export function buildLotName(lotNamePieces) {
-    let lotName = `${lotNamePieces.cemetery}-`;
-    if (lotNamePieces.block !== '') {
-        lotName += `B${lotNamePieces.block}-`;
-    }
-    if (lotNamePieces.range1 !== '0' || lotNamePieces.range2 !== '') {
-        lotName += `R${lotNamePieces.range1 === '0' ? '' : lotNamePieces.range1}${lotNamePieces.range2}-`;
-    }
-    if (lotNamePieces.lot1 !== '0' || lotNamePieces.lot2 === '') {
-        lotName += `L${lotNamePieces.lot1}${lotNamePieces.lot2}-`;
-    }
-    lotName += `G${lotNamePieces.grave1}${lotNamePieces.grave2}, Interment ${lotNamePieces.interment}`;
-    return lotName;
-}
 export function getFuneralHomeLotOccupancyOccupantData(funeralHomeKey) {
     switch (funeralHomeKey) {
         case 'AR': {

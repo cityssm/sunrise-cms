@@ -4,22 +4,22 @@
   <ul>
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li>
-      <a href="<%= urlPrefix %>/maps">
+      <a href="<%= urlPrefix %>/cemeteries">
         <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
-        <span><%= configFunctions.getConfigProperty("aliases.maps") %></span>
+        <span>Cemeteries</span>
       </a>
     </li>
     <% if (!isCreate) { %>
       <li>
-        <a href="<%= urlPrefix %>/maps/<%= map.mapId %>" accesskey="v">
-          <%= map.mapName || "(No Name)" %>
+        <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>" accesskey="v">
+          <%= cemetery.cemeteryName || "(No Name)" %>
         </a>
       </li>
     <% } %>
     <li class="is-active">
       <a href="#" aria-current="page">
         <% if (isCreate) { %>
-          Create a New <%= configFunctions.getConfigProperty("aliases.map") %>
+          Create a New Cemetery
         <% } else { %>
           Update
         <% } %>
@@ -30,9 +30,9 @@
 
 <h1 class="title is-1">
   <% if (isCreate) { %>
-    Create a New <%= configFunctions.getConfigProperty("aliases.map") %>
+    Create a New Cemetery
   <% } else { %>
-    Update <%= configFunctions.getConfigProperty("aliases.map") %>
+    Update Cemetery
   <% } %>
 </h1>
 
@@ -40,14 +40,14 @@
   <div class="level-left">
     <% if (!isCreate) { %>
       <span class="level-item has-text-weight-bold">
-        <%= map.mapName || "(No Name)" %>
+        <%= cemetery.cemeteryName || "(No Name)" %>
       </span>
     <% } %>
   </div>
   <div class="level-right">
     <% if (isCreate) { %>
       <div class="level-item">
-        <a class="button is-danger is-inverted" href="<%= urlPrefix %>/maps">
+        <a class="button is-danger is-inverted" href="<%= urlPrefix %>/cemeteries">
           Cancel
         </a>
       </div>
@@ -64,9 +64,9 @@
           </div>
           <div class="dropdown-menu">
             <div class="dropdown-content">
-              <a class="dropdown-item" id="button--deleteMap" href="#">
+              <a class="dropdown-item" id="button--deleteCemetery" href="#">
                 <span class="icon is-small"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
-                <span>Delete <%= configFunctions.getConfigProperty("aliases.map") %></span>
+                <span>Delete Cemetery</span>
               </a>
             </div>
           </div>
@@ -74,11 +74,11 @@
       </div>
     <% } %>
     <div class="level-item">
-      <button class="button is-primary is-light" type="submit" form="form--map">
+      <button class="button is-primary is-light" type="submit" form="form--cemetery">
         <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
         <span>
           <%= (isCreate ? "Create": "Update") %>
-          <%= configFunctions.getConfigProperty("aliases.map") %>
+          Cemetery
         </span>
       </button>
     </div>
@@ -86,27 +86,34 @@
   
 </div>
 
-<form id="form--map">
-    <input id="map--mapId" name="mapId" type="hidden" value="<%= map.mapId %>" />
+<form id="form--cemetery">
+    <input id="cemetery--cemeteryId" name="cemeteryId" type="hidden" value="<%= cemetery.cemeteryId %>" />
 
     <div class="columns">
         <div class="column">
           <div class="panel">
             <div class="panel-block is-block">
               <div class="field">
-                  <label class="label" for="map--mapName"><%= configFunctions.getConfigProperty("aliases.map") %> Name</label>
-                  <div class="control">
-                    <input class="input" id="map--mapName" name="mapName" type="text"
-                      value="<%= map.mapName %>" maxlength="200" required
-                      accesskey="f"
-                      <%= (isCreate ? " autofocus" : "") %> />
-                  </div>
+                <label class="label" for="cemetery--cemeteryName">Cemetery Name</label>
+                <div class="control">
+                  <input class="input" id="cemetery--cemeteryName" name="cemeteryName" type="text"
+                    value="<%= cemetery.cemeteryName %>" maxlength="200" required
+                    accesskey="f"
+                    <%= (isCreate ? " autofocus" : "") %> />
+                </div>
               </div>
               <div class="field">
-                  <label class="label" for="map--mapDescription"><%= configFunctions.getConfigProperty("aliases.map") %> Description</label>
-                  <div class="control">
-                      <textarea class="textarea" id="map--mapDescription" name="mapDescription"><%= map.mapDescription %></textarea>
-                  </div>
+                <label class="label" for="cemetery--cemeteryKey">Cemetery Key</label>
+                <div class="control">
+                  <input class="input" id="cemetery--cemeteryKey" name="cemeteryKey" type="text"
+                    value="<%= cemetery.cemeteryKey %>" maxlength="20" required />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="cemetery--cemeteryDescription">Cemetery Description</label>
+                <div class="control">
+                <textarea class="textarea" id="cemetery--cemeteryDescription" name="cemeteryDescription"><%= cemetery.cemeteryDescription %></textarea>
+                </div>
               </div>
             </div>
           </div>
@@ -116,51 +123,51 @@
               <h2 class="panel-heading">Address</h2>
               <div class="panel-block is-block">
                   <div class="field">
-                      <label class="label" for="map--mapAddress1">Address</label>
-                      <div class="control">
-                          <input class="input" id="map--mapAddress1" name="mapAddress1" type="text" value="<%= map.mapAddress1 %>" maxlength="50" placeholder="Line 1" />
-                      </div>
+                    <label class="label" for="cemetery--cemeteryAddress1">Address</label>
+                    <div class="control">
+                      <input class="input" id="cemetery--cemeteryAddress1" name="cemeteryAddress1" type="text" value="<%= cemetery.cemeteryAddress1 %>" maxlength="50" placeholder="Line 1" />
+                    </div>
                   </div>
                   <div class="field">
-                      <div class="control">
-                          <input class="input" id="map--mapAddress2" name="mapAddress2" type="text" value="<%= map.mapAddress2 %>" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
-                      </div>
+                    <div class="control">
+                      <input class="input" id="cemetery--cemeteryAddress2" name="cemeteryAddress2" type="text" value="<%= cemetery.cemeteryAddress2 %>" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
+                    </div>
                   </div>
                   <div class="columns">
-                      <div class="column is-8">
-                          <div class="field">
-                              <label class="label" for="map--mapCity">City</label>
-                              <div class="control">
-                                  <input class="input" id="map--mapCity" name="mapCity" value="<%= map.mapCity %>" maxlength="20" />
-                              </div>
-                          </div>
+                    <div class="column is-8">
+                      <div class="field">
+                        <label class="label" for="cemetery--cemeteryCity">City</label>
+                        <div class="control">
+                          <input class="input" id="cemetery--cemeteryCity" name="cemeteryCity" value="<%= cemetery.cemeteryCity %>" maxlength="20" />
+                        </div>
                       </div>
-                      <div class="column">
-                          <div class="field">
-                              <label class="label" for="map--mapProvince">Province</label>
-                              <div class="control">
-                                  <input class="input" id="map--mapProvince" name="mapProvince" value="<%= map.mapProvince %>" maxlength="2" />
-                              </div>
-                          </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label" for="cemetery--cemeteryProvince">Province</label>
+                        <div class="control">
+                          <input class="input" id="cemetery--cemeteryProvince" name="cemeteryProvince" value="<%= cemetery.cemeteryProvince %>" maxlength="2" />
+                        </div>
                       </div>
+                    </div>
                   </div>
                   <div class="columns">
-                      <div class="column">
-                          <div class="field">
-                              <label class="label" for="map--mapPostalCode">Postal Code</label>
-                              <div class="control">
-                                  <input class="input" id="map--mapPostalCode" name="mapPostalCode" value="<%= map.mapPostalCode %>" maxlength="7" />
-                              </div>
-                          </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label" for="cemetery--cemeteryPostalCode">Postal Code</label>
+                        <div class="control">
+                          <input class="input" id="cemetery--cemeteryPostalCode" name="cemeteryPostalCode" value="<%= cemetery.cemeteryPostalCode %>" maxlength="7" />
+                        </div>
                       </div>
-                      <div class="column">
-                          <div class="field">
-                              <label class="label" for="map--mapPhoneNumber">Phone Number</label>
-                              <div class="control">
-                                  <input class="input" id="map--mapPhoneNumber" name="mapPhoneNumber" value="<%= map.mapPhoneNumber %>" maxlength="30" />
-                              </div>
-                          </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label" for="cemetery--cemeteryPhoneNumber">Phone Number</label>
+                        <div class="control">
+                          <input class="input" id="cemetery--cemeteryPhoneNumber" name="cemeteryPhoneNumber" value="<%= cemetery.cemeteryPhoneNumber %>" maxlength="30" />
+                        </div>
                       </div>
+                    </div>
                   </div>
               </div>
           </div>
@@ -172,15 +179,15 @@
                 <h2 class="panel-heading">Geographic Location</h2>
                 <div class="panel-block is-block">
                     <div class="field">
-                        <label class="label" for="map--mapLatitude">Latitude</label>
+                        <label class="label" for="cemetery--cemeteryLatitude">Latitude</label>
                         <div class="control">
-                            <input class="input" id="map--mapLatitude" name="mapLatitude" type="number" min="-90" max="90" step="0.00000001" value="<%= map.mapLatitude %>" />
+                            <input class="input" id="cemetery--cemeteryLatitude" name="cemeteryLatitude" type="number" min="-90" max="90" step="0.00000001" value="<%= cemetery.cemeteryLatitude %>" />
                         </div>
                     </div>
                     <div class="field">
-                        <label class="label" for="map--mapLongitude">Longitude</label>
+                        <label class="label" for="cemetery--cemeteryLongitude">Longitude</label>
                         <div class="control">
-                            <input class="input" id="map--mapLongitude" name="mapLongitude" type="number" min="-180" max="180" step="0.00000001" value="<%= map.mapLongitude %>" />
+                            <input class="input" id="cemetery--cemeteryLongitude" name="cemeteryLongitude" type="number" min="-180" max="180" step="0.00000001" value="<%= cemetery.cemeteryLongitude %>" />
                         </div>
                     </div>
                 </div>
@@ -188,24 +195,24 @@
         </div>
         <div class="column">
             <div class="panel">
-                <h2 class="panel-heading">Image</h2>
-                <div class="panel-block is-block">
-                    <div class="field">
-                        <label class="label" for="map--mapSVG">SVG File</label>
-                        <div class="control">
-                            <div class="select is-fullwidth">
-                                <select id="map--mapSVG" name="mapSVG">
-                                    <option value="">(Select a File)</option>
-                                    <% for (const mapSVG of mapSVGs) { %>
-                                        <option value="<%= mapSVG %>" <%= (map.mapSVG === mapSVG) ? " selected" : "" %>>
-                                            <%= mapSVG %>
-                                        </option>
-                                    <% } %>
-                                </select>
-                            </div>
-                        </div>
+              <h2 class="panel-heading">Image</h2>
+              <div class="panel-block is-block">
+                <div class="field">
+                  <label class="label" for="cemetery--cemeterySvg">SVG File</label>
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select id="cemetery--cemeterySvg" name="cemeterySvg">
+                        <option value="">(Select a File)</option>
+                        <% for (const cemeterySVG of cemeterySVGs) { %>
+                          <option value="<%= cemeterySVG %>" <%= (cemetery.cemeterySvg === cemeterySVG) ? " selected" : "" %>>
+                              <%= cemeterySVG %>
+                          </option>
+                        <% } %>
+                      </select>
                     </div>
+                  </div>
                 </div>
+              </div>
             </div>
             
         </div>
@@ -214,107 +221,107 @@
 </form>
 
 <% if (!isCreate) { %>
-    <% const lotSearchUrl = urlPrefix + "/lots?mapId=" + map.mapId; %>
+    <% const burialSiteSearchUrl = urlPrefix + "/burialSites?cemeteryId=" + cemetery.cemeteryId; %>
     <div class="panel mt-4">
         <div class="panel-heading">
             <div class="level is-mobile">
                 <div class="level-left">
-                    <div class="level-item">
-                        <h2 class="title is-5 has-text-weight-bold">
-                            <%= configFunctions.getConfigProperty("aliases.lot") %> Summaries
-                            <a class="tag is-link ml-2" href="<%= lotSearchUrl %>">
-                                <%= map.lotCount %>
-                            </a>
-                        </h2>
-                    </div>
+                  <div class="level-item">
+                    <h2 class="title is-5 has-text-weight-bold">
+                      Burial Site Summaries
+                      <a class="tag is-link ml-2" href="<%= burialSiteSearchUrl %>">
+                        <%= cemetery.burialSiteCount %>
+                      </a>
+                    </h2>
+                  </div>
                 </div>
                 <div class="level-right">
                     <div class="level-item">
-                        <a class="button is-small is-success has-text-weight-normal" href="<%=urlPrefix %>/lots/new?mapId=<%= map.mapId %>">
+                        <a class="button is-small is-success has-text-weight-normal" href="<%=urlPrefix %>/burialSites/new?cemeteryId=<%= cemetery.cemeteryId %>">
                             <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                            <span>Create a <%= configFunctions.getConfigProperty("aliases.lot") %></span>
+                            <span>Create a Burial Site</span>
                         </a>
                     </div>
                     <div class="level-item">
-                        <a class="button is-small is-link has-text-weight-normal" href="<%=urlPrefix %>/reports/lots-byMapId?mapId=<%= map.mapId %>" download>
-                            <span class="icon"><i class="fas fa-download" aria-hidden="true"></i></span>
-                            <span>Export All</span>
-                        </a>
+                      <a class="button is-small is-link has-text-weight-normal" href="<%=urlPrefix %>/reports/burialSites-byCemeteryId?cemeteryId=<%= cemetery.cemeteryId %>" download>
+                        <span class="icon"><i class="fas fa-download" aria-hidden="true"></i></span>
+                        <span>Export All</span>
+                      </a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="panel-block is-block">
-            <% if (map.lotCount === 0) { %>
-                <div class="message is-info">
-                    <p class="message-body">
-                        There are no <%= configFunctions.getConfigProperty("aliases.lots").toLowerCase() %>
-                        associated with this <%= configFunctions.getConfigProperty("aliases.map").toLowerCase() %>.
-                    </p>
-                </div>
+            <% if (cemetery.burialSiteCount === 0) { %>
+              <div class="message is-info">
+                <p class="message-body">
+                  There are no burial sites
+                  associated with this cemetery.
+                </p>
+              </div>
             <% } else { %>
-                <div class="columns">
-                    <div class="column">
-                        <table class="table is-fullwidth is-striped is-hoverable">
-                            <thead>
-                                <tr>
-                                    <th>Type</th>
-                                    <th class="has-text-right">
-                                        <%= configFunctions.getConfigProperty("aliases.lot") %> Count
-                                    </th>
-                                    <th class="has-text-right">Percentage</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% for (const lotType of lotTypeSummary) { %>
-                                    <tr>
-                                        <td>
-                                            <a class="has-text-weight-bold" href="<%= lotSearchUrl %>&burialSiteTypeId=<%= lotType.burialSiteTypeId %>">
-                                                <%= lotType.lotType %>
-                                            </a>
-                                        </td>
-                                        <td class="has-text-right">
-                                            <%= lotType.lotCount %>
-                                        </td>
-                                        <td class="has-text-right">
-                                            <%= ((lotType.lotCount / map.lotCount) * 100).toFixed(1) %>%
-                                        </td>
-                                    </tr>
-                                <% } %>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="column">
-                        <table class="table is-fullwidth is-striped is-hoverable">
-                            <thead>
-                                <tr>
-                                    <th>Status</th>
-                                    <th class="has-text-right">
-                                        <%= configFunctions.getConfigProperty("aliases.lot") %> Count
-                                    </th>
-                                    <th class="has-text-right">Percentage</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% for (const lotStatus of lotStatusSummary) { %>
-                                    <tr>
-                                        <td>
-                                            <a class="has-text-weight-bold" href="<%= lotSearchUrl %>&burialSiteStatusId=<%= lotStatus.burialSiteStatusId %>">
-                                                <%= lotStatus.lotStatus %>
-                                            </a>
-                                        </td>
-                                        <td class="has-text-right">
-                                            <%= lotStatus.lotCount %>
-                                        </td>
-                                        <td class="has-text-right">
-                                            <%= ((lotStatus.lotCount / map.lotCount) * 100).toFixed(1) %>%
-                                        </td>
-                                    </tr>
-                                <% } %>
-                            </tbody>
-                        </table>
-                    </div>
+              <div class="columns">
+                <div class="column">
+                  <table class="table is-fullwidth is-striped is-hoverable">
+                    <thead>
+                      <tr>
+                        <th>Type</th>
+                        <th class="has-text-right">
+                          Burial Site Count
+                        </th>
+                        <th class="has-text-right">Percentage</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for (const burialSiteType of burialSiteTypeSummary) { %>
+                        <tr>
+                          <td>
+                            <a class="has-text-weight-bold" href="<%= burialSiteSearchUrl %>&burialSiteTypeId=<%= burialSiteType.burialSiteTypeId %>">
+                              <%= burialSiteType.burialSiteType %>
+                            </a>
+                          </td>
+                          <td class="has-text-right">
+                            <%= burialSiteType.burialSiteCount %>
+                          </td>
+                          <td class="has-text-right">
+                            <%= ((burialSiteType.burialSiteCount / cemetery.burialSiteCount) * 100).toFixed(1) %>%
+                          </td>
+                        </tr>
+                      <% } %>
+                    </tbody>
+                  </table>
                 </div>
+                <div class="column">
+                  <table class="table is-fullwidth is-striped is-hoverable">
+                      <thead>
+                          <tr>
+                              <th>Status</th>
+                              <th class="has-text-right">
+                                Burial Site Count
+                              </th>
+                              <th class="has-text-right">Percentage</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <% for (const burialSiteStatus of burialSiteStatusSummary) { %>
+                              <tr>
+                                  <td>
+                                      <a class="has-text-weight-bold" href="<%= burialSiteSearchUrl %>&burialSiteStatusId=<%= burialSiteStatus.burialSiteStatusId %>">
+                                        <%= burialSiteStatus.burialSiteStatus %>
+                                      </a>
+                                  </td>
+                                  <td class="has-text-right">
+                                      <%= burialSiteStatus.burialSiteCount %>
+                                  </td>
+                                  <td class="has-text-right">
+                                      <%= ((burialSiteStatus.burialSiteCount / cemetery.burialSiteCount) * 100).toFixed(1) %>%
+                                  </td>
+                              </tr>
+                          <% } %>
+                      </tbody>
+                  </table>
+                </div>
+              </div>
             <% } %>
         </div>
     </div>    
@@ -322,6 +329,6 @@
 
 <%- include('_footerA'); -%>
 
-<script src="<%= urlPrefix %>/javascripts/mapEdit.js"></script>
+<script src="<%= urlPrefix %>/javascripts/cemetery.edit.js"></script>
 
 <%- include('_footerB'); -%>

@@ -26,12 +26,12 @@ describe('functions.cache', () => {
       assert.ok(lotStatuses.length > 0)
 
       for (const lotStatus of lotStatuses) {
-        const byId = await cacheFunctions.getLotStatusById(
+        const byId = await cacheFunctions.getBurialSiteStatusById(
           lotStatus.burialSiteStatusId
         )
         assert.strictEqual(lotStatus.burialSiteStatusId, byId?.burialSiteStatusId)
 
-        const byName = await cacheFunctions.getLotStatusByLotStatus(
+        const byName = await cacheFunctions.getBurialSiteStatusByLotStatus(
           lotStatus.lotStatus
         )
         assert.strictEqual(lotStatus.lotStatus, byName?.lotStatus)
@@ -39,12 +39,12 @@ describe('functions.cache', () => {
     })
 
     it('returns undefined with a bad burialSiteStatusId', async () => {
-      const byBadId = await cacheFunctions.getLotStatusById(badId)
+      const byBadId = await cacheFunctions.getBurialSiteStatusById(badId)
       assert.ok(byBadId === undefined)
     })
 
     it('returns undefined with a bad lotStatus', async () => {
-      const byBadName = await cacheFunctions.getLotStatusByLotStatus(badName)
+      const byBadName = await cacheFunctions.getBurialSiteStatusByLotStatus(badName)
       assert.ok(byBadName === undefined)
     })
   })
@@ -58,7 +58,7 @@ describe('functions.cache', () => {
       assert.ok(lotTypes.length > 0)
 
       for (const lotType of lotTypes) {
-        const byId = await cacheFunctions.getLotTypeById(lotType.burialSiteTypeId)
+        const byId = await cacheFunctions.getBurialSiteTypeById(lotType.burialSiteTypeId)
         assert.strictEqual(lotType.burialSiteTypeId, byId?.burialSiteTypeId)
 
         const byName = await cacheFunctions.getBurialSiteTypesByBurialSiteType(
@@ -69,7 +69,7 @@ describe('functions.cache', () => {
     })
 
     it('returns undefined with a bad burialSiteTypeId', async () => {
-      const byBadId = await cacheFunctions.getLotTypeById(badId)
+      const byBadId = await cacheFunctions.getBurialSiteTypeById(badId)
       assert.ok(byBadId === undefined)
     })
 

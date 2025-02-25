@@ -1,24 +1,25 @@
+/* eslint-disable max-lines */
 import fs from 'node:fs';
 import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import papa from 'papaparse';
-import { sunriseDB as databasePath } from '../data/databasePaths.js';
-import addLot from '../database/addLot.js';
+import { sunriseDB as databasePath } from '../helpers/database.helpers.js';
+import addBurialSite from '../database/addBurialSite.js';
 import addBurialSiteContract from '../database/addBurialSiteContract.js';
 import addBurialSiteContractComment from '../database/addBurialSiteContractComment.js';
 import addBurialSiteContractFee from '../database/addBurialSiteContractFee.js';
 import addBurialSiteContractOccupant from '../database/addBurialSiteContractOccupant.js';
 import addBurialSiteContractTransaction from '../database/addBurialSiteContractTransaction.js';
-import addMap from '../database/addMap.js';
-import addOrUpdateLotOccupancyField from '../database/addOrUpdateLotOccupancyField.js';
+import addCemetery from '../database/addCemetery.js';
+import addOrUpdateBurialSiteContractField from '../database/addOrUpdateBurialSiteContractField.js';
 import addWorkOrder from '../database/addWorkOrder.js';
-import addWorkOrderLot from '../database/addWorkOrderLot.js';
+import addWorkOrderBurialSite from '../database/addWorkOrderBurialSite.js';
 import addWorkOrderBurialSiteContract from '../database/addWorkOrderBurialSiteContract.js';
 import addWorkOrderMilestone from '../database/addWorkOrderMilestone.js';
 import closeWorkOrder from '../database/closeWorkOrder.js';
-import getLot, { getLotByLotName } from '../database/getLot.js';
+import getBurialSite from '../database/getBurialSite.js';
 import getBurialSiteContracts from '../database/getBurialSiteContracts.js';
-import getMapFromDatabase from '../database/getMap.js';
+import getCemeteryFromDatabase from '../database/getCemetery.js';
 import getWorkOrder, { getWorkOrderByWorkOrderNumber } from '../database/getWorkOrder.js';
 import reopenWorkOrder from '../database/reopenWorkOrder.js';
 import { updateBurialSiteStatus } from '../database/updateBurialSite.js';
@@ -37,18 +38,18 @@ function purgeTables() {
     const tablesToPurge = [
         'WorkOrderMilestones',
         'WorkOrderComments',
-        'WorkOrderLots',
-        'WorkOrderLotOccupancies',
+        'WorkOrderBurialSites',
+        'WorkOrderBurialSiteContracts',
         'WorkOrders',
-        'LotOccupancyTransactions',
-        'LotOccupancyFees',
-        'LotOccupancyFields',
-        'LotOccupancyComments',
-        'LotOccupancyOccupants',
-        'LotOccupancies',
-        'LotFields',
-        'LotComments',
-        'Lots'
+        'BurialSiteContractTransactions',
+        'BurialSiteContractFees',
+        'BurialSiteContractFields',
+        'BurialSiteContractComments',
+        'BurialSiteContractInterments',
+        'BurialSiteContracts',
+        'BurialSiteFields',
+        'BurialSiteComments',
+        'BurialSites'
     ];
     const database = sqlite(databasePath);
     for (const tableName of tablesToPurge) {
@@ -63,20 +64,20 @@ function purgeTables() {
 function purgeConfigTables() {
     console.time('purgeConfigTables');
     const database = sqlite(databasePath);
-    database.prepare('delete from Maps').run();
-    database.prepare("delete from sqlite_sequence where name in ('Maps')").run();
+    database.prepare('delete from Cemeteries').run();
+    database.prepare("delete from sqlite_sequence where name in ('Cemeteries')").run();
     database.close();
     console.timeEnd('purgeConfigTables');
 }
-function getMapByMapDescription(mapDescription) {
+function getCemeteryByDescription(cemeteryDescription) {
     const database = sqlite(databasePath, {
         readonly: true
     });
-    const map = database
-        .prepare('select * from Maps where mapDescription = ?')
-        .get(mapDescription);
+    const cemetery = database
+        .prepare('select * from Cemeteries where cemeteryDescription = ?')
+        .get(cemeteryDescription);
     database.close();
-    return map;
+    return cemetery;
 }
 function formatDateString(year, month, day) {
     const formattedYear = `0000${year}`.slice(-4);
@@ -102,8 +103,8 @@ const cemeteryTocemeteryName = {
     UG: 'New Greenwood - Urn Garden',
     WK: 'West Korah'
 };
-const mapCache = new Map();
-async function getMap(dataRow) {
+const cemeteryCache = new Map();
+async function getCemetery(dataRow) {
     const mapCacheKey = dataRow.cemetery;
     /*
       if (masterRow.CM_CEMETERY === "HS" &&
@@ -111,29 +112,29 @@ async function getMap(dataRow) {
           mapCacheKey += "-" + masterRow.CM_BLOCK;
       }
       */
-    if (mapCache.has(mapCacheKey)) {
-        return mapCache.get(mapCacheKey);
+    if (cemeteryCache.has(mapCacheKey)) {
+        return cemeteryCache.get(mapCacheKey);
     }
-    let map = getMapByMapDescription(mapCacheKey);
-    if (!map) {
-        console.log(`Creating map: ${dataRow.cemetery}`);
-        const cemeteryId = await addMap({
+    let cemetery = getCemeteryByDescription(mapCacheKey);
+    if (cemetery === undefined) {
+        console.log(`Creating cemetery: ${dataRow.cemetery}`);
+        const cemeteryId = await addCemetery({
             cemeteryName: cemeteryTocemeteryName[dataRow.cemetery] ?? dataRow.cemetery,
-            mapDescription: dataRow.cemetery,
-            mapSVG: '',
-            mapLatitude: '',
-            mapLongitude: '',
-            mapAddress1: '',
-            mapAddress2: '',
-            mapCity: 'Sault Ste. Marie',
-            mapProvince: 'ON',
-            mapPostalCode: '',
-            mapPhoneNumber: ''
+            cemeteryDescription: dataRow.cemetery,
+            cemeterySvg: '',
+            cemeteryLatitude: '',
+            cemeteryLongitude: '',
+            cemeteryAddress1: '',
+            cemeteryAddress2: '',
+            cemeteryCity: 'Sault Ste. Marie',
+            cemeteryProvince: 'ON',
+            cemeteryPostalCode: '',
+            cemeteryPhoneNumber: ''
         }, user);
-        map = (await getMapFromDatabase(cemeteryId));
+        cemetery = (await getCemeteryFromDatabase(cemeteryId));
     }
-    mapCache.set(mapCacheKey, map);
-    return map;
+    cemeteryCache.set(mapCacheKey, cemetery);
+    return cemetery;
 }
 async function importFromMasterCSV() {
     console.time('importFromMasterCSV');
@@ -149,31 +150,20 @@ async function importFromMasterCSV() {
     }
     try {
         for (masterRow of cmmaster.data) {
-            const map = await getMap({
+            const cemetery = await getCemetery({
                 cemetery: masterRow.CM_CEMETERY
-            });
-            const lotName = importData.buildLotName({
-                cemetery: masterRow.CM_CEMETERY,
-                block: masterRow.CM_BLOCK,
-                range1: masterRow.CM_RANGE1,
-                range2: masterRow.CM_RANGE2,
-                lot1: masterRow.CM_LOT1,
-                lot2: masterRow.CM_LOT2,
-                grave1: masterRow.CM_GRAVE1,
-                grave2: masterRow.CM_GRAVE2,
-                interment: masterRow.CM_INTERMENT
             });
             const burialSiteTypeId = importIds.getburialSiteTypeId({
                 cemetery: masterRow.CM_CEMETERY
             });
-            let lotId;
+            let burialSiteId;
             if (masterRow.CM_CEMETERY !== '00') {
-                lotId = await addLot({
+                burialSiteId = await addBurialSite({
                     lotName,
                     burialSiteTypeId,
-                    burialSiteStatusId: importIds.availableburialSiteStatusId,
-                    cemeteryId: map.cemeteryId,
-                    mapKey: lotName.includes(',') ? lotName.split(',')[0] : lotName,
+                    burialSiteStatusId: importIds.availableBurialSiteStatusId,
+                    cemeteryId: cemetery.cemeteryId,
+                    cemeterySvgId: '',
                     burialSiteLatitude: '',
                     burialSiteLongitude: ''
                 }, user);
@@ -209,7 +199,7 @@ async function importFromMasterCSV() {
                 }
                 preneedburialSiteContractId = await addBurialSiteContract({
                     contractTypeId: importIds.preneedOccupancyType.contractTypeId,
-                    lotId: lotId ?? '',
+                    lotId: burialSiteId ?? '',
                     contractStartDateString: preneedcontractStartDateString,
                     contractEndDateString,
                     contractTypeFieldIds: ''
@@ -253,7 +243,7 @@ async function importFromMasterCSV() {
                     }, user);
                 }
                 if (contractEndDateString === '') {
-                    await updateBurialSiteStatus(lotId ?? '', importIds.reservedburialSiteStatusId, user);
+                    await updateBurialSiteStatus(burialSiteId ?? '', importIds.reservedburialSiteStatusId, user);
                 }
             }
             let deceasedcontractStartDateString;
@@ -270,15 +260,15 @@ async function importFromMasterCSV() {
                     deceasedcontractStartDateString === '0000-00-00') {
                     deceasedcontractStartDateString = '0001-01-01';
                 }
-                const deceasedcontractEndDateString = lotId
+                const deceasedcontractEndDateString = burialSiteId
                     ? ''
                     : deceasedcontractStartDateString;
-                const occupancyType = lotId
+                const occupancyType = burialSiteId
                     ? importIds.deceasedOccupancyType
                     : importIds.cremationOccupancyType;
                 deceasedburialSiteContractId = await addBurialSiteContract({
                     contractTypeId: occupancyType.contractTypeId,
-                    lotId: lotId ?? '',
+                    lotId: burialSiteId ?? '',
                     contractStartDateString: deceasedcontractStartDateString,
                     contractEndDateString: deceasedcontractEndDateString,
                     contractTypeFieldIds: ''
@@ -299,14 +289,14 @@ async function importFromMasterCSV() {
                 }, user);
                 if (masterRow.CM_DEATH_YR !== '') {
                     const burialSiteContractFieldValue = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
-                    await addOrUpdateLotOccupancyField({
+                    await addOrUpdateBurialSiteContractField({
                         burialSiteContractId: deceasedburialSiteContractId,
                         contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Date').contractTypeFieldId,
                         burialSiteContractFieldValue
                     }, user);
                 }
                 if (masterRow.CM_AGE !== '') {
-                    await addOrUpdateLotOccupancyField({
+                    await addOrUpdateBurialSiteContractField({
                         burialSiteContractId: deceasedburialSiteContractId,
                         contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Age').contractTypeFieldId,
                         burialSiteContractFieldValue: masterRow.CM_AGE
@@ -314,9 +304,9 @@ async function importFromMasterCSV() {
                 }
                 if (masterRow.CM_PERIOD !== '') {
                     const period = importData.getDeathAgePeriod(masterRow.CM_PERIOD);
-                    await addOrUpdateLotOccupancyField({
+                    await addOrUpdateBurialSiteContractField({
                         burialSiteContractId: deceasedburialSiteContractId,
-                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => (occupancyTypeField.occupancyTypeField === 'Death Age Period')).contractTypeFieldId,
+                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Age Period').contractTypeFieldId,
                         burialSiteContractFieldValue: period
                     }, user);
                 }
@@ -336,7 +326,7 @@ async function importFromMasterCSV() {
                         occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress ?? ''
                     }, user);
                     /*
-                      addOrUpdateLotOccupancyField(
+                      addOrUpdateBurialSiteContractField(
                         {
                             burialSiteContractId: deceasedburialSiteContractId,
                             contractTypeFieldId: allContractTypeFields.find(
@@ -352,17 +342,17 @@ async function importFromMasterCSV() {
                 }
                 if (masterRow.CM_FUNERAL_YR !== '') {
                     const burialSiteContractFieldValue = formatDateString(masterRow.CM_FUNERAL_YR, masterRow.CM_FUNERAL_MON, masterRow.CM_FUNERAL_DAY);
-                    await addOrUpdateLotOccupancyField({
+                    await addOrUpdateBurialSiteContractField({
                         burialSiteContractId: deceasedburialSiteContractId,
-                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => (occupancyTypeField.occupancyTypeField === 'Funeral Date')).contractTypeFieldId,
+                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Funeral Date').contractTypeFieldId,
                         burialSiteContractFieldValue
                     }, user);
                 }
                 if (occupancyType.occupancyType !== 'Cremation') {
                     if (masterRow.CM_CONTAINER_TYPE !== '') {
-                        await addOrUpdateLotOccupancyField({
+                        await addOrUpdateBurialSiteContractField({
                             burialSiteContractId: deceasedburialSiteContractId,
-                            contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => (occupancyTypeField.occupancyTypeField === 'Container Type')).contractTypeFieldId,
+                            contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Container Type').contractTypeFieldId,
                             burialSiteContractFieldValue: masterRow.CM_CONTAINER_TYPE
                         }, user);
                     }
@@ -371,9 +361,9 @@ async function importFromMasterCSV() {
                         if (commitalType === 'GS') {
                             commitalType = 'Graveside';
                         }
-                        await addOrUpdateLotOccupancyField({
+                        await addOrUpdateBurialSiteContractField({
                             burialSiteContractId: deceasedburialSiteContractId,
-                            contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => (occupancyTypeField.occupancyTypeField === 'Committal Type')).contractTypeFieldId,
+                            contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Committal Type').contractTypeFieldId,
                             burialSiteContractFieldValue: commitalType
                         }, user);
                     }
@@ -402,7 +392,7 @@ async function importFromMasterCSV() {
                         burialSiteContractComment: `Imported Contract #${masterRow.CM_WORK_ORDER}`
                     }, user);
                 }
-                await updateBurialSiteStatus(lotId ?? '', importIds.takenburialSiteStatusId, user);
+                await updateBurialSiteStatus(burialSiteId ?? '', importIds.takenburialSiteStatusId, user);
                 if (masterRow.CM_PRENEED_OWNER !== '') {
                     await addBurialSiteContractOccupant({
                         burialSiteContractId: deceasedburialSiteContractId,
@@ -450,7 +440,7 @@ async function importFromPrepaidCSV() {
             }
             let lot;
             if (cemetery !== '') {
-                const map = await getMap({
+                const map = await getCemetery({
                     cemetery
                 });
                 const lotName = importData.buildLotName({
@@ -464,12 +454,12 @@ async function importFromPrepaidCSV() {
                     grave2: prepaidRow.CMPP_GRAVE2,
                     interment: prepaidRow.CMPP_INTERMENT
                 });
-                lot = await getLotByLotName(lotName);
+                lot = await getBurialSiteByLotName(lotName);
                 if (!lot) {
                     const burialSiteTypeId = importIds.getburialSiteTypeId({
                         cemetery
                     });
-                    const lotId = await addLot({
+                    const lotId = await addBurialSite({
                         lotName,
                         burialSiteTypeId,
                         burialSiteStatusId: importIds.reservedburialSiteStatusId,
@@ -478,10 +468,11 @@ async function importFromPrepaidCSV() {
                         burialSiteLatitude: '',
                         burialSiteLongitude: ''
                     }, user);
-                    lot = await getLot(lotId);
+                    lot = await getBurialSite(lotId);
                 }
             }
-            if (lot && lot.burialSiteStatusId === importIds.availableburialSiteStatusId) {
+            if (lot &&
+                lot.burialSiteStatusId === importIds.availableburialSiteStatusId) {
                 await updateBurialSiteStatus(lot.lotId, importIds.reservedburialSiteStatusId, user);
             }
             const contractStartDateString = formatDateString(prepaidRow.CMPP_PURCH_YR, prepaidRow.CMPP_PURCH_MON, prepaidRow.CMPP_PURCH_DAY);
@@ -711,16 +702,16 @@ async function importFromWorkOrderCSV() {
                     grave2: workOrderRow.WO_GRAVE2,
                     interment: workOrderRow.WO_INTERMENT
                 });
-                lot = await getLotByLotName(lotName);
+                lot = await getBurialSiteByLotName(lotName);
                 if (lot) {
                     await updateBurialSiteStatus(lot.lotId, importIds.takenburialSiteStatusId, user);
                 }
                 else {
-                    const map = await getMap({ cemetery: workOrderRow.WO_CEMETERY });
+                    const map = await getCemetery({ cemetery: workOrderRow.WO_CEMETERY });
                     const burialSiteTypeId = importIds.getburialSiteTypeId({
                         cemetery: workOrderRow.WO_CEMETERY
                     });
-                    const lotId = await addLot({
+                    const lotId = await addBurialSite({
                         cemeteryId: map.cemeteryId,
                         lotName,
                         mapKey: lotName.includes(',') ? lotName.split(',')[0] : lotName,
@@ -729,11 +720,11 @@ async function importFromWorkOrderCSV() {
                         burialSiteLatitude: '',
                         burialSiteLongitude: ''
                     }, user);
-                    lot = await getLot(lotId);
+                    lot = await getBurialSite(lotId);
                 }
                 const workOrderContainsLot = workOrder.workOrderLots.find((possibleLot) => (possibleLot.lotId = lot.lotId));
                 if (!workOrderContainsLot) {
-                    await addWorkOrderLot({
+                    await addWorkOrderBurialSite({
                         workOrderId: workOrder.workOrderId,
                         lotId: lot.lotId
                     }, user);
@@ -768,21 +759,21 @@ async function importFromWorkOrderCSV() {
             }, user);
             if (workOrderRow.WO_DEATH_YR !== '') {
                 const burialSiteContractFieldValue = formatDateString(workOrderRow.WO_DEATH_YR, workOrderRow.WO_DEATH_MON, workOrderRow.WO_DEATH_DAY);
-                await addOrUpdateLotOccupancyField({
+                await addOrUpdateBurialSiteContractField({
                     burialSiteContractId,
                     contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Date').contractTypeFieldId,
                     burialSiteContractFieldValue
                 }, user);
             }
             if (workOrderRow.WO_DEATH_PLACE !== '') {
-                await addOrUpdateLotOccupancyField({
+                await addOrUpdateBurialSiteContractField({
                     burialSiteContractId,
                     contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Place').contractTypeFieldId,
                     burialSiteContractFieldValue: workOrderRow.WO_DEATH_PLACE
                 }, user);
             }
             if (workOrderRow.WO_AGE !== '') {
-                await addOrUpdateLotOccupancyField({
+                await addOrUpdateBurialSiteContractField({
                     burialSiteContractId,
                     contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Age').contractTypeFieldId,
                     burialSiteContractFieldValue: workOrderRow.WO_AGE
@@ -790,9 +781,9 @@ async function importFromWorkOrderCSV() {
             }
             if (workOrderRow.WO_PERIOD !== '') {
                 const period = importData.getDeathAgePeriod(workOrderRow.WO_PERIOD);
-                await addOrUpdateLotOccupancyField({
+                await addOrUpdateBurialSiteContractField({
                     burialSiteContractId,
-                    contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => (occupancyTypeField.occupancyTypeField === 'Death Age Period')).contractTypeFieldId,
+                    contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Age Period').contractTypeFieldId,
                     burialSiteContractFieldValue: period
                 }, user);
             }
@@ -812,7 +803,7 @@ async function importFromWorkOrderCSV() {
                     occupantEmailAddress: funeralHomeOccupant.occupantEmailAddress
                 }, user);
                 /*
-                  addOrUpdateLotOccupancyField(
+                  addOrUpdateBurialSiteContractField(
                     {
                         burialSiteContractId: burialSiteContractId,
                         contractTypeFieldId: allContractTypeFields.find((occupancyTypeField) => {
@@ -826,7 +817,7 @@ async function importFromWorkOrderCSV() {
             }
             if (workOrderRow.WO_FUNERAL_YR !== '') {
                 const burialSiteContractFieldValue = formatDateString(workOrderRow.WO_FUNERAL_YR, workOrderRow.WO_FUNERAL_MON, workOrderRow.WO_FUNERAL_DAY);
-                await addOrUpdateLotOccupancyField({
+                await addOrUpdateBurialSiteContractField({
                     burialSiteContractId,
                     contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Funeral Date').contractTypeFieldId,
                     burialSiteContractFieldValue
@@ -834,9 +825,9 @@ async function importFromWorkOrderCSV() {
             }
             if (occupancyType.occupancyType !== 'Cremation') {
                 if (workOrderRow.WO_CONTAINER_TYPE !== '') {
-                    await addOrUpdateLotOccupancyField({
+                    await addOrUpdateBurialSiteContractField({
                         burialSiteContractId,
-                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => (occupancyTypeField.occupancyTypeField === 'Container Type')).contractTypeFieldId,
+                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Container Type').contractTypeFieldId,
                         burialSiteContractFieldValue: workOrderRow.WO_CONTAINER_TYPE
                     }, user);
                 }
@@ -845,9 +836,9 @@ async function importFromWorkOrderCSV() {
                     if (commitalType === 'GS') {
                         commitalType = 'Graveside';
                     }
-                    await addOrUpdateLotOccupancyField({
+                    await addOrUpdateBurialSiteContractField({
                         burialSiteContractId,
-                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => (occupancyTypeField.occupancyTypeField === 'Committal Type')).contractTypeFieldId,
+                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Committal Type').contractTypeFieldId,
                         burialSiteContractFieldValue: commitalType
                     }, user);
                 }

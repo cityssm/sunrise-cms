@@ -25,7 +25,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         // Search for ID
         let svgId = mapKey;
         let svgElementToHighlight;
-        // eslint-disable-next-line no-constant-condition
         while (true) {
             svgElementToHighlight = mapContainerElement.querySelector(`#${svgId}`);
             if (svgElementToHighlight !== null || !svgId.includes('-')) {
@@ -44,7 +43,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function unlockField(clickEvent) {
         const fieldElement = clickEvent.currentTarget.closest('.field');
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
         const inputOrSelectElement = fieldElement.querySelector('input, select');
         inputOrSelectElement.classList.remove('is-readonly');
         if (inputOrSelectElement.tagName === 'INPUT') {
@@ -141,63 +139,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function populateAliases(containerElement) {
         const aliasElements = containerElement.querySelectorAll('.alias');
         for (const aliasElement of aliasElements) {
-            switch (aliasElement.dataset.alias) {
-                case 'Map': {
-                    aliasElement.textContent = exports.aliases.map;
-                    break;
-                }
-                case 'Lot': {
-                    aliasElement.textContent = exports.aliases.lot;
-                    break;
-                }
-                case 'lot': {
-                    aliasElement.textContent = exports.aliases.lot.toLowerCase();
-                    break;
-                }
-                case 'Occupancy': {
-                    aliasElement.textContent = exports.aliases.occupancy;
-                    break;
-                }
-                case 'occupancy': {
-                    aliasElement.textContent = exports.aliases.occupancy.toLowerCase();
-                    break;
-                }
-                case 'Occupant': {
-                    aliasElement.textContent = exports.aliases.occupant;
-                    break;
-                }
-                case 'occupant': {
-                    aliasElement.textContent = exports.aliases.occupant.toLowerCase();
-                    break;
-                }
-                case 'ExternalReceiptNumber': {
-                    aliasElement.textContent = exports.aliases.externalReceiptNumber;
-                    break;
-                }
+            if (aliasElement.dataset.alias === 'ExternalReceiptNumber') {
+                aliasElement.textContent = exports.aliases.externalReceiptNumber;
+                break;
             }
         }
     }
     const escapedAliases = Object.freeze({
-        Map: cityssm.escapeHTML(exports.aliases.map),
-        map: cityssm.escapeHTML(exports.aliases.map.toLowerCase()),
-        Maps: cityssm.escapeHTML(exports.aliases.maps),
-        maps: cityssm.escapeHTML(exports.aliases.maps.toLowerCase()),
-        Lot: cityssm.escapeHTML(exports.aliases.lot),
-        lot: cityssm.escapeHTML(exports.aliases.lot.toLowerCase()),
-        Lots: cityssm.escapeHTML(exports.aliases.lots),
-        lots: cityssm.escapeHTML(exports.aliases.lots.toLowerCase()),
-        Occupancy: cityssm.escapeHTML(exports.aliases.occupancy),
-        occupancy: cityssm.escapeHTML(exports.aliases.occupancy.toLowerCase()),
-        Occupancies: cityssm.escapeHTML(exports.aliases.occupancies),
-        occupancies: cityssm.escapeHTML(exports.aliases.occupancies.toLowerCase()),
-        Occupant: cityssm.escapeHTML(exports.aliases.occupant),
-        occupant: cityssm.escapeHTML(exports.aliases.occupant.toLowerCase()),
-        Occupants: cityssm.escapeHTML(exports.aliases.occupants),
-        occupants: cityssm.escapeHTML(exports.aliases.occupants.toLowerCase()),
         ExternalReceiptNumber: cityssm.escapeHTML(exports.aliases.externalReceiptNumber),
         externalReceiptNumber: cityssm.escapeHTML(exports.aliases.externalReceiptNumber.toLowerCase()),
-        OccupancyStartDate: cityssm.escapeHTML(exports.aliases.occupancyStartDate),
-        occupancyStartDate: cityssm.escapeHTML(exports.aliases.occupancyStartDate.toLowerCase()),
         WorkOrderOpenDate: cityssm.escapeHTML(exports.aliases.workOrderOpenDate),
         workOrderOpenDate: cityssm.escapeHTML(exports.aliases.workOrderOpenDate.toLowerCase()),
         WorkOrderCloseDate: cityssm.escapeHTML(exports.aliases.workOrderCloseDate),
@@ -298,14 +248,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
             (recordId && edit ? '/edit' : '') +
             (time ? `/?t=${Date.now().toString()}` : ''));
     }
-    function getMapURL(mapId = '', edit = false, time = false) {
-        return getRecordURL('maps', mapId, edit, time);
+    function getCemeteryURL(cemeteryId = '', edit = false, time = false) {
+        return getRecordURL('cemeteries', cemeteryId, edit, time);
     }
-    function getLotURL(lotId = '', edit = false, time = false) {
-        return getRecordURL('lots', lotId, edit, time);
+    function getBurialSiteURL(burialSiteId = '', edit = false, time = false) {
+        return getRecordURL('burialSites', burialSiteId, edit, time);
     }
-    function getLotOccupancyURL(lotOccupancyId = '', edit = false, time = false) {
-        return getRecordURL('lotOccupancies', lotOccupancyId, edit, time);
+    function getBurialSiteContractURL(burialSiteContractId = '', edit = false, time = false) {
+        return getRecordURL('contracts', burialSiteContractId, edit, time);
     }
     function getWorkOrderURL(workOrderId = '', edit = false, time = false) {
         return getRecordURL('workOrders', workOrderId, edit, time);
@@ -333,9 +283,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         getMoveUpDownButtonFieldHTML,
         getLoadingParagraphHTML,
         getSearchResultsPagerHTML,
-        getMapURL,
-        getLotURL,
-        getLotOccupancyURL,
+        getCemeteryURL,
+        getBurialSiteURL,
+        getBurialSiteContractURL,
         getWorkOrderURL
     };
     exports.los = los;

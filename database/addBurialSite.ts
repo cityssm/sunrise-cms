@@ -23,7 +23,7 @@ export interface AddBurialSiteForm {
   [fieldValue_burialSiteTypeFieldId: string]: unknown
 }
 
-export default async function addLot(
+export default async function addBurialSite(
   burialSiteForm: AddBurialSiteForm,
   user: User
 ): Promise<number> {

@@ -2,6 +2,7 @@ import { acquireConnection } from './pool.js'
 
 export interface AddCemeteryForm {
   cemeteryName: string
+  cemeteryKey: string
   cemeteryDescription: string
 
   cemeterySvg: string
@@ -27,17 +28,18 @@ export default async function addCemetery(
   const result = database
     .prepare(
       `insert into Cemeteries (
-        cemeteryName, cemeteryDescription,
+        cemeteryName, cemeteryKey, cemeteryDescription,
         cemeterySvg, cemeteryLatitude, cemeteryLongitude,
         cemeteryAddress1, cemeteryAddress2,
         cemeteryCity, cemeteryProvince, cemeteryPostalCode,
         cemeteryPhoneNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       addForm.cemeteryName,
+      addForm.cemeteryKey,
       addForm.cemeteryDescription,
       addForm.cemeterySvg,
       addForm.cemeteryLatitude === '' ? undefined : addForm.cemeteryLatitude,

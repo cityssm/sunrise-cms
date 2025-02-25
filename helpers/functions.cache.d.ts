@@ -17,6 +17,6 @@ export declare function getWorkOrderMilestoneTypeById(workOrderMilestoneTypeId: 
 export declare function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString: string): Promise<WorkOrderMilestoneType | undefined>;
 export declare function preloadCaches(): Promise<void>;
 export declare function clearCaches(): void;
-type CacheTableNames = 'BurialSiteStatuses' | 'BurialSiteTypes' | 'BurialSiteTypeFields' | 'ContractTypes' | 'ContractTypeFields' | 'ContractTypePrints' | 'WorkOrderMilestoneTypes' | 'WorkOrderTypes';
+type CacheTableNames = 'BurialSiteStatuses' | 'BurialSiteTypes' | 'BurialSiteTypeFields' | 'ContractTypes' | 'ContractTypeFields' | 'ContractTypePrints' | 'WorkOrderMilestoneTypes' | 'WorkOrderTypes' | 'FeeCategories';
 export declare function clearCacheByTableName(tableName: CacheTableNames, relayMessage?: boolean): void;
 export {};

@@ -18,8 +18,6 @@ export interface LOS {
   escapedAliases: {
     ExternalReceiptNumber: string
     externalReceiptNumber: string
-    contractStartDate: string
-    contractStartDate: string
     WorkOrderOpenDate: string
     workOrderOpenDate: string
     WorkOrderCloseDate: string
@@ -46,8 +44,8 @@ export interface LOS {
     count: number
   ) => string
 
-  getMapURL: (cemeteryId?: number | string, edit?: boolean, time?: boolean) => string
-  getLotURL: (lotId?: number | string, edit?: boolean, time?: boolean) => string
+  getCemeteryURL: (cemeteryId?: number | string, edit?: boolean, time?: boolean) => string
+  getBurialSiteURL: (burialSiteId?: number | string, edit?: boolean, time?: boolean) => string
   getBurialSiteContractURL: (
     burialSiteContractId?: number | string,
     edit?: boolean,

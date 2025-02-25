@@ -5,7 +5,7 @@ export interface AddWorkOrderLotForm {
   burialSiteId: number | string
 }
 
-export default async function addWorkOrderLot(
+export default async function addWorkOrderBurialSite(
   workOrderLotForm: AddWorkOrderLotForm,
   user: User
 ): Promise<boolean> {

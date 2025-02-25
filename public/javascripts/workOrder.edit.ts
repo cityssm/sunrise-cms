@@ -270,7 +270,7 @@ declare const exports: Record<string, unknown>
         })
       }
 
-      function addLot(
+      function addBurialSite(
         lotId: number | string,
         callbackFunction?: (success: boolean) => void
       ): void {
@@ -340,10 +340,10 @@ declare const exports: Record<string, unknown>
         )
       }
 
-      function addLotFromLotOccupancy(clickEvent: Event): void {
+      function addBurialSiteFromLotOccupancy(clickEvent: Event): void {
         const lotId =
           (clickEvent.currentTarget as HTMLElement).dataset.lotId ?? ''
-        addLot(lotId)
+        addBurialSite(lotId)
       }
 
       function renderRelatedOccupancies(): void {
@@ -420,7 +420,7 @@ declare const exports: Record<string, unknown>
           ${
             hasLotRecord
               ? ''
-              : ` <button class="button is-small is-light is-success button--addLot"
+              : ` <button class="button is-small is-light is-success button--addBurialSite"
                   data-lot-id="${burialSiteContract.lotId.toString()}"
                   data-tooltip="Add ${los.escapedAliases.Lot}"
                   aria-label="Add ${los.escapedAliases.Lot}" type="button">
@@ -479,8 +479,8 @@ declare const exports: Record<string, unknown>
           )
 
           rowElement
-            .querySelector('.button--addLot')
-            ?.addEventListener('click', addLotFromLotOccupancy)
+            .querySelector('.button--addBurialSite')
+            ?.addEventListener('click', addBurialSiteFromLotOccupancy)
 
           rowElement
             .querySelector('.button--deleteLotOccupancy')
@@ -686,7 +686,7 @@ declare const exports: Record<string, unknown>
 
           // eslint-disable-next-line no-unsanitized/property
           rowElement.innerHTML = `<td>
-              <a class="has-text-weight-bold" href="${los.getLotURL(lot.lotId)}">
+              <a class="has-text-weight-bold" href="${los.getBurialSiteURL(lot.lotId)}">
                 ${cityssm.escapeHTML(lot.lotName ?? '')}
               </a>
             </td><td>
@@ -923,7 +923,7 @@ declare const exports: Record<string, unknown>
 
         const lotId = rowElement.dataset.lotId ?? ''
 
-        addLot(lotId, (success) => {
+        addBurialSite(lotId, (success) => {
           if (success) {
             rowElement.remove()
           }
@@ -931,7 +931,7 @@ declare const exports: Record<string, unknown>
       }
 
       document
-        .querySelector('#button--addLot')
+        .querySelector('#button--addBurialSite')
         ?.addEventListener('click', () => {
           let searchFormElement: HTMLFormElement
           let searchResultsContainerElement: HTMLElement
@@ -977,7 +977,7 @@ declare const exports: Record<string, unknown>
                   rowElement.dataset.lotId = lot.lotId.toString()
 
                   rowElement.innerHTML = `<td class="has-text-centered">
-                      <button class="button is-small is-success button--addLot" data-tooltip="Add" type="button" aria-label="Add">
+                      <button class="button is-small is-success button--addBurialSite" data-tooltip="Add" type="button" aria-label="Add">
                         <i class="fas fa-plus" aria-hidden="true"></i>
                       </button>
                     </td><td class="has-text-weight-bold">
@@ -991,7 +991,7 @@ declare const exports: Record<string, unknown>
                     </td>`
 
                   rowElement
-                    .querySelector('.button--addLot')
+                    .querySelector('.button--addBurialSite')
                     ?.addEventListener('click', doAddLot)
 
                   searchResultsContainerElement
@@ -1002,7 +1002,7 @@ declare const exports: Record<string, unknown>
             )
           }
 
-          cityssm.openHtmlModal('workOrder-addLot', {
+          cityssm.openHtmlModal('workOrder-addBurialSite', {
             onshow(modalElement) {
               los.populateAliases(modalElement)
 
@@ -1051,7 +1051,7 @@ declare const exports: Record<string, unknown>
             onremoved() {
               bulmaJS.toggleHtmlClipped()
               ;(
-                document.querySelector('#button--addLot') as HTMLButtonElement
+                document.querySelector('#button--addBurialSite') as HTMLButtonElement
               ).focus()
             }
           })

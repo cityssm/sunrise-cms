@@ -2,14 +2,14 @@ import type { Cemetery } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-export default async function getMap(
+export default async function getCemetery(
   cemeteryId: number | string
 ): Promise<Cemetery | undefined> {
   const database = await acquireConnection()
 
   const map = database
     .prepare(
-      `select m.cemeteryId, m.cemeteryName, m.cemeteryDescription,
+      `select m.cemeteryId, m.cemeteryName, m.cemeteryKey, m.cemeteryDescription,
         m.cemeteryLatitude, m.cemeteryLongitude, m.cemeterySvg,
         m.cemeteryAddress1, m.cemeteryAddress2, m.cemeteryCity, m.cemeteryProvince, m.cemeteryPostalCode,
         m.cemeteryPhoneNumber,

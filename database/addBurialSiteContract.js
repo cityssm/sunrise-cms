@@ -1,14 +1,10 @@
 import { dateStringToInteger } from '@cityssm/utils-datetime';
-import addBurialSiteContractOccupant from './addBurialSiteContractOccupant.js';
 import addOrUpdateBurialSiteContractField from './addOrUpdateBurialSiteContractField.js';
 import { acquireConnection } from './pool.js';
 export default async function addBurialSiteContract(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
     const contractStartDate = dateStringToInteger(addForm.contractStartDateString);
-    if (contractStartDate <= 0) {
-        console.error(addForm);
-    }
     const result = database
         .prepare(`insert into BurialSiteContracts (
         contractTypeId, lotId,
@@ -22,30 +18,14 @@ export default async function addBurialSiteContract(addForm, user, connectedData
     const burialSiteContractId = result.lastInsertRowid;
     const contractTypeFieldIds = (addForm.contractTypeFieldIds ?? '').split(',');
     for (const contractTypeFieldId of contractTypeFieldIds) {
-        const burialSiteContractFieldValue = addForm[`burialSiteContractFieldValue_${contractTypeFieldId}`];
-        if ((burialSiteContractFieldValue ?? '') !== '') {
+        const fieldValue = addForm[`fieldValue_${contractTypeFieldId}`];
+        if ((fieldValue ?? '') !== '') {
             await addOrUpdateBurialSiteContractField({
                 burialSiteContractId,
                 contractTypeFieldId,
-                burialSiteContractFieldValue: burialSiteContractFieldValue ?? ''
+                fieldValue: fieldValue ?? ''
             }, user, database);
         }
-    }
-    if ((addForm.lotOccupantTypeId ?? '') !== '') {
-        await addBurialSiteContractOccupant({
-            burialSiteContractId,
-            lotOccupantTypeId: addForm.lotOccupantTypeId ?? '',
-            occupantName: addForm.occupantName ?? '',
-            occupantFamilyName: addForm.occupantFamilyName ?? '',
-            occupantAddress1: addForm.occupantAddress1 ?? '',
-            occupantAddress2: addForm.occupantAddress2 ?? '',
-            occupantCity: addForm.occupantCity ?? '',
-            occupantProvince: addForm.occupantProvince ?? '',
-            occupantPostalCode: addForm.occupantPostalCode ?? '',
-            occupantPhoneNumber: addForm.occupantPhoneNumber ?? '',
-            occupantEmailAddress: addForm.occupantEmailAddress ?? '',
-            occupantComment: addForm.occupantComment ?? ''
-        }, user, database);
     }
     if (connectedDatabase === undefined) {
         database.release();

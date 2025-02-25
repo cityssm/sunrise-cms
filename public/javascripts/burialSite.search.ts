@@ -49,11 +49,11 @@ declare const exports: Record<string, unknown>
         'beforeend',
         `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${los.getLotURL(lot.lotId)}">
+            <a class="has-text-weight-bold" href="${los.getBurialSiteURL(lot.lotId)}">
               ${cityssm.escapeHTML(lot.lotName ?? '')}
             </a>
           </td><td>
-            <a href="${los.getMapURL(lot.cemeteryId)}">
+            <a href="${los.getCemeteryURL(lot.cemeteryId)}">
               ${
                 lot.cemeteryName
                   ? cityssm.escapeHTML(lot.cemeteryName)

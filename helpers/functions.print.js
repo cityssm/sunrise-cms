@@ -1,3 +1,5 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable security/detect-object-injection */
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import getBurialSite from '../database/getBurialSite.js';
 import getBurialSiteContract from '../database/getBurialSiteContract.js';

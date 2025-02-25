@@ -13,4 +13,4 @@ export interface AddBurialSiteForm {
     burialSiteTypeFieldIds?: string;
     [fieldValue_burialSiteTypeFieldId: string]: unknown;
 }
-export default function addLot(burialSiteForm: AddBurialSiteForm, user: User): Promise<number>;
+export default function addBurialSite(burialSiteForm: AddBurialSiteForm, user: User): Promise<number>;

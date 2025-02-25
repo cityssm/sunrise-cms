@@ -45,14 +45,14 @@
               <span>Work Orders</span>
             </a>
 
-            <a class="navbar-item" href="<%= urlPrefix %>/lotOccupancies" accesskey="2">
+            <a class="navbar-item" href="<%= urlPrefix %>/contracts" accesskey="2">
               <span class="icon mr-1">
                 <span class="fa-layers fa-fw" aria-hidden="true">
                   <i class="fas fa-vector-square"></i>
                   <i class="fas fa-user" data-fa-transform="shrink-10"></i>
                 </span>
               </span>
-              <span><%= configFunctions.getConfigProperty("aliases.occupancies") %></span>
+              <span>Contracts</span>
             </a>
               
             <div class="navbar-item has-dropdown">
@@ -63,17 +63,17 @@
                 </span>
               </a>
               <div class="navbar-dropdown">
-                <a class="navbar-item" href="<%= urlPrefix %>/lots" accesskey="3">
+                <a class="navbar-item" href="<%= urlPrefix %>/burialSites" accesskey="3">
                   <span class="icon mr-1">
                     <i class="fas fa-fw fa-vector-square" aria-hidden="true"></i>
                   </span>
-                  <span><%= configFunctions.getConfigProperty("aliases.lots") %></span>
+                  <span>Burial Sites</span>
                 </a>
-                <a class="navbar-item" href="<%= urlPrefix %>/maps" accesskey="4">
+                <a class="navbar-item" href="<%= urlPrefix %>/cemeteries" accesskey="4">
                   <span class="icon mr-1">
                     <i class="far fa-fw fa-map" aria-hidden="true"></i>
                   </span>
-                  <span><%= configFunctions.getConfigProperty("aliases.maps") %></span>
+                  <span>Cemeteries</span>
                 </a>
                 <hr class="navbar-divider" />
                 <a class="navbar-item" href="<%= urlPrefix %>/reports">

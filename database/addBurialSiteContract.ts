@@ -1,7 +1,6 @@
 import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import addBurialSiteContractOccupant from './addBurialSiteContractOccupant.js'
 import addOrUpdateBurialSiteContractField from './addOrUpdateBurialSiteContractField.js'
 import { acquireConnection } from './pool.js'
 
@@ -41,10 +40,6 @@ export default async function addBurialSiteContract(
     addForm.contractStartDateString as DateString
   )
 
-  if (contractStartDate <= 0) {
-    console.error(addForm)
-  }
-
   const result = database
     .prepare(
       `insert into BurialSiteContracts (
@@ -60,9 +55,7 @@ export default async function addBurialSiteContract(
       contractStartDate,
       addForm.contractEndDateString === ''
         ? undefined
-        : dateStringToInteger(
-            addForm.contractEndDateString as DateString
-          ),
+        : dateStringToInteger(addForm.contractEndDateString as DateString),
       user.userName,
       rightNowMillis,
       user.userName,
@@ -71,47 +64,24 @@ export default async function addBurialSiteContract(
 
   const burialSiteContractId = result.lastInsertRowid as number
 
-  const contractTypeFieldIds = (
-    addForm.contractTypeFieldIds ?? ''
-  ).split(',')
+  const contractTypeFieldIds = (addForm.contractTypeFieldIds ?? '').split(',')
 
   for (const contractTypeFieldId of contractTypeFieldIds) {
-    const burialSiteContractFieldValue = addForm[
-      `burialSiteContractFieldValue_${contractTypeFieldId}`
-    ] as string | undefined
+    const fieldValue = addForm[`fieldValue_${contractTypeFieldId}`] as
+      | string
+      | undefined
 
-    if ((burialSiteContractFieldValue ?? '') !== '') {
+    if ((fieldValue ?? '') !== '') {
       await addOrUpdateBurialSiteContractField(
         {
           burialSiteContractId,
           contractTypeFieldId,
-          burialSiteContractFieldValue: burialSiteContractFieldValue ?? ''
+          fieldValue: fieldValue ?? ''
         },
         user,
         database
       )
     }
-  }
-
-  if ((addForm.lotOccupantTypeId ?? '') !== '') {
-    await addBurialSiteContractOccupant(
-      {
-        burialSiteContractId,
-        lotOccupantTypeId: addForm.lotOccupantTypeId ?? '',
-        occupantName: addForm.occupantName ?? '',
-        occupantFamilyName: addForm.occupantFamilyName ?? '',
-        occupantAddress1: addForm.occupantAddress1 ?? '',
-        occupantAddress2: addForm.occupantAddress2 ?? '',
-        occupantCity: addForm.occupantCity ?? '',
-        occupantProvince: addForm.occupantProvince ?? '',
-        occupantPostalCode: addForm.occupantPostalCode ?? '',
-        occupantPhoneNumber: addForm.occupantPhoneNumber ?? '',
-        occupantEmailAddress: addForm.occupantEmailAddress ?? '',
-        occupantComment: addForm.occupantComment ?? ''
-      },
-      user,
-      database
-    )
   }
 
   if (connectedDatabase === undefined) {

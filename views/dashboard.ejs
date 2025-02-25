@@ -59,25 +59,24 @@
                     <%= milestone.workOrderNumber %>
                   </a><br />
                   <% 
-                    if (milestone.workOrderLots.length > 0) {
-                      for (const lot of milestone.workOrderLots) {
+                    if (milestone.workOrderBurialSites.length > 0) {
+                      for (const burialSite of milestone.workOrderBurialSites) {
                   %>
-                  <span class="has-tooltip-right" data-tooltip="<%= lot.mapName %>">
-                    <i class="fas fa-fw fa-vector-square" aria-label="<%= configFunctions.getConfigProperty("aliases.lot") %>"></i>
-                    <%= lot.lotName %>
+                  <span class="has-tooltip-right" data-tooltip="<%= burialSite.cemeteryName %>">
+                    <i class="fas fa-fw fa-vector-square" aria-label="Burial Site"></i>
+                    <%= burialSite.burialSiteName %>
                   </span><br />
                   <%
                       }
                     }
                   
-                    if (milestone.workOrderLotOccupancies.length > 0) {
-                      for (const occupancy of milestone.workOrderLotOccupancies) {
-                        for (const occupant of occupancy.lotOccupancyOccupants) {
+                    if (milestone.workOrderBurialSiteContracts.length > 0) {
+                      for (const burialSiteContract of milestone.workOrderBurialSiteContracts) {
+                        for (const interment of burialSiteContract.lotOccupancyInterments) {
                   %>
-                  <span class="has-tooltip-right" data-tooltip="<%= occupant.lotOccupantType %>">
-                    <i class="fas fa-fw fa-<%= occupant.fontAwesomeIconClass || 'user' %>" aria-label="<%= configFunctions.getConfigProperty("aliases.occupancy") %>"></i>
-                    <%= occupant.occupantName %>
-                    <%= occupant.occupantFamilyName %>
+                  <span class="has-tooltip-right" data-tooltip="Interment">
+                    <i class="fas fa-fw fa-user" aria-label="Contract"></i>
+                    <%= interment.deceasedName %>
                   </span><br />
                   <%
                         }
@@ -94,87 +93,86 @@
   <% } %>
   <div class="column">
     <div class="columns is-desktop">
-        <div class="column">
-          <div class="card is-hover-container">
-            <div class="card-content">
-              <div class="media">
-                <div class="media-left">
-                  <span class="fa-layers fa-4x fa-fw">
-                    <i class="fas fa-fw fa-hard-hat" aria-hidden="true"></i>
-                    <% if (workOrderCount > 0) { %>
-                      <a class="fa-layers-counter has-background-success has-text-white" href="<%= urlPrefix %>/workOrders/?workOrderOpenDateString=<%= dateTimeFunctions.dateToString(new Date()) %>"><%= workOrderCount %></a>
-                    <% } %>
-                  </span>
-                </div>
-                <a class="media-content" href="<%= urlPrefix %>/workOrders">
-                  <h2 class="title is-4 is-marginless has-text-link">
-                    Work Orders
-                  </h2>
-                  <p>
-                    View and maintain work orders.<br />
-                    <span class="tags has-addons is-invisible is-visible-hover">
-                      <span class="tag is-link is-light">Shortcut</span>
-                      <kbd class="tag">1</kbd>
-                    </span>
-                  </p>
-                </a>
-              </div>
-              <% if (user.userProperties.canUpdate) { %>
-                <a class="button is-fullwidth is-success is-light mb-2" href="<%= urlPrefix %>/workOrders/new">
-                  <span class="icon">
-                    <i class="fas fa-plus" aria-hidden="true"></i>
-                  </span>
-                  <span>New Work Order</span>
-                </a>
-              <% } %>
-              <a class="button is-fullwidth is-link is-light" href="<%= urlPrefix %>/workOrders/milestoneCalendar">
-                <span class="icon">
-                  <i class="fas fa-calendar" aria-hidden="true"></i>
+      <div class="column">
+        <div class="card is-hover-container">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left">
+                <span class="fa-layers fa-4x fa-fw">
+                  <i class="fas fa-fw fa-hard-hat" aria-hidden="true"></i>
+                  <% if (workOrderCount > 0) { %>
+                    <a class="fa-layers-counter has-background-success has-text-white" href="<%= urlPrefix %>/workOrders/?workOrderOpenDateString=<%= dateTimeFunctions.dateToString(new Date()) %>"><%= workOrderCount %></a>
+                  <% } %>
                 </span>
-                <span>Milestone Calendar</span>
+              </div>
+              <a class="media-content" href="<%= urlPrefix %>/workOrders">
+                <h2 class="title is-4 is-marginless has-text-link">
+                  Work Orders
+                </h2>
+                <p>
+                  View and maintain work orders.<br />
+                  <span class="tags has-addons is-invisible is-visible-hover">
+                    <span class="tag is-link is-light">Shortcut</span>
+                    <kbd class="tag">1</kbd>
+                  </span>
+                </p>
               </a>
             </div>
+            <% if (user.userProperties.canUpdate) { %>
+              <a class="button is-fullwidth is-success is-light mb-2" href="<%= urlPrefix %>/workOrders/new">
+                <span class="icon">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                </span>
+                <span>New Work Order</span>
+              </a>
+            <% } %>
+            <a class="button is-fullwidth is-link is-light" href="<%= urlPrefix %>/workOrders/milestoneCalendar">
+              <span class="icon">
+                <i class="fas fa-calendar" aria-hidden="true"></i>
+              </span>
+              <span>Milestone Calendar</span>
+            </a>
           </div>
         </div>
+      </div>
         
-        <div class="column">
-          <div class="card is-hover-container">
-              <div class="card-content">
-                <div class="media">
-                  <div class="media-left">
-                    <span class="fa-layers fa-4x fa-fw" aria-hidden="true">
-                      <i class="fas fa-vector-square"></i>
-                      <i class="fas fa-user" data-fa-transform="shrink-10"></i>
-                      <% if (lotOccupancyCount > 0) { %>
-                        <span class="fa-layers-counter has-background-success"><%= lotOccupancyCount %></span>
-                      <% } %>
-                    </span>
-                  </div>
-                  <a class="media-content" href="<%= urlPrefix %>/lotOccupancies">
-                    <h2 class="title is-4 is-marginless has-text-link">
-                      <%= configFunctions.getConfigProperty("aliases.occupancies") %>
-                    </h2>
-                    <p>
-                      View and maintain current and past
-                      <%= configFunctions.getConfigProperty("aliases.occupancies").toLowerCase() %>.<br />
-                      <span class="tags has-addons is-invisible is-visible-hover">
-                        <span class="tag is-link is-light">Shortcut</span>
-                        <kbd class="tag">2</kbd>
-                      </span>
-                    </p>
-                  </a>
-                </div>
-                <% if (user.userProperties.canUpdate) { %>
-                  <a class="button is-fullwidth is-success is-light" href="<%= urlPrefix %>/lotOccupancies/new">
-                    <span class="icon">
-                      <i class="fas fa-plus" aria-hidden="true"></i>
-                    </span>
-                    <span>New <%= configFunctions.getConfigProperty("aliases.occupancy") %></span>
-                  </a>
-                <% } %>
+      <div class="column">
+        <div class="card is-hover-container">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left">
+                <span class="fa-layers fa-4x fa-fw" aria-hidden="true">
+                  <i class="fas fa-vector-square"></i>
+                  <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+                  <% if (burialSiteContractCount > 0) { %>
+                    <span class="fa-layers-counter has-background-success"><%= burialSiteContractCount %></span>
+                  <% } %>
+                </span>
               </div>
+              <a class="media-content" href="<%= urlPrefix %>/contracts">
+                <h2 class="title is-4 is-marginless has-text-link">
+                  Contracts
+                </h2>
+                <p>
+                  View and maintain current and past contracts.<br />
+                  <span class="tags has-addons is-invisible is-visible-hover">
+                    <span class="tag is-link is-light">Shortcut</span>
+                    <kbd class="tag">2</kbd>
+                  </span>
+                </p>
+              </a>
+            </div>
+            <% if (user.userProperties.canUpdate) { %>
+              <a class="button is-fullwidth is-success is-light" href="<%= urlPrefix %>/contracts/new">
+                <span class="icon">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                </span>
+                <span>New Contract</span>
+              </a>
+            <% } %>
           </div>
         </div>
+      </div>
     </div>
     <div class="columns is-desktop">
       <div class="column">
@@ -184,14 +182,12 @@
               <div class="media-left">
                 <i class="fas fa-4x fa-fw fa-vector-square" aria-hidden="true"></i>
               </div>
-              <a class="media-content" href="<%= urlPrefix %>/lots">
+              <a class="media-content" href="<%= urlPrefix %>/burialSites">
                 <h2 class="title is-4 is-marginless has-text-link">
-                  <%= configFunctions.getConfigProperty("aliases.lots") %>
+                  Burial Sites
                 </h2>
                 <p>
-                  View and maintain
-                  <%= configFunctions.getConfigProperty("aliases.lots").toLowerCase() %> within a
-                  <%= configFunctions.getConfigProperty("aliases.map").toLowerCase() %>.<br />
+                  View and maintain burial sites within a cemetery.<br />
                   <span class="tags has-addons is-invisible is-visible-hover">
                     <span class="tag is-link is-light">Shortcut</span>
                     <kbd class="tag">3</kbd>
@@ -200,11 +196,11 @@
               </a>
             </div>
             <% if (user.userProperties.canUpdate) { %>
-              <a class="button is-fullwidth is-success is-light" href="<%= urlPrefix %>/lots/new">
+              <a class="button is-fullwidth is-success is-light" href="<%= urlPrefix %>/burialSites/new">
                 <span class="icon">
                   <i class="fas fa-plus" aria-hidden="true"></i>
                 </span>
-                <span>New <%= configFunctions.getConfigProperty("aliases.lot") %></span>
+                <span>New Burial Site</span>
               </a>
             <% } %>
           </div>
@@ -217,12 +213,12 @@
               <div class="media-left">
                 <i class="far fa-4x fa-fw fa-map" aria-hidden="true"></i>
               </div>
-              <a class="media-content" href="<%= urlPrefix %>/maps">
+              <a class="media-content" href="<%= urlPrefix %>/cemeteries">
                 <h2 class="title is-4 is-marginless has-text-link">
-                  <%= configFunctions.getConfigProperty("aliases.maps") %>
+                  Cemeteries
                 </h2>
                 <p>
-                  View and maintain <%= configFunctions.getConfigProperty("aliases.maps").toLowerCase() %>.
+                  View and maintain cemeteries.
                   <span class="tags has-addons is-invisible is-visible-hover">
                     <span class="tag is-link is-light">Shortcut</span>
                     <kbd class="tag">4</kbd>
@@ -231,11 +227,11 @@
               </a>
             </div>
             <% if (user.userProperties.canUpdate) { %>
-              <a class="button is-fullwidth is-success is-light" href="<%= urlPrefix %>/maps/new">
+              <a class="button is-fullwidth is-success is-light" href="<%= urlPrefix %>/cemeteries/new">
                 <span class="icon">
                   <i class="fas fa-plus" aria-hidden="true"></i>
                 </span>
-                <span>New <%= configFunctions.getConfigProperty("aliases.map") %></span>
+                <span>New Cemetery</span>
               </a>
             <% } %>
           </div>
@@ -262,12 +258,13 @@
       </div>
       <div class="column">
         <div class="card is-hover-container">
-          <a class="button is-fullwidth is-link is-light has-tooltip-bottom" data-tooltip="Latest Updates, Issue Tracker, Say Hello"
-            href="https://github.com/cityssm/sunrise-cms" target="_blank" rel="noreferrer">
-            <span class="icon">
-              <i class="fab fa-github" aria-hidden="true"></i>
-            </span>
-            <span>GitHub</span>
+          <div class="card-content">
+            <a class="button is-fullwidth is-link is-light has-tooltip-bottom" data-tooltip="Latest Updates, Issue Tracker, Say Hello"
+              href="https://github.com/cityssm/sunrise-cms" target="_blank" rel="noreferrer">
+              <span class="icon">
+                <i class="fab fa-github" aria-hidden="true"></i>
+              </span>
+              <span>GitHub</span>
             </a>
           </div>
         </div>
@@ -291,11 +288,8 @@
                 Fee Management
               </h2>
               <p>
-                Manage fees for
-                <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %>
-                <%= configFunctions.getConfigProperty("aliases.occupancy").toLowerCase() %>
-                and specific
-                <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %> types.
+                Manage fees for contracts
+                and specific burial site types.
               </p>
             </a>
           </div>
@@ -308,13 +302,12 @@
                 <i class="fas fa-cog" data-fa-transform="shrink-8 right-8 down-5" data-fa-glow="10"></i>
               </span>
             </div>
-            <a class="media-content" href="<%= urlPrefix %>/admin/occupancyTypes">
+            <a class="media-content" href="<%= urlPrefix %>/admin/contractTypes">
               <h2 class="title is-4 is-marginless has-text-link">
-                <%= configFunctions.getConfigProperty("aliases.occupancy") %> Type Management
+                Contract Type Management
               </h2>
               <p>
-                Manage
-                <%= configFunctions.getConfigProperty("aliases.occupancy").toLowerCase() %> types,
+                Manage contract types,
                 the fields associated with them,
                 and their available print options.
               </p>
@@ -329,14 +322,12 @@
                 <i class="fas fa-cog" data-fa-transform="shrink-8 right-8 down-5" data-fa-glow="10"></i>
               </span>
             </div>
-            <a class="media-content" href="<%= urlPrefix %>/admin/lotTypes">
+            <a class="media-content" href="<%= urlPrefix %>/admin/burialSiteTypes">
               <h2 class="title is-4 is-marginless has-text-link">
-                <%= configFunctions.getConfigProperty("aliases.lot") %> Type Management
+                Burial Site Type Management
               </h2>
               <p>
-                Manage
-                <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %> types
-                and fields associated with them.
+                Manage burial site types and fields associated with them.
               </p>
             </a>
           </div>
@@ -355,9 +346,8 @@
               </h2>
               <p>
                 Manage simple configuration tables fees for
-                work order types,
-                <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %> statuses,
-                and <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %> <%= configFunctions.getConfigProperty("aliases.occupant").toLowerCase() %> types.
+                work order types
+                and burial site statuses.
               </p>
             </a>
           </div>
