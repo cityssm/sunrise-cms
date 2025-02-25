@@ -271,8 +271,18 @@ function clearWorkOrderMilestoneTypesCache(): void {
   workOrderMilestoneTypes = undefined
 }
 
+type CacheTableNames =
+  | 'BurialSiteStatuses'
+  | 'BurialSiteTypes'
+  | 'BurialSiteTypeFields'
+  | 'ContractTypes'
+  | 'ContractTypeFields'
+  | 'ContractTypePrints'
+  | 'WorkOrderMilestoneTypes'
+  | 'WorkOrderTypes'
+
 export function clearCacheByTableName(
-  tableName: string,
+  tableName: CacheTableNames,
   relayMessage = true
 ): void {
   switch (tableName) {
@@ -304,6 +314,7 @@ export function clearCacheByTableName(
       break
     }
 
+    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
     default: {
       return
     }
@@ -330,6 +341,9 @@ export function clearCacheByTableName(
 process.on('message', (message: WorkerMessage) => {
   if (message.messageType === 'clearCache' && message.pid !== process.pid) {
     debug(`Clearing cache: ${(message as ClearCacheWorkerMessage).tableName}`)
-    clearCacheByTableName((message as ClearCacheWorkerMessage).tableName, false)
+    clearCacheByTableName(
+      (message as ClearCacheWorkerMessage).tableName as CacheTableNames,
+      false
+    )
   }
 })

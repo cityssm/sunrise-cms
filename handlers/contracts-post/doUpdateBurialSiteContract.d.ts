@@ -1,2 +1,3 @@
 import type { Request, Response } from 'express';
-export default function handler(request: Request, response: Response): Promise<void>;
+import { type UpdateBurialSiteContractForm } from '../../database/updateBurialSiteContract.js';
+export default function handler(request: Request<unknown, unknown, UpdateBurialSiteContractForm>, response: Response): Promise<void>;

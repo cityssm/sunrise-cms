@@ -7,7 +7,7 @@ import {
 
 import { acquireConnection } from './pool.js'
 
-export interface BurialSiteCommentUpdateForm {
+export interface UpdateForm {
   burialSiteContractCommentId: string | number
   commentDateString: DateString
   commentTimeString: TimeString
@@ -15,7 +15,7 @@ export interface BurialSiteCommentUpdateForm {
 }
 
 export default async function updateBurialSiteContractComment(
-  commentForm: BurialSiteCommentUpdateForm,
+  commentForm: UpdateForm,
   user: User
 ): Promise<boolean> {
   const database = await acquireConnection()

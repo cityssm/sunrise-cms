@@ -16,7 +16,7 @@ export interface UpdateLotOccupancyOccupantForm {
   occupantComment: string
 }
 
-export default async function updateLotOccupancyOccupant(
+export default async function updateBurialSiteContractOccupant(
   burialSiteContractOccupantForm: UpdateLotOccupancyOccupantForm,
   user: User
 ): Promise<boolean> {

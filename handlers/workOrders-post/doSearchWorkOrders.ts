@@ -12,7 +12,7 @@ export default async function handler(
   const result = await getWorkOrders(request.body as GetWorkOrdersFilters, {
     limit: request.body.limit,
     offset: request.body.offset,
-    includeLotsAndLotOccupancies: true
+    includeBurialSites: true
   })
 
   response.json({

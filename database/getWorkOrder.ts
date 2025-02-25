@@ -48,12 +48,12 @@ async function _getWorkOrder(
         {
           limit: -1,
           offset: 0,
-          includeLotOccupancyCount: false
+          includeBurialSiteContractCount: false
         },
         database
       )
 
-      workOrder.workOrderBurialSites = burialSiteResults.lots
+      workOrder.workOrderBurialSites = burialSiteResults.burialSites
 
       const workOrderBurialSiteContractsResults = await getBurialSiteContracts(
         {
@@ -62,7 +62,7 @@ async function _getWorkOrder(
         {
           limit: -1,
           offset: 0,
-          includeOccupants: true,
+          includeInterments: true,
           includeFees: false,
           includeTransactions: false
         },
@@ -70,7 +70,7 @@ async function _getWorkOrder(
       )
 
       workOrder.workOrderBurialSiteContracts =
-        workOrderBurialSiteContractsResults.BurialSiteContracts
+        workOrderBurialSiteContractsResults.burialSiteContracts
     }
 
     if (options.includeComments) {

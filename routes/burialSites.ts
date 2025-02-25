@@ -6,14 +6,14 @@ import handler_next from '../handlers/burialSites-get/next.js'
 import handler_previous from '../handlers/burialSites-get/previous.js'
 import handler_search from '../handlers/burialSites-get/search.js'
 import handler_view from '../handlers/burialSites-get/view.js'
-import handler_doAddLotComment from '../handlers/burialSites-post/doAddLotComment.js'
-import handler_doCreateLot from '../handlers/burialSites-post/doCreateLot.js'
-import handler_doDeleteLot from '../handlers/burialSites-post/doDeleteLot.js'
-import handler_doDeleteLotComment from '../handlers/burialSites-post/doDeleteLotComment.js'
+import handler_doAddBurialSiteComment from '../handlers/burialSites-post/doAddBurialSiteComment.js'
+import handler_doCreateBurialSite from '../handlers/burialSites-post/doCreateBurialSite.js'
+import handler_doDeleteBurialSite from '../handlers/burialSites-post/doDeleteBurialSite.js'
+import handler_doDeleteBurialSiteComment from '../handlers/burialSites-post/doDeleteBurialSiteComment.js'
 import handler_doGetBurialSiteTypeFields from '../handlers/burialSites-post/doGetBurialSiteTypeFields.js'
-import handler_doSearchLots from '../handlers/burialSites-post/doSearchLots.js'
-import handler_doUpdateLot from '../handlers/burialSites-post/doUpdateLot.js'
-import handler_doUpdateLotComment from '../handlers/burialSites-post/doUpdateLotComment.js'
+import handler_doSearchBurialSites from '../handlers/burialSites-post/doSearchBurialSites.js'
+import handler_doUpdateBurialSite from '../handlers/burialSites-post/doUpdateBurialSite.js'
+import handler_doUpdateBurialSiteComment from '../handlers/burialSites-post/doUpdateBurialSiteComment.js'
 import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js'
 
 export const router = Router()
@@ -24,7 +24,7 @@ export const router = Router()
 
 router.get('/', handler_search)
 
-router.post('/doSearchLots', handler_doSearchLots)
+router.post('/doSearchBurialSites', handler_doSearchBurialSites)
 
 /*
  * Lot View / Edit
@@ -47,39 +47,39 @@ router.post(
 )
 
 router.post(
-  '/doCreateLot',
+  '/doCreateBurialSite',
   updatePostHandler,
-  handler_doCreateLot
+  handler_doCreateBurialSite
 )
 
 router.post(
-  '/doUpdateLot',
+  '/doUpdateBurialSite',
   updatePostHandler,
-  handler_doUpdateLot
+  handler_doUpdateBurialSite
 )
 
 router.post(
-  '/doDeleteLot',
+  '/doDeleteBurialSite',
   updatePostHandler,
-  handler_doDeleteLot
+  handler_doDeleteBurialSite
 )
 
 router.post(
-  '/doAddLotComment',
+  '/doAddBurialSiteComment',
   updatePostHandler,
-  handler_doAddLotComment
+  handler_doAddBurialSiteComment
 )
 
 router.post(
-  '/doUpdateLotComment',
+  '/doUpdateBurialSiteComment',
   updatePostHandler,
-  handler_doUpdateLotComment
+  handler_doUpdateBurialSiteComment
 )
 
 router.post(
-  '/doDeleteLotComment',
+  '/doDeleteBurialSiteComment',
   updatePostHandler,
-  handler_doDeleteLotComment
+  handler_doDeleteBurialSiteComment
 )
 
 export default router

@@ -13,9 +13,9 @@ describe('functions.cache', () => {
     before(() => {
         cacheFunctions.clearCaches();
     });
-    describe('Lot Statuses', () => {
-        it('returns Lot Statuses', async () => {
-            cacheFunctions.clearCacheByTableName('LotStatuses');
+    describe('Burial Site Statuses', () => {
+        it('returns Burial Site Statuses', async () => {
+            cacheFunctions.clearCacheByTableName('BurialSiteStatuses');
             const lotStatuses = await cacheFunctions.getBurialSiteStatuses();
             assert.ok(lotStatuses.length > 0);
             for (const lotStatus of lotStatuses) {

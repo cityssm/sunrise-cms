@@ -4,23 +4,23 @@ export default async function addWorkOrderLot(workOrderLotForm, user) {
     const rightNowMillis = Date.now();
     const row = database
         .prepare(`select recordDelete_timeMillis
-        from WorkOrderLots
+        from WorkOrderBurialSites
         where workOrderId = ?
-        and lotId = ?`)
-        .get(workOrderLotForm.workOrderId, workOrderLotForm.lotId);
+        and burialSiteId = ?`)
+        .get(workOrderLotForm.workOrderId, workOrderLotForm.burialSiteId);
     if (row === undefined) {
         database
-            .prepare(`insert into WorkOrderLots (
-          workOrderId, lotId,
+            .prepare(`insert into WorkOrderBurialSites (
+          workOrderId, burialSiteId,
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
           values (?, ?, ?, ?, ?, ?)`)
-            .run(workOrderLotForm.workOrderId, workOrderLotForm.lotId, user.userName, rightNowMillis, user.userName, rightNowMillis);
+            .run(workOrderLotForm.workOrderId, workOrderLotForm.burialSiteId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
     else {
         if (row.recordDelete_timeMillis) {
             database
-                .prepare(`update WorkOrderLots
+                .prepare(`update WorkOrderBurialSites
             set recordCreate_userName = ?,
             recordCreate_timeMillis = ?,
             recordUpdate_userName = ?,
@@ -28,8 +28,8 @@ export default async function addWorkOrderLot(workOrderLotForm, user) {
             recordDelete_userName = null,
             recordDelete_timeMillis = null
             where workOrderId = ?
-            and lotId = ?`)
-                .run(user.userName, rightNowMillis, user.userName, rightNowMillis, workOrderLotForm.workOrderId, workOrderLotForm.lotId);
+            and burialSiteId = ?`)
+                .run(user.userName, rightNowMillis, user.userName, rightNowMillis, workOrderLotForm.workOrderId, workOrderLotForm.burialSiteId);
         }
     }
     database.release();

@@ -1,7 +1,7 @@
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import getBurialSiteContracts from './getBurialSiteContracts.js';
-import getLots from './getLots.js';
+import getBurialSites from './getBurialSites.js';
 import { acquireConnection } from './pool.js';
 // eslint-disable-next-line security/detect-unsafe-regex
 const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/;
@@ -43,7 +43,8 @@ function buildWhereClause(filters) {
             break;
         }
     }
-    if (filters.workOrderMilestoneDateString !== undefined && filters.workOrderMilestoneDateString !== '') {
+    if (filters.workOrderMilestoneDateString !== undefined &&
+        filters.workOrderMilestoneDateString !== '') {
         sqlWhereClause += ' and m.workOrderMilestoneDate = ?';
         sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString));
     }
@@ -104,9 +105,9 @@ export default async function getWorkOrderMilestones(filters, options, connected
     userFn_timeIntegerToPeriodString(ifnull(m.workOrderMilestoneCompletionTime, 0)) as workOrderMilestoneCompletionTimePeriodString,
     ${options.includeWorkOrders ?? false
         ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,
-        w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
-        w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
-        w.recordUpdate_timeMillis as workOrderRecordUpdate_timeMillis,`
+            w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
+            w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
+            w.recordUpdate_timeMillis as workOrderRecordUpdate_timeMillis,`
         : ''}
     m.recordCreate_userName, m.recordCreate_timeMillis,
     m.recordUpdate_userName, m.recordUpdate_timeMillis
@@ -121,24 +122,25 @@ export default async function getWorkOrderMilestones(filters, options, connected
         .all(sqlParameters);
     if (options.includeWorkOrders ?? false) {
         for (const workOrderMilestone of workOrderMilestones) {
-            const workOrderLotsResults = await getLots({
+            const burialSites = await getBurialSites({
                 workOrderId: workOrderMilestone.workOrderId
             }, {
                 limit: -1,
                 offset: 0,
-                includeLotOccupancyCount: false
+                includeBurialSiteContractCount: false
             }, database);
-            workOrderMilestone.workOrderLots = workOrderLotsResults.lots;
-            const BurialSiteContracts = await getBurialSiteContracts({
+            workOrderMilestone.workOrderBurialSites = burialSites.burialSites;
+            const burialSiteContracts = await getBurialSiteContracts({
                 workOrderId: workOrderMilestone.workOrderId
             }, {
                 limit: -1,
                 offset: 0,
-                includeOccupants: true,
+                includeInterments: true,
                 includeFees: false,
                 includeTransactions: false
             }, database);
-            workOrderMilestone.workOrderBurialSiteContracts = BurialSiteContracts.BurialSiteContracts;
+            workOrderMilestone.workOrderBurialSiteContracts =
+                burialSiteContracts.burialSiteContracts;
         }
     }
     if (connectedDatabase === undefined) {

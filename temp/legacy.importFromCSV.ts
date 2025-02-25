@@ -20,7 +20,7 @@ import addMap from '../database/addMap.js'
 import addOrUpdateLotOccupancyField from '../database/addOrUpdateLotOccupancyField.js'
 import addWorkOrder from '../database/addWorkOrder.js'
 import addWorkOrderLot from '../database/addWorkOrderLot.js'
-import addWorkOrderLotOccupancy from '../database/addWorkOrderLotOccupancy.js'
+import addWorkOrderBurialSiteContract from '../database/addWorkOrderBurialSiteContract.js'
 import addWorkOrderMilestone from '../database/addWorkOrderMilestone.js'
 import closeWorkOrder from '../database/closeWorkOrder.js'
 import getLot, { getLotByLotName } from '../database/getLot.js'
@@ -30,7 +30,7 @@ import getWorkOrder, {
   getWorkOrderByWorkOrderNumber
 } from '../database/getWorkOrder.js'
 import reopenWorkOrder from '../database/reopenWorkOrder.js'
-import { updateLotStatus } from '../database/updateLot.js'
+import { updateBurialSiteStatus } from '../database/updateBurialSite.js'
 import type * as recordTypes from '../types/recordTypes.js'
 
 import * as importData from './legacy.importFromCsv.data.js'
@@ -511,7 +511,7 @@ async function importFromMasterCSV(): Promise<void> {
         }
 
         if (contractEndDateString === '') {
-          await updateLotStatus(
+          await updateBurialSiteStatus(
             lotId ?? '',
             importIds.reservedburialSiteStatusId,
             user
@@ -771,7 +771,7 @@ async function importFromMasterCSV(): Promise<void> {
           )
         }
 
-        await updateLotStatus(lotId ?? '', importIds.takenburialSiteStatusId, user)
+        await updateBurialSiteStatus(lotId ?? '', importIds.takenburialSiteStatusId, user)
 
         if (masterRow.CM_PRENEED_OWNER !== '') {
           await addBurialSiteContractOccupant(
@@ -874,7 +874,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       }
 
       if (lot && lot.burialSiteStatusId === importIds.availableburialSiteStatusId) {
-        await updateLotStatus(lot.lotId, importIds.reservedburialSiteStatusId, user)
+        await updateBurialSiteStatus(lot.lotId, importIds.reservedburialSiteStatusId, user)
       }
 
       const contractStartDateString = formatDateString(
@@ -1200,7 +1200,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         lot = await getLotByLotName(lotName)
 
         if (lot) {
-          await updateLotStatus(lot.lotId, importIds.takenburialSiteStatusId, user)
+          await updateBurialSiteStatus(lot.lotId, importIds.takenburialSiteStatusId, user)
         } else {
           const map = await getMap({ cemetery: workOrderRow.WO_CEMETERY })
 
@@ -1438,7 +1438,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         }
       }
 
-      await addWorkOrderLotOccupancy(
+      await addWorkOrderBurialSiteContract(
         {
           workOrderId: workOrder.workOrderId!,
           burialSiteContractId

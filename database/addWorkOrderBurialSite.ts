@@ -2,7 +2,7 @@ import { acquireConnection } from './pool.js'
 
 export interface AddWorkOrderLotForm {
   workOrderId: number | string
-  lotId: number | string
+  burialSiteId: number | string
 }
 
 export default async function addWorkOrderLot(
@@ -16,26 +16,28 @@ export default async function addWorkOrderLot(
   const row = database
     .prepare(
       `select recordDelete_timeMillis
-        from WorkOrderLots
+        from WorkOrderBurialSites
         where workOrderId = ?
-        and lotId = ?`
+        and burialSiteId = ?`
     )
-    .get(workOrderLotForm.workOrderId, workOrderLotForm.lotId) as {
-    recordDelete_timeMillis?: number
-  }
+    .get(workOrderLotForm.workOrderId, workOrderLotForm.burialSiteId) as
+    | {
+        recordDelete_timeMillis?: number
+      }
+    | undefined
 
   if (row === undefined) {
     database
       .prepare(
-        `insert into WorkOrderLots (
-          workOrderId, lotId,
+        `insert into WorkOrderBurialSites (
+          workOrderId, burialSiteId,
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
           values (?, ?, ?, ?, ?, ?)`
       )
       .run(
         workOrderLotForm.workOrderId,
-        workOrderLotForm.lotId,
+        workOrderLotForm.burialSiteId,
         user.userName,
         rightNowMillis,
         user.userName,
@@ -45,7 +47,7 @@ export default async function addWorkOrderLot(
     if (row.recordDelete_timeMillis) {
       database
         .prepare(
-          `update WorkOrderLots
+          `update WorkOrderBurialSites
             set recordCreate_userName = ?,
             recordCreate_timeMillis = ?,
             recordUpdate_userName = ?,
@@ -53,7 +55,7 @@ export default async function addWorkOrderLot(
             recordDelete_userName = null,
             recordDelete_timeMillis = null
             where workOrderId = ?
-            and lotId = ?`
+            and burialSiteId = ?`
         )
         .run(
           user.userName,
@@ -61,7 +63,7 @@ export default async function addWorkOrderLot(
           user.userName,
           rightNowMillis,
           workOrderLotForm.workOrderId,
-          workOrderLotForm.lotId
+          workOrderLotForm.burialSiteId
         )
     }
   }

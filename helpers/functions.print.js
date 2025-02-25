@@ -2,8 +2,8 @@ import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import getBurialSite from '../database/getBurialSite.js';
 import getBurialSiteContract from '../database/getBurialSiteContract.js';
 import getWorkOrder from '../database/getWorkOrder.js';
+import * as burialSiteContractFunctions from './burialSiteContracts.helpers.js';
 import * as configFunctions from './config.helpers.js';
-import * as burialSiteContractFunctions from './functions.burialSiteContract.js';
 const screenPrintConfigs = {
     burialSiteContract: {
         title: `Burial Site Contract Print`,

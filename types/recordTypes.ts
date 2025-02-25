@@ -379,7 +379,7 @@ export interface WorkOrder extends Record {
   workOrderBurialSites?: BurialSite[]
   workOrderBurialSiteCount?: number
 
-  workOrderBurialSiteContract?: BurialSiteContract[]
+  workOrderBurialSiteContracts?: BurialSiteContract[]
 }
 
 /*

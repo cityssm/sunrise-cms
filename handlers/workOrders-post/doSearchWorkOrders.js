@@ -3,7 +3,7 @@ export default async function handler(request, response) {
     const result = await getWorkOrders(request.body, {
         limit: request.body.limit,
         offset: request.body.offset,
-        includeLotsAndLotOccupancies: true
+        includeBurialSites: true
     });
     response.json({
         count: result.count,

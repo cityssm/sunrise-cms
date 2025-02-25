@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export default async function addWorkOrderLotOccupancy(addForm, user, connectedDatabase) {
+export default async function addWorkOrderBurialSiteContract(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
     const recordDeleteTimeMillis = database

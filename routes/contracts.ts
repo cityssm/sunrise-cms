@@ -4,28 +4,24 @@ import handler_edit from '../handlers/contracts-get/edit.js'
 import handler_new from '../handlers/contracts-get/new.js'
 import handler_search from '../handlers/contracts-get/search.js'
 import handler_view from '../handlers/contracts-get/view.js'
-import handler_doAddLotOccupancyComment from '../handlers/contracts-post/doAddLotOccupancyComment.js'
-import handler_doAddLotOccupancyFee from '../handlers/contracts-post/doAddBurialSiteContractFee.js'
-import handler_doAddLotOccupancyFeeCategory from '../handlers/contracts-post/doAddLotOccupancyFeeCategory.js'
-import handler_doAddLotOccupancyOccupant from '../handlers/contracts-post/doAddLotOccupancyOccupant.js'
-import handler_doAddLotOccupancyTransaction from '../handlers/contracts-post/doAddBurialSiteContractTransaction.js'
-import handler_doCopyLotOccupancy from '../handlers/contracts-post/doCopyLotOccupancy.js'
-import handler_doCreateLotOccupancy from '../handlers/contracts-post/doCreateBurialSiteContract.js'
-import handler_doDeleteLotOccupancy from '../handlers/contracts-post/doDeleteLotOccupancy.js'
-import handler_doDeleteLotOccupancyComment from '../handlers/contracts-post/doDeleteLotOccupancyComment.js'
-import handler_doDeleteLotOccupancyFee from '../handlers/contracts-post/doDeleteLotOccupancyFee.js'
-import handler_doDeleteLotOccupancyOccupant from '../handlers/contracts-post/doDeleteLotOccupancyOccupant.js'
-import handler_doDeleteLotOccupancyTransaction from '../handlers/contracts-post/doDeleteBurialSiteContractTransaction.js'
+import handler_doAddBurialSiteContractComment from '../handlers/contracts-post/doAddBurialSiteContractComment.js'
+import handler_doAddBurialSiteContractFee from '../handlers/contracts-post/doAddBurialSiteContractFee.js'
+import handler_doAddBurialSiteContractFeeCategory from '../handlers/contracts-post/doAddBurialSiteContractFeeCategory.js'
+import handler_doAddBurialSiteContractTransaction from '../handlers/contracts-post/doAddBurialSiteContractTransaction.js'
+import handler_doCopyBurialSiteContract from '../handlers/contracts-post/doCopyBurialSiteContract.js'
+import handler_doCreateBurialSiteContract from '../handlers/contracts-post/doCreateBurialSiteContract.js'
+import handler_doDeleteBurialSiteContract from '../handlers/contracts-post/doDeleteBurialSiteContract.js'
+import handler_doDeleteBurialSiteContractComment from '../handlers/contracts-post/doDeleteBurialSiteContractComment.js'
+import handler_doDeleteBurialSiteContractFee from '../handlers/contracts-post/doDeleteBurialSiteContractFee.js'
+import handler_doDeleteBurialSiteContractTransaction from '../handlers/contracts-post/doDeleteBurialSiteContractTransaction.js'
+import handler_doGetContractTypeFields from '../handlers/contracts-post/doGetContractTypeFields.js'
 import handler_doGetDynamicsGPDocument from '../handlers/contracts-post/doGetDynamicsGPDocument.js'
 import handler_doGetFees from '../handlers/contracts-post/doGetFees.js'
-import handler_doGetContractTypeFields from '../handlers/contracts-post/doGetContractTypeFields.js'
-import handler_doSearchLotOccupancies from '../handlers/contracts-post/doSearchBurialSiteContracts.js'
-import handler_doSearchPastOccupants from '../handlers/contracts-post/doSearchPastOccupants.js'
-import handler_doUpdateLotOccupancy from '../handlers/contracts-post/doUpdateLotOccupancy.js'
-import handler_doUpdateLotOccupancyComment from '../handlers/contracts-post/doUpdateBurialSiteContractComment.js'
-import handler_doUpdateLotOccupancyFeeQuantity from '../handlers/contracts-post/doUpdateBurialSiteContractFeeQuantity.js'
-import handler_doUpdateLotOccupancyOccupant from '../handlers/contracts-post/doUpdateLotOccupancyOccupant.js'
-import handler_doUpdateLotOccupancyTransaction from '../handlers/contracts-post/doUpdateBurialSiteContractTransaction.js'
+import handler_doSearchBurialSiteContracts from '../handlers/contracts-post/doSearchBurialSiteContracts.js'
+import handler_doUpdateBurialSiteContract from '../handlers/contracts-post/doUpdateBurialSiteContract.js'
+import handler_doUpdateBurialSiteContractComment from '../handlers/contracts-post/doUpdateBurialSiteContractComment.js'
+import handler_doUpdateBurialSiteContractFeeQuantity from '../handlers/contracts-post/doUpdateBurialSiteContractFeeQuantity.js'
+import handler_doUpdateBurialSiteContractTransaction from '../handlers/contracts-post/doUpdateBurialSiteContractTransaction.js'
 import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
@@ -36,8 +32,8 @@ export const router = Router()
 router.get('/', handler_search)
 
 router.post(
-  '/doSearchLotOccupancies',
-  handler_doSearchLotOccupancies
+  '/doSearchBurialSiteContracts',
+  handler_doSearchBurialSiteContracts
 )
 
 // Create
@@ -51,9 +47,9 @@ router.post(
 )
 
 router.post(
-  '/doCreateLotOccupancy',
+  '/doCreateBurialSiteContract',
   updatePostHandler,
-  handler_doCreateLotOccupancy
+  handler_doCreateBurialSiteContract
 )
 
 // View
@@ -69,67 +65,41 @@ router.get(
 )
 
 router.post(
-  '/doUpdateLotOccupancy',
+  '/doUpdateBurialSiteContract',
   updatePostHandler,
-  handler_doUpdateLotOccupancy
+  handler_doUpdateBurialSiteContract
 )
 
 router.post(
-  '/doCopyLotOccupancy',
+  '/doCopyBurialSiteContract',
   updatePostHandler,
-  handler_doCopyLotOccupancy
+  handler_doCopyBurialSiteContract
 )
 
 router.post(
-  '/doDeleteLotOccupancy',
+  '/doDeleteBurialSiteContract',
   updatePostHandler,
-  handler_doDeleteLotOccupancy
-)
-
-// Occupants
-
-router.post(
-  '/doSearchPastOccupants',
-  updatePostHandler,
-  handler_doSearchPastOccupants
-)
-
-router.post(
-  '/doAddLotOccupancyOccupant',
-  updatePostHandler,
-  handler_doAddLotOccupancyOccupant
-)
-
-router.post(
-  '/doUpdateLotOccupancyOccupant',
-  updatePostHandler,
-  handler_doUpdateLotOccupancyOccupant
-)
-
-router.post(
-  '/doDeleteLotOccupancyOccupant',
-  updatePostHandler,
-  handler_doDeleteLotOccupancyOccupant
+  handler_doDeleteBurialSiteContract
 )
 
 // Comments
 
 router.post(
-  '/doAddLotOccupancyComment',
+  '/doAddBurialSiteContractComment',
   updatePostHandler,
-  handler_doAddLotOccupancyComment
+  handler_doAddBurialSiteContractComment
 )
 
 router.post(
-  '/doUpdateLotOccupancyComment',
+  '/doUpdateBurialSiteContractComment',
   updatePostHandler,
-  handler_doUpdateLotOccupancyComment
+  handler_doUpdateBurialSiteContractComment
 )
 
 router.post(
-  '/doDeleteLotOccupancyComment',
+  '/doDeleteBurialSiteContractComment',
   updatePostHandler,
-  handler_doDeleteLotOccupancyComment
+  handler_doDeleteBurialSiteContractComment
 )
 
 // Fees
@@ -141,27 +111,27 @@ router.post(
 )
 
 router.post(
-  '/doAddLotOccupancyFee',
+  '/doAddBurialSiteContractFee',
   updatePostHandler,
-  handler_doAddLotOccupancyFee
+  handler_doAddBurialSiteContractFee
 )
 
 router.post(
-  '/doAddLotOccupancyFeeCategory',
+  '/doAddBurialSiteContractFeeCategory',
   updatePostHandler,
-  handler_doAddLotOccupancyFeeCategory
+  handler_doAddBurialSiteContractFeeCategory
 )
 
 router.post(
-  '/doUpdateLotOccupancyFeeQuantity',
+  '/doUpdateBurialSiteContractFeeQuantity',
   updatePostHandler,
-  handler_doUpdateLotOccupancyFeeQuantity
+  handler_doUpdateBurialSiteContractFeeQuantity
 )
 
 router.post(
-  '/doDeleteLotOccupancyFee',
+  '/doDeleteBurialSiteContractFee',
   updatePostHandler,
-  handler_doDeleteLotOccupancyFee
+  handler_doDeleteBurialSiteContractFee
 )
 
 // Transactions
@@ -175,21 +145,21 @@ if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
 }
 
 router.post(
-  '/doAddLotOccupancyTransaction',
+  '/doAddBurialSiteContractTransaction',
   updatePostHandler,
-  handler_doAddLotOccupancyTransaction
+  handler_doAddBurialSiteContractTransaction
 )
 
 router.post(
-  '/doUpdateLotOccupancyTransaction',
+  '/doUpdateBurialSiteContractTransaction',
   updatePostHandler,
-  handler_doUpdateLotOccupancyTransaction
+  handler_doUpdateBurialSiteContractTransaction
 )
 
 router.post(
-  '/doDeleteLotOccupancyTransaction',
+  '/doDeleteBurialSiteContractTransaction',
   updatePostHandler,
-  handler_doDeleteLotOccupancyTransaction
+  handler_doDeleteBurialSiteContractTransaction
 )
 
 export default router

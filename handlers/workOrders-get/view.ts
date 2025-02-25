@@ -8,7 +8,7 @@ export default async function handler(
   response: Response
 ): Promise<void> {
   const workOrder = await getWorkOrder(request.params.workOrderId, {
-    includeLotsAndLotOccupancies: true,
+    includeBurialSites: true,
     includeComments: true,
     includeMilestones: true
   })

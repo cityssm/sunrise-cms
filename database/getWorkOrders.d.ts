@@ -11,7 +11,7 @@ export interface GetWorkOrdersFilters {
 interface GetWorkOrdersOptions {
     limit: number;
     offset: number;
-    includeLotsAndBurialSiteContracts?: boolean;
+    includeBurialSites?: boolean;
     includeComments?: boolean;
     includeMilestones?: boolean;
 }

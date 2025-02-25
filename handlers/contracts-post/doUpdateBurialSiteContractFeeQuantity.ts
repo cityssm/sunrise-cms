@@ -1,21 +1,21 @@
 import type { Request, Response } from 'express'
 
 import getBurialSiteContractFees from '../../database/getBurialSiteContractFees.js'
-import updateLotOccupancyFeeQuantity, {
-  type UpdateLotOccupancyFeeQuantityForm
-} from '../../database/updateLotOccupancyFeeQuantity.js'
+import updateBurialSiteContractFeeQuantity, {
+  type UpdateBurialSiteFeeForm
+} from '../../database/updateBurialSiteContractFeeQuantity.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<unknown, unknown, UpdateBurialSiteFeeForm>,
   response: Response
 ): Promise<void> {
-  const success = await updateLotOccupancyFeeQuantity(
-    request.body as UpdateLotOccupancyFeeQuantityForm,
+  const success = await updateBurialSiteContractFeeQuantity(
+    request.body,
     request.session.user as User
   )
 
   const burialSiteContractFees = await getBurialSiteContractFees(
-    request.body.burialSiteContractId as string
+    request.body.burialSiteContractId
   )
 
   response.json({

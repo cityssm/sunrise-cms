@@ -24,20 +24,20 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
             }, {
                 limit: -1,
                 offset: 0,
-                includeLotOccupancyCount: false
+                includeBurialSiteContractCount: false
             }, database);
-            workOrder.workOrderBurialSites = burialSiteResults.lots;
+            workOrder.workOrderBurialSites = burialSiteResults.burialSites;
             const workOrderBurialSiteContractsResults = await getBurialSiteContracts({
                 workOrderId: workOrder.workOrderId
             }, {
                 limit: -1,
                 offset: 0,
-                includeOccupants: true,
+                includeInterments: true,
                 includeFees: false,
                 includeTransactions: false
             }, database);
             workOrder.workOrderBurialSiteContracts =
-                workOrderBurialSiteContractsResults.BurialSiteContracts;
+                workOrderBurialSiteContractsResults.burialSiteContracts;
         }
         if (options.includeComments) {
             workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);

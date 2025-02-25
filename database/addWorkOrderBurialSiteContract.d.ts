@@ -3,4 +3,4 @@ export interface AddWorkOrderBurialSiteContractOccupancyForm {
     workOrderId: number | string;
     burialSiteContractId: number | string;
 }
-export default function addWorkOrderLotOccupancy(addForm: AddWorkOrderBurialSiteContractOccupancyForm, user: User, connectedDatabase?: PoolConnection): Promise<boolean>;
+export default function addWorkOrderBurialSiteContract(addForm: AddWorkOrderBurialSiteContractOccupancyForm, user: User, connectedDatabase?: PoolConnection): Promise<boolean>;

@@ -281,7 +281,7 @@ export interface WorkOrder extends Record {
     workOrderComments?: WorkOrderComment[];
     workOrderBurialSites?: BurialSite[];
     workOrderBurialSiteCount?: number;
-    workOrderBurialSiteContract?: BurialSiteContract[];
+    workOrderBurialSiteContracts?: BurialSiteContract[];
 }
 declare global {
     export interface User {

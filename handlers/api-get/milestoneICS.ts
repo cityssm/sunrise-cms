@@ -47,7 +47,7 @@ function buildEventSummary(milestone: WorkOrderMilestone): string {
 
   let occupantCount = 0
 
-  for (const burialSiteContract of milestone.workOrderLotOccupancies ?? []) {
+  for (const burialSiteContract of milestone.workOrderBurialSiteContracts ?? []) {
     for (const occupant of burialSiteContract.burialSiteContractOccupants ?? []) {
       occupantCount += 1
 
@@ -75,23 +75,23 @@ function buildEventDescriptionHTML_occupancies(
 ): string {
   let descriptionHTML = ''
 
-  if (milestone.workOrderLotOccupancies!.length > 0) {
+  if (milestone.workOrderBurialSiteContracts!.length > 0) {
     const urlRoot = getUrlRoot(request)
 
     descriptionHTML = `<h2>
-      Related ${escapeHTML(getConfigProperty('aliases.occupancies'))}
+      Related Contracts
       </h2>
       <table border="1">
       <thead><tr>
-      <th>${escapeHTML(getConfigProperty('aliases.occupancy'))} Type</th>
-      <th>${escapeHTML(getConfigProperty('aliases.lot'))}</th>
+      <th>Contract Type</th>
+      <th>Burial Site</th>
       <th>Start Date</th>
       <th>End Date</th>
       <th>${escapeHTML(getConfigProperty('aliases.occupants'))}</th>
       </tr></thead>
       <tbody>`
 
-    for (const occupancy of milestone.workOrderLotOccupancies ?? []) {
+    for (const occupancy of milestone.workOrderBurialSiteContracts ?? []) {
       descriptionHTML += `<tr>
           <td>
             <a href="${urlRoot}/contracts/${occupancy.burialSiteContractId}">
@@ -137,36 +137,30 @@ function buildEventDescriptionHTML_lots(
 ): string {
   let descriptionHTML = ''
 
-  if (milestone.workOrderLots!.length > 0) {
+  if ((milestone.workOrderBurialSites ?? []).length > 0) {
     const urlRoot = getUrlRoot(request)
 
     descriptionHTML += `<h2>
-      Related ${escapeHTML(getConfigProperty('aliases.lots'))}
+      Related Burial Sites
       </h2>
       <table border="1"><thead><tr>
-      <th>
-        ${escapeHTML(getConfigProperty('aliases.lot'))}
-      </th>
-      <th>
-        ${escapeHTML(getConfigProperty('aliases.map'))}
-      </th>
-      <th>
-        ${escapeHTML(getConfigProperty('aliases.lot'))} Type
-      </th>
+      <th>Burial Site</th>
+      <th>Cemetery</th>
+      <th>Burial Site Type</th>
       <th>Status</th>
       </tr></thead>
       <tbody>`
 
-    for (const lot of milestone.workOrderLots ?? []) {
+    for (const burialSite of milestone.workOrderBurialSites ?? []) {
       descriptionHTML += `<tr>
         <td>
-          <a href="${urlRoot}/lots/${lot.lotId.toString()}">
-            ${escapeHTML(lot.lotName ?? '')}
+          <a href="${urlRoot}/burialSites/${burialSite.burialSiteId.toString()}">
+            ${escapeHTML(burialSite.burialSiteName ?? '')}
           </a>
         </td>
-        <td>${escapeHTML(lot.cemeteryName ?? '')}</td>
-        <td>${escapeHTML(lot.lotType ?? '')}</td>
-        <td>${escapeHTML(lot.lotStatus ?? '')}</td>
+        <td>${escapeHTML(burialSite.cemeteryName ?? '')}</td>
+        <td>${escapeHTML(burialSite.burialSiteType ?? '')}</td>
+        <td>${escapeHTML(burialSite.burialSiteStatus ?? '')}</td>
         </tr>`
     }
 
@@ -242,14 +236,14 @@ function buildEventCategoryList(milestone: WorkOrderMilestone): string[] {
 }
 
 function buildEventLocation(milestone: WorkOrderMilestone): string {
-  const lotNames: string[] = []
+  const burialSiteNames: string[] = []
 
-  if (milestone.workOrderLots!.length > 0) {
-    for (const lot of milestone.workOrderLots ?? []) {
-      lotNames.push(`${lot.cemeteryName ?? ''}: ${lot.lotName ?? ''}`)
+  if ((milestone.workOrderBurialSites ?? []).length > 0) {
+    for (const burialSite of milestone.workOrderBurialSites ?? []) {
+      burialSiteNames.push(`${burialSite.cemeteryName ?? ''}: ${burialSite.burialSiteName ?? ''}`)
     }
   }
-  return lotNames.join(', ')
+  return burialSiteNames.join(', ')
 }
 
 export default async function handler(
@@ -375,9 +369,9 @@ export default async function handler(
     calendarEvent.location(location)
 
     // Set organizer / attendees
-    if (milestone.workOrderLotOccupancies!.length > 0) {
+    if (milestone.workOrderBurialSiteContracts!.length > 0) {
       let organizerSet = false
-      for (const burialSiteContract of milestone.workOrderLotOccupancies ?? []) {
+      for (const burialSiteContract of milestone.workOrderBurialSiteContracts ?? []) {
         for (const occupant of burialSiteContract.burialSiteContractOccupants ?? []) {
           if (organizerSet) {
             calendarEvent.createAttendee({

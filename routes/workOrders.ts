@@ -7,23 +7,23 @@ import handler_new from '../handlers/workOrders-get/new.js'
 import handler_outlook from '../handlers/workOrders-get/outlook.js'
 import handler_search from '../handlers/workOrders-get/search.js'
 import handler_view from '../handlers/workOrders-get/view.js'
+import handler_doAddWorkOrderBurialSite from '../handlers/workOrders-post/doAddWorkOrderBurialSite.js'
+import handler_doAddWorkOrderBurialSiteContract from '../handlers/workOrders-post/doAddWorkOrderBurialSiteContract.js'
 import handler_doAddWorkOrderComment from '../handlers/workOrders-post/doAddWorkOrderComment.js'
-import handler_doAddWorkOrderLot from '../handlers/workOrders-post/doAddWorkOrderLot.js'
-import handler_doAddWorkOrderLotOccupancy from '../handlers/workOrders-post/doAddWorkOrderLotOccupancy.js'
 import handler_doAddWorkOrderMilestone from '../handlers/workOrders-post/doAddWorkOrderMilestone.js'
 import handler_doCloseWorkOrder from '../handlers/workOrders-post/doCloseWorkOrder.js'
 import handler_doCompleteWorkOrderMilestone from '../handlers/workOrders-post/doCompleteWorkOrderMilestone.js'
 import handler_doCreateWorkOrder from '../handlers/workOrders-post/doCreateWorkOrder.js'
 import handler_doDeleteWorkOrder from '../handlers/workOrders-post/doDeleteWorkOrder.js'
+import handler_doDeleteWorkOrderBurialSite from '../handlers/workOrders-post/doDeleteWorkOrderBurialSite.js'
+import handler_doDeleteWorkOrderBurialSiteContract from '../handlers/workOrders-post/doDeleteWorkOrderBurialSiteContract.js'
 import handler_doDeleteWorkOrderComment from '../handlers/workOrders-post/doDeleteWorkOrderComment.js'
-import handler_doDeleteWorkOrderLot from '../handlers/workOrders-post/doDeleteWorkOrderLot.js'
-import handler_doDeleteWorkOrderLotOccupancy from '../handlers/workOrders-post/doDeleteWorkOrderLotOccupancy.js'
 import handler_doDeleteWorkOrderMilestone from '../handlers/workOrders-post/doDeleteWorkOrderMilestone.js'
 import handler_doGetWorkOrderMilestones from '../handlers/workOrders-post/doGetWorkOrderMilestones.js'
 import handler_doReopenWorkOrder from '../handlers/workOrders-post/doReopenWorkOrder.js'
 import handler_doReopenWorkOrderMilestone from '../handlers/workOrders-post/doReopenWorkOrderMilestone.js'
 import handler_doSearchWorkOrders from '../handlers/workOrders-post/doSearchWorkOrders.js'
-import handler_doUpdateLotStatus from '../handlers/workOrders-post/doUpdateLotStatus.js'
+import handler_doUpdateBurialSiteStatus from '../handlers/workOrders-post/doUpdateBurialSiteStatus.js'
 import handler_doUpdateWorkOrder from '../handlers/workOrders-post/doUpdateWorkOrder.js'
 import handler_doUpdateWorkOrderComment from '../handlers/workOrders-post/doUpdateWorkOrderComment.js'
 import handler_doUpdateWorkOrderMilestone from '../handlers/workOrders-post/doUpdateWorkOrderMilestone.js'
@@ -68,28 +68,28 @@ router.post('/doCloseWorkOrder', updatePostHandler, handler_doCloseWorkOrder)
 
 router.post('/doDeleteWorkOrder', updatePostHandler, handler_doDeleteWorkOrder)
 
-// Lot Occupancy
+// Burial Site Contract
 
 router.post(
-  '/doAddWorkOrderLotOccupancy',
+  '/doAddWorkOrderBurialSiteContract',
   updatePostHandler,
-  handler_doAddWorkOrderLotOccupancy
+  handler_doAddWorkOrderBurialSiteContract
 )
 
 router.post(
-  '/doDeleteWorkOrderLotOccupancy',
+  '/doDeleteWorkOrderBurialSiteContract',
   updatePostHandler,
-  handler_doDeleteWorkOrderLotOccupancy
+  handler_doDeleteWorkOrderBurialSiteContract
 )
 
-router.post('/doAddWorkOrderLot', updatePostHandler, handler_doAddWorkOrderLot)
+router.post('/doAddWorkOrderBurialSite', updatePostHandler, handler_doAddWorkOrderBurialSite)
 
-router.post('/doUpdateLotStatus', updatePostHandler, handler_doUpdateLotStatus)
+router.post('/doUpdateBurialSiteStatus', updatePostHandler, handler_doUpdateBurialSiteStatus)
 
 router.post(
-  '/doDeleteWorkOrderLot',
+  '/doDeleteWorkOrderBurialSite',
   updatePostHandler,
-  handler_doDeleteWorkOrderLot
+  handler_doDeleteWorkOrderBurialSite
 )
 
 // Comments

@@ -7,7 +7,7 @@ export interface AddWorkOrderBurialSiteContractOccupancyForm {
   burialSiteContractId: number | string
 }
 
-export default async function addWorkOrderLotOccupancy(
+export default async function addWorkOrderBurialSiteContract(
   addForm: AddWorkOrderBurialSiteContractOccupancyForm,
   user: User,
   connectedDatabase?: PoolConnection

@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import papaparse from 'papaparse'
+import papaParse from 'papaparse'
 
 import getReportData, {
   type ReportParameters
@@ -25,7 +25,7 @@ export default async function handler(
     return
   }
 
-  const csv = papaparse.unparse(rows)
+  const csv = papaParse.unparse(rows)
 
   response.setHeader(
     'Content-Disposition',

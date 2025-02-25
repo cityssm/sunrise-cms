@@ -12,7 +12,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js'
 import type { WorkOrderMilestone } from '../types/recordTypes.js'
 
 import getBurialSiteContracts from './getBurialSiteContracts.js'
-import getLots from './getLots.js'
+import getBurialSites from './getBurialSites.js'
 import { acquireConnection } from './pool.js'
 
 export interface WorkOrderMilestoneFilters {
@@ -99,7 +99,10 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
     }
   }
 
-  if (filters.workOrderMilestoneDateString !== undefined && filters.workOrderMilestoneDateString !== '') {
+  if (
+    filters.workOrderMilestoneDateString !== undefined &&
+    filters.workOrderMilestoneDateString !== ''
+  ) {
     sqlWhereClause += ' and m.workOrderMilestoneDate = ?'
     sqlParameters.push(
       dateStringToInteger(filters.workOrderMilestoneDateString)
@@ -184,9 +187,9 @@ export default async function getWorkOrderMilestones(
     ${
       options.includeWorkOrders ?? false
         ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,
-        w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
-        w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
-        w.recordUpdate_timeMillis as workOrderRecordUpdate_timeMillis,`
+            w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
+            w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
+            w.recordUpdate_timeMillis as workOrderRecordUpdate_timeMillis,`
         : ''
     }
     m.recordCreate_userName, m.recordCreate_timeMillis,
@@ -204,35 +207,36 @@ export default async function getWorkOrderMilestones(
 
   if (options.includeWorkOrders ?? false) {
     for (const workOrderMilestone of workOrderMilestones) {
-      const workOrderLotsResults = await getLots(
+      const burialSites = await getBurialSites(
         {
           workOrderId: workOrderMilestone.workOrderId
         },
         {
           limit: -1,
           offset: 0,
-          includeLotOccupancyCount: false
+          includeBurialSiteContractCount: false
         },
         database
       )
 
-      workOrderMilestone.workOrderLots = workOrderLotsResults.lots
+      workOrderMilestone.workOrderBurialSites = burialSites.burialSites
 
-      const BurialSiteContracts = await getBurialSiteContracts(
+      const burialSiteContracts = await getBurialSiteContracts(
         {
           workOrderId: workOrderMilestone.workOrderId
         },
         {
           limit: -1,
           offset: 0,
-          includeOccupants: true,
+          includeInterments: true,
           includeFees: false,
           includeTransactions: false
         },
         database
       )
 
-      workOrderMilestone.workOrderBurialSiteContracts = BurialSiteContracts.BurialSiteContracts
+      workOrderMilestone.workOrderBurialSiteContracts =
+        burialSiteContracts.burialSiteContracts
     }
   }
 

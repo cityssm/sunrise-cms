@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export default async function updateLotOccupancyOccupant(burialSiteContractOccupantForm, user) {
+export default async function updateBurialSiteContractOccupant(burialSiteContractOccupantForm, user) {
     const database = await acquireConnection();
     const results = database
         .prepare(`update LotOccupancyOccupants

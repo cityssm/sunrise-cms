@@ -13,7 +13,7 @@ import addMap from '../database/addMap.js';
 import addOrUpdateLotOccupancyField from '../database/addOrUpdateLotOccupancyField.js';
 import addWorkOrder from '../database/addWorkOrder.js';
 import addWorkOrderLot from '../database/addWorkOrderLot.js';
-import addWorkOrderLotOccupancy from '../database/addWorkOrderLotOccupancy.js';
+import addWorkOrderBurialSiteContract from '../database/addWorkOrderBurialSiteContract.js';
 import addWorkOrderMilestone from '../database/addWorkOrderMilestone.js';
 import closeWorkOrder from '../database/closeWorkOrder.js';
 import getLot, { getLotByLotName } from '../database/getLot.js';
@@ -21,7 +21,7 @@ import getBurialSiteContracts from '../database/getBurialSiteContracts.js';
 import getMapFromDatabase from '../database/getMap.js';
 import getWorkOrder, { getWorkOrderByWorkOrderNumber } from '../database/getWorkOrder.js';
 import reopenWorkOrder from '../database/reopenWorkOrder.js';
-import { updateLotStatus } from '../database/updateLot.js';
+import { updateBurialSiteStatus } from '../database/updateBurialSite.js';
 import * as importData from './legacy.importFromCsv.data.js';
 import * as importIds from './legacy.importFromCsv.ids.js';
 const user = {
@@ -253,7 +253,7 @@ async function importFromMasterCSV() {
                     }, user);
                 }
                 if (contractEndDateString === '') {
-                    await updateLotStatus(lotId ?? '', importIds.reservedburialSiteStatusId, user);
+                    await updateBurialSiteStatus(lotId ?? '', importIds.reservedburialSiteStatusId, user);
                 }
             }
             let deceasedcontractStartDateString;
@@ -402,7 +402,7 @@ async function importFromMasterCSV() {
                         burialSiteContractComment: `Imported Contract #${masterRow.CM_WORK_ORDER}`
                     }, user);
                 }
-                await updateLotStatus(lotId ?? '', importIds.takenburialSiteStatusId, user);
+                await updateBurialSiteStatus(lotId ?? '', importIds.takenburialSiteStatusId, user);
                 if (masterRow.CM_PRENEED_OWNER !== '') {
                     await addBurialSiteContractOccupant({
                         burialSiteContractId: deceasedburialSiteContractId,
@@ -482,7 +482,7 @@ async function importFromPrepaidCSV() {
                 }
             }
             if (lot && lot.burialSiteStatusId === importIds.availableburialSiteStatusId) {
-                await updateLotStatus(lot.lotId, importIds.reservedburialSiteStatusId, user);
+                await updateBurialSiteStatus(lot.lotId, importIds.reservedburialSiteStatusId, user);
             }
             const contractStartDateString = formatDateString(prepaidRow.CMPP_PURCH_YR, prepaidRow.CMPP_PURCH_MON, prepaidRow.CMPP_PURCH_DAY);
             let burialSiteContractId;
@@ -713,7 +713,7 @@ async function importFromWorkOrderCSV() {
                 });
                 lot = await getLotByLotName(lotName);
                 if (lot) {
-                    await updateLotStatus(lot.lotId, importIds.takenburialSiteStatusId, user);
+                    await updateBurialSiteStatus(lot.lotId, importIds.takenburialSiteStatusId, user);
                 }
                 else {
                     const map = await getMap({ cemetery: workOrderRow.WO_CEMETERY });
@@ -852,7 +852,7 @@ async function importFromWorkOrderCSV() {
                     }, user);
                 }
             }
-            await addWorkOrderLotOccupancy({
+            await addWorkOrderBurialSiteContract({
                 workOrderId: workOrder.workOrderId,
                 burialSiteContractId
             }, user);

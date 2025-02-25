@@ -1,4 +1,4 @@
-import papaparse from 'papaparse';
+import papaParse from 'papaparse';
 import getReportData from '../../database/getReportData.js';
 export default async function handler(request, response) {
     const reportName = request.params.reportName;
@@ -10,7 +10,7 @@ export default async function handler(request, response) {
         });
         return;
     }
-    const csv = papaparse.unparse(rows);
+    const csv = papaParse.unparse(rows);
     response.setHeader('Content-Disposition', `attachment; filename=${reportName}-${Date.now().toString()}.csv`);
     response.setHeader('Content-Type', 'text/csv');
     response.send(csv);

@@ -37,6 +37,7 @@ export function getOccupancyTimeWhereClause(occupancyTime, lotOccupanciesTableAl
     let sqlWhereClause = '';
     const sqlParameters = [];
     const currentDateString = dateToInteger(new Date());
+    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
     switch (occupancyTime ?? '') {
         case 'current': {
             sqlWhereClause += ` and ${lotOccupanciesTableAlias}.contractStartDate <= ?

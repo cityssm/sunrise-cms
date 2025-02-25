@@ -5,8 +5,8 @@ import getBurialSiteContract from '../database/getBurialSiteContract.js'
 import getWorkOrder from '../database/getWorkOrder.js'
 import type { BurialSite, BurialSiteContract, WorkOrder } from '../types/recordTypes.js'
 
+import * as burialSiteContractFunctions from './burialSiteContracts.helpers.js'
 import * as configFunctions from './config.helpers.js'
-import * as burialSiteContractFunctions from './functions.burialSiteContract.js'
 
 interface PrintConfig {
   title: string
