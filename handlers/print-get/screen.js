@@ -2,7 +2,7 @@ import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getReportData, getScreenPrintConfig } from '../../helpers/functions.print.js';
 export default async function handler(request, response) {
     const printName = request.params.printName;
-    if (!getConfigProperty('settings.lotOccupancy.prints').includes(`screen/${printName}`) &&
+    if (!getConfigProperty('settings.burialSiteContract.prints').includes(`screen/${printName}`) &&
         !getConfigProperty('settings.workOrders.prints').includes(`screen/${printName}`)) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotAllowed`);
         return;

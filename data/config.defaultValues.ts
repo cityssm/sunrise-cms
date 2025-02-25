@@ -3,6 +3,7 @@ import type { config as MSSQLConfig } from 'mssql'
 
 import type {
   ConfigActiveDirectory,
+  ConfigBurialSiteNameSegments,
   ConfigNtfyStartup,
   DynamicsGPLookup
 } from '../types/configTypes.js'
@@ -40,6 +41,20 @@ export const configDefaultValues = {
 
   'settings.cemeteries.cityDefault': '',
   'settings.cemeteries.provinceDefault': '',
+
+  'settings.burialSites.burialSiteNameSegments': {
+    separator: '-',
+    segments: {
+      1: {
+        isRequired: true,
+        isAvailable: true,
+        label: 'Plot Number',
+        minLength: 1,
+        maxLength: 20
+      }
+    }
+  } as unknown as ConfigBurialSiteNameSegments,
+
 
   'settings.contracts.burialSiteIdIsRequired': true,
   'settings.contracts.cityDefault': '',

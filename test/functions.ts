@@ -21,7 +21,7 @@ describe('functions.cache', () => {
     it('returns Lot Statuses', async () => {
       cacheFunctions.clearCacheByTableName('LotStatuses')
 
-      const lotStatuses = await cacheFunctions.getLotStatuses()
+      const lotStatuses = await cacheFunctions.getBurialSiteStatuses()
 
       assert.ok(lotStatuses.length > 0)
 
@@ -182,7 +182,7 @@ describe('functions.cache', () => {
 describe('functions.sqlFilters', () => {
   describe('LotName filter', () => {
     it('returns startsWith filter', () => {
-      const filter = sqlFilterFunctions.getLotNameWhereClause(
+      const filter = sqlFilterFunctions.getBurialSiteNameWhereClause(
         'TEST1 TEST2',
         'startsWith',
         'l'
@@ -194,7 +194,7 @@ describe('functions.sqlFilters', () => {
     })
 
     it('returns endsWith filter', () => {
-      const filter = sqlFilterFunctions.getLotNameWhereClause(
+      const filter = sqlFilterFunctions.getBurialSiteNameWhereClause(
         'TEST1 TEST2',
         'endsWith',
         'l'
@@ -206,7 +206,7 @@ describe('functions.sqlFilters', () => {
     })
 
     it('returns contains filter', () => {
-      const filter = sqlFilterFunctions.getLotNameWhereClause(
+      const filter = sqlFilterFunctions.getBurialSiteNameWhereClause(
         'TEST1 TEST2',
         '',
         'l'
@@ -221,14 +221,14 @@ describe('functions.sqlFilters', () => {
     })
 
     it('handles empty filter', () => {
-      const filter = sqlFilterFunctions.getLotNameWhereClause('', '')
+      const filter = sqlFilterFunctions.getBurialSiteNameWhereClause('', '')
 
       assert.strictEqual(filter.sqlWhereClause, '')
       assert.strictEqual(filter.sqlParameters.length, 0)
     })
 
     it('handles undefined filter', () => {
-      const filter = sqlFilterFunctions.getLotNameWhereClause(
+      const filter = sqlFilterFunctions.getBurialSiteNameWhereClause(
         undefined,
         undefined,
         'l'

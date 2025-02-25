@@ -1,16 +1,14 @@
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
-import getLot from '../../database/getLot.js'
-import getMaps from '../../database/getMaps.js'
+import getBurialSite from '../../database/getBurialSite.js'
+import getCemeteries from '../../database/getCemeteries.js'
 import {
-  getLotOccupantTypes,
-  getLotStatuses,
+  getBurialSiteStatuses,
   getBurialSiteTypes,
   getContractTypes
 } from '../../helpers/functions.cache.js'
-import { getConfigProperty } from '../../helpers/config.helpers.js'
-import type { LotOccupancy } from '../../types/recordTypes.js'
+import type { BurialSiteContract } from '../../types/recordTypes.js'
 
 export default async function handler(
   request: Request,
@@ -18,37 +16,35 @@ export default async function handler(
 ): Promise<void> {
   const startDate = new Date()
 
-  const lotOccupancy: Partial<LotOccupancy> = {
+  const burialSiteContract: Partial<BurialSiteContract> = {
     contractStartDate: dateToInteger(startDate),
     contractStartDateString: dateToString(startDate)
   }
 
-  if (request.query.lotId !== undefined) {
-    const lot = await getLot(request.query.lotId as string)
+  if (request.query.burialSiteId !== undefined) {
+    const burialSite = await getBurialSite(request.query.burialSiteId as string)
 
-    if (lot !== undefined) {
-      lotOccupancy.lotId = lot.lotId
-      lotOccupancy.lotName = lot.lotName
-      lotOccupancy.cemeteryId = lot.cemeteryId
-      lotOccupancy.cemeteryName = lot.cemeteryName
+    if (burialSite !== undefined) {
+      burialSiteContract.burialSiteId = burialSite.burialSiteId
+      burialSiteContract.burialSiteName = burialSite.burialSiteName
+      burialSiteContract.cemeteryId = burialSite.cemeteryId
+      burialSiteContract.cemeteryName = burialSite.cemeteryName
     }
   }
 
-  const occupancyTypes = await getContractTypes()
-  const lotOccupantTypes = await getLotOccupantTypes()
-  const lotTypes = await getBurialSiteTypes()
-  const lotStatuses = await getLotStatuses()
-  const maps = await getMaps()
+  const contractTypes = await getContractTypes()
+  const burialSiteTypes = await getBurialSiteTypes()
+  const burialSiteStatuses = await getBurialSiteStatuses()
+  const cemeteries = await getCemeteries()
 
-  response.render('lotOccupancy-edit', {
-    headTitle: `Create a New ${getConfigProperty('aliases.occupancy')} Record`,
-    lotOccupancy,
+  response.render('burialSiteContract-edit', {
+    headTitle: 'Create a New Contract',
+    burialSiteContract,
 
-    occupancyTypes,
-    lotOccupantTypes,
-    lotTypes,
-    lotStatuses,
-    maps,
+    contractTypes,
+    burialSiteTypes,
+    burialSiteStatuses,
+    cemeteries,
 
     isCreate: true
   })

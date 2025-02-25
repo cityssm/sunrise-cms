@@ -47,8 +47,8 @@ function buildEventSummary(milestone: WorkOrderMilestone): string {
 
   let occupantCount = 0
 
-  for (const lotOccupancy of milestone.workOrderLotOccupancies ?? []) {
-    for (const occupant of lotOccupancy.lotOccupancyOccupants ?? []) {
+  for (const burialSiteContract of milestone.workOrderLotOccupancies ?? []) {
+    for (const occupant of burialSiteContract.burialSiteContractOccupants ?? []) {
       occupantCount += 1
 
       if (occupantCount === 1) {
@@ -94,7 +94,7 @@ function buildEventDescriptionHTML_occupancies(
     for (const occupancy of milestone.workOrderLotOccupancies ?? []) {
       descriptionHTML += `<tr>
           <td>
-            <a href="${urlRoot}/lotOccupancies/${occupancy.burialSiteContractId}">
+            <a href="${urlRoot}/contracts/${occupancy.burialSiteContractId}">
               ${escapeHTML(occupancy.occupancyType ?? '')}
             </a>
           </td>
@@ -113,7 +113,7 @@ function buildEventDescriptionHTML_occupancies(
           </td>
           <td>`
 
-      for (const occupant of occupancy.lotOccupancyOccupants ?? []) {
+      for (const occupant of occupancy.burialSiteContractOccupants ?? []) {
         descriptionHTML += `${escapeHTML(
           occupant.lotOccupantType ?? ''
         )}: ${escapeHTML(occupant.occupantName ?? '')} ${escapeHTML(
@@ -377,8 +377,8 @@ export default async function handler(
     // Set organizer / attendees
     if (milestone.workOrderLotOccupancies!.length > 0) {
       let organizerSet = false
-      for (const lotOccupancy of milestone.workOrderLotOccupancies ?? []) {
-        for (const occupant of lotOccupancy.lotOccupancyOccupants ?? []) {
+      for (const burialSiteContract of milestone.workOrderLotOccupancies ?? []) {
+        for (const occupant of burialSiteContract.burialSiteContractOccupants ?? []) {
           if (organizerSet) {
             calendarEvent.createAttendee({
               name: `${occupant.occupantName ?? ''} ${

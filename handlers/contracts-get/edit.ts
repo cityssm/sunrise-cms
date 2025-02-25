@@ -1,53 +1,52 @@
 import type { Request, Response } from 'express'
 
-import getLotOccupancy from '../../database/getLotOccupancy.js'
-import getMaps from '../../database/getMaps.js'
+import getBurialSiteContract from '../../database/getBurialSiteContract.js'
+import getCemeteries from '../../database/getCemeteries.js'
+import { getConfigProperty } from '../../helpers/config.helpers.js'
 import {
-  getLotOccupantTypes,
-  getLotStatuses,
+  getBurialSiteStatuses,
   getBurialSiteTypes,
   getContractTypePrintsById,
   getContractTypes,
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
-import { getConfigProperty } from '../../helpers/config.helpers.js'
 
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lotOccupancy = await getLotOccupancy(request.params.burialSiteContractId)
+  const burialSiteContract = await getBurialSiteContract(
+    request.params.burialSiteContractId
+  )
 
-  if (lotOccupancy === undefined) {
+  if (burialSiteContract === undefined) {
     response.redirect(
       `${getConfigProperty(
         'reverseProxy.urlPrefix'
-      )}/lotOccupancies/?error=burialSiteContractIdNotFound`
+      )}/contracts/?error=burialSiteContractIdNotFound`
     )
     return
   }
 
-  const ContractTypePrints = await getContractTypePrintsById(
-    lotOccupancy.contractTypeId
+  const contractTypePrints = await getContractTypePrintsById(
+    burialSiteContract.contractTypeId
   )
 
-  const occupancyTypes = await getContractTypes()
-  const lotOccupantTypes = await getLotOccupantTypes()
-  const lotTypes = await getBurialSiteTypes()
-  const lotStatuses = await getLotStatuses()
-  const maps = await getMaps()
+  const contractTypes = await getContractTypes()
+  const burialSiteTypes = await getBurialSiteTypes()
+  const burialSiteStatuses = await getBurialSiteStatuses()
+  const cemeteries = await getCemeteries()
   const workOrderTypes = await getWorkOrderTypes()
 
-  response.render('lotOccupancy-edit', {
-    headTitle: `${getConfigProperty('aliases.occupancy')} Update`,
-    lotOccupancy,
-    ContractTypePrints,
+  response.render('burialSiteContract-edit', {
+    headTitle: 'Contract Update',
+    burialSiteContract,
+    contractTypePrints,
 
-    occupancyTypes,
-    lotOccupantTypes,
-    lotTypes,
-    lotStatuses,
-    maps,
+    contractTypes,
+    burialSiteTypes,
+    burialSiteStatuses,
+    cemeteries,
     workOrderTypes,
 
     isCreate: false

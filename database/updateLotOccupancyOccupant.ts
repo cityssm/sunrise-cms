@@ -17,7 +17,7 @@ export interface UpdateLotOccupancyOccupantForm {
 }
 
 export default async function updateLotOccupancyOccupant(
-  lotOccupancyOccupantForm: UpdateLotOccupancyOccupantForm,
+  burialSiteContractOccupantForm: UpdateLotOccupancyOccupantForm,
   user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
@@ -43,21 +43,21 @@ export default async function updateLotOccupancyOccupant(
         and lotOccupantIndex = ?`
     )
     .run(
-      lotOccupancyOccupantForm.occupantName,
-      lotOccupancyOccupantForm.occupantFamilyName,
-      lotOccupancyOccupantForm.occupantAddress1,
-      lotOccupancyOccupantForm.occupantAddress2,
-      lotOccupancyOccupantForm.occupantCity,
-      lotOccupancyOccupantForm.occupantProvince,
-      lotOccupancyOccupantForm.occupantPostalCode,
-      lotOccupancyOccupantForm.occupantPhoneNumber,
-      lotOccupancyOccupantForm.occupantEmailAddress,
-      lotOccupancyOccupantForm.occupantComment,
-      lotOccupancyOccupantForm.lotOccupantTypeId,
+      burialSiteContractOccupantForm.occupantName,
+      burialSiteContractOccupantForm.occupantFamilyName,
+      burialSiteContractOccupantForm.occupantAddress1,
+      burialSiteContractOccupantForm.occupantAddress2,
+      burialSiteContractOccupantForm.occupantCity,
+      burialSiteContractOccupantForm.occupantProvince,
+      burialSiteContractOccupantForm.occupantPostalCode,
+      burialSiteContractOccupantForm.occupantPhoneNumber,
+      burialSiteContractOccupantForm.occupantEmailAddress,
+      burialSiteContractOccupantForm.occupantComment,
+      burialSiteContractOccupantForm.lotOccupantTypeId,
       user.userName,
       Date.now(),
-      lotOccupancyOccupantForm.burialSiteContractId,
-      lotOccupancyOccupantForm.lotOccupantIndex
+      burialSiteContractOccupantForm.burialSiteContractId,
+      burialSiteContractOccupantForm.lotOccupantIndex
     )
 
   database.release()

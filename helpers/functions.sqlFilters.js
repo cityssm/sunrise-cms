@@ -1,29 +1,29 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
-export function getLotNameWhereClause(lotName = '', lotNameSearchType = '', lotsTableAlias = 'l') {
+export function getBurialSiteNameWhereClause(burialSiteName = '', burialSiteNameSearchType = '', burialSitesTableAlias = 'l') {
     let sqlWhereClause = '';
     const sqlParameters = [];
-    if (lotName !== '') {
-        switch (lotNameSearchType ?? '') {
+    if (burialSiteName !== '') {
+        switch (burialSiteNameSearchType) {
             case 'startsWith': {
-                sqlWhereClause += ` and ${lotsTableAlias}.lotName like ? || '%'`;
-                sqlParameters.push(lotName);
+                sqlWhereClause += ` and ${burialSitesTableAlias}.burialSiteName like ? || '%'`;
+                sqlParameters.push(burialSiteName);
                 break;
             }
             case 'endsWith': {
-                sqlWhereClause += ` and ${lotsTableAlias}.lotName like '%' || ?`;
-                sqlParameters.push(lotName);
+                sqlWhereClause += ` and ${burialSitesTableAlias}.burialSiteName like '%' || ?`;
+                sqlParameters.push(burialSiteName);
                 break;
             }
             default: {
                 const usedPieces = new Set();
-                const lotNamePieces = lotName.toLowerCase().split(' ');
-                for (const lotNamePiece of lotNamePieces) {
-                    if (lotNamePiece === '' || usedPieces.has(lotNamePiece)) {
+                const burialSiteNamePieces = burialSiteName.toLowerCase().split(' ');
+                for (const burialSiteNamePiece of burialSiteNamePieces) {
+                    if (burialSiteNamePiece === '' || usedPieces.has(burialSiteNamePiece)) {
                         continue;
                     }
-                    usedPieces.add(lotNamePiece);
-                    sqlWhereClause += ` and instr(lower(${lotsTableAlias}.lotName), ?)`;
-                    sqlParameters.push(lotNamePiece);
+                    usedPieces.add(burialSiteNamePiece);
+                    sqlWhereClause += ` and instr(lower(${burialSitesTableAlias}.burialSiteName), ?)`;
+                    sqlParameters.push(burialSiteNamePiece);
                 }
             }
         }

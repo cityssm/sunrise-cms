@@ -6,7 +6,7 @@ export default async function GetBurialSiteContractTransactions(burialSiteContra
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
-    const lotOccupancyTransactions = database
+    const burialSiteContractTransactions = database
         .prepare(`select burialSiteContractId, transactionIndex,
         transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString,
         transactionTime, userFn_timeIntegerToString(transactionTime) as transactionTimeString,
@@ -21,7 +21,7 @@ export default async function GetBurialSiteContractTransactions(burialSiteContra
     }
     if (options.includeIntegrations &&
         getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
-        for (const transaction of lotOccupancyTransactions) {
+        for (const transaction of burialSiteContractTransactions) {
             if ((transaction.externalReceiptNumber ?? '') !== '') {
                 const gpDocument = await getDynamicsGPDocument(transaction.externalReceiptNumber ?? '');
                 if (gpDocument !== undefined) {
@@ -30,5 +30,5 @@ export default async function GetBurialSiteContractTransactions(burialSiteContra
             }
         }
     }
-    return lotOccupancyTransactions;
+    return burialSiteContractTransactions;
 }

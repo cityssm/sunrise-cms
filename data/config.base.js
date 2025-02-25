@@ -7,6 +7,7 @@ export const config = {
     settings: {
         fees: {},
         cemeteries: {},
+        burialSites: {},
         contracts: {},
         workOrders: {},
         adminCleanup: {},

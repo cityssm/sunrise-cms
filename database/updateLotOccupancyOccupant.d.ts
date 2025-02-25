@@ -13,4 +13,4 @@ export interface UpdateLotOccupancyOccupantForm {
     occupantEmailAddress: string;
     occupantComment: string;
 }
-export default function updateLotOccupancyOccupant(lotOccupancyOccupantForm: UpdateLotOccupancyOccupantForm, user: User): Promise<boolean>;
+export default function updateLotOccupancyOccupant(burialSiteContractOccupantForm: UpdateLotOccupancyOccupantForm, user: User): Promise<boolean>;

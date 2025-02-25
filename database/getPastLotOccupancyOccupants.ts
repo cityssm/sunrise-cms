@@ -60,11 +60,11 @@ export default async function getPastLotOccupancyOccupants(
     order by burialSiteContractIdCount desc, recordUpdate_timeMillisMax desc
     limit ${options.limit}`
 
-  const lotOccupancyOccupants = database
+  const burialSiteContractOccupants = database
     .prepare(sql)
     .all(sqlParameters) as LotOccupancyOccupant[]
 
   database.release()
 
-  return lotOccupancyOccupants
+  return burialSiteContractOccupants
 }

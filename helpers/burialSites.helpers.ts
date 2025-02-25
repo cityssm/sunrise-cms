@@ -1,5 +1,9 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/strict-boolean-expressions, security/detect-object-injection */
+
 import cluster from 'node:cluster'
 
+import { minutesToSeconds } from '@cityssm/to-millis'
 import Debug from 'debug'
 import NodeCache from 'node-cache'
 
@@ -11,10 +15,12 @@ import type {
   ClearNextPreviousBurialSiteIdsCacheWorkerMessage
 } from '../types/applicationTypes.js'
 
+import { getConfigProperty } from './config.helpers.js'
+
 const debug = Debug(`${DEBUG_NAMESPACE}:burialSites.helpers:${process.pid}`)
 
 const cacheOptions: NodeCache.Options = {
-  stdTTL: 2 * 60, // two minutes
+  stdTTL: minutesToSeconds(2),
   useClones: false
 }
 
@@ -126,6 +132,39 @@ export function clearNextPreviousBurialSiteIdCache(
       process.send(workerMessage)
     }
   } catch {}
+}
+
+const segmentConfig = getConfigProperty(
+  'settings.burialSites.burialSiteNameSegments'
+)
+
+export function buildBurialSiteName(segments: {
+  burialSiteNameSegment1?: string
+  burialSiteNameSegment2?: string
+  burialSiteNameSegment3?: string
+  burialSiteNameSegment4?: string
+  burialSiteNameSegment5?: string
+}): string {
+  const segmentPieces: string[] = []
+
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+  for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex++) {
+    const segmentIndexString = segmentIndex.toString()
+
+    if (
+      (segmentConfig.segments[segmentIndexString]?.isAvailable ?? false) &&
+      ((segmentConfig.segments[segmentIndexString]?.isRequired ?? false) ||
+        (segments[`burialSiteNameSegment${segmentIndexString}`] ?? '') !== '')
+    ) {
+      segmentPieces.push(
+        (segmentConfig.segments[segmentIndexString]?.prefix ?? '') +
+          (segments[`burialSiteNameSegment${segmentIndexString}`] ?? '') +
+          (segmentConfig.segments[segmentIndexString]?.suffix ?? '')
+      )
+    }
+  }
+
+  return segmentPieces.join(segmentConfig.separator ?? '-')
 }
 
 process.on(

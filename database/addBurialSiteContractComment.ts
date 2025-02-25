@@ -16,7 +16,7 @@ export interface AddBurialSiteContractCommentForm {
   comment: string
 }
 
-export default async function addLotOccupancyComment(
+export default async function addBurialSiteContractComment(
   commentForm: AddBurialSiteContractCommentForm,
   user: User
 ): Promise<number> {

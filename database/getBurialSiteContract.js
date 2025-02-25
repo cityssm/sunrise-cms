@@ -2,22 +2,18 @@ import { dateIntegerToString } from '@cityssm/utils-datetime';
 import getBurialSiteContractComments from './getBurialSiteContractComments.js';
 import getBurialSiteContractFees from './getBurialSiteContractFees.js';
 import getBurialSiteContractFields from './getBurialSiteContractFields.js';
-// import getLotOccupancyOccupants from './getLotOccupancyOccupants.js'
+// import getBurialSiteContractOccupants from './getBurialSiteContractOccupants.js'
 import getBurialSiteContractTransactions from './getBurialSiteContractTransactions.js';
 import { getWorkOrders } from './getWorkOrders.js';
 import { acquireConnection } from './pool.js';
-export default async function getLotOccupancy(burialSiteContractId, connectedDatabase) {
+export default async function getBurialSiteContract(burialSiteContractId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const contract = database
         .prepare(`select o.burialSiteContractId,
         o.contractTypeId, t.contractType,
         o.burialSiteId,
-        l.burialSiteNameSegment1,
-        l.burialSiteNameSegment2,
-        l.burialSiteNameSegment3,
-        l.burialSiteNameSegment4,
-        l.burialSiteNameSegment5,
+        l.burialSiteName,
         l.burialSiteTypeId,
         l.cemeteryId, m.cemeteryName,
         o.contractStartDate, userFn_dateIntegerToString(o.contractStartDate) as contractStartDateString,
@@ -33,7 +29,7 @@ export default async function getLotOccupancy(burialSiteContractId, connectedDat
     if (contract !== undefined) {
         contract.burialSiteContractFields = await getBurialSiteContractFields(burialSiteContractId, database);
         /*
-        contract.burialSiteContractInterments = await getLotOccupancyOccupants(
+        contract.burialSiteContractInterments = await getBurialSiteContractOccupants(
           burialSiteContractId,
           database
         )

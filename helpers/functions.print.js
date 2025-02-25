@@ -1,12 +1,12 @@
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
-import getLot from '../database/getLot.js';
-import getLotOccupancy from '../database/getLotOccupancy.js';
+import getBurialSite from '../database/getBurialSite.js';
+import getBurialSiteContract from '../database/getBurialSiteContract.js';
 import getWorkOrder from '../database/getWorkOrder.js';
 import * as configFunctions from './config.helpers.js';
-import * as lotOccupancyFunctions from './functions.lotOccupancy.js';
+import * as burialSiteContractFunctions from './functions.burialSiteContract.js';
 const screenPrintConfigs = {
-    lotOccupancy: {
-        title: `${configFunctions.getConfigProperty('aliases.lot')} ${configFunctions.getConfigProperty('aliases.occupancy')} Print`,
+    burialSiteContract: {
+        title: `Burial Site Contract Print`,
         params: ['burialSiteContractId']
     }
 };
@@ -52,20 +52,20 @@ export async function getReportData(printConfig, requestQuery) {
         headTitle: printConfig.title,
         configFunctions,
         dateTimeFunctions,
-        lotOccupancyFunctions
+        burialSiteContractFunctions
     };
     if (printConfig.params.includes('burialSiteContractId') &&
         typeof requestQuery.burialSiteContractId === 'string') {
-        const lotOccupancy = await getLotOccupancy(requestQuery.burialSiteContractId);
-        if (lotOccupancy !== undefined && (lotOccupancy.lotId ?? -1) !== -1) {
-            reportData.lot = await getLot(lotOccupancy.lotId ?? -1);
+        const burialSiteContract = await getBurialSiteContract(requestQuery.burialSiteContractId);
+        if (burialSiteContract !== undefined && (burialSiteContract.burialSiteId ?? -1) !== -1) {
+            reportData.burialSite = await getBurialSite(burialSiteContract.burialSiteId ?? -1);
         }
-        reportData.lotOccupancy = lotOccupancy;
+        reportData.burialSiteContract = burialSiteContract;
     }
     if (printConfig.params.includes('workOrderId') &&
         typeof requestQuery.workOrderId === 'string') {
         reportData.workOrder = await getWorkOrder(requestQuery.workOrderId, {
-            includeLotsAndLotOccupancies: true,
+            includeBurialSites: true,
             includeComments: true,
             includeMilestones: true
         });

@@ -8,18 +8,18 @@ import type { PoolConnection } from 'better-sqlite-pool'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { getContractTypeById } from '../helpers/functions.cache.js'
 import {
-  getLotNameWhereClause,
+  getBurialSiteNameWhereClause,
   getOccupancyTimeWhereClause,
   getOccupantNameWhereClause
 } from '../helpers/functions.sqlFilters.js'
 import type { BurialSiteContract } from '../types/recordTypes.js'
 
 import getBurialSiteContractFees from './getBurialSiteContractFees.js'
-// import getLotOccupancyOccupants from './getLotOccupancyOccupants.js'
+// import getBurialSiteContractOccupants from './getBurialSiteContractOccupants.js'
 import getBurialSiteContractTransactions from './getBurialSiteContractTransactions.js'
 import { acquireConnection } from './pool.js'
 
-interface GetBurialSiteContractsFilters {
+export interface GetBurialSiteContractsFilters {
   burialSiteId?: number | string
   occupancyTime?: '' | 'past' | 'current' | 'future'
   contractStartDateString?: DateString
@@ -34,10 +34,10 @@ interface GetBurialSiteContractsFilters {
   notWorkOrderId?: number | string
 }
 
-interface GetBurialSiteContractsOptions {
+export interface GetBurialSiteContractsOptions {
   /** -1 for no limit */
-  limit: number
-  offset: number
+  limit: number | string
+  offset: number | string
   includeInterments: boolean
   includeFees: boolean
   includeTransactions: boolean
@@ -55,7 +55,7 @@ function buildWhereClause(filters: GetBurialSiteContractsFilters): {
     sqlParameters.push(filters.burialSiteId)
   }
 
-  const lotNameFilters = getLotNameWhereClause(
+  const lotNameFilters = getBurialSiteNameWhereClause(
     filters.burialSiteName,
     filters.burialSiteNameSearchType ?? '',
     'l'
@@ -157,7 +157,7 @@ async function addInclusions(
   /*
   if (options.includeInterments) {
     burialSiteContract.burialSiteContractInterments =
-      await getLotOccupancyOccupants(
+      await getBurialSiteContractOccupants(
         burialSiteContract.burialSiteContractId,
         database
       )
@@ -178,7 +178,10 @@ export default async function getBurialSiteContracts(
 
   const { sqlWhereClause, sqlParameters } = buildWhereClause(filters)
 
-  let count = options.limit
+  let count =
+    typeof options.limit === 'string'
+      ? Number.parseInt(options.limit, 10)
+      : options.limit
 
   const isLimited = options.limit !== -1
 
@@ -203,11 +206,7 @@ export default async function getBurialSiteContracts(
         `select o.burialSiteContractId,
           o.contractTypeId, t.contractType,
           o.burialSiteId, lt.burialSiteType,
-          l.burialSiteNameSegment1,
-          l.burialSiteNameSegment2,
-          l.burialSiteNameSegment3,
-          l.burialSiteNameSegment4,
-          l.burialSiteNameSegment5,
+          l.burialSiteName,
           l.cemeteryId, m.cemeteryName,
           o.contractStartDate, userFn_dateIntegerToString(o.contractStartDate) as contractStartDateString,
           o.contractEndDate,  userFn_dateIntegerToString(o.contractEndDate) as contractEndDateString
@@ -236,7 +235,7 @@ export default async function getBurialSiteContracts(
 
     for (const burialSiteContract of burialSiteContracts) {
       const contractType = await getContractTypeById(
-        burialSiteContract.contractTypeId!
+        burialSiteContract.contractTypeId
       )
 
       if (contractType !== undefined) {

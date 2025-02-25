@@ -1,43 +1,45 @@
 import type { Request, Response } from 'express'
 
-import getMaps from '../../database/getMaps.js'
-import { getLotStatuses, getBurialSiteTypes } from '../../helpers/functions.cache.js'
-import { getConfigProperty } from '../../helpers/config.helpers.js'
-import type { Lot } from '../../types/recordTypes.js'
+import getCemeteries from '../../database/getCemeteries.js'
+import {
+  getBurialSiteStatuses,
+  getBurialSiteTypes
+} from '../../helpers/functions.cache.js'
+import type { BurialSite } from '../../types/recordTypes.js'
 
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lot: Lot = {
-    lotId: -1,
-    lotOccupancies: []
+  const burialSite: BurialSite = {
+    burialSiteId: -1,
+    burialSiteContracts: []
   }
 
-  const maps = await getMaps()
+  const cemeteries = await getCemeteries()
 
   if (request.query.cemeteryId !== undefined) {
     const cemeteryId = Number.parseInt(request.query.cemeteryId as string, 10)
 
-    const map = maps.find((possibleMap) => {
-      return cemeteryId === possibleMap.cemeteryId
-    })
+    const cemetery = cemeteries.find(
+      (possibleMatch) => cemeteryId === possibleMatch.cemeteryId
+    )
 
-    if (map !== undefined) {
-      lot.cemeteryId = map.cemeteryId
-      lot.cemeteryName = map.cemeteryName
+    if (cemetery !== undefined) {
+      burialSite.cemeteryId = cemetery.cemeteryId
+      burialSite.cemeteryName = cemetery.cemeteryName
     }
   }
 
-  const lotTypes = await getBurialSiteTypes()
-  const lotStatuses = await getLotStatuses()
+  const burialSiteTypes = await getBurialSiteTypes()
+  const burialSiteStatuses = await getBurialSiteStatuses()
 
-  response.render('lot-edit', {
-    headTitle: `Create a New ${getConfigProperty('aliases.lot')}`,
-    lot,
+  response.render('burialSite-edit', {
+    headTitle: 'Create a New Burial Site',
+    burialSite,
     isCreate: true,
-    maps,
-    lotTypes,
-    lotStatuses
+    cemeteries,
+    burialSiteTypes,
+    burialSiteStatuses
   })
 }

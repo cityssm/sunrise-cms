@@ -460,7 +460,7 @@ declare const exports: Record<string, unknown> & {
     return getRecordURL('lots', lotId, edit, time)
   }
 
-  function getLotOccupancyURL(
+  function getBurialSiteContractURL(
     burialSiteContractId: number | string = '',
     edit = false,
     time = false
@@ -510,7 +510,7 @@ declare const exports: Record<string, unknown> & {
 
     getMapURL,
     getLotURL,
-    getLotOccupancyURL,
+    getBurialSiteContractURL,
     getWorkOrderURL
   }
 

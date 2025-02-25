@@ -6,7 +6,7 @@ import {
 import type { PoolConnection } from 'better-sqlite-pool'
 
 import {
-  getLotNameWhereClause,
+  getBurialSiteNameWhereClause,
   getOccupantNameWhereClause
 } from '../helpers/functions.sqlFilters.js'
 import type { WorkOrder } from '../types/recordTypes.js'
@@ -77,7 +77,7 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
     sqlParameters.push(...occupantNameFilters.sqlParameters)
   }
 
-  const lotNameFilters = getLotNameWhereClause(filters.lotName, '', 'l')
+  const lotNameFilters = getBurialSiteNameWhereClause(filters.lotName, '', 'l')
   if (lotNameFilters.sqlParameters.length > 0) {
     sqlWhereClause +=
       ` and w.workOrderId in (

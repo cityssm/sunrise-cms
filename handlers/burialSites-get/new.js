@@ -1,30 +1,27 @@
-import getMaps from '../../database/getMaps.js';
-import { getLotStatuses, getBurialSiteTypes } from '../../helpers/functions.cache.js';
-import { getConfigProperty } from '../../helpers/config.helpers.js';
+import getCemeteries from '../../database/getCemeteries.js';
+import { getBurialSiteStatuses, getBurialSiteTypes } from '../../helpers/functions.cache.js';
 export default async function handler(request, response) {
-    const lot = {
-        lotId: -1,
-        lotOccupancies: []
+    const burialSite = {
+        burialSiteId: -1,
+        burialSiteContracts: []
     };
-    const maps = await getMaps();
+    const cemeteries = await getCemeteries();
     if (request.query.cemeteryId !== undefined) {
         const cemeteryId = Number.parseInt(request.query.cemeteryId, 10);
-        const map = maps.find((possibleMap) => {
-            return cemeteryId === possibleMap.cemeteryId;
-        });
-        if (map !== undefined) {
-            lot.cemeteryId = map.cemeteryId;
-            lot.cemeteryName = map.cemeteryName;
+        const cemetery = cemeteries.find((possibleMatch) => cemeteryId === possibleMatch.cemeteryId);
+        if (cemetery !== undefined) {
+            burialSite.cemeteryId = cemetery.cemeteryId;
+            burialSite.cemeteryName = cemetery.cemeteryName;
         }
     }
-    const lotTypes = await getBurialSiteTypes();
-    const lotStatuses = await getLotStatuses();
-    response.render('lot-edit', {
-        headTitle: `Create a New ${getConfigProperty('aliases.lot')}`,
-        lot,
+    const burialSiteTypes = await getBurialSiteTypes();
+    const burialSiteStatuses = await getBurialSiteStatuses();
+    response.render('burialSite-edit', {
+        headTitle: 'Create a New Burial Site',
+        burialSite,
         isCreate: true,
-        maps,
-        lotTypes,
-        lotStatuses
+        cemeteries,
+        burialSiteTypes,
+        burialSiteStatuses
     });
 }

@@ -1,7 +1,7 @@
 import { type DateString } from '@cityssm/utils-datetime';
 import type { PoolConnection } from 'better-sqlite-pool';
 import type { BurialSiteContract } from '../types/recordTypes.js';
-interface GetBurialSiteContractsFilters {
+export interface GetBurialSiteContractsFilters {
     burialSiteId?: number | string;
     occupancyTime?: '' | 'past' | 'current' | 'future';
     contractStartDateString?: DateString;
@@ -15,10 +15,10 @@ interface GetBurialSiteContractsFilters {
     workOrderId?: number | string;
     notWorkOrderId?: number | string;
 }
-interface GetBurialSiteContractsOptions {
+export interface GetBurialSiteContractsOptions {
     /** -1 for no limit */
-    limit: number;
-    offset: number;
+    limit: number | string;
+    offset: number | string;
     includeInterments: boolean;
     includeFees: boolean;
     includeTransactions: boolean;
@@ -27,4 +27,3 @@ export default function getBurialSiteContracts(filters: GetBurialSiteContractsFi
     count: number;
     burialSiteContracts: BurialSiteContract[];
 }>;
-export {};

@@ -17,7 +17,7 @@ export default async function handler(_request, response) {
         limit: 1, // only using the count
         offset: 0
     });
-    const lotOccupancyResults = await getBurialSiteContracts({
+    const burialSiteContractResults = await getBurialSiteContracts({
         contractStartDateString: currentDateString
     }, {
         limit: 1, // only using the count
@@ -30,6 +30,6 @@ export default async function handler(_request, response) {
         headTitle: 'Dashboard',
         workOrderMilestones,
         workOrderCount: workOrderResults.count,
-        lotOccupancyCount: lotOccupancyResults.count
+        burialSiteContractCount: burialSiteContractResults.count
     });
 }

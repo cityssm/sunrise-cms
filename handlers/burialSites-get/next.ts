@@ -1,21 +1,21 @@
 import type { Request, Response } from 'express'
 
+import { getNextBurialSiteId } from '../../helpers/burialSites.helpers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import { getNextLotId } from '../../helpers/functions.lots.js'
 
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lotId = Number.parseInt(request.params.lotId, 10)
+  const burialSiteId = Number.parseInt(request.params.burialSiteId, 10)
 
-  const nextLotId = await getNextLotId(lotId)
+  const nextBurialSiteId = await getNextBurialSiteId(burialSiteId)
 
-  if (nextLotId === undefined) {
+  if (nextBurialSiteId === undefined) {
     response.redirect(
       `${getConfigProperty(
         'reverseProxy.urlPrefix'
-      )}/lots/?error=noNextLotIdFound`
+      )}/burialSites/?error=noNextBurialSiteIdFound`
     )
     return
   }
@@ -23,6 +23,6 @@ export default async function handler(
   response.redirect(
     `${getConfigProperty(
       'reverseProxy.urlPrefix'
-    )}/lots/${nextLotId.toString()}`
+    )}/burialSites/${nextBurialSiteId.toString()}`
   )
 }

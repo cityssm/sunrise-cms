@@ -1,12 +1,12 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
-import { getLotNameWhereClause } from '../helpers/functions.sqlFilters.js';
+import { getBurialSiteNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import { acquireConnection } from './pool.js';
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where l.recordDelete_timeMillis is null';
     const sqlParameters = [];
-    const lotNameFilters = getLotNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'l');
-    sqlWhereClause += lotNameFilters.sqlWhereClause;
-    sqlParameters.push(...lotNameFilters.sqlParameters);
+    const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'l');
+    sqlWhereClause += burialSiteNameFilters.sqlWhereClause;
+    sqlParameters.push(...burialSiteNameFilters.sqlParameters);
     if ((filters.cemeteryId ?? '') !== '') {
         sqlWhereClause += ' and l.cemeteryId = ?';
         sqlParameters.push(filters.cemeteryId);
@@ -21,16 +21,16 @@ function buildWhereClause(filters) {
     }
     if ((filters.contractStatus ?? '') !== '') {
         if (filters.contractStatus === 'occupied') {
-            sqlWhereClause += ' and lotOccupancyCount > 0';
+            sqlWhereClause += ' and burialSiteContractCount > 0';
         }
         else if (filters.contractStatus === 'unoccupied') {
             sqlWhereClause +=
-                ' and (lotOccupancyCount is null or lotOccupancyCount = 0)';
+                ' and (burialSiteContractCount is null or burialSiteContractCount = 0)';
         }
     }
     if ((filters.workOrderId ?? '') !== '') {
         sqlWhereClause +=
-            ' and l.lotId in (select lotId from WorkOrderLots where recordDelete_timeMillis is null and workOrderId = ?)';
+            ' and l.burialSiteId in (select burialSiteId from WorkOrderBurialSites where recordDelete_timeMillis is null and workOrderId = ?)';
         sqlParameters.push(filters.workOrderId);
     }
     return {

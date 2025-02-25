@@ -1,8 +1,8 @@
 import { dateStringToInteger } from '@cityssm/utils-datetime';
-import addLotOccupancyOccupant from './addLotOccupancyOccupant.js';
+import addBurialSiteContractOccupant from './addBurialSiteContractOccupant.js';
 import addOrUpdateBurialSiteContractField from './addOrUpdateBurialSiteContractField.js';
 import { acquireConnection } from './pool.js';
-export default async function addLotOccupancy(addForm, user, connectedDatabase) {
+export default async function addBurialSiteContract(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
     const contractStartDate = dateStringToInteger(addForm.contractStartDateString);
@@ -22,17 +22,17 @@ export default async function addLotOccupancy(addForm, user, connectedDatabase) 
     const burialSiteContractId = result.lastInsertRowid;
     const contractTypeFieldIds = (addForm.contractTypeFieldIds ?? '').split(',');
     for (const contractTypeFieldId of contractTypeFieldIds) {
-        const lotOccupancyFieldValue = addForm[`lotOccupancyFieldValue_${contractTypeFieldId}`];
-        if ((lotOccupancyFieldValue ?? '') !== '') {
+        const burialSiteContractFieldValue = addForm[`burialSiteContractFieldValue_${contractTypeFieldId}`];
+        if ((burialSiteContractFieldValue ?? '') !== '') {
             await addOrUpdateBurialSiteContractField({
                 burialSiteContractId,
                 contractTypeFieldId,
-                lotOccupancyFieldValue: lotOccupancyFieldValue ?? ''
+                burialSiteContractFieldValue: burialSiteContractFieldValue ?? ''
             }, user, database);
         }
     }
     if ((addForm.lotOccupantTypeId ?? '') !== '') {
-        await addLotOccupancyOccupant({
+        await addBurialSiteContractOccupant({
             burialSiteContractId,
             lotOccupantTypeId: addForm.lotOccupantTypeId ?? '',
             occupantName: addForm.occupantName ?? '',

@@ -7,7 +7,7 @@ export interface AddBurialSiteContractCategoryForm {
   feeCategoryId: number | string
 }
 
-export default async function addLotOccupancyFeeCategory(
+export default async function addBurialSiteContractFeeCategory(
   addFeeCategoryForm: AddBurialSiteContractCategoryForm,
   user: User
 ): Promise<number> {

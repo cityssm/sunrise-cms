@@ -22,7 +22,7 @@ export default async function GetBurialSiteContractTransactions(
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
 
-  const lotOccupancyTransactions = database
+  const burialSiteContractTransactions = database
     .prepare(
       `select burialSiteContractId, transactionIndex,
         transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString,
@@ -43,7 +43,7 @@ export default async function GetBurialSiteContractTransactions(
     options.includeIntegrations &&
     getConfigProperty('settings.dynamicsGP.integrationIsEnabled')
   ) {
-    for (const transaction of lotOccupancyTransactions) {
+    for (const transaction of burialSiteContractTransactions) {
       if ((transaction.externalReceiptNumber ?? '') !== '') {
         const gpDocument = await getDynamicsGPDocument(
           transaction.externalReceiptNumber ?? ''
@@ -56,5 +56,5 @@ export default async function GetBurialSiteContractTransactions(
     }
   }
 
-  return lotOccupancyTransactions
+  return burialSiteContractTransactions
 }

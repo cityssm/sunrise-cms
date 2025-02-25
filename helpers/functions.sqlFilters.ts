@@ -1,46 +1,46 @@
 import { dateToInteger } from '@cityssm/utils-datetime'
 
-type LotNameSearchType = 'startsWith' | 'endsWith' | ''
+type BurialSiteNameSearchType = 'startsWith' | 'endsWith' | ''
 
 interface WhereClauseReturn {
   sqlWhereClause: string
   sqlParameters: unknown[]
 }
 
-export function getLotNameWhereClause(
-  lotName = '',
-  lotNameSearchType: LotNameSearchType = '',
-  lotsTableAlias = 'l'
+export function getBurialSiteNameWhereClause(
+  burialSiteName = '',
+  burialSiteNameSearchType: BurialSiteNameSearchType = '',
+  burialSitesTableAlias = 'l'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
   const sqlParameters: unknown[] = []
 
-  if (lotName !== '') {
-    switch (lotNameSearchType ?? '') {
+  if (burialSiteName !== '') {
+    switch (burialSiteNameSearchType) {
       case 'startsWith': {
-        sqlWhereClause += ` and ${lotsTableAlias}.lotName like ? || '%'`
-        sqlParameters.push(lotName)
+        sqlWhereClause += ` and ${burialSitesTableAlias}.burialSiteName like ? || '%'`
+        sqlParameters.push(burialSiteName)
         break
       }
       case 'endsWith': {
-        sqlWhereClause += ` and ${lotsTableAlias}.lotName like '%' || ?`
-        sqlParameters.push(lotName)
+        sqlWhereClause += ` and ${burialSitesTableAlias}.burialSiteName like '%' || ?`
+        sqlParameters.push(burialSiteName)
         break
       }
       default: {
         const usedPieces = new Set<string>()
 
-        const lotNamePieces = lotName.toLowerCase().split(' ')
+        const burialSiteNamePieces = burialSiteName.toLowerCase().split(' ')
 
-        for (const lotNamePiece of lotNamePieces) {
-          if (lotNamePiece === '' || usedPieces.has(lotNamePiece)) {
+        for (const burialSiteNamePiece of burialSiteNamePieces) {
+          if (burialSiteNamePiece === '' || usedPieces.has(burialSiteNamePiece)) {
             continue
           }
 
-          usedPieces.add(lotNamePiece)
+          usedPieces.add(burialSiteNamePiece)
 
-          sqlWhereClause += ` and instr(lower(${lotsTableAlias}.lotName), ?)`
-          sqlParameters.push(lotNamePiece)
+          sqlWhereClause += ` and instr(lower(${burialSitesTableAlias}.burialSiteName), ?)`
+          sqlParameters.push(burialSiteNamePiece)
         }
       }
     }

@@ -1,33 +1,36 @@
 import type { Request, Response } from 'express'
 
-import getLot from '../../database/getLot.js'
-import getMaps from '../../database/getMaps.js'
-import { getLotStatuses, getBurialSiteTypes } from '../../helpers/functions.cache.js'
+import getBurialSite from '../../database/getBurialSite.js'
+import getCemeteries from '../../database/getCemeteries.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
+import {
+  getBurialSiteStatuses,
+  getBurialSiteTypes
+} from '../../helpers/functions.cache.js'
 
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lot = await getLot(request.params.lotId)
+  const burialSite = await getBurialSite(request.params.burialSiteId)
 
-  if (lot === undefined) {
+  if (burialSite === undefined) {
     response.redirect(
-      `${getConfigProperty('reverseProxy.urlPrefix')}/lots/?error=lotIdNotFound`
+      `${getConfigProperty('reverseProxy.urlPrefix')}/burialSites/?error=burialSiteIdNotFound`
     )
     return
   }
 
-  const maps = await getMaps()
-  const lotTypes = await getBurialSiteTypes()
-  const lotStatuses = await getLotStatuses()
+  const cemeteries = await getCemeteries()
+  const burialSiteTypes = await getBurialSiteTypes()
+  const burialSiteStatuses = await getBurialSiteStatuses()
 
-  response.render('lot-edit', {
-    headTitle: lot.lotName,
-    lot,
+  response.render('burialSite-edit', {
+    headTitle: burialSite.burialSiteName,
+    burialSite,
     isCreate: false,
-    maps,
-    lotTypes,
-    lotStatuses
+    cemeteries,
+    burialSiteTypes,
+    burialSiteStatuses
   })
 }

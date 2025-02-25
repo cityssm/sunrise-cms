@@ -2,7 +2,7 @@ import type { Fee, LotOccupancy } from '../types/recordTypes.js'
 
 export function calculateFeeAmount(
   fee: Fee,
-  lotOccupancy: LotOccupancy
+  burialSiteContract: LotOccupancy
 ): number {
   return fee.feeFunction ? 0 : fee.feeAmount ?? 0
 }

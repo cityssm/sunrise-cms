@@ -32,7 +32,7 @@ export default async function handler(
     }
   )
 
-  const lotOccupancyResults = await getBurialSiteContracts(
+  const burialSiteContractResults = await getBurialSiteContracts(
     {
       contractStartDateString: currentDateString
     },
@@ -49,6 +49,6 @@ export default async function handler(
     headTitle: 'Dashboard',
     workOrderMilestones,
     workOrderCount: workOrderResults.count,
-    lotOccupancyCount: lotOccupancyResults.count
+    burialSiteContractCount: burialSiteContractResults.count
   })
 }

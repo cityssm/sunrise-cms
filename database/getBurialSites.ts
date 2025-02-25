@@ -1,12 +1,12 @@
 import { dateToInteger } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import { getLotNameWhereClause } from '../helpers/functions.sqlFilters.js'
+import { getBurialSiteNameWhereClause } from '../helpers/functions.sqlFilters.js'
 import type { BurialSite } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-interface GetBurialSitesFilters {
+export interface GetBurialSitesFilters {
   burialSiteNameSearchType?: '' | 'startsWith' | 'endsWith'
   burialSiteName?: string
   cemeteryId?: number | string
@@ -16,10 +16,10 @@ interface GetBurialSitesFilters {
   workOrderId?: number | string
 }
 
-interface GetBurialSitesOptions {
+export interface GetBurialSitesOptions {
   /** -1 for no limit */
   limit: number
-  offset: number
+  offset: string | number
   includeBurialSiteContractCount?: boolean
 }
 
@@ -30,13 +30,13 @@ function buildWhereClause(filters: GetBurialSitesFilters): {
   let sqlWhereClause = ' where l.recordDelete_timeMillis is null'
   const sqlParameters: unknown[] = []
 
-  const lotNameFilters = getLotNameWhereClause(
+  const burialSiteNameFilters = getBurialSiteNameWhereClause(
     filters.burialSiteName,
     filters.burialSiteNameSearchType ?? '',
     'l'
   )
-  sqlWhereClause += lotNameFilters.sqlWhereClause
-  sqlParameters.push(...lotNameFilters.sqlParameters)
+  sqlWhereClause += burialSiteNameFilters.sqlWhereClause
+  sqlParameters.push(...burialSiteNameFilters.sqlParameters)
 
   if ((filters.cemeteryId ?? '') !== '') {
     sqlWhereClause += ' and l.cemeteryId = ?'
@@ -55,16 +55,16 @@ function buildWhereClause(filters: GetBurialSitesFilters): {
 
   if ((filters.contractStatus ?? '') !== '') {
     if (filters.contractStatus === 'occupied') {
-      sqlWhereClause += ' and lotOccupancyCount > 0'
+      sqlWhereClause += ' and burialSiteContractCount > 0'
     } else if (filters.contractStatus === 'unoccupied') {
       sqlWhereClause +=
-        ' and (lotOccupancyCount is null or lotOccupancyCount = 0)'
+        ' and (burialSiteContractCount is null or burialSiteContractCount = 0)'
     }
   }
 
   if ((filters.workOrderId ?? '') !== '') {
     sqlWhereClause +=
-      ' and l.lotId in (select lotId from WorkOrderLots where recordDelete_timeMillis is null and workOrderId = ?)'
+      ' and l.burialSiteId in (select burialSiteId from WorkOrderBurialSites where recordDelete_timeMillis is null and workOrderId = ?)'
     sqlParameters.push(filters.workOrderId)
   }
 

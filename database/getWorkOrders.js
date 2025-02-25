@@ -1,5 +1,5 @@
 import { dateIntegerToString, dateStringToInteger } from '@cityssm/utils-datetime';
-import { getLotNameWhereClause, getOccupantNameWhereClause } from '../helpers/functions.sqlFilters.js';
+import { getBurialSiteNameWhereClause, getOccupantNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import getBurialSiteContracts from './getBurialSiteContracts.js';
 import getLots from './getLots.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
@@ -36,7 +36,7 @@ function buildWhereClause(filters) {
         ))`;
         sqlParameters.push(...occupantNameFilters.sqlParameters);
     }
-    const lotNameFilters = getLotNameWhereClause(filters.lotName, '', 'l');
+    const lotNameFilters = getBurialSiteNameWhereClause(filters.lotName, '', 'l');
     if (lotNameFilters.sqlParameters.length > 0) {
         sqlWhereClause +=
             ` and w.workOrderId in (

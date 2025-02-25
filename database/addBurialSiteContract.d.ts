@@ -18,4 +18,4 @@ export interface AddBurialSiteContractForm {
     occupantEmailAddress?: string;
     occupantComment?: string;
 }
-export default function addLotOccupancy(addForm: AddBurialSiteContractForm, user: User, connectedDatabase?: PoolConnection): Promise<number>;
+export default function addBurialSiteContract(addForm: AddBurialSiteContractForm, user: User, connectedDatabase?: PoolConnection): Promise<number>;

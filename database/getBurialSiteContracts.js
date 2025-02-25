@@ -1,9 +1,9 @@
 import { dateIntegerToString, dateStringToInteger } from '@cityssm/utils-datetime';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { getContractTypeById } from '../helpers/functions.cache.js';
-import { getLotNameWhereClause, getOccupancyTimeWhereClause, getOccupantNameWhereClause } from '../helpers/functions.sqlFilters.js';
+import { getBurialSiteNameWhereClause, getOccupancyTimeWhereClause, getOccupantNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import getBurialSiteContractFees from './getBurialSiteContractFees.js';
-// import getLotOccupancyOccupants from './getLotOccupancyOccupants.js'
+// import getBurialSiteContractOccupants from './getBurialSiteContractOccupants.js'
 import getBurialSiteContractTransactions from './getBurialSiteContractTransactions.js';
 import { acquireConnection } from './pool.js';
 function buildWhereClause(filters) {
@@ -13,7 +13,7 @@ function buildWhereClause(filters) {
         sqlWhereClause += ' and o.lotId = ?';
         sqlParameters.push(filters.burialSiteId);
     }
-    const lotNameFilters = getLotNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'l');
+    const lotNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'l');
     sqlWhereClause += lotNameFilters.sqlWhereClause;
     sqlParameters.push(...lotNameFilters.sqlParameters);
     const occupantNameFilters = getOccupantNameWhereClause(filters.occupantName, 'o');
@@ -76,7 +76,7 @@ async function addInclusions(burialSiteContract, options, database) {
     /*
     if (options.includeInterments) {
       burialSiteContract.burialSiteContractInterments =
-        await getLotOccupancyOccupants(
+        await getBurialSiteContractOccupants(
           burialSiteContract.burialSiteContractId,
           database
         )
@@ -88,7 +88,9 @@ export default async function getBurialSiteContracts(filters, options, connected
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
-    let count = options.limit;
+    let count = typeof options.limit === 'string'
+        ? Number.parseInt(options.limit, 10)
+        : options.limit;
     const isLimited = options.limit !== -1;
     if (isLimited) {
         count = database
@@ -104,11 +106,7 @@ export default async function getBurialSiteContracts(filters, options, connected
             .prepare(`select o.burialSiteContractId,
           o.contractTypeId, t.contractType,
           o.burialSiteId, lt.burialSiteType,
-          l.burialSiteNameSegment1,
-          l.burialSiteNameSegment2,
-          l.burialSiteNameSegment3,
-          l.burialSiteNameSegment4,
-          l.burialSiteNameSegment5,
+          l.burialSiteName,
           l.cemeteryId, m.cemeteryName,
           o.contractStartDate, userFn_dateIntegerToString(o.contractStartDate) as contractStartDateString,
           o.contractEndDate,  userFn_dateIntegerToString(o.contractEndDate) as contractEndDateString

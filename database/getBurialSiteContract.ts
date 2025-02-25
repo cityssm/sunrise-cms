@@ -6,12 +6,12 @@ import type { BurialSiteContract } from '../types/recordTypes.js'
 import getBurialSiteContractComments from './getBurialSiteContractComments.js'
 import getBurialSiteContractFees from './getBurialSiteContractFees.js'
 import getBurialSiteContractFields from './getBurialSiteContractFields.js'
-// import getLotOccupancyOccupants from './getLotOccupancyOccupants.js'
+// import getBurialSiteContractOccupants from './getBurialSiteContractOccupants.js'
 import getBurialSiteContractTransactions from './getBurialSiteContractTransactions.js'
 import { getWorkOrders } from './getWorkOrders.js'
 import { acquireConnection } from './pool.js'
 
-export default async function getLotOccupancy(
+export default async function getBurialSiteContract(
   burialSiteContractId: number | string,
   connectedDatabase?: PoolConnection
 ): Promise<BurialSiteContract | undefined> {
@@ -24,11 +24,7 @@ export default async function getLotOccupancy(
       `select o.burialSiteContractId,
         o.contractTypeId, t.contractType,
         o.burialSiteId,
-        l.burialSiteNameSegment1,
-        l.burialSiteNameSegment2,
-        l.burialSiteNameSegment3,
-        l.burialSiteNameSegment4,
-        l.burialSiteNameSegment5,
+        l.burialSiteName,
         l.burialSiteTypeId,
         l.cemeteryId, m.cemeteryName,
         o.contractStartDate, userFn_dateIntegerToString(o.contractStartDate) as contractStartDateString,
@@ -49,7 +45,7 @@ export default async function getLotOccupancy(
       database
     )
     /*
-    contract.burialSiteContractInterments = await getLotOccupancyOccupants(
+    contract.burialSiteContractInterments = await getBurialSiteContractOccupants(
       burialSiteContractId,
       database
     )

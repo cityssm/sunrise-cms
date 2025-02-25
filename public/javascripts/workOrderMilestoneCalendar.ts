@@ -77,10 +77,10 @@ declare const exports: Record<string, unknown>
         panelBlockElement.classList.add('has-background-warning-light')
       }
 
-      let lotOccupancyHTML = ''
+      let burialSiteContractHTML = ''
 
       for (const lot of milestone.workOrderLots ?? []) {
-        lotOccupancyHTML += `<li class="has-tooltip-left"
+        burialSiteContractHTML += `<li class="has-tooltip-left"
           data-tooltip="${cityssm.escapeHTML(lot.cemeteryName ?? '')}">
           <span class="fa-li">
           <i class="fas fa-vector-square"
@@ -90,9 +90,9 @@ declare const exports: Record<string, unknown>
           </li>`
       }
 
-      for (const lotOccupancy of milestone.workOrderLotOccupancies ?? []) {
-        for (const occupant of lotOccupancy.lotOccupancyOccupants ?? []) {
-          lotOccupancyHTML += `<li class="has-tooltip-left"
+      for (const burialSiteContract of milestone.workOrderLotOccupancies ?? []) {
+        for (const occupant of burialSiteContract.burialSiteContractOccupants ?? []) {
+          burialSiteContractHTML += `<li class="has-tooltip-left"
             data-tooltip="${cityssm.escapeHTML(
               occupant.lotOccupantType ?? ''
             )}">
@@ -138,9 +138,9 @@ declare const exports: Record<string, unknown>
           <span class="is-size-7">${cityssm.escapeHTML(milestone.workOrderDescription ?? '')}</span>
         </div><div class="column is-size-7">
           ${
-            lotOccupancyHTML === ''
+            burialSiteContractHTML === ''
               ? ''
-              : `<ul class="fa-ul ml-4">${lotOccupancyHTML}</ul>`
+              : `<ul class="fa-ul ml-4">${burialSiteContractHTML}</ul>`
           }</div></div>`
       ;(currentPanelElement as HTMLElement).append(panelBlockElement)
     }

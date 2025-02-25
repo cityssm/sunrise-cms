@@ -1,5 +1,5 @@
 import { acquireConnection } from './pool.js';
-export default async function updateLotOccupancyOccupant(lotOccupancyOccupantForm, user) {
+export default async function updateLotOccupancyOccupant(burialSiteContractOccupantForm, user) {
     const database = await acquireConnection();
     const results = database
         .prepare(`update LotOccupancyOccupants
@@ -19,7 +19,7 @@ export default async function updateLotOccupancyOccupant(lotOccupancyOccupantFor
         where recordDelete_timeMillis is null
         and burialSiteContractId = ?
         and lotOccupantIndex = ?`)
-        .run(lotOccupancyOccupantForm.occupantName, lotOccupancyOccupantForm.occupantFamilyName, lotOccupancyOccupantForm.occupantAddress1, lotOccupancyOccupantForm.occupantAddress2, lotOccupancyOccupantForm.occupantCity, lotOccupancyOccupantForm.occupantProvince, lotOccupancyOccupantForm.occupantPostalCode, lotOccupancyOccupantForm.occupantPhoneNumber, lotOccupancyOccupantForm.occupantEmailAddress, lotOccupancyOccupantForm.occupantComment, lotOccupancyOccupantForm.lotOccupantTypeId, user.userName, Date.now(), lotOccupancyOccupantForm.burialSiteContractId, lotOccupancyOccupantForm.lotOccupantIndex);
+        .run(burialSiteContractOccupantForm.occupantName, burialSiteContractOccupantForm.occupantFamilyName, burialSiteContractOccupantForm.occupantAddress1, burialSiteContractOccupantForm.occupantAddress2, burialSiteContractOccupantForm.occupantCity, burialSiteContractOccupantForm.occupantProvince, burialSiteContractOccupantForm.occupantPostalCode, burialSiteContractOccupantForm.occupantPhoneNumber, burialSiteContractOccupantForm.occupantEmailAddress, burialSiteContractOccupantForm.occupantComment, burialSiteContractOccupantForm.lotOccupantTypeId, user.userName, Date.now(), burialSiteContractOccupantForm.burialSiteContractId, burialSiteContractOccupantForm.lotOccupantIndex);
     database.release();
     return results.changes > 0;
 }

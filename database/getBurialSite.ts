@@ -12,16 +12,17 @@ const baseSQL = `select l.burialSiteId,
   l.burialSiteNameSegment3,
   l.burialSiteNameSegment4,
   l.burialSiteNameSegment5,
+  l.burialSiteName,
   l.burialSiteStatusId, s.burialSiteStatus,
   l.cemeteryId, m.cemeteryName,
   m.cemeterySvg, l.cemeterySvgId,
   l.burialSiteLatitude, l.burialSiteLongitude,
 
-    from BurialSites l
-    left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
-    left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
-    left join Cemeteries m on l.cemeteryId = m.cemeteryId
-    where l.recordDelete_timeMillis is null`
+  from BurialSites l
+  left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
+  left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
+  left join Cemeteries m on l.cemeteryId = m.cemeteryId
+  where l.recordDelete_timeMillis is null`
 
 async function _getBurialSite(
   sql: string,
@@ -32,12 +33,12 @@ async function _getBurialSite(
   const burialSite = database.prepare(sql).get(burialSiteIdOrLotName) as BurialSite | undefined
 
   if (burialSite !== undefined) {
-    const BurialSiteContracts = await getBurialSiteInterments(
+    const burialSiteContracts = await getBurialSiteInterments(
       {
         burialSiteId: burialSite.burialSiteId
       },
       {
-        includeOccupants: true,
+        includeInterments: true,
         includeFees: false,
         includeTransactions: false,
         limit: -1,
@@ -46,7 +47,7 @@ async function _getBurialSite(
       database
     )
 
-    burialSite.burialSiteContracts = BurialSiteContracts.BurialSiteContracts
+    burialSite.burialSiteContracts = burialSiteContracts.burialSiteContracts
 
     burialSite.burialSiteFields = await getBurialSiteFields(burialSite.burialSiteId, database)
 
@@ -58,15 +59,14 @@ async function _getBurialSite(
   return burialSite
 }
 
-// TODO
-export async function getLotByLotName(
-  lotName: string
-): Promise<Lot | undefined> {
-  return await _getBurialSite(`${baseSQL} and l.lotName = ?`, lotName)
+export async function getBurialSiteByBurialSiteName(
+  burialSiteName: string
+): Promise<BurialSite | undefined> {
+  return await _getBurialSite(`${baseSQL} and l.burialSiteName = ?`, burialSiteName)
 }
 
-export default async function getLot(
+export default async function getBurialSite(
   burialSiteId: number | string
-): Promise<Lot | undefined> {
+): Promise<BurialSite | undefined> {
   return await _getBurialSite(`${baseSQL} and l.burialSiteId = ?`, burialSiteId)
 }

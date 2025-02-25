@@ -1,5 +1,5 @@
 import addWorkOrderLotOccupancy from '../../database/addWorkOrderLotOccupancy.js';
-import getBurialSiteContracts from '../../database/getLotOccupancies.js';
+import getBurialSiteContracts from '../../database/getBurialSiteContracts.js';
 export default async function handler(request, response) {
     const success = await addWorkOrderLotOccupancy({
         workOrderId: request.body.workOrderId,

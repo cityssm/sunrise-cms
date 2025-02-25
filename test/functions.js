@@ -16,7 +16,7 @@ describe('functions.cache', () => {
     describe('Lot Statuses', () => {
         it('returns Lot Statuses', async () => {
             cacheFunctions.clearCacheByTableName('LotStatuses');
-            const lotStatuses = await cacheFunctions.getLotStatuses();
+            const lotStatuses = await cacheFunctions.getBurialSiteStatuses();
             assert.ok(lotStatuses.length > 0);
             for (const lotStatus of lotStatuses) {
                 const byId = await cacheFunctions.getLotStatusById(lotStatus.burialSiteStatusId);
@@ -116,30 +116,30 @@ describe('functions.cache', () => {
 describe('functions.sqlFilters', () => {
     describe('LotName filter', () => {
         it('returns startsWith filter', () => {
-            const filter = sqlFilterFunctions.getLotNameWhereClause('TEST1 TEST2', 'startsWith', 'l');
+            const filter = sqlFilterFunctions.getBurialSiteNameWhereClause('TEST1 TEST2', 'startsWith', 'l');
             assert.strictEqual(filter.sqlWhereClause, " and l.lotName like ? || '%'");
             assert.strictEqual(filter.sqlParameters.length, 1);
             assert.ok(filter.sqlParameters.includes('TEST1 TEST2'));
         });
         it('returns endsWith filter', () => {
-            const filter = sqlFilterFunctions.getLotNameWhereClause('TEST1 TEST2', 'endsWith', 'l');
+            const filter = sqlFilterFunctions.getBurialSiteNameWhereClause('TEST1 TEST2', 'endsWith', 'l');
             assert.strictEqual(filter.sqlWhereClause, " and l.lotName like '%' || ?");
             assert.strictEqual(filter.sqlParameters.length, 1);
             assert.strictEqual(filter.sqlParameters[0], 'TEST1 TEST2');
         });
         it('returns contains filter', () => {
-            const filter = sqlFilterFunctions.getLotNameWhereClause('TEST1 TEST2', '', 'l');
+            const filter = sqlFilterFunctions.getBurialSiteNameWhereClause('TEST1 TEST2', '', 'l');
             assert.strictEqual(filter.sqlWhereClause, ' and instr(lower(l.lotName), ?) and instr(lower(l.lotName), ?)');
             assert.ok(filter.sqlParameters.includes('test1'));
             assert.ok(filter.sqlParameters.includes('test2'));
         });
         it('handles empty filter', () => {
-            const filter = sqlFilterFunctions.getLotNameWhereClause('', '');
+            const filter = sqlFilterFunctions.getBurialSiteNameWhereClause('', '');
             assert.strictEqual(filter.sqlWhereClause, '');
             assert.strictEqual(filter.sqlParameters.length, 0);
         });
         it('handles undefined filter', () => {
-            const filter = sqlFilterFunctions.getLotNameWhereClause(undefined, undefined, 'l');
+            const filter = sqlFilterFunctions.getBurialSiteNameWhereClause(undefined, undefined, 'l');
             assert.strictEqual(filter.sqlWhereClause, '');
             assert.strictEqual(filter.sqlParameters.length, 0);
         });

@@ -13,6 +13,7 @@ export interface Record {
 export interface Cemetery extends Record {
     cemeteryId?: number;
     cemeteryName?: string;
+    cemeteryKey?: string;
     cemeteryDescription?: string;
     cemeteryLatitude?: number;
     cemeteryLongitude?: number;
@@ -40,8 +41,8 @@ export interface BurialSiteTypeField extends Record {
     fieldValues?: string;
     isRequired?: boolean;
     pattern?: string;
-    minimumLength?: number;
-    maximumLength?: number;
+    minLength?: number;
+    maxLength?: number;
     orderNumber?: number;
 }
 export interface BurialSiteStatus extends Record {
@@ -51,6 +52,11 @@ export interface BurialSiteStatus extends Record {
 }
 export interface BurialSite extends Record {
     burialSiteId: number;
+    burialSiteNameSegment1?: string;
+    burialSiteNameSegment2?: string;
+    burialSiteNameSegment3?: string;
+    burialSiteNameSegment4?: string;
+    burialSiteNameSegment5?: string;
     burialSiteName?: string;
     burialSiteTypeId?: number;
     burialSiteType?: string;
@@ -97,8 +103,8 @@ export interface ContractTypeField {
     fieldValues?: string;
     isRequired?: boolean;
     pattern?: string;
-    minimumLength?: number;
-    maximumLength?: number;
+    minLength?: number;
+    maxLength?: number;
     orderNumber?: number;
 }
 export interface FeeCategory extends Record {
@@ -197,11 +203,7 @@ export interface BurialSiteContract extends Record {
     burialSiteId?: number;
     burialSiteTypeId?: number;
     burialSiteType?: string;
-    burialSiteNameSegment1?: string;
-    burialSiteNameSegment2?: string;
-    burialSiteNameSegment3?: string;
-    burialSiteNameSegment4?: string;
-    burialSiteNameSegment5?: string;
+    burialSiteName?: string;
     cemeteryId?: number;
     cemeteryName?: string;
     contractStartDate?: number;

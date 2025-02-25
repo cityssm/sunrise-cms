@@ -1,6 +1,6 @@
 import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import { acquireConnection } from './pool.js';
-export default async function addLotOccupancyComment(commentForm, user) {
+export default async function addBurialSiteContractComment(commentForm, user) {
     const rightNow = new Date();
     let commentDate = 0;
     let commentTime = 0;

@@ -4,7 +4,7 @@ import type { BurialSiteContract } from '../types/recordTypes.js'
 
 import addBurialSiteContract from './addBurialSiteContract.js'
 import addBurialSiteContractComment from './addBurialSiteContractComment.js'
-// import addLotOccupancyOccupant from './addLotOccupancyOccupant.js'
+// import addBurialSiteContractOccupant from './addBurialSiteContractOccupant.js'
 import getBurialSiteContract from './getBurialSiteContract.js'
 import { acquireConnection } from './pool.js'
 
@@ -58,8 +58,8 @@ export default async function copyBurialSiteContract(
    */
 
   /*
-  for (const occupant of oldBurialSiteContract.lotOccupancyOccupants ?? []) {
-    await addLotOccupancyOccupant(
+  for (const occupant of oldBurialSiteContract.burialSiteContractOccupants ?? []) {
+    await addBurialSiteContractOccupant(
       {
         burialSiteContractId: newBurialSiteContractId,
         lotOccupantTypeId: occupant.lotOccupantTypeId!,

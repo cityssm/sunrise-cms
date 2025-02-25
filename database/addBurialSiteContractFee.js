@@ -9,9 +9,9 @@ export default async function addBurialSiteContractFee(addFeeForm, user, connect
     let feeAmount;
     let taxAmount;
     if ((addFeeForm.feeAmount ?? '') === '') {
-        const lotOccupancy = (await getBurialSiteContract(addFeeForm.burialSiteContractId));
+        const burialSiteContract = (await getBurialSiteContract(addFeeForm.burialSiteContractId));
         const fee = (await getFee(addFeeForm.feeId));
-        feeAmount = calculateFeeAmount(fee, lotOccupancy);
+        feeAmount = calculateFeeAmount(fee, burialSiteContract);
         taxAmount = calculateTaxAmount(fee, feeAmount);
     }
     else {

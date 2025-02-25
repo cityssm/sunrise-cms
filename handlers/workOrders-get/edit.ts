@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 
 import getWorkOrder from '../../database/getWorkOrder.js'
 import {
-  getLotStatuses,
+  getBurialSiteStatuses,
   getWorkOrderMilestoneTypes,
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
@@ -40,7 +40,7 @@ export default async function handler(
 
   const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
 
-  const lotStatuses = await getLotStatuses()
+  const lotStatuses = await getBurialSiteStatuses()
 
   response.render('workOrder-edit', {
     headTitle: `Work Order #${workOrder.workOrderNumber}`,

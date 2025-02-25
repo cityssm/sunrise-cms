@@ -27,6 +27,9 @@ export interface Config {
             cityDefault?: string;
             provinceDefault?: string;
         };
+        burialSites: {
+            burialSiteNameSegments?: ConfigBurialSiteNameSegments;
+        };
         contracts: {
             burialSiteIdIsRequired?: boolean;
             cityDefault?: string;
@@ -82,5 +85,17 @@ export interface ConfigActiveDirectory {
     baseDN: string;
     username: string;
     password: string;
+}
+export interface ConfigBurialSiteNameSegments {
+    separator?: string;
+    segments: Partial<Record<'1' | '2' | '3' | '4' | '5', {
+        isAvailable?: boolean;
+        isRequired?: boolean;
+        label?: string;
+        prefix?: string;
+        suffix?: string;
+        minLength?: number;
+        maxLength?: number;
+    }>>;
 }
 export {};

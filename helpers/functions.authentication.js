@@ -33,7 +33,7 @@ const safeRedirects = new Set([
     '/admin/occupancytypes',
     '/admin/tables',
     '/lotoccupancies',
-    '/lotoccupancies/new',
+    '/contracts/new',
     '/lots',
     '/lots/new',
     '/maps',

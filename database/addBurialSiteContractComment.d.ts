@@ -5,4 +5,4 @@ export interface AddBurialSiteContractCommentForm {
     commentTimeString?: TimeString;
     comment: string;
 }
-export default function addLotOccupancyComment(commentForm: AddBurialSiteContractCommentForm, user: User): Promise<number>;
+export default function addBurialSiteContractComment(commentForm: AddBurialSiteContractCommentForm, user: User): Promise<number>;

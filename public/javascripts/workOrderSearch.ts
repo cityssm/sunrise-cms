@@ -66,7 +66,7 @@ declare const exports: Record<string, unknown>
       }
 
       for (const occupancy of workOrder.workOrderLotOccupancies ?? []) {
-        for (const occupant of occupancy.lotOccupancyOccupants ?? []) {
+        for (const occupant of occupancy.burialSiteContractOccupants ?? []) {
           relatedHTML += `<li class="has-tooltip-left"
             data-tooltip="${cityssm.escapeHTML(
               occupant.lotOccupantType ?? ''

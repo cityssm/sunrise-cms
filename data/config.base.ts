@@ -9,6 +9,7 @@ export const config: Config = {
   settings: {
     fees: {},
     cemeteries: {},
+    burialSites: {},
     contracts: {},
     workOrders: {},
     adminCleanup: {},

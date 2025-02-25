@@ -1,29 +1,32 @@
 import type { Request, Response } from 'express'
 
-import getLot from '../../database/getLot.js'
+import getBurialSite from '../../database/getBurialSite.js'
+import {
+  getNextBurialSiteId,
+  getPreviousBurialSiteId
+} from '../../helpers/burialSites.helpers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import { getNextLotId, getPreviousLotId } from '../../helpers/functions.lots.js'
 
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lot = await getLot(request.params.lotId)
+  const burialSite = await getBurialSite(request.params.burialSiteId)
 
-  if (lot === undefined) {
+  if (burialSite === undefined) {
     response.redirect(
-      `${getConfigProperty('reverseProxy.urlPrefix')}/lots/?error=lotIdNotFound`
+      `${getConfigProperty('reverseProxy.urlPrefix')}/burialSites/?error=burialSiteIdNotFound`
     )
     return
   }
 
-  response.render('lot-view', {
-    headTitle: lot.lotName,
-    lot
+  response.render('burialSite-view', {
+    headTitle: burialSite.burialSiteName,
+    lot: burialSite
   })
 
   response.on('finish', () => {
-    void getNextLotId(lot.lotId)
-    void getPreviousLotId(lot.lotId)
+    void getNextBurialSiteId(burialSite.burialSiteId)
+    void getPreviousBurialSiteId(burialSite.burialSiteId)
   })
 }

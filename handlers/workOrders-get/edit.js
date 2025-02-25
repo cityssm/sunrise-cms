@@ -1,5 +1,5 @@
 import getWorkOrder from '../../database/getWorkOrder.js';
-import { getLotStatuses, getWorkOrderMilestoneTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
+import { getBurialSiteStatuses, getWorkOrderMilestoneTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 export default async function handler(request, response) {
     const workOrder = await getWorkOrder(request.params.workOrderId, {
@@ -17,7 +17,7 @@ export default async function handler(request, response) {
     }
     const workOrderTypes = await getWorkOrderTypes();
     const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
-    const lotStatuses = await getLotStatuses();
+    const lotStatuses = await getBurialSiteStatuses();
     response.render('workOrder-edit', {
         headTitle: `Work Order #${workOrder.workOrderNumber}`,
         workOrder,

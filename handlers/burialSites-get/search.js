@@ -1,15 +1,14 @@
-import getMaps from '../../database/getMaps.js';
-import { getLotStatuses, getBurialSiteTypes } from '../../helpers/functions.cache.js';
-import { getConfigProperty } from '../../helpers/config.helpers.js';
+import getCemeteries from '../../database/getCemeteries.js';
+import { getBurialSiteStatuses, getBurialSiteTypes } from '../../helpers/functions.cache.js';
 export default async function handler(request, response) {
-    const maps = await getMaps();
-    const lotTypes = await getBurialSiteTypes();
-    const lotStatuses = await getLotStatuses();
-    response.render('lot-search', {
-        headTitle: `${getConfigProperty('aliases.lot')} Search`,
-        maps,
-        lotTypes,
-        lotStatuses,
+    const cemeteries = await getCemeteries();
+    const burialSiteTypes = await getBurialSiteTypes();
+    const burialSiteStatuses = await getBurialSiteStatuses();
+    response.render('burialSite-search', {
+        headTitle: `Burial Site Search`,
+        cemeteries,
+        burialSiteTypes,
+        burialSiteStatuses,
         cemeteryId: request.query.cemeteryId,
         burialSiteTypeId: request.query.burialSiteTypeId,
         burialSiteStatusId: request.query.burialSiteStatusId

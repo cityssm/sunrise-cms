@@ -1,25 +1,24 @@
 import type { Request, Response } from 'express'
 
-import getMaps from '../../database/getMaps.js'
+import getCemeteries from '../../database/getCemeteries.js'
 import {
   getBurialSiteTypes,
   getContractTypes
 } from '../../helpers/functions.cache.js'
-import { getConfigProperty } from '../../helpers/config.helpers.js'
 
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const maps = await getMaps()
-  const lotTypes = await getBurialSiteTypes()
-  const occupancyTypes = await getContractTypes()
+  const cemeteries = await getCemeteries()
+  const burialSiteTypes = await getBurialSiteTypes()
+  const contractTypes = await getContractTypes()
 
-  response.render('lotOccupancy-search', {
-    headTitle: `${getConfigProperty('aliases.occupancy')} Search`,
-    maps,
-    lotTypes,
-    occupancyTypes,
+  response.render('burialSiteContract-search', {
+    headTitle: `Contract Search`,
+    cemeteries,
+    burialSiteTypes,
+    contractTypes,
     cemeteryId: request.query.cemeteryId
   })
 }

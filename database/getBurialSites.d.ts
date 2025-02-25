@@ -1,6 +1,6 @@
 import type { PoolConnection } from 'better-sqlite-pool';
 import type { BurialSite } from '../types/recordTypes.js';
-interface GetBurialSitesFilters {
+export interface GetBurialSitesFilters {
     burialSiteNameSearchType?: '' | 'startsWith' | 'endsWith';
     burialSiteName?: string;
     cemeteryId?: number | string;
@@ -9,14 +9,13 @@ interface GetBurialSitesFilters {
     contractStatus?: '' | 'occupied' | 'unoccupied';
     workOrderId?: number | string;
 }
-interface GetBurialSitesOptions {
+export interface GetBurialSitesOptions {
     /** -1 for no limit */
     limit: number;
-    offset: number;
+    offset: string | number;
     includeBurialSiteContractCount?: boolean;
 }
 export default function getBurialSites(filters: GetBurialSitesFilters, options: GetBurialSitesOptions, connectedDatabase?: PoolConnection): Promise<{
     count: number;
     burialSites: BurialSite[];
 }>;
-export {};

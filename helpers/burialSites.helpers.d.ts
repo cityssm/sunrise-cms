@@ -1,3 +1,10 @@
 export declare function getNextBurialSiteId(burialSiteId: number): Promise<number | undefined>;
 export declare function getPreviousBurialSiteId(burialSiteId: number): Promise<number | undefined>;
 export declare function clearNextPreviousBurialSiteIdCache(burialSiteId?: number, relayMessage?: boolean): void;
+export declare function buildBurialSiteName(segments: {
+    burialSiteNameSegment1?: string;
+    burialSiteNameSegment2?: string;
+    burialSiteNameSegment3?: string;
+    burialSiteNameSegment4?: string;
+    burialSiteNameSegment5?: string;
+}): string;

@@ -1,5 +1,5 @@
 import type { config as MSSQLConfig } from 'mssql';
-import type { ConfigActiveDirectory, ConfigNtfyStartup, DynamicsGPLookup } from '../types/configTypes.js';
+import type { ConfigActiveDirectory, ConfigBurialSiteNameSegments, ConfigNtfyStartup, DynamicsGPLookup } from '../types/configTypes.js';
 export declare const configDefaultValues: {
     activeDirectory: ConfigActiveDirectory;
     'application.applicationName': string;
@@ -26,6 +26,7 @@ export declare const configDefaultValues: {
     'aliases.workOrderCloseDate': string;
     'settings.cemeteries.cityDefault': string;
     'settings.cemeteries.provinceDefault': string;
+    'settings.burialSites.burialSiteNameSegments': ConfigBurialSiteNameSegments;
     'settings.contracts.burialSiteIdIsRequired': boolean;
     'settings.contracts.cityDefault': string;
     'settings.contracts.provinceDefault': string;

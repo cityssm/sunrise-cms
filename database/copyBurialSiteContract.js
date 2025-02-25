@@ -1,7 +1,7 @@
 import { dateToString } from '@cityssm/utils-datetime';
 import addBurialSiteContract from './addBurialSiteContract.js';
 import addBurialSiteContractComment from './addBurialSiteContractComment.js';
-// import addLotOccupancyOccupant from './addLotOccupancyOccupant.js'
+// import addBurialSiteContractOccupant from './addBurialSiteContractOccupant.js'
 import getBurialSiteContract from './getBurialSiteContract.js';
 import { acquireConnection } from './pool.js';
 export default async function copyBurialSiteContract(oldBurialSiteContractId, user) {
@@ -30,8 +30,8 @@ export default async function copyBurialSiteContract(oldBurialSiteContractId, us
      * Copy Occupants
      */
     /*
-    for (const occupant of oldBurialSiteContract.lotOccupancyOccupants ?? []) {
-      await addLotOccupancyOccupant(
+    for (const occupant of oldBurialSiteContract.burialSiteContractOccupants ?? []) {
+      await addBurialSiteContractOccupant(
         {
           burialSiteContractId: newBurialSiteContractId,
           lotOccupantTypeId: occupant.lotOccupantTypeId!,

@@ -1,11 +1,11 @@
+import { getPreviousBurialSiteId } from '../../helpers/burialSites.helpers.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { getPreviousLotId } from '../../helpers/functions.lots.js';
 export default async function handler(request, response) {
-    const lotId = Number.parseInt(request.params.lotId, 10);
-    const previousLotId = await getPreviousLotId(lotId);
-    if (previousLotId === undefined) {
-        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/lots/?error=noPreviousLotIdFound`);
+    const burialSiteId = Number.parseInt(request.params.burialSiteId, 10);
+    const previousBurialSiteId = await getPreviousBurialSiteId(burialSiteId);
+    if (previousBurialSiteId === undefined) {
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/burialSites/?error=noPreviousBurialSiteIdFound`);
         return;
     }
-    response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/lots/${previousLotId.toString()}`);
+    response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/burialSites/${previousBurialSiteId.toString()}`);
 }

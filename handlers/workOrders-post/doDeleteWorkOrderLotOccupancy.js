@@ -1,5 +1,5 @@
 import deleteWorkOrderLotOccupancy from '../../database/deleteWorkOrderLotOccupancy.js';
-import getBurialSiteContracts from '../../database/getLotOccupancies.js';
+import getBurialSiteContracts from '../../database/getBurialSiteContracts.js';
 export default async function handler(request, response) {
     const success = await deleteWorkOrderLotOccupancy(request.body.workOrderId, request.body.burialSiteContractId, request.session.user);
     const workOrderLotOccupancies = await getBurialSiteContracts({

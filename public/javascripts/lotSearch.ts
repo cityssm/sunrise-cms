@@ -69,7 +69,7 @@ declare const exports: Record<string, unknown>
                 : '<span class="has-text-grey">(No Status)</span>'
             }<br />
             ${
-              (lot.lotOccupancyCount ?? 0) > 0
+              (lot.burialSiteContractCount ?? 0) > 0
                 ? '<span class="is-size-7">Currently Occupied</span>'
                 : ''
             }

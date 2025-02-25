@@ -31,9 +31,9 @@ export default async function getPastLotOccupancyOccupants(filters, options) {
       occupantPhoneNumber, occupantEmailAddress
     order by burialSiteContractIdCount desc, recordUpdate_timeMillisMax desc
     limit ${options.limit}`;
-    const lotOccupancyOccupants = database
+    const burialSiteContractOccupants = database
         .prepare(sql)
         .all(sqlParameters);
     database.release();
-    return lotOccupancyOccupants;
+    return burialSiteContractOccupants;
 }

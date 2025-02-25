@@ -1,31 +1,33 @@
 import type { Request, Response } from 'express'
 
-import getLotOccupancy from '../../database/getLotOccupancy.js'
-import { getContractTypePrintsById } from '../../helpers/functions.cache.js'
+import getBurialSiteContract from '../../database/getBurialSiteContract.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { getContractTypePrintsById } from '../../helpers/functions.cache.js'
 
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const lotOccupancy = await getLotOccupancy(request.params.burialSiteContractId)
+  const burialSiteContract = await getBurialSiteContract(
+    request.params.burialSiteContractId
+  )
 
-  if (lotOccupancy === undefined) {
+  if (burialSiteContract === undefined) {
     response.redirect(
       `${getConfigProperty(
         'reverseProxy.urlPrefix'
-      )}/lotOccupancies/?error=burialSiteContractIdNotFound`
+      )}/contracts/?error=burialSiteContractIdNotFound`
     )
     return
   }
 
-  const ContractTypePrints = await getContractTypePrintsById(
-    lotOccupancy.contractTypeId
+  const contractTypePrints = await getContractTypePrintsById(
+    burialSiteContract.contractTypeId
   )
 
-  response.render('lotOccupancy-view', {
-    headTitle: `${getConfigProperty('aliases.occupancy')} View`,
-    lotOccupancy,
-    ContractTypePrints
+  response.render('burialSiteContract-view', {
+    headTitle: 'Contract View',
+    burialSiteContract,
+    contractTypePrints
   })
 }

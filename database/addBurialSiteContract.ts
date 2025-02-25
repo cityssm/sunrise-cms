@@ -1,7 +1,7 @@
 import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import addLotOccupancyOccupant from './addLotOccupancyOccupant.js'
+import addBurialSiteContractOccupant from './addBurialSiteContractOccupant.js'
 import addOrUpdateBurialSiteContractField from './addOrUpdateBurialSiteContractField.js'
 import { acquireConnection } from './pool.js'
 
@@ -28,7 +28,7 @@ export interface AddBurialSiteContractForm {
   occupantComment?: string
 }
 
-export default async function addLotOccupancy(
+export default async function addBurialSiteContract(
   addForm: AddBurialSiteContractForm,
   user: User,
   connectedDatabase?: PoolConnection
@@ -76,16 +76,16 @@ export default async function addLotOccupancy(
   ).split(',')
 
   for (const contractTypeFieldId of contractTypeFieldIds) {
-    const lotOccupancyFieldValue = addForm[
-      `lotOccupancyFieldValue_${contractTypeFieldId}`
+    const burialSiteContractFieldValue = addForm[
+      `burialSiteContractFieldValue_${contractTypeFieldId}`
     ] as string | undefined
 
-    if ((lotOccupancyFieldValue ?? '') !== '') {
+    if ((burialSiteContractFieldValue ?? '') !== '') {
       await addOrUpdateBurialSiteContractField(
         {
           burialSiteContractId,
           contractTypeFieldId,
-          lotOccupancyFieldValue: lotOccupancyFieldValue ?? ''
+          burialSiteContractFieldValue: burialSiteContractFieldValue ?? ''
         },
         user,
         database
@@ -94,7 +94,7 @@ export default async function addLotOccupancy(
   }
 
   if ((addForm.lotOccupantTypeId ?? '') !== '') {
-    await addLotOccupancyOccupant(
+    await addBurialSiteContractOccupant(
       {
         burialSiteContractId,
         lotOccupantTypeId: addForm.lotOccupantTypeId ?? '',

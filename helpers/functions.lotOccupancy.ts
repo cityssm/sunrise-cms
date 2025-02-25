@@ -5,12 +5,12 @@ import type {
 } from '../types/recordTypes.js'
 
 export function filterOccupantsByLotOccupantType(
-  lotOccupancy: LotOccupancy,
+  burialSiteContract: LotOccupancy,
   lotOccupantType: string
 ): LotOccupancyOccupant[] {
   const lotOccupantTypeLowerCase = lotOccupantType.toLowerCase()
 
-  return (lotOccupancy.lotOccupancyOccupants ?? []).filter(
+  return (burialSiteContract.burialSiteContractOccupants ?? []).filter(
     (possibleOccupant) =>
       (possibleOccupant.lotOccupantType as string).toLowerCase() ===
       lotOccupantTypeLowerCase
@@ -18,12 +18,12 @@ export function filterOccupantsByLotOccupantType(
 }
 
 export function getFieldValueByOccupancyTypeField(
-  lotOccupancy: LotOccupancy,
+  burialSiteContract: LotOccupancy,
   occupancyTypeField: string
 ): string | undefined {
   const occupancyTypeFieldLowerCase = occupancyTypeField.toLowerCase()
 
-  const field = (lotOccupancy.lotOccupancyFields ?? []).find(
+  const field = (burialSiteContract.burialSiteContractFields ?? []).find(
     (possibleField) =>
       (possibleField.occupancyTypeField as string).toLowerCase() ===
       occupancyTypeFieldLowerCase
@@ -33,17 +33,17 @@ export function getFieldValueByOccupancyTypeField(
     return undefined
   }
 
-  return field.lotOccupancyFieldValue
+  return field.burialSiteContractFieldValue
 }
 
 export function getFeesByFeeCategory(
-  lotOccupancy: LotOccupancy,
+  burialSiteContract: LotOccupancy,
   feeCategory: string,
   feeCategoryContains = false
 ): LotOccupancyFee[] {
   const feeCategoryLowerCase = feeCategory.toLowerCase()
 
-  return (lotOccupancy.lotOccupancyFees ?? []).filter((possibleFee) =>
+  return (burialSiteContract.burialSiteContractFees ?? []).filter((possibleFee) =>
     feeCategoryContains
       ? (possibleFee.feeCategory as string)
           .toLowerCase()
@@ -53,10 +53,10 @@ export function getFeesByFeeCategory(
   )
 }
 
-export function getTransactionTotal(lotOccupancy: LotOccupancy): number {
+export function getTransactionTotal(burialSiteContract: LotOccupancy): number {
   let transactionTotal = 0
 
-  for (const transaction of lotOccupancy.lotOccupancyTransactions ?? []) {
+  for (const transaction of burialSiteContract.burialSiteContractTransactions ?? []) {
     transactionTotal += transaction.transactionAmount
   }
 

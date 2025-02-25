@@ -23,7 +23,7 @@ export async function handler(
   const printName = request.params.printName
 
   if (
-    !getConfigProperty('settings.lotOccupancy.prints').includes(
+    !getConfigProperty('settings.burialSiteContract.prints').includes(
       `pdf/${printName}`
     ) &&
     !getConfigProperty('settings.workOrders.prints').includes(

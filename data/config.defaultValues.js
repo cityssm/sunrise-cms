@@ -25,6 +25,18 @@ export const configDefaultValues = {
     'aliases.workOrderCloseDate': 'Completion Date',
     'settings.cemeteries.cityDefault': '',
     'settings.cemeteries.provinceDefault': '',
+    'settings.burialSites.burialSiteNameSegments': {
+        separator: '-',
+        segments: {
+            1: {
+                isRequired: true,
+                isAvailable: true,
+                label: 'Plot Number',
+                minLength: 1,
+                maxLength: 20
+            }
+        }
+    },
     'settings.contracts.burialSiteIdIsRequired': true,
     'settings.contracts.cityDefault': '',
     'settings.contracts.provinceDefault': '',

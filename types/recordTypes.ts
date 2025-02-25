@@ -20,6 +20,7 @@ export interface Record {
 export interface Cemetery extends Record {
   cemeteryId?: number
   cemeteryName?: string
+  cemeteryKey?: string
   cemeteryDescription?: string
 
   cemeteryLatitude?: number
@@ -54,8 +55,8 @@ export interface BurialSiteTypeField extends Record {
   fieldValues?: string
   isRequired?: boolean
   pattern?: string
-  minimumLength?: number
-  maximumLength?: number
+  minLength?: number
+  maxLength?: number
 
   orderNumber?: number
 }
@@ -68,6 +69,12 @@ export interface BurialSiteStatus extends Record {
 
 export interface BurialSite extends Record {
   burialSiteId: number
+
+  burialSiteNameSegment1?: string
+  burialSiteNameSegment2?: string
+  burialSiteNameSegment3?: string
+  burialSiteNameSegment4?: string
+  burialSiteNameSegment5?: string
   burialSiteName?: string
 
   burialSiteTypeId?: number
@@ -129,8 +136,8 @@ export interface ContractTypeField {
   fieldValues?: string
   isRequired?: boolean
   pattern?: string
-  minimumLength?: number
-  maximumLength?: number
+  minLength?: number
+  maxLength?: number
   orderNumber?: number
 }
 
@@ -261,13 +268,8 @@ export interface BurialSiteContract extends Record {
   burialSiteId?: number
   burialSiteTypeId?: number
   burialSiteType?: string
+  burialSiteName?: string
   
-  burialSiteNameSegment1?: string
-  burialSiteNameSegment2?: string
-  burialSiteNameSegment3?: string
-  burialSiteNameSegment4?: string
-  burialSiteNameSegment5?: string
-
   cemeteryId?: number
   cemeteryName?: string
 
