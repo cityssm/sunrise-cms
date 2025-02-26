@@ -51,7 +51,7 @@ function buildWhereClause(filters: GetBurialSiteContractsFilters): {
   const sqlParameters: unknown[] = []
 
   if ((filters.burialSiteId ?? '') !== '') {
-    sqlWhereClause += ' and o.lotId = ?'
+    sqlWhereClause += ' and o.burialSiteId = ?'
     sqlParameters.push(filters.burialSiteId)
   }
 

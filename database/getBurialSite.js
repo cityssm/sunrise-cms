@@ -13,7 +13,7 @@ const baseSQL = `select l.burialSiteId,
   l.burialSiteStatusId, s.burialSiteStatus,
   l.cemeteryId, m.cemeteryName,
   m.cemeterySvg, l.cemeterySvgId,
-  l.burialSiteLatitude, l.burialSiteLongitude,
+  l.burialSiteLatitude, l.burialSiteLongitude
 
   from BurialSites l
   left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId

@@ -4,24 +4,24 @@
   <ul>
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li>
-      <a href="<%= urlPrefix %>/lots">
+      <a href="<%= urlPrefix %>/burialSites">
         <span class="icon is-small"><i class="fas fa-vector-square" aria-hidden="true"></i></span>
-        <span><%= configFunctions.getConfigProperty("aliases.lots") %></span>
+        <span>Burial Sites</span>
       </a>
     </li>
     <% if (!isCreate) { %>
       <li>
-        <a href="<%= urlPrefix %>/lots/<%= lot.lotId %>" accesskey="v">
-          <%= lot.lotName %>
+        <a href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>" accesskey="v">
+          <%= burialSite.burialSiteName %>
         </a>
       </li>
     <% } %>
     <li class="is-active">
       <a href="#" aria-current="page">
         <% if (isCreate) { %>
-          Create a New <%= configFunctions.getConfigProperty("aliases.lot") %>
+          Create a New Burial Site
         <% } else { %>
-          Update <%= configFunctions.getConfigProperty("aliases.lot") %>
+          Update Burial Site
         <% } %>
       </a>
     </li>
@@ -30,9 +30,9 @@
 
 <h1 class="title is-1">
   <% if (isCreate) { %>
-    Create a New <%= configFunctions.getConfigProperty("aliases.lot") %>
+    Create a New Burial Site
   <% } else { %>
-    <%= lot.lotName %>
+    <%= burialSite.burialSiteName %>
   <% } %>
 </h1>
 
@@ -40,14 +40,14 @@
   <div class="level-left">
     <% if (!isCreate) { %>
       <span class="level-item has-text-weight-bold">
-        <%= lot.lotName %>
+        <%= burialSite.burialSiteName %>
       </span>
     <% } %>
   </div>
   <div class="level-right">
     <% if (isCreate) { %>
       <div class="level-item">
-        <a class="button is-danger is-inverted" href="<%= urlPrefix %>/lots">
+        <a class="button is-danger is-inverted" href="<%= urlPrefix %>/burialSites">
           Cancel
         </a>
       </div>
@@ -64,9 +64,9 @@
           </div>
           <div class="dropdown-menu">
             <div class="dropdown-content">
-              <a class="dropdown-item" id="button--deleteLot" href="#">
+              <a class="dropdown-item" id="button--deleteBurialSite" href="#">
                 <span class="icon is-small"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
-                <span>Delete <%= configFunctions.getConfigProperty("aliases.lot") %></span>
+                <span>Delete Burial Site</span>
               </a>
             </div>
           </div>
@@ -74,11 +74,11 @@
       </div>
     <% } %>
     <div class="level-item">
-      <button class="button is-light is-primary" type="submit" form="form--lot">
+      <button class="button is-light is-primary" type="submit" form="form--burialSite">
         <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
         <span>
           <%= (isCreate ? "Create" : "Update") %>
-          <%= configFunctions.getConfigProperty("aliases.lot") %>
+          Burial Site
         </span>
       </button>
     </div>
@@ -86,99 +86,171 @@
   
 </div>
 
-<form class="mb-5" id="form--lot">
-  <input id="lot--lotId" name="lotId" type="hidden" value="<%= isCreate ? "" : lot.lotId %>" />
+<form class="mb-5" id="form--burialSite">
+  <input id="burialSite--burialSiteId" name="burialSiteId" type="hidden" value="<%= isCreate ? "" : burialSite.burialSiteId %>" />
 
   <div class="panel">
     <div class="panel-block is-block">
       <div class="columns">
         <div class="column">
-            <div class="field">
-                <label class="label" for="lot--lotName">
-                    <%= configFunctions.getConfigProperty("aliases.lot") %> Name
-                </label>
-                <div class="control">
-                    <input class="input" id="lot--lotName" name="lotName" value="<%= lot.lotName %>" 
-                        <% if (configFunctions.getConfigProperty("settings.lot.lotNamePattern")) { %>
-                            pattern="<%= configFunctions.getConfigProperty("settings.lot.lotNamePattern").source %>"
-                        <% } %>
-                        maxlength="100" 
-                        required
-                        accesskey="f"
-                        <%= (isCreate ? " autofocus" : "") %> />
-                </div>
-                <% if (configFunctions.getConfigProperty("settings.lot.lotNameHelpText")) { %>
-                    <p class="help">
-                        <%- configFunctions.getConfigProperty("settings.lot.lotNameHelpText").replace(/\n/g, "<br />") %>
-                    </p>
+          <%
+            const burialSiteNameSegments = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments')
+          %>
+          <label class="label" for="burialSite--burialSiteNameSegment1">
+            Burial Site Name
+          </label>
+          <div class="field has-addons">
+            <% for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) { %>
+              <%
+                const segmentIndexString = segmentIndex.toString();
+                const segment = burialSiteNameSegments.segments[segmentIndexString];
+              %>
+              <% if (segment?.isAvailable ?? false) { %>
+                <% if (segmentIndex !== 1 && (burialSiteNameSegments.separator ?? '') !== '') { %>
+                  <p class="control">
+                    <span class="button is-static">
+                      <%= burialSiteNameSegments.separator %>
+                    </span>
+                  </p>
                 <% } %>
+                <% if ((segment.prefix ?? '') !== '') { %>
+                  <p class="control">
+                    <span class="button is-static">
+                      <%= segment.prefix %>
+                    </span>
+                  </p>
+                <% } %>
+                <div class="control"
+                  data-tooltip="<%= segment.label ?? '' %>">
+
+                  <input class="input" id="burialSite--burialSiteNameSegment<%= segmentIndexString %>"
+                    name="burialSiteNameSegment<%= segmentIndexString %>"
+                    value="<%= burialSite[`burialSiteNameSegment${segmentIndex}`] %>"
+                    type="text"
+                    minlength="<%= Math.min(segment.minLength ?? 1, 20) %>" 
+                    maxlength="<%= Math.min(segment.maxLength ?? 20, 20) %>"
+                    placeholder="<%= segment.label ?? '' %>"
+                    aria-label="<%= segment.label ?? '' %>"
+                    <%= (segment.isRequired ?? false) ? ' required' : '' %>
+                    <%= segmentIndex === 1 ? ' accesskey="f"' : '' %>
+                    <%= (isCreate && segmentIndex === 1 ? " autofocus" : "") %> />
+                </div>
+                <% if ((segment.suffix ?? '') !== '') { %>
+                  <p class="control">
+                    <span class="button is-static">
+                      <%= segment.suffix %>
+                    </span>
+                  </p>
+                <% } %>
+              <% } %>
+            <% } %>
+          </div>
+
+          <label class="label" for="burialSite--cemeteryId">Cemetery</label>
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select
+                  <% if (!isCreate) { %>
+                    class="is-readonly"
+                  <% } %>
+                  id="burialSite--cemeteryId" name="cemeteryId">
+                  <option value="" <%= (!isCreate && burialSite.cemeteryId ? " disabled" : "") %>>
+                    (No Cemetery Selected)
+                  </option>
+                  <% let cemeteryIsFound = false; %>
+                  <% for (const cemetery of cemeteries) { %>
+                    <%
+                      if (burialSite.cemeteryId === cemetery.cemeteryId) {
+                        cemeteryIsFound = true;
+                      }
+                    %>
+                    <option value="<%= cemetery.cemeteryId %>"
+                      <%= (burialSite.cemeteryId === cemetery.cemeteryId ? " selected" : "") %>
+                      <%= (!isCreate && burialSite.cemeteryId !== cemetery.cemeteryId ? " disabled" : "") %>>
+                      <%= cemetery.cemeteryName || "(No Name)"  %>
+                    </option>
+                  <% } %>
+                  <% if (burialSite.cemeteryId && !cemeteryIsFound) { %>
+                    <option value="<%= burialSite.cemeteryId %>" selected>
+                      <%= burialSite.cemeteryName %>
+                    </option>
+                  <% } %>
+                </select>
+              </div>
             </div>
+            <div class="control">
+              <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
+                <i class="fas fa-unlock" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
         </div>
         <div class="column">
-            <label class="label" for="lot--burialSiteTypeId">
-                <%= configFunctions.getConfigProperty("aliases.lot") %> Type
+            <label class="label" for="burialSite--burialSiteTypeId">
+              Burial Site Type
             </label>
             <div class="field has-addons">
-                <div class="control is-expanded">
-                    <div class="select is-fullwidth">
-                        <select 
-                            <% if (!isCreate) { %>
-                                class="is-readonly" 
-                            <% } %>
-                            id="lot--burialSiteTypeId" name="burialSiteTypeId" required>
-                            <% if (isCreate) { %>
-                                <option value="">(No Type)</option>
-                            <% } %>
-                            <% let typeIsFound = false; %>
-                            <% for (const lotType of lotTypes) { %>
-                                <% 
-                                    if (lot.burialSiteTypeId === lotType.burialSiteTypeId) {
-                                        typeIsFound = true;
-                                    }
-                                %>
-                                <option value="<%= lotType.burialSiteTypeId %>"
-                                    <%= (lot.burialSiteTypeId === lotType.burialSiteTypeId ? " selected" : "") %>
-                                    <%= (!isCreate && lot.burialSiteTypeId !== lotType.burialSiteTypeId ? " disabled" : "") %>>
-                                    <%= lotType.lotType %>
-                                </option>
-                            <% } %>
-                            <% if (lot.burialSiteTypeId && !typeIsFound) { %>
-                                <option value="<%= lot.burialSiteTypeId %>" selected>
-                                    <%= lot.lotType %>
-                                </option>
-                            <% } %>
-                        </select>
-                    </div>
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select 
+                    <% if (!isCreate) { %>
+                        class="is-readonly" 
+                    <% } %>
+                    id="burialSite--burialSiteTypeId" name="burialSiteTypeId" required>
+                    <% if (isCreate) { %>
+                      <option value="">(No Type)</option>
+                    <% } %>
+                    <% let typeIsFound = false; %>
+                    <% for (const burialSiteType of burialSiteTypes) { %>
+                      <% 
+                        if (burialSite.burialSiteTypeId === burialSiteType.burialSiteTypeId) {
+                          typeIsFound = true;
+                        }
+                      %>
+                      <option value="<%= burialSiteType.burialSiteTypeId %>"
+                        <%= (burialSite.burialSiteTypeId === burialSiteType.burialSiteTypeId ? " selected" : "") %>
+                        <%= (!isCreate && burialSite.burialSiteTypeId !== burialSiteType.burialSiteTypeId ? " disabled" : "") %>>
+                        <%= burialSiteType.burialSiteType %>
+                      </option>
+                    <% } %>
+                    <% if (burialSite.burialSiteTypeId && !typeIsFound) { %>
+                      <option value="<%= burialSite.burialSiteTypeId %>" selected>
+                        <%= burialSite.burialSiteType %>
+                      </option>
+                    <% } %>
+                  </select>
                 </div>
-                <div class="control">
-                    <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
-                        <i class="fas fa-unlock" aria-hidden="true"></i>
-                    </button>
-                </div>
+              </div>
+              <div class="control">
+                <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
+                  <i class="fas fa-unlock" aria-hidden="true"></i>
+                </button>
+              </div>
             </div>
-            <label class="label" for="lot--burialSiteStatusId">
-                <%= configFunctions.getConfigProperty("aliases.lot") %> Status
+            <label class="label" for="burialSite--burialSiteStatusId">
+              Burial Site Status
             </label>
             <div class="field">
               <div class="control">
                 <div class="select is-fullwidth">
-                  <select id="lot--burialSiteStatusId" name="burialSiteStatusId">
+                  <select id="burialSite--burialSiteStatusId" name="burialSiteStatusId">
                     <option value="">(No Status)</option>
                     <% let statusIsFound = false; %>
-                    <% for (const lotStatus of lotStatuses) { %>
+                    <% for (const burialSiteStatus of burialSiteStatuses) { %>
                       <% 
-                        if (lot.burialSiteStatusId === lotStatus.burialSiteStatusId) {
+                        if (burialSite.burialSiteStatusId === burialSiteStatus.burialSiteStatusId) {
                           statusIsFound = true;
                         }
                       %>
-                      <option value="<%= lotStatus.burialSiteStatusId %>"
-                        <%= (lot.burialSiteStatusId === lotStatus.burialSiteStatusId ? " selected" : "") %>>
-                        <%= lotStatus.lotStatus %>
+                      <option value="<%= burialSiteStatus.burialSiteStatusId %>"
+                        <%= (burialSite.burialSiteStatusId === burialSiteStatus.burialSiteStatusId ? " selected" : "") %>>
+                        <%= burialSiteStatus.burialSiteStatus %>
                       </option>
                     <% } %>
-                    <% if (lot.burialSiteStatusId && !statusIsFound) { %>
-                      <option value="<%= lot.burialSiteStatusId %>" selected>
-                        <%= lot.lotStatus %>
+                    <% if (burialSite.burialSiteStatusId && !statusIsFound) { %>
+                      <option value="<%= burialSite.burialSiteStatusId %>" selected>
+                        <%= burialSite.burialSiteStatus %>
                       </option>
                     <% } %>
                   </select>
@@ -187,77 +259,77 @@
             </div>
         </div>
         <div class="column">
-            <div id="container--lotFields">
-                <% if (isCreate) { %>
-                    <div class="message is-info">
-                        <p class="message-body">
-                            Select the <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %> type to load the available fields.
-                        </p>
-                    </div>
-                <% } else if (lot.lotFields.length === 0) { %>
-                    <div class="message is-info">
-                        <p class="message-body">
-                            The current <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %> type has no additional fields.
-                        </p>
-                    </div>
-                <% } else { %>
-                  <% let lotTypeFieldIds = ""; %>
-                  <% for (const lotField of lot.lotFields) { %>
-                    <% lotTypeFieldIds += "," + lotField.lotTypeFieldId; %>
-                    <div class="field">
-                      <label class="label" for="lot--lotFieldValue_<%= lotField.lotTypeFieldId %>">
-                        <%= lotField.lotTypeField %>
-                      </label>
-                      <div class="control">
-                        <% if (lotField.fieldType === 'select' || (lotField.lotTypeFieldValues ?? '') !== "") { %>
+          <div id="container--burialSiteFields">
+              <% if (isCreate) { %>
+                <div class="message is-info">
+                  <p class="message-body">
+                    Select the burial site type to load the available fields.
+                  </p>
+                </div>
+              <% } else if (burialSite.burialSiteFields.length === 0) { %>
+                <div class="message is-info">
+                  <p class="message-body">
+                    The current burial site type has no additional fields.
+                  </p>
+                </div>
+              <% } else { %>
+                <% let burialSiteTypeFieldIds = ""; %>
+                <% for (const burialSiteField of burialSite.burialSiteFields) { %>
+                  <% burialSiteTypeFieldIds += "," + burialSiteField.burialSiteTypeFieldId; %>
+                  <div class="field">
+                    <label class="label" for="burialSite--fieldValue_<%= burialSiteField.burialSiteTypeFieldId %>">
+                      <%= burialSiteField.burialSiteTypeField %>
+                    </label>
+                    <div class="control">
+                      <% if (burialSiteField.fieldType === 'select' || (burialSiteField.fieldValues ?? '') !== "") { %>
 
-                          <%
-                            const fieldValues = lotField.lotTypeFieldValues.split("\n");
-                            let valueFound = false;
-                          %>
-                          <div class="select is-fullwidth">
-                            <select id="lot--lotFieldValue_<%= lotField.lotTypeFieldId %>"
-                              name="lotFieldValue_<%= lotField.lotTypeFieldId %>">
-                              <% if (!lotField.isRequired || lotField.lotFieldValue === "") { %>
-                                  <option value="">(Not Set)</option>
-                              <% } %>
-                              <% for (const fieldValue of fieldValues) { %>
-                                <% 
-                                  if (fieldValue === lotField.lotFieldValue) {
-                                    valueFound = true;
-                                  }
-                                %>
-                                <option value="<%= fieldValue %>"
-                                  <%= (fieldValue === lotField.lotFieldValue ? " selected" : "") %>>
-                                  <%= fieldValue %>
-                                </option>
-                              <% } %>
-                              <% if (!valueFound && lotField.lotFieldValue !== "") { %>
-                                <option value="<%= lotField.lotFieldValue %>" selected>
-                                  <%= lotField.lotFieldValue %>
-                                </option>
-                              <% } %>
-                            </select>
-                          </div>                                
-                        <% } else { %>
-                          <input class="input"
-                            id="lot--lotFieldValue_<%= lotField.lotTypeFieldId %>"
-                            name="lotFieldValue_<%= lotField.lotTypeFieldId %>"
-                            type="<%= lotField.fieldType %>"
-                            value="<%= lotField.lotFieldValue %>"
-                            <% if (lotField.pattern !== "") { %>
-                                pattern="<%= lotField.pattern %>"
+                        <%
+                          const fieldValues = burialSiteField.fieldValues.split("\n");
+                          let valueFound = false;
+                        %>
+                        <div class="select is-fullwidth">
+                          <select id="burialSite--fieldValue_<%= burialSiteField.burialSiteTypeFieldId %>"
+                            name="fieldValue_<%= burialSiteField.burialSiteTypeFieldId %>">
+                            <% if (!burialSiteField.isRequired || burialSiteField.fieldValue === "") { %>
+                              <option value="">(Not Set)</option>
                             <% } %>
-                            minlength="<%= lotField.minimumLength %>"
-                            maxlength="<%= lotField.maximumLength %>"
-                            <%= lotField.isRequired ? " required" : "" %> />
-                        <% } %>
-                      </div>
+                            <% for (const fieldValue of fieldValues) { %>
+                              <% 
+                                if (fieldValue === burialSiteField.fieldValue) {
+                                  valueFound = true;
+                                }
+                              %>
+                              <option value="<%= fieldValue %>"
+                                <%= (fieldValue === burialSiteField.fieldValue ? " selected" : "") %>>
+                                <%= fieldValue %>
+                              </option>
+                            <% } %>
+                            <% if (!valueFound && burialSiteField.fieldValue !== "") { %>
+                              <option value="<%= burialSiteField.fieldValue %>" selected>
+                                <%= burialSiteField.fieldValue %>
+                              </option>
+                            <% } %>
+                          </select>
+                        </div>                                
+                      <% } else { %>
+                        <input class="input"
+                          id="burialSite--fieldValue_<%= burialSiteField.burialSiteTypeFieldId %>"
+                          name="fieldValue_<%= burialSiteField.burialSiteTypeFieldId %>"
+                          type="<%= burialSiteField.fieldType %>"
+                          value="<%= burialSiteField.fieldValue %>"
+                          <% if (burialSiteField.pattern !== "") { %>
+                            pattern="<%= burialSiteField.pattern %>"
+                          <% } %>
+                          minlength="<%= burialSiteField.minLength %>"
+                          maxlength="<%= burialSiteField.maxLength %>"
+                          <%= burialSiteField.isRequired ? " required" : "" %> />
+                      <% } %>
                     </div>
-                  <% } %>
-                  <input id="lot--lotTypeFieldIds" name="lotTypeFieldIds" type="hidden" value="<%= lotTypeFieldIds.slice(1) %>" />
+                  </div>
                 <% } %>
-            </div>
+                <input id="burialSite--burialSiteTypeFieldIds" name="burialSiteTypeFieldIds" type="hidden" value="<%= burialSiteTypeFieldIds.slice(1) %>" />
+              <% } %>
+          </div>
         </div>
       </div>
     </div>
@@ -266,75 +338,35 @@
   <div class="columns">
     <div class="column">
       <div class="panel">
-          <h2 class="panel-heading">Geographic Location</h2>
-          <div class="panel-block is-block">
-              <div class="field">
-                  <label class="label" for="lot--lotLatitude">Latitude</label>
-                  <div class="control">
-                      <input class="input" id="lot--lotLatitude" name="lotLatitude" type="number" min="-90" max="90" step="0.00000001" value="<%= lot.lotLatitude %>" onwheel="return false" />
-                  </div>
-              </div>
-              <div class="field">
-                  <label class="label" for="lot--lotLongitude">Longitude</label>
-                  <div class="control">
-                      <input class="input" id="lot--lotLongitude" name="lotLongitude" type="number" min="-180" max="180" step="0.00000001" value="<%= lot.lotLongitude %>" onwheel="return false" />
-                  </div>
-              </div>
+        <h2 class="panel-heading">Geographic Location</h2>
+        <div class="panel-block is-block">
+          <div class="field">
+            <label class="label" for="burialSite--burialSiteLatitude">Latitude</label>
+            <div class="control">
+              <input class="input" id="burialSite--burialSiteLatitude" name="burialSiteLatitude" type="number" min="-90" max="90" step="0.00000001" value="<%= burialSite.burialSiteLatitude %>" onwheel="return false" />
+            </div>
           </div>
+          <div class="field">
+            <label class="label" for="burialSite--burialSiteLongitude">Longitude</label>
+            <div class="control">
+              <input class="input" id="burialSite--burialSiteLongitude" name="burialSiteLongitude" type="number" min="-180" max="180" step="0.00000001" value="<%= burialSite.burialSiteLongitude %>" onwheel="return false" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="column">
       <div class="panel">
         <h2 class="panel-heading">Image</h2>
-        <div class="panel-block is-block">
-            <label class="label" for="lot--mapId"><%= configFunctions.getConfigProperty("aliases.map") %></label>
-            <div class="field has-addons">
-                <div class="control is-expanded">
-                    <div class="select is-fullwidth">
-                        <select
-                            <% if (!isCreate) { %>
-                                class="is-readonly"
-                            <% } %>
-                            id="lot--mapId" name="mapId">
-                            <option value="" <%= (!isCreate && lot.mapId ? " disabled" : "") %>>
-                                (No <%= configFunctions.getConfigProperty("aliases.map") %> Selected)
-                            </option>
-                            <% let mapIsFound = false; %>
-                            <% for (const map of maps) { %>
-                                <%
-                                    if (lot.mapId === map.mapId) {
-                                        mapIsFound = true;
-                                    }
-                                %>
-                                <option value="<%= map.mapId %>"
-                                    <%= (lot.mapId === map.mapId ? " selected" : "") %>
-                                    <%= (!isCreate && lot.mapId !== map.mapId ? " disabled" : "") %>>
-                                    <%= map.mapName || "(No Name)"  %>
-                                </option>
-                            <% } %>
-                            <% if (lot.mapId && !mapIsFound) { %>
-                                <option value="<%= lot.mapId %>" selected>
-                                    <%= lot.mapName %>
-                                </option>
-                            <% } %>
-                        </select>
-                    </div>
-                </div>
-                <div class="control">
-                  <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
-                    <i class="fas fa-unlock" aria-hidden="true"></i>
-                  </button>
-                </div>
+        <div class="panel-block is-block">   
+          <div class="field">
+            <label class="label" for="burialSite--cemeterySvgId">
+              Cemetery SVG ID
+            </label>
+            <div class="control">
+              <input class="input" id="burialSite--cemeterySvgId" name="cemeterySvgId" value="<%= burialSite.cemeterySvgId %>" maxlength="100" pattern="^[\d\w-]*$" />
             </div>
-    
-            <div class="field">
-              <label class="label" for="lot--mapKey">
-                <%= configFunctions.getConfigProperty("aliases.map") %> SVG ID
-              </label>
-              <div class="control">
-                <input class="input" id="lot--mapKey" name="mapKey" value="<%= lot.mapKey %>" maxlength="100" pattern="^[\d\w-]*$" />
-              </div>
-            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -351,24 +383,24 @@
     <div class="panel">
       <div class="panel-heading">
         <div class="level is-mobile">
-            <div class="level-left">
-                <div class="level-item">
-                    <h2 class="has-text-weight-bold is-size-5">
-                        Comments
-                    </h2>
-                </div>
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="has-text-weight-bold is-size-5">
+                Comments
+              </h2>
             </div>
-            <div class="level-right">
-                <div class="level-item">
-                    <button class="button is-small is-success" id="lotComments--add" type="button">
-                        <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                        <span>Add a Comment</span>
-                    </button>
-                </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <button class="button is-small is-success" id="burialSiteComments--add" type="button">
+                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add a Comment</span>
+              </button>
             </div>
+          </div>
         </div>
       </div>
-      <div class="panel-block is-block" id="container--lotComments"></div>
+      <div class="panel-block is-block" id="container--burialSiteComments"></div>
     </div>
     
     <div class="panel">
@@ -377,27 +409,26 @@
           <div class="level-left">
             <div class="level-item">
               <h2 class="has-text-weight-bold is-size-5">
-                <%= configFunctions.getConfigProperty("aliases.occupancies") %>
-                <span class="tag"><%= lot.lotOccupancies.length %></span>
+                Contracts
+                <span class="tag"><%= burialSite.burialSiteContracts.length %></span>
               </h2> 
             </div>
           </div>
           <div class="level-right">
             <div class="level-item">
-              <a class="button is-success is-small has-text-weight-normal" href="<%= urlPrefix %>/lotOccupancies/new?lotId=<%= lot.lotId %>">
+              <a class="button is-success is-small has-text-weight-normal" href="<%= urlPrefix %>/contracts/new?burialSiteId=<%= burialSite.burialSiteId %>">
                 <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                <span>Create New <%= configFunctions.getConfigProperty("aliases.occupancy") %></span>
+                <span>Create New Contract</span>
               </a>
             </div>
           </div>
         </div>
       </div>
       <div class="panel-block is-block">
-        <% if (lot.lotOccupancies.length === 0) { %>
+        <% if (burialSite.burialSiteContracts.length === 0) { %>
           <div class="message is-info">
             <p class="message-body">
-              There are no <%= configFunctions.getConfigProperty("aliases.occupancy").toLowerCase() %> records
-              asscociated with this <%= configFunctions.getConfigProperty("aliases.lot") %>.
+              There are no contracts associated with this burial site.
             </p>
           </div>
         <% } else { %>
@@ -405,49 +436,46 @@
             <thead>
               <tr>
                 <th class="has-width-10">&nbsp;</th>
-                <th><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type</th>
-                <th><%= configFunctions.getConfigProperty("aliases.occupancyStartDate") %></th>
+                <th>Contract Type</th>
+                <th>Contract Date</th>
                 <th>End Date</th>
-                <th><%= configFunctions.getConfigProperty("aliases.occupants") %></th>
+                <th>Interments</th>
               </tr>
             </thead>
             <tbody>
               <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
-              <% for (const lotOccupancy of lot.lotOccupancies) { %>
-                <% const isActive = !(lotOccupancy.occupancyEndDate && lotOccupancy.occupancyEndDate < currentDate); %>
+              <% for (const burialSiteContract of burialSite.burialSiteContracts) { %>
+                <% const isActive = !(burialSiteContract.contractEndDate && burialSiteContract.contractEndDate < currentDate); %>
                 <tr>
-                    <td class="has-text-centered">
-                      <% if (isActive) { %>
-                        <i class="fas fa-play" title="Current <%= configFunctions.getConfigProperty("aliases.occupancy") %>"></i>
-                      <% } else { %>
-                        <i class="fas fa-stop" title="Previous <%= configFunctions.getConfigProperty("aliases.occupancy") %>"></i>
-                      <% } %>
-                    </td>
+                  <td class="has-text-centered">
+                    <% if (isActive) { %>
+                      <i class="fas fa-play" title="Current Contract"></i>
+                    <% } else { %>
+                      <i class="fas fa-stop" title="Previous Contract"></i>
+                    <% } %>
+                  </td>
+                  <td>
+                    <a class="has-text-weight-bold" href="<%= urlPrefix %>/contracts/<%= burialSiteContract.burialSiteContractId %>">
+                      <%= burialSiteContract.contractType %>
+                    </a><br />
+                    <span class="is-size-7">
+                      #<%= burialSiteContract.burialSiteContractId %>
+                    </span>
+                  </td>
+                    <td><%= burialSiteContract.contractStartDateString %></td>
                     <td>
-                      <a class="has-text-weight-bold" href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
-                        <%= lotOccupancy.occupancyType %>
-                      </a><br />
-                      <span class="is-size-7">
-                        #<%= lotOccupancy.lotOccupancyId %>
-                      </span>
-                    </td>
-                    <td><%= lotOccupancy.occupancyStartDateString %></td>
-                    <td>
-                      <% if (lotOccupancy.occupancyEndDate) { %>
-                        <%= lotOccupancy.occupancyEndDateString %>
+                      <% if (burialSiteContract.contractEndDate) { %>
+                        <%= burialSiteContract.contractEndDateString %>
                       <% } else { %>
                         <span class="has-text-grey">(No End Date)</span>
                       <% } %>
                     </td>
                     <td>
-                      <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
-                        <span class="has-text-grey">(No <%= configFunctions.getConfigProperty("aliases.occupants") %>)</span>
+                      <% if (burialSiteContract.burialSiteContractInterments.length === 0) { %>
+                        <span class="has-text-grey">(No Interments)</span>
                       <% } else { %>
-                        <% for (const occupant of lotOccupancy.lotOccupancyOccupants) { %>
-                          <span class="has-tooltip-left" data-tooltip="<%= occupant.lotOccupantType %>">
-                            <i class="fas fa-fw fa-<%= occupant.fontAwesomeIconClass || 'user' %>" aria-hidden="true"></i>
-                            <%= occupant.occupantName + ' ' + occupant.occupantFamilyName %>
-                          </span><br />
+                        <% for (const interment of burialSiteContract.burialSiteContractInterments) { %>
+                          <%= interment.deceasedName %>
                         <% } %>
                       <% } %>
                     </td>
@@ -464,9 +492,9 @@
 
 <% if (!isCreate) { %>
 <script>
-    exports.lotComments = <%- JSON.stringify(lot.lotComments) %>;
+    exports.burialSiteComments = <%- JSON.stringify(burialSite.burialSiteComments) %>;
 </script>
 <% } %>
-<script src="<%= urlPrefix %>/javascripts/lotEdit.js"></script>
+<script src="<%= urlPrefix %>/javascripts/burialSite.edit.js"></script>
 
 <%- include('_footerB'); -%>

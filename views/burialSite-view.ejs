@@ -4,43 +4,43 @@
   <ul>
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li>
-      <a href="<%= urlPrefix %>/lots">
+      <a href="<%= urlPrefix %>/burialSites">
         <span class="icon is-small"><i class="fas fa-vector-square" aria-hidden="true"></i></span>
-        <span><%= configFunctions.getConfigProperty("aliases.lots") %></span>
+        <span>Burial Sites</span>
       </a>
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        <%= lot.lotName %>
+        <%= burialSite.burialSiteName %>
       </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-  <%= lot.lotName %>
+  <%= burialSite.burialSiteName %>
 </h1>
 
 <div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
   <div class="level-left">
     <span class="level-item has-text-weight-bold">
-      <%= lot.lotName %>
+      <%= burialSite.burialSiteName %>
     </span>
   </div>
   <div class="level-right">
     <div class="level-item">
       <a class="button is-link is-outlined has-tooltip-left"
-        data-tooltip="Previous <%= configFunctions.getConfigProperty("aliases.lot") %>"
-        href="<%= urlPrefix %>/lots/<%= lot.lotId %>/previous"
+        data-tooltip="Previous Burial Site"
+        href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/previous"
         accesskey=",">
         <i class="fas fa-arrow-left" aria-hidden="true"></i>
-        <span class="sr-only">Previous <%= configFunctions.getConfigProperty("aliases.lot") %></span>
+        <span class="sr-only">Previous Burial Site</span>
       </a>
     </div>
     <div class="level-item">
       <a class="button is-link has-tooltip-left"
-        data-tooltip="Next <%= configFunctions.getConfigProperty("aliases.lot") %>"
-        href="<%= urlPrefix %>/lots/<%= lot.lotId %>/next"
+        data-tooltip="Next Burial Site"
+        href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/next"
         accesskey=".">
         <span>Next</span>
         <span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
@@ -49,7 +49,7 @@
     <% if (user.userProperties.canUpdate) { %>
       <div class="level-item">
         <a class="button is-primary"
-          href="<%= urlPrefix %>/lots/<%= lot.lotId %>/edit"
+          href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/edit"
           accesskey="e">
           <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
           <span>Switch to Edit Mode</span>
@@ -66,46 +66,46 @@
               <div class="columns">
                   <div class="column">
                       <p class="mb-2">
-                          <strong><%= configFunctions.getConfigProperty("aliases.map") %></strong><br />
-                          <a href="<%= urlPrefix %>/maps/<%= lot.mapId %>">
-                              <%= lot.mapName || "(No Name)" %>
-                          </a>
+                        <strong>Cemetery</strong><br />
+                        <a href="<%= urlPrefix %>/cemeteries/<%= burialSite.cemeteryId %>">
+                          <%= burialSite.cemeteryName || "(No Name)" %>
+                        </a>
                       </p>
                       <p class="mb-2">
-                          <strong><%= configFunctions.getConfigProperty("aliases.lot") %> Type</strong><br />
-                          <%= lot.lotType %>
+                        <strong>Burial Site Type</strong><br />
+                        <%= burialSite.burialSiteType %>
                       </p>
                       <p>
-                          <strong>Status</strong><br />
-                          <%= lot.lotStatus %>
+                        <strong>Status</strong><br />
+                        <%= burialSite.burialSiteStatus %>
                       </p>
                   </div>
-                  <% if (lot.lotFields.length > 0) { %>
-                      <div class="column">
-                          <% for (const lotField of lot.lotFields) { %>
-                              <p class="mb-2">
-                                  <strong><%= lotField.lotTypeField %></strong><br />
-                                  <% if (lotField.lotFieldValue) { %>
-                                      <%= lotField.lotFieldValue %>
-                                  <% } else { %>
-                                      <span class="has-text-grey">(No Value)</span>
-                                  <% } %>
-                              </p>
+                  <% if (burialSite.burialSiteFields.length > 0) { %>
+                    <div class="column">
+                      <% for (const burialSiteField of burialSite.burialSiteFields) { %>
+                        <p class="mb-2">
+                          <strong><%= burialSiteField.burialSiteTypeField %></strong><br />
+                          <% if (burialSiteField.fieldValue) { %>
+                            <%= burialSiteField.fieldValue %>
+                          <% } else { %>
+                            <span class="has-text-grey">(No Value)</span>
                           <% } %>
-                      </div>
+                        </p>
+                      <% } %>
+                    </div>
                   <% } %>
               </div>
           </div>
       </div>
   </div>
-  <% if (lot.mapSVG) { %>
+  <% if (burialSite.cemeterySvg) { %>
     <div class="column">
       <div class="panel">
         <h2 class="panel-heading">Image</h2>
         <div class="panel-block is-block">
-          <% const imageURL = urlPrefix + "/images/maps/" + lot.mapSVG %>
-          <div class="image" id="lot--map" data-map-key="<%= lot.mapKey %>">
-            <%- include('../public/images/maps/' + lot.mapSVG); -%>
+          <% const imageURL = urlPrefix + "/images/cemeteries/" + burialSite.cemeterySvg %>
+          <div class="image" id="burialSite--cemeterySvg" data-map-key="<%= burialSite.cemeterySvgId %>">
+            <%- include('../public/images/cemeteries/' + burialSite.cemeterySvg); -%>
           </div>
       </div>
       </div>
@@ -114,108 +114,104 @@
 </div>
 
 
-<% if (lot.lotComments.length > 0) { %>
+<% if (burialSite.burialSiteComments.length > 0) { %>
   <div class="panel">
-      <h2 class="panel-heading">Comments</h2>
-      <div class="panel-block is-block">
-          <table class="table is-fullwidth is-striped is-hoverable">
-              <thead>
-                  <tr>
-                      <th>Commentor</th>
-                      <th>Comment Date</th>
-                      <th>Comment</th>
-                  </tr>
-              </thead>
-              <tbody>
-                <% for (const lotComment of lot.lotComments) { %>
-                  <tr>
-                    <td><%= lotComment.recordCreate_userName %></td>
-                    <td>
-                      <%= lotComment.lotCommentDateString %>
-                      <%= (lotComment.lotCommentTime === 0 ? "" : lotComment.lotCommentTimePeriodString) %>
-                    </td>
-                    <td><%= lotComment.lotComment %></td>
-                  </tr>
-                <% } %>
-              </tbody>
-          </table>
-      </div>
+    <h2 class="panel-heading">Comments</h2>
+    <div class="panel-block is-block">
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Commentor</th>
+            <th>Comment Date</th>
+            <th>Comment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (const burialSiteComment of burialSite.burialSiteComments) { %>
+            <tr>
+              <td><%= burialSiteComment.recordCreate_userName %></td>
+              <td>
+                <%= burialSiteComment.commentDateString %>
+                <%= (burialSiteComment.commentTime === 0 ? "" : burialSiteComment.commentTimePeriodString) %>
+              </td>
+              <td><%= burialSiteComment.comment %></td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
   </div>
 <% } %>
 
 <div class="panel">
   <h2 class="panel-heading">
-    <%= configFunctions.getConfigProperty("aliases.occupancies") %>
-    <span class="tag"><%= lot.lotOccupancies.length %></span>
+    Contracts
+    <span class="tag"><%= burialSite.burialSiteContracts.length %></span>
   </h2>
   <div class="panel-block is-block">
-      <% if (lot.lotOccupancies.length === 0) { %>
+      <% if (burialSite.burialSiteContracts.length === 0) { %>
         <div class="message is-info">
           <p class="message-body">
-            There are no occupancy records asscociated with this
-            <%= configFunctions.getConfigProperty("aliases.lot") %>.
+            There are no contracts asscociated with this burial site.
           </p>
         </div>
       <% } else { %>
-          <table class="table is-fullwidth is-striped is-hoverable">
-              <thead>
-                <tr>
-                  <th class="has-width-10">&nbsp;</th>
-                  <th><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type</th>
-                  <th><%= configFunctions.getConfigProperty("aliases.occupancyStartDate") %></th>
-                  <th>End Date</th>
-                  <th><%= configFunctions.getConfigProperty("aliases.occupants") %></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
-                <% for (const lotOccupancy of lot.lotOccupancies) { %>
-                  <% const isActive = !(lotOccupancy.occupancyEndDate && lotOccupancy.occupancyEndDate < currentDate); %>
-                  <tr>
-                      <td class="has-text-centered">
-                        <% if (isActive) { %>
-                          <i class="fas fa-play" title="Current <%= configFunctions.getConfigProperty("aliases.occupancy") %>"></i>
-                        <% } else { %>
-                          <i class="fas fa-stop" title="Previous <%= configFunctions.getConfigProperty("aliases.occupancy") %>"></i>
-                        <% } %>
-                      </td>
-                      <td>
-                        <a class="has-text-weight-bold"
-                          href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
-                          <%= lotOccupancy.occupancyType %>
-                        </a><br />
-                        <span class="is-size-7">#<%= lotOccupancy.lotOccupancyId %></span>
-                      </td>
-                      <td><%= lotOccupancy.occupancyStartDateString %></td>
-                      <td>
-                          <% if (lotOccupancy.occupancyEndDate) { %>
-                              <%= lotOccupancy.occupancyEndDateString %>
-                          <% } else { %>
-                              <span class="has-text-grey">(No End Date)</span>
-                          <% } %>
-                      </td>
-                      <td>
-                        <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
-                          <span class="has-text-grey">(No <%= configFunctions.getConfigProperty("aliases.occupants") %>)</span>
-                        <% } else { %>
-                          <% for (const occupant of lotOccupancy.lotOccupancyOccupants) { %>
-                            <span class="has-tooltip-left" data-tooltip="<%= occupant.lotOccupantType %>">
-                              <i class="fas fa-fw fa-<%= occupant.fontAwesomeIconClass || 'user' %>" aria-hidden="true"></i>
-                              <%= occupant.occupantName + ' ' + occupant.occupantFamilyName %>
-                            </span><br />
-                          <% } %>
-                        <% } %>
-                      </td>
-                  </tr>
-                <% } %>
-              </tbody>
-          </table>
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th class="has-width-10">&nbsp;</th>
+              <th>Contract Type</th>
+              <th>Contract Date</th>
+              <th>End Date</th>
+              <th>Interments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
+            <% for (const burialSiteContract of burialSite.burialSiteContracts) { %>
+              <% const isActive = !(burialSiteContract.contractEndDate && burialSiteContract.contractEndDate < currentDate); %>
+              <tr>
+                <td class="has-text-centered">
+                  <% if (isActive) { %>
+                    <i class="fas fa-play" title="Current Contract"></i>
+                  <% } else { %>
+                    <i class="fas fa-stop" title="Previous Contract"></i>
+                  <% } %>
+                </td>
+                <td>
+                  <a class="has-text-weight-bold"
+                    href="<%= urlPrefix %>/contracts/<%= burialSiteContract.burialSiteContractId %>">
+                    <%= burialSiteContract.contractType %>
+                  </a><br />
+                  <span class="is-size-7">#<%= burialSiteContract.burialSiteContractId %></span>
+                </td>
+                <td><%= burialSiteContract.contractStartDateString %></td>
+                <td>
+                  <% if (burialSiteContract.contractEndDate) { %>
+                    <%= burialSiteContract.contractEndDateString %>
+                  <% } else { %>
+                    <span class="has-text-grey">(No End Date)</span>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (burialSiteContract.burialSiteContractInterments.length === 0) { %>
+                    <span class="has-text-grey">(No Interments)</span>
+                  <% } else { %>
+                    <% for (const interment of burialSiteContract.burialSiteContractInterments) { %>
+                      <%= interment.deceasedName %>
+                    <% } %>
+                  <% } %>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
       <% } %>
   </div>
 </div>
 
 <%- include('_footerA'); -%>
 
-<script src="<%= urlPrefix %>/javascripts/lotView.js"></script>
+<script src="<%= urlPrefix %>/javascripts/burialSite.view.js"></script>
 
 <%- include('_footerB'); -%>

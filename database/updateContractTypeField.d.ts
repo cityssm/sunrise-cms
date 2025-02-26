@@ -3,8 +3,8 @@ export interface UpdateContractTypeFieldForm {
     contractTypeField: string;
     isRequired: '0' | '1';
     fieldType?: string;
-    minimumLength?: string;
-    maximumLength?: string;
+    minLength?: string;
+    maxLength?: string;
     pattern?: string;
     fieldValues: string;
 }

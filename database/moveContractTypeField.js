@@ -28,9 +28,9 @@ export async function moveContractTypeFieldDown(contractTypeFieldId) {
 export async function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
     const database = await acquireConnection();
     const currentField = getCurrentField(contractTypeFieldId, database);
-    const occupancyTypeParameters = [];
+    const contractTypeParameters = [];
     if (currentField.contractTypeId) {
-        occupancyTypeParameters.push(currentField.contractTypeId);
+        contractTypeParameters.push(currentField.contractTypeId);
     }
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
@@ -39,10 +39,10 @@ export async function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
           ${currentField.contractTypeId === undefined
         ? ' and contractTypeId is null'
         : ' and contractTypeId = ?'}`)
-        .get(occupancyTypeParameters).maxOrderNumber;
+        .get(contractTypeParameters).maxOrderNumber;
     if (currentField.orderNumber !== maxOrderNumber) {
         updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, maxOrderNumber + 1, database);
-        occupancyTypeParameters.push(currentField.orderNumber);
+        contractTypeParameters.push(currentField.orderNumber);
         database
             .prepare(`update ContractTypeFields set orderNumber = orderNumber - 1
           where recordDelete_timeMillis is null
@@ -50,7 +50,7 @@ export async function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
             ? ' and contractTypeId is null'
             : ' and contractTypeId = ?'}
           and orderNumber > ?`)
-            .run(occupancyTypeParameters);
+            .run(contractTypeParameters);
     }
     database.release();
     clearCacheByTableName('ContractTypeFields');
@@ -82,11 +82,11 @@ export async function moveContractTypeFieldUpToTop(contractTypeFieldId) {
     const currentField = getCurrentField(contractTypeFieldId, database);
     if (currentField.orderNumber > 0) {
         updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, -1, database);
-        const occupancyTypeParameters = [];
+        const contractTypeParameters = [];
         if (currentField.contractTypeId) {
-            occupancyTypeParameters.push(currentField.contractTypeId);
+            contractTypeParameters.push(currentField.contractTypeId);
         }
-        occupancyTypeParameters.push(currentField.orderNumber);
+        contractTypeParameters.push(currentField.orderNumber);
         database
             .prepare(`update ContractTypeFields
           set orderNumber = orderNumber + 1
@@ -94,7 +94,7 @@ export async function moveContractTypeFieldUpToTop(contractTypeFieldId) {
           ${currentField.contractTypeId
             ? ' and contractTypeId = ?'
             : ' and contractTypeId is null'} and orderNumber < ?`)
-            .run(occupancyTypeParameters);
+            .run(contractTypeParameters);
     }
     database.release();
     clearCacheByTableName('ContractTypeFields');

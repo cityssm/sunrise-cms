@@ -1,11 +1,14 @@
+import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
+
 import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js'
 import deleteBurialSiteField from './deleteBurialSiteField.js'
+import getCemetery from './getCemetery.js'
 import { acquireConnection } from './pool.js'
 
 export interface UpdateBurialSiteForm {
   burialSiteId: string | number
 
-  burialSiteNameSegment1: string
+  burialSiteNameSegment1?: string
   burialSiteNameSegment2?: string
   burialSiteNameSegment3?: string
   burialSiteNameSegment4?: string
@@ -30,6 +33,16 @@ export default async function updateBurialSite(
 ): Promise<boolean> {
   const database = await acquireConnection()
 
+  const cemetery =
+  updateForm.cemeteryId === ''
+      ? undefined
+      : await getCemetery(updateForm.cemeteryId, database)
+
+  const burialSiteName = buildBurialSiteName(
+    cemetery?.cemeteryKey,
+    updateForm
+  )
+
   const result = database
     .prepare(
       `update BurialSites
@@ -38,6 +51,7 @@ export default async function updateBurialSite(
         burialSiteNameSegment3 = ?,
         burialSiteNameSegment4 = ?,
         burialSiteNameSegment5 = ?,
+        burialSiteName = ?,
         burialSiteTypeId = ?,
         burialSiteStatusId = ?,
         cemeteryId = ?,
@@ -46,15 +60,16 @@ export default async function updateBurialSite(
         burialSiteLongitude = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
-        where lotId = ?
+        where burialSiteId = ?
         and recordDelete_timeMillis is null`
     )
     .run(
-      updateForm.burialSiteNameSegment1,
+      updateForm.burialSiteNameSegment1 ?? '',
       updateForm.burialSiteNameSegment2 ?? '',
       updateForm.burialSiteNameSegment3 ?? '',
       updateForm.burialSiteNameSegment4 ?? '',
       updateForm.burialSiteNameSegment5 ?? '',
+      burialSiteName,
       updateForm.burialSiteTypeId,
       updateForm.burialSiteStatusId === ''
         ? undefined

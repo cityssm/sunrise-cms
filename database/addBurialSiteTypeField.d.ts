@@ -5,8 +5,8 @@ export interface AddBurialSiteTypeFieldForm {
     fieldValues?: string;
     isRequired?: string;
     pattern?: string;
-    minimumLength?: string | number;
-    maximumLength?: string | number;
+    minLength?: string | number;
+    maxLength?: string | number;
     orderNumber?: number;
 }
 export default function addBurialSiteTypeField(addForm: AddBurialSiteTypeFieldForm, user: User): Promise<number>;

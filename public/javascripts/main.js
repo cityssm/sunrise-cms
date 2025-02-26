@@ -24,8 +24,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function highlightMap(mapContainerElement, mapKey, contextualClass) {
         // Search for ID
         let svgId = mapKey;
-        let svgElementToHighlight;
-        while (true) {
+        let svgElementToHighlight = null;
+        while (svgId !== '') {
             svgElementToHighlight = mapContainerElement.querySelector(`#${svgId}`);
             if (svgElementToHighlight !== null || !svgId.includes('-')) {
                 break;

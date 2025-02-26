@@ -144,33 +144,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ? occupancyType.ContractTypeFields ?? []
             : allContractTypeFields).find((currentOccupancyTypeField) => currentOccupancyTypeField.contractTypeFieldId === contractTypeFieldId);
         let fieldTypeElement;
-        let minimumLengthElement;
-        let maximumLengthElement;
+        let minLengthInputElement;
+        let maxLengthInputElement;
         let patternElement;
         let occupancyTypeFieldValuesElement;
         let editCloseModalFunction;
         function updateMaximumLengthMin() {
-            maximumLengthElement.min = minimumLengthElement.value;
+            maxLengthInputElement.min = minLengthInputElement.value;
         }
         function toggleInputFields() {
             switch (fieldTypeElement.value) {
                 case 'date': {
-                    minimumLengthElement.disabled = true;
-                    maximumLengthElement.disabled = true;
+                    minLengthInputElement.disabled = true;
+                    maxLengthInputElement.disabled = true;
                     patternElement.disabled = true;
                     occupancyTypeFieldValuesElement.disabled = true;
                     break;
                 }
                 case 'select': {
-                    minimumLengthElement.disabled = true;
-                    maximumLengthElement.disabled = true;
+                    minLengthInputElement.disabled = true;
+                    maxLengthInputElement.disabled = true;
                     patternElement.disabled = true;
                     occupancyTypeFieldValuesElement.disabled = false;
                     break;
                 }
                 default: {
-                    minimumLengthElement.disabled = false;
-                    maximumLengthElement.disabled = false;
+                    minLengthInputElement.disabled = false;
+                    maxLengthInputElement.disabled = false;
                     patternElement.disabled = false;
                     occupancyTypeFieldValuesElement.disabled = true;
                     break;
@@ -217,12 +217,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector('#occupancyTypeFieldEdit--isRequired').value = occupancyTypeField.isRequired ?? false ? '1' : '0';
                 fieldTypeElement = modalElement.querySelector('#occupancyTypeFieldEdit--fieldType');
                 fieldTypeElement.value = occupancyTypeField.fieldType;
-                minimumLengthElement = modalElement.querySelector('#occupancyTypeFieldEdit--minimumLength');
-                minimumLengthElement.value =
-                    occupancyTypeField.minimumLength?.toString() ?? '';
-                maximumLengthElement = modalElement.querySelector('#occupancyTypeFieldEdit--maximumLength');
-                maximumLengthElement.value =
-                    occupancyTypeField.maximumLength?.toString() ?? '';
+                minLengthInputElement = modalElement.querySelector('#occupancyTypeFieldEdit--minLength');
+                minLengthInputElement.value =
+                    occupancyTypeField.minLength?.toString() ?? '';
+                maxLengthInputElement = modalElement.querySelector('#occupancyTypeFieldEdit--maxLength');
+                maxLengthInputElement.value =
+                    occupancyTypeField.maxLength?.toString() ?? '';
                 patternElement = modalElement.querySelector('#occupancyTypeFieldEdit--pattern');
                 patternElement.value = occupancyTypeField.pattern ?? '';
                 occupancyTypeFieldValuesElement = modalElement.querySelector('#occupancyTypeFieldEdit--occupancyTypeFieldValues');
@@ -236,7 +236,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
                 cityssm.enableNavBlocker();
                 modalElement.querySelector('form')?.addEventListener('submit', doUpdate);
-                minimumLengthElement.addEventListener('keyup', updateMaximumLengthMin);
+                minLengthInputElement.addEventListener('keyup', updateMaximumLengthMin);
                 updateMaximumLengthMin();
                 fieldTypeElement.addEventListener('change', toggleInputFields);
                 modalElement

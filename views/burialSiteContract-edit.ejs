@@ -190,7 +190,7 @@
 
             <input id="lotOccupancy--lotId" name="lotId" type="hidden" value="<%= lotOccupancy.lotId %>" />
             <label class="label" for="lotOccupancy--lotName">
-                <%= configFunctions.getConfigProperty("aliases.lot") %>
+                Burial Site
             </label>
             <div class="field has-addons">
                 <div class="control is-expanded">
@@ -199,17 +199,17 @@
                     <%= (isCreate ? "" : " disabled readonly") %> />
                 </div>
                 <div class="control is-hidden-print">
-                    <button class="button is-clear-lot-button" data-tooltip="Clear" type="button" aria-label="Clear <%= configFunctions.getConfigProperty("aliases.lot") %></button> Field">
+                    <button class="button is-clear-lot-button" data-tooltip="Clear" type="button" aria-label="Clear Burial Site</button> Field">
                         <i class="fas fa-eraser" aria-hidden="true"></i>
                     </button>
                 </div>
                 <div class="control is-hidden-print">
-                    <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock <%= configFunctions.getConfigProperty("aliases.lot") %></button> Field">
+                    <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Burial Site</button> Field">
                         <i class="fas fa-unlock" aria-hidden="true"></i>
                     </button>
                 </div>
                 <div class="control is-hidden-print">
-                    <button class="button is-lot-view-button" data-tooltip="Open <%= configFunctions.getConfigProperty("aliases.lot") %>" type="button" aria-label="Open <%= configFunctions.getConfigProperty("aliases.lot") %>">
+                    <button class="button is-lot-view-button" data-tooltip="Open Burial Site" type="button" aria-label="Open Burial Site">
                         <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -300,8 +300,8 @@
                               <% if (lotOccupancyField.pattern !== "") { %>
                                 pattern="<%= lotOccupancyField.pattern %>"
                               <% } %>
-                              minlength="<%= lotOccupancyField.minimumLength %>"
-                              maxlength="<%= lotOccupancyField.maximumLength %>"
+                              minlength="<%= lotOccupancyField.minLength %>"
+                              maxlength="<%= lotOccupancyField.maxLength %>"
                               <%= lotOccupancyField.isRequired ? " required" : "" %> />
                           <% } %>
                         </div>

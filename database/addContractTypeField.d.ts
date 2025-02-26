@@ -5,8 +5,8 @@ export interface AddContractTypeFieldForm {
     fieldType?: string;
     isRequired?: string;
     pattern?: string;
-    minimumLength?: string | number;
-    maximumLength?: string | number;
+    minLength?: string | number;
+    maxLength?: string | number;
     orderNumber?: number;
 }
 export default function addContractTypeField(addForm: AddContractTypeFieldForm, user: User): Promise<number>;

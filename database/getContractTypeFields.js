@@ -8,7 +8,7 @@ export default async function getContractTypeFields(contractTypeId, connectedDat
     }
     const contractTypeFields = database
         .prepare(`select contractTypeFieldId, contractTypeField, fieldType,
-        fieldValues, isRequired, pattern, minimumLength, maximumLength, orderNumber
+        fieldValues, isRequired, pattern, minLength, maxLength, orderNumber
         from ContractTypeFields
         where recordDelete_timeMillis is null
         ${(contractTypeId ?? -1) === -1

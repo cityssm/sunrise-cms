@@ -5,17 +5,17 @@ export default async function handler(_request, response) {
     const contractTypes = await getContractTypes();
     const allContractTypeFields = await getAllContractTypeFields();
     const contractTypePrints = getConfigProperty('settings.contracts.prints');
-    const occupancyTypePrintTitles = {};
+    const contractTypePrintTitles = {};
     for (const printEJS of contractTypePrints) {
         const printConfig = getPrintConfig(printEJS);
         if (printConfig !== undefined) {
-            occupancyTypePrintTitles[printEJS] = printConfig.title;
+            contractTypePrintTitles[printEJS] = printConfig.title;
         }
     }
     response.render('admin-contractTypes', {
         headTitle: `Contract Type Management`,
-        occupancyTypes: contractTypes,
+        contractTypes,
         allContractTypeFields,
-        occupancyTypePrintTitles
+        contractTypePrintTitles
     });
 }

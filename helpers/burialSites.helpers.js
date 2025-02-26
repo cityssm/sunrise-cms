@@ -85,8 +85,11 @@ export function clearNextPreviousBurialSiteIdCache(burialSiteId = -1, relayMessa
     catch { }
 }
 const segmentConfig = getConfigProperty('settings.burialSites.burialSiteNameSegments');
-export function buildBurialSiteName(segments) {
+export function buildBurialSiteName(cemeteryKey, segments) {
     const segmentPieces = [];
+    if (segmentConfig.includeCemeteryKey && cemeteryKey !== undefined) {
+        segmentPieces.push(cemeteryKey);
+    }
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex++) {
         const segmentIndexString = segmentIndex.toString();

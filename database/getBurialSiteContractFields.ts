@@ -14,7 +14,7 @@ export default async function getBurialSiteContractField(
     .prepare(
       `select o.burialSiteContractId, o.contractTypeFieldId,
         o.fieldValue, f.contractTypeField, f.fieldType, f.fieldValues,
-        f.isRequired, f.pattern, f.minimumLength, f.maximumLength,
+        f.isRequired, f.pattern, f.minLength, f.maxLength,
         f.orderNumber, t.orderNumber as contractTypeOrderNumber
         from BurialSiteContractFields o
         left join ContractTypeFields f on o.contractTypeFieldId = f.contractTypeFieldId
@@ -26,7 +26,7 @@ export default async function getBurialSiteContractField(
         
         select ? as burialSiteContractId, f.contractTypeFieldId,
         '' as fieldValue, f.contractTypeField, f.fieldType, f.fieldValues,
-        f.isRequired, f.pattern, f.minimumLength, f.maximumLength,
+        f.isRequired, f.pattern, f.minLength, f.maxLength,
         f.orderNumber, t.orderNumber as contractTypeOrderNumber
         from ContractTypeFields f
         left join ContractTypes t on f.contractTypeId = t.contractTypeId

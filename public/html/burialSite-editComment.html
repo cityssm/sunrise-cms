@@ -10,21 +10,21 @@
       ></button>
     </header>
     <section class="modal-card-body">
-      <form id="form--lotCommentEdit">
-        <input id="lotCommentEdit--lotId" name="lotId" type="hidden" value="" />
+      <form id="form--burialSiteCommentEdit">
+        <input id="burialSiteCommentEdit--burialSiteId" name="burialSiteId" type="hidden" value="" />
         <input
-          id="lotCommentEdit--lotCommentId"
-          name="lotCommentId"
+          id="burialSiteCommentEdit--burialSiteCommentId"
+          name="burialSiteCommentId"
           type="hidden"
           value=""
         />
         <div class="field">
-          <label class="label" for="lotCommentEdit--lotComment">Comment</label>
+          <label class="label" for="burialSiteCommentEdit--comment">Comment</label>
           <div class="control">
             <textarea
               class="textarea"
-              id="lotCommentEdit--lotComment"
-              name="lotComment"
+              id="burialSiteCommentEdit--comment"
+              name="comment"
               required
             ></textarea>
           </div>
@@ -32,14 +32,14 @@
         <div class="columns">
           <div class="column">
             <div class="field">
-              <label class="label" for="lotCommentEdit--lotCommentDateString"
+              <label class="label" for="burialSiteCommentEdit--commentDateString"
                 >Comment Date</label
               >
               <div class="control has-icons-left">
                 <input
                   class="input"
-                  id="lotCommentEdit--lotCommentDateString"
-                  name="lotCommentDateString"
+                  id="burialSiteCommentEdit--commentDateString"
+                  name="commentDateString"
                   type="date"
                   required
                 />
@@ -51,14 +51,14 @@
           </div>
           <div class="column">
             <div class="field">
-              <label class="label" for="lotCommentEdit--lotCommentTimeString"
+              <label class="label" for="burialSiteCommentEdit--commentTimeString"
                 >Comment Time</label
               >
               <div class="control has-icons-left">
                 <input
                   class="input"
-                  id="lotCommentEdit--lotCommentTimeString"
-                  name="lotCommentTimeString"
+                  id="burialSiteCommentEdit--commentTimeString"
+                  name="commentTimeString"
                   type="time"
                   required
                 />
@@ -75,7 +75,7 @@
       <button
         class="button is-success"
         type="submit"
-        form="form--lotCommentEdit"
+        form="form--burialSiteCommentEdit"
       >
         <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
         <span>Update Comment</span>

@@ -9,14 +9,14 @@
     <%- include('_workOrder-header.ejs'); %>
     
     <% if (workOrder.workOrderLots.length > 0) { %>
-      <h2 class="mb-0"><%= configFunctions.getConfigProperty("aliases.lots") %></h2>
+      <h2 class="mb-0">Burial Sites</h2>
 
       <table class="data-table">
         <thead>
           <tr>
-            <th><%= configFunctions.getConfigProperty("aliases.lot") %></th>
+            <th>Burial Site</th>
             <th><%= configFunctions.getConfigProperty("aliases.map") %></th>
-            <th><%= configFunctions.getConfigProperty("aliases.lot") %> Type</th>
+            <th>Burial Site Type</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -40,7 +40,7 @@
         <thead>
           <tr>
             <th><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type</th>
-            <th><%= configFunctions.getConfigProperty("aliases.lot") %></th>
+            <th>Burial Site</th>
             <th><%= configFunctions.getConfigProperty("aliases.occupancyStartDate") %></th>
             <th>End Date</th>
             <th><%= configFunctions.getConfigProperty("aliases.occupants") %></th>

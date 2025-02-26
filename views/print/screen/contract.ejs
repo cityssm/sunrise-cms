@@ -1,7 +1,7 @@
 <%- include('_header-print'); -%>
 
 <h1 class="title is-2 has-text-centered">
-    <%= configFunctions.getConfigProperty("aliases.lot") %>
+    Burial Site
     <%= configFunctions.getConfigProperty("aliases.occupancy") %>
 </h1>
 
@@ -14,11 +14,11 @@
     </div>
     <div class="column">
         <p class="mb-2">
-            <strong><%= configFunctions.getConfigProperty("aliases.lot") %></strong><br />
+            <strong>Burial Site</strong><br />
             <% if (lotOccupancy.lotId) { %>
                 <%= lotOccupancy.lotName %>
             <% } else { %>
-                (No <%= configFunctions.getConfigProperty("aliases.lot") %>)
+                (No Burial Site)
             <% } %>
         </p>
         <p>

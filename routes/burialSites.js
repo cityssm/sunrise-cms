@@ -24,10 +24,10 @@ router.post('/doSearchBurialSites', handler_doSearchBurialSites);
  * Lot View / Edit
  */
 router.get('/new', updateGetHandler, handler_new);
-router.get('/:lotId', handler_view);
-router.get('/:lotId/next', handler_next);
-router.get('/:lotId/previous', handler_previous);
-router.get('/:lotId/edit', updateGetHandler, handler_edit);
+router.get('/:burialSiteId', handler_view);
+router.get('/:burialSiteId/next', handler_next);
+router.get('/:burialSiteId/previous', handler_previous);
+router.get('/:burialSiteId/edit', updateGetHandler, handler_edit);
 router.post('/doGetBurialSiteTypeFields', updatePostHandler, handler_doGetBurialSiteTypeFields);
 router.post('/doCreateBurialSite', updatePostHandler, handler_doCreateBurialSite);
 router.post('/doUpdateBurialSite', updatePostHandler, handler_doUpdateBurialSite);

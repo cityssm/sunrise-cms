@@ -1,7 +1,8 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { LOS } from '../../types/globalTypes.js'
-import type { Lot } from '../../types/recordTypes.js'
+import type { BurialSite } from '../../types/recordTypes.js'
+
+import type { LOS } from './types.js'
 
 declare const cityssm: cityssmGlobal
 
@@ -25,17 +26,16 @@ declare const exports: Record<string, unknown>
     '#searchFilter--offset'
   ) as HTMLInputElement
 
-  function renderLots(rawResponseJSON: unknown): void {
+  function renderBurialSites(rawResponseJSON: unknown): void {
     const responseJSON = rawResponseJSON as {
       count: number
       offset: number
-      lots: Lot[]
+      burialSites: BurialSite[]
     }
 
-    if (responseJSON.lots.length === 0) {
-      // eslint-disable-next-line no-unsanitized/property
+    if (responseJSON.burialSites.length === 0) {
       searchResultsContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no ${los.escapedAliases.lots} that meet the search criteria.</p>
+        <p class="message-body">There are no burial sites that meet the search criteria.</p>
         </div>`
 
       return
@@ -43,33 +43,33 @@ declare const exports: Record<string, unknown>
 
     const resultsTbodyElement = document.createElement('tbody')
 
-    for (const lot of responseJSON.lots) {
+    for (const burialSite of responseJSON.burialSites) {
       // eslint-disable-next-line no-unsanitized/method
       resultsTbodyElement.insertAdjacentHTML(
         'beforeend',
         `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${los.getBurialSiteURL(lot.lotId)}">
-              ${cityssm.escapeHTML(lot.lotName ?? '')}
+            <a class="has-text-weight-bold" href="${los.getBurialSiteURL(burialSite.burialSiteId)}">
+              ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
             </a>
           </td><td>
-            <a href="${los.getCemeteryURL(lot.cemeteryId)}">
+            <a href="${los.getCemeteryURL(burialSite.cemeteryId)}">
               ${
-                lot.cemeteryName
-                  ? cityssm.escapeHTML(lot.cemeteryName)
+                burialSite.cemeteryName
+                  ? cityssm.escapeHTML(burialSite.cemeteryName)
                   : '<span class="has-text-grey">(No Name)</span>'
               }
             </a>
           </td><td>
-            ${cityssm.escapeHTML(lot.lotType ?? '')}
+            ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
           </td><td>
             ${
-              lot.burialSiteStatusId
-                ? cityssm.escapeHTML(lot.lotStatus ?? '')
+              burialSite.burialSiteStatusId
+                ? cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
                 : '<span class="has-text-grey">(No Status)</span>'
             }<br />
             ${
-              (lot.burialSiteContractCount ?? 0) > 0
+              (burialSite.burialSiteContractCount ?? 0) > 0
                 ? '<span class="is-size-7">Currently Occupied</span>'
                 : ''
             }
@@ -78,12 +78,11 @@ declare const exports: Record<string, unknown>
       )
     }
 
-    // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
       <thead><tr>
-      <th>${los.escapedAliases.Lot}</th>
-      <th>${los.escapedAliases.Map}</th>
-      <th>${los.escapedAliases.Lot} Type</th>
+      <th>Burial Site</th>
+      <th>Cemetery</th>
+      <th>Burial Site Type</th>
       <th>Status</th>
       </tr></thead>
       <table>`
@@ -104,32 +103,32 @@ declare const exports: Record<string, unknown>
 
     searchResultsContainerElement
       .querySelector("button[data-page='previous']")
-      ?.addEventListener('click', previousAndGetLots)
+      ?.addEventListener('click', previousAndGetBurialSites)
 
     searchResultsContainerElement
       .querySelector("button[data-page='next']")
-      ?.addEventListener('click', nextAndGetLots)
+      ?.addEventListener('click', nextAndGetBurialSites)
   }
 
   function getBurialSites(): void {
     // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
-      `Loading ${los.escapedAliases.Lots}...`
+      `Loading Burial Sites...`
     )
 
     cityssm.postJSON(
-      `${los.urlPrefix}/lots/doSearchBurialSites`,
+      `${los.urlPrefix}/burialSites/doSearchBurialSites`,
       searchFilterFormElement,
-      renderLots
+      renderBurialSites
     )
   }
 
-  function resetOffsetAndGetLots(): void {
+  function resetOffsetAndGetBurialSites(): void {
     offsetElement.value = '0'
     getBurialSites()
   }
 
-  function previousAndGetLots(): void {
+  function previousAndGetBurialSites(): void {
     offsetElement.value = Math.max(
       Number.parseInt(offsetElement.value, 10) - limit,
       0
@@ -137,7 +136,7 @@ declare const exports: Record<string, unknown>
     getBurialSites()
   }
 
-  function nextAndGetLots(): void {
+  function nextAndGetBurialSites(): void {
     offsetElement.value = (
       Number.parseInt(offsetElement.value, 10) + limit
     ).toString()
@@ -148,7 +147,7 @@ declare const exports: Record<string, unknown>
     searchFilterFormElement.querySelectorAll('input, select')
 
   for (const filterElement of filterElements) {
-    filterElement.addEventListener('change', resetOffsetAndGetLots)
+    filterElement.addEventListener('change', resetOffsetAndGetBurialSites)
   }
 
   searchFilterFormElement.addEventListener('submit', (formEvent) => {

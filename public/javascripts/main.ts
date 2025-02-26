@@ -62,9 +62,9 @@ declare const exports: Record<string, unknown> & {
   ): void {
     // Search for ID
     let svgId = mapKey
-    let svgElementToHighlight: SVGElement | null
+    let svgElementToHighlight: SVGElement | null = null
 
-    while (true) {
+    while (svgId !== '') {
       svgElementToHighlight = mapContainerElement.querySelector(`#${svgId}`)
 
       if (svgElementToHighlight !== null || !svgId.includes('-')) {

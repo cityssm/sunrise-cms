@@ -4,7 +4,7 @@
   <ul>
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li>
-      <a href="<%= urlPrefix %>/maps">
+      <a href="<%= urlPrefix %>/cemeteries">
         <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
         <span>Cemeteries</span>
       </a>
@@ -18,7 +18,10 @@
 </nav>
 
 <h1 class="title is-1">
-    <%= cemetery.cemeteryName || "(No Name)" %>
+  <%= cemetery.cemeteryName || "(No Name)" %>
+  <% if (cemetery.cemeteryKey !== '') { %>
+    <span class="tag is-large"><%= cemetery.cemeteryKey %></span>
+  <% } %>
 </h1>
 
 
@@ -107,19 +110,19 @@
     </div>
     <div class="column">
         <div class="panel">
-            <h2 class="panel-heading">Image</h2>
-            <div class="panel-block is-block">
-                <% if (cemetery.cemeterySvg) { %>
-                    <% const imageURL = urlPrefix + "/images/cemeteries/" + cemetery.cemeterySvg %>
-                    <a class="image" href="<%= urlPrefix %>/images/cemeteries/<%= cemetery.cemeterySvg %>" target="_blank">
-                        <%- include('../public/images/cemeteries/' + cemetery.cemeterySvg); -%>
-                    </a>
-                <% } else { %>
-                    <div class="message is-info">
-                        <p class="message-body">There are no image associated with this cemetery.</p>
-                    </div>
-                <% } %>
-            </div>
+          <h2 class="panel-heading">Image</h2>
+          <div class="panel-block is-block">
+            <% if (cemetery.cemeterySvg) { %>
+              <% const imageURL = urlPrefix + "/images/cemeteries/" + cemetery.cemeterySvg %>
+              <a class="image" href="<%= urlPrefix %>/images/cemeteries/<%= cemetery.cemeterySvg %>" target="_blank">
+                <%- include('../public/images/cemeteries/' + cemetery.cemeterySvg); -%>
+              </a>
+            <% } else { %>
+              <div class="message is-info">
+                <p class="message-body">There are no image associated with this cemetery.</p>
+              </div>
+            <% } %>
+          </div>
         </div>
     </div>
 </div>
@@ -151,7 +154,7 @@
     <div class="panel-block is-block">
         <% if (cemetery.burialSiteCount === 0) { %>
           <div class="message is-info">
-              <p class="message-body">
+            <p class="message-body">
               There are no burial sites associated with this cemetery.
             </p>
           </div>
@@ -160,21 +163,21 @@
                 <div class="column">
                     <table class="table is-fullwidth is-striped is-hoverable">
                         <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th class="has-text-right">
-                                  Burial Site Count
-                                </th>
-                                <th class="has-text-right">Percentage</th>
-                            </tr>
+                          <tr>
+                            <th>Type</th>
+                            <th class="has-text-right">
+                              Burial Site Count
+                            </th>
+                            <th class="has-text-right">Percentage</th>
+                          </tr>
                         </thead>
                         <tbody>
                           <% for (const burialSiteType of burialSiteTypeSummary) { %>
                             <tr>
                               <td>
-                                  <a class="has-text-weight-bold" href="<%= lotSearchUrl %>&burialSiteTypeId=<%= burialSiteType.burialSiteTypeId %>">
-                                      <%= burialSiteType.burialSiteType %>
-                                  </a>
+                                <a class="has-text-weight-bold" href="<%= burialSiteSearchUrl %>&burialSiteTypeId=<%= burialSiteType.burialSiteTypeId %>">
+                                  <%= burialSiteType.burialSiteType %>
+                                </a>
                               </td>
                               <td class="has-text-right">
                                   <%= burialSiteType.burialSiteCount %>
@@ -202,7 +205,7 @@
                             <% for (const burialSiteStatus of burialSiteStatusSummary) { %>
                               <tr>
                                 <td>
-                                  <a class="has-text-weight-bold" href="<%= lotSearchUrl %>&burialSiteStatusId=<%= burialSiteStatus.burialSiteStatusId %>">
+                                  <a class="has-text-weight-bold" href="<%= burialSiteSearchUrl %>&burialSiteStatusId=<%= burialSiteStatus.burialSiteStatusId %>">
                                       <%= burialSiteStatus.burialSiteStatus %>
                                   </a>
                                 </td>
@@ -210,7 +213,7 @@
                                     <%= burialSiteStatus.burialSiteCount %>
                                 </td>
                                 <td class="has-text-right">
-                                    <%= ((burialSiteStatus.burialSiteCount / map.burialSiteCount) * 100).toFixed(1) %>%
+                                    <%= ((burialSiteStatus.burialSiteCount / cemetery.burialSiteCount) * 100).toFixed(1) %>%
                                 </td>
                               </tr>
                             <% } %>

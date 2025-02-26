@@ -1,7 +1,7 @@
-export function getFieldValueByContractTypeField(burialSiteContract, occupancyTypeField) {
-    const occupancyTypeFieldLowerCase = occupancyTypeField.toLowerCase();
+export function getFieldValueByContractTypeField(burialSiteContract, contractTypeField) {
+    const contractTypeFieldLowerCase = contractTypeField.toLowerCase();
     const field = (burialSiteContract.burialSiteContractFields ?? []).find((possibleField) => possibleField.contractTypeField.toLowerCase() ===
-        occupancyTypeFieldLowerCase);
+        contractTypeFieldLowerCase);
     if (field === undefined) {
         return undefined;
     }

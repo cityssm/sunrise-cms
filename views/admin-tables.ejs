@@ -44,13 +44,13 @@
         <li>
             <a href="#tab--lotStatuses">
                 <span class="icon is-small"><i class="fas fa-table" aria-hidden="true"></i></span>
-                <span><%= configFunctions.getConfigProperty("aliases.lot") %> Statuses</span>
+                <span>Burial Site Statuses</span>
             </a>
         </li>
         <li>
             <a href="#tab--lotOccupantTypes">
                 <span class="icon is-small"><i class="fas fa-table" aria-hidden="true"></i></span>
-                <span><%= configFunctions.getConfigProperty("aliases.lot") %> <%= configFunctions.getConfigProperty("aliases.occupant") %> Types</span>
+                <span>Burial Site <%= configFunctions.getConfigProperty("aliases.occupant") %> Types</span>
             </a>
         </li>
       </ul>
@@ -117,11 +117,11 @@
             </table>
         </div>
         <div class="is-hidden" id="tab--lotStatuses">
-            <h2 class="title is-4"><%= configFunctions.getConfigProperty("aliases.lot") %> Statuses</h2>
+            <h2 class="title is-4">Burial Site Statuses</h2>
             <table class="table is-striped is-hoverable has-sticky-header">
                 <thead>
                     <tr>
-                        <th><%= configFunctions.getConfigProperty("aliases.lot") %> Status</th>
+                        <th>Burial Site Status</th>
                         <th class="has-text-centered has-width-1">Options</th>
                     </tr>
                 </thead>
@@ -131,7 +131,7 @@
                             <form id="form--addLotStatus">
                                 <div class="field has-addons">
                                     <div class="control is-expanded">
-                                        <input class="input" name="lotStatus" type="text" maxlength="100" placeholder="New <%= configFunctions.getConfigProperty("aliases.lot") %> Status" required />
+                                        <input class="input" name="lotStatus" type="text" maxlength="100" placeholder="New Burial Site Status" required />
                                     </div>
                                     <div class="control">
                                         <button class="button is-success has-tooltip-bottom" data-tooltip="Add Status" type="submit" aria-label="Add Status">
@@ -147,11 +147,11 @@
             </table>
         </div>
         <div class="is-hidden" id="tab--lotOccupantTypes">
-            <h2 class="title is-4"><%= configFunctions.getConfigProperty("aliases.lot") %> <%= configFunctions.getConfigProperty("aliases.occupant") %> Types</h2>
+            <h2 class="title is-4">Burial Site <%= configFunctions.getConfigProperty("aliases.occupant") %> Types</h2>
             <table class="table is-striped is-hoverable has-sticky-header">
                 <thead>
                   <tr>
-                    <th><%= configFunctions.getConfigProperty("aliases.lot") %> <%= configFunctions.getConfigProperty("aliases.occupant") %> Type</th>
+                    <th>Burial Site <%= configFunctions.getConfigProperty("aliases.occupant") %> Type</th>
                     <th>
                         Icon Class
                         <a class="has-text-weight-normal has-tooltip-right" data-tooltip="View Available Icons" href="https://fontawesome.com/v5/search?o=r&m=free&s=solid" target="_blank" rel="noreferrer noopener" aria-label="Search and View Available Icons">
@@ -174,7 +174,7 @@
                         <input name="occupantCommentTitle" type="hidden" value="Comment" />
                         <div class="field has-addons">
                           <div class="control is-expanded">
-                            <input class="input" name="lotOccupantType" type="text" maxlength="100" placeholder="New <%= configFunctions.getConfigProperty("aliases.lot") %> <%= configFunctions.getConfigProperty("aliases.occupant") %> Type" required />
+                            <input class="input" name="lotOccupantType" type="text" maxlength="100" placeholder="New Burial Site <%= configFunctions.getConfigProperty("aliases.occupant") %> Type" required />
                           </div>
                           <div class="control">
                             <button class="button is-success has-tooltip-bottom" data-tooltip="Add Type" type="submit" aria-label="Add Type">

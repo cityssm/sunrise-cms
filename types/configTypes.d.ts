@@ -88,6 +88,7 @@ export interface ConfigActiveDirectory {
 }
 export interface ConfigBurialSiteNameSegments {
     separator?: string;
+    includeCemeteryKey?: boolean;
     segments: Partial<Record<'1' | '2' | '3' | '4' | '5', {
         isAvailable?: boolean;
         isRequired?: boolean;

@@ -1,6 +1,6 @@
 export interface UpdateBurialSiteForm {
     burialSiteId: string | number;
-    burialSiteNameSegment1: string;
+    burialSiteNameSegment1?: string;
     burialSiteNameSegment2?: string;
     burialSiteNameSegment3?: string;
     burialSiteNameSegment4?: string;

@@ -273,36 +273,36 @@ type ResponseJSON =
     ) as LotTypeField
 
     let fieldTypeElement: HTMLSelectElement
-    let minimumLengthElement: HTMLInputElement
-    let maximumLengthElement: HTMLInputElement
+    let minLengthInputElement: HTMLInputElement
+    let maxLengthInputElement: HTMLInputElement
     let patternElement: HTMLInputElement
     let lotTypeFieldValuesElement: HTMLTextAreaElement
 
     let editCloseModalFunction: () => void
 
     function updateMaximumLengthMin(): void {
-      maximumLengthElement.min = minimumLengthElement.value
+      maxLengthInputElement.min = minLengthInputElement.value
     }
 
     function toggleInputFields(): void {
       switch (fieldTypeElement.value) {
         case 'date': {
-          minimumLengthElement.disabled = true
-          maximumLengthElement.disabled = true
+          minLengthInputElement.disabled = true
+          maxLengthInputElement.disabled = true
           patternElement.disabled = true
           lotTypeFieldValuesElement.disabled = true
           break
         }
         case 'select': {
-          minimumLengthElement.disabled = true
-          maximumLengthElement.disabled = true
+          minLengthInputElement.disabled = true
+          maxLengthInputElement.disabled = true
           patternElement.disabled = true
           lotTypeFieldValuesElement.disabled = false
           break
         }
         default: {
-          minimumLengthElement.disabled = false
-          maximumLengthElement.disabled = false
+          minLengthInputElement.disabled = false
+          maxLengthInputElement.disabled = false
           patternElement.disabled = false
           lotTypeFieldValuesElement.disabled = true
           break
@@ -382,19 +382,19 @@ type ResponseJSON =
 
         fieldTypeElement.value = lotTypeField.fieldType
 
-        minimumLengthElement = modalElement.querySelector(
-          '#lotTypeFieldEdit--minimumLength'
+        minLengthInputElement = modalElement.querySelector(
+          '#lotTypeFieldEdit--minLength'
         ) as HTMLInputElement
 
-        minimumLengthElement.value =
-          lotTypeField.minimumLength?.toString() ?? ''
+        minLengthInputElement.value =
+          lotTypeField.minLength?.toString() ?? ''
 
-        maximumLengthElement = modalElement.querySelector(
-          '#lotTypeFieldEdit--maximumLength'
+        maxLengthInputElement = modalElement.querySelector(
+          '#lotTypeFieldEdit--maxLength'
         ) as HTMLInputElement
 
-        maximumLengthElement.value =
-          lotTypeField.maximumLength?.toString() ?? ''
+        maxLengthInputElement.value =
+          lotTypeField.maxLength?.toString() ?? ''
 
         patternElement = modalElement.querySelector(
           '#lotTypeFieldEdit--pattern'
@@ -419,7 +419,7 @@ type ResponseJSON =
 
         modalElement.querySelector('form')?.addEventListener('submit', doUpdate)
 
-        minimumLengthElement.addEventListener('keyup', updateMaximumLengthMin)
+        minLengthInputElement.addEventListener('keyup', updateMaximumLengthMin)
         updateMaximumLengthMin()
 
         fieldTypeElement.addEventListener('change', toggleInputFields)

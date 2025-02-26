@@ -5,14 +5,14 @@ import type {
 
 export function getFieldValueByContractTypeField(
   burialSiteContract: BurialSiteContract,
-  occupancyTypeField: string
+  contractTypeField: string
 ): string | undefined {
-  const occupancyTypeFieldLowerCase = occupancyTypeField.toLowerCase()
+  const contractTypeFieldLowerCase = contractTypeField.toLowerCase()
 
   const field = (burialSiteContract.burialSiteContractFields ?? []).find(
     (possibleField) =>
       (possibleField.contractTypeField as string).toLowerCase() ===
-      occupancyTypeFieldLowerCase
+      contractTypeFieldLowerCase
   )
 
   if (field === undefined) {

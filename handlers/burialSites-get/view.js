@@ -9,7 +9,7 @@ export default async function handler(request, response) {
     }
     response.render('burialSite-view', {
         headTitle: burialSite.burialSiteName,
-        lot: burialSite
+        burialSite
     });
     response.on('finish', () => {
         void getNextBurialSiteId(burialSite.burialSiteId);

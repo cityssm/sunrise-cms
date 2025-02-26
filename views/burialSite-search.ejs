@@ -6,24 +6,24 @@
     <li class="is-active">
       <a href="#" aria-current="page">
         <span class="icon is-small"><i class="fas fa-vector-square" aria-hidden="true"></i></span>
-        <span><%= configFunctions.getConfigProperty("aliases.lots") %></span>
+        <span>Burial Sites</span>
       </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-  Find a <%= configFunctions.getConfigProperty("aliases.lot") %>
+  Find a Burial Site
 </h1>
 
 <% if (user.userProperties.canUpdate) { %>
   <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
     <a class="button is-circle is-primary has-tooltip-left"
-      data-tooltip="Create a New <%= configFunctions.getConfigProperty("aliases.lot") %>"
-      href="<%= urlPrefix %>/lots/new"
+      data-tooltip="Create a New Burial Site"
+      href="<%= urlPrefix %>/burialSites/new"
       accesskey="n">
       <i class="fas fa-plus" aria-hidden="true"></i>
-      <span class="sr-only">Create a New <%= configFunctions.getConfigProperty("aliases.lot") %></span>
+      <span class="sr-only">Create a New Burial Site</span>
     </a>
   </div>
 <% } %>
@@ -34,11 +34,11 @@
     <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
     <div class="columns">
       <div class="column">
-        <label class="label" for="searchFilter--lotName"><%= configFunctions.getConfigProperty("aliases.lot") %></label>
+        <label class="label" for="searchFilter--burialSiteName">Burial Site</label>
         <div class="field has-addons">
           <div class="control has-icons-left">
             <div class="select">
-              <select id="selectFilter--lotNameSearchType" name="lotNameSearchType" aria-label="<%= configFunctions.getConfigProperty("aliases.lot") %> Filter Type">
+              <select id="selectFilter--burialSiteNameSearchType" name="burialSiteNameSearchType" aria-label="Burial Site Filter Type">
                 <option value="">contains</option>
                 <option value="startsWith">starts with</option>
                 <option value="endsWith">ends with</option>
@@ -49,20 +49,20 @@
             </span>
           </div>
           <div class="control is-expanded">
-            <input class="input" id="searchFilter--lotName" name="lotName" />
+            <input class="input" id="searchFilter--burialSiteName" name="burialSiteName" />
           </div>
         </div>
       </div>
       <div class="column">
         <div class="field">
-          <label class="label" for="searchFilter--burialSiteTypeId"><%= configFunctions.getConfigProperty("aliases.lot") %> Type</label>
+          <label class="label" for="searchFilter--burialSiteTypeId">Burial Site Type</label>
           <div class="control has-icons-left">
             <div class="select is-fullwidth">
             <select id="searchFilter--burialSiteTypeId" name="burialSiteTypeId">
-              <option value="">(All <%= configFunctions.getConfigProperty("aliases.lot") %> Types)</option>
-              <% for (const lotType of lotTypes) { %>
-                <option value="<%= lotType.burialSiteTypeId %>" <%= (lotType.burialSiteTypeId.toString() === burialSiteTypeId) ? " selected" : "" %>>
-                  <%= lotType.lotType || "(No Name)" %>
+              <option value="">(All Burial Site Types)</option>
+              <% for (const burialSiteType of burialSiteTypes) { %>
+                <option value="<%= burialSiteType.burialSiteTypeId %>" <%= (burialSiteType.burialSiteTypeId.toString() === burialSiteTypeId) ? " selected" : "" %>>
+                  <%= burialSiteType.burialSiteType || "(No Name)" %>
                 </option>
               <% } %>
           </select>
@@ -77,14 +77,14 @@
     <div class="columns">
     <div class="column">
         <div class="field">
-        <label class="label" for="searchFilter--mapId"><%= configFunctions.getConfigProperty("aliases.map") %></label>
+        <label class="label" for="searchFilter--cemeteryId">Cemetery</label>
         <div class="control has-icons-left">
             <div class="select is-fullwidth">
-            <select id="searchFilter--mapId" name="mapId">
-                <option value="">(All <%= configFunctions.getConfigProperty("aliases.maps") %>)</option>
-                <% for (const map of maps) { %>
-                <option value="<%= map.mapId %>" <%= (map.mapId.toString() === mapId) ? " selected" : "" %>>
-                    <%= map.mapName || "(No Name)" %>
+            <select id="searchFilter--cemeteryId" name="cemeteryId">
+                <option value="">(All Cemeteries)</option>
+                <% for (const cemetery of cemeteries) { %>
+                <option value="<%= cemetery.cemeteryId %>" <%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>>
+                    <%= cemetery.cemeteryName || "(No Name)" %>
                 </option>
                 <% } %>
             </select>
@@ -102,9 +102,9 @@
                 <div class="select is-fullwidth">
                     <select id="searchFilter--burialSiteStatusId" name="burialSiteStatusId">
                         <option value="">(All Statuses)</option>
-                        <% for (const lotStatus of lotStatuses) { %>
-                        <option value="<%= lotStatus.burialSiteStatusId %>" <%= (lotStatus.burialSiteStatusId.toString() === burialSiteStatusId) ? " selected" : "" %>>
-                            <%= lotStatus.lotStatus %>
+                        <% for (const burialSiteStatus of burialSiteStatuses) { %>
+                        <option value="<%= burialSiteStatus.burialSiteStatusId %>" <%= (burialSiteStatus.burialSiteStatusId.toString() === burialSiteStatusId) ? " selected" : "" %>>
+                            <%= burialSiteStatus.burialSiteStatus %>
                         </option>
                         <% } %>
                     </select>
@@ -123,6 +123,6 @@
 
 <%- include('_footerA'); -%>
 
-<script src="<%= urlPrefix %>/javascripts/lotSearch.js"></script>
+<script src="<%= urlPrefix %>/javascripts/burialSite.search.js"></script>
 
 <%- include('_footerB'); -%>

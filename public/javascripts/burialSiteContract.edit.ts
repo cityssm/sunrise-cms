@@ -399,10 +399,10 @@ declare const exports: Record<string, unknown>
               inputElement.required = occupancyTypeField.isRequired as boolean
 
               inputElement.minLength =
-                occupancyTypeField.minimumLength as number
+                occupancyTypeField.minLength as number
 
               inputElement.maxLength =
-                occupancyTypeField.maximumLength as number
+                occupancyTypeField.maxLength as number
 
               if ((occupancyTypeField.pattern ?? '') !== '') {
                 inputElement.pattern = occupancyTypeField.pattern as string
@@ -501,7 +501,7 @@ declare const exports: Record<string, unknown>
         los.getLoadingParagraphHTML('Searching...')
 
       cityssm.postJSON(
-        `${los.urlPrefix}/lots/doSearchBurialSites`,
+        `${los.urlPrefix}/burialSites/doSearchBurialSites`,
         lotSelectFormElement,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
@@ -563,7 +563,7 @@ declare const exports: Record<string, unknown>
       ).value
 
       cityssm.postJSON(
-        `${los.urlPrefix}/lots/doCreateBurialSite`,
+        `${los.urlPrefix}/burialSites/doCreateBurialSite`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
@@ -704,7 +704,7 @@ declare const exports: Record<string, unknown>
           contextualColorName: 'info'
         })
       } else {
-        window.open(`${los.urlPrefix}/lots/${lotId}`)
+        window.open(`${los.urlPrefix}/burialSites/${lotId}`)
       }
     })
 

@@ -103,13 +103,13 @@
     "bulma-steps": "^2.2.1",
     "bulma-switch": "^2.0.4",
     "bulma-tooltip": "^3.0.2",
-    "cypress": "^14.0.3",
+    "cypress": "^14.1.0",
     "cypress-axe": "^1.6.0",
     "eslint-config-cityssm": "^20.0.0",
     "gulp": "^5.0.0",
     "gulp-sass": "^6.0.0",
     "nodemon": "^3.1.9",
     "prettier-config-cityssm": "^1.0.0",
-    "sass": "^1.85.0"
+    "sass": "^1.85.1"
   }
 }

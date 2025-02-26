@@ -25,18 +25,18 @@ describe('Read Only User', () => {
     cy.get("a[href*='/admin']").should('not.exist')
   })
 
-  it('Has no link to create maps on Map Search', () => {
-    cy.visit('/maps')
+  it('Has no link to create cemeteries on Cemetery Search', () => {
+    cy.visit('/cemeteries')
     cy.get("a[href*='/new']").should('not.exist')
   })
 
-  it('Has no link to create lots on Lot Search', () => {
-    cy.visit('/lots')
+  it('Has no link to create burial sites on Burial Site Search', () => {
+    cy.visit('/burialSites')
     cy.get("a[href*='/new']").should('not.exist')
   })
 
-  it('Has no link to create occupancies on Occupancy Search', () => {
-    cy.visit('/lotOccupancies')
+  it('Has no link to create contracts on Contract Search', () => {
+    cy.visit('/contracts')
     cy.get("a[href*='/new']").should('not.exist')
   })
 

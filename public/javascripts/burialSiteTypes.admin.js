@@ -135,33 +135,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const lotType = lotTypes.find((currentLotType) => currentLotType.burialSiteTypeId === burialSiteTypeId);
         const lotTypeField = (lotType.BurialSiteTypeFields ?? []).find((currentLotTypeField) => currentLotTypeField.lotTypeFieldId === lotTypeFieldId);
         let fieldTypeElement;
-        let minimumLengthElement;
-        let maximumLengthElement;
+        let minLengthInputElement;
+        let maxLengthInputElement;
         let patternElement;
         let lotTypeFieldValuesElement;
         let editCloseModalFunction;
         function updateMaximumLengthMin() {
-            maximumLengthElement.min = minimumLengthElement.value;
+            maxLengthInputElement.min = minLengthInputElement.value;
         }
         function toggleInputFields() {
             switch (fieldTypeElement.value) {
                 case 'date': {
-                    minimumLengthElement.disabled = true;
-                    maximumLengthElement.disabled = true;
+                    minLengthInputElement.disabled = true;
+                    maxLengthInputElement.disabled = true;
                     patternElement.disabled = true;
                     lotTypeFieldValuesElement.disabled = true;
                     break;
                 }
                 case 'select': {
-                    minimumLengthElement.disabled = true;
-                    maximumLengthElement.disabled = true;
+                    minLengthInputElement.disabled = true;
+                    maxLengthInputElement.disabled = true;
                     patternElement.disabled = true;
                     lotTypeFieldValuesElement.disabled = false;
                     break;
                 }
                 default: {
-                    minimumLengthElement.disabled = false;
-                    maximumLengthElement.disabled = false;
+                    minLengthInputElement.disabled = false;
+                    maxLengthInputElement.disabled = false;
                     patternElement.disabled = false;
                     lotTypeFieldValuesElement.disabled = true;
                     break;
@@ -208,12 +208,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector('#lotTypeFieldEdit--isRequired').value = lotTypeField.isRequired ? '1' : '0';
                 fieldTypeElement = modalElement.querySelector('#lotTypeFieldEdit--fieldType');
                 fieldTypeElement.value = lotTypeField.fieldType;
-                minimumLengthElement = modalElement.querySelector('#lotTypeFieldEdit--minimumLength');
-                minimumLengthElement.value =
-                    lotTypeField.minimumLength?.toString() ?? '';
-                maximumLengthElement = modalElement.querySelector('#lotTypeFieldEdit--maximumLength');
-                maximumLengthElement.value =
-                    lotTypeField.maximumLength?.toString() ?? '';
+                minLengthInputElement = modalElement.querySelector('#lotTypeFieldEdit--minLength');
+                minLengthInputElement.value =
+                    lotTypeField.minLength?.toString() ?? '';
+                maxLengthInputElement = modalElement.querySelector('#lotTypeFieldEdit--maxLength');
+                maxLengthInputElement.value =
+                    lotTypeField.maxLength?.toString() ?? '';
                 patternElement = modalElement.querySelector('#lotTypeFieldEdit--pattern');
                 patternElement.value = lotTypeField.pattern ?? '';
                 lotTypeFieldValuesElement = modalElement.querySelector('#lotTypeFieldEdit--lotTypeFieldValues');
@@ -226,7 +226,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
                 cityssm.enableNavBlocker();
                 modalElement.querySelector('form')?.addEventListener('submit', doUpdate);
-                minimumLengthElement.addEventListener('keyup', updateMaximumLengthMin);
+                minLengthInputElement.addEventListener('keyup', updateMaximumLengthMin);
                 updateMaximumLengthMin();
                 fieldTypeElement.addEventListener('change', toggleInputFields);
                 modalElement

@@ -1,14 +1,14 @@
-import type { LOS } from '../../types/globalTypes.js'
+import type { LOS } from './types.js'
 
 declare const exports: Record<string, unknown>
 ;(() => {
   const mapContainerElement: HTMLElement | null =
-    document.querySelector('#lot--map')
+    document.querySelector('#burialSite--cemeterySvg')
 
   if (mapContainerElement !== null) {
     ;(exports.los as LOS).highlightMap(
       mapContainerElement,
-      mapContainerElement.dataset.mapKey ?? '',
+      mapContainerElement.dataset.cemeterySvgId ?? '',
       'success'
     )
   }

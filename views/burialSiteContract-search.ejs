@@ -11,24 +11,24 @@
             <i class="fas fa-user" data-fa-transform="shrink-10"></i>
           </span>
         </span>
-        <span><%= configFunctions.getConfigProperty("aliases.occupancies") %></span>
+        <span>Contracts</span>
       </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-  Find an <%= configFunctions.getConfigProperty("aliases.occupancy") %> Record
+  Find a Contract
 </h1>
 
 <% if (user.userProperties.canUpdate) { %>
   <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
     <a class="button is-circle is-primary has-tooltip-left"
-      data-tooltip="Create a New <%= configFunctions.getConfigProperty("aliases.occupancy") %>"
-      href="<%= urlPrefix %>/lotOccupancies/new"
+      data-tooltip="Create a New Contract"
+      href="<%= urlPrefix %>/contracts/new"
       accesskey="n">
       <i class="fas fa-plus" aria-hidden="true"></i>
-      <span class="sr-only">Create a New <%= configFunctions.getConfigProperty("aliases.occupancy") %></span>
+      <span class="sr-only">Create a New Contract</span>
     </a>
   </div>
 <% } %>
@@ -40,9 +40,9 @@
     <div class="columns">
       <div class="column">
         <div class="field">
-          <label class="label" for="searchFilter--occupantName"><%= configFunctions.getConfigProperty("aliases.occupant") %> Name</label>
+          <label class="label" for="searchFilter--deceasedName">Deceased Name</label>
           <div class="control has-icons-left">
-            <input class="input" id="searchFilter--occupantName" name="occupantName" accesskey="f" />
+            <input class="input" id="searchFilter--deceasedName" name="deceasedName" accesskey="f" />
             <span class="icon is-small is-left">
               <i class="fas fa-search" aria-hidden="true"></i>
             </span>
@@ -50,53 +50,53 @@
         </div>
       </div>
       <div class="column">
-          <div class="field">
-              <label class="label" for="searchFilter--occupancyTypeId"><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type</label>
-              <div class="control has-icons-left">
-                  <div class="select is-fullwidth">
-                      <select id="searchFilter--occupancyTypeId" name="occupancyTypeId">
-                          <option value="">(All <%= configFunctions.getConfigProperty("aliases.occupancy") %> Types)</option>
-                          <% for (const occupancyType of occupancyTypes) { %>
-                              <option value="<%= occupancyType.occupancyTypeId %>"><%= occupancyType.occupancyType %></option>
-                          <% } %>
-                      </select>
-                  </div>
-                  <span class="icon is-small is-left">
-                      <i class="fas fa-search" aria-hidden="true"></i>
-                  </span>
-              </div>
+        <div class="field">
+          <label class="label" for="searchFilter--contractTypeId">Contract Type</label>
+          <div class="control has-icons-left">
+            <div class="select is-fullwidth">
+              <select id="searchFilter--contractTypeId" name="contractTypeId">
+                <option value="">(All Contract Types)</option>
+                <% for (const contractType of contractTypes) { %>
+                  <option value="<%= contractType.contractTypeId %>"><%= contractType.contractType %></option>
+                <% } %>
+              </select>
+            </div>
+            <span class="icon is-small is-left">
+              <i class="fas fa-search" aria-hidden="true"></i>
+            </span>
           </div>
+        </div>
       </div>
       <div class="column">
-          <div class="field">
-              <label class="label" for="searchFilter--occupancyTime"><%= configFunctions.getConfigProperty("aliases.occupancy") %> Time</label>
-              <div class="control has-icons-left">
-                  <div class="select is-fullwidth">
-                      <select id="searchFilter--occupancyTime" name="occupancyTime">
-                          <option value="">(All Times)</option>
-                          <option value="current" selected>Current</option>
-                          <option value="past">Past</option>
-                          <option value="future">Future</option>
-                      </select>
-                  </div>
-                  <span class="icon is-small is-left">
-                      <i class="fas fa-search" aria-hidden="true"></i>
-                  </span>
-              </div>
+        <div class="field">
+          <label class="label" for="searchFilter--contractTime">Contract Time</label>
+          <div class="control has-icons-left">
+            <div class="select is-fullwidth">
+              <select id="searchFilter--contractTime" name="contractTime">
+                <option value="">(All Times)</option>
+                <option value="current" selected>Current</option>
+                <option value="past">Past</option>
+                <option value="future">Future</option>
+              </select>
+            </div>
+            <span class="icon is-small is-left">
+              <i class="fas fa-search" aria-hidden="true"></i>
+            </span>
           </div>
+        </div>
       </div>
     </div>
     <div class="columns">
       <div class="column">
         <div class="field">
-          <label class="label" for="searchFilter--mapId"><%= configFunctions.getConfigProperty("aliases.map") %></label>
+          <label class="label" for="searchFilter--cemeteryId">Cemetery</label>
           <div class="control has-icons-left">
             <div class="select is-fullwidth">
-              <select id="searchFilter--mapId" name="mapId">
-                <option value="">(All <%= configFunctions.getConfigProperty("aliases.maps") %>)</option>
-                <% for (const map of maps) { %>
-                  <option value="<%= map.mapId %>" <%= (map.mapId.toString() === mapId) ? " selected" : "" %>>
-                    <%= map.mapName || "(No Name)" %>
+              <select id="searchFilter--cemeteryId" name="cemeteryId">
+                <option value="">(All Cemeteries)</option>
+                <% for (const cemetery of cemeteries) { %>
+                  <option value="<%= cemetery.cemeteryId %>" <%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>>
+                    <%= cemetery.cemeteryName || "(No Name)" %>
                   </option>
                 <% } %>
               </select>
@@ -108,29 +108,29 @@
         </div>
       </div>
       <div class="column">
-          <div class="field">
-          <label class="label" for="searchFilter--burialSiteTypeId"><%= configFunctions.getConfigProperty("aliases.lot") %> Type</label>
+        <div class="field">
+          <label class="label" for="searchFilter--burialSiteTypeId">Burial Site Type</label>
           <div class="control has-icons-left">
-              <div class="select is-fullwidth">
+            <div class="select is-fullwidth">
               <select id="searchFilter--burialSiteTypeId" name="burialSiteTypeId">
-                  <option value="">(All <%= configFunctions.getConfigProperty("aliases.lot") %> Types)</option>
-                  <% for (const lotType of lotTypes) { %>
-                    <option value="<%= lotType.burialSiteTypeId %>"><%= lotType.lotType %></option>
-                  <% } %>
+                <option value="">(All Burial Site Types)</option>
+                <% for (const burialSiteType of burialSiteTypes) { %>
+                  <option value="<%= burialSiteType.burialSiteTypeId %>"><%= burialSiteType.burialSiteType %></option>
+                <% } %>
               </select>
-              </div>
-              <span class="icon is-small is-left">
-                  <i class="fas fa-search" aria-hidden="true"></i>
-              </span>
+            </div>
+            <span class="icon is-small is-left">
+              <i class="fas fa-search" aria-hidden="true"></i>
+            </span>
           </div>
-          </div>
+        </div>
       </div>
     </div>
-    <label class="label" for="searchFilter--lotName"><%= configFunctions.getConfigProperty("aliases.lot") %></label>
+    <label class="label" for="searchFilter--burialSiteName">Burial Site</label>
     <div class="field has-addons">
       <div class="control has-icons-left">
         <div class="select">
-          <select id="selectFilter--lotNameSearchType" name="lotNameSearchType" aria-label="<%= configFunctions.getConfigProperty("aliases.lot") %> Filter Type">
+          <select id="selectFilter--burialSiteNameSearchType" name="burialSiteNameSearchType" aria-label="Burial Site Filter Type">
             <option value="">contains</option>
             <option value="startsWith">starts with</option>
             <option value="endsWith">ends with</option>
@@ -141,7 +141,7 @@
         </span>
       </div>
       <div class="control is-expanded">
-        <input class="input" id="searchFilter--lotName" name="lotName" />
+        <input class="input" id="searchFilter--burialSiteName" name="burialSiteName" />
       </div>
     </div>
   </form>
@@ -151,6 +151,6 @@
 
 <%- include('_footerA'); -%>
 
-<script src="<%= urlPrefix %>/javascripts/lotOccupancySearch.js"></script>
+<script src="<%= urlPrefix %>/javascripts/burialSiteContract.search.js"></script>
 
 <%- include('_footerB'); -%>

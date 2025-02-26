@@ -246,9 +246,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         inputElement.type = occupancyTypeField.fieldType;
                         inputElement.required = occupancyTypeField.isRequired;
                         inputElement.minLength =
-                            occupancyTypeField.minimumLength;
+                            occupancyTypeField.minLength;
                         inputElement.maxLength =
-                            occupancyTypeField.maximumLength;
+                            occupancyTypeField.maxLength;
                         if ((occupancyTypeField.pattern ?? '') !== '') {
                             inputElement.pattern = occupancyTypeField.pattern;
                         }
@@ -314,7 +314,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // eslint-disable-next-line no-unsanitized/property
             lotSelectResultsElement.innerHTML =
                 los.getLoadingParagraphHTML('Searching...');
-            cityssm.postJSON(`${los.urlPrefix}/lots/doSearchBurialSites`, lotSelectFormElement, (rawResponseJSON) => {
+            cityssm.postJSON(`${los.urlPrefix}/burialSites/doSearchBurialSites`, lotSelectFormElement, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.count === 0) {
                     lotSelectResultsElement.innerHTML = `<div class="message is-info">
@@ -353,7 +353,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function createLotAndSelect(submitEvent) {
             submitEvent.preventDefault();
             const lotName = lotSelectModalElement.querySelector('#lotCreate--lotName').value;
-            cityssm.postJSON(`${los.urlPrefix}/lots/doCreateBurialSite`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${los.urlPrefix}/burialSites/doCreateBurialSite`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     renderSelectedLotAndClose(responseJSON.lotId ?? '', lotName);
@@ -441,7 +441,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         else {
-            window.open(`${los.urlPrefix}/lots/${lotId}`);
+            window.open(`${los.urlPrefix}/burialSites/${lotId}`);
         }
     });
     document

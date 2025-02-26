@@ -15,7 +15,7 @@ export default async function getBurialSiteFields(
       `select l.burialSiteId, l.burialSiteTypeFieldId,
         l.fieldValue,
         f.burialSiteTypeField, f.fieldType, f.fieldValues,
-        f.isRequired, f.pattern, f.minimumLength, f.maximumLength,
+        f.isRequired, f.pattern, f.minLength, f.maxLength,
         f.orderNumber, t.orderNumber as burialSiteTypeOrderNumber
         from BurialSiteFields l
         left join BurialSiteTypeFields f on l.burialSiteTypeFieldId = f.burialSiteTypeFieldId
@@ -28,7 +28,7 @@ export default async function getBurialSiteFields(
         select ? as burialSiteId, f.burialSiteTypeFieldId,
         '' as fieldValue,
         f.burialSiteTypeField, f.fieldType, f.fieldValues,
-        f.isRequired, f.pattern, f.minimumLength, f.maximumLength,
+        f.isRequired, f.pattern, f.minLength, f.maxLength,
         f.orderNumber, t.orderNumber as burialSiteTypeOrderNumber
         from BurialSiteTypeFields f
         left join BurialSiteTypes t on f.burialSiteTypeId = t.burialSiteTypeId

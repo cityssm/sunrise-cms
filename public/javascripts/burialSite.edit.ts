@@ -1,11 +1,12 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
-
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { LOS } from '../../types/globalTypes.js'
-import type { LotComment, LotTypeField } from '../../types/recordTypes.js'
+import type {
+  BurialSiteComment,
+  BurialSiteTypeField
+} from '../../types/recordTypes.js'
+
+import type { LOS } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -14,9 +15,10 @@ declare const exports: Record<string, unknown>
 ;(() => {
   const los = exports.los as LOS
 
-  const lotId = (document.querySelector('#lot--lotId') as HTMLInputElement)
-    .value
-  const isCreate = lotId === ''
+  const burialSiteId = (
+    document.querySelector('#burialSite--burialSiteId') as HTMLInputElement
+  ).value
+  const isCreate = burialSiteId === ''
 
   // Main form
 
@@ -25,29 +27,31 @@ declare const exports: Record<string, unknown>
   function setUnsavedChanges(): void {
     los.setUnsavedChanges()
     document
-      .querySelector("button[type='submit'][form='form--lot']")
+      .querySelector("button[type='submit'][form='form--burialSite']")
       ?.classList.remove('is-light')
   }
 
   function clearUnsavedChanges(): void {
     los.clearUnsavedChanges()
     document
-      .querySelector("button[type='submit'][form='form--lot']")
+      .querySelector("button[type='submit'][form='form--burialSite']")
       ?.classList.add('is-light')
   }
 
-  const formElement = document.querySelector('#form--lot') as HTMLFormElement
+  const formElement = document.querySelector(
+    '#form--burialSite'
+  ) as HTMLFormElement
 
   function updateBurialSite(formEvent: SubmitEvent): void {
     formEvent.preventDefault()
 
     cityssm.postJSON(
-      `${los.urlPrefix}/lots/${isCreate ? 'doCreateBurialSite' : 'doUpdateBurialSite'}`,
+      `${los.urlPrefix}/burialSites/${isCreate ? 'doCreateBurialSite' : 'doUpdateBurialSite'}`,
       formElement,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          lotId?: number
+          burialSiteId?: number
           errorMessage?: string
         }
 
@@ -55,16 +59,20 @@ declare const exports: Record<string, unknown>
           clearUnsavedChanges()
 
           if (isCreate || refreshAfterSave) {
-            window.location.href = los.getBurialSiteURL(responseJSON.lotId, true, true)
+            globalThis.location.href = los.getBurialSiteURL(
+              responseJSON.burialSiteId,
+              true,
+              true
+            )
           } else {
             bulmaJS.alert({
-              message: `${los.escapedAliases.Lot} Updated Successfully`,
+              message: `Burial Site Updated Successfully`,
               contextualColorName: 'success'
             })
           }
         } else {
           bulmaJS.alert({
-            title: `Error Updating ${los.escapedAliases.Lot}`,
+            title: `Error Updating Burial Site`,
             message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
@@ -84,15 +92,15 @@ declare const exports: Record<string, unknown>
   los.initializeUnlockFieldButtons(formElement)
 
   document
-    .querySelector('#button--deleteLot')
+    .querySelector('#button--deleteBurialSite')
     ?.addEventListener('click', (clickEvent) => {
       clickEvent.preventDefault()
 
       function doDelete(): void {
         cityssm.postJSON(
-          `${los.urlPrefix}/lots/doDeleteBurialSite`,
+          `${los.urlPrefix}/burialSites/doDeleteBurialSite`,
           {
-            lotId
+            burialSiteId
           },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
@@ -102,10 +110,10 @@ declare const exports: Record<string, unknown>
 
             if (responseJSON.success) {
               clearUnsavedChanges()
-              window.location.href = los.getBurialSiteURL()
+              globalThis.location.href = los.getBurialSiteURL()
             } else {
               bulmaJS.alert({
-                title: `Error Deleting ${los.escapedAliases.Lot}`,
+                title: `Error Deleting Burial Site`,
                 message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })
@@ -115,68 +123,66 @@ declare const exports: Record<string, unknown>
       }
 
       bulmaJS.confirm({
-        title: `Delete ${los.escapedAliases.Lot}`,
-        message: `Are you sure you want to delete this ${los.escapedAliases.lot}?`,
+        title: `Delete Burial Site`,
+        message: `Are you sure you want to delete this burial site?`,
         contextualColorName: 'warning',
         okButton: {
-          text: `Yes, Delete ${los.escapedAliases.Lot}`,
+          text: `Yes, Delete Burial Site`,
           callbackFunction: doDelete
         }
       })
     })
 
-  // Lot Type
+  // Burial Site Type
 
   const burialSiteTypeIdElement = document.querySelector(
-    '#lot--burialSiteTypeId'
+    '#burialSite--burialSiteTypeId'
   ) as HTMLSelectElement
 
   if (isCreate) {
-    const lotFieldsContainerElement = document.querySelector(
-      '#container--lotFields'
+    const burialSiteFieldsContainerElement = document.querySelector(
+      '#container--burialSiteFields'
     ) as HTMLElement
 
     burialSiteTypeIdElement.addEventListener('change', () => {
       if (burialSiteTypeIdElement.value === '') {
-        // eslint-disable-next-line no-unsanitized/property
-        lotFieldsContainerElement.innerHTML = `<div class="message is-info">
-          <p class="message-body">Select the ${los.escapedAliases.lot} type to load the available fields.</p>
+        burialSiteFieldsContainerElement.innerHTML = `<div class="message is-info">
+          <p class="message-body">Select the burial site type to load the available fields.</p>
           </div>`
 
         return
       }
 
       cityssm.postJSON(
-        `${los.urlPrefix}/lots/doGetBurialSiteTypeFields`,
+        `${los.urlPrefix}/burialSites/doGetBurialSiteTypeFields`,
         {
           burialSiteTypeId: burialSiteTypeIdElement.value
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            BurialSiteTypeFields: LotTypeField[]
+            burialSiteTypeFields: BurialSiteTypeField[]
           }
 
-          if (responseJSON.BurialSiteTypeFields.length === 0) {
-            // eslint-disable-next-line no-unsanitized/property
-            lotFieldsContainerElement.innerHTML = `<div class="message is-info">
+          if (responseJSON.burialSiteTypeFields.length === 0) {
+            burialSiteFieldsContainerElement.innerHTML = `<div class="message is-info">
               <p class="message-body">
-                There are no additional fields for this ${los.escapedAliases.lot} type.
+                There are no additional fields for this burial site type.
               </p>
               </div>`
 
             return
           }
 
-          lotFieldsContainerElement.innerHTML = ''
+          burialSiteFieldsContainerElement.innerHTML = ''
 
-          let lotTypeFieldIds = ''
+          let burialSiteTypeFieldIds = ''
 
-          for (const lotTypeField of responseJSON.BurialSiteTypeFields) {
-            lotTypeFieldIds += `,${lotTypeField.lotTypeFieldId.toString()}`
+          for (const burialSiteTypeField of responseJSON.burialSiteTypeFields) {
+            burialSiteTypeFieldIds += `,${burialSiteTypeField.burialSiteTypeFieldId.toString()}`
 
-            const fieldName = `lotFieldValue_${lotTypeField.lotTypeFieldId.toString()}`
+            const fieldName = `fieldValue_${burialSiteTypeField.burialSiteTypeFieldId.toString()}`
 
-            const fieldId = `lot--${fieldName}`
+            const fieldId = `burialSite--${fieldName}`
 
             const fieldElement = document.createElement('div')
             fieldElement.className = 'field'
@@ -186,9 +192,9 @@ declare const exports: Record<string, unknown>
               <div class="control"></div>`
             ;(
               fieldElement.querySelector('label') as HTMLLabelElement
-            ).textContent = lotTypeField.lotTypeField as string
+            ).textContent = burialSiteTypeField.burialSiteTypeField as string
 
-            if (lotTypeField.lotTypeFieldValues === '') {
+            if (burialSiteTypeField.fieldValues === '') {
               const inputElement = document.createElement('input')
 
               inputElement.className = 'input'
@@ -199,12 +205,12 @@ declare const exports: Record<string, unknown>
 
               inputElement.type = 'text'
 
-              inputElement.required = lotTypeField.isRequired as boolean
-              inputElement.minLength = lotTypeField.minimumLength as number
-              inputElement.maxLength = lotTypeField.maximumLength as number
+              inputElement.required = burialSiteTypeField.isRequired as boolean
+              inputElement.minLength = burialSiteTypeField.minLength as number
+              inputElement.maxLength = burialSiteTypeField.maxLength as number
 
-              if ((lotTypeField.pattern ?? '') !== '') {
-                inputElement.pattern = lotTypeField.pattern ?? ''
+              if ((burialSiteTypeField.pattern ?? '') !== '') {
+                inputElement.pattern = burialSiteTypeField.pattern ?? ''
               }
 
               fieldElement.querySelector('.control')?.append(inputElement)
@@ -220,10 +226,10 @@ declare const exports: Record<string, unknown>
                 'select'
               ) as HTMLSelectElement
 
-              selectElement.required = lotTypeField.isRequired as boolean
+              selectElement.required = burialSiteTypeField.isRequired as boolean
 
               const optionValues = (
-                lotTypeField.lotTypeFieldValues as string
+                burialSiteTypeField.fieldValues as string
               ).split('\n')
 
               for (const optionValue of optionValues) {
@@ -234,25 +240,25 @@ declare const exports: Record<string, unknown>
               }
             }
 
-            lotFieldsContainerElement.append(fieldElement)
+            burialSiteFieldsContainerElement.append(fieldElement)
           }
 
-          lotFieldsContainerElement.insertAdjacentHTML(
+          burialSiteFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
-            `<input name="lotTypeFieldIds" type="hidden"
-              value="${cityssm.escapeHTML(lotTypeFieldIds.slice(1))}" />`
+            `<input name="burialSiteTypeFieldIds" type="hidden"
+              value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />`
           )
         }
       )
     })
   } else {
-    const originalburialSiteTypeId = burialSiteTypeIdElement.value
+    const originalBurialSiteTypeId = burialSiteTypeIdElement.value
 
     burialSiteTypeIdElement.addEventListener('change', () => {
-      if (burialSiteTypeIdElement.value !== originalburialSiteTypeId) {
+      if (burialSiteTypeIdElement.value !== originalBurialSiteTypeId) {
         bulmaJS.confirm({
           title: 'Confirm Change',
-          message: `Are you sure you want to change the ${los.escapedAliases.lot} type?\n
+          message: `Are you sure you want to change the burial site type?\n
             This change affects the additional fields associated with this record.`,
           contextualColorName: 'warning',
           okButton: {
@@ -264,7 +270,7 @@ declare const exports: Record<string, unknown>
           cancelButton: {
             text: 'Revert the Change',
             callbackFunction() {
-              burialSiteTypeIdElement.value = originalburialSiteTypeId
+              burialSiteTypeIdElement.value = originalBurialSiteTypeId
             }
           }
         })
@@ -274,19 +280,20 @@ declare const exports: Record<string, unknown>
 
   // Comments
 
-  let lotComments = exports.lotComments as LotComment[]
-  delete exports.lotComments
+  let burialSiteComments = exports.burialSiteComments as BurialSiteComment[]
+  delete exports.burialSiteComments
 
-  function openEditLotComment(clickEvent: Event): void {
-    const lotCommentId = Number.parseInt(
+  function openEditBurialSiteComment(clickEvent: Event): void {
+    const burialSiteCommentId = Number.parseInt(
       (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-        .lotCommentId ?? '',
+        .burialSiteCommentId ?? '',
       10
     )
 
-    const lotComment = lotComments.find((currentLotComment) => {
-      return currentLotComment.lotCommentId === lotCommentId
-    }) as LotComment
+    const burialSiteComment = burialSiteComments.find(
+      (currentComment) =>
+        currentComment.burialSiteCommentId === burialSiteCommentId
+    ) as BurialSiteComment
 
     let editFormElement: HTMLFormElement
     let editCloseModalFunction: () => void
@@ -295,19 +302,19 @@ declare const exports: Record<string, unknown>
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/lots/doUpdateBurialSiteComment`,
+        `${los.urlPrefix}/burialSites/doUpdateBurialSiteComment`,
         editFormElement,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
             errorMessage?: string
-            lotComments: LotComment[]
+            burialSiteComments: BurialSiteComment[]
           }
 
           if (responseJSON.success) {
-            lotComments = responseJSON.lotComments
+            burialSiteComments = responseJSON.burialSiteComments
             editCloseModalFunction()
-            renderLotComments()
+            renderBurialSiteComments()
           } else {
             bulmaJS.alert({
               title: 'Error Updating Comment',
@@ -319,43 +326,43 @@ declare const exports: Record<string, unknown>
       )
     }
 
-    cityssm.openHtmlModal('lot-editComment', {
+    cityssm.openHtmlModal('burialSite-editComment', {
       onshow(modalElement) {
         los.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
-            '#lotCommentEdit--lotId'
+            '#burialSiteCommentEdit--burialSiteId'
           ) as HTMLInputElement
-        ).value = lotId
+        ).value = burialSiteId
         ;(
           modalElement.querySelector(
-            '#lotCommentEdit--lotCommentId'
+            '#burialSiteCommentEdit--burialSiteCommentId'
           ) as HTMLInputElement
-        ).value = lotCommentId.toString()
+        ).value = burialSiteCommentId.toString()
         ;(
           modalElement.querySelector(
-            '#lotCommentEdit--lotComment'
+            '#burialSiteCommentEdit--comment'
           ) as HTMLInputElement
-        ).value = lotComment.lotComment ?? ''
+        ).value = burialSiteComment.comment ?? ''
 
-        const lotCommentDateStringElement = modalElement.querySelector(
-          '#lotCommentEdit--lotCommentDateString'
+        const commentDateStringElement = modalElement.querySelector(
+          '#burialSiteCommentEdit--commentDateString'
         ) as HTMLInputElement
 
-        lotCommentDateStringElement.value =
-          lotComment.lotCommentDateString ?? ''
+        commentDateStringElement.value =
+          burialSiteComment.commentDateString ?? ''
 
         const currentDateString = cityssm.dateToString(new Date())
 
-        lotCommentDateStringElement.max =
-          lotComment.lotCommentDateString! <= currentDateString
+        commentDateStringElement.max =
+          burialSiteComment.commentDateString! <= currentDateString
             ? currentDateString
-            : lotComment.lotCommentDateString ?? ''
+            : burialSiteComment.commentDateString ?? ''
         ;(
           modalElement.querySelector(
-            '#lotCommentEdit--lotCommentTimeString'
+            '#burialSiteCommentEdit--commentTimeString'
           ) as HTMLInputElement
-        ).value = lotComment.lotCommentTimeString ?? ''
+        ).value = burialSiteComment.commentTimeString ?? ''
       },
       onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
@@ -364,7 +371,7 @@ declare const exports: Record<string, unknown>
         // los.initializeTimePickers(modalElement);
         ;(
           modalElement.querySelector(
-            '#lotCommentEdit--lotComment'
+            '#burialSiteCommentEdit--comment'
           ) as HTMLTextAreaElement
         ).focus()
 
@@ -379,30 +386,30 @@ declare const exports: Record<string, unknown>
     })
   }
 
-  function deleteLotComment(clickEvent: Event): void {
-    const lotCommentId = Number.parseInt(
+  function deleteBurialSiteComment(clickEvent: Event): void {
+    const burialSiteCommentId = Number.parseInt(
       (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-        .lotCommentId ?? '',
+        .burialSiteCommentId ?? '',
       10
     )
 
     function doDelete(): void {
       cityssm.postJSON(
-        `${los.urlPrefix}/lots/doDeleteBurialSiteComment`,
+        `${los.urlPrefix}/burialSites/doDeleteBurialSiteComment`,
         {
-          lotId,
-          lotCommentId
+          burialSiteId,
+          burialSiteCommentId
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
             errorMessage?: string
-            lotComments: LotComment[]
+            burialSiteComments: BurialSiteComment[]
           }
 
           if (responseJSON.success) {
-            lotComments = responseJSON.lotComments
-            renderLotComments()
+            burialSiteComments = responseJSON.burialSiteComments
+            renderBurialSiteComments()
           } else {
             bulmaJS.alert({
               title: 'Error Removing Comment',
@@ -425,12 +432,12 @@ declare const exports: Record<string, unknown>
     })
   }
 
-  function renderLotComments(): void {
+  function renderBurialSiteComments(): void {
     const containerElement = document.querySelector(
-      '#container--lotComments'
+      '#container--burialSiteComments'
     ) as HTMLElement
 
-    if (lotComments.length === 0) {
+    if (burialSiteComments.length === 0) {
       containerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no comments to display.</p>
         </div>`
@@ -447,22 +454,23 @@ declare const exports: Record<string, unknown>
       </tr></thead>
       <tbody></tbody>`
 
-    for (const lotComment of lotComments) {
+    for (const burialSiteComment of burialSiteComments) {
       const tableRowElement = document.createElement('tr')
-      tableRowElement.dataset.lotCommentId = lotComment.lotCommentId?.toString()
+      tableRowElement.dataset.burialSiteCommentId =
+        burialSiteComment.burialSiteCommentId?.toString()
 
       // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = `<td>
-          ${cityssm.escapeHTML(lotComment.recordCreate_userName ?? '')}
+          ${cityssm.escapeHTML(burialSiteComment.recordCreate_userName ?? '')}
         </td><td>
-          ${lotComment.lotCommentDateString}
+          ${burialSiteComment.commentDateString}
           ${
-            lotComment.lotCommentTime === 0
+            burialSiteComment.commentTime === 0
               ? ''
-              : ` ${lotComment.lotCommentTimePeriodString}`
+              : ` ${burialSiteComment.commentTimePeriodString}`
           }
         </td><td>
-          ${cityssm.escapeHTML(lotComment.lotComment ?? '')}
+          ${cityssm.escapeHTML(burialSiteComment.comment ?? '')}
         </td><td class="is-hidden-print">
           <div class="buttons are-small is-justify-content-end">
             <button class="button is-primary button--edit" type="button">
@@ -477,11 +485,11 @@ declare const exports: Record<string, unknown>
 
       tableRowElement
         .querySelector('.button--edit')
-        ?.addEventListener('click', openEditLotComment)
+        ?.addEventListener('click', openEditBurialSiteComment)
 
       tableRowElement
         .querySelector('.button--delete')
-        ?.addEventListener('click', deleteLotComment)
+        ?.addEventListener('click', deleteBurialSiteComment)
 
       tableElement.querySelector('tbody')?.append(tableRowElement)
     }
@@ -497,31 +505,31 @@ declare const exports: Record<string, unknown>
       formEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/lots/doAddBurialSiteComment`,
+        `${los.urlPrefix}/burialSites/doAddBurialSiteComment`,
         formEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
-            lotComments: LotComment[]
+            burialSiteComments: BurialSiteComment[]
           }
 
           if (responseJSON.success) {
-            lotComments = responseJSON.lotComments
-            renderLotComments()
+            burialSiteComments = responseJSON.burialSiteComments
+            renderBurialSiteComments()
             addCommentCloseModalFunction()
           }
         }
       )
     }
 
-    cityssm.openHtmlModal('lot-addComment', {
+    cityssm.openHtmlModal('burialSite-addComment', {
       onshow(modalElement) {
         los.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
-            '#lotCommentAdd--lotId'
+            '#burialSiteCommentAdd--burialSiteId'
           ) as HTMLInputElement
-        ).value = lotId
+        ).value = burialSiteId
         modalElement
           .querySelector('form')
           ?.addEventListener('submit', doAddComment)
@@ -531,14 +539,16 @@ declare const exports: Record<string, unknown>
         addCommentCloseModalFunction = closeModalFunction
         ;(
           modalElement.querySelector(
-            '#lotCommentAdd--lotComment'
+            '#burialSiteCommentAdd--comment'
           ) as HTMLTextAreaElement
         ).focus()
       },
       onremoved() {
         bulmaJS.toggleHtmlClipped()
         ;(
-          document.querySelector('#lotComments--add') as HTMLButtonElement
+          document.querySelector(
+            '#burialSiteComments--add'
+          ) as HTMLButtonElement
         ).focus()
       }
     })
@@ -546,8 +556,8 @@ declare const exports: Record<string, unknown>
 
   if (!isCreate) {
     document
-      .querySelector('#lotComments--add')
+      .querySelector('#burialSiteComments--add')
       ?.addEventListener('click', openAddCommentModal)
-    renderLotComments()
+    renderBurialSiteComments()
   }
 })()

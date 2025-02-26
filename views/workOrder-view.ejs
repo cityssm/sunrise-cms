@@ -124,7 +124,7 @@
     </div>
 
     <div class="panel">
-      <h2 class="panel-heading">Related <%= configFunctions.getConfigProperty("aliases.lots") %></h2>
+      <h2 class="panel-heading">Related Burial Sites</h2>
       <div class="panel-block is-block">
           <%
               const tabToSelect = (workOrder.workOrderLotOccupancies.length > 0 || workOrder.workOrderLots.length === 0 ? "lotOccupancies" : "lots");
@@ -139,7 +139,7 @@
               </li>
               <li class="<%= (tabToSelect === "lots" ? "is-active" : "") %>">
                 <a href="#relatedTab--lots">
-                  <span><%= configFunctions.getConfigProperty("aliases.lots") %></span>
+                  <span>Burial Sites</span>
                   <span class="ml-2 tag"><%= workOrder.workOrderLots.length %></span>
                 </a>
               </li>
@@ -163,7 +163,7 @@
                               <tr>
                                   <th class="has-width-1"></th>
                                   <th><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type</th>
-                                  <th><%= configFunctions.getConfigProperty("aliases.lot") %></th>
+                                  <th>Burial Site</th>
                                   <th><%= configFunctions.getConfigProperty("aliases.occupancyStartDate") %></th>
                                   <th>End Date</th>
                                   <th><%= configFunctions.getConfigProperty("aliases.occupants") %></th>
@@ -193,7 +193,7 @@
                                           <% if (lotOccupancy.lotId) { %>
                                               <%= lotOccupancy.lotName %>
                                           <% } else { %>
-                                              <span class="has-text-grey">(No <%= configFunctions.getConfigProperty("aliases.lot") %>)</span>
+                                              <span class="has-text-grey">(No Burial Site)</span>
                                           <% } %>
                                       </td>
                                       <td><%= lotOccupancy.occupancyStartDateString %></td>
@@ -242,9 +242,9 @@
                       <table class="table is-fullwidth is-striped is-hoverable">
                           <thead>
                               <tr>
-                                  <th><%= configFunctions.getConfigProperty("aliases.lot") %></th>
+                                  <th>Burial Site</th>
                                   <th><%= configFunctions.getConfigProperty("aliases.map") %></th>
-                                  <th><%= configFunctions.getConfigProperty("aliases.lot") %> Type</th>
+                                  <th>Burial Site Type</th>
                                   <th>Status</th>
                               </tr>
                           </thead>
@@ -252,7 +252,7 @@
                               <% for (const lot of workOrder.workOrderLots) { %>
                                   <tr>
                                       <td>
-                                          <a class="has-text-weight-bold" href="<%= urlPrefix %>/lots/<%= lot.lotId %>"><%= lot.lotName %></a>
+                                          <a class="has-text-weight-bold" href="<%= urlPrefix %>/burialSites/<%= lot.lotId %>"><%= lot.lotName %></a>
                                       </td>
                                       <td><%= lot.mapName %></td>
                                       <td><%= lot.lotType %></td>

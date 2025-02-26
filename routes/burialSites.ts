@@ -32,13 +32,13 @@ router.post('/doSearchBurialSites', handler_doSearchBurialSites)
 
 router.get('/new', updateGetHandler, handler_new)
 
-router.get('/:lotId', handler_view)
+router.get('/:burialSiteId', handler_view)
 
-router.get('/:lotId/next', handler_next)
+router.get('/:burialSiteId/next', handler_next)
 
-router.get('/:lotId/previous', handler_previous)
+router.get('/:burialSiteId/previous', handler_previous)
 
-router.get('/:lotId/edit', updateGetHandler, handler_edit)
+router.get('/:burialSiteId/edit', updateGetHandler, handler_edit)
 
 router.post(
   '/doGetBurialSiteTypeFields',

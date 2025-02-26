@@ -946,7 +946,7 @@ declare const exports: Record<string, unknown>
               los.getLoadingParagraphHTML('Searching...')
 
             cityssm.postJSON(
-              `${los.urlPrefix}/lots/doSearchBurialSites`,
+              `${los.urlPrefix}/burialSites/doSearchBurialSites`,
               searchFormElement,
               (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON as { lots: Lot[] }

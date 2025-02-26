@@ -70,6 +70,7 @@ export default async function getBurialSites(filters, options, connectedDatabase
           l.burialSiteNameSegment3,
           l.burialSiteNameSegment4,
           l.burialSiteNameSegment5,
+          l.burialSiteName,
           t.burialSiteType,
           l.cemeteryId, m.cemeteryName, l.cemeterySvgId,
           l.burialSiteStatusId, s.burialSiteStatus

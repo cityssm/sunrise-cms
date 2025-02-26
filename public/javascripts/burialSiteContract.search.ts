@@ -1,7 +1,8 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { LOS } from '../../types/globalTypes.js'
-import type { LotOccupancy } from '../../types/recordTypes.js'
+import type { BurialSiteContract } from '../../types/recordTypes.js'
+
+import type { LOS } from './types.js'
 
 declare const cityssm: cityssmGlobal
 
@@ -26,18 +27,18 @@ declare const exports: Record<string, unknown>
     '#searchFilter--offset'
   ) as HTMLInputElement
 
-  function renderLotOccupancies(rawResponseJSON: unknown): void {
+  // eslint-disable-next-line complexity
+  function renderContracts(rawResponseJSON: unknown): void {
     const responseJSON = rawResponseJSON as {
       count: number
       offset: number
-      lotOccupancies: LotOccupancy[]
+      burialSiteContracts: BurialSiteContract[]
     }
 
-    if (responseJSON.lotOccupancies.length === 0) {
-      // eslint-disable-next-line no-unsanitized/property
+    if (responseJSON.burialSiteContracts.length === 0) {
       searchResultsContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">
-        There are no ${los.escapedAliases.occupancy} records that meet the search criteria.
+        There are no contracts that meet the search criteria.
         </p>
         </div>`
 
@@ -48,40 +49,32 @@ declare const exports: Record<string, unknown>
 
     const nowDateString = cityssm.dateToString(new Date())
 
-    for (const burialSiteContract of responseJSON.lotOccupancies) {
-      let occupancyTimeHTML = ''
+    for (const burialSiteContract of responseJSON.burialSiteContracts) {
+      let contractTimeHTML = ''
 
       if (
         burialSiteContract.contractStartDateString! <= nowDateString &&
         (burialSiteContract.contractEndDateString === '' ||
           burialSiteContract.contractEndDateString! >= nowDateString)
       ) {
-        occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Current ${los.escapedAliases.Occupancy}">
-          <i class="fas fa-play" aria-label="Current ${los.escapedAliases.Occupancy}"></i>
+        contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Current Contract">
+          <i class="fas fa-play" aria-label="Current Contract"></i>
           </span>`
       } else if (burialSiteContract.contractStartDateString! > nowDateString) {
-        occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Future ${los.escapedAliases.Occupancy}">
-          <i class="fas fa-fast-forward" aria-label="Future ${los.escapedAliases.Occupancy}"></i>
+        contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Future Contract">
+          <i class="fas fa-fast-forward" aria-label="Future Contract"></i>
           </span>`
       } else {
-        occupancyTimeHTML = `<span class="has-tooltip-right" data-tooltip="Past ${los.escapedAliases.Occupancy}">
-          <i class="fas fa-stop" aria-label="Past ${los.escapedAliases.Occupancy}"></i>
+        contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Past Contract">
+          <i class="fas fa-stop" aria-label="Past Contract"></i>
           </span>`
       }
 
-      let occupantsHTML = ''
+      let deceasedHTML = ''
 
-      for (const occupant of burialSiteContract.burialSiteContractOccupants ?? []) {
-        occupantsHTML += `<li class="has-tooltip-left" data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
-          <span class="fa-li">
-            <i class="fas fa-fw fa-${cityssm.escapeHTML(
-              (occupant.fontAwesomeIconClass ?? '') === ''
-                ? 'user'
-                : occupant.fontAwesomeIconClass ?? ''
-            )}" aria-hidden="true"></i>
-          </span>
-          ${cityssm.escapeHTML(occupant.occupantName ?? '')}
-          ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
+      for (const interment of burialSiteContract.burialSiteContractInterments ?? []) {
+        deceasedHTML += `<li class="has-tooltip-left">
+          ${cityssm.escapeHTML(interment.deceasedName ?? '')}
           </li>`
       }
 
@@ -122,18 +115,21 @@ declare const exports: Record<string, unknown>
         'beforeend',
         `<tr>
           <td class="has-width-1">
-            ${occupancyTimeHTML}
+            ${contractTimeHTML}
           </td><td>
             <a class="has-text-weight-bold"
               href="${los.getBurialSiteContractURL(burialSiteContract.burialSiteContractId)}">
-              ${cityssm.escapeHTML(burialSiteContract.occupancyType ?? '')}
+              ${cityssm.escapeHTML(burialSiteContract.contractType ?? '')}
             </a><br />
             <span class="is-size-7">#${burialSiteContract.burialSiteContractId}</span>
           </td><td>
             ${
-              (burialSiteContract.lotId ?? -1) === -1
-                ? `<span class="has-text-grey">(No ${los.escapedAliases.Lot})</span>`
-                : `<a class="has-tooltip-right" data-tooltip="${cityssm.escapeHTML(burialSiteContract.lotType ?? '')}" href="${los.getBurialSiteURL(burialSiteContract.lotId)}">${cityssm.escapeHTML(burialSiteContract.lotName ?? '')}</a>`
+              (burialSiteContract.burialSiteId ?? -1) === -1
+                ? `<span class="has-text-grey">(No Burial Site)</span>`
+                : `<a class="has-tooltip-right" data-tooltip="${cityssm.escapeHTML(burialSiteContract.burialSiteType ?? '')}"
+                    href="${los.getBurialSiteURL(burialSiteContract.burialSiteId)}">
+                    ${cityssm.escapeHTML(burialSiteContract.burialSiteName ?? '')}
+                    </a>`
             }<br />
             <span class="is-size-7">${cityssm.escapeHTML(burialSiteContract.cemeteryName ?? '')}</span>
           </td><td>
@@ -146,9 +142,9 @@ declare const exports: Record<string, unknown>
             }
           </td><td>
             ${
-              occupantsHTML === ''
+              deceasedHTML === ''
                 ? ''
-                : `<ul class="fa-ul ml-5">${occupantsHTML}</ul>`
+                : `<ul class="fa-ul ml-5">${deceasedHTML}</ul>`
             }
           </td><td>
             ${feeIconHTML}
@@ -164,15 +160,14 @@ declare const exports: Record<string, unknown>
       )
     }
 
-    // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
       <thead><tr>
       <th class="has-width-1"></th>
-      <th>${los.escapedAliases.Occupancy} Type</th>
-      <th>${los.escapedAliases.Lot}</th>
-      <th>${los.escapedAliases.contractStartDate}</th>
+      <th>Contract Type</th>
+      <th>Burial Site</th>
+      <th>Contract Date</th>
       <th>End Date</th>
-      <th>${los.escapedAliases.Occupants}</th>
+      <th>Deceased</th>
       <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
       <th class="has-width-1"><span class="is-sr-only">Print</span></th>
       </tr></thead>
@@ -194,32 +189,32 @@ declare const exports: Record<string, unknown>
 
     searchResultsContainerElement
       .querySelector("button[data-page='previous']")
-      ?.addEventListener('click', previousAndGetLotOccupancies)
+      ?.addEventListener('click', previousAndGetContracts)
 
     searchResultsContainerElement
       .querySelector("button[data-page='next']")
-      ?.addEventListener('click', nextAndGetLotOccupancies)
+      ?.addEventListener('click', nextAndGetContracts)
   }
 
   function getBurialSiteContracts(): void {
     // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
-      `Loading ${los.escapedAliases.Occupancies}...`
+      `Loading Contracts...`
     )
 
     cityssm.postJSON(
-      `${los.urlPrefix}/contracts/doSearchLotOccupancies`,
+      `${los.urlPrefix}/contracts/doSearchBurialSiteContracts`,
       searchFilterFormElement,
-      renderLotOccupancies
+      renderContracts
     )
   }
 
-  function resetOffsetAndGetLotOccupancies(): void {
+  function resetOffsetAndGetContracts(): void {
     offsetElement.value = '0'
     getBurialSiteContracts()
   }
 
-  function previousAndGetLotOccupancies(): void {
+  function previousAndGetContracts(): void {
     offsetElement.value = Math.max(
       Number.parseInt(offsetElement.value, 10) - limit,
       0
@@ -227,7 +222,7 @@ declare const exports: Record<string, unknown>
     getBurialSiteContracts()
   }
 
-  function nextAndGetLotOccupancies(): void {
+  function nextAndGetContracts(): void {
     offsetElement.value = (
       Number.parseInt(offsetElement.value, 10) + limit
     ).toString()
@@ -238,7 +233,7 @@ declare const exports: Record<string, unknown>
     searchFilterFormElement.querySelectorAll('input, select')
 
   for (const filterElement of filterElements) {
-    filterElement.addEventListener('change', resetOffsetAndGetLotOccupancies)
+    filterElement.addEventListener('change', resetOffsetAndGetContracts)
   }
 
   searchFilterFormElement.addEventListener('submit', (formEvent) => {

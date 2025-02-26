@@ -12,12 +12,12 @@ describe('Update - Lots', () => {
   it('Has a "Create" link on the Lot Search', () => {
     cy.visit('/lots')
     cy.location('pathname').should('equal', '/lots')
-    cy.get("a[href$='/lots/new']").should('exist')
+    cy.get("a[href$='/burialSites/new']").should('exist')
   })
 
   describe('Update a New Lot', () => {
     it('Has no detectable accessibility issues', () => {
-      cy.visit('/lots/new')
+      cy.visit('/burialSites/new')
       cy.injectAxe()
       cy.checkA11y()
     })

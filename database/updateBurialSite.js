@@ -1,8 +1,14 @@
+import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
 import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js';
 import deleteBurialSiteField from './deleteBurialSiteField.js';
+import getCemetery from './getCemetery.js';
 import { acquireConnection } from './pool.js';
 export default async function updateBurialSite(updateForm, user) {
     const database = await acquireConnection();
+    const cemetery = updateForm.cemeteryId === ''
+        ? undefined
+        : await getCemetery(updateForm.cemeteryId, database);
+    const burialSiteName = buildBurialSiteName(cemetery?.cemeteryKey, updateForm);
     const result = database
         .prepare(`update BurialSites
         set burialSiteNameSegment1 = ?,
@@ -10,6 +16,7 @@ export default async function updateBurialSite(updateForm, user) {
         burialSiteNameSegment3 = ?,
         burialSiteNameSegment4 = ?,
         burialSiteNameSegment5 = ?,
+        burialSiteName = ?,
         burialSiteTypeId = ?,
         burialSiteStatusId = ?,
         cemeteryId = ?,
@@ -18,9 +25,9 @@ export default async function updateBurialSite(updateForm, user) {
         burialSiteLongitude = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
-        where lotId = ?
+        where burialSiteId = ?
         and recordDelete_timeMillis is null`)
-        .run(updateForm.burialSiteNameSegment1, updateForm.burialSiteNameSegment2 ?? '', updateForm.burialSiteNameSegment3 ?? '', updateForm.burialSiteNameSegment4 ?? '', updateForm.burialSiteNameSegment5 ?? '', updateForm.burialSiteTypeId, updateForm.burialSiteStatusId === ''
+        .run(updateForm.burialSiteNameSegment1 ?? '', updateForm.burialSiteNameSegment2 ?? '', updateForm.burialSiteNameSegment3 ?? '', updateForm.burialSiteNameSegment4 ?? '', updateForm.burialSiteNameSegment5 ?? '', burialSiteName, updateForm.burialSiteTypeId, updateForm.burialSiteStatusId === ''
         ? undefined
         : updateForm.burialSiteStatusId, updateForm.cemeteryId === '' ? undefined : updateForm.cemeteryId, updateForm.cemeterySvgId, updateForm.burialSiteLatitude === ''
         ? undefined

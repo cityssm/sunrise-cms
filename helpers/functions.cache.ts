@@ -281,6 +281,7 @@ type CacheTableNames =
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
   | 'FeeCategories'
+  | 'Fees'
 
 export function clearCacheByTableName(
   tableName: CacheTableNames,

@@ -303,36 +303,36 @@ type ResponseJSON =
     ) as OccupancyTypeField
 
     let fieldTypeElement: HTMLSelectElement
-    let minimumLengthElement: HTMLInputElement
-    let maximumLengthElement: HTMLInputElement
+    let minLengthInputElement: HTMLInputElement
+    let maxLengthInputElement: HTMLInputElement
     let patternElement: HTMLInputElement
     let occupancyTypeFieldValuesElement: HTMLTextAreaElement
 
     let editCloseModalFunction: () => void
 
     function updateMaximumLengthMin(): void {
-      maximumLengthElement.min = minimumLengthElement.value
+      maxLengthInputElement.min = minLengthInputElement.value
     }
 
     function toggleInputFields(): void {
       switch (fieldTypeElement.value) {
         case 'date': {
-          minimumLengthElement.disabled = true
-          maximumLengthElement.disabled = true
+          minLengthInputElement.disabled = true
+          maxLengthInputElement.disabled = true
           patternElement.disabled = true
           occupancyTypeFieldValuesElement.disabled = true
           break
         }
         case 'select': {
-          minimumLengthElement.disabled = true
-          maximumLengthElement.disabled = true
+          minLengthInputElement.disabled = true
+          maxLengthInputElement.disabled = true
           patternElement.disabled = true
           occupancyTypeFieldValuesElement.disabled = false
           break
         }
         default: {
-          minimumLengthElement.disabled = false
-          maximumLengthElement.disabled = false
+          minLengthInputElement.disabled = false
+          maxLengthInputElement.disabled = false
           patternElement.disabled = false
           occupancyTypeFieldValuesElement.disabled = true
           break
@@ -412,19 +412,19 @@ type ResponseJSON =
 
         fieldTypeElement.value = occupancyTypeField.fieldType
 
-        minimumLengthElement = modalElement.querySelector(
-          '#occupancyTypeFieldEdit--minimumLength'
+        minLengthInputElement = modalElement.querySelector(
+          '#occupancyTypeFieldEdit--minLength'
         ) as HTMLInputElement
 
-        minimumLengthElement.value =
-          occupancyTypeField.minimumLength?.toString() ?? ''
+        minLengthInputElement.value =
+          occupancyTypeField.minLength?.toString() ?? ''
 
-        maximumLengthElement = modalElement.querySelector(
-          '#occupancyTypeFieldEdit--maximumLength'
+        maxLengthInputElement = modalElement.querySelector(
+          '#occupancyTypeFieldEdit--maxLength'
         ) as HTMLInputElement
 
-        maximumLengthElement.value =
-          occupancyTypeField.maximumLength?.toString() ?? ''
+        maxLengthInputElement.value =
+          occupancyTypeField.maxLength?.toString() ?? ''
 
         patternElement = modalElement.querySelector(
           '#occupancyTypeFieldEdit--pattern'
@@ -450,7 +450,7 @@ type ResponseJSON =
 
         modalElement.querySelector('form')?.addEventListener('submit', doUpdate)
 
-        minimumLengthElement.addEventListener('keyup', updateMaximumLengthMin)
+        minLengthInputElement.addEventListener('keyup', updateMaximumLengthMin)
         updateMaximumLengthMin()
 
         fieldTypeElement.addEventListener('change', toggleInputFields)

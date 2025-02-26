@@ -1,13 +1,16 @@
+import type { PoolConnection } from 'better-sqlite-pool'
+
 import type { Cemetery } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
 export default async function getCemetery(
-  cemeteryId: number | string
+  cemeteryId: number | string,
+  connectedDatabase?: PoolConnection
 ): Promise<Cemetery | undefined> {
-  const database = await acquireConnection()
+  const database = connectedDatabase ?? (await acquireConnection())
 
-  const map = database
+  const cemetery = database
     .prepare(
       `select m.cemeteryId, m.cemeteryName, m.cemeteryKey, m.cemeteryDescription,
         m.cemeteryLatitude, m.cemeteryLongitude, m.cemeterySvg,
@@ -31,7 +34,9 @@ export default async function getCemetery(
     )
     .get(cemeteryId) as Cemetery | undefined
 
-  database.release()
+  if (connectedDatabase === undefined) {
+    database.release()
+  }
 
-  return map
+  return cemetery
 }

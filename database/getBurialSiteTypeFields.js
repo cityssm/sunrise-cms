@@ -5,7 +5,7 @@ export default async function getBurialSiteTypeFields(burialSiteTypeId, connecte
     const typeFields = database
         .prepare(`select burialSiteTypeFieldId,
         burialSiteTypeField, fieldType, fieldValues,
-        isRequired, pattern, minimumLength, maximumLength, orderNumber
+        isRequired, pattern, minLength, maxLength, orderNumber
         from BurialSiteTypeFields
         where recordDelete_timeMillis is null
         and burialSiteTypeId = ?

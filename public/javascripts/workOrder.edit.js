@@ -620,7 +620,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     // eslint-disable-next-line no-unsanitized/property
                     searchResultsContainerElement.innerHTML =
                         los.getLoadingParagraphHTML('Searching...');
-                    cityssm.postJSON(`${los.urlPrefix}/lots/doSearchBurialSites`, searchFormElement, (rawResponseJSON) => {
+                    cityssm.postJSON(`${los.urlPrefix}/burialSites/doSearchBurialSites`, searchFormElement, (rawResponseJSON) => {
                         const responseJSON = rawResponseJSON;
                         if (responseJSON.lots.length === 0) {
                             searchResultsContainerElement.innerHTML = `<div class="message is-info">

@@ -1,12 +1,12 @@
 import { testAdmin } from '../../../test/_globals.js'
 import { login, logout } from '../../support/index.js'
 
-describe('Admin - Occupancy Type Management', () => {
+describe('Admin - Contract Type Management', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
-    cy.visit('/admin/occupancyTypes')
-    cy.location('pathname').should('equal', '/admin/occupancyTypes')
+    cy.visit('/admin/contractTypes')
+    cy.location('pathname').should('equal', '/admin/contractTypes')
   })
 
   afterEach(logout)

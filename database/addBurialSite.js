@@ -1,10 +1,12 @@
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
 import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js';
+import getCemetery from './getCemetery.js';
 import { acquireConnection } from './pool.js';
 export default async function addBurialSite(burialSiteForm, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();
-    const burialSiteName = buildBurialSiteName(burialSiteForm);
+    const cemetery = burialSiteForm.cemeteryId === '' ? undefined : await getCemetery(burialSiteForm.cemeteryId, database);
+    const burialSiteName = buildBurialSiteName(cemetery?.cemeteryKey, burialSiteForm);
     const result = database
         .prepare(`insert into BurialSites (
         burialSiteNameSegment1,

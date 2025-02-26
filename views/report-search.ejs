@@ -25,9 +25,9 @@
           </a>
         </li> 
         <li>
-          <a href="#tab--lots" aria-label="<%= configFunctions.getConfigProperty("aliases.lots") %>">
+          <a href="#tab--lots" aria-label="Burial Sites">
             <span class="icon"><i class="fas fa-fw fa-vector-square" aria-hidden="true"></i></span>
-            <span class="is-hidden-touch"><%= configFunctions.getConfigProperty("aliases.lots") %></span>
+            <span class="is-hidden-touch">Burial Sites</span>
           </a>
         </li>
         <li>
@@ -182,7 +182,7 @@
         </div>
       </div>
       <div class="is-hidden" id="tab--lots">
-        <h1 class="title is-1"><%= configFunctions.getConfigProperty("aliases.lot") %> Reports</h1>
+        <h1 class="title is-1">Burial Site Reports</h1>
 
         <div class="panel">
             <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byMapId">
@@ -194,7 +194,7 @@
                 </div>
                 <div>
                   <h2 class="title is-5 is-marginless">
-                    <%= configFunctions.getConfigProperty("aliases.lots") %> By <%= configFunctions.getConfigProperty("aliases.map") %>
+                    Burial Sites By <%= configFunctions.getConfigProperty("aliases.map") %>
                   </h2>
                   <div class="field has-addons mt-2">
                       <div class="control">
@@ -229,11 +229,11 @@
                     <span class="tag is-info">CSV</span>
                 </div>
                 <div>
-                    <h2 class="title is-5 is-marginless"><%= configFunctions.getConfigProperty("aliases.lots") %> By Type</h2>
+                    <h2 class="title is-5 is-marginless">Burial Sites By Type</h2>
                     <div class="field has-addons mt-2">
                         <div class="control">
                             <label class="button is-small is-static" for="lots-byburialSiteTypeId--burialSiteTypeId">
-                                <%= configFunctions.getConfigProperty("aliases.lot") %> Type
+                                Burial Site Type
                             </label>
                         </div>
                         <div class="control is-expanded">
@@ -263,11 +263,11 @@
                     <span class="tag is-info">CSV</span>
                 </div>
                 <div>
-                    <h2 class="title is-5 is-marginless"><%= configFunctions.getConfigProperty("aliases.lots") %> By Status</h2>
+                    <h2 class="title is-5 is-marginless">Burial Sites By Status</h2>
                     <div class="field has-addons mt-2">
                         <div class="control">
                             <label class="button is-small is-static" for="lots-byburialSiteStatusId--burialSiteStatusId">
-                                <%= configFunctions.getConfigProperty("aliases.lot") %> Status
+                                Burial Site Status
                             </label>
                         </div>
                         <div class="control is-expanded">
@@ -440,7 +440,7 @@
                 </a>
             </div>
             <div class="panel">
-                <h2 class="panel-heading">Lot (<%= configFunctions.getConfigProperty("aliases.lot") %>) Tables</h2>
+                <h2 class="panel-heading">Lot (Burial Site) Tables</h2>
                 <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/maps-all" download>
                     <div class="has-text-centered my-2 ml-2 mr-3">
                         <span class="icon has-text-info">
@@ -525,7 +525,7 @@
                 </a>
             </div>
             <div class="panel">
-                <h2 class="panel-heading">Lot (<%= configFunctions.getConfigProperty("aliases.lot") %>) Tables</h2>
+                <h2 class="panel-heading">Lot (Burial Site) Tables</h2>
                 <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotTypes-all" download>
                     <div class="has-text-centered my-2 ml-2 mr-3">
                         <span class="icon has-text-info">

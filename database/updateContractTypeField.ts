@@ -7,8 +7,8 @@ export interface UpdateContractTypeFieldForm {
   contractTypeField: string
   isRequired: '0' | '1'
   fieldType?: string
-  minimumLength?: string
-  maximumLength?: string
+  minLength?: string
+  maxLength?: string
   pattern?: string
   fieldValues: string
 }
@@ -25,8 +25,8 @@ export default async function updateContractTypeField(
         set contractTypeField = ?,
         isRequired = ?,
         fieldType = ?,
-        minimumLength = ?,
-        maximumLength = ?,
+        minLength = ?,
+        maxLength = ?,
         pattern = ?,
         fieldValues = ?,
         recordUpdate_userName = ?,
@@ -38,8 +38,8 @@ export default async function updateContractTypeField(
       updateForm.contractTypeField,
       Number.parseInt(updateForm.isRequired, 10),
       updateForm.fieldType ?? 'text',
-      updateForm.minimumLength ?? 0,
-      updateForm.maximumLength ?? 100,
+      updateForm.minLength ?? 0,
+      updateForm.maxLength ?? 100,
       updateForm.pattern ?? '',
       updateForm.fieldValues,
       user.userName,

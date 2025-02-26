@@ -10,7 +10,7 @@ function buildWhereClause(filters) {
     let sqlWhereClause = ' where o.recordDelete_timeMillis is null';
     const sqlParameters = [];
     if ((filters.burialSiteId ?? '') !== '') {
-        sqlWhereClause += ' and o.lotId = ?';
+        sqlWhereClause += ' and o.burialSiteId = ?';
         sqlParameters.push(filters.burialSiteId);
     }
     const lotNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'l');

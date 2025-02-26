@@ -1,46 +1,43 @@
 "use strict";
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
-    const lotId = document.querySelector('#lot--lotId')
-        .value;
-    const isCreate = lotId === '';
+    const burialSiteId = document.querySelector('#burialSite--burialSiteId').value;
+    const isCreate = burialSiteId === '';
     // Main form
     let refreshAfterSave = isCreate;
     function setUnsavedChanges() {
         los.setUnsavedChanges();
         document
-            .querySelector("button[type='submit'][form='form--lot']")
+            .querySelector("button[type='submit'][form='form--burialSite']")
             ?.classList.remove('is-light');
     }
     function clearUnsavedChanges() {
         los.clearUnsavedChanges();
         document
-            .querySelector("button[type='submit'][form='form--lot']")
+            .querySelector("button[type='submit'][form='form--burialSite']")
             ?.classList.add('is-light');
     }
-    const formElement = document.querySelector('#form--lot');
+    const formElement = document.querySelector('#form--burialSite');
     function updateBurialSite(formEvent) {
         formEvent.preventDefault();
-        cityssm.postJSON(`${los.urlPrefix}/lots/${isCreate ? 'doCreateBurialSite' : 'doUpdateBurialSite'}`, formElement, (rawResponseJSON) => {
+        cityssm.postJSON(`${los.urlPrefix}/burialSites/${isCreate ? 'doCreateBurialSite' : 'doUpdateBurialSite'}`, formElement, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
-                    window.location.href = los.getBurialSiteURL(responseJSON.lotId, true, true);
+                    globalThis.location.href = los.getBurialSiteURL(responseJSON.burialSiteId, true, true);
                 }
                 else {
                     bulmaJS.alert({
-                        message: `${los.escapedAliases.Lot} Updated Successfully`,
+                        message: `Burial Site Updated Successfully`,
                         contextualColorName: 'success'
                     });
                 }
             }
             else {
                 bulmaJS.alert({
-                    title: `Error Updating ${los.escapedAliases.Lot}`,
+                    title: `Error Updating Burial Site`,
                     message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
@@ -54,21 +51,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     los.initializeUnlockFieldButtons(formElement);
     document
-        .querySelector('#button--deleteLot')
+        .querySelector('#button--deleteBurialSite')
         ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         function doDelete() {
-            cityssm.postJSON(`${los.urlPrefix}/lots/doDeleteBurialSite`, {
-                lotId
+            cityssm.postJSON(`${los.urlPrefix}/burialSites/doDeleteBurialSite`, {
+                burialSiteId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     clearUnsavedChanges();
-                    window.location.href = los.getBurialSiteURL();
+                    globalThis.location.href = los.getBurialSiteURL();
                 }
                 else {
                     bulmaJS.alert({
-                        title: `Error Deleting ${los.escapedAliases.Lot}`,
+                        title: `Error Deleting Burial Site`,
                         message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
@@ -76,63 +73,61 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         bulmaJS.confirm({
-            title: `Delete ${los.escapedAliases.Lot}`,
-            message: `Are you sure you want to delete this ${los.escapedAliases.lot}?`,
+            title: `Delete Burial Site`,
+            message: `Are you sure you want to delete this burial site?`,
             contextualColorName: 'warning',
             okButton: {
-                text: `Yes, Delete ${los.escapedAliases.Lot}`,
+                text: `Yes, Delete Burial Site`,
                 callbackFunction: doDelete
             }
         });
     });
-    // Lot Type
-    const burialSiteTypeIdElement = document.querySelector('#lot--burialSiteTypeId');
+    // Burial Site Type
+    const burialSiteTypeIdElement = document.querySelector('#burialSite--burialSiteTypeId');
     if (isCreate) {
-        const lotFieldsContainerElement = document.querySelector('#container--lotFields');
+        const burialSiteFieldsContainerElement = document.querySelector('#container--burialSiteFields');
         burialSiteTypeIdElement.addEventListener('change', () => {
             if (burialSiteTypeIdElement.value === '') {
-                // eslint-disable-next-line no-unsanitized/property
-                lotFieldsContainerElement.innerHTML = `<div class="message is-info">
-          <p class="message-body">Select the ${los.escapedAliases.lot} type to load the available fields.</p>
+                burialSiteFieldsContainerElement.innerHTML = `<div class="message is-info">
+          <p class="message-body">Select the burial site type to load the available fields.</p>
           </div>`;
                 return;
             }
-            cityssm.postJSON(`${los.urlPrefix}/lots/doGetBurialSiteTypeFields`, {
+            cityssm.postJSON(`${los.urlPrefix}/burialSites/doGetBurialSiteTypeFields`, {
                 burialSiteTypeId: burialSiteTypeIdElement.value
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
-                if (responseJSON.BurialSiteTypeFields.length === 0) {
-                    // eslint-disable-next-line no-unsanitized/property
-                    lotFieldsContainerElement.innerHTML = `<div class="message is-info">
+                if (responseJSON.burialSiteTypeFields.length === 0) {
+                    burialSiteFieldsContainerElement.innerHTML = `<div class="message is-info">
               <p class="message-body">
-                There are no additional fields for this ${los.escapedAliases.lot} type.
+                There are no additional fields for this burial site type.
               </p>
               </div>`;
                     return;
                 }
-                lotFieldsContainerElement.innerHTML = '';
-                let lotTypeFieldIds = '';
-                for (const lotTypeField of responseJSON.BurialSiteTypeFields) {
-                    lotTypeFieldIds += `,${lotTypeField.lotTypeFieldId.toString()}`;
-                    const fieldName = `lotFieldValue_${lotTypeField.lotTypeFieldId.toString()}`;
-                    const fieldId = `lot--${fieldName}`;
+                burialSiteFieldsContainerElement.innerHTML = '';
+                let burialSiteTypeFieldIds = '';
+                for (const burialSiteTypeField of responseJSON.burialSiteTypeFields) {
+                    burialSiteTypeFieldIds += `,${burialSiteTypeField.burialSiteTypeFieldId.toString()}`;
+                    const fieldName = `fieldValue_${burialSiteTypeField.burialSiteTypeFieldId.toString()}`;
+                    const fieldId = `burialSite--${fieldName}`;
                     const fieldElement = document.createElement('div');
                     fieldElement.className = 'field';
                     // eslint-disable-next-line no-unsanitized/property
                     fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label>
               <div class="control"></div>`;
-                    fieldElement.querySelector('label').textContent = lotTypeField.lotTypeField;
-                    if (lotTypeField.lotTypeFieldValues === '') {
+                    fieldElement.querySelector('label').textContent = burialSiteTypeField.burialSiteTypeField;
+                    if (burialSiteTypeField.fieldValues === '') {
                         const inputElement = document.createElement('input');
                         inputElement.className = 'input';
                         inputElement.id = fieldId;
                         inputElement.name = fieldName;
                         inputElement.type = 'text';
-                        inputElement.required = lotTypeField.isRequired;
-                        inputElement.minLength = lotTypeField.minimumLength;
-                        inputElement.maxLength = lotTypeField.maximumLength;
-                        if ((lotTypeField.pattern ?? '') !== '') {
-                            inputElement.pattern = lotTypeField.pattern ?? '';
+                        inputElement.required = burialSiteTypeField.isRequired;
+                        inputElement.minLength = burialSiteTypeField.minLength;
+                        inputElement.maxLength = burialSiteTypeField.maxLength;
+                        if ((burialSiteTypeField.pattern ?? '') !== '') {
+                            inputElement.pattern = burialSiteTypeField.pattern ?? '';
                         }
                         fieldElement.querySelector('.control')?.append(inputElement);
                     }
@@ -143,8 +138,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                   <select id="${fieldId}" name="${fieldName}"><option value="">(Not Set)</option></select>
                   </div>`;
                         const selectElement = fieldElement.querySelector('select');
-                        selectElement.required = lotTypeField.isRequired;
-                        const optionValues = lotTypeField.lotTypeFieldValues.split('\n');
+                        selectElement.required = burialSiteTypeField.isRequired;
+                        const optionValues = burialSiteTypeField.fieldValues.split('\n');
                         for (const optionValue of optionValues) {
                             const optionElement = document.createElement('option');
                             optionElement.value = optionValue;
@@ -152,20 +147,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             selectElement.append(optionElement);
                         }
                     }
-                    lotFieldsContainerElement.append(fieldElement);
+                    burialSiteFieldsContainerElement.append(fieldElement);
                 }
-                lotFieldsContainerElement.insertAdjacentHTML('beforeend', `<input name="lotTypeFieldIds" type="hidden"
-              value="${cityssm.escapeHTML(lotTypeFieldIds.slice(1))}" />`);
+                burialSiteFieldsContainerElement.insertAdjacentHTML('beforeend', `<input name="burialSiteTypeFieldIds" type="hidden"
+              value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />`);
             });
         });
     }
     else {
-        const originalburialSiteTypeId = burialSiteTypeIdElement.value;
+        const originalBurialSiteTypeId = burialSiteTypeIdElement.value;
         burialSiteTypeIdElement.addEventListener('change', () => {
-            if (burialSiteTypeIdElement.value !== originalburialSiteTypeId) {
+            if (burialSiteTypeIdElement.value !== originalBurialSiteTypeId) {
                 bulmaJS.confirm({
                     title: 'Confirm Change',
-                    message: `Are you sure you want to change the ${los.escapedAliases.lot} type?\n
+                    message: `Are you sure you want to change the burial site type?\n
             This change affects the additional fields associated with this record.`,
                     contextualColorName: 'warning',
                     okButton: {
@@ -177,7 +172,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     cancelButton: {
                         text: 'Revert the Change',
                         callbackFunction() {
-                            burialSiteTypeIdElement.value = originalburialSiteTypeId;
+                            burialSiteTypeIdElement.value = originalBurialSiteTypeId;
                         }
                     }
                 });
@@ -185,24 +180,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     // Comments
-    let lotComments = exports.lotComments;
-    delete exports.lotComments;
-    function openEditLotComment(clickEvent) {
-        const lotCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-            .lotCommentId ?? '', 10);
-        const lotComment = lotComments.find((currentLotComment) => {
-            return currentLotComment.lotCommentId === lotCommentId;
-        });
+    let burialSiteComments = exports.burialSiteComments;
+    delete exports.burialSiteComments;
+    function openEditBurialSiteComment(clickEvent) {
+        const burialSiteCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+            .burialSiteCommentId ?? '', 10);
+        const burialSiteComment = burialSiteComments.find((currentComment) => currentComment.burialSiteCommentId === burialSiteCommentId);
         let editFormElement;
         let editCloseModalFunction;
         function editComment(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/lots/doUpdateBurialSiteComment`, editFormElement, (rawResponseJSON) => {
+            cityssm.postJSON(`${los.urlPrefix}/burialSites/doUpdateBurialSiteComment`, editFormElement, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    lotComments = responseJSON.lotComments;
+                    burialSiteComments = responseJSON.burialSiteComments;
                     editCloseModalFunction();
-                    renderLotComments();
+                    renderBurialSiteComments();
                 }
                 else {
                     bulmaJS.alert({
@@ -213,26 +206,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         }
-        cityssm.openHtmlModal('lot-editComment', {
+        cityssm.openHtmlModal('burialSite-editComment', {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
-                modalElement.querySelector('#lotCommentEdit--lotId').value = lotId;
-                modalElement.querySelector('#lotCommentEdit--lotCommentId').value = lotCommentId.toString();
-                modalElement.querySelector('#lotCommentEdit--lotComment').value = lotComment.lotComment ?? '';
-                const lotCommentDateStringElement = modalElement.querySelector('#lotCommentEdit--lotCommentDateString');
-                lotCommentDateStringElement.value =
-                    lotComment.lotCommentDateString ?? '';
+                modalElement.querySelector('#burialSiteCommentEdit--burialSiteId').value = burialSiteId;
+                modalElement.querySelector('#burialSiteCommentEdit--burialSiteCommentId').value = burialSiteCommentId.toString();
+                modalElement.querySelector('#burialSiteCommentEdit--comment').value = burialSiteComment.comment ?? '';
+                const commentDateStringElement = modalElement.querySelector('#burialSiteCommentEdit--commentDateString');
+                commentDateStringElement.value =
+                    burialSiteComment.commentDateString ?? '';
                 const currentDateString = cityssm.dateToString(new Date());
-                lotCommentDateStringElement.max =
-                    lotComment.lotCommentDateString <= currentDateString
+                commentDateStringElement.max =
+                    burialSiteComment.commentDateString <= currentDateString
                         ? currentDateString
-                        : lotComment.lotCommentDateString ?? '';
-                modalElement.querySelector('#lotCommentEdit--lotCommentTimeString').value = lotComment.lotCommentTimeString ?? '';
+                        : burialSiteComment.commentDateString ?? '';
+                modalElement.querySelector('#burialSiteCommentEdit--commentTimeString').value = burialSiteComment.commentTimeString ?? '';
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 los.initializeDatePickers(modalElement);
-                modalElement.querySelector('#lotCommentEdit--lotComment').focus();
+                modalElement.querySelector('#burialSiteCommentEdit--comment').focus();
                 editFormElement = modalElement.querySelector('form');
                 editFormElement.addEventListener('submit', editComment);
                 editCloseModalFunction = closeModalFunction;
@@ -242,18 +235,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
-    function deleteLotComment(clickEvent) {
-        const lotCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-            .lotCommentId ?? '', 10);
+    function deleteBurialSiteComment(clickEvent) {
+        const burialSiteCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+            .burialSiteCommentId ?? '', 10);
         function doDelete() {
-            cityssm.postJSON(`${los.urlPrefix}/lots/doDeleteBurialSiteComment`, {
-                lotId,
-                lotCommentId
+            cityssm.postJSON(`${los.urlPrefix}/burialSites/doDeleteBurialSiteComment`, {
+                burialSiteId,
+                burialSiteCommentId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    lotComments = responseJSON.lotComments;
-                    renderLotComments();
+                    burialSiteComments = responseJSON.burialSiteComments;
+                    renderBurialSiteComments();
                 }
                 else {
                     bulmaJS.alert({
@@ -274,9 +267,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             contextualColorName: 'warning'
         });
     }
-    function renderLotComments() {
-        const containerElement = document.querySelector('#container--lotComments');
-        if (lotComments.length === 0) {
+    function renderBurialSiteComments() {
+        const containerElement = document.querySelector('#container--burialSiteComments');
+        if (burialSiteComments.length === 0) {
             containerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no comments to display.</p>
         </div>`;
@@ -291,19 +284,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
       <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
       </tr></thead>
       <tbody></tbody>`;
-        for (const lotComment of lotComments) {
+        for (const burialSiteComment of burialSiteComments) {
             const tableRowElement = document.createElement('tr');
-            tableRowElement.dataset.lotCommentId = lotComment.lotCommentId?.toString();
+            tableRowElement.dataset.burialSiteCommentId =
+                burialSiteComment.burialSiteCommentId?.toString();
             // eslint-disable-next-line no-unsanitized/property
             tableRowElement.innerHTML = `<td>
-          ${cityssm.escapeHTML(lotComment.recordCreate_userName ?? '')}
+          ${cityssm.escapeHTML(burialSiteComment.recordCreate_userName ?? '')}
         </td><td>
-          ${lotComment.lotCommentDateString}
-          ${lotComment.lotCommentTime === 0
+          ${burialSiteComment.commentDateString}
+          ${burialSiteComment.commentTime === 0
                 ? ''
-                : ` ${lotComment.lotCommentTimePeriodString}`}
+                : ` ${burialSiteComment.commentTimePeriodString}`}
         </td><td>
-          ${cityssm.escapeHTML(lotComment.lotComment ?? '')}
+          ${cityssm.escapeHTML(burialSiteComment.comment ?? '')}
         </td><td class="is-hidden-print">
           <div class="buttons are-small is-justify-content-end">
             <button class="button is-primary button--edit" type="button">
@@ -317,10 +311,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </td>`;
             tableRowElement
                 .querySelector('.button--edit')
-                ?.addEventListener('click', openEditLotComment);
+                ?.addEventListener('click', openEditBurialSiteComment);
             tableRowElement
                 .querySelector('.button--delete')
-                ?.addEventListener('click', deleteLotComment);
+                ?.addEventListener('click', deleteBurialSiteComment);
             tableElement.querySelector('tbody')?.append(tableRowElement);
         }
         containerElement.innerHTML = '';
@@ -330,19 +324,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCommentCloseModalFunction;
         function doAddComment(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/lots/doAddBurialSiteComment`, formEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${los.urlPrefix}/burialSites/doAddBurialSiteComment`, formEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    lotComments = responseJSON.lotComments;
-                    renderLotComments();
+                    burialSiteComments = responseJSON.burialSiteComments;
+                    renderBurialSiteComments();
                     addCommentCloseModalFunction();
                 }
             });
         }
-        cityssm.openHtmlModal('lot-addComment', {
+        cityssm.openHtmlModal('burialSite-addComment', {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
-                modalElement.querySelector('#lotCommentAdd--lotId').value = lotId;
+                modalElement.querySelector('#burialSiteCommentAdd--burialSiteId').value = burialSiteId;
                 modalElement
                     .querySelector('form')
                     ?.addEventListener('submit', doAddComment);
@@ -350,18 +344,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 addCommentCloseModalFunction = closeModalFunction;
-                modalElement.querySelector('#lotCommentAdd--lotComment').focus();
+                modalElement.querySelector('#burialSiteCommentAdd--comment').focus();
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();
-                document.querySelector('#lotComments--add').focus();
+                document.querySelector('#burialSiteComments--add').focus();
             }
         });
     }
     if (!isCreate) {
         document
-            .querySelector('#lotComments--add')
+            .querySelector('#burialSiteComments--add')
             ?.addEventListener('click', openAddCommentModal);
-        renderLotComments();
+        renderBurialSiteComments();
     }
 })();

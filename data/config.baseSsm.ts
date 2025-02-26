@@ -8,13 +8,14 @@ config.aliases.externalReceiptNumber = 'GP Receipt Number'
 
 config.settings.burialSites.burialSiteNameSegments = {
   separator: '-',
+  includeCemeteryKey: true,
   segments: {
     1: {
-      isRequired: true,
+      isRequired: false,
       isAvailable: true,
       label: 'Block',
       minLength: 1,
-      maxLength: 3
+      maxLength: 1
     },
     2: {
       isRequired: true,
@@ -28,7 +29,7 @@ config.settings.burialSites.burialSiteNameSegments = {
       isAvailable: true,
       label: 'Lot',
       minLength: 1,
-      maxLength: 3
+      maxLength: 4
     },
     4: {
       isRequired: true,

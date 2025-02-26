@@ -95,11 +95,11 @@
       </div>
       <div class="column">
           <p class="mb-2">
-              <strong><%= configFunctions.getConfigProperty("aliases.lot") %></strong><br />
+              <strong>Burial Site</strong><br />
               <% if (lotOccupancy.lotId) { %>
-                  <a href="<%= urlPrefix %>/lots/<%= lotOccupancy.lotId %>"><%= lotOccupancy.lotName %></a>
+                  <a href="<%= urlPrefix %>/burialSites/<%= lotOccupancy.lotId %>"><%= lotOccupancy.lotName %></a>
               <% } else { %>
-                  <span class="has-text-grey">(No <%= configFunctions.getConfigProperty("aliases.lot") %>)</span>
+                  <span class="has-text-grey">(No Burial Site)</span>
               <% } %>
           </p>
           <p>

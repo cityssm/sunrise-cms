@@ -63,10 +63,10 @@ export async function moveContractTypeFieldDownToBottom(
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
-  const occupancyTypeParameters: unknown[] = []
+  const contractTypeParameters: unknown[] = []
 
   if (currentField.contractTypeId) {
-    occupancyTypeParameters.push(currentField.contractTypeId)
+    contractTypeParameters.push(currentField.contractTypeId)
   }
 
   const maxOrderNumber: number = (
@@ -81,7 +81,7 @@ export async function moveContractTypeFieldDownToBottom(
               : ' and contractTypeId = ?'
           }`
       )
-      .get(occupancyTypeParameters) as { maxOrderNumber: number }
+      .get(contractTypeParameters) as { maxOrderNumber: number }
   ).maxOrderNumber
 
   if (currentField.orderNumber !== maxOrderNumber) {
@@ -92,7 +92,7 @@ export async function moveContractTypeFieldDownToBottom(
       database
     )
 
-    occupancyTypeParameters.push(currentField.orderNumber)
+    contractTypeParameters.push(currentField.orderNumber)
 
     database
       .prepare(
@@ -105,7 +105,7 @@ export async function moveContractTypeFieldDownToBottom(
           }
           and orderNumber > ?`
       )
-      .run(occupancyTypeParameters)
+      .run(contractTypeParameters)
   }
 
   database.release()
@@ -170,13 +170,13 @@ export async function moveContractTypeFieldUpToTop(
       database
     )
 
-    const occupancyTypeParameters: unknown[] = []
+    const contractTypeParameters: unknown[] = []
 
     if (currentField.contractTypeId) {
-      occupancyTypeParameters.push(currentField.contractTypeId)
+      contractTypeParameters.push(currentField.contractTypeId)
     }
 
-    occupancyTypeParameters.push(currentField.orderNumber)
+    contractTypeParameters.push(currentField.orderNumber)
 
     database
       .prepare(
@@ -189,7 +189,7 @@ export async function moveContractTypeFieldUpToTop(
               : ' and contractTypeId is null'
           } and orderNumber < ?`
       )
-      .run(occupancyTypeParameters)
+      .run(contractTypeParameters)
   }
 
   database.release()

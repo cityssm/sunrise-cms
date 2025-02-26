@@ -138,7 +138,7 @@ const segmentConfig = getConfigProperty(
   'settings.burialSites.burialSiteNameSegments'
 )
 
-export function buildBurialSiteName(segments: {
+export function buildBurialSiteName(cemeteryKey: string | undefined, segments: {
   burialSiteNameSegment1?: string
   burialSiteNameSegment2?: string
   burialSiteNameSegment3?: string
@@ -146,6 +146,10 @@ export function buildBurialSiteName(segments: {
   burialSiteNameSegment5?: string
 }): string {
   const segmentPieces: string[] = []
+
+  if (segmentConfig.includeCemeteryKey && cemeteryKey !== undefined) {
+    segmentPieces.push(cemeteryKey)
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-magic-numbers
   for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex++) {
