@@ -1,4 +1,4 @@
-export function calculateFeeAmount(fee, burialSiteContract) {
+export function calculateFeeAmount(fee, contract) {
     return fee.feeFunction ? 0 : fee.feeAmount ?? 0;
 }
 export function calculateTaxAmount(fee, feeAmount) {

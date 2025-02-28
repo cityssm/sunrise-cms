@@ -1,8 +1,8 @@
-import type { BurialSiteContract, Fee } from '../types/recordTypes.js'
+import type { Contract, Fee } from '../types/recordTypes.js'
 
 export function calculateFeeAmount(
   fee: Fee,
-  burialSiteContract: BurialSiteContract
+  contract: Contract
 ): number {
   return fee.feeFunction ? 0 : fee.feeAmount ?? 0
 }

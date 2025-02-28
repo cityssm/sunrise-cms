@@ -254,8 +254,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function getBurialSiteURL(burialSiteId = '', edit = false, time = false) {
         return getRecordURL('burialSites', burialSiteId, edit, time);
     }
-    function getBurialSiteContractURL(burialSiteContractId = '', edit = false, time = false) {
-        return getRecordURL('contracts', burialSiteContractId, edit, time);
+    function getContractURL(contractId = '', edit = false, time = false) {
+        return getRecordURL('contracts', contractId, edit, time);
     }
     function getWorkOrderURL(workOrderId = '', edit = false, time = false) {
         return getRecordURL('workOrders', workOrderId, edit, time);
@@ -285,7 +285,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         getSearchResultsPagerHTML,
         getCemeteryURL,
         getBurialSiteURL,
-        getBurialSiteContractURL,
+        getContractURL,
         getWorkOrderURL
     };
     exports.los = los;

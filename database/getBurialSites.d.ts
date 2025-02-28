@@ -13,7 +13,7 @@ export interface GetBurialSitesOptions {
     /** -1 for no limit */
     limit: number;
     offset: string | number;
-    includeBurialSiteContractCount?: boolean;
+    includeContractCount?: boolean;
 }
 export default function getBurialSites(filters: GetBurialSitesFilters, options: GetBurialSitesOptions, connectedDatabase?: PoolConnection): Promise<{
     count: number;

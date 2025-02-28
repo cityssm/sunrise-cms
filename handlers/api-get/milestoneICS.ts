@@ -47,8 +47,8 @@ function buildEventSummary(milestone: WorkOrderMilestone): string {
 
   let occupantCount = 0
 
-  for (const burialSiteContract of milestone.workOrderBurialSiteContracts ?? []) {
-    for (const occupant of burialSiteContract.burialSiteContractOccupants ?? []) {
+  for (const contract of milestone.workOrderContracts ?? []) {
+    for (const occupant of contract.contractOccupants ?? []) {
       occupantCount += 1
 
       if (occupantCount === 1) {
@@ -75,7 +75,7 @@ function buildEventDescriptionHTML_occupancies(
 ): string {
   let descriptionHTML = ''
 
-  if (milestone.workOrderBurialSiteContracts!.length > 0) {
+  if (milestone.workOrderContracts!.length > 0) {
     const urlRoot = getUrlRoot(request)
 
     descriptionHTML = `<h2>
@@ -91,10 +91,10 @@ function buildEventDescriptionHTML_occupancies(
       </tr></thead>
       <tbody>`
 
-    for (const occupancy of milestone.workOrderBurialSiteContracts ?? []) {
+    for (const occupancy of milestone.workOrderContracts ?? []) {
       descriptionHTML += `<tr>
           <td>
-            <a href="${urlRoot}/contracts/${occupancy.burialSiteContractId}">
+            <a href="${urlRoot}/contracts/${occupancy.contractId}">
               ${escapeHTML(occupancy.occupancyType ?? '')}
             </a>
           </td>
@@ -113,7 +113,7 @@ function buildEventDescriptionHTML_occupancies(
           </td>
           <td>`
 
-      for (const occupant of occupancy.burialSiteContractOccupants ?? []) {
+      for (const occupant of occupancy.contractOccupants ?? []) {
         descriptionHTML += `${escapeHTML(
           occupant.lotOccupantType ?? ''
         )}: ${escapeHTML(occupant.occupantName ?? '')} ${escapeHTML(
@@ -369,10 +369,10 @@ export default async function handler(
     calendarEvent.location(location)
 
     // Set organizer / attendees
-    if (milestone.workOrderBurialSiteContracts!.length > 0) {
+    if (milestone.workOrderContracts!.length > 0) {
       let organizerSet = false
-      for (const burialSiteContract of milestone.workOrderBurialSiteContracts ?? []) {
-        for (const occupant of burialSiteContract.burialSiteContractOccupants ?? []) {
+      for (const contract of milestone.workOrderContracts ?? []) {
+        for (const occupant of contract.contractOccupants ?? []) {
           if (organizerSet) {
             calendarEvent.createAttendee({
               name: `${occupant.occupantName ?? ''} ${

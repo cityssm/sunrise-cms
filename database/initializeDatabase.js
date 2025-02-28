@@ -160,8 +160,8 @@ const createStatements = [
     foreign key (contractTypeId) references ContractTypes (contractTypeId))`,
     `create index if not exists idx_ContractTypePrints_orderNumber
     on ContractTypePrints (contractTypeId, orderNumber, printEJS)`,
-    `create table if not exists BurialSiteContracts (
-    burialSiteContractId integer not null primary key autoincrement,
+    `create table if not exists Contracts (
+    contractId integer not null primary key autoincrement,
     contractTypeId integer not null,
     burialSiteId integer,
     contractStartDate integer not null check (contractStartDate > 0),
@@ -183,24 +183,24 @@ const createStatements = [
     foreign key (burialSiteId) references BurialSites (burialSiteId),
     foreign key (contractTypeId) references ContractTypes (contractTypeId),
     foreign key (funeralHomeId) references FuneralHomes (funeralHomeId))`,
-    `create table if not exists BurialSiteContractFields (
-    burialSiteContractId integer not null,
+    `create table if not exists ContractFields (
+    contractId integer not null,
     contractTypeFieldId integer not null,
     fieldValue text not null,
     ${recordColumns},
-    primary key (burialSiteContractId, contractTypeFieldId),
-    foreign key (burialSiteContractId) references BurialSiteContracts (burialSiteContractId),
+    primary key (contractId, contractTypeFieldId),
+    foreign key (contractId) references Contracts (contractId),
     foreign key (contractTypeFieldId) references ContractTypeFields (contractTypeFieldId)) without rowid`,
-    `create table if not exists BurialSiteContractComments (
-    burialSiteContractCommentId integer not null primary key autoincrement,
-    burialSiteContractId integer not null,
+    `create table if not exists ContractComments (
+    contractCommentId integer not null primary key autoincrement,
+    contractId integer not null,
     commentDate integer not null check (commentDate > 0),
     commentTime integer not null check (commentTime >= 0),
     comment text not null,
     ${recordColumns},
-    foreign key (burialSiteContractId) references BurialSiteContracts (burialSiteContractId))`,
-    `create index if not exists idx_BurialSiteContractComments_datetime
-    on BurialSiteContractComments (burialSiteContractId, commentDate, commentTime)`,
+    foreign key (contractId) references Contracts (contractId))`,
+    `create index if not exists idx_ContractComments_datetime
+    on ContractComments (contractId, commentDate, commentTime)`,
     /*
      * Interments
      */
@@ -218,8 +218,8 @@ const createStatements = [
     ${recordColumns})`,
     `create index if not exists idx_IntermentCommittalType_orderNumber
     on IntermentCommittalTypes (orderNumber, intermentCommittalType)`,
-    `create table if not exists BurialSiteContractInterments (
-    burialSiteContractId integer not null,
+    `create table if not exists ContractInterments (
+    contractId integer not null,
     intermentNumber integer not null,
     
     deceasedName varchar(50) not null,
@@ -238,8 +238,8 @@ const createStatements = [
     intermentCommittalTypeId integer,
 
     ${recordColumns},
-    primary key (burialSiteContractId, intermentNumber),
-    foreign key (burialSiteContractId) references BurialSiteContracts (burialSiteContractId),
+    primary key (contractId, intermentNumber),
+    foreign key (contractId) references Contracts (contractId),
     foreign key (intermentContainerTypeId) references IntermentContainerTypes (intermentContainerTypeId),
     foreign key (intermentCommittalTypeId) references IntermentCommittalTypes (intermentCommittalTypeId)) without rowid`,
     /*
@@ -274,18 +274,18 @@ const createStatements = [
     foreign key (contractTypeId) references ContractTypes (contractTypeId),
     foreign key (burialSiteTypeId) references BurialSiteTypes (burialSiteTypeId))`,
     'create index if not exists idx_Fees_orderNumber on Fees (orderNumber, feeName)',
-    `create table if not exists BurialSiteContractFees (
-    burialSiteContractId integer not null,
+    `create table if not exists ContractFees (
+    contractId integer not null,
     feeId integer not null,
     quantity decimal(4, 1) not null default 1,
     feeAmount decimal(8, 2) not null,
     taxAmount decimal(8, 2) not null,
     ${recordColumns},
-    primary key (burialSiteContractId, feeId),
-    foreign key (burialSiteContractId) references BurialSiteContracts (burialSiteContractId),
+    primary key (contractId, feeId),
+    foreign key (contractId) references Contracts (contractId),
     foreign key (feeId) references Fees (feeId)) without rowid`,
-    `create table if not exists BurialSiteContractTransactions (
-    burialSiteContractId integer not null,
+    `create table if not exists ContractTransactions (
+    contractId integer not null,
     transactionIndex integer not null,
     transactionDate integer not null check (transactionDate > 0),
     transactionTime integer not null check (transactionTime >= 0),
@@ -293,10 +293,10 @@ const createStatements = [
     externalReceiptNumber varchar(100),
     transactionNote text,
     ${recordColumns},
-    primary key (burialSiteContractId, transactionIndex),
-    foreign key (burialSiteContractId) references BurialSiteContracts (burialSiteContractId)) without rowid`,
-    `create index if not exists idx_BurialSiteContractTransactions_orderNumber
-    on BurialSiteContractTransactions (burialSiteContractId, transactionDate, transactionTime)`,
+    primary key (contractId, transactionIndex),
+    foreign key (contractId) references Contracts (contractId)) without rowid`,
+    `create index if not exists idx_ContractTransactions_orderNumber
+    on ContractTransactions (contractId, transactionDate, transactionTime)`,
     /*
      * Work Orders
      */
@@ -323,13 +323,13 @@ const createStatements = [
     primary key (workOrderId, burialSiteId),
     foreign key (workOrderId) references WorkOrders (workOrderId),
     foreign key (burialSiteId) references BurialSites (burialSiteId)) without rowid`,
-    `create table if not exists WorkOrderBurialSiteContracts (
+    `create table if not exists WorkOrderContracts (
     workOrderId integer not null,
-    burialSiteContractId integer not null,
+    contractId integer not null,
     ${recordColumns},
-    primary key (workOrderId, burialSiteContractId),
+    primary key (workOrderId, contractId),
     foreign key (workOrderId) references WorkOrders (workOrderId),
-    foreign key (burialSiteContractId) references BurialSiteContracts (burialSiteContractId)) without rowid`,
+    foreign key (contractId) references Contracts (contractId)) without rowid`,
     `create table if not exists WorkOrderComments (
     workOrderCommentId integer not null primary key autoincrement,
     workOrderId integer not null,

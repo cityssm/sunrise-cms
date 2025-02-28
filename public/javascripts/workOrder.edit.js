@@ -151,18 +151,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
         (() => {
             let workOrderLots = exports.workOrderLots;
             delete exports.workOrderLots;
-            let workOrderBurialSiteContracts = exports.workOrderBurialSiteContracts;
-            delete exports.workOrderBurialSiteContracts;
+            let workOrderContracts = exports.workOrderContracts;
+            delete exports.workOrderContracts;
             function deleteLotOccupancy(clickEvent) {
-                const burialSiteContractId = clickEvent.currentTarget.closest('.container--burialSiteContract').dataset.burialSiteContractId;
+                const contractId = clickEvent.currentTarget.closest('.container--contract').dataset.contractId;
                 function doDelete() {
-                    cityssm.postJSON(`${los.urlPrefix}/workOrders/doDeleteWorkOrderBurialSiteContract`, {
+                    cityssm.postJSON(`${los.urlPrefix}/workOrders/doDeleteWorkOrderContract`, {
                         workOrderId,
-                        burialSiteContractId
+                        contractId
                     }, (rawResponseJSON) => {
                         const responseJSON = rawResponseJSON;
                         if (responseJSON.success) {
-                            workOrderBurialSiteContracts = responseJSON.workOrderBurialSiteContracts;
+                            workOrderContracts = responseJSON.workOrderContracts;
                             renderRelatedLotsAndOccupancies();
                         }
                         else {
@@ -206,14 +206,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                 });
             }
-            function addBurialSiteContract(burialSiteContractId, callbackFunction) {
-                cityssm.postJSON(`${los.urlPrefix}/workOrders/doAddWorkOrderBurialSiteContract`, {
+            function addContract(contractId, callbackFunction) {
+                cityssm.postJSON(`${los.urlPrefix}/workOrders/doAddWorkOrderContract`, {
                     workOrderId,
-                    burialSiteContractId
+                    contractId
                 }, (rawResponseJSON) => {
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
-                        workOrderBurialSiteContracts = responseJSON.workOrderBurialSiteContracts;
+                        workOrderContracts = responseJSON.workOrderContracts;
                         renderRelatedLotsAndOccupancies();
                     }
                     else {
@@ -234,8 +234,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             function renderRelatedOccupancies() {
                 const occupanciesContainerElement = document.querySelector('#container--lotOccupancies');
-                document.querySelector(".tabs a[href='#relatedTab--lotOccupancies'] .tag").textContent = workOrderBurialSiteContracts.length.toString();
-                if (workOrderBurialSiteContracts.length === 0) {
+                document.querySelector(".tabs a[href='#relatedTab--lotOccupancies'] .tag").textContent = workOrderContracts.length.toString();
+                if (workOrderContracts.length === 0) {
                     // eslint-disable-next-line no-unsanitized/property
                     occupanciesContainerElement.innerHTML = `<div class="message is-info">
             <p class="message-body">There are no ${los.escapedAliases.occupancies} associated with this work order.</p>
@@ -256,34 +256,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
           <tbody></tbody>
           </table>`;
                 const currentDateString = cityssm.dateToString(new Date());
-                for (const burialSiteContract of workOrderBurialSiteContracts) {
+                for (const contract of workOrderContracts) {
                     const rowElement = document.createElement('tr');
-                    rowElement.className = 'container--burialSiteContract';
-                    rowElement.dataset.burialSiteContractId =
-                        burialSiteContract.burialSiteContractId.toString();
-                    const isActive = !(burialSiteContract.contractEndDate &&
-                        burialSiteContract.contractEndDateString < currentDateString);
-                    const hasLotRecord = burialSiteContract.lotId &&
-                        workOrderLots.some((lot) => burialSiteContract.lotId === lot.lotId);
+                    rowElement.className = 'container--contract';
+                    rowElement.dataset.contractId =
+                        contract.contractId.toString();
+                    const isActive = !(contract.contractEndDate &&
+                        contract.contractEndDateString < currentDateString);
+                    const hasLotRecord = contract.lotId &&
+                        workOrderLots.some((lot) => contract.lotId === lot.lotId);
                     // eslint-disable-next-line no-unsanitized/property
                     rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
       ${isActive
                         ? `<i class="fas fa-play" title="Current ${los.escapedAliases.Occupancy}"></i>`
                         : `<i class="fas fa-stop" title="Previous ${los.escapedAliases.Occupancy}"></i>`}
       </td><td>
-        <a class="has-text-weight-bold" href="${los.getBurialSiteContractURL(burialSiteContract.burialSiteContractId)}">
-          ${cityssm.escapeHTML(burialSiteContract.occupancyType ?? '')}
+        <a class="has-text-weight-bold" href="${los.getContractURL(contract.contractId)}">
+          ${cityssm.escapeHTML(contract.occupancyType ?? '')}
         </a><br />
-        <span class="is-size-7">#${burialSiteContract.burialSiteContractId}</span>
+        <span class="is-size-7">#${contract.contractId}</span>
       </td>`;
-                    if (burialSiteContract.lotId) {
+                    if (contract.lotId) {
                         // eslint-disable-next-line no-unsanitized/method
                         rowElement.insertAdjacentHTML('beforeend', `<td>
-          ${cityssm.escapeHTML(burialSiteContract.lotName ?? '')}
+          ${cityssm.escapeHTML(contract.lotName ?? '')}
           ${hasLotRecord
                             ? ''
                             : ` <button class="button is-small is-light is-success button--addBurialSite"
-                  data-lot-id="${burialSiteContract.lotId.toString()}"
+                  data-lot-id="${contract.lotId.toString()}"
                   data-tooltip="Add ${los.escapedAliases.Lot}"
                   aria-label="Add ${los.escapedAliases.Lot}" type="button">
                   <i class="fas fa-plus" aria-hidden="true"></i>
@@ -295,7 +295,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         rowElement.insertAdjacentHTML('beforeend', `<td><span class="has-text-grey">(No ${los.escapedAliases.Lot})</span></td>`);
                     }
                     let occupantsHTML = '';
-                    for (const occupant of burialSiteContract.burialSiteContractOccupants) {
+                    for (const occupant of contract.contractOccupants) {
                         occupantsHTML += `<li class="has-tooltip-left"
               data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
               <span class="fa-li">
@@ -309,13 +309,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                     // eslint-disable-next-line no-unsanitized/method
                     rowElement.insertAdjacentHTML('beforeend', `<td>
-          ${burialSiteContract.contractStartDateString}
+          ${contract.contractStartDateString}
         </td><td>
-          ${burialSiteContract.contractEndDate
-                        ? burialSiteContract.contractEndDateString
+          ${contract.contractEndDate
+                        ? contract.contractEndDateString
                         : '<span class="has-text-grey">(No End Date)</span>'}
         </td><td>
-          ${burialSiteContract.burialSiteContractOccupants.length === 0
+          ${contract.contractOccupants.length === 0
                         ? `<span class="has-text-grey">(No ${los.escapedAliases.Occupants})</span>`
                         : `<ul class="fa-ul ml-5">${occupantsHTML}</ul>`}
         </td><td>
@@ -489,15 +489,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             renderRelatedLotsAndOccupancies();
             function doAddLotOccupancy(clickEvent) {
                 const rowElement = clickEvent.currentTarget.closest('tr');
-                const burialSiteContractId = rowElement.dataset.burialSiteContractId ?? '';
-                addBurialSiteContract(burialSiteContractId, (success) => {
+                const contractId = rowElement.dataset.contractId ?? '';
+                addContract(contractId, (success) => {
                     if (success) {
                         rowElement.remove();
                     }
                 });
             }
             document
-                .querySelector('#button--addBurialSiteContract')
+                .querySelector('#button--addContract')
                 ?.addEventListener('click', () => {
                 let searchFormElement;
                 let searchResultsContainerElement;
@@ -528,21 +528,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
                   </tr></thead>
                   <tbody></tbody>
                   </table>`;
-                        for (const burialSiteContract of responseJSON.lotOccupancies) {
+                        for (const contract of responseJSON.lotOccupancies) {
                             const rowElement = document.createElement('tr');
-                            rowElement.className = 'container--burialSiteContract';
-                            rowElement.dataset.burialSiteContractId =
-                                burialSiteContract.burialSiteContractId.toString();
+                            rowElement.className = 'container--contract';
+                            rowElement.dataset.contractId =
+                                contract.contractId.toString();
                             rowElement.innerHTML = `<td class="has-text-centered">
-                      <button class="button is-small is-success button--addBurialSiteContract" data-tooltip="Add" type="button" aria-label="Add">
+                      <button class="button is-small is-success button--addContract" data-tooltip="Add" type="button" aria-label="Add">
                         <i class="fas fa-plus" aria-hidden="true"></i>
                       </button>
                     </td>
                     <td class="has-text-weight-bold">
-                      ${cityssm.escapeHTML(burialSiteContract.occupancyType ?? '')}
+                      ${cityssm.escapeHTML(contract.occupancyType ?? '')}
                     </td>`;
-                            if (burialSiteContract.lotId) {
-                                rowElement.insertAdjacentHTML('beforeend', `<td>${cityssm.escapeHTML(burialSiteContract.lotName ?? '')}</td>`);
+                            if (contract.lotId) {
+                                rowElement.insertAdjacentHTML('beforeend', `<td>${cityssm.escapeHTML(contract.lotName ?? '')}</td>`);
                             }
                             else {
                                 // eslint-disable-next-line no-unsanitized/method
@@ -550,25 +550,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             }
                             // eslint-disable-next-line no-unsanitized/method
                             rowElement.insertAdjacentHTML('beforeend', `<td>
-                  ${burialSiteContract.contractStartDateString}
+                  ${contract.contractStartDateString}
                 </td><td>
-                  ${burialSiteContract.contractEndDate
-                                ? burialSiteContract.contractEndDateString
+                  ${contract.contractEndDate
+                                ? contract.contractEndDateString
                                 : '<span class="has-text-grey">(No End Date)</span>'}
                 </td><td>
-                  ${burialSiteContract.burialSiteContractOccupants.length === 0
+                  ${contract.contractOccupants.length === 0
                                 ? `<span class="has-text-grey">
                           (No ${cityssm.escapeHTML(los.escapedAliases.Occupants)})
                           </span>`
-                                : cityssm.escapeHTML(`${burialSiteContract.burialSiteContractOccupants[0].occupantName}
-                            ${burialSiteContract.burialSiteContractOccupants[0]
+                                : cityssm.escapeHTML(`${contract.contractOccupants[0].occupantName}
+                            ${contract.contractOccupants[0]
                                     .occupantFamilyName}`) +
-                                    (burialSiteContract.burialSiteContractOccupants.length > 1
+                                    (contract.contractOccupants.length > 1
                                         ? ` plus
-                              ${(burialSiteContract.burialSiteContractOccupants.length - 1).toString()}`
+                              ${(contract.contractOccupants.length - 1).toString()}`
                                         : '')}</td>`);
                             rowElement
-                                .querySelector('.button--addBurialSiteContract')
+                                .querySelector('.button--addContract')
                                 ?.addEventListener('click', doAddLotOccupancy);
                             searchResultsContainerElement
                                 .querySelector('tbody')
@@ -576,26 +576,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         }
                     });
                 }
-                cityssm.openHtmlModal('workOrder-addBurialSiteContract', {
+                cityssm.openHtmlModal('workOrder-addContract', {
                     onshow(modalElement) {
                         los.populateAliases(modalElement);
                         searchFormElement = modalElement.querySelector('form');
-                        searchResultsContainerElement = modalElement.querySelector('#resultsContainer--burialSiteContractAdd');
-                        modalElement.querySelector('#burialSiteContractSearch--notWorkOrderId').value = workOrderId;
-                        modalElement.querySelector('#burialSiteContractSearch--occupancyEffectiveDateString').value = document.querySelector('#workOrderEdit--workOrderOpenDateString').value;
+                        searchResultsContainerElement = modalElement.querySelector('#resultsContainer--contractAdd');
+                        modalElement.querySelector('#contractSearch--notWorkOrderId').value = workOrderId;
+                        modalElement.querySelector('#contractSearch--occupancyEffectiveDateString').value = document.querySelector('#workOrderEdit--workOrderOpenDateString').value;
                         doSearch();
                     },
                     onshown(modalElement) {
                         bulmaJS.toggleHtmlClipped();
-                        const occupantNameElement = modalElement.querySelector('#burialSiteContractSearch--occupantName');
+                        const occupantNameElement = modalElement.querySelector('#contractSearch--occupantName');
                         occupantNameElement.addEventListener('change', doSearch);
                         occupantNameElement.focus();
-                        modalElement.querySelector('#burialSiteContractSearch--lotName').addEventListener('change', doSearch);
+                        modalElement.querySelector('#contractSearch--lotName').addEventListener('change', doSearch);
                         searchFormElement.addEventListener('submit', doSearch);
                     },
                     onremoved() {
                         bulmaJS.toggleHtmlClipped();
-                        document.querySelector('#button--addBurialSiteContract').focus();
+                        document.querySelector('#button--addContract').focus();
                     }
                 });
             });

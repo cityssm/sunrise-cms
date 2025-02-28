@@ -3,7 +3,7 @@ import { getBurialSiteStatuses, getBurialSiteTypes } from '../../helpers/functio
 export default async function handler(request, response) {
     const burialSite = {
         burialSiteId: -1,
-        burialSiteContracts: []
+        contracts: []
     };
     const cemeteries = await getCemeteries();
     if (request.query.cemeteryId !== undefined) {

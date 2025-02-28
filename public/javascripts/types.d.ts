@@ -23,6 +23,6 @@ export interface LOS {
     getSearchResultsPagerHTML: (limit: number, offset: number, count: number) => string;
     getCemeteryURL: (cemeteryId?: number | string, edit?: boolean, time?: boolean) => string;
     getBurialSiteURL: (burialSiteId?: number | string, edit?: boolean, time?: boolean) => string;
-    getBurialSiteContractURL: (burialSiteContractId?: number | string, edit?: boolean, time?: boolean) => string;
+    getContractURL: (contractId?: number | string, edit?: boolean, time?: boolean) => string;
     getWorkOrderURL: (workOrderId?: number | string, edit?: boolean, time?: boolean) => string;
 }

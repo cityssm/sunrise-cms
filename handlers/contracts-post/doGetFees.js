@@ -1,11 +1,11 @@
-import getBurialSiteContract from '../../database/getBurialSiteContract.js';
+import getContract from '../../database/getContract.js';
 import getFeeCategories from '../../database/getFeeCategories.js';
 export default async function handler(request, response) {
-    const burialSiteContractId = request.body.burialSiteContractId;
-    const burialSiteContract = (await getBurialSiteContract(burialSiteContractId));
+    const contractId = request.body.contractId;
+    const contract = (await getContract(contractId));
     const feeCategories = await getFeeCategories({
-        contractTypeId: burialSiteContract.contractTypeId,
-        burialSiteTypeId: burialSiteContract.burialSiteTypeId
+        contractTypeId: contract.contractTypeId,
+        burialSiteTypeId: contract.burialSiteTypeId
     }, {
         includeFees: true
     });

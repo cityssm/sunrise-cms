@@ -3,8 +3,8 @@ import type { PoolConnection } from 'better-sqlite-pool'
 
 import type { WorkOrder } from '../types/recordTypes.js'
 
-import getBurialSiteContracts from './getBurialSiteContracts.js'
 import getBurialSites from './getBurialSites.js'
+import getContracts from './getContracts.js'
 import getWorkOrderComments from './getWorkOrderComments.js'
 import getWorkOrderMilestones from './getWorkOrderMilestones.js'
 import { acquireConnection } from './pool.js'
@@ -48,14 +48,14 @@ async function _getWorkOrder(
         {
           limit: -1,
           offset: 0,
-          includeBurialSiteContractCount: false
+          includeContractCount: false
         },
         database
       )
 
       workOrder.workOrderBurialSites = burialSiteResults.burialSites
 
-      const workOrderBurialSiteContractsResults = await getBurialSiteContracts(
+      const workOrderContractsResults = await getContracts(
         {
           workOrderId: workOrder.workOrderId
         },
@@ -69,8 +69,8 @@ async function _getWorkOrder(
         database
       )
 
-      workOrder.workOrderBurialSiteContracts =
-        workOrderBurialSiteContractsResults.burialSiteContracts
+      workOrder.workOrderContracts =
+        workOrderContractsResults.contracts
     }
 
     if (options.includeComments) {

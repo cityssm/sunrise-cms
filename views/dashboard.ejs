@@ -70,9 +70,9 @@
                       }
                     }
                   
-                    if (milestone.workOrderBurialSiteContracts.length > 0) {
-                      for (const burialSiteContract of milestone.workOrderBurialSiteContracts) {
-                        for (const interment of burialSiteContract.lotOccupancyInterments) {
+                    if (milestone.workOrderContracts.length > 0) {
+                      for (const contract of milestone.workOrderContracts) {
+                        for (const interment of contract.lotOccupancyInterments) {
                   %>
                   <span class="has-tooltip-right" data-tooltip="Interment">
                     <i class="fas fa-fw fa-user" aria-label="Contract"></i>
@@ -144,8 +144,8 @@
                 <span class="fa-layers fa-4x fa-fw" aria-hidden="true">
                   <i class="fas fa-vector-square"></i>
                   <i class="fas fa-user" data-fa-transform="shrink-10"></i>
-                  <% if (burialSiteContractCount > 0) { %>
-                    <span class="fa-layers-counter has-background-success"><%= burialSiteContractCount %></span>
+                  <% if (contractCount > 0) { %>
+                    <span class="fa-layers-counter has-background-success"><%= contractCount %></span>
                   <% } %>
                 </span>
               </div>

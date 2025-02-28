@@ -1,5 +1,5 @@
 import { dateToString } from '@cityssm/utils-datetime';
-import getBurialSiteContracts from '../../database/getBurialSiteContracts.js';
+import getContracts from '../../database/getContracts.js';
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
 import { getWorkOrders } from '../../database/getWorkOrders.js';
 export default async function handler(_request, response) {
@@ -17,7 +17,7 @@ export default async function handler(_request, response) {
         limit: 1, // only using the count
         offset: 0
     });
-    const burialSiteContractResults = await getBurialSiteContracts({
+    const contractResults = await getContracts({
         contractStartDateString: currentDateString
     }, {
         limit: 1, // only using the count
@@ -30,6 +30,6 @@ export default async function handler(_request, response) {
         headTitle: 'Dashboard',
         workOrderMilestones,
         workOrderCount: workOrderResults.count,
-        burialSiteContractCount: burialSiteContractResults.count
+        contractCount: contractResults.count
     });
 }

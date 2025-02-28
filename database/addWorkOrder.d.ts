@@ -4,6 +4,6 @@ export interface AddWorkOrderForm {
     workOrderDescription: string;
     workOrderOpenDateString?: string;
     workOrderCloseDateString?: string;
-    burialSiteContractId?: string;
+    contractId?: string;
 }
 export default function addWorkOrder(workOrderForm: AddWorkOrderForm, user: User): Promise<number>;

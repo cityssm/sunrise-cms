@@ -1,5 +1,5 @@
 import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
-import addWorkOrderBurialSiteContract from './addWorkOrderBurialSiteContract.js';
+import addWorkOrderContract from './addWorkOrderContract.js';
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js';
 import { acquireConnection } from './pool.js';
 export default async function addWorkOrder(workOrderForm, user) {
@@ -22,10 +22,10 @@ export default async function addWorkOrder(workOrderForm, user) {
         ? undefined
         : dateStringToInteger(workOrderForm.workOrderCloseDateString), user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     const workOrderId = result.lastInsertRowid;
-    if ((workOrderForm.burialSiteContractId ?? '') !== '') {
-        await addWorkOrderBurialSiteContract({
+    if ((workOrderForm.contractId ?? '') !== '') {
+        await addWorkOrderContract({
             workOrderId,
-            burialSiteContractId: workOrderForm.burialSiteContractId
+            contractId: workOrderForm.contractId
         }, user, database);
     }
     database.release();

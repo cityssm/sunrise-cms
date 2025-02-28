@@ -4,7 +4,7 @@ import {
   dateToInteger
 } from '@cityssm/utils-datetime'
 
-import addWorkOrderBurialSiteContract from './addWorkOrderBurialSiteContract.js'
+import addWorkOrderContract from './addWorkOrderContract.js'
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js'
 import { acquireConnection } from './pool.js'
 
@@ -14,7 +14,7 @@ export interface AddWorkOrderForm {
   workOrderDescription: string
   workOrderOpenDateString?: string
   workOrderCloseDateString?: string
-  burialSiteContractId?: string
+  contractId?: string
 }
 
 export default async function addWorkOrder(
@@ -62,11 +62,11 @@ export default async function addWorkOrder(
 
   const workOrderId = result.lastInsertRowid as number
 
-  if ((workOrderForm.burialSiteContractId ?? '') !== '') {
-    await addWorkOrderBurialSiteContract(
+  if ((workOrderForm.contractId ?? '') !== '') {
+    await addWorkOrderContract(
       {
         workOrderId,
-        burialSiteContractId: workOrderForm.burialSiteContractId as string
+        contractId: workOrderForm.contractId as string
       },
       user,
       database

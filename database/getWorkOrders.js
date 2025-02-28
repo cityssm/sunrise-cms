@@ -1,6 +1,6 @@
 import { dateIntegerToString, dateStringToInteger } from '@cityssm/utils-datetime';
 import { getBurialSiteNameWhereClause, getOccupantNameWhereClause } from '../helpers/functions.sqlFilters.js';
-import getBurialSiteContracts from './getBurialSiteContracts.js';
+import getContracts from './getContracts.js';
 import getBurialSites from './getBurialSites.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
@@ -28,10 +28,10 @@ function buildWhereClause(filters) {
     if (occupantNameFilters.sqlParameters.length > 0) {
         sqlWhereClause +=
             ` and w.workOrderId in (
-        select workOrderId from WorkOrderBurialSiteContracts o
+        select workOrderId from WorkOrderContracts o
         where recordDelete_timeMillis is null
-        and o.burialSiteContractId in (
-          select burialSiteContractId from LotOccupancyOccupants o where recordDelete_timeMillis is null
+        and o.contractId in (
+          select contractId from LotOccupancyOccupants o where recordDelete_timeMillis is null
           ${occupantNameFilters.sqlWhereClause}
         ))`;
         sqlParameters.push(...occupantNameFilters.sqlParameters);
@@ -49,10 +49,10 @@ function buildWhereClause(filters) {
         ))`;
         sqlParameters.push(...burialSiteNameFilters.sqlParameters);
     }
-    if ((filters.burialSiteContractId ?? '') !== '') {
+    if ((filters.contractId ?? '') !== '') {
         sqlWhereClause +=
-            ' and w.workOrderId in (select workOrderId from WorkOrderBurialSiteContracts where recordDelete_timeMillis is null and burialSiteContractId = ?)';
-        sqlParameters.push(filters.burialSiteContractId);
+            ' and w.workOrderId in (select workOrderId from WorkOrderContracts where recordDelete_timeMillis is null and contractId = ?)';
+        sqlParameters.push(filters.contractId);
     }
     return {
         sqlWhereClause,
@@ -73,11 +73,11 @@ async function addInclusions(workOrder, options, database) {
             }, {
                 limit: -1,
                 offset: 0,
-                includeBurialSiteContractCount: false
+                includeContractCount: false
             }, database);
             workOrder.workOrderBurialSites = workOrderBurialSitesResults.burialSites;
         }
-        const burialSiteContracts = await getBurialSiteContracts({
+        const contracts = await getContracts({
             workOrderId: workOrder.workOrderId
         }, {
             limit: -1,
@@ -86,7 +86,7 @@ async function addInclusions(workOrder, options, database) {
             includeFees: false,
             includeTransactions: false
         }, database);
-        workOrder.workOrderBurialSiteContracts = burialSiteContracts.burialSiteContracts;
+        workOrder.workOrderContracts = contracts.contracts;
     }
     if (options.includeMilestones ?? false) {
         workOrder.workOrderMilestones =

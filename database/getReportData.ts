@@ -119,13 +119,13 @@ export default async function getReportData(
       break
     }
 
-    case 'burialSiteContracts-all': {
-      sql = 'select * from BurialSiteContracts'
+    case 'contracts-all': {
+      sql = 'select * from Contracts'
       break
     }
 
-    case 'burialSiteContracts-current-byCemeteryId': {
-      sql = `select o.burialSiteContractId,
+    case 'contracts-current-byCemeteryId': {
+      sql = `select o.contractId,
         l.burialSiteNameSegment1,
         l.burialSiteNameSegment2,
         l.burialSiteNameSegment3,
@@ -135,7 +135,7 @@ export default async function getReportData(
         ot.contractType,
         o.contractStartDate,
         o.contractEndDate
-        from BurialSiteContracts o
+        from Contracts o
         left join ContractTypes ot on o.contractTypeId = ot.contractTypeId
         left join BurialSites l on o.burialSiteId = l.burialSiteId
         left join Cemeteries m on l.cemeteryId = m.cemeteryId
@@ -148,32 +148,32 @@ export default async function getReportData(
       break
     }
 
-    case 'burialSiteContractComments-all': {
-      sql = 'select * from BurialSiteContractComments'
+    case 'contractComments-all': {
+      sql = 'select * from ContractComments'
       break
     }
 
-    case 'burialSiteContractFees-all': {
-      sql = 'select * from BurialSiteContractFees'
+    case 'contractFees-all': {
+      sql = 'select * from ContractFees'
       break
     }
 
-    case 'burialSiteContractFields-all': {
-      sql = 'select * from BurialSiteContractFields'
+    case 'contractFields-all': {
+      sql = 'select * from ContractFields'
       break
     }
 
-    case 'burialSiteContractTransactions-all': {
-      sql = 'select * from BurialSiteContractTransactions'
+    case 'contractTransactions-all': {
+      sql = 'select * from ContractTransactions'
       break
     }
 
-    case 'burialSiteContractTransactions-byTransactionDateString': {
-      sql = `select t.burialSiteContractId, t.transactionIndex,
+    case 'contractTransactions-byTransactionDateString': {
+      sql = `select t.contractId, t.transactionIndex,
         t.transactionDate, t.transactionTime,
         t.transactionAmount,
         t.externalReceiptNumber, t.transactionNote
-        from BurialSiteContractTransactions t
+        from ContractTransactions t
         where t.recordDelete_timeMillis is null
         and t.transactionDate = ?`
 

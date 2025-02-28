@@ -3,7 +3,7 @@ export default async function handler(request, response) {
     const result = await getBurialSites(request.body, {
         limit: request.body.limit,
         offset: request.body.offset,
-        includeBurialSiteContractCount: true
+        includeContractCount: true
     });
     response.json({
         count: result.count,

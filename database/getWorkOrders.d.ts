@@ -6,7 +6,7 @@ export interface GetWorkOrdersFilters {
     workOrderOpenDateString?: string;
     occupantName?: string;
     lotName?: string;
-    burialSiteContractId?: number | string;
+    contractId?: number | string;
 }
 interface GetWorkOrdersOptions {
     limit: number;

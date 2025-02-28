@@ -1,7 +1,7 @@
 import type { BurialSite } from '../types/recordTypes.js'
 
 import getBurialSiteComments from './getBurialSiteComments.js'
-import getBurialSiteInterments from './getBurialSiteContracts.js'
+import getBurialSiteInterments from './getContracts.js'
 import getBurialSiteFields from './getBurialSiteFields.js'
 import { acquireConnection } from './pool.js'
 
@@ -33,7 +33,7 @@ async function _getBurialSite(
   const burialSite = database.prepare(sql).get(burialSiteIdOrLotName) as BurialSite | undefined
 
   if (burialSite !== undefined) {
-    const burialSiteContracts = await getBurialSiteInterments(
+    const contracts = await getBurialSiteInterments(
       {
         burialSiteId: burialSite.burialSiteId
       },
@@ -47,7 +47,7 @@ async function _getBurialSite(
       database
     )
 
-    burialSite.burialSiteContracts = burialSiteContracts.burialSiteContracts
+    burialSite.contracts = contracts.contracts
 
     burialSite.burialSiteFields = await getBurialSiteFields(burialSite.burialSiteId, database)
 

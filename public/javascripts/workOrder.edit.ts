@@ -220,33 +220,33 @@ declare const exports: Record<string, unknown>
       let workOrderLots = exports.workOrderLots as Lot[]
       delete exports.workOrderLots
 
-      let workOrderBurialSiteContracts =
-        exports.workOrderBurialSiteContracts as LotOccupancy[]
-      delete exports.workOrderBurialSiteContracts
+      let workOrderContracts =
+        exports.workOrderContracts as LotOccupancy[]
+      delete exports.workOrderContracts
 
       function deleteLotOccupancy(clickEvent: Event): void {
-        const burialSiteContractId = (
+        const contractId = (
           (clickEvent.currentTarget as HTMLElement).closest(
-            '.container--burialSiteContract'
+            '.container--contract'
           ) as HTMLElement
-        ).dataset.burialSiteContractId
+        ).dataset.contractId
 
         function doDelete(): void {
           cityssm.postJSON(
-            `${los.urlPrefix}/workOrders/doDeleteWorkOrderBurialSiteContract`,
+            `${los.urlPrefix}/workOrders/doDeleteWorkOrderContract`,
             {
               workOrderId,
-              burialSiteContractId
+              contractId
             },
             (rawResponseJSON) => {
               const responseJSON = rawResponseJSON as {
                 success: boolean
                 errorMessage?: string
-                workOrderBurialSiteContracts: LotOccupancy[]
+                workOrderContracts: LotOccupancy[]
               }
 
               if (responseJSON.success) {
-                workOrderBurialSiteContracts = responseJSON.workOrderBurialSiteContracts
+                workOrderContracts = responseJSON.workOrderContracts
                 renderRelatedLotsAndOccupancies()
               } else {
                 bulmaJS.alert({
@@ -305,25 +305,25 @@ declare const exports: Record<string, unknown>
         )
       }
 
-      function addBurialSiteContract(
-        burialSiteContractId: number | string,
+      function addContract(
+        contractId: number | string,
         callbackFunction?: (success?: boolean) => void
       ): void {
         cityssm.postJSON(
-          `${los.urlPrefix}/workOrders/doAddWorkOrderBurialSiteContract`,
+          `${los.urlPrefix}/workOrders/doAddWorkOrderContract`,
           {
             workOrderId,
-            burialSiteContractId
+            contractId
           },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
               success: boolean
               errorMessage?: string
-              workOrderBurialSiteContracts: LotOccupancy[]
+              workOrderContracts: LotOccupancy[]
             }
 
             if (responseJSON.success) {
-              workOrderBurialSiteContracts = responseJSON.workOrderBurialSiteContracts
+              workOrderContracts = responseJSON.workOrderContracts
               renderRelatedLotsAndOccupancies()
             } else {
               bulmaJS.alert({
@@ -355,9 +355,9 @@ declare const exports: Record<string, unknown>
           document.querySelector(
             ".tabs a[href='#relatedTab--lotOccupancies'] .tag"
           ) as HTMLElement
-        ).textContent = workOrderBurialSiteContracts.length.toString()
+        ).textContent = workOrderContracts.length.toString()
 
-        if (workOrderBurialSiteContracts.length === 0) {
+        if (workOrderContracts.length === 0) {
           // eslint-disable-next-line no-unsanitized/property
           occupanciesContainerElement.innerHTML = `<div class="message is-info">
             <p class="message-body">There are no ${los.escapedAliases.occupancies} associated with this work order.</p>
@@ -382,20 +382,20 @@ declare const exports: Record<string, unknown>
 
         const currentDateString = cityssm.dateToString(new Date())
 
-        for (const burialSiteContract of workOrderBurialSiteContracts) {
+        for (const contract of workOrderContracts) {
           const rowElement = document.createElement('tr')
-          rowElement.className = 'container--burialSiteContract'
-          rowElement.dataset.burialSiteContractId =
-            burialSiteContract.burialSiteContractId.toString()
+          rowElement.className = 'container--contract'
+          rowElement.dataset.contractId =
+            contract.contractId.toString()
 
           const isActive = !(
-            burialSiteContract.contractEndDate &&
-            burialSiteContract.contractEndDateString! < currentDateString
+            contract.contractEndDate &&
+            contract.contractEndDateString! < currentDateString
           )
 
           const hasLotRecord =
-            burialSiteContract.lotId &&
-            workOrderLots.some((lot) => burialSiteContract.lotId === lot.lotId)
+            contract.lotId &&
+            workOrderLots.some((lot) => contract.lotId === lot.lotId)
 
           // eslint-disable-next-line no-unsanitized/property
           rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
@@ -405,23 +405,23 @@ declare const exports: Record<string, unknown>
           : `<i class="fas fa-stop" title="Previous ${los.escapedAliases.Occupancy}"></i>`
       }
       </td><td>
-        <a class="has-text-weight-bold" href="${los.getBurialSiteContractURL(burialSiteContract.burialSiteContractId)}">
-          ${cityssm.escapeHTML(burialSiteContract.occupancyType ?? '')}
+        <a class="has-text-weight-bold" href="${los.getContractURL(contract.contractId)}">
+          ${cityssm.escapeHTML(contract.occupancyType ?? '')}
         </a><br />
-        <span class="is-size-7">#${burialSiteContract.burialSiteContractId}</span>
+        <span class="is-size-7">#${contract.contractId}</span>
       </td>`
 
-          if (burialSiteContract.lotId) {
+          if (contract.lotId) {
             // eslint-disable-next-line no-unsanitized/method
             rowElement.insertAdjacentHTML(
               'beforeend',
               `<td>
-          ${cityssm.escapeHTML(burialSiteContract.lotName ?? '')}
+          ${cityssm.escapeHTML(contract.lotName ?? '')}
           ${
             hasLotRecord
               ? ''
               : ` <button class="button is-small is-light is-success button--addBurialSite"
-                  data-lot-id="${burialSiteContract.lotId.toString()}"
+                  data-lot-id="${contract.lotId.toString()}"
                   data-tooltip="Add ${los.escapedAliases.Lot}"
                   aria-label="Add ${los.escapedAliases.Lot}" type="button">
                   <i class="fas fa-plus" aria-hidden="true"></i>
@@ -439,7 +439,7 @@ declare const exports: Record<string, unknown>
 
           let occupantsHTML = ''
 
-          for (const occupant of burialSiteContract.burialSiteContractOccupants!) {
+          for (const occupant of contract.contractOccupants!) {
             occupantsHTML += `<li class="has-tooltip-left"
               data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
               <span class="fa-li">
@@ -458,16 +458,16 @@ declare const exports: Record<string, unknown>
           rowElement.insertAdjacentHTML(
             'beforeend',
             `<td>
-          ${burialSiteContract.contractStartDateString}
+          ${contract.contractStartDateString}
         </td><td>
           ${
-            burialSiteContract.contractEndDate
-              ? burialSiteContract.contractEndDateString
+            contract.contractEndDate
+              ? contract.contractEndDateString
               : '<span class="has-text-grey">(No End Date)</span>'
           }
         </td><td>
           ${
-            burialSiteContract.burialSiteContractOccupants!.length === 0
+            contract.contractOccupants!.length === 0
               ? `<span class="has-text-grey">(No ${los.escapedAliases.Occupants})</span>`
               : `<ul class="fa-ul ml-5">${occupantsHTML}</ul>`
           }
@@ -732,9 +732,9 @@ declare const exports: Record<string, unknown>
           'tr'
         ) as HTMLTableRowElement
 
-        const burialSiteContractId = rowElement.dataset.burialSiteContractId ?? ''
+        const contractId = rowElement.dataset.contractId ?? ''
 
-        addBurialSiteContract(burialSiteContractId, (success) => {
+        addContract(contractId, (success) => {
           if (success) {
             rowElement.remove()
           }
@@ -742,7 +742,7 @@ declare const exports: Record<string, unknown>
       }
 
       document
-        .querySelector('#button--addBurialSiteContract')
+        .querySelector('#button--addContract')
         ?.addEventListener('click', () => {
           let searchFormElement: HTMLFormElement
           let searchResultsContainerElement: HTMLElement
@@ -785,25 +785,25 @@ declare const exports: Record<string, unknown>
                   <tbody></tbody>
                   </table>`
 
-                for (const burialSiteContract of responseJSON.lotOccupancies) {
+                for (const contract of responseJSON.lotOccupancies) {
                   const rowElement = document.createElement('tr')
-                  rowElement.className = 'container--burialSiteContract'
-                  rowElement.dataset.burialSiteContractId =
-                    burialSiteContract.burialSiteContractId.toString()
+                  rowElement.className = 'container--contract'
+                  rowElement.dataset.contractId =
+                    contract.contractId.toString()
 
                   rowElement.innerHTML = `<td class="has-text-centered">
-                      <button class="button is-small is-success button--addBurialSiteContract" data-tooltip="Add" type="button" aria-label="Add">
+                      <button class="button is-small is-success button--addContract" data-tooltip="Add" type="button" aria-label="Add">
                         <i class="fas fa-plus" aria-hidden="true"></i>
                       </button>
                     </td>
                     <td class="has-text-weight-bold">
-                      ${cityssm.escapeHTML(burialSiteContract.occupancyType ?? '')}
+                      ${cityssm.escapeHTML(contract.occupancyType ?? '')}
                     </td>`
 
-                  if (burialSiteContract.lotId) {
+                  if (contract.lotId) {
                     rowElement.insertAdjacentHTML(
                       'beforeend',
-                      `<td>${cityssm.escapeHTML(burialSiteContract.lotName ?? '')}</td>`
+                      `<td>${cityssm.escapeHTML(contract.lotName ?? '')}</td>`
                     )
                   } else {
                     // eslint-disable-next-line no-unsanitized/method
@@ -817,39 +817,39 @@ declare const exports: Record<string, unknown>
                   rowElement.insertAdjacentHTML(
                     'beforeend',
                     `<td>
-                  ${burialSiteContract.contractStartDateString}
+                  ${contract.contractStartDateString}
                 </td><td>
                   ${
-                    burialSiteContract.contractEndDate
-                      ? burialSiteContract.contractEndDateString
+                    contract.contractEndDate
+                      ? contract.contractEndDateString
                       : '<span class="has-text-grey">(No End Date)</span>'
                   }
                 </td><td>
                   ${
-                    burialSiteContract.burialSiteContractOccupants!.length === 0
+                    contract.contractOccupants!.length === 0
                       ? `<span class="has-text-grey">
                           (No ${cityssm.escapeHTML(
                             los.escapedAliases.Occupants
                           )})
                           </span>`
                       : cityssm.escapeHTML(
-                          `${burialSiteContract.burialSiteContractOccupants![0].occupantName}
+                          `${contract.contractOccupants![0].occupantName}
                             ${
-                              burialSiteContract.burialSiteContractOccupants![0]
+                              contract.contractOccupants![0]
                                 .occupantFamilyName
                             }`
                         ) +
-                        (burialSiteContract.burialSiteContractOccupants!.length > 1
+                        (contract.contractOccupants!.length > 1
                           ? ` plus
                               ${(
-                                burialSiteContract.burialSiteContractOccupants!.length - 1
+                                contract.contractOccupants!.length - 1
                               ).toString()}`
                           : '')
                   }</td>`
                   )
 
                   rowElement
-                    .querySelector('.button--addBurialSiteContract')
+                    .querySelector('.button--addContract')
                     ?.addEventListener('click', doAddLotOccupancy)
 
                   searchResultsContainerElement
@@ -860,7 +860,7 @@ declare const exports: Record<string, unknown>
             )
           }
 
-          cityssm.openHtmlModal('workOrder-addBurialSiteContract', {
+          cityssm.openHtmlModal('workOrder-addContract', {
             onshow(modalElement) {
               los.populateAliases(modalElement)
 
@@ -869,16 +869,16 @@ declare const exports: Record<string, unknown>
               ) as HTMLFormElement
 
               searchResultsContainerElement = modalElement.querySelector(
-                '#resultsContainer--burialSiteContractAdd'
+                '#resultsContainer--contractAdd'
               ) as HTMLElement
               ;(
                 modalElement.querySelector(
-                  '#burialSiteContractSearch--notWorkOrderId'
+                  '#contractSearch--notWorkOrderId'
                 ) as HTMLInputElement
               ).value = workOrderId
               ;(
                 modalElement.querySelector(
-                  '#burialSiteContractSearch--occupancyEffectiveDateString'
+                  '#contractSearch--occupancyEffectiveDateString'
                 ) as HTMLInputElement
               ).value = (
                 document.querySelector(
@@ -892,14 +892,14 @@ declare const exports: Record<string, unknown>
               bulmaJS.toggleHtmlClipped()
 
               const occupantNameElement = modalElement.querySelector(
-                '#burialSiteContractSearch--occupantName'
+                '#contractSearch--occupantName'
               ) as HTMLInputElement
 
               occupantNameElement.addEventListener('change', doSearch)
               occupantNameElement.focus()
               ;(
                 modalElement.querySelector(
-                  '#burialSiteContractSearch--lotName'
+                  '#contractSearch--lotName'
                 ) as HTMLInputElement
               ).addEventListener('change', doSearch)
 
@@ -909,7 +909,7 @@ declare const exports: Record<string, unknown>
               bulmaJS.toggleHtmlClipped()
               ;(
                 document.querySelector(
-                  '#button--addBurialSiteContract'
+                  '#button--addContract'
                 ) as HTMLButtonElement
               ).focus()
             }

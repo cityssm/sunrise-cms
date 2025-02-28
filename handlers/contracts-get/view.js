@@ -1,16 +1,16 @@
-import getBurialSiteContract from '../../database/getBurialSiteContract.js';
+import getContract from '../../database/getContract.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getContractTypePrintsById } from '../../helpers/functions.cache.js';
 export default async function handler(request, response) {
-    const burialSiteContract = await getBurialSiteContract(request.params.burialSiteContractId);
-    if (burialSiteContract === undefined) {
-        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/contracts/?error=burialSiteContractIdNotFound`);
+    const contract = await getContract(request.params.contractId);
+    if (contract === undefined) {
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/contracts/?error=contractIdNotFound`);
         return;
     }
-    const contractTypePrints = await getContractTypePrintsById(burialSiteContract.contractTypeId);
-    response.render('burialSiteContract-view', {
+    const contractTypePrints = await getContractTypePrintsById(contract.contractTypeId);
+    response.render('contract-view', {
         headTitle: 'Contract View',
-        burialSiteContract,
+        contract,
         contractTypePrints
     });
 }

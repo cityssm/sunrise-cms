@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import getBurialSiteContract from '../../database/getBurialSiteContract.js'
+import getContract from '../../database/getContract.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getContractTypePrintsById } from '../../helpers/functions.cache.js'
 
@@ -8,26 +8,26 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const burialSiteContract = await getBurialSiteContract(
-    request.params.burialSiteContractId
+  const contract = await getContract(
+    request.params.contractId
   )
 
-  if (burialSiteContract === undefined) {
+  if (contract === undefined) {
     response.redirect(
       `${getConfigProperty(
         'reverseProxy.urlPrefix'
-      )}/contracts/?error=burialSiteContractIdNotFound`
+      )}/contracts/?error=contractIdNotFound`
     )
     return
   }
 
   const contractTypePrints = await getContractTypePrintsById(
-    burialSiteContract.contractTypeId
+    contract.contractTypeId
   )
 
-  response.render('burialSiteContract-view', {
+  response.render('contract-view', {
     headTitle: 'Contract View',
-    burialSiteContract,
+    contract,
     contractTypePrints
   })
 }

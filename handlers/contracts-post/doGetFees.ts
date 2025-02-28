@@ -1,23 +1,23 @@
 import type { Request, Response } from 'express'
 
-import getBurialSiteContract from '../../database/getBurialSiteContract.js'
+import getContract from '../../database/getContract.js'
 import getFeeCategories from '../../database/getFeeCategories.js'
-import type { BurialSiteContract } from '../../types/recordTypes.js'
+import type { Contract } from '../../types/recordTypes.js'
 
 export default async function handler(
-  request: Request<unknown, unknown, { burialSiteContractId: string }>,
+  request: Request<unknown, unknown, { contractId: string }>,
   response: Response
 ): Promise<void> {
-  const burialSiteContractId = request.body.burialSiteContractId
+  const contractId = request.body.contractId
 
-  const burialSiteContract = (await getBurialSiteContract(
-    burialSiteContractId
-  )) as BurialSiteContract
+  const contract = (await getContract(
+    contractId
+  )) as Contract
 
   const feeCategories = await getFeeCategories(
     {
-      contractTypeId: burialSiteContract.contractTypeId,
-      burialSiteTypeId: burialSiteContract.burialSiteTypeId
+      contractTypeId: contract.contractTypeId,
+      burialSiteTypeId: contract.burialSiteTypeId
     },
     {
       includeFees: true

@@ -2,14 +2,14 @@
 /* eslint-disable security/detect-object-injection */
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import getBurialSite from '../database/getBurialSite.js';
-import getBurialSiteContract from '../database/getBurialSiteContract.js';
+import getContract from '../database/getContract.js';
 import getWorkOrder from '../database/getWorkOrder.js';
-import * as burialSiteContractFunctions from './burialSiteContracts.helpers.js';
+import * as contractFunctions from './contracts.helpers.js';
 import * as configFunctions from './config.helpers.js';
 const screenPrintConfigs = {
-    burialSiteContract: {
+    contract: {
         title: `Burial Site Contract Print`,
-        params: ['burialSiteContractId']
+        params: ['contractId']
     }
 };
 export function getScreenPrintConfig(printName) {
@@ -27,11 +27,11 @@ const pdfPrintConfigs = {
     // Occupancy
     'ssm.cemetery.burialPermit': {
         title: 'Burial Permit',
-        params: ['burialSiteContractId']
+        params: ['contractId']
     },
     'ssm.cemetery.contract': {
         title: 'Contract for Purchase of Interment Rights',
-        params: ['burialSiteContractId']
+        params: ['contractId']
     }
 };
 export function getPdfPrintConfig(printName) {
@@ -54,15 +54,15 @@ export async function getReportData(printConfig, requestQuery) {
         headTitle: printConfig.title,
         configFunctions,
         dateTimeFunctions,
-        burialSiteContractFunctions
+        contractFunctions
     };
-    if (printConfig.params.includes('burialSiteContractId') &&
-        typeof requestQuery.burialSiteContractId === 'string') {
-        const burialSiteContract = await getBurialSiteContract(requestQuery.burialSiteContractId);
-        if (burialSiteContract !== undefined && (burialSiteContract.burialSiteId ?? -1) !== -1) {
-            reportData.burialSite = await getBurialSite(burialSiteContract.burialSiteId ?? -1);
+    if (printConfig.params.includes('contractId') &&
+        typeof requestQuery.contractId === 'string') {
+        const contract = await getContract(requestQuery.contractId);
+        if (contract !== undefined && (contract.burialSiteId ?? -1) !== -1) {
+            reportData.burialSite = await getBurialSite(contract.burialSiteId ?? -1);
         }
-        reportData.burialSiteContract = burialSiteContract;
+        reportData.contract = contract;
     }
     if (printConfig.params.includes('workOrderId') &&
         typeof requestQuery.workOrderId === 'string') {

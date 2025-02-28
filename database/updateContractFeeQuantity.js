@@ -1,0 +1,15 @@
+import { acquireConnection } from './pool.js';
+export default async function updateContractFeeQuantity(feeQuantityForm, user) {
+    const database = await acquireConnection();
+    const result = database
+        .prepare(`update ContractFees
+        set quantity = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where recordDelete_timeMillis is null
+        and contractId = ?
+        and feeId = ?`)
+        .run(feeQuantityForm.quantity, user.userName, Date.now(), feeQuantityForm.contractId, feeQuantityForm.feeId);
+    database.release();
+    return result.changes > 0;
+}

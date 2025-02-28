@@ -46,8 +46,8 @@ export interface LOS {
 
   getCemeteryURL: (cemeteryId?: number | string, edit?: boolean, time?: boolean) => string
   getBurialSiteURL: (burialSiteId?: number | string, edit?: boolean, time?: boolean) => string
-  getBurialSiteContractURL: (
-    burialSiteContractId?: number | string,
+  getContractURL: (
+    contractId?: number | string,
     edit?: boolean,
     time?: boolean
   ) => string

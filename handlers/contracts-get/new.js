@@ -4,26 +4,26 @@ import getCemeteries from '../../database/getCemeteries.js';
 import { getBurialSiteStatuses, getBurialSiteTypes, getContractTypes } from '../../helpers/functions.cache.js';
 export default async function handler(request, response) {
     const startDate = new Date();
-    const burialSiteContract = {
+    const contract = {
         contractStartDate: dateToInteger(startDate),
         contractStartDateString: dateToString(startDate)
     };
     if (request.query.burialSiteId !== undefined) {
         const burialSite = await getBurialSite(request.query.burialSiteId);
         if (burialSite !== undefined) {
-            burialSiteContract.burialSiteId = burialSite.burialSiteId;
-            burialSiteContract.burialSiteName = burialSite.burialSiteName;
-            burialSiteContract.cemeteryId = burialSite.cemeteryId;
-            burialSiteContract.cemeteryName = burialSite.cemeteryName;
+            contract.burialSiteId = burialSite.burialSiteId;
+            contract.burialSiteName = burialSite.burialSiteName;
+            contract.cemeteryId = burialSite.cemeteryId;
+            contract.cemeteryName = burialSite.cemeteryName;
         }
     }
     const contractTypes = await getContractTypes();
     const burialSiteTypes = await getBurialSiteTypes();
     const burialSiteStatuses = await getBurialSiteStatuses();
     const cemeteries = await getCemeteries();
-    response.render('burialSiteContract-edit', {
+    response.render('contract-edit', {
         headTitle: 'Create a New Contract',
-        burialSiteContract,
+        contract,
         contractTypes,
         burialSiteTypes,
         burialSiteStatuses,

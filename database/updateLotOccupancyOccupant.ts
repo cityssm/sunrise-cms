@@ -1,7 +1,7 @@
 import { acquireConnection } from './pool.js'
 
 export interface UpdateLotOccupancyOccupantForm {
-  burialSiteContractId: string | number
+  contractId: string | number
   lotOccupantIndex: string | number
   lotOccupantTypeId: string | number
   occupantName: string
@@ -16,8 +16,8 @@ export interface UpdateLotOccupancyOccupantForm {
   occupantComment: string
 }
 
-export default async function updateBurialSiteContractOccupant(
-  burialSiteContractOccupantForm: UpdateLotOccupancyOccupantForm,
+export default async function updateContractOccupant(
+  contractOccupantForm: UpdateLotOccupancyOccupantForm,
   user: User
 ): Promise<boolean> {
   const database = await acquireConnection()
@@ -39,25 +39,25 @@ export default async function updateBurialSiteContractOccupant(
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and burialSiteContractId = ?
+        and contractId = ?
         and lotOccupantIndex = ?`
     )
     .run(
-      burialSiteContractOccupantForm.occupantName,
-      burialSiteContractOccupantForm.occupantFamilyName,
-      burialSiteContractOccupantForm.occupantAddress1,
-      burialSiteContractOccupantForm.occupantAddress2,
-      burialSiteContractOccupantForm.occupantCity,
-      burialSiteContractOccupantForm.occupantProvince,
-      burialSiteContractOccupantForm.occupantPostalCode,
-      burialSiteContractOccupantForm.occupantPhoneNumber,
-      burialSiteContractOccupantForm.occupantEmailAddress,
-      burialSiteContractOccupantForm.occupantComment,
-      burialSiteContractOccupantForm.lotOccupantTypeId,
+      contractOccupantForm.occupantName,
+      contractOccupantForm.occupantFamilyName,
+      contractOccupantForm.occupantAddress1,
+      contractOccupantForm.occupantAddress2,
+      contractOccupantForm.occupantCity,
+      contractOccupantForm.occupantProvince,
+      contractOccupantForm.occupantPostalCode,
+      contractOccupantForm.occupantPhoneNumber,
+      contractOccupantForm.occupantEmailAddress,
+      contractOccupantForm.occupantComment,
+      contractOccupantForm.lotOccupantTypeId,
       user.userName,
       Date.now(),
-      burialSiteContractOccupantForm.burialSiteContractId,
-      burialSiteContractOccupantForm.lotOccupantIndex
+      contractOccupantForm.contractId,
+      contractOccupantForm.lotOccupantIndex
     )
 
   database.release()

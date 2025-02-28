@@ -1,7 +1,7 @@
 import { dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
-import getBurialSiteContracts from '../../database/getBurialSiteContracts.js'
+import getContracts from '../../database/getContracts.js'
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js'
 import { getWorkOrders } from '../../database/getWorkOrders.js'
 
@@ -32,7 +32,7 @@ export default async function handler(
     }
   )
 
-  const burialSiteContractResults = await getBurialSiteContracts(
+  const contractResults = await getContracts(
     {
       contractStartDateString: currentDateString
     },
@@ -49,6 +49,6 @@ export default async function handler(
     headTitle: 'Dashboard',
     workOrderMilestones,
     workOrderCount: workOrderResults.count,
-    burialSiteContractCount: burialSiteContractResults.count
+    contractCount: contractResults.count
   })
 }

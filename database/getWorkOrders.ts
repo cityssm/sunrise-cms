@@ -11,7 +11,7 @@ import {
 } from '../helpers/functions.sqlFilters.js'
 import type { WorkOrder } from '../types/recordTypes.js'
 
-import getBurialSiteContracts from './getBurialSiteContracts.js'
+import getContracts from './getContracts.js'
 import getBurialSites from './getBurialSites.js'
 import getWorkOrderComments from './getWorkOrderComments.js'
 import getWorkOrderMilestones from './getWorkOrderMilestones.js'
@@ -23,7 +23,7 @@ export interface GetWorkOrdersFilters {
   workOrderOpenDateString?: string
   occupantName?: string
   lotName?: string
-  burialSiteContractId?: number | string
+  contractId?: number | string
 }
 
 interface GetWorkOrdersOptions {
@@ -68,10 +68,10 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
   if (occupantNameFilters.sqlParameters.length > 0) {
     sqlWhereClause +=
       ` and w.workOrderId in (
-        select workOrderId from WorkOrderBurialSiteContracts o
+        select workOrderId from WorkOrderContracts o
         where recordDelete_timeMillis is null
-        and o.burialSiteContractId in (
-          select burialSiteContractId from LotOccupancyOccupants o where recordDelete_timeMillis is null
+        and o.contractId in (
+          select contractId from LotOccupancyOccupants o where recordDelete_timeMillis is null
           ${occupantNameFilters.sqlWhereClause}
         ))`
     sqlParameters.push(...occupantNameFilters.sqlParameters)
@@ -91,10 +91,10 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
     sqlParameters.push(...burialSiteNameFilters.sqlParameters)
   }
 
-  if ((filters.burialSiteContractId ?? '') !== '') {
+  if ((filters.contractId ?? '') !== '') {
     sqlWhereClause +=
-      ' and w.workOrderId in (select workOrderId from WorkOrderBurialSiteContracts where recordDelete_timeMillis is null and burialSiteContractId = ?)'
-    sqlParameters.push(filters.burialSiteContractId)
+      ' and w.workOrderId in (select workOrderId from WorkOrderContracts where recordDelete_timeMillis is null and contractId = ?)'
+    sqlParameters.push(filters.contractId)
   }
 
   return {
@@ -126,7 +126,7 @@ async function addInclusions(
         {
           limit: -1,
           offset: 0,
-          includeBurialSiteContractCount: false
+          includeContractCount: false
         },
         database
       )
@@ -134,7 +134,7 @@ async function addInclusions(
       workOrder.workOrderBurialSites = workOrderBurialSitesResults.burialSites
     }
 
-    const burialSiteContracts = await getBurialSiteContracts(
+    const contracts = await getContracts(
       {
         workOrderId: workOrder.workOrderId
       },
@@ -148,7 +148,7 @@ async function addInclusions(
       database
     )
 
-    workOrder.workOrderBurialSiteContracts = burialSiteContracts.burialSiteContracts
+    workOrder.workOrderContracts = contracts.contracts
   }
 
   if (options.includeMilestones ?? false) {

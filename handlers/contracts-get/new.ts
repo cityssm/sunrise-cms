@@ -8,7 +8,7 @@ import {
   getBurialSiteTypes,
   getContractTypes
 } from '../../helpers/functions.cache.js'
-import type { BurialSiteContract } from '../../types/recordTypes.js'
+import type { Contract } from '../../types/recordTypes.js'
 
 export default async function handler(
   request: Request,
@@ -16,7 +16,7 @@ export default async function handler(
 ): Promise<void> {
   const startDate = new Date()
 
-  const burialSiteContract: Partial<BurialSiteContract> = {
+  const contract: Partial<Contract> = {
     contractStartDate: dateToInteger(startDate),
     contractStartDateString: dateToString(startDate)
   }
@@ -25,10 +25,10 @@ export default async function handler(
     const burialSite = await getBurialSite(request.query.burialSiteId as string)
 
     if (burialSite !== undefined) {
-      burialSiteContract.burialSiteId = burialSite.burialSiteId
-      burialSiteContract.burialSiteName = burialSite.burialSiteName
-      burialSiteContract.cemeteryId = burialSite.cemeteryId
-      burialSiteContract.cemeteryName = burialSite.cemeteryName
+      contract.burialSiteId = burialSite.burialSiteId
+      contract.burialSiteName = burialSite.burialSiteName
+      contract.cemeteryId = burialSite.cemeteryId
+      contract.cemeteryName = burialSite.cemeteryName
     }
   }
 
@@ -37,9 +37,9 @@ export default async function handler(
   const burialSiteStatuses = await getBurialSiteStatuses()
   const cemeteries = await getCemeteries()
 
-  response.render('burialSiteContract-edit', {
+  response.render('contract-edit', {
     headTitle: 'Create a New Contract',
-    burialSiteContract,
+    contract,
 
     contractTypes,
     burialSiteTypes,

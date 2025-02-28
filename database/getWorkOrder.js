@@ -1,6 +1,6 @@
 import { dateIntegerToString } from '@cityssm/utils-datetime';
-import getBurialSiteContracts from './getBurialSiteContracts.js';
 import getBurialSites from './getBurialSites.js';
+import getContracts from './getContracts.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
 import { acquireConnection } from './pool.js';
@@ -24,10 +24,10 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
             }, {
                 limit: -1,
                 offset: 0,
-                includeBurialSiteContractCount: false
+                includeContractCount: false
             }, database);
             workOrder.workOrderBurialSites = burialSiteResults.burialSites;
-            const workOrderBurialSiteContractsResults = await getBurialSiteContracts({
+            const workOrderContractsResults = await getContracts({
                 workOrderId: workOrder.workOrderId
             }, {
                 limit: -1,
@@ -36,8 +36,8 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
                 includeFees: false,
                 includeTransactions: false
             }, database);
-            workOrder.workOrderBurialSiteContracts =
-                workOrderBurialSiteContractsResults.burialSiteContracts;
+            workOrder.workOrderContracts =
+                workOrderContractsResults.contracts;
         }
         if (options.includeComments) {
             workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);

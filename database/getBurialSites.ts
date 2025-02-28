@@ -20,7 +20,7 @@ export interface GetBurialSitesOptions {
   /** -1 for no limit */
   limit: number
   offset: string | number
-  includeBurialSiteContractCount?: boolean
+  includeContractCount?: boolean
 }
 
 function buildWhereClause(filters: GetBurialSitesFilters): {
@@ -55,10 +55,10 @@ function buildWhereClause(filters: GetBurialSitesFilters): {
 
   if ((filters.contractStatus ?? '') !== '') {
     if (filters.contractStatus === 'occupied') {
-      sqlWhereClause += ' and burialSiteContractCount > 0'
+      sqlWhereClause += ' and contractCount > 0'
     } else if (filters.contractStatus === 'unoccupied') {
       sqlWhereClause +=
-        ' and (burialSiteContractCount is null or burialSiteContractCount = 0)'
+        ' and (contractCount is null or contractCount = 0)'
     }
   }
 
@@ -94,7 +94,7 @@ export default async function getBurialSites(
           `select count(*) as recordCount
             from BurialSites l
             left join (
-              select burialSiteId, count(burialSiteContractId) as burialSiteContractCount from BurialSiteContracts
+              select burialSiteId, count(contractId) as contractCount from Contracts
               where recordDelete_timeMillis is null
               and contractStartDate <= ${currentDate.toString()}
               and (contractEndDate is null or contractEndDate >= ${currentDate.toString()})
@@ -109,9 +109,9 @@ export default async function getBurialSites(
   let burialSites: BurialSite[] = []
 
   if (options.limit === -1 || count > 0) {
-    const includeBurialSiteContractCount = options.includeBurialSiteContractCount ?? true
+    const includeContractCount = options.includeContractCount ?? true
 
-    if (includeBurialSiteContractCount) {
+    if (includeContractCount) {
       sqlParameters.unshift(currentDate, currentDate)
     }
 
@@ -128,8 +128,8 @@ export default async function getBurialSites(
           l.cemeteryId, m.cemeteryName, l.cemeterySvgId,
           l.burialSiteStatusId, s.burialSiteStatus
           ${
-            includeBurialSiteContractCount
-              ? ', ifnull(o.burialSiteContractCount, 0) as burialSiteContractCount'
+            includeContractCount
+              ? ', ifnull(o.contractCount, 0) as contractCount'
               : ''
           }
           from BurialSites l
@@ -137,10 +137,10 @@ export default async function getBurialSites(
           left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
           left join Cemeteries m on l.cemeteryId = m.cemeteryId
           ${
-            includeBurialSiteContractCount
+            includeContractCount
               ? `left join (
-                  select burialSiteId, count(burialSiteContractId) as burialSiteContractCount
-                  from BurialSiteContracts
+                  select burialSiteId, count(contractId) as contractCount
+                  from Contracts
                   where recordDelete_timeMillis is null
                   and contractStartDate <= ?
                   and (contractEndDate is null or contractEndDate >= ?)

@@ -21,11 +21,11 @@ function buildWhereClause(filters) {
     }
     if ((filters.contractStatus ?? '') !== '') {
         if (filters.contractStatus === 'occupied') {
-            sqlWhereClause += ' and burialSiteContractCount > 0';
+            sqlWhereClause += ' and contractCount > 0';
         }
         else if (filters.contractStatus === 'unoccupied') {
             sqlWhereClause +=
-                ' and (burialSiteContractCount is null or burialSiteContractCount = 0)';
+                ' and (contractCount is null or contractCount = 0)';
         }
     }
     if ((filters.workOrderId ?? '') !== '') {
@@ -48,7 +48,7 @@ export default async function getBurialSites(filters, options, connectedDatabase
             .prepare(`select count(*) as recordCount
             from BurialSites l
             left join (
-              select burialSiteId, count(burialSiteContractId) as burialSiteContractCount from BurialSiteContracts
+              select burialSiteId, count(contractId) as contractCount from Contracts
               where recordDelete_timeMillis is null
               and contractStartDate <= ${currentDate.toString()}
               and (contractEndDate is null or contractEndDate >= ${currentDate.toString()})
@@ -59,8 +59,8 @@ export default async function getBurialSites(filters, options, connectedDatabase
     }
     let burialSites = [];
     if (options.limit === -1 || count > 0) {
-        const includeBurialSiteContractCount = options.includeBurialSiteContractCount ?? true;
-        if (includeBurialSiteContractCount) {
+        const includeContractCount = options.includeContractCount ?? true;
+        if (includeContractCount) {
             sqlParameters.unshift(currentDate, currentDate);
         }
         burialSites = database
@@ -74,17 +74,17 @@ export default async function getBurialSites(filters, options, connectedDatabase
           t.burialSiteType,
           l.cemeteryId, m.cemeteryName, l.cemeterySvgId,
           l.burialSiteStatusId, s.burialSiteStatus
-          ${includeBurialSiteContractCount
-            ? ', ifnull(o.burialSiteContractCount, 0) as burialSiteContractCount'
+          ${includeContractCount
+            ? ', ifnull(o.contractCount, 0) as contractCount'
             : ''}
           from BurialSites l
           left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
           left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
           left join Cemeteries m on l.cemeteryId = m.cemeteryId
-          ${includeBurialSiteContractCount
+          ${includeContractCount
             ? `left join (
-                  select burialSiteId, count(burialSiteContractId) as burialSiteContractCount
-                  from BurialSiteContracts
+                  select burialSiteId, count(contractId) as contractCount
+                  from Contracts
                   where recordDelete_timeMillis is null
                   and contractStartDate <= ?
                   and (contractEndDate is null or contractEndDate >= ?)

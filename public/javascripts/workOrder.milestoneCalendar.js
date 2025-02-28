@@ -40,9 +40,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 milestone.workOrderMilestoneDateString < currentDate) {
                 panelBlockElement.classList.add('has-background-warning-light');
             }
-            let burialSiteContractHTML = '';
+            let contractHTML = '';
             for (const lot of milestone.workOrderLots ?? []) {
-                burialSiteContractHTML += `<li class="has-tooltip-left"
+                contractHTML += `<li class="has-tooltip-left"
           data-tooltip="${cityssm.escapeHTML(lot.cemeteryName ?? '')}">
           <span class="fa-li">
           <i class="fas fa-vector-square"
@@ -51,9 +51,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
           ${cityssm.escapeHTML(lot.lotName ?? '')}
           </li>`;
             }
-            for (const burialSiteContract of milestone.workOrderBurialSiteContracts ?? []) {
-                for (const occupant of burialSiteContract.burialSiteContractOccupants ?? []) {
-                    burialSiteContractHTML += `<li class="has-tooltip-left"
+            for (const contract of milestone.workOrderContracts ?? []) {
+                for (const occupant of contract.contractOccupants ?? []) {
+                    contractHTML += `<li class="has-tooltip-left"
             data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
             <span class="fa-li">
             <i class="fas fa-user"
@@ -89,9 +89,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </a><br />
           <span class="is-size-7">${cityssm.escapeHTML(milestone.workOrderDescription ?? '')}</span>
         </div><div class="column is-size-7">
-          ${burialSiteContractHTML === ''
+          ${contractHTML === ''
                 ? ''
-                : `<ul class="fa-ul ml-4">${burialSiteContractHTML}</ul>`}</div></div>`;
+                : `<ul class="fa-ul ml-4">${contractHTML}</ul>`}</div></div>`;
             currentPanelElement.append(panelBlockElement);
         }
         milestoneCalendarContainerElement.append(currentPanelElement);

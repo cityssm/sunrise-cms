@@ -7,7 +7,7 @@ import handler_outlook from '../handlers/workOrders-get/outlook.js';
 import handler_search from '../handlers/workOrders-get/search.js';
 import handler_view from '../handlers/workOrders-get/view.js';
 import handler_doAddWorkOrderBurialSite from '../handlers/workOrders-post/doAddWorkOrderBurialSite.js';
-import handler_doAddWorkOrderBurialSiteContract from '../handlers/workOrders-post/doAddWorkOrderBurialSiteContract.js';
+import handler_doAddWorkOrderContract from '../handlers/workOrders-post/doAddWorkOrderContract.js';
 import handler_doAddWorkOrderComment from '../handlers/workOrders-post/doAddWorkOrderComment.js';
 import handler_doAddWorkOrderMilestone from '../handlers/workOrders-post/doAddWorkOrderMilestone.js';
 import handler_doCloseWorkOrder from '../handlers/workOrders-post/doCloseWorkOrder.js';
@@ -15,7 +15,7 @@ import handler_doCompleteWorkOrderMilestone from '../handlers/workOrders-post/do
 import handler_doCreateWorkOrder from '../handlers/workOrders-post/doCreateWorkOrder.js';
 import handler_doDeleteWorkOrder from '../handlers/workOrders-post/doDeleteWorkOrder.js';
 import handler_doDeleteWorkOrderBurialSite from '../handlers/workOrders-post/doDeleteWorkOrderBurialSite.js';
-import handler_doDeleteWorkOrderBurialSiteContract from '../handlers/workOrders-post/doDeleteWorkOrderBurialSiteContract.js';
+import handler_doDeleteWorkOrderContract from '../handlers/workOrders-post/doDeleteWorkOrderContract.js';
 import handler_doDeleteWorkOrderComment from '../handlers/workOrders-post/doDeleteWorkOrderComment.js';
 import handler_doDeleteWorkOrderMilestone from '../handlers/workOrders-post/doDeleteWorkOrderMilestone.js';
 import handler_doGetWorkOrderMilestones from '../handlers/workOrders-post/doGetWorkOrderMilestones.js';
@@ -47,8 +47,8 @@ router.post('/doUpdateWorkOrder', updatePostHandler, handler_doUpdateWorkOrder);
 router.post('/doCloseWorkOrder', updatePostHandler, handler_doCloseWorkOrder);
 router.post('/doDeleteWorkOrder', updatePostHandler, handler_doDeleteWorkOrder);
 // Burial Site Contract
-router.post('/doAddWorkOrderBurialSiteContract', updatePostHandler, handler_doAddWorkOrderBurialSiteContract);
-router.post('/doDeleteWorkOrderBurialSiteContract', updatePostHandler, handler_doDeleteWorkOrderBurialSiteContract);
+router.post('/doAddWorkOrderContract', updatePostHandler, handler_doAddWorkOrderContract);
+router.post('/doDeleteWorkOrderContract', updatePostHandler, handler_doDeleteWorkOrderContract);
 router.post('/doAddWorkOrderBurialSite', updatePostHandler, handler_doAddWorkOrderBurialSite);
 router.post('/doUpdateBurialSiteStatus', updatePostHandler, handler_doUpdateBurialSiteStatus);
 router.post('/doDeleteWorkOrderBurialSite', updatePostHandler, handler_doDeleteWorkOrderBurialSite);

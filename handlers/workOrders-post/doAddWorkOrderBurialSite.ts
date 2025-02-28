@@ -26,7 +26,7 @@ export default async function handler(
     {
       limit: -1,
       offset: 0,
-      includeBurialSiteContractCount: false
+      includeContractCount: false
     }
   )
 

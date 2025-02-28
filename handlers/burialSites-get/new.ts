@@ -13,7 +13,7 @@ export default async function handler(
 ): Promise<void> {
   const burialSite: BurialSite = {
     burialSiteId: -1,
-    burialSiteContracts: []
+    contracts: []
   }
 
   const cemeteries = await getCemeteries()

@@ -50,11 +50,11 @@ export default async function getFees(
         f.taxAmount, f.taxPercentage,
         f.includeQuantity, f.quantityUnit,
         f.isRequired, f.orderNumber,
-        ifnull(lo.burialSiteContractFeeCount, 0) as burialSiteContractFeeCount
+        ifnull(lo.contractFeeCount, 0) as contractFeeCount
         from Fees f
         left join (
-          select feeId, count(burialSiteContractId) as burialSiteContractFeeCount
-          from BurialSiteContractFees
+          select feeId, count(contractId) as contractFeeCount
+          from ContractFees
           where recordDelete_timeMillis is null
           group by feeId
         ) lo on f.feeId = lo.feeId

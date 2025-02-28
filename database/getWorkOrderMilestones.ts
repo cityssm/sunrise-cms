@@ -11,7 +11,7 @@ import type { PoolConnection } from 'better-sqlite-pool'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import type { WorkOrderMilestone } from '../types/recordTypes.js'
 
-import getBurialSiteContracts from './getBurialSiteContracts.js'
+import getContracts from './getContracts.js'
 import getBurialSites from './getBurialSites.js'
 import { acquireConnection } from './pool.js'
 
@@ -214,14 +214,14 @@ export default async function getWorkOrderMilestones(
         {
           limit: -1,
           offset: 0,
-          includeBurialSiteContractCount: false
+          includeContractCount: false
         },
         database
       )
 
       workOrderMilestone.workOrderBurialSites = burialSites.burialSites
 
-      const burialSiteContracts = await getBurialSiteContracts(
+      const contracts = await getContracts(
         {
           workOrderId: workOrderMilestone.workOrderId
         },
@@ -235,8 +235,8 @@ export default async function getWorkOrderMilestones(
         database
       )
 
-      workOrderMilestone.workOrderBurialSiteContracts =
-        burialSiteContracts.burialSiteContracts
+      workOrderMilestone.workOrderContracts =
+        contracts.contracts
     }
   }
 

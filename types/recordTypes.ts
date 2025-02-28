@@ -94,8 +94,8 @@ export interface BurialSite extends Record {
 
   burialSiteFields?: BurialSiteField[]
 
-  burialSiteContractCount?: number
-  burialSiteContracts?: BurialSiteContract[]
+  contractCount?: number
+  contracts?: Contract[]
 
   burialSiteComments?: BurialSiteComment[]
 }
@@ -178,16 +178,16 @@ export interface Fee extends Record {
 
   orderNumber: number
 
-  burialSiteContractFeeCount?: number
+  contractFeeCount?: number
 }
 
-export interface BurialSiteContractFee extends Fee, Record {
-  burialSiteContractId?: number
+export interface ContractFee extends Fee, Record {
+  contractId?: number
   quantity?: number
 }
 
-export interface BurialSiteContractTransaction extends Record {
-  burialSiteContractId?: number
+export interface ContractTransaction extends Record {
+  contractId?: number
   transactionIndex?: number
   transactionDate?: number
   transactionDateString?: string
@@ -207,8 +207,8 @@ export interface DynamicsGPDocument {
   documentTotal: number
 }
 
-export interface BurialSiteContractInterment extends Record {
-  burialSiteContractId?: number
+export interface ContractInterment extends Record {
+  contractId?: number
   intermentNumber?: number
   isCremated?: boolean
 
@@ -234,13 +234,13 @@ export interface BurialSiteContractInterment extends Record {
   intermentCommittalTypeId?: number
   intermentCommittalType?: string
 
-  burialSiteContractIdCount?: number
+  contractIdCount?: number
   recordUpdate_timeMillisMax?: number
 }
 
-export interface BurialSiteContractComment extends Record {
-  burialSiteContractCommentId?: number
-  burialSiteContractId?: number
+export interface ContractComment extends Record {
+  contractCommentId?: number
+  contractId?: number
 
   commentDate?: number
   commentDateString?: string
@@ -252,14 +252,14 @@ export interface BurialSiteContractComment extends Record {
   comment?: string
 }
 
-export interface BurialSiteContractField extends ContractTypeField, Record {
-  burialSiteContractId: number
+export interface ContractField extends ContractTypeField, Record {
+  contractId: number
   contractTypeFieldId: number
   fieldValue?: string
 }
 
-export interface BurialSiteContract extends Record {
-  burialSiteContractId: number
+export interface Contract extends Record {
+  contractId: number
 
   contractTypeId: number
   contractType?: string
@@ -292,11 +292,11 @@ export interface BurialSiteContract extends Record {
   funeralHomeDirectorName?: string
   funeralHomeName?: string
 
-  burialSiteContractFields?: BurialSiteContractField[]
-  burialSiteContractComments?: BurialSiteContractComment[]
-  burialSiteContractInterments?: BurialSiteContractInterment[]
-  burialSiteContractFees?: BurialSiteContractFee[]
-  burialSiteContractTransactions?: BurialSiteContractTransaction[]
+  contractFields?: ContractField[]
+  contractComments?: ContractComment[]
+  contractInterments?: ContractInterment[]
+  contractFees?: ContractFee[]
+  contractTransactions?: ContractTransaction[]
   workOrders?: WorkOrder[]
 }
 
@@ -379,7 +379,7 @@ export interface WorkOrder extends Record {
   workOrderBurialSites?: BurialSite[]
   workOrderBurialSiteCount?: number
 
-  workOrderBurialSiteContracts?: BurialSiteContract[]
+  workOrderContracts?: Contract[]
 }
 
 /*

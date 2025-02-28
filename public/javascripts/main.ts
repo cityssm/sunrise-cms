@@ -403,12 +403,12 @@ declare const exports: Record<string, unknown> & {
     return getRecordURL('burialSites', burialSiteId, edit, time)
   }
 
-  function getBurialSiteContractURL(
-    burialSiteContractId: number | string = '',
+  function getContractURL(
+    contractId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('contracts', burialSiteContractId, edit, time)
+    return getRecordURL('contracts', contractId, edit, time)
   }
 
   function getWorkOrderURL(
@@ -453,7 +453,7 @@ declare const exports: Record<string, unknown> & {
 
     getCemeteryURL,
     getBurialSiteURL,
-    getBurialSiteContractURL,
+    getContractURL,
     getWorkOrderURL
   }
 

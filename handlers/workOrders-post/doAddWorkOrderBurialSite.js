@@ -10,7 +10,7 @@ export default async function handler(request, response) {
     }, {
         limit: -1,
         offset: 0,
-        includeBurialSiteContractCount: false
+        includeContractCount: false
     });
     response.json({
         success,

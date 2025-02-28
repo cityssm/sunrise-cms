@@ -5,8 +5,8 @@ recordIdColumns.set('FeeCategories', 'feeCategoryId');
 recordIdColumns.set('Fees', 'feeId');
 recordIdColumns.set('BurialSites', 'burialSiteId');
 recordIdColumns.set('BurialSiteComments', 'burialSiteCommentId');
-recordIdColumns.set('BurialSiteContracts', 'burialSiteContractId');
-recordIdColumns.set('BurialSiteContractComments', 'burialSiteContractCommentId');
+recordIdColumns.set('Contracts', 'contractId');
+recordIdColumns.set('ContractComments', 'contractCommentId');
 recordIdColumns.set('BurialSiteStatuses', 'burialSiteStatusId');
 recordIdColumns.set('BurialSiteTypes', 'burialSiteTypeId');
 recordIdColumns.set('BurialSiteTypeFields', 'burialSiteFieldTypeId');
@@ -21,9 +21,9 @@ recordIdColumns.set('WorkOrderTypes', 'workOrderTypeId');
 const relatedTables = new Map();
 relatedTables.set('FeeCategories', ['Fees']);
 relatedTables.set('BurialSites', ['BurialSiteFields', 'BurialSiteComments']);
-relatedTables.set('BurialSiteContracts', [
-    'BurialSiteContractFields',
-    'BurialSiteContractComments'
+relatedTables.set('Contracts', [
+    'ContractFields',
+    'ContractComments'
 ]);
 relatedTables.set('BurialSiteTypes', ['BurialSiteTypeFields']);
 relatedTables.set('Cemeteries', ['BurialSites']);
@@ -31,7 +31,7 @@ relatedTables.set('ContractTypes', ['ContractTypePrints', 'ContractTypeFields'])
 relatedTables.set('WorkOrders', [
     'WorkOrderMilestones',
     'WorkOrderLots',
-    'WorkOrderBurialSiteContracts',
+    'WorkOrderContracts',
     'WorkOrderComments'
 ]);
 export async function deleteRecord(recordTable, recordId, user) {

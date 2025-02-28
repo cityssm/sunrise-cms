@@ -146,10 +146,10 @@
 <div class="panel">
   <h2 class="panel-heading">
     Contracts
-    <span class="tag"><%= burialSite.burialSiteContracts.length %></span>
+    <span class="tag"><%= burialSite.contracts.length %></span>
   </h2>
   <div class="panel-block is-block">
-      <% if (burialSite.burialSiteContracts.length === 0) { %>
+      <% if (burialSite.contracts.length === 0) { %>
         <div class="message is-info">
           <p class="message-body">
             There are no contracts asscociated with this burial site.
@@ -168,8 +168,8 @@
           </thead>
           <tbody>
             <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
-            <% for (const burialSiteContract of burialSite.burialSiteContracts) { %>
-              <% const isActive = !(burialSiteContract.contractEndDate && burialSiteContract.contractEndDate < currentDate); %>
+            <% for (const contract of burialSite.contracts) { %>
+              <% const isActive = !(contract.contractEndDate && contract.contractEndDate < currentDate); %>
               <tr>
                 <td class="has-text-centered">
                   <% if (isActive) { %>
@@ -180,24 +180,24 @@
                 </td>
                 <td>
                   <a class="has-text-weight-bold"
-                    href="<%= urlPrefix %>/contracts/<%= burialSiteContract.burialSiteContractId %>">
-                    <%= burialSiteContract.contractType %>
+                    href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
+                    <%= contract.contractType %>
                   </a><br />
-                  <span class="is-size-7">#<%= burialSiteContract.burialSiteContractId %></span>
+                  <span class="is-size-7">#<%= contract.contractId %></span>
                 </td>
-                <td><%= burialSiteContract.contractStartDateString %></td>
+                <td><%= contract.contractStartDateString %></td>
                 <td>
-                  <% if (burialSiteContract.contractEndDate) { %>
-                    <%= burialSiteContract.contractEndDateString %>
+                  <% if (contract.contractEndDate) { %>
+                    <%= contract.contractEndDateString %>
                   <% } else { %>
                     <span class="has-text-grey">(No End Date)</span>
                   <% } %>
                 </td>
                 <td>
-                  <% if (burialSiteContract.burialSiteContractInterments.length === 0) { %>
+                  <% if (contract.contractInterments.length === 0) { %>
                     <span class="has-text-grey">(No Interments)</span>
                   <% } else { %>
-                    <% for (const interment of burialSiteContract.burialSiteContractInterments) { %>
+                    <% for (const interment of contract.contractInterments) { %>
                       <%= interment.deceasedName %>
                     <% } %>
                   <% } %>
