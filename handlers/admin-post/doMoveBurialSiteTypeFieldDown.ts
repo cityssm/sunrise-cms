@@ -10,14 +10,14 @@ export default async function handler(
   request: Request<
     unknown,
     unknown,
-    { lotTypeFieldId: string; moveToEnd: '0' | '1' }
+    { burialSiteTypeFieldId: string; moveToEnd: '0' | '1' }
   >,
   response: Response
 ): Promise<void> {
   const success =
     request.body.moveToEnd === '1'
-      ? await moveBurialSiteTypeFieldDownToBottom(request.body.lotTypeFieldId)
-      : await moveBurialSiteTypeFieldDown(request.body.lotTypeFieldId)
+      ? await moveBurialSiteTypeFieldDownToBottom(request.body.burialSiteTypeFieldId)
+      : await moveBurialSiteTypeFieldDown(request.body.burialSiteTypeFieldId)
 
   const burialSiteTypes = await getBurialSiteTypes()
 

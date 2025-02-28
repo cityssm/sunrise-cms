@@ -9,7 +9,7 @@ recordIdColumns.set('Contracts', 'contractId');
 recordIdColumns.set('ContractComments', 'contractCommentId');
 recordIdColumns.set('BurialSiteStatuses', 'burialSiteStatusId');
 recordIdColumns.set('BurialSiteTypes', 'burialSiteTypeId');
-recordIdColumns.set('BurialSiteTypeFields', 'burialSiteFieldTypeId');
+recordIdColumns.set('BurialSiteTypeFields', 'burialSiteTypeFieldId');
 recordIdColumns.set('Cemeteries', 'cemeteryId');
 recordIdColumns.set('ContractTypes', 'contractTypeId');
 recordIdColumns.set('ContractTypeFields', 'contractTypeFieldId');

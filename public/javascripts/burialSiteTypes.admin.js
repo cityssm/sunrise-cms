@@ -1,84 +1,86 @@
 "use strict";
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable max-lines */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const los = exports.los;
-    const containerElement = document.querySelector('#container--lotTypes');
-    let lotTypes = exports.lotTypes;
-    delete exports.lotTypes;
-    const expandedLotTypes = new Set();
+    const containerElement = document.querySelector('#container--burialSiteTypes');
+    let burialSiteTypes = exports.burialSiteTypes;
+    delete exports.burialSiteTypes;
+    const expandedBurialSiteTypes = new Set();
     function toggleBurialSiteTypeFields(clickEvent) {
         const toggleButtonElement = clickEvent.currentTarget;
-        const lotTypeElement = toggleButtonElement.closest('.container--lotType');
-        const burialSiteTypeId = Number.parseInt(lotTypeElement.dataset.burialSiteTypeId ?? '', 10);
-        if (expandedLotTypes.has(burialSiteTypeId)) {
-            expandedLotTypes.delete(burialSiteTypeId);
+        const burialSiteTypeElement = toggleButtonElement.closest('.container--burialSiteType');
+        const burialSiteTypeId = Number.parseInt(burialSiteTypeElement.dataset.burialSiteTypeId ?? '', 10);
+        if (expandedBurialSiteTypes.has(burialSiteTypeId)) {
+            expandedBurialSiteTypes.delete(burialSiteTypeId);
         }
         else {
-            expandedLotTypes.add(burialSiteTypeId);
+            expandedBurialSiteTypes.add(burialSiteTypeId);
         }
         // eslint-disable-next-line no-unsanitized/property
-        toggleButtonElement.innerHTML = expandedLotTypes.has(burialSiteTypeId)
+        toggleButtonElement.innerHTML = expandedBurialSiteTypes.has(burialSiteTypeId)
             ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
             : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>';
-        const panelBlockElements = lotTypeElement.querySelectorAll('.panel-block');
+        const panelBlockElements = burialSiteTypeElement.querySelectorAll('.panel-block');
         for (const panelBlockElement of panelBlockElements) {
             panelBlockElement.classList.toggle('is-hidden');
         }
     }
-    function lotTypeResponseHandler(rawResponseJSON) {
+    function burialSiteTypeResponseHandler(rawResponseJSON) {
         const responseJSON = rawResponseJSON;
         if (responseJSON.success) {
-            lotTypes = responseJSON.lotTypes;
-            renderLotTypes();
+            burialSiteTypes = responseJSON.burialSiteTypes;
+            renderBurialSiteTypes();
         }
         else {
             bulmaJS.alert({
-                title: `Error Updating ${los.escapedAliases.Lot} Type`,
+                title: `Error Updating Burial Site Type`,
                 message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
             });
         }
     }
-    function deleteLotType(clickEvent) {
-        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.burialSiteTypeId ?? '', 10);
+    function deleteBurialSiteType(clickEvent) {
+        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--burialSiteType').dataset.burialSiteTypeId ?? '', 10);
         function doDelete() {
             cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteBurialSiteType`, {
                 burialSiteTypeId
-            }, lotTypeResponseHandler);
+            }, burialSiteTypeResponseHandler);
         }
         bulmaJS.confirm({
-            title: `Delete ${los.escapedAliases.Lot} Type`,
-            message: `Are you sure you want to delete this ${los.escapedAliases.lot} type?`,
+            title: `Delete Burial Site Type`,
+            message: `Are you sure you want to delete this burial site type?`,
             contextualColorName: 'warning',
             okButton: {
-                text: `Yes, Delete ${los.escapedAliases.Lot} Type`,
+                text: `Yes, Delete Burial Site Type`,
                 callbackFunction: doDelete
             }
         });
     }
-    function openEditLotType(clickEvent) {
-        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.burialSiteTypeId ?? '', 10);
-        const lotType = lotTypes.find((currentLotType) => burialSiteTypeId === currentLotType.burialSiteTypeId);
+    function openEditBurialSiteType(clickEvent) {
+        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--burialSiteType').dataset.burialSiteTypeId ?? '', 10);
+        const burialSiteType = burialSiteTypes.find((currentType) => burialSiteTypeId === currentType.burialSiteTypeId);
         let editCloseModalFunction;
         function doEdit(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateBurialSiteType`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
-                lotTypeResponseHandler(responseJSON);
+                burialSiteTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
                 }
             });
         }
-        cityssm.openHtmlModal('adminLotTypes-editLotType', {
+        cityssm.openHtmlModal('adminBurialSiteTypes-edit', {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
-                modalElement.querySelector('#lotTypeEdit--burialSiteTypeId').value = burialSiteTypeId.toString();
-                modalElement.querySelector('#lotTypeEdit--lotType').value = lotType.lotType;
+                modalElement.querySelector('#burialSiteTypeEdit--burialSiteTypeId').value = burialSiteTypeId.toString();
+                modalElement.querySelector('#burialSiteTypeEdit--burialSiteType').value = burialSiteType.burialSiteType;
             },
             onshown(modalElement, closeModalFunction) {
                 editCloseModalFunction = closeModalFunction;
-                modalElement.querySelector('#lotTypeEdit--lotType').focus();
+                modalElement.querySelector('#burialSiteTypeEdit--burialSiteType').focus();
                 modalElement.querySelector('form')?.addEventListener('submit', doEdit);
                 bulmaJS.toggleHtmlClipped();
             },
@@ -87,32 +89,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
-    function openAddLotTypeField(clickEvent) {
-        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.burialSiteTypeId ?? '', 10);
+    function openAddBurialSiteTypeField(clickEvent) {
+        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--burialSiteType').dataset.burialSiteTypeId ?? '', 10);
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(`${los.urlPrefix}/admin/doAddBurialSiteTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
-                expandedLotTypes.add(burialSiteTypeId);
-                lotTypeResponseHandler(responseJSON);
+                expandedBurialSiteTypes.add(burialSiteTypeId);
+                burialSiteTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     addCloseModalFunction();
-                    openEditLotTypeField(burialSiteTypeId, responseJSON.lotTypeFieldId);
+                    openEditBurialSiteTypeField(burialSiteTypeId, responseJSON.burialSiteTypeFieldId);
                 }
             });
         }
-        cityssm.openHtmlModal('adminLotTypes-addBurialSiteTypeField', {
+        cityssm.openHtmlModal('adminBurialSiteTypes-addField', {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
                 if (burialSiteTypeId) {
                     ;
-                    modalElement.querySelector('#lotTypeFieldAdd--burialSiteTypeId').value = burialSiteTypeId.toString();
+                    modalElement.querySelector('#burialSiteTypeFieldAdd--burialSiteTypeId').value = burialSiteTypeId.toString();
                 }
             },
             onshown(modalElement, closeModalFunction) {
                 addCloseModalFunction = closeModalFunction;
-                modalElement.querySelector('#lotTypeFieldAdd--lotTypeField').focus();
+                modalElement.querySelector('#burialSiteTypeFieldAdd--burialSiteTypeField').focus();
                 modalElement.querySelector('form')?.addEventListener('submit', doAdd);
                 bulmaJS.toggleHtmlClipped();
             },
@@ -121,24 +123,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
-    function moveLotType(clickEvent) {
+    function moveBurialSiteType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const burialSiteTypeId = buttonElement.closest('.container--lotType').dataset.burialSiteTypeId;
+        const burialSiteTypeId = buttonElement.closest('.container--burialSiteType').dataset.burialSiteTypeId;
         cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveBurialSiteTypeUp'
-            : 'doMoveBurialSiteTypeDown'}`, {
+            : // eslint-disable-next-line no-secrets/no-secrets
+                'doMoveBurialSiteTypeDown'}`, {
             burialSiteTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, lotTypeResponseHandler);
+        }, burialSiteTypeResponseHandler);
     }
-    function openEditLotTypeField(burialSiteTypeId, lotTypeFieldId) {
-        const lotType = lotTypes.find((currentLotType) => currentLotType.burialSiteTypeId === burialSiteTypeId);
-        const lotTypeField = (lotType.BurialSiteTypeFields ?? []).find((currentLotTypeField) => currentLotTypeField.lotTypeFieldId === lotTypeFieldId);
+    function openEditBurialSiteTypeField(burialSiteTypeId, burialSiteTypeFieldId) {
+        const burialSiteType = burialSiteTypes.find((currentType) => currentType.burialSiteTypeId === burialSiteTypeId);
+        const burialSiteTypeField = (burialSiteType.burialSiteTypeFields ?? []).find((currentField) => currentField.burialSiteTypeFieldId === burialSiteTypeFieldId);
         let fieldTypeElement;
         let minLengthInputElement;
         let maxLengthInputElement;
         let patternElement;
-        let lotTypeFieldValuesElement;
+        let fieldValuesElement;
         let editCloseModalFunction;
         function updateMaximumLengthMin() {
             maxLengthInputElement.min = minLengthInputElement.value;
@@ -149,21 +152,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     minLengthInputElement.disabled = true;
                     maxLengthInputElement.disabled = true;
                     patternElement.disabled = true;
-                    lotTypeFieldValuesElement.disabled = true;
+                    fieldValuesElement.disabled = true;
                     break;
                 }
                 case 'select': {
                     minLengthInputElement.disabled = true;
                     maxLengthInputElement.disabled = true;
                     patternElement.disabled = true;
-                    lotTypeFieldValuesElement.disabled = false;
+                    fieldValuesElement.disabled = false;
                     break;
                 }
                 default: {
                     minLengthInputElement.disabled = false;
                     maxLengthInputElement.disabled = false;
                     patternElement.disabled = false;
-                    lotTypeFieldValuesElement.disabled = true;
+                    fieldValuesElement.disabled = true;
                     break;
                 }
             }
@@ -172,7 +175,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             submitEvent.preventDefault();
             cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateBurialSiteTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
-                lotTypeResponseHandler(responseJSON);
+                burialSiteTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
                 }
@@ -180,10 +183,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         function doDelete() {
             cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteBurialSiteTypeField`, {
-                lotTypeFieldId
+                burialSiteTypeFieldId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
-                lotTypeResponseHandler(responseJSON);
+                burialSiteTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
                 }
@@ -200,24 +203,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         }
-        cityssm.openHtmlModal('adminLotTypes-editLotTypeField', {
+        cityssm.openHtmlModal('adminBurialSiteTypes-editField', {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
-                modalElement.querySelector('#lotTypeFieldEdit--lotTypeFieldId').value = lotTypeField.lotTypeFieldId.toString();
-                modalElement.querySelector('#lotTypeFieldEdit--lotTypeField').value = lotTypeField.lotTypeField ?? '';
-                modalElement.querySelector('#lotTypeFieldEdit--isRequired').value = lotTypeField.isRequired ? '1' : '0';
-                fieldTypeElement = modalElement.querySelector('#lotTypeFieldEdit--fieldType');
-                fieldTypeElement.value = lotTypeField.fieldType;
-                minLengthInputElement = modalElement.querySelector('#lotTypeFieldEdit--minLength');
+                modalElement.querySelector('#burialSiteTypeFieldEdit--burialSiteTypeFieldId').value = burialSiteTypeField.burialSiteTypeFieldId.toString();
+                modalElement.querySelector('#burialSiteTypeFieldEdit--burialSiteTypeField').value = burialSiteTypeField.burialSiteTypeField ?? '';
+                modalElement.querySelector('#burialSiteTypeFieldEdit--isRequired').value = burialSiteTypeField.isRequired ?? false ? '1' : '0';
+                fieldTypeElement = modalElement.querySelector('#burialSiteTypeFieldEdit--fieldType');
+                fieldTypeElement.value = burialSiteTypeField.fieldType;
+                minLengthInputElement = modalElement.querySelector('#burialSiteTypeFieldEdit--minLength');
                 minLengthInputElement.value =
-                    lotTypeField.minLength?.toString() ?? '';
-                maxLengthInputElement = modalElement.querySelector('#lotTypeFieldEdit--maxLength');
+                    burialSiteTypeField.minLength?.toString() ?? '';
+                maxLengthInputElement = modalElement.querySelector('#burialSiteTypeFieldEdit--maxLength');
                 maxLengthInputElement.value =
-                    lotTypeField.maxLength?.toString() ?? '';
-                patternElement = modalElement.querySelector('#lotTypeFieldEdit--pattern');
-                patternElement.value = lotTypeField.pattern ?? '';
-                lotTypeFieldValuesElement = modalElement.querySelector('#lotTypeFieldEdit--lotTypeFieldValues');
-                lotTypeFieldValuesElement.value = lotTypeField.lotTypeFieldValues ?? '';
+                    burialSiteTypeField.maxLength?.toString() ?? '';
+                patternElement = modalElement.querySelector('#burialSiteTypeFieldEdit--pattern');
+                patternElement.value = burialSiteTypeField.pattern ?? '';
+                fieldValuesElement = modalElement.querySelector('#burialSiteTypeFieldEdit--fieldValues');
+                fieldValuesElement.value = burialSiteTypeField.fieldValues ?? '';
                 toggleInputFields();
             },
             onshown(modalElement, closeModalFunction) {
@@ -230,7 +233,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 updateMaximumLengthMin();
                 fieldTypeElement.addEventListener('change', toggleInputFields);
                 modalElement
-                    .querySelector('#button--deleteLotTypeField')
+                    .querySelector('#button--deleteBurialSiteTypeField')
                     ?.addEventListener('click', confirmDoDelete);
             },
             onremoved() {
@@ -239,103 +242,106 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
-    function openEditLotTypeFieldByClick(clickEvent) {
+    function openEditBurialSiteTypeFieldByClick(clickEvent) {
         clickEvent.preventDefault();
-        const lotTypeFieldId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotTypeField').dataset.lotTypeFieldId ?? '', 10);
-        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--lotType').dataset.burialSiteTypeId ?? '', 10);
-        openEditLotTypeField(burialSiteTypeId, lotTypeFieldId);
+        const burialSiteTypeFieldId = Number.parseInt(clickEvent.currentTarget.closest('.container--burialSiteTypeField').dataset.burialSiteTypeFieldId ?? '', 10);
+        const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--burialSiteType').dataset.burialSiteTypeId ?? '', 10);
+        openEditBurialSiteTypeField(burialSiteTypeId, burialSiteTypeFieldId);
     }
-    function moveLotTypeField(clickEvent) {
+    function moveBurialSiteTypeField(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const lotTypeFieldId = buttonElement.closest('.container--lotTypeField').dataset.lotTypeFieldId;
+        const burialSiteTypeFieldId = buttonElement.closest('.container--burialSiteTypeField').dataset.burialSiteTypeFieldId;
         cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveBurialSiteTypeFieldUp'
-            : 'doMoveBurialSiteTypeFieldDown'}`, {
-            lotTypeFieldId,
+            : // eslint-disable-next-line no-secrets/no-secrets
+                'doMoveBurialSiteTypeFieldDown'}`, {
+            burialSiteTypeFieldId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, lotTypeResponseHandler);
+        }, burialSiteTypeResponseHandler);
     }
-    function renderBurialSiteTypeFields(panelElement, burialSiteTypeId, BurialSiteTypeFields) {
-        if (BurialSiteTypeFields.length === 0) {
+    function renderBurialSiteTypeFields(panelElement, burialSiteTypeId, burialSiteTypeFields) {
+        if (burialSiteTypeFields.length === 0) {
             // eslint-disable-next-line no-unsanitized/method
             panelElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block
-          ${expandedLotTypes.has(burialSiteTypeId) ? '' : ' is-hidden'}">
+          ${expandedBurialSiteTypes.has(burialSiteTypeId) ? '' : ' is-hidden'}">
           <div class="message is-info"><p class="message-body">There are no additional fields.</p></div>
           </div>`);
         }
         else {
-            for (const lotTypeField of BurialSiteTypeFields) {
+            for (const burialSiteTypeField of burialSiteTypeFields) {
                 const panelBlockElement = document.createElement('div');
                 panelBlockElement.className =
-                    'panel-block is-block container--lotTypeField';
-                if (!expandedLotTypes.has(burialSiteTypeId)) {
+                    'panel-block is-block container--burialSiteTypeField';
+                if (!expandedBurialSiteTypes.has(burialSiteTypeId)) {
                     panelBlockElement.classList.add('is-hidden');
                 }
-                panelBlockElement.dataset.lotTypeFieldId =
-                    lotTypeField.lotTypeFieldId.toString();
+                panelBlockElement.dataset.burialSiteTypeFieldId =
+                    burialSiteTypeField.burialSiteTypeFieldId.toString();
                 // eslint-disable-next-line no-unsanitized/property
                 panelBlockElement.innerHTML = `<div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <a class="has-text-weight-bold button--editLotTypeField" href="#">
-                ${cityssm.escapeHTML(lotTypeField.lotTypeField ?? '')}
+              <a class="has-text-weight-bold button--editBurialSiteTypeField" href="#">
+                ${cityssm.escapeHTML(burialSiteTypeField.burialSiteTypeField ?? '')}
               </a>
             </div>
           </div>
           <div class="level-right">
             <div class="level-item">
-              ${los.getMoveUpDownButtonFieldHTML('button--moveLotTypeFieldUp', 'button--moveLotTypeFieldDown')}
+              ${los.getMoveUpDownButtonFieldHTML('button--moveBurialSiteTypeFieldUp', 
+                // eslint-disable-next-line no-secrets/no-secrets
+                'button--moveBurialSiteTypeFieldDown')}
             </div>
           </div>
           </div>`;
                 panelBlockElement
-                    .querySelector('.button--editLotTypeField')
-                    ?.addEventListener('click', openEditLotTypeFieldByClick);
-                panelBlockElement.querySelector('.button--moveLotTypeFieldUp').addEventListener('click', moveLotTypeField);
-                panelBlockElement.querySelector('.button--moveLotTypeFieldDown').addEventListener('click', moveLotTypeField);
+                    .querySelector('.button--editBurialSiteTypeField')
+                    ?.addEventListener('click', openEditBurialSiteTypeFieldByClick);
+                panelBlockElement.querySelector('.button--moveBurialSiteTypeFieldUp').addEventListener('click', moveBurialSiteTypeField);
+                panelBlockElement.querySelector('.button--moveBurialSiteTypeFieldDown').addEventListener('click', moveBurialSiteTypeField);
                 panelElement.append(panelBlockElement);
             }
         }
     }
-    function renderLotTypes() {
+    function renderBurialSiteTypes() {
         containerElement.innerHTML = '';
-        if (lotTypes.length === 0) {
-            // eslint-disable-next-line no-unsanitized/method
-            containerElement.insertAdjacentHTML('afterbegin', `<div class="message is-warning>
-          <p class="message-body">There are no active ${los.escapedAliases.lot} types.</p>
+        if (burialSiteTypes.length === 0) {
+            containerElement.insertAdjacentHTML('afterbegin', `<div class="message is-warning">
+          <p class="message-body">There are no active burial site types.</p>
           </div>`);
             return;
         }
-        for (const lotType of lotTypes) {
-            const lotTypeContainer = document.createElement('div');
-            lotTypeContainer.className = 'panel container--lotType';
-            lotTypeContainer.dataset.burialSiteTypeId = lotType.burialSiteTypeId.toString();
+        for (const burialSiteType of burialSiteTypes) {
+            const burialSiteTypeContainer = document.createElement('div');
+            burialSiteTypeContainer.className = 'panel container--burialSiteType';
+            burialSiteTypeContainer.dataset.burialSiteTypeId =
+                burialSiteType.burialSiteTypeId.toString();
             // eslint-disable-next-line no-unsanitized/property
-            lotTypeContainer.innerHTML = `<div class="panel-heading">
+            burialSiteTypeContainer.innerHTML = `<div class="panel-heading">
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
               <button class="button is-small button--toggleBurialSiteTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
-              ${expandedLotTypes.has(lotType.burialSiteTypeId)
+              ${expandedBurialSiteTypes.has(burialSiteType.burialSiteTypeId)
                 ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
                 : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'}
               </button>
             </div>
             <div class="level-item">
-              <h2 class="title is-4">${cityssm.escapeHTML(lotType.lotType)}</h2>
+              <h2 class="title is-4">${cityssm.escapeHTML(burialSiteType.burialSiteType)}</h2>
             </div>
           </div>
           <div class="level-right">
             <div class="level-item">
-              <button class="button is-danger is-small button--deleteLotType" type="button">
+              <button class="button is-danger is-small button--deleteBurialSiteType" type="button">
                 <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
                 <span>Delete</span>
               </button>
             </div>
             <div class="level-item">
-              <button class="button is-primary is-small button--editLotType" type="button">
+              <button class="button is-primary is-small button--editBurialSiteType" type="button">
                 <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-                <span>Edit ${los.escapedAliases.Lot} Type</span>
+                <span>Edit Burial Site Type</span>
               </button>
             </div>
             <div class="level-item">
@@ -345,27 +351,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </button>
             </div>
             <div class="level-item">
-              ${los.getMoveUpDownButtonFieldHTML('button--moveLotTypeUp', 'button--moveLotTypeDown')}
+              ${los.getMoveUpDownButtonFieldHTML('button--moveBurialSiteTypeUp', 'button--moveBurialSiteTypeDown')}
             </div>
           </div>
         </div>
         </div>`;
-            renderBurialSiteTypeFields(lotTypeContainer, lotType.burialSiteTypeId, lotType.BurialSiteTypeFields ?? []);
-            lotTypeContainer
+            renderBurialSiteTypeFields(burialSiteTypeContainer, burialSiteType.burialSiteTypeId, burialSiteType.burialSiteTypeFields ?? []);
+            burialSiteTypeContainer
                 .querySelector('.button--toggleBurialSiteTypeFields')
                 ?.addEventListener('click', toggleBurialSiteTypeFields);
-            lotTypeContainer
-                .querySelector('.button--deleteLotType')
-                ?.addEventListener('click', deleteLotType);
-            lotTypeContainer
-                .querySelector('.button--editLotType')
-                ?.addEventListener('click', openEditLotType);
-            lotTypeContainer
+            burialSiteTypeContainer
+                .querySelector('.button--deleteBurialSiteType')
+                ?.addEventListener('click', deleteBurialSiteType);
+            burialSiteTypeContainer
+                .querySelector('.button--editBurialSiteType')
+                ?.addEventListener('click', openEditBurialSiteType);
+            burialSiteTypeContainer
                 .querySelector('.button--addBurialSiteTypeField')
-                ?.addEventListener('click', openAddLotTypeField);
-            lotTypeContainer.querySelector('.button--moveLotTypeUp').addEventListener('click', moveLotType);
-            lotTypeContainer.querySelector('.button--moveLotTypeDown').addEventListener('click', moveLotType);
-            containerElement.append(lotTypeContainer);
+                ?.addEventListener('click', openAddBurialSiteTypeField);
+            burialSiteTypeContainer.querySelector('.button--moveBurialSiteTypeUp').addEventListener('click', moveBurialSiteType);
+            burialSiteTypeContainer.querySelector('.button--moveBurialSiteTypeDown').addEventListener('click', moveBurialSiteType);
+            containerElement.append(burialSiteTypeContainer);
         }
     }
     document
@@ -374,29 +380,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doAddLotType`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${los.urlPrefix}/admin/doAddBurialSiteType`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     addCloseModalFunction();
-                    lotTypes = responseJSON.lotTypes;
-                    renderLotTypes();
+                    burialSiteTypes = responseJSON.burialSiteTypes;
+                    renderBurialSiteTypes();
                 }
                 else {
                     bulmaJS.alert({
-                        title: `Error Adding ${los.escapedAliases.Lot} Type`,
+                        title: `Error Adding Burial Site Type`,
                         message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
             });
         }
-        cityssm.openHtmlModal('adminLotTypes-addBurialSiteType', {
+        cityssm.openHtmlModal('adminBurialSiteTypes-add', {
             onshow(modalElement) {
                 los.populateAliases(modalElement);
             },
             onshown(modalElement, closeModalFunction) {
                 addCloseModalFunction = closeModalFunction;
-                modalElement.querySelector('#lotTypeAdd--lotType').focus();
+                modalElement.querySelector('#burialSiteTypeAdd--burialSiteType').focus();
                 modalElement.querySelector('form')?.addEventListener('submit', doAdd);
                 bulmaJS.toggleHtmlClipped();
             },
@@ -405,5 +411,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    renderLotTypes();
+    renderBurialSiteTypes();
 })();

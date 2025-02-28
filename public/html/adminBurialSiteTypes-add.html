@@ -2,9 +2,7 @@
   <div class="modal-background"></div>
   <div class="modal-card has-width-900">
     <header class="modal-card-head">
-      <h3 class="modal-card-title">
-        Update <span class="alias" data-alias="Lot"></span> Type
-      </h3>
+      <h3 class="modal-card-title">Add Burial Site Type</h3>
       <button
         class="delete is-close-modal-button"
         aria-label="close"
@@ -12,22 +10,16 @@
       ></button>
     </header>
     <section class="modal-card-body">
-      <form id="form--lotTypeEdit">
-        <input
-          class="input"
-          id="lotTypeEdit--burialSiteTypeId"
-          name="burialSiteTypeId"
-          type="hidden"
-        />
+      <form id="form--burialSiteTypeAdd">
         <div class="field">
-          <label class="label" for="lotTypeEdit--lotType"
-            ><span class="alias" data-alias="Lot"></span> Type</label
+          <label class="label" for="burialSiteTypeAdd--burialSiteType"
+            >Burial Site Type</label
           >
           <div class="control">
             <input
               class="input"
-              id="lotTypeEdit--lotType"
-              name="lotType"
+              id="burialSiteTypeAdd--burialSiteType"
+              name="burialSiteType"
               type="text"
               maxlength="100"
               required
@@ -37,9 +29,13 @@
       </form>
     </section>
     <footer class="modal-card-foot justify-right">
-      <button class="button is-success" type="submit" form="form--lotTypeEdit">
-        <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
-        <span>Update <span class="alias" data-alias="Lot"></span> Type</span>
+      <button
+        class="button is-success"
+        type="submit"
+        form="form--burialSiteTypeAdd"
+      >
+        <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+        <span>Add Burial Site Type</span>
       </button>
       <button class="button is-close-modal-button" type="button">Cancel</button>
     </footer>

@@ -6,10 +6,10 @@ export default async function handler(
   _request: Request,
   response: Response
 ): Promise<void> {
-  const lotTypes = await getBurialSiteTypes()
+  const burialSiteTypes = await getBurialSiteTypes()
 
   response.render('admin-burialSiteTypes', {
     headTitle: `Burial Site Type Management`,
-    lotTypes
+    burialSiteTypes
   })
 }

@@ -3,7 +3,7 @@
   <div class="modal-card has-width-900">
     <header class="modal-card-head">
       <h3 class="modal-card-title">
-        Add <span class="alias" data-alias="Lot"></span> Type
+        Add <span class="alias" data-alias="Lot"></span> Type Field
       </h3>
       <button
         class="delete is-close-modal-button"
@@ -12,16 +12,22 @@
       ></button>
     </header>
     <section class="modal-card-body">
-      <form id="form--lotTypeAdd">
+      <form id="form--burialSiteTypeFieldAdd">
+        <input
+          class="input"
+          id="burialSiteTypeFieldAdd--burialSiteTypeId"
+          name="burialSiteTypeId"
+          type="hidden"
+        />
         <div class="field">
-          <label class="label" for="lotTypeAdd--lotType"
-            ><span class="alias" data-alias="Lot"></span> Type</label
+          <label class="label" for="burialSiteTypeFieldAdd--burialSiteTypeField"
+            >New Field Name</label
           >
           <div class="control">
             <input
               class="input"
-              id="lotTypeAdd--lotType"
-              name="lotType"
+              id="burialSiteTypeFieldAdd--burialSiteTypeField"
+              name="burialSiteTypeField"
               type="text"
               maxlength="100"
               required
@@ -31,9 +37,13 @@
       </form>
     </section>
     <footer class="modal-card-foot justify-right">
-      <button class="button is-success" type="submit" form="form--lotTypeAdd">
+      <button
+        class="button is-success"
+        type="submit"
+        form="form--burialSiteTypeFieldAdd"
+      >
         <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-        <span>Add <span class="alias" data-alias="Lot"></span> Type</span>
+        <span>Add Field</span>
       </button>
       <button class="button is-close-modal-button" type="button">Cancel</button>
     </footer>

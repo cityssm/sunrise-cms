@@ -7,13 +7,13 @@ export default async function handler(
   request: Request<
     unknown,
     unknown,
-    { lotType: string; orderNumber?: string | number }
+    { burialSiteType: string; orderNumber?: string | number }
   >,
   response: Response
 ): Promise<void> {
   const burialSiteTypeId = await addRecord(
     'BurialSiteTypes',
-    request.body.lotType,
+    request.body.burialSiteType,
     request.body.orderNumber ?? -1,
     request.session.user as User
   )
