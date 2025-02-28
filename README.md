@@ -1,10 +1,16 @@
+<div align=center>
+
 # Sunrise Cemetery Management System (CMS)
+
+![Sunrise CMS Logo](./public/images/sunrise-cms.png)
 
 🚧 **In development** 🚧
 
-**A web-based application that allows cemetery managers to manage their cemetery records**
+**A web-based application to assist cemetery managers with managing their cemetery records**
 
-This is a major refactoring of the 
+</div>
+
+This is a major refactoring of the
 [Lot Occupancy System](https://github.com/cityssm/lot-occupancy-system),
 originally built with multiple focuses. This fork reworks the project to focus exculsively
 on cemetery management.
