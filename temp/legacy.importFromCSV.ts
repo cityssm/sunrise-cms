@@ -440,7 +440,7 @@ async function importFromMasterCSV(): Promise<void> {
 
         preneedcontractId = await addContract(
           {
-            contractTypeId: importIds.preneedOccupancyType.contractTypeId,
+            contractTypeId: importIds.preneedContractType.contractTypeId,
             lotId: burialSiteId ?? '',
             contractStartDateString: preneedcontractStartDateString,
             contractEndDateString,
@@ -551,13 +551,13 @@ async function importFromMasterCSV(): Promise<void> {
           ? ''
           : deceasedcontractStartDateString
 
-        const occupancyType = burialSiteId
-          ? importIds.deceasedOccupancyType
-          : importIds.cremationOccupancyType
+        const contractType = burialSiteId
+          ? importIds.deceasedContractType
+          : importIds.cremationContractType
 
         deceasedcontractId = await addContract(
           {
-            contractTypeId: occupancyType.contractTypeId,
+            contractTypeId: contractType.contractTypeId,
             lotId: burialSiteId ?? '',
             contractStartDateString: deceasedcontractStartDateString,
             contractEndDateString: deceasedcontractEndDateString,
@@ -596,9 +596,9 @@ async function importFromMasterCSV(): Promise<void> {
           await addOrUpdateContractField(
             {
               contractId: deceasedcontractId,
-              contractTypeFieldId: occupancyType.ContractTypeFields!.find(
-                (occupancyTypeField) =>
-                  occupancyTypeField.occupancyTypeField === 'Death Date'
+              contractTypeFieldId: contractType.ContractTypeFields!.find(
+                (contractTypeField) =>
+                  contractTypeField.contractTypeField === 'Death Date'
               )!.contractTypeFieldId!,
               contractFieldValue
             },
@@ -610,9 +610,9 @@ async function importFromMasterCSV(): Promise<void> {
           await addOrUpdateContractField(
             {
               contractId: deceasedcontractId,
-              contractTypeFieldId: occupancyType.ContractTypeFields!.find(
-                (occupancyTypeField) =>
-                  occupancyTypeField.occupancyTypeField === 'Death Age'
+              contractTypeFieldId: contractType.ContractTypeFields!.find(
+                (contractTypeField) =>
+                  contractTypeField.contractTypeField === 'Death Age'
               )!.contractTypeFieldId!,
               contractFieldValue: masterRow.CM_AGE
             },
@@ -626,9 +626,9 @@ async function importFromMasterCSV(): Promise<void> {
           await addOrUpdateContractField(
             {
               contractId: deceasedcontractId,
-              contractTypeFieldId: occupancyType.ContractTypeFields!.find(
-                (occupancyTypeField) =>
-                  occupancyTypeField.occupancyTypeField === 'Death Age Period'
+              contractTypeFieldId: contractType.ContractTypeFields!.find(
+                (contractTypeField) =>
+                  contractTypeField.contractTypeField === 'Death Age Period'
               )!.contractTypeFieldId!,
               contractFieldValue: period
             },
@@ -666,8 +666,8 @@ async function importFromMasterCSV(): Promise<void> {
               {
                   contractId: deceasedcontractId,
                   contractTypeFieldId: allContractTypeFields.find(
-                      (occupancyTypeField) => {
-                          return occupancyTypeField.occupancyTypeField === "Funeral Home";
+                      (contractTypeField) => {
+                          return contractTypeField.contractTypeField === "Funeral Home";
                       }
                   ).contractTypeFieldId,
                   contractFieldValue: masterRow.CM_FUNERAL_HOME
@@ -687,9 +687,9 @@ async function importFromMasterCSV(): Promise<void> {
           await addOrUpdateContractField(
             {
               contractId: deceasedcontractId,
-              contractTypeFieldId: occupancyType.ContractTypeFields!.find(
-                (occupancyTypeField) =>
-                  occupancyTypeField.occupancyTypeField === 'Funeral Date'
+              contractTypeFieldId: contractType.ContractTypeFields!.find(
+                (contractTypeField) =>
+                  contractTypeField.contractTypeField === 'Funeral Date'
               )!.contractTypeFieldId!,
               contractFieldValue
             },
@@ -697,14 +697,14 @@ async function importFromMasterCSV(): Promise<void> {
           )
         }
 
-        if (occupancyType.occupancyType !== 'Cremation') {
+        if (contractType.contractType !== 'Cremation') {
           if (masterRow.CM_CONTAINER_TYPE !== '') {
             await addOrUpdateContractField(
               {
                 contractId: deceasedcontractId,
-                contractTypeFieldId: occupancyType.ContractTypeFields!.find(
-                  (occupancyTypeField) =>
-                    occupancyTypeField.occupancyTypeField === 'Container Type'
+                contractTypeFieldId: contractType.ContractTypeFields!.find(
+                  (contractTypeField) =>
+                    contractTypeField.contractTypeField === 'Container Type'
                 )!.contractTypeFieldId!,
                 contractFieldValue: masterRow.CM_CONTAINER_TYPE
               },
@@ -722,9 +722,9 @@ async function importFromMasterCSV(): Promise<void> {
             await addOrUpdateContractField(
               {
                 contractId: deceasedcontractId,
-                contractTypeFieldId: occupancyType.ContractTypeFields!.find(
-                  (occupancyTypeField) =>
-                    occupancyTypeField.occupancyTypeField === 'Committal Type'
+                contractTypeFieldId: contractType.ContractTypeFields!.find(
+                  (contractTypeField) =>
+                    contractTypeField.contractTypeField === 'Committal Type'
                 )!.contractTypeFieldId!,
                 contractFieldValue: commitalType
               },
@@ -901,7 +901,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         const possibleLotOccupancies = await getContracts(
           {
             lotId: lot.lotId,
-            contractTypeId: importIds.preneedOccupancyType.contractTypeId,
+            contractTypeId: importIds.preneedContractType.contractTypeId,
             occupantName: prepaidRow.CMPP_PREPAID_FOR_NAME,
             contractStartDateString
           },
@@ -923,7 +923,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       contractId ||= await addContract(
         {
           lotId: lot ? lot.lotId : '',
-          contractTypeId: importIds.preneedOccupancyType.contractTypeId,
+          contractTypeId: importIds.preneedContractType.contractTypeId,
           contractStartDateString,
           contractEndDateString: ''
         },
@@ -1267,14 +1267,14 @@ async function importFromWorkOrderCSV(): Promise<void> {
         )
       }
 
-      const occupancyType = lot
-        ? importIds.deceasedOccupancyType
-        : importIds.cremationOccupancyType
+      const contractType = lot
+        ? importIds.deceasedContractType
+        : importIds.cremationContractType
 
       const contractId = await addContract(
         {
           lotId: lot ? lot.lotId : '',
-          contractTypeId: occupancyType.contractTypeId,
+          contractTypeId: contractType.contractTypeId,
           contractStartDateString,
           contractEndDateString: ''
         },
@@ -1308,9 +1308,9 @@ async function importFromWorkOrderCSV(): Promise<void> {
         await addOrUpdateContractField(
           {
             contractId,
-            contractTypeFieldId: occupancyType.ContractTypeFields!.find(
-              (occupancyTypeField) =>
-                occupancyTypeField.occupancyTypeField === 'Death Date'
+            contractTypeFieldId: contractType.ContractTypeFields!.find(
+              (contractTypeField) =>
+                contractTypeField.contractTypeField === 'Death Date'
             )!.contractTypeFieldId!,
             contractFieldValue
           },
@@ -1322,9 +1322,9 @@ async function importFromWorkOrderCSV(): Promise<void> {
         await addOrUpdateContractField(
           {
             contractId,
-            contractTypeFieldId: occupancyType.ContractTypeFields!.find(
-              (occupancyTypeField) =>
-                occupancyTypeField.occupancyTypeField === 'Death Place'
+            contractTypeFieldId: contractType.ContractTypeFields!.find(
+              (contractTypeField) =>
+                contractTypeField.contractTypeField === 'Death Place'
             )!.contractTypeFieldId!,
             contractFieldValue: workOrderRow.WO_DEATH_PLACE
           },
@@ -1336,9 +1336,9 @@ async function importFromWorkOrderCSV(): Promise<void> {
         await addOrUpdateContractField(
           {
             contractId,
-            contractTypeFieldId: occupancyType.ContractTypeFields!.find(
-              (occupancyTypeField) =>
-                occupancyTypeField.occupancyTypeField === 'Death Age'
+            contractTypeFieldId: contractType.ContractTypeFields!.find(
+              (contractTypeField) =>
+                contractTypeField.contractTypeField === 'Death Age'
             )!.contractTypeFieldId!,
             contractFieldValue: workOrderRow.WO_AGE
           },
@@ -1352,9 +1352,9 @@ async function importFromWorkOrderCSV(): Promise<void> {
         await addOrUpdateContractField(
           {
             contractId,
-            contractTypeFieldId: occupancyType.ContractTypeFields!.find(
-              (occupancyTypeField) =>
-                occupancyTypeField.occupancyTypeField === 'Death Age Period'
+            contractTypeFieldId: contractType.ContractTypeFields!.find(
+              (contractTypeField) =>
+                contractTypeField.contractTypeField === 'Death Age Period'
             )!.contractTypeFieldId!,
             contractFieldValue: period
           },
@@ -1389,8 +1389,8 @@ async function importFromWorkOrderCSV(): Promise<void> {
           addOrUpdateContractField(
             {
                 contractId: contractId,
-                contractTypeFieldId: allContractTypeFields.find((occupancyTypeField) => {
-                    return occupancyTypeField.occupancyTypeField === "Funeral Home";
+                contractTypeFieldId: allContractTypeFields.find((contractTypeField) => {
+                    return contractTypeField.contractTypeField === "Funeral Home";
                 }).contractTypeFieldId,
                 contractFieldValue: workOrderRow.WO_FUNERAL_HOME
             },
@@ -1409,9 +1409,9 @@ async function importFromWorkOrderCSV(): Promise<void> {
         await addOrUpdateContractField(
           {
             contractId,
-            contractTypeFieldId: occupancyType.ContractTypeFields!.find(
-              (occupancyTypeField) =>
-                occupancyTypeField.occupancyTypeField === 'Funeral Date'
+            contractTypeFieldId: contractType.ContractTypeFields!.find(
+              (contractTypeField) =>
+                contractTypeField.contractTypeField === 'Funeral Date'
             )!.contractTypeFieldId!,
             contractFieldValue
           },
@@ -1419,14 +1419,14 @@ async function importFromWorkOrderCSV(): Promise<void> {
         )
       }
 
-      if (occupancyType.occupancyType !== 'Cremation') {
+      if (contractType.contractType !== 'Cremation') {
         if (workOrderRow.WO_CONTAINER_TYPE !== '') {
           await addOrUpdateContractField(
             {
               contractId,
-              contractTypeFieldId: occupancyType.ContractTypeFields!.find(
-                (occupancyTypeField) =>
-                  occupancyTypeField.occupancyTypeField === 'Container Type'
+              contractTypeFieldId: contractType.ContractTypeFields!.find(
+                (contractTypeField) =>
+                  contractTypeField.contractTypeField === 'Container Type'
               )!.contractTypeFieldId!,
               contractFieldValue: workOrderRow.WO_CONTAINER_TYPE
             },
@@ -1444,9 +1444,9 @@ async function importFromWorkOrderCSV(): Promise<void> {
           await addOrUpdateContractField(
             {
               contractId,
-              contractTypeFieldId: occupancyType.ContractTypeFields!.find(
-                (occupancyTypeField) =>
-                  occupancyTypeField.occupancyTypeField === 'Committal Type'
+              contractTypeFieldId: contractType.ContractTypeFields!.find(
+                (contractTypeField) =>
+                  contractTypeField.contractTypeField === 'Committal Type'
               )!.contractTypeFieldId!,
               contractFieldValue: commitalType
             },

@@ -6,14 +6,14 @@ import type {
   BurialSiteTypeField
 } from '../../types/recordTypes.js'
 
-import type { LOS } from './types.js'
+import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as LOS
+  const los = exports.sunrise as Sunrise
 
   const burialSiteId = (
     document.querySelector('#burialSite--burialSiteId') as HTMLInputElement

@@ -1,4 +1,4 @@
-export interface LOS {
+export interface Sunrise {
   urlPrefix: string
   apiKey: string
 
@@ -44,6 +44,7 @@ export interface LOS {
     count: number
   ) => string
 
+  getFuneralHomeURL: (funeralHomeId?: number | string, edit?: boolean, time?: boolean) => string
   getCemeteryURL: (cemeteryId?: number | string, edit?: boolean, time?: boolean) => string
   getBurialSiteURL: (burialSiteId?: number | string, edit?: boolean, time?: boolean) => string
   getContractURL: (

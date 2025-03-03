@@ -11,6 +11,7 @@ recordIdColumns.set('BurialSiteStatuses', 'burialSiteStatusId');
 recordIdColumns.set('BurialSiteTypes', 'burialSiteTypeId');
 recordIdColumns.set('BurialSiteTypeFields', 'burialSiteTypeFieldId');
 recordIdColumns.set('Cemeteries', 'cemeteryId');
+recordIdColumns.set('FuneralHomes', 'funeralHomeId');
 recordIdColumns.set('ContractTypes', 'contractTypeId');
 recordIdColumns.set('ContractTypeFields', 'contractTypeFieldId');
 recordIdColumns.set('WorkOrders', 'workOrderId');

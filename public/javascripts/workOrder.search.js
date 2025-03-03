@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
+    const los = exports.sunrise;
     const workOrderPrints = exports.workOrderPrints;
     const searchFilterFormElement = document.querySelector('#form--searchFilters');
     los.initializeDatePickers(searchFilterFormElement);

@@ -95,7 +95,7 @@ function buildEventDescriptionHTML_occupancies(
       descriptionHTML += `<tr>
           <td>
             <a href="${urlRoot}/contracts/${occupancy.contractId}">
-              ${escapeHTML(occupancy.occupancyType ?? '')}
+              ${escapeHTML(occupancy.contractType ?? '')}
             </a>
           </td>
           <td>

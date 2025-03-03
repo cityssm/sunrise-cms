@@ -2,13 +2,13 @@ import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { Contract } from '../../types/recordTypes.js'
 
-import type { LOS } from './types.js'
+import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as LOS
+  const los = exports.sunrise as Sunrise
 
   const searchFilterFormElement = document.querySelector(
     '#form--searchFilters'

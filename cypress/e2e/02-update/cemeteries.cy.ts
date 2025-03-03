@@ -65,12 +65,12 @@ describe('Update - Cemeteries', () => {
 
     cy.get("input[name='cemeteryCity']").should(
       'have.value',
-      getConfigProperty('settings.cemeteries.cityDefault')
+      getConfigProperty('settings.cityDefault')
     )
 
     cy.get("input[name='cemeteryProvince']").should(
       'have.value',
-      getConfigProperty('settings.cemeteries.provinceDefault')
+      getConfigProperty('settings.provinceDefault')
     )
 
     cy.log('Submit the form')
@@ -106,12 +106,12 @@ describe('Update - Cemeteries', () => {
 
       cy.get("input[name='cemeteryCity']").should(
         'have.value',
-        getConfigProperty('settings.cemeteries.cityDefault')
+        getConfigProperty('settings.cityDefault')
       )
 
       cy.get("input[name='cemeteryProvince']").should(
         'have.value',
-        getConfigProperty('settings.cemeteries.provinceDefault')
+        getConfigProperty('settings.provinceDefault')
       )
 
       cy.get("input[name='cemeteryPostalCode']").should(

@@ -3,7 +3,7 @@
 /* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
+    const los = exports.sunrise;
     const workOrderTypeIdsElement = document.querySelector('#icsFilters--workOrderTypeIds');
     const workOrderMilestoneTypeIdsElement = document.querySelector('#icsFilters--workOrderMilestoneTypeIds');
     const calendarLinkElement = document.querySelector('#icsFilters--calendarURL');

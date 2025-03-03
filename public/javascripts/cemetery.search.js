@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
+    const sunrise = exports.sunrise;
     const cemeteries = exports.cemeteries;
     const searchFilterElement = document.querySelector('#searchFilter--cemetery');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     // eslint-disable-next-line complexity
     function renderResults() {
         // eslint-disable-next-line no-unsanitized/property
-        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading Cemeteries...`);
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(`Loading Cemeteries...`);
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement('tbody');
         const filterStringSplit = searchFilterElement.value
@@ -31,7 +31,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // eslint-disable-next-line no-unsanitized/method
             searchResultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${los.getCemeteryURL(cemetery.cemeteryId)}">
+            <a class="has-text-weight-bold" href="${sunrise.getCemeteryURL(cemetery.cemeteryId)}">
               ${cityssm.escapeHTML((cemetery.cemeteryName ?? '') === '' ? '(No Name)' : cemetery.cemeteryName ?? '')}
             </a><br />
             <span class="is-size-7">
@@ -63,13 +63,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ? ''
                 : '<span data-tooltip="Has Image"><i class="fas fa-image" role="img" aria-label="Has Image"></i></span>'}
           </td><td class="has-text-right">
-            <a href="${los.urlPrefix}/burialSites?cemeteryId=${cemetery.cemeteryId}">${cemetery.burialSiteCount}</a>
+            <a href="${sunrise.urlPrefix}/burialSites?cemeteryId=${cemetery.cemeteryId}">${cemetery.burialSiteCount}</a>
           </td>
           </tr>`);
         }
         searchResultsContainerElement.innerHTML = '';
         if (searchResultCount === 0) {
-            // eslint-disable-next-line no-unsanitized/property
             searchResultsContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no cemeteries that meet the search criteria.</p>
         </div>`;
@@ -78,7 +77,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const searchResultsTableElement = document.createElement('table');
             searchResultsTableElement.className =
                 'table is-fullwidth is-striped is-hoverable has-sticky-header';
-            // eslint-disable-next-line no-unsanitized/property
             searchResultsTableElement.innerHTML = `<thead><tr>
         <th>Cemetery</th>
         <th>Address</th>

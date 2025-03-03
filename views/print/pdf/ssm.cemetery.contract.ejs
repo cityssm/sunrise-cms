@@ -3,7 +3,7 @@
 
   let purchaserOccupants = [];
   for (const purchaserLotOccupantType of purchaserLotOccupantTypes) {
-    purchaserOccupants = lotOccupancyFunctions.filterOccupantsByLotOccupantType(lotOccupancy, purchaserLotOccupantType);
+    purchaserOccupants = contractFunctions.filterOccupantsByLotOccupantType(contract, purchaserLotOccupantType);
     if (purchaserOccupants.length > 0) {
       break;
     }
@@ -15,7 +15,7 @@
 
   let recipientOccupants = [];
   for (const recipientLotOccupantType of recipientLotOccupantTypes) {
-    recipientOccupants = lotOccupancyFunctions.filterOccupantsByLotOccupantType(lotOccupancy, recipientLotOccupantType);
+    recipientOccupants = contractFunctions.filterOccupantsByLotOccupantType(contract, recipientLotOccupantType);
     if (recipientOccupants.length > 0) {
       break;
     }
@@ -82,7 +82,7 @@
       <p class="has-text-centered">
         in
         <span class="field" style="width:300px">
-          <%= lotOccupancy.mapName %>
+          <%= contract.mapName %>
         </span>
         cemetery<br />
         <span class="is-capitalized">operated by</span><br />
@@ -92,13 +92,13 @@
       <p>
         Contract No.
         <span class="field">
-          <%= lotOccupancy.lotOccupancyId %>
+          <%= contract.contractId %>
         </span>
       </p>
       <p>
         Date of Purchase
         <span class="field">
-          <%= lotOccupancy.occupancyStartDateString %>
+          <%= contract.occupancyStartDateString %>
         </span>
       </p>
       <table class="layout-table is-10pt" style="table-layout:fixed">
@@ -173,11 +173,11 @@
                       <tr>
                         <th class="has-text-left"><%= fieldName %>:</th>
                         <%
-                          const field = lotOccupancy.lotOccupancyFields.find((possibleField) => {
-                            return possibleField.occupancyTypeField === fieldName;
+                          const field = contract.contractFields.find((possibleField) => {
+                            return possibleField.contractTypeField === fieldName;
                           });
                         %>
-                        <td class="has-border-bottom"><%= field?.lotOccupancyFieldValue ?? "" %>&nbsp;</td>
+                        <td class="has-border-bottom"><%= field?.contractFieldValue ?? "" %>&nbsp;</td>
                       </tr>
                     <% 
                       }
@@ -216,19 +216,19 @@
             <table class="is-10pt data-table">
               <tr>
                 <td><%= configFunctions.getConfigProperty("aliases.map") %></td>
-                <td><%= lotOccupancy.mapName ?? '(No ' + configFunctions.getConfigProperty("aliases.map") + ')' %></td>
+                <td><%= contract.mapName ?? '(No ' + configFunctions.getConfigProperty("aliases.map") + ')' %></td>
               </tr>
               <tr>
                 <td>Burial Site</td>
-                <td><%= lotOccupancy.lotName ?? '(No ' + configFunctions.getConfigProperty("aliases.lot") + ')' %></td>
+                <td><%= contract.lotName ?? '(No ' + configFunctions.getConfigProperty("aliases.lot") + ')' %></td>
               </tr>
               <% 
-                for (const field of lotOccupancy.lotOccupancyFields) { 
-                  if (!recipientFields.includes(field.occupancyTypeField) && field.lotOccupancyFieldValue) {
+                for (const field of contract.contractFields) { 
+                  if (!recipientFields.includes(field.contractTypeField) && field.contractFieldValue) {
               %>
                   <tr>
-                    <td><%= field.occupancyTypeField %></td>
-                    <td><%= field.lotOccupancyFieldValue %></td>
+                    <td><%= field.contractTypeField %></td>
+                    <td><%= field.contractFieldValue %></td>
                   </tr>
               <% 
                   }
@@ -245,7 +245,7 @@
                       let feeAmountTotal = 0;
                       let taxAmountTotal = 0;
                     %>
-                    <% for (const fee of lotOccupancy.lotOccupancyFees) { %>
+                    <% for (const fee of contract.contractFees) { %>
                         <% if (currentFeeCategory !== fee.feeCategory) { %>
                           <tr>
                             <td colspan="3">
@@ -292,7 +292,7 @@
                     </tr><tr>
                       <td colspan="2"><strong>Balance Owing</strong></td>
                       <td class="has-text-right">
-                        <strong>$<%= (feeAmountTotal + taxAmountTotal - lotOccupancyFunctions.getTransactionTotal(lotOccupancy)).toFixed(2) %></strong>
+                        <strong>$<%= (feeAmountTotal + taxAmountTotal - contractFunctions.getTransactionTotal(contract)).toFixed(2) %></strong>
                       </td>
                     </tr>
                 </tbody>

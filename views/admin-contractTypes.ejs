@@ -16,7 +16,7 @@
           </li>
           <li class="is-active">
             <a href="#" aria-current="page">
-              <%= configFunctions.getConfigProperty("aliases.occupancy") %> Type Management
+              Contract Type Management
             </a>
           </li>
         </ul>
@@ -25,13 +25,13 @@
       <div class="columns is-vcentered">
         <div class="column">
           <h1 class="title is-1">
-            <%= configFunctions.getConfigProperty("aliases.occupancy") %> Type Management
+            Contract Type Management
           </h1>
         </div>
         <div class="column has-text-right is-narrow">
-          <button class="button is-success" id="button--addOccupancyType" type="button" accesskey="n">
+          <button class="button is-success" id="button--addContractType" type="button" accesskey="n">
             <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-            <span>Add <%= configFunctions.getConfigProperty("aliases.occupancy") %> Type</span>
+            <span>Add Contract Type</span>
           </button>
         </div>
       </div>
@@ -39,13 +39,13 @@
       <div class="tabs is-boxed" role="tablist">
         <ul role="presentation">
           <li class="is-active" role="presentation">
-            <a href="#tab--occupancyTypes">
+            <a href="#tab--contractTypes">
               <i class="fas fa-user-friends" aria-hidden="true"></i>
               <span class="ml-2">Types and Fields</span>
             </a>
           </li>
           <li role="presentation">
-            <a href="#tab--ContractTypePrints">
+            <a href="#tab--contractTypePrints">
               <i class="fas fa-print" aria-hidden="true"></i>
               <span class="ml-2">Prints</span>
             </a>
@@ -53,19 +53,19 @@
         </ul>
       </div>
       <div class="tab-container">
-        <div id="tab--occupancyTypes">
-          <div id="container--occupancyTypes"></div>
+        <div id="tab--contractTypes">
+          <div id="container--contractTypes"></div>
         </div>
-        <div class="is-hidden" id="tab--ContractTypePrints">
+        <div class="is-hidden" id="tab--contractTypePrints">
           <div class="columns">
             <div class="column">
-              <div id="container--ContractTypePrints"></div>
+              <div id="container--contractTypePrints"></div>
             </div>
             <div class="column is-4">
               <div class="box">
                 <h2 class="title is-6">Available Prints</h2>
                 <ul class="fa-ul">
-                  <% for (const [printEJS, printTitle] of Object.entries(occupancyTypePrintTitles)) { %>
+                  <% for (const [printEJS, printTitle] of Object.entries(contractTypePrintTitles)) { %>
                     <% const printIconClass = printEJS.startsWith("pdf/") ? "fa-file-pdf" : "fa-file" %>
                     <li>
                       <span class="fa-li"><i class="fas <%= printIconClass %>" aria-hidden="true"></i></span>
@@ -84,11 +84,11 @@
 <%- include('_footerA'); -%>
 
 <script>
-  exports.occupancyTypes = <%- JSON.stringify(occupancyTypes) %>;
-  exports.allOccupancyTypeFields = <%- JSON.stringify(allOccupancyTypeFields) %>;
-  exports.occupancyTypePrintTitles = <%- JSON.stringify(occupancyTypePrintTitles) %>;
+  exports.contractTypes = <%- JSON.stringify(contractTypes) %>;
+  exports.allContractTypeFields = <%- JSON.stringify(allContractTypeFields) %>;
+  exports.contractTypePrintTitles = <%- JSON.stringify(contractTypePrintTitles) %>;
 </script>
 
-<script src="<%= urlPrefix %>/javascripts/adminOccupancyTypes.js"></script>
+<script src="<%= urlPrefix %>/javascripts/contractTypes.admin.js"></script>
 
 <%- include('_footerB'); -%>

@@ -9,22 +9,22 @@
     <div class="column">
         <p>
             <strong><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type</strong><br />
-            <%= lotOccupancy.occupancyType %>
+            <%= contract.contractType %>
         </p>
     </div>
     <div class="column">
         <p class="mb-2">
             <strong>Burial Site</strong><br />
-            <% if (lotOccupancy.lotId) { %>
-                <%= lotOccupancy.lotName %>
+            <% if (contract.lotId) { %>
+                <%= contract.lotName %>
             <% } else { %>
                 (No Burial Site)
             <% } %>
         </p>
         <p>
             <strong><%= configFunctions.getConfigProperty("aliases.map") %></strong><br />
-            <% if (lotOccupancy.mapId) { %>
-                <%= lotOccupancy.mapName %>
+            <% if (contract.mapId) { %>
+                <%= contract.mapName %>
             <% } else { %>
                 (No <%= configFunctions.getConfigProperty("aliases.map") %>)
             <% } %>
@@ -33,19 +33,19 @@
     <div class="column">
         <p class="mb-2">
             <strong><%= configFunctions.getConfigProperty("aliases.occupancyStartDate") %></strong><br />
-            <%= lotOccupancy.occupancyStartDateString %>
+            <%= contract.occupancyStartDateString %>
         </p>
         <p>
             <strong>End Date</strong><br />
-            <%= (lotOccupancy.occupancyEndDateString === "" ? "(No End Date)" : lotOccupancy.occupancyEndDateString) %>
+            <%= (contract.occupancyEndDateString === "" ? "(No End Date)" : contract.occupancyEndDateString) %>
         </p>
     </div>
-    <% if (lotOccupancy.lotOccupancyFields.length > 0) { %>
+    <% if (contract.contractFields.length > 0) { %>
         <div class="column">
-            <% for (const lotOccupancyField of lotOccupancy.lotOccupancyFields) { %>
+            <% for (const contractField of contract.contractFields) { %>
                 <p class="mb-2">
-                    <strong><%= lotOccupancyField.occupancyTypeField %></strong><br />
-                    <%= lotOccupancyField.lotOccupancyFieldValue || "(No Value)" %>
+                    <strong><%= contractField.contractTypeField %></strong><br />
+                    <%= contractField.contractFieldValue || "(No Value)" %>
                 </p>
             <% } %>
         </div>
@@ -55,7 +55,7 @@
 <section>
     <h2 class="title is-4"><%= configFunctions.getConfigProperty("aliases.occupants") %></h2>
 
-    <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
+    <% if (contract.contractOccupants.length === 0) { %>
         <div class="message is-warning">
             <p class="message-body">
                 There are no <%= configFunctions.getConfigProperty("aliases.occupants").toLowerCase() %>
@@ -73,23 +73,23 @@
                 </tr>
             </thead>
             <tbody>
-                <% for (const lotOccupancyOccupant of lotOccupancy.lotOccupancyOccupants) { %>
+                <% for (const contractOccupant of contract.contractOccupants) { %>
                 <tr>
-                    <td><%= lotOccupancyOccupant.lotOccupantType %></td>
-                    <td><%= lotOccupancyOccupant.occupantName %> <%= lotOccupancyOccupant.occupantFamilyName %></td>
+                    <td><%= contractOccupant.lotOccupantType %></td>
+                    <td><%= contractOccupant.occupantName %> <%= contractOccupant.occupantFamilyName %></td>
                     <td>
-                        <%= lotOccupancyOccupant.occupantAddress1 %><br />
-                        <% if (lotOccupancyOccupant.occupantAddress2 && lotOccupancyOccupant.occupantAddress2 !== "") { %>
-                            <%= lotOccupancyOccupant.occupantAddress2 %><br />
+                        <%= contractOccupant.occupantAddress1 %><br />
+                        <% if (contractOccupant.occupantAddress2 && contractOccupant.occupantAddress2 !== "") { %>
+                            <%= contractOccupant.occupantAddress2 %><br />
                         <% } %>
-                        <% if (lotOccupancyOccupant.occupantCity) { %>
-                            <%= lotOccupancyOccupant.occupantCity %>, 
+                        <% if (contractOccupant.occupantCity) { %>
+                            <%= contractOccupant.occupantCity %>, 
                         <% } %>
-                        <%= lotOccupancyOccupant.occupantProvince %><br />
-                        <%= lotOccupancyOccupant.occupantPostalCode %>
+                        <%= contractOccupant.occupantProvince %><br />
+                        <%= contractOccupant.occupantPostalCode %>
                     </td>
                     <td>
-                        <%= lotOccupancyOccupant.occupantPhoneNumber %>
+                        <%= contractOccupant.occupantPhoneNumber %>
                     </td>
                 </tr>
                 <% } %>
@@ -98,7 +98,7 @@
     <% } %>
 </section>
 
-<% if (lotOccupancy.lotOccupancyComments.length > 0) { %>
+<% if (contract.contractComments.length > 0) { %>
 <section class="mt-4">
     <h2 class="title is-4">Comments</h2>
 
@@ -111,14 +111,14 @@
             </tr>
         </thead>
         <tbody>
-            <% for (const lotOccupancyComment of lotOccupancy.lotOccupancyComments) { %>
+            <% for (const contractComment of contract.contractComments) { %>
                 <tr>
-                    <td><%= lotOccupancyComment.recordCreate_userName %></td>
+                    <td><%= contractComment.recordCreate_userName %></td>
                     <td>
-                        <%= lotOccupancyComment.lotOccupancyCommentDateString %>
-                        <%= (lotOccupancyComment.lotOccupancyCommentTime === 0 ? "" : lotOccupancyComment.lotOccupancyCommentTimeString) %>
+                        <%= contractComment.contractCommentDateString %>
+                        <%= (contractComment.contractCommentTime === 0 ? "" : contractComment.contractCommentTimeString) %>
                     </td>
-                    <td><%= lotOccupancyComment.lotOccupancyComment %></td>
+                    <td><%= contractComment.contractComment %></td>
                 </tr>
             <% } %>
         </tbody>
@@ -129,7 +129,7 @@
 <section class="mt-4">
     <h2 class="title is-4">Fees</h2>
 
-    <% if (lotOccupancy.lotOccupancyFees.length === 0) { %>
+    <% if (contract.contractFees.length === 0) { %>
         <div class="message is-info">
             <p class="message-body">
                 There are no fees applied to this <%= configFunctions.getConfigProperty("aliases.occupancy").toLowerCase() %> record.
@@ -152,22 +152,22 @@
                 </tr>
             </thead>
             <tbody>
-                <% for (const lotOccupancyFee of lotOccupancy.lotOccupancyFees) { %>
+                <% for (const contractFee of contract.contractFees) { %>
                     <%
-                        feeAmountTotal += (lotOccupancyFee.feeAmount * lotOccupancyFee.quantity);
-                        taxAmountTotal += (lotOccupancyFee.taxAmount * lotOccupancyFee.quantity);
+                        feeAmountTotal += (contractFee.feeAmount * contractFee.quantity);
+                        taxAmountTotal += (contractFee.taxAmount * contractFee.quantity);
                     %>
                     <tr>
-                        <td colspan="<%= (lotOccupancyFee.quantity === 1 ? "5" : "1") %>">
-                            <%= lotOccupancyFee.feeName %>
+                        <td colspan="<%= (contractFee.quantity === 1 ? "5" : "1") %>">
+                            <%= contractFee.feeName %>
                         </td>
-                        <% if (lotOccupancyFee.quantity !== 1) { %>
-                            <td class="has-text-right">$<%= lotOccupancyFee.feeAmount.toFixed(2) %></td>
+                        <% if (contractFee.quantity !== 1) { %>
+                            <td class="has-text-right">$<%= contractFee.feeAmount.toFixed(2) %></td>
                             <td>&times;</td>
-                            <td class="has-text-right"><%= lotOccupancyFee.quantity %></td>
+                            <td class="has-text-right"><%= contractFee.quantity %></td>
                             <td>=</td>
                         <% } %>
-                        <td class="has-text-right">$<%= (lotOccupancyFee.feeAmount * lotOccupancyFee.quantity).toFixed(2) %></td>
+                        <td class="has-text-right">$<%= (contractFee.feeAmount * contractFee.quantity).toFixed(2) %></td>
                     </tr>
                 <% } %>
             </tbody>
@@ -192,7 +192,7 @@
 <section class="mt-4">
     <h2 class="title is-4">Transactions</h2>
 
-    <% if (lotOccupancy.lotOccupancyTransactions.length === 0) { %>
+    <% if (contract.contractTransactions.length === 0) { %>
         <div class="message is-info">
             <p class="message-body">
                 There are no transactions associated with this <%= configFunctions.getConfigProperty("aliases.occupancy").toLowerCase() %> record.
@@ -208,15 +208,15 @@
                 </tr>
             </thead>
             <tbody>
-                <% for (const lotOccupancyTransaction of lotOccupancy.lotOccupancyTransactions) { %>
+                <% for (const contractTransaction of contract.contractTransactions) { %>
                     <tr>
-                        <td><%= lotOccupancyTransaction.transactionDateString %></td>
+                        <td><%= contractTransaction.transactionDateString %></td>
                         <td>
-                            <%= lotOccupancyTransaction.externalReceiptNumber %><br />
-                            <small><%= lotOccupancyTransaction.transactionNote %></small>
+                            <%= contractTransaction.externalReceiptNumber %><br />
+                            <small><%= contractTransaction.transactionNote %></small>
                         </td>
                         <td class="has-text-right">
-                            $<%= lotOccupancyTransaction.transactionAmount.toFixed(2) %>
+                            $<%= contractTransaction.transactionAmount.toFixed(2) %>
                         </td>
                     </tr>
                 <% } %>

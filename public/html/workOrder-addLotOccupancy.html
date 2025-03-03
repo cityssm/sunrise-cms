@@ -14,17 +14,17 @@
     </header>
     <section class="modal-card-body">
       <div class="box">
-        <form id="form--lotOccupancySearch">
+        <form id="form--contractSearch">
           <input name="limit" type="hidden" value="100" />
           <input name="offset" type="hidden" value="0" />
           <input
-            id="lotOccupancySearch--notWorkOrderId"
+            id="contractSearch--notWorkOrderId"
             name="notWorkOrderId"
             type="hidden"
             value=""
           />
           <input
-            id="lotOccupancySearch--occupancyEffectiveDateString"
+            id="contractSearch--occupancyEffectiveDateString"
             name="occupancyEffectiveDateString"
             type="hidden"
             value=""
@@ -32,14 +32,14 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label" for="lotOccupancySearch--occupantName">
+                <label class="label" for="contractSearch--occupantName">
                   <span class="alias" data-alias="Occupant"></span>
                   Name
                 </label>
                 <div class="control has-icons-left">
                   <input
                     class="input"
-                    id="lotOccupancySearch--occupantName"
+                    id="contractSearch--occupantName"
                     name="occupantName"
                     type="text"
                   />
@@ -51,14 +51,14 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="lotOccupancySearch--lotName">
+                <label class="label" for="contractSearch--lotName">
                   <span class="alias" data-alias="Lot"></span>
                   Name
                 </label>
                 <div class="control has-icons-left">
                   <input
                     class="input"
-                    id="lotOccupancySearch--lotName"
+                    id="contractSearch--lotName"
                     name="lotName"
                     type="text"
                   />
@@ -71,7 +71,7 @@
           </div>
         </form>
       </div>
-      <div id="resultsContainer--lotOccupancyAdd"></div>
+      <div id="resultsContainer--contractAdd"></div>
     </section>
     <footer class="modal-card-foot justify-right">
       <button class="button is-close-modal-button" type="button">Close</button>

@@ -170,8 +170,8 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <% for (const lotOccupancy of workOrder.workOrderLotOccupancies) { %>
-                                  <% const isActive = !(lotOccupancy.occupancyEndDate && lotOccupancy.occupancyEndDate < currentDate); %>
+                              <% for (const contract of workOrder.workOrderLotOccupancies) { %>
+                                  <% const isActive = !(contract.occupancyEndDate && contract.occupancyEndDate < currentDate); %>
                                   <tr>
                                       <td class="has-text-centered">
                                         <% if (isActive) { %>
@@ -182,36 +182,36 @@
                                       </td>
                                       <td>
                                         <a class="has-text-weight-bold"
-                                          href="<%= urlPrefix %>/lotOccupancies/<%= lotOccupancy.lotOccupancyId %>">
-                                          <%= lotOccupancy.occupancyType %>
+                                          href="<%= urlPrefix %>/lotOccupancies/<%= contract.contractId %>">
+                                          <%= contract.contractType %>
                                         </a><br />
                                         <span class="is-size-7">
-                                          #<%= lotOccupancy.lotOccupancyId %>
+                                          #<%= contract.contractId %>
                                         </span>
                                       </td>
                                       <td>
-                                          <% if (lotOccupancy.lotId) { %>
-                                              <%= lotOccupancy.lotName %>
+                                          <% if (contract.lotId) { %>
+                                              <%= contract.lotName %>
                                           <% } else { %>
                                               <span class="has-text-grey">(No Burial Site)</span>
                                           <% } %>
                                       </td>
-                                      <td><%= lotOccupancy.occupancyStartDateString %></td>
+                                      <td><%= contract.occupancyStartDateString %></td>
                                       <td>
-                                          <% if (lotOccupancy.occupancyEndDate) { %>
-                                              <%= lotOccupancy.occupancyEndDateString %>
+                                          <% if (contract.occupancyEndDate) { %>
+                                              <%= contract.occupancyEndDateString %>
                                           <% } else { %>
                                               <span class="has-text-grey">(No End Date)</span>
                                           <% } %>
                                       </td>
                                       <td>
-                                        <% if (lotOccupancy.lotOccupancyOccupants.length === 0) { %>
+                                        <% if (contract.contractOccupants.length === 0) { %>
                                           <span class="has-text-grey">(
                                             No <%= configFunctions.getConfigProperty("aliases.occupants") %>)
                                           </span>
                                         <% } else { %>
                                           <ul class="fa-ul ml-5">
-                                            <% for (const occupant of lotOccupancy.lotOccupancyOccupants) { %>
+                                            <% for (const occupant of contract.contractOccupants) { %>
                                               <li class="has-tooltip-right" data-tooltip="<%= occupant.lotOccupantType %>">
                                                 <span class="fa-li">
                                                   <i class="fas fa-fw fa-<%= occupant.fontAwesomeIconClass || 'user' %>" aria-hidden="true"></i>

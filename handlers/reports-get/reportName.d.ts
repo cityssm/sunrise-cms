@@ -1,2 +1,5 @@
 import type { Request, Response } from 'express';
-export default function handler(request: Request, response: Response): Promise<void>;
+import { type ReportParameters } from '../../database/getReportData.js';
+export default function handler(request: Request<{
+    reportName: string;
+}, unknown, unknown, ReportParameters>, response: Response): Promise<void>;

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
+    const los = exports.sunrise;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     const isCreate = workOrderId === '';
     const workOrderFormElement = document.querySelector('#form--workOrderEdit');
@@ -272,7 +272,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         : `<i class="fas fa-stop" title="Previous ${los.escapedAliases.Occupancy}"></i>`}
       </td><td>
         <a class="has-text-weight-bold" href="${los.getContractURL(contract.contractId)}">
-          ${cityssm.escapeHTML(contract.occupancyType ?? '')}
+          ${cityssm.escapeHTML(contract.contractType ?? '')}
         </a><br />
         <span class="is-size-7">#${contract.contractId}</span>
       </td>`;
@@ -539,7 +539,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                       </button>
                     </td>
                     <td class="has-text-weight-bold">
-                      ${cityssm.escapeHTML(contract.occupancyType ?? '')}
+                      ${cityssm.escapeHTML(contract.contractType ?? '')}
                     </td>`;
                             if (contract.lotId) {
                                 rowElement.insertAdjacentHTML('beforeend', `<td>${cityssm.escapeHTML(contract.lotName ?? '')}</td>`);

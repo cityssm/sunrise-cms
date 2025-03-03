@@ -1,9 +1,9 @@
 <%
     const funeralDirectorLotOccupantType = "Funeral Director";
-    const funeralDirectorOccupants = lotOccupancyFunctions.filterOccupantsByLotOccupantType(lotOccupancy, funeralDirectorLotOccupantType);
+    const funeralDirectorOccupants = contractFunctions.filterOccupantsByLotOccupantType(contract, funeralDirectorLotOccupantType);
 
     const deceasedLotOccupantType = "Deceased";
-    const deceasedOccupants = lotOccupancyFunctions.filterOccupantsByLotOccupantType(lotOccupancy, deceasedLotOccupantType);
+    const deceasedOccupants = contractFunctions.filterOccupantsByLotOccupantType(contract, deceasedLotOccupantType);
 
     const deathDateOccupantTypeField = "Death Date";
     const deathPlaceOccupantTypeField = "Death Place";
@@ -53,13 +53,13 @@
             who died at
             <span class="field has-text-centered" style="width:300px">
                 &nbsp;
-                <%= lotOccupancyFunctions.getFieldValueByOccupancyTypeField(lotOccupancy, deathPlaceOccupantTypeField); %>
+                <%= contractFunctions.getFieldValueByContractTypeField(contract, deathPlaceOccupantTypeField); %>
                 &nbsp;
             </span>
             in Ontario on
             <span class="field has-text-centered" style="width:150px">
                 &nbsp;
-                <%= lotOccupancyFunctions.getFieldValueByOccupancyTypeField(lotOccupancy, deathDateOccupantTypeField); %>
+                <%= contractFunctions.getFieldValueByContractTypeField(contract, deathDateOccupantTypeField); %>
                 &nbsp;
             </span>
             .

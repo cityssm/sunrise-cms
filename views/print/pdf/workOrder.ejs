@@ -49,12 +49,12 @@
         <tbody>
           <% for (const occupancy of workOrder.workOrderLotOccupancies) { %>
             <tr>
-              <td><%= occupancy.occupancyType %></td>
+              <td><%= occupancy.contractType %></td>
               <td><%= occupancy.lotName %></td>
               <td><%= occupancy.occupancyStartDateString %></td>
               <td><%= occupancy.occupancyStartEndString %></td>
               <td>
-                <% for (const occupant of occupancy.lotOccupancyOccupants) { %>
+                <% for (const occupant of occupancy.contractOccupants) { %>
                   <%= occupant.lotOccupantType %>:
                   <%= occupant.occupantName %>
                   <%= occupant.occupantFamilyName %>

@@ -1,0 +1,162 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li>
+      <a href="<%= urlPrefix %>/funeralHomes">
+        <span class="icon is-small"><i class="far fa-map" aria-hidden="true"></i></span>
+        <span>Funeral Homes</span>
+      </a>
+    </li>
+    <% if (!isCreate) { %>
+      <li>
+        <a href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>" accesskey="v">
+          <%= funeralHome.funeralHomeName || "(No Name)" %>
+        </a>
+      </li>
+    <% } %>
+    <li class="is-active">
+      <a href="#" aria-current="page">
+        <% if (isCreate) { %>
+          Create a New Funeral Home
+        <% } else { %>
+          Update
+        <% } %>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<h1 class="title is-1">
+  <% if (isCreate) { %>
+    Create a New Funeral Home
+  <% } else { %>
+    Update Funeral Home
+  <% } %>
+</h1>
+
+<div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
+  <div class="level-left">
+    <% if (!isCreate) { %>
+      <span class="level-item has-text-weight-bold">
+        <%= funeralHome.funeralHomeName || "(No Name)" %>
+      </span>
+    <% } %>
+  </div>
+  <div class="level-right">
+    <% if (isCreate) { %>
+      <div class="level-item">
+        <a class="button is-danger is-inverted" href="<%= urlPrefix %>/funeralHomes">
+          Cancel
+        </a>
+      </div>
+    <% } else { %>
+      <div class="level-item">
+        <div class="dropdown is-right is-up">
+          <div class="dropdown-trigger">
+            <button class="button" type="button">
+              <span>More Options</span>
+              <span class="icon is-small">
+                <i class="fas fa-angle-up" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu">
+            <div class="dropdown-content">
+              <a class="dropdown-item" id="button--deleteFuneralHome" href="#">
+                <span class="icon is-small"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
+                <span>Delete Funeral Home</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+    <div class="level-item">
+      <button class="button is-primary is-light" type="submit" form="form--funeralHome">
+        <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
+        <span>
+          <%= (isCreate ? "Create": "Update") %>
+          Funeral Home
+        </span>
+      </button>
+    </div>
+  </div>
+  
+</div>
+
+<form id="form--funeralHome">
+    <input id="funeralHome--funeralHomeId" name="funeralHomeId" type="hidden" value="<%= funeralHome.funeralHomeId %>" />
+
+    <div class="columns">
+        <div class="column">
+          <div class="panel">
+            <div class="panel-block is-block">
+              <div class="field">
+                <label class="label" for="funeralHome--funeralHomeName">Funeral Home Name</label>
+                <div class="control">
+                  <input class="input" id="funeralHome--funeralHomeName" name="funeralHomeName" type="text"
+                    value="<%= funeralHome.funeralHomeName %>" maxlength="200" required
+                    accesskey="f"
+                    <%= (isCreate ? " autofocus" : "") %> />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="funeralHome--funeralHomeAddress1">Address</label>
+                <div class="control">
+                  <input class="input" id="funeralHome--funeralHomeAddress1" name="funeralHomeAddress1" type="text" value="<%= funeralHome.funeralHomeAddress1 %>" maxlength="50" placeholder="Line 1" />
+                </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <input class="input" id="funeralHome--funeralHomeAddress2" name="funeralHomeAddress2" type="text" value="<%= funeralHome.funeralHomeAddress2 %>" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column is-8">
+                  <div class="field">
+                    <label class="label" for="funeralHome--funeralHomeCity">City</label>
+                    <div class="control">
+                      <input class="input" id="funeralHome--funeralHomeCity" name="funeralHomeCity" value="<%= funeralHome.funeralHomeCity %>" maxlength="20" />
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <div class="field">
+                    <label class="label" for="funeralHome--funeralHomeProvince">Province</label>
+                    <div class="control">
+                      <input class="input" id="funeralHome--funeralHomeProvince" name="funeralHomeProvince" value="<%= funeralHome.funeralHomeProvince %>" maxlength="2" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <div class="field">
+                    <label class="label" for="funeralHome--funeralHomePostalCode">Postal Code</label>
+                    <div class="control">
+                      <input class="input" id="funeralHome--funeralHomePostalCode" name="funeralHomePostalCode" value="<%= funeralHome.funeralHomePostalCode %>" maxlength="7" />
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <div class="field">
+                    <label class="label" for="funeralHome--funeralHomePhoneNumber">Phone Number</label>
+                    <div class="control">
+                      <input class="input" id="funeralHome--funeralHomePhoneNumber" name="funeralHomePhoneNumber" value="<%= funeralHome.funeralHomePhoneNumber %>" maxlength="30" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</form>
+
+<%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/funeralHome.edit.js"></script>
+
+<%- include('_footerB'); -%>

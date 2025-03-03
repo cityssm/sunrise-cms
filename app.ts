@@ -24,6 +24,7 @@ import routerBurialSites from './routes/burialSites.js'
 import routerCemeteries from './routes/cemeteries.js'
 import routerContracts from './routes/contracts.js'
 import routerDashboard from './routes/dashboard.js'
+import routerFuneralHomes from './routes/funeralHomes.js'
 import routerLogin from './routes/login.js'
 import routerPrint from './routes/print.js'
 import routerReports from './routes/reports.js'
@@ -233,6 +234,7 @@ app.use(`${urlPrefix}/api/:apiKey`, permissionHandlers.apiGetHandler, routerApi)
 app.use(`${urlPrefix}/print`, sessionChecker, routerPrint)
 app.use(`${urlPrefix}/cemeteries`, sessionChecker, routerCemeteries)
 app.use(`${urlPrefix}/burialSites`, sessionChecker, routerBurialSites)
+app.use(`${urlPrefix}/funeralHomes`, sessionChecker, routerFuneralHomes)
 app.use(`${urlPrefix}/contracts`, sessionChecker, routerContracts)
 app.use(`${urlPrefix}/workOrders`, sessionChecker, routerWorkOrders)
 

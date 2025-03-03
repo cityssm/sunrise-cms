@@ -46,11 +46,7 @@ export default async function getReportData(
     case 'burialSites-byBurialSiteTypeId': {
       sql = `select l.burialSiteId,
         m.cemeteryName,
-        l.burialSiteNameSegment1,
-        l.burialSiteNameSegment2,
-        l.burialSiteNameSegment3,
-        l.burialSiteNameSegment4,
-        l.burialSiteNameSegment5,
+        l.burialSiteName,
         t.burialSiteType,
         s.burialSiteStatus
         from BurialSites l
@@ -68,11 +64,7 @@ export default async function getReportData(
     case 'burialSites-byBurialSiteStatusId': {
       sql = `select l.burialSiteId,
         m.cemeteryName,
-        l.burialSiteNameSegment1,
-        l.burialSiteNameSegment2,
-        l.burialSiteNameSegment3,
-        l.burialSiteNameSegment4,
-        l.burialSiteNameSegment5,
+        l.burialSiteName,
         t.burialSiteType,
         s.burialSiteStatus
         from BurialSites l
@@ -90,11 +82,7 @@ export default async function getReportData(
     case 'burialSites-byCemeteryId': {
       sql = `select l.burialSiteId,
         m.cemeteryName,
-        l.burialSiteNameSegment1,
-        l.burialSiteNameSegment2,
-        l.burialSiteNameSegment3,
-        l.burialSiteNameSegment4,
-        l.burialSiteNameSegment5,
+        l.burialSiteName,
         t.burialSiteType,
         s.burialSiteStatus
         from BurialSites l
@@ -126,11 +114,7 @@ export default async function getReportData(
 
     case 'contracts-current-byCemeteryId': {
       sql = `select o.contractId,
-        l.burialSiteNameSegment1,
-        l.burialSiteNameSegment2,
-        l.burialSiteNameSegment3,
-        l.burialSiteNameSegment4,
-        l.burialSiteNameSegment5,
+        l.burialSiteName,
         m.cemeteryName,
         ot.contractType,
         o.contractStartDate,

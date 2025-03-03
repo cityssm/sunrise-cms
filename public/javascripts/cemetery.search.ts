@@ -2,13 +2,13 @@ import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { Cemetery } from '../../types/recordTypes.js'
 
-import type { LOS } from './types.js'
+import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as LOS
+  const sunrise = exports.sunrise as Sunrise
 
   const cemeteries = exports.cemeteries as Cemetery[]
 
@@ -23,7 +23,7 @@ declare const exports: Record<string, unknown>
   // eslint-disable-next-line complexity
   function renderResults(): void {
     // eslint-disable-next-line no-unsanitized/property
-    searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
+    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
       `Loading Cemeteries...`
     )
 
@@ -60,7 +60,7 @@ declare const exports: Record<string, unknown>
         'beforeend',
         `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${los.getCemeteryURL(cemetery.cemeteryId)}">
+            <a class="has-text-weight-bold" href="${sunrise.getCemeteryURL(cemetery.cemeteryId)}">
               ${cityssm.escapeHTML(
                 (cemetery.cemeteryName ?? '') === '' ? '(No Name)' : cemetery.cemeteryName ?? ''
               )}
@@ -106,7 +106,7 @@ declare const exports: Record<string, unknown>
                 : '<span data-tooltip="Has Image"><i class="fas fa-image" role="img" aria-label="Has Image"></i></span>'
             }
           </td><td class="has-text-right">
-            <a href="${los.urlPrefix}/burialSites?cemeteryId=${cemetery.cemeteryId}">${cemetery.burialSiteCount}</a>
+            <a href="${sunrise.urlPrefix}/burialSites?cemeteryId=${cemetery.cemeteryId}">${cemetery.burialSiteCount}</a>
           </td>
           </tr>`
       )
@@ -115,7 +115,6 @@ declare const exports: Record<string, unknown>
     searchResultsContainerElement.innerHTML = ''
 
     if (searchResultCount === 0) {
-      // eslint-disable-next-line no-unsanitized/property
       searchResultsContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no cemeteries that meet the search criteria.</p>
         </div>`
@@ -125,7 +124,6 @@ declare const exports: Record<string, unknown>
       searchResultsTableElement.className =
         'table is-fullwidth is-striped is-hoverable has-sticky-header'
 
-      // eslint-disable-next-line no-unsanitized/property
       searchResultsTableElement.innerHTML = `<thead><tr>
         <th>Cemetery</th>
         <th>Address</th>

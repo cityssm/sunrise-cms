@@ -72,9 +72,9 @@ export function getburialSiteTypeId(dataRow) {
 /*
  * Occupancy Type IDs
  */
-export const preneedOccupancyType = (await cacheFunctions.getContractTypeByContractType('Preneed'));
-export const deceasedOccupancyType = (await cacheFunctions.getContractTypeByContractType('Interment'));
-export const cremationOccupancyType = (await cacheFunctions.getContractTypeByContractType('Cremation'));
+export const preneedContractType = (await cacheFunctions.getContractTypeByContractType('Preneed'));
+export const deceasedContractType = (await cacheFunctions.getContractTypeByContractType('Interment'));
+export const cremationContractType = (await cacheFunctions.getContractTypeByContractType('Cremation'));
 /*
  * Work Order Milestone Type IDs
  */

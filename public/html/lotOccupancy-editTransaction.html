@@ -10,15 +10,15 @@
       ></button>
     </header>
     <section class="modal-card-body">
-      <form id="form--lotOccupancyTransactionEdit">
+      <form id="form--contractTransactionEdit">
         <input
-          id="lotOccupancyTransactionEdit--lotOccupancyId"
-          name="lotOccupancyId"
+          id="contractTransactionEdit--contractId"
+          name="contractId"
           type="hidden"
           value=""
         />
         <input
-          id="lotOccupancyTransactionEdit--transactionIndex"
+          id="contractTransactionEdit--transactionIndex"
           name="transactionIndex"
           type="hidden"
           value=""
@@ -27,13 +27,13 @@
         <div class="field">
           <label
             class="label"
-            for="lotOccupancyTransactionEdit--transactionAmount"
+            for="contractTransactionEdit--transactionAmount"
             >Transaction Amount</label
           >
           <div class="control has-icons-left">
             <input
               class="input has-text-right"
-              id="lotOccupancyTransactionEdit--transactionAmount"
+              id="contractTransactionEdit--transactionAmount"
               name="transactionAmount"
               type="number"
               step="0.01"
@@ -47,14 +47,14 @@
         <div class="field">
           <label
             class="label"
-            for="lotOccupancyTransactionEdit--externalReceiptNumber"
+            for="contractTransactionEdit--externalReceiptNumber"
           >
             <span class="alias" data-alias="ExternalReceiptNumber"></span>
           </label>
           <div class="control">
             <input
               class="input"
-              id="lotOccupancyTransactionEdit--externalReceiptNumber"
+              id="contractTransactionEdit--externalReceiptNumber"
               name="externalReceiptNumber"
               maxlength="100"
               autocomplete="off"
@@ -62,13 +62,13 @@
           </div>
         </div>
         <div class="field">
-          <label class="label" for="lotOccupancyTransactionEdit--transactionNote"
+          <label class="label" for="contractTransactionEdit--transactionNote"
             >Note</label
           >
           <div class="control">
             <textarea
               class="textarea"
-              id="lotOccupancyTransactionEdit--transactionNote"
+              id="contractTransactionEdit--transactionNote"
               name="transactionNote"
             ></textarea>
           </div>
@@ -78,13 +78,13 @@
             <div class="field">
               <label
                 class="label"
-                for="lotOccupancyTransactionEdit--transactionDateString"
+                for="contractTransactionEdit--transactionDateString"
                 >Transaction Date</label
               >
               <div class="control has-icons-left">
                 <input
                   class="input"
-                  id="lotOccupancyTransactionEdit--transactionDateString"
+                  id="contractTransactionEdit--transactionDateString"
                   name="transactionDateString"
                   type="date"
                   required
@@ -99,13 +99,13 @@
             <div class="field">
               <label
                 class="label"
-                for="lotOccupancyTransactionEdit--transactionTimeString"
+                for="contractTransactionEdit--transactionTimeString"
                 >Transaction Time</label
               >
               <div class="control has-icons-left">
                 <input
                   class="input"
-                  id="lotOccupancyTransactionEdit--transactionTimeString"
+                  id="contractTransactionEdit--transactionTimeString"
                   name="transactionTimeString"
                   type="time"
                   required
@@ -123,7 +123,7 @@
       <button
         class="button is-success"
         type="submit"
-        form="form--lotOccupancyTransactionEdit"
+        form="form--contractTransactionEdit"
       >
         <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
         <span>Update Transaction</span>

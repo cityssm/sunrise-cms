@@ -9,9 +9,9 @@ export declare const takenburialSiteStatusId: any;
 export declare function getburialSiteTypeId(dataRow: {
     cemetery: string;
 }): number;
-export declare const preneedOccupancyType: import("../types/recordTypes.js").ContractType;
-export declare const deceasedOccupancyType: import("../types/recordTypes.js").ContractType;
-export declare const cremationOccupancyType: import("../types/recordTypes.js").ContractType;
+export declare const preneedContractType: import("../types/recordTypes.js").ContractType;
+export declare const deceasedContractType: import("../types/recordTypes.js").ContractType;
+export declare const cremationContractType: import("../types/recordTypes.js").ContractType;
 export declare const acknowledgedWorkOrderMilestoneTypeId: number | undefined;
 export declare const deathWorkOrderMilestoneTypeId: number | undefined;
 export declare const funeralWorkOrderMilestoneTypeId: number | undefined;

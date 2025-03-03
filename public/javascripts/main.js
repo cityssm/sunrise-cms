@@ -251,6 +251,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function getCemeteryURL(cemeteryId = '', edit = false, time = false) {
         return getRecordURL('cemeteries', cemeteryId, edit, time);
     }
+    function getFuneralHomeURL(funeralHomeId = '', edit = false, time = false) {
+        return getRecordURL('funeralHomes', funeralHomeId, edit, time);
+    }
     function getBurialSiteURL(burialSiteId = '', edit = false, time = false) {
         return getRecordURL('burialSites', burialSiteId, edit, time);
     }
@@ -265,9 +268,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
      */
     const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled;
     /*
-     * Declare LOS
+     * Declare sunrise
      */
-    const los = {
+    const sunrise = {
         urlPrefix,
         apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
         dynamicsGPIntegrationIsEnabled,
@@ -285,8 +288,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         getSearchResultsPagerHTML,
         getCemeteryURL,
         getBurialSiteURL,
+        getFuneralHomeURL,
         getContractURL,
         getWorkOrderURL
     };
-    exports.los = los;
+    exports.sunrise = sunrise;
 })();

@@ -2,7 +2,7 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 import type { Options as BulmaCalendarOptions } from 'bulma-calendar'
 
-import type { LOS } from './types.js'
+import type { Sunrise } from './types.js'
 
 type RandomColorHue =
   | 'red'
@@ -372,7 +372,12 @@ declare const exports: Record<string, unknown> & {
   const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
 
   function getRecordURL(
-    recordTypePlural: 'cemeteries' | 'burialSites' | 'contracts' | 'workOrders',
+    recordTypePlural:
+      | 'cemeteries'
+      | 'burialSites'
+      | 'funeralHomes'
+      | 'contracts'
+      | 'workOrders',
     recordId: number | string,
     edit: boolean,
     time: boolean
@@ -393,6 +398,14 @@ declare const exports: Record<string, unknown> & {
     time = false
   ): string {
     return getRecordURL('cemeteries', cemeteryId, edit, time)
+  }
+
+  function getFuneralHomeURL(
+    funeralHomeId: number | string = '',
+    edit = false,
+    time = false
+  ): string {
+    return getRecordURL('funeralHomes', funeralHomeId, edit, time)
   }
 
   function getBurialSiteURL(
@@ -427,10 +440,10 @@ declare const exports: Record<string, unknown> & {
     exports.dynamicsGPIntegrationIsEnabled as boolean
 
   /*
-   * Declare LOS
+   * Declare sunrise
    */
 
-  const los: LOS = {
+  const sunrise: Sunrise = {
     urlPrefix,
     apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
     dynamicsGPIntegrationIsEnabled,
@@ -453,9 +466,10 @@ declare const exports: Record<string, unknown> & {
 
     getCemeteryURL,
     getBurialSiteURL,
+    getFuneralHomeURL,
     getContractURL,
     getWorkOrderURL
   }
 
-  exports.los = los
+  exports.sunrise = sunrise
 })()

@@ -9,8 +9,8 @@ export default async function handler(
   response: Response
 ): Promise<void> {
   const cemetery: Cemetery = {
-    cemeteryCity: getConfigProperty('settings.cemeteries.cityDefault'),
-    cemeteryProvince: getConfigProperty('settings.cemeteries.provinceDefault')
+    cemeteryCity: getConfigProperty('settings.cityDefault'),
+    cemeteryProvince: getConfigProperty('settings.provinceDefault')
   }
 
   const cemeterySVGs = await getCemeterySVGs()

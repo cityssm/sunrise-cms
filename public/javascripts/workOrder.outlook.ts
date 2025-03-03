@@ -5,7 +5,7 @@ import type { LOS } from '../../types/globalTypes.js'
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as LOS
+  const los = exports.sunrise as LOS
 
   const workOrderTypeIdsElement = document.querySelector(
     '#icsFilters--workOrderTypeIds'

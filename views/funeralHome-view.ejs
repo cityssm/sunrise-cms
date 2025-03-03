@@ -1,0 +1,70 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li>
+      <a href="<%= urlPrefix %>/funeralHomes">
+        <span class="icon is-small"><i class="fas fa-place-of-worship" aria-hidden="true"></i></span>
+        <span>Funeral Homes</span>
+      </a>
+    </li>
+    <li class="is-active">
+      <a href="#" aria-current="page">
+        <%= funeralHome.funeralHomeName || "(No Name)" %>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<h1 class="title is-1">
+  <%= funeralHome.funeralHomeName || "(No Name)" %>
+</h1>
+
+<div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
+  <div class="level-left">
+    <span class="level-item has-text-weight-bold">
+      <%= funeralHome.funeralHomeName || "(No Name)" %>
+    </span>
+  </div>
+  <div class="level-right">
+    <% if (user.userProperties.canUpdate) { %>
+      <div class="level-item">
+        <a class="button is-primary"
+          href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/edit"
+          accesskey="e">
+          <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+          <span>Switch to Edit Mode</span>
+        </a>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-block is-block">
+    <div class="columns">
+      <div class="column">
+        <strong>Address</strong><br />
+        <% if (funeralHome.funeralHomeAddress1 !== "") { %>
+            <%= funeralHome.funeralHomeAddress1 %><br />
+        <% } %>
+        <% if (funeralHome.funeralHomeAddress2 !== "") { %>
+            <%= funeralHome.funeralHomeAddress2 %><br />
+        <% } %>
+        <%= funeralHome.funeralHomeCity %>, <%= funeralHome.funeralHomeProvince %><br />
+        <%= funeralHome.funeralHomePostalCode %>
+      </div>
+      <% if (funeralHome.funeralHomePhoneNumber !== "") { %>
+        <div class="column">
+          <strong>Phone Number</strong><br />
+          <%= funeralHome.funeralHomePhoneNumber %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('_footerA'); -%>
+
+<%- include('_footerB'); -%>

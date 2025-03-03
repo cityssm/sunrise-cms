@@ -15,13 +15,10 @@ export default async function handler(
   const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
   const burialSiteStatuses = await getBurialSiteStatuses()
 
-  const fontAwesomeIconClasses = await getSolidIconClasses()
-
   response.render('admin-tables', {
     headTitle: 'Config Table Management',
     workOrderTypes,
     workOrderMilestoneTypes,
-    burialSiteStatuses,
-    fontAwesomeIconClasses
+    burialSiteStatuses
   })
 }

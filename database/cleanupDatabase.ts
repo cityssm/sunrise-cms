@@ -37,7 +37,7 @@ export default async function cleanupDatabase(
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Work Order Burial Site Contracts
+   * Work Order Contracts
    */
 
   inactivatedRecordCount += database
@@ -271,7 +271,7 @@ export default async function cleanupDatabase(
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Occupancy Type Prints
+   * Contract Type Prints
    */
 
   inactivatedRecordCount += database
@@ -364,7 +364,7 @@ export default async function cleanupDatabase(
         and burialSiteId not in (select burialSiteId from BurialSiteComments)
         and burialSiteId not in (select burialSiteId from BurialSiteFields)
         and burialSiteId not in (select burialSiteId from Contracts)
-        and burialSiteId not in (select burialSiteId from WorkOrderLots)`
+        and burialSiteId not in (select burialSiteId from WorkOrderBurialSites)`
     )
     .run(recordDeleteTimeMillisMin).changes
 

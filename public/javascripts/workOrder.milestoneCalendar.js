@@ -3,7 +3,7 @@
 /* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
+    const los = exports.sunrise;
     const workOrderSearchFiltersFormElement = document.querySelector('#form--searchFilters');
     const workOrderMilestoneDateFilterElement = workOrderSearchFiltersFormElement.querySelector('#searchFilter--workOrderMilestoneDateFilter');
     const workOrderMilestoneDateStringElement = workOrderSearchFiltersFormElement.querySelector('#searchFilter--workOrderMilestoneDateString');

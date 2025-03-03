@@ -10,10 +10,10 @@
       ></button>
     </header>
     <section class="modal-card-body">
-      <form id="form--lotOccupancyTransactionAdd">
+      <form id="form--contractTransactionAdd">
         <input
-          id="lotOccupancyTransactionAdd--lotOccupancyId"
-          name="lotOccupancyId"
+          id="contractTransactionAdd--contractId"
+          name="contractId"
           type="hidden"
           value=""
         />
@@ -21,13 +21,13 @@
         <div class="field">
           <label
             class="label"
-            for="lotOccupancyTransactionAdd--transactionAmount"
+            for="contractTransactionAdd--transactionAmount"
             >Transaction Amount</label
           >
           <div class="control has-icons-left">
             <input
               class="input has-text-right"
-              id="lotOccupancyTransactionAdd--transactionAmount"
+              id="contractTransactionAdd--transactionAmount"
               name="transactionAmount"
               type="number"
               step="0.01"
@@ -41,14 +41,14 @@
         <div class="field">
           <label
             class="label"
-            for="lotOccupancyTransactionAdd--externalReceiptNumber"
+            for="contractTransactionAdd--externalReceiptNumber"
           >
             <span class="alias" data-alias="ExternalReceiptNumber"></span>
           </label>
           <div class="control">
             <input
               class="input"
-              id="lotOccupancyTransactionAdd--externalReceiptNumber"
+              id="contractTransactionAdd--externalReceiptNumber"
               name="externalReceiptNumber"
               maxlength="100"
               autocomplete="off"
@@ -56,13 +56,13 @@
           </div>
         </div>
         <div class="field">
-          <label class="label" for="lotOccupancyTransactionAdd--transactionNote"
+          <label class="label" for="contractTransactionAdd--transactionNote"
             >Note</label
           >
           <div class="control">
             <textarea
               class="textarea"
-              id="lotOccupancyTransactionAdd--transactionNote"
+              id="contractTransactionAdd--transactionNote"
               name="transactionNote"
             ></textarea>
           </div>
@@ -73,7 +73,7 @@
       <button
         class="button is-success"
         type="submit"
-        form="form--lotOccupancyTransactionAdd"
+        form="form--contractTransactionAdd"
       >
         <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
         <span>Add Transaction</span>

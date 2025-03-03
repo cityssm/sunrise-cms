@@ -1,11 +1,13 @@
+/* eslint-disable max-lines */
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { LOS } from '../../types/globalTypes.js'
 import type {
-  OccupancyType,
-  OccupancyTypeField
+  ContractType,
+  ContractTypeField
 } from '../../types/recordTypes.js'
+
+import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -15,91 +17,86 @@ declare const exports: Record<string, unknown>
 type ResponseJSON =
   | {
       success: true
-      occupancyTypes: OccupancyType[]
-      allContractTypeFields: OccupancyTypeField[]
+      contractTypes: ContractType[]
+      allContractTypeFields: ContractTypeField[]
       contractTypeFieldId?: number
     }
   | {
       success: false
-      errorMessage: string
+      errorMessage?: string
     }
 ;(() => {
-  const los = exports.los as LOS
+  const los = exports.sunrise as Sunrise
 
-  const occupancyTypesContainerElement = document.querySelector(
-    '#container--occupancyTypes'
+  const contractTypesContainerElement = document.querySelector(
+    '#container--contractTypes'
   ) as HTMLElement
 
-  const ContractTypePrintsContainerElement = document.querySelector(
-    '#container--ContractTypePrints'
+  const contractTypePrintsContainerElement = document.querySelector(
+    '#container--contractTypePrints'
   ) as HTMLElement
 
-  let occupancyTypes = exports.occupancyTypes as OccupancyType[]
-  delete exports.occupancyTypes
+  let contractTypes = exports.contractTypes as ContractType[]
+  delete exports.contractTypes
 
   let allContractTypeFields =
-    exports.allContractTypeFields as OccupancyTypeField[]
+    exports.allContractTypeFields as ContractTypeField[]
   delete exports.allContractTypeFields
 
-  const expandedOccupancyTypes = new Set<number>()
+  const expandedContractTypes = new Set<number>()
 
   function toggleContractTypeFields(clickEvent: Event): void {
     const toggleButtonElement = clickEvent.currentTarget as HTMLButtonElement
 
-    const occupancyTypeElement = toggleButtonElement.closest(
-      '.container--occupancyType'
+    const contractTypeElement = toggleButtonElement.closest(
+      '.container--contractType'
     ) as HTMLElement
 
     const contractTypeId = Number.parseInt(
-      occupancyTypeElement.dataset.contractTypeId ?? '',
+      contractTypeElement.dataset.contractTypeId ?? '',
       10
     )
 
-    if (expandedOccupancyTypes.has(contractTypeId)) {
-      expandedOccupancyTypes.delete(contractTypeId)
+    if (expandedContractTypes.has(contractTypeId)) {
+      expandedContractTypes.delete(contractTypeId)
     } else {
-      expandedOccupancyTypes.add(contractTypeId)
+      expandedContractTypes.add(contractTypeId)
     }
 
     // eslint-disable-next-line no-unsanitized/property
-    toggleButtonElement.innerHTML = expandedOccupancyTypes.has(contractTypeId)
+    toggleButtonElement.innerHTML = expandedContractTypes.has(contractTypeId)
       ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
       : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
 
     const panelBlockElements =
-      occupancyTypeElement.querySelectorAll('.panel-block')
+      contractTypeElement.querySelectorAll('.panel-block')
 
     for (const panelBlockElement of panelBlockElements) {
       panelBlockElement.classList.toggle('is-hidden')
     }
   }
 
-  function occupancyTypeResponseHandler(rawResponseJSON: unknown): void {
-    const responseJSON = rawResponseJSON as {
-      success: boolean
-      errorMessage?: string
-      occupancyTypes: OccupancyType[]
-      allContractTypeFields: OccupancyTypeField[]
-    }
+  function contractTypeResponseHandler(rawResponseJSON: unknown): void {
+    const responseJSON = rawResponseJSON as ResponseJSON
 
     if (responseJSON.success) {
-      occupancyTypes = responseJSON.occupancyTypes
+      contractTypes = responseJSON.contractTypes
       allContractTypeFields = responseJSON.allContractTypeFields
-      renderOccupancyTypes()
+      renderContractTypes()
     } else {
       bulmaJS.alert({
-        title: `Error Updating ${los.escapedAliases.Occupancy} Type`,
+        title: `Error Updating Contract Type`,
         message: responseJSON.errorMessage ?? '',
         contextualColorName: 'danger'
       })
     }
   }
 
-  function deleteOccupancyType(clickEvent: Event): void {
+  function deleteContractType(clickEvent: Event): void {
     const contractTypeId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--occupancyType'
+          '.container--contractType'
         ) as HTMLElement
       ).dataset.contractTypeId ?? '',
       10
@@ -111,35 +108,35 @@ type ResponseJSON =
         {
           contractTypeId
         },
-        occupancyTypeResponseHandler
+        contractTypeResponseHandler
       )
     }
 
     bulmaJS.confirm({
-      title: `Delete ${los.escapedAliases.Occupancy} Type`,
-      message: `Are you sure you want to delete this ${los.escapedAliases.occupancy} type?`,
+      title: `Delete Contract Type`,
+      message: `Are you sure you want to delete this contract type?`,
       contextualColorName: 'warning',
       okButton: {
-        text: `Yes, Delete ${los.escapedAliases.Occupancy} Type`,
+        text: `Yes, Delete Contract Type`,
         callbackFunction: doDelete
       }
     })
   }
 
-  function openEditOccupancyType(clickEvent: Event): void {
+  function openEditContractType(clickEvent: Event): void {
     const contractTypeId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--occupancyType'
+          '.container--contractType'
         ) as HTMLElement
       ).dataset.contractTypeId ?? '',
       10
     )
 
-    const occupancyType = occupancyTypes.find(
-      (currentOccupancyType) =>
-        contractTypeId === currentOccupancyType.contractTypeId
-    ) as OccupancyType
+    const contractType = contractTypes.find(
+      (currentContractType) =>
+        contractTypeId === currentContractType.contractTypeId
+    ) as ContractType
 
     let editCloseModalFunction: () => void
 
@@ -152,7 +149,7 @@ type ResponseJSON =
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
 
-          occupancyTypeResponseHandler(responseJSON)
+          contractTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
           }
@@ -160,25 +157,25 @@ type ResponseJSON =
       )
     }
 
-    cityssm.openHtmlModal('adminOccupancyTypes-editOccupancyType', {
-      onshow(modalElement): void {
+    cityssm.openHtmlModal('adminContractTypes-edit', {
+      onshow(modalElement) {
         los.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
-            '#occupancyTypeEdit--contractTypeId'
+            '#contractTypeEdit--contractTypeId'
           ) as HTMLInputElement
         ).value = contractTypeId.toString()
         ;(
           modalElement.querySelector(
-            '#occupancyTypeEdit--occupancyType'
+            '#contractTypeEdit--contractType'
           ) as HTMLInputElement
-        ).value = occupancyType.occupancyType
+        ).value = contractType.contractType
       },
       onshown(modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
         ;(
           modalElement.querySelector(
-            '#occupancyTypeEdit--occupancyType'
+            '#contractTypeEdit--contractType'
           ) as HTMLInputElement
         ).focus()
 
@@ -192,11 +189,11 @@ type ResponseJSON =
     })
   }
 
-  function openAddOccupancyTypeField(clickEvent: Event): void {
+  function openAddContractTypeField(clickEvent: Event): void {
     const contractTypeId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--occupancyType'
+          '.container--contractType'
         ) as HTMLElement
       ).dataset.contractTypeId ?? '',
       10
@@ -213,12 +210,12 @@ type ResponseJSON =
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
 
-          expandedOccupancyTypes.add(contractTypeId)
-          occupancyTypeResponseHandler(responseJSON)
+          expandedContractTypes.add(contractTypeId)
+          contractTypeResponseHandler(responseJSON)
 
           if (responseJSON.success) {
             addCloseModalFunction()
-            openEditOccupancyTypeField(
+            openEditContractTypeField(
               contractTypeId,
               responseJSON.contractTypeFieldId ?? 0
             )
@@ -227,14 +224,14 @@ type ResponseJSON =
       )
     }
 
-    cityssm.openHtmlModal('adminOccupancyTypes-addOccupancyTypeField', {
+    cityssm.openHtmlModal('adminContractTypes-addField', {
       onshow(modalElement) {
         los.populateAliases(modalElement)
 
         if (contractTypeId) {
           ;(
             modalElement.querySelector(
-              '#occupancyTypeFieldAdd--contractTypeId'
+              '#contractTypeFieldAdd--contractTypeId'
             ) as HTMLInputElement
           ).value = contractTypeId.toString()
         }
@@ -243,7 +240,7 @@ type ResponseJSON =
         addCloseModalFunction = closeModalFunction
         ;(
           modalElement.querySelector(
-            '#occupancyTypeFieldAdd--occupancyTypeField'
+            '#contractTypeFieldAdd--contractTypeField'
           ) as HTMLInputElement
         ).focus()
 
@@ -257,12 +254,12 @@ type ResponseJSON =
     })
   }
 
-  function moveOccupancyType(clickEvent: MouseEvent): void {
+  function moveContractType(clickEvent: MouseEvent): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
     const contractTypeId = (
       (clickEvent.currentTarget as HTMLElement).closest(
-        '.container--occupancyType'
+        '.container--contractType'
       ) as HTMLElement
     ).dataset.contractTypeId
 
@@ -276,37 +273,37 @@ type ResponseJSON =
         contractTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      occupancyTypeResponseHandler
+      contractTypeResponseHandler
     )
   }
 
-  function openEditOccupancyTypeField(
+  function openEditContractTypeField(
     contractTypeId: number,
     contractTypeFieldId: number
   ): void {
-    let occupancyType: OccupancyType | undefined
+    let contractType: ContractType | undefined
 
     if (contractTypeId) {
-      occupancyType = occupancyTypes.find(
-        (currentOccupancyType) =>
-          currentOccupancyType.contractTypeId === contractTypeId
+      contractType = contractTypes.find(
+        (currentContractType) =>
+          currentContractType.contractTypeId === contractTypeId
       )
     }
 
-    const occupancyTypeField = (
-      occupancyType
-        ? occupancyType.ContractTypeFields ?? []
+    const contractTypeField = (
+      contractType
+        ? contractType.contractTypeFields ?? []
         : allContractTypeFields
     ).find(
-      (currentOccupancyTypeField) =>
-        currentOccupancyTypeField.contractTypeFieldId === contractTypeFieldId
-    ) as OccupancyTypeField
+      (currentContractTypeField) =>
+        currentContractTypeField.contractTypeFieldId === contractTypeFieldId
+    ) as ContractTypeField
 
     let fieldTypeElement: HTMLSelectElement
     let minLengthInputElement: HTMLInputElement
     let maxLengthInputElement: HTMLInputElement
     let patternElement: HTMLInputElement
-    let occupancyTypeFieldValuesElement: HTMLTextAreaElement
+    let fieldValuesElement: HTMLTextAreaElement
 
     let editCloseModalFunction: () => void
 
@@ -320,21 +317,21 @@ type ResponseJSON =
           minLengthInputElement.disabled = true
           maxLengthInputElement.disabled = true
           patternElement.disabled = true
-          occupancyTypeFieldValuesElement.disabled = true
+          fieldValuesElement.disabled = true
           break
         }
         case 'select': {
           minLengthInputElement.disabled = true
           maxLengthInputElement.disabled = true
           patternElement.disabled = true
-          occupancyTypeFieldValuesElement.disabled = false
+          fieldValuesElement.disabled = false
           break
         }
         default: {
           minLengthInputElement.disabled = false
           maxLengthInputElement.disabled = false
           patternElement.disabled = false
-          occupancyTypeFieldValuesElement.disabled = true
+          fieldValuesElement.disabled = true
           break
         }
       }
@@ -349,7 +346,7 @@ type ResponseJSON =
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
 
-          occupancyTypeResponseHandler(responseJSON)
+          contractTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
           }
@@ -366,7 +363,7 @@ type ResponseJSON =
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
 
-          occupancyTypeResponseHandler(responseJSON)
+          contractTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
           }
@@ -387,61 +384,60 @@ type ResponseJSON =
       })
     }
 
-    cityssm.openHtmlModal('adminOccupancyTypes-editOccupancyTypeField', {
-      onshow: (modalElement) => {
+    cityssm.openHtmlModal('adminContractTypes-editField', {
+      onshow(modalElement) {
         los.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
-            '#occupancyTypeFieldEdit--contractTypeFieldId'
+            '#contractTypeFieldEdit--contractTypeFieldId'
           ) as HTMLInputElement
-        ).value = occupancyTypeField.contractTypeFieldId.toString()
+        ).value = contractTypeField.contractTypeFieldId.toString()
         ;(
           modalElement.querySelector(
-            '#occupancyTypeFieldEdit--occupancyTypeField'
+            '#contractTypeFieldEdit--contractTypeField'
           ) as HTMLInputElement
-        ).value = occupancyTypeField.occupancyTypeField ?? ''
+        ).value = contractTypeField.contractTypeField ?? ''
         ;(
           modalElement.querySelector(
-            '#occupancyTypeFieldEdit--isRequired'
+            '#contractTypeFieldEdit--isRequired'
           ) as HTMLSelectElement
-        ).value = occupancyTypeField.isRequired ?? false ? '1' : '0'
+        ).value = contractTypeField.isRequired ?? false ? '1' : '0'
 
         fieldTypeElement = modalElement.querySelector(
-          '#occupancyTypeFieldEdit--fieldType'
+          '#contractTypeFieldEdit--fieldType'
         ) as HTMLSelectElement
 
-        fieldTypeElement.value = occupancyTypeField.fieldType
+        fieldTypeElement.value = contractTypeField.fieldType
 
         minLengthInputElement = modalElement.querySelector(
-          '#occupancyTypeFieldEdit--minLength'
+          '#contractTypeFieldEdit--minLength'
         ) as HTMLInputElement
 
         minLengthInputElement.value =
-          occupancyTypeField.minLength?.toString() ?? ''
+          contractTypeField.minLength?.toString() ?? ''
 
         maxLengthInputElement = modalElement.querySelector(
-          '#occupancyTypeFieldEdit--maxLength'
+          '#contractTypeFieldEdit--maxLength'
         ) as HTMLInputElement
 
         maxLengthInputElement.value =
-          occupancyTypeField.maxLength?.toString() ?? ''
+          contractTypeField.maxLength?.toString() ?? ''
 
         patternElement = modalElement.querySelector(
-          '#occupancyTypeFieldEdit--pattern'
+          '#contractTypeFieldEdit--pattern'
         ) as HTMLInputElement
 
-        patternElement.value = occupancyTypeField.pattern ?? ''
+        patternElement.value = contractTypeField.pattern ?? ''
 
-        occupancyTypeFieldValuesElement = modalElement.querySelector(
-          '#occupancyTypeFieldEdit--occupancyTypeFieldValues'
+        fieldValuesElement = modalElement.querySelector(
+          '#contractTypeFieldEdit--fieldValues'
         ) as HTMLTextAreaElement
 
-        occupancyTypeFieldValuesElement.value =
-          occupancyTypeField.occupancyTypeFieldValues ?? ''
+        fieldValuesElement.value = contractTypeField.fieldValues ?? ''
 
         toggleInputFields()
       },
-      onshown: (modalElement, closeModalFunction) => {
+      onshown(modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
 
         bulmaJS.init(modalElement)
@@ -456,23 +452,23 @@ type ResponseJSON =
         fieldTypeElement.addEventListener('change', toggleInputFields)
 
         modalElement
-          .querySelector('#button--deleteOccupancyTypeField')
+          .querySelector('#button--deleteContractTypeField')
           ?.addEventListener('click', confirmDoDelete)
       },
-      onremoved: () => {
+      onremoved() {
         bulmaJS.toggleHtmlClipped()
         cityssm.disableNavBlocker()
       }
     })
   }
 
-  function openEditOccupancyTypeFieldByClick(clickEvent: Event): void {
+  function openEditContractTypeFieldByClick(clickEvent: Event): void {
     clickEvent.preventDefault()
 
     const contractTypeFieldId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--occupancyTypeField'
+          '.container--contractTypeField'
         ) as HTMLElement
       ).dataset.contractTypeFieldId ?? '',
       10
@@ -481,28 +477,29 @@ type ResponseJSON =
     const contractTypeId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--occupancyType'
+          '.container--contractType'
         ) as HTMLElement
       ).dataset.contractTypeId ?? '',
       10
     )
 
-    openEditOccupancyTypeField(contractTypeId, contractTypeFieldId)
+    openEditContractTypeField(contractTypeId, contractTypeFieldId)
   }
 
-  function moveOccupancyTypeField(clickEvent: MouseEvent): void {
+  function moveContractTypeField(clickEvent: MouseEvent): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
     const contractTypeFieldId = (
       (clickEvent.currentTarget as HTMLElement).closest(
-        '.container--occupancyTypeField'
+        '.container--contractTypeField'
       ) as HTMLElement
     ).dataset.contractTypeFieldId
 
     cityssm.postJSON(
       `${los.urlPrefix}/admin/${
         buttonElement.dataset.direction === 'up'
-          ? 'doMoveContractTypeFieldUp'
+          ? // eslint-disable-next-line no-secrets/no-secrets
+            'doMoveContractTypeFieldUp'
           : // eslint-disable-next-line no-secrets/no-secrets
             'doMoveContractTypeFieldDown'
       }`,
@@ -510,21 +507,21 @@ type ResponseJSON =
         contractTypeFieldId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      occupancyTypeResponseHandler
+      contractTypeResponseHandler
     )
   }
 
   function renderContractTypeFields(
     panelElement: HTMLElement,
     contractTypeId: number | undefined,
-    ContractTypeFields: OccupancyTypeField[]
+    contractTypeFields: ContractTypeField[]
   ): void {
-    if (ContractTypeFields.length === 0) {
+    if (contractTypeFields.length === 0) {
       // eslint-disable-next-line no-unsanitized/method
       panelElement.insertAdjacentHTML(
         'beforeend',
         `<div class="panel-block is-block ${
-          !contractTypeId || expandedOccupancyTypes.has(contractTypeId)
+          !contractTypeId || expandedContractTypes.has(contractTypeId)
             ? ''
             : ' is-hidden'
         }">
@@ -532,61 +529,61 @@ type ResponseJSON =
         </div>`
       )
     } else {
-      for (const occupancyTypeField of ContractTypeFields) {
+      for (const contractTypeField of contractTypeFields) {
         const panelBlockElement = document.createElement('div')
         panelBlockElement.className =
-          'panel-block is-block container--occupancyTypeField'
+          'panel-block is-block container--contractTypeField'
 
-        if (contractTypeId && !expandedOccupancyTypes.has(contractTypeId)) {
+        if (contractTypeId && !expandedContractTypes.has(contractTypeId)) {
           panelBlockElement.classList.add('is-hidden')
         }
 
         panelBlockElement.dataset.contractTypeFieldId =
-          occupancyTypeField.contractTypeFieldId.toString()
+          contractTypeField.contractTypeFieldId.toString()
 
         // eslint-disable-next-line no-unsanitized/property
         panelBlockElement.innerHTML = `<div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <a class="has-text-weight-bold button--editOccupancyTypeField" href="#">
-                ${cityssm.escapeHTML(occupancyTypeField.occupancyTypeField ?? '')}
+              <a class="has-text-weight-bold button--editContractTypeField" href="#">
+                ${cityssm.escapeHTML(contractTypeField.contractTypeField ?? '')}
               </a>
             </div>
           </div>
           <div class="level-right">
             <div class="level-item">
               ${los.getMoveUpDownButtonFieldHTML(
-                'button--moveOccupancyTypeFieldUp',
-                'button--moveOccupancyTypeFieldDown'
+                'button--moveContractTypeFieldUp',
+                'button--moveContractTypeFieldDown'
               )}
             </div>
           </div>
           </div>`
 
         panelBlockElement
-          .querySelector('.button--editOccupancyTypeField')
-          ?.addEventListener('click', openEditOccupancyTypeFieldByClick)
+          .querySelector('.button--editContractTypeField')
+          ?.addEventListener('click', openEditContractTypeFieldByClick)
         ;(
           panelBlockElement.querySelector(
-            '.button--moveOccupancyTypeFieldUp'
+            '.button--moveContractTypeFieldUp'
           ) as HTMLButtonElement
-        ).addEventListener('click', moveOccupancyTypeField)
+        ).addEventListener('click', moveContractTypeField)
         ;(
           panelBlockElement.querySelector(
-            '.button--moveOccupancyTypeFieldDown'
+            '.button--moveContractTypeFieldDown'
           ) as HTMLButtonElement
-        ).addEventListener('click', moveOccupancyTypeField)
+        ).addEventListener('click', moveContractTypeField)
 
         panelElement.append(panelBlockElement)
       }
     }
   }
 
-  function openAddOccupancyTypePrint(clickEvent: Event): void {
+  function openAddContractTypePrint(clickEvent: Event): void {
     const contractTypeId =
       (
         (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--occupancyTypePrintList'
+          '.container--contractTypePrintList'
         ) as HTMLElement
       ).dataset.contractTypeId ?? ''
 
@@ -605,26 +602,26 @@ type ResponseJSON =
             closeAddModalFunction()
           }
 
-          occupancyTypeResponseHandler(responseJSON)
+          contractTypeResponseHandler(responseJSON)
         }
       )
     }
 
-    cityssm.openHtmlModal('adminOccupancyTypes-addOccupancyTypePrint', {
+    cityssm.openHtmlModal('adminContractTypes-addPrint', {
       onshow(modalElement) {
         los.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
-            '#occupancyTypePrintAdd--contractTypeId'
+            '#contractTypePrintAdd--contractTypeId'
           ) as HTMLInputElement
         ).value = contractTypeId
 
         const printSelectElement = modalElement.querySelector(
-          '#occupancyTypePrintAdd--printEJS'
+          '#contractTypePrintAdd--printEJS'
         ) as HTMLSelectElement
 
         for (const [printEJS, printTitle] of Object.entries(
-          exports.occupancyTypePrintTitles as Record<string, string>
+          exports.contractTypePrintTitles as Record<string, string>
         )) {
           const optionElement = document.createElement('option')
           optionElement.value = printEJS
@@ -640,46 +637,44 @@ type ResponseJSON =
     })
   }
 
-  function moveOccupancyTypePrint(clickEvent: MouseEvent): void {
+  function moveContractTypePrint(clickEvent: MouseEvent): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
     const printEJS = (
-      buttonElement.closest('.container--occupancyTypePrint') as HTMLElement
+      buttonElement.closest('.container--contractTypePrint') as HTMLElement
     ).dataset.printEJS
 
     const contractTypeId = (
-      buttonElement.closest('.container--occupancyTypePrintList') as HTMLElement
+      buttonElement.closest('.container--contractTypePrintList') as HTMLElement
     ).dataset.contractTypeId
 
     cityssm.postJSON(
       `${los.urlPrefix}/admin/${
         buttonElement.dataset.direction === 'up'
-          ? // eslint-disable-next-line no-secrets/no-secrets
-            'doMoveContractTypePrintUp'
-          : // eslint-disable-next-line no-secrets/no-secrets
-            'doMoveContractTypePrintDown'
+          ? 'doMoveContractTypePrintUp'
+          : 'doMoveContractTypePrintDown'
       }`,
       {
         contractTypeId,
         printEJS,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      occupancyTypeResponseHandler
+      contractTypeResponseHandler
     )
   }
 
-  function deleteOccupancyTypePrint(clickEvent: Event): void {
+  function deleteContractTypePrint(clickEvent: Event): void {
     clickEvent.preventDefault()
 
     const printEJS = (
       (clickEvent.currentTarget as HTMLElement).closest(
-        '.container--occupancyTypePrint'
+        '.container--contractTypePrint'
       ) as HTMLElement
     ).dataset.printEJS
 
     const contractTypeId = (
       (clickEvent.currentTarget as HTMLElement).closest(
-        '.container--occupancyTypePrintList'
+        '.container--contractTypePrintList'
       ) as HTMLElement
     ).dataset.contractTypeId
 
@@ -690,7 +685,7 @@ type ResponseJSON =
           contractTypeId,
           printEJS
         },
-        occupancyTypeResponseHandler
+        contractTypeResponseHandler
       )
     }
 
@@ -708,9 +703,9 @@ type ResponseJSON =
   function renderContractTypePrints(
     panelElement: HTMLElement,
     contractTypeId: number,
-    ContractTypePrints: string[]
+    contractTypePrints: string[]
   ): void {
-    if (ContractTypePrints.length === 0) {
+    if (contractTypePrints.length === 0) {
       panelElement.insertAdjacentHTML(
         'beforeend',
         `<div class="panel-block is-block">
@@ -720,17 +715,17 @@ type ResponseJSON =
           </div>`
       )
     } else {
-      for (const printEJS of ContractTypePrints) {
+      for (const printEJS of contractTypePrints) {
         const panelBlockElement = document.createElement('div')
         panelBlockElement.className =
-          'panel-block is-block container--occupancyTypePrint'
+          'panel-block is-block container--contractTypePrint'
 
         panelBlockElement.dataset.printEJS = printEJS
 
         const printTitle =
           printEJS === '*'
             ? '(All Available Prints)'
-            : ((exports.occupancyTypePrintTitles as string[])[
+            : ((exports.contractTypePrintTitles as string[])[
                 printEJS
               ] as string)
 
@@ -755,12 +750,12 @@ type ResponseJSON =
           <div class="level-right">
             <div class="level-item">
               ${los.getMoveUpDownButtonFieldHTML(
-                'button--moveOccupancyTypePrintUp',
-                'button--moveOccupancyTypePrintDown'
+                'button--moveContractTypePrintUp',
+                'button--moveContractTypePrintDown'
               )}
             </div>
             <div class="level-item">
-              <button class="button is-small is-danger button--deleteOccupancyTypePrint" data-tooltip="Delete" type="button" aria-label="Delete Print">
+              <button class="button is-small is-danger button--deleteContractTypePrint" data-tooltip="Delete" type="button" aria-label="Delete Print">
                 <i class="fas fa-trash" aria-hidden="true"></i>
               </button>
             </div>
@@ -768,37 +763,36 @@ type ResponseJSON =
           </div>`
         ;(
           panelBlockElement.querySelector(
-            '.button--moveOccupancyTypePrintUp'
+            '.button--moveContractTypePrintUp'
           ) as HTMLButtonElement
-        ).addEventListener('click', moveOccupancyTypePrint)
+        ).addEventListener('click', moveContractTypePrint)
         ;(
           panelBlockElement.querySelector(
-            '.button--moveOccupancyTypePrintDown'
+            '.button--moveContractTypePrintDown'
           ) as HTMLButtonElement
-        ).addEventListener('click', moveOccupancyTypePrint)
+        ).addEventListener('click', moveContractTypePrint)
 
         panelBlockElement
-          .querySelector('.button--deleteOccupancyTypePrint')
-          ?.addEventListener('click', deleteOccupancyTypePrint)
+          .querySelector('.button--deleteContractTypePrint')
+          ?.addEventListener('click', deleteContractTypePrint)
 
         panelElement.append(panelBlockElement)
       }
     }
   }
 
-  function renderOccupancyTypes(): void {
-    // eslint-disable-next-line no-unsanitized/property
-    occupancyTypesContainerElement.innerHTML = `<div class="panel container--occupancyType" id="container--allContractTypeFields" data-occupancy-type-id="">
+  function renderContractTypes(): void {
+    contractTypesContainerElement.innerHTML = `<div class="panel container--contractType" id="container--allContractTypeFields" data-contract-type-id="">
       <div class="panel-heading">
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="title is-4">(All ${los.escapedAliases.Occupancy} Types)</h2>
+              <h2 class="title is-4">(All Contract Types)</h2>
             </div>
           </div>
           <div class="level-right">
             <div class="level-item">
-              <button class="button is-success is-small button--addOccupancyTypeField" type="button">
+              <button class="button is-success is-small button--addContractTypeField" type="button">
                 <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
                 <span>Add Field</span>
               </button>
@@ -808,92 +802,90 @@ type ResponseJSON =
       </div>
       </div>`
 
-    ContractTypePrintsContainerElement.innerHTML = ''
+    contractTypePrintsContainerElement.innerHTML = ''
 
     renderContractTypeFields(
-      occupancyTypesContainerElement.querySelector(
+      contractTypesContainerElement.querySelector(
         '#container--allContractTypeFields'
       ) as HTMLElement,
       undefined,
       allContractTypeFields
     )
 
-    occupancyTypesContainerElement
-      .querySelector('.button--addOccupancyTypeField')
-      ?.addEventListener('click', openAddOccupancyTypeField)
+    contractTypesContainerElement
+      .querySelector('.button--addContractTypeField')
+      ?.addEventListener('click', openAddContractTypeField)
 
-    if (occupancyTypes.length === 0) {
-      // eslint-disable-next-line no-unsanitized/method
-      occupancyTypesContainerElement.insertAdjacentHTML(
+    if (contractTypes.length === 0) {
+      contractTypesContainerElement.insertAdjacentHTML(
         'afterbegin',
         `<div class="message is-warning>
-          <p class="message-body">There are no active ${los.escapedAliases.occupancy} types.</p>
+          <p class="message-body">There are no active contract types.</p>
           </div>`
       )
 
-      // eslint-disable-next-line no-unsanitized/method
-      ContractTypePrintsContainerElement.insertAdjacentHTML(
+      contractTypePrintsContainerElement.insertAdjacentHTML(
         'afterbegin',
         `<div class="message is-warning>
-          <p class="message-body">There are no active ${los.escapedAliases.occupancy} types.</p>
+          <p class="message-body">There are no active contract types.</p>
           </div>`
       )
 
       return
     }
 
-    for (const occupancyType of occupancyTypes) {
+    for (const contractType of contractTypes) {
       /*
        * Types and Fields
        */
 
-      const occupancyTypeContainer = document.createElement('div')
+      const contractTypeContainer = document.createElement('div')
 
-      occupancyTypeContainer.className = 'panel container--occupancyType'
+      contractTypeContainer.className = 'panel container--contractType'
 
-      occupancyTypeContainer.dataset.contractTypeId =
-        occupancyType.contractTypeId.toString()
+      contractTypeContainer.dataset.contractTypeId =
+        contractType.contractTypeId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      occupancyTypeContainer.innerHTML = `<div class="panel-heading">
+      contractTypeContainer.innerHTML = `<div class="panel-heading">
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
               <button class="button is-small button--toggleContractTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
                 ${
-                  expandedOccupancyTypes.has(occupancyType.contractTypeId)
+                  expandedContractTypes.has(contractType.contractTypeId)
                     ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
                     : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
                 }
               </button>
             </div>
             <div class="level-item">
-              <h2 class="title is-4">${cityssm.escapeHTML(occupancyType.occupancyType)}</h2>
+              <h2 class="title is-4">${cityssm.escapeHTML(contractType.contractType)}</h2>
             </div>
           </div>
           <div class="level-right">
             <div class="level-item">
-              <button class="button is-danger is-small button--deleteOccupancyType" type="button">
+              <button class="button is-danger is-small button--deleteContractType" type="button">
                 <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
                 <span>Delete</span>
               </button>
             </div>
             <div class="level-item">
-              <button class="button is-primary is-small button--editOccupancyType" type="button">
+              <button class="button is-primary is-small button--editContractType" type="button">
                 <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-                <span>Edit ${los.escapedAliases.Occupancy} Type</span>
+                <span>Edit Contract Type</span>
               </button>
             </div>
             <div class="level-item">
-              <button class="button is-success is-small button--addOccupancyTypeField" type="button">
+              <button class="button is-success is-small button--addContractTypeField" type="button">
                 <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
                 <span>Add Field</span>
               </button>
             </div>
             <div class="level-item">
               ${los.getMoveUpDownButtonFieldHTML(
-                'button--moveOccupancyTypeUp',
-                'button--moveOccupancyTypeDown'
+                'button--moveContractTypeUp',
+                'button--moveContractTypeDown'
               )}
             </div>
           </div>
@@ -901,61 +893,61 @@ type ResponseJSON =
         </div>`
 
       renderContractTypeFields(
-        occupancyTypeContainer,
-        occupancyType.contractTypeId,
-        occupancyType.ContractTypeFields ?? []
+        contractTypeContainer,
+        contractType.contractTypeId,
+        contractType.contractTypeFields ?? []
       )
 
-      occupancyTypeContainer
+      contractTypeContainer
         .querySelector('.button--toggleContractTypeFields')
         ?.addEventListener('click', toggleContractTypeFields)
 
-      occupancyTypeContainer
-        .querySelector('.button--deleteOccupancyType')
-        ?.addEventListener('click', deleteOccupancyType)
+      contractTypeContainer
+        .querySelector('.button--deleteContractType')
+        ?.addEventListener('click', deleteContractType)
 
-      occupancyTypeContainer
-        .querySelector('.button--editOccupancyType')
-        ?.addEventListener('click', openEditOccupancyType)
+      contractTypeContainer
+        .querySelector('.button--editContractType')
+        ?.addEventListener('click', openEditContractType)
 
-      occupancyTypeContainer
-        .querySelector('.button--addOccupancyTypeField')
-        ?.addEventListener('click', openAddOccupancyTypeField)
+      contractTypeContainer
+        .querySelector('.button--addContractTypeField')
+        ?.addEventListener('click', openAddContractTypeField)
       ;(
-        occupancyTypeContainer.querySelector(
-          '.button--moveOccupancyTypeUp'
+        contractTypeContainer.querySelector(
+          '.button--moveContractTypeUp'
         ) as HTMLButtonElement
-      ).addEventListener('click', moveOccupancyType)
+      ).addEventListener('click', moveContractType)
       ;(
-        occupancyTypeContainer.querySelector(
-          '.button--moveOccupancyTypeDown'
+        contractTypeContainer.querySelector(
+          '.button--moveContractTypeDown'
         ) as HTMLButtonElement
-      ).addEventListener('click', moveOccupancyType)
+      ).addEventListener('click', moveContractType)
 
-      occupancyTypesContainerElement.append(occupancyTypeContainer)
+      contractTypesContainerElement.append(contractTypeContainer)
 
       /*
        * Prints
        */
 
-      const occupancyTypePrintContainer = document.createElement('div')
+      const contractTypePrintContainer = document.createElement('div')
 
-      occupancyTypePrintContainer.className =
-        'panel container--occupancyTypePrintList'
+      contractTypePrintContainer.className =
+        'panel container--contractTypePrintList'
 
-      occupancyTypePrintContainer.dataset.contractTypeId =
-        occupancyType.contractTypeId.toString()
+      contractTypePrintContainer.dataset.contractTypeId =
+        contractType.contractTypeId.toString()
 
-      occupancyTypePrintContainer.innerHTML = `<div class="panel-heading">
+      contractTypePrintContainer.innerHTML = `<div class="panel-heading">
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="title is-4">${cityssm.escapeHTML(occupancyType.occupancyType)}</h2>
+              <h2 class="title is-4">${cityssm.escapeHTML(contractType.contractType)}</h2>
             </div>
           </div>
           <div class="level-right">
             <div class="level-item">
-              <button class="button is-success is-small button--addOccupancyTypePrint" type="button">
+              <button class="button is-success is-small button--addContractTypePrint" type="button">
                 <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
                 <span>Add Print</span>
               </button>
@@ -965,21 +957,21 @@ type ResponseJSON =
         </div>`
 
       renderContractTypePrints(
-        occupancyTypePrintContainer,
-        occupancyType.contractTypeId,
-        occupancyType.ContractTypePrints ?? []
+        contractTypePrintContainer,
+        contractType.contractTypeId,
+        contractType.contractTypePrints ?? []
       )
 
-      occupancyTypePrintContainer
-        .querySelector('.button--addOccupancyTypePrint')
-        ?.addEventListener('click', openAddOccupancyTypePrint)
+      contractTypePrintContainer
+        .querySelector('.button--addContractTypePrint')
+        ?.addEventListener('click', openAddContractTypePrint)
 
-      ContractTypePrintsContainerElement.append(occupancyTypePrintContainer)
+      contractTypePrintsContainerElement.append(contractTypePrintContainer)
     }
   }
 
   document
-    .querySelector('#button--addOccupancyType')
+    .querySelector('#button--addContractType')
     ?.addEventListener('click', () => {
       let addCloseModalFunction: () => void
 
@@ -994,11 +986,11 @@ type ResponseJSON =
 
             if (responseJSON.success) {
               addCloseModalFunction()
-              occupancyTypes = responseJSON.occupancyTypes
-              renderOccupancyTypes()
+              contractTypes = responseJSON.contractTypes
+              renderContractTypes()
             } else {
               bulmaJS.alert({
-                title: `Error Adding ${los.escapedAliases.Occupancy} Type`,
+                title: `Error Adding Contract Type`,
                 message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })
@@ -1007,7 +999,7 @@ type ResponseJSON =
         )
       }
 
-      cityssm.openHtmlModal('adminOccupancyTypes-addOccupancyType', {
+      cityssm.openHtmlModal('adminContractTypes-add', {
         onshow(modalElement) {
           los.populateAliases(modalElement)
         },
@@ -1015,7 +1007,7 @@ type ResponseJSON =
           addCloseModalFunction = closeModalFunction
           ;(
             modalElement.querySelector(
-              '#occupancyTypeAdd--occupancyType'
+              '#contractTypeAdd--contractType'
             ) as HTMLInputElement
           ).focus()
 
@@ -1029,5 +1021,5 @@ type ResponseJSON =
       })
     })
 
-  renderOccupancyTypes()
+  renderContractTypes()
 })()

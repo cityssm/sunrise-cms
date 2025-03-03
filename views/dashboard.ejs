@@ -72,7 +72,7 @@
                   
                     if (milestone.workOrderContracts.length > 0) {
                       for (const contract of milestone.workOrderContracts) {
-                        for (const interment of contract.lotOccupancyInterments) {
+                        for (const interment of contract.contractInterments) {
                   %>
                   <span class="has-tooltip-right" data-tooltip="Interment">
                     <i class="fas fa-fw fa-user" aria-label="Contract"></i>
@@ -163,13 +163,19 @@
               </a>
             </div>
             <% if (user.userProperties.canUpdate) { %>
-              <a class="button is-fullwidth is-success is-light" href="<%= urlPrefix %>/contracts/new">
+              <a class="button is-fullwidth is-success is-light mb-2" href="<%= urlPrefix %>/contracts/new">
                 <span class="icon">
                   <i class="fas fa-plus" aria-hidden="true"></i>
                 </span>
                 <span>New Contract</span>
               </a>
             <% } %>
+            <a class="button is-fullwidth is-link is-light" href="<%= urlPrefix %>/funeralHomes">
+              <span class="icon">
+                <i class="fas fa-place-of-worship" aria-hidden="true"></i>
+              </span>
+              <span>Funeral Homes</span>
+            </a>
           </div>
         </div>
       </div>

@@ -6,14 +6,14 @@ import getReportData, {
 } from '../../database/getReportData.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<{ reportName: string }, unknown, unknown, ReportParameters>,
   response: Response
 ): Promise<void> {
   const reportName = request.params.reportName
 
   const rows = await getReportData(
     reportName,
-    request.query as ReportParameters
+    request.query
   )
 
   if (rows === undefined) {

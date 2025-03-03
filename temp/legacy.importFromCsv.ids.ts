@@ -121,13 +121,13 @@ export function getburialSiteTypeId(dataRow: { cemetery: string }): number {
  * Occupancy Type IDs
  */
 
-export const preneedOccupancyType =
+export const preneedContractType =
   (await cacheFunctions.getContractTypeByContractType('Preneed'))!
 
-export const deceasedOccupancyType =
+export const deceasedContractType =
   (await cacheFunctions.getContractTypeByContractType('Interment'))!
 
-export const cremationOccupancyType =
+export const cremationContractType =
   (await cacheFunctions.getContractTypeByContractType('Cremation'))!
 
 /*

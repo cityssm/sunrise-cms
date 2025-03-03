@@ -81,22 +81,22 @@ describe('functions.cache', () => {
 
   describe('Occupancy Types', () => {
     it('returns Occupancy Types', async () => {
-      cacheFunctions.clearCacheByTableName('OccupancyTypes')
+      cacheFunctions.clearCacheByTableName('ContractTypes')
 
-      const occupancyTypes = await cacheFunctions.getContractTypes()
+      const contractTypes = await cacheFunctions.getContractTypes()
 
-      assert.ok(occupancyTypes.length > 0)
+      assert.ok(contractTypes.length > 0)
 
-      for (const occupancyType of occupancyTypes) {
+      for (const contractType of contractTypes) {
         const byId = await cacheFunctions.getContractTypeById(
-          occupancyType.contractTypeId
+          contractType.contractTypeId
         )
-        assert.strictEqual(occupancyType.contractTypeId, byId?.contractTypeId)
+        assert.strictEqual(contractType.contractTypeId, byId?.contractTypeId)
 
         const byName = await cacheFunctions.getContractTypeByContractType(
-          occupancyType.occupancyType
+          contractType.contractType
         )
-        assert.strictEqual(occupancyType.occupancyType, byName?.occupancyType)
+        assert.strictEqual(contractType.contractType, byName?.contractType)
       }
     })
 
@@ -105,7 +105,7 @@ describe('functions.cache', () => {
       assert.ok(byBadId === undefined)
     })
 
-    it('returns undefined with a bad occupancyType', async () => {
+    it('returns undefined with a bad contractType', async () => {
       const byBadName = await cacheFunctions.getContractTypeByContractType(
         badName
       )

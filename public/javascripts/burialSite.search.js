@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
+    const los = exports.sunrise;
     const searchFilterFormElement = document.querySelector('#form--searchFilters');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);

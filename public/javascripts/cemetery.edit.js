@@ -1,30 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
+    const sunrise = exports.sunrise;
     const cemeteryId = document.querySelector('#cemetery--cemeteryId').value;
     const isCreate = cemeteryId === '';
     const cemeteryForm = document.querySelector('#form--cemetery');
     function setUnsavedChanges() {
-        los.setUnsavedChanges();
+        sunrise.setUnsavedChanges();
         document
             .querySelector("button[type='submit'][form='form--cemetery']")
             ?.classList.remove('is-light');
     }
     function clearUnsavedChanges() {
-        los.clearUnsavedChanges();
+        sunrise.clearUnsavedChanges();
         document
             .querySelector("button[type='submit'][form='form--cemetery']")
             ?.classList.add('is-light');
     }
     function updateCemetery(formEvent) {
         formEvent.preventDefault();
-        cityssm.postJSON(`${los.urlPrefix}/cemeteries/${isCreate ? 'doCreateCemetery' : 'doUpdateCemetery'}`, cemeteryForm, (rawResponseJSON) => {
+        cityssm.postJSON(`${sunrise.urlPrefix}/cemeteries/${isCreate ? 'doCreateCemetery' : 'doUpdateCemetery'}`, cemeteryForm, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
-                    globalThis.location.href = los.getCemeteryURL(responseJSON.cemeteryId, true);
+                    globalThis.location.href = sunrise.getCemeteryURL(responseJSON.cemeteryId, true);
                 }
                 else {
                     bulmaJS.alert({
@@ -52,12 +52,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         function doDelete() {
-            cityssm.postJSON(`${los.urlPrefix}/cemeteries/doDeleteCemetery`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/cemeteries/doDeleteCemetery`, {
                 cemeteryId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    globalThis.location.href = los.getCemeteryURL();
+                    globalThis.location.href = sunrise.getCemeteryURL();
                 }
                 else {
                     bulmaJS.alert({

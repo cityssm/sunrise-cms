@@ -10,7 +10,7 @@ declare const cityssm: cityssmGlobal
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as LOS
+  const los = exports.sunrise as LOS
 
   const workOrderSearchFiltersFormElement = document.querySelector(
     '#form--searchFilters'

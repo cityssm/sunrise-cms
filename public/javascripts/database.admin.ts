@@ -8,7 +8,7 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as LOS
+  const los = exports.sunrise as LOS
 
   function doBackup(): void {
     cityssm.postJSON(

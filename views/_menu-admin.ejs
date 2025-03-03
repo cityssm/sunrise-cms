@@ -12,16 +12,16 @@
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === configFunctions.getConfigProperty("aliases.occupancy") + " Type Management" ? "is-active" : "") %>"
-        href="<%= urlPrefix %>/admin/occupancyTypes"
-        aria-label="<%= configFunctions.getConfigProperty("aliases.occupancy") %> Type Management">
+      <a class="<%= (headTitle === "Contract Type Management" ? "is-active" : "") %>"
+        href="<%= urlPrefix %>/admin/contractTypes"
+        aria-label="Contract Type Management">
         <span class="icon"><i class="fas fa-fw fa-user-friends" aria-hidden="true"></i></span>
-        <span class="is-hidden-touch"><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type Management</span>
+        <span class="is-hidden-touch">Contract Type Management</span>
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === configFunctions.getConfigProperty("aliases.lot") + " Type Management" ? "is-active" : "") %>"
-        href="<%= urlPrefix %>/admin/lotTypes"
+      <a class="<%= (headTitle === "Burial Site Type Management" ? "is-active" : "") %>"
+        href="<%= urlPrefix %>/admin/burialSiteTypes"
         aria-label="Burial Site Type Management">
         <span class="icon"><i class="fas fa-fw fa-vector-square" aria-hidden="true"></i></span>
         <span class="is-hidden-touch">Burial Site Type Management</span>

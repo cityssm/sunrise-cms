@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
+    const los = exports.sunrise;
     const reopenWorkOrderButtonElement = document.querySelector('#button--reopenWorkOrder');
     if (reopenWorkOrderButtonElement !== null) {
         const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId ?? '';

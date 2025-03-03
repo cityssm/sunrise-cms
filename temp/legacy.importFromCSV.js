@@ -198,7 +198,7 @@ async function importFromMasterCSV() {
                     preneedcontractStartDateString = '0001-01-01';
                 }
                 preneedcontractId = await addContract({
-                    contractTypeId: importIds.preneedOccupancyType.contractTypeId,
+                    contractTypeId: importIds.preneedContractType.contractTypeId,
                     lotId: burialSiteId ?? '',
                     contractStartDateString: preneedcontractStartDateString,
                     contractEndDateString,
@@ -263,11 +263,11 @@ async function importFromMasterCSV() {
                 const deceasedcontractEndDateString = burialSiteId
                     ? ''
                     : deceasedcontractStartDateString;
-                const occupancyType = burialSiteId
-                    ? importIds.deceasedOccupancyType
-                    : importIds.cremationOccupancyType;
+                const contractType = burialSiteId
+                    ? importIds.deceasedContractType
+                    : importIds.cremationContractType;
                 deceasedcontractId = await addContract({
-                    contractTypeId: occupancyType.contractTypeId,
+                    contractTypeId: contractType.contractTypeId,
                     lotId: burialSiteId ?? '',
                     contractStartDateString: deceasedcontractStartDateString,
                     contractEndDateString: deceasedcontractEndDateString,
@@ -291,14 +291,14 @@ async function importFromMasterCSV() {
                     const contractFieldValue = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
                     await addOrUpdateContractField({
                         contractId: deceasedcontractId,
-                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Date').contractTypeFieldId,
+                        contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Death Date').contractTypeFieldId,
                         contractFieldValue
                     }, user);
                 }
                 if (masterRow.CM_AGE !== '') {
                     await addOrUpdateContractField({
                         contractId: deceasedcontractId,
-                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Age').contractTypeFieldId,
+                        contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Death Age').contractTypeFieldId,
                         contractFieldValue: masterRow.CM_AGE
                     }, user);
                 }
@@ -306,7 +306,7 @@ async function importFromMasterCSV() {
                     const period = importData.getDeathAgePeriod(masterRow.CM_PERIOD);
                     await addOrUpdateContractField({
                         contractId: deceasedcontractId,
-                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Age Period').contractTypeFieldId,
+                        contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Death Age Period').contractTypeFieldId,
                         contractFieldValue: period
                     }, user);
                 }
@@ -330,8 +330,8 @@ async function importFromMasterCSV() {
                         {
                             contractId: deceasedcontractId,
                             contractTypeFieldId: allContractTypeFields.find(
-                                (occupancyTypeField) => {
-                                    return occupancyTypeField.occupancyTypeField === "Funeral Home";
+                                (contractTypeField) => {
+                                    return contractTypeField.contractTypeField === "Funeral Home";
                                 }
                             ).contractTypeFieldId,
                             contractFieldValue: masterRow.CM_FUNERAL_HOME
@@ -344,15 +344,15 @@ async function importFromMasterCSV() {
                     const contractFieldValue = formatDateString(masterRow.CM_FUNERAL_YR, masterRow.CM_FUNERAL_MON, masterRow.CM_FUNERAL_DAY);
                     await addOrUpdateContractField({
                         contractId: deceasedcontractId,
-                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Funeral Date').contractTypeFieldId,
+                        contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Funeral Date').contractTypeFieldId,
                         contractFieldValue
                     }, user);
                 }
-                if (occupancyType.occupancyType !== 'Cremation') {
+                if (contractType.contractType !== 'Cremation') {
                     if (masterRow.CM_CONTAINER_TYPE !== '') {
                         await addOrUpdateContractField({
                             contractId: deceasedcontractId,
-                            contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Container Type').contractTypeFieldId,
+                            contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Container Type').contractTypeFieldId,
                             contractFieldValue: masterRow.CM_CONTAINER_TYPE
                         }, user);
                     }
@@ -363,7 +363,7 @@ async function importFromMasterCSV() {
                         }
                         await addOrUpdateContractField({
                             contractId: deceasedcontractId,
-                            contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Committal Type').contractTypeFieldId,
+                            contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Committal Type').contractTypeFieldId,
                             contractFieldValue: commitalType
                         }, user);
                     }
@@ -480,7 +480,7 @@ async function importFromPrepaidCSV() {
             if (lot) {
                 const possibleLotOccupancies = await getContracts({
                     lotId: lot.lotId,
-                    contractTypeId: importIds.preneedOccupancyType.contractTypeId,
+                    contractTypeId: importIds.preneedContractType.contractTypeId,
                     occupantName: prepaidRow.CMPP_PREPAID_FOR_NAME,
                     contractStartDateString
                 }, {
@@ -497,7 +497,7 @@ async function importFromPrepaidCSV() {
             }
             contractId ||= await addContract({
                 lotId: lot ? lot.lotId : '',
-                contractTypeId: importIds.preneedOccupancyType.contractTypeId,
+                contractTypeId: importIds.preneedContractType.contractTypeId,
                 contractStartDateString,
                 contractEndDateString: ''
             }, user);
@@ -735,12 +735,12 @@ async function importFromWorkOrderCSV() {
             if (workOrderRow.WO_INTERMENT_YR) {
                 contractStartDateString = formatDateString(workOrderRow.WO_INTERMENT_YR, workOrderRow.WO_INTERMENT_MON, workOrderRow.WO_INTERMENT_DAY);
             }
-            const occupancyType = lot
-                ? importIds.deceasedOccupancyType
-                : importIds.cremationOccupancyType;
+            const contractType = lot
+                ? importIds.deceasedContractType
+                : importIds.cremationContractType;
             const contractId = await addContract({
                 lotId: lot ? lot.lotId : '',
-                contractTypeId: occupancyType.contractTypeId,
+                contractTypeId: contractType.contractTypeId,
                 contractStartDateString,
                 contractEndDateString: ''
             }, user);
@@ -761,21 +761,21 @@ async function importFromWorkOrderCSV() {
                 const contractFieldValue = formatDateString(workOrderRow.WO_DEATH_YR, workOrderRow.WO_DEATH_MON, workOrderRow.WO_DEATH_DAY);
                 await addOrUpdateContractField({
                     contractId,
-                    contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Date').contractTypeFieldId,
+                    contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Death Date').contractTypeFieldId,
                     contractFieldValue
                 }, user);
             }
             if (workOrderRow.WO_DEATH_PLACE !== '') {
                 await addOrUpdateContractField({
                     contractId,
-                    contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Place').contractTypeFieldId,
+                    contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Death Place').contractTypeFieldId,
                     contractFieldValue: workOrderRow.WO_DEATH_PLACE
                 }, user);
             }
             if (workOrderRow.WO_AGE !== '') {
                 await addOrUpdateContractField({
                     contractId,
-                    contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Age').contractTypeFieldId,
+                    contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Death Age').contractTypeFieldId,
                     contractFieldValue: workOrderRow.WO_AGE
                 }, user);
             }
@@ -783,7 +783,7 @@ async function importFromWorkOrderCSV() {
                 const period = importData.getDeathAgePeriod(workOrderRow.WO_PERIOD);
                 await addOrUpdateContractField({
                     contractId,
-                    contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Death Age Period').contractTypeFieldId,
+                    contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Death Age Period').contractTypeFieldId,
                     contractFieldValue: period
                 }, user);
             }
@@ -806,8 +806,8 @@ async function importFromWorkOrderCSV() {
                   addOrUpdateContractField(
                     {
                         contractId: contractId,
-                        contractTypeFieldId: allContractTypeFields.find((occupancyTypeField) => {
-                            return occupancyTypeField.occupancyTypeField === "Funeral Home";
+                        contractTypeFieldId: allContractTypeFields.find((contractTypeField) => {
+                            return contractTypeField.contractTypeField === "Funeral Home";
                         }).contractTypeFieldId,
                         contractFieldValue: workOrderRow.WO_FUNERAL_HOME
                     },
@@ -819,15 +819,15 @@ async function importFromWorkOrderCSV() {
                 const contractFieldValue = formatDateString(workOrderRow.WO_FUNERAL_YR, workOrderRow.WO_FUNERAL_MON, workOrderRow.WO_FUNERAL_DAY);
                 await addOrUpdateContractField({
                     contractId,
-                    contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Funeral Date').contractTypeFieldId,
+                    contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Funeral Date').contractTypeFieldId,
                     contractFieldValue
                 }, user);
             }
-            if (occupancyType.occupancyType !== 'Cremation') {
+            if (contractType.contractType !== 'Cremation') {
                 if (workOrderRow.WO_CONTAINER_TYPE !== '') {
                     await addOrUpdateContractField({
                         contractId,
-                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Container Type').contractTypeFieldId,
+                        contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Container Type').contractTypeFieldId,
                         contractFieldValue: workOrderRow.WO_CONTAINER_TYPE
                     }, user);
                 }
@@ -838,7 +838,7 @@ async function importFromWorkOrderCSV() {
                     }
                     await addOrUpdateContractField({
                         contractId,
-                        contractTypeFieldId: occupancyType.ContractTypeFields.find((occupancyTypeField) => occupancyTypeField.occupancyTypeField === 'Committal Type').contractTypeFieldId,
+                        contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Committal Type').contractTypeFieldId,
                         contractFieldValue: commitalType
                     }, user);
                 }

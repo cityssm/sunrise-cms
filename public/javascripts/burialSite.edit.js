@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
+    const los = exports.sunrise;
     const burialSiteId = document.querySelector('#burialSite--burialSiteId').value;
     const isCreate = burialSiteId === '';
     // Main form

@@ -26,6 +26,16 @@ export interface Cemetery extends Record {
     cemeteryPhoneNumber?: string;
     burialSiteCount?: number;
 }
+export interface FuneralHome extends Record {
+    funeralHomeId?: number;
+    funeralHomeName?: string;
+    funeralHomeAddress1?: string;
+    funeralHomeAddress2?: string;
+    funeralHomeCity?: string;
+    funeralHomeProvince?: string;
+    funeralHomePostalCode?: string;
+    funeralHomePhoneNumber?: string;
+}
 export interface BurialSiteType extends Record {
     burialSiteTypeId: number;
     burialSiteType: string;

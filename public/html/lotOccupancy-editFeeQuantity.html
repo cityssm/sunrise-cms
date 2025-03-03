@@ -10,17 +10,17 @@
       ></button>
     </header>
     <section class="modal-card-body">
-      <form id="form--lotOccupancyFeeQuantity">
-        <input id="lotOccupancyFeeQuantity--lotOccupancyId" name="lotOccupancyId" type="hidden" />
-        <input id="lotOccupancyFeeQuantity--feeId" name="feeId" type="hidden" />
-        <label class="label" for="lotOccupancyFeeQuantity--quantity"
+      <form id="form--contractFeeQuantity">
+        <input id="contractFeeQuantity--contractId" name="contractId" type="hidden" />
+        <input id="contractFeeQuantity--feeId" name="feeId" type="hidden" />
+        <label class="label" for="contractFeeQuantity--quantity"
           >Quantity</label
         >
         <div class="field has-addons">
           <div class="control is-expanded">
             <input
               class="input"
-              id="lotOccupancyFeeQuantity--quantity"
+              id="contractFeeQuantity--quantity"
               name="quantity"
               type="number"
               value="1"
@@ -34,7 +34,7 @@
           <div class="control">
             <span
               class="button is-static"
-              id="lotOccupancyFeeQuantity--quantityUnit"
+              id="contractFeeQuantity--quantityUnit"
             ></span>
           </div>
         </div>
@@ -44,7 +44,7 @@
       <button
         class="button is-success"
         type="submit"
-        form="form--lotOccupancyFeeQuantity"
+        form="form--contractFeeQuantity"
       >
         <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
         <span>Update Quantity</span>

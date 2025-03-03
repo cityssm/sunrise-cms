@@ -57,21 +57,21 @@ describe('functions.cache', () => {
     });
     describe('Occupancy Types', () => {
         it('returns Occupancy Types', async () => {
-            cacheFunctions.clearCacheByTableName('OccupancyTypes');
-            const occupancyTypes = await cacheFunctions.getContractTypes();
-            assert.ok(occupancyTypes.length > 0);
-            for (const occupancyType of occupancyTypes) {
-                const byId = await cacheFunctions.getContractTypeById(occupancyType.contractTypeId);
-                assert.strictEqual(occupancyType.contractTypeId, byId?.contractTypeId);
-                const byName = await cacheFunctions.getContractTypeByContractType(occupancyType.occupancyType);
-                assert.strictEqual(occupancyType.occupancyType, byName?.occupancyType);
+            cacheFunctions.clearCacheByTableName('ContractTypes');
+            const contractTypes = await cacheFunctions.getContractTypes();
+            assert.ok(contractTypes.length > 0);
+            for (const contractType of contractTypes) {
+                const byId = await cacheFunctions.getContractTypeById(contractType.contractTypeId);
+                assert.strictEqual(contractType.contractTypeId, byId?.contractTypeId);
+                const byName = await cacheFunctions.getContractTypeByContractType(contractType.contractType);
+                assert.strictEqual(contractType.contractType, byName?.contractType);
             }
         });
         it('returns undefined with a bad contractTypeId', async () => {
             const byBadId = await cacheFunctions.getContractTypeById(badId);
             assert.ok(byBadId === undefined);
         });
-        it('returns undefined with a bad occupancyType', async () => {
+        it('returns undefined with a bad contractType', async () => {
             const byBadName = await cacheFunctions.getContractTypeByContractType(badName);
             assert.ok(byBadName === undefined);
         });

@@ -20,20 +20,17 @@ export interface Config {
         workOrderCloseDate?: string;
     };
     settings: {
+        cityDefault?: string;
+        provinceDefault?: string;
         fees: {
             taxPercentageDefault?: number;
-        };
-        cemeteries: {
-            cityDefault?: string;
-            provinceDefault?: string;
         };
         burialSites: {
             burialSiteNameSegments?: ConfigBurialSiteNameSegments;
         };
         contracts: {
             burialSiteIdIsRequired?: boolean;
-            cityDefault?: string;
-            provinceDefault?: string;
+            contractEndDateIsRequired?: boolean;
             prints?: string[];
         };
         workOrders: {

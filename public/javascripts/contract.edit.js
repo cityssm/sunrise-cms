@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
+    const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
     const isCreate = contractId === '';
     /*
@@ -9,13 +9,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
      */
     let refreshAfterSave = isCreate;
     function setUnsavedChanges() {
-        los.setUnsavedChanges();
+        sunrise.setUnsavedChanges();
         document
             .querySelector("button[type='submit'][form='form--contract']")
             ?.classList.remove('is-light');
     }
     function clearUnsavedChanges() {
-        los.clearUnsavedChanges();
+        sunrise.clearUnsavedChanges();
         document
             .querySelector("button[type='submit'][form='form--contract']")
             ?.classList.add('is-light');
@@ -23,23 +23,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const formElement = document.querySelector('#form--contract');
     formElement.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
-        cityssm.postJSON(`${los.urlPrefix}/contracts/${isCreate ? 'doCreateBurialSiteOccupancy' : 'doUpdateContract'}`, formElement, (rawResponseJSON) => {
+        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/${isCreate ? 'doCreateContract' : 'doUpdateContract'}`, formElement, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
-                    globalThis.location.href = los.getContractURL(responseJSON.contractId, true, true);
+                    globalThis.location.href = sunrise.getContractURL(responseJSON.contractId, true, true);
                 }
                 else {
                     bulmaJS.alert({
-                        message: `${los.escapedAliases.Occupancy} Updated Successfully`,
+                        message: `Contract Updated Successfully`,
                         contextualColorName: 'success'
                     });
                 }
             }
             else {
                 bulmaJS.alert({
-                    title: `Error Saving ${los.escapedAliases.Occupancy}`,
+                    title: `Error Saving Contract`,
                     message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
@@ -51,13 +51,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
         formInputElement.addEventListener('change', setUnsavedChanges);
     }
     function doCopy() {
-        cityssm.postJSON(`${los.urlPrefix}/contracts/doCopyContract`, {
+        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doCopyContract`, {
             contractId
         }, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
-                globalThis.location.href = los.getContractURL(responseJSON.contractId, true);
+                globalThis.location.href = sunrise.getContractURL(responseJSON.contractId, true);
             }
             else {
                 bulmaJS.alert({
@@ -72,7 +72,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         .querySelector('#button--copyContract')
         ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
-        if (los.hasUnsavedChanges()) {
+        if (sunrise.hasUnsavedChanges()) {
             bulmaJS.alert({
                 title: 'Unsaved Changes',
                 message: 'Please save all unsaved changes before continuing.',
@@ -81,7 +81,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         else {
             bulmaJS.confirm({
-                title: `Copy ${los.escapedAliases.Occupancy} Record as New`,
+                title: `Copy Contract Record as New`,
                 message: 'Are you sure you want to copy this record to a new record?',
                 contextualColorName: 'info',
                 okButton: {
@@ -92,17 +92,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     });
     document
-        .querySelector('#button--deleteLotOccupancy')
+        .querySelector('#button--deleteContract')
         ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         function doDelete() {
-            cityssm.postJSON(`${los.urlPrefix}/contracts/doDeleteContract`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContract`, {
                 contractId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     clearUnsavedChanges();
-                    globalThis.location.href = los.getContractURL();
+                    globalThis.location.href = sunrise.getContractURL();
                 }
                 else {
                     bulmaJS.alert({
@@ -114,7 +114,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         bulmaJS.confirm({
-            title: `Delete ${los.escapedAliases.Occupancy} Record`,
+            title: `Delete Contract Record`,
             message: 'Are you sure you want to delete this record?',
             contextualColorName: 'warning',
             okButton: {
@@ -130,7 +130,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let createCloseModalFunction;
         function doCreate(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/workOrders/doCreateWorkOrder`, formEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCreateWorkOrder`, formEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     createCloseModalFunction();
@@ -140,8 +140,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         contextualColorName: 'success',
                         okButton: {
                             text: 'Yes, Open the Work Order',
-                            callbackFunction: () => {
-                                globalThis.location.href = los.getWorkOrderURL(responseJSON.workOrderId, true);
+                            callbackFunction() {
+                                globalThis.location.href = sunrise.getWorkOrderURL(responseJSON.workOrderId, true);
                             }
                         }
                     });
@@ -187,41 +187,39 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    // Occupancy Type
+    // Contract Type
     const contractTypeIdElement = document.querySelector('#contract--contractTypeId');
     if (isCreate) {
         const contractFieldsContainerElement = document.querySelector('#container--contractFields');
         contractTypeIdElement.addEventListener('change', () => {
             if (contractTypeIdElement.value === '') {
-                // eslint-disable-next-line no-unsanitized/property
                 contractFieldsContainerElement.innerHTML = `<div class="message is-info">
-          <p class="message-body">Select the ${los.escapedAliases.occupancy} type to load the available fields.</p>
+          <p class="message-body">Select the contract type to load the available fields.</p>
           </div>`;
                 return;
             }
-            cityssm.postJSON(`${los.urlPrefix}/contracts/doGetContractTypeFields`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetContractTypeFields`, {
                 contractTypeId: contractTypeIdElement.value
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
-                if (responseJSON.ContractTypeFields.length === 0) {
-                    // eslint-disable-next-line no-unsanitized/property
+                if (responseJSON.contractTypeFields.length === 0) {
                     contractFieldsContainerElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">There are no additional fields for this ${los.escapedAliases.occupancy} type.</p>
+              <p class="message-body">There are no additional fields for this contract type.</p>
               </div>`;
                     return;
                 }
                 contractFieldsContainerElement.innerHTML = '';
                 let contractTypeFieldIds = '';
-                for (const occupancyTypeField of responseJSON.ContractTypeFields) {
-                    contractTypeFieldIds += `,${occupancyTypeField.contractTypeFieldId.toString()}`;
-                    const fieldName = `contractFieldValue_${occupancyTypeField.contractTypeFieldId.toString()}`;
+                for (const contractTypeField of responseJSON.contractTypeFields) {
+                    contractTypeFieldIds += `,${contractTypeField.contractTypeFieldId.toString()}`;
+                    const fieldName = `contractFieldValue_${contractTypeField.contractTypeFieldId.toString()}`;
                     const fieldId = `contract--${fieldName}`;
                     const fieldElement = document.createElement('div');
                     fieldElement.className = 'field';
                     fieldElement.innerHTML = `<label class="label" for="${cityssm.escapeHTML(fieldId)}"></label><div class="control"></div>`;
-                    fieldElement.querySelector('label').textContent = occupancyTypeField.occupancyTypeField;
-                    if (occupancyTypeField.fieldType === 'select' ||
-                        (occupancyTypeField.occupancyTypeFieldValues ?? '') !== '') {
+                    fieldElement.querySelector('label').textContent = contractTypeField.contractTypeField;
+                    if (contractTypeField.fieldType === 'select' ||
+                        (contractTypeField.fieldValues ?? '') !== '') {
                         ;
                         fieldElement.querySelector('.control').innerHTML = `<div class="select is-fullwidth">
                   <select id="${cityssm.escapeHTML(fieldId)}" name="${cityssm.escapeHTML(fieldName)}">
@@ -229,8 +227,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                   </select>
                   </div>`;
                         const selectElement = fieldElement.querySelector('select');
-                        selectElement.required = occupancyTypeField.isRequired;
-                        const optionValues = occupancyTypeField.occupancyTypeFieldValues.split('\n');
+                        selectElement.required = contractTypeField.isRequired;
+                        const optionValues = contractTypeField.fieldValues.split('\n');
                         for (const optionValue of optionValues) {
                             const optionElement = document.createElement('option');
                             optionElement.value = optionValue;
@@ -243,19 +241,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         inputElement.className = 'input';
                         inputElement.id = fieldId;
                         inputElement.name = fieldName;
-                        inputElement.type = occupancyTypeField.fieldType;
-                        inputElement.required = occupancyTypeField.isRequired;
-                        inputElement.minLength =
-                            occupancyTypeField.minLength;
-                        inputElement.maxLength =
-                            occupancyTypeField.maxLength;
-                        if ((occupancyTypeField.pattern ?? '') !== '') {
-                            inputElement.pattern = occupancyTypeField.pattern;
+                        inputElement.type = contractTypeField.fieldType;
+                        inputElement.required = contractTypeField.isRequired;
+                        inputElement.minLength = contractTypeField.minLength;
+                        inputElement.maxLength = contractTypeField.maxLength;
+                        if ((contractTypeField.pattern ?? '') !== '') {
+                            inputElement.pattern = contractTypeField.pattern;
                         }
                         ;
                         fieldElement.querySelector('.control').append(inputElement);
                     }
-                    console.log(fieldElement);
                     contractFieldsContainerElement.append(fieldElement);
                 }
                 contractFieldsContainerElement.insertAdjacentHTML('beforeend', 
@@ -266,12 +261,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     else {
-        const originalcontractTypeId = contractTypeIdElement.value;
+        const originalContractTypeId = contractTypeIdElement.value;
         contractTypeIdElement.addEventListener('change', () => {
-            if (contractTypeIdElement.value !== originalcontractTypeId) {
+            if (contractTypeIdElement.value !== originalContractTypeId) {
                 bulmaJS.confirm({
                     title: 'Confirm Change',
-                    message: `Are you sure you want to change the ${los.escapedAliases.occupancy} type?\n
+                    message: `Are you sure you want to change the contract type?\n
             This change affects the additional fields associated with this record, and may also affect the available fees.`,
                     contextualColorName: 'warning',
                     okButton: {
@@ -283,147 +278,145 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     cancelButton: {
                         text: 'Revert the Change',
                         callbackFunction: () => {
-                            contractTypeIdElement.value = originalcontractTypeId;
+                            contractTypeIdElement.value = originalContractTypeId;
                         }
                     }
                 });
             }
         });
     }
-    // Lot Selector
-    const lotNameElement = document.querySelector('#contract--lotName');
-    lotNameElement.addEventListener('click', (clickEvent) => {
-        const currentLotName = clickEvent.currentTarget.value;
-        let lotSelectCloseModalFunction;
-        let lotSelectModalElement;
-        let lotSelectFormElement;
-        let lotSelectResultsElement;
-        function renderSelectedLotAndClose(lotId, lotName) {
+    // Burial Site Selector
+    const burialSiteNameElement = document.querySelector('#contract--burialSiteName');
+    burialSiteNameElement.addEventListener('click', (clickEvent) => {
+        const currentBurialSiteName = clickEvent.currentTarget
+            .value;
+        let burialSiteSelectCloseModalFunction;
+        let burialSiteSelectModalElement;
+        let burialSiteSelectFormElement;
+        let burialSiteSelectResultsElement;
+        function renderSelectedBurialSiteAndClose(burialSiteId, burialSiteName) {
             ;
-            document.querySelector('#contract--lotId').value = lotId.toString();
-            document.querySelector('#contract--lotName').value = lotName;
+            document.querySelector('#contract--burialSiteId').value = burialSiteId.toString();
+            document.querySelector('#contract--burialSiteName').value = burialSiteName;
             setUnsavedChanges();
-            lotSelectCloseModalFunction();
+            burialSiteSelectCloseModalFunction();
         }
-        function selectExistingLot(clickEvent) {
+        function selectExistingBurialSite(clickEvent) {
             clickEvent.preventDefault();
             const selectedLotElement = clickEvent.currentTarget;
-            renderSelectedLotAndClose(selectedLotElement.dataset.lotId ?? '', selectedLotElement.dataset.lotName ?? '');
+            renderSelectedBurialSiteAndClose(selectedLotElement.dataset.burialSiteId ?? '', selectedLotElement.dataset.burialSiteName ?? '');
         }
-        function searchLots() {
+        function searchBurialSites() {
             // eslint-disable-next-line no-unsanitized/property
-            lotSelectResultsElement.innerHTML =
-                los.getLoadingParagraphHTML('Searching...');
-            cityssm.postJSON(`${los.urlPrefix}/burialSites/doSearchBurialSites`, lotSelectFormElement, (rawResponseJSON) => {
+            burialSiteSelectResultsElement.innerHTML =
+                sunrise.getLoadingParagraphHTML('Searching...');
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, burialSiteSelectFormElement, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.count === 0) {
-                    lotSelectResultsElement.innerHTML = `<div class="message is-info">
+                    burialSiteSelectResultsElement.innerHTML = `<div class="message is-info">
               <p class="message-body">No results.</p>
               </div>`;
                     return;
                 }
                 const panelElement = document.createElement('div');
                 panelElement.className = 'panel';
-                for (const lot of responseJSON.lots) {
+                for (const burialSite of responseJSON.burialSites) {
                     const panelBlockElement = document.createElement('a');
                     panelBlockElement.className = 'panel-block is-block';
                     panelBlockElement.href = '#';
-                    panelBlockElement.dataset.lotId = lot.lotId.toString();
-                    panelBlockElement.dataset.lotName = lot.lotName;
+                    panelBlockElement.dataset.burialSiteId =
+                        burialSite.burialSiteId.toString();
+                    panelBlockElement.dataset.lotName = burialSite.burialSiteName;
                     // eslint-disable-next-line no-unsanitized/property
                     panelBlockElement.innerHTML = `<div class="columns">
               <div class="column">
-                ${cityssm.escapeHTML(lot.lotName ?? '')}<br />
-                <span class="is-size-7">${cityssm.escapeHTML(lot.cemeteryName ?? '')}</span>
+                ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}<br />
+                <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
               </div>
               <div class="column">
-                ${cityssm.escapeHTML(lot.lotStatus)}<br />
+                ${cityssm.escapeHTML(burialSite.burialSiteStatus)}<br />
                 <span class="is-size-7">
-                  ${lot.contractCount > 0 ? 'Currently Occupied' : ''}
+                  ${(burialSite.contractCount ?? 0) > 0 ? 'Has Current Contract' : ''}
                 </span>
               </div>
               </div>`;
-                    panelBlockElement.addEventListener('click', selectExistingLot);
+                    panelBlockElement.addEventListener('click', selectExistingBurialSite);
                     panelElement.append(panelBlockElement);
                 }
-                lotSelectResultsElement.innerHTML = '';
-                lotSelectResultsElement.append(panelElement);
+                burialSiteSelectResultsElement.innerHTML = '';
+                burialSiteSelectResultsElement.append(panelElement);
             });
         }
-        function createLotAndSelect(submitEvent) {
+        function createBurialSiteAndSelect(submitEvent) {
             submitEvent.preventDefault();
-            const lotName = lotSelectModalElement.querySelector('#lotCreate--lotName').value;
-            cityssm.postJSON(`${los.urlPrefix}/burialSites/doCreateBurialSite`, submitEvent.currentTarget, (rawResponseJSON) => {
+            const burialSiteName = burialSiteSelectModalElement.querySelector('#burialSiteCreate--burialSiteName').value;
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doCreateBurialSite`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    renderSelectedLotAndClose(responseJSON.lotId ?? '', lotName);
+                    renderSelectedBurialSiteAndClose(responseJSON.burialSiteId ?? '', burialSiteName);
                 }
                 else {
                     bulmaJS.alert({
-                        title: `Error Creating ${los.escapedAliases.Lot}`,
+                        title: `Error Creating Burial Site`,
                         message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
                 }
             });
         }
-        cityssm.openHtmlModal('contract-selectLot', {
+        cityssm.openHtmlModal('contract-selectBurialSite', {
             onshow(modalElement) {
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
-                lotSelectModalElement = modalElement;
-                lotSelectCloseModalFunction = closeModalFunction;
+                burialSiteSelectModalElement = modalElement;
+                burialSiteSelectCloseModalFunction = closeModalFunction;
                 bulmaJS.init(modalElement);
                 // search Tab
-                const lotNameFilterElement = modalElement.querySelector('#lotSelect--lotName');
-                if (document.querySelector('#contract--lotId')
-                    .value !== '') {
-                    lotNameFilterElement.value = currentLotName;
+                const burialSiteNameFilterElement = modalElement.querySelector('#burialSiteSelect--burialSiteName');
+                if (document.querySelector('#contract--burialSiteId').value !== '') {
+                    burialSiteNameFilterElement.value = currentBurialSiteName;
                 }
-                lotNameFilterElement.focus();
-                lotNameFilterElement.addEventListener('change', searchLots);
-                const occupancyStatusFilterElement = modalElement.querySelector('#lotSelect--occupancyStatus');
-                occupancyStatusFilterElement.addEventListener('change', searchLots);
-                if (currentLotName !== '') {
-                    occupancyStatusFilterElement.value = '';
+                burialSiteNameFilterElement.focus();
+                burialSiteNameFilterElement.addEventListener('change', searchBurialSites);
+                const contractStatusFilterElement = modalElement.querySelector('#burialSiteSelect--occupancyStatus');
+                contractStatusFilterElement.addEventListener('change', searchBurialSites);
+                if (currentBurialSiteName !== '') {
+                    contractStatusFilterElement.value = '';
                 }
-                lotSelectFormElement = modalElement.querySelector('#form--lotSelect');
-                lotSelectResultsElement = modalElement.querySelector('#resultsContainer--lotSelect');
-                lotSelectFormElement.addEventListener('submit', (submitEvent) => {
+                burialSiteSelectFormElement = modalElement.querySelector('#form--burialSiteSelect');
+                burialSiteSelectResultsElement = modalElement.querySelector('#resultsContainer--burialSiteSelect');
+                burialSiteSelectFormElement.addEventListener('submit', (submitEvent) => {
                     submitEvent.preventDefault();
                 });
-                searchLots();
-                // Create Tab
-                if (exports.lotNamePattern) {
-                    const regex = exports.lotNamePattern;
-                    modalElement.querySelector('#lotCreate--lotName').pattern = regex.source;
-                }
-                const lotTypeElement = modalElement.querySelector('#lotCreate--burialSiteTypeId');
-                for (const lotType of exports.lotTypes) {
+                searchBurialSites();
+                const burialSiteTypeElement = modalElement.querySelector('#burialSiteCreate--burialSiteTypeId');
+                for (const burialSiteType of exports.burialSiteTypes) {
                     const optionElement = document.createElement('option');
-                    optionElement.value = lotType.burialSiteTypeId.toString();
-                    optionElement.textContent = lotType.lotType;
-                    lotTypeElement.append(optionElement);
+                    optionElement.value = burialSiteType.burialSiteTypeId.toString();
+                    optionElement.textContent = burialSiteType.burialSiteType;
+                    burialSiteTypeElement.append(optionElement);
                 }
-                const lotStatusElement = modalElement.querySelector('#lotCreate--burialSiteStatusId');
-                for (const lotStatus of exports.lotStatuses) {
+                const burialSiteStatusElement = modalElement.querySelector('#burialSiteCreate--burialSiteStatusId');
+                for (const burialSiteStatus of exports.burialSiteStatuses) {
                     const optionElement = document.createElement('option');
-                    optionElement.value = lotStatus.burialSiteStatusId.toString();
-                    optionElement.textContent = lotStatus.lotStatus;
-                    lotStatusElement.append(optionElement);
+                    optionElement.value = burialSiteStatus.burialSiteStatusId.toString();
+                    optionElement.textContent = burialSiteStatus.burialSiteStatus;
+                    burialSiteStatusElement.append(optionElement);
                 }
-                const mapElement = modalElement.querySelector('#lotCreate--cemeteryId');
-                for (const map of exports.maps) {
+                const mapElement = modalElement.querySelector('#burialSiteCreate--cemeteryId');
+                for (const cemetery of exports.cemeteries) {
                     const optionElement = document.createElement('option');
-                    optionElement.value = map.cemeteryId.toString();
+                    optionElement.value = cemetery.cemeteryId.toString();
                     optionElement.textContent =
-                        (map.cemeteryName ?? '') === '' ? '(No Name)' : map.cemeteryName ?? '';
+                        (cemetery.cemeteryName ?? '') === ''
+                            ? '(No Name)'
+                            : cemetery.cemeteryName ?? '';
                     mapElement.append(optionElement);
                 }
                 ;
-                modalElement.querySelector('#form--lotCreate').addEventListener('submit', createLotAndSelect);
+                modalElement.querySelector('#form--burialSiteCreate').addEventListener('submit', createBurialSiteAndSelect);
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();
@@ -431,36 +424,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     });
     document
-        .querySelector('.is-lot-view-button')
+        .querySelector('.is-burial-site-view-button')
         ?.addEventListener('click', () => {
-        const lotId = document.querySelector('#contract--lotId').value;
-        if (lotId === '') {
+        const burialSiteId = document.querySelector('#contract--burialSiteId').value;
+        if (burialSiteId === '') {
             bulmaJS.alert({
-                message: `No ${los.escapedAliases.lot} selected.`,
+                message: `No burial site selected.`,
                 contextualColorName: 'info'
             });
         }
         else {
-            window.open(`${los.urlPrefix}/burialSites/${lotId}`);
+            window.open(`${sunrise.urlPrefix}/burialSites/${burialSiteId}`);
         }
     });
     document
-        .querySelector('.is-clear-lot-button')
+        .querySelector('.is-clear-burial-site-button')
         ?.addEventListener('click', () => {
-        if (lotNameElement.disabled) {
+        if (burialSiteNameElement.disabled) {
             bulmaJS.alert({
                 message: 'You need to unlock the field before clearing it.',
                 contextualColorName: 'info'
             });
         }
         else {
-            lotNameElement.value = `(No ${los.escapedAliases.Lot})`;
-            document.querySelector('#contract--lotId').value = '';
+            burialSiteNameElement.value = `(No Burial Site)`;
+            document.querySelector('#contract--burialSiteId').value = '';
             setUnsavedChanges();
         }
     });
     // Start Date
-    los.initializeDatePickers(formElement);
+    sunrise.initializeDatePickers(formElement);
     document
         .querySelector('#contract--contractStartDateString')
         ?.addEventListener('change', () => {
@@ -468,398 +461,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         endDatePicker.min = document.querySelector('#contract--contractStartDateString').value;
         endDatePicker.refresh();
     });
-    los.initializeUnlockFieldButtons(formElement);
-    (() => {
-        let contractOccupants = exports.contractOccupants;
-        delete exports.contractOccupants;
-        function openEditLotOccupancyOccupant(clickEvent) {
-            const lotOccupantIndex = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-                .lotOccupantIndex ?? '', 10);
-            const contractOccupant = contractOccupants.find((currentLotOccupancyOccupant) => {
-                return (currentLotOccupancyOccupant.lotOccupantIndex === lotOccupantIndex);
-            });
-            let editFormElement;
-            let editCloseModalFunction;
-            function editOccupant(submitEvent) {
-                submitEvent.preventDefault();
-                cityssm.postJSON(`${los.urlPrefix}/contracts/doUpdateContractOccupant`, editFormElement, (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
-                    if (responseJSON.success) {
-                        contractOccupants = responseJSON.contractOccupants;
-                        editCloseModalFunction();
-                        renderLotOccupancyOccupants();
-                    }
-                    else {
-                        bulmaJS.alert({
-                            title: `Error Updating ${los.escapedAliases.Occupant}`,
-                            message: responseJSON.errorMessage ?? '',
-                            contextualColorName: 'danger'
-                        });
-                    }
-                });
-            }
-            cityssm.openHtmlModal('contract-editOccupant', {
-                onshow(modalElement) {
-                    los.populateAliases(modalElement);
-                    modalElement.querySelector('#contractOccupantEdit--contractId').value = contractId;
-                    modalElement.querySelector('#contractOccupantEdit--lotOccupantIndex').value = lotOccupantIndex.toString();
-                    const lotOccupantTypeSelectElement = modalElement.querySelector('#contractOccupantEdit--lotOccupantTypeId');
-                    let lotOccupantTypeSelected = false;
-                    for (const lotOccupantType of exports.lotOccupantTypes) {
-                        const optionElement = document.createElement('option');
-                        optionElement.value = lotOccupantType.lotOccupantTypeId.toString();
-                        optionElement.textContent = lotOccupantType.lotOccupantType;
-                        optionElement.dataset.occupantCommentTitle =
-                            lotOccupantType.occupantCommentTitle;
-                        optionElement.dataset.fontAwesomeIconClass =
-                            lotOccupantType.fontAwesomeIconClass;
-                        if (lotOccupantType.lotOccupantTypeId ===
-                            contractOccupant.lotOccupantTypeId) {
-                            optionElement.selected = true;
-                            lotOccupantTypeSelected = true;
-                        }
-                        lotOccupantTypeSelectElement.append(optionElement);
-                    }
-                    if (!lotOccupantTypeSelected) {
-                        const optionElement = document.createElement('option');
-                        optionElement.value =
-                            contractOccupant.lotOccupantTypeId?.toString() ?? '';
-                        optionElement.textContent =
-                            contractOccupant.lotOccupantType ?? '';
-                        optionElement.dataset.occupantCommentTitle =
-                            contractOccupant.occupantCommentTitle;
-                        optionElement.dataset.fontAwesomeIconClass =
-                            contractOccupant.fontAwesomeIconClass;
-                        optionElement.selected = true;
-                        lotOccupantTypeSelectElement.append(optionElement);
-                    }
-                    ;
-                    modalElement.querySelector('#contractOccupantEdit--fontAwesomeIconClass').innerHTML =
-                        `<i class="fas fa-fw fa-${cityssm.escapeHTML(contractOccupant.fontAwesomeIconClass ?? '')}" aria-hidden="true"></i>`;
-                    modalElement.querySelector('#contractOccupantEdit--occupantName').value = contractOccupant.occupantName ?? '';
-                    modalElement.querySelector('#contractOccupantEdit--occupantFamilyName').value = contractOccupant.occupantFamilyName ?? '';
-                    modalElement.querySelector('#contractOccupantEdit--occupantAddress1').value = contractOccupant.occupantAddress1 ?? '';
-                    modalElement.querySelector('#contractOccupantEdit--occupantAddress2').value = contractOccupant.occupantAddress2 ?? '';
-                    modalElement.querySelector('#contractOccupantEdit--occupantCity').value = contractOccupant.occupantCity ?? '';
-                    modalElement.querySelector('#contractOccupantEdit--occupantProvince').value = contractOccupant.occupantProvince ?? '';
-                    modalElement.querySelector('#contractOccupantEdit--occupantPostalCode').value = contractOccupant.occupantPostalCode ?? '';
-                    modalElement.querySelector('#contractOccupantEdit--occupantPhoneNumber').value = contractOccupant.occupantPhoneNumber ?? '';
-                    modalElement.querySelector('#contractOccupantEdit--occupantEmailAddress').value = contractOccupant.occupantEmailAddress ?? '';
-                    modalElement.querySelector('#contractOccupantEdit--occupantCommentTitle').textContent =
-                        (contractOccupant.occupantCommentTitle ?? '') === ''
-                            ? 'Comment'
-                            : contractOccupant.occupantCommentTitle ?? '';
-                    modalElement.querySelector('#contractOccupantEdit--occupantComment').value = contractOccupant.occupantComment ?? '';
-                },
-                onshown(modalElement, closeModalFunction) {
-                    bulmaJS.toggleHtmlClipped();
-                    const lotOccupantTypeIdElement = modalElement.querySelector('#contractOccupantEdit--lotOccupantTypeId');
-                    lotOccupantTypeIdElement.focus();
-                    lotOccupantTypeIdElement.addEventListener('change', () => {
-                        const fontAwesomeIconClass = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                            .fontAwesomeIconClass ?? 'user';
-                        modalElement.querySelector('#contractOccupantEdit--fontAwesomeIconClass').innerHTML =
-                            `<i class="fas fa-fw fa-${cityssm.escapeHTML(fontAwesomeIconClass)}" aria-hidden="true"></i>`;
-                        let occupantCommentTitle = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                            .occupantCommentTitle ?? '';
-                        if (occupantCommentTitle === '') {
-                            occupantCommentTitle = 'Comment';
-                        }
-                        ;
-                        modalElement.querySelector('#contractOccupantEdit--occupantCommentTitle').textContent = occupantCommentTitle;
-                    });
-                    editFormElement = modalElement.querySelector('form');
-                    editFormElement.addEventListener('submit', editOccupant);
-                    editCloseModalFunction = closeModalFunction;
-                },
-                onremoved() {
-                    bulmaJS.toggleHtmlClipped();
-                }
-            });
-        }
-        function deleteLotOccupancyOccupant(clickEvent) {
-            const lotOccupantIndex = clickEvent.currentTarget.closest('tr')?.dataset.lotOccupantIndex;
-            function doDelete() {
-                cityssm.postJSON(`${los.urlPrefix}/contracts/doDeleteContractOccupant`, {
-                    contractId,
-                    lotOccupantIndex
-                }, (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
-                    if (responseJSON.success) {
-                        contractOccupants = responseJSON.contractOccupants;
-                        renderLotOccupancyOccupants();
-                    }
-                    else {
-                        bulmaJS.alert({
-                            title: `Error Removing ${los.escapedAliases.Occupant}`,
-                            message: responseJSON.errorMessage ?? '',
-                            contextualColorName: 'danger'
-                        });
-                    }
-                });
-            }
-            bulmaJS.confirm({
-                title: `Remove ${los.escapedAliases.Occupant}?`,
-                message: `Are you sure you want to remove this ${los.escapedAliases.occupant}?`,
-                okButton: {
-                    text: `Yes, Remove ${los.escapedAliases.Occupant}`,
-                    callbackFunction: doDelete
-                },
-                contextualColorName: 'warning'
-            });
-        }
-        function renderLotOccupancyOccupants() {
-            const occupantsContainer = document.querySelector('#container--contractOccupants');
-            cityssm.clearElement(occupantsContainer);
-            if (contractOccupants.length === 0) {
-                // eslint-disable-next-line no-unsanitized/property
-                occupantsContainer.innerHTML = `<div class="message is-warning">
-        <p class="message-body">There are no ${los.escapedAliases.occupants} associated with this record.</p>
-        </div>`;
-                return;
-            }
-            const tableElement = document.createElement('table');
-            tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-            // eslint-disable-next-line no-unsanitized/property
-            tableElement.innerHTML = `<thead><tr>
-      <th>${los.escapedAliases.Occupant}</th>
-      <th>Address</th>
-      <th>Other Contact</th>
-      <th>Comment</th>
-      <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-      </tr></thead>
-      <tbody></tbody>`;
-            for (const contractOccupant of contractOccupants) {
-                const tableRowElement = document.createElement('tr');
-                tableRowElement.dataset.lotOccupantIndex =
-                    contractOccupant.lotOccupantIndex?.toString();
-                // eslint-disable-next-line no-unsanitized/property
-                tableRowElement.innerHTML = `<td>
-        ${cityssm.escapeHTML((contractOccupant.occupantName ?? '') === '' &&
-                    (contractOccupant.occupantFamilyName ?? '') === ''
-                    ? '(No Name)'
-                    : `${contractOccupant.occupantName} ${contractOccupant.occupantFamilyName}`)}<br />
-        <span class="tag">
-          <i class="fas fa-fw fa-${cityssm.escapeHTML(contractOccupant.fontAwesomeIconClass ?? '')}" aria-hidden="true"></i>
-          <span class="ml-1">${cityssm.escapeHTML(contractOccupant.lotOccupantType ?? '')}</span>
-        </span>
-      </td><td>
-        ${(contractOccupant.occupantAddress1 ?? '') === ''
-                    ? ''
-                    : `${cityssm.escapeHTML(contractOccupant.occupantAddress1 ?? '')}<br />`}
-        ${(contractOccupant.occupantAddress2 ?? '') === ''
-                    ? ''
-                    : `${cityssm.escapeHTML(contractOccupant.occupantAddress2 ?? '')}<br />`}
-        ${(contractOccupant.occupantCity ?? '') === ''
-                    ? ''
-                    : `${cityssm.escapeHTML(contractOccupant.occupantCity ?? '')}, `}
-        ${cityssm.escapeHTML(contractOccupant.occupantProvince ?? '')}<br />
-        ${cityssm.escapeHTML(contractOccupant.occupantPostalCode ?? '')}
-      </td><td>
-        ${(contractOccupant.occupantPhoneNumber ?? '') === ''
-                    ? ''
-                    : `${cityssm.escapeHTML(contractOccupant.occupantPhoneNumber ?? '')}<br />`}
-        ${(contractOccupant.occupantEmailAddress ?? '') === ''
-                    ? ''
-                    : cityssm.escapeHTML(contractOccupant.occupantEmailAddress ?? '')}
-      </td><td>
-        <span data-tooltip="${cityssm.escapeHTML((contractOccupant.occupantCommentTitle ?? '') === ''
-                    ? 'Comment'
-                    : contractOccupant.occupantCommentTitle ?? '')}">
-        ${cityssm.escapeHTML(contractOccupant.occupantComment ?? '')}
-        </span>
-      </td><td class="is-hidden-print">
-        <div class="buttons are-small is-justify-content-end">
-          <button class="button is-primary button--edit" type="button">
-            <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-            <span>Edit</span>
-          </button>
-          <button class="button is-light is-danger button--delete" data-tooltip="Delete ${los.escapedAliases.Occupant}" type="button" aria-label="Delete">
-            <i class="fas fa-trash" aria-hidden="true"></i>
-          </button>
-        </div>
-      </td>`;
-                tableRowElement
-                    .querySelector('.button--edit')
-                    ?.addEventListener('click', openEditLotOccupancyOccupant);
-                tableRowElement
-                    .querySelector('.button--delete')
-                    ?.addEventListener('click', deleteLotOccupancyOccupant);
-                tableElement.querySelector('tbody')?.append(tableRowElement);
-            }
-            occupantsContainer.append(tableElement);
-        }
-        if (isCreate) {
-            const lotOccupantTypeIdElement = document.querySelector('#contract--lotOccupantTypeId');
-            lotOccupantTypeIdElement.addEventListener('change', () => {
-                const occupantFields = formElement.querySelectorAll("[data-table='LotOccupancyOccupant']");
-                for (const occupantField of occupantFields) {
-                    occupantField.disabled = lotOccupantTypeIdElement.value === '';
-                }
-                let occupantCommentTitle = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                    .occupantCommentTitle ?? '';
-                if (occupantCommentTitle === '') {
-                    occupantCommentTitle = 'Comment';
-                }
-                ;
-                formElement.querySelector('#contract--occupantCommentTitle').textContent = occupantCommentTitle;
-            });
-        }
-        else {
-            renderLotOccupancyOccupants();
-        }
-        document
-            .querySelector('#button--addOccupant')
-            ?.addEventListener('click', () => {
-            let addCloseModalFunction;
-            let addFormElement;
-            let searchFormElement;
-            let searchResultsElement;
-            function addOccupant(formOrObject) {
-                cityssm.postJSON(`${los.urlPrefix}/contracts/doAddLotOccupancyOccupant`, formOrObject, (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
-                    if (responseJSON.success) {
-                        contractOccupants = responseJSON.contractOccupants;
-                        addCloseModalFunction();
-                        renderLotOccupancyOccupants();
-                    }
-                    else {
-                        bulmaJS.alert({
-                            title: `Error Adding ${los.escapedAliases.Occupant}`,
-                            message: responseJSON.errorMessage ?? '',
-                            contextualColorName: 'danger'
-                        });
-                    }
-                });
-            }
-            function addOccupantFromForm(submitEvent) {
-                submitEvent.preventDefault();
-                addOccupant(addFormElement);
-            }
-            let pastOccupantSearchResults = [];
-            function addOccupantFromCopy(clickEvent) {
-                clickEvent.preventDefault();
-                const panelBlockElement = clickEvent.currentTarget;
-                const occupant = pastOccupantSearchResults[Number.parseInt(panelBlockElement.dataset.index ?? '', 10)];
-                const lotOccupantTypeId = (panelBlockElement
-                    .closest('.modal')
-                    ?.querySelector('#contractOccupantCopy--lotOccupantTypeId')).value;
-                if (lotOccupantTypeId === '') {
-                    bulmaJS.alert({
-                        title: `No ${los.escapedAliases.Occupant} Type Selected`,
-                        message: `Select a type to apply to the newly added ${los.escapedAliases.occupant}.`,
-                        contextualColorName: 'warning'
-                    });
-                }
-                else {
-                    occupant.lotOccupantTypeId = Number.parseInt(lotOccupantTypeId, 10);
-                    occupant.contractId = Number.parseInt(contractId, 10);
-                    addOccupant(occupant);
-                }
-            }
-            function searchOccupants(event) {
-                event.preventDefault();
-                if (searchFormElement.querySelector('#contractOccupantCopy--searchFilter').value === '') {
-                    searchResultsElement.innerHTML = `<div class="message is-info">
-          <p class="message-body">Enter a partial name or address in the search field above.</p>
-          </div>`;
-                    return;
-                }
-                // eslint-disable-next-line no-unsanitized/property
-                searchResultsElement.innerHTML =
-                    los.getLoadingParagraphHTML('Searching...');
-                cityssm.postJSON(`${los.urlPrefix}/contracts/doSearchPastOccupants`, searchFormElement, (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
-                    pastOccupantSearchResults = responseJSON.occupants;
-                    const panelElement = document.createElement('div');
-                    panelElement.className = 'panel';
-                    for (const [index, occupant] of pastOccupantSearchResults.entries()) {
-                        const panelBlockElement = document.createElement('a');
-                        panelBlockElement.className = 'panel-block is-block';
-                        panelBlockElement.href = '#';
-                        panelBlockElement.dataset.index = index.toString();
-                        // eslint-disable-next-line no-unsanitized/property
-                        panelBlockElement.innerHTML = `<strong>
-                ${cityssm.escapeHTML(occupant.occupantName ?? '')} ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
-              </strong><br />
-              <div class="columns">
-                <div class="column">
-                  ${cityssm.escapeHTML(occupant.occupantAddress1 ?? '')}<br />
-                  ${(occupant.occupantAddress2 ?? '') === ''
-                            ? ''
-                            : `${cityssm.escapeHTML(occupant.occupantAddress2 ?? '')}<br />`}${cityssm.escapeHTML(occupant.occupantCity ?? '')}, ${cityssm.escapeHTML(occupant.occupantProvince ?? '')}<br />
-                  ${cityssm.escapeHTML(occupant.occupantPostalCode ?? '')}
-                </div>
-                <div class="column">
-                ${(occupant.occupantPhoneNumber ?? '') === ''
-                            ? ''
-                            : `${cityssm.escapeHTML(occupant.occupantPhoneNumber ?? '')}<br />`}
-                ${cityssm.escapeHTML(occupant.occupantEmailAddress ?? '')}<br />
-                </div>
-                </div>`;
-                        panelBlockElement.addEventListener('click', addOccupantFromCopy);
-                        panelElement.append(panelBlockElement);
-                    }
-                    searchResultsElement.innerHTML = '';
-                    searchResultsElement.append(panelElement);
-                });
-            }
-            cityssm.openHtmlModal('contract-addOccupant', {
-                onshow(modalElement) {
-                    los.populateAliases(modalElement);
-                    modalElement.querySelector('#contractOccupantAdd--contractId').value = contractId;
-                    const lotOccupantTypeSelectElement = modalElement.querySelector('#contractOccupantAdd--lotOccupantTypeId');
-                    const lotOccupantTypeCopySelectElement = modalElement.querySelector('#contractOccupantCopy--lotOccupantTypeId');
-                    for (const lotOccupantType of exports.lotOccupantTypes) {
-                        const optionElement = document.createElement('option');
-                        optionElement.value = lotOccupantType.lotOccupantTypeId.toString();
-                        optionElement.textContent = lotOccupantType.lotOccupantType;
-                        optionElement.dataset.occupantCommentTitle =
-                            lotOccupantType.occupantCommentTitle;
-                        optionElement.dataset.fontAwesomeIconClass =
-                            lotOccupantType.fontAwesomeIconClass;
-                        lotOccupantTypeSelectElement.append(optionElement);
-                        lotOccupantTypeCopySelectElement.append(optionElement.cloneNode(true));
-                    }
-                    ;
-                    modalElement.querySelector('#contractOccupantAdd--occupantCity').value = exports.occupantCityDefault;
-                    modalElement.querySelector('#contractOccupantAdd--occupantProvince').value = exports.occupantProvinceDefault;
-                },
-                onshown(modalElement, closeModalFunction) {
-                    bulmaJS.toggleHtmlClipped();
-                    bulmaJS.init(modalElement);
-                    const lotOccupantTypeIdElement = modalElement.querySelector('#contractOccupantAdd--lotOccupantTypeId');
-                    lotOccupantTypeIdElement.focus();
-                    lotOccupantTypeIdElement.addEventListener('change', () => {
-                        const fontAwesomeIconClass = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                            .fontAwesomeIconClass ?? 'user';
-                        modalElement.querySelector('#contractOccupantAdd--fontAwesomeIconClass').innerHTML =
-                            `<i class="fas fa-fw fa-${cityssm.escapeHTML(fontAwesomeIconClass)}" aria-hidden="true"></i>`;
-                        let occupantCommentTitle = lotOccupantTypeIdElement.selectedOptions[0].dataset
-                            .occupantCommentTitle ?? '';
-                        if (occupantCommentTitle === '') {
-                            occupantCommentTitle = 'Comment';
-                        }
-                        ;
-                        modalElement.querySelector('#contractOccupantAdd--occupantCommentTitle').textContent = occupantCommentTitle;
-                    });
-                    addFormElement = modalElement.querySelector('#form--contractOccupantAdd');
-                    addFormElement.addEventListener('submit', addOccupantFromForm);
-                    searchResultsElement = modalElement.querySelector('#contractOccupantCopy--searchResults');
-                    searchFormElement = modalElement.querySelector('#form--contractOccupantCopy');
-                    searchFormElement.addEventListener('submit', (formEvent) => {
-                        formEvent.preventDefault();
-                    });
-                    modalElement.querySelector('#contractOccupantCopy--searchFilter').addEventListener('change', searchOccupants);
-                    addCloseModalFunction = closeModalFunction;
-                },
-                onremoved() {
-                    bulmaJS.toggleHtmlClipped();
-                    document.querySelector('#button--addOccupant').focus();
-                }
-            });
-        });
-    })();
+    sunrise.initializeUnlockFieldButtons(formElement);
     if (!isCreate) {
         /**
          * Comments
@@ -872,14 +474,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const contractCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
                     .contractCommentId ?? '', 10);
                 const contractComment = contractComments.find((currentLotOccupancyComment) => {
-                    return (currentLotOccupancyComment.contractCommentId ===
-                        contractCommentId);
+                    return (currentLotOccupancyComment.contractCommentId === contractCommentId);
                 });
                 let editFormElement;
                 let editCloseModalFunction;
                 function editComment(submitEvent) {
                     submitEvent.preventDefault();
-                    cityssm.postJSON(`${los.urlPrefix}/contracts/doUpdateContractComment`, editFormElement, (rawResponseJSON) => {
+                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractComment`, editFormElement, (rawResponseJSON) => {
                         const responseJSON = rawResponseJSON;
                         if (responseJSON.success) {
                             contractComments = responseJSON.contractComments ?? [];
@@ -897,7 +498,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 cityssm.openHtmlModal('contract-editComment', {
                     onshow(modalElement) {
-                        los.populateAliases(modalElement);
+                        sunrise.populateAliases(modalElement);
                         modalElement.querySelector('#contractCommentEdit--contractId').value = contractId;
                         modalElement.querySelector('#contractCommentEdit--contractCommentId').value = contractCommentId.toString();
                         modalElement.querySelector('#contractCommentEdit--contractComment').value = contractComment.contractComment ?? '';
@@ -906,15 +507,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             contractComment.contractCommentDateString ?? '';
                         const currentDateString = cityssm.dateToString(new Date());
                         contractCommentDateStringElement.max =
-                            contractComment.contractCommentDateString <=
-                                currentDateString
+                            contractComment.contractCommentDateString <= currentDateString
                                 ? currentDateString
                                 : contractComment.contractCommentDateString ?? '';
                         modalElement.querySelector('#contractCommentEdit--contractCommentTimeString').value = contractComment.contractCommentTimeString ?? '';
                     },
                     onshown(modalElement, closeModalFunction) {
                         bulmaJS.toggleHtmlClipped();
-                        los.initializeDatePickers(modalElement);
+                        sunrise.initializeDatePickers(modalElement);
                         modalElement.querySelector('#contractCommentEdit--contractComment').focus();
                         editFormElement = modalElement.querySelector('form');
                         editFormElement.addEventListener('submit', editComment);
@@ -929,7 +529,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const contractCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
                     .contractCommentId ?? '', 10);
                 function doDelete() {
-                    cityssm.postJSON(`${los.urlPrefix}/contracts/doDeleteContractComment`, {
+                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractComment`, {
                         contractId,
                         contractCommentId
                     }, (rawResponseJSON) => {
@@ -1015,7 +615,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 let addCloseModalFunction;
                 function addComment(submitEvent) {
                     submitEvent.preventDefault();
-                    cityssm.postJSON(`${los.urlPrefix}/contracts/doAddContractComment`, addFormElement, (rawResponseJSON) => {
+                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractComment`, addFormElement, (rawResponseJSON) => {
                         const responseJSON = rawResponseJSON;
                         if (responseJSON.success) {
                             contractComments = responseJSON.contractComments;
@@ -1033,7 +633,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 cityssm.openHtmlModal('contract-addComment', {
                     onshow(modalElement) {
-                        los.populateAliases(modalElement);
+                        sunrise.populateAliases(modalElement);
                         modalElement.querySelector('#contractCommentAdd--contractId').value = contractId;
                     },
                     onshown(modalElement, closeModalFunction) {
@@ -1059,8 +659,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 let feeGrandTotal = 0;
                 for (const contractFee of contractFees) {
                     feeGrandTotal +=
-                        ((contractFee.feeAmount ?? 0) +
-                            (contractFee.taxAmount ?? 0)) *
+                        ((contractFee.feeAmount ?? 0) + (contractFee.taxAmount ?? 0)) *
                             (contractFee.quantity ?? 0);
                 }
                 return feeGrandTotal;
@@ -1074,7 +673,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 let updateCloseModalFunction;
                 function doUpdateQuantity(formEvent) {
                     formEvent.preventDefault();
-                    cityssm.postJSON(`${los.urlPrefix}/contracts/doUpdateContractFeeQuantity`, formEvent.currentTarget, (rawResponseJSON) => {
+                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractFeeQuantity`, formEvent.currentTarget, (rawResponseJSON) => {
                         const responseJSON = rawResponseJSON;
                         if (responseJSON.success) {
                             contractFees = responseJSON.contractFees;
@@ -1114,7 +713,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             function deleteContractFee(clickEvent) {
                 const feeId = clickEvent.currentTarget.closest('.container--contractFee').dataset.feeId;
                 function doDelete() {
-                    cityssm.postJSON(`${los.urlPrefix}/contracts/doDeleteContractFee`, {
+                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractFee`, {
                         contractId,
                         feeId
                     }, (rawResponseJSON) => {
@@ -1234,7 +833,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             const addFeeButtonElement = document.querySelector('#button--addFee');
             addFeeButtonElement.addEventListener('click', () => {
-                if (los.hasUnsavedChanges()) {
+                if (sunrise.hasUnsavedChanges()) {
                     bulmaJS.alert({
                         message: 'Please save all unsaved changes before adding fees.',
                         contextualColorName: 'warning'
@@ -1248,7 +847,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     clickEvent.preventDefault();
                     const feeCategoryId = Number.parseInt(clickEvent.currentTarget.dataset.feeCategoryId ??
                         '', 10);
-                    cityssm.postJSON(`${los.urlPrefix}/contracts/doAddContractFeeCategory`, {
+                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractFeeCategory`, {
                         contractId,
                         feeCategoryId
                     }, (rawResponseJSON) => {
@@ -1271,7 +870,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     });
                 }
                 function doAddFee(feeId, quantity = 1) {
-                    cityssm.postJSON(`${los.urlPrefix}/contracts/doAddLotOccupancyFee`, {
+                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddLotOccupancyFee`, {
                         contractId,
                         feeId,
                         quantity
@@ -1414,7 +1013,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     onshow(modalElement) {
                         feeFilterElement = modalElement.querySelector('#feeSelect--feeName');
                         feeFilterResultsElement = modalElement.querySelector('#resultsContainer--feeSelect');
-                        cityssm.postJSON(`${los.urlPrefix}/contracts/doGetFees`, {
+                        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetFees`, {
                             contractId
                         }, (rawResponseJSON) => {
                             const responseJSON = rawResponseJSON;
@@ -1456,7 +1055,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 let editCloseModalFunction;
                 function doEdit(formEvent) {
                     formEvent.preventDefault();
-                    cityssm.postJSON(`${los.urlPrefix}/contracts/doUpdateContractTransaction`, formEvent.currentTarget, (rawResponseJSON) => {
+                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractTransaction`, formEvent.currentTarget, (rawResponseJSON) => {
                         const responseJSON = rawResponseJSON;
                         if (responseJSON.success) {
                             contractTransactions = responseJSON.contractTransactions;
@@ -1474,7 +1073,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 cityssm.openHtmlModal('contract-editTransaction', {
                     onshow(modalElement) {
-                        los.populateAliases(modalElement);
+                        sunrise.populateAliases(modalElement);
                         modalElement.querySelector('#contractTransactionEdit--contractId').value = contractId;
                         modalElement.querySelector('#contractTransactionEdit--transactionIndex').value = transaction.transactionIndex?.toString() ?? '';
                         modalElement.querySelector('#contractTransactionEdit--transactionAmount').value = transaction.transactionAmount.toFixed(2);
@@ -1485,7 +1084,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     },
                     onshown(modalElement, closeModalFunction) {
                         bulmaJS.toggleHtmlClipped();
-                        los.initializeDatePickers(modalElement);
+                        sunrise.initializeDatePickers(modalElement);
                         modalElement.querySelector('#contractTransactionEdit--transactionAmount').focus();
                         modalElement
                             .querySelector('form')
@@ -1500,7 +1099,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             function deleteContractTransaction(clickEvent) {
                 const transactionIndex = clickEvent.currentTarget.closest('.container--contractTransaction').dataset.transactionIndex;
                 function doDelete() {
-                    cityssm.postJSON(`${los.urlPrefix}/contracts/doDeleteContractTransaction`, {
+                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractTransaction`, {
                         contractId,
                         transactionIndex
                     }, (rawResponseJSON) => {
@@ -1540,7 +1139,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 contractTransactionsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
       <thead><tr>
         <th class="has-width-1">Date</th>
-        <th>${los.escapedAliases.ExternalReceiptNumber}</th>
+        <th>${sunrise.escapedAliases.ExternalReceiptNumber}</th>
         <th class="has-text-right has-width-1">Amount</th>
         <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
       </tr></thead>
@@ -1561,7 +1160,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     let externalReceiptNumberHTML = '';
                     if (contractTransaction.externalReceiptNumber !== '') {
                         externalReceiptNumberHTML = cityssm.escapeHTML(contractTransaction.externalReceiptNumber ?? '');
-                        if (los.dynamicsGPIntegrationIsEnabled) {
+                        if (sunrise.dynamicsGPIntegrationIsEnabled) {
                             if (contractTransaction.dynamicsGPDocument === undefined) {
                                 externalReceiptNumberHTML += ` <span data-tooltip="No Matching Document Found">
             <i class="fas fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
@@ -1638,7 +1237,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 let addCloseModalFunction;
                 function doAddTransaction(submitEvent) {
                     submitEvent.preventDefault();
-                    cityssm.postJSON(`${los.urlPrefix}/contracts/doAddLotOccupancyTransaction`, submitEvent.currentTarget, (rawResponseJSON) => {
+                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddLotOccupancyTransaction`, submitEvent.currentTarget, (rawResponseJSON) => {
                         const responseJSON = rawResponseJSON;
                         if (responseJSON.success) {
                             contractTransactions = responseJSON.contractTransactions;
@@ -1669,7 +1268,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             '<i class="fas fa-minus" aria-hidden="true"></i>';
                         return;
                     }
-                    cityssm.postJSON(`${los.urlPrefix}/contracts/doGetDynamicsGPDocument`, {
+                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetDynamicsGPDocument`, {
                         externalReceiptNumber
                     }, (rawResponseJSON) => {
                         const responseJSON = rawResponseJSON;
@@ -1694,7 +1293,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 cityssm.openHtmlModal('contract-addTransaction', {
                     onshow(modalElement) {
-                        los.populateAliases(modalElement);
+                        sunrise.populateAliases(modalElement);
                         modalElement.querySelector('#contractTransactionAdd--contractId').value = contractId.toString();
                         const feeGrandTotal = getFeeGrandTotal();
                         const transactionGrandTotal = getTransactionGrandTotal();
@@ -1702,7 +1301,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         transactionAmountElement.min = (-1 * transactionGrandTotal).toFixed(2);
                         transactionAmountElement.max = Math.max(feeGrandTotal - transactionGrandTotal, 0).toFixed(2);
                         transactionAmountElement.value = Math.max(feeGrandTotal - transactionGrandTotal, 0).toFixed(2);
-                        if (los.dynamicsGPIntegrationIsEnabled) {
+                        if (sunrise.dynamicsGPIntegrationIsEnabled) {
                             externalReceiptNumberElement = modalElement.querySelector(
                             // eslint-disable-next-line no-secrets/no-secrets
                             '#contractTransactionAdd--externalReceiptNumber');

@@ -3,7 +3,7 @@
   <div class="modal-card has-width-900">
     <header class="modal-card-head">
       <h3 class="modal-card-title">
-        Add <span class="alias" data-alias="Occupancy"></span> Type Field
+        Add Contract Type
       </h3>
       <button
         class="delete is-close-modal-button"
@@ -12,22 +12,16 @@
       ></button>
     </header>
     <section class="modal-card-body">
-      <form id="form--occupancyTypeFieldAdd">
-        <input
-          class="input"
-          id="occupancyTypeFieldAdd--occupancyTypeId"
-          name="occupancyTypeId"
-          type="hidden"
-        />
+      <form id="form--contractTypeAdd">
         <div class="field">
-          <label class="label" for="occupancyTypeFieldAdd--occupancyTypeField"
-            >New Field Name</label
+          <label class="label" for="contractTypeAdd--contractType"
+            >Contract Type</label
           >
           <div class="control">
             <input
               class="input"
-              id="occupancyTypeFieldAdd--occupancyTypeField"
-              name="occupancyTypeField"
+              id="contractTypeAdd--contractType"
+              name="contractType"
               type="text"
               maxlength="100"
               required
@@ -40,10 +34,10 @@
       <button
         class="button is-success"
         type="submit"
-        form="form--occupancyTypeFieldAdd"
+        form="form--contractTypeAdd"
       >
         <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-        <span>Add Field</span>
+        <span>Add Contract Type</span>
       </button>
       <button class="button is-close-modal-button" type="button">Cancel</button>
     </footer>

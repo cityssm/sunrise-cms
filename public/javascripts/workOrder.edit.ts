@@ -16,7 +16,7 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as LOS
+  const los = exports.sunrise as LOS
 
   const workOrderId = (
     document.querySelector('#workOrderEdit--workOrderId') as HTMLInputElement
@@ -406,7 +406,7 @@ declare const exports: Record<string, unknown>
       }
       </td><td>
         <a class="has-text-weight-bold" href="${los.getContractURL(contract.contractId)}">
-          ${cityssm.escapeHTML(contract.occupancyType ?? '')}
+          ${cityssm.escapeHTML(contract.contractType ?? '')}
         </a><br />
         <span class="is-size-7">#${contract.contractId}</span>
       </td>`
@@ -797,7 +797,7 @@ declare const exports: Record<string, unknown>
                       </button>
                     </td>
                     <td class="has-text-weight-bold">
-                      ${cityssm.escapeHTML(contract.occupancyType ?? '')}
+                      ${cityssm.escapeHTML(contract.contractType ?? '')}
                     </td>`
 
                   if (contract.lotId) {

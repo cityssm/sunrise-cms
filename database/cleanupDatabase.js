@@ -23,7 +23,7 @@ export default async function cleanupDatabase(user) {
         .prepare('delete from WorkOrderComments where recordDelete_timeMillis <= ?')
         .run(recordDeleteTimeMillisMin).changes;
     /*
-     * Work Order Burial Site Contracts
+     * Work Order Contracts
      */
     inactivatedRecordCount += database
         .prepare(`update WorkOrderContracts
@@ -181,7 +181,7 @@ export default async function cleanupDatabase(user) {
         and contractTypeFieldId not in (select contractTypeFieldId from ContractFields)`)
         .run(recordDeleteTimeMillisMin).changes;
     /*
-     * Occupancy Type Prints
+     * Contract Type Prints
      */
     inactivatedRecordCount += database
         .prepare(`update ContractTypePrints
@@ -246,7 +246,7 @@ export default async function cleanupDatabase(user) {
         and burialSiteId not in (select burialSiteId from BurialSiteComments)
         and burialSiteId not in (select burialSiteId from BurialSiteFields)
         and burialSiteId not in (select burialSiteId from Contracts)
-        and burialSiteId not in (select burialSiteId from WorkOrderLots)`)
+        and burialSiteId not in (select burialSiteId from WorkOrderBurialSites)`)
         .run(recordDeleteTimeMillisMin).changes;
     /*
      * Burial Site Statuses

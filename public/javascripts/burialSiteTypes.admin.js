@@ -3,7 +3,7 @@
 /* eslint-disable max-lines */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
+    const los = exports.sunrise;
     const containerElement = document.querySelector('#container--burialSiteTypes');
     let burialSiteTypes = exports.burialSiteTypes;
     delete exports.burialSiteTypes;

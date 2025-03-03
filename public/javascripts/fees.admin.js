@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
+    const los = exports.sunrise;
     const feeCategoriesContainerElement = document.querySelector('#container--feeCategories');
     let feeCategories = exports.feeCategories;
     delete exports.feeCategories;
@@ -108,7 +108,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         ? ''
                         : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Occupancy} Type Filter">
                         <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
-                        <span>${cityssm.escapeHTML(fee.occupancyType ?? '')}</span>
+                        <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
                         </span>`}
                     ${(fee.burialSiteTypeId ?? -1) === -1
                         ? ''
@@ -344,12 +344,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                     feeCategoryElement.append(optionElement);
                 }
-                const occupancyTypeElement = modalElement.querySelector('#feeAdd--contractTypeId');
-                for (const occupancyType of exports.occupancyTypes) {
+                const contractTypeElement = modalElement.querySelector('#feeAdd--contractTypeId');
+                for (const contractType of exports.contractTypes) {
                     const optionElement = document.createElement('option');
-                    optionElement.value = occupancyType.contractTypeId.toString();
-                    optionElement.textContent = occupancyType.occupancyType;
-                    occupancyTypeElement.append(optionElement);
+                    optionElement.value = contractType.contractTypeId.toString();
+                    optionElement.textContent = contractType.contractType;
+                    contractTypeElement.append(optionElement);
                 }
                 const lotTypeElement = modalElement.querySelector('#feeAdd--burialSiteTypeId');
                 for (const lotType of exports.lotTypes) {
@@ -566,15 +566,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector('#feeEdit--feeName').value = fee.feeName ?? '';
                 modalElement.querySelector('#feeEdit--feeAccount').value = fee.feeAccount ?? '';
                 modalElement.querySelector('#feeEdit--feeDescription').value = fee.feeDescription ?? '';
-                const occupancyTypeElement = modalElement.querySelector('#feeEdit--contractTypeId');
-                for (const occupancyType of exports.occupancyTypes) {
+                const contractTypeElement = modalElement.querySelector('#feeEdit--contractTypeId');
+                for (const contractType of exports.contractTypes) {
                     const optionElement = document.createElement('option');
-                    optionElement.value = occupancyType.contractTypeId.toString();
-                    optionElement.textContent = occupancyType.occupancyType;
-                    if (occupancyType.contractTypeId === fee.contractTypeId) {
+                    optionElement.value = contractType.contractTypeId.toString();
+                    optionElement.textContent = contractType.contractType;
+                    if (contractType.contractTypeId === fee.contractTypeId) {
                         optionElement.selected = true;
                     }
-                    occupancyTypeElement.append(optionElement);
+                    contractTypeElement.append(optionElement);
                 }
                 const lotTypeElement = modalElement.querySelector('#feeEdit--burialSiteTypeId');
                 for (const lotType of exports.lotTypes) {

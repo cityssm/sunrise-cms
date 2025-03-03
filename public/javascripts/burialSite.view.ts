@@ -1,4 +1,4 @@
-import type { LOS } from './types.js'
+import type { Sunrise } from './types.js'
 
 declare const exports: Record<string, unknown>
 ;(() => {
@@ -6,7 +6,7 @@ declare const exports: Record<string, unknown>
     document.querySelector('#burialSite--cemeterySvg')
 
   if (mapContainerElement !== null) {
-    ;(exports.los as LOS).highlightMap(
+    ;(exports.sunrise as Sunrise).highlightMap(
       mapContainerElement,
       mapContainerElement.dataset.cemeterySvgId ?? '',
       'success'

@@ -24,12 +24,10 @@ export declare const configDefaultValues: {
     'aliases.externalReceiptNumber': string;
     'aliases.workOrderOpenDate': string;
     'aliases.workOrderCloseDate': string;
-    'settings.cemeteries.cityDefault': string;
-    'settings.cemeteries.provinceDefault': string;
+    'settings.cityDefault': string;
+    'settings.provinceDefault': string;
     'settings.burialSites.burialSiteNameSegments': ConfigBurialSiteNameSegments;
     'settings.contracts.burialSiteIdIsRequired': boolean;
-    'settings.contracts.cityDefault': string;
-    'settings.contracts.provinceDefault': string;
     'settings.contracts.prints': string[];
     'settings.fees.taxPercentageDefault': number;
     'settings.workOrders.workOrderNumberLength': number;

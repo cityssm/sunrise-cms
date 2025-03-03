@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.los;
+    const los = exports.sunrise;
     function doBackup() {
         cityssm.postJSON(`${los.urlPrefix}/admin/doBackupDatabase`, {}, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;

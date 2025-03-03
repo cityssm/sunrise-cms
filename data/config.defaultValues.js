@@ -23,8 +23,8 @@ export const configDefaultValues = {
     'aliases.externalReceiptNumber': 'External Receipt Number',
     'aliases.workOrderOpenDate': 'Order Date',
     'aliases.workOrderCloseDate': 'Completion Date',
-    'settings.cemeteries.cityDefault': '',
-    'settings.cemeteries.provinceDefault': '',
+    'settings.cityDefault': '',
+    'settings.provinceDefault': '',
     'settings.burialSites.burialSiteNameSegments': {
         separator: '-',
         segments: {
@@ -38,8 +38,6 @@ export const configDefaultValues = {
         }
     },
     'settings.contracts.burialSiteIdIsRequired': true,
-    'settings.contracts.cityDefault': '',
-    'settings.contracts.provinceDefault': '',
     'settings.contracts.prints': ['screen/contract'],
     'settings.fees.taxPercentageDefault': 0,
     'settings.workOrders.workOrderNumberLength': 6,

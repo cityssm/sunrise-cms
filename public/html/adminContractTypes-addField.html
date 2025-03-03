@@ -1,9 +1,9 @@
 <div class="modal" role="dialog">
   <div class="modal-background"></div>
-  <div class="modal-card">
+  <div class="modal-card has-width-900">
     <header class="modal-card-head">
       <h3 class="modal-card-title">
-        Add <span class="alias" data-alias="Occupancy"></span> Type Print
+        Add Contract Type Field
       </h3>
       <button
         class="delete is-close-modal-button"
@@ -12,28 +12,26 @@
       ></button>
     </header>
     <section class="modal-card-body">
-      <form id="form--occupancyTypePrintAdd">
+      <form id="form--contractTypeFieldAdd">
         <input
           class="input"
-          id="occupancyTypePrintAdd--occupancyTypeId"
-          name="occupancyTypeId"
+          id="contractTypeFieldAdd--contractTypeId"
+          name="contractTypeId"
           type="hidden"
         />
         <div class="field">
-          <label class="label" for="occupancyTypePrintAdd--printEJS"
-            >Print</label
+          <label class="label" for="contractTypeFieldAdd--contractTypeField"
+            >New Field Name</label
           >
           <div class="control">
-            <div class="select is-fullwidth">
-              <select
-                id="occupancyTypePrintAdd--printEJS"
-                name="printEJS"
-                required
-              >
-                <option value="">(Select a Print)</option>
-                <option value="*">(All Available Prints)</option>
-              </select>
-            </div>
+            <input
+              class="input"
+              id="contractTypeFieldAdd--contractTypeField"
+              name="contractTypeField"
+              type="text"
+              maxlength="100"
+              required
+            />
           </div>
         </div>
       </form>
@@ -42,10 +40,10 @@
       <button
         class="button is-success"
         type="submit"
-        form="form--occupancyTypePrintAdd"
+        form="form--contractTypeFieldAdd"
       >
         <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-        <span>Add Print</span>
+        <span>Add Field</span>
       </button>
       <button class="button is-close-modal-button" type="button">Cancel</button>
     </footer>

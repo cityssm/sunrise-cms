@@ -153,7 +153,7 @@
                     </div>
                 </div>
             </form>
-            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lotOccupancyTransactions-byTransactionDateString">
+            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/contractTransactions-byTransactionDateString">
                 <div class="has-text-centered my-2 ml-2 mr-3">
                     <span class="icon has-text-info">
                         <i class="fas fa-2x fa-file" aria-hidden="true"></i>
@@ -164,12 +164,12 @@
                     <h2 class="title is-5 is-marginless">Transactions by Date</h2>
                     <div class="field has-addons mt-2">
                         <div class="control">
-                            <label class="button is-small is-static" for="lotOccupancyTransactions-byTransactionDateString--transactionDateString">
+                            <label class="button is-small is-static" for="contractTransactions-byTransactionDateString--transactionDateString">
                                 Transaction Date
                             </label>
                         </div>
                         <div class="control is-expanded">
-                            <input class="input is-small" id="lotOccupancyTransactions-byTransactionDateString--transactionDateString" name="transactionDateString" type="date" value="<%= dateTimeFunctions.dateToString(new Date()) %>" required />
+                            <input class="input is-small" id="contractTransactions-byTransactionDateString--transactionDateString" name="transactionDateString" type="date" value="<%= dateTimeFunctions.dateToString(new Date()) %>" required />
                         </div>
                         <div class="control">
                             <button class="button is-small is-primary" type="submit">
@@ -334,7 +334,7 @@
                         <h3 class="title is-5 is-marginless">Full LotOccupancies Table</h3>
                     </div>
                 </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyComments-all" download>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractComments-all" download>
                     <div class="has-text-centered my-2 ml-2 mr-3">
                         <span class="icon has-text-info">
                             <i class="fas fa-2x fa-table" aria-hidden="true"></i>
@@ -345,7 +345,7 @@
                         <h3 class="title is-5 is-marginless">Full LotOccupancyComments Table</h3>
                     </div>
                 </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyFees-all" download>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractFees-all" download>
                     <div class="has-text-centered my-2 ml-2 mr-3">
                         <span class="icon has-text-info">
                             <i class="fas fa-2x fa-table" aria-hidden="true"></i>
@@ -356,7 +356,7 @@
                         <h3 class="title is-5 is-marginless">Full LotOccupancyFees Table</h3>
                     </div>
                 </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyFields-all" download>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractFields-all" download>
                     <div class="has-text-centered my-2 ml-2 mr-3">
                         <span class="icon has-text-info">
                             <i class="fas fa-2x fa-table" aria-hidden="true"></i>
@@ -367,7 +367,7 @@
                         <h3 class="title is-5 is-marginless">Full LotOccupancyFields Table</h3>
                     </div>
                 </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyOccupants-all" download>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractOccupants-all" download>
                     <div class="has-text-centered my-2 ml-2 mr-3">
                         <span class="icon has-text-info">
                             <i class="fas fa-2x fa-table" aria-hidden="true"></i>
@@ -378,7 +378,7 @@
                         <h3 class="title is-5 is-marginless">Full LotOccupancyOccupants Table</h3>
                     </div>
                 </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancyTransactions-all" download>
+                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractTransactions-all" download>
                     <div class="has-text-centered my-2 ml-2 mr-3">
                         <span class="icon has-text-info">
                             <i class="fas fa-2x fa-table" aria-hidden="true"></i>
@@ -564,7 +564,7 @@
           <div class="column">
             <div class="panel">
               <h2 class="panel-heading">Occupancy (<%= configFunctions.getConfigProperty("aliases.occupancy") %>) Tables</h2>
-              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/occupancyTypes-all" download>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractTypes-all" download>
                   <div class="has-text-centered my-2 ml-2 mr-3">
                       <span class="icon has-text-info">
                           <i class="fas fa-2x fa-table" aria-hidden="true"></i>
@@ -572,10 +572,10 @@
                       <span class="tag is-info">CSV</span>
                   </div>
                   <div>
-                      <h3 class="title is-5 is-marginless">Full OccupancyTypes Table</h3>
+                      <h3 class="title is-5 is-marginless">Full ContractTypes Table</h3>
                   </div>
               </a>
-              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/occupancyTypeFields-all" download>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractTypeFields-all" download>
                   <div class="has-text-centered my-2 ml-2 mr-3">
                       <span class="icon has-text-info">
                           <i class="fas fa-2x fa-table" aria-hidden="true"></i>
@@ -583,7 +583,7 @@
                       <span class="tag is-info">CSV</span>
                   </div>
                   <div>
-                      <h3 class="title is-5 is-marginless">Full OccupancyTypeFields Table</h3>
+                      <h3 class="title is-5 is-marginless">Full ContractTypeFields Table</h3>
                   </div>
               </a>
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupantTypes-all" download>

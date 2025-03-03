@@ -1,14 +1,14 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { LOS } from './types.js'
+import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as LOS
+  const sunrise = exports.sunrise as Sunrise
 
   const cemeteryId = (
     document.querySelector('#cemetery--cemeteryId') as HTMLInputElement
@@ -20,14 +20,14 @@ declare const exports: Record<string, unknown>
   ) as HTMLFormElement
 
   function setUnsavedChanges(): void {
-    los.setUnsavedChanges()
+    sunrise.setUnsavedChanges()
     document
       .querySelector("button[type='submit'][form='form--cemetery']")
       ?.classList.remove('is-light')
   }
 
   function clearUnsavedChanges(): void {
-    los.clearUnsavedChanges()
+    sunrise.clearUnsavedChanges()
     document
       .querySelector("button[type='submit'][form='form--cemetery']")
       ?.classList.add('is-light')
@@ -37,7 +37,7 @@ declare const exports: Record<string, unknown>
     formEvent.preventDefault()
 
     cityssm.postJSON(
-      `${los.urlPrefix}/cemeteries/${isCreate ? 'doCreateCemetery' : 'doUpdateCemetery'}`,
+      `${sunrise.urlPrefix}/cemeteries/${isCreate ? 'doCreateCemetery' : 'doUpdateCemetery'}`,
       cemeteryForm,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
@@ -50,7 +50,7 @@ declare const exports: Record<string, unknown>
           clearUnsavedChanges()
 
           if (isCreate) {
-            globalThis.location.href = los.getCemeteryURL(
+            globalThis.location.href = sunrise.getCemeteryURL(
               responseJSON.cemeteryId,
               true
             )
@@ -87,7 +87,7 @@ declare const exports: Record<string, unknown>
 
       function doDelete(): void {
         cityssm.postJSON(
-          `${los.urlPrefix}/cemeteries/doDeleteCemetery`,
+          `${sunrise.urlPrefix}/cemeteries/doDeleteCemetery`,
           {
             cemeteryId
           },
@@ -98,7 +98,7 @@ declare const exports: Record<string, unknown>
             }
 
             if (responseJSON.success) {
-              globalThis.location.href = los.getCemeteryURL()
+              globalThis.location.href = sunrise.getCemeteryURL()
             } else {
               bulmaJS.alert({
                 title: `Error Deleting Cemetery`,

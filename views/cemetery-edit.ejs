@@ -58,7 +58,7 @@
             <button class="button" type="button">
               <span>More Options</span>
               <span class="icon is-small">
-                  <i class="fas fa-angle-up" aria-hidden="true"></i>
+                <i class="fas fa-angle-up" aria-hidden="true"></i>
               </span>
             </button>
           </div>
@@ -175,46 +175,45 @@
     </div>
     <div class="columns">
         <div class="column">
-            <div class="panel">
-                <h2 class="panel-heading">Geographic Location</h2>
-                <div class="panel-block is-block">
-                    <div class="field">
-                        <label class="label" for="cemetery--cemeteryLatitude">Latitude</label>
-                        <div class="control">
-                            <input class="input" id="cemetery--cemeteryLatitude" name="cemeteryLatitude" type="number" min="-90" max="90" step="0.00000001" value="<%= cemetery.cemeteryLatitude %>" />
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label" for="cemetery--cemeteryLongitude">Longitude</label>
-                        <div class="control">
-                            <input class="input" id="cemetery--cemeteryLongitude" name="cemeteryLongitude" type="number" min="-180" max="180" step="0.00000001" value="<%= cemetery.cemeteryLongitude %>" />
-                        </div>
-                    </div>
+          <div class="panel">
+            <h2 class="panel-heading">Geographic Location</h2>
+            <div class="panel-block is-block">
+              <div class="field">
+                <label class="label" for="cemetery--cemeteryLatitude">Latitude</label>
+                <div class="control">
+                  <input class="input" id="cemetery--cemeteryLatitude" name="cemeteryLatitude" type="number" min="-90" max="90" step="0.00000001" value="<%= cemetery.cemeteryLatitude %>" />
                 </div>
+              </div>
+              <div class="field">
+                <label class="label" for="cemetery--cemeteryLongitude">Longitude</label>
+                <div class="control">
+                  <input class="input" id="cemetery--cemeteryLongitude" name="cemeteryLongitude" type="number" min="-180" max="180" step="0.00000001" value="<%= cemetery.cemeteryLongitude %>" />
+                </div>
+              </div>
             </div>
+          </div>
         </div>
         <div class="column">
-            <div class="panel">
-              <h2 class="panel-heading">Image</h2>
-              <div class="panel-block is-block">
-                <div class="field">
-                  <label class="label" for="cemetery--cemeterySvg">SVG File</label>
-                  <div class="control">
-                    <div class="select is-fullwidth">
-                      <select id="cemetery--cemeterySvg" name="cemeterySvg">
-                        <option value="">(Select a File)</option>
-                        <% for (const cemeterySVG of cemeterySVGs) { %>
-                          <option value="<%= cemeterySVG %>" <%= (cemetery.cemeterySvg === cemeterySVG) ? " selected" : "" %>>
-                              <%= cemeterySVG %>
-                          </option>
-                        <% } %>
-                      </select>
-                    </div>
+          <div class="panel">
+            <h2 class="panel-heading">Image</h2>
+            <div class="panel-block is-block">
+              <div class="field">
+                <label class="label" for="cemetery--cemeterySvg">SVG File</label>
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="cemetery--cemeterySvg" name="cemeterySvg">
+                      <option value="">(Select a File)</option>
+                      <% for (const cemeterySVG of cemeterySVGs) { %>
+                        <option value="<%= cemeterySVG %>" <%= (cemetery.cemeterySvg === cemeterySVG) ? " selected" : "" %>>
+                            <%= cemeterySVG %>
+                        </option>
+                      <% } %>
+                    </select>
                   </div>
                 </div>
               </div>
             </div>
-            
+          </div>
         </div>
     </div>
     
@@ -224,32 +223,32 @@
     <% const burialSiteSearchUrl = urlPrefix + "/burialSites?cemeteryId=" + cemetery.cemeteryId; %>
     <div class="panel mt-4">
         <div class="panel-heading">
-            <div class="level is-mobile">
-                <div class="level-left">
-                  <div class="level-item">
-                    <h2 class="title is-5 has-text-weight-bold">
-                      Burial Site Summaries
-                      <a class="tag is-link ml-2" href="<%= burialSiteSearchUrl %>">
-                        <%= cemetery.burialSiteCount %>
-                      </a>
-                    </h2>
-                  </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <a class="button is-small is-success has-text-weight-normal" href="<%=urlPrefix %>/burialSites/new?cemeteryId=<%= cemetery.cemeteryId %>">
-                            <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                            <span>Create a Burial Site</span>
-                        </a>
-                    </div>
-                    <div class="level-item">
-                      <a class="button is-small is-link has-text-weight-normal" href="<%=urlPrefix %>/reports/burialSites-byCemeteryId?cemeteryId=<%= cemetery.cemeteryId %>" download>
-                        <span class="icon"><i class="fas fa-download" aria-hidden="true"></i></span>
-                        <span>Export All</span>
-                      </a>
-                    </div>
-                </div>
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="title is-5 has-text-weight-bold">
+                  Burial Site Summaries
+                  <a class="tag is-link ml-2" href="<%= burialSiteSearchUrl %>">
+                    <%= cemetery.burialSiteCount %>
+                  </a>
+                </h2>
+              </div>
             </div>
+            <div class="level-right">
+              <div class="level-item">
+                  <a class="button is-small is-success has-text-weight-normal" href="<%=urlPrefix %>/burialSites/new?cemeteryId=<%= cemetery.cemeteryId %>">
+                      <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                      <span>Create a Burial Site</span>
+                  </a>
+              </div>
+              <div class="level-item">
+                <a class="button is-small is-link has-text-weight-normal" href="<%=urlPrefix %>/reports/burialSites-byCemeteryId?cemeteryId=<%= cemetery.cemeteryId %>" download>
+                  <span class="icon"><i class="fas fa-download" aria-hidden="true"></i></span>
+                  <span>Export All</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="panel-block is-block">
             <% if (cemetery.burialSiteCount === 0) { %>
@@ -293,32 +292,32 @@
                 </div>
                 <div class="column">
                   <table class="table is-fullwidth is-striped is-hoverable">
-                      <thead>
-                          <tr>
-                              <th>Status</th>
-                              <th class="has-text-right">
-                                Burial Site Count
-                              </th>
-                              <th class="has-text-right">Percentage</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <% for (const burialSiteStatus of burialSiteStatusSummary) { %>
-                              <tr>
-                                  <td>
-                                      <a class="has-text-weight-bold" href="<%= burialSiteSearchUrl %>&burialSiteStatusId=<%= burialSiteStatus.burialSiteStatusId %>">
-                                        <%= burialSiteStatus.burialSiteStatus %>
-                                      </a>
-                                  </td>
-                                  <td class="has-text-right">
-                                      <%= burialSiteStatus.burialSiteCount %>
-                                  </td>
-                                  <td class="has-text-right">
-                                      <%= ((burialSiteStatus.burialSiteCount / cemetery.burialSiteCount) * 100).toFixed(1) %>%
-                                  </td>
-                              </tr>
-                          <% } %>
-                      </tbody>
+                    <thead>
+                      <tr>
+                        <th>Status</th>
+                        <th class="has-text-right">
+                          Burial Site Count
+                        </th>
+                        <th class="has-text-right">Percentage</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for (const burialSiteStatus of burialSiteStatusSummary) { %>
+                        <tr>
+                          <td>
+                            <a class="has-text-weight-bold" href="<%= burialSiteSearchUrl %>&burialSiteStatusId=<%= burialSiteStatus.burialSiteStatusId %>">
+                              <%= burialSiteStatus.burialSiteStatus %>
+                            </a>
+                          </td>
+                          <td class="has-text-right">
+                            <%= burialSiteStatus.burialSiteCount %>
+                          </td>
+                          <td class="has-text-right">
+                            <%= ((burialSiteStatus.burialSiteCount / cemetery.burialSiteCount) * 100).toFixed(1) %>%
+                          </td>
+                        </tr>
+                      <% } %>
+                    </tbody>
                   </table>
                 </div>
               </div>

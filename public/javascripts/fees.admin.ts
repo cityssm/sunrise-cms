@@ -6,7 +6,7 @@ import type {
   Fee,
   FeeCategory,
   LotType,
-  OccupancyType
+  ContractType
 } from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
@@ -14,7 +14,7 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.los as LOS
+  const los = exports.sunrise as LOS
 
   const feeCategoriesContainerElement = document.querySelector(
     '#container--feeCategories'
@@ -172,7 +172,7 @@ declare const exports: Record<string, unknown>
                         ? ''
                         : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Occupancy} Type Filter">
                         <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
-                        <span>${cityssm.escapeHTML(fee.occupancyType ?? '')}</span>
+                        <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
                         </span>`
                     }
                     ${
@@ -542,15 +542,15 @@ declare const exports: Record<string, unknown>
           feeCategoryElement.append(optionElement)
         }
 
-        const occupancyTypeElement = modalElement.querySelector(
+        const contractTypeElement = modalElement.querySelector(
           '#feeAdd--contractTypeId'
         ) as HTMLSelectElement
 
-        for (const occupancyType of exports.occupancyTypes as OccupancyType[]) {
+        for (const contractType of exports.contractTypes as ContractType[]) {
           const optionElement = document.createElement('option')
-          optionElement.value = occupancyType.contractTypeId.toString()
-          optionElement.textContent = occupancyType.occupancyType
-          occupancyTypeElement.append(optionElement)
+          optionElement.value = contractType.contractTypeId.toString()
+          optionElement.textContent = contractType.contractType
+          contractTypeElement.append(optionElement)
         }
 
         const lotTypeElement = modalElement.querySelector(
@@ -906,20 +906,20 @@ declare const exports: Record<string, unknown>
           ) as HTMLTextAreaElement
         ).value = fee.feeDescription ?? ''
 
-        const occupancyTypeElement = modalElement.querySelector(
+        const contractTypeElement = modalElement.querySelector(
           '#feeEdit--contractTypeId'
         ) as HTMLSelectElement
 
-        for (const occupancyType of exports.occupancyTypes as OccupancyType[]) {
+        for (const contractType of exports.contractTypes as ContractType[]) {
           const optionElement = document.createElement('option')
-          optionElement.value = occupancyType.contractTypeId.toString()
-          optionElement.textContent = occupancyType.occupancyType
+          optionElement.value = contractType.contractTypeId.toString()
+          optionElement.textContent = contractType.contractType
 
-          if (occupancyType.contractTypeId === fee.contractTypeId) {
+          if (contractType.contractTypeId === fee.contractTypeId) {
             optionElement.selected = true
           }
 
-          occupancyTypeElement.append(optionElement)
+          contractTypeElement.append(optionElement)
         }
 
         const lotTypeElement = modalElement.querySelector(
