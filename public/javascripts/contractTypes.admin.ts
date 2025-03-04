@@ -1,4 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
@@ -26,7 +28,7 @@ type ResponseJSON =
       errorMessage?: string
     }
 ;(() => {
-  const los = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise as Sunrise
 
   const contractTypesContainerElement = document.querySelector(
     '#container--contractTypes'
@@ -104,7 +106,7 @@ type ResponseJSON =
 
     function doDelete(): void {
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doDeleteContractType`,
+        `${sunrise.urlPrefix}/admin/doDeleteContractType`,
         {
           contractTypeId
         },
@@ -144,7 +146,7 @@ type ResponseJSON =
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doUpdateContractType`,
+        `${sunrise.urlPrefix}/admin/doUpdateContractType`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -159,7 +161,7 @@ type ResponseJSON =
 
     cityssm.openHtmlModal('adminContractTypes-edit', {
       onshow(modalElement) {
-        los.populateAliases(modalElement)
+        sunrise.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
             '#contractTypeEdit--contractTypeId'
@@ -170,6 +172,14 @@ type ResponseJSON =
             '#contractTypeEdit--contractType'
           ) as HTMLInputElement
         ).value = contractType.contractType
+
+        if (contractType.isPreneed) {
+          ;(
+            modalElement.querySelector(
+              '#contractTypeEdit--isPreneed'
+            ) as HTMLInputElement
+          ).checked = true
+        }
       },
       onshown(modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
@@ -205,7 +215,7 @@ type ResponseJSON =
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doAddContractTypeField`,
+        `${sunrise.urlPrefix}/admin/doAddContractTypeField`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -226,7 +236,7 @@ type ResponseJSON =
 
     cityssm.openHtmlModal('adminContractTypes-addField', {
       onshow(modalElement) {
-        los.populateAliases(modalElement)
+        sunrise.populateAliases(modalElement)
 
         if (contractTypeId) {
           ;(
@@ -264,7 +274,7 @@ type ResponseJSON =
     ).dataset.contractTypeId
 
     cityssm.postJSON(
-      `${los.urlPrefix}/admin/${
+      `${sunrise.urlPrefix}/admin/${
         buttonElement.dataset.direction === 'up'
           ? 'doMoveContractTypeUp'
           : 'doMoveContractTypeDown'
@@ -341,7 +351,7 @@ type ResponseJSON =
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doUpdateContractTypeField`,
+        `${sunrise.urlPrefix}/admin/doUpdateContractTypeField`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -356,7 +366,7 @@ type ResponseJSON =
 
     function doDelete(): void {
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doDeleteContractTypeField`,
+        `${sunrise.urlPrefix}/admin/doDeleteContractTypeField`,
         {
           contractTypeFieldId
         },
@@ -386,7 +396,7 @@ type ResponseJSON =
 
     cityssm.openHtmlModal('adminContractTypes-editField', {
       onshow(modalElement) {
-        los.populateAliases(modalElement)
+        sunrise.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
             '#contractTypeFieldEdit--contractTypeFieldId'
@@ -496,7 +506,7 @@ type ResponseJSON =
     ).dataset.contractTypeFieldId
 
     cityssm.postJSON(
-      `${los.urlPrefix}/admin/${
+      `${sunrise.urlPrefix}/admin/${
         buttonElement.dataset.direction === 'up'
           ? // eslint-disable-next-line no-secrets/no-secrets
             'doMoveContractTypeFieldUp'
@@ -552,7 +562,7 @@ type ResponseJSON =
           </div>
           <div class="level-right">
             <div class="level-item">
-              ${los.getMoveUpDownButtonFieldHTML(
+              ${sunrise.getMoveUpDownButtonFieldHTML(
                 'button--moveContractTypeFieldUp',
                 'button--moveContractTypeFieldDown'
               )}
@@ -593,7 +603,7 @@ type ResponseJSON =
       formEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doAddContractTypePrint`,
+        `${sunrise.urlPrefix}/admin/doAddContractTypePrint`,
         formEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -609,7 +619,7 @@ type ResponseJSON =
 
     cityssm.openHtmlModal('adminContractTypes-addPrint', {
       onshow(modalElement) {
-        los.populateAliases(modalElement)
+        sunrise.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
             '#contractTypePrintAdd--contractTypeId'
@@ -649,7 +659,7 @@ type ResponseJSON =
     ).dataset.contractTypeId
 
     cityssm.postJSON(
-      `${los.urlPrefix}/admin/${
+      `${sunrise.urlPrefix}/admin/${
         buttonElement.dataset.direction === 'up'
           ? 'doMoveContractTypePrintUp'
           : 'doMoveContractTypePrintDown'
@@ -680,7 +690,7 @@ type ResponseJSON =
 
     function doDelete(): void {
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doDeleteContractTypePrint`,
+        `${sunrise.urlPrefix}/admin/doDeleteContractTypePrint`,
         {
           contractTypeId,
           printEJS
@@ -749,7 +759,7 @@ type ResponseJSON =
           </div>
           <div class="level-right">
             <div class="level-item">
-              ${los.getMoveUpDownButtonFieldHTML(
+              ${sunrise.getMoveUpDownButtonFieldHTML(
                 'button--moveContractTypePrintUp',
                 'button--moveContractTypePrintDown'
               )}
@@ -862,6 +872,13 @@ type ResponseJSON =
             <div class="level-item">
               <h2 class="title is-4">${cityssm.escapeHTML(contractType.contractType)}</h2>
             </div>
+            ${
+              contractType.isPreneed
+                ? `<div class="level-item">
+                    <span class="tag is-info">Preneed</span>
+                    </div>`
+                : ''
+            }
           </div>
           <div class="level-right">
             <div class="level-item">
@@ -883,7 +900,7 @@ type ResponseJSON =
               </button>
             </div>
             <div class="level-item">
-              ${los.getMoveUpDownButtonFieldHTML(
+              ${sunrise.getMoveUpDownButtonFieldHTML(
                 'button--moveContractTypeUp',
                 'button--moveContractTypeDown'
               )}
@@ -979,7 +996,7 @@ type ResponseJSON =
         submitEvent.preventDefault()
 
         cityssm.postJSON(
-          `${los.urlPrefix}/admin/doAddContractType`,
+          `${sunrise.urlPrefix}/admin/doAddContractType`,
           submitEvent.currentTarget,
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as ResponseJSON
@@ -1001,7 +1018,7 @@ type ResponseJSON =
 
       cityssm.openHtmlModal('adminContractTypes-add', {
         onshow(modalElement) {
-          los.populateAliases(modalElement)
+          sunrise.populateAliases(modalElement)
         },
         onshown(modalElement, closeModalFunction) {
           addCloseModalFunction = closeModalFunction

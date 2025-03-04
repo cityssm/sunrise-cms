@@ -10,7 +10,7 @@ export default async function getContractTypes(): Promise<ContractType[]> {
 
   const contractTypes = database
     .prepare(
-      `select contractTypeId, contractType, orderNumber
+      `select contractTypeId, contractType, isPreneed, orderNumber
         from ContractTypes
         where recordDelete_timeMillis is null
         order by orderNumber, contractType`

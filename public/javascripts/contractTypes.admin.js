@@ -1,7 +1,9 @@
 "use strict";
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable max-lines */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.sunrise;
+    const sunrise = exports.sunrise;
     const contractTypesContainerElement = document.querySelector('#container--contractTypes');
     const contractTypePrintsContainerElement = document.querySelector('#container--contractTypePrints');
     let contractTypes = exports.contractTypes;
@@ -46,7 +48,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function deleteContractType(clickEvent) {
         const contractTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--contractType').dataset.contractTypeId ?? '', 10);
         function doDelete() {
-            cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteContractType`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteContractType`, {
                 contractTypeId
             }, contractTypeResponseHandler);
         }
@@ -66,7 +68,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         function doEdit(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateContractType`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateContractType`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 contractTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
@@ -76,9 +78,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('adminContractTypes-edit', {
             onshow(modalElement) {
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#contractTypeEdit--contractTypeId').value = contractTypeId.toString();
                 modalElement.querySelector('#contractTypeEdit--contractType').value = contractType.contractType;
+                if (contractType.isPreneed) {
+                    ;
+                    modalElement.querySelector('#contractTypeEdit--isPreneed').checked = true;
+                }
             },
             onshown(modalElement, closeModalFunction) {
                 editCloseModalFunction = closeModalFunction;
@@ -96,7 +102,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doAddContractTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddContractTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 expandedContractTypes.add(contractTypeId);
                 contractTypeResponseHandler(responseJSON);
@@ -108,7 +114,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('adminContractTypes-addField', {
             onshow(modalElement) {
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
                 if (contractTypeId) {
                     ;
                     modalElement.querySelector('#contractTypeFieldAdd--contractTypeId').value = contractTypeId.toString();
@@ -128,7 +134,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function moveContractType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const contractTypeId = clickEvent.currentTarget.closest('.container--contractType').dataset.contractTypeId;
-        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveContractTypeUp'
             : 'doMoveContractTypeDown'}`, {
             contractTypeId,
@@ -179,7 +185,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         function doUpdate(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateContractTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateContractTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 contractTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
@@ -188,7 +194,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         function doDelete() {
-            cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteContractTypeField`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteContractTypeField`, {
                 contractTypeFieldId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
@@ -211,7 +217,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('adminContractTypes-editField', {
             onshow(modalElement) {
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#contractTypeFieldEdit--contractTypeFieldId').value = contractTypeField.contractTypeFieldId.toString();
                 modalElement.querySelector('#contractTypeFieldEdit--contractTypeField').value = contractTypeField.contractTypeField ?? '';
                 modalElement.querySelector('#contractTypeFieldEdit--isRequired').value = contractTypeField.isRequired ?? false ? '1' : '0';
@@ -257,7 +263,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function moveContractTypeField(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const contractTypeFieldId = clickEvent.currentTarget.closest('.container--contractTypeField').dataset.contractTypeFieldId;
-        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? // eslint-disable-next-line no-secrets/no-secrets
                 'doMoveContractTypeFieldUp'
             : // eslint-disable-next-line no-secrets/no-secrets
@@ -296,7 +302,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </div>
           <div class="level-right">
             <div class="level-item">
-              ${los.getMoveUpDownButtonFieldHTML('button--moveContractTypeFieldUp', 'button--moveContractTypeFieldDown')}
+              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveContractTypeFieldUp', 'button--moveContractTypeFieldDown')}
             </div>
           </div>
           </div>`;
@@ -314,7 +320,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let closeAddModalFunction;
         function doAdd(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doAddContractTypePrint`, formEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddContractTypePrint`, formEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     closeAddModalFunction();
@@ -324,7 +330,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('adminContractTypes-addPrint', {
             onshow(modalElement) {
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#contractTypePrintAdd--contractTypeId').value = contractTypeId;
                 const printSelectElement = modalElement.querySelector('#contractTypePrintAdd--printEJS');
                 for (const [printEJS, printTitle] of Object.entries(exports.contractTypePrintTitles)) {
@@ -344,7 +350,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const buttonElement = clickEvent.currentTarget;
         const printEJS = buttonElement.closest('.container--contractTypePrint').dataset.printEJS;
         const contractTypeId = buttonElement.closest('.container--contractTypePrintList').dataset.contractTypeId;
-        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveContractTypePrintUp'
             : 'doMoveContractTypePrintDown'}`, {
             contractTypeId,
@@ -357,7 +363,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const printEJS = clickEvent.currentTarget.closest('.container--contractTypePrint').dataset.printEJS;
         const contractTypeId = clickEvent.currentTarget.closest('.container--contractTypePrintList').dataset.contractTypeId;
         function doDelete() {
-            cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteContractTypePrint`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteContractTypePrint`, {
                 contractTypeId,
                 printEJS
             }, contractTypeResponseHandler);
@@ -408,7 +414,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </div>
           <div class="level-right">
             <div class="level-item">
-              ${los.getMoveUpDownButtonFieldHTML('button--moveContractTypePrintUp', 'button--moveContractTypePrintDown')}
+              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveContractTypePrintUp', 'button--moveContractTypePrintDown')}
             </div>
             <div class="level-item">
               <button class="button is-small is-danger button--deleteContractTypePrint" data-tooltip="Delete" type="button" aria-label="Delete Print">
@@ -482,6 +488,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <div class="level-item">
               <h2 class="title is-4">${cityssm.escapeHTML(contractType.contractType)}</h2>
             </div>
+            ${contractType.isPreneed
+                ? `<div class="level-item">
+                    <span class="tag is-info">Preneed</span>
+                    </div>`
+                : ''}
           </div>
           <div class="level-right">
             <div class="level-item">
@@ -503,7 +514,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </button>
             </div>
             <div class="level-item">
-              ${los.getMoveUpDownButtonFieldHTML('button--moveContractTypeUp', 'button--moveContractTypeDown')}
+              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveContractTypeUp', 'button--moveContractTypeDown')}
             </div>
           </div>
         </div>
@@ -562,7 +573,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doAddContractType`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddContractType`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     addCloseModalFunction();
@@ -580,7 +591,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('adminContractTypes-add', {
             onshow(modalElement) {
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
             },
             onshown(modalElement, closeModalFunction) {
                 addCloseModalFunction = closeModalFunction;

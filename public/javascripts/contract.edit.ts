@@ -1,13 +1,15 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type {
   BurialSite,
-  BurialSiteStatus,
-  BurialSiteType,
-  Cemetery,
+  ContractComment,
+  ContractFee,
   ContractInterment,
+  ContractTransaction,
   ContractTypeField,
   DynamicsGPDocument,
   Fee,
@@ -309,6 +311,19 @@ declare const exports: Record<string, unknown>
     ) as HTMLElement
 
     contractTypeIdElement.addEventListener('change', () => {
+      const recipientOrPreneedElements = document.querySelectorAll(
+        '.is-recipient-or-deceased'
+      )
+
+      const isPreneed =
+        contractTypeIdElement.selectedOptions[0].dataset.isPreneed === 'true'
+
+      for (const recipientOrPreneedElement of recipientOrPreneedElements) {
+        recipientOrPreneedElement.textContent = isPreneed
+          ? 'Recipient'
+          : 'Deceased'
+      }
+
       if (contractTypeIdElement.value === '') {
         contractFieldsContainerElement.innerHTML = `<div class="message is-info">
           <p class="message-body">Select the contract type to load the available fields.</p>
@@ -457,7 +472,6 @@ declare const exports: Record<string, unknown>
       .value
 
     let burialSiteSelectCloseModalFunction: () => void
-    let burialSiteSelectModalElement: HTMLElement
 
     let burialSiteSelectFormElement: HTMLFormElement
     let burialSiteSelectResultsElement: HTMLElement
@@ -480,11 +494,11 @@ declare const exports: Record<string, unknown>
     function selectExistingBurialSite(clickEvent: Event): void {
       clickEvent.preventDefault()
 
-      const selectedLotElement = clickEvent.currentTarget as HTMLElement
+      const selectedBurialSiteElement = clickEvent.currentTarget as HTMLElement
 
       renderSelectedBurialSiteAndClose(
-        selectedLotElement.dataset.burialSiteId ?? '',
-        selectedLotElement.dataset.burialSiteName ?? ''
+        selectedBurialSiteElement.dataset.burialSiteId ?? '',
+        selectedBurialSiteElement.dataset.burialSiteName ?? ''
       )
     }
 
@@ -520,7 +534,7 @@ declare const exports: Record<string, unknown>
 
             panelBlockElement.dataset.burialSiteId =
               burialSite.burialSiteId.toString()
-            panelBlockElement.dataset.lotName = burialSite.burialSiteName
+            panelBlockElement.dataset.burialSiteName = burialSite.burialSiteName
 
             // eslint-disable-next-line no-unsanitized/property
             panelBlockElement.innerHTML = `<div class="columns">
@@ -550,41 +564,6 @@ declare const exports: Record<string, unknown>
       )
     }
 
-    function createBurialSiteAndSelect(submitEvent: SubmitEvent): void {
-      submitEvent.preventDefault()
-
-      const burialSiteName = (
-        burialSiteSelectModalElement.querySelector(
-          '#burialSiteCreate--burialSiteName'
-        ) as HTMLInputElement
-      ).value
-
-      cityssm.postJSON(
-        `${sunrise.urlPrefix}/burialSites/doCreateBurialSite`,
-        submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-            errorMessage?: string
-            burialSiteId?: number
-          }
-
-          if (responseJSON.success) {
-            renderSelectedBurialSiteAndClose(
-              responseJSON.burialSiteId ?? '',
-              burialSiteName
-            )
-          } else {
-            bulmaJS.alert({
-              title: `Error Creating Burial Site`,
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
-            })
-          }
-        }
-      )
-    }
-
     cityssm.openHtmlModal('contract-selectBurialSite', {
       onshow(modalElement) {
         sunrise.populateAliases(modalElement)
@@ -592,12 +571,11 @@ declare const exports: Record<string, unknown>
       onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
 
-        burialSiteSelectModalElement = modalElement
         burialSiteSelectCloseModalFunction = closeModalFunction
 
         bulmaJS.init(modalElement)
 
-        // search Tab
+        // Search Tab
 
         const burialSiteNameFilterElement = modalElement.querySelector(
           '#burialSiteSelect--burialSiteName'
@@ -646,48 +624,6 @@ declare const exports: Record<string, unknown>
         )
 
         searchBurialSites()
-
-        const burialSiteTypeElement = modalElement.querySelector(
-          '#burialSiteCreate--burialSiteTypeId'
-        ) as HTMLSelectElement
-
-        for (const burialSiteType of exports.burialSiteTypes as BurialSiteType[]) {
-          const optionElement = document.createElement('option')
-          optionElement.value = burialSiteType.burialSiteTypeId.toString()
-          optionElement.textContent = burialSiteType.burialSiteType
-          burialSiteTypeElement.append(optionElement)
-        }
-
-        const burialSiteStatusElement = modalElement.querySelector(
-          '#burialSiteCreate--burialSiteStatusId'
-        ) as HTMLSelectElement
-
-        for (const burialSiteStatus of exports.burialSiteStatuses as BurialSiteStatus[]) {
-          const optionElement = document.createElement('option')
-          optionElement.value = burialSiteStatus.burialSiteStatusId.toString()
-          optionElement.textContent = burialSiteStatus.burialSiteStatus
-          burialSiteStatusElement.append(optionElement)
-        }
-
-        const mapElement = modalElement.querySelector(
-          '#burialSiteCreate--cemeteryId'
-        ) as HTMLSelectElement
-
-        for (const cemetery of exports.cemeteries as Cemetery[]) {
-          const optionElement = document.createElement('option')
-          optionElement.value = cemetery.cemeteryId!.toString()
-          optionElement.textContent =
-            (cemetery.cemeteryName ?? '') === ''
-              ? '(No Name)'
-              : cemetery.cemeteryName ?? ''
-          mapElement.append(optionElement)
-        }
-
-        ;(
-          modalElement.querySelector(
-            '#form--burialSiteCreate'
-          ) as HTMLFormElement
-        ).addEventListener('submit', createBurialSiteAndSelect)
       },
       onremoved() {
         bulmaJS.toggleHtmlClipped()
@@ -754,196 +690,235 @@ declare const exports: Record<string, unknown>
 
   sunrise.initializeUnlockFieldButtons(formElement)
 
-  if (!isCreate) {
+  if (isCreate) {
+    /*
+     * Deceased
+     */
+
+    document
+      .querySelector('#button--copyFromPurchaser')
+      ?.addEventListener('click', () => {
+        const fieldsToCopy = [
+          'Name',
+          'Address1',
+          'Address2',
+          'City',
+          'Province',
+          'PostalCode'
+        ]
+
+        for (const fieldToCopy of fieldsToCopy) {
+          const purchaserFieldElement = document.querySelector(
+            `#contract--purchaser${fieldToCopy}`
+          ) as HTMLInputElement
+
+          const deceasedFieldElement = document.querySelector(
+            `#contract--deceased${fieldToCopy}`
+          ) as HTMLInputElement
+
+          deceasedFieldElement.value = purchaserFieldElement.value
+        }
+
+        setUnsavedChanges()
+      })
+  } else {
+    /**
+     * Interments
+     */
+
+    let contractInterments = exports.contractInterments as ContractInterment[]
+    delete exports.contractInterments
+
+    function renderContractInterments(): void {
+      
+    }
+
     /**
      * Comments
      */
-    ;(() => {
-      let contractComments = exports.contractComments as LotOccupancyComment[]
-      delete exports.contractComments
 
-      function openEditLotOccupancyComment(clickEvent: Event): void {
-        const contractCommentId = Number.parseInt(
-          (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-            .contractCommentId ?? '',
-          10
-        )
+    let contractComments = exports.contractComments as ContractComment[]
+    delete exports.contractComments
 
-        const contractComment = contractComments.find(
-          (currentLotOccupancyComment) => {
-            return (
-              currentLotOccupancyComment.contractCommentId === contractCommentId
-            )
-          }
-        ) as LotOccupancyComment
+    function openEditContractComment(clickEvent: Event): void {
+      const contractCommentId = Number.parseInt(
+        (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+          .contractCommentId ?? '',
+        10
+      )
 
-        let editFormElement: HTMLFormElement
-        let editCloseModalFunction: () => void
+      const contractComment = contractComments.find(
+        (currentComment) =>
+          currentComment.contractCommentId === contractCommentId
+      ) as ContractComment
 
-        function editComment(submitEvent: SubmitEvent): void {
-          submitEvent.preventDefault()
+      let editFormElement: HTMLFormElement
+      let editCloseModalFunction: () => void
 
-          cityssm.postJSON(
-            `${sunrise.urlPrefix}/contracts/doUpdateContractComment`,
-            editFormElement,
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                success: boolean
-                errorMessage?: string
-                contractComments?: LotOccupancyComment[]
-              }
+      function editContractComment(submitEvent: SubmitEvent): void {
+        submitEvent.preventDefault()
 
-              if (responseJSON.success) {
-                contractComments = responseJSON.contractComments ?? []
-                editCloseModalFunction()
-                renderLotOccupancyComments()
-              } else {
-                bulmaJS.alert({
-                  title: 'Error Updating Comment',
-                  message: responseJSON.errorMessage ?? '',
-                  contextualColorName: 'danger'
-                })
-              }
+        cityssm.postJSON(
+          `${sunrise.urlPrefix}/contracts/doUpdateContractComment`,
+          editFormElement,
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+              contractComments?: ContractComment[]
             }
-          )
-        }
 
-        cityssm.openHtmlModal('contract-editComment', {
-          onshow(modalElement) {
-            sunrise.populateAliases(modalElement)
-            ;(
-              modalElement.querySelector(
-                '#contractCommentEdit--contractId'
-              ) as HTMLInputElement
-            ).value = contractId
-            ;(
-              modalElement.querySelector(
-                '#contractCommentEdit--contractCommentId'
-              ) as HTMLInputElement
-            ).value = contractCommentId.toString()
-            ;(
-              modalElement.querySelector(
-                '#contractCommentEdit--contractComment'
-              ) as HTMLInputElement
-            ).value = contractComment.contractComment ?? ''
+            if (responseJSON.success) {
+              contractComments = responseJSON.contractComments ?? []
+              editCloseModalFunction()
+              renderContractComments()
+            } else {
+              bulmaJS.alert({
+                title: 'Error Updating Comment',
+                message: responseJSON.errorMessage ?? '',
+                contextualColorName: 'danger'
+              })
+            }
+          }
+        )
+      }
 
-            const contractCommentDateStringElement = modalElement.querySelector(
-              '#contractCommentEdit--contractCommentDateString'
+      cityssm.openHtmlModal('contract-editComment', {
+        onshow(modalElement) {
+          sunrise.populateAliases(modalElement)
+          ;(
+            modalElement.querySelector(
+              '#contractCommentEdit--contractId'
             ) as HTMLInputElement
+          ).value = contractId
+          ;(
+            modalElement.querySelector(
+              '#contractCommentEdit--contractCommentId'
+            ) as HTMLInputElement
+          ).value = contractCommentId.toString()
+          ;(
+            modalElement.querySelector(
+              '#contractCommentEdit--contractComment'
+            ) as HTMLInputElement
+          ).value = contractComment.contractComment ?? ''
 
-            contractCommentDateStringElement.value =
-              contractComment.contractCommentDateString ?? ''
+          const contractCommentDateStringElement = modalElement.querySelector(
+            '#contractCommentEdit--contractCommentDateString'
+          ) as HTMLInputElement
 
-            const currentDateString = cityssm.dateToString(new Date())
+          contractCommentDateStringElement.value =
+            contractComment.contractCommentDateString ?? ''
 
-            contractCommentDateStringElement.max =
-              contractComment.contractCommentDateString! <= currentDateString
-                ? currentDateString
-                : contractComment.contractCommentDateString ?? ''
-            ;(
-              modalElement.querySelector(
-                '#contractCommentEdit--contractCommentTimeString'
-              ) as HTMLInputElement
-            ).value = contractComment.contractCommentTimeString ?? ''
-          },
-          onshown(modalElement, closeModalFunction) {
-            bulmaJS.toggleHtmlClipped()
+          const currentDateString = cityssm.dateToString(new Date())
 
-            sunrise.initializeDatePickers(modalElement)
-            ;(
-              modalElement.querySelector(
-                '#contractCommentEdit--contractComment'
-              ) as HTMLTextAreaElement
-            ).focus()
+          contractCommentDateStringElement.max =
+            contractComment.contractCommentDateString! <= currentDateString
+              ? currentDateString
+              : contractComment.contractCommentDateString ?? ''
+          ;(
+            modalElement.querySelector(
+              '#contractCommentEdit--contractCommentTimeString'
+            ) as HTMLInputElement
+          ).value = contractComment.contractCommentTimeString ?? ''
+        },
+        onshown(modalElement, closeModalFunction) {
+          bulmaJS.toggleHtmlClipped()
 
-            editFormElement = modalElement.querySelector(
-              'form'
-            ) as HTMLFormElement
+          sunrise.initializeDatePickers(modalElement)
+          ;(
+            modalElement.querySelector(
+              '#contractCommentEdit--contractComment'
+            ) as HTMLTextAreaElement
+          ).focus()
 
-            editFormElement.addEventListener('submit', editComment)
+          editFormElement = modalElement.querySelector(
+            'form'
+          ) as HTMLFormElement
 
-            editCloseModalFunction = closeModalFunction
-          },
-          onremoved() {
-            bulmaJS.toggleHtmlClipped()
-          }
-        })
-      }
+          editFormElement.addEventListener('submit', editContractComment)
 
-      function deleteLotOccupancyComment(clickEvent: Event): void {
-        const contractCommentId = Number.parseInt(
-          (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
-            .contractCommentId ?? '',
-          10
-        )
-
-        function doDelete(): void {
-          cityssm.postJSON(
-            `${sunrise.urlPrefix}/contracts/doDeleteContractComment`,
-            {
-              contractId,
-              contractCommentId
-            },
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                success: boolean
-                errorMessage?: string
-                contractComments: LotOccupancyComment[]
-              }
-
-              if (responseJSON.success) {
-                contractComments = responseJSON.contractComments
-                renderLotOccupancyComments()
-              } else {
-                bulmaJS.alert({
-                  title: 'Error Removing Comment',
-                  message: responseJSON.errorMessage ?? '',
-                  contextualColorName: 'danger'
-                })
-              }
-            }
-          )
+          editCloseModalFunction = closeModalFunction
+        },
+        onremoved() {
+          bulmaJS.toggleHtmlClipped()
         }
+      })
+    }
 
-        bulmaJS.confirm({
-          title: 'Remove Comment?',
-          message: 'Are you sure you want to remove this comment?',
-          okButton: {
-            text: 'Yes, Remove Comment',
-            callbackFunction: doDelete
+    function deleteContractComment(clickEvent: Event): void {
+      const contractCommentId = Number.parseInt(
+        (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+          .contractCommentId ?? '',
+        10
+      )
+
+      function doDelete(): void {
+        cityssm.postJSON(
+          `${sunrise.urlPrefix}/contracts/doDeleteContractComment`,
+          {
+            contractId,
+            contractCommentId
           },
-          contextualColorName: 'warning'
-        })
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+              contractComments: ContractComment[]
+            }
+
+            if (responseJSON.success) {
+              contractComments = responseJSON.contractComments
+              renderContractComments()
+            } else {
+              bulmaJS.alert({
+                title: 'Error Removing Comment',
+                message: responseJSON.errorMessage ?? '',
+                contextualColorName: 'danger'
+              })
+            }
+          }
+        )
       }
 
-      function renderLotOccupancyComments(): void {
-        const containerElement = document.querySelector(
-          '#container--contractComments'
-        ) as HTMLElement
+      bulmaJS.confirm({
+        title: 'Remove Comment?',
+        message: 'Are you sure you want to remove this comment?',
+        okButton: {
+          text: 'Yes, Remove Comment',
+          callbackFunction: doDelete
+        },
+        contextualColorName: 'warning'
+      })
+    }
 
-        if (contractComments.length === 0) {
-          containerElement.innerHTML = `<div class="message is-info">
+    function renderContractComments(): void {
+      const containerElement = document.querySelector(
+        '#container--contractComments'
+      ) as HTMLElement
+
+      if (contractComments.length === 0) {
+        containerElement.innerHTML = `<div class="message is-info">
       <p class="message-body">There are no comments associated with this record.</p>
       </div>`
-          return
-        }
+        return
+      }
 
-        const tableElement = document.createElement('table')
-        tableElement.className = 'table is-fullwidth is-striped is-hoverable'
-        tableElement.innerHTML = `<thead><tr>
-    <th>Commentor</th>
-    <th>Comment Date</th>
-    <th>Comment</th>
-    <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-    </tr></thead>
-    <tbody></tbody>`
+      const tableElement = document.createElement('table')
+      tableElement.className = 'table is-fullwidth is-striped is-hoverable'
+      tableElement.innerHTML = `<thead><tr>
+          <th>Author</th>
+          <th>Comment Date</th>
+          <th>Comment</th>
+          <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+          </tr></thead>
+          <tbody></tbody>`
 
-        for (const contractComment of contractComments) {
-          const tableRowElement = document.createElement('tr')
-          tableRowElement.dataset.contractCommentId =
-            contractComment.contractCommentId?.toString()
+      for (const contractComment of contractComments) {
+        const tableRowElement = document.createElement('tr')
+        tableRowElement.dataset.contractCommentId =
+          contractComment.contractCommentId?.toString()
 
-          tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
+        tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
       <td>
       ${cityssm.escapeHTML(contractComment.contractCommentDateString ?? '')}
       ${cityssm.escapeHTML(
@@ -965,227 +940,47 @@ declare const exports: Record<string, unknown>
         </div>
       </td>`
 
-          tableRowElement
-            .querySelector('.button--edit')
-            ?.addEventListener('click', openEditLotOccupancyComment)
+        tableRowElement
+          .querySelector('.button--edit')
+          ?.addEventListener('click', openEditContractComment)
 
-          tableRowElement
-            .querySelector('.button--delete')
-            ?.addEventListener('click', deleteLotOccupancyComment)
+        tableRowElement
+          .querySelector('.button--delete')
+          ?.addEventListener('click', deleteContractComment)
 
-          tableElement.querySelector('tbody')?.append(tableRowElement)
-        }
-
-        containerElement.innerHTML = ''
-        containerElement.append(tableElement)
+        tableElement.querySelector('tbody')?.append(tableRowElement)
       }
 
-      document
-        .querySelector('#button--addComment')
-        ?.addEventListener('click', () => {
-          let addFormElement: HTMLFormElement
-          let addCloseModalFunction: () => void
+      containerElement.innerHTML = ''
+      containerElement.append(tableElement)
+    }
 
-          function addComment(submitEvent: SubmitEvent): void {
-            submitEvent.preventDefault()
+    document
+      .querySelector('#button--addComment')
+      ?.addEventListener('click', () => {
+        let addFormElement: HTMLFormElement
+        let addCloseModalFunction: () => void
 
-            cityssm.postJSON(
-              `${sunrise.urlPrefix}/contracts/doAddContractComment`,
-              addFormElement,
-              (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON as {
-                  success: boolean
-                  errorMessage?: string
-                  contractComments: LotOccupancyComment[]
-                }
-
-                if (responseJSON.success) {
-                  contractComments = responseJSON.contractComments
-                  addCloseModalFunction()
-                  renderLotOccupancyComments()
-                } else {
-                  bulmaJS.alert({
-                    title: 'Error Adding Comment',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
-                  })
-                }
-              }
-            )
-          }
-
-          cityssm.openHtmlModal('contract-addComment', {
-            onshow(modalElement) {
-              sunrise.populateAliases(modalElement)
-              ;(
-                modalElement.querySelector(
-                  '#contractCommentAdd--contractId'
-                ) as HTMLInputElement
-              ).value = contractId
-            },
-            onshown(modalElement, closeModalFunction) {
-              bulmaJS.toggleHtmlClipped()
-              ;(
-                modalElement.querySelector(
-                  '#contractCommentAdd--contractComment'
-                ) as HTMLTextAreaElement
-              ).focus()
-
-              addFormElement = modalElement.querySelector(
-                'form'
-              ) as HTMLFormElement
-
-              addFormElement.addEventListener('submit', addComment)
-
-              addCloseModalFunction = closeModalFunction
-            },
-            onremoved: () => {
-              bulmaJS.toggleHtmlClipped()
-              ;(
-                document.querySelector(
-                  '#button--addComment'
-                ) as HTMLButtonElement
-              ).focus()
-            }
-          })
-        })
-
-      renderLotOccupancyComments()
-    })()
-
-    /**
-     * Fees
-     */
-    ;(() => {
-      let contractFees = exports.contractFees as LotOccupancyFee[]
-      delete exports.contractFees
-
-      const contractFeesContainerElement = document.querySelector(
-        '#container--contractFees'
-      ) as HTMLElement
-
-      function getFeeGrandTotal(): number {
-        let feeGrandTotal = 0
-
-        for (const contractFee of contractFees) {
-          feeGrandTotal +=
-            ((contractFee.feeAmount ?? 0) + (contractFee.taxAmount ?? 0)) *
-            (contractFee.quantity ?? 0)
-        }
-
-        return feeGrandTotal
-      }
-
-      function editLotOccupancyFeeQuantity(clickEvent: Event): void {
-        const feeId = Number.parseInt(
-          (clickEvent.currentTarget as HTMLButtonElement).closest('tr')?.dataset
-            .feeId ?? '',
-          10
-        )
-
-        const fee = contractFees.find((possibleFee) => {
-          return possibleFee.feeId === feeId
-        }) as LotOccupancyFee
-
-        let updateCloseModalFunction: () => void
-
-        function doUpdateQuantity(formEvent: SubmitEvent): void {
-          formEvent.preventDefault()
+        function addComment(submitEvent: SubmitEvent): void {
+          submitEvent.preventDefault()
 
           cityssm.postJSON(
-            `${sunrise.urlPrefix}/contracts/doUpdateContractFeeQuantity`,
-            formEvent.currentTarget,
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                success: boolean
-                contractFees: LotOccupancyFee[]
-              }
-
-              if (responseJSON.success) {
-                contractFees = responseJSON.contractFees
-                renderLotOccupancyFees()
-                updateCloseModalFunction()
-              } else {
-                bulmaJS.alert({
-                  title: 'Error Updating Quantity',
-                  message: 'Please try again.',
-                  contextualColorName: 'danger'
-                })
-              }
-            }
-          )
-        }
-
-        cityssm.openHtmlModal('contract-editFeeQuantity', {
-          onshow(modalElement) {
-            ;(
-              modalElement.querySelector(
-                '#contractFeeQuantity--contractId'
-              ) as HTMLInputElement
-            ).value = contractId
-            ;(
-              modalElement.querySelector(
-                '#contractFeeQuantity--feeId'
-              ) as HTMLInputElement
-            ).value = fee.feeId.toString()
-            ;(
-              modalElement.querySelector(
-                '#contractFeeQuantity--quantity'
-              ) as HTMLInputElement
-            ).valueAsNumber = fee.quantity ?? 0
-            ;(
-              modalElement.querySelector(
-                '#contractFeeQuantity--quantityUnit'
-              ) as HTMLElement
-            ).textContent = fee.quantityUnit ?? ''
-          },
-          onshown(modalElement, closeModalFunction) {
-            bulmaJS.toggleHtmlClipped()
-
-            updateCloseModalFunction = closeModalFunction
-            ;(
-              modalElement.querySelector(
-                '#contractFeeQuantity--quantity'
-              ) as HTMLInputElement
-            ).focus()
-
-            modalElement
-              .querySelector('form')
-              ?.addEventListener('submit', doUpdateQuantity)
-          },
-          onremoved() {
-            bulmaJS.toggleHtmlClipped()
-          }
-        })
-      }
-
-      function deleteContractFee(clickEvent: Event): void {
-        const feeId = (
-          (clickEvent.currentTarget as HTMLElement).closest(
-            '.container--contractFee'
-          ) as HTMLElement
-        ).dataset.feeId
-
-        function doDelete(): void {
-          cityssm.postJSON(
-            `${sunrise.urlPrefix}/contracts/doDeleteContractFee`,
-            {
-              contractId,
-              feeId
-            },
+            `${sunrise.urlPrefix}/contracts/doAddContractComment`,
+            addFormElement,
             (rawResponseJSON) => {
               const responseJSON = rawResponseJSON as {
                 success: boolean
                 errorMessage?: string
-                contractFees: LotOccupancyFee[]
+                contractComments: ContractComment[]
               }
 
               if (responseJSON.success) {
-                contractFees = responseJSON.contractFees
-                renderLotOccupancyFees()
+                contractComments = responseJSON.contractComments
+                addCloseModalFunction()
+                renderContractComments()
               } else {
                 bulmaJS.alert({
-                  title: 'Error Deleting Fee',
+                  title: 'Error Adding Comment',
                   message: responseJSON.errorMessage ?? '',
                   contextualColorName: 'danger'
                 })
@@ -1194,30 +989,207 @@ declare const exports: Record<string, unknown>
           )
         }
 
-        bulmaJS.confirm({
-          title: 'Delete Fee',
-          message: 'Are you sure you want to delete this fee?',
-          contextualColorName: 'warning',
-          okButton: {
-            text: 'Yes, Delete Fee',
-            callbackFunction: doDelete
+        cityssm.openHtmlModal('contract-addComment', {
+          onshow(modalElement) {
+            sunrise.populateAliases(modalElement)
+            ;(
+              modalElement.querySelector(
+                '#contractCommentAdd--contractId'
+              ) as HTMLInputElement
+            ).value = contractId
+          },
+          onshown(modalElement, closeModalFunction) {
+            bulmaJS.toggleHtmlClipped()
+            ;(
+              modalElement.querySelector(
+                '#contractCommentAdd--comment'
+              ) as HTMLTextAreaElement
+            ).focus()
+
+            addFormElement = modalElement.querySelector(
+              'form'
+            ) as HTMLFormElement
+
+            addFormElement.addEventListener('submit', addComment)
+
+            addCloseModalFunction = closeModalFunction
+          },
+          onremoved() {
+            bulmaJS.toggleHtmlClipped()
+            ;(
+              document.querySelector('#button--addComment') as HTMLButtonElement
+            ).focus()
           }
         })
+      })
+
+    renderContractComments()
+
+    /**
+     * Fees
+     */
+
+    let contractFees = exports.contractFees as ContractFee[]
+    delete exports.contractFees
+
+    const contractFeesContainerElement = document.querySelector(
+      '#container--contractFees'
+    ) as HTMLElement
+
+    function getFeeGrandTotal(): number {
+      let feeGrandTotal = 0
+
+      for (const contractFee of contractFees) {
+        feeGrandTotal +=
+          ((contractFee.feeAmount ?? 0) + (contractFee.taxAmount ?? 0)) *
+          (contractFee.quantity ?? 0)
       }
 
-      function renderLotOccupancyFees(): void {
-        if (contractFees.length === 0) {
-          contractFeesContainerElement.innerHTML = `<div class="message is-info">
+      return feeGrandTotal
+    }
+
+    function editContractFeeQuantity(clickEvent: Event): void {
+      const feeId = Number.parseInt(
+        (clickEvent.currentTarget as HTMLButtonElement).closest('tr')?.dataset
+          .feeId ?? '',
+        10
+      )
+
+      const fee = contractFees.find(
+        (possibleFee) => possibleFee.feeId === feeId
+      ) as ContractFee
+
+      let updateCloseModalFunction: () => void
+
+      function doUpdateQuantity(formEvent: SubmitEvent): void {
+        formEvent.preventDefault()
+
+        cityssm.postJSON(
+          `${sunrise.urlPrefix}/contracts/doUpdateContractFeeQuantity`,
+          formEvent.currentTarget,
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              contractFees: ContractFee[]
+            }
+
+            if (responseJSON.success) {
+              contractFees = responseJSON.contractFees
+              renderContractFees()
+              updateCloseModalFunction()
+            } else {
+              bulmaJS.alert({
+                title: 'Error Updating Quantity',
+                message: 'Please try again.',
+                contextualColorName: 'danger'
+              })
+            }
+          }
+        )
+      }
+
+      cityssm.openHtmlModal('contract-editFeeQuantity', {
+        onshow(modalElement) {
+          ;(
+            modalElement.querySelector(
+              '#contractFeeQuantity--contractId'
+            ) as HTMLInputElement
+          ).value = contractId
+          ;(
+            modalElement.querySelector(
+              '#contractFeeQuantity--feeId'
+            ) as HTMLInputElement
+          ).value = fee.feeId.toString()
+          ;(
+            modalElement.querySelector(
+              '#contractFeeQuantity--quantity'
+            ) as HTMLInputElement
+          ).valueAsNumber = fee.quantity ?? 0
+          ;(
+            modalElement.querySelector(
+              '#contractFeeQuantity--quantityUnit'
+            ) as HTMLElement
+          ).textContent = fee.quantityUnit ?? ''
+        },
+        onshown(modalElement, closeModalFunction) {
+          bulmaJS.toggleHtmlClipped()
+
+          updateCloseModalFunction = closeModalFunction
+          ;(
+            modalElement.querySelector(
+              '#contractFeeQuantity--quantity'
+            ) as HTMLInputElement
+          ).focus()
+
+          modalElement
+            .querySelector('form')
+            ?.addEventListener('submit', doUpdateQuantity)
+        },
+        onremoved() {
+          bulmaJS.toggleHtmlClipped()
+        }
+      })
+    }
+
+    function deleteContractFee(clickEvent: Event): void {
+      const feeId = (
+        (clickEvent.currentTarget as HTMLElement).closest(
+          '.container--contractFee'
+        ) as HTMLElement
+      ).dataset.feeId
+
+      function doDelete(): void {
+        cityssm.postJSON(
+          `${sunrise.urlPrefix}/contracts/doDeleteContractFee`,
+          {
+            contractId,
+            feeId
+          },
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+              contractFees: ContractFee[]
+            }
+
+            if (responseJSON.success) {
+              contractFees = responseJSON.contractFees
+              renderContractFees()
+            } else {
+              bulmaJS.alert({
+                title: 'Error Deleting Fee',
+                message: responseJSON.errorMessage ?? '',
+                contextualColorName: 'danger'
+              })
+            }
+          }
+        )
+      }
+
+      bulmaJS.confirm({
+        title: 'Delete Fee',
+        message: 'Are you sure you want to delete this fee?',
+        contextualColorName: 'warning',
+        okButton: {
+          text: 'Yes, Delete Fee',
+          callbackFunction: doDelete
+        }
+      })
+    }
+
+    // eslint-disable-next-line complexity
+    function renderContractFees(): void {
+      if (contractFees.length === 0) {
+        contractFeesContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no fees associated with this record.</p>
         </div>`
 
-          renderLotOccupancyTransactions()
+        renderContractTransactions()
 
-          return
-        }
+        return
+      }
 
-        // eslint-disable-next-line no-secrets/no-secrets
-        contractFeesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
+      contractFeesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
       <thead><tr>
         <th>Fee</th>
         <th><span class="is-sr-only">Unit Cost</span></th>
@@ -1242,254 +1214,253 @@ declare const exports: Record<string, unknown>
         <td class="is-hidden-print"></td>
       </tr></tfoot></table>`
 
-        let feeAmountTotal = 0
-        let taxAmountTotal = 0
+      let feeAmountTotal = 0
+      let taxAmountTotal = 0
 
-        for (const contractFee of contractFees) {
-          const tableRowElement = document.createElement('tr')
-          tableRowElement.className = 'container--contractFee'
-          tableRowElement.dataset.feeId = contractFee.feeId.toString()
-          tableRowElement.dataset.includeQuantity =
-            contractFee.includeQuantity ?? false ? '1' : '0'
+      for (const contractFee of contractFees) {
+        const tableRowElement = document.createElement('tr')
+        tableRowElement.className = 'container--contractFee'
+        tableRowElement.dataset.feeId = contractFee.feeId.toString()
+        tableRowElement.dataset.includeQuantity =
+          contractFee.includeQuantity ?? false ? '1' : '0'
 
-          // eslint-disable-next-line no-unsanitized/property
-          tableRowElement.innerHTML = `<td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
-      ${cityssm.escapeHTML(contractFee.feeName ?? '')}<br />
-      <span class="tag">${cityssm.escapeHTML(contractFee.feeCategory ?? '')}</span>
-      </td>
-      ${
-        contractFee.quantity === 1
-          ? ''
-          : `<td class="has-text-right">
-              $${contractFee.feeAmount?.toFixed(2)}
-              </td>
-              <td>&times;</td>
-              <td class="has-text-right">${contractFee.quantity?.toString()}</td>
-              <td>=</td>`
-      }
-      <td class="has-text-right">
-        $${((contractFee.feeAmount ?? 0) * (contractFee.quantity ?? 0)).toFixed(2)}
-      </td>
-      <td class="is-hidden-print">
-      <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-      ${
-        contractFee.includeQuantity ?? false
-          ? `<button class="button is-primary button--editQuantity">
-              <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-              <span>Edit</span>
-              </button>`
-          : ''
-      }
-      <button class="button is-danger is-light button--delete" data-tooltip="Delete Fee" type="button">
-        <i class="fas fa-trash" aria-hidden="true"></i>
-      </button>
-      </div>
-      </td>`
-
-          tableRowElement
-            .querySelector('.button--editQuantity')
-            ?.addEventListener('click', editLotOccupancyFeeQuantity)
-
-          tableRowElement
-            .querySelector('.button--delete')
-            ?.addEventListener('click', deleteContractFee)
-
-          contractFeesContainerElement
-            .querySelector('tbody')
-            ?.append(tableRowElement)
-
-          feeAmountTotal +=
-            (contractFee.feeAmount ?? 0) * (contractFee.quantity ?? 0)
-
-          taxAmountTotal +=
-            (contractFee.taxAmount ?? 0) * (contractFee.quantity ?? 0)
-        }
-
-        ;(
-          contractFeesContainerElement.querySelector(
-            '#contractFees--feeAmountTotal'
-          ) as HTMLElement
-        ).textContent = `$${feeAmountTotal.toFixed(2)}`
-        ;(
-          contractFeesContainerElement.querySelector(
-            '#contractFees--taxAmountTotal'
-          ) as HTMLElement
-        ).textContent = `$${taxAmountTotal.toFixed(2)}`
-        ;(
-          contractFeesContainerElement.querySelector(
-            '#contractFees--grandTotal'
-          ) as HTMLElement
-        ).textContent = `$${(feeAmountTotal + taxAmountTotal).toFixed(2)}`
-
-        renderLotOccupancyTransactions()
-      }
-
-      const addFeeButtonElement = document.querySelector(
-        '#button--addFee'
-      ) as HTMLButtonElement
-
-      addFeeButtonElement.addEventListener('click', () => {
-        if (sunrise.hasUnsavedChanges()) {
-          bulmaJS.alert({
-            message: 'Please save all unsaved changes before adding fees.',
-            contextualColorName: 'warning'
-          })
-          return
-        }
-
-        let feeCategories: FeeCategory[]
-
-        let feeFilterElement: HTMLInputElement
-        let feeFilterResultsElement: HTMLElement
-
-        function doAddFeeCategory(clickEvent: Event): void {
-          clickEvent.preventDefault()
-
-          const feeCategoryId = Number.parseInt(
-            (clickEvent.currentTarget as HTMLElement).dataset.feeCategoryId ??
-              '',
-            10
-          )
-
-          cityssm.postJSON(
-            `${sunrise.urlPrefix}/contracts/doAddContractFeeCategory`,
-            {
-              contractId,
-              feeCategoryId
-            },
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                success: boolean
-                errorMessage?: string
-                contractFees: LotOccupancyFee[]
-              }
-
-              if (responseJSON.success) {
-                contractFees = responseJSON.contractFees
-                renderLotOccupancyFees()
-
-                bulmaJS.alert({
-                  message: 'Fee Group Added Successfully',
-                  contextualColorName: 'success'
-                })
-              } else {
-                bulmaJS.alert({
-                  title: 'Error Adding Fee',
-                  message: responseJSON.errorMessage ?? '',
-                  contextualColorName: 'danger'
-                })
-              }
-            }
-          )
-        }
-
-        function doAddFee(feeId: number, quantity: number | string = 1): void {
-          cityssm.postJSON(
-            `${sunrise.urlPrefix}/contracts/doAddLotOccupancyFee`,
-            {
-              contractId,
-              feeId,
-              quantity
-            },
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                success: boolean
-                errorMessage?: string
-                contractFees: LotOccupancyFee[]
-              }
-
-              if (responseJSON.success) {
-                contractFees = responseJSON.contractFees
-                renderLotOccupancyFees()
-                filterFees()
-              } else {
-                bulmaJS.alert({
-                  title: 'Error Adding Fee',
-                  message: responseJSON.errorMessage ?? '',
-                  contextualColorName: 'danger'
-                })
-              }
-            }
-          )
-        }
-
-        function doSetQuantityAndAddFee(fee: Fee): void {
-          let quantityElement: HTMLInputElement
-          let quantityCloseModalFunction: () => void
-
-          function doSetQuantity(submitEvent: SubmitEvent): void {
-            submitEvent.preventDefault()
-            doAddFee(fee.feeId, quantityElement.value)
-            quantityCloseModalFunction()
+        // eslint-disable-next-line no-unsanitized/property
+        tableRowElement.innerHTML = `<td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
+          ${cityssm.escapeHTML(contractFee.feeName ?? '')}<br />
+          <span class="tag">${cityssm.escapeHTML(contractFee.feeCategory ?? '')}</span>
+          </td>
+          ${
+            contractFee.quantity === 1
+              ? ''
+              : `<td class="has-text-right">
+                  $${contractFee.feeAmount?.toFixed(2)}
+                  </td>
+                  <td>&times;</td>
+                  <td class="has-text-right">${contractFee.quantity?.toString()}</td>
+                  <td>=</td>`
           }
-
-          cityssm.openHtmlModal('contract-setFeeQuantity', {
-            onshow(modalElement) {
-              ;(
-                modalElement.querySelector(
-                  '#contractFeeQuantity--quantityUnit'
-                ) as HTMLElement
-              ).textContent = fee.quantityUnit ?? ''
-            },
-            onshown(modalElement, closeModalFunction) {
-              quantityCloseModalFunction = closeModalFunction
-
-              quantityElement = modalElement.querySelector(
-                '#contractFeeQuantity--quantity'
-              ) as HTMLInputElement
-
-              modalElement
-                .querySelector('form')
-                ?.addEventListener('submit', doSetQuantity)
-            }
-          })
-        }
-
-        function tryAddFee(clickEvent: Event): void {
-          clickEvent.preventDefault()
-
-          const feeId = Number.parseInt(
-            (clickEvent.currentTarget as HTMLElement).dataset.feeId ?? '',
-            10
-          )
-          const feeCategoryId = Number.parseInt(
-            (clickEvent.currentTarget as HTMLElement).dataset.feeCategoryId ??
-              '',
-            10
-          )
-
-          const feeCategory = feeCategories.find((currentFeeCategory) => {
-            return currentFeeCategory.feeCategoryId === feeCategoryId
-          }) as FeeCategory
-
-          const fee = feeCategory.fees.find((currentFee) => {
-            return currentFee.feeId === feeId
-          }) as Fee
-
-          if (fee.includeQuantity ?? false) {
-            doSetQuantityAndAddFee(fee)
-          } else {
-            doAddFee(feeId)
+          <td class="has-text-right">
+            $${((contractFee.feeAmount ?? 0) * (contractFee.quantity ?? 0)).toFixed(2)}
+          </td>
+          <td class="is-hidden-print">
+          <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
+          ${
+            contractFee.includeQuantity ?? false
+              ? `<button class="button is-primary button--editQuantity">
+                  <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                  <span>Edit</span>
+                  </button>`
+              : ''
           }
+          <button class="button is-danger is-light button--delete" data-tooltip="Delete Fee" type="button">
+            <i class="fas fa-trash" aria-hidden="true"></i>
+          </button>
+          </div>
+          </td>`
+
+        tableRowElement
+          .querySelector('.button--editQuantity')
+          ?.addEventListener('click', editContractFeeQuantity)
+
+        tableRowElement
+          .querySelector('.button--delete')
+          ?.addEventListener('click', deleteContractFee)
+
+        contractFeesContainerElement
+          .querySelector('tbody')
+          ?.append(tableRowElement)
+
+        feeAmountTotal +=
+          (contractFee.feeAmount ?? 0) * (contractFee.quantity ?? 0)
+
+        taxAmountTotal +=
+          (contractFee.taxAmount ?? 0) * (contractFee.quantity ?? 0)
+      }
+
+      ;(
+        contractFeesContainerElement.querySelector(
+          '#contractFees--feeAmountTotal'
+        ) as HTMLElement
+      ).textContent = `$${feeAmountTotal.toFixed(2)}`
+      ;(
+        contractFeesContainerElement.querySelector(
+          '#contractFees--taxAmountTotal'
+        ) as HTMLElement
+      ).textContent = `$${taxAmountTotal.toFixed(2)}`
+      ;(
+        contractFeesContainerElement.querySelector(
+          '#contractFees--grandTotal'
+        ) as HTMLElement
+      ).textContent = `$${(feeAmountTotal + taxAmountTotal).toFixed(2)}`
+
+      renderContractTransactions()
+    }
+
+    const addFeeButtonElement = document.querySelector(
+      '#button--addFee'
+    ) as HTMLButtonElement
+
+    addFeeButtonElement.addEventListener('click', () => {
+      if (sunrise.hasUnsavedChanges()) {
+        bulmaJS.alert({
+          message: 'Please save all unsaved changes before adding fees.',
+          contextualColorName: 'warning'
+        })
+        return
+      }
+
+      let feeCategories: FeeCategory[]
+
+      let feeFilterElement: HTMLInputElement
+      let feeFilterResultsElement: HTMLElement
+
+      function doAddFeeCategory(clickEvent: Event): void {
+        clickEvent.preventDefault()
+
+        const feeCategoryId = Number.parseInt(
+          (clickEvent.currentTarget as HTMLElement).dataset.feeCategoryId ?? '',
+          10
+        )
+
+        cityssm.postJSON(
+          `${sunrise.urlPrefix}/contracts/doAddContractFeeCategory`,
+          {
+            contractId,
+            feeCategoryId
+          },
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+              contractFees: ContractFee[]
+            }
+
+            if (responseJSON.success) {
+              contractFees = responseJSON.contractFees
+              renderContractFees()
+
+              bulmaJS.alert({
+                message: 'Fee Group Added Successfully',
+                contextualColorName: 'success'
+              })
+            } else {
+              bulmaJS.alert({
+                title: 'Error Adding Fee',
+                message: responseJSON.errorMessage ?? '',
+                contextualColorName: 'danger'
+              })
+            }
+          }
+        )
+      }
+
+      function doAddFee(feeId: number, quantity: number | string = 1): void {
+        cityssm.postJSON(
+          `${sunrise.urlPrefix}/contracts/doAddContractFee`,
+          {
+            contractId,
+            feeId,
+            quantity
+          },
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+              contractFees: ContractFee[]
+            }
+
+            if (responseJSON.success) {
+              contractFees = responseJSON.contractFees
+              renderContractFees()
+              filterFees()
+            } else {
+              bulmaJS.alert({
+                title: 'Error Adding Fee',
+                message: responseJSON.errorMessage ?? '',
+                contextualColorName: 'danger'
+              })
+            }
+          }
+        )
+      }
+
+      function doSetQuantityAndAddFee(fee: Fee): void {
+        let quantityElement: HTMLInputElement
+        let quantityCloseModalFunction: () => void
+
+        function doSetQuantity(submitEvent: SubmitEvent): void {
+          submitEvent.preventDefault()
+          doAddFee(fee.feeId, quantityElement.value)
+          quantityCloseModalFunction()
         }
 
-        function filterFees(): void {
-          const filterStringPieces = feeFilterElement.value
-            .trim()
-            .toLowerCase()
-            .split(' ')
+        cityssm.openHtmlModal('contract-setFeeQuantity', {
+          onshow(modalElement) {
+            ;(
+              modalElement.querySelector(
+                '#contractFeeQuantity--quantityUnit'
+              ) as HTMLElement
+            ).textContent = fee.quantityUnit ?? ''
+          },
+          onshown(modalElement, closeModalFunction) {
+            quantityCloseModalFunction = closeModalFunction
 
-          feeFilterResultsElement.innerHTML = ''
+            quantityElement = modalElement.querySelector(
+              '#contractFeeQuantity--quantity'
+            ) as HTMLInputElement
 
-          for (const feeCategory of feeCategories) {
-            const categoryContainerElement = document.createElement('div')
+            modalElement
+              .querySelector('form')
+              ?.addEventListener('submit', doSetQuantity)
+          }
+        })
+      }
 
-            categoryContainerElement.className = 'container--feeCategory'
+      function tryAddFee(clickEvent: Event): void {
+        clickEvent.preventDefault()
 
-            categoryContainerElement.dataset.feeCategoryId =
-              feeCategory.feeCategoryId.toString()
+        const feeId = Number.parseInt(
+          (clickEvent.currentTarget as HTMLElement).dataset.feeId ?? '',
+          10
+        )
+        const feeCategoryId = Number.parseInt(
+          (clickEvent.currentTarget as HTMLElement).dataset.feeCategoryId ?? '',
+          10
+        )
 
-            categoryContainerElement.innerHTML = `<div class="columns is-vcentered">
+        const feeCategory = feeCategories.find(
+          (currentFeeCategory) =>
+            currentFeeCategory.feeCategoryId === feeCategoryId
+        ) as FeeCategory
+
+        const fee = feeCategory.fees.find(
+          (currentFee) => currentFee.feeId === feeId
+        ) as Fee
+
+        if (fee.includeQuantity ?? false) {
+          doSetQuantityAndAddFee(fee)
+        } else {
+          doAddFee(feeId)
+        }
+      }
+
+      function filterFees(): void {
+        const filterStringPieces = feeFilterElement.value
+          .trim()
+          .toLowerCase()
+          .split(' ')
+
+        feeFilterResultsElement.innerHTML = ''
+
+        for (const feeCategory of feeCategories) {
+          const categoryContainerElement = document.createElement('div')
+
+          categoryContainerElement.className = 'container--feeCategory'
+
+          categoryContainerElement.dataset.feeCategoryId =
+            feeCategory.feeCategoryId.toString()
+
+          categoryContainerElement.innerHTML = `<div class="columns is-vcentered">
         <div class="column">
           <h4 class="title is-5">
           ${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}
@@ -1498,608 +1469,596 @@ declare const exports: Record<string, unknown>
         </div>
         <div class="panel mb-5"></div>`
 
-            if (feeCategory.isGroupedFee) {
-              // eslint-disable-next-line no-unsanitized/method
-              categoryContainerElement
-                .querySelector('.columns')
-                ?.insertAdjacentHTML(
-                  'beforeend',
-                  `<div class="column is-narrow has-text-right">
-                    <button class="button is-small is-success" type="button" data-fee-category-id="${feeCategory.feeCategoryId}">
-                      <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                      <span>Add Fee Group</span>
-                    </button>
-                    </div>`
-                )
-
-              categoryContainerElement
-                .querySelector('button')
-                ?.addEventListener('click', doAddFeeCategory)
-            }
-
-            let hasFees = false
-
-            for (const fee of feeCategory.fees) {
-              // Don't include already applied fees that limit quantity
-              if (
-                contractFeesContainerElement.querySelector(
-                  `.container--contractFee[data-fee-id='${fee.feeId}'][data-include-quantity='0']`
-                ) !== null
-              ) {
-                continue
-              }
-
-              let includeFee = true
-
-              const feeSearchString =
-                `${feeCategory.feeCategory ?? ''} ${fee.feeName ?? ''} ${fee.feeDescription ?? ''}`.toLowerCase()
-
-              for (const filterStringPiece of filterStringPieces) {
-                if (!feeSearchString.includes(filterStringPiece)) {
-                  includeFee = false
-                  break
-                }
-              }
-
-              if (!includeFee) {
-                continue
-              }
-
-              hasFees = true
-
-              const panelBlockElement = document.createElement(
-                feeCategory.isGroupedFee ? 'div' : 'a'
+          if (feeCategory.isGroupedFee) {
+            // eslint-disable-next-line no-unsanitized/method
+            categoryContainerElement
+              .querySelector('.columns')
+              ?.insertAdjacentHTML(
+                'beforeend',
+                `<div class="column is-narrow has-text-right">
+                  <button class="button is-small is-success" type="button" data-fee-category-id="${feeCategory.feeCategoryId}">
+                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                    <span>Add Fee Group</span>
+                  </button>
+                  </div>`
               )
-              panelBlockElement.className =
-                'panel-block is-block container--fee'
-              panelBlockElement.dataset.feeId = fee.feeId.toString()
-              panelBlockElement.dataset.feeCategoryId =
-                feeCategory.feeCategoryId.toString()
 
-              // eslint-disable-next-line no-unsanitized/property
-              panelBlockElement.innerHTML = `<strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
-          <small>
-          ${
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            cityssm
-              .escapeHTML(fee.feeDescription ?? '')
-              .replaceAll('\n', '<br />')
+            categoryContainerElement
+              .querySelector('button')
+              ?.addEventListener('click', doAddFeeCategory)
           }
-          </small>`
 
-              if (!feeCategory.isGroupedFee) {
-                ;(panelBlockElement as HTMLAnchorElement).href = '#'
-                panelBlockElement.addEventListener('click', tryAddFee)
-              }
-              ;(
-                categoryContainerElement.querySelector('.panel') as HTMLElement
-              ).append(panelBlockElement)
+          let hasFees = false
+
+          for (const fee of feeCategory.fees) {
+            // Don't include already applied fees that limit quantity
+            if (
+              contractFeesContainerElement.querySelector(
+                `.container--contractFee[data-fee-id='${fee.feeId}'][data-include-quantity='0']`
+              ) !== null
+            ) {
+              continue
             }
 
-            if (hasFees) {
-              feeFilterResultsElement.append(categoryContainerElement)
-            }
-          }
-        }
+            let includeFee = true
 
-        cityssm.openHtmlModal('contract-addFee', {
-          onshow(modalElement) {
-            feeFilterElement = modalElement.querySelector(
-              '#feeSelect--feeName'
-            ) as HTMLInputElement
+            const feeSearchString =
+              `${feeCategory.feeCategory ?? ''} ${fee.feeName ?? ''} ${fee.feeDescription ?? ''}`.toLowerCase()
 
-            feeFilterResultsElement = modalElement.querySelector(
-              '#resultsContainer--feeSelect'
-            ) as HTMLElement
-
-            cityssm.postJSON(
-              `${sunrise.urlPrefix}/contracts/doGetFees`,
-              {
-                contractId
-              },
-              (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON as {
-                  feeCategories: FeeCategory[]
-                }
-
-                feeCategories = responseJSON.feeCategories
-
-                feeFilterElement.disabled = false
-                feeFilterElement.addEventListener('keyup', filterFees)
-                feeFilterElement.focus()
-
-                filterFees()
+            for (const filterStringPiece of filterStringPieces) {
+              if (!feeSearchString.includes(filterStringPiece)) {
+                includeFee = false
+                break
               }
+            }
+
+            if (!includeFee) {
+              continue
+            }
+
+            hasFees = true
+
+            const panelBlockElement = document.createElement(
+              feeCategory.isGroupedFee ? 'div' : 'a'
             )
-          },
-          onshown() {
-            bulmaJS.toggleHtmlClipped()
-          },
-          onhidden() {
-            renderLotOccupancyFees()
-          },
-          onremoved() {
-            bulmaJS.toggleHtmlClipped()
-            addFeeButtonElement.focus()
-          }
-        })
-      })
+            panelBlockElement.className = 'panel-block is-block container--fee'
+            panelBlockElement.dataset.feeId = fee.feeId.toString()
+            panelBlockElement.dataset.feeCategoryId =
+              feeCategory.feeCategoryId.toString()
 
-      let contractTransactions =
-        exports.contractTransactions as LotOccupancyTransaction[]
-      delete exports.contractTransactions
-
-      const contractTransactionsContainerElement = document.querySelector(
-        '#container--contractTransactions'
-      ) as HTMLElement
-
-      function getTransactionGrandTotal(): number {
-        let transactionGrandTotal = 0
-
-        for (const contractTransaction of contractTransactions) {
-          transactionGrandTotal += contractTransaction.transactionAmount
-        }
-
-        return transactionGrandTotal
-      }
-
-      function editLotOccupancyTransaction(clickEvent: Event): void {
-        const transactionIndex = Number.parseInt(
-          (clickEvent.currentTarget as HTMLButtonElement).closest('tr')?.dataset
-            .transactionIndex ?? '',
-          10
-        )
-
-        const transaction = contractTransactions.find((possibleTransaction) => {
-          return possibleTransaction.transactionIndex === transactionIndex
-        }) as LotOccupancyTransaction
-
-        let editCloseModalFunction: () => void
-
-        function doEdit(formEvent: SubmitEvent): void {
-          formEvent.preventDefault()
-
-          cityssm.postJSON(
-            `${sunrise.urlPrefix}/contracts/doUpdateContractTransaction`,
-            formEvent.currentTarget,
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                success: boolean
-                contractTransactions: LotOccupancyTransaction[]
+            // eslint-disable-next-line no-unsanitized/property
+            panelBlockElement.innerHTML = `<strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
+              <small>
+              ${
+                cityssm
+                  .escapeHTML(fee.feeDescription ?? '')
+                  .replaceAll('\n', '<br />')
               }
+              </small>`
 
-              if (responseJSON.success) {
-                contractTransactions = responseJSON.contractTransactions
-                renderLotOccupancyTransactions()
-                editCloseModalFunction()
-              } else {
-                bulmaJS.alert({
-                  title: 'Error Updating Transaction',
-                  message: 'Please try again.',
-                  contextualColorName: 'danger'
-                })
-              }
+            if (!feeCategory.isGroupedFee) {
+              ;(panelBlockElement as HTMLAnchorElement).href = '#'
+              panelBlockElement.addEventListener('click', tryAddFee)
             }
-          )
-        }
-
-        cityssm.openHtmlModal('contract-editTransaction', {
-          onshow(modalElement) {
-            sunrise.populateAliases(modalElement)
             ;(
-              modalElement.querySelector(
-                '#contractTransactionEdit--contractId'
-              ) as HTMLInputElement
-            ).value = contractId
-            ;(
-              modalElement.querySelector(
-                '#contractTransactionEdit--transactionIndex'
-              ) as HTMLInputElement
-            ).value = transaction.transactionIndex?.toString() ?? ''
-            ;(
-              modalElement.querySelector(
-                '#contractTransactionEdit--transactionAmount'
-              ) as HTMLInputElement
-            ).value = transaction.transactionAmount.toFixed(2)
-            ;(
-              modalElement.querySelector(
-                '#contractTransactionEdit--externalReceiptNumber'
-              ) as HTMLInputElement
-            ).value = transaction.externalReceiptNumber ?? ''
-            ;(
-              modalElement.querySelector(
-                '#contractTransactionEdit--transactionNote'
-              ) as HTMLTextAreaElement
-            ).value = transaction.transactionNote ?? ''
-            ;(
-              modalElement.querySelector(
-                '#contractTransactionEdit--transactionDateString'
-              ) as HTMLInputElement
-            ).value = transaction.transactionDateString ?? ''
-            ;(
-              modalElement.querySelector(
-                '#contractTransactionEdit--transactionTimeString'
-              ) as HTMLInputElement
-            ).value = transaction.transactionTimeString ?? ''
-          },
-          onshown(modalElement, closeModalFunction) {
-            bulmaJS.toggleHtmlClipped()
-
-            sunrise.initializeDatePickers(modalElement)
-            ;(
-              modalElement.querySelector(
-                '#contractTransactionEdit--transactionAmount'
-              ) as HTMLInputElement
-            ).focus()
-
-            modalElement
-              .querySelector('form')
-              ?.addEventListener('submit', doEdit)
-
-            editCloseModalFunction = closeModalFunction
-          },
-          onremoved() {
-            bulmaJS.toggleHtmlClipped()
+              categoryContainerElement.querySelector('.panel') as HTMLElement
+            ).append(panelBlockElement)
           }
-        })
+
+          if (hasFees) {
+            feeFilterResultsElement.append(categoryContainerElement)
+          }
+        }
       }
 
-      function deleteContractTransaction(clickEvent: Event): void {
-        const transactionIndex = (
-          (clickEvent.currentTarget as HTMLElement).closest(
-            '.container--contractTransaction'
-          ) as HTMLElement
-        ).dataset.transactionIndex
+      cityssm.openHtmlModal('contract-addFee', {
+        onshow(modalElement) {
+          feeFilterElement = modalElement.querySelector(
+            '#feeSelect--feeName'
+          ) as HTMLInputElement
 
-        function doDelete(): void {
+          feeFilterResultsElement = modalElement.querySelector(
+            '#resultsContainer--feeSelect'
+          ) as HTMLElement
+
           cityssm.postJSON(
-            `${sunrise.urlPrefix}/contracts/doDeleteContractTransaction`,
+            `${sunrise.urlPrefix}/contracts/doGetFees`,
             {
-              contractId,
-              transactionIndex
+              contractId
             },
             (rawResponseJSON) => {
               const responseJSON = rawResponseJSON as {
-                success: boolean
-                errorMessage?: string
-                contractTransactions: LotOccupancyTransaction[]
+                feeCategories: FeeCategory[]
               }
 
-              if (responseJSON.success) {
-                contractTransactions = responseJSON.contractTransactions
-                renderLotOccupancyTransactions()
-              } else {
-                bulmaJS.alert({
-                  title: 'Error Deleting Transaction',
-                  message: responseJSON.errorMessage ?? '',
-                  contextualColorName: 'danger'
-                })
-              }
+              feeCategories = responseJSON.feeCategories
+
+              feeFilterElement.disabled = false
+              feeFilterElement.addEventListener('keyup', filterFees)
+              feeFilterElement.focus()
+
+              filterFees()
             }
           )
+        },
+        onshown() {
+          bulmaJS.toggleHtmlClipped()
+        },
+        onhidden() {
+          renderContractFees()
+        },
+        onremoved() {
+          bulmaJS.toggleHtmlClipped()
+          addFeeButtonElement.focus()
         }
+      })
+    })
 
-        bulmaJS.confirm({
-          title: 'Delete Transaction',
-          message: 'Are you sure you want to delete this transaction?',
-          contextualColorName: 'warning',
-          okButton: {
-            text: 'Yes, Delete Transaction',
-            callbackFunction: doDelete
-          }
-        })
+    let contractTransactions =
+      exports.contractTransactions as ContractTransaction[]
+    delete exports.contractTransactions
+
+    const contractTransactionsContainerElement = document.querySelector(
+      '#container--contractTransactions'
+    ) as HTMLElement
+
+    function getTransactionGrandTotal(): number {
+      let transactionGrandTotal = 0
+
+      for (const contractTransaction of contractTransactions) {
+        transactionGrandTotal += contractTransaction.transactionAmount
       }
 
-      function renderLotOccupancyTransactions(): void {
-        if (contractTransactions.length === 0) {
-          // eslint-disable-next-line no-unsanitized/property
-          contractTransactionsContainerElement.innerHTML = `<div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
-      <p class="message-body">There are no transactions associated with this record.</p>
-      </div>`
+      return transactionGrandTotal
+    }
 
-          return
+    function editContractTransaction(clickEvent: Event): void {
+      const transactionIndex = Number.parseInt(
+        (clickEvent.currentTarget as HTMLButtonElement).closest('tr')?.dataset
+          .transactionIndex ?? '',
+        10
+      )
+
+      const transaction = contractTransactions.find((possibleTransaction) => possibleTransaction.transactionIndex === transactionIndex) as ContractTransaction
+
+      let editCloseModalFunction: () => void
+
+      function doEdit(formEvent: SubmitEvent): void {
+        formEvent.preventDefault()
+
+        cityssm.postJSON(
+          `${sunrise.urlPrefix}/contracts/doUpdateContractTransaction`,
+          formEvent.currentTarget,
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              contractTransactions: ContractTransaction[]
+            }
+
+            if (responseJSON.success) {
+              contractTransactions = responseJSON.contractTransactions
+              renderContractTransactions()
+              editCloseModalFunction()
+            } else {
+              bulmaJS.alert({
+                title: 'Error Updating Transaction',
+                message: 'Please try again.',
+                contextualColorName: 'danger'
+              })
+            }
+          }
+        )
+      }
+
+      cityssm.openHtmlModal('contract-editTransaction', {
+        onshow(modalElement) {
+          sunrise.populateAliases(modalElement)
+          ;(
+            modalElement.querySelector(
+              '#contractTransactionEdit--contractId'
+            ) as HTMLInputElement
+          ).value = contractId
+          ;(
+            modalElement.querySelector(
+              '#contractTransactionEdit--transactionIndex'
+            ) as HTMLInputElement
+          ).value = transaction.transactionIndex?.toString() ?? ''
+          ;(
+            modalElement.querySelector(
+              '#contractTransactionEdit--transactionAmount'
+            ) as HTMLInputElement
+          ).value = transaction.transactionAmount.toFixed(2)
+          ;(
+            modalElement.querySelector(
+              '#contractTransactionEdit--externalReceiptNumber'
+            ) as HTMLInputElement
+          ).value = transaction.externalReceiptNumber ?? ''
+          ;(
+            modalElement.querySelector(
+              '#contractTransactionEdit--transactionNote'
+            ) as HTMLTextAreaElement
+          ).value = transaction.transactionNote ?? ''
+          ;(
+            modalElement.querySelector(
+              '#contractTransactionEdit--transactionDateString'
+            ) as HTMLInputElement
+          ).value = transaction.transactionDateString ?? ''
+          ;(
+            modalElement.querySelector(
+              '#contractTransactionEdit--transactionTimeString'
+            ) as HTMLInputElement
+          ).value = transaction.transactionTimeString ?? ''
+        },
+        onshown(modalElement, closeModalFunction) {
+          bulmaJS.toggleHtmlClipped()
+
+          sunrise.initializeDatePickers(modalElement)
+          ;(
+            modalElement.querySelector(
+              '#contractTransactionEdit--transactionAmount'
+            ) as HTMLInputElement
+          ).focus()
+
+          modalElement.querySelector('form')?.addEventListener('submit', doEdit)
+
+          editCloseModalFunction = closeModalFunction
+        },
+        onremoved() {
+          bulmaJS.toggleHtmlClipped()
         }
+      })
+    }
 
+    function deleteContractTransaction(clickEvent: Event): void {
+      const transactionIndex = (
+        (clickEvent.currentTarget as HTMLElement).closest(
+          '.container--contractTransaction'
+        ) as HTMLElement
+      ).dataset.transactionIndex
+
+      function doDelete(): void {
+        cityssm.postJSON(
+          `${sunrise.urlPrefix}/contracts/doDeleteContractTransaction`,
+          {
+            contractId,
+            transactionIndex
+          },
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+              contractTransactions: ContractTransaction[]
+            }
+
+            if (responseJSON.success) {
+              contractTransactions = responseJSON.contractTransactions
+              renderContractTransactions()
+            } else {
+              bulmaJS.alert({
+                title: 'Error Deleting Transaction',
+                message: responseJSON.errorMessage ?? '',
+                contextualColorName: 'danger'
+              })
+            }
+          }
+        )
+      }
+
+      bulmaJS.confirm({
+        title: 'Delete Transaction',
+        message: 'Are you sure you want to delete this transaction?',
+        contextualColorName: 'warning',
+        okButton: {
+          text: 'Yes, Delete Transaction',
+          callbackFunction: doDelete
+        }
+      })
+    }
+
+    function renderContractTransactions(): void {
+      if (contractTransactions.length === 0) {
         // eslint-disable-next-line no-unsanitized/property
-        contractTransactionsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-      <thead><tr>
-        <th class="has-width-1">Date</th>
-        <th>${sunrise.escapedAliases.ExternalReceiptNumber}</th>
-        <th class="has-text-right has-width-1">Amount</th>
-        <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
-      </tr></thead>
-      <tbody></tbody>
-      <tfoot><tr>
-        <th colspan="2">Transaction Total</th>
-        <td class="has-text-weight-bold has-text-right" id="contractTransactions--grandTotal"></td>
-        <td class="is-hidden-print"></td>
-      </tr></tfoot>
-      </table>`
+        contractTransactionsContainerElement.innerHTML = `<div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
+          <p class="message-body">There are no transactions associated with this record.</p>
+          </div>`
 
-        let transactionGrandTotal = 0
+        return
+      }
 
-        for (const contractTransaction of contractTransactions) {
-          transactionGrandTotal += contractTransaction.transactionAmount
+      // eslint-disable-next-line no-unsanitized/property
+      contractTransactionsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
+        <thead><tr>
+          <th class="has-width-1">Date</th>
+          <th>${sunrise.escapedAliases.ExternalReceiptNumber}</th>
+          <th class="has-text-right has-width-1">Amount</th>
+          <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
+        </tr></thead>
+        <tbody></tbody>
+        <tfoot><tr>
+          <th colspan="2">Transaction Total</th>
+          <td class="has-text-weight-bold has-text-right" id="contractTransactions--grandTotal"></td>
+          <td class="is-hidden-print"></td>
+        </tr></tfoot>
+        </table>`
 
-          const tableRowElement = document.createElement('tr')
-          tableRowElement.className = 'container--contractTransaction'
-          tableRowElement.dataset.transactionIndex =
-            contractTransaction.transactionIndex?.toString()
+      let transactionGrandTotal = 0
 
-          let externalReceiptNumberHTML = ''
+      for (const contractTransaction of contractTransactions) {
+        transactionGrandTotal += contractTransaction.transactionAmount
 
-          if (contractTransaction.externalReceiptNumber !== '') {
-            externalReceiptNumberHTML = cityssm.escapeHTML(
-              contractTransaction.externalReceiptNumber ?? ''
-            )
+        const tableRowElement = document.createElement('tr')
+        tableRowElement.className = 'container--contractTransaction'
+        tableRowElement.dataset.transactionIndex =
+          contractTransaction.transactionIndex?.toString()
 
-            if (sunrise.dynamicsGPIntegrationIsEnabled) {
-              if (contractTransaction.dynamicsGPDocument === undefined) {
-                externalReceiptNumberHTML += ` <span data-tooltip="No Matching Document Found">
-            <i class="fas fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
-            </span>`
-              } else if (
-                contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
-                  2
-                ) === contractTransaction.transactionAmount.toFixed(2)
-              ) {
-                externalReceiptNumberHTML += ` <span data-tooltip="Matching Document Found">
-            <i class="fas fa-check-circle has-text-success" aria-label="Matching Document Found"></i>
-            </span>`
-              } else {
-                externalReceiptNumberHTML += ` <span data-tooltip="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
-                  2
-                )}">
+        let externalReceiptNumberHTML = ''
+
+        if (contractTransaction.externalReceiptNumber !== '') {
+          externalReceiptNumberHTML = cityssm.escapeHTML(
+            contractTransaction.externalReceiptNumber ?? ''
+          )
+
+          if (sunrise.dynamicsGPIntegrationIsEnabled) {
+            if (contractTransaction.dynamicsGPDocument === undefined) {
+              externalReceiptNumberHTML += ` <span data-tooltip="No Matching Document Found">
+                <i class="fas fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
+                </span>`
+            } else if (
+              contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
+                2
+              ) === contractTransaction.transactionAmount.toFixed(2)
+            ) {
+              externalReceiptNumberHTML += ` <span data-tooltip="Matching Document Found">
+                <i class="fas fa-check-circle has-text-success" aria-label="Matching Document Found"></i>
+                </span>`
+            } else {
+              externalReceiptNumberHTML += ` <span data-tooltip="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
+                2
+              )}">
             <i class="fas fa-check-circle has-text-warning" aria-label="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
               2
             )}"></i>
             </span>`
-              }
             }
-
-            externalReceiptNumberHTML += '<br />'
           }
 
-          // eslint-disable-next-line no-unsanitized/property
-          tableRowElement.innerHTML = `<td>
-      ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
-      </td>
-      <td>
-        ${externalReceiptNumberHTML}
-        <small>${cityssm.escapeHTML(contractTransaction.transactionNote ?? '')}</small>
-      </td>
-      <td class="has-text-right">
-        $${cityssm.escapeHTML(contractTransaction.transactionAmount.toFixed(2))}
-      </td>
-      <td class="is-hidden-print">
-        <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-          <button class="button is-primary button--edit" type="button">
-            <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-            <span>Edit</span>
-          </button>
-          <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
-            <i class="fas fa-trash" aria-hidden="true"></i>
-          </button>
-        </div>
-      </td>`
-
-          tableRowElement
-            .querySelector('.button--edit')
-            ?.addEventListener('click', editLotOccupancyTransaction)
-
-          tableRowElement
-            .querySelector('.button--delete')
-            ?.addEventListener('click', deleteContractTransaction)
-
-          contractTransactionsContainerElement
-            .querySelector('tbody')
-            ?.append(tableRowElement)
+          externalReceiptNumberHTML += '<br />'
         }
 
-        ;(
-          contractTransactionsContainerElement.querySelector(
-            '#contractTransactions--grandTotal'
-          ) as HTMLElement
-        ).textContent = `$${transactionGrandTotal.toFixed(2)}`
-
-        const feeGrandTotal = getFeeGrandTotal()
-
-        if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
-          contractTransactionsContainerElement.insertAdjacentHTML(
-            'afterbegin',
-            `<div class="message is-warning">
-        <div class="message-body">
-        <div class="level">
-          <div class="level-left">
-            <div class="level-item">Outstanding Balance</div>
-          </div>
-          <div class="level-right">
-            <div class="level-item">
-              $${cityssm.escapeHTML((feeGrandTotal - transactionGrandTotal).toFixed(2))}
+        // eslint-disable-next-line no-unsanitized/property
+        tableRowElement.innerHTML = `<td>
+          ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
+          </td>
+          <td>
+            ${externalReceiptNumberHTML}
+            <small>${cityssm.escapeHTML(contractTransaction.transactionNote ?? '')}</small>
+          </td>
+          <td class="has-text-right">
+            $${cityssm.escapeHTML(contractTransaction.transactionAmount.toFixed(2))}
+          </td>
+          <td class="is-hidden-print">
+            <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
+              <button class="button is-primary button--edit" type="button">
+                <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                <span>Edit</span>
+              </button>
+              <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
             </div>
-          </div>
-        </div>
-        </div></div>`
-          )
-        }
+          </td>`
+
+        tableRowElement
+          .querySelector('.button--edit')
+          ?.addEventListener('click', editContractTransaction)
+
+        tableRowElement
+          .querySelector('.button--delete')
+          ?.addEventListener('click', deleteContractTransaction)
+
+        contractTransactionsContainerElement
+          .querySelector('tbody')
+          ?.append(tableRowElement)
       }
 
-      const addTransactionButtonElement = document.querySelector(
-        '#button--addTransaction'
-      ) as HTMLButtonElement
+      ;(
+        contractTransactionsContainerElement.querySelector(
+          '#contractTransactions--grandTotal'
+        ) as HTMLElement
+      ).textContent = `$${transactionGrandTotal.toFixed(2)}`
 
-      addTransactionButtonElement.addEventListener('click', () => {
-        let transactionAmountElement: HTMLInputElement
-        let externalReceiptNumberElement: HTMLInputElement
+      const feeGrandTotal = getFeeGrandTotal()
 
-        let addCloseModalFunction: () => void
+      if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
+        contractTransactionsContainerElement.insertAdjacentHTML(
+          'afterbegin',
+          `<div class="message is-warning">
+            <div class="message-body">
+            <div class="level">
+              <div class="level-left">
+                <div class="level-item">Outstanding Balance</div>
+              </div>
+              <div class="level-right">
+                <div class="level-item">
+                  $${cityssm.escapeHTML((feeGrandTotal - transactionGrandTotal).toFixed(2))}
+                </div>
+              </div>
+            </div>
+            </div></div>`
+        )
+      }
+    }
 
-        function doAddTransaction(submitEvent: SubmitEvent): void {
-          submitEvent.preventDefault()
+    const addTransactionButtonElement = document.querySelector(
+      '#button--addTransaction'
+    ) as HTMLButtonElement
 
-          cityssm.postJSON(
-            `${sunrise.urlPrefix}/contracts/doAddLotOccupancyTransaction`,
-            submitEvent.currentTarget,
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                success: boolean
-                errorMessage?: string
-                contractTransactions: LotOccupancyTransaction[]
-              }
+    addTransactionButtonElement.addEventListener('click', () => {
+      let transactionAmountElement: HTMLInputElement
+      let externalReceiptNumberElement: HTMLInputElement
 
-              if (responseJSON.success) {
-                contractTransactions = responseJSON.contractTransactions
-                addCloseModalFunction()
-                renderLotOccupancyTransactions()
-              } else {
-                bulmaJS.confirm({
-                  title: 'Error Adding Transaction',
-                  message: responseJSON.errorMessage ?? '',
-                  contextualColorName: 'danger'
-                })
-              }
+      let addCloseModalFunction: () => void
+
+      function doAddTransaction(submitEvent: SubmitEvent): void {
+        submitEvent.preventDefault()
+
+        cityssm.postJSON(
+          `${sunrise.urlPrefix}/contracts/doAddContractTransaction`,
+          submitEvent.currentTarget,
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+              contractTransactions: ContractTransaction[]
             }
-          )
-        }
 
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        function dynamicsGP_refreshExternalReceiptNumberIcon(): void {
-          const externalReceiptNumber = externalReceiptNumberElement.value
-
-          const iconElement = externalReceiptNumberElement
-            .closest('.control')
-            ?.querySelector('.icon') as HTMLElement
-
-          const helpTextElement = externalReceiptNumberElement
-            .closest('.field')
-            ?.querySelector('.help') as HTMLElement
-
-          if (externalReceiptNumber === '') {
-            helpTextElement.innerHTML = '&nbsp;'
-            iconElement.innerHTML =
-              '<i class="fas fa-minus" aria-hidden="true"></i>'
-            return
+            if (responseJSON.success) {
+              contractTransactions = responseJSON.contractTransactions
+              addCloseModalFunction()
+              renderContractTransactions()
+            } else {
+              bulmaJS.confirm({
+                title: 'Error Adding Transaction',
+                message: responseJSON.errorMessage ?? '',
+                contextualColorName: 'danger'
+              })
+            }
           }
+        )
+      }
 
-          cityssm.postJSON(
-            `${sunrise.urlPrefix}/contracts/doGetDynamicsGPDocument`,
-            {
-              externalReceiptNumber
-            },
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                success: boolean
-                dynamicsGPDocument?: DynamicsGPDocument
-              }
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      function dynamicsGP_refreshExternalReceiptNumberIcon(): void {
+        const externalReceiptNumber = externalReceiptNumberElement.value
 
-              if (
-                !responseJSON.success ||
-                responseJSON.dynamicsGPDocument === undefined
-              ) {
-                helpTextElement.textContent = 'No Matching Document Found'
-                iconElement.innerHTML =
-                  '<i class="fas fa-times-circle" aria-hidden="true"></i>'
-              } else if (
-                transactionAmountElement.valueAsNumber ===
-                responseJSON.dynamicsGPDocument.documentTotal
-              ) {
-                helpTextElement.textContent = 'Matching Document Found'
-                iconElement.innerHTML =
-                  '<i class="fas fa-check-circle" aria-hidden="true"></i>'
-              } else {
-                helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)}`
-                iconElement.innerHTML =
-                  '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i>'
-              }
-            }
-          )
+        const iconElement = externalReceiptNumberElement
+          .closest('.control')
+          ?.querySelector('.icon') as HTMLElement
+
+        const helpTextElement = externalReceiptNumberElement
+          .closest('.field')
+          ?.querySelector('.help') as HTMLElement
+
+        if (externalReceiptNumber === '') {
+          helpTextElement.innerHTML = '&nbsp;'
+          iconElement.innerHTML =
+            '<i class="fas fa-minus" aria-hidden="true"></i>'
+          return
         }
 
-        cityssm.openHtmlModal('contract-addTransaction', {
-          onshow(modalElement) {
-            sunrise.populateAliases(modalElement)
-            ;(
-              modalElement.querySelector(
-                '#contractTransactionAdd--contractId'
-              ) as HTMLInputElement
-            ).value = contractId.toString()
+        cityssm.postJSON(
+          `${sunrise.urlPrefix}/contracts/doGetDynamicsGPDocument`,
+          {
+            externalReceiptNumber
+          },
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              dynamicsGPDocument?: DynamicsGPDocument
+            }
 
-            const feeGrandTotal = getFeeGrandTotal()
-            const transactionGrandTotal = getTransactionGrandTotal()
+            if (
+              !responseJSON.success ||
+              responseJSON.dynamicsGPDocument === undefined
+            ) {
+              helpTextElement.textContent = 'No Matching Document Found'
+              iconElement.innerHTML =
+                '<i class="fas fa-times-circle" aria-hidden="true"></i>'
+            } else if (
+              transactionAmountElement.valueAsNumber ===
+              responseJSON.dynamicsGPDocument.documentTotal
+            ) {
+              helpTextElement.textContent = 'Matching Document Found'
+              iconElement.innerHTML =
+                '<i class="fas fa-check-circle" aria-hidden="true"></i>'
+            } else {
+              helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)}`
+              iconElement.innerHTML =
+                '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i>'
+            }
+          }
+        )
+      }
 
-            transactionAmountElement = modalElement.querySelector(
-              '#contractTransactionAdd--transactionAmount'
+      cityssm.openHtmlModal('contract-addTransaction', {
+        onshow(modalElement) {
+          sunrise.populateAliases(modalElement)
+          ;(
+            modalElement.querySelector(
+              '#contractTransactionAdd--contractId'
+            ) as HTMLInputElement
+          ).value = contractId.toString()
+
+          const feeGrandTotal = getFeeGrandTotal()
+          const transactionGrandTotal = getTransactionGrandTotal()
+
+          transactionAmountElement = modalElement.querySelector(
+            '#contractTransactionAdd--transactionAmount'
+          ) as HTMLInputElement
+
+          transactionAmountElement.min = (-1 * transactionGrandTotal).toFixed(2)
+
+          transactionAmountElement.max = Math.max(
+            feeGrandTotal - transactionGrandTotal,
+            0
+          ).toFixed(2)
+
+          transactionAmountElement.value = Math.max(
+            feeGrandTotal - transactionGrandTotal,
+            0
+          ).toFixed(2)
+
+          if (sunrise.dynamicsGPIntegrationIsEnabled) {
+            externalReceiptNumberElement = modalElement.querySelector(
+              '#contractTransactionAdd--externalReceiptNumber'
             ) as HTMLInputElement
 
-            transactionAmountElement.min = (-1 * transactionGrandTotal).toFixed(
-              2
+            const externalReceiptNumberControlElement =
+              externalReceiptNumberElement.closest('.control') as HTMLElement
+
+            externalReceiptNumberControlElement.classList.add('has-icons-right')
+
+            externalReceiptNumberControlElement.insertAdjacentHTML(
+              'beforeend',
+              '<span class="icon is-small is-right"></span>'
             )
 
-            transactionAmountElement.max = Math.max(
-              feeGrandTotal - transactionGrandTotal,
-              0
-            ).toFixed(2)
+            externalReceiptNumberControlElement.insertAdjacentHTML(
+              'afterend',
+              '<p class="help has-text-right"></p>'
+            )
 
-            transactionAmountElement.value = Math.max(
-              feeGrandTotal - transactionGrandTotal,
-              0
-            ).toFixed(2)
+            externalReceiptNumberElement.addEventListener(
+              'change',
+              dynamicsGP_refreshExternalReceiptNumberIcon
+            )
 
-            if (sunrise.dynamicsGPIntegrationIsEnabled) {
-              externalReceiptNumberElement = modalElement.querySelector(
-                // eslint-disable-next-line no-secrets/no-secrets
-                '#contractTransactionAdd--externalReceiptNumber'
-              ) as HTMLInputElement
+            transactionAmountElement.addEventListener(
+              'change',
+              dynamicsGP_refreshExternalReceiptNumberIcon
+            )
 
-              const externalReceiptNumberControlElement =
-                externalReceiptNumberElement.closest('.control') as HTMLElement
-
-              externalReceiptNumberControlElement.classList.add(
-                'has-icons-right'
-              )
-
-              externalReceiptNumberControlElement.insertAdjacentHTML(
-                'beforeend',
-                '<span class="icon is-small is-right"></span>'
-              )
-
-              externalReceiptNumberControlElement.insertAdjacentHTML(
-                'afterend',
-                '<p class="help has-text-right"></p>'
-              )
-
-              externalReceiptNumberElement.addEventListener(
-                'change',
-                dynamicsGP_refreshExternalReceiptNumberIcon
-              )
-
-              transactionAmountElement.addEventListener(
-                'change',
-                dynamicsGP_refreshExternalReceiptNumberIcon
-              )
-
-              dynamicsGP_refreshExternalReceiptNumberIcon()
-            }
-          },
-          onshown(modalElement, closeModalFunction) {
-            bulmaJS.toggleHtmlClipped()
-
-            transactionAmountElement.focus()
-
-            addCloseModalFunction = closeModalFunction
-
-            modalElement
-              .querySelector('form')
-              ?.addEventListener('submit', doAddTransaction)
-          },
-          onremoved() {
-            bulmaJS.toggleHtmlClipped()
-            addTransactionButtonElement.focus()
+            dynamicsGP_refreshExternalReceiptNumberIcon()
           }
-        })
-      })
+        },
+        onshown(modalElement, closeModalFunction) {
+          bulmaJS.toggleHtmlClipped()
 
-      renderLotOccupancyFees()
-    })()
+          transactionAmountElement.focus()
+
+          addCloseModalFunction = closeModalFunction
+
+          modalElement
+            .querySelector('form')
+            ?.addEventListener('submit', doAddTransaction)
+        },
+        onremoved() {
+          bulmaJS.toggleHtmlClipped()
+          addTransactionButtonElement.focus()
+        }
+      })
+    })
+
+    renderContractFees()
   }
 })()

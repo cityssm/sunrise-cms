@@ -1,11 +1,9 @@
 import type { Request, Response } from 'express'
 
-import getCemeteries from '../../database/getCemeteries.js'
 import getContract from '../../database/getContract.js'
+import getFuneralHomes from '../../database/getFuneralHomes.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import {
-  getBurialSiteStatuses,
-  getBurialSiteTypes,
   getContractTypePrintsById,
   getContractTypes,
   getWorkOrderTypes
@@ -33,9 +31,7 @@ export default async function handler(
   )
 
   const contractTypes = await getContractTypes()
-  const burialSiteTypes = await getBurialSiteTypes()
-  const burialSiteStatuses = await getBurialSiteStatuses()
-  const cemeteries = await getCemeteries()
+  const funeralHomes = await getFuneralHomes()
   const workOrderTypes = await getWorkOrderTypes()
 
   response.render('contract-edit', {
@@ -44,9 +40,7 @@ export default async function handler(
     contractTypePrints,
 
     contractTypes,
-    burialSiteTypes,
-    burialSiteStatuses,
-    cemeteries,
+    funeralHomes,
     workOrderTypes,
 
     isCreate: false

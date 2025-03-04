@@ -1,4 +1,6 @@
 "use strict";
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable max-lines */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
@@ -192,6 +194,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
     if (isCreate) {
         const contractFieldsContainerElement = document.querySelector('#container--contractFields');
         contractTypeIdElement.addEventListener('change', () => {
+            const recipientOrPreneedElements = document.querySelectorAll('.is-recipient-or-deceased');
+            const isPreneed = contractTypeIdElement.selectedOptions[0].dataset.isPreneed === 'true';
+            for (const recipientOrPreneedElement of recipientOrPreneedElements) {
+                recipientOrPreneedElement.textContent = isPreneed
+                    ? 'Recipient'
+                    : 'Deceased';
+            }
             if (contractTypeIdElement.value === '') {
                 contractFieldsContainerElement.innerHTML = `<div class="message is-info">
           <p class="message-body">Select the contract type to load the available fields.</p>
@@ -291,7 +300,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const currentBurialSiteName = clickEvent.currentTarget
             .value;
         let burialSiteSelectCloseModalFunction;
-        let burialSiteSelectModalElement;
         let burialSiteSelectFormElement;
         let burialSiteSelectResultsElement;
         function renderSelectedBurialSiteAndClose(burialSiteId, burialSiteName) {
@@ -303,8 +311,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         function selectExistingBurialSite(clickEvent) {
             clickEvent.preventDefault();
-            const selectedLotElement = clickEvent.currentTarget;
-            renderSelectedBurialSiteAndClose(selectedLotElement.dataset.burialSiteId ?? '', selectedLotElement.dataset.burialSiteName ?? '');
+            const selectedBurialSiteElement = clickEvent.currentTarget;
+            renderSelectedBurialSiteAndClose(selectedBurialSiteElement.dataset.burialSiteId ?? '', selectedBurialSiteElement.dataset.burialSiteName ?? '');
         }
         function searchBurialSites() {
             // eslint-disable-next-line no-unsanitized/property
@@ -326,7 +334,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     panelBlockElement.href = '#';
                     panelBlockElement.dataset.burialSiteId =
                         burialSite.burialSiteId.toString();
-                    panelBlockElement.dataset.lotName = burialSite.burialSiteName;
+                    panelBlockElement.dataset.burialSiteName = burialSite.burialSiteName;
                     // eslint-disable-next-line no-unsanitized/property
                     panelBlockElement.innerHTML = `<div class="columns">
               <div class="column">
@@ -347,33 +355,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 burialSiteSelectResultsElement.append(panelElement);
             });
         }
-        function createBurialSiteAndSelect(submitEvent) {
-            submitEvent.preventDefault();
-            const burialSiteName = burialSiteSelectModalElement.querySelector('#burialSiteCreate--burialSiteName').value;
-            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doCreateBurialSite`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
-                if (responseJSON.success) {
-                    renderSelectedBurialSiteAndClose(responseJSON.burialSiteId ?? '', burialSiteName);
-                }
-                else {
-                    bulmaJS.alert({
-                        title: `Error Creating Burial Site`,
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
-                    });
-                }
-            });
-        }
         cityssm.openHtmlModal('contract-selectBurialSite', {
             onshow(modalElement) {
                 sunrise.populateAliases(modalElement);
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
-                burialSiteSelectModalElement = modalElement;
                 burialSiteSelectCloseModalFunction = closeModalFunction;
                 bulmaJS.init(modalElement);
-                // search Tab
+                // Search Tab
                 const burialSiteNameFilterElement = modalElement.querySelector('#burialSiteSelect--burialSiteName');
                 if (document.querySelector('#contract--burialSiteId').value !== '') {
                     burialSiteNameFilterElement.value = currentBurialSiteName;
@@ -391,32 +381,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     submitEvent.preventDefault();
                 });
                 searchBurialSites();
-                const burialSiteTypeElement = modalElement.querySelector('#burialSiteCreate--burialSiteTypeId');
-                for (const burialSiteType of exports.burialSiteTypes) {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = burialSiteType.burialSiteTypeId.toString();
-                    optionElement.textContent = burialSiteType.burialSiteType;
-                    burialSiteTypeElement.append(optionElement);
-                }
-                const burialSiteStatusElement = modalElement.querySelector('#burialSiteCreate--burialSiteStatusId');
-                for (const burialSiteStatus of exports.burialSiteStatuses) {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = burialSiteStatus.burialSiteStatusId.toString();
-                    optionElement.textContent = burialSiteStatus.burialSiteStatus;
-                    burialSiteStatusElement.append(optionElement);
-                }
-                const mapElement = modalElement.querySelector('#burialSiteCreate--cemeteryId');
-                for (const cemetery of exports.cemeteries) {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = cemetery.cemeteryId.toString();
-                    optionElement.textContent =
-                        (cemetery.cemeteryName ?? '') === ''
-                            ? '(No Name)'
-                            : cemetery.cemeteryName ?? '';
-                    mapElement.append(optionElement);
-                }
-                ;
-                modalElement.querySelector('#form--burialSiteCreate').addEventListener('submit', createBurialSiteAndSelect);
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();
@@ -462,128 +426,154 @@ Object.defineProperty(exports, "__esModule", { value: true });
         endDatePicker.refresh();
     });
     sunrise.initializeUnlockFieldButtons(formElement);
-    if (!isCreate) {
+    if (isCreate) {
+        /*
+         * Deceased
+         */
+        document
+            .querySelector('#button--copyFromPurchaser')
+            ?.addEventListener('click', () => {
+            const fieldsToCopy = [
+                'Name',
+                'Address1',
+                'Address2',
+                'City',
+                'Province',
+                'PostalCode'
+            ];
+            for (const fieldToCopy of fieldsToCopy) {
+                const purchaserFieldElement = document.querySelector(`#contract--purchaser${fieldToCopy}`);
+                const deceasedFieldElement = document.querySelector(`#contract--deceased${fieldToCopy}`);
+                deceasedFieldElement.value = purchaserFieldElement.value;
+            }
+            setUnsavedChanges();
+        });
+    }
+    else {
+        /**
+         * Interments
+         */
+        let contractInterments = exports.contractInterments;
+        delete exports.contractInterments;
+        function renderContractInterments() {
+        }
         /**
          * Comments
          */
-        ;
-        (() => {
-            let contractComments = exports.contractComments;
-            delete exports.contractComments;
-            function openEditLotOccupancyComment(clickEvent) {
-                const contractCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-                    .contractCommentId ?? '', 10);
-                const contractComment = contractComments.find((currentLotOccupancyComment) => {
-                    return (currentLotOccupancyComment.contractCommentId === contractCommentId);
-                });
-                let editFormElement;
-                let editCloseModalFunction;
-                function editComment(submitEvent) {
-                    submitEvent.preventDefault();
-                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractComment`, editFormElement, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.success) {
-                            contractComments = responseJSON.contractComments ?? [];
-                            editCloseModalFunction();
-                            renderLotOccupancyComments();
-                        }
-                        else {
-                            bulmaJS.alert({
-                                title: 'Error Updating Comment',
-                                message: responseJSON.errorMessage ?? '',
-                                contextualColorName: 'danger'
-                            });
-                        }
-                    });
-                }
-                cityssm.openHtmlModal('contract-editComment', {
-                    onshow(modalElement) {
-                        sunrise.populateAliases(modalElement);
-                        modalElement.querySelector('#contractCommentEdit--contractId').value = contractId;
-                        modalElement.querySelector('#contractCommentEdit--contractCommentId').value = contractCommentId.toString();
-                        modalElement.querySelector('#contractCommentEdit--contractComment').value = contractComment.contractComment ?? '';
-                        const contractCommentDateStringElement = modalElement.querySelector('#contractCommentEdit--contractCommentDateString');
-                        contractCommentDateStringElement.value =
-                            contractComment.contractCommentDateString ?? '';
-                        const currentDateString = cityssm.dateToString(new Date());
-                        contractCommentDateStringElement.max =
-                            contractComment.contractCommentDateString <= currentDateString
-                                ? currentDateString
-                                : contractComment.contractCommentDateString ?? '';
-                        modalElement.querySelector('#contractCommentEdit--contractCommentTimeString').value = contractComment.contractCommentTimeString ?? '';
-                    },
-                    onshown(modalElement, closeModalFunction) {
-                        bulmaJS.toggleHtmlClipped();
-                        sunrise.initializeDatePickers(modalElement);
-                        modalElement.querySelector('#contractCommentEdit--contractComment').focus();
-                        editFormElement = modalElement.querySelector('form');
-                        editFormElement.addEventListener('submit', editComment);
-                        editCloseModalFunction = closeModalFunction;
-                    },
-                    onremoved() {
-                        bulmaJS.toggleHtmlClipped();
+        let contractComments = exports.contractComments;
+        delete exports.contractComments;
+        function openEditContractComment(clickEvent) {
+            const contractCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+                .contractCommentId ?? '', 10);
+            const contractComment = contractComments.find((currentComment) => currentComment.contractCommentId === contractCommentId);
+            let editFormElement;
+            let editCloseModalFunction;
+            function editContractComment(submitEvent) {
+                submitEvent.preventDefault();
+                cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractComment`, editFormElement, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    if (responseJSON.success) {
+                        contractComments = responseJSON.contractComments ?? [];
+                        editCloseModalFunction();
+                        renderContractComments();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: 'Error Updating Comment',
+                            message: responseJSON.errorMessage ?? '',
+                            contextualColorName: 'danger'
+                        });
                     }
                 });
             }
-            function deleteLotOccupancyComment(clickEvent) {
-                const contractCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-                    .contractCommentId ?? '', 10);
-                function doDelete() {
-                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractComment`, {
-                        contractId,
-                        contractCommentId
-                    }, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.success) {
-                            contractComments = responseJSON.contractComments;
-                            renderLotOccupancyComments();
-                        }
-                        else {
-                            bulmaJS.alert({
-                                title: 'Error Removing Comment',
-                                message: responseJSON.errorMessage ?? '',
-                                contextualColorName: 'danger'
-                            });
-                        }
-                    });
+            cityssm.openHtmlModal('contract-editComment', {
+                onshow(modalElement) {
+                    sunrise.populateAliases(modalElement);
+                    modalElement.querySelector('#contractCommentEdit--contractId').value = contractId;
+                    modalElement.querySelector('#contractCommentEdit--contractCommentId').value = contractCommentId.toString();
+                    modalElement.querySelector('#contractCommentEdit--contractComment').value = contractComment.contractComment ?? '';
+                    const contractCommentDateStringElement = modalElement.querySelector('#contractCommentEdit--contractCommentDateString');
+                    contractCommentDateStringElement.value =
+                        contractComment.contractCommentDateString ?? '';
+                    const currentDateString = cityssm.dateToString(new Date());
+                    contractCommentDateStringElement.max =
+                        contractComment.contractCommentDateString <= currentDateString
+                            ? currentDateString
+                            : contractComment.contractCommentDateString ?? '';
+                    modalElement.querySelector('#contractCommentEdit--contractCommentTimeString').value = contractComment.contractCommentTimeString ?? '';
+                },
+                onshown(modalElement, closeModalFunction) {
+                    bulmaJS.toggleHtmlClipped();
+                    sunrise.initializeDatePickers(modalElement);
+                    modalElement.querySelector('#contractCommentEdit--contractComment').focus();
+                    editFormElement = modalElement.querySelector('form');
+                    editFormElement.addEventListener('submit', editContractComment);
+                    editCloseModalFunction = closeModalFunction;
+                },
+                onremoved() {
+                    bulmaJS.toggleHtmlClipped();
                 }
-                bulmaJS.confirm({
-                    title: 'Remove Comment?',
-                    message: 'Are you sure you want to remove this comment?',
-                    okButton: {
-                        text: 'Yes, Remove Comment',
-                        callbackFunction: doDelete
-                    },
-                    contextualColorName: 'warning'
+            });
+        }
+        function deleteContractComment(clickEvent) {
+            const contractCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+                .contractCommentId ?? '', 10);
+            function doDelete() {
+                cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractComment`, {
+                    contractId,
+                    contractCommentId
+                }, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    if (responseJSON.success) {
+                        contractComments = responseJSON.contractComments;
+                        renderContractComments();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: 'Error Removing Comment',
+                            message: responseJSON.errorMessage ?? '',
+                            contextualColorName: 'danger'
+                        });
+                    }
                 });
             }
-            function renderLotOccupancyComments() {
-                const containerElement = document.querySelector('#container--contractComments');
-                if (contractComments.length === 0) {
-                    containerElement.innerHTML = `<div class="message is-info">
+            bulmaJS.confirm({
+                title: 'Remove Comment?',
+                message: 'Are you sure you want to remove this comment?',
+                okButton: {
+                    text: 'Yes, Remove Comment',
+                    callbackFunction: doDelete
+                },
+                contextualColorName: 'warning'
+            });
+        }
+        function renderContractComments() {
+            const containerElement = document.querySelector('#container--contractComments');
+            if (contractComments.length === 0) {
+                containerElement.innerHTML = `<div class="message is-info">
       <p class="message-body">There are no comments associated with this record.</p>
       </div>`;
-                    return;
-                }
-                const tableElement = document.createElement('table');
-                tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-                tableElement.innerHTML = `<thead><tr>
-    <th>Commentor</th>
-    <th>Comment Date</th>
-    <th>Comment</th>
-    <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-    </tr></thead>
-    <tbody></tbody>`;
-                for (const contractComment of contractComments) {
-                    const tableRowElement = document.createElement('tr');
-                    tableRowElement.dataset.contractCommentId =
-                        contractComment.contractCommentId?.toString();
-                    tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
+                return;
+            }
+            const tableElement = document.createElement('table');
+            tableElement.className = 'table is-fullwidth is-striped is-hoverable';
+            tableElement.innerHTML = `<thead><tr>
+          <th>Author</th>
+          <th>Comment Date</th>
+          <th>Comment</th>
+          <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+          </tr></thead>
+          <tbody></tbody>`;
+            for (const contractComment of contractComments) {
+                const tableRowElement = document.createElement('tr');
+                tableRowElement.dataset.contractCommentId =
+                    contractComment.contractCommentId?.toString();
+                tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
       <td>
       ${cityssm.escapeHTML(contractComment.contractCommentDateString ?? '')}
       ${cityssm.escapeHTML(contractComment.contractCommentTime === 0
-                        ? ''
-                        : contractComment.contractCommentTimePeriodString ?? '')}
+                    ? ''
+                    : contractComment.contractCommentTimePeriodString ?? '')}
       </td>
       <td>${cityssm.escapeHTML(contractComment.contractComment ?? '')}</td>
       <td class="is-hidden-print">
@@ -597,160 +587,159 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </button>
         </div>
       </td>`;
-                    tableRowElement
-                        .querySelector('.button--edit')
-                        ?.addEventListener('click', openEditLotOccupancyComment);
-                    tableRowElement
-                        .querySelector('.button--delete')
-                        ?.addEventListener('click', deleteLotOccupancyComment);
-                    tableElement.querySelector('tbody')?.append(tableRowElement);
-                }
-                containerElement.innerHTML = '';
-                containerElement.append(tableElement);
+                tableRowElement
+                    .querySelector('.button--edit')
+                    ?.addEventListener('click', openEditContractComment);
+                tableRowElement
+                    .querySelector('.button--delete')
+                    ?.addEventListener('click', deleteContractComment);
+                tableElement.querySelector('tbody')?.append(tableRowElement);
             }
-            document
-                .querySelector('#button--addComment')
-                ?.addEventListener('click', () => {
-                let addFormElement;
-                let addCloseModalFunction;
-                function addComment(submitEvent) {
-                    submitEvent.preventDefault();
-                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractComment`, addFormElement, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.success) {
-                            contractComments = responseJSON.contractComments;
-                            addCloseModalFunction();
-                            renderLotOccupancyComments();
-                        }
-                        else {
-                            bulmaJS.alert({
-                                title: 'Error Adding Comment',
-                                message: responseJSON.errorMessage ?? '',
-                                contextualColorName: 'danger'
-                            });
-                        }
-                    });
-                }
-                cityssm.openHtmlModal('contract-addComment', {
-                    onshow(modalElement) {
-                        sunrise.populateAliases(modalElement);
-                        modalElement.querySelector('#contractCommentAdd--contractId').value = contractId;
-                    },
-                    onshown(modalElement, closeModalFunction) {
-                        bulmaJS.toggleHtmlClipped();
-                        modalElement.querySelector('#contractCommentAdd--contractComment').focus();
-                        addFormElement = modalElement.querySelector('form');
-                        addFormElement.addEventListener('submit', addComment);
-                        addCloseModalFunction = closeModalFunction;
-                    },
-                    onremoved: () => {
-                        bulmaJS.toggleHtmlClipped();
-                        document.querySelector('#button--addComment').focus();
+            containerElement.innerHTML = '';
+            containerElement.append(tableElement);
+        }
+        document
+            .querySelector('#button--addComment')
+            ?.addEventListener('click', () => {
+            let addFormElement;
+            let addCloseModalFunction;
+            function addComment(submitEvent) {
+                submitEvent.preventDefault();
+                cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractComment`, addFormElement, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    if (responseJSON.success) {
+                        contractComments = responseJSON.contractComments;
+                        addCloseModalFunction();
+                        renderContractComments();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: 'Error Adding Comment',
+                            message: responseJSON.errorMessage ?? '',
+                            contextualColorName: 'danger'
+                        });
                     }
                 });
+            }
+            cityssm.openHtmlModal('contract-addComment', {
+                onshow(modalElement) {
+                    sunrise.populateAliases(modalElement);
+                    modalElement.querySelector('#contractCommentAdd--contractId').value = contractId;
+                },
+                onshown(modalElement, closeModalFunction) {
+                    bulmaJS.toggleHtmlClipped();
+                    modalElement.querySelector('#contractCommentAdd--comment').focus();
+                    addFormElement = modalElement.querySelector('form');
+                    addFormElement.addEventListener('submit', addComment);
+                    addCloseModalFunction = closeModalFunction;
+                },
+                onremoved() {
+                    bulmaJS.toggleHtmlClipped();
+                    document.querySelector('#button--addComment').focus();
+                }
             });
-            renderLotOccupancyComments();
-        })();
-        (() => {
-            let contractFees = exports.contractFees;
-            delete exports.contractFees;
-            const contractFeesContainerElement = document.querySelector('#container--contractFees');
-            function getFeeGrandTotal() {
-                let feeGrandTotal = 0;
-                for (const contractFee of contractFees) {
-                    feeGrandTotal +=
-                        ((contractFee.feeAmount ?? 0) + (contractFee.taxAmount ?? 0)) *
-                            (contractFee.quantity ?? 0);
-                }
-                return feeGrandTotal;
+        });
+        renderContractComments();
+        /**
+         * Fees
+         */
+        let contractFees = exports.contractFees;
+        delete exports.contractFees;
+        const contractFeesContainerElement = document.querySelector('#container--contractFees');
+        function getFeeGrandTotal() {
+            let feeGrandTotal = 0;
+            for (const contractFee of contractFees) {
+                feeGrandTotal +=
+                    ((contractFee.feeAmount ?? 0) + (contractFee.taxAmount ?? 0)) *
+                        (contractFee.quantity ?? 0);
             }
-            function editLotOccupancyFeeQuantity(clickEvent) {
-                const feeId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-                    .feeId ?? '', 10);
-                const fee = contractFees.find((possibleFee) => {
-                    return possibleFee.feeId === feeId;
-                });
-                let updateCloseModalFunction;
-                function doUpdateQuantity(formEvent) {
-                    formEvent.preventDefault();
-                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractFeeQuantity`, formEvent.currentTarget, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.success) {
-                            contractFees = responseJSON.contractFees;
-                            renderLotOccupancyFees();
-                            updateCloseModalFunction();
-                        }
-                        else {
-                            bulmaJS.alert({
-                                title: 'Error Updating Quantity',
-                                message: 'Please try again.',
-                                contextualColorName: 'danger'
-                            });
-                        }
-                    });
-                }
-                cityssm.openHtmlModal('contract-editFeeQuantity', {
-                    onshow(modalElement) {
-                        ;
-                        modalElement.querySelector('#contractFeeQuantity--contractId').value = contractId;
-                        modalElement.querySelector('#contractFeeQuantity--feeId').value = fee.feeId.toString();
-                        modalElement.querySelector('#contractFeeQuantity--quantity').valueAsNumber = fee.quantity ?? 0;
-                        modalElement.querySelector('#contractFeeQuantity--quantityUnit').textContent = fee.quantityUnit ?? '';
-                    },
-                    onshown(modalElement, closeModalFunction) {
-                        bulmaJS.toggleHtmlClipped();
-                        updateCloseModalFunction = closeModalFunction;
-                        modalElement.querySelector('#contractFeeQuantity--quantity').focus();
-                        modalElement
-                            .querySelector('form')
-                            ?.addEventListener('submit', doUpdateQuantity);
-                    },
-                    onremoved() {
-                        bulmaJS.toggleHtmlClipped();
+            return feeGrandTotal;
+        }
+        function editContractFeeQuantity(clickEvent) {
+            const feeId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+                .feeId ?? '', 10);
+            const fee = contractFees.find((possibleFee) => possibleFee.feeId === feeId);
+            let updateCloseModalFunction;
+            function doUpdateQuantity(formEvent) {
+                formEvent.preventDefault();
+                cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractFeeQuantity`, formEvent.currentTarget, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    if (responseJSON.success) {
+                        contractFees = responseJSON.contractFees;
+                        renderContractFees();
+                        updateCloseModalFunction();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: 'Error Updating Quantity',
+                            message: 'Please try again.',
+                            contextualColorName: 'danger'
+                        });
                     }
                 });
             }
-            function deleteContractFee(clickEvent) {
-                const feeId = clickEvent.currentTarget.closest('.container--contractFee').dataset.feeId;
-                function doDelete() {
-                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractFee`, {
-                        contractId,
-                        feeId
-                    }, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.success) {
-                            contractFees = responseJSON.contractFees;
-                            renderLotOccupancyFees();
-                        }
-                        else {
-                            bulmaJS.alert({
-                                title: 'Error Deleting Fee',
-                                message: responseJSON.errorMessage ?? '',
-                                contextualColorName: 'danger'
-                            });
-                        }
-                    });
+            cityssm.openHtmlModal('contract-editFeeQuantity', {
+                onshow(modalElement) {
+                    ;
+                    modalElement.querySelector('#contractFeeQuantity--contractId').value = contractId;
+                    modalElement.querySelector('#contractFeeQuantity--feeId').value = fee.feeId.toString();
+                    modalElement.querySelector('#contractFeeQuantity--quantity').valueAsNumber = fee.quantity ?? 0;
+                    modalElement.querySelector('#contractFeeQuantity--quantityUnit').textContent = fee.quantityUnit ?? '';
+                },
+                onshown(modalElement, closeModalFunction) {
+                    bulmaJS.toggleHtmlClipped();
+                    updateCloseModalFunction = closeModalFunction;
+                    modalElement.querySelector('#contractFeeQuantity--quantity').focus();
+                    modalElement
+                        .querySelector('form')
+                        ?.addEventListener('submit', doUpdateQuantity);
+                },
+                onremoved() {
+                    bulmaJS.toggleHtmlClipped();
                 }
-                bulmaJS.confirm({
-                    title: 'Delete Fee',
-                    message: 'Are you sure you want to delete this fee?',
-                    contextualColorName: 'warning',
-                    okButton: {
-                        text: 'Yes, Delete Fee',
-                        callbackFunction: doDelete
+            });
+        }
+        function deleteContractFee(clickEvent) {
+            const feeId = clickEvent.currentTarget.closest('.container--contractFee').dataset.feeId;
+            function doDelete() {
+                cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractFee`, {
+                    contractId,
+                    feeId
+                }, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    if (responseJSON.success) {
+                        contractFees = responseJSON.contractFees;
+                        renderContractFees();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: 'Error Deleting Fee',
+                            message: responseJSON.errorMessage ?? '',
+                            contextualColorName: 'danger'
+                        });
                     }
                 });
             }
-            function renderLotOccupancyFees() {
-                if (contractFees.length === 0) {
-                    contractFeesContainerElement.innerHTML = `<div class="message is-info">
+            bulmaJS.confirm({
+                title: 'Delete Fee',
+                message: 'Are you sure you want to delete this fee?',
+                contextualColorName: 'warning',
+                okButton: {
+                    text: 'Yes, Delete Fee',
+                    callbackFunction: doDelete
+                }
+            });
+        }
+        // eslint-disable-next-line complexity
+        function renderContractFees() {
+            if (contractFees.length === 0) {
+                contractFeesContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">There are no fees associated with this record.</p>
         </div>`;
-                    renderLotOccupancyTransactions();
-                    return;
-                }
-                // eslint-disable-next-line no-secrets/no-secrets
-                contractFeesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
+                renderContractTransactions();
+                return;
+            }
+            contractFeesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
       <thead><tr>
         <th>Fee</th>
         <th><span class="is-sr-only">Unit Cost</span></th>
@@ -774,174 +763,168 @@ Object.defineProperty(exports, "__esModule", { value: true });
         <td class="has-text-weight-bold has-text-right" id="contractFees--grandTotal"></td>
         <td class="is-hidden-print"></td>
       </tr></tfoot></table>`;
-                let feeAmountTotal = 0;
-                let taxAmountTotal = 0;
-                for (const contractFee of contractFees) {
-                    const tableRowElement = document.createElement('tr');
-                    tableRowElement.className = 'container--contractFee';
-                    tableRowElement.dataset.feeId = contractFee.feeId.toString();
-                    tableRowElement.dataset.includeQuantity =
-                        contractFee.includeQuantity ?? false ? '1' : '0';
-                    // eslint-disable-next-line no-unsanitized/property
-                    tableRowElement.innerHTML = `<td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
-      ${cityssm.escapeHTML(contractFee.feeName ?? '')}<br />
-      <span class="tag">${cityssm.escapeHTML(contractFee.feeCategory ?? '')}</span>
-      </td>
-      ${contractFee.quantity === 1
-                        ? ''
-                        : `<td class="has-text-right">
-              $${contractFee.feeAmount?.toFixed(2)}
-              </td>
-              <td>&times;</td>
-              <td class="has-text-right">${contractFee.quantity?.toString()}</td>
-              <td>=</td>`}
-      <td class="has-text-right">
-        $${((contractFee.feeAmount ?? 0) * (contractFee.quantity ?? 0)).toFixed(2)}
-      </td>
-      <td class="is-hidden-print">
-      <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-      ${contractFee.includeQuantity ?? false
-                        ? `<button class="button is-primary button--editQuantity">
-              <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-              <span>Edit</span>
-              </button>`
-                        : ''}
-      <button class="button is-danger is-light button--delete" data-tooltip="Delete Fee" type="button">
-        <i class="fas fa-trash" aria-hidden="true"></i>
-      </button>
-      </div>
-      </td>`;
-                    tableRowElement
-                        .querySelector('.button--editQuantity')
-                        ?.addEventListener('click', editLotOccupancyFeeQuantity);
-                    tableRowElement
-                        .querySelector('.button--delete')
-                        ?.addEventListener('click', deleteContractFee);
-                    contractFeesContainerElement
-                        .querySelector('tbody')
-                        ?.append(tableRowElement);
-                    feeAmountTotal +=
-                        (contractFee.feeAmount ?? 0) * (contractFee.quantity ?? 0);
-                    taxAmountTotal +=
-                        (contractFee.taxAmount ?? 0) * (contractFee.quantity ?? 0);
-                }
-                ;
-                contractFeesContainerElement.querySelector('#contractFees--feeAmountTotal').textContent = `$${feeAmountTotal.toFixed(2)}`;
-                contractFeesContainerElement.querySelector('#contractFees--taxAmountTotal').textContent = `$${taxAmountTotal.toFixed(2)}`;
-                contractFeesContainerElement.querySelector('#contractFees--grandTotal').textContent = `$${(feeAmountTotal + taxAmountTotal).toFixed(2)}`;
-                renderLotOccupancyTransactions();
+            let feeAmountTotal = 0;
+            let taxAmountTotal = 0;
+            for (const contractFee of contractFees) {
+                const tableRowElement = document.createElement('tr');
+                tableRowElement.className = 'container--contractFee';
+                tableRowElement.dataset.feeId = contractFee.feeId.toString();
+                tableRowElement.dataset.includeQuantity =
+                    contractFee.includeQuantity ?? false ? '1' : '0';
+                // eslint-disable-next-line no-unsanitized/property
+                tableRowElement.innerHTML = `<td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
+          ${cityssm.escapeHTML(contractFee.feeName ?? '')}<br />
+          <span class="tag">${cityssm.escapeHTML(contractFee.feeCategory ?? '')}</span>
+          </td>
+          ${contractFee.quantity === 1
+                    ? ''
+                    : `<td class="has-text-right">
+                  $${contractFee.feeAmount?.toFixed(2)}
+                  </td>
+                  <td>&times;</td>
+                  <td class="has-text-right">${contractFee.quantity?.toString()}</td>
+                  <td>=</td>`}
+          <td class="has-text-right">
+            $${((contractFee.feeAmount ?? 0) * (contractFee.quantity ?? 0)).toFixed(2)}
+          </td>
+          <td class="is-hidden-print">
+          <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
+          ${contractFee.includeQuantity ?? false
+                    ? `<button class="button is-primary button--editQuantity">
+                  <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                  <span>Edit</span>
+                  </button>`
+                    : ''}
+          <button class="button is-danger is-light button--delete" data-tooltip="Delete Fee" type="button">
+            <i class="fas fa-trash" aria-hidden="true"></i>
+          </button>
+          </div>
+          </td>`;
+                tableRowElement
+                    .querySelector('.button--editQuantity')
+                    ?.addEventListener('click', editContractFeeQuantity);
+                tableRowElement
+                    .querySelector('.button--delete')
+                    ?.addEventListener('click', deleteContractFee);
+                contractFeesContainerElement
+                    .querySelector('tbody')
+                    ?.append(tableRowElement);
+                feeAmountTotal +=
+                    (contractFee.feeAmount ?? 0) * (contractFee.quantity ?? 0);
+                taxAmountTotal +=
+                    (contractFee.taxAmount ?? 0) * (contractFee.quantity ?? 0);
             }
-            const addFeeButtonElement = document.querySelector('#button--addFee');
-            addFeeButtonElement.addEventListener('click', () => {
-                if (sunrise.hasUnsavedChanges()) {
-                    bulmaJS.alert({
-                        message: 'Please save all unsaved changes before adding fees.',
-                        contextualColorName: 'warning'
-                    });
-                    return;
-                }
-                let feeCategories;
-                let feeFilterElement;
-                let feeFilterResultsElement;
-                function doAddFeeCategory(clickEvent) {
-                    clickEvent.preventDefault();
-                    const feeCategoryId = Number.parseInt(clickEvent.currentTarget.dataset.feeCategoryId ??
-                        '', 10);
-                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractFeeCategory`, {
-                        contractId,
-                        feeCategoryId
-                    }, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.success) {
-                            contractFees = responseJSON.contractFees;
-                            renderLotOccupancyFees();
-                            bulmaJS.alert({
-                                message: 'Fee Group Added Successfully',
-                                contextualColorName: 'success'
-                            });
-                        }
-                        else {
-                            bulmaJS.alert({
-                                title: 'Error Adding Fee',
-                                message: responseJSON.errorMessage ?? '',
-                                contextualColorName: 'danger'
-                            });
-                        }
-                    });
-                }
-                function doAddFee(feeId, quantity = 1) {
-                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddLotOccupancyFee`, {
-                        contractId,
-                        feeId,
-                        quantity
-                    }, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.success) {
-                            contractFees = responseJSON.contractFees;
-                            renderLotOccupancyFees();
-                            filterFees();
-                        }
-                        else {
-                            bulmaJS.alert({
-                                title: 'Error Adding Fee',
-                                message: responseJSON.errorMessage ?? '',
-                                contextualColorName: 'danger'
-                            });
-                        }
-                    });
-                }
-                function doSetQuantityAndAddFee(fee) {
-                    let quantityElement;
-                    let quantityCloseModalFunction;
-                    function doSetQuantity(submitEvent) {
-                        submitEvent.preventDefault();
-                        doAddFee(fee.feeId, quantityElement.value);
-                        quantityCloseModalFunction();
-                    }
-                    cityssm.openHtmlModal('contract-setFeeQuantity', {
-                        onshow(modalElement) {
-                            ;
-                            modalElement.querySelector('#contractFeeQuantity--quantityUnit').textContent = fee.quantityUnit ?? '';
-                        },
-                        onshown(modalElement, closeModalFunction) {
-                            quantityCloseModalFunction = closeModalFunction;
-                            quantityElement = modalElement.querySelector('#contractFeeQuantity--quantity');
-                            modalElement
-                                .querySelector('form')
-                                ?.addEventListener('submit', doSetQuantity);
-                        }
-                    });
-                }
-                function tryAddFee(clickEvent) {
-                    clickEvent.preventDefault();
-                    const feeId = Number.parseInt(clickEvent.currentTarget.dataset.feeId ?? '', 10);
-                    const feeCategoryId = Number.parseInt(clickEvent.currentTarget.dataset.feeCategoryId ??
-                        '', 10);
-                    const feeCategory = feeCategories.find((currentFeeCategory) => {
-                        return currentFeeCategory.feeCategoryId === feeCategoryId;
-                    });
-                    const fee = feeCategory.fees.find((currentFee) => {
-                        return currentFee.feeId === feeId;
-                    });
-                    if (fee.includeQuantity ?? false) {
-                        doSetQuantityAndAddFee(fee);
+            ;
+            contractFeesContainerElement.querySelector('#contractFees--feeAmountTotal').textContent = `$${feeAmountTotal.toFixed(2)}`;
+            contractFeesContainerElement.querySelector('#contractFees--taxAmountTotal').textContent = `$${taxAmountTotal.toFixed(2)}`;
+            contractFeesContainerElement.querySelector('#contractFees--grandTotal').textContent = `$${(feeAmountTotal + taxAmountTotal).toFixed(2)}`;
+            renderContractTransactions();
+        }
+        const addFeeButtonElement = document.querySelector('#button--addFee');
+        addFeeButtonElement.addEventListener('click', () => {
+            if (sunrise.hasUnsavedChanges()) {
+                bulmaJS.alert({
+                    message: 'Please save all unsaved changes before adding fees.',
+                    contextualColorName: 'warning'
+                });
+                return;
+            }
+            let feeCategories;
+            let feeFilterElement;
+            let feeFilterResultsElement;
+            function doAddFeeCategory(clickEvent) {
+                clickEvent.preventDefault();
+                const feeCategoryId = Number.parseInt(clickEvent.currentTarget.dataset.feeCategoryId ?? '', 10);
+                cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractFeeCategory`, {
+                    contractId,
+                    feeCategoryId
+                }, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    if (responseJSON.success) {
+                        contractFees = responseJSON.contractFees;
+                        renderContractFees();
+                        bulmaJS.alert({
+                            message: 'Fee Group Added Successfully',
+                            contextualColorName: 'success'
+                        });
                     }
                     else {
-                        doAddFee(feeId);
+                        bulmaJS.alert({
+                            title: 'Error Adding Fee',
+                            message: responseJSON.errorMessage ?? '',
+                            contextualColorName: 'danger'
+                        });
                     }
+                });
+            }
+            function doAddFee(feeId, quantity = 1) {
+                cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractFee`, {
+                    contractId,
+                    feeId,
+                    quantity
+                }, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    if (responseJSON.success) {
+                        contractFees = responseJSON.contractFees;
+                        renderContractFees();
+                        filterFees();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: 'Error Adding Fee',
+                            message: responseJSON.errorMessage ?? '',
+                            contextualColorName: 'danger'
+                        });
+                    }
+                });
+            }
+            function doSetQuantityAndAddFee(fee) {
+                let quantityElement;
+                let quantityCloseModalFunction;
+                function doSetQuantity(submitEvent) {
+                    submitEvent.preventDefault();
+                    doAddFee(fee.feeId, quantityElement.value);
+                    quantityCloseModalFunction();
                 }
-                function filterFees() {
-                    const filterStringPieces = feeFilterElement.value
-                        .trim()
-                        .toLowerCase()
-                        .split(' ');
-                    feeFilterResultsElement.innerHTML = '';
-                    for (const feeCategory of feeCategories) {
-                        const categoryContainerElement = document.createElement('div');
-                        categoryContainerElement.className = 'container--feeCategory';
-                        categoryContainerElement.dataset.feeCategoryId =
-                            feeCategory.feeCategoryId.toString();
-                        categoryContainerElement.innerHTML = `<div class="columns is-vcentered">
+                cityssm.openHtmlModal('contract-setFeeQuantity', {
+                    onshow(modalElement) {
+                        ;
+                        modalElement.querySelector('#contractFeeQuantity--quantityUnit').textContent = fee.quantityUnit ?? '';
+                    },
+                    onshown(modalElement, closeModalFunction) {
+                        quantityCloseModalFunction = closeModalFunction;
+                        quantityElement = modalElement.querySelector('#contractFeeQuantity--quantity');
+                        modalElement
+                            .querySelector('form')
+                            ?.addEventListener('submit', doSetQuantity);
+                    }
+                });
+            }
+            function tryAddFee(clickEvent) {
+                clickEvent.preventDefault();
+                const feeId = Number.parseInt(clickEvent.currentTarget.dataset.feeId ?? '', 10);
+                const feeCategoryId = Number.parseInt(clickEvent.currentTarget.dataset.feeCategoryId ?? '', 10);
+                const feeCategory = feeCategories.find((currentFeeCategory) => currentFeeCategory.feeCategoryId === feeCategoryId);
+                const fee = feeCategory.fees.find((currentFee) => currentFee.feeId === feeId);
+                if (fee.includeQuantity ?? false) {
+                    doSetQuantityAndAddFee(fee);
+                }
+                else {
+                    doAddFee(feeId);
+                }
+            }
+            function filterFees() {
+                const filterStringPieces = feeFilterElement.value
+                    .trim()
+                    .toLowerCase()
+                    .split(' ');
+                feeFilterResultsElement.innerHTML = '';
+                for (const feeCategory of feeCategories) {
+                    const categoryContainerElement = document.createElement('div');
+                    categoryContainerElement.className = 'container--feeCategory';
+                    categoryContainerElement.dataset.feeCategoryId =
+                        feeCategory.feeCategoryId.toString();
+                    categoryContainerElement.innerHTML = `<div class="columns is-vcentered">
         <div class="column">
           <h4 class="title is-5">
           ${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}
@@ -949,386 +932,376 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </div>
         </div>
         <div class="panel mb-5"></div>`;
-                        if (feeCategory.isGroupedFee) {
-                            // eslint-disable-next-line no-unsanitized/method
-                            categoryContainerElement
-                                .querySelector('.columns')
-                                ?.insertAdjacentHTML('beforeend', `<div class="column is-narrow has-text-right">
-                    <button class="button is-small is-success" type="button" data-fee-category-id="${feeCategory.feeCategoryId}">
-                      <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                      <span>Add Fee Group</span>
-                    </button>
-                    </div>`);
-                            categoryContainerElement
-                                .querySelector('button')
-                                ?.addEventListener('click', doAddFeeCategory);
+                    if (feeCategory.isGroupedFee) {
+                        // eslint-disable-next-line no-unsanitized/method
+                        categoryContainerElement
+                            .querySelector('.columns')
+                            ?.insertAdjacentHTML('beforeend', `<div class="column is-narrow has-text-right">
+                  <button class="button is-small is-success" type="button" data-fee-category-id="${feeCategory.feeCategoryId}">
+                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                    <span>Add Fee Group</span>
+                  </button>
+                  </div>`);
+                        categoryContainerElement
+                            .querySelector('button')
+                            ?.addEventListener('click', doAddFeeCategory);
+                    }
+                    let hasFees = false;
+                    for (const fee of feeCategory.fees) {
+                        // Don't include already applied fees that limit quantity
+                        if (contractFeesContainerElement.querySelector(`.container--contractFee[data-fee-id='${fee.feeId}'][data-include-quantity='0']`) !== null) {
+                            continue;
                         }
-                        let hasFees = false;
-                        for (const fee of feeCategory.fees) {
-                            // Don't include already applied fees that limit quantity
-                            if (contractFeesContainerElement.querySelector(`.container--contractFee[data-fee-id='${fee.feeId}'][data-include-quantity='0']`) !== null) {
-                                continue;
+                        let includeFee = true;
+                        const feeSearchString = `${feeCategory.feeCategory ?? ''} ${fee.feeName ?? ''} ${fee.feeDescription ?? ''}`.toLowerCase();
+                        for (const filterStringPiece of filterStringPieces) {
+                            if (!feeSearchString.includes(filterStringPiece)) {
+                                includeFee = false;
+                                break;
                             }
-                            let includeFee = true;
-                            const feeSearchString = `${feeCategory.feeCategory ?? ''} ${fee.feeName ?? ''} ${fee.feeDescription ?? ''}`.toLowerCase();
-                            for (const filterStringPiece of filterStringPieces) {
-                                if (!feeSearchString.includes(filterStringPiece)) {
-                                    includeFee = false;
-                                    break;
-                                }
-                            }
-                            if (!includeFee) {
-                                continue;
-                            }
-                            hasFees = true;
-                            const panelBlockElement = document.createElement(feeCategory.isGroupedFee ? 'div' : 'a');
-                            panelBlockElement.className =
-                                'panel-block is-block container--fee';
-                            panelBlockElement.dataset.feeId = fee.feeId.toString();
-                            panelBlockElement.dataset.feeCategoryId =
-                                feeCategory.feeCategoryId.toString();
-                            // eslint-disable-next-line no-unsanitized/property
-                            panelBlockElement.innerHTML = `<strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
-          <small>
-          ${
-                            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                            cityssm
-                                .escapeHTML(fee.feeDescription ?? '')
-                                .replaceAll('\n', '<br />')}
-          </small>`;
-                            if (!feeCategory.isGroupedFee) {
-                                ;
-                                panelBlockElement.href = '#';
-                                panelBlockElement.addEventListener('click', tryAddFee);
-                            }
+                        }
+                        if (!includeFee) {
+                            continue;
+                        }
+                        hasFees = true;
+                        const panelBlockElement = document.createElement(feeCategory.isGroupedFee ? 'div' : 'a');
+                        panelBlockElement.className = 'panel-block is-block container--fee';
+                        panelBlockElement.dataset.feeId = fee.feeId.toString();
+                        panelBlockElement.dataset.feeCategoryId =
+                            feeCategory.feeCategoryId.toString();
+                        // eslint-disable-next-line no-unsanitized/property
+                        panelBlockElement.innerHTML = `<strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
+              <small>
+              ${cityssm
+                            .escapeHTML(fee.feeDescription ?? '')
+                            .replaceAll('\n', '<br />')}
+              </small>`;
+                        if (!feeCategory.isGroupedFee) {
                             ;
-                            categoryContainerElement.querySelector('.panel').append(panelBlockElement);
+                            panelBlockElement.href = '#';
+                            panelBlockElement.addEventListener('click', tryAddFee);
                         }
-                        if (hasFees) {
-                            feeFilterResultsElement.append(categoryContainerElement);
-                        }
+                        ;
+                        categoryContainerElement.querySelector('.panel').append(panelBlockElement);
+                    }
+                    if (hasFees) {
+                        feeFilterResultsElement.append(categoryContainerElement);
                     }
                 }
-                cityssm.openHtmlModal('contract-addFee', {
-                    onshow(modalElement) {
-                        feeFilterElement = modalElement.querySelector('#feeSelect--feeName');
-                        feeFilterResultsElement = modalElement.querySelector('#resultsContainer--feeSelect');
-                        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetFees`, {
-                            contractId
-                        }, (rawResponseJSON) => {
-                            const responseJSON = rawResponseJSON;
-                            feeCategories = responseJSON.feeCategories;
-                            feeFilterElement.disabled = false;
-                            feeFilterElement.addEventListener('keyup', filterFees);
-                            feeFilterElement.focus();
-                            filterFees();
-                        });
-                    },
-                    onshown() {
-                        bulmaJS.toggleHtmlClipped();
-                    },
-                    onhidden() {
-                        renderLotOccupancyFees();
-                    },
-                    onremoved() {
-                        bulmaJS.toggleHtmlClipped();
-                        addFeeButtonElement.focus();
-                    }
-                });
-            });
-            let contractTransactions = exports.contractTransactions;
-            delete exports.contractTransactions;
-            const contractTransactionsContainerElement = document.querySelector('#container--contractTransactions');
-            function getTransactionGrandTotal() {
-                let transactionGrandTotal = 0;
-                for (const contractTransaction of contractTransactions) {
-                    transactionGrandTotal += contractTransaction.transactionAmount;
-                }
-                return transactionGrandTotal;
             }
-            function editLotOccupancyTransaction(clickEvent) {
-                const transactionIndex = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-                    .transactionIndex ?? '', 10);
-                const transaction = contractTransactions.find((possibleTransaction) => {
-                    return possibleTransaction.transactionIndex === transactionIndex;
-                });
-                let editCloseModalFunction;
-                function doEdit(formEvent) {
-                    formEvent.preventDefault();
-                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractTransaction`, formEvent.currentTarget, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.success) {
-                            contractTransactions = responseJSON.contractTransactions;
-                            renderLotOccupancyTransactions();
-                            editCloseModalFunction();
-                        }
-                        else {
-                            bulmaJS.alert({
-                                title: 'Error Updating Transaction',
-                                message: 'Please try again.',
-                                contextualColorName: 'danger'
-                            });
-                        }
-                    });
-                }
-                cityssm.openHtmlModal('contract-editTransaction', {
-                    onshow(modalElement) {
-                        sunrise.populateAliases(modalElement);
-                        modalElement.querySelector('#contractTransactionEdit--contractId').value = contractId;
-                        modalElement.querySelector('#contractTransactionEdit--transactionIndex').value = transaction.transactionIndex?.toString() ?? '';
-                        modalElement.querySelector('#contractTransactionEdit--transactionAmount').value = transaction.transactionAmount.toFixed(2);
-                        modalElement.querySelector('#contractTransactionEdit--externalReceiptNumber').value = transaction.externalReceiptNumber ?? '';
-                        modalElement.querySelector('#contractTransactionEdit--transactionNote').value = transaction.transactionNote ?? '';
-                        modalElement.querySelector('#contractTransactionEdit--transactionDateString').value = transaction.transactionDateString ?? '';
-                        modalElement.querySelector('#contractTransactionEdit--transactionTimeString').value = transaction.transactionTimeString ?? '';
-                    },
-                    onshown(modalElement, closeModalFunction) {
-                        bulmaJS.toggleHtmlClipped();
-                        sunrise.initializeDatePickers(modalElement);
-                        modalElement.querySelector('#contractTransactionEdit--transactionAmount').focus();
-                        modalElement
-                            .querySelector('form')
-                            ?.addEventListener('submit', doEdit);
-                        editCloseModalFunction = closeModalFunction;
-                    },
-                    onremoved() {
-                        bulmaJS.toggleHtmlClipped();
-                    }
-                });
-            }
-            function deleteContractTransaction(clickEvent) {
-                const transactionIndex = clickEvent.currentTarget.closest('.container--contractTransaction').dataset.transactionIndex;
-                function doDelete() {
-                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractTransaction`, {
-                        contractId,
-                        transactionIndex
+            cityssm.openHtmlModal('contract-addFee', {
+                onshow(modalElement) {
+                    feeFilterElement = modalElement.querySelector('#feeSelect--feeName');
+                    feeFilterResultsElement = modalElement.querySelector('#resultsContainer--feeSelect');
+                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetFees`, {
+                        contractId
                     }, (rawResponseJSON) => {
                         const responseJSON = rawResponseJSON;
-                        if (responseJSON.success) {
-                            contractTransactions = responseJSON.contractTransactions;
-                            renderLotOccupancyTransactions();
-                        }
-                        else {
-                            bulmaJS.alert({
-                                title: 'Error Deleting Transaction',
-                                message: responseJSON.errorMessage ?? '',
-                                contextualColorName: 'danger'
-                            });
-                        }
+                        feeCategories = responseJSON.feeCategories;
+                        feeFilterElement.disabled = false;
+                        feeFilterElement.addEventListener('keyup', filterFees);
+                        feeFilterElement.focus();
+                        filterFees();
                     });
+                },
+                onshown() {
+                    bulmaJS.toggleHtmlClipped();
+                },
+                onhidden() {
+                    renderContractFees();
+                },
+                onremoved() {
+                    bulmaJS.toggleHtmlClipped();
+                    addFeeButtonElement.focus();
                 }
-                bulmaJS.confirm({
-                    title: 'Delete Transaction',
-                    message: 'Are you sure you want to delete this transaction?',
-                    contextualColorName: 'warning',
-                    okButton: {
-                        text: 'Yes, Delete Transaction',
-                        callbackFunction: doDelete
+            });
+        });
+        let contractTransactions = exports.contractTransactions;
+        delete exports.contractTransactions;
+        const contractTransactionsContainerElement = document.querySelector('#container--contractTransactions');
+        function getTransactionGrandTotal() {
+            let transactionGrandTotal = 0;
+            for (const contractTransaction of contractTransactions) {
+                transactionGrandTotal += contractTransaction.transactionAmount;
+            }
+            return transactionGrandTotal;
+        }
+        function editContractTransaction(clickEvent) {
+            const transactionIndex = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
+                .transactionIndex ?? '', 10);
+            const transaction = contractTransactions.find((possibleTransaction) => possibleTransaction.transactionIndex === transactionIndex);
+            let editCloseModalFunction;
+            function doEdit(formEvent) {
+                formEvent.preventDefault();
+                cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractTransaction`, formEvent.currentTarget, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    if (responseJSON.success) {
+                        contractTransactions = responseJSON.contractTransactions;
+                        renderContractTransactions();
+                        editCloseModalFunction();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: 'Error Updating Transaction',
+                            message: 'Please try again.',
+                            contextualColorName: 'danger'
+                        });
                     }
                 });
             }
-            function renderLotOccupancyTransactions() {
-                if (contractTransactions.length === 0) {
-                    // eslint-disable-next-line no-unsanitized/property
-                    contractTransactionsContainerElement.innerHTML = `<div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
-      <p class="message-body">There are no transactions associated with this record.</p>
-      </div>`;
-                    return;
+            cityssm.openHtmlModal('contract-editTransaction', {
+                onshow(modalElement) {
+                    sunrise.populateAliases(modalElement);
+                    modalElement.querySelector('#contractTransactionEdit--contractId').value = contractId;
+                    modalElement.querySelector('#contractTransactionEdit--transactionIndex').value = transaction.transactionIndex?.toString() ?? '';
+                    modalElement.querySelector('#contractTransactionEdit--transactionAmount').value = transaction.transactionAmount.toFixed(2);
+                    modalElement.querySelector('#contractTransactionEdit--externalReceiptNumber').value = transaction.externalReceiptNumber ?? '';
+                    modalElement.querySelector('#contractTransactionEdit--transactionNote').value = transaction.transactionNote ?? '';
+                    modalElement.querySelector('#contractTransactionEdit--transactionDateString').value = transaction.transactionDateString ?? '';
+                    modalElement.querySelector('#contractTransactionEdit--transactionTimeString').value = transaction.transactionTimeString ?? '';
+                },
+                onshown(modalElement, closeModalFunction) {
+                    bulmaJS.toggleHtmlClipped();
+                    sunrise.initializeDatePickers(modalElement);
+                    modalElement.querySelector('#contractTransactionEdit--transactionAmount').focus();
+                    modalElement.querySelector('form')?.addEventListener('submit', doEdit);
+                    editCloseModalFunction = closeModalFunction;
+                },
+                onremoved() {
+                    bulmaJS.toggleHtmlClipped();
                 }
+            });
+        }
+        function deleteContractTransaction(clickEvent) {
+            const transactionIndex = clickEvent.currentTarget.closest('.container--contractTransaction').dataset.transactionIndex;
+            function doDelete() {
+                cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractTransaction`, {
+                    contractId,
+                    transactionIndex
+                }, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    if (responseJSON.success) {
+                        contractTransactions = responseJSON.contractTransactions;
+                        renderContractTransactions();
+                    }
+                    else {
+                        bulmaJS.alert({
+                            title: 'Error Deleting Transaction',
+                            message: responseJSON.errorMessage ?? '',
+                            contextualColorName: 'danger'
+                        });
+                    }
+                });
+            }
+            bulmaJS.confirm({
+                title: 'Delete Transaction',
+                message: 'Are you sure you want to delete this transaction?',
+                contextualColorName: 'warning',
+                okButton: {
+                    text: 'Yes, Delete Transaction',
+                    callbackFunction: doDelete
+                }
+            });
+        }
+        function renderContractTransactions() {
+            if (contractTransactions.length === 0) {
                 // eslint-disable-next-line no-unsanitized/property
-                contractTransactionsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-      <thead><tr>
-        <th class="has-width-1">Date</th>
-        <th>${sunrise.escapedAliases.ExternalReceiptNumber}</th>
-        <th class="has-text-right has-width-1">Amount</th>
-        <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
-      </tr></thead>
-      <tbody></tbody>
-      <tfoot><tr>
-        <th colspan="2">Transaction Total</th>
-        <td class="has-text-weight-bold has-text-right" id="contractTransactions--grandTotal"></td>
-        <td class="is-hidden-print"></td>
-      </tr></tfoot>
-      </table>`;
-                let transactionGrandTotal = 0;
-                for (const contractTransaction of contractTransactions) {
-                    transactionGrandTotal += contractTransaction.transactionAmount;
-                    const tableRowElement = document.createElement('tr');
-                    tableRowElement.className = 'container--contractTransaction';
-                    tableRowElement.dataset.transactionIndex =
-                        contractTransaction.transactionIndex?.toString();
-                    let externalReceiptNumberHTML = '';
-                    if (contractTransaction.externalReceiptNumber !== '') {
-                        externalReceiptNumberHTML = cityssm.escapeHTML(contractTransaction.externalReceiptNumber ?? '');
-                        if (sunrise.dynamicsGPIntegrationIsEnabled) {
-                            if (contractTransaction.dynamicsGPDocument === undefined) {
-                                externalReceiptNumberHTML += ` <span data-tooltip="No Matching Document Found">
-            <i class="fas fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
-            </span>`;
-                            }
-                            else if (contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) === contractTransaction.transactionAmount.toFixed(2)) {
-                                externalReceiptNumberHTML += ` <span data-tooltip="Matching Document Found">
-            <i class="fas fa-check-circle has-text-success" aria-label="Matching Document Found"></i>
-            </span>`;
-                            }
-                            else {
-                                externalReceiptNumberHTML += ` <span data-tooltip="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2)}">
+                contractTransactionsContainerElement.innerHTML = `<div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
+          <p class="message-body">There are no transactions associated with this record.</p>
+          </div>`;
+                return;
+            }
+            // eslint-disable-next-line no-unsanitized/property
+            contractTransactionsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
+        <thead><tr>
+          <th class="has-width-1">Date</th>
+          <th>${sunrise.escapedAliases.ExternalReceiptNumber}</th>
+          <th class="has-text-right has-width-1">Amount</th>
+          <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
+        </tr></thead>
+        <tbody></tbody>
+        <tfoot><tr>
+          <th colspan="2">Transaction Total</th>
+          <td class="has-text-weight-bold has-text-right" id="contractTransactions--grandTotal"></td>
+          <td class="is-hidden-print"></td>
+        </tr></tfoot>
+        </table>`;
+            let transactionGrandTotal = 0;
+            for (const contractTransaction of contractTransactions) {
+                transactionGrandTotal += contractTransaction.transactionAmount;
+                const tableRowElement = document.createElement('tr');
+                tableRowElement.className = 'container--contractTransaction';
+                tableRowElement.dataset.transactionIndex =
+                    contractTransaction.transactionIndex?.toString();
+                let externalReceiptNumberHTML = '';
+                if (contractTransaction.externalReceiptNumber !== '') {
+                    externalReceiptNumberHTML = cityssm.escapeHTML(contractTransaction.externalReceiptNumber ?? '');
+                    if (sunrise.dynamicsGPIntegrationIsEnabled) {
+                        if (contractTransaction.dynamicsGPDocument === undefined) {
+                            externalReceiptNumberHTML += ` <span data-tooltip="No Matching Document Found">
+                <i class="fas fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
+                </span>`;
+                        }
+                        else if (contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) === contractTransaction.transactionAmount.toFixed(2)) {
+                            externalReceiptNumberHTML += ` <span data-tooltip="Matching Document Found">
+                <i class="fas fa-check-circle has-text-success" aria-label="Matching Document Found"></i>
+                </span>`;
+                        }
+                        else {
+                            externalReceiptNumberHTML += ` <span data-tooltip="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2)}">
             <i class="fas fa-check-circle has-text-warning" aria-label="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2)}"></i>
             </span>`;
-                            }
                         }
-                        externalReceiptNumberHTML += '<br />';
                     }
-                    // eslint-disable-next-line no-unsanitized/property
-                    tableRowElement.innerHTML = `<td>
-      ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
-      </td>
-      <td>
-        ${externalReceiptNumberHTML}
-        <small>${cityssm.escapeHTML(contractTransaction.transactionNote ?? '')}</small>
-      </td>
-      <td class="has-text-right">
-        $${cityssm.escapeHTML(contractTransaction.transactionAmount.toFixed(2))}
-      </td>
-      <td class="is-hidden-print">
-        <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-          <button class="button is-primary button--edit" type="button">
-            <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-            <span>Edit</span>
-          </button>
-          <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
-            <i class="fas fa-trash" aria-hidden="true"></i>
-          </button>
-        </div>
-      </td>`;
-                    tableRowElement
-                        .querySelector('.button--edit')
-                        ?.addEventListener('click', editLotOccupancyTransaction);
-                    tableRowElement
-                        .querySelector('.button--delete')
-                        ?.addEventListener('click', deleteContractTransaction);
-                    contractTransactionsContainerElement
-                        .querySelector('tbody')
-                        ?.append(tableRowElement);
+                    externalReceiptNumberHTML += '<br />';
                 }
-                ;
-                contractTransactionsContainerElement.querySelector('#contractTransactions--grandTotal').textContent = `$${transactionGrandTotal.toFixed(2)}`;
-                const feeGrandTotal = getFeeGrandTotal();
-                if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
-                    contractTransactionsContainerElement.insertAdjacentHTML('afterbegin', `<div class="message is-warning">
-        <div class="message-body">
-        <div class="level">
-          <div class="level-left">
-            <div class="level-item">Outstanding Balance</div>
-          </div>
-          <div class="level-right">
-            <div class="level-item">
-              $${cityssm.escapeHTML((feeGrandTotal - transactionGrandTotal).toFixed(2))}
+                // eslint-disable-next-line no-unsanitized/property
+                tableRowElement.innerHTML = `<td>
+          ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
+          </td>
+          <td>
+            ${externalReceiptNumberHTML}
+            <small>${cityssm.escapeHTML(contractTransaction.transactionNote ?? '')}</small>
+          </td>
+          <td class="has-text-right">
+            $${cityssm.escapeHTML(contractTransaction.transactionAmount.toFixed(2))}
+          </td>
+          <td class="is-hidden-print">
+            <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
+              <button class="button is-primary button--edit" type="button">
+                <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                <span>Edit</span>
+              </button>
+              <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
             </div>
-          </div>
-        </div>
-        </div></div>`);
-                }
+          </td>`;
+                tableRowElement
+                    .querySelector('.button--edit')
+                    ?.addEventListener('click', editContractTransaction);
+                tableRowElement
+                    .querySelector('.button--delete')
+                    ?.addEventListener('click', deleteContractTransaction);
+                contractTransactionsContainerElement
+                    .querySelector('tbody')
+                    ?.append(tableRowElement);
             }
-            const addTransactionButtonElement = document.querySelector('#button--addTransaction');
-            addTransactionButtonElement.addEventListener('click', () => {
-                let transactionAmountElement;
-                let externalReceiptNumberElement;
-                let addCloseModalFunction;
-                function doAddTransaction(submitEvent) {
-                    submitEvent.preventDefault();
-                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddLotOccupancyTransaction`, submitEvent.currentTarget, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.success) {
-                            contractTransactions = responseJSON.contractTransactions;
-                            addCloseModalFunction();
-                            renderLotOccupancyTransactions();
-                        }
-                        else {
-                            bulmaJS.confirm({
-                                title: 'Error Adding Transaction',
-                                message: responseJSON.errorMessage ?? '',
-                                contextualColorName: 'danger'
-                            });
-                        }
-                    });
-                }
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                function dynamicsGP_refreshExternalReceiptNumberIcon() {
-                    const externalReceiptNumber = externalReceiptNumberElement.value;
-                    const iconElement = externalReceiptNumberElement
-                        .closest('.control')
-                        ?.querySelector('.icon');
-                    const helpTextElement = externalReceiptNumberElement
-                        .closest('.field')
-                        ?.querySelector('.help');
-                    if (externalReceiptNumber === '') {
-                        helpTextElement.innerHTML = '&nbsp;';
-                        iconElement.innerHTML =
-                            '<i class="fas fa-minus" aria-hidden="true"></i>';
-                        return;
+            ;
+            contractTransactionsContainerElement.querySelector('#contractTransactions--grandTotal').textContent = `$${transactionGrandTotal.toFixed(2)}`;
+            const feeGrandTotal = getFeeGrandTotal();
+            if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
+                contractTransactionsContainerElement.insertAdjacentHTML('afterbegin', `<div class="message is-warning">
+            <div class="message-body">
+            <div class="level">
+              <div class="level-left">
+                <div class="level-item">Outstanding Balance</div>
+              </div>
+              <div class="level-right">
+                <div class="level-item">
+                  $${cityssm.escapeHTML((feeGrandTotal - transactionGrandTotal).toFixed(2))}
+                </div>
+              </div>
+            </div>
+            </div></div>`);
+            }
+        }
+        const addTransactionButtonElement = document.querySelector('#button--addTransaction');
+        addTransactionButtonElement.addEventListener('click', () => {
+            let transactionAmountElement;
+            let externalReceiptNumberElement;
+            let addCloseModalFunction;
+            function doAddTransaction(submitEvent) {
+                submitEvent.preventDefault();
+                cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractTransaction`, submitEvent.currentTarget, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    if (responseJSON.success) {
+                        contractTransactions = responseJSON.contractTransactions;
+                        addCloseModalFunction();
+                        renderContractTransactions();
                     }
-                    cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetDynamicsGPDocument`, {
-                        externalReceiptNumber
-                    }, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (!responseJSON.success ||
-                            responseJSON.dynamicsGPDocument === undefined) {
-                            helpTextElement.textContent = 'No Matching Document Found';
-                            iconElement.innerHTML =
-                                '<i class="fas fa-times-circle" aria-hidden="true"></i>';
-                        }
-                        else if (transactionAmountElement.valueAsNumber ===
-                            responseJSON.dynamicsGPDocument.documentTotal) {
-                            helpTextElement.textContent = 'Matching Document Found';
-                            iconElement.innerHTML =
-                                '<i class="fas fa-check-circle" aria-hidden="true"></i>';
-                        }
-                        else {
-                            helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)}`;
-                            iconElement.innerHTML =
-                                '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i>';
-                        }
-                    });
-                }
-                cityssm.openHtmlModal('contract-addTransaction', {
-                    onshow(modalElement) {
-                        sunrise.populateAliases(modalElement);
-                        modalElement.querySelector('#contractTransactionAdd--contractId').value = contractId.toString();
-                        const feeGrandTotal = getFeeGrandTotal();
-                        const transactionGrandTotal = getTransactionGrandTotal();
-                        transactionAmountElement = modalElement.querySelector('#contractTransactionAdd--transactionAmount');
-                        transactionAmountElement.min = (-1 * transactionGrandTotal).toFixed(2);
-                        transactionAmountElement.max = Math.max(feeGrandTotal - transactionGrandTotal, 0).toFixed(2);
-                        transactionAmountElement.value = Math.max(feeGrandTotal - transactionGrandTotal, 0).toFixed(2);
-                        if (sunrise.dynamicsGPIntegrationIsEnabled) {
-                            externalReceiptNumberElement = modalElement.querySelector(
-                            // eslint-disable-next-line no-secrets/no-secrets
-                            '#contractTransactionAdd--externalReceiptNumber');
-                            const externalReceiptNumberControlElement = externalReceiptNumberElement.closest('.control');
-                            externalReceiptNumberControlElement.classList.add('has-icons-right');
-                            externalReceiptNumberControlElement.insertAdjacentHTML('beforeend', '<span class="icon is-small is-right"></span>');
-                            externalReceiptNumberControlElement.insertAdjacentHTML('afterend', '<p class="help has-text-right"></p>');
-                            externalReceiptNumberElement.addEventListener('change', dynamicsGP_refreshExternalReceiptNumberIcon);
-                            transactionAmountElement.addEventListener('change', dynamicsGP_refreshExternalReceiptNumberIcon);
-                            dynamicsGP_refreshExternalReceiptNumberIcon();
-                        }
-                    },
-                    onshown(modalElement, closeModalFunction) {
-                        bulmaJS.toggleHtmlClipped();
-                        transactionAmountElement.focus();
-                        addCloseModalFunction = closeModalFunction;
-                        modalElement
-                            .querySelector('form')
-                            ?.addEventListener('submit', doAddTransaction);
-                    },
-                    onremoved() {
-                        bulmaJS.toggleHtmlClipped();
-                        addTransactionButtonElement.focus();
+                    else {
+                        bulmaJS.confirm({
+                            title: 'Error Adding Transaction',
+                            message: responseJSON.errorMessage ?? '',
+                            contextualColorName: 'danger'
+                        });
                     }
                 });
+            }
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            function dynamicsGP_refreshExternalReceiptNumberIcon() {
+                const externalReceiptNumber = externalReceiptNumberElement.value;
+                const iconElement = externalReceiptNumberElement
+                    .closest('.control')
+                    ?.querySelector('.icon');
+                const helpTextElement = externalReceiptNumberElement
+                    .closest('.field')
+                    ?.querySelector('.help');
+                if (externalReceiptNumber === '') {
+                    helpTextElement.innerHTML = '&nbsp;';
+                    iconElement.innerHTML =
+                        '<i class="fas fa-minus" aria-hidden="true"></i>';
+                    return;
+                }
+                cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetDynamicsGPDocument`, {
+                    externalReceiptNumber
+                }, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    if (!responseJSON.success ||
+                        responseJSON.dynamicsGPDocument === undefined) {
+                        helpTextElement.textContent = 'No Matching Document Found';
+                        iconElement.innerHTML =
+                            '<i class="fas fa-times-circle" aria-hidden="true"></i>';
+                    }
+                    else if (transactionAmountElement.valueAsNumber ===
+                        responseJSON.dynamicsGPDocument.documentTotal) {
+                        helpTextElement.textContent = 'Matching Document Found';
+                        iconElement.innerHTML =
+                            '<i class="fas fa-check-circle" aria-hidden="true"></i>';
+                    }
+                    else {
+                        helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)}`;
+                        iconElement.innerHTML =
+                            '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i>';
+                    }
+                });
+            }
+            cityssm.openHtmlModal('contract-addTransaction', {
+                onshow(modalElement) {
+                    sunrise.populateAliases(modalElement);
+                    modalElement.querySelector('#contractTransactionAdd--contractId').value = contractId.toString();
+                    const feeGrandTotal = getFeeGrandTotal();
+                    const transactionGrandTotal = getTransactionGrandTotal();
+                    transactionAmountElement = modalElement.querySelector('#contractTransactionAdd--transactionAmount');
+                    transactionAmountElement.min = (-1 * transactionGrandTotal).toFixed(2);
+                    transactionAmountElement.max = Math.max(feeGrandTotal - transactionGrandTotal, 0).toFixed(2);
+                    transactionAmountElement.value = Math.max(feeGrandTotal - transactionGrandTotal, 0).toFixed(2);
+                    if (sunrise.dynamicsGPIntegrationIsEnabled) {
+                        externalReceiptNumberElement = modalElement.querySelector('#contractTransactionAdd--externalReceiptNumber');
+                        const externalReceiptNumberControlElement = externalReceiptNumberElement.closest('.control');
+                        externalReceiptNumberControlElement.classList.add('has-icons-right');
+                        externalReceiptNumberControlElement.insertAdjacentHTML('beforeend', '<span class="icon is-small is-right"></span>');
+                        externalReceiptNumberControlElement.insertAdjacentHTML('afterend', '<p class="help has-text-right"></p>');
+                        externalReceiptNumberElement.addEventListener('change', dynamicsGP_refreshExternalReceiptNumberIcon);
+                        transactionAmountElement.addEventListener('change', dynamicsGP_refreshExternalReceiptNumberIcon);
+                        dynamicsGP_refreshExternalReceiptNumberIcon();
+                    }
+                },
+                onshown(modalElement, closeModalFunction) {
+                    bulmaJS.toggleHtmlClipped();
+                    transactionAmountElement.focus();
+                    addCloseModalFunction = closeModalFunction;
+                    modalElement
+                        .querySelector('form')
+                        ?.addEventListener('submit', doAddTransaction);
+                },
+                onremoved() {
+                    bulmaJS.toggleHtmlClipped();
+                    addTransactionButtonElement.focus();
+                }
             });
-            renderLotOccupancyFees();
-        })();
+        });
+        renderContractFees();
     }
 })();

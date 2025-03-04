@@ -129,7 +129,7 @@
         <span>
           <%= (isCreate ? "Create" : "Update") %>
           <span class="is-hidden-touch">
-            Contract Record
+            Contract
           </span>
         </span>
       </button>
@@ -158,7 +158,7 @@
                   required accesskey="f"
                   <%= (isCreate ? " autofocus" : "") %>>
                   <% if (isCreate) { %>
-                    <option value="">(No Type)</option>
+                    <option value="" data-is-preneed="false">(No Type)</option>
                   <% } %>
                   <% let typeIsFound = false; %>
                   <% for (const contractType of contractTypes) { %>
@@ -168,13 +168,16 @@
                       }
                     %>
                     <option value="<%= contractType.contractTypeId %>"
-                      <%= (contract.contractTypeId === contractType.contractTypeId ? " selected" : "") %>
+                      <%- (contractType.isPreneed ? ' data-is-preneed="true"' : ' data-is-preneed="false"') %>
+                      <%= (contract.contractTypeId === contractType.contractTypeId ? ' selected' : '') %>
                       <%= (!isCreate && contract.contractTypeId !== contractType.contractTypeId ? " disabled" : "") %>>
                       <%= contractType.contractType %>
                     </option>
                   <% } %>
                   <% if (contract.contractTypeId && !typeIsFound) { %>
-                    <option value="<%= contract.contractTypeId %>" selected>
+                    <option value="<%= contract.contractTypeId %>"
+                      <%- (contract.isPreneed ? ' data-is-preneed="true"' : ' data-is-preneed="false"') %>
+                      selected>
                       <%= contract.contractType %>
                     </option>
                   <% } %>
@@ -201,7 +204,7 @@
                 <%= (isCreate ? "" : " disabled readonly") %> />
             </div>
             <div class="control is-hidden-print">
-              <button class="button is-clear-lot-button" data-tooltip="Clear" type="button" aria-label="Clear Burial Site Field">
+              <button class="button is-clear-burial-site-button" data-tooltip="Clear" type="button" aria-label="Clear Burial Site Field">
                 <i class="fas fa-eraser" aria-hidden="true"></i>
               </button>
             </div>
@@ -211,7 +214,7 @@
               </button>
             </div>
             <div class="control is-hidden-print">
-              <button class="button is-lot-view-button" data-tooltip="Open Burial Site" type="button" aria-label="Open Burial Site">
+              <button class="button is-burial-site-view-button" data-tooltip="Open Burial Site" type="button" aria-label="Open Burial Site">
                 <i class="fas fa-external-link-alt" aria-hidden="true"></i>
               </button>
             </div>
@@ -304,7 +307,8 @@
                           <% } %>
                           minlength="<%= contractField.minLength %>"
                           maxlength="<%= contractField.maxLength %>"
-                          <%= contractField.isRequired ? " required" : "" %> />
+                          <%= contractField.isRequired ? " required" : "" %>
+                          />
                       <% } %>
                     </div>
                   </div>
@@ -312,6 +316,44 @@
                 <input id="contract--contractTypeFieldIds" name="contractTypeFieldIds" type="hidden" value="<%= contractTypeFieldIds.slice(1) %>" />
               <% } %>
             </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 class="panel-heading">Funeral Home</h2>
+    <div class="panel-block is-block">
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label class="label" for="contract--funeralHomeId">
+              Funeral Home
+            </label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="contract--funeralHomeId" name="funeralHomeId">
+                  <option value="">(No Funeral Home)</option>
+                  <% for (const funeralHome of funeralHomes) { %>
+                    <option value="<%= funeralHome.funeralHomeId %>"
+                      <%= (contract.funeralHomeId === funeralHome.funeralHomeId ? " selected" : "") %>>
+                      <%= funeralHome.funeralHomeName %>
+                    </option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label" for="contract--funeralDirectorName">
+              Funeral Director's Name
+            </label>
+            <div class="control">
+              <input class="input" id="contract--funeralDirectorName" name="funeralDirectorName" type="text" maxlength="100" autocomplete="off" value="<%= contract.funeralDirectorName %>" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -330,7 +372,6 @@
               <input class="input" id="contract--purchaserName" name="purchaserName" type="text" maxlength="100" autocomplete="off" required value="<%= contract.purchaserName %>" />
             </div>
           </div>
-    
           <div class="field">
             <label class="label" for="contract--purchaserAddress1">Address</label>
             <div class="control">
@@ -373,174 +414,324 @@
               <div class="field">
                 <label class="label" for="contract--purchaserPhoneNumber">Phone Number</label>
                 <div class="control">
-                  <input class="input" id="contract--purchaserPhoneNumber" name="purchaserPhoneNumber" type="text" maxlength="30" autocomplete="off" />
+                  <input class="input" id="contract--purchaserPhoneNumber" name="purchaserPhoneNumber" type="text" maxlength="30" autocomplete="off" value="<%= contract.purchaserPhoneNumber %>" />
                 </div>
               </div>
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="contract--purchaserEmailAddress">Email Address</label>
+                <label class="label" for="contract--purchaserEmail">Email Address</label>
                 <div class="control">
-                  <input class="input" id="contract--purchaserEmailAddress" name="purchaserEmailAddress" type="email" maxlength="100" autocomplete="off" />
+                  <input class="input" id="contract--purchaserEmail" name="purchaserEmail" type="email" maxlength="100" autocomplete="off" value="<%= contract.purchaserEmail %>" />
                 </div>
               </div>
             </div>
           </div>
+          <div class="field">
+            <label class="label" for="contract--purchaserRelationship">
+              Relationship to Deceased
+            </label>
+            <div class="control">
+              <input class="input" id="contract--purchaserRelationship" name="purchaserRelationship" type="text" maxlength="100" autocomplete="off" value="<%= contract.purchaserRelationship %>" />
+            </div>
+          </div>
         </div>
-    
       </div>
     </div>
     <div class="column">
-      <div class="panel">
-        <h2 class="panel-heading">Deceased</h2>
-        
-      </div>
-      <div class="panel">
-        <h2 class="panel-heading">Funeral Home</h2>
-        
-      </div>
+      <% if (isCreate) { %>
+        <div class="panel">
+          <div class="panel-heading">
+            <div class="level is-mobile">
+              <div class="level-left">
+                <div class="level-item">
+                  <h2 class="has-text-weight-bold is-size-5 is-recipient-or-deceased">
+                    <%= (contract.isPreneed ? "Recipient" : "Deceased") %>
+                  </h2>
+                </div>
+              </div>
+              <div class="level-right">
+                <div class="level-item">
+                  <button class="button is-small is-hidden-print" id="button--copyFromPurchaser" type="button">
+                    <span class="icon is-small"><i class="far fa-copy" aria-hidden="true"></i></span>
+                    <span>Copy from Purchaser</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-block is-block">
+            <div class="field">
+              <label class="label" for="contract--deceasedName">
+                <span class="is-recipient-or-deceased"><%= (contract.isPreneed ? "Recipient" : "Deceased") %></span>
+                Name
+              </label>
+              <div class="control">
+                <input class="input" id="contract--deceasedName" name="deceasedName" type="text" maxlength="100" autocomplete="off" required value="<%= contract.deceasedName %>" />
+              </div>
+            </div>
+            <div class="field">
+              <label class="label" for="contract--deceasedAddress1">Address</label>
+              <div class="control">
+                <input class="input" id="contract--deceasedAddress1" name="deceasedAddress1" type="text" maxlength="50" placeholder="Line 1" autocomplete="off" value="<%= contract.deceasedAddress1 %>" />
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <input class="input" id="contract--deceasedAddress2" name="deceasedAddress2" type="text" maxlength="50" placeholder="Line 2" autocomplete="off" aria-label="Address Line 2" value="<%= contract.deceasedAddress2 %>" />
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="contract--deceasedCity">City</label>
+                  <div class="control">
+                    <input class="input" id="contract--deceasedCity" name="deceasedCity" type="text" maxlength="20" value="<%= contract.deceasedCity %>" />
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="contract--deceasedProvince">Province</label>
+                  <div class="control">
+                    <input class="input" id="contract--deceasedProvince" name="deceasedProvince" type="text" maxlength="2" value="<%= contract.deceasedProvince %>" />
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="contract--deceasedPostalCode">Postal Code</label>
+                  <div class="control">
+                    <input class="input" id="contract--deceasedPostalCode" name="deceasedPostalCode" type="text" maxlength="7" autocomplete="off" value="<%= contract.deceasedPostalCode %>" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="contract--birthDateString">
+                    Date of Birth
+                  </label>
+                  <div class="control has-icons-left">
+                    <input class="input" id="contract--birthDateString" name="birthDateString" type="date" value="<%= contract.birthDateString %>" />
+                    <span class="icon is-left">
+                      <i class="fas fa-calendar" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="contract--birthPlace">
+                    Place of Birth
+                  </label>
+                  <div class="control">
+                    <input class="input" id="contract--birthPlace" name="birthPlace" type="text" maxlength="100" autocomplete="off" value="<%= contract.deceasedPlaceOfBirth %>" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="contract--deathDateString">
+                    Date of Death
+                  </label>
+                  <div class="control has-icons-left">
+                    <input class="input" id="contract--deathDateString" name="deathDateString" type="date" value="<%= contract.deceasedDateOfDeathString %>" />
+                    <span class="icon is-left">
+                      <i class="fas fa-calendar" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="contract--deathPlace">
+                    Place of Death
+                  </label>
+                  <div class="control">
+                    <input class="input" id="contract--deathPlace" name="deathPlace" type="text" maxlength="100" autocomplete="off" value="<%= contract.deceasedPlaceOfDeath %>" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="message is-info is-small">
+              <p class="message-body">
+                Any additional interments associated with this contract can be added after the contract is created.
+              </p>
+            </div>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="panel">
+          <div class="panel-heading">
+            <div class="level is-mobile">
+              <div class="level-left">
+                <div class="level-item">
+                  <h2 class="has-text-weight-bold is-size-5">
+                    <%= (contract.isPreneed ? "Recipient" : "Deceased") %>
+                  </h2>
+                </div>
+              </div>
+              <div class="level-right">
+                <div class="level-item">
+                  <button class="button is-small is-success is-hidden-print" id="button--addInterment" type="button">
+                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                    <span>Add Additional <%= (contract.isPreneed ? "Recipient" : "Deceased") %></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-block is-block">
+
+          </div>
+        </div>
+      <% } %>
     </div>
   </div>
 </form>
 
 <% if (!isCreate) { %>
-    <div class="panel">
-      <div class="panel-heading">
-        <div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <h2 class="has-text-weight-bold is-size-5">Comments</h2>
-            </div>
-          </div>
-          <div class="level-right">
-            <div class="level-item">
-              <button class="button is-small is-success is-hidden-print" id="button--addComment" type="button">
-                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                <span>Add Comment</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel-block is-block" id="container--contractComments"></div>
-    </div>
-
-    <%
-      const workOrderOpenDateAlias = configFunctions.getConfigProperty("aliases.workOrderOpenDate");
-      const workOrderCloseDateAlias = configFunctions.getConfigProperty("aliases.workOrderCloseDate");
-    %>
-    <div class="panel">
-      <div class="panel-heading">
-        <div class="level is-mobile">
+  <div class="columns is-desktop mt-4">
+    <div class="column is-7-desktop">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="level is-mobile">
             <div class="level-left">
-                <h2 class="has-text-weight-bold is-size-5">Work Orders</h2>
+              <div class="level-item">
+                <h2 class="has-text-weight-bold is-size-5">Fees</h2>
+              </div>
             </div>
             <div class="level-right">
               <div class="level-item">
-                <button class="button is-small is-success is-hidden-print" id="button--createWorkOrder" type="button">
+                <button class="button is-small is-success is-hidden-print" id="button--addFee" type="button">
                   <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                  <span>Create a Work Order</span>
+                  <span>Add Fee</span>
                 </button>
               </div>
             </div>
-        </div>
-      </div>
-      <div class="panel-block is-block">
-        <% if (contract.workOrders.length === 0) { %>
-          <div class="message is-info">
-            <p class="message-body">
-              There are no work orders associated with this record.
-            </p>
           </div>
-        <% } else { %>
-          <table class="table is-fullwidth is-striped is-hoverable">
-            <thead>
-              <tr>
-                <th>Work Order Number</th>
-                <th>Description</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (const workOrder of contract.workOrders) { %>
-                <tr>
-                  <td>
-                    <a class="has-text-weight-bold" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
-                      <%= workOrder.workOrderNumber %>
-                    </a>
-                  </td>
-                  <td>
-                    <%= workOrder.workOrderType %><br />
-                    <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
-                  </td>
-                  <td class="is-nowrap">
-                    <span class="has-tooltip-left" data-tooltip="<%= workOrderOpenDateAlias %>">
-                      <i class="fas fa-fw fa-play" aria-label="<%= workOrderOpenDateAlias %>"></i>
-                      <%= workOrder.workOrderOpenDateString %>
-                    </span><br />
-                    <span class="has-tooltip-left" data-tooltip="<%= workOrderCloseDateAlias %>">
-                      <i class="fas fa-fw fa-stop" aria-label="<%= workOrderCloseDateAlias %>"></i>
-                      <% if (workOrder.workOrderCloseDate) { %>
-                        <%= workOrder.workOrderCloseDateString %>
-                      <% } else { %>
-                        <span class="has-text-grey">(No <%= workOrderCloseDateAlias %>)</span>
-                      <% } %>
-                    </span>
-                  </td>
-                </tr>
-              <% } %>
-            </tbody>
-          </table>
-        <% } %>
+        </div>
+        <div class="panel-block is-block" id="container--contractFees"></div>
       </div>
     </div>
+    <div class="column">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="has-text-weight-bold is-size-5">Transactions</h2>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <button class="button is-small is-success is-hidden-print" id="button--addTransaction" type="button">
+                  <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                  <span>Add Transaction</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block" id="container--contractTransactions"></div>
+      </div>
+    </div>
+  </div>
 
-    <div class="columns is-desktop">
-      <div class="column is-7-desktop">
-        <div class="panel">
-          <div class="panel-heading">
-            <div class="level is-mobile">
-              <div class="level-left">
-                <div class="level-item">
-                  <h2 class="has-text-weight-bold is-size-5">Fees</h2>
-                </div>
-              </div>
-              <div class="level-right">
-                <div class="level-item">
-                  <button class="button is-small is-success is-hidden-print" id="button--addFee" type="button">
-                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                    <span>Add Fee</span>
-                  </button>
-                </div>
-              </div>
+  <%
+    const workOrderOpenDateAlias = configFunctions.getConfigProperty("aliases.workOrderOpenDate");
+    const workOrderCloseDateAlias = configFunctions.getConfigProperty("aliases.workOrderCloseDate");
+  %>
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="level is-mobile">
+          <div class="level-left">
+              <h2 class="has-text-weight-bold is-size-5">Work Orders</h2>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <button class="button is-small is-success is-hidden-print" id="button--createWorkOrder" type="button">
+                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Create a Work Order</span>
+              </button>
             </div>
           </div>
-          <div class="panel-block is-block" id="container--contractFees"></div>
-        </div>
       </div>
-      <div class="column">
-        <div class="panel">
-          <div class="panel-heading">
-            <div class="level is-mobile">
-              <div class="level-left">
-                <div class="level-item">
-                  <h2 class="has-text-weight-bold is-size-5">Transactions</h2>
-                </div>
-              </div>
-              <div class="level-right">
-                <div class="level-item">
-                  <button class="button is-small is-success is-hidden-print" id="button--addTransaction" type="button">
-                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                    <span>Add Transaction</span>
-                  </button>
-                </div>
-              </div>
-            </div>
+    </div>
+    <div class="panel-block is-block">
+      <% if (contract.workOrders.length === 0) { %>
+        <div class="message is-info">
+          <p class="message-body">
+            There are no work orders associated with this record.
+          </p>
+        </div>
+      <% } else { %>
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th>Work Order Number</th>
+              <th>Description</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (const workOrder of contract.workOrders) { %>
+              <tr>
+                <td>
+                  <a class="has-text-weight-bold" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
+                    <%= workOrder.workOrderNumber %>
+                  </a>
+                </td>
+                <td>
+                  <%= workOrder.workOrderType %><br />
+                  <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
+                </td>
+                <td class="is-nowrap">
+                  <span class="has-tooltip-left" data-tooltip="<%= workOrderOpenDateAlias %>">
+                    <i class="fas fa-fw fa-play" aria-label="<%= workOrderOpenDateAlias %>"></i>
+                    <%= workOrder.workOrderOpenDateString %>
+                  </span><br />
+                  <span class="has-tooltip-left" data-tooltip="<%= workOrderCloseDateAlias %>">
+                    <i class="fas fa-fw fa-stop" aria-label="<%= workOrderCloseDateAlias %>"></i>
+                    <% if (workOrder.workOrderCloseDate) { %>
+                      <%= workOrder.workOrderCloseDateString %>
+                    <% } else { %>
+                      <span class="has-text-grey">(No <%= workOrderCloseDateAlias %>)</span>
+                    <% } %>
+                  </span>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="has-text-weight-bold is-size-5">Comments</h2>
           </div>
-          <div class="panel-block is-block" id="container--contractTransactions"></div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <button class="button is-small is-success is-hidden-print" id="button--addComment" type="button">
+              <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+              <span>Add Comment</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
+    <div class="panel-block is-block" id="container--contractComments"></div>
+  </div>
 <% } %>
     
 <%- include('_footerA'); -%>
@@ -557,10 +748,6 @@
 
     exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
   <% } %>
-  
-  exports.burialSiteTypes = <%- JSON.stringify(burialSiteTypes) %>;
-  exports.burialSiteStatuses = <%- JSON.stringify(burialSiteStatuses) %>;
-  exports.cemeteries = <%- JSON.stringify(cemeteries) %>;
  </script>
 
 <script src="<%= urlPrefix %>/javascripts/contract.edit.js"></script>

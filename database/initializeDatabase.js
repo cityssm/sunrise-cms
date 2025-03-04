@@ -4,6 +4,7 @@ import sqlite from 'better-sqlite3';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { sunriseDB as databasePath } from '../helpers/database.helpers.js';
+import addContractType from './addContractType.js';
 import addFeeCategory from './addFeeCategory.js';
 import addRecord from './addRecord.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:database/initializeDatabase`);
@@ -132,6 +133,7 @@ const createStatements = [
     `create table if not exists ContractTypes (
     contractTypeId integer not null primary key autoincrement,
     contractType varchar(100) not null,
+    isPreneed bit not null default 0,
     orderNumber smallint not null default 0,
     ${recordColumns})`,
     `create index if not exists idx_ContractTypes_orderNumber
@@ -175,6 +177,7 @@ const createStatements = [
     purchaserPostalCode varchar(7),
     purchaserPhoneNumber varchar(30),
     purchaserEmail varchar(100),
+    purchaserRelationship varchar(50),
 
     funeralHomeId integer,
     funeralDirectorName varchar(100),
@@ -224,6 +227,12 @@ const createStatements = [
     
     deceasedName varchar(50) not null,
     isCremated bit not null default 0,
+
+    deceasedAddress1 varchar(50),
+    deceasedAddress2 varchar(50),
+    deceasedCity varchar(20),
+    deceasedProvince varchar(2),
+    deceasedPostalCode varchar(7),
 
     birthDate integer,
     birthPlace varchar(100),
@@ -393,9 +402,30 @@ async function initializeData() {
     await addRecord('BurialSiteStatuses', 'Available', 1, initializingUser);
     await addRecord('BurialSiteStatuses', 'Reserved', 2, initializingUser);
     await addRecord('BurialSiteStatuses', 'Taken', 3, initializingUser);
-    await addRecord('ContractTypes', 'Preneed', 1, initializingUser);
-    await addRecord('ContractTypes', 'Interment', 2, initializingUser);
-    await addRecord('ContractTypes', 'Cremation', 3, initializingUser);
+    await addContractType({
+        contractType: 'Preneed',
+        isPreneed: '1',
+        orderNumber: 1
+    }, initializingUser);
+    await addContractType({
+        contractType: 'Interment',
+        isPreneed: '0',
+        orderNumber: 2
+    }, initializingUser);
+    await addContractType({
+        contractType: 'Cremation',
+        isPreneed: '0',
+        orderNumber: 3
+    }, initializingUser);
+    await addRecord('IntermentContainerTypes', 'No Shell', 1, initializingUser);
+    await addRecord('IntermentContainerTypes', 'Concrete Liner', 2, initializingUser);
+    await addRecord('IntermentContainerTypes', 'Unpainted Vault', 3, initializingUser);
+    await addRecord('IntermentContainerTypes', 'Concrete Vault', 4, initializingUser);
+    await addRecord('IntermentContainerTypes', 'Wooden Shell', 5, initializingUser);
+    await addRecord('IntermentContainerTypes', 'Steel Vault', 6, initializingUser);
+    await addRecord('IntermentCommittalTypes', 'Graveside', 1, initializingUser);
+    await addRecord('IntermentCommittalTypes', 'Chapel', 2, initializingUser);
+    await addRecord('IntermentCommittalTypes', 'Church', 3, initializingUser);
     /*
      * Fee Categories
      */

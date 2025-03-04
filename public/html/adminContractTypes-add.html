@@ -13,19 +13,37 @@
     </header>
     <section class="modal-card-body">
       <form id="form--contractTypeAdd">
-        <div class="field">
-          <label class="label" for="contractTypeAdd--contractType"
-            >Contract Type</label
-          >
-          <div class="control">
-            <input
-              class="input"
-              id="contractTypeAdd--contractType"
-              name="contractType"
-              type="text"
-              maxlength="100"
-              required
-            />
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="contractTypeAdd--contractType"
+                >Contract Type</label
+              >
+              <div class="control">
+                <input
+                  class="input"
+                  id="contractTypeAdd--contractType"
+                  name="contractType"
+                  type="text"
+                  maxlength="100"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                id="contractTypeAdd--isPreneed"
+                name="isPreneed"
+              />
+              Contract Type is Preneed
+            </label>
+            <p class="help">
+              When checked, interments associated with the contract
+              will be considered reserved, not occupied.
+            </p>
           </div>
         </div>
       </form>

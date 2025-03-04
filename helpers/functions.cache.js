@@ -6,6 +6,8 @@ import getBurialSiteStatusesFromDatabase from '../database/getBurialSiteStatuses
 import getBurialSiteTypesFromDatabase from '../database/getBurialSiteTypes.js';
 import getContractTypeFieldsFromDatabase from '../database/getContractTypeFields.js';
 import getContractTypesFromDatabase from '../database/getContractTypes.js';
+import getIntermentCommittalTypesFromDatabase from '../database/getIntermentCommittalTypes.js';
+import getIntermentContainerTypesFromDatabase from '../database/getIntermentContainerTypes.js';
 import getWorkOrderMilestoneTypesFromDatabase from '../database/getWorkOrderMilestoneTypes.js';
 import getWorkOrderTypesFromDatabase from '../database/getWorkOrderTypes.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
@@ -97,6 +99,40 @@ function clearContractTypesCache() {
     allContractTypeFields = undefined;
 }
 /*
+ * Interment Container Types
+ */
+let intermentContainerTypes;
+export async function getIntermentContainerTypes() {
+    if (intermentContainerTypes === undefined) {
+        intermentContainerTypes = await getIntermentContainerTypesFromDatabase();
+    }
+    return intermentContainerTypes;
+}
+export async function getIntermentContainerTypeById(intermentContainerTypeId) {
+    const cachedContainerTypes = await getIntermentContainerTypes();
+    return cachedContainerTypes.find((currentContainerType) => currentContainerType.intermentContainerTypeId === intermentContainerTypeId);
+}
+function clearIntermentContainerTypesCache() {
+    intermentContainerTypes = undefined;
+}
+/*
+ * Interment Committal Types
+ */
+let intermentCommittalTypes;
+export async function getIntermentCommittalTypes() {
+    if (intermentCommittalTypes === undefined) {
+        intermentCommittalTypes = await getIntermentCommittalTypesFromDatabase();
+    }
+    return intermentCommittalTypes;
+}
+export async function getIntermentCommittalTypeById(intermentCommittalTypeId) {
+    const cachedCommittalTypes = await getIntermentCommittalTypes();
+    return cachedCommittalTypes.find((currentCommittalType) => currentCommittalType.intermentCommittalTypeId === intermentCommittalTypeId);
+}
+function clearIntermentCommittalTypesCache() {
+    intermentCommittalTypes = undefined;
+}
+/*
  * Work Order Types
  */
 let workOrderTypes;
@@ -167,6 +203,14 @@ export function clearCacheByTableName(tableName, relayMessage = true) {
         case 'ContractTypeFields':
         case 'ContractTypePrints': {
             clearContractTypesCache();
+            break;
+        }
+        case 'IntermentContainerTypes': {
+            clearIntermentContainerTypesCache();
+            break;
+        }
+        case 'IntermentCommittalTypes': {
+            clearIntermentCommittalTypesCache();
             break;
         }
         case 'WorkOrderMilestoneTypes': {

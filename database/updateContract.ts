@@ -12,8 +12,21 @@ export interface UpdateContractForm {
   contractStartDateString: DateString
   contractEndDateString: DateString | ''
 
+  funeralHomeId?: string | number
+  funeralDirectorName?: string
+
+  purchaserName?: string
+  purchaserAddress1?: string
+  purchaserAddress2?: string
+  purchaserCity?: string
+  purchaserProvince?: string
+  purchaserPostalCode?: string
+  purchaserPhoneNumber?: string
+  purchaserEmail?: string
+  purchaserRelationship?: string
+
   contractTypeFieldIds?: string
-  [fieldValue_contractTypeFieldId: string]: unknown
+  [fieldValue_contractTypeFieldId: `fieldValue_${string}`]: unknown
 }
 
 export default async function updateContract(
@@ -29,6 +42,17 @@ export default async function updateContract(
         burialSiteId = ?,
         contractStartDate = ?,
         contractEndDate = ?,
+        funeralHomeId = ?,
+        funeralDirectorName = ?,
+        purchaserName = ?,
+        purchaserAddress1 = ?,
+        purchaserAddress2 = ?,
+        purchaserCity = ?,
+        purchaserProvince = ?,
+        purchaserPostalCode = ?,
+        purchaserPhoneNumber = ?,
+        purchaserEmail = ?,
+        purchaserRelationship = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where contractId = ?
@@ -41,6 +65,17 @@ export default async function updateContract(
       updateForm.contractEndDateString === ''
         ? undefined
         : dateStringToInteger(updateForm.contractEndDateString),
+      updateForm.funeralHomeId === '' ? undefined : updateForm.funeralHomeId,
+      updateForm.funeralDirectorName ?? '',
+      updateForm.purchaserName ?? '',
+      updateForm.purchaserAddress1 ?? '',
+      updateForm.purchaserAddress2 ?? '',
+      updateForm.purchaserCity ?? '',
+      updateForm.purchaserProvince ?? '',
+      updateForm.purchaserPostalCode ?? '',
+      updateForm.purchaserPhoneNumber ?? '',
+      updateForm.purchaserEmail ?? '',
+      updateForm.purchaserRelationship ?? '',
       user.userName,
       Date.now(),
       updateForm.contractId

@@ -10,13 +10,24 @@ export default async function updateContract(updateForm, user) {
         burialSiteId = ?,
         contractStartDate = ?,
         contractEndDate = ?,
+        funeralHomeId = ?,
+        funeralDirectorName = ?,
+        purchaserName = ?,
+        purchaserAddress1 = ?,
+        purchaserAddress2 = ?,
+        purchaserCity = ?,
+        purchaserProvince = ?,
+        purchaserPostalCode = ?,
+        purchaserPhoneNumber = ?,
+        purchaserEmail = ?,
+        purchaserRelationship = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where contractId = ?
         and recordDelete_timeMillis is null`)
         .run(updateForm.contractTypeId, updateForm.burialSiteId === '' ? undefined : updateForm.burialSiteId, dateStringToInteger(updateForm.contractStartDateString), updateForm.contractEndDateString === ''
         ? undefined
-        : dateStringToInteger(updateForm.contractEndDateString), user.userName, Date.now(), updateForm.contractId);
+        : dateStringToInteger(updateForm.contractEndDateString), updateForm.funeralHomeId === '' ? undefined : updateForm.funeralHomeId, updateForm.funeralDirectorName ?? '', updateForm.purchaserName ?? '', updateForm.purchaserAddress1 ?? '', updateForm.purchaserAddress2 ?? '', updateForm.purchaserCity ?? '', updateForm.purchaserProvince ?? '', updateForm.purchaserPostalCode ?? '', updateForm.purchaserPhoneNumber ?? '', updateForm.purchaserEmail ?? '', updateForm.purchaserRelationship ?? '', user.userName, Date.now(), updateForm.contractId);
     if (result.changes > 0) {
         const contractTypeFieldIds = (updateForm.contractTypeFieldIds ?? '').split(',');
         for (const contractTypeFieldId of contractTypeFieldIds) {

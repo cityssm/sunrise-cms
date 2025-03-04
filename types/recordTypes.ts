@@ -133,6 +133,7 @@ export interface BurialSiteField extends BurialSiteTypeField, Record {
 export interface ContractType extends Record {
   contractTypeId: number
   contractType: string
+  isPreneed: boolean
   orderNumber?: number
   contractTypeFields?: ContractTypeField[]
   contractTypePrints?: string[]
@@ -218,12 +219,30 @@ export interface DynamicsGPDocument {
   documentTotal: number
 }
 
+export interface IntermentContainerType extends Record {
+  intermentContainerTypeId: number
+  intermentContainerType: string
+  orderNumber?: number
+}
+
+export interface IntermentCommittalType extends Record {
+  intermentCommittalTypeId: number
+  intermentCommittalType: string
+  orderNumber?: number
+}
+
 export interface ContractInterment extends Record {
   contractId?: number
   intermentNumber?: number
+  
+  deceasedName?: string
   isCremated?: boolean
 
-  deceasedName?: string
+  deceasedAddress1?: string
+  deceasedAddress2?: string
+  deceasedCity?: string
+  deceasedProvince?: string
+  deceasedPostalCode?: string
 
   birthDate?: number
   birthDateString?: string
@@ -235,9 +254,6 @@ export interface ContractInterment extends Record {
 
   intermentDate?: number
   intermentDateString?: string
-
-  intermentTime?: number
-  intermentTimeString?: string
 
   intermentContainerTypeId?: number
   intermentContainerType?: string
@@ -274,6 +290,8 @@ export interface Contract extends Record {
 
   contractTypeId: number
   contractType?: string
+  isPreneed?: boolean
+
   printEJS?: string
 
   burialSiteId?: number
@@ -298,10 +316,11 @@ export interface Contract extends Record {
   purchaserPostalCode?: string
   purchaserPhoneNumber?: string 
   purchaserEmail?: string
+  purchaserRelationship?: string
 
   funeralHomeId?: number
-  funeralHomeDirectorName?: string
   funeralHomeName?: string
+  funeralDirectorName?: string
 
   contractFields?: ContractField[]
   contractComments?: ContractComment[]

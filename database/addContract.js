@@ -1,21 +1,29 @@
 import { dateStringToInteger } from '@cityssm/utils-datetime';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
 import { acquireConnection } from './pool.js';
+// eslint-disable-next-line complexity
 export default async function addContract(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     const rightNowMillis = Date.now();
     const contractStartDate = dateStringToInteger(addForm.contractStartDateString);
     const result = database
         .prepare(`insert into Contracts (
-        contractTypeId, lotId,
+        contractTypeId, burialSiteId,
         contractStartDate, contractEndDate,
+        purchaserName, purchaserAddress1, purchaserAddress2,
+        purchaserCity, purchaserProvince, purchaserPostalCode,
+        purchaserPhoneNumber, purchaserEmail, purchaserRelationship,
+        funeralHomeId, funeralDirectorName,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?)`)
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(addForm.contractTypeId, addForm.burialSiteId === '' ? undefined : addForm.burialSiteId, contractStartDate, addForm.contractEndDateString === ''
         ? undefined
-        : dateStringToInteger(addForm.contractEndDateString), user.userName, rightNowMillis, user.userName, rightNowMillis);
+        : dateStringToInteger(addForm.contractEndDateString), addForm.purchaserName ?? '', addForm.purchaserAddress1 ?? '', addForm.purchaserAddress2 ?? '', addForm.purchaserCity ?? '', addForm.purchaserProvince ?? '', addForm.purchaserPostalCode ?? '', addForm.purchaserPhoneNumber ?? '', addForm.purchaserEmail ?? '', addForm.purchaserRelationship ?? '', addForm.funeralHomeId === '' ? undefined : addForm.funeralHomeId, addForm.funeralDirectorName ?? '', user.userName, rightNowMillis, user.userName, rightNowMillis);
     const contractId = result.lastInsertRowid;
+    /*
+     * Add contract fields
+     */
     const contractTypeFieldIds = (addForm.contractTypeFieldIds ?? '').split(',');
     for (const contractTypeFieldId of contractTypeFieldIds) {
         const fieldValue = addForm[`fieldValue_${contractTypeFieldId}`];
@@ -26,6 +34,34 @@ export default async function addContract(addForm, user, connectedDatabase) {
                 fieldValue: fieldValue ?? ''
             }, user, database);
         }
+    }
+    /*
+     * Add deceased information
+     */
+    if ((addForm.deceasedName ?? '') !== '') {
+        database
+            .prepare(`insert into ContractInterments (
+          contractId, intermentNumber,
+          deceasedName, deceasedAddress1, deceasedAddress2,
+          deceasedCity, deceasedProvince, deceasedPostalCode,
+          birthDate, deathDate,
+          birthPlace, deathPlace,
+          intermentDate,
+          intermentContainerTypeId, intermentCommittalTypeId,
+          recordCreate_userName, recordCreate_timeMillis,
+          recordUpdate_userName, recordUpdate_timeMillis)
+          values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+            .run(contractId, 1, addForm.deceasedName ?? '', addForm.deceasedAddress1 ?? '', addForm.deceasedAddress2 ?? '', addForm.deceasedCity ?? '', addForm.deceasedProvince ?? '', addForm.deceasedPostalCode ?? '', addForm.birthDateString === ''
+            ? undefined
+            : dateStringToInteger(addForm.birthDateString), addForm.deathDateString === ''
+            ? undefined
+            : dateStringToInteger(addForm.deathDateString), addForm.birthPlace ?? '', addForm.deathPlace ?? '', addForm.intermentDateString === ''
+            ? undefined
+            : dateStringToInteger(addForm.intermentDateString), addForm.intermentContainerTypeId === ''
+            ? undefined
+            : addForm.intermentContainerTypeId, addForm.intermentCommittalTypeId === ''
+            ? undefined
+            : addForm.intermentCommittalTypeId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
     if (connectedDatabase === undefined) {
         database.release();

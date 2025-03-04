@@ -101,6 +101,7 @@ export interface BurialSiteField extends BurialSiteTypeField, Record {
 export interface ContractType extends Record {
     contractTypeId: number;
     contractType: string;
+    isPreneed: boolean;
     orderNumber?: number;
     contractTypeFields?: ContractTypeField[];
     contractTypePrints?: string[];
@@ -168,11 +169,26 @@ export interface DynamicsGPDocument {
     documentDescription: string[];
     documentTotal: number;
 }
+export interface IntermentContainerType extends Record {
+    intermentContainerTypeId: number;
+    intermentContainerType: string;
+    orderNumber?: number;
+}
+export interface IntermentCommittalType extends Record {
+    intermentCommittalTypeId: number;
+    intermentCommittalType: string;
+    orderNumber?: number;
+}
 export interface ContractInterment extends Record {
     contractId?: number;
     intermentNumber?: number;
-    isCremated?: boolean;
     deceasedName?: string;
+    isCremated?: boolean;
+    deceasedAddress1?: string;
+    deceasedAddress2?: string;
+    deceasedCity?: string;
+    deceasedProvince?: string;
+    deceasedPostalCode?: string;
     birthDate?: number;
     birthDateString?: string;
     birthPlace?: string;
@@ -181,8 +197,6 @@ export interface ContractInterment extends Record {
     deathPlace?: string;
     intermentDate?: number;
     intermentDateString?: string;
-    intermentTime?: number;
-    intermentTimeString?: string;
     intermentContainerTypeId?: number;
     intermentContainerType?: string;
     intermentCommittalTypeId?: number;
@@ -209,6 +223,7 @@ export interface Contract extends Record {
     contractId: number;
     contractTypeId: number;
     contractType?: string;
+    isPreneed?: boolean;
     printEJS?: string;
     burialSiteId?: number;
     burialSiteTypeId?: number;
@@ -228,9 +243,10 @@ export interface Contract extends Record {
     purchaserPostalCode?: string;
     purchaserPhoneNumber?: string;
     purchaserEmail?: string;
+    purchaserRelationship?: string;
     funeralHomeId?: number;
-    funeralHomeDirectorName?: string;
     funeralHomeName?: string;
+    funeralDirectorName?: string;
     contractFields?: ContractField[];
     contractComments?: ContractComment[];
     contractInterments?: ContractInterment[];

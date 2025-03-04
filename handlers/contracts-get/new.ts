@@ -2,12 +2,9 @@ import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
 import getBurialSite from '../../database/getBurialSite.js'
-import getCemeteries from '../../database/getCemeteries.js'
-import {
-  getBurialSiteStatuses,
-  getBurialSiteTypes,
-  getContractTypes
-} from '../../helpers/functions.cache.js'
+import getFuneralHomes from '../../database/getFuneralHomes.js'
+import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { getContractTypes } from '../../helpers/functions.cache.js'
 import type { Contract } from '../../types/recordTypes.js'
 
 export default async function handler(
@@ -17,8 +14,11 @@ export default async function handler(
   const startDate = new Date()
 
   const contract: Partial<Contract> = {
+    isPreneed: false,
     contractStartDate: dateToInteger(startDate),
-    contractStartDateString: dateToString(startDate)
+    contractStartDateString: dateToString(startDate),
+    purchaserCity: getConfigProperty('settings.cityDefault'),
+    purchaserProvince: getConfigProperty('settings.provinceDefault')
   }
 
   if (request.query.burialSiteId !== undefined) {
@@ -33,18 +33,14 @@ export default async function handler(
   }
 
   const contractTypes = await getContractTypes()
-  const burialSiteTypes = await getBurialSiteTypes()
-  const burialSiteStatuses = await getBurialSiteStatuses()
-  const cemeteries = await getCemeteries()
+  const funeralHomes = await getFuneralHomes()
 
   response.render('contract-edit', {
     headTitle: 'Create a New Contract',
     contract,
 
     contractTypes,
-    burialSiteTypes,
-    burialSiteStatuses,
-    cemeteries,
+    funeralHomes,
 
     isCreate: true
   })

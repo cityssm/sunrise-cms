@@ -1,23 +1,21 @@
-import { dateIntegerToString, timeIntegerToString } from '@cityssm/utils-datetime';
+import { dateIntegerToString } from '@cityssm/utils-datetime';
 import { acquireConnection } from './pool.js';
 export default async function getContractInterments(contractId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
-    database.function('userFn_timeIntegerToString', timeIntegerToString);
     const interments = database
         .prepare(`select o.contractId, o.intermentNumber,
         o.isCremated,
         o.deceasedName,
-        birthDate, userFn_dateIntegerToString(birthDate) as birthDateString,
-        birthPlace,
-        deathDate, userFn_dateIntegerToString(deathDate) as deathDateString,
-        deathPlace,
+        o.birthDate, userFn_dateIntegerToString(o.birthDate) as birthDateString,
+        o.birthPlace,
+        o.deathDate, userFn_dateIntegerToString(o.deathDate) as deathDateString,
+        o.deathPlace,
 
-        intermentDate, userFn_dateIntegerToString(intermentDate) as intermentDateString,
-        intermentTime, userFn_timeIntegerToString(intermentTime) as intermentTimeString,
+        o.intermentDate, userFn_dateIntegerToString(o.intermentDate) as intermentDateString,
 
-        intermentContainerTypeId, t.intermentContainerType,
-        intermentCommittalTypeId, c.intermentCommittalType
+        o.intermentContainerTypeId, t.intermentContainerType,
+        o.intermentCommittalTypeId, c.intermentCommittalType
 
         from ContractInterments o
         left join IntermentContainerTypes t on o.intermentContainerTypeId = t.intermentContainerTypeId

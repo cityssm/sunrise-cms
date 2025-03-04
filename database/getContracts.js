@@ -3,7 +3,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import { getContractTypeById } from '../helpers/functions.cache.js';
 import { getBurialSiteNameWhereClause, getOccupancyTimeWhereClause, getOccupantNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import getContractFees from './getContractFees.js';
-// import getContractOccupants from './getContractOccupants.js'
+import getContractInterments from './getContractInterments.js';
 import getContractTransactions from './getContractTransactions.js';
 import { acquireConnection } from './pool.js';
 function buildWhereClause(filters) {
@@ -70,18 +70,11 @@ async function addInclusions(contract, options, database) {
         contract.contractFees = await getContractFees(contract.contractId, database);
     }
     if (options.includeTransactions) {
-        contract.contractTransactions =
-            await getContractTransactions(contract.contractId, { includeIntegrations: false }, database);
+        contract.contractTransactions = await getContractTransactions(contract.contractId, { includeIntegrations: false }, database);
     }
-    /*
     if (options.includeInterments) {
-      contract.contractInterments =
-        await getContractOccupants(
-          contract.contractId,
-          database
-        )
+        contract.contractInterments = await getContractInterments(contract.contractId, database);
     }
-    */
     return contract;
 }
 export default async function getContracts(filters, options, connectedDatabase) {
@@ -95,21 +88,24 @@ export default async function getContracts(filters, options, connectedDatabase) 
     if (isLimited) {
         count = database
             .prepare(`select count(*) as recordCount
-          from Contracts o
-          left join BurialSites l on o.burialSiteId = l.burialSiteId
-          ${sqlWhereClause}`)
+            from Contracts o
+            left join BurialSites l on o.burialSiteId = l.burialSiteId
+            ${sqlWhereClause}`)
             .get(sqlParameters).recordCount;
     }
     let contracts = [];
     if (count !== 0) {
         contracts = database
             .prepare(`select o.contractId,
-          o.contractTypeId, t.contractType,
-          o.burialSiteId, lt.burialSiteType,
-          l.burialSiteName,
+          o.contractTypeId, t.contractType, t.isPreneed,
+          o.burialSiteId, lt.burialSiteType, l.burialSiteName,
           l.cemeteryId, m.cemeteryName,
           o.contractStartDate, userFn_dateIntegerToString(o.contractStartDate) as contractStartDateString,
-          o.contractEndDate,  userFn_dateIntegerToString(o.contractEndDate) as contractEndDateString
+          o.contractEndDate, userFn_dateIntegerToString(o.contractEndDate) as contractEndDateString,
+          o.purchaserName, o.purchaserAddress1, o.purchaserAddress2,
+          o.purchaserCity, o.purchaserProvince, o.purchaserPostalCode,
+          o.purchaserPhoneNumber, o.purchaserEmail, o.purchaserRelationship,
+          o.funeralHomeId, o.funeralDirectorName
           from Contracts o
           left join ContractTypes t on o.contractTypeId = t.contractTypeId
           left join BurialSites l on o.burialSiteId = l.burialSiteId

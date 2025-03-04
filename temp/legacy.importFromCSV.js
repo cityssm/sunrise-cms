@@ -90,7 +90,7 @@ function formatTimeString(hour, minute) {
     const formattedMinute = `00${minute}`.slice(-2);
     return `${formattedHour}:${formattedMinute}`;
 }
-const cemeteryTocemeteryName = {
+const cemeteryToCemeteryName = {
     '00': 'Crematorium',
     GC: 'New Greenwood - Columbarium',
     HC: 'Holy Sepulchre - Columbarium',
@@ -119,7 +119,7 @@ async function getCemetery(dataRow) {
     if (cemetery === undefined) {
         console.log(`Creating cemetery: ${dataRow.cemetery}`);
         const cemeteryId = await addCemetery({
-            cemeteryName: cemeteryTocemeteryName[dataRow.cemetery] ?? dataRow.cemetery,
+            cemeteryName: cemeteryToCemeteryName[dataRow.cemetery] ?? dataRow.cemetery,
             cemeteryDescription: dataRow.cemetery,
             cemeterySvg: '',
             cemeteryLatitude: '',
@@ -352,7 +352,7 @@ async function importFromMasterCSV() {
                     if (masterRow.CM_CONTAINER_TYPE !== '') {
                         await addOrUpdateContractField({
                             contractId: deceasedcontractId,
-                            contractTypeFieldId: contractType.ContractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Container Type').contractTypeFieldId,
+                            contractTypeFieldId: contractType.contractTypeFields.find((contractTypeField) => contractTypeField.contractTypeField === 'Container Type').contractTypeFieldId,
                             contractFieldValue: masterRow.CM_CONTAINER_TYPE
                         }, user);
                     }

@@ -1,4 +1,4 @@
-import type { BurialSiteStatus, BurialSiteType, ContractType, ContractTypeField, WorkOrderMilestoneType, WorkOrderType } from '../types/recordTypes.js';
+import type { BurialSiteStatus, BurialSiteType, ContractType, ContractTypeField, IntermentCommittalType, IntermentContainerType, WorkOrderMilestoneType, WorkOrderType } from '../types/recordTypes.js';
 export declare function getBurialSiteStatuses(): Promise<BurialSiteStatus[]>;
 export declare function getBurialSiteStatusById(burialSiteStatusId: number): Promise<BurialSiteStatus | undefined>;
 export declare function getBurialSiteStatusByBurialSiteStatus(burialSiteStatus: string): Promise<BurialSiteStatus | undefined>;
@@ -10,6 +10,10 @@ export declare function getAllContractTypeFields(): Promise<ContractTypeField[]>
 export declare function getContractTypeById(contractTypeId: number): Promise<ContractType | undefined>;
 export declare function getContractTypeByContractType(contractTypeString: string): Promise<ContractType | undefined>;
 export declare function getContractTypePrintsById(contractTypeId: number): Promise<string[]>;
+export declare function getIntermentContainerTypes(): Promise<IntermentContainerType[]>;
+export declare function getIntermentContainerTypeById(intermentContainerTypeId: number): Promise<IntermentContainerType | undefined>;
+export declare function getIntermentCommittalTypes(): Promise<IntermentCommittalType[]>;
+export declare function getIntermentCommittalTypeById(intermentCommittalTypeId: number): Promise<IntermentCommittalType | undefined>;
 export declare function getWorkOrderTypes(): Promise<WorkOrderType[]>;
 export declare function getWorkOrderTypeById(workOrderTypeId: number): Promise<WorkOrderType | undefined>;
 export declare function getWorkOrderMilestoneTypes(): Promise<WorkOrderMilestoneType[]>;
@@ -17,6 +21,6 @@ export declare function getWorkOrderMilestoneTypeById(workOrderMilestoneTypeId: 
 export declare function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString: string): Promise<WorkOrderMilestoneType | undefined>;
 export declare function preloadCaches(): Promise<void>;
 export declare function clearCaches(): void;
-type CacheTableNames = 'BurialSiteStatuses' | 'BurialSiteTypes' | 'BurialSiteTypeFields' | 'ContractTypes' | 'ContractTypeFields' | 'ContractTypePrints' | 'WorkOrderMilestoneTypes' | 'WorkOrderTypes' | 'FeeCategories' | 'Fees';
+type CacheTableNames = 'BurialSiteStatuses' | 'BurialSiteTypes' | 'BurialSiteTypeFields' | 'ContractTypes' | 'ContractTypeFields' | 'ContractTypePrints' | 'IntermentContainerTypes' | 'IntermentCommittalTypes' | 'WorkOrderMilestoneTypes' | 'WorkOrderTypes' | 'FeeCategories' | 'Fees';
 export declare function clearCacheByTableName(tableName: CacheTableNames, relayMessage?: boolean): void;
 export {};

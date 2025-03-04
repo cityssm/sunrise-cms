@@ -1,23 +1,19 @@
 import type { Request, Response } from 'express'
 
-import addRecord from '../../database/addRecord.js'
+import addContractType, {
+  type AddForm
+} from '../../database/addContractType.js'
 import {
   getAllContractTypeFields,
   getContractTypes
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  request: Request<
-    unknown,
-    unknown,
-    { contractType: string; orderNumber?: number | string }
-  >,
+  request: Request<unknown, unknown, AddForm>,
   response: Response
 ): Promise<void> {
-  const contractTypeId = await addRecord(
-    'ContractTypes',
-    request.body.contractType,
-    request.body.orderNumber ?? -1,
+  const contractTypeId = await addContractType(
+    request.body,
     request.session.user as User
   )
 

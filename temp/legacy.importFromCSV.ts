@@ -272,7 +272,7 @@ function formatTimeString(hour: string, minute: string): TimeString {
   return `${formattedHour}:${formattedMinute}` as TimeString
 }
 
-const cemeteryTocemeteryName = {
+const cemeteryToCemeteryName = {
   '00': 'Crematorium',
   GC: 'New Greenwood - Columbarium',
   HC: 'Holy Sepulchre - Columbarium',
@@ -312,7 +312,7 @@ async function getCemetery(dataRow: {
     const cemeteryId = await addCemetery(
       {
         cemeteryName:
-          cemeteryTocemeteryName[dataRow.cemetery] ?? dataRow.cemetery,
+          cemeteryToCemeteryName[dataRow.cemetery] ?? dataRow.cemetery,
         cemeteryDescription: dataRow.cemetery,
         cemeterySvg: '',
         cemeteryLatitude: '',
@@ -702,7 +702,7 @@ async function importFromMasterCSV(): Promise<void> {
             await addOrUpdateContractField(
               {
                 contractId: deceasedcontractId,
-                contractTypeFieldId: contractType.ContractTypeFields!.find(
+                contractTypeFieldId: contractType.contractTypeFields!.find(
                   (contractTypeField) =>
                     contractTypeField.contractTypeField === 'Container Type'
                 )!.contractTypeFieldId!,

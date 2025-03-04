@@ -5,7 +5,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export default async function getContractTypes() {
     const database = await acquireConnection();
     const contractTypes = database
-        .prepare(`select contractTypeId, contractType, orderNumber
+        .prepare(`select contractTypeId, contractType, isPreneed, orderNumber
         from ContractTypes
         where recordDelete_timeMillis is null
         order by orderNumber, contractType`)

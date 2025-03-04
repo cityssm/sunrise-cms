@@ -1,4 +1,7 @@
-import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
+import {
+  type DateString,
+  dateStringToInteger
+} from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
 import addOrUpdateContractField from './addOrUpdateContractField.js'
@@ -8,25 +11,42 @@ export interface AddContractForm {
   contractTypeId: string | number
   burialSiteId: string | number
 
-  contractStartDateString: string
-  contractEndDateString: string
+  contractStartDateString: DateString | ''
+  contractEndDateString: DateString | ''
 
   contractTypeFieldIds?: string
-  [fieldValue_contractTypeFieldId: string]: unknown
+  [fieldValue_contractTypeFieldId: `fieldValue_${string}`]: unknown
 
-  lotOccupantTypeId?: string
-  occupantName?: string
-  occupantFamilyName?: string
-  occupantAddress1?: string
-  occupantAddress2?: string
-  occupantCity?: string
-  occupantProvince?: string
-  occupantPostalCode?: string
-  occupantPhoneNumber?: string
-  occupantEmailAddress?: string
-  occupantComment?: string
+  purchaserName?: string
+  purchaserAddress1?: string
+  purchaserAddress2?: string
+  purchaserCity?: string
+  purchaserProvince?: string
+  purchaserPostalCode?: string
+  purchaserPhoneNumber?: string
+  purchaserEmail?: string
+  purchaserRelationship?: string
+
+  funeralHomeId?: string | number
+  funeralDirectorName?: string
+
+  deceasedName?: string
+  deceasedAddress1?: string
+  deceasedAddress2?: string
+  deceasedCity?: string
+  deceasedProvince?: string
+  deceasedPostalCode?: string
+
+  birthDateString?: DateString | ''
+  birthPlace?: string
+  deathDateString?: DateString | ''
+  deathPlace?: string
+  intermentDateString?: DateString | ''
+  intermentContainerTypeId?: string | number
+  intermentCommittalTypeId?: string | number
 }
 
+// eslint-disable-next-line complexity
 export default async function addContract(
   addForm: AddContractForm,
   user: User,
@@ -43,11 +63,15 @@ export default async function addContract(
   const result = database
     .prepare(
       `insert into Contracts (
-        contractTypeId, lotId,
+        contractTypeId, burialSiteId,
         contractStartDate, contractEndDate,
+        purchaserName, purchaserAddress1, purchaserAddress2,
+        purchaserCity, purchaserProvince, purchaserPostalCode,
+        purchaserPhoneNumber, purchaserEmail, purchaserRelationship,
+        funeralHomeId, funeralDirectorName,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       addForm.contractTypeId,
@@ -56,6 +80,17 @@ export default async function addContract(
       addForm.contractEndDateString === ''
         ? undefined
         : dateStringToInteger(addForm.contractEndDateString as DateString),
+      addForm.purchaserName ?? '',
+      addForm.purchaserAddress1 ?? '',
+      addForm.purchaserAddress2 ?? '',
+      addForm.purchaserCity ?? '',
+      addForm.purchaserProvince ?? '',
+      addForm.purchaserPostalCode ?? '',
+      addForm.purchaserPhoneNumber ?? '',
+      addForm.purchaserEmail ?? '',
+      addForm.purchaserRelationship ?? '',
+      addForm.funeralHomeId === '' ? undefined : addForm.funeralHomeId,
+      addForm.funeralDirectorName ?? '',
       user.userName,
       rightNowMillis,
       user.userName,
@@ -63,6 +98,10 @@ export default async function addContract(
     )
 
   const contractId = result.lastInsertRowid as number
+
+  /*
+   * Add contract fields
+   */
 
   const contractTypeFieldIds = (addForm.contractTypeFieldIds ?? '').split(',')
 
@@ -82,6 +121,59 @@ export default async function addContract(
         database
       )
     }
+  }
+
+  /*
+   * Add deceased information
+   */
+
+  if ((addForm.deceasedName ?? '') !== '') {
+    database
+      .prepare(
+        `insert into ContractInterments (
+          contractId, intermentNumber,
+          deceasedName, deceasedAddress1, deceasedAddress2,
+          deceasedCity, deceasedProvince, deceasedPostalCode,
+          birthDate, deathDate,
+          birthPlace, deathPlace,
+          intermentDate,
+          intermentContainerTypeId, intermentCommittalTypeId,
+          recordCreate_userName, recordCreate_timeMillis,
+          recordUpdate_userName, recordUpdate_timeMillis)
+          values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      )
+
+      .run(
+        contractId,
+        1,
+        addForm.deceasedName ?? '',
+        addForm.deceasedAddress1 ?? '',
+        addForm.deceasedAddress2 ?? '',
+        addForm.deceasedCity ?? '',
+        addForm.deceasedProvince ?? '',
+        addForm.deceasedPostalCode ?? '',
+        addForm.birthDateString === ''
+          ? undefined
+          : dateStringToInteger(addForm.birthDateString as DateString),
+        addForm.deathDateString === ''
+          ? undefined
+          : dateStringToInteger(addForm.deathDateString as DateString),
+        addForm.birthPlace ?? '',
+        addForm.deathPlace ?? '',
+        addForm.intermentDateString === ''
+          ? undefined
+          : dateStringToInteger(addForm.intermentDateString as DateString),
+        addForm.intermentContainerTypeId === ''
+          ? undefined
+          : addForm.intermentContainerTypeId,
+        addForm.intermentCommittalTypeId === ''
+          ? undefined
+          : addForm.intermentCommittalTypeId,
+        user.userName,
+        rightNowMillis,
+        user.userName,
+        rightNowMillis
+      )
   }
 
   if (connectedDatabase === undefined) {

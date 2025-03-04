@@ -1,5 +1,3 @@
 import type { Request, Response } from 'express';
-export default function handler(request: Request<unknown, unknown, {
-    contractType: string;
-    orderNumber?: number | string;
-}>, response: Response): Promise<void>;
+import { type AddForm } from '../../database/addContractType.js';
+export default function handler(request: Request<unknown, unknown, AddForm>, response: Response): Promise<void>;

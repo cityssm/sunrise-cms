@@ -1,9 +1,14 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
 import { acquireConnection } from './pool.js';
 const recordNameIdColumns = new Map();
-recordNameIdColumns.set('BurialSiteStatuses', ['burialSiteStatus', 'burialSiteStatusId']);
-recordNameIdColumns.set('BurialSiteTypes', ['burialSiteType', 'burialSiteTypeId']);
-recordNameIdColumns.set('ContractTypes', ['contractType', 'contractTypeId']);
+recordNameIdColumns.set('BurialSiteStatuses', [
+    'burialSiteStatus',
+    'burialSiteStatusId'
+]);
+recordNameIdColumns.set('BurialSiteTypes', [
+    'burialSiteType',
+    'burialSiteTypeId'
+]);
 recordNameIdColumns.set('WorkOrderMilestoneTypes', [
     'workOrderMilestoneType',
     'workOrderMilestoneTypeId'
