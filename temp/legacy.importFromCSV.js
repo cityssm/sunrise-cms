@@ -159,7 +159,7 @@ async function importFromMasterCSV() {
             let burialSiteId;
             if (masterRow.CM_CEMETERY !== '00') {
                 burialSiteId = await addBurialSite({
-                    lotName,
+                    burialSiteName,
                     burialSiteTypeId,
                     burialSiteStatusId: importIds.availableBurialSiteStatusId,
                     cemeteryId: cemetery.cemeteryId,
@@ -199,7 +199,7 @@ async function importFromMasterCSV() {
                 }
                 preneedcontractId = await addContract({
                     contractTypeId: importIds.preneedContractType.contractTypeId,
-                    lotId: burialSiteId ?? '',
+                    burialSiteId: burialSiteId ?? '',
                     contractStartDateString: preneedcontractStartDateString,
                     contractEndDateString,
                     contractTypeFieldIds: ''
@@ -268,7 +268,7 @@ async function importFromMasterCSV() {
                     : importIds.cremationContractType;
                 deceasedcontractId = await addContract({
                     contractTypeId: contractType.contractTypeId,
-                    lotId: burialSiteId ?? '',
+                    burialSiteId: burialSiteId ?? '',
                     contractStartDateString: deceasedcontractStartDateString,
                     contractEndDateString: deceasedcontractEndDateString,
                     contractTypeFieldIds: ''
@@ -443,7 +443,7 @@ async function importFromPrepaidCSV() {
                 const map = await getCemetery({
                     cemetery
                 });
-                const lotName = importData.buildLotName({
+                const burialSiteName = importData.buildLotName({
                     cemetery,
                     block: prepaidRow.CMPP_BLOCK,
                     range1: prepaidRow.CMPP_RANGE1,
@@ -454,32 +454,32 @@ async function importFromPrepaidCSV() {
                     grave2: prepaidRow.CMPP_GRAVE2,
                     interment: prepaidRow.CMPP_INTERMENT
                 });
-                lot = await getBurialSiteByLotName(lotName);
+                lot = await getBurialSiteByLotName(burialSiteName);
                 if (!lot) {
                     const burialSiteTypeId = importIds.getburialSiteTypeId({
                         cemetery
                     });
-                    const lotId = await addBurialSite({
-                        lotName,
+                    const burialSiteId = await addBurialSite({
+                        burialSiteName,
                         burialSiteTypeId,
                         burialSiteStatusId: importIds.reservedburialSiteStatusId,
                         cemeteryId: map.cemeteryId ?? '',
-                        mapKey: lotName.includes(',') ? lotName.split(',')[0] : lotName,
+                        mapKey: burialSiteName.includes(',') ? burialSiteName.split(',')[0] : burialSiteName,
                         burialSiteLatitude: '',
                         burialSiteLongitude: ''
                     }, user);
-                    lot = await getBurialSite(lotId);
+                    lot = await getBurialSite(burialSiteId);
                 }
             }
             if (lot &&
                 lot.burialSiteStatusId === importIds.availableburialSiteStatusId) {
-                await updateBurialSiteStatus(lot.lotId, importIds.reservedburialSiteStatusId, user);
+                await updateBurialSiteStatus(lot.burialSiteId, importIds.reservedburialSiteStatusId, user);
             }
             const contractStartDateString = formatDateString(prepaidRow.CMPP_PURCH_YR, prepaidRow.CMPP_PURCH_MON, prepaidRow.CMPP_PURCH_DAY);
             let contractId;
             if (lot) {
                 const possibleLotOccupancies = await getContracts({
-                    lotId: lot.lotId,
+                    burialSiteId: lot.burialSiteId,
                     contractTypeId: importIds.preneedContractType.contractTypeId,
                     occupantName: prepaidRow.CMPP_PREPAID_FOR_NAME,
                     contractStartDateString
@@ -496,7 +496,7 @@ async function importFromPrepaidCSV() {
                 }
             }
             contractId ||= await addContract({
-                lotId: lot ? lot.lotId : '',
+                burialSiteId: lot ? lot.burialSiteId : '',
                 contractTypeId: importIds.preneedContractType.contractTypeId,
                 contractStartDateString,
                 contractEndDateString: ''
@@ -691,7 +691,7 @@ async function importFromWorkOrderCSV() {
             }
             let lot;
             if (workOrderRow.WO_CEMETERY !== '00') {
-                const lotName = importData.buildLotName({
+                const burialSiteName = importData.buildLotName({
                     cemetery: workOrderRow.WO_CEMETERY,
                     block: workOrderRow.WO_BLOCK,
                     range1: workOrderRow.WO_RANGE1,
@@ -702,31 +702,31 @@ async function importFromWorkOrderCSV() {
                     grave2: workOrderRow.WO_GRAVE2,
                     interment: workOrderRow.WO_INTERMENT
                 });
-                lot = await getBurialSiteByLotName(lotName);
+                lot = await getBurialSiteByLotName(burialSiteName);
                 if (lot) {
-                    await updateBurialSiteStatus(lot.lotId, importIds.takenburialSiteStatusId, user);
+                    await updateBurialSiteStatus(lot.burialSiteId, importIds.takenburialSiteStatusId, user);
                 }
                 else {
                     const map = await getCemetery({ cemetery: workOrderRow.WO_CEMETERY });
                     const burialSiteTypeId = importIds.getburialSiteTypeId({
                         cemetery: workOrderRow.WO_CEMETERY
                     });
-                    const lotId = await addBurialSite({
+                    const burialSiteId = await addBurialSite({
                         cemeteryId: map.cemeteryId,
-                        lotName,
-                        mapKey: lotName.includes(',') ? lotName.split(',')[0] : lotName,
+                        burialSiteName,
+                        mapKey: burialSiteName.includes(',') ? burialSiteName.split(',')[0] : burialSiteName,
                         burialSiteStatusId: importIds.takenburialSiteStatusId,
                         burialSiteTypeId,
                         burialSiteLatitude: '',
                         burialSiteLongitude: ''
                     }, user);
-                    lot = await getBurialSite(lotId);
+                    lot = await getBurialSite(burialSiteId);
                 }
-                const workOrderContainsLot = workOrder.workOrderLots.find((possibleLot) => (possibleLot.lotId = lot.lotId));
+                const workOrderContainsLot = workOrder.workOrderLots.find((possibleLot) => (possibleLot.burialSiteId = lot.burialSiteId));
                 if (!workOrderContainsLot) {
                     await addWorkOrderBurialSite({
                         workOrderId: workOrder.workOrderId,
-                        lotId: lot.lotId
+                        burialSiteId: lot.burialSiteId
                     }, user);
                     workOrder.workOrderLots.push(lot);
                 }
@@ -739,7 +739,7 @@ async function importFromWorkOrderCSV() {
                 ? importIds.deceasedContractType
                 : importIds.cremationContractType;
             const contractId = await addContract({
-                lotId: lot ? lot.lotId : '',
+                burialSiteId: lot ? lot.burialSiteId : '',
                 contractTypeId: contractType.contractTypeId,
                 contractStartDateString,
                 contractEndDateString: ''

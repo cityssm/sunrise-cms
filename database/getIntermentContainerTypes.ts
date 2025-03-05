@@ -1,6 +1,7 @@
 import type { IntermentContainerType } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
+import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default async function getIntermentContainerTypes(): Promise<
   IntermentContainerType[]
@@ -9,12 +10,29 @@ export default async function getIntermentContainerTypes(): Promise<
 
   const containerTypes = database
     .prepare(
-      `select intermentContainerTypeId, intermentContainerType, orderNumber
+      `select intermentContainerTypeId, intermentContainerType, isCremationType, orderNumber
         from IntermentContainerTypes
         where recordDelete_timeMillis is null
-        order by orderNumber, intermentContainerType, intermentContainerTypeId`
+        order by isCremationType, orderNumber, intermentContainerType, intermentContainerTypeId`
     )
     .all() as IntermentContainerType[]
+
+  let expectedOrderNumber = -1
+
+  for (const containerType of containerTypes) {
+    expectedOrderNumber += 1
+
+    if (containerType.orderNumber !== expectedOrderNumber) {
+      updateRecordOrderNumber(
+        'IntermentContainerTypes',
+        containerType.intermentContainerTypeId,
+        expectedOrderNumber,
+        database
+      )
+
+      containerType.orderNumber = expectedOrderNumber
+    }
+  }
 
   database.release()
 

@@ -7,12 +7,12 @@ export default async function handler(
   request: Request<
     unknown,
     unknown,
-    { lotId: string; burialSiteStatusId: string; workOrderId: string }
+    { burialSiteId: string; burialSiteStatusId: string; workOrderId: string }
   >,
   response: Response
 ): Promise<void> {
   const success = await updateBurialSiteStatus(
-    request.body.lotId,
+    request.body.burialSiteId,
     request.body.burialSiteStatusId,
     request.session.user as User
   )

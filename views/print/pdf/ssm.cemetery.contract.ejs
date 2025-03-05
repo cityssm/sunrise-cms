@@ -82,7 +82,7 @@
       <p class="has-text-centered">
         in
         <span class="field" style="width:300px">
-          <%= contract.mapName %>
+          <%= contract.cemeteryName %>
         </span>
         cemetery<br />
         <span class="is-capitalized">operated by</span><br />
@@ -215,12 +215,12 @@
             <h2 class="is-10pt is-capitalized">Details</h2>
             <table class="is-10pt data-table">
               <tr>
-                <td><%= configFunctions.getConfigProperty("aliases.map") %></td>
-                <td><%= contract.mapName ?? '(No ' + configFunctions.getConfigProperty("aliases.map") + ')' %></td>
+                <td>Cemetery</td>
+                <td><%= contract.cemeteryName ?? '(No ' + configFunctions.getConfigProperty("aliases.map") + ')' %></td>
               </tr>
               <tr>
                 <td>Burial Site</td>
-                <td><%= contract.lotName ?? '(No ' + configFunctions.getConfigProperty("aliases.lot") + ')' %></td>
+                <td><%= contract.burialSiteName ?? '(No ' + configFunctions.getConfigProperty("aliases.lot") + ')' %></td>
               </tr>
               <% 
                 for (const field of contract.contractFields) { 

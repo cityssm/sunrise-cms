@@ -455,8 +455,72 @@ Object.defineProperty(exports, "__esModule", { value: true });
          */
         let contractInterments = exports.contractInterments;
         delete exports.contractInterments;
+        function openEditContractInterment(clickEvent) { }
+        function deleteContractInterment(clickEvent) { }
         function renderContractInterments() {
+            const containerElement = document.querySelector('#container--contractInterments');
+            if (contractInterments.length === 0) {
+                containerElement.innerHTML = `<div class="message is-info">
+          <p class="message-body">There are no interments associated with this record.</p>
+          </div>`;
+                return;
+            }
+            const tableElement = document.createElement('table');
+            tableElement.className = 'table is-fullwidth is-striped is-hoverable';
+            tableElement.innerHTML = `<thead><tr>
+        <th>Name</th>
+        <th>Vital Statistics</th>
+        <th>Container</th>
+        <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+        </tr></thead>
+        <tbody></tbody>`;
+            for (const interment of contractInterments) {
+                const tableRowElement = document.createElement('tr');
+                tableRowElement.dataset.intermentNumber =
+                    interment.intermentNumber?.toString();
+                tableRowElement.innerHTML = `<td>
+            ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
+            ${cityssm.escapeHTML(interment.deceasedAddress1 ?? '')}<br />
+            ${cityssm.escapeHTML(interment.deceasedAddress2 ?? '')}<br />
+            ${cityssm.escapeHTML(interment.deceasedCity ?? '')}, ${cityssm.escapeHTML(interment.deceasedProvince ?? '')}<br />
+            ${cityssm.escapeHTML(interment.deceasedPostalCode ?? '')}
+          </td>
+          <td>
+            <p class="mb-2">
+              <strong>Birth:</strong><br />
+              ${cityssm.escapeHTML(interment.birthDateString ?? '')}<br />
+              ${cityssm.escapeHTML(interment.birthPlace ?? '')}
+            </p>
+            <p>
+              <strong>Death:</strong><br />
+              ${cityssm.escapeHTML(interment.deathDateString ?? '')}<br />
+              ${cityssm.escapeHTML(interment.deathPlace ?? '')}
+            </p>
+            </td>
+            <td>${cityssm.escapeHTML(interment.intermentContainerType ?? '')}</td>
+            <td class="is-hidden-print">
+              <div class="buttons is-justify-content-end">
+                <button class="button is-small is-info button--edit" type="button" data-tooltip="Edit Interment">
+                  <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                  <span>Edit</span>
+                </button>
+                <button class="button is-small is-danger button--delete" type="button" data-tooltip="Remove Interment">
+                  <span class="icon"><i class="fas fa-trash" aria-hidden="true"></i></span>
+                </button>
+              </div>
+            </td>`;
+                tableRowElement
+                    .querySelector('.button--edit')
+                    ?.addEventListener('click', openEditContractInterment);
+                tableRowElement
+                    .querySelector('.button--delete')
+                    ?.addEventListener('click', deleteContractInterment);
+                tableElement.querySelector('tbody')?.append(tableRowElement);
+            }
+            containerElement.innerHTML = '';
+            containerElement.append(tableElement);
         }
+        renderContractInterments();
         /**
          * Comments
          */
@@ -551,42 +615,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const containerElement = document.querySelector('#container--contractComments');
             if (contractComments.length === 0) {
                 containerElement.innerHTML = `<div class="message is-info">
-      <p class="message-body">There are no comments associated with this record.</p>
-      </div>`;
+          <p class="message-body">There are no comments associated with this record.</p>
+          </div>`;
                 return;
             }
             const tableElement = document.createElement('table');
             tableElement.className = 'table is-fullwidth is-striped is-hoverable';
             tableElement.innerHTML = `<thead><tr>
-          <th>Author</th>
-          <th>Comment Date</th>
-          <th>Comment</th>
-          <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-          </tr></thead>
-          <tbody></tbody>`;
+        <th>Author</th>
+        <th>Comment Date</th>
+        <th>Comment</th>
+        <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+        </tr></thead>
+        <tbody></tbody>`;
             for (const contractComment of contractComments) {
                 const tableRowElement = document.createElement('tr');
                 tableRowElement.dataset.contractCommentId =
                     contractComment.contractCommentId?.toString();
                 tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
-      <td>
-      ${cityssm.escapeHTML(contractComment.contractCommentDateString ?? '')}
-      ${cityssm.escapeHTML(contractComment.contractCommentTime === 0
+          <td>
+            ${cityssm.escapeHTML(contractComment.commentDateString ?? '')}
+            ${cityssm.escapeHTML(contractComment.commentTime === 0
                     ? ''
-                    : contractComment.contractCommentTimePeriodString ?? '')}
-      </td>
-      <td>${cityssm.escapeHTML(contractComment.contractComment ?? '')}</td>
-      <td class="is-hidden-print">
-        <div class="buttons are-small is-justify-content-end">
-        <button class="button is-primary button--edit" type="button">
-          <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-          <span>Edit</span>
-        </button>
-        <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
-          <i class="fas fa-trash" aria-hidden="true"></i>
-        </button>
-        </div>
-      </td>`;
+                    : contractComment.commentTimePeriodString ?? '')}
+          </td>
+          <td>${cityssm.escapeHTML(contractComment.comment ?? '')}</td>
+          <td class="is-hidden-print">
+            <div class="buttons are-small is-justify-content-end">
+            <button class="button is-primary button--edit" type="button">
+              <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+              <span>Edit</span>
+            </button>
+            <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
+              <i class="fas fa-trash" aria-hidden="true"></i>
+            </button>
+            </div>
+          </td>`;
                 tableRowElement
                     .querySelector('.button--edit')
                     ?.addEventListener('click', openEditContractComment);

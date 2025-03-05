@@ -8,7 +8,7 @@ export default async function getContractTypes() {
         .prepare(`select contractTypeId, contractType, isPreneed, orderNumber
         from ContractTypes
         where recordDelete_timeMillis is null
-        order by orderNumber, contractType`)
+        order by orderNumber, contractType, contractTypeId`)
         .all();
     let expectedOrderNumber = -1;
     for (const contractType of contractTypes) {

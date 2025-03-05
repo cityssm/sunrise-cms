@@ -367,7 +367,7 @@ async function importFromMasterCSV(): Promise<void> {
       if (masterRow.CM_CEMETERY !== '00') {
         burialSiteId = await addBurialSite(
           {
-            lotName,
+            burialSiteName,
             burialSiteTypeId,
             burialSiteStatusId: importIds.availableBurialSiteStatusId,
             cemeteryId: cemetery.cemeteryId!,
@@ -441,7 +441,7 @@ async function importFromMasterCSV(): Promise<void> {
         preneedcontractId = await addContract(
           {
             contractTypeId: importIds.preneedContractType.contractTypeId,
-            lotId: burialSiteId ?? '',
+            burialSiteId: burialSiteId ?? '',
             contractStartDateString: preneedcontractStartDateString,
             contractEndDateString,
             contractTypeFieldIds: ''
@@ -558,7 +558,7 @@ async function importFromMasterCSV(): Promise<void> {
         deceasedcontractId = await addContract(
           {
             contractTypeId: contractType.contractTypeId,
-            lotId: burialSiteId ?? '',
+            burialSiteId: burialSiteId ?? '',
             contractStartDateString: deceasedcontractStartDateString,
             contractEndDateString: deceasedcontractEndDateString,
             contractTypeFieldIds: ''
@@ -842,7 +842,7 @@ async function importFromPrepaidCSV(): Promise<void> {
           cemetery
         })
 
-        const lotName = importData.buildLotName({
+        const burialSiteName = importData.buildLotName({
           cemetery,
           block: prepaidRow.CMPP_BLOCK,
           range1: prepaidRow.CMPP_RANGE1,
@@ -854,27 +854,27 @@ async function importFromPrepaidCSV(): Promise<void> {
           interment: prepaidRow.CMPP_INTERMENT
         })
 
-        lot = await getBurialSiteByLotName(lotName)
+        lot = await getBurialSiteByLotName(burialSiteName)
 
         if (!lot) {
           const burialSiteTypeId = importIds.getburialSiteTypeId({
             cemetery
           })
 
-          const lotId = await addBurialSite(
+          const burialSiteId = await addBurialSite(
             {
-              lotName,
+              burialSiteName,
               burialSiteTypeId,
               burialSiteStatusId: importIds.reservedburialSiteStatusId,
               cemeteryId: map.cemeteryId ?? '',
-              mapKey: lotName.includes(',') ? lotName.split(',')[0] : lotName,
+              mapKey: burialSiteName.includes(',') ? burialSiteName.split(',')[0] : burialSiteName,
               burialSiteLatitude: '',
               burialSiteLongitude: ''
             },
             user
           )
 
-          lot = await getBurialSite(lotId)
+          lot = await getBurialSite(burialSiteId)
         }
       }
 
@@ -883,7 +883,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         lot.burialSiteStatusId === importIds.availableburialSiteStatusId
       ) {
         await updateBurialSiteStatus(
-          lot.lotId,
+          lot.burialSiteId,
           importIds.reservedburialSiteStatusId,
           user
         )
@@ -900,7 +900,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       if (lot) {
         const possibleLotOccupancies = await getContracts(
           {
-            lotId: lot.lotId,
+            burialSiteId: lot.burialSiteId,
             contractTypeId: importIds.preneedContractType.contractTypeId,
             occupantName: prepaidRow.CMPP_PREPAID_FOR_NAME,
             contractStartDateString
@@ -922,7 +922,7 @@ async function importFromPrepaidCSV(): Promise<void> {
 
       contractId ||= await addContract(
         {
-          lotId: lot ? lot.lotId : '',
+          burialSiteId: lot ? lot.burialSiteId : '',
           contractTypeId: importIds.preneedContractType.contractTypeId,
           contractStartDateString,
           contractEndDateString: ''
@@ -1197,7 +1197,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
       let lot: recordTypes.Lot
 
       if (workOrderRow.WO_CEMETERY !== '00') {
-        const lotName = importData.buildLotName({
+        const burialSiteName = importData.buildLotName({
           cemetery: workOrderRow.WO_CEMETERY,
           block: workOrderRow.WO_BLOCK,
           range1: workOrderRow.WO_RANGE1,
@@ -1209,11 +1209,11 @@ async function importFromWorkOrderCSV(): Promise<void> {
           interment: workOrderRow.WO_INTERMENT
         })
 
-        lot = await getBurialSiteByLotName(lotName)
+        lot = await getBurialSiteByLotName(burialSiteName)
 
         if (lot) {
           await updateBurialSiteStatus(
-            lot.lotId,
+            lot.burialSiteId,
             importIds.takenburialSiteStatusId,
             user
           )
@@ -1224,11 +1224,11 @@ async function importFromWorkOrderCSV(): Promise<void> {
             cemetery: workOrderRow.WO_CEMETERY
           })
 
-          const lotId = await addBurialSite(
+          const burialSiteId = await addBurialSite(
             {
               cemeteryId: map.cemeteryId!,
-              lotName,
-              mapKey: lotName.includes(',') ? lotName.split(',')[0] : lotName,
+              burialSiteName,
+              mapKey: burialSiteName.includes(',') ? burialSiteName.split(',')[0] : burialSiteName,
               burialSiteStatusId: importIds.takenburialSiteStatusId,
               burialSiteTypeId,
               burialSiteLatitude: '',
@@ -1237,18 +1237,18 @@ async function importFromWorkOrderCSV(): Promise<void> {
             user
           )
 
-          lot = await getBurialSite(lotId)
+          lot = await getBurialSite(burialSiteId)
         }
 
         const workOrderContainsLot = workOrder.workOrderLots!.find(
-          (possibleLot) => (possibleLot.lotId = lot.lotId)
+          (possibleLot) => (possibleLot.burialSiteId = lot.burialSiteId)
         )
 
         if (!workOrderContainsLot) {
           await addWorkOrderBurialSite(
             {
               workOrderId: workOrder.workOrderId!,
-              lotId: lot.lotId
+              burialSiteId: lot.burialSiteId
             },
             user
           )
@@ -1273,7 +1273,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
 
       const contractId = await addContract(
         {
-          lotId: lot ? lot.lotId : '',
+          burialSiteId: lot ? lot.burialSiteId : '',
           contractTypeId: contractType.contractTypeId,
           contractStartDateString,
           contractEndDateString: ''

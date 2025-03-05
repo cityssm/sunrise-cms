@@ -1,6 +1,8 @@
 import {
   type DateString,
-  dateStringToInteger
+  type TimeString,
+  dateStringToInteger,
+  timeStringToInteger
 } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
 
@@ -29,6 +31,9 @@ export interface AddContractForm {
 
   funeralHomeId?: string | number
   funeralDirectorName?: string
+  funeralDateString?: DateString | ''
+  funeralTimeString?: TimeString | ''
+  committalTypeId?: string | number
 
   deceasedName?: string
   deceasedAddress1?: string
@@ -41,9 +46,7 @@ export interface AddContractForm {
   birthPlace?: string
   deathDateString?: DateString | ''
   deathPlace?: string
-  intermentDateString?: DateString | ''
   intermentContainerTypeId?: string | number
-  intermentCommittalTypeId?: string | number
 }
 
 // eslint-disable-next-line complexity
@@ -69,9 +72,11 @@ export default async function addContract(
         purchaserCity, purchaserProvince, purchaserPostalCode,
         purchaserPhoneNumber, purchaserEmail, purchaserRelationship,
         funeralHomeId, funeralDirectorName,
+        funeralDate, funeralTime,
+        committalTypeId,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       addForm.contractTypeId,
@@ -91,6 +96,13 @@ export default async function addContract(
       addForm.purchaserRelationship ?? '',
       addForm.funeralHomeId === '' ? undefined : addForm.funeralHomeId,
       addForm.funeralDirectorName ?? '',
+      addForm.funeralDateString === ''
+        ? undefined
+        : dateStringToInteger(addForm.funeralDateString as DateString),
+      addForm.funeralTimeString === ''
+        ? undefined
+        : timeStringToInteger(addForm.funeralTimeString as TimeString),
+      addForm.committalTypeId === '' ? undefined : addForm.committalTypeId,
       user.userName,
       rightNowMillis,
       user.userName,
@@ -136,11 +148,10 @@ export default async function addContract(
           deceasedCity, deceasedProvince, deceasedPostalCode,
           birthDate, deathDate,
           birthPlace, deathPlace,
-          intermentDate,
-          intermentContainerTypeId, intermentCommittalTypeId,
+          intermentContainerTypeId,
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
-          values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+          values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
       )
 
       .run(
@@ -160,15 +171,9 @@ export default async function addContract(
           : dateStringToInteger(addForm.deathDateString as DateString),
         addForm.birthPlace ?? '',
         addForm.deathPlace ?? '',
-        addForm.intermentDateString === ''
-          ? undefined
-          : dateStringToInteger(addForm.intermentDateString as DateString),
         addForm.intermentContainerTypeId === ''
           ? undefined
           : addForm.intermentContainerTypeId,
-        addForm.intermentCommittalTypeId === ''
-          ? undefined
-          : addForm.intermentCommittalTypeId,
         user.userName,
         rightNowMillis,
         user.userName,

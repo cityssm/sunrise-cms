@@ -8,7 +8,6 @@ export const config: Config = {
   aliases: {},
   settings: {
     fees: {},
-    cemeteries: {},
     burialSites: {},
     contracts: {},
     workOrders: {},

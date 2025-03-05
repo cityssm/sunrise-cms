@@ -99,7 +99,7 @@ function buildEventDescriptionHTML_occupancies(
             </a>
           </td>
           <td>
-            ${occupancy.lotName ? escapeHTML(occupancy.lotName) : '(Not Set)'}
+            ${occupancy.burialSiteName ? escapeHTML(occupancy.burialSiteName) : '(Not Set)'}
           </td>
           <td>
             ${occupancy.contractStartDateString}

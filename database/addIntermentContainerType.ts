@@ -3,12 +3,12 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 import { acquireConnection } from './pool.js'
 
 export interface AddForm {
-  contractType: string
-  isPreneed?: string
+  intermentContainerType: string
+  isCremationType?: string
   orderNumber?: number
 }
 
-export default async function addContractType(
+export default async function addIntermentContainerType(
   addForm: AddForm,
   user: User
 ): Promise<number> {
@@ -18,15 +18,15 @@ export default async function addContractType(
 
   const result = database
     .prepare(
-      `insert into ContractTypes (
-        contractType, isPreneed, orderNumber,
+      `insert into IntermentContainerTypes (
+        intermentContainerType, isCremationType, orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
-      addForm.contractType,
-      addForm.isPreneed === undefined ? 0 : 1,
+      addForm.intermentContainerType,
+      addForm.isCremationType === undefined ? 0 : 1,
       addForm.orderNumber ?? -1,
       user.userName,
       rightNowMillis,
@@ -36,7 +36,7 @@ export default async function addContractType(
 
   database.release()
 
-  clearCacheByTableName('ContractTypes')
+  clearCacheByTableName('IntermentContainerTypes')
 
   return result.lastInsertRowid as number
 }

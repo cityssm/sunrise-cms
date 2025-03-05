@@ -26,9 +26,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <i class="fas fa-fw fa-vector-square"
               aria-label="${los.escapedAliases.Lot}"></i>
           </span>
-          ${cityssm.escapeHTML((lot.lotName ?? '') === ''
+          ${cityssm.escapeHTML((lot.burialSiteName ?? '') === ''
                     ? `(No ${los.escapedAliases.Lot} Name)`
-                    : lot.lotName ?? '')}
+                    : lot.burialSiteName ?? '')}
           </li>`;
             }
             for (const occupancy of workOrder.workOrderContracts ?? []) {

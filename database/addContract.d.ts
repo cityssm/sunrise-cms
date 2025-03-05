@@ -1,4 +1,4 @@
-import { type DateString } from '@cityssm/utils-datetime';
+import { type DateString, type TimeString } from '@cityssm/utils-datetime';
 import type { PoolConnection } from 'better-sqlite-pool';
 export interface AddContractForm {
     contractTypeId: string | number;
@@ -18,6 +18,9 @@ export interface AddContractForm {
     purchaserRelationship?: string;
     funeralHomeId?: string | number;
     funeralDirectorName?: string;
+    funeralDateString?: DateString | '';
+    funeralTimeString?: TimeString | '';
+    committalTypeId?: string | number;
     deceasedName?: string;
     deceasedAddress1?: string;
     deceasedAddress2?: string;
@@ -28,8 +31,6 @@ export interface AddContractForm {
     birthPlace?: string;
     deathDateString?: DateString | '';
     deathPlace?: string;
-    intermentDateString?: DateString | '';
     intermentContainerTypeId?: string | number;
-    intermentCommittalTypeId?: string | number;
 }
 export default function addContract(addForm: AddContractForm, user: User, connectedDatabase?: PoolConnection): Promise<number>;

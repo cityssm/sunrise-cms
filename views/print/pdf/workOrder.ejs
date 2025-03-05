@@ -15,7 +15,7 @@
         <thead>
           <tr>
             <th>Burial Site</th>
-            <th><%= configFunctions.getConfigProperty("aliases.map") %></th>
+            <th>Cemetery</th>
             <th>Burial Site Type</th>
             <th>Status</th>
           </tr>
@@ -23,8 +23,8 @@
         <tbody>
           <% for (const lot of workOrder.workOrderLots) { %>
             <tr>
-              <td><%= lot.lotName %></td>
-              <td><%= lot.mapName %></td>
+              <td><%= lot.burialSiteName %></td>
+              <td><%= lot.cemeteryName %></td>
               <td><%= lot.lotType %></td>
               <td><%= lot.lotStatus %></td>
             </tr>
@@ -39,7 +39,7 @@
       <table class="data-table">
         <thead>
           <tr>
-            <th><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type</th>
+            <th>Contract Type</th>
             <th>Burial Site</th>
             <th><%= configFunctions.getConfigProperty("aliases.occupancyStartDate") %></th>
             <th>End Date</th>
@@ -50,7 +50,7 @@
           <% for (const occupancy of workOrder.workOrderLotOccupancies) { %>
             <tr>
               <td><%= occupancy.contractType %></td>
-              <td><%= occupancy.lotName %></td>
+              <td><%= occupancy.burialSiteName %></td>
               <td><%= occupancy.occupancyStartDateString %></td>
               <td><%= occupancy.occupancyStartEndString %></td>
               <td>

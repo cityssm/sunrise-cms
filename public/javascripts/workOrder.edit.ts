@@ -271,14 +271,14 @@ declare const exports: Record<string, unknown>
       }
 
       function addBurialSite(
-        lotId: number | string,
+        burialSiteId: number | string,
         callbackFunction?: (success: boolean) => void
       ): void {
         cityssm.postJSON(
           `${los.urlPrefix}/workOrders/doAddWorkOrderBurialSite`,
           {
             workOrderId,
-            lotId
+            burialSiteId
           },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
@@ -341,9 +341,9 @@ declare const exports: Record<string, unknown>
       }
 
       function addBurialSiteFromLotOccupancy(clickEvent: Event): void {
-        const lotId =
-          (clickEvent.currentTarget as HTMLElement).dataset.lotId ?? ''
-        addBurialSite(lotId)
+        const burialSiteId =
+          (clickEvent.currentTarget as HTMLElement).dataset.burialSiteId ?? ''
+        addBurialSite(burialSiteId)
       }
 
       function renderRelatedOccupancies(): void {
@@ -394,8 +394,8 @@ declare const exports: Record<string, unknown>
           )
 
           const hasLotRecord =
-            contract.lotId &&
-            workOrderLots.some((lot) => contract.lotId === lot.lotId)
+            contract.burialSiteId &&
+            workOrderLots.some((lot) => contract.burialSiteId === lot.burialSiteId)
 
           // eslint-disable-next-line no-unsanitized/property
           rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
@@ -411,17 +411,17 @@ declare const exports: Record<string, unknown>
         <span class="is-size-7">#${contract.contractId}</span>
       </td>`
 
-          if (contract.lotId) {
+          if (contract.burialSiteId) {
             // eslint-disable-next-line no-unsanitized/method
             rowElement.insertAdjacentHTML(
               'beforeend',
               `<td>
-          ${cityssm.escapeHTML(contract.lotName ?? '')}
+          ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
           ${
             hasLotRecord
               ? ''
               : ` <button class="button is-small is-light is-success button--addBurialSite"
-                  data-lot-id="${contract.lotId.toString()}"
+                  data-lot-id="${contract.burialSiteId.toString()}"
                   data-tooltip="Add ${los.escapedAliases.Lot}"
                   aria-label="Add ${los.escapedAliases.Lot}" type="button">
                   <i class="fas fa-plus" aria-hidden="true"></i>
@@ -491,17 +491,17 @@ declare const exports: Record<string, unknown>
       }
 
       function openEditLotStatus(clickEvent: Event): void {
-        const lotId = Number.parseInt(
+        const burialSiteId = Number.parseInt(
           (
             (clickEvent.currentTarget as HTMLElement).closest(
               '.container--lot'
             ) as HTMLElement
-          ).dataset.lotId ?? '',
+          ).dataset.burialSiteId ?? '',
           10
         )
 
         const lot = workOrderLots.find(
-          (possibleLot) => possibleLot.lotId === lotId
+          (possibleLot) => possibleLot.burialSiteId === burialSiteId
         ) as Lot
 
         let editCloseModalFunction: () => void
@@ -539,14 +539,14 @@ declare const exports: Record<string, unknown>
             los.populateAliases(modalElement)
             ;(
               modalElement.querySelector(
-                '#lotStatusEdit--lotId'
+                '#lotStatusEdit--burialSiteId'
               ) as HTMLInputElement
-            ).value = lotId.toString()
+            ).value = burialSiteId.toString()
             ;(
               modalElement.querySelector(
-                '#lotStatusEdit--lotName'
+                '#lotStatusEdit--burialSiteName'
               ) as HTMLInputElement
-            ).value = lot.lotName ?? ''
+            ).value = lot.burialSiteName ?? ''
 
             const lotStatusElement = modalElement.querySelector(
               '#lotStatusEdit--burialSiteStatusId'
@@ -601,18 +601,18 @@ declare const exports: Record<string, unknown>
       }
 
       function deleteLot(clickEvent: Event): void {
-        const lotId = (
+        const burialSiteId = (
           (clickEvent.currentTarget as HTMLElement).closest(
             '.container--lot'
           ) as HTMLElement
-        ).dataset.lotId
+        ).dataset.burialSiteId
 
         function doDelete(): void {
           cityssm.postJSON(
             `${los.urlPrefix}/workOrders/doDeleteWorkOrderBurialSite`,
             {
               workOrderId,
-              lotId
+              burialSiteId
             },
             (rawResponseJSON) => {
               const responseJSON = rawResponseJSON as {
@@ -682,12 +682,12 @@ declare const exports: Record<string, unknown>
           const rowElement = document.createElement('tr')
           rowElement.className = 'container--lot'
 
-          rowElement.dataset.lotId = lot.lotId.toString()
+          rowElement.dataset.burialSiteId = lot.burialSiteId.toString()
 
           // eslint-disable-next-line no-unsanitized/property
           rowElement.innerHTML = `<td>
-              <a class="has-text-weight-bold" href="${los.getBurialSiteURL(lot.lotId)}">
-                ${cityssm.escapeHTML(lot.lotName ?? '')}
+              <a class="has-text-weight-bold" href="${los.getBurialSiteURL(lot.burialSiteId)}">
+                ${cityssm.escapeHTML(lot.burialSiteName ?? '')}
               </a>
             </td><td>
               ${cityssm.escapeHTML(lot.cemeteryName ?? '')}
@@ -800,10 +800,10 @@ declare const exports: Record<string, unknown>
                       ${cityssm.escapeHTML(contract.contractType ?? '')}
                     </td>`
 
-                  if (contract.lotId) {
+                  if (contract.burialSiteId) {
                     rowElement.insertAdjacentHTML(
                       'beforeend',
-                      `<td>${cityssm.escapeHTML(contract.lotName ?? '')}</td>`
+                      `<td>${cityssm.escapeHTML(contract.burialSiteName ?? '')}</td>`
                     )
                   } else {
                     // eslint-disable-next-line no-unsanitized/method
@@ -899,7 +899,7 @@ declare const exports: Record<string, unknown>
               occupantNameElement.focus()
               ;(
                 modalElement.querySelector(
-                  '#contractSearch--lotName'
+                  '#contractSearch--burialSiteName'
                 ) as HTMLInputElement
               ).addEventListener('change', doSearch)
 
@@ -921,9 +921,9 @@ declare const exports: Record<string, unknown>
           'tr'
         ) as HTMLTableRowElement
 
-        const lotId = rowElement.dataset.lotId ?? ''
+        const burialSiteId = rowElement.dataset.burialSiteId ?? ''
 
-        addBurialSite(lotId, (success) => {
+        addBurialSite(burialSiteId, (success) => {
           if (success) {
             rowElement.remove()
           }
@@ -974,14 +974,14 @@ declare const exports: Record<string, unknown>
                 for (const lot of responseJSON.lots) {
                   const rowElement = document.createElement('tr')
                   rowElement.className = 'container--lot'
-                  rowElement.dataset.lotId = lot.lotId.toString()
+                  rowElement.dataset.burialSiteId = lot.burialSiteId.toString()
 
                   rowElement.innerHTML = `<td class="has-text-centered">
                       <button class="button is-small is-success button--addBurialSite" data-tooltip="Add" type="button" aria-label="Add">
                         <i class="fas fa-plus" aria-hidden="true"></i>
                       </button>
                     </td><td class="has-text-weight-bold">
-                      ${cityssm.escapeHTML(lot.lotName ?? '')}
+                      ${cityssm.escapeHTML(lot.burialSiteName ?? '')}
                     </td><td>
                       ${cityssm.escapeHTML(lot.cemeteryName ?? '')}
                     </td><td>
@@ -1035,12 +1035,12 @@ declare const exports: Record<string, unknown>
             onshown(modalElement) {
               bulmaJS.toggleHtmlClipped()
 
-              const lotNameElement = modalElement.querySelector(
-                '#lotSearch--lotName'
+              const burialSiteNameElement = modalElement.querySelector(
+                '#lotSearch--burialSiteName'
               ) as HTMLInputElement
 
-              lotNameElement.addEventListener('change', doSearch)
-              lotNameElement.focus()
+              burialSiteNameElement.addEventListener('change', doSearch)
+              burialSiteNameElement.focus()
 
               modalElement
                 .querySelector('#lotSearch--burialSiteStatusId')

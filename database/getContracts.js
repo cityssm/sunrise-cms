@@ -1,4 +1,4 @@
-import { dateIntegerToString, dateStringToInteger } from '@cityssm/utils-datetime';
+import { dateIntegerToString, dateStringToInteger, timeIntegerToString } from '@cityssm/utils-datetime';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { getContractTypeById } from '../helpers/functions.cache.js';
 import { getBurialSiteNameWhereClause, getOccupancyTimeWhereClause, getOccupantNameWhereClause } from '../helpers/functions.sqlFilters.js';
@@ -13,9 +13,9 @@ function buildWhereClause(filters) {
         sqlWhereClause += ' and o.burialSiteId = ?';
         sqlParameters.push(filters.burialSiteId);
     }
-    const lotNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'l');
-    sqlWhereClause += lotNameFilters.sqlWhereClause;
-    sqlParameters.push(...lotNameFilters.sqlParameters);
+    const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'l');
+    sqlWhereClause += burialSiteNameFilters.sqlWhereClause;
+    sqlParameters.push(...burialSiteNameFilters.sqlParameters);
     const occupantNameFilters = getOccupantNameWhereClause(filters.occupantName, 'o');
     if (occupantNameFilters.sqlParameters.length > 0) {
         sqlWhereClause += ` and o.contractId in (
@@ -80,6 +80,7 @@ async function addInclusions(contract, options, database) {
 export default async function getContracts(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
+    database.function('userFn_timeIntegerToString', timeIntegerToString);
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
     let count = typeof options.limit === 'string'
         ? Number.parseInt(options.limit, 10)
@@ -105,9 +106,13 @@ export default async function getContracts(filters, options, connectedDatabase) 
           o.purchaserName, o.purchaserAddress1, o.purchaserAddress2,
           o.purchaserCity, o.purchaserProvince, o.purchaserPostalCode,
           o.purchaserPhoneNumber, o.purchaserEmail, o.purchaserRelationship,
-          o.funeralHomeId, o.funeralDirectorName
+          o.funeralHomeId, o.funeralDirectorName,
+          o.funeralDate, userFn_dateIntegerToString(o.funeralDate) as funeralDateString,
+          o.funeralTime, userFn_timeIntegerToString(o.funeralTime) as funeralTimeString,
+          o.committalTypeId, c.committalType
           from Contracts o
           left join ContractTypes t on o.contractTypeId = t.contractTypeId
+          left join CommittalTypes c on o.committalTypeId = c.committalTypeId
           left join BurialSites l on o.burialSiteId = l.burialSiteId
           left join BurialSiteTypes lt on l.burialSiteTypeId = lt.burialSiteTypeId
           left join Cemeteries m on l.cemeteryId = m.cemeteryId

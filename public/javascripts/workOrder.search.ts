@@ -58,9 +58,9 @@ declare const exports: Record<string, unknown>
               aria-label="${los.escapedAliases.Lot}"></i>
           </span>
           ${cityssm.escapeHTML(
-            (lot.lotName ?? '') === ''
+            (lot.burialSiteName ?? '') === ''
               ? `(No ${los.escapedAliases.Lot} Name)`
-              : lot.lotName ?? ''
+              : lot.burialSiteName ?? ''
           )}
           </li>`
       }

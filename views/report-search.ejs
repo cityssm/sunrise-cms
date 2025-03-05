@@ -14,26 +14,26 @@
           </a>
         </li> 
         <li>
-          <a href="#tab--lotOccupancies" aria-label="<%= configFunctions.getConfigProperty("aliases.occupancies") %>">
+          <a href="#tab--contracts" aria-label="Contracts">
             <span class="icon">
-                <span class="fa-layers fa-fw" aria-hidden="true">
-                  <i class="fas fa-vector-square"></i>
-                  <i class="fas fa-user" data-fa-transform="shrink-10"></i>
-                </span>
+              <span class="fa-layers fa-fw" aria-hidden="true">
+                <i class="fas fa-vector-square"></i>
+                <i class="fas fa-user" data-fa-transform="shrink-10"></i>
+              </span>
             </span>
-            <span class="is-hidden-touch"><%= configFunctions.getConfigProperty("aliases.occupancies") %></span>
+            <span class="is-hidden-touch">Contacts</span>
           </a>
         </li> 
         <li>
-          <a href="#tab--lots" aria-label="Burial Sites">
+          <a href="#tab--burialSites" aria-label="Burial Sites">
             <span class="icon"><i class="fas fa-fw fa-vector-square" aria-hidden="true"></i></span>
             <span class="is-hidden-touch">Burial Sites</span>
           </a>
         </li>
         <li>
-          <a href="#tab--maps" aria-label="<%= configFunctions.getConfigProperty("aliases.maps") %>">
+          <a href="#tab--cemeteries" aria-label="Cemeteries">
             <span class="icon"><i class="far fa-fw fa-map" aria-hidden="true"></i></span>
-            <span class="is-hidden-touch"><%= configFunctions.getConfigProperty("aliases.maps") %></span>
+            <span class="is-hidden-touch">Cemeteries</span>
           </a>
         </li>
       </ul>
@@ -113,11 +113,11 @@
         </div>
       </div>
           
-      <div class="is-hidden" id="tab--lotOccupancies">
-        <h1 class="title is-1"><%= configFunctions.getConfigProperty("aliases.occupancy") %> Reports</h1>
+      <div class="is-hidden" id="tab--contracts">
+        <h1 class="title is-1">Contract Reports</h1>
 
         <div class="panel">
-            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lotOccupancies-current-byMapId">
+            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/contracts-current-byCemeteryId">
                 <div class="has-text-centered my-2 ml-2 mr-3">
                     <span class="icon has-text-info">
                         <i class="fas fa-2x fa-file" aria-hidden="true"></i>
@@ -126,24 +126,24 @@
                 </div>
                 <div>
                     <h2 class="title is-5 is-marginless">
-                      Current <%= configFunctions.getConfigProperty("aliases.occupancy") %> By <%= configFunctions.getConfigProperty("aliases.map") %>
+                      Current Contract By Cemetery
                     </h2>
                     <div class="field has-addons mt-2">
                         <div class="control">
-                            <label class="button is-small is-static" for="lotOccupancies-current-byMapId--mapId">
-                                <%= configFunctions.getConfigProperty("aliases.map") %>
-                            </label>
+                          <label class="button is-small is-static" for="contracts-current-byCemeteryId--cemeteryId">
+                            Cemetery
+                          </label>
                         </div>
                         <div class="control is-expanded">
-                            <div class="select is-small is-fullwidth">
-                                <select id="lotOccupancies-current-byMapId--mapId" name="mapId">
-                                    <% for (const map of maps) { %>
-                                        <option value="<%= map.mapId %>">
-                                            <%= map.mapName || "(No Name)" %>
-                                        </option>
-                                    <% } %>
-                                </select>
-                            </div>
+                          <div class="select is-small is-fullwidth">
+                            <select id="contracts-current-byCemeteryId--cemeteryId" name="cemeteryId">
+                              <% for (const cemetery of cemeteries) { %>
+                                <option value="<%= cemetery.cemeteryId %>">
+                                    <%= cemetery.cemeteryName || "(No Name)" %>
+                                </option>
+                              <% } %>
+                            </select>
+                          </div>
                         </div>
                         <div class="control">
                             <button class="button is-small is-primary" type="submit">
@@ -161,31 +161,31 @@
                     <span class="tag is-info">CSV</span>
                 </div>
                 <div>
-                    <h2 class="title is-5 is-marginless">Transactions by Date</h2>
-                    <div class="field has-addons mt-2">
-                        <div class="control">
-                            <label class="button is-small is-static" for="contractTransactions-byTransactionDateString--transactionDateString">
-                                Transaction Date
-                            </label>
-                        </div>
-                        <div class="control is-expanded">
-                            <input class="input is-small" id="contractTransactions-byTransactionDateString--transactionDateString" name="transactionDateString" type="date" value="<%= dateTimeFunctions.dateToString(new Date()) %>" required />
-                        </div>
-                        <div class="control">
-                            <button class="button is-small is-primary" type="submit">
-                                Export
-                            </button>
-                        </div>
+                  <h2 class="title is-5 is-marginless">Transactions by Date</h2>
+                  <div class="field has-addons mt-2">
+                    <div class="control">
+                      <label class="button is-small is-static" for="contractTransactions-byTransactionDateString--transactionDateString">
+                        Transaction Date
+                      </label>
                     </div>
+                    <div class="control is-expanded">
+                      <input class="input is-small" id="contractTransactions-byTransactionDateString--transactionDateString" name="transactionDateString" type="date" value="<%= dateTimeFunctions.dateToString(new Date()) %>" required />
+                    </div>
+                    <div class="control">
+                      <button class="button is-small is-primary" type="submit">
+                        Export
+                      </button>
+                    </div>
+                  </div>
                 </div>
             </form>
         </div>
       </div>
-      <div class="is-hidden" id="tab--lots">
+      <div class="is-hidden" id="tab--burialSites">
         <h1 class="title is-1">Burial Site Reports</h1>
 
         <div class="panel">
-            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byMapId">
+            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byCemeteryId">
                 <div class="has-text-centered my-2 ml-2 mr-3">
                     <span class="icon has-text-info">
                         <i class="fas fa-2x fa-file" aria-hidden="true"></i>
@@ -194,22 +194,22 @@
                 </div>
                 <div>
                   <h2 class="title is-5 is-marginless">
-                    Burial Sites By <%= configFunctions.getConfigProperty("aliases.map") %>
+                    Burial Sites By Cemetery
                   </h2>
                   <div class="field has-addons mt-2">
                       <div class="control">
-                          <label class="button is-small is-static" for="lots-byMapId--mapId">
-                              <%= configFunctions.getConfigProperty("aliases.map") %>
+                          <label class="button is-small is-static" for="burialSites-byCemeteryId--cemeteryId">
+                              Cemetery
                           </label>
                       </div>
                       <div class="control is-expanded">
                           <div class="select is-small is-fullwidth">
-                              <select id="lots-byMapId--mapId" name="mapId">
-                                  <% for (const map of maps) { %>
-                                      <option value="<%= map.mapId %>">
-                                          <%= map.mapName || "(No Name)" %>
-                                      </option>
-                                  <% } %>
+                              <select id="burialSites-byCemeteryId--cemeteryId" name="cemeteryId">
+                                <% for (const cemetery of cemeteries) { %>
+                                  <option value="<%= cemetery.cemeteryId %>">
+                                      <%= cemetery.cemeteryName || "(No Name)" %>
+                                  </option>
+                                <% } %>
                               </select>
                           </div>
                       </div>
@@ -221,41 +221,41 @@
                   </div>
                 </div>
             </form>
-            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byburialSiteTypeId">
+            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byburialSiteTypeId">
                 <div class="has-text-centered my-2 ml-2 mr-3">
-                    <span class="icon has-text-info">
-                        <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                    </span><br />
-                    <span class="tag is-info">CSV</span>
+                  <span class="icon has-text-info">
+                    <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
                 </div>
                 <div>
                     <h2 class="title is-5 is-marginless">Burial Sites By Type</h2>
                     <div class="field has-addons mt-2">
-                        <div class="control">
-                            <label class="button is-small is-static" for="lots-byburialSiteTypeId--burialSiteTypeId">
-                                Burial Site Type
-                            </label>
+                      <div class="control">
+                        <label class="button is-small is-static" for="lots-byburialSiteTypeId--burialSiteTypeId">
+                          Burial Site Type
+                        </label>
+                      </div>
+                      <div class="control is-expanded">
+                        <div class="select is-small is-fullwidth">
+                          <select id="lots-byburialSiteTypeId--burialSiteTypeId" name="burialSiteTypeId">
+                            <% for (const burialSiteType of burialSiteTypes) { %>
+                              <option value="<%= burialSiteType.burialSiteTypeId %>">
+                                <%= burialSiteType.burialSiteType %>
+                              </option>
+                            <% } %>
+                          </select>
                         </div>
-                        <div class="control is-expanded">
-                            <div class="select is-small is-fullwidth">
-                                <select id="lots-byburialSiteTypeId--burialSiteTypeId" name="burialSiteTypeId">
-                                    <% for (const lotType of lotTypes) { %>
-                                        <option value="<%= lotType.burialSiteTypeId %>">
-                                            <%= lotType.lotType %>
-                                        </option>
-                                    <% } %>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="control">
-                            <button class="button is-small is-primary" type="submit">
-                                Export
-                            </button>
-                        </div>
+                      </div>
+                      <div class="control">
+                        <button class="button is-small is-primary" type="submit">
+                          Export
+                        </button>
+                      </div>
                     </div>
                 </div>
             </form>
-            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/lots-byburialSiteStatusId">
+            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteStatusId">
                 <div class="has-text-centered my-2 ml-2 mr-3">
                     <span class="icon has-text-info">
                         <i class="fas fa-2x fa-file" aria-hidden="true"></i>
@@ -266,18 +266,18 @@
                     <h2 class="title is-5 is-marginless">Burial Sites By Status</h2>
                     <div class="field has-addons mt-2">
                         <div class="control">
-                            <label class="button is-small is-static" for="lots-byburialSiteStatusId--burialSiteStatusId">
+                            <label class="button is-small is-static" for="burialSites-byBurialSiteStatusId--burialSiteStatusId">
                                 Burial Site Status
                             </label>
                         </div>
                         <div class="control is-expanded">
                             <div class="select is-small is-fullwidth">
-                                <select id="lots-byburialSiteStatusId--burialSiteStatusId" name="burialSiteStatusId">
-                                    <% for (const lotStatus of lotStatuses) { %>
-                                        <option value="<%= lotStatus.burialSiteStatusId %>">
-                                            <%= lotStatus.lotStatus %>
-                                        </option>
-                                    <% } %>
+                                <select id="burialSites-byBurialSiteStatusId--burialSiteStatusId" name="burialSiteStatusId">
+                                  <% for (const burialSiteStatus of burialSiteStatuses) { %>
+                                    <option value="<%= burialSiteStatus.burialSiteStatusId %>">
+                                      <%= burialSiteStatus.burialSiteStatus %>
+                                    </option>
+                                  <% } %>
                                 </select>
                             </div>
                         </div>
@@ -291,8 +291,8 @@
             </form>
         </div>
       </div>
-      <div class="is-hidden" id="tab--maps">
-        <h1 class="title is-1"><%= configFunctions.getConfigProperty("aliases.map") %> Reports</h1>
+      <div class="is-hidden" id="tab--cemeteries">
+        <h1 class="title is-1">Cemetery Reports</h1>
         <div class="panel">
             <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/maps-formatted" download>
               <div class="has-text-centered my-2 ml-2 mr-3">
@@ -302,9 +302,9 @@
                   <span class="tag is-info">CSV</span>
               </div>
               <div>
-                  <h2 class="title is-5 is-marginless">Full <%= configFunctions.getConfigProperty("aliases.map") %> List</h2>
+                  <h2 class="title is-5 is-marginless">Full Cemetery List</h2>
                   <p>
-                      All active <%= configFunctions.getConfigProperty("aliases.maps").toLowerCase() %>.
+                      All active cemeteries.
                   </p>
               </div>
             </a>
@@ -322,7 +322,7 @@
         <div class="columns">
           <div class="column">
             <div class="panel">
-                <h2 class="panel-heading">Occupancy (<%= configFunctions.getConfigProperty("aliases.occupancy") %>) Tables</h2>
+                <h2 class="panel-heading">Occupancy (Contract) Tables</h2>
                 <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/lotOccupancies-all" download>
                     <div class="has-text-centered my-2 ml-2 mr-3">
                         <span class="icon has-text-info">
@@ -563,7 +563,7 @@
           </div>
           <div class="column">
             <div class="panel">
-              <h2 class="panel-heading">Occupancy (<%= configFunctions.getConfigProperty("aliases.occupancy") %>) Tables</h2>
+              <h2 class="panel-heading">Occupancy (Contract) Tables</h2>
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractTypes-all" download>
                   <div class="has-text-centered my-2 ml-2 mr-3">
                       <span class="icon has-text-info">
@@ -632,6 +632,6 @@
 
 <%- include('_footerA'); -%>
 
-<script src="<%= urlPrefix %>/javascripts/reportSearch.js"></script>
+<script src="<%= urlPrefix %>/javascripts/report.search.js"></script>
 
 <%- include('_footerB'); -%>

@@ -7,9 +7,9 @@ import Debug from 'debug'
 
 import getBurialSiteStatusesFromDatabase from '../database/getBurialSiteStatuses.js'
 import getBurialSiteTypesFromDatabase from '../database/getBurialSiteTypes.js'
+import getCommittalTypesFromDatabase from '../database/getCommittalTypes.js'
 import getContractTypeFieldsFromDatabase from '../database/getContractTypeFields.js'
 import getContractTypesFromDatabase from '../database/getContractTypes.js'
-import getIntermentCommittalTypesFromDatabase from '../database/getIntermentCommittalTypes.js'
 import getIntermentContainerTypesFromDatabase from '../database/getIntermentContainerTypes.js'
 import getWorkOrderMilestoneTypesFromDatabase from '../database/getWorkOrderMilestoneTypes.js'
 import getWorkOrderTypesFromDatabase from '../database/getWorkOrderTypes.js'
@@ -21,9 +21,9 @@ import type {
 import type {
   BurialSiteStatus,
   BurialSiteType,
+  CommittalType,
   ContractType,
   ContractTypeField,
-  IntermentCommittalType,
   IntermentContainerType,
   WorkOrderMilestoneType,
   WorkOrderType
@@ -214,34 +214,34 @@ function clearIntermentContainerTypesCache(): void {
 }
 
 /*
- * Interment Committal Types
+ * Committal Types
  */
 
-let intermentCommittalTypes: IntermentCommittalType[] | undefined
+let committalTypes: CommittalType[] | undefined
 
-export async function getIntermentCommittalTypes(): Promise<
-  IntermentCommittalType[]
+export async function getCommittalTypes(): Promise<
+  CommittalType[]
 > {
-  if (intermentCommittalTypes === undefined) {
-    intermentCommittalTypes = await getIntermentCommittalTypesFromDatabase()
+  if (committalTypes === undefined) {
+    committalTypes = await getCommittalTypesFromDatabase()
   }
 
-  return intermentCommittalTypes
+  return committalTypes
 }
 
-export async function getIntermentCommittalTypeById(
-  intermentCommittalTypeId: number
-): Promise<IntermentCommittalType | undefined> {
-  const cachedCommittalTypes = await getIntermentCommittalTypes()
+export async function getCommittalTypeById(
+  committalTypeId: number
+): Promise<CommittalType | undefined> {
+  const cachedCommittalTypes = await getCommittalTypes()
 
   return cachedCommittalTypes.find(
     (currentCommittalType) =>
-      currentCommittalType.intermentCommittalTypeId === intermentCommittalTypeId
+      currentCommittalType.committalTypeId === committalTypeId
   )
 }
 
-function clearIntermentCommittalTypesCache(): void {
-  intermentCommittalTypes = undefined
+function clearCommittalTypesCache(): void {
+  committalTypes = undefined
 }
 
 /*
@@ -321,6 +321,8 @@ export async function preloadCaches(): Promise<void> {
   await getBurialSiteStatuses()
   await getBurialSiteTypes()
   await getContractTypes()
+  await getCommittalTypes()
+  await getIntermentContainerTypes()
   await getWorkOrderTypes()
   await getWorkOrderMilestoneTypes()
 }
@@ -329,6 +331,8 @@ export function clearCaches(): void {
   clearBurialSiteStatusesCache()
   clearBurialSiteTypesCache()
   clearContractTypesCache()
+  clearCommittalTypesCache()
+  clearIntermentContainerTypesCache()
   clearWorkOrderTypesCache()
   clearWorkOrderMilestoneTypesCache()
 }
@@ -345,7 +349,7 @@ type CacheTableNames =
   | 'ContractTypeFields'
   | 'ContractTypePrints'
   | 'IntermentContainerTypes'
-  | 'IntermentCommittalTypes'
+  | 'CommittalTypes'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
   | 'FeeCategories'
@@ -379,8 +383,8 @@ export function clearCacheByTableName(
       break
     }
 
-    case 'IntermentCommittalTypes': {
-      clearIntermentCommittalTypesCache()
+    case 'CommittalTypes': {
+      clearCommittalTypesCache()
       break
     }
 

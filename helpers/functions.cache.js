@@ -4,9 +4,9 @@ import cluster from 'node:cluster';
 import Debug from 'debug';
 import getBurialSiteStatusesFromDatabase from '../database/getBurialSiteStatuses.js';
 import getBurialSiteTypesFromDatabase from '../database/getBurialSiteTypes.js';
+import getCommittalTypesFromDatabase from '../database/getCommittalTypes.js';
 import getContractTypeFieldsFromDatabase from '../database/getContractTypeFields.js';
 import getContractTypesFromDatabase from '../database/getContractTypes.js';
-import getIntermentCommittalTypesFromDatabase from '../database/getIntermentCommittalTypes.js';
 import getIntermentContainerTypesFromDatabase from '../database/getIntermentContainerTypes.js';
 import getWorkOrderMilestoneTypesFromDatabase from '../database/getWorkOrderMilestoneTypes.js';
 import getWorkOrderTypesFromDatabase from '../database/getWorkOrderTypes.js';
@@ -116,21 +116,21 @@ function clearIntermentContainerTypesCache() {
     intermentContainerTypes = undefined;
 }
 /*
- * Interment Committal Types
+ * Committal Types
  */
-let intermentCommittalTypes;
-export async function getIntermentCommittalTypes() {
-    if (intermentCommittalTypes === undefined) {
-        intermentCommittalTypes = await getIntermentCommittalTypesFromDatabase();
+let committalTypes;
+export async function getCommittalTypes() {
+    if (committalTypes === undefined) {
+        committalTypes = await getCommittalTypesFromDatabase();
     }
-    return intermentCommittalTypes;
+    return committalTypes;
 }
-export async function getIntermentCommittalTypeById(intermentCommittalTypeId) {
-    const cachedCommittalTypes = await getIntermentCommittalTypes();
-    return cachedCommittalTypes.find((currentCommittalType) => currentCommittalType.intermentCommittalTypeId === intermentCommittalTypeId);
+export async function getCommittalTypeById(committalTypeId) {
+    const cachedCommittalTypes = await getCommittalTypes();
+    return cachedCommittalTypes.find((currentCommittalType) => currentCommittalType.committalTypeId === committalTypeId);
 }
-function clearIntermentCommittalTypesCache() {
-    intermentCommittalTypes = undefined;
+function clearCommittalTypesCache() {
+    committalTypes = undefined;
 }
 /*
  * Work Order Types
@@ -175,6 +175,8 @@ export async function preloadCaches() {
     await getBurialSiteStatuses();
     await getBurialSiteTypes();
     await getContractTypes();
+    await getCommittalTypes();
+    await getIntermentContainerTypes();
     await getWorkOrderTypes();
     await getWorkOrderMilestoneTypes();
 }
@@ -182,6 +184,8 @@ export function clearCaches() {
     clearBurialSiteStatusesCache();
     clearBurialSiteTypesCache();
     clearContractTypesCache();
+    clearCommittalTypesCache();
+    clearIntermentContainerTypesCache();
     clearWorkOrderTypesCache();
     clearWorkOrderMilestoneTypesCache();
 }
@@ -209,8 +213,8 @@ export function clearCacheByTableName(tableName, relayMessage = true) {
             clearIntermentContainerTypesCache();
             break;
         }
-        case 'IntermentCommittalTypes': {
-            clearIntermentCommittalTypesCache();
+        case 'CommittalTypes': {
+            clearCommittalTypesCache();
             break;
         }
         case 'WorkOrderMilestoneTypes': {

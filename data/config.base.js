@@ -6,7 +6,6 @@ export const config = {
     aliases: {},
     settings: {
         fees: {},
-        cemeteries: {},
         burialSites: {},
         contracts: {},
         workOrders: {},

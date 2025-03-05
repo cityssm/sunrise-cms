@@ -6,6 +6,8 @@ type RecordTable =
   | 'BurialSiteStatuses'
   | 'BurialSiteTypes'
   | 'BurialSiteTypeFields'
+  | 'IntermentContainerTypes'
+  | 'CommittalTypes'
   | 'ContractTypes'
   | 'ContractTypeFields'
   | 'WorkOrderMilestoneTypes'
@@ -17,6 +19,8 @@ recordIdColumns.set('Fees', 'feeId')
 recordIdColumns.set('BurialSiteStatuses', 'burialSiteStatusId')
 recordIdColumns.set('BurialSiteTypes', 'burialSiteTypeId')
 recordIdColumns.set('BurialSiteTypeFields', 'burialSiteTypeFieldId')
+recordIdColumns.set('IntermentContainerTypes', 'intermentContainerTypeId')
+recordIdColumns.set('CommittalTypes', 'committalTypeId')
 recordIdColumns.set('ContractTypes', 'contractTypeId')
 recordIdColumns.set('ContractTypeFields', 'contractTypeFieldId')
 recordIdColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId')

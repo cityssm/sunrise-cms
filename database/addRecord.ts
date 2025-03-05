@@ -5,16 +5,14 @@ import { acquireConnection } from './pool.js'
 type RecordTable =
   | 'BurialSiteStatuses'
   | 'BurialSiteTypes'
-  | 'IntermentContainerTypes'
-  | 'IntermentCommittalTypes'
+  | 'CommittalTypes'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
 
 const recordNameColumns = new Map<RecordTable, string>()
 recordNameColumns.set('BurialSiteStatuses', 'burialSiteStatus')
 recordNameColumns.set('BurialSiteTypes', 'burialSiteType')
-recordNameColumns.set('IntermentContainerTypes', 'intermentContainerType')
-recordNameColumns.set('IntermentCommittalTypes', 'intermentCommittalType')
+recordNameColumns.set('CommittalTypes', 'committalType')
 recordNameColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneType')
 recordNameColumns.set('WorkOrderTypes', 'workOrderType')
 

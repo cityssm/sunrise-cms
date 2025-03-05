@@ -13,7 +13,7 @@ export default async function getContractTypes(): Promise<ContractType[]> {
       `select contractTypeId, contractType, isPreneed, orderNumber
         from ContractTypes
         where recordDelete_timeMillis is null
-        order by orderNumber, contractType`
+        order by orderNumber, contractType, contractTypeId`
     )
     .all() as ContractType[]
 

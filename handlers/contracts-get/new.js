@@ -2,7 +2,7 @@ import { dateToInteger, dateToString } from '@cityssm/utils-datetime';
 import getBurialSite from '../../database/getBurialSite.js';
 import getFuneralHomes from '../../database/getFuneralHomes.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { getContractTypes } from '../../helpers/functions.cache.js';
+import { getCommittalTypes, getContractTypes, getIntermentContainerTypes } from '../../helpers/functions.cache.js';
 export default async function handler(request, response) {
     const startDate = new Date();
     const contract = {
@@ -23,11 +23,15 @@ export default async function handler(request, response) {
     }
     const contractTypes = await getContractTypes();
     const funeralHomes = await getFuneralHomes();
+    const committalTypes = await getCommittalTypes();
+    const intermentContainerTypes = await getIntermentContainerTypes();
     response.render('contract-edit', {
         headTitle: 'Create a New Contract',
         contract,
         contractTypes,
         funeralHomes,
+        committalTypes,
+        intermentContainerTypes,
         isCreate: true
     });
 }

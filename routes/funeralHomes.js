@@ -9,8 +9,8 @@ import handler_doUpdateFuneralHome from '../handlers/funeralHomes-post/doUpdateF
 import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js';
 export const router = Router();
 router.get('/', handler_search);
-router.get('/:funeralHomeId', handler_view);
 router.get('/new', updateGetHandler, handler_new);
+router.get('/:funeralHomeId', handler_view);
 router.post('/doCreateFuneralHome', updatePostHandler, handler_doCreateFuneralHome);
 router.get('/:funeralHomeId/edit', updateGetHandler, handler_edit);
 router.post('/doUpdateFuneralHome', updatePostHandler, handler_doUpdateFuneralHome);

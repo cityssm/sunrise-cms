@@ -2,31 +2,31 @@
 
 <h1 class="title is-2 has-text-centered">
     Burial Site
-    <%= configFunctions.getConfigProperty("aliases.occupancy") %>
+    Contract
 </h1>
 
 <div class="columns">
     <div class="column">
         <p>
-            <strong><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type</strong><br />
+            <strong>Contract Type</strong><br />
             <%= contract.contractType %>
         </p>
     </div>
     <div class="column">
         <p class="mb-2">
             <strong>Burial Site</strong><br />
-            <% if (contract.lotId) { %>
-                <%= contract.lotName %>
+            <% if (contract.burialSiteId) { %>
+                <%= contract.burialSiteName %>
             <% } else { %>
                 (No Burial Site)
             <% } %>
         </p>
         <p>
-            <strong><%= configFunctions.getConfigProperty("aliases.map") %></strong><br />
-            <% if (contract.mapId) { %>
-                <%= contract.mapName %>
+            <strong>Cemetery</strong><br />
+            <% if (contract.cemeteryId) { %>
+                <%= contract.cemeteryName %>
             <% } else { %>
-                (No <%= configFunctions.getConfigProperty("aliases.map") %>)
+                (No Cemetery)
             <% } %>
         </p>
     </div>

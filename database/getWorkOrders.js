@@ -36,7 +36,7 @@ function buildWhereClause(filters) {
         ))`;
         sqlParameters.push(...occupantNameFilters.sqlParameters);
     }
-    const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.lotName, '', 'l');
+    const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, '', 'l');
     if (burialSiteNameFilters.sqlParameters.length > 0) {
         sqlWhereClause +=
             ` and w.workOrderId in (
@@ -130,7 +130,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
             where recordDelete_timeMillis is null
             group by workOrderId) m on w.workOrderId = m.workOrderId
           left join (
-            select workOrderId, count(lotId) as workOrderLotCount
+            select workOrderId, count(burialSiteId) as workOrderLotCount
             from WorkOrderLots
             where recordDelete_timeMillis is null
             group by workOrderId) l on w.workOrderId = l.workOrderId

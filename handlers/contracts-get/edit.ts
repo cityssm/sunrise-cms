@@ -4,8 +4,10 @@ import getContract from '../../database/getContract.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import {
+  getCommittalTypes,
   getContractTypePrintsById,
   getContractTypes,
+  getIntermentContainerTypes,
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
 
@@ -32,6 +34,8 @@ export default async function handler(
 
   const contractTypes = await getContractTypes()
   const funeralHomes = await getFuneralHomes()
+  const committalTypes = await getCommittalTypes()
+  const intermentContainerTypes = await getIntermentContainerTypes()
   const workOrderTypes = await getWorkOrderTypes()
 
   response.render('contract-edit', {
@@ -41,6 +45,8 @@ export default async function handler(
 
     contractTypes,
     funeralHomes,
+    committalTypes,
+    intermentContainerTypes,
     workOrderTypes,
 
     isCreate: false

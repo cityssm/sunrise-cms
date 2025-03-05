@@ -48,7 +48,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           <i class="fas fa-vector-square"
             aria-label="${los.escapedAliases.Lot}"></i>
           </span>
-          ${cityssm.escapeHTML(lot.lotName ?? '')}
+          ${cityssm.escapeHTML(lot.burialSiteName ?? '')}
           </li>`;
             }
             for (const contract of milestone.workOrderContracts ?? []) {

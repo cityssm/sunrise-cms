@@ -18,21 +18,18 @@ export default async function getContractInterments(
   const interments = database
     .prepare(
       `select o.contractId, o.intermentNumber,
-        o.isCremated,
         o.deceasedName,
+        o.deceasedAddress1, o.deceasedAddress2, o.deceasedCity, o.deceasedProvince, o.deceasedPostalCode,
+        
         o.birthDate, userFn_dateIntegerToString(o.birthDate) as birthDateString,
         o.birthPlace,
         o.deathDate, userFn_dateIntegerToString(o.deathDate) as deathDateString,
         o.deathPlace,
-
-        o.intermentDate, userFn_dateIntegerToString(o.intermentDate) as intermentDateString,
-
-        o.intermentContainerTypeId, t.intermentContainerType,
-        o.intermentCommittalTypeId, c.intermentCommittalType
+        
+        o.intermentContainerTypeId, t.intermentContainerType, t.isCremationType
 
         from ContractInterments o
         left join IntermentContainerTypes t on o.intermentContainerTypeId = t.intermentContainerTypeId
-        left join IntermentCommittalTypes c on o.intermentCommittalTypeId = c.intermentCommittalTypeId
 
         where o.recordDelete_timeMillis is null
         and o.contractId = ?

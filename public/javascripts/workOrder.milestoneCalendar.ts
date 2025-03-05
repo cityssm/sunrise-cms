@@ -86,7 +86,7 @@ declare const exports: Record<string, unknown>
           <i class="fas fa-vector-square"
             aria-label="${los.escapedAliases.Lot}"></i>
           </span>
-          ${cityssm.escapeHTML(lot.lotName ?? '')}
+          ${cityssm.escapeHTML(lot.burialSiteName ?? '')}
           </li>`
       }
 

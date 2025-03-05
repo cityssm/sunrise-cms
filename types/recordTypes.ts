@@ -222,12 +222,13 @@ export interface DynamicsGPDocument {
 export interface IntermentContainerType extends Record {
   intermentContainerTypeId: number
   intermentContainerType: string
+  isCremationType: boolean
   orderNumber?: number
 }
 
-export interface IntermentCommittalType extends Record {
-  intermentCommittalTypeId: number
-  intermentCommittalType: string
+export interface CommittalType extends Record {
+  committalTypeId: number
+  committalType: string
   orderNumber?: number
 }
 
@@ -236,8 +237,6 @@ export interface ContractInterment extends Record {
   intermentNumber?: number
   
   deceasedName?: string
-  isCremated?: boolean
-
   deceasedAddress1?: string
   deceasedAddress2?: string
   deceasedCity?: string
@@ -252,14 +251,9 @@ export interface ContractInterment extends Record {
   deathDateString?: string
   deathPlace?: string
 
-  intermentDate?: number
-  intermentDateString?: string
-
   intermentContainerTypeId?: number
   intermentContainerType?: string
-
-  intermentCommittalTypeId?: number
-  intermentCommittalType?: string
+  isCremationType?: boolean
 
   contractIdCount?: number
   recordUpdate_timeMillisMax?: number
@@ -321,6 +315,13 @@ export interface Contract extends Record {
   funeralHomeId?: number
   funeralHomeName?: string
   funeralDirectorName?: string
+
+  funeralDate?: number
+  funeralDateString?: string
+  funeralTime?: number
+  funeralTimeString?: string
+  committalTypeId?: number
+  committalType?: string
 
   contractFields?: ContractField[]
   contractComments?: ContractComment[]

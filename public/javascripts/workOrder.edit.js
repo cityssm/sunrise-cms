@@ -184,10 +184,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                 });
             }
-            function addBurialSite(lotId, callbackFunction) {
+            function addBurialSite(burialSiteId, callbackFunction) {
                 cityssm.postJSON(`${los.urlPrefix}/workOrders/doAddWorkOrderBurialSite`, {
                     workOrderId,
-                    lotId
+                    burialSiteId
                 }, (rawResponseJSON) => {
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
@@ -229,8 +229,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
             function addBurialSiteFromLotOccupancy(clickEvent) {
-                const lotId = clickEvent.currentTarget.dataset.lotId ?? '';
-                addBurialSite(lotId);
+                const burialSiteId = clickEvent.currentTarget.dataset.burialSiteId ?? '';
+                addBurialSite(burialSiteId);
             }
             function renderRelatedOccupancies() {
                 const occupanciesContainerElement = document.querySelector('#container--lotOccupancies');
@@ -263,8 +263,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         contract.contractId.toString();
                     const isActive = !(contract.contractEndDate &&
                         contract.contractEndDateString < currentDateString);
-                    const hasLotRecord = contract.lotId &&
-                        workOrderLots.some((lot) => contract.lotId === lot.lotId);
+                    const hasLotRecord = contract.burialSiteId &&
+                        workOrderLots.some((lot) => contract.burialSiteId === lot.burialSiteId);
                     // eslint-disable-next-line no-unsanitized/property
                     rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
       ${isActive
@@ -276,14 +276,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </a><br />
         <span class="is-size-7">#${contract.contractId}</span>
       </td>`;
-                    if (contract.lotId) {
+                    if (contract.burialSiteId) {
                         // eslint-disable-next-line no-unsanitized/method
                         rowElement.insertAdjacentHTML('beforeend', `<td>
-          ${cityssm.escapeHTML(contract.lotName ?? '')}
+          ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
           ${hasLotRecord
                             ? ''
                             : ` <button class="button is-small is-light is-success button--addBurialSite"
-                  data-lot-id="${contract.lotId.toString()}"
+                  data-lot-id="${contract.burialSiteId.toString()}"
                   data-tooltip="Add ${los.escapedAliases.Lot}"
                   aria-label="Add ${los.escapedAliases.Lot}" type="button">
                   <i class="fas fa-plus" aria-hidden="true"></i>
@@ -333,8 +333,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             }
             function openEditLotStatus(clickEvent) {
-                const lotId = Number.parseInt(clickEvent.currentTarget.closest('.container--lot').dataset.lotId ?? '', 10);
-                const lot = workOrderLots.find((possibleLot) => possibleLot.lotId === lotId);
+                const burialSiteId = Number.parseInt(clickEvent.currentTarget.closest('.container--lot').dataset.burialSiteId ?? '', 10);
+                const lot = workOrderLots.find((possibleLot) => possibleLot.burialSiteId === burialSiteId);
                 let editCloseModalFunction;
                 function doUpdateBurialSiteStatus(submitEvent) {
                     submitEvent.preventDefault();
@@ -357,8 +357,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 cityssm.openHtmlModal('lot-editLotStatus', {
                     onshow(modalElement) {
                         los.populateAliases(modalElement);
-                        modalElement.querySelector('#lotStatusEdit--lotId').value = lotId.toString();
-                        modalElement.querySelector('#lotStatusEdit--lotName').value = lot.lotName ?? '';
+                        modalElement.querySelector('#lotStatusEdit--burialSiteId').value = burialSiteId.toString();
+                        modalElement.querySelector('#lotStatusEdit--burialSiteName').value = lot.burialSiteName ?? '';
                         const lotStatusElement = modalElement.querySelector('#lotStatusEdit--burialSiteStatusId');
                         let lotStatusFound = false;
                         for (const lotStatus of exports.lotStatuses) {
@@ -397,11 +397,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             }
             function deleteLot(clickEvent) {
-                const lotId = clickEvent.currentTarget.closest('.container--lot').dataset.lotId;
+                const burialSiteId = clickEvent.currentTarget.closest('.container--lot').dataset.burialSiteId;
                 function doDelete() {
                     cityssm.postJSON(`${los.urlPrefix}/workOrders/doDeleteWorkOrderBurialSite`, {
                         workOrderId,
-                        lotId
+                        burialSiteId
                     }, (rawResponseJSON) => {
                         const responseJSON = rawResponseJSON;
                         if (responseJSON.success) {
@@ -451,11 +451,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 for (const lot of workOrderLots) {
                     const rowElement = document.createElement('tr');
                     rowElement.className = 'container--lot';
-                    rowElement.dataset.lotId = lot.lotId.toString();
+                    rowElement.dataset.burialSiteId = lot.burialSiteId.toString();
                     // eslint-disable-next-line no-unsanitized/property
                     rowElement.innerHTML = `<td>
-              <a class="has-text-weight-bold" href="${los.getBurialSiteURL(lot.lotId)}">
-                ${cityssm.escapeHTML(lot.lotName ?? '')}
+              <a class="has-text-weight-bold" href="${los.getBurialSiteURL(lot.burialSiteId)}">
+                ${cityssm.escapeHTML(lot.burialSiteName ?? '')}
               </a>
             </td><td>
               ${cityssm.escapeHTML(lot.cemeteryName ?? '')}
@@ -541,8 +541,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     <td class="has-text-weight-bold">
                       ${cityssm.escapeHTML(contract.contractType ?? '')}
                     </td>`;
-                            if (contract.lotId) {
-                                rowElement.insertAdjacentHTML('beforeend', `<td>${cityssm.escapeHTML(contract.lotName ?? '')}</td>`);
+                            if (contract.burialSiteId) {
+                                rowElement.insertAdjacentHTML('beforeend', `<td>${cityssm.escapeHTML(contract.burialSiteName ?? '')}</td>`);
                             }
                             else {
                                 // eslint-disable-next-line no-unsanitized/method
@@ -590,7 +590,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         const occupantNameElement = modalElement.querySelector('#contractSearch--occupantName');
                         occupantNameElement.addEventListener('change', doSearch);
                         occupantNameElement.focus();
-                        modalElement.querySelector('#contractSearch--lotName').addEventListener('change', doSearch);
+                        modalElement.querySelector('#contractSearch--burialSiteName').addEventListener('change', doSearch);
                         searchFormElement.addEventListener('submit', doSearch);
                     },
                     onremoved() {
@@ -601,8 +601,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
             function doAddLot(clickEvent) {
                 const rowElement = clickEvent.currentTarget.closest('tr');
-                const lotId = rowElement.dataset.lotId ?? '';
-                addBurialSite(lotId, (success) => {
+                const burialSiteId = rowElement.dataset.burialSiteId ?? '';
+                addBurialSite(burialSiteId, (success) => {
                     if (success) {
                         rowElement.remove();
                     }
@@ -642,13 +642,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         for (const lot of responseJSON.lots) {
                             const rowElement = document.createElement('tr');
                             rowElement.className = 'container--lot';
-                            rowElement.dataset.lotId = lot.lotId.toString();
+                            rowElement.dataset.burialSiteId = lot.burialSiteId.toString();
                             rowElement.innerHTML = `<td class="has-text-centered">
                       <button class="button is-small is-success button--addBurialSite" data-tooltip="Add" type="button" aria-label="Add">
                         <i class="fas fa-plus" aria-hidden="true"></i>
                       </button>
                     </td><td class="has-text-weight-bold">
-                      ${cityssm.escapeHTML(lot.lotName ?? '')}
+                      ${cityssm.escapeHTML(lot.burialSiteName ?? '')}
                     </td><td>
                       ${cityssm.escapeHTML(lot.cemeteryName ?? '')}
                     </td><td>
@@ -682,9 +682,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     },
                     onshown(modalElement) {
                         bulmaJS.toggleHtmlClipped();
-                        const lotNameElement = modalElement.querySelector('#lotSearch--lotName');
-                        lotNameElement.addEventListener('change', doSearch);
-                        lotNameElement.focus();
+                        const burialSiteNameElement = modalElement.querySelector('#lotSearch--burialSiteName');
+                        burialSiteNameElement.addEventListener('change', doSearch);
+                        burialSiteNameElement.focus();
                         modalElement
                             .querySelector('#lotSearch--burialSiteStatusId')
                             ?.addEventListener('change', doSearch);

@@ -4,7 +4,7 @@ import type { Request, Response } from 'express'
 import getBurialSite from '../../database/getBurialSite.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import { getContractTypes } from '../../helpers/functions.cache.js'
+import { getCommittalTypes, getContractTypes, getIntermentContainerTypes } from '../../helpers/functions.cache.js'
 import type { Contract } from '../../types/recordTypes.js'
 
 export default async function handler(
@@ -34,6 +34,8 @@ export default async function handler(
 
   const contractTypes = await getContractTypes()
   const funeralHomes = await getFuneralHomes()
+  const committalTypes = await getCommittalTypes()
+  const intermentContainerTypes = await getIntermentContainerTypes()
 
   response.render('contract-edit', {
     headTitle: 'Create a New Contract',
@@ -41,6 +43,8 @@ export default async function handler(
 
     contractTypes,
     funeralHomes,
+    committalTypes,
+    intermentContainerTypes,
 
     isCreate: true
   })

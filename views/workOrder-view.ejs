@@ -162,7 +162,7 @@
                           <thead>
                               <tr>
                                   <th class="has-width-1"></th>
-                                  <th><%= configFunctions.getConfigProperty("aliases.occupancy") %> Type</th>
+                                  <th>Contract Type</th>
                                   <th>Burial Site</th>
                                   <th><%= configFunctions.getConfigProperty("aliases.occupancyStartDate") %></th>
                                   <th>End Date</th>
@@ -175,9 +175,9 @@
                                   <tr>
                                       <td class="has-text-centered">
                                         <% if (isActive) { %>
-                                          <i class="fas fa-play" title="Current <%= configFunctions.getConfigProperty("aliases.occupancy") %>"></i>
+                                          <i class="fas fa-play" title="Current Contract"></i>
                                         <% } else { %>
-                                          <i class="fas fa-stop" title="Previous <%= configFunctions.getConfigProperty("aliases.occupancy") %>"></i>
+                                          <i class="fas fa-stop" title="Previous Contract"></i>
                                         <% } %>
                                       </td>
                                       <td>
@@ -190,8 +190,8 @@
                                         </span>
                                       </td>
                                       <td>
-                                          <% if (contract.lotId) { %>
-                                              <%= contract.lotName %>
+                                          <% if (contract.burialSiteId) { %>
+                                              <%= contract.burialSiteName %>
                                           <% } else { %>
                                               <span class="has-text-grey">(No Burial Site)</span>
                                           <% } %>
@@ -243,7 +243,7 @@
                           <thead>
                               <tr>
                                   <th>Burial Site</th>
-                                  <th><%= configFunctions.getConfigProperty("aliases.map") %></th>
+                                  <th>Cemetery</th>
                                   <th>Burial Site Type</th>
                                   <th>Status</th>
                               </tr>
@@ -252,9 +252,9 @@
                               <% for (const lot of workOrder.workOrderLots) { %>
                                   <tr>
                                       <td>
-                                          <a class="has-text-weight-bold" href="<%= urlPrefix %>/burialSites/<%= lot.lotId %>"><%= lot.lotName %></a>
+                                          <a class="has-text-weight-bold" href="<%= urlPrefix %>/burialSites/<%= lot.burialSiteId %>"><%= lot.burialSiteName %></a>
                                       </td>
-                                      <td><%= lot.mapName %></td>
+                                      <td><%= lot.cemeteryName %></td>
                                       <td><%= lot.lotType %></td>
                                       <td><%= lot.lotStatus %></td>
                                   </tr>

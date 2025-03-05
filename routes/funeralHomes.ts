@@ -13,9 +13,9 @@ export const router = Router()
 
 router.get('/', handler_search)
 
-router.get('/:funeralHomeId', handler_view)
-
 router.get('/new', updateGetHandler, handler_new)
+
+router.get('/:funeralHomeId', handler_view)
 
 router.post(
   '/doCreateFuneralHome',

@@ -5,7 +5,7 @@ export interface GetWorkOrdersFilters {
     workOrderOpenStatus?: '' | 'open' | 'closed';
     workOrderOpenDateString?: string;
     occupantName?: string;
-    lotName?: string;
+    burialSiteName?: string;
     contractId?: number | string;
 }
 interface GetWorkOrdersOptions {

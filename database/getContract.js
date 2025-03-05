@@ -1,4 +1,4 @@
-import { dateIntegerToString } from '@cityssm/utils-datetime';
+import { dateIntegerToString, timeIntegerToString } from '@cityssm/utils-datetime';
 import getContractComments from './getContractComments.js';
 import getContractFees from './getContractFees.js';
 import getContractFields from './getContractFields.js';
@@ -9,6 +9,7 @@ import { acquireConnection } from './pool.js';
 export default async function getContract(contractId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
+    database.function('userFn_timeIntegerToString', timeIntegerToString);
     const contract = database
         .prepare(`select o.contractId,
         o.contractTypeId, t.contractType, t.isPreneed,
@@ -20,9 +21,13 @@ export default async function getContract(contractId, connectedDatabase) {
         o.purchaserCity, o.purchaserProvince, o.purchaserPostalCode,
         o.purchaserPhoneNumber, o.purchaserEmail, o.purchaserRelationship,
         o.funeralHomeId, o.funeralDirectorName,
+        o.funeralDate, userFn_dateIntegerToString(o.funeralDate) as funeralDateString,
+        o.funeralTime, userFn_timeIntegerToString(o.funeralTime) as funeralTimeString,
+        o.committalTypeId, c.committalType,
         o.recordUpdate_timeMillis
         from Contracts o
         left join ContractTypes t on o.contractTypeId = t.contractTypeId
+        left join CommittalTypes c on o.committalTypeId = c.committalTypeId
         left join BurialSites l on o.burialSiteId = l.burialSiteId
         left join Cemeteries m on l.cemeteryId = m.cemeteryId
         where o.recordDelete_timeMillis is null

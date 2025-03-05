@@ -245,84 +245,84 @@
           </div>
         </div>
         <div class="column">
-            <div id="container--contractFields">
-              <% if (isCreate) { %>
-                <div class="message is-info">
-                  <p class="message-body">
-                    Select the contract type to load the available fields.
-                  </p>
-                </div>
-              <% } else if (contract.contractFields.length === 0) { %>
-                <div class="message is-info">
-                  <p class="message-body">
-                    The current contract type has no additional fields.
-                  </p>
-                </div>
-              <% } else { %>
-                <% let contractTypeFieldIds = ""; %>
-                <% for (const contractField of contract.contractFields) { %>
-                  <% contractTypeFieldIds += "," + contractField.contractTypeFieldId; %>
-                  <div class="field">
-                    <label class="label" for="contract--fieldValue_<%= contractField.contractTypeFieldId %>">
-                      <%= contractField.contractTypeField %>
-                    </label>
-                    <div class="control">
-                      <% if (contractField.fieldType === 'select' || (contractField.fieldValues ?? '') !== "") { %>
-                        <%
-                          const fieldValues = contractField.fieldValues.split("\n");
-                          let valueFound = false;
-                        %>
-                        <div class="select is-fullwidth">
-                          <select id="contract--fieldValue_<%= contractField.contractTypeFieldId %>"
-                            name="fieldValue_<%= contractField.contractTypeFieldId %>">
-                            <% if (!contractField.isRequired || contractField.contractFieldValue === "") { %>
-                              <option value="">(Not Set)</option>
-                            <% } %>
-                            <% for (const fieldValue of fieldValues) { %>
-                              <% 
-                                if (fieldValue === contractField.fieldValue) {
-                                  valueFound = true;
-                                }
-                              %>
-                              <option value="<%= fieldValue %>"
-                                <%= (fieldValue === contractField.fieldValue ? " selected" : "") %>>
-                                <%= fieldValue %>
-                              </option>
-                            <% } %>
-                            <% if (!valueFound && contractField.fieldValue !== "") { %>
-                              <option value="<%= contractField.fieldValue %>" selected>
-                                <%= contractField.fieldValue %>
-                              </option>
-                            <% } %>
-                          </select>
-                        </div>
-                      <% } else { %>
-                        <input class="input"
-                          id="contract--fieldValue_<%= contractField.contractTypeFieldId %>"
-                          name="fieldValue_<%= contractField.contractTypeFieldId %>"
-                          type="<%= contractField.fieldType %>"
-                          value="<%= contractField.fieldValue %>"
-                          <% if (contractField.pattern !== "") { %>
-                            pattern="<%= contractField.pattern %>"
+          <div id="container--contractFields">
+            <% if (isCreate) { %>
+              <div class="message is-info">
+                <p class="message-body">
+                  Select the contract type to load the available fields.
+                </p>
+              </div>
+            <% } else if (contract.contractFields.length === 0) { %>
+              <div class="message is-info">
+                <p class="message-body">
+                  The current contract type has no additional fields.
+                </p>
+              </div>
+            <% } else { %>
+              <% let contractTypeFieldIds = ""; %>
+              <% for (const contractField of contract.contractFields) { %>
+                <% contractTypeFieldIds += "," + contractField.contractTypeFieldId; %>
+                <div class="field">
+                  <label class="label" for="contract--fieldValue_<%= contractField.contractTypeFieldId %>">
+                    <%= contractField.contractTypeField %>
+                  </label>
+                  <div class="control">
+                    <% if (contractField.fieldType === 'select' || (contractField.fieldValues ?? '') !== "") { %>
+                      <%
+                        const fieldValues = contractField.fieldValues.split("\n");
+                        let valueFound = false;
+                      %>
+                      <div class="select is-fullwidth">
+                        <select id="contract--fieldValue_<%= contractField.contractTypeFieldId %>"
+                          name="fieldValue_<%= contractField.contractTypeFieldId %>">
+                          <% if (!contractField.isRequired || contractField.contractFieldValue === "") { %>
+                            <option value="">(Not Set)</option>
                           <% } %>
-                          minlength="<%= contractField.minLength %>"
-                          maxlength="<%= contractField.maxLength %>"
-                          <%= contractField.isRequired ? " required" : "" %>
-                          />
-                      <% } %>
-                    </div>
+                          <% for (const fieldValue of fieldValues) { %>
+                            <% 
+                              if (fieldValue === contractField.fieldValue) {
+                                valueFound = true;
+                              }
+                            %>
+                            <option value="<%= fieldValue %>"
+                              <%= (fieldValue === contractField.fieldValue ? " selected" : "") %>>
+                              <%= fieldValue %>
+                            </option>
+                          <% } %>
+                          <% if (!valueFound && contractField.fieldValue !== "") { %>
+                            <option value="<%= contractField.fieldValue %>" selected>
+                              <%= contractField.fieldValue %>
+                            </option>
+                          <% } %>
+                        </select>
+                      </div>
+                    <% } else { %>
+                      <input class="input"
+                        id="contract--fieldValue_<%= contractField.contractTypeFieldId %>"
+                        name="fieldValue_<%= contractField.contractTypeFieldId %>"
+                        type="<%= contractField.fieldType %>"
+                        value="<%= contractField.fieldValue %>"
+                        <% if (contractField.pattern !== "") { %>
+                          pattern="<%= contractField.pattern %>"
+                        <% } %>
+                        minlength="<%= contractField.minLength %>"
+                        maxlength="<%= contractField.maxLength %>"
+                        <%= contractField.isRequired ? " required" : "" %>
+                        />
+                    <% } %>
                   </div>
-                <% } %>
-                <input id="contract--contractTypeFieldIds" name="contractTypeFieldIds" type="hidden" value="<%= contractTypeFieldIds.slice(1) %>" />
+                </div>
               <% } %>
-            </div>
+              <input id="contract--contractTypeFieldIds" name="contractTypeFieldIds" type="hidden" value="<%= contractTypeFieldIds.slice(1) %>" />
+            <% } %>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <div class="panel">
-    <h2 class="panel-heading">Funeral Home</h2>
+    <h2 class="panel-heading">Funeral</h2>
     <div class="panel-block is-block">
       <div class="columns">
         <div class="column">
@@ -334,24 +334,87 @@
               <div class="select is-fullwidth">
                 <select id="contract--funeralHomeId" name="funeralHomeId">
                   <option value="">(No Funeral Home)</option>
+                  <% let funeralHomeIsFound = false; %>
                   <% for (const funeralHome of funeralHomes) { %>
+                    <%
+                      if (contract.funeralHomeId === funeralHome.funeralHomeId) { 
+                        funeralHomeIsFound = true;
+                      }
+                    %>
                     <option value="<%= funeralHome.funeralHomeId %>"
                       <%= (contract.funeralHomeId === funeralHome.funeralHomeId ? " selected" : "") %>>
                       <%= funeralHome.funeralHomeName %>
+                    </option>
+                  <% } %>
+                  <% if (contract.funeralHomeId && !funeralHomeIsFound) { %>
+                    <option value="<%= contract.funeralHomeId %>" selected>
+                      <%= contract.funeralHomeName %>
                     </option>
                   <% } %>
                 </select>
               </div>
             </div>
           </div>
-        </div>
-        <div class="column">
           <div class="field">
             <label class="label" for="contract--funeralDirectorName">
               Funeral Director's Name
             </label>
             <div class="control">
               <input class="input" id="contract--funeralDirectorName" name="funeralDirectorName" type="text" maxlength="100" autocomplete="off" value="<%= contract.funeralDirectorName %>" />
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="columns is-mobile mb-0">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="contract--funeralDateString">Funeral Date</label>
+                <div class="control has-icons-left">
+                  <input class="input" id="contract--funeralDateString" name="funeralDateString" type="date"
+                    value="<%= contract.funeralDateString %>" />
+                  <span class="icon is-left">
+                    <i class="fas fa-calendar" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="contract--funeralTimeString">Time</label>
+                <div class="control has-icons-left">
+                  <input class="input" id="contract--funeralTimeString" name="funeralTimeString" type="time" value="<%= contract.funeralTimeString %>" />
+                  <span class="icon is-left">
+                    <i class="fas fa-clock" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="contract--committalTypeId">Committal Type</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="contract--committalTypeId" name="committalTypeId">
+                  <option value="">(No Type)</option>
+                  <% let committalTypeIsFound = false; %>
+                  <% for (const committalType of committalTypes) { %>
+                    <%
+                      if (contract.committalTypeId === committalType.committalTypeId) { 
+                        committalTypeIsFound = true;
+                      }
+                    %>
+                    <option value="<%= committalType.committalTypeId %>"
+                      <%= (contract.committalTypeId === committalType.committalTypeId ? " selected" : "") %>>
+                      <%= committalType.committalType %>
+                    </option>
+                  <% } %>
+                  <% if (contract.committalTypeId && !committalTypeIsFound) { %>
+                    <option value="<%= contract.committalTypeId %>" selected>
+                      <%= contract.committalType %>
+                    </option>
+                  <% } %>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -429,7 +492,10 @@
           </div>
           <div class="field">
             <label class="label" for="contract--purchaserRelationship">
-              Relationship to Deceased
+              Relationship to
+              <span class="is-recipient-or-deceased">
+                <%= (contract.isPreneed ? "Recipient" : "Deceased") %>
+              </span>
             </label>
             <div class="control">
               <input class="input" id="contract--purchaserRelationship" name="purchaserRelationship" type="text" maxlength="100" autocomplete="off" value="<%= contract.purchaserRelationship %>" />
@@ -557,6 +623,41 @@
                 </div>
               </div>
             </div>
+            <div class="field">
+              <label class="label" for="contract--intermentContainerTypeId">Container</label>
+              <div class="select is-fullwidth">
+                <select id="contract--intermentContainerTypeId" name="intermentContainerTypeId">
+                  <option value="">(No Container)</option>
+                  <optgroup label="Non-Cremated">
+                    <%
+                      let containerIsFound = false;
+                      let isCremationType = false;
+                    %>
+                    <% for (const container of intermentContainerTypes) { %>
+                      <% if (container.isCremationType && !isCremationType) { %>
+                        </optgroup>
+                        <optgroup label="Cremated">
+                        <% isCremationType = true; %>
+                      <% } %>
+                      <%
+                        if (contract.intermentContainerTypeId === container.intermentContainerTypeId) { 
+                          containerIsFound = true;
+                        }
+                      %>
+                      <option value="<%= container.intermentContainerTypeId %>">
+                        <%= (contract.intermentContainerTypeId === container.intermentContainerTypeId ? " selected" : "") %>
+                        <%= container.intermentContainerType %>
+                      </option>
+                    <% } %>
+                    </optgroup>
+                  <% if (contract.intermentContainerTypeId && !containerIsFound) { %>
+                    <option value="<%= contract.intermentContainerTypeId %>" selected>
+                      <%= contract.intermentContainerType %>
+                    </option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
             <div class="message is-info is-small">
               <p class="message-body">
                 Any additional interments associated with this contract can be added after the contract is created.
@@ -585,9 +686,7 @@
               </div>
             </div>
           </div>
-          <div class="panel-block is-block">
-
-          </div>
+          <div class="panel-block is-block" id="container--contractInterments"></div>
         </div>
       <% } %>
     </div>
@@ -748,7 +847,7 @@
 
     exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
   <% } %>
- </script>
+</script>
 
 <script src="<%= urlPrefix %>/javascripts/contract.edit.js"></script>
 

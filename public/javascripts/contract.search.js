@@ -41,6 +41,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             let deceasedHTML = '';
             for (const interment of contract.contractInterments ?? []) {
                 deceasedHTML += `<li class="has-tooltip-left">
+          <span class="fa-li"><i class="fas fa-user"></i></span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
           </li>`;
             }
@@ -103,7 +104,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
       <th>Burial Site</th>
       <th>Contract Date</th>
       <th>End Date</th>
-      <th>Deceased</th>
+      <th>Recipient / Deceased</th>
       <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
       <th class="has-width-1"><span class="is-sr-only">Print</span></th>
       </tr></thead>

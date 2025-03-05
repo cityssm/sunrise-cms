@@ -74,6 +74,7 @@ declare const exports: Record<string, unknown>
 
       for (const interment of contract.contractInterments ?? []) {
         deceasedHTML += `<li class="has-tooltip-left">
+          <span class="fa-li"><i class="fas fa-user"></i></span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
           </li>`
       }
@@ -167,7 +168,7 @@ declare const exports: Record<string, unknown>
       <th>Burial Site</th>
       <th>Contract Date</th>
       <th>End Date</th>
-      <th>Deceased</th>
+      <th>Recipient / Deceased</th>
       <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
       <th class="has-width-1"><span class="is-sr-only">Print</span></th>
       </tr></thead>

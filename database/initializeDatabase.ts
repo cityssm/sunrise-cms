@@ -1,5 +1,5 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable no-secrets/no-secrets */
+/* eslint-disable max-lines, no-secrets/no-secrets */
 
 import sqlite from 'better-sqlite3'
 import Debug from 'debug'
@@ -9,6 +9,7 @@ import { sunriseDB as databasePath } from '../helpers/database.helpers.js'
 
 import addContractType from './addContractType.js'
 import addFeeCategory from './addFeeCategory.js'
+import addIntermentContainerType from './addIntermentContainerType.js'
 import addRecord from './addRecord.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:database/initializeDatabase`)
@@ -192,6 +193,15 @@ const createStatements = [
   `create index if not exists idx_ContractTypePrints_orderNumber
     on ContractTypePrints (contractTypeId, orderNumber, printEJS)`,
 
+  `create table if not exists CommittalTypes (
+    committalTypeId integer not null primary key autoincrement,
+    committalType varchar(100) not null,
+    orderNumber smallint not null default 0,
+    ${recordColumns})`,
+
+  `create index if not exists idx_CommittalType_orderNumber
+    on CommittalTypes (orderNumber, committalType)`,
+
   `create table if not exists Contracts (
     contractId integer not null primary key autoincrement,
     contractTypeId integer not null,
@@ -211,11 +221,15 @@ const createStatements = [
 
     funeralHomeId integer,
     funeralDirectorName varchar(100),
+    funeralDate integer check (funeralDate > 0),
+    funeralTime integer check (funeralTime >= 0),
+    committalTypeId integer,
 
     ${recordColumns},
     foreign key (burialSiteId) references BurialSites (burialSiteId),
     foreign key (contractTypeId) references ContractTypes (contractTypeId),
-    foreign key (funeralHomeId) references FuneralHomes (funeralHomeId))`,
+    foreign key (funeralHomeId) references FuneralHomes (funeralHomeId),
+    foreign key (committalTypeId) references CommittalTypes (committalTypeId))`,
 
   `create table if not exists ContractFields (
     contractId integer not null,
@@ -245,20 +259,12 @@ const createStatements = [
   `create table if not exists IntermentContainerTypes (
     intermentContainerTypeId integer not null primary key autoincrement,
     intermentContainerType varchar(100) not null,
+    isCremationType bit not null default 0,
     orderNumber smallint not null default 0,
     ${recordColumns})`,
 
   `create index if not exists idx_IntermentContainerTypes_orderNumber
     on IntermentContainerTypes (orderNumber, intermentContainerType)`,
-
-  `create table if not exists IntermentCommittalTypes (
-    intermentCommittalTypeId integer not null primary key autoincrement,
-    intermentCommittalType varchar(100) not null,
-    orderNumber smallint not null default 0,
-    ${recordColumns})`,
-
-  `create index if not exists idx_IntermentCommittalType_orderNumber
-    on IntermentCommittalTypes (orderNumber, intermentCommittalType)`,
 
   `create table if not exists ContractInterments (
     contractId integer not null,
@@ -279,17 +285,12 @@ const createStatements = [
     deathDate integer,
     deathPlace varchar(100),
 
-    intermentDate integer check (intermentDate > 0),
-    intermentTime integer check (intermentTime >= 0),
-
     intermentContainerTypeId integer,
-    intermentCommittalTypeId integer,
 
     ${recordColumns},
     primary key (contractId, intermentNumber),
     foreign key (contractId) references Contracts (contractId),
-    foreign key (intermentContainerTypeId) references IntermentContainerTypes (intermentContainerTypeId),
-    foreign key (intermentCommittalTypeId) references IntermentCommittalTypes (intermentCommittalTypeId)) without rowid`,
+    foreign key (intermentContainerTypeId) references IntermentContainerTypes (intermentContainerTypeId)) without rowid`,
 
   /*
    * Fees and Transactions
@@ -473,6 +474,8 @@ async function initializeData(): Promise<void> {
   await addRecord('BurialSiteStatuses', 'Reserved', 2, initializingUser)
   await addRecord('BurialSiteStatuses', 'Taken', 3, initializingUser)
 
+  // Contract Types
+
   await addContractType(
     {
       contractType: 'Preneed',
@@ -485,7 +488,6 @@ async function initializeData(): Promise<void> {
   await addContractType(
     {
       contractType: 'Interment',
-      isPreneed: '0',
       orderNumber: 2
     },
     initializingUser
@@ -494,22 +496,69 @@ async function initializeData(): Promise<void> {
   await addContractType(
     {
       contractType: 'Cremation',
-      isPreneed: '0',
       orderNumber: 3
     },
     initializingUser
   )
 
-  await addRecord('IntermentContainerTypes', 'No Shell', 1, initializingUser)
-  await addRecord('IntermentContainerTypes', 'Concrete Liner', 2, initializingUser)
-  await addRecord('IntermentContainerTypes', 'Unpainted Vault', 3, initializingUser)
-  await addRecord('IntermentContainerTypes', 'Concrete Vault', 4, initializingUser)
-  await addRecord('IntermentContainerTypes', 'Wooden Shell', 5, initializingUser)
-  await addRecord('IntermentContainerTypes', 'Steel Vault', 6, initializingUser)
+  // Interment Container Types
 
-  await addRecord('IntermentCommittalTypes', 'Graveside', 1, initializingUser)
-  await addRecord('IntermentCommittalTypes', 'Chapel', 2, initializingUser)
-  await addRecord('IntermentCommittalTypes', 'Church', 3, initializingUser)
+  await addIntermentContainerType(
+    {
+      intermentContainerType: 'No Shell',
+      orderNumber: 1
+    },
+    initializingUser
+  )
+
+  await addIntermentContainerType(
+    {
+      intermentContainerType: 'Concrete Liner',
+      orderNumber: 2
+    },
+    initializingUser
+  )
+
+  await addIntermentContainerType(
+    {
+      intermentContainerType: 'Unpainted Vault',
+      orderNumber: 3
+    },
+    initializingUser
+  )
+
+  await addIntermentContainerType(
+    {
+      intermentContainerType: 'Concrete Vault',
+      orderNumber: 4
+    },
+    initializingUser
+  )
+
+  await addIntermentContainerType(
+    { intermentContainerType: 'Wooden Shell', orderNumber: 5 },
+    initializingUser
+  )
+
+  await addIntermentContainerType(
+    { intermentContainerType: 'Steel Vault', orderNumber: 6 },
+    initializingUser
+  )
+
+  await addIntermentContainerType(
+    {
+      intermentContainerType: 'Urn',
+      isCremationType: '1',
+      orderNumber: 7
+    },
+    initializingUser
+  )
+
+  // Committal Types
+
+  await addRecord('CommittalTypes', 'Graveside', 1, initializingUser)
+  await addRecord('CommittalTypes', 'Chapel', 2, initializingUser)
+  await addRecord('CommittalTypes', 'Church', 3, initializingUser)
 
   /*
    * Fee Categories

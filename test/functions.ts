@@ -188,7 +188,7 @@ describe('functions.sqlFilters', () => {
         'l'
       )
 
-      assert.strictEqual(filter.sqlWhereClause, " and l.lotName like ? || '%'")
+      assert.strictEqual(filter.sqlWhereClause, " and l.burialSiteName like ? || '%'")
       assert.strictEqual(filter.sqlParameters.length, 1)
       assert.ok(filter.sqlParameters.includes('TEST1 TEST2'))
     })
@@ -200,7 +200,7 @@ describe('functions.sqlFilters', () => {
         'l'
       )
 
-      assert.strictEqual(filter.sqlWhereClause, " and l.lotName like '%' || ?")
+      assert.strictEqual(filter.sqlWhereClause, " and l.burialSiteName like '%' || ?")
       assert.strictEqual(filter.sqlParameters.length, 1)
       assert.strictEqual(filter.sqlParameters[0], 'TEST1 TEST2')
     })
@@ -213,7 +213,7 @@ describe('functions.sqlFilters', () => {
       )
       assert.strictEqual(
         filter.sqlWhereClause,
-        ' and instr(lower(l.lotName), ?) and instr(lower(l.lotName), ?)'
+        ' and instr(lower(l.burialSiteName), ?) and instr(lower(l.burialSiteName), ?)'
       )
 
       assert.ok(filter.sqlParameters.includes('test1'))
