@@ -4,7 +4,7 @@ import { acquireConnection } from './pool.js'
 
 export interface AddWorkOrderCommentForm {
   workOrderId: string
-  workOrderComment: string
+  comment: string
 }
 
 export default async function addWorkOrderComment(
@@ -19,8 +19,8 @@ export default async function addWorkOrderComment(
     .prepare(
       `insert into WorkOrderComments (
         workOrderId,
-        workOrderCommentDate, workOrderCommentTime,
-        workOrderComment,
+        commentDate, commentTime,
+        comment,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?)`
@@ -29,7 +29,7 @@ export default async function addWorkOrderComment(
       workOrderCommentForm.workOrderId,
       dateToInteger(rightNow),
       dateToTimeInteger(rightNow),
-      workOrderCommentForm.workOrderComment,
+      workOrderCommentForm.comment,
       user.userName,
       rightNow.getTime(),
       user.userName,

@@ -3,7 +3,7 @@
 /* eslint-disable max-lines */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.sunrise;
+    const sunrise = exports.sunrise;
     const containerElement = document.querySelector('#container--burialSiteTypes');
     let burialSiteTypes = exports.burialSiteTypes;
     delete exports.burialSiteTypes;
@@ -44,7 +44,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function deleteBurialSiteType(clickEvent) {
         const burialSiteTypeId = Number.parseInt(clickEvent.currentTarget.closest('.container--burialSiteType').dataset.burialSiteTypeId ?? '', 10);
         function doDelete() {
-            cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteBurialSiteType`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteBurialSiteType`, {
                 burialSiteTypeId
             }, burialSiteTypeResponseHandler);
         }
@@ -64,7 +64,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         function doEdit(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateBurialSiteType`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateBurialSiteType`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 burialSiteTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
@@ -74,7 +74,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('adminBurialSiteTypes-edit', {
             onshow(modalElement) {
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#burialSiteTypeEdit--burialSiteTypeId').value = burialSiteTypeId.toString();
                 modalElement.querySelector('#burialSiteTypeEdit--burialSiteType').value = burialSiteType.burialSiteType;
             },
@@ -94,7 +94,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doAddBurialSiteTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddBurialSiteTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 expandedBurialSiteTypes.add(burialSiteTypeId);
                 burialSiteTypeResponseHandler(responseJSON);
@@ -106,7 +106,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('adminBurialSiteTypes-addField', {
             onshow(modalElement) {
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
                 if (burialSiteTypeId) {
                     ;
                     modalElement.querySelector('#burialSiteTypeFieldAdd--burialSiteTypeId').value = burialSiteTypeId.toString();
@@ -126,7 +126,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function moveBurialSiteType(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const burialSiteTypeId = buttonElement.closest('.container--burialSiteType').dataset.burialSiteTypeId;
-        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveBurialSiteTypeUp'
             : // eslint-disable-next-line no-secrets/no-secrets
                 'doMoveBurialSiteTypeDown'}`, {
@@ -173,7 +173,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         function doUpdate(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateBurialSiteTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateBurialSiteTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 burialSiteTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
@@ -182,7 +182,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         function doDelete() {
-            cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteBurialSiteTypeField`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteBurialSiteTypeField`, {
                 burialSiteTypeFieldId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
@@ -205,7 +205,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('adminBurialSiteTypes-editField', {
             onshow(modalElement) {
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#burialSiteTypeFieldEdit--burialSiteTypeFieldId').value = burialSiteTypeField.burialSiteTypeFieldId.toString();
                 modalElement.querySelector('#burialSiteTypeFieldEdit--burialSiteTypeField').value = burialSiteTypeField.burialSiteTypeField ?? '';
                 modalElement.querySelector('#burialSiteTypeFieldEdit--isRequired').value = burialSiteTypeField.isRequired ?? false ? '1' : '0';
@@ -251,7 +251,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function moveBurialSiteTypeField(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
         const burialSiteTypeFieldId = buttonElement.closest('.container--burialSiteTypeField').dataset.burialSiteTypeFieldId;
-        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveBurialSiteTypeFieldUp'
             : // eslint-disable-next-line no-secrets/no-secrets
                 'doMoveBurialSiteTypeFieldDown'}`, {
@@ -288,7 +288,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </div>
           <div class="level-right">
             <div class="level-item">
-              ${los.getMoveUpDownButtonFieldHTML('button--moveBurialSiteTypeFieldUp', 
+              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveBurialSiteTypeFieldUp', 
                 // eslint-disable-next-line no-secrets/no-secrets
                 'button--moveBurialSiteTypeFieldDown')}
             </div>
@@ -351,7 +351,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </button>
             </div>
             <div class="level-item">
-              ${los.getMoveUpDownButtonFieldHTML('button--moveBurialSiteTypeUp', 'button--moveBurialSiteTypeDown')}
+              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveBurialSiteTypeUp', 'button--moveBurialSiteTypeDown')}
             </div>
           </div>
         </div>
@@ -380,7 +380,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doAddBurialSiteType`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddBurialSiteType`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     addCloseModalFunction();
@@ -398,7 +398,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('adminBurialSiteTypes-add', {
             onshow(modalElement) {
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
             },
             onshown(modalElement, closeModalFunction) {
                 addCloseModalFunction = closeModalFunction;

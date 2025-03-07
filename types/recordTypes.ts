@@ -315,6 +315,11 @@ export interface Contract extends Record {
   funeralHomeId?: number
   funeralHomeName?: string
   funeralDirectorName?: string
+  funeralHomeAddress1?: string
+  funeralHomeAddress2?: string
+  funeralHomeCity?: string
+  funeralHomeProvince?: string
+  funeralHomePostalCode?: string
 
   funeralDate?: number
   funeralDateString?: string

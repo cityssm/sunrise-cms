@@ -14,7 +14,7 @@ export default async function addContractComment(commentForm, user) {
     }
     const database = await acquireConnection();
     const result = database
-        .prepare(`insert into BurialSiteContactComments (
+        .prepare(`insert into ContractComments (
         contractId,
         commentDate, commentTime,
         comment,

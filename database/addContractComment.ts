@@ -11,7 +11,7 @@ import { acquireConnection } from './pool.js'
 
 export interface AddContractCommentForm {
   contractId: string | number
- commentDateString?: DateString
+  commentDateString?: DateString
   commentTimeString?: TimeString
   comment: string
 }
@@ -41,7 +41,7 @@ export default async function addContractComment(
 
   const result = database
     .prepare(
-      `insert into BurialSiteContactComments (
+      `insert into ContractComments (
         contractId,
         commentDate, commentTime,
         comment,

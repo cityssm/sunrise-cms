@@ -3,14 +3,15 @@
 
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { LOS } from '../../types/globalTypes.js'
 import type { WorkOrderMilestone } from '../../types/recordTypes.js'
+
+import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.sunrise as LOS
+  const sunrise = exports.sunrise as Sunrise
 
   const workOrderSearchFiltersFormElement = document.querySelector(
     '#form--searchFilters'
@@ -84,7 +85,7 @@ declare const exports: Record<string, unknown>
           data-tooltip="${cityssm.escapeHTML(lot.cemeteryName ?? '')}">
           <span class="fa-li">
           <i class="fas fa-vector-square"
-            aria-label="${los.escapedAliases.Lot}"></i>
+            aria-label="${sunrise.escapedAliases.Lot}"></i>
           </span>
           ${cityssm.escapeHTML(lot.burialSiteName ?? '')}
           </li>`
@@ -98,7 +99,7 @@ declare const exports: Record<string, unknown>
             )}">
             <span class="fa-li">
             <i class="fas fa-user"
-              aria-label="${los.escapedAliases.Occupancy}"></i>
+              aria-label="${sunrise.escapedAliases.Occupancy}"></i>
             </span>
             ${cityssm.escapeHTML(occupant.occupantName ?? '')}
             ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
@@ -131,8 +132,8 @@ declare const exports: Record<string, unknown>
             ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}
           </span>
         </div><div class="column">
-          <i class="fas fa-circle" style="color:${los.getRandomColor(milestone.workOrderNumber ?? '')}" aria-hidden="true"></i>
-          <a class="has-text-weight-bold" href="${los.getWorkOrderURL(milestone.workOrderId)}">
+          <i class="fas fa-circle" style="color:${sunrise.getRandomColor(milestone.workOrderNumber ?? '')}" aria-hidden="true"></i>
+          <a class="has-text-weight-bold" href="${sunrise.getWorkOrderURL(milestone.workOrderId)}">
             ${cityssm.escapeHTML(milestone.workOrderNumber ?? '')}
           </a><br />
           <span class="is-size-7">${cityssm.escapeHTML(milestone.workOrderDescription ?? '')}</span>
@@ -154,12 +155,12 @@ declare const exports: Record<string, unknown>
     }
 
     // eslint-disable-next-line no-unsanitized/property
-    milestoneCalendarContainerElement.innerHTML = los.getLoadingParagraphHTML(
+    milestoneCalendarContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
       'Loading Milestones...'
     )
 
     cityssm.postJSON(
-      `${los.urlPrefix}/workOrders/doGetWorkOrderMilestones`,
+      `${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`,
       workOrderSearchFiltersFormElement,
       (responseJSON) => {
         renderMilestones(
@@ -181,8 +182,6 @@ declare const exports: Record<string, unknown>
     ).disabled = workOrderMilestoneDateFilterElement.value !== 'date'
     getMilestones()
   })
-
-  los.initializeDatePickers(workOrderSearchFiltersFormElement)
 
   workOrderMilestoneDateStringElement.addEventListener('change', getMilestones)
   workOrderSearchFiltersFormElement.addEventListener('submit', getMilestones)

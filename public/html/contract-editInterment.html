@@ -3,7 +3,7 @@
   <div class="modal-card">
     <header class="modal-card-head">
       <h3 class="modal-card-title">
-        Update <span class="alias" data-alias="Occupant"></span>
+        Update Interment
       </h3>
       <button
         class="delete is-close-modal-button"
@@ -12,47 +12,31 @@
       ></button>
     </header>
     <section class="modal-card-body">
-      <form id="form--contractOccupantEdit">
+      <form id="form--contractIntermentEdit">
         <input
-          id="contractOccupantEdit--contractId"
+          id="contractIntermentEdit--contractId"
           name="contractId"
           type="hidden"
           value=""
         />
         <input
-          id="contractOccupantEdit--lotOccupantIndex"
-          name="lotOccupantIndex"
+          id="contractIntermentEdit--intermentNumber"
+          name="intermentNumber"
           type="hidden"
           value=""
         />
-        <label class="label" for="contractOccupantEdit--lotOccupantTypeId"
-          ><span class="alias" data-alias="Occupant"></span> Type</label
-        >
-        <div class="field has-addons">
-          <div class="control is-expanded">
-            <div class="select is-fullwidth">
-              <select
-                id="contractOccupantEdit--lotOccupantTypeId"
-                name="lotOccupantTypeId"
-                required
-              ></select>
-            </div>
-          </div>
-          <div class="control">
-            <span class="button is-static" id="contractOccupantEdit--fontAwesomeIconClass"></span>
-          </div>
-        </div>
-        <div class="columns mt-2 mb-0">
+
+        <div class="columns">
           <div class="column">
             <div class="field">
-              <label class="label" for="contractOccupantEdit--occupantName"
-                ><span class="alias" data-alias="Occupant"></span> Name</label
+              <label class="label" for="contractIntermentEdit--deceasedName"
+                >Name</label
               >
               <div class="control">
                 <input
                   class="input"
-                  id="contractOccupantEdit--occupantName"
-                  name="occupantName"
+                  id="contractIntermentEdit--deceasedName"
+                  name="deceasedName"
                   type="text"
                   maxlength="200"
                   autocomplete="off"
@@ -61,33 +45,16 @@
               </div>
             </div>
           </div>
-          <div class="column">
-            <div class="field">
-              <label class="label" for="contractOccupantEdit--occupantFamilyName"
-                >Family Name</label
-              >
-              <div class="control">
-                <input
-                  class="input"
-                  id="contractOccupantEdit--occupantFamilyName"
-                  name="occupantFamilyName"
-                  type="text"
-                  maxlength="200"
-                  autocomplete="off"
-                />
-              </div>
-            </div>
-          </div>
         </div>
         <div class="field">
-          <label class="label" for="contractOccupantEdit--occupantAddress1"
+          <label class="label" for="contractIntermentEdit--deceasedAddress1"
             >Address</label
           >
           <div class="control">
             <input
               class="input"
-              id="contractOccupantEdit--occupantAddress1"
-              name="occupantAddress1"
+              id="contractIntermentEdit--deceasedAddress1"
+              name="deceasedAddress1"
               type="text"
               maxlength="50"
               placeholder="Line 1"
@@ -99,8 +66,8 @@
           <div class="control">
             <input
               class="input"
-              id="contractOccupantEdit--occupantAddress2"
-              name="occupantAddress2"
+              id="contractIntermentEdit--deceasedAddress2"
+              name="deceasedAddress2"
               type="text"
               maxlength="50"
               placeholder="Line 2"
@@ -112,14 +79,14 @@
         <div class="columns">
           <div class="column">
             <div class="field">
-              <label class="label" for="contractOccupantEdit--occupantCity"
+              <label class="label" for="contractIntermentEdit--deceasedCity"
                 >City</label
               >
               <div class="control">
                 <input
                   class="input"
-                  id="contractOccupantEdit--occupantCity"
-                  name="occupantCity"
+                  id="contractIntermentEdit--deceasedCity"
+                  name="deceasedCity"
                   type="text"
                   maxlength="20"
                 />
@@ -130,14 +97,14 @@
             <div class="field">
               <label
                 class="label"
-                for="contractOccupantEdit--occupantProvince"
+                for="contractIntermentEdit--deceasedProvince"
                 >Province</label
               >
               <div class="control">
                 <input
                   class="input"
-                  id="contractOccupantEdit--occupantProvince"
-                  name="occupantProvince"
+                  id="contractIntermentEdit--deceasedProvince"
+                  name="deceasedProvince"
                   type="text"
                   maxlength="2"
                 />
@@ -148,14 +115,14 @@
             <div class="field">
               <label
                 class="label"
-                for="contractOccupantEdit--occupantPostalCode"
+                for="contractIntermentEdit--deceasedPostalCode"
                 >Postal Code</label
               >
               <div class="control">
                 <input
                   class="input"
-                  id="contractOccupantEdit--occupantPostalCode"
-                  name="occupantPostalCode"
+                  id="contractIntermentEdit--deceasedPostalCode"
+                  name="deceasedPostalCode"
                   type="text"
                   maxlength="7"
                   autocomplete="off"
@@ -166,63 +133,64 @@
         </div>
         <div class="columns">
           <div class="column">
-            <label
-              class="label"
-              for="contractOccupantEdit--occupantPhoneNumber"
-              >Phone Number</label
-            >
             <div class="field">
+              <label class="label" for="contractIntermentEdit--birthDateString">
+                Date of Birth
+              </label>
               <div class="control has-icons-left">
-                <input
-                  class="input"
-                  id="contractOccupantEdit--occupantPhoneNumber"
-                  name="occupantPhoneNumber"
-                  type="text"
-                  maxlength="30"
-                  autocomplete="off"
-                />
-                <span class="icon is-small is-left">
-                  <i class="fas fa-phone" aria-hidden="true"></i>
+                <input class="input" id="contractIntermentEdit--birthDateString" name="birthDateString" type="date" />
+                <span class="icon is-left">
+                  <i class="fas fa-calendar" aria-hidden="true"></i>
                 </span>
               </div>
             </div>
           </div>
           <div class="column">
-            <label
-              class="label"
-              for="contractOccupantEdit--occupantEmailAddress"
-              >Email Address</label
-            >
             <div class="field">
+              <label class="label" for="contractIntermentEdit--birthPlace">
+                Place of Birth
+              </label>
+              <div class="control">
+                <input class="input" id="contractIntermentEdit--birthPlace" name="birthPlace" type="text" maxlength="100" autocomplete="off" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="contractIntermentEdit--deathDateString">
+                Date of Death
+              </label>
               <div class="control has-icons-left">
-                <input
-                  class="input"
-                  id="contractOccupantEdit--occupantEmailAddress"
-                  name="occupantEmailAddress"
-                  type="email"
-                  maxlength="200"
-                  autocomplete="off"
-                />
-                <span class="icon is-small is-left">
-                  <i class="fas fa-envelope" aria-hidden="true"></i>
+                <input class="input" id="contractIntermentEdit--deathDateString" name="deathDateString" type="date" />
+                <span class="icon is-left">
+                  <i class="fas fa-calendar" aria-hidden="true"></i>
                 </span>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="contractIntermentEdit--deathPlace">
+                Place of Death
+              </label>
+              <div class="control">
+                <input class="input" id="contractIntermentEdit--deathPlace" name="deathPlace" type="text" maxlength="100" autocomplete="off" />
               </div>
             </div>
           </div>
         </div>
         <div class="field">
-          <label
-            class="label"
-            id="contractOccupantEdit--occupantCommentTitle"
-            for="contractOccupantEdit--occupantComment"
-            >Comment</label
-          >
+          <label class="label" for="contractIntermentEdit--intermentContainerTypeId">Container</label>
           <div class="control">
-            <textarea
-              class="textarea"
-              id="contractOccupantEdit--occupantComment"
-              name="occupantComment"
-            ></textarea>
+            <div class="select is-fullwidth">
+              <select id="contractIntermentEdit--intermentContainerTypeId" name="intermentContainerTypeId">
+                <option value="">(No Container)</option>
+                <optgroup label="Non-Cremated" data-is-cremation-type="0"></optgroup>
+                <optgroup label="Cremated" data-is-cremation-type="1"></optgroup>
+              </select>
+            </div>
           </div>
         </div>
       </form>
@@ -231,10 +199,10 @@
       <button
         class="button is-success"
         type="submit"
-        form="form--contractOccupantEdit"
+        form="form--contractIntermentEdit"
       >
-        <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-        <span>Update <span class="alias" data-alias="Occupant"></span></span>
+        <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
+        <span>Update Interment</span>
       </button>
       <button class="button is-close-modal-button" type="button">Cancel</button>
     </footer>

@@ -1,7 +1,7 @@
 import { testUpdate } from '../../../test/_globals.js'
 import { login, logout } from '../../support/index.js'
 
-describe('Update - Lot Occupancies', () => {
+describe('Update - Contracts', () => {
   beforeEach(() => {
     logout()
     login(testUpdate)
@@ -9,13 +9,13 @@ describe('Update - Lot Occupancies', () => {
 
   afterEach(logout)
 
-  it('Has a "Create" link on the Lot Occupancy Search', () => {
-    cy.visit('/lotOccupancies')
-    cy.location('pathname').should('equal', '/lotOccupancies')
+  it('Has a "Create" link on the Contract Search', () => {
+    cy.visit('/contracts')
+    cy.location('pathname').should('equal', '/contracts')
     cy.get("a[href$='/contracts/new']").should('exist')
   })
 
-  describe('Update a New Lot Occupancy', () => {
+  describe('Creates a New Contract', () => {
     it('Has no detectable accessibility issues', () => {
       cy.visit('/contracts/new')
       cy.injectAxe()

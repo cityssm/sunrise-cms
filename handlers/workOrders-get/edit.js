@@ -17,13 +17,13 @@ export default async function handler(request, response) {
     }
     const workOrderTypes = await getWorkOrderTypes();
     const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
-    const lotStatuses = await getBurialSiteStatuses();
+    const burialSiteStatuses = await getBurialSiteStatuses();
     response.render('workOrder-edit', {
         headTitle: `Work Order #${workOrder.workOrderNumber}`,
         workOrder,
         isCreate: false,
         workOrderTypes,
         workOrderMilestoneTypes,
-        lotStatuses
+        burialSiteStatuses
     });
 }

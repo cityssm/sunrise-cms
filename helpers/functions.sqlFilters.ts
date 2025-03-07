@@ -52,11 +52,11 @@ export function getBurialSiteNameWhereClause(
   }
 }
 
-type OccupancyTime = '' | 'current' | 'past' | 'future'
+type ContractTime = '' | 'current' | 'past' | 'future'
 
-export function getOccupancyTimeWhereClause(
-  occupancyTime: OccupancyTime | undefined,
-  lotOccupanciesTableAlias = 'o'
+export function getContractTimeWhereClause(
+  contractTime: ContractTime | undefined,
+  contractsTableAlias = 'o'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
   const sqlParameters: unknown[] = []
@@ -64,24 +64,24 @@ export function getOccupancyTimeWhereClause(
   const currentDateString = dateToInteger(new Date())
 
   // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
-  switch (occupancyTime ?? '') {
+  switch (contractTime ?? '') {
     case 'current': {
-      sqlWhereClause += ` and ${lotOccupanciesTableAlias}.contractStartDate <= ?
-        and (${lotOccupanciesTableAlias}.contractEndDate is null or ${lotOccupanciesTableAlias}.contractEndDate >= ?)`
+      sqlWhereClause += ` and ${contractsTableAlias}.contractStartDate <= ?
+        and (${contractsTableAlias}.contractEndDate is null or ${contractsTableAlias}.contractEndDate >= ?)`
       sqlParameters.push(currentDateString, currentDateString)
       break
     }
 
     case 'past': {
       sqlWhereClause +=
-        ` and ${lotOccupanciesTableAlias}.contractEndDate < ?`
+        ` and ${contractsTableAlias}.contractEndDate < ?`
       sqlParameters.push(currentDateString)
       break
     }
 
     case 'future': {
       sqlWhereClause +=
-        ` and ${lotOccupanciesTableAlias}.contractStartDate > ?`
+        ` and ${contractsTableAlias}.contractStartDate > ?`
       sqlParameters.push(currentDateString)
       break
     }
@@ -93,8 +93,8 @@ export function getOccupancyTimeWhereClause(
   }
 }
 
-export function getOccupantNameWhereClause(
-  occupantName = '',
+export function getDeceasedNameWhereClause(
+  deceasedName = '',
   tableAlias = 'o'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
@@ -102,16 +102,16 @@ export function getOccupantNameWhereClause(
 
   const usedPieces = new Set<string>()
 
-  const occupantNamePieces = occupantName.toLowerCase().split(' ')
-  for (const occupantNamePiece of occupantNamePieces) {
-    if (occupantNamePiece === '' || usedPieces.has(occupantNamePiece)) {
+  const deceasedNamePieces = deceasedName.toLowerCase().split(' ')
+  for (const namePiece of deceasedNamePieces) {
+    if (namePiece === '' || usedPieces.has(namePiece)) {
       continue
     }
 
-    usedPieces.add(occupantNamePiece)
+    usedPieces.add(namePiece)
 
-    sqlWhereClause += ` and (instr(lower(${tableAlias}.occupantName), ?) or instr(lower(${tableAlias}.occupantFamilyName), ?))`
-    sqlParameters.push(occupantNamePiece, occupantNamePiece)
+    sqlWhereClause += ` and instr(lower(${tableAlias}.deceasedName), ?)`
+    sqlParameters.push(namePiece)
   }
 
   return {

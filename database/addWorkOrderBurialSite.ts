@@ -1,12 +1,12 @@
 import { acquireConnection } from './pool.js'
 
-export interface AddWorkOrderLotForm {
+export interface AddForm {
   workOrderId: number | string
   burialSiteId: number | string
 }
 
 export default async function addWorkOrderBurialSite(
-  workOrderLotForm: AddWorkOrderLotForm,
+  workOrderLotForm: AddForm,
   user: User
 ): Promise<boolean> {
   const database = await acquireConnection()

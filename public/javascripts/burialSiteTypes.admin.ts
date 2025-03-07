@@ -27,7 +27,7 @@ type ResponseJSON =
       errorMessage?: string
     }
 ;(() => {
-  const los = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise as Sunrise
 
   const containerElement = document.querySelector(
     '#container--burialSiteTypes'
@@ -98,7 +98,7 @@ type ResponseJSON =
 
     function doDelete(): void {
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doDeleteBurialSiteType`,
+        `${sunrise.urlPrefix}/admin/doDeleteBurialSiteType`,
         {
           burialSiteTypeId
         },
@@ -137,7 +137,7 @@ type ResponseJSON =
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doUpdateBurialSiteType`,
+        `${sunrise.urlPrefix}/admin/doUpdateBurialSiteType`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -152,7 +152,7 @@ type ResponseJSON =
 
     cityssm.openHtmlModal('adminBurialSiteTypes-edit', {
       onshow(modalElement) {
-        los.populateAliases(modalElement)
+        sunrise.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
             '#burialSiteTypeEdit--burialSiteTypeId'
@@ -198,7 +198,7 @@ type ResponseJSON =
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doAddBurialSiteTypeField`,
+        `${sunrise.urlPrefix}/admin/doAddBurialSiteTypeField`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -219,7 +219,7 @@ type ResponseJSON =
 
     cityssm.openHtmlModal('adminBurialSiteTypes-addField', {
       onshow(modalElement) {
-        los.populateAliases(modalElement)
+        sunrise.populateAliases(modalElement)
 
         if (burialSiteTypeId) {
           ;(
@@ -255,7 +255,7 @@ type ResponseJSON =
     ).dataset.burialSiteTypeId
 
     cityssm.postJSON(
-      `${los.urlPrefix}/admin/${
+      `${sunrise.urlPrefix}/admin/${
         buttonElement.dataset.direction === 'up'
           ? 'doMoveBurialSiteTypeUp'
           : // eslint-disable-next-line no-secrets/no-secrets
@@ -326,7 +326,7 @@ type ResponseJSON =
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doUpdateBurialSiteTypeField`,
+        `${sunrise.urlPrefix}/admin/doUpdateBurialSiteTypeField`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -341,7 +341,7 @@ type ResponseJSON =
 
     function doDelete(): void {
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doDeleteBurialSiteTypeField`,
+        `${sunrise.urlPrefix}/admin/doDeleteBurialSiteTypeField`,
         {
           burialSiteTypeFieldId
         },
@@ -371,7 +371,7 @@ type ResponseJSON =
 
     cityssm.openHtmlModal('adminBurialSiteTypes-editField', {
       onshow(modalElement) {
-        los.populateAliases(modalElement)
+        sunrise.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
             '#burialSiteTypeFieldEdit--burialSiteTypeFieldId'
@@ -479,7 +479,7 @@ type ResponseJSON =
     ).dataset.burialSiteTypeFieldId
 
     cityssm.postJSON(
-      `${los.urlPrefix}/admin/${
+      `${sunrise.urlPrefix}/admin/${
         buttonElement.dataset.direction === 'up'
           ? 'doMoveBurialSiteTypeFieldUp'
           : // eslint-disable-next-line no-secrets/no-secrets
@@ -531,7 +531,7 @@ type ResponseJSON =
           </div>
           <div class="level-right">
             <div class="level-item">
-              ${los.getMoveUpDownButtonFieldHTML(
+              ${sunrise.getMoveUpDownButtonFieldHTML(
                 'button--moveBurialSiteTypeFieldUp',
                 // eslint-disable-next-line no-secrets/no-secrets
                 'button--moveBurialSiteTypeFieldDown'
@@ -618,7 +618,7 @@ type ResponseJSON =
               </button>
             </div>
             <div class="level-item">
-              ${los.getMoveUpDownButtonFieldHTML(
+              ${sunrise.getMoveUpDownButtonFieldHTML(
                 'button--moveBurialSiteTypeUp',
                 'button--moveBurialSiteTypeDown'
               )}
@@ -672,7 +672,7 @@ type ResponseJSON =
         submitEvent.preventDefault()
 
         cityssm.postJSON(
-          `${los.urlPrefix}/admin/doAddBurialSiteType`,
+          `${sunrise.urlPrefix}/admin/doAddBurialSiteType`,
           submitEvent.currentTarget,
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as ResponseJSON
@@ -694,7 +694,7 @@ type ResponseJSON =
 
       cityssm.openHtmlModal('adminBurialSiteTypes-add', {
         onshow(modalElement) {
-          los.populateAliases(modalElement)
+          sunrise.populateAliases(modalElement)
         },
         onshown(modalElement, closeModalFunction) {
           addCloseModalFunction = closeModalFunction

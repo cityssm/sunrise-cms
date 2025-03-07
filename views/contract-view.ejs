@@ -39,7 +39,7 @@
     <% if (contractTypePrints.length > 0) { %>
       <% if (contractTypePrints.length === 1) { %>
         <div class="level-item">
-          <a href="<%= urlPrefix %>/print/<%= ContractTypePrints[0] %>/?contractId=<%= contract.contractId %>" target="_blank" aria-label="Print">
+          <a href="<%= urlPrefix %>/print/<%= contractTypePrints[0] %>/?contractId=<%= contract.contractId %>" target="_blank" aria-label="Print">
             <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
             <span class="is-hidden-touch">Print</span>
           </a>
@@ -226,7 +226,7 @@
             <thead>
               <tr>
                 <th><%= (contract.isPreneed ? "Recipient" : "Deceased") %></th>
-                <th>Address</th>
+                <th>Details</th>
               </tr>
             </thead>
             <tbody>
@@ -247,6 +247,34 @@
                       <%= contractInterment.deceasedProvince %><br />
                       <%= contractInterment.deceasedPostalCode %>
                     </span>
+                  </td>
+                  <td>
+                    <div class="columns mb-0">
+                      <div class="column">
+                        <strong>Birth:</strong>
+                      </div>
+                      <div class="column">
+                        <%= contractInterment.birthDateString ?? '(No Birth Date)' %><br />
+                        <%= contractInterment.birthPlace ?? '(No Birth Place)' %>
+                      </div>
+                    </div>
+                    <div class="columns">
+                      <div class="column">
+                        <strong>Death:</strong>
+                      </div>
+                      <div class="column">
+                        <%= contractInterment.deathDateString ?? '(No Death Date)' %><br />
+                        <%= contractInterment.deathPlace ?? '(No Death Place)' %>
+                      </div>
+                    </div>
+                    <div class="columns">
+                      <div class="column">
+                        <strong>Container:</strong>
+                      </div>
+                      <div class="column">
+                        <%= contractInterment.intermentContainerType ?? '(No Container Type)' %>
+                      </div>
+                    </div>
                   </td>
                 </tr>
               <% } %>
@@ -389,7 +417,7 @@
             </table>
           <% } %>
       </div>
-  </div>
+    </div>
   </div>
 </div>
 
@@ -460,10 +488,10 @@
             <tr>
               <td><%= contractComment.recordCreate_userName %></td>
               <td>
-                <%= contractComment.contractCommentDateString %>
-                <%= (contractComment.contractCommentTime === 0 ? "" : contractComment.contractCommentTimePeriodString) %>
+                <%= contractComment.commentDateString %>
+                <%= (contractComment.commentTime === 0 ? "" : contractComment.commentTimePeriodString) %>
               </td>
-              <td><%= contractComment.contractComment %></td>
+              <td><%= contractComment.comment %></td>
             </tr>
           <% } %>
         </tbody>

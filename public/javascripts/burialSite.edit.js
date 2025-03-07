@@ -1,19 +1,21 @@
 "use strict";
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable max-lines */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.sunrise;
+    const sunrise = exports.sunrise;
     const burialSiteId = document.querySelector('#burialSite--burialSiteId').value;
     const isCreate = burialSiteId === '';
     // Main form
     let refreshAfterSave = isCreate;
     function setUnsavedChanges() {
-        los.setUnsavedChanges();
+        sunrise.setUnsavedChanges();
         document
             .querySelector("button[type='submit'][form='form--burialSite']")
             ?.classList.remove('is-light');
     }
     function clearUnsavedChanges() {
-        los.clearUnsavedChanges();
+        sunrise.clearUnsavedChanges();
         document
             .querySelector("button[type='submit'][form='form--burialSite']")
             ?.classList.add('is-light');
@@ -21,12 +23,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const formElement = document.querySelector('#form--burialSite');
     function updateBurialSite(formEvent) {
         formEvent.preventDefault();
-        cityssm.postJSON(`${los.urlPrefix}/burialSites/${isCreate ? 'doCreateBurialSite' : 'doUpdateBurialSite'}`, formElement, (rawResponseJSON) => {
+        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/${isCreate ? 'doCreateBurialSite' : 'doUpdateBurialSite'}`, formElement, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
-                    globalThis.location.href = los.getBurialSiteURL(responseJSON.burialSiteId, true, true);
+                    globalThis.location.href = sunrise.getBurialSiteURL(responseJSON.burialSiteId, true, true);
                 }
                 else {
                     bulmaJS.alert({
@@ -49,19 +51,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
     for (const formInputElement of formInputElements) {
         formInputElement.addEventListener('change', setUnsavedChanges);
     }
-    los.initializeUnlockFieldButtons(formElement);
+    sunrise.initializeUnlockFieldButtons(formElement);
     document
         .querySelector('#button--deleteBurialSite')
         ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         function doDelete() {
-            cityssm.postJSON(`${los.urlPrefix}/burialSites/doDeleteBurialSite`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doDeleteBurialSite`, {
                 burialSiteId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     clearUnsavedChanges();
-                    globalThis.location.href = los.getBurialSiteURL();
+                    globalThis.location.href = sunrise.getBurialSiteURL();
                 }
                 else {
                     bulmaJS.alert({
@@ -93,7 +95,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </div>`;
                 return;
             }
-            cityssm.postJSON(`${los.urlPrefix}/burialSites/doGetBurialSiteTypeFields`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doGetBurialSiteTypeFields`, {
                 burialSiteTypeId: burialSiteTypeIdElement.value
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
@@ -149,7 +151,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                     burialSiteFieldsContainerElement.append(fieldElement);
                 }
-                burialSiteFieldsContainerElement.insertAdjacentHTML('beforeend', `<input name="burialSiteTypeFieldIds" type="hidden"
+                burialSiteFieldsContainerElement.insertAdjacentHTML('beforeend', 
+                // eslint-disable-next-line no-secrets/no-secrets
+                `<input name="burialSiteTypeFieldIds" type="hidden"
               value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />`);
             });
         });
@@ -190,7 +194,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         function editComment(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/burialSites/doUpdateBurialSiteComment`, editFormElement, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doUpdateBurialSiteComment`, editFormElement, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     burialSiteComments = responseJSON.burialSiteComments;
@@ -208,7 +212,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('burialSite-editComment', {
             onshow(modalElement) {
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#burialSiteCommentEdit--burialSiteId').value = burialSiteId;
                 modalElement.querySelector('#burialSiteCommentEdit--burialSiteCommentId').value = burialSiteCommentId.toString();
                 modalElement.querySelector('#burialSiteCommentEdit--comment').value = burialSiteComment.comment ?? '';
@@ -224,7 +228,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
-                los.initializeDatePickers(modalElement);
                 modalElement.querySelector('#burialSiteCommentEdit--comment').focus();
                 editFormElement = modalElement.querySelector('form');
                 editFormElement.addEventListener('submit', editComment);
@@ -239,7 +242,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const burialSiteCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
             .burialSiteCommentId ?? '', 10);
         function doDelete() {
-            cityssm.postJSON(`${los.urlPrefix}/burialSites/doDeleteBurialSiteComment`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doDeleteBurialSiteComment`, {
                 burialSiteId,
                 burialSiteCommentId
             }, (rawResponseJSON) => {
@@ -324,7 +327,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCommentCloseModalFunction;
         function doAddComment(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/burialSites/doAddBurialSiteComment`, formEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doAddBurialSiteComment`, formEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     burialSiteComments = responseJSON.burialSiteComments;
@@ -335,7 +338,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         cityssm.openHtmlModal('burialSite-addComment', {
             onshow(modalElement) {
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#burialSiteCommentAdd--burialSiteId').value = burialSiteId;
                 modalElement
                     .querySelector('form')

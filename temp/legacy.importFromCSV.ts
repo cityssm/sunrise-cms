@@ -902,7 +902,7 @@ async function importFromPrepaidCSV(): Promise<void> {
           {
             burialSiteId: lot.burialSiteId,
             contractTypeId: importIds.preneedContractType.contractTypeId,
-            occupantName: prepaidRow.CMPP_PREPAID_FOR_NAME,
+            deceasedName: prepaidRow.CMPP_PREPAID_FOR_NAME,
             contractStartDateString
           },
           {

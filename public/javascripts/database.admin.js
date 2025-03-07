@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.sunrise;
+    const sunrise = exports.sunrise;
     function doBackup() {
-        cityssm.postJSON(`${los.urlPrefix}/admin/doBackupDatabase`, {}, (rawResponseJSON) => {
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doBackupDatabase`, {}, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 bulmaJS.alert({
@@ -24,7 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function doCleanup() {
-        cityssm.postJSON(`${los.urlPrefix}/admin/doCleanupDatabase`, {}, (rawResponseJSON) => {
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doCleanupDatabase`, {}, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 bulmaJS.alert({

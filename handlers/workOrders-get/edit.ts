@@ -40,7 +40,7 @@ export default async function handler(
 
   const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
 
-  const lotStatuses = await getBurialSiteStatuses()
+  const burialSiteStatuses = await getBurialSiteStatuses()
 
   response.render('workOrder-edit', {
     headTitle: `Work Order #${workOrder.workOrderNumber}`,
@@ -48,6 +48,6 @@ export default async function handler(
     isCreate: false,
     workOrderTypes,
     workOrderMilestoneTypes,
-    lotStatuses
+    burialSiteStatuses
   })
 }

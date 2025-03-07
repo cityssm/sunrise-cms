@@ -146,42 +146,42 @@ describe('functions.sqlFilters', () => {
     });
     describe('OccupancyTime filter', () => {
         it('creates three different filters', () => {
-            const currentFilter = sqlFilterFunctions.getOccupancyTimeWhereClause('current');
+            const currentFilter = sqlFilterFunctions.getContractTimeWhereClause('current');
             assert.notStrictEqual(currentFilter.sqlWhereClause, '');
-            const pastFilter = sqlFilterFunctions.getOccupancyTimeWhereClause('past');
+            const pastFilter = sqlFilterFunctions.getContractTimeWhereClause('past');
             assert.notStrictEqual(pastFilter.sqlWhereClause, '');
-            const futureFilter = sqlFilterFunctions.getOccupancyTimeWhereClause('future');
+            const futureFilter = sqlFilterFunctions.getContractTimeWhereClause('future');
             assert.notStrictEqual(futureFilter, '');
             assert.notStrictEqual(currentFilter.sqlWhereClause, pastFilter.sqlWhereClause);
             assert.notStrictEqual(currentFilter.sqlWhereClause, futureFilter.sqlWhereClause);
             assert.notStrictEqual(pastFilter.sqlWhereClause, futureFilter.sqlWhereClause);
         });
         it('handles empty filter', () => {
-            const filter = sqlFilterFunctions.getOccupancyTimeWhereClause('');
+            const filter = sqlFilterFunctions.getContractTimeWhereClause('');
             assert.strictEqual(filter.sqlWhereClause, '');
             assert.strictEqual(filter.sqlParameters.length, 0);
         });
         it('handles undefined filter', () => {
-            const filter = sqlFilterFunctions.getOccupancyTimeWhereClause(undefined, 'o');
+            const filter = sqlFilterFunctions.getContractTimeWhereClause(undefined, 'o');
             assert.strictEqual(filter.sqlWhereClause, '');
             assert.strictEqual(filter.sqlParameters.length, 0);
         });
     });
     describe('OccupantName filter', () => {
         it('returns filter', () => {
-            const filter = sqlFilterFunctions.getOccupantNameWhereClause('TEST1 TEST2', 'o');
+            const filter = sqlFilterFunctions.getDeceasedNameWhereClause('TEST1 TEST2', 'o');
             assert.strictEqual(filter.sqlWhereClause, ' and (instr(lower(o.occupantName), ?) or instr(lower(o.occupantFamilyName), ?)) and (instr(lower(o.occupantName), ?) or instr(lower(o.occupantFamilyName), ?))');
             assert.ok(filter.sqlParameters.length === 4);
             assert.ok(filter.sqlParameters.includes('test1'));
             assert.ok(filter.sqlParameters.includes('test2'));
         });
         it('handles empty filter', () => {
-            const filter = sqlFilterFunctions.getOccupantNameWhereClause('');
+            const filter = sqlFilterFunctions.getDeceasedNameWhereClause('');
             assert.strictEqual(filter.sqlWhereClause, '');
             assert.strictEqual(filter.sqlParameters.length, 0);
         });
         it('handles undefined filter', () => {
-            const filter = sqlFilterFunctions.getOccupantNameWhereClause(undefined, 'o');
+            const filter = sqlFilterFunctions.getDeceasedNameWhereClause(undefined, 'o');
             assert.strictEqual(filter.sqlWhereClause, '');
             assert.strictEqual(filter.sqlParameters.length, 0);
         });

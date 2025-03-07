@@ -1,18 +1,18 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { LOS } from '../../types/globalTypes.js'
+import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.sunrise as LOS
+  const sunrise = exports.sunrise as Sunrise
 
   function doBackup(): void {
     cityssm.postJSON(
-      `${los.urlPrefix}/admin/doBackupDatabase`,
+      `${sunrise.urlPrefix}/admin/doBackupDatabase`,
       {},
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as
@@ -46,7 +46,7 @@ declare const exports: Record<string, unknown>
 
   function doCleanup(): void {
     cityssm.postJSON(
-      `${los.urlPrefix}/admin/doCleanupDatabase`,
+      `${sunrise.urlPrefix}/admin/doCleanupDatabase`,
       {},
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as

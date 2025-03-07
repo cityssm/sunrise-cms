@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.sunrise;
+    const sunrise = exports.sunrise;
     const workOrderPrints = exports.workOrderPrints;
     const searchFilterFormElement = document.querySelector('#form--searchFilters');
-    los.initializeDatePickers(searchFilterFormElement);
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
     const offsetElement = document.querySelector('#searchFilter--offset');
+    // eslint-disable-next-line complexity
     function renderWorkOrders(rawResponseJSON) {
         const responseJSON = rawResponseJSON;
         if (responseJSON.workOrders.length === 0) {
@@ -19,38 +19,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const resultsTbodyElement = document.createElement('tbody');
         for (const workOrder of responseJSON.workOrders) {
             let relatedHTML = '';
-            for (const lot of workOrder.workOrderLots ?? []) {
+            for (const burialSite of workOrder.workOrderBurialSites ?? []) {
                 relatedHTML += `<li class="has-tooltip-left"
-          data-tooltip="${cityssm.escapeHTML(lot.cemeteryName ?? '')}">
+          data-tooltip="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
             <i class="fas fa-fw fa-vector-square"
-              aria-label="${los.escapedAliases.Lot}"></i>
+              aria-label="Burial Site"></i>
           </span>
-          ${cityssm.escapeHTML((lot.burialSiteName ?? '') === ''
-                    ? `(No ${los.escapedAliases.Lot} Name)`
-                    : lot.burialSiteName ?? '')}
+          ${cityssm.escapeHTML((burialSite.burialSiteName ?? '') === ''
+                    ? `(No Burial Site Name)`
+                    : burialSite.burialSiteName ?? '')}
           </li>`;
             }
-            for (const occupancy of workOrder.workOrderContracts ?? []) {
-                for (const occupant of occupancy.contractOccupants ?? []) {
+            for (const contract of workOrder.workOrderContracts ?? []) {
+                for (const interment of contract.contractInterments ?? []) {
                     relatedHTML += `<li class="has-tooltip-left"
-            data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
+            data-tooltip="${cityssm.escapeHTML(contract.isPreneed ?? false ? 'Recipient' : 'Deceased')}">
             <span class="fa-li">
-              <i class="fas fa-fw fa-${cityssm.escapeHTML((occupant.fontAwesomeIconClass ?? '') === ''
-                        ? 'user'
-                        : occupant.fontAwesomeIconClass ?? '')}" aria-label="${los.escapedAliases.occupant}"></i>
+              <i class="fas fa-fw fa-user"></i>
             </span>
-            ${cityssm.escapeHTML((occupant.occupantName ?? '') === '' &&
-                        (occupant.occupantFamilyName ?? '') === ''
-                        ? '(No Name)'
-                        : `${occupant.occupantName} ${occupant.occupantFamilyName}`)}
+            ${cityssm.escapeHTML(interment.deceasedName ?? '')}
             </li>`;
                 }
             }
             // eslint-disable-next-line no-unsanitized/method
             resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${los.getWorkOrderURL(workOrder.workOrderId)}">
+            <a class="has-text-weight-bold" href="${sunrise.getWorkOrderURL(workOrder.workOrderId)}">
               ${workOrder.workOrderNumber?.trim() === ''
                 ? '(No Number)'
                 : cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
@@ -67,19 +62,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </td><td>
             <ul class="fa-ul ml-5 is-size-7">
               <li class="has-tooltip-left"
-                data-tooltip="${los.escapedAliases.WorkOrderOpenDate}">
+                data-tooltip="${sunrise.escapedAliases.WorkOrderOpenDate}">
                 <span class="fa-li">
-                  <i class="fas fa-fw fa-play" aria-label="${los.escapedAliases.WorkOrderOpenDate}"></i>
+                  <i class="fas fa-fw fa-play" aria-label="${sunrise.escapedAliases.WorkOrderOpenDate}"></i>
                 </span>
                 ${workOrder.workOrderOpenDateString}
               </li>
-              <li class="has-tooltip-left" data-tooltip="${los.escapedAliases.WorkOrderCloseDate}">
+              <li class="has-tooltip-left" data-tooltip="${sunrise.escapedAliases.WorkOrderCloseDate}">
                 <span class="fa-li">
-                  <i class="fas fa-fw fa-stop" aria-label="${los.escapedAliases.WorkOrderCloseDate}"></i>
+                  <i class="fas fa-fw fa-stop" aria-label="${sunrise.escapedAliases.WorkOrderCloseDate}"></i>
                 </span>
                 ${workOrder.workOrderCloseDate
                 ? workOrder.workOrderCloseDateString
-                : `<span class="has-text-grey">(No ${los.escapedAliases.WorkOrderCloseDate})</span>`}
+                : `<span class="has-text-grey">(No ${sunrise.escapedAliases.WorkOrderCloseDate})</span>`}
               </li>
             </ul>
           </td><td>
@@ -92,7 +87,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           ${workOrderPrints.length > 0
                 ? `<td>
                   <a class="button is-small" data-tooltip="Print"
-                    href="${los.urlPrefix}/print/${workOrderPrints[0]}/?workOrderId=${workOrder.workOrderId.toString()}"
+                    href="${sunrise.urlPrefix}/print/${workOrderPrints[0]}/?workOrderId=${workOrder.workOrderId.toString()}"
                     target="_blank">
                     <i class="fas fa-print" aria-label="Print"></i>
                   </a>
@@ -111,7 +106,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
       </tr></thead>
       <table>`;
         // eslint-disable-next-line no-unsanitized/method
-        searchResultsContainerElement.insertAdjacentHTML('beforeend', los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector('table')
             ?.append(resultsTbodyElement);
@@ -124,8 +119,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function getWorkOrders() {
         // eslint-disable-next-line no-unsanitized/property
-        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML('Loading Work Orders...');
-        cityssm.postJSON(`${los.urlPrefix}/workOrders/doSearchWorkOrders`, searchFilterFormElement, renderWorkOrders);
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Work Orders...');
+        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doSearchWorkOrders`, searchFilterFormElement, renderWorkOrders);
     }
     function resetOffsetAndGetWorkOrders() {
         offsetElement.value = '0';

@@ -1,11 +1,11 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable unicorn/prefer-module */
 
-import type { LOS } from '../../types/globalTypes.js'
+import type { Sunrise } from './types.js'
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.sunrise as LOS
+  const sunrise = exports.sunrise as Sunrise
 
   const workOrderTypeIdsElement = document.querySelector(
     '#icsFilters--workOrderTypeIds'
@@ -21,11 +21,11 @@ declare const exports: Record<string, unknown>
 
   function updateCalendarURL(): void {
     let url = `${
-      window.location.href.slice(
+      globalThis.location.href.slice(
         0,
-        Math.max(0, window.location.href.indexOf(window.location.pathname) + 1)
-      ) + los.urlPrefix
-    }api/${los.apiKey}/milestoneICS/?`
+        Math.max(0, globalThis.location.href.indexOf(globalThis.location.pathname) + 1)
+      ) + sunrise.urlPrefix
+    }api/${sunrise.apiKey}/milestoneICS/?`
 
     if (
       !workOrderTypeIdsElement.disabled &&

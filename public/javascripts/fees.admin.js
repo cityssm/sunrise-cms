@@ -1,7 +1,9 @@
 "use strict";
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable max-lines */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.sunrise;
+    const sunrise = exports.sunrise;
     const feeCategoriesContainerElement = document.querySelector('#container--feeCategories');
     let feeCategories = exports.feeCategories;
     delete exports.feeCategories;
@@ -11,6 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function getFee(feeCategory, feeId) {
         return feeCategory.fees.find((currentFee) => currentFee.feeId === feeId);
     }
+    // eslint-disable-next-line complexity
     function renderFeeCategories() {
         if (feeCategories.length === 0) {
             feeCategoriesContainerElement.innerHTML = `<div class="message is-warning">
@@ -60,7 +63,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </button>
             </div>
             <div class="control">
-              ${los.getMoveUpDownButtonFieldHTML('button--moveFeeCategoryUp', 'button--moveFeeCategoryDown')}
+              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveFeeCategoryUp', 'button--moveFeeCategoryDown')}
             </div>
           </div>
         </div>
@@ -101,21 +104,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
             </p>
             ${hasTagsBlock
                     ? `<p class="tags">
-                    ${fee.isRequired ?? false
+                    ${
+                    // eslint-disable-next-line sonarjs/no-nested-conditional
+                    fee.isRequired ?? false
                         ? '<span class="tag is-warning">Required</span>'
                         : ''}
-                    ${(fee.contractTypeId ?? -1) === -1
+                    ${
+                    // eslint-disable-next-line sonarjs/no-nested-conditional
+                    (fee.contractTypeId ?? -1) === -1
                         ? ''
-                        : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Occupancy} Type Filter">
-                        <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
-                        <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
-                        </span>`}
-                    ${(fee.burialSiteTypeId ?? -1) === -1
+                        : ` <span class="tag has-tooltip-bottom" data-tooltip="Contract Type Filter">
+                            <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
+                            <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
+                            </span>`}
+                    ${
+                    // eslint-disable-next-line sonarjs/no-nested-conditional
+                    (fee.burialSiteTypeId ?? -1) === -1
                         ? ''
-                        : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Lot} Type Filter">
-                        <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
-                        <span>${cityssm.escapeHTML(fee.lotType ?? '')}</span>
-                        </span>`}
+                        : ` <span class="tag has-tooltip-bottom" data-tooltip="Burial Site Type Filter">
+                            <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
+                            <span>${cityssm.escapeHTML(fee.burialSiteType ?? '')}</span>
+                            </span>`}
                     </p>`
                     : ''}
           </div>
@@ -145,7 +154,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             </div>
           </div>
           <div class="column is-narrow">
-            ${los.getMoveUpDownButtonFieldHTML('button--moveFeeUp', 'button--moveFeeDown')}
+            ${sunrise.getMoveUpDownButtonFieldHTML('button--moveFeeUp', 'button--moveFeeDown')}
           </div>
         </div>`;
                 panelBlockElement
@@ -178,7 +187,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAddFeeCategory(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doAddFeeCategory`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddFeeCategory`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
@@ -215,7 +224,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         function doUpdateFeeCategory(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateFeeCategory`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFeeCategory`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
@@ -249,7 +258,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     ?.addEventListener('submit', doUpdateFeeCategory);
                 modalElement.querySelector('#feeCategoryEdit--feeCategory').focus();
             },
-            onremoved: () => {
+            onremoved() {
                 bulmaJS.toggleHtmlClipped();
             }
         });
@@ -257,7 +266,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function confirmDeleteFeeCategory(clickEvent) {
         const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest('.container--feeCategory').dataset.feeCategoryId ?? '', 10);
         function doDelete() {
-            cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteFeeCategory`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteFeeCategory`, {
                 feeCategoryId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
@@ -288,7 +297,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const buttonElement = clickEvent.currentTarget;
         const feeCategoryId = buttonElement.closest('.container--feeCategory').dataset
             .feeCategoryId ?? '';
-        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveFeeCategoryUp'
             : 'doMoveFeeCategoryDown'}`, {
             feeCategoryId,
@@ -316,7 +325,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addCloseModalFunction;
         function doAddFee(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doAddFee`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddFee`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
@@ -351,16 +360,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     optionElement.textContent = contractType.contractType;
                     contractTypeElement.append(optionElement);
                 }
-                const lotTypeElement = modalElement.querySelector('#feeAdd--burialSiteTypeId');
-                for (const lotType of exports.lotTypes) {
+                const burialSiteTypeElement = modalElement.querySelector('#feeAdd--burialSiteTypeId');
+                for (const burialSiteType of exports.burialSiteTypes) {
                     const optionElement = document.createElement('option');
-                    optionElement.value = lotType.burialSiteTypeId.toString();
-                    optionElement.textContent = lotType.lotType;
-                    lotTypeElement.append(optionElement);
+                    optionElement.value = burialSiteType.burialSiteTypeId.toString();
+                    optionElement.textContent = burialSiteType.burialSiteType;
+                    burialSiteTypeElement.append(optionElement);
                 }
                 ;
                 modalElement.querySelector('#feeAdd--taxPercentage').value = exports.taxPercentageDefault.toString();
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
@@ -423,7 +432,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editCloseModalFunction;
         function doUpdateFeeAmount(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateFeeAmount`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFeeAmount`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
@@ -469,7 +478,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let editModalElement;
         function doUpdateFee(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/admin/doUpdateFee`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFee`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
@@ -488,7 +497,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function confirmDeleteFee(clickEvent) {
             clickEvent.preventDefault();
             function doDelete() {
-                cityssm.postJSON(`${los.urlPrefix}/admin/doDeleteFee`, {
+                cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteFee`, {
                     feeId
                 }, (rawResponseJSON) => {
                     const responseJSON = rawResponseJSON;
@@ -577,11 +586,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     contractTypeElement.append(optionElement);
                 }
                 const lotTypeElement = modalElement.querySelector('#feeEdit--burialSiteTypeId');
-                for (const lotType of exports.lotTypes) {
+                for (const burialSiteType of exports.burialSiteTypes) {
                     const optionElement = document.createElement('option');
-                    optionElement.value = lotType.burialSiteTypeId.toString();
-                    optionElement.textContent = lotType.lotType;
-                    if (lotType.burialSiteTypeId === fee.burialSiteTypeId) {
+                    optionElement.value = burialSiteType.burialSiteTypeId.toString();
+                    optionElement.textContent = burialSiteType.burialSiteType;
+                    if (burialSiteType.burialSiteTypeId === fee.burialSiteTypeId) {
                         optionElement.selected = true;
                     }
                     lotTypeElement.append(optionElement);
@@ -610,7 +619,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     ;
                     modalElement.querySelector('#feeEdit--isRequired').value = '1';
                 }
-                los.populateAliases(modalElement);
+                sunrise.populateAliases(modalElement);
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
@@ -632,7 +641,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const buttonElement = clickEvent.currentTarget;
         const feeContainerElement = buttonElement.closest('.container--fee');
         const feeId = feeContainerElement.dataset.feeId ?? '';
-        cityssm.postJSON(`${los.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveFeeUp'
             : 'doMoveFeeDown'}`, {
             feeId,

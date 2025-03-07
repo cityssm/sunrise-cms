@@ -1,20 +1,24 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable max-lines */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { LOS } from '../../types/globalTypes.js'
 import type {
+  BurialSiteType,
+  ContractType,
   Fee,
-  FeeCategory,
-  LotType,
-  ContractType
+  FeeCategory
 } from '../../types/recordTypes.js'
+
+import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.sunrise as LOS
+  const sunrise = exports.sunrise as Sunrise
 
   const feeCategoriesContainerElement = document.querySelector(
     '#container--feeCategories'
@@ -45,6 +49,7 @@ declare const exports: Record<string, unknown>
     ) as Fee
   }
 
+  // eslint-disable-next-line complexity
   function renderFeeCategories(): void {
     if (feeCategories.length === 0) {
       feeCategoriesContainerElement.innerHTML = `<div class="message is-warning">
@@ -106,7 +111,7 @@ declare const exports: Record<string, unknown>
               </button>
             </div>
             <div class="control">
-              ${los.getMoveUpDownButtonFieldHTML(
+              ${sunrise.getMoveUpDownButtonFieldHTML(
                 'button--moveFeeCategoryUp',
                 'button--moveFeeCategoryDown'
               )}
@@ -163,25 +168,28 @@ declare const exports: Record<string, unknown>
               hasTagsBlock
                 ? `<p class="tags">
                     ${
+                      // eslint-disable-next-line sonarjs/no-nested-conditional
                       fee.isRequired ?? false
                         ? '<span class="tag is-warning">Required</span>'
                         : ''
                     }
                     ${
+                      // eslint-disable-next-line sonarjs/no-nested-conditional
                       (fee.contractTypeId ?? -1) === -1
                         ? ''
-                        : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Occupancy} Type Filter">
-                        <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
-                        <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
-                        </span>`
+                        : ` <span class="tag has-tooltip-bottom" data-tooltip="Contract Type Filter">
+                            <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
+                            <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
+                            </span>`
                     }
                     ${
+                      // eslint-disable-next-line sonarjs/no-nested-conditional
                       (fee.burialSiteTypeId ?? -1) === -1
                         ? ''
-                        : ` <span class="tag has-tooltip-bottom" data-tooltip="${los.escapedAliases.Lot} Type Filter">
-                        <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
-                        <span>${cityssm.escapeHTML(fee.lotType ?? '')}</span>
-                        </span>`
+                        : ` <span class="tag has-tooltip-bottom" data-tooltip="Burial Site Type Filter">
+                            <span class="icon is-small"><i class="fas fa-filter" aria-hidden="true"></i></span>
+                            <span>${cityssm.escapeHTML(fee.burialSiteType ?? '')}</span>
+                            </span>`
                     }
                     </p>`
                 : ''
@@ -219,7 +227,7 @@ declare const exports: Record<string, unknown>
             </div>
           </div>
           <div class="column is-narrow">
-            ${los.getMoveUpDownButtonFieldHTML(
+            ${sunrise.getMoveUpDownButtonFieldHTML(
               'button--moveFeeUp',
               'button--moveFeeDown'
             )}
@@ -282,7 +290,7 @@ declare const exports: Record<string, unknown>
         submitEvent.preventDefault()
 
         cityssm.postJSON(
-          `${los.urlPrefix}/admin/doAddFeeCategory`,
+          `${sunrise.urlPrefix}/admin/doAddFeeCategory`,
           submitEvent.currentTarget,
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as ResponseJSON
@@ -345,7 +353,7 @@ declare const exports: Record<string, unknown>
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doUpdateFeeCategory`,
+        `${sunrise.urlPrefix}/admin/doUpdateFeeCategory`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -400,7 +408,7 @@ declare const exports: Record<string, unknown>
           ) as HTMLInputElement
         ).focus()
       },
-      onremoved: () => {
+      onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
     })
@@ -418,7 +426,7 @@ declare const exports: Record<string, unknown>
 
     function doDelete(): void {
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doDeleteFeeCategory`,
+        `${sunrise.urlPrefix}/admin/doDeleteFeeCategory`,
         {
           feeCategoryId
         },
@@ -458,7 +466,7 @@ declare const exports: Record<string, unknown>
         .feeCategoryId ?? ''
 
     cityssm.postJSON(
-      `${los.urlPrefix}/admin/${
+      `${sunrise.urlPrefix}/admin/${
         buttonElement.dataset.direction === 'up'
           ? 'doMoveFeeCategoryUp'
           : 'doMoveFeeCategoryDown'
@@ -504,7 +512,7 @@ declare const exports: Record<string, unknown>
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doAddFee`,
+        `${sunrise.urlPrefix}/admin/doAddFee`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -553,15 +561,15 @@ declare const exports: Record<string, unknown>
           contractTypeElement.append(optionElement)
         }
 
-        const lotTypeElement = modalElement.querySelector(
+        const burialSiteTypeElement = modalElement.querySelector(
           '#feeAdd--burialSiteTypeId'
         ) as HTMLSelectElement
 
-        for (const lotType of exports.lotTypes as LotType[]) {
+        for (const burialSiteType of exports.burialSiteTypes as BurialSiteType[]) {
           const optionElement = document.createElement('option')
-          optionElement.value = lotType.burialSiteTypeId.toString()
-          optionElement.textContent = lotType.lotType
-          lotTypeElement.append(optionElement)
+          optionElement.value = burialSiteType.burialSiteTypeId.toString()
+          optionElement.textContent = burialSiteType.burialSiteType
+          burialSiteTypeElement.append(optionElement)
         }
 
         ;(
@@ -570,7 +578,7 @@ declare const exports: Record<string, unknown>
           ) as HTMLInputElement
         ).value = (exports.taxPercentageDefault as number).toString()
 
-        los.populateAliases(modalElement)
+        sunrise.populateAliases(modalElement)
       },
       onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
@@ -674,7 +682,7 @@ declare const exports: Record<string, unknown>
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doUpdateFeeAmount`,
+        `${sunrise.urlPrefix}/admin/doUpdateFeeAmount`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -755,7 +763,7 @@ declare const exports: Record<string, unknown>
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/admin/doUpdateFee`,
+        `${sunrise.urlPrefix}/admin/doUpdateFee`,
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as ResponseJSON
@@ -780,7 +788,7 @@ declare const exports: Record<string, unknown>
 
       function doDelete(): void {
         cityssm.postJSON(
-          `${los.urlPrefix}/admin/doDeleteFee`,
+          `${sunrise.urlPrefix}/admin/doDeleteFee`,
           {
             feeId
           },
@@ -926,12 +934,12 @@ declare const exports: Record<string, unknown>
           '#feeEdit--burialSiteTypeId'
         ) as HTMLSelectElement
 
-        for (const lotType of exports.lotTypes as LotType[]) {
+        for (const burialSiteType of exports.burialSiteTypes as BurialSiteType[]) {
           const optionElement = document.createElement('option')
-          optionElement.value = lotType.burialSiteTypeId.toString()
-          optionElement.textContent = lotType.lotType
+          optionElement.value = burialSiteType.burialSiteTypeId.toString()
+          optionElement.textContent = burialSiteType.burialSiteType
 
-          if (lotType.burialSiteTypeId === fee.burialSiteTypeId) {
+          if (burialSiteType.burialSiteTypeId === fee.burialSiteTypeId) {
             optionElement.selected = true
           }
 
@@ -986,7 +994,7 @@ declare const exports: Record<string, unknown>
           ).value = '1'
         }
 
-        los.populateAliases(modalElement)
+        sunrise.populateAliases(modalElement)
       },
       onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
@@ -1019,7 +1027,7 @@ declare const exports: Record<string, unknown>
     const feeId = feeContainerElement.dataset.feeId ?? ''
 
     cityssm.postJSON(
-      `${los.urlPrefix}/admin/${
+      `${sunrise.urlPrefix}/admin/${
         buttonElement.dataset.direction === 'up'
           ? 'doMoveFeeUp'
           : 'doMoveFeeDown'

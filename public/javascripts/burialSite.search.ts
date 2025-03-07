@@ -8,7 +8,7 @@ declare const cityssm: cityssmGlobal
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise as Sunrise
 
   const searchFilterFormElement = document.querySelector(
     '#form--searchFilters'
@@ -49,11 +49,11 @@ declare const exports: Record<string, unknown>
         'beforeend',
         `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${los.getBurialSiteURL(burialSite.burialSiteId)}">
+            <a class="has-text-weight-bold" href="${sunrise.getBurialSiteURL(burialSite.burialSiteId)}">
               ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
             </a>
           </td><td>
-            <a href="${los.getCemeteryURL(burialSite.cemeteryId)}">
+            <a href="${sunrise.getCemeteryURL(burialSite.cemeteryId)}">
               ${
                 burialSite.cemeteryName
                   ? cityssm.escapeHTML(burialSite.cemeteryName)
@@ -90,7 +90,7 @@ declare const exports: Record<string, unknown>
     // eslint-disable-next-line no-unsanitized/method
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
-      los.getSearchResultsPagerHTML(
+      sunrise.getSearchResultsPagerHTML(
         limit,
         responseJSON.offset,
         responseJSON.count
@@ -112,12 +112,12 @@ declare const exports: Record<string, unknown>
 
   function getBurialSites(): void {
     // eslint-disable-next-line no-unsanitized/property
-    searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
+    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
       `Loading Burial Sites...`
     )
 
     cityssm.postJSON(
-      `${los.urlPrefix}/burialSites/doSearchBurialSites`,
+      `${sunrise.urlPrefix}/burialSites/doSearchBurialSites`,
       searchFilterFormElement,
       renderBurialSites
     )

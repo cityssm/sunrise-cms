@@ -3,10 +3,10 @@ import type { PoolConnection } from 'better-sqlite-pool';
 import type { Contract } from '../types/recordTypes.js';
 export interface GetContractsFilters {
     burialSiteId?: number | string;
-    occupancyTime?: '' | 'past' | 'current' | 'future';
+    contractTime?: '' | 'past' | 'current' | 'future';
     contractStartDateString?: DateString;
-    occupancyEffectiveDateString?: string;
-    occupantName?: string;
+    contractEffectiveDateString?: string;
+    deceasedName?: string;
     contractTypeId?: number | string;
     cemeteryId?: number | string;
     burialSiteNameSearchType?: '' | 'startsWith' | 'endsWith';

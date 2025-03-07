@@ -1,0 +1,203 @@
+<div class="modal" role="dialog">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h3 class="modal-card-title">
+        Add Interment
+      </h3>
+      <button
+        class="delete is-close-modal-button"
+        aria-label="close"
+        type="button"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--contractIntermentAdd">
+        <input
+          id="contractIntermentAdd--contractId"
+          name="contractId"
+          type="hidden"
+          value=""
+        />
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="contractIntermentAdd--deceasedName"
+                >Name</label
+              >
+              <div class="control">
+                <input
+                  class="input"
+                  id="contractIntermentAdd--deceasedName"
+                  name="deceasedName"
+                  type="text"
+                  maxlength="200"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="contractIntermentAdd--deceasedAddress1"
+            >Address</label
+          >
+          <div class="control">
+            <input
+              class="input"
+              id="contractIntermentAdd--deceasedAddress1"
+              name="deceasedAddress1"
+              type="text"
+              maxlength="50"
+              placeholder="Line 1"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <div class="field">
+          <div class="control">
+            <input
+              class="input"
+              id="contractIntermentAdd--deceasedAddress2"
+              name="deceasedAddress2"
+              type="text"
+              maxlength="50"
+              placeholder="Line 2"
+              aria-label="Address Line 2"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="contractIntermentAdd--deceasedCity"
+                >City</label
+              >
+              <div class="control">
+                <input
+                  class="input"
+                  id="contractIntermentAdd--deceasedCity"
+                  name="deceasedCity"
+                  type="text"
+                  maxlength="20"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label
+                class="label"
+                for="contractIntermentAdd--deceasedProvince"
+                >Province</label
+              >
+              <div class="control">
+                <input
+                  class="input"
+                  id="contractIntermentAdd--deceasedProvince"
+                  name="deceasedProvince"
+                  type="text"
+                  maxlength="2"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label
+                class="label"
+                for="contractIntermentAdd--deceasedPostalCode"
+                >Postal Code</label
+              >
+              <div class="control">
+                <input
+                  class="input"
+                  id="contractIntermentAdd--deceasedPostalCode"
+                  name="deceasedPostalCode"
+                  type="text"
+                  maxlength="7"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="contractIntermentAdd--birthDateString">
+                Date of Birth
+              </label>
+              <div class="control has-icons-left">
+                <input class="input" id="contractIntermentAdd--birthDateString" name="birthDateString" type="date" />
+                <span class="icon is-left">
+                  <i class="fas fa-calendar" aria-hidden="true"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="contractIntermentAdd--birthPlace">
+                Place of Birth
+              </label>
+              <div class="control">
+                <input class="input" id="contractIntermentAdd--birthPlace" name="birthPlace" type="text" maxlength="100" autocomplete="off" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="contractIntermentAdd--deathDateString">
+                Date of Death
+              </label>
+              <div class="control has-icons-left">
+                <input class="input" id="contractIntermentAdd--deathDateString" name="deathDateString" type="date" />
+                <span class="icon is-left">
+                  <i class="fas fa-calendar" aria-hidden="true"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="contractIntermentAdd--deathPlace">
+                Place of Death
+              </label>
+              <div class="control">
+                <input class="input" id="contractIntermentAdd--deathPlace" name="deathPlace" type="text" maxlength="100" autocomplete="off" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="contractIntermentAdd--intermentContainerTypeId">Container</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="contractIntermentAdd--intermentContainerTypeId" name="intermentContainerTypeId">
+                <option value="">(No Container)</option>
+                <optgroup label="Non-Cremated" data-is-cremation-type="0"></optgroup>
+                <optgroup label="Cremated" data-is-cremation-type="1"></optgroup>
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot justify-right">
+      <button
+        class="button is-success"
+        type="submit"
+        form="form--contractIntermentAdd"
+      >
+        <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+        <span>Add Interment</span>
+      </button>
+      <button class="button is-close-modal-button" type="button">Cancel</button>
+    </footer>
+  </div>
+</div>

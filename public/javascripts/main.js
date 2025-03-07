@@ -65,75 +65,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     }
     /*
-     * Date Pickers
-     */
-    const datePickerBaseOptions = {
-        type: 'date',
-        dateFormat: 'yyyy-MM-dd',
-        showFooter: false,
-        color: 'info',
-        displayMode: 'dialog'
-    };
-    function initializeDatePickers(containerElement) {
-        const dateElements = containerElement.querySelectorAll("input[type='date']");
-        for (const dateElement of dateElements) {
-            const datePickerOptions = { ...datePickerBaseOptions };
-            if (dateElement.required) {
-                datePickerOptions.showClearButton = false;
-            }
-            // apply min date if set
-            if (dateElement.min !== '') {
-                datePickerOptions.minDate = cityssm.dateStringToDate(dateElement.min);
-            }
-            // apply max date if set
-            if (dateElement.max !== '') {
-                datePickerOptions.maxDate = cityssm.dateStringToDate(dateElement.max);
-            }
-            const cal = exports.bulmaCalendar.attach(dateElement, datePickerOptions)[0];
-            // trigger change event on original element
-            cal.on('save', () => {
-                dateElement.value = cal.value();
-                dateElement.dispatchEvent(new Event('change'));
-            });
-            // Disable html scrolling when calendar is open
-            cal.on('show', () => {
-                document.querySelector('html')?.classList.add('is-clipped');
-            });
-            // Reenable scrolling, if a modal window is not open
-            cal.on('hide', () => {
-                bulmaJS.toggleHtmlClipped();
-            });
-            // Get the datepicker container element
-            const datepickerElement = containerElement.querySelector(`#${cal._id}`);
-            // Override the previous and next month button styles
-            const datePickerNavButtonElements = datepickerElement.querySelectorAll('.datepicker-nav button.is-text');
-            for (const datePickerNavButtonElement of datePickerNavButtonElements) {
-                datePickerNavButtonElement.classList.add(`is-${datePickerBaseOptions.color ?? ''}`);
-                datePickerNavButtonElement.classList.remove('is-text');
-            }
-            // Override the clear button style
-            const clearButtonElement = datepickerElement.querySelector('.datetimepicker-clear-button');
-            if (clearButtonElement !== null) {
-                if (dateElement.required) {
-                    clearButtonElement.remove();
-                }
-                else {
-                    clearButtonElement.dataset.tooltip = 'Clear';
-                    clearButtonElement.setAttribute('aria-label', 'Clear');
-                    clearButtonElement.innerHTML =
-                        '<span class="has-text-weight-bold" aria-hidden="true">&times;</span>';
-                }
-            }
-            // Apply a label
-            const labelElement = document.querySelector(`label[for='${dateElement.id}']`);
-            if (labelElement !== null) {
-                datepickerElement
-                    .querySelector('.datetimepicker-dummy-input')
-                    ?.setAttribute('aria-label', labelElement.textContent ?? '');
-            }
-        }
-    }
-    /*
      * Aliases
      */
     function populateAliases(containerElement) {
@@ -276,7 +207,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         dynamicsGPIntegrationIsEnabled,
         highlightMap,
         initializeUnlockFieldButtons,
-        initializeDatePickers,
         populateAliases,
         escapedAliases,
         getRandomColor,

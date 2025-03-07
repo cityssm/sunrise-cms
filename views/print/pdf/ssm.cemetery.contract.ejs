@@ -1,30 +1,3 @@
-<%
-  const purchaserLotOccupantTypes = ["Purchaser", "Preneed Owner"];
-
-  let purchaserOccupants = [];
-  for (const purchaserLotOccupantType of purchaserLotOccupantTypes) {
-    purchaserOccupants = contractFunctions.filterOccupantsByLotOccupantType(contract, purchaserLotOccupantType);
-    if (purchaserOccupants.length > 0) {
-      break;
-    }
-  }
-
-  const purchaser = purchaserOccupants.length > 0 ? purchaserOccupants[0] : undefined;
-
-  const recipientLotOccupantTypes = ["Deceased", "Preneed Owner", "Purchaser"];
-
-  let recipientOccupants = [];
-  for (const recipientLotOccupantType of recipientLotOccupantTypes) {
-    recipientOccupants = contractFunctions.filterOccupantsByLotOccupantType(contract, recipientLotOccupantType);
-    if (recipientOccupants.length > 0) {
-      break;
-    }
-  }
-
-  const recipient = recipientOccupants.length > 0 ? recipientOccupants[0] : undefined;
-
-  const recipientFields = ["Birth Date", "Birth Place"]
-%>
 <html>
   <head>
     <title><%= headTitle %></title>
@@ -98,7 +71,7 @@
       <p>
         Date of Purchase
         <span class="field">
-          <%= contract.occupancyStartDateString %>
+          <%= contract.contractStartDateString %>
         </span>
       </p>
       <table class="layout-table is-10pt" style="table-layout:fixed">
@@ -111,77 +84,59 @@
                     <tr>
                       <th class="has-text-left">Name:</th>
                       <td class="has-border-bottom">
-                        <%= purchaser ? purchaser.occupantName + ' ' + purchaser.occupantFamilyName : "" %>
+                        <%= contract.purchaserName %>
                       </td>
                     </tr><tr>
                       <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
-                      <td class="has-border-bottom"><%= purchaser ? purchaser.occupantAddress1 : "" %>&nbsp;</td>
+                      <td class="has-border-bottom"><%= contract.purchaserAddress1 %>&nbsp;</td>
                     </tr><tr>
-                      <td class="has-border-bottom"><%= purchaser ? purchaser.occupantAddress2 : "" %>&nbsp;</td>
+                      <td class="has-border-bottom"><%= contract.purchaserAddress2 %>&nbsp;</td>
                     </tr><tr>
                       <th class="has-text-left">City:</th>
-                      <td class="has-border-bottom"><%= purchaser ? purchaser.occupantCity : "" %>&nbsp;</td>
+                      <td class="has-border-bottom"><%= contract.purchaserCity %>&nbsp;</td>
                     </tr><tr>
                       <th class="has-text-left">Province:</th>
-                      <td class="has-border-bottom"><%= purchaser ? purchaser.occupantProvince : "" %>&nbsp;</td>
+                      <td class="has-border-bottom"><%= contract.purchaserProvince %>&nbsp;</td>
                     </tr><tr>
                       <th class="has-text-left has-text-nowrap">Postal Code:</th>
-                      <td class="has-border-bottom" style="width:100%"><%= purchaser ? purchaser.occupantPostalCode : "" %>&nbsp;</td>
+                      <td class="has-border-bottom" style="width:100%"><%= contract.purchaserPostalCode %>&nbsp;</td>
                     </tr><tr>
                       <th class="has-text-left">Telephone:</th>
-                      <td class="has-border-bottom"><%= purchaser ? purchaser.occupantPhoneNumber : "" %>&nbsp;</td>
+                      <td class="has-border-bottom"><%= contract.purchaserPhoneNumber %>&nbsp;</td>
                     </tr><tr>
                       <th class="has-text-left">E-mail:</th>
-                      <td class="has-border-bottom"><%= purchaser ? purchaser.occupantEmailAddress : "" %>&nbsp;</td>
+                      <td class="has-border-bottom"><%= contract.purchaserEmail %>&nbsp;</td>
                     </tr>
                   </tbody>
                 </table>
               </td>
               <td>
                 <h2 class="is-10pt">Recipient</h2>
+                <%
+                  const recipient = contract.contractInterments[0]
+                %>
                 <table class="is-10pt layout-table">
                   <tbody>
                     <tr>
                         <th class="has-text-left">Name:</th>
                         <td class="has-border-bottom">
-                          <%= recipient ? recipient.occupantName + ' ' + recipient.occupantFamilyName : "" %>
+                          <%= recipient ? recipient.deceasedName : "" %>
                         </td>
                     </tr><tr>
                         <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
-                        <td class="has-border-bottom"><%= recipient ? recipient.occupantAddress1 : "" %>&nbsp;</td>
+                        <td class="has-border-bottom"><%= recipient ? recipient.deceasedAddress1 : "" %>&nbsp;</td>
                     </tr><tr>
-                        <td class="has-border-bottom"><%= recipient ? recipient.occupantAddress2 : "" %>&nbsp;</td>
+                        <td class="has-border-bottom"><%= recipient ? recipient.deceasedAddress2 : "" %>&nbsp;</td>
                     </tr><tr>
                         <th class="has-text-left">City:</th>
-                        <td class="has-border-bottom"><%= recipient ? recipient.occupantCity : "" %>&nbsp;</td>
+                        <td class="has-border-bottom"><%= recipient ? recipient.deceasedCity : "" %>&nbsp;</td>
                     </tr><tr>
                         <th class="has-text-left">Province:</th>
-                        <td class="has-border-bottom"><%= recipient ? recipient.occupantProvince : "" %>&nbsp;</td>
+                        <td class="has-border-bottom"><%= recipient ? recipient.deceasedProvince : "" %>&nbsp;</td>
                     </tr><tr>
                         <th class="has-text-left">Postal Code:</th>
-                        <td class="has-border-bottom"><%= recipient ? recipient.occupantPostalCode : "" %>&nbsp;</td>
-                    </tr><tr>
-                        <th class="has-text-left">Telephone:</th>
-                        <td class="has-border-bottom"><%= recipient ? recipient.occupantPhoneNumber : "" %>&nbsp;</td>
-                    </tr><tr>
-                        <th class="has-text-left">E-mail:</th>
-                        <td class="has-border-bottom"><%= recipient ? recipient.occupantEmailAddress : "" %>&nbsp;</td>
+                        <td class="has-border-bottom"><%= recipient ? recipient.deceasedPostalCode : "" %>&nbsp;</td>
                     </tr>
-                    <% 
-                      for (const fieldName of recipientFields) { 
-                    %>
-                      <tr>
-                        <th class="has-text-left"><%= fieldName %>:</th>
-                        <%
-                          const field = contract.contractFields.find((possibleField) => {
-                            return possibleField.contractTypeField === fieldName;
-                          });
-                        %>
-                        <td class="has-border-bottom"><%= field?.contractFieldValue ?? "" %>&nbsp;</td>
-                      </tr>
-                    <% 
-                      }
-                    %>
                   </tbody>
                 </table>
               </td>
@@ -191,7 +146,7 @@
       <p>
         Purchaser's relationship to Recipient:
         <span class="field" style="width:550px">
-          <%= purchaser ? (purchaser.occupantComment ?? '') : '' %>
+          <%= contract.purchaserRelationship %>
           &nbsp;
         </span>
       </p>

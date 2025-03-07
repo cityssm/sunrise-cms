@@ -33,27 +33,27 @@ export function getBurialSiteNameWhereClause(burialSiteName = '', burialSiteName
         sqlParameters
     };
 }
-export function getOccupancyTimeWhereClause(occupancyTime, lotOccupanciesTableAlias = 'o') {
+export function getContractTimeWhereClause(contractTime, contractsTableAlias = 'o') {
     let sqlWhereClause = '';
     const sqlParameters = [];
     const currentDateString = dateToInteger(new Date());
     // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
-    switch (occupancyTime ?? '') {
+    switch (contractTime ?? '') {
         case 'current': {
-            sqlWhereClause += ` and ${lotOccupanciesTableAlias}.contractStartDate <= ?
-        and (${lotOccupanciesTableAlias}.contractEndDate is null or ${lotOccupanciesTableAlias}.contractEndDate >= ?)`;
+            sqlWhereClause += ` and ${contractsTableAlias}.contractStartDate <= ?
+        and (${contractsTableAlias}.contractEndDate is null or ${contractsTableAlias}.contractEndDate >= ?)`;
             sqlParameters.push(currentDateString, currentDateString);
             break;
         }
         case 'past': {
             sqlWhereClause +=
-                ` and ${lotOccupanciesTableAlias}.contractEndDate < ?`;
+                ` and ${contractsTableAlias}.contractEndDate < ?`;
             sqlParameters.push(currentDateString);
             break;
         }
         case 'future': {
             sqlWhereClause +=
-                ` and ${lotOccupanciesTableAlias}.contractStartDate > ?`;
+                ` and ${contractsTableAlias}.contractStartDate > ?`;
             sqlParameters.push(currentDateString);
             break;
         }
@@ -63,18 +63,18 @@ export function getOccupancyTimeWhereClause(occupancyTime, lotOccupanciesTableAl
         sqlParameters
     };
 }
-export function getOccupantNameWhereClause(occupantName = '', tableAlias = 'o') {
+export function getDeceasedNameWhereClause(deceasedName = '', tableAlias = 'o') {
     let sqlWhereClause = '';
     const sqlParameters = [];
     const usedPieces = new Set();
-    const occupantNamePieces = occupantName.toLowerCase().split(' ');
-    for (const occupantNamePiece of occupantNamePieces) {
-        if (occupantNamePiece === '' || usedPieces.has(occupantNamePiece)) {
+    const deceasedNamePieces = deceasedName.toLowerCase().split(' ');
+    for (const namePiece of deceasedNamePieces) {
+        if (namePiece === '' || usedPieces.has(namePiece)) {
             continue;
         }
-        usedPieces.add(occupantNamePiece);
-        sqlWhereClause += ` and (instr(lower(${tableAlias}.occupantName), ?) or instr(lower(${tableAlias}.occupantFamilyName), ?))`;
-        sqlParameters.push(occupantNamePiece, occupantNamePiece);
+        usedPieces.add(namePiece);
+        sqlWhereClause += ` and instr(lower(${tableAlias}.deceasedName), ?)`;
+        sqlParameters.push(namePiece);
     }
     return {
         sqlWhereClause,

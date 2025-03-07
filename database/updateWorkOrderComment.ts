@@ -9,9 +9,9 @@ import { acquireConnection } from './pool.js'
 
 export interface UpdateWorkOrderCommentForm {
   workOrderCommentId: string | number
-  workOrderCommentDateString: DateString
-  workOrderCommentTimeString: TimeString
-  workOrderComment: string
+  commentDateString: DateString
+  commentTimeString: TimeString
+  comment: string
 }
 
 export default async function updateWorkOrderComment(
@@ -23,18 +23,18 @@ export default async function updateWorkOrderComment(
   const result = database
     .prepare(
       `update WorkOrderComments
-        set workOrderCommentDate = ?,
-        workOrderCommentTime = ?,
-        workOrderComment = ?,
+        set commentDate = ?,
+        commentTime = ?,
+        comment = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
         and workOrderCommentId = ?`
     )
     .run(
-      dateStringToInteger(commentForm.workOrderCommentDateString),
-      timeStringToInteger(commentForm.workOrderCommentTimeString),
-      commentForm.workOrderComment,
+      dateStringToInteger(commentForm.commentDateString),
+      timeStringToInteger(commentForm.commentTimeString),
+      commentForm.comment,
       user.userName,
       Date.now(),
       commentForm.workOrderCommentId

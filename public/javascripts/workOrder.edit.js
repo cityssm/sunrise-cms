@@ -1,34 +1,33 @@
 "use strict";
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable max-lines */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.sunrise;
+    const sunrise = exports.sunrise;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     const isCreate = workOrderId === '';
     const workOrderFormElement = document.querySelector('#form--workOrderEdit');
-    los.initializeDatePickers(workOrderFormElement
-        .querySelector('#workOrderEdit--workOrderOpenDateString')
-        ?.closest('.field'));
-    los.initializeUnlockFieldButtons(workOrderFormElement);
+    sunrise.initializeUnlockFieldButtons(workOrderFormElement);
     function setUnsavedChanges() {
-        los.setUnsavedChanges();
+        sunrise.setUnsavedChanges();
         document
             .querySelector("button[type='submit'][form='form--workOrderEdit']")
             ?.classList.remove('is-light');
     }
     function clearUnsavedChanges() {
-        los.clearUnsavedChanges();
+        sunrise.clearUnsavedChanges();
         document
             .querySelector("button[type='submit'][form='form--workOrderEdit']")
             ?.classList.add('is-light');
     }
     workOrderFormElement.addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${los.urlPrefix}/workOrders/${isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'}`, submitEvent.currentTarget, (rawResponseJSON) => {
+        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/${isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'}`, submitEvent.currentTarget, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
-                    globalThis.location.href = los.getWorkOrderURL(responseJSON.workOrderId, true);
+                    globalThis.location.href = sunrise.getWorkOrderURL(responseJSON.workOrderId, true);
                 }
                 else {
                     bulmaJS.alert({
@@ -54,13 +53,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
      * Work Order Options
      */
     function doClose() {
-        cityssm.postJSON(`${los.urlPrefix}/workOrders/doCloseWorkOrder`, {
+        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCloseWorkOrder`, {
             workOrderId
         }, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
-                globalThis.location.href = los.getWorkOrderURL(workOrderId);
+                globalThis.location.href = sunrise.getWorkOrderURL(workOrderId);
             }
             else {
                 bulmaJS.alert({
@@ -72,13 +71,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function doDelete() {
-        cityssm.postJSON(`${los.urlPrefix}/workOrders/doDeleteWorkOrder`, {
+        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrder`, {
             workOrderId
         }, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
-                globalThis.location.href = `${los.urlPrefix}/workOrders`;
+                globalThis.location.href = `${sunrise.urlPrefix}/workOrders`;
             }
             else {
                 bulmaJS.alert({
@@ -118,10 +117,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         else {
             bulmaJS.confirm({
                 title: 'Close Work Order',
-                message: los.hasUnsavedChanges()
+                message: sunrise.hasUnsavedChanges()
                     ? 'Are you sure you want to close this work order with unsaved changes?'
                     : 'Are you sure you want to close this work order?',
-                contextualColorName: los.hasUnsavedChanges() ? 'warning' : 'info',
+                contextualColorName: sunrise.hasUnsavedChanges() ? 'warning' : 'info',
                 okButton: {
                     text: 'Yes, Close Work Order',
                     callbackFunction: doClose
@@ -143,745 +142,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    /**
-     * Related Lots
-     */
-    if (!isCreate) {
-        ;
-        (() => {
-            let workOrderLots = exports.workOrderLots;
-            delete exports.workOrderLots;
-            let workOrderContracts = exports.workOrderContracts;
-            delete exports.workOrderContracts;
-            function deleteLotOccupancy(clickEvent) {
-                const contractId = clickEvent.currentTarget.closest('.container--contract').dataset.contractId;
-                function doDelete() {
-                    cityssm.postJSON(`${los.urlPrefix}/workOrders/doDeleteWorkOrderContract`, {
-                        workOrderId,
-                        contractId
-                    }, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.success) {
-                            workOrderContracts = responseJSON.workOrderContracts;
-                            renderRelatedLotsAndOccupancies();
-                        }
-                        else {
-                            bulmaJS.alert({
-                                title: 'Error Deleting Relationship',
-                                message: responseJSON.errorMessage ?? '',
-                                contextualColorName: 'danger'
-                            });
-                        }
-                    });
-                }
-                bulmaJS.confirm({
-                    title: `Delete ${los.escapedAliases.Occupancy} Relationship`,
-                    message: `Are you sure you want to remove the relationship to this ${los.escapedAliases.occupancy} record from this work order?  Note that the record will remain.`,
-                    contextualColorName: 'warning',
-                    okButton: {
-                        text: 'Yes, Delete Relationship',
-                        callbackFunction: doDelete
-                    }
-                });
-            }
-            function addBurialSite(burialSiteId, callbackFunction) {
-                cityssm.postJSON(`${los.urlPrefix}/workOrders/doAddWorkOrderBurialSite`, {
-                    workOrderId,
-                    burialSiteId
-                }, (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
-                    if (responseJSON.success) {
-                        workOrderLots = responseJSON.workOrderLots;
-                        renderRelatedLotsAndOccupancies();
-                    }
-                    else {
-                        bulmaJS.alert({
-                            title: `Error Adding ${los.escapedAliases.Lot}`,
-                            message: responseJSON.errorMessage ?? '',
-                            contextualColorName: 'danger'
-                        });
-                    }
-                    if (callbackFunction !== undefined) {
-                        callbackFunction(responseJSON.success);
-                    }
-                });
-            }
-            function addContract(contractId, callbackFunction) {
-                cityssm.postJSON(`${los.urlPrefix}/workOrders/doAddWorkOrderContract`, {
-                    workOrderId,
-                    contractId
-                }, (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
-                    if (responseJSON.success) {
-                        workOrderContracts = responseJSON.workOrderContracts;
-                        renderRelatedLotsAndOccupancies();
-                    }
-                    else {
-                        bulmaJS.alert({
-                            title: `Error Adding ${los.escapedAliases.Occupancy}`,
-                            message: responseJSON.errorMessage ?? '',
-                            contextualColorName: 'danger'
-                        });
-                    }
-                    if (callbackFunction !== undefined) {
-                        callbackFunction(responseJSON.success);
-                    }
-                });
-            }
-            function addBurialSiteFromLotOccupancy(clickEvent) {
-                const burialSiteId = clickEvent.currentTarget.dataset.burialSiteId ?? '';
-                addBurialSite(burialSiteId);
-            }
-            function renderRelatedOccupancies() {
-                const occupanciesContainerElement = document.querySelector('#container--lotOccupancies');
-                document.querySelector(".tabs a[href='#relatedTab--lotOccupancies'] .tag").textContent = workOrderContracts.length.toString();
-                if (workOrderContracts.length === 0) {
-                    // eslint-disable-next-line no-unsanitized/property
-                    occupanciesContainerElement.innerHTML = `<div class="message is-info">
-            <p class="message-body">There are no ${los.escapedAliases.occupancies} associated with this work order.</p>
-            </div>`;
-                    return;
-                }
-                // eslint-disable-next-line no-unsanitized/property
-                occupanciesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-          <thead><tr>
-            <th class="has-width-1"></th>
-            <th>${los.escapedAliases.Occupancy} Type</th>
-            <th>${los.escapedAliases.Lot}</th>
-            <th>${los.escapedAliases.contractStartDate}</th>
-            <th>End Date</th>
-            <th>${los.escapedAliases.Occupants}</th>
-            <th class="has-width-1"></th>
-          </tr></thead>
-          <tbody></tbody>
-          </table>`;
-                const currentDateString = cityssm.dateToString(new Date());
-                for (const contract of workOrderContracts) {
-                    const rowElement = document.createElement('tr');
-                    rowElement.className = 'container--contract';
-                    rowElement.dataset.contractId =
-                        contract.contractId.toString();
-                    const isActive = !(contract.contractEndDate &&
-                        contract.contractEndDateString < currentDateString);
-                    const hasLotRecord = contract.burialSiteId &&
-                        workOrderLots.some((lot) => contract.burialSiteId === lot.burialSiteId);
-                    // eslint-disable-next-line no-unsanitized/property
-                    rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
-      ${isActive
-                        ? `<i class="fas fa-play" title="Current ${los.escapedAliases.Occupancy}"></i>`
-                        : `<i class="fas fa-stop" title="Previous ${los.escapedAliases.Occupancy}"></i>`}
-      </td><td>
-        <a class="has-text-weight-bold" href="${los.getContractURL(contract.contractId)}">
-          ${cityssm.escapeHTML(contract.contractType ?? '')}
-        </a><br />
-        <span class="is-size-7">#${contract.contractId}</span>
-      </td>`;
-                    if (contract.burialSiteId) {
-                        // eslint-disable-next-line no-unsanitized/method
-                        rowElement.insertAdjacentHTML('beforeend', `<td>
-          ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
-          ${hasLotRecord
-                            ? ''
-                            : ` <button class="button is-small is-light is-success button--addBurialSite"
-                  data-lot-id="${contract.burialSiteId.toString()}"
-                  data-tooltip="Add ${los.escapedAliases.Lot}"
-                  aria-label="Add ${los.escapedAliases.Lot}" type="button">
-                  <i class="fas fa-plus" aria-hidden="true"></i>
-                  </button>`}
-        </td>`);
-                    }
-                    else {
-                        // eslint-disable-next-line no-unsanitized/method
-                        rowElement.insertAdjacentHTML('beforeend', `<td><span class="has-text-grey">(No ${los.escapedAliases.Lot})</span></td>`);
-                    }
-                    let occupantsHTML = '';
-                    for (const occupant of contract.contractOccupants) {
-                        occupantsHTML += `<li class="has-tooltip-left"
-              data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
-              <span class="fa-li">
-              <i class="fas fa-fw fa-${cityssm.escapeHTML((occupant.fontAwesomeIconClass ?? '') === ''
-                            ? 'user'
-                            : occupant.fontAwesomeIconClass ?? '')}" aria-label="${los.escapedAliases.Occupant}"></i>
-              </span>
-              ${cityssm.escapeHTML(occupant.occupantName ?? '')}
-              ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
-              </li>`;
-                    }
-                    // eslint-disable-next-line no-unsanitized/method
-                    rowElement.insertAdjacentHTML('beforeend', `<td>
-          ${contract.contractStartDateString}
-        </td><td>
-          ${contract.contractEndDate
-                        ? contract.contractEndDateString
-                        : '<span class="has-text-grey">(No End Date)</span>'}
-        </td><td>
-          ${contract.contractOccupants.length === 0
-                        ? `<span class="has-text-grey">(No ${los.escapedAliases.Occupants})</span>`
-                        : `<ul class="fa-ul ml-5">${occupantsHTML}</ul>`}
-        </td><td>
-          <button class="button is-small is-light is-danger button--deleteLotOccupancy" data-tooltip="Delete Relationship" type="button">
-            <i class="fas fa-trash" aria-hidden="true"></i>
-          </button>
-        </td>`);
-                    rowElement
-                        .querySelector('.button--addBurialSite')
-                        ?.addEventListener('click', addBurialSiteFromLotOccupancy);
-                    rowElement
-                        .querySelector('.button--deleteLotOccupancy')
-                        ?.addEventListener('click', deleteLotOccupancy);
-                    occupanciesContainerElement.querySelector('tbody')?.append(rowElement);
-                }
-            }
-            function openEditLotStatus(clickEvent) {
-                const burialSiteId = Number.parseInt(clickEvent.currentTarget.closest('.container--lot').dataset.burialSiteId ?? '', 10);
-                const lot = workOrderLots.find((possibleLot) => possibleLot.burialSiteId === burialSiteId);
-                let editCloseModalFunction;
-                function doUpdateBurialSiteStatus(submitEvent) {
-                    submitEvent.preventDefault();
-                    cityssm.postJSON(`${los.urlPrefix}/workOrders/doUpdateBurialSiteStatus`, submitEvent.currentTarget, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.success) {
-                            workOrderLots = responseJSON.workOrderLots;
-                            renderRelatedLotsAndOccupancies();
-                            editCloseModalFunction();
-                        }
-                        else {
-                            bulmaJS.alert({
-                                title: 'Error Deleting Relationship',
-                                message: responseJSON.errorMessage ?? '',
-                                contextualColorName: 'danger'
-                            });
-                        }
-                    });
-                }
-                cityssm.openHtmlModal('lot-editLotStatus', {
-                    onshow(modalElement) {
-                        los.populateAliases(modalElement);
-                        modalElement.querySelector('#lotStatusEdit--burialSiteId').value = burialSiteId.toString();
-                        modalElement.querySelector('#lotStatusEdit--burialSiteName').value = lot.burialSiteName ?? '';
-                        const lotStatusElement = modalElement.querySelector('#lotStatusEdit--burialSiteStatusId');
-                        let lotStatusFound = false;
-                        for (const lotStatus of exports.lotStatuses) {
-                            const optionElement = document.createElement('option');
-                            optionElement.value = lotStatus.burialSiteStatusId.toString();
-                            optionElement.textContent = lotStatus.lotStatus;
-                            if (lotStatus.burialSiteStatusId === lot.burialSiteStatusId) {
-                                lotStatusFound = true;
-                            }
-                            lotStatusElement.append(optionElement);
-                        }
-                        if (!lotStatusFound && lot.burialSiteStatusId) {
-                            const optionElement = document.createElement('option');
-                            optionElement.value = lot.burialSiteStatusId.toString();
-                            optionElement.textContent = lot.lotStatus ?? '';
-                            lotStatusElement.append(optionElement);
-                        }
-                        if (lot.burialSiteStatusId) {
-                            lotStatusElement.value = lot.burialSiteStatusId.toString();
-                        }
-                        // eslint-disable-next-line no-unsanitized/method
-                        modalElement
-                            .querySelector('form')
-                            ?.insertAdjacentHTML('beforeend', `<input name="workOrderId" type="hidden" value="${workOrderId}" />`);
-                    },
-                    onshown(modalElement, closeModalFunction) {
-                        editCloseModalFunction = closeModalFunction;
-                        bulmaJS.toggleHtmlClipped();
-                        modalElement
-                            .querySelector('form')
-                            ?.addEventListener('submit', doUpdateBurialSiteStatus);
-                    },
-                    onremoved() {
-                        bulmaJS.toggleHtmlClipped();
-                    }
-                });
-            }
-            function deleteLot(clickEvent) {
-                const burialSiteId = clickEvent.currentTarget.closest('.container--lot').dataset.burialSiteId;
-                function doDelete() {
-                    cityssm.postJSON(`${los.urlPrefix}/workOrders/doDeleteWorkOrderBurialSite`, {
-                        workOrderId,
-                        burialSiteId
-                    }, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.success) {
-                            workOrderLots = responseJSON.workOrderLots;
-                            renderRelatedLotsAndOccupancies();
-                        }
-                        else {
-                            bulmaJS.alert({
-                                title: 'Error Deleting Relationship',
-                                message: responseJSON.errorMessage ?? '',
-                                contextualColorName: 'danger'
-                            });
-                        }
-                    });
-                }
-                bulmaJS.confirm({
-                    title: `Delete ${los.escapedAliases.Occupancy} Relationship`,
-                    message: `Are you sure you want to remove the relationship to this ${los.escapedAliases.occupancy} record from this work order?  Note that the record will remain.`,
-                    contextualColorName: 'warning',
-                    okButton: {
-                        text: 'Yes, Delete Relationship',
-                        callbackFunction: doDelete
-                    }
-                });
-            }
-            function renderRelatedLots() {
-                const lotsContainerElement = document.querySelector('#container--lots');
-                document.querySelector(".tabs a[href='#relatedTab--lots'] .tag").textContent = workOrderLots.length.toString();
-                if (workOrderLots.length === 0) {
-                    // eslint-disable-next-line no-unsanitized/property
-                    lotsContainerElement.innerHTML = `<div class="message is-info">
-            <p class="message-body">There are no ${los.escapedAliases.lots} associated with this work order.</p>
-            </div>`;
-                    return;
-                }
-                // eslint-disable-next-line no-unsanitized/property
-                lotsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-          <thead><tr>
-            <th>${los.escapedAliases.Lot}</th>
-            <th>${los.escapedAliases.Map}</th>
-            <th>${los.escapedAliases.Lot} Type</th>
-            <th>Status</th>
-            <th class="has-width-1"></th>
-          </tr></thead>
-          <tbody></tbody>
-          </table>`;
-                for (const lot of workOrderLots) {
-                    const rowElement = document.createElement('tr');
-                    rowElement.className = 'container--lot';
-                    rowElement.dataset.burialSiteId = lot.burialSiteId.toString();
-                    // eslint-disable-next-line no-unsanitized/property
-                    rowElement.innerHTML = `<td>
-              <a class="has-text-weight-bold" href="${los.getBurialSiteURL(lot.burialSiteId)}">
-                ${cityssm.escapeHTML(lot.burialSiteName ?? '')}
-              </a>
-            </td><td>
-              ${cityssm.escapeHTML(lot.cemeteryName ?? '')}
-            </td><td>
-              ${cityssm.escapeHTML(lot.lotType ?? '')}
-            </td><td>
-              ${lot.burialSiteStatusId
-                        ? cityssm.escapeHTML(lot.lotStatus ?? '')
-                        : '<span class="has-text-grey">(No Status)</span>'}
-            </td><td class="is-nowrap">
-              <button class="button is-small is-light is-info button--editLotStatus" data-tooltip="Update Status" type="button">
-              <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-              </button>
-              <button class="button is-small is-light is-danger button--deleteLot" data-tooltip="Delete Relationship" type="button">
-              <i class="fas fa-trash" aria-hidden="true"></i>
-              </button>
-            </td>`;
-                    rowElement
-                        .querySelector('.button--editLotStatus')
-                        ?.addEventListener('click', openEditLotStatus);
-                    rowElement
-                        .querySelector('.button--deleteLot')
-                        ?.addEventListener('click', deleteLot);
-                    lotsContainerElement.querySelector('tbody')?.append(rowElement);
-                }
-            }
-            function renderRelatedLotsAndOccupancies() {
-                renderRelatedOccupancies();
-                renderRelatedLots();
-            }
-            renderRelatedLotsAndOccupancies();
-            function doAddLotOccupancy(clickEvent) {
-                const rowElement = clickEvent.currentTarget.closest('tr');
-                const contractId = rowElement.dataset.contractId ?? '';
-                addContract(contractId, (success) => {
-                    if (success) {
-                        rowElement.remove();
-                    }
-                });
-            }
-            document
-                .querySelector('#button--addContract')
-                ?.addEventListener('click', () => {
-                let searchFormElement;
-                let searchResultsContainerElement;
-                function doSearch(event) {
-                    if (event) {
-                        event.preventDefault();
-                    }
-                    // eslint-disable-next-line no-unsanitized/property
-                    searchResultsContainerElement.innerHTML =
-                        los.getLoadingParagraphHTML('Searching...');
-                    cityssm.postJSON(`${los.urlPrefix}/contracts/doSearchLotOccupancies`, searchFormElement, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.lotOccupancies.length === 0) {
-                            searchResultsContainerElement.innerHTML = `<div class="message is-info">
-                    <p class="message-body">There are no records that meet the search criteria.</p>
-                    </div>`;
-                            return;
-                        }
-                        // eslint-disable-next-line no-unsanitized/property
-                        searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-                  <thead><tr>
-                    <th class="has-width-1"></th>
-                    <th>${los.escapedAliases.Occupancy} Type</th>
-                    <th>${los.escapedAliases.Lot}</th>
-                    <th>${los.escapedAliases.contractStartDate}</th>
-                    <th>End Date</th>
-                    <th>${los.escapedAliases.Occupants}</th>
-                  </tr></thead>
-                  <tbody></tbody>
-                  </table>`;
-                        for (const contract of responseJSON.lotOccupancies) {
-                            const rowElement = document.createElement('tr');
-                            rowElement.className = 'container--contract';
-                            rowElement.dataset.contractId =
-                                contract.contractId.toString();
-                            rowElement.innerHTML = `<td class="has-text-centered">
-                      <button class="button is-small is-success button--addContract" data-tooltip="Add" type="button" aria-label="Add">
-                        <i class="fas fa-plus" aria-hidden="true"></i>
-                      </button>
-                    </td>
-                    <td class="has-text-weight-bold">
-                      ${cityssm.escapeHTML(contract.contractType ?? '')}
-                    </td>`;
-                            if (contract.burialSiteId) {
-                                rowElement.insertAdjacentHTML('beforeend', `<td>${cityssm.escapeHTML(contract.burialSiteName ?? '')}</td>`);
-                            }
-                            else {
-                                // eslint-disable-next-line no-unsanitized/method
-                                rowElement.insertAdjacentHTML('beforeend', `<td><span class="has-text-grey">(No ${los.escapedAliases.Lot})</span></td>`);
-                            }
-                            // eslint-disable-next-line no-unsanitized/method
-                            rowElement.insertAdjacentHTML('beforeend', `<td>
-                  ${contract.contractStartDateString}
-                </td><td>
-                  ${contract.contractEndDate
-                                ? contract.contractEndDateString
-                                : '<span class="has-text-grey">(No End Date)</span>'}
-                </td><td>
-                  ${contract.contractOccupants.length === 0
-                                ? `<span class="has-text-grey">
-                          (No ${cityssm.escapeHTML(los.escapedAliases.Occupants)})
-                          </span>`
-                                : cityssm.escapeHTML(`${contract.contractOccupants[0].occupantName}
-                            ${contract.contractOccupants[0]
-                                    .occupantFamilyName}`) +
-                                    (contract.contractOccupants.length > 1
-                                        ? ` plus
-                              ${(contract.contractOccupants.length - 1).toString()}`
-                                        : '')}</td>`);
-                            rowElement
-                                .querySelector('.button--addContract')
-                                ?.addEventListener('click', doAddLotOccupancy);
-                            searchResultsContainerElement
-                                .querySelector('tbody')
-                                ?.append(rowElement);
-                        }
-                    });
-                }
-                cityssm.openHtmlModal('workOrder-addContract', {
-                    onshow(modalElement) {
-                        los.populateAliases(modalElement);
-                        searchFormElement = modalElement.querySelector('form');
-                        searchResultsContainerElement = modalElement.querySelector('#resultsContainer--contractAdd');
-                        modalElement.querySelector('#contractSearch--notWorkOrderId').value = workOrderId;
-                        modalElement.querySelector('#contractSearch--occupancyEffectiveDateString').value = document.querySelector('#workOrderEdit--workOrderOpenDateString').value;
-                        doSearch();
-                    },
-                    onshown(modalElement) {
-                        bulmaJS.toggleHtmlClipped();
-                        const occupantNameElement = modalElement.querySelector('#contractSearch--occupantName');
-                        occupantNameElement.addEventListener('change', doSearch);
-                        occupantNameElement.focus();
-                        modalElement.querySelector('#contractSearch--burialSiteName').addEventListener('change', doSearch);
-                        searchFormElement.addEventListener('submit', doSearch);
-                    },
-                    onremoved() {
-                        bulmaJS.toggleHtmlClipped();
-                        document.querySelector('#button--addContract').focus();
-                    }
-                });
-            });
-            function doAddLot(clickEvent) {
-                const rowElement = clickEvent.currentTarget.closest('tr');
-                const burialSiteId = rowElement.dataset.burialSiteId ?? '';
-                addBurialSite(burialSiteId, (success) => {
-                    if (success) {
-                        rowElement.remove();
-                    }
-                });
-            }
-            document
-                .querySelector('#button--addBurialSite')
-                ?.addEventListener('click', () => {
-                let searchFormElement;
-                let searchResultsContainerElement;
-                function doSearch(event) {
-                    if (event) {
-                        event.preventDefault();
-                    }
-                    // eslint-disable-next-line no-unsanitized/property
-                    searchResultsContainerElement.innerHTML =
-                        los.getLoadingParagraphHTML('Searching...');
-                    cityssm.postJSON(`${los.urlPrefix}/burialSites/doSearchBurialSites`, searchFormElement, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        if (responseJSON.lots.length === 0) {
-                            searchResultsContainerElement.innerHTML = `<div class="message is-info">
-            <p class="message-body">There are no records that meet the search criteria.</p>
-            </div>`;
-                            return;
-                        }
-                        // eslint-disable-next-line no-unsanitized/property
-                        searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-                  <thead><tr>
-                    <th class="has-width-1"></th>
-                    <th>${los.escapedAliases.Lot}</th>
-                    <th>${los.escapedAliases.Map}</th>
-                    <th>${los.escapedAliases.Lot} Type</th>
-                    <th>Status</th>
-                  </tr></thead>
-                  <tbody></tbody>
-                  </table>`;
-                        for (const lot of responseJSON.lots) {
-                            const rowElement = document.createElement('tr');
-                            rowElement.className = 'container--lot';
-                            rowElement.dataset.burialSiteId = lot.burialSiteId.toString();
-                            rowElement.innerHTML = `<td class="has-text-centered">
-                      <button class="button is-small is-success button--addBurialSite" data-tooltip="Add" type="button" aria-label="Add">
-                        <i class="fas fa-plus" aria-hidden="true"></i>
-                      </button>
-                    </td><td class="has-text-weight-bold">
-                      ${cityssm.escapeHTML(lot.burialSiteName ?? '')}
-                    </td><td>
-                      ${cityssm.escapeHTML(lot.cemeteryName ?? '')}
-                    </td><td>
-                      ${cityssm.escapeHTML(lot.lotType ?? '')}
-                    </td><td>
-                      ${cityssm.escapeHTML(lot.lotStatus ?? '')}
-                    </td>`;
-                            rowElement
-                                .querySelector('.button--addBurialSite')
-                                ?.addEventListener('click', doAddLot);
-                            searchResultsContainerElement
-                                .querySelector('tbody')
-                                ?.append(rowElement);
-                        }
-                    });
-                }
-                cityssm.openHtmlModal('workOrder-addBurialSite', {
-                    onshow(modalElement) {
-                        los.populateAliases(modalElement);
-                        searchFormElement = modalElement.querySelector('form');
-                        searchResultsContainerElement = modalElement.querySelector('#resultsContainer--lotAdd');
-                        modalElement.querySelector('#lotSearch--notWorkOrderId').value = workOrderId;
-                        const lotStatusElement = modalElement.querySelector('#lotSearch--burialSiteStatusId');
-                        for (const lotStatus of exports.lotStatuses) {
-                            const optionElement = document.createElement('option');
-                            optionElement.value = lotStatus.burialSiteStatusId.toString();
-                            optionElement.textContent = lotStatus.lotStatus;
-                            lotStatusElement.append(optionElement);
-                        }
-                        doSearch();
-                    },
-                    onshown(modalElement) {
-                        bulmaJS.toggleHtmlClipped();
-                        const burialSiteNameElement = modalElement.querySelector('#lotSearch--burialSiteName');
-                        burialSiteNameElement.addEventListener('change', doSearch);
-                        burialSiteNameElement.focus();
-                        modalElement
-                            .querySelector('#lotSearch--burialSiteStatusId')
-                            ?.addEventListener('change', doSearch);
-                        searchFormElement.addEventListener('submit', doSearch);
-                    },
-                    onremoved() {
-                        bulmaJS.toggleHtmlClipped();
-                        document.querySelector('#button--addBurialSite').focus();
-                    }
-                });
-            });
-        })();
-    }
-    /**
-     * Comments
-     */
-    ;
-    (() => {
-        let workOrderComments = exports.workOrderComments;
-        delete exports.workOrderComments;
-        function openEditWorkOrderComment(clickEvent) {
-            const workOrderCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-                .workOrderCommentId ?? '', 10);
-            const workOrderComment = workOrderComments.find((currentComment) => currentComment.workOrderCommentId === workOrderCommentId);
-            let editFormElement;
-            let editCloseModalFunction;
-            function editComment(submitEvent) {
-                submitEvent.preventDefault();
-                cityssm.postJSON(`${los.urlPrefix}/workOrders/doUpdateWorkOrderComment`, editFormElement, (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
-                    if (responseJSON.success) {
-                        workOrderComments = responseJSON.workOrderComments;
-                        editCloseModalFunction();
-                        renderWorkOrderComments();
-                    }
-                    else {
-                        bulmaJS.alert({
-                            title: 'Error Updating Comment',
-                            message: responseJSON.errorMessage ?? '',
-                            contextualColorName: 'danger'
-                        });
-                    }
-                });
-            }
-            cityssm.openHtmlModal('workOrder-editComment', {
-                onshow(modalElement) {
-                    ;
-                    modalElement.querySelector('#workOrderCommentEdit--workOrderId').value = workOrderId;
-                    modalElement.querySelector('#workOrderCommentEdit--workOrderCommentId').value = workOrderCommentId.toString();
-                    modalElement.querySelector('#workOrderCommentEdit--workOrderComment').value = workOrderComment.workOrderComment ?? '';
-                    const workOrderCommentDateStringElement = modalElement.querySelector('#workOrderCommentEdit--workOrderCommentDateString');
-                    workOrderCommentDateStringElement.value =
-                        workOrderComment.workOrderCommentDateString ?? '';
-                    const currentDateString = cityssm.dateToString(new Date());
-                    workOrderCommentDateStringElement.max =
-                        workOrderComment.workOrderCommentDateString <= currentDateString
-                            ? currentDateString
-                            : workOrderComment.workOrderCommentDateString ?? '';
-                    modalElement.querySelector('#workOrderCommentEdit--workOrderCommentTimeString').value = workOrderComment.workOrderCommentTimeString ?? '';
-                },
-                onshown(modalElement, closeModalFunction) {
-                    bulmaJS.toggleHtmlClipped();
-                    los.initializeDatePickers(modalElement);
-                    modalElement.querySelector('#workOrderCommentEdit--workOrderComment').focus();
-                    editFormElement = modalElement.querySelector('form');
-                    editFormElement.addEventListener('submit', editComment);
-                    editCloseModalFunction = closeModalFunction;
-                },
-                onremoved() {
-                    bulmaJS.toggleHtmlClipped();
-                }
-            });
-        }
-        function deleteWorkOrderComment(clickEvent) {
-            const workOrderCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
-                .workOrderCommentId ?? '', 10);
-            function doDelete() {
-                cityssm.postJSON(`${los.urlPrefix}/workOrders/doDeleteWorkOrderComment`, {
-                    workOrderId,
-                    workOrderCommentId
-                }, (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
-                    if (responseJSON.success) {
-                        workOrderComments = responseJSON.workOrderComments;
-                        renderWorkOrderComments();
-                    }
-                    else {
-                        bulmaJS.alert({
-                            title: 'Error Removing Comment',
-                            message: responseJSON.errorMessage ?? '',
-                            contextualColorName: 'danger'
-                        });
-                    }
-                });
-            }
-            bulmaJS.confirm({
-                title: 'Remove Comment?',
-                message: 'Are you sure you want to remove this comment?',
-                okButton: {
-                    text: 'Yes, Remove Comment',
-                    callbackFunction: doDelete
-                },
-                contextualColorName: 'warning'
-            });
-        }
-        function renderWorkOrderComments() {
-            const containerElement = document.querySelector('#container--workOrderComments');
-            if (workOrderComments.length === 0) {
-                containerElement.innerHTML = `<div class="message is-info">
-      <p class="message-body">There are no comments to display.</p>
-      </div>`;
-                return;
-            }
-            const tableElement = document.createElement('table');
-            tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-            tableElement.innerHTML = `<thead><tr>
-        <th>Commentor</th>
-        <th>Comment Date</th>
-        <th>Comment</th>
-        <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-        </tr></thead>
-        <tbody></tbody>`;
-            for (const workOrderComment of workOrderComments) {
-                const tableRowElement = document.createElement('tr');
-                tableRowElement.dataset.workOrderCommentId =
-                    workOrderComment.workOrderCommentId?.toString();
-                // eslint-disable-next-line no-unsanitized/property
-                tableRowElement.innerHTML = `<td>
-            ${cityssm.escapeHTML(workOrderComment.recordCreate_userName ?? '')}
-          </td><td>
-            ${workOrderComment.workOrderCommentDateString}
-            ${workOrderComment.workOrderCommentTime === 0
-                    ? ''
-                    : workOrderComment.workOrderCommentTimePeriodString}
-          </td><td>
-            ${cityssm.escapeHTML(workOrderComment.workOrderComment ?? '')}
-          </td><td class="is-hidden-print">
-            <div class="buttons are-small is-justify-content-end">
-              <button class="button is-primary button--edit" type="button">
-                <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-                <span>Edit</span>
-              </button>
-              <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
-                <i class="fas fa-trash" aria-hidden="true"></i>
-              </button>
-            </div>
-          </td>`;
-                tableRowElement
-                    .querySelector('.button--edit')
-                    ?.addEventListener('click', openEditWorkOrderComment);
-                tableRowElement
-                    .querySelector('.button--delete')
-                    ?.addEventListener('click', deleteWorkOrderComment);
-                tableElement.querySelector('tbody')?.append(tableRowElement);
-            }
-            containerElement.innerHTML = '';
-            containerElement.append(tableElement);
-        }
-        function openAddCommentModal() {
-            let addCommentCloseModalFunction;
-            function doAddComment(formEvent) {
-                formEvent.preventDefault();
-                cityssm.postJSON(`${los.urlPrefix}/workOrders/doAddWorkOrderComment`, formEvent.currentTarget, (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
-                    if (responseJSON.success) {
-                        workOrderComments = responseJSON.workOrderComments;
-                        renderWorkOrderComments();
-                        addCommentCloseModalFunction();
-                    }
-                });
-            }
-            cityssm.openHtmlModal('workOrder-addComment', {
-                onshow(modalElement) {
-                    los.populateAliases(modalElement);
-                    modalElement.querySelector('#workOrderCommentAdd--workOrderId').value = workOrderId;
-                    modalElement
-                        .querySelector('form')
-                        ?.addEventListener('submit', doAddComment);
-                },
-                onshown(modalElement, closeModalFunction) {
-                    bulmaJS.toggleHtmlClipped();
-                    addCommentCloseModalFunction = closeModalFunction;
-                    modalElement.querySelector('#workOrderCommentAdd--workOrderComment').focus();
-                },
-                onremoved() {
-                    bulmaJS.toggleHtmlClipped();
-                    document.querySelector('#workOrderComments--add').focus();
-                }
-            });
-        }
-        document
-            .querySelector('#workOrderComments--add')
-            ?.addEventListener('click', openAddCommentModal);
-        if (!isCreate) {
-            renderWorkOrderComments();
-        }
-    })();
     /*
      * Milestones
      */
@@ -895,9 +155,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clearPanelBlockElements(targetPanelElement);
         // eslint-disable-next-line no-unsanitized/method
         targetPanelElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
-      ${los.getLoadingParagraphHTML('Loading conflicting milestones...')}
+      ${sunrise.getLoadingParagraphHTML('Loading conflicting milestones...')}
       </div>`);
-        cityssm.postJSON(`${los.urlPrefix}/workOrders/doGetWorkOrderMilestones`, {
+        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`, {
             workOrderMilestoneDateFilter: 'date',
             workOrderMilestoneDateString
         }, (rawResponseJSON) => {
@@ -952,7 +212,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId ?? '', 10);
         const workOrderMilestone = workOrderMilestones.find((currentMilestone) => currentMilestone.workOrderMilestoneId === workOrderMilestoneId);
         function doComplete() {
-            cityssm.postJSON(`${los.urlPrefix}/workOrders/doCompleteWorkOrderMilestone`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCompleteWorkOrderMilestone`, {
                 workOrderId,
                 workOrderMilestoneId
             }, processMilestoneResponse);
@@ -977,7 +237,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         const workOrderMilestoneId = clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId;
         function doReopen() {
-            cityssm.postJSON(`${los.urlPrefix}/workOrders/doReopenWorkOrderMilestone`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doReopenWorkOrderMilestone`, {
                 workOrderId,
                 workOrderMilestoneId
             }, processMilestoneResponse);
@@ -996,7 +256,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         const workOrderMilestoneId = clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId;
         function doDelete() {
-            cityssm.postJSON(`${los.urlPrefix}/workOrders/doDeleteWorkOrderMilestone`, {
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderMilestone`, {
                 workOrderMilestoneId,
                 workOrderId
             }, processMilestoneResponse);
@@ -1019,7 +279,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let workOrderMilestoneDateStringElement;
         function doEdit(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${los.urlPrefix}/workOrders/doUpdateWorkOrderMilestone`, submitEvent.currentTarget, (rawResponseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkOrderMilestone`, submitEvent.currentTarget, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 processMilestoneResponse(responseJSON);
                 if (responseJSON.success) {
@@ -1069,8 +329,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             onshown(modalElement, closeModalFunction) {
                 editCloseModalFunction = closeModalFunction;
                 bulmaJS.toggleHtmlClipped();
-                los.initializeDatePickers(modalElement);
-                // los.initializeTimePickers(modalElement);
                 modalElement.querySelector('form')?.addEventListener('submit', doEdit);
                 const conflictingMilestonePanelElement = document.querySelector('#milestoneEdit--conflictingMilestonesPanel');
                 workOrderMilestoneDateStringElement.addEventListener('change', () => {
@@ -1179,7 +437,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 const currentDateString = cityssm.dateToString(new Date());
                 function _doAdd() {
-                    cityssm.postJSON(`${los.urlPrefix}/workOrders/doAddWorkOrderMilestone`, addFormElement, (rawResponseJSON) => {
+                    cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderMilestone`, addFormElement, (rawResponseJSON) => {
                         const responseJSON = rawResponseJSON;
                         processMilestoneResponse(responseJSON);
                         if (responseJSON.success) {
@@ -1221,8 +479,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 },
                 onshown(modalElement, closeModalFunction) {
                     addCloseModalFunction = closeModalFunction;
-                    los.initializeDatePickers(modalElement);
-                    // los.initializeTimePickers(modalElement);
                     bulmaJS.toggleHtmlClipped();
                     modalElement.querySelector('#milestoneAdd--workOrderMilestoneTypeId').focus();
                     addFormElement = modalElement.querySelector('form');

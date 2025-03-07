@@ -3,7 +3,7 @@
   <div class="modal-card">
     <header class="modal-card-head">
       <h3 class="modal-card-title">
-        Edit <span class="alias" data-alias="Lot"></span> Status
+        Edit Burial Site Status
       </h3>
       <button
         class="delete is-close-modal-button"
@@ -12,26 +12,26 @@
       ></button>
     </header>
     <section class="modal-card-body">
-      <form id="form--lotStatusEdit">
-        <input id="lotStatusEdit--burialSiteId" name="burialSiteId" type="hidden" value="" />
+      <form id="form--burialSiteStatusEdit">
+        <input id="burialSiteStatusEdit--burialSiteId" name="burialSiteId" type="hidden" value="" />
 
         <div class="field">
-          <label class="label" for="lotStatusEdit--burialSiteName"
-            ><span class="alias" data-alias="Lot"></span> Name</label
-          >
+          <label class="label" for="burialSiteStatusEdit--burialSiteName">
+            Burial Site Name
+          </label>
           <div class="control">
             <input
               class="input is-readonly"
-              id="lotStatusEdit--burialSiteName"
+              id="burialSiteStatusEdit--burialSiteName"
               readonly
             />
           </div>
         </div>
         <div class="field">
-          <label class="label" for="lotStatusEdit--burialSiteStatusId">Status</label>
+          <label class="label" for="burialSiteStatusEdit--burialSiteStatusId">Status</label>
           <div class="control">
             <div class="select is-fullwidth">
-              <select id="lotStatusEdit--burialSiteStatusId" name="burialSiteStatusId">
+              <select id="burialSiteStatusEdit--burialSiteStatusId" name="burialSiteStatusId">
                 <option value="">(No Status)</option>
               </select>
             </div>
@@ -43,7 +43,7 @@
       <button
         class="button is-success"
         type="submit"
-        form="form--lotStatusEdit"
+        form="form--burialSiteStatusEdit"
       >
         <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
         <span>Update Status</span>

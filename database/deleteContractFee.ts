@@ -9,7 +9,7 @@ export default async function deleteContractFee(
 
   const result = database
     .prepare(
-      `update BurialSteContractFees
+      `update ContractFees
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where contractId = ?

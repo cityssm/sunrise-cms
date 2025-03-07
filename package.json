@@ -46,7 +46,6 @@
     "activedirectory2": "^2.2.0",
     "better-sqlite-pool": "^0.3.2",
     "better-sqlite3": "^11.8.1",
-    "bulma-calendar": "^6.1.19",
     "camelcase": "^8.0.0",
     "compression": "^1.8.0",
     "cookie-parser": "^1.4.7",

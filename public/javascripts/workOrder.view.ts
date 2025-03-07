@@ -1,25 +1,25 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { LOS } from '../../types/globalTypes.js'
+import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.sunrise as LOS
+  const sunrise = exports.sunrise as Sunrise
 
-  const reopenWorkOrderButtonElement: HTMLButtonElement | null =
-    document.querySelector('#button--reopenWorkOrder')
+  document
+    .querySelector('#button--reopenWorkOrder')
+    ?.addEventListener('click', (clickEvent) => {
+      const workOrderId =
+        (clickEvent.currentTarget as HTMLButtonElement).dataset.workOrderId ??
+        ''
 
-  if (reopenWorkOrderButtonElement !== null) {
-    const workOrderId = reopenWorkOrderButtonElement.dataset.workOrderId ?? ''
-
-    reopenWorkOrderButtonElement.addEventListener('click', () => {
       function doReopen(): void {
         cityssm.postJSON(
-          `${los.urlPrefix}/workOrders/doReopenWorkOrder`,
+          `${sunrise.urlPrefix}/workOrders/doReopenWorkOrder`,
           {
             workOrderId
           },
@@ -30,7 +30,7 @@ declare const exports: Record<string, unknown>
             }
 
             if (responseJSON.success) {
-              globalThis.location.href = los.getWorkOrderURL(
+              globalThis.location.href = sunrise.getWorkOrderURL(
                 workOrderId,
                 true,
                 true
@@ -57,5 +57,4 @@ declare const exports: Record<string, unknown>
         }
       })
     })
-  }
 })()

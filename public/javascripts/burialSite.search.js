@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.sunrise;
+    const sunrise = exports.sunrise;
     const searchFilterFormElement = document.querySelector('#form--searchFilters');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
@@ -19,11 +19,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // eslint-disable-next-line no-unsanitized/method
             resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${los.getBurialSiteURL(burialSite.burialSiteId)}">
+            <a class="has-text-weight-bold" href="${sunrise.getBurialSiteURL(burialSite.burialSiteId)}">
               ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
             </a>
           </td><td>
-            <a href="${los.getCemeteryURL(burialSite.cemeteryId)}">
+            <a href="${sunrise.getCemeteryURL(burialSite.cemeteryId)}">
               ${burialSite.cemeteryName
                 ? cityssm.escapeHTML(burialSite.cemeteryName)
                 : '<span class="has-text-grey">(No Name)</span>'}
@@ -49,7 +49,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
       </tr></thead>
       <table>`;
         // eslint-disable-next-line no-unsanitized/method
-        searchResultsContainerElement.insertAdjacentHTML('beforeend', los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector('table')
             ?.append(resultsTbodyElement);
@@ -62,8 +62,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function getBurialSites() {
         // eslint-disable-next-line no-unsanitized/property
-        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading Burial Sites...`);
-        cityssm.postJSON(`${los.urlPrefix}/burialSites/doSearchBurialSites`, searchFilterFormElement, renderBurialSites);
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(`Loading Burial Sites...`);
+        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, searchFilterFormElement, renderBurialSites);
     }
     function resetOffsetAndGetBurialSites() {
         offsetElement.value = '0';

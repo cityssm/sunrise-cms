@@ -5,7 +5,7 @@ export default async function handler(request, response) {
         workOrderId: request.body.workOrderId,
         burialSiteId: request.body.burialSiteId
     }, request.session.user);
-    const workOrderLotsResults = await getBurialSites({
+    const results = await getBurialSites({
         workOrderId: request.body.workOrderId
     }, {
         limit: -1,
@@ -14,6 +14,6 @@ export default async function handler(request, response) {
     });
     response.json({
         success,
-        workOrderBurialSites: workOrderLotsResults.burialSites
+        workOrderBurialSites: results.burialSites
     });
 }

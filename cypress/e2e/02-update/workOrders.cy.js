@@ -11,7 +11,7 @@ describe('Update - Work Orders', () => {
         cy.location('pathname').should('equal', '/workOrders');
         cy.get("a[href$='/workOrders/new']").should('exist');
     });
-    describe('Update a New Work Order', () => {
+    describe('Creates a New Work Order', () => {
         it('Has no detectable accessibility issues', () => {
             cy.visit('/workOrders/new');
             cy.location('pathname').should('equal', '/workOrders/new');

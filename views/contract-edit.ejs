@@ -841,6 +841,7 @@
     exports.provinceDefault = "<%= configFunctions.getConfigProperty('settings.provinceDefault') %>";
 
     exports.contractInterments = <%- JSON.stringify(contract.contractInterments) %>;
+    exports.intermentContainerTypes = <%- JSON.stringify(intermentContainerTypes) %>;
     exports.contractComments = <%- JSON.stringify(contract.contractComments) %>;
     exports.contractFees = <%- JSON.stringify(contract.contractFees) %>;
     exports.contractTransactions = <%- JSON.stringify(contract.contractTransactions) %>;
@@ -850,5 +851,11 @@
 </script>
 
 <script src="<%= urlPrefix %>/javascripts/contract.edit.js"></script>
+<% if (!isCreate) { %>
+  <script src="<%= urlPrefix %>/javascripts/contract.editInterments.js"></script>
+  <script src="<%= urlPrefix %>/javascripts/contract.editFees.js"></script>
+  <script src="<%= urlPrefix %>/javascripts/contract.editWorkOrders.js"></script>
+  <script src="<%= urlPrefix %>/javascripts/contract.editComments.js"></script>
+<% } %>
 
 <%- include('_footerB'); -%>

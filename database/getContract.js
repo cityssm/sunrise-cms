@@ -21,12 +21,15 @@ export default async function getContract(contractId, connectedDatabase) {
         o.purchaserCity, o.purchaserProvince, o.purchaserPostalCode,
         o.purchaserPhoneNumber, o.purchaserEmail, o.purchaserRelationship,
         o.funeralHomeId, o.funeralDirectorName,
+        f.funeralHomeName, f.funeralHomeAddress1, f.funeralHomeAddress2,
+        f.funeralHomeCity, f.funeralHomeProvince, f.funeralHomePostalCode,
         o.funeralDate, userFn_dateIntegerToString(o.funeralDate) as funeralDateString,
         o.funeralTime, userFn_timeIntegerToString(o.funeralTime) as funeralTimeString,
         o.committalTypeId, c.committalType,
         o.recordUpdate_timeMillis
         from Contracts o
         left join ContractTypes t on o.contractTypeId = t.contractTypeId
+        left join FuneralHomes f on o.funeralHomeId = f.funeralHomeId
         left join CommittalTypes c on o.committalTypeId = c.committalTypeId
         left join BurialSites l on o.burialSiteId = l.burialSiteId
         left join Cemeteries m on l.cemeteryId = m.cemeteryId

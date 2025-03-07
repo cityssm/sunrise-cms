@@ -19,7 +19,7 @@ export default async function handler(
     request.session.user as User
   )
 
-  const workOrderLotsResults = await getBurialSites(
+  const results = await getBurialSites(
     {
       workOrderId: request.body.workOrderId
     },
@@ -32,6 +32,6 @@ export default async function handler(
 
   response.json({
     success,
-    workOrderBurialSites: workOrderLotsResults.burialSites
+    workOrderBurialSites: results.burialSites
   })
 }

@@ -105,11 +105,6 @@ if (urlPrefix !== '') {
 app.use(urlPrefix, express.static(path.join('public')))
 
 app.use(
-  `${urlPrefix}/lib/bulma-calendar`,
-  express.static(path.join('node_modules', 'bulma-calendar', 'dist'))
-)
-
-app.use(
   `${urlPrefix}/lib/cityssm-bulma-js/bulma-js.js`,
   express.static(
     path.join('node_modules', '@cityssm', 'bulma-js', 'dist', 'bulma-js.js')

@@ -6,12 +6,12 @@ export default async function addWorkOrderComment(workOrderCommentForm, user) {
     const result = database
         .prepare(`insert into WorkOrderComments (
         workOrderId,
-        workOrderCommentDate, workOrderCommentTime,
-        workOrderComment,
+        commentDate, commentTime,
+        comment,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(workOrderCommentForm.workOrderId, dateToInteger(rightNow), dateToTimeInteger(rightNow), workOrderCommentForm.workOrderComment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
+        .run(workOrderCommentForm.workOrderId, dateToInteger(rightNow), dateToTimeInteger(rightNow), workOrderCommentForm.comment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     database.release();
     return result.lastInsertRowid;
 }

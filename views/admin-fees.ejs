@@ -45,11 +45,11 @@
 <script>
   exports.feeCategories = <%- JSON.stringify(feeCategories) %>;
   exports.contractTypes = <%- JSON.stringify(contractTypes) %>;
-  exports.lotTypes = <%- JSON.stringify(lotTypes) %>;
+  exports.burialSiteTypes = <%- JSON.stringify(burialSiteTypes) %>;
 
   exports.taxPercentageDefault = <%= configFunctions.getConfigProperty("settings.fees.taxPercentageDefault") %>;
 </script>
 
-<script src="<%= urlPrefix %>/javascripts/adminFees.js"></script>
+<script src="<%= urlPrefix %>/javascripts/fees.admin.js"></script>
 
 <%- include('_footerB'); -%>

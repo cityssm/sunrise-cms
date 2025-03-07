@@ -270,7 +270,7 @@ const createStatements = [
     contractId integer not null,
     intermentNumber integer not null,
     
-    deceasedName varchar(50) not null,
+    deceasedName varchar(200) not null,
     isCremated bit not null default 0,
 
     deceasedAddress1 varchar(50),

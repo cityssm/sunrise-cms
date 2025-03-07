@@ -2,13 +2,13 @@ import type { PoolConnection } from 'better-sqlite-pool'
 
 import { acquireConnection } from './pool.js'
 
-export interface AddWorkOrderContractOccupancyForm {
+export interface AddForm {
   workOrderId: number | string
   contractId: number | string
 }
 
 export default async function addWorkOrderContract(
-  addForm: AddWorkOrderContractOccupancyForm,
+  addForm: AddForm,
   user: User,
   connectedDatabase?: PoolConnection
 ): Promise<boolean> {

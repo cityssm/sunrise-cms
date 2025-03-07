@@ -1,13 +1,5 @@
-<%
-    const funeralDirectorLotOccupantType = "Funeral Director";
-    const funeralDirectorOccupants = contractFunctions.filterOccupantsByLotOccupantType(contract, funeralDirectorLotOccupantType);
+<% const deceased = contract.contractInterments[0]; %>
 
-    const deceasedLotOccupantType = "Deceased";
-    const deceasedOccupants = contractFunctions.filterOccupantsByLotOccupantType(contract, deceasedLotOccupantType);
-
-    const deathDateOccupantTypeField = "Death Date";
-    const deathPlaceOccupantTypeField = "Death Place";
-%>
 <html>
     <head>
       <title><%= headTitle %></title>
@@ -21,21 +13,18 @@
         <h1 class="has-text-centered is-capitalized mt-4 mb-4">Burial Permit</h1>
 
         <p>
-            Under the <span class="is-italic">Vital Statistics Act</span>
-            and the regulations,
-            subject to the limitations thereof,
-            this permit is granted to:<br />
+          Under the <span class="is-italic">Vital Statistics Act</span>
+          and the regulations,
+          subject to the limitations thereof,
+          this permit is granted to:<br />
         </p>
 
         <p class="has-text-centered">
-          <% if (funeralDirectorOccupants.length > 0) { %>
-            <% const funeralDirector = funeralDirectorOccupants[0]; %>
-            <strong><%= funeralDirector.occupantName %> <%= funeralDirector.occupantFamilyName %></strong><br />
-            <%= funeralDirector.occupantAddress1 %><br />
-            <% if (funeralDirector.occupantAddress2) { %><%= funeralDirector.occupantAddress2 %><br /><% } %>
-            <%= funeralDirector.occupantCity %>, <%= funeralDirector.occupantProvince %><br />
-            <%= funeralDirector.occupantPostalCode %>
-          <% } %>
+          <strong><%= contract.funeralHomeName %></strong><br />
+          <%= contract.funeralHomeAddress1 %><br />
+          <% if (contract.funeralHomeAddress2) { %><%= contract.funeralHomeAddress2 %><br /><% } %>
+          <%= contract.funeralHomeCity %>, <%= contract.funeralHomeProvince %><br />
+          <%= contract.funeralHomePostalCode %>
         </p>
 
         <p class="mt-4">
@@ -43,26 +32,25 @@
         </p>
 
         <p class="has-text-centered">
-          <% if (deceasedOccupants.length > 0) { %>
-            <% const deceased = deceasedOccupants[0]; %>
-            <strong><%= deceased.occupantName %> <%= deceased.occupantFamilyName %></strong>
+          <% if (!contract.isPreneed && deceased !== undefined) { %>
+            <strong><%= deceased.deceasedName %></strong>
           <% } %>
         </p>
 
         <p>
-            who died at
-            <span class="field has-text-centered" style="width:300px">
-                &nbsp;
-                <%= contractFunctions.getFieldValueByContractTypeField(contract, deathPlaceOccupantTypeField); %>
-                &nbsp;
-            </span>
-            in Ontario on
-            <span class="field has-text-centered" style="width:150px">
-                &nbsp;
-                <%= contractFunctions.getFieldValueByContractTypeField(contract, deathDateOccupantTypeField); %>
-                &nbsp;
-            </span>
-            .
+          who died at
+          <span class="field has-text-centered" style="width:300px">
+              &nbsp;
+              <%= deceased?.deathPlace ?? '' %>
+              &nbsp;
+          </span>
+          in Ontario on
+          <span class="field has-text-centered" style="width:150px">
+              &nbsp;
+              <%= deceased?.deathDateString %>
+              &nbsp;
+          </span>
+          .
         </p>
 
         <p class="has-text-right mt-6">

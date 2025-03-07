@@ -8,7 +8,7 @@ declare const cityssm: cityssmGlobal
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise as Sunrise
 
   const searchFilterFormElement = document.querySelector(
     '#form--searchFilters'
@@ -119,7 +119,7 @@ declare const exports: Record<string, unknown>
             ${contractTimeHTML}
           </td><td>
             <a class="has-text-weight-bold"
-              href="${los.getContractURL(contract.contractId)}">
+              href="${sunrise.getContractURL(contract.contractId)}">
               ${cityssm.escapeHTML(contract.contractType ?? '')}
             </a><br />
             <span class="is-size-7">#${contract.contractId}</span>
@@ -128,7 +128,7 @@ declare const exports: Record<string, unknown>
               (contract.burialSiteId ?? -1) === -1
                 ? `<span class="has-text-grey">(No Burial Site)</span>`
                 : `<a class="has-tooltip-right" data-tooltip="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
-                    href="${los.getBurialSiteURL(contract.burialSiteId)}">
+                    href="${sunrise.getBurialSiteURL(contract.burialSiteId)}">
                     ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
                     </a>`
             }<br />
@@ -153,7 +153,7 @@ declare const exports: Record<string, unknown>
             ${
               contract.printEJS
                 ? `<a class="button is-small" data-tooltip="Print"
-                    href="${los.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}" target="_blank">
+                    href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}" target="_blank">
                     <i class="fas fa-print" aria-label="Print"></i>
                     </a>`
                 : ''
@@ -181,7 +181,7 @@ declare const exports: Record<string, unknown>
     // eslint-disable-next-line no-unsanitized/method
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
-      los.getSearchResultsPagerHTML(
+      sunrise.getSearchResultsPagerHTML(
         limit,
         responseJSON.offset,
         responseJSON.count
@@ -199,12 +199,12 @@ declare const exports: Record<string, unknown>
 
   function getContracts(): void {
     // eslint-disable-next-line no-unsanitized/property
-    searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
+    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
       `Loading Contracts...`
     )
 
     cityssm.postJSON(
-      `${los.urlPrefix}/contracts/doSearchContracts`,
+      `${sunrise.urlPrefix}/contracts/doSearchContracts`,
       searchFilterFormElement,
       renderContracts
     )

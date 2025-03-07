@@ -7,12 +7,14 @@ import handler_view from '../handlers/contracts-get/view.js'
 import handler_doAddContractComment from '../handlers/contracts-post/doAddContractComment.js'
 import handler_doAddContractFee from '../handlers/contracts-post/doAddContractFee.js'
 import handler_doAddContractFeeCategory from '../handlers/contracts-post/doAddContractFeeCategory.js'
+import handler_doAddContractInterment from '../handlers/contracts-post/doAddContractInterment.js'
 import handler_doAddContractTransaction from '../handlers/contracts-post/doAddContractTransaction.js'
 import handler_doCopyContract from '../handlers/contracts-post/doCopyContract.js'
 import handler_doCreateContract from '../handlers/contracts-post/doCreateContract.js'
 import handler_doDeleteContract from '../handlers/contracts-post/doDeleteContract.js'
 import handler_doDeleteContractComment from '../handlers/contracts-post/doDeleteContractComment.js'
 import handler_doDeleteContractFee from '../handlers/contracts-post/doDeleteContractFee.js'
+import handler_doDeleteContractInterment from '../handlers/contracts-post/doDeleteContractInterment.js'
 import handler_doDeleteContractTransaction from '../handlers/contracts-post/doDeleteContractTransaction.js'
 import handler_doGetContractTypeFields from '../handlers/contracts-post/doGetContractTypeFields.js'
 import handler_doGetDynamicsGPDocument from '../handlers/contracts-post/doGetDynamicsGPDocument.js'
@@ -21,6 +23,7 @@ import handler_doSearchContracts from '../handlers/contracts-post/doSearchContra
 import handler_doUpdateContract from '../handlers/contracts-post/doUpdateContract.js'
 import handler_doUpdateContractComment from '../handlers/contracts-post/doUpdateContractComment.js'
 import handler_doUpdateContractFeeQuantity from '../handlers/contracts-post/doUpdateContractFeeQuantity.js'
+import handler_doUpdateContractInterment from '../handlers/contracts-post/doUpdateContractInterment.js'
 import handler_doUpdateContractTransaction from '../handlers/contracts-post/doUpdateContractTransaction.js'
 import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -31,10 +34,7 @@ export const router = Router()
 
 router.get('/', handler_search)
 
-router.post(
-  '/doSearchContracts',
-  handler_doSearchContracts
-)
+router.post('/doSearchContracts', handler_doSearchContracts)
 
 // Create
 
@@ -46,11 +46,7 @@ router.post(
   handler_doGetContractTypeFields
 )
 
-router.post(
-  '/doCreateContract',
-  updatePostHandler,
-  handler_doCreateContract
-)
+router.post('/doCreateContract', updatePostHandler, handler_doCreateContract)
 
 // View
 
@@ -58,28 +54,32 @@ router.get('/:contractId', handler_view)
 
 // Edit
 
-router.get(
-  '/:contractId/edit',
-  updateGetHandler,
-  handler_edit
+router.get('/:contractId/edit', updateGetHandler, handler_edit)
+
+router.post('/doUpdateContract', updatePostHandler, handler_doUpdateContract)
+
+router.post('/doCopyContract', updatePostHandler, handler_doCopyContract)
+
+router.post('/doDeleteContract', updatePostHandler, handler_doDeleteContract)
+
+// Interments
+
+router.post(
+  '/doAddContractInterment',
+  updatePostHandler,
+  handler_doAddContractInterment
 )
 
 router.post(
-  '/doUpdateContract',
+  '/doUpdateContractInterment',
   updatePostHandler,
-  handler_doUpdateContract
+  handler_doUpdateContractInterment
 )
 
 router.post(
-  '/doCopyContract',
+  '/doDeleteContractInterment',
   updatePostHandler,
-  handler_doCopyContract
-)
-
-router.post(
-  '/doDeleteContract',
-  updatePostHandler,
-  handler_doDeleteContract
+  handler_doDeleteContractInterment
 )
 
 // Comments
@@ -104,17 +104,9 @@ router.post(
 
 // Fees
 
-router.post(
-  '/doGetFees',
-  updatePostHandler,
-  handler_doGetFees
-)
+router.post('/doGetFees', updatePostHandler, handler_doGetFees)
 
-router.post(
-  '/doAddContractFee',
-  updatePostHandler,
-  handler_doAddContractFee
-)
+router.post('/doAddContractFee', updatePostHandler, handler_doAddContractFee)
 
 router.post(
   '/doAddContractFeeCategory',

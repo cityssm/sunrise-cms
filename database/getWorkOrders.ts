@@ -7,12 +7,12 @@ import type { PoolConnection } from 'better-sqlite-pool'
 
 import {
   getBurialSiteNameWhereClause,
-  getOccupantNameWhereClause
+  getDeceasedNameWhereClause
 } from '../helpers/functions.sqlFilters.js'
 import type { WorkOrder } from '../types/recordTypes.js'
 
-import getContracts from './getContracts.js'
 import getBurialSites from './getBurialSites.js'
+import getContracts from './getContracts.js'
 import getWorkOrderComments from './getWorkOrderComments.js'
 import getWorkOrderMilestones from './getWorkOrderMilestones.js'
 import { acquireConnection } from './pool.js'
@@ -21,7 +21,7 @@ export interface GetWorkOrdersFilters {
   workOrderTypeId?: number | string
   workOrderOpenStatus?: '' | 'open' | 'closed'
   workOrderOpenDateString?: string
-  occupantName?: string
+  deceasedName?: string
   burialSiteName?: string
   contractId?: number | string
 }
@@ -61,20 +61,20 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
     )
   }
 
-  const occupantNameFilters = getOccupantNameWhereClause(
-    filters.occupantName,
+  const deceasedNameFilters = getDeceasedNameWhereClause(
+    filters.deceasedName,
     'o'
   )
-  if (occupantNameFilters.sqlParameters.length > 0) {
+  if (deceasedNameFilters.sqlParameters.length > 0) {
     sqlWhereClause +=
       ` and w.workOrderId in (
         select workOrderId from WorkOrderContracts o
         where recordDelete_timeMillis is null
         and o.contractId in (
-          select contractId from LotOccupancyOccupants o where recordDelete_timeMillis is null
-          ${occupantNameFilters.sqlWhereClause}
+          select contractId from ContractInterments o where recordDelete_timeMillis is null
+          ${deceasedNameFilters.sqlWhereClause}
         ))`
-    sqlParameters.push(...occupantNameFilters.sqlParameters)
+    sqlParameters.push(...deceasedNameFilters.sqlParameters)
   }
 
   const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, '', 'l')
@@ -202,7 +202,7 @@ export async function getWorkOrders(
           w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
           ifnull(m.workOrderMilestoneCount, 0) as workOrderMilestoneCount,
           ifnull(m.workOrderMilestoneCompletionCount, 0) as workOrderMilestoneCompletionCount,
-          ifnull(l.workOrderLotCount, 0) as workOrderLotCount
+          ifnull(l.workOrderBurialSiteCount, 0) as workOrderBurialSiteCount
           from WorkOrders w
           left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
           left join (
@@ -213,8 +213,8 @@ export async function getWorkOrders(
             where recordDelete_timeMillis is null
             group by workOrderId) m on w.workOrderId = m.workOrderId
           left join (
-            select workOrderId, count(burialSiteId) as workOrderLotCount
-            from WorkOrderLots
+            select workOrderId, count(burialSiteId) as workOrderBurialSiteCount
+            from WorkOrderBurialSites
             where recordDelete_timeMillis is null
             group by workOrderId) l on w.workOrderId = l.workOrderId
           ${sqlWhereClause}

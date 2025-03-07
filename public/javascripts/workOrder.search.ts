@@ -1,21 +1,20 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { LOS } from '../../types/globalTypes.js'
 import type { WorkOrder } from '../../types/recordTypes.js'
+
+import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.sunrise as LOS
+  const sunrise = exports.sunrise as Sunrise
 
   const workOrderPrints = exports.workOrderPrints as string[]
 
   const searchFilterFormElement = document.querySelector(
     '#form--searchFilters'
   ) as HTMLFormElement
-
-  los.initializeDatePickers(searchFilterFormElement)
 
   const searchResultsContainerElement = document.querySelector(
     '#container--searchResults'
@@ -30,6 +29,7 @@ declare const exports: Record<string, unknown>
     '#searchFilter--offset'
   ) as HTMLInputElement
 
+  // eslint-disable-next-line complexity
   function renderWorkOrders(rawResponseJSON: unknown): void {
     const responseJSON = rawResponseJSON as {
       count: number
@@ -50,40 +50,31 @@ declare const exports: Record<string, unknown>
     for (const workOrder of responseJSON.workOrders) {
       let relatedHTML = ''
 
-      for (const lot of workOrder.workOrderLots ?? []) {
+      for (const burialSite of workOrder.workOrderBurialSites ?? []) {
         relatedHTML += `<li class="has-tooltip-left"
-          data-tooltip="${cityssm.escapeHTML(lot.cemeteryName ?? '')}">
+          data-tooltip="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
             <i class="fas fa-fw fa-vector-square"
-              aria-label="${los.escapedAliases.Lot}"></i>
+              aria-label="Burial Site"></i>
           </span>
           ${cityssm.escapeHTML(
-            (lot.burialSiteName ?? '') === ''
-              ? `(No ${los.escapedAliases.Lot} Name)`
-              : lot.burialSiteName ?? ''
+            (burialSite.burialSiteName ?? '') === ''
+              ? `(No Burial Site Name)`
+              : burialSite.burialSiteName ?? ''
           )}
           </li>`
       }
 
-      for (const occupancy of workOrder.workOrderContracts ?? []) {
-        for (const occupant of occupancy.contractOccupants ?? []) {
+      for (const contract of workOrder.workOrderContracts ?? []) {
+        for (const interment of contract.contractInterments ?? []) {
           relatedHTML += `<li class="has-tooltip-left"
             data-tooltip="${cityssm.escapeHTML(
-              occupant.lotOccupantType ?? ''
+              contract.isPreneed ?? false ? 'Recipient' : 'Deceased'
             )}">
             <span class="fa-li">
-              <i class="fas fa-fw fa-${cityssm.escapeHTML(
-                (occupant.fontAwesomeIconClass ?? '') === ''
-                  ? 'user'
-                  : occupant.fontAwesomeIconClass ?? ''
-              )}" aria-label="${los.escapedAliases.occupant}"></i>
+              <i class="fas fa-fw fa-user"></i>
             </span>
-            ${cityssm.escapeHTML(
-              (occupant.occupantName ?? '') === '' &&
-                (occupant.occupantFamilyName ?? '') === ''
-                ? '(No Name)'
-                : `${occupant.occupantName} ${occupant.occupantFamilyName}`
-            )}
+            ${cityssm.escapeHTML(interment.deceasedName ?? '')}
             </li>`
         }
       }
@@ -93,7 +84,7 @@ declare const exports: Record<string, unknown>
         'beforeend',
         `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${los.getWorkOrderURL(workOrder.workOrderId)}">
+            <a class="has-text-weight-bold" href="${sunrise.getWorkOrderURL(workOrder.workOrderId)}">
               ${
                 workOrder.workOrderNumber?.trim() === ''
                   ? '(No Number)'
@@ -114,20 +105,20 @@ declare const exports: Record<string, unknown>
           </td><td>
             <ul class="fa-ul ml-5 is-size-7">
               <li class="has-tooltip-left"
-                data-tooltip="${los.escapedAliases.WorkOrderOpenDate}">
+                data-tooltip="${sunrise.escapedAliases.WorkOrderOpenDate}">
                 <span class="fa-li">
-                  <i class="fas fa-fw fa-play" aria-label="${los.escapedAliases.WorkOrderOpenDate}"></i>
+                  <i class="fas fa-fw fa-play" aria-label="${sunrise.escapedAliases.WorkOrderOpenDate}"></i>
                 </span>
                 ${workOrder.workOrderOpenDateString}
               </li>
-              <li class="has-tooltip-left" data-tooltip="${los.escapedAliases.WorkOrderCloseDate}">
+              <li class="has-tooltip-left" data-tooltip="${sunrise.escapedAliases.WorkOrderCloseDate}">
                 <span class="fa-li">
-                  <i class="fas fa-fw fa-stop" aria-label="${los.escapedAliases.WorkOrderCloseDate}"></i>
+                  <i class="fas fa-fw fa-stop" aria-label="${sunrise.escapedAliases.WorkOrderCloseDate}"></i>
                 </span>
                 ${
                   workOrder.workOrderCloseDate
                     ? workOrder.workOrderCloseDateString
-                    : `<span class="has-text-grey">(No ${los.escapedAliases.WorkOrderCloseDate})</span>`
+                    : `<span class="has-text-grey">(No ${sunrise.escapedAliases.WorkOrderCloseDate})</span>`
                 }
               </li>
             </ul>
@@ -146,7 +137,7 @@ declare const exports: Record<string, unknown>
             workOrderPrints.length > 0
               ? `<td>
                   <a class="button is-small" data-tooltip="Print"
-                    href="${los.urlPrefix}/print/${workOrderPrints[0]}/?workOrderId=${workOrder.workOrderId.toString()}"
+                    href="${sunrise.urlPrefix}/print/${workOrderPrints[0]}/?workOrderId=${workOrder.workOrderId.toString()}"
                     target="_blank">
                     <i class="fas fa-print" aria-label="Print"></i>
                   </a>
@@ -171,7 +162,7 @@ declare const exports: Record<string, unknown>
     // eslint-disable-next-line no-unsanitized/method
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
-      los.getSearchResultsPagerHTML(
+      sunrise.getSearchResultsPagerHTML(
         limit,
         responseJSON.offset,
         responseJSON.count
@@ -193,12 +184,12 @@ declare const exports: Record<string, unknown>
 
   function getWorkOrders(): void {
     // eslint-disable-next-line no-unsanitized/property
-    searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(
+    searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
       'Loading Work Orders...'
     )
 
     cityssm.postJSON(
-      `${los.urlPrefix}/workOrders/doSearchWorkOrders`,
+      `${sunrise.urlPrefix}/workOrders/doSearchWorkOrders`,
       searchFilterFormElement,
       renderWorkOrders
     )

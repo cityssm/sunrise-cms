@@ -8,7 +8,7 @@
   <body>
     <%- include('_workOrder-header.ejs'); %>
     
-    <% if (workOrder.workOrderLots.length > 0) { %>
+    <% if (workOrder.workOrderBurialSites.length > 0) { %>
       <h2 class="mb-0">Burial Sites</h2>
 
       <table class="data-table">
@@ -21,43 +21,41 @@
           </tr>
         </thead>
         <tbody>
-          <% for (const lot of workOrder.workOrderLots) { %>
+          <% for (const burialSite of workOrder.workOrderBurialSites) { %>
             <tr>
-              <td><%= lot.burialSiteName %></td>
-              <td><%= lot.cemeteryName %></td>
-              <td><%= lot.lotType %></td>
-              <td><%= lot.lotStatus %></td>
+              <td><%= burialSite.burialSiteName %></td>
+              <td><%= burialSite.cemeteryName %></td>
+              <td><%= burialSite.burialSiteType %></td>
+              <td><%= burialSite.burialSiteStatus %></td>
             </tr>
           <% } %>
         </tbody>
       </table>
     <% } %>
 
-    <% if (workOrder.workOrderLotOccupancies.length > 0) { %>
-      <h2 class="mb-0"><%= configFunctions.getConfigProperty("aliases.occupancies") %></h2>
+    <% if (workOrder.workOrderContracts.length > 0) { %>
+      <h2 class="mb-0">Contracts</h2>
 
       <table class="data-table">
         <thead>
           <tr>
             <th>Contract Type</th>
             <th>Burial Site</th>
-            <th><%= configFunctions.getConfigProperty("aliases.occupancyStartDate") %></th>
+            <th>Contract Date</th>
             <th>End Date</th>
-            <th><%= configFunctions.getConfigProperty("aliases.occupants") %></th>
+            <th>Interments</th>
           </tr>
         </thead>
         <tbody>
-          <% for (const occupancy of workOrder.workOrderLotOccupancies) { %>
+          <% for (const contract of workOrder.workOrderContracts) { %>
             <tr>
-              <td><%= occupancy.contractType %></td>
-              <td><%= occupancy.burialSiteName %></td>
-              <td><%= occupancy.occupancyStartDateString %></td>
-              <td><%= occupancy.occupancyStartEndString %></td>
+              <td><%= contract.contractType %></td>
+              <td><%= contract.burialSiteName %></td>
+              <td><%= contract.contractStartDateString %></td>
+              <td><%= contract.contractEndDateString %></td>
               <td>
-                <% for (const occupant of occupancy.contractOccupants) { %>
-                  <%= occupant.lotOccupantType %>:
-                  <%= occupant.occupantName %>
-                  <%= occupant.occupantFamilyName %>
+                <% for (const interment of contract.contractInterments) { %>
+                  <%= interment.deceasedName %>
                   <br />
                 <% } %>
               </td>

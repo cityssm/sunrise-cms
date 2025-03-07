@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.sunrise;
+    const sunrise = exports.sunrise;
     const searchFilterFormElement = document.querySelector('#form--searchFilters');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
@@ -65,7 +65,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${contractTimeHTML}
           </td><td>
             <a class="has-text-weight-bold"
-              href="${los.getContractURL(contract.contractId)}">
+              href="${sunrise.getContractURL(contract.contractId)}">
               ${cityssm.escapeHTML(contract.contractType ?? '')}
             </a><br />
             <span class="is-size-7">#${contract.contractId}</span>
@@ -73,7 +73,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${(contract.burialSiteId ?? -1) === -1
                 ? `<span class="has-text-grey">(No Burial Site)</span>`
                 : `<a class="has-tooltip-right" data-tooltip="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
-                    href="${los.getBurialSiteURL(contract.burialSiteId)}">
+                    href="${sunrise.getBurialSiteURL(contract.burialSiteId)}">
                     ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
                     </a>`}<br />
             <span class="is-size-7">${cityssm.escapeHTML(contract.cemeteryName ?? '')}</span>
@@ -92,7 +92,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </td><td>
             ${contract.printEJS
                 ? `<a class="button is-small" data-tooltip="Print"
-                    href="${los.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}" target="_blank">
+                    href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}" target="_blank">
                     <i class="fas fa-print" aria-label="Print"></i>
                     </a>`
                 : ''}</td></tr>`);
@@ -113,7 +113,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .querySelector('table')
             ?.append(resultsTbodyElement);
         // eslint-disable-next-line no-unsanitized/method
-        searchResultsContainerElement.insertAdjacentHTML('beforeend', los.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector("button[data-page='previous']")
             ?.addEventListener('click', previousAndGetContracts);
@@ -123,8 +123,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function getContracts() {
         // eslint-disable-next-line no-unsanitized/property
-        searchResultsContainerElement.innerHTML = los.getLoadingParagraphHTML(`Loading Contracts...`);
-        cityssm.postJSON(`${los.urlPrefix}/contracts/doSearchContracts`, searchFilterFormElement, renderContracts);
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(`Loading Contracts...`);
+        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doSearchContracts`, searchFilterFormElement, renderContracts);
     }
     function resetOffsetAndGetContracts() {
         offsetElement.value = '0';

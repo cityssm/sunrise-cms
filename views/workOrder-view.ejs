@@ -127,51 +127,48 @@
       <h2 class="panel-heading">Related Burial Sites</h2>
       <div class="panel-block is-block">
           <%
-              const tabToSelect = (workOrder.workOrderLotOccupancies.length > 0 || workOrder.workOrderLots.length === 0 ? "lotOccupancies" : "lots");
+            const tabToSelect = (workOrder.workOrderContracts.length > 0 || workOrder.workOrderBurialSites.length === 0 ? "contracts" : "burialSites");
           %>
           <div class="tabs is-boxed">
             <ul>
-              <li class="<%= (tabToSelect === "lotOccupancies" ? "is-active" : "") %>">
-                <a href="#relatedTab--lotOccupancies">
-                  <span><%= configFunctions.getConfigProperty("aliases.occupancies") %></span>
-                  <span class="ml-2 tag"><%= workOrder.workOrderLotOccupancies.length %></span>
+              <li class="<%= (tabToSelect === "contracts" ? "is-active" : "") %>">
+                <a href="#relatedTab--contracts">
+                  <span>Contracts</span>
+                  <span class="ml-2 tag"><%= workOrder.workOrderContracts.length %></span>
                 </a>
               </li>
-              <li class="<%= (tabToSelect === "lots" ? "is-active" : "") %>">
-                <a href="#relatedTab--lots">
+              <li class="<%= (tabToSelect === "burialSites" ? "is-active" : "") %>">
+                <a href="#relatedTab--burialSites">
                   <span>Burial Sites</span>
-                  <span class="ml-2 tag"><%= workOrder.workOrderLots.length %></span>
+                  <span class="ml-2 tag"><%= workOrder.workOrderBurialSites.length %></span>
                 </a>
               </li>
             </ul>
           </div>
           <div class="tab-container">
-              <div class="<%= (tabToSelect === "lotOccupancies" ? "" : "is-hidden") %>" id="relatedTab--lotOccupancies">
-                  <% if (workOrder.workOrderLotOccupancies.length === 0) { %>
+              <div class="<%= (tabToSelect === "contracts" ? "" : "is-hidden") %>" id="relatedTab--contracts">
+                  <% if (workOrder.workOrderContracts.length === 0) { %>
                       <div class="message is-info">
                         <p class="message-body">
-                          There are no
-                          <%= configFunctions.getConfigProperty("aliases.lot").toLowerCase() %>
-                          <%= configFunctions.getConfigProperty("aliases.occupancy").toLowerCase() %>
-                          records associated with this work order.
+                          There are no contracts associated with this work order.
                         </p>
                       </div>
                   <% } else { %>
                       <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
                       <table class="table is-fullwidth is-striped is-hoverable">
                           <thead>
-                              <tr>
-                                  <th class="has-width-1"></th>
-                                  <th>Contract Type</th>
-                                  <th>Burial Site</th>
-                                  <th><%= configFunctions.getConfigProperty("aliases.occupancyStartDate") %></th>
-                                  <th>End Date</th>
-                                  <th><%= configFunctions.getConfigProperty("aliases.occupants") %></th>
-                              </tr>
+                            <tr>
+                              <th class="has-width-1"></th>
+                              <th>Contract Type</th>
+                              <th>Burial Site</th>
+                              <th>Contract Date</th>
+                              <th>End Date</th>
+                              <th>Interments</th>
+                            </tr>
                           </thead>
                           <tbody>
-                              <% for (const contract of workOrder.workOrderLotOccupancies) { %>
-                                  <% const isActive = !(contract.occupancyEndDate && contract.occupancyEndDate < currentDate); %>
+                              <% for (const contract of workOrder.workOrderContracts) { %>
+                                  <% const isActive = !(contract.contractEndDate && contract.contractEndDate < currentDate); %>
                                   <tr>
                                       <td class="has-text-centered">
                                         <% if (isActive) { %>
@@ -182,7 +179,7 @@
                                       </td>
                                       <td>
                                         <a class="has-text-weight-bold"
-                                          href="<%= urlPrefix %>/lotOccupancies/<%= contract.contractId %>">
+                                          href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
                                           <%= contract.contractType %>
                                         </a><br />
                                         <span class="is-size-7">
@@ -196,28 +193,24 @@
                                               <span class="has-text-grey">(No Burial Site)</span>
                                           <% } %>
                                       </td>
-                                      <td><%= contract.occupancyStartDateString %></td>
+                                      <td><%= contract.contractStartDateString %></td>
                                       <td>
-                                          <% if (contract.occupancyEndDate) { %>
-                                              <%= contract.occupancyEndDateString %>
+                                          <% if (contract.contractEndDate) { %>
+                                              <%= contract.contractEndDateString %>
                                           <% } else { %>
                                               <span class="has-text-grey">(No End Date)</span>
                                           <% } %>
                                       </td>
                                       <td>
-                                        <% if (contract.contractOccupants.length === 0) { %>
-                                          <span class="has-text-grey">(
-                                            No <%= configFunctions.getConfigProperty("aliases.occupants") %>)
+                                        <% if (contract.contractInterments.length === 0) { %>
+                                          <span class="has-text-grey">
+                                            (No Interments)
                                           </span>
                                         <% } else { %>
                                           <ul class="fa-ul ml-5">
-                                            <% for (const occupant of contract.contractOccupants) { %>
-                                              <li class="has-tooltip-right" data-tooltip="<%= occupant.lotOccupantType %>">
-                                                <span class="fa-li">
-                                                  <i class="fas fa-fw fa-<%= occupant.fontAwesomeIconClass || 'user' %>" aria-hidden="true"></i>
-                                                </span>
-                                                <%= occupant.occupantName %>
-                                                <%= occupant.occupantFamilyName %>
+                                            <% for (const interment of contract.contractInterments) { %>
+                                              <li>
+                                                <%= interment.deceasedName %>
                                               </li>
                                             <% } %>
                                           </ul>
@@ -229,71 +222,71 @@
                       </table>
                   <% } %>
               </div>
-              <div class="<%= (tabToSelect === "lots" ? "" : "is-hidden") %>" id="relatedTab--lots">
-                  <% if (workOrder.workOrderLots.length === 0) { %>
-                      <div class="message is-info">
-                          <p class="message-body">
-                              There are no
-                              <%= configFunctions.getConfigProperty("aliases.lots").toLowerCase() %>
-                              records associated with this work order.
-                          </p>
-                      </div>
-                  <% } else { %>
-                      <table class="table is-fullwidth is-striped is-hoverable">
-                          <thead>
-                              <tr>
-                                  <th>Burial Site</th>
-                                  <th>Cemetery</th>
-                                  <th>Burial Site Type</th>
-                                  <th>Status</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <% for (const lot of workOrder.workOrderLots) { %>
-                                  <tr>
-                                      <td>
-                                          <a class="has-text-weight-bold" href="<%= urlPrefix %>/burialSites/<%= lot.burialSiteId %>"><%= lot.burialSiteName %></a>
-                                      </td>
-                                      <td><%= lot.cemeteryName %></td>
-                                      <td><%= lot.lotType %></td>
-                                      <td><%= lot.lotStatus %></td>
-                                  </tr>
-                              <% } %>
-                          </tbody>
-                      </table>
-                  <% } %>
+              <div class="<%= (tabToSelect === "burialSites" ? "" : "is-hidden") %>" id="relatedTab--burialSites">
+                <% if (workOrder.workOrderBurialSites.length === 0) { %>
+                  <div class="message is-info">
+                    <p class="message-body">
+                      There are no burial sites associated with this work order.
+                    </p>
+                  </div>
+                <% } else { %>
+                  <table class="table is-fullwidth is-striped is-hoverable">
+                    <thead>
+                      <tr>
+                        <th>Burial Site</th>
+                        <th>Cemetery</th>
+                        <th>Burial Site Type</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for (const burialSite of workOrder.workOrderBurialSites) { %>
+                        <tr>
+                          <td>
+                            <a class="has-text-weight-bold" href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>">
+                              <%= burialSite.burialSiteName %>
+                            </a>
+                          </td>
+                          <td><%= burialSite.cemeteryName %></td>
+                          <td><%= burialSite.burialSiteType %></td>
+                          <td><%= burialSite.burialSiteStatus %></td>
+                        </tr>
+                      <% } %>
+                    </tbody>
+                  </table>
+                <% } %>
               </div>
           </div>
       </div>
     </div>
 
     <% if (workOrder.workOrderComments.length > 0) { %>
-        <div class="panel">
-            <h2 class="panel-heading">Work Order Comments</h2>
-            <div class="panel-block is-block">
-                <table class="table is-fullwidth is-striped is-hoverable">
-                    <thead>
-                        <tr>
-                            <th>Commentor</th>
-                            <th>Comment Date</th>
-                            <th>Comment</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for (const workOrderComment of workOrder.workOrderComments) { %>
-                            <tr>
-                                <td><%= workOrderComment.recordCreate_userName %></td>
-                                <td>
-                                    <%= workOrderComment.workOrderCommentDateString %>
-                                    <%= (workOrderComment.workOrderCommentTime === 0 ? "" : workOrderComment.workOrderCommentTimePeriodString) %>
-                                </td>
-                                <td><%= workOrderComment.workOrderComment %></td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                </table>
-            </div>
+      <div class="panel">
+        <h2 class="panel-heading">Work Order Comments</h2>
+        <div class="panel-block is-block">
+          <table class="table is-fullwidth is-striped is-hoverable">
+            <thead>
+              <tr>
+                <th>Commentor</th>
+                <th>Comment Date</th>
+                <th>Comment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (const workOrderComment of workOrder.workOrderComments) { %>
+                <tr>
+                  <td><%= workOrderComment.recordCreate_userName %></td>
+                  <td>
+                    <%= workOrderComment.commentDateString %>
+                    <%= (workOrderComment.commentTime === 0 ? "" : workOrderComment.commentTimePeriodString) %>
+                  </td>
+                  <td><%= workOrderComment.comment %></td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
         </div>
+      </div>
     <% } %>
   </div>
   <% if (workOrder.workOrderMilestones.length > 0) { %>
@@ -335,19 +328,19 @@
           <div class="panel-block is-block">
             <div class="columns is-mobile">
               <div class="column is-narrow">
-                  <% if (milestone.workOrderMilestoneCompletionDate) { %>
-                      <span class="icon is-small" data-tooltip="Completed <%= milestone.workOrderMilestoneCompletionDateString %>">
-                          <i class="fas fa-check" aria-label="Completed <%= milestone.workOrderMilestoneCompletionDateString %>"></i>
-                      </span>
-                  <% } else { %>
-                      <span class="icon is-small">
-                          <i class="far fa-square has-text-grey" aria-label="Incomplete"></i>
-                      </span>
-                  <% } %>
+                <% if (milestone.workOrderMilestoneCompletionDate) { %>
+                  <span class="icon is-small" data-tooltip="Completed <%= milestone.workOrderMilestoneCompletionDateString %>">
+                    <i class="fas fa-check" aria-label="Completed <%= milestone.workOrderMilestoneCompletionDateString %>"></i>
+                  </span>
+                <% } else { %>
+                  <span class="icon is-small">
+                    <i class="far fa-square has-text-grey" aria-label="Incomplete"></i>
+                  </span>
+                <% } %>
               </div>
               <div class="column">
                 <% if (milestone.workOrderMilestoneTypeId) { %>
-                    <strong><%= milestone.workOrderMilestoneType %></strong><br />
+                  <strong><%= milestone.workOrderMilestoneType %></strong><br />
                 <% } %>
                 <% if (milestone.workOrderMilestoneDate === 0) { %>
                   <span class="has-text-grey">(No Set Date)</span>
@@ -370,6 +363,6 @@
 
 <%- include('_footerA'); -%>
 
-<script src="<%= urlPrefix %>/javascripts/workOrderView.js"></script>
+<script src="<%= urlPrefix %>/javascripts/workOrder.view.js"></script>
 
 <%- include('_footerB'); -%>

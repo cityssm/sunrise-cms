@@ -10,8 +10,8 @@ import { getConfigProperty } from '../helpers/config.helpers.js'
 import { getContractTypeById } from '../helpers/functions.cache.js'
 import {
   getBurialSiteNameWhereClause,
-  getOccupancyTimeWhereClause,
-  getOccupantNameWhereClause
+  getContractTimeWhereClause,
+  getDeceasedNameWhereClause,
 } from '../helpers/functions.sqlFilters.js'
 import type { Contract } from '../types/recordTypes.js'
 
@@ -22,10 +22,10 @@ import { acquireConnection } from './pool.js'
 
 export interface GetContractsFilters {
   burialSiteId?: number | string
-  occupancyTime?: '' | 'past' | 'current' | 'future'
+  contractTime?: '' | 'past' | 'current' | 'future'
   contractStartDateString?: DateString
-  occupancyEffectiveDateString?: string
-  occupantName?: string
+  contractEffectiveDateString?: string
+  deceasedName?: string
   contractTypeId?: number | string
   cemeteryId?: number | string
   burialSiteNameSearchType?: '' | 'startsWith' | 'endsWith'
@@ -64,16 +64,16 @@ function buildWhereClause(filters: GetContractsFilters): {
   sqlWhereClause += burialSiteNameFilters.sqlWhereClause
   sqlParameters.push(...burialSiteNameFilters.sqlParameters)
 
-  const occupantNameFilters = getOccupantNameWhereClause(
-    filters.occupantName,
+  const deceasedNameFilters = getDeceasedNameWhereClause(
+    filters.deceasedName,
     'o'
   )
-  if (occupantNameFilters.sqlParameters.length > 0) {
+  if (deceasedNameFilters.sqlParameters.length > 0) {
     sqlWhereClause += ` and o.contractId in (
-        select contractId from LotOccupancyOccupants o
+        select contractId from ContractInterments o
         where recordDelete_timeMillis is null
-        ${occupantNameFilters.sqlWhereClause})`
-    sqlParameters.push(...occupantNameFilters.sqlParameters)
+        ${deceasedNameFilters.sqlWhereClause})`
+    sqlParameters.push(...deceasedNameFilters.sqlParameters)
   }
 
   if ((filters.contractTypeId ?? '') !== '') {
@@ -81,12 +81,12 @@ function buildWhereClause(filters: GetContractsFilters): {
     sqlParameters.push(filters.contractTypeId)
   }
 
-  const occupancyTimeFilters = getOccupancyTimeWhereClause(
-    filters.occupancyTime ?? '',
+  const contractTimeFilters = getContractTimeWhereClause(
+    filters.contractTime ?? '',
     'o'
   )
-  sqlWhereClause += occupancyTimeFilters.sqlWhereClause
-  sqlParameters.push(...occupancyTimeFilters.sqlParameters)
+  sqlWhereClause += contractTimeFilters.sqlWhereClause
+  sqlParameters.push(...contractTimeFilters.sqlParameters)
 
   if ((filters.contractStartDateString ?? '') !== '') {
     sqlWhereClause += ' and o.contractStartDate = ?'
@@ -95,14 +95,14 @@ function buildWhereClause(filters: GetContractsFilters): {
     )
   }
 
-  if ((filters.occupancyEffectiveDateString ?? '') !== '') {
+  if ((filters.contractEffectiveDateString ?? '') !== '') {
     sqlWhereClause += ` and (
         o.contractEndDate is null
         or (o.contractStartDate <= ? and o.contractEndDate >= ?)
       )`
     sqlParameters.push(
-      dateStringToInteger(filters.occupancyEffectiveDateString as DateString),
-      dateStringToInteger(filters.occupancyEffectiveDateString as DateString)
+      dateStringToInteger(filters.contractEffectiveDateString as DateString),
+      dateStringToInteger(filters.contractEffectiveDateString as DateString)
     )
   }
 

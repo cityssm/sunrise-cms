@@ -8,12 +8,14 @@ if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
 function filterCashReceipt(cashReceipt) {
     const accountCodes = getConfigProperty('settings.dynamicsGP.accountCodes');
     if (accountCodes.length > 0) {
-        for (const detail of cashReceipt.details) {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        for (const detail of cashReceipt?.details ?? []) {
             if (accountCodes.includes(detail.accountCode)) {
                 return cashReceipt;
             }
         }
-        for (const distribution of cashReceipt.distributions) {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        for (const distribution of cashReceipt?.distributions ?? []) {
             if (accountCodes.includes(distribution.accountCode)) {
                 return cashReceipt;
             }

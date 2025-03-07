@@ -25,16 +25,16 @@ export default async function getWorkOrderComments(
   const workOrderComments = database
     .prepare(
       `select workOrderCommentId,
-        workOrderCommentDate, userFn_dateIntegerToString(workOrderCommentDate) as workOrderCommentDateString,
-        workOrderCommentTime,
-        userFn_timeIntegerToString(workOrderCommentTime) as workOrderCommentTimeString,
-        userFn_timeIntegerToPeriodString(workOrderCommentTime) as workOrderCommentTimePeriodString,
-        workOrderComment,
+        commentDate, userFn_dateIntegerToString(commentDate) as commentDateString,
+        commentTime,
+        userFn_timeIntegerToString(commentTime) as commentTimeString,
+        userFn_timeIntegerToPeriodString(commentTime) as commentTimePeriodString,
+        comment,
         recordCreate_userName, recordUpdate_userName
         from WorkOrderComments
         where recordDelete_timeMillis is null
         and workOrderId = ?
-        order by workOrderCommentDate desc, workOrderCommentTime desc, workOrderCommentId desc`
+        order by commentDate desc, commentTime desc, workOrderCommentId desc`
     )
     .all(workOrderId) as WorkOrderComment[]
 

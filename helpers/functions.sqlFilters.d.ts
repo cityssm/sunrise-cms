@@ -4,7 +4,7 @@ interface WhereClauseReturn {
     sqlParameters: unknown[];
 }
 export declare function getBurialSiteNameWhereClause(burialSiteName?: string, burialSiteNameSearchType?: BurialSiteNameSearchType, burialSitesTableAlias?: string): WhereClauseReturn;
-type OccupancyTime = '' | 'current' | 'past' | 'future';
-export declare function getOccupancyTimeWhereClause(occupancyTime: OccupancyTime | undefined, lotOccupanciesTableAlias?: string): WhereClauseReturn;
-export declare function getOccupantNameWhereClause(occupantName?: string, tableAlias?: string): WhereClauseReturn;
+type ContractTime = '' | 'current' | 'past' | 'future';
+export declare function getContractTimeWhereClause(contractTime: ContractTime | undefined, contractsTableAlias?: string): WhereClauseReturn;
+export declare function getDeceasedNameWhereClause(deceasedName?: string, tableAlias?: string): WhereClauseReturn;
 export {};

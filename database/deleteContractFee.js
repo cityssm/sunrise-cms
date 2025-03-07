@@ -2,7 +2,7 @@ import { acquireConnection } from './pool.js';
 export default async function deleteContractFee(contractId, feeId, user) {
     const database = await acquireConnection();
     const result = database
-        .prepare(`update BurialSteContractFees
+        .prepare(`update ContractFees
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where contractId = ?

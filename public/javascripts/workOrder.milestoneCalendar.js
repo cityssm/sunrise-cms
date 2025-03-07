@@ -3,7 +3,7 @@
 /* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const los = exports.sunrise;
+    const sunrise = exports.sunrise;
     const workOrderSearchFiltersFormElement = document.querySelector('#form--searchFilters');
     const workOrderMilestoneDateFilterElement = workOrderSearchFiltersFormElement.querySelector('#searchFilter--workOrderMilestoneDateFilter');
     const workOrderMilestoneDateStringElement = workOrderSearchFiltersFormElement.querySelector('#searchFilter--workOrderMilestoneDateString');
@@ -46,7 +46,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           data-tooltip="${cityssm.escapeHTML(lot.cemeteryName ?? '')}">
           <span class="fa-li">
           <i class="fas fa-vector-square"
-            aria-label="${los.escapedAliases.Lot}"></i>
+            aria-label="${sunrise.escapedAliases.Lot}"></i>
           </span>
           ${cityssm.escapeHTML(lot.burialSiteName ?? '')}
           </li>`;
@@ -57,7 +57,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             data-tooltip="${cityssm.escapeHTML(occupant.lotOccupantType ?? '')}">
             <span class="fa-li">
             <i class="fas fa-user"
-              aria-label="${los.escapedAliases.Occupancy}"></i>
+              aria-label="${sunrise.escapedAliases.Occupancy}"></i>
             </span>
             ${cityssm.escapeHTML(occupant.occupantName ?? '')}
             ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
@@ -83,8 +83,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}
           </span>
         </div><div class="column">
-          <i class="fas fa-circle" style="color:${los.getRandomColor(milestone.workOrderNumber ?? '')}" aria-hidden="true"></i>
-          <a class="has-text-weight-bold" href="${los.getWorkOrderURL(milestone.workOrderId)}">
+          <i class="fas fa-circle" style="color:${sunrise.getRandomColor(milestone.workOrderNumber ?? '')}" aria-hidden="true"></i>
+          <a class="has-text-weight-bold" href="${sunrise.getWorkOrderURL(milestone.workOrderId)}">
             ${cityssm.escapeHTML(milestone.workOrderNumber ?? '')}
           </a><br />
           <span class="is-size-7">${cityssm.escapeHTML(milestone.workOrderDescription ?? '')}</span>
@@ -101,8 +101,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             event.preventDefault();
         }
         // eslint-disable-next-line no-unsanitized/property
-        milestoneCalendarContainerElement.innerHTML = los.getLoadingParagraphHTML('Loading Milestones...');
-        cityssm.postJSON(`${los.urlPrefix}/workOrders/doGetWorkOrderMilestones`, workOrderSearchFiltersFormElement, (responseJSON) => {
+        milestoneCalendarContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Milestones...');
+        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`, workOrderSearchFiltersFormElement, (responseJSON) => {
             renderMilestones(responseJSON.workOrderMilestones);
         });
     }
@@ -111,7 +111,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         workOrderMilestoneDateStringElement.closest('fieldset').disabled = workOrderMilestoneDateFilterElement.value !== 'date';
         getMilestones();
     });
-    los.initializeDatePickers(workOrderSearchFiltersFormElement);
     workOrderMilestoneDateStringElement.addEventListener('change', getMilestones);
     workOrderSearchFiltersFormElement.addEventListener('submit', getMilestones);
     getMilestones();

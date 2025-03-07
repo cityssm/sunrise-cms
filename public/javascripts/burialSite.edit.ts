@@ -1,3 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable max-lines */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
@@ -13,7 +16,7 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: Record<string, unknown>
 ;(() => {
-  const los = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise as Sunrise
 
   const burialSiteId = (
     document.querySelector('#burialSite--burialSiteId') as HTMLInputElement
@@ -25,14 +28,14 @@ declare const exports: Record<string, unknown>
   let refreshAfterSave = isCreate
 
   function setUnsavedChanges(): void {
-    los.setUnsavedChanges()
+    sunrise.setUnsavedChanges()
     document
       .querySelector("button[type='submit'][form='form--burialSite']")
       ?.classList.remove('is-light')
   }
 
   function clearUnsavedChanges(): void {
-    los.clearUnsavedChanges()
+    sunrise.clearUnsavedChanges()
     document
       .querySelector("button[type='submit'][form='form--burialSite']")
       ?.classList.add('is-light')
@@ -46,7 +49,7 @@ declare const exports: Record<string, unknown>
     formEvent.preventDefault()
 
     cityssm.postJSON(
-      `${los.urlPrefix}/burialSites/${isCreate ? 'doCreateBurialSite' : 'doUpdateBurialSite'}`,
+      `${sunrise.urlPrefix}/burialSites/${isCreate ? 'doCreateBurialSite' : 'doUpdateBurialSite'}`,
       formElement,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
@@ -59,7 +62,7 @@ declare const exports: Record<string, unknown>
           clearUnsavedChanges()
 
           if (isCreate || refreshAfterSave) {
-            globalThis.location.href = los.getBurialSiteURL(
+            globalThis.location.href = sunrise.getBurialSiteURL(
               responseJSON.burialSiteId,
               true,
               true
@@ -89,7 +92,7 @@ declare const exports: Record<string, unknown>
     formInputElement.addEventListener('change', setUnsavedChanges)
   }
 
-  los.initializeUnlockFieldButtons(formElement)
+  sunrise.initializeUnlockFieldButtons(formElement)
 
   document
     .querySelector('#button--deleteBurialSite')
@@ -98,7 +101,7 @@ declare const exports: Record<string, unknown>
 
       function doDelete(): void {
         cityssm.postJSON(
-          `${los.urlPrefix}/burialSites/doDeleteBurialSite`,
+          `${sunrise.urlPrefix}/burialSites/doDeleteBurialSite`,
           {
             burialSiteId
           },
@@ -110,7 +113,7 @@ declare const exports: Record<string, unknown>
 
             if (responseJSON.success) {
               clearUnsavedChanges()
-              globalThis.location.href = los.getBurialSiteURL()
+              globalThis.location.href = sunrise.getBurialSiteURL()
             } else {
               bulmaJS.alert({
                 title: `Error Deleting Burial Site`,
@@ -154,7 +157,7 @@ declare const exports: Record<string, unknown>
       }
 
       cityssm.postJSON(
-        `${los.urlPrefix}/burialSites/doGetBurialSiteTypeFields`,
+        `${sunrise.urlPrefix}/burialSites/doGetBurialSiteTypeFields`,
         {
           burialSiteTypeId: burialSiteTypeIdElement.value
         },
@@ -245,6 +248,7 @@ declare const exports: Record<string, unknown>
 
           burialSiteFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
+            // eslint-disable-next-line no-secrets/no-secrets
             `<input name="burialSiteTypeFieldIds" type="hidden"
               value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />`
           )
@@ -302,7 +306,7 @@ declare const exports: Record<string, unknown>
       submitEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/burialSites/doUpdateBurialSiteComment`,
+        `${sunrise.urlPrefix}/burialSites/doUpdateBurialSiteComment`,
         editFormElement,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
@@ -328,7 +332,7 @@ declare const exports: Record<string, unknown>
 
     cityssm.openHtmlModal('burialSite-editComment', {
       onshow(modalElement) {
-        los.populateAliases(modalElement)
+        sunrise.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
             '#burialSiteCommentEdit--burialSiteId'
@@ -366,9 +370,6 @@ declare const exports: Record<string, unknown>
       },
       onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
-
-        los.initializeDatePickers(modalElement)
-        // los.initializeTimePickers(modalElement);
         ;(
           modalElement.querySelector(
             '#burialSiteCommentEdit--comment'
@@ -395,7 +396,7 @@ declare const exports: Record<string, unknown>
 
     function doDelete(): void {
       cityssm.postJSON(
-        `${los.urlPrefix}/burialSites/doDeleteBurialSiteComment`,
+        `${sunrise.urlPrefix}/burialSites/doDeleteBurialSiteComment`,
         {
           burialSiteId,
           burialSiteCommentId
@@ -505,7 +506,7 @@ declare const exports: Record<string, unknown>
       formEvent.preventDefault()
 
       cityssm.postJSON(
-        `${los.urlPrefix}/burialSites/doAddBurialSiteComment`,
+        `${sunrise.urlPrefix}/burialSites/doAddBurialSiteComment`,
         formEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
@@ -524,7 +525,7 @@ declare const exports: Record<string, unknown>
 
     cityssm.openHtmlModal('burialSite-addComment', {
       onshow(modalElement) {
-        los.populateAliases(modalElement)
+        sunrise.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
             '#burialSiteCommentAdd--burialSiteId'

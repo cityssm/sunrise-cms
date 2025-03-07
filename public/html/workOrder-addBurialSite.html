@@ -3,7 +3,7 @@
   <div class="modal-card has-width-900">
     <header class="modal-card-head">
       <h3 class="modal-card-title">
-        Add Related <span class="alias" data-alias="Lot"></span> to Work Order
+        Add Related Burial Site to Work Order
       </h3>
       <button
         class="delete is-close-modal-button"
@@ -13,11 +13,11 @@
     </header>
     <section class="modal-card-body">
       <div class="box">
-        <form id="form--lotSearch">
+        <form id="form--burialSiteSearch">
           <input name="limit" type="hidden" value="100" />
           <input name="offset" type="hidden" value="0" />
           <input
-            id="lotSearch--notWorkOrderId"
+            id="burialSiteSearch--notWorkOrderId"
             name="notWorkOrderId"
             type="hidden"
             value=""
@@ -26,14 +26,13 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label" for="lotSearch--burialSiteName">
-                  <span class="alias" data-alias="Lot"></span>
-                  Name
+                <label class="label" for="burialSiteSearch--burialSiteName">
+                  Burial Site Name
                 </label>
                 <div class="control has-icons-left">
                   <input
                     class="input"
-                    id="lotSearch--burialSiteName"
+                    id="burialSiteSearch--burialSiteName"
                     name="burialSiteName"
                     type="text"
                   />
@@ -45,10 +44,10 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="lotSearch--burialSiteStatusId">Status</label>
+                <label class="label" for="burialSiteSearch--burialSiteStatusId">Status</label>
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
-                    <select id="lotSearch--burialSiteStatusId" name="burialSiteStatusId">
+                    <select id="burialSiteSearch--burialSiteStatusId" name="burialSiteStatusId">
                       <option value="">(All Statuses)</option>
                     </select>
                   </div>
@@ -61,7 +60,7 @@
           </div>
         </form>
       </div>
-      <div id="resultsContainer--lotAdd"></div>
+      <div id="resultsContainer--burialSiteAdd"></div>
     </section>
     <footer class="modal-card-foot justify-right">
       <button class="button is-close-modal-button" type="button">Close</button>

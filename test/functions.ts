@@ -242,14 +242,14 @@ describe('functions.sqlFilters', () => {
   describe('OccupancyTime filter', () => {
     it('creates three different filters', () => {
       const currentFilter =
-        sqlFilterFunctions.getOccupancyTimeWhereClause('current')
+        sqlFilterFunctions.getContractTimeWhereClause('current')
       assert.notStrictEqual(currentFilter.sqlWhereClause, '')
 
-      const pastFilter = sqlFilterFunctions.getOccupancyTimeWhereClause('past')
+      const pastFilter = sqlFilterFunctions.getContractTimeWhereClause('past')
       assert.notStrictEqual(pastFilter.sqlWhereClause, '')
 
       const futureFilter =
-        sqlFilterFunctions.getOccupancyTimeWhereClause('future')
+        sqlFilterFunctions.getContractTimeWhereClause('future')
       assert.notStrictEqual(futureFilter, '')
 
       assert.notStrictEqual(
@@ -267,13 +267,13 @@ describe('functions.sqlFilters', () => {
     })
 
     it('handles empty filter', () => {
-      const filter = sqlFilterFunctions.getOccupancyTimeWhereClause('')
+      const filter = sqlFilterFunctions.getContractTimeWhereClause('')
       assert.strictEqual(filter.sqlWhereClause, '')
       assert.strictEqual(filter.sqlParameters.length, 0)
     })
 
     it('handles undefined filter', () => {
-      const filter = sqlFilterFunctions.getOccupancyTimeWhereClause(
+      const filter = sqlFilterFunctions.getContractTimeWhereClause(
         undefined,
         'o'
       )
@@ -284,7 +284,7 @@ describe('functions.sqlFilters', () => {
 
   describe('OccupantName filter', () => {
     it('returns filter', () => {
-      const filter = sqlFilterFunctions.getOccupantNameWhereClause(
+      const filter = sqlFilterFunctions.getDeceasedNameWhereClause(
         'TEST1 TEST2',
         'o'
       )
@@ -301,14 +301,14 @@ describe('functions.sqlFilters', () => {
     })
 
     it('handles empty filter', () => {
-      const filter = sqlFilterFunctions.getOccupantNameWhereClause('')
+      const filter = sqlFilterFunctions.getDeceasedNameWhereClause('')
 
       assert.strictEqual(filter.sqlWhereClause, '')
       assert.strictEqual(filter.sqlParameters.length, 0)
     })
 
     it('handles undefined filter', () => {
-      const filter = sqlFilterFunctions.getOccupantNameWhereClause(
+      const filter = sqlFilterFunctions.getDeceasedNameWhereClause(
         undefined,
         'o'
       )
