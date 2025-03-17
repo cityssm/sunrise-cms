@@ -42,5 +42,5 @@ assignees: ''
 <!-- Everything helps! -->
 
 <!--
-  Thanks for helping to make the Lot Occupancy System better!**
+  Thanks for helping to make Sunrise CMS better!**
 -->
