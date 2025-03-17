@@ -5,7 +5,7 @@ export default async function handler(request, response) {
     const burialSiteTypes = await getBurialSiteTypes();
     const burialSiteStatuses = await getBurialSiteStatuses();
     response.render('burialSite-search', {
-        headTitle: `Burial Site Search`,
+        headTitle: "Burial Site Search",
         cemeteries,
         burialSiteTypes,
         burialSiteStatuses,

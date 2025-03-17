@@ -8,7 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     // eslint-disable-next-line complexity
     function renderResults() {
         // eslint-disable-next-line no-unsanitized/property
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(`Loading Cemeteries...`);
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML("Loading Cemeteries...");
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement('tbody');
         const filterStringSplit = searchFilterElement.value

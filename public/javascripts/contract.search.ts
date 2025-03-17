@@ -126,7 +126,7 @@ declare const exports: Record<string, unknown>
           </td><td>
             ${
               (contract.burialSiteId ?? -1) === -1
-                ? `<span class="has-text-grey">(No Burial Site)</span>`
+                ? '<span class="has-text-grey">(No Burial Site)</span>'
                 : `<a class="has-tooltip-right" data-tooltip="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
                     href="${sunrise.getBurialSiteURL(contract.burialSiteId)}">
                     ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
@@ -200,7 +200,7 @@ declare const exports: Record<string, unknown>
   function getContracts(): void {
     // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
-      `Loading Contracts...`
+      "Loading Contracts..."
     )
 
     cityssm.postJSON(

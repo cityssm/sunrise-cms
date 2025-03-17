@@ -395,7 +395,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         rowElement.insertAdjacentHTML('beforeend', `<td>${cityssm.escapeHTML(contract.burialSiteName ?? '')}</td>`);
                     }
                     else {
-                        rowElement.insertAdjacentHTML('beforeend', `<td><span class="has-text-grey">(No Burial Site)</span></td>`);
+                        rowElement.insertAdjacentHTML('beforeend', '<td><span class="has-text-grey">(No Burial Site)</span></td>');
                     }
                     // eslint-disable-next-line no-unsanitized/method
                     rowElement.insertAdjacentHTML('beforeend', `<td>

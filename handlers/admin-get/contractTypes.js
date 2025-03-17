@@ -13,7 +13,7 @@ export default async function handler(_request, response) {
         }
     }
     response.render('admin-contractTypes', {
-        headTitle: `Contract Type Management`,
+        headTitle: "Contract Type Management",
         contractTypes,
         allContractTypeFields,
         contractTypePrintTitles

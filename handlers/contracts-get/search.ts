@@ -15,7 +15,7 @@ export default async function handler(
   const contractTypes = await getContractTypes()
 
   response.render('contract-search', {
-    headTitle: `Contract Search`,
+    headTitle: "Contract Search",
     cemeteries,
     burialSiteTypes,
     contractTypes,

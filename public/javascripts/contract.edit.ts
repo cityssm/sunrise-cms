@@ -70,13 +70,13 @@ declare const exports: Record<string, unknown>
             )
           } else {
             bulmaJS.alert({
-              message: `Contract Updated Successfully`,
+              message: "Contract Updated Successfully",
               contextualColorName: 'success'
             })
           }
         } else {
           bulmaJS.alert({
-            title: `Error Saving Contract`,
+            title: "Error Saving Contract",
             message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
@@ -135,7 +135,7 @@ declare const exports: Record<string, unknown>
         })
       } else {
         bulmaJS.confirm({
-          title: `Copy Contract Record as New`,
+          title: "Copy Contract Record as New",
           message: 'Are you sure you want to copy this record to a new record?',
           contextualColorName: 'info',
           okButton: {
@@ -178,7 +178,7 @@ declare const exports: Record<string, unknown>
       }
 
       bulmaJS.confirm({
-        title: `Delete Contract Record`,
+        title: "Delete Contract Record",
         message: 'Are you sure you want to delete this record?',
         contextualColorName: 'warning',
         okButton: {
@@ -529,7 +529,7 @@ declare const exports: Record<string, unknown>
 
       if (burialSiteId === '') {
         bulmaJS.alert({
-          message: `No burial site selected.`,
+          message: "No burial site selected.",
           contextualColorName: 'info'
         })
       } else {
@@ -546,7 +546,7 @@ declare const exports: Record<string, unknown>
           contextualColorName: 'info'
         })
       } else {
-        burialSiteNameElement.value = `(No Burial Site)`
+        burialSiteNameElement.value = "(No Burial Site)"
         ;(
           document.querySelector('#contract--burialSiteId') as HTMLInputElement
         ).value = ''

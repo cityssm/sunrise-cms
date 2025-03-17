@@ -7,7 +7,7 @@ export default async function handler(_request, response) {
     };
     const cemeterySVGs = await getCemeterySVGs();
     response.render('cemetery-edit', {
-        headTitle: `Create a Cemetery`,
+        headTitle: "Create a Cemetery",
         isCreate: true,
         cemetery,
         cemeterySVGs

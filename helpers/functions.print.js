@@ -8,7 +8,7 @@ import * as contractFunctions from './contracts.helpers.js';
 import * as configFunctions from './config.helpers.js';
 const screenPrintConfigs = {
     contract: {
-        title: `Burial Site Contract Print`,
+        title: "Burial Site Contract Print",
         params: ['contractId']
     }
 };
