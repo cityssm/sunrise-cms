@@ -31,7 +31,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         bulmaJS.confirm({
-            title: `Delete Contract Relationship`,
+            title: 'Delete Contract Relationship',
             message: `Are you sure you want to remove the relationship to this contract record from this work order?
         Note that the contract will remain.`,
             contextualColorName: 'warning',
@@ -75,7 +75,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
-                    title: `Error Adding Contract`,
+                    title: 'Error Adding Contract',
                     message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
@@ -123,8 +123,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // eslint-disable-next-line no-unsanitized/property
             rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
       ${isActive
-                ? `<i class="fas fa-play" title="Current Contract"></i>`
-                : `<i class="fas fa-stop" title="Previous Contract"></i>`}
+                ? '<i class="fas fa-play" title="Current Contract"></i>'
+                : '<i class="fas fa-stop" title="Previous Contract"></i>'}
       </td><td>
         <a class="has-text-weight-bold" href="${sunrise.getContractURL(contract.contractId)}">
           ${cityssm.escapeHTML(contract.contractType ?? '')}
@@ -146,7 +146,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </td>`);
             }
             else {
-                rowElement.insertAdjacentHTML('beforeend', `<td><span class="has-text-grey">(No Burial Site)</span></td>`);
+                rowElement.insertAdjacentHTML('beforeend', '<td><span class="has-text-grey">(No Burial Site)</span></td>');
             }
             let intermentsHTML = '';
             for (const interment of contract.contractInterments ?? []) {
@@ -167,7 +167,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : '<span class="has-text-grey">(No End Date)</span>'}
         </td><td>
           ${contract.contractInterments.length === 0
-                ? `<span class="has-text-grey">(No Interments)</span>`
+                ? '<span class="has-text-grey">(No Interments)</span>'
                 : `<ul class="fa-ul ml-5">${intermentsHTML}</ul>`}
         </td><td>
           <button class="button is-small is-light is-danger button--deleteContract" data-tooltip="Delete Relationship" type="button">
@@ -271,7 +271,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         bulmaJS.confirm({
-            title: `Delete Burial Site Relationship`,
+            title: 'Delete Burial Site Relationship',
             message: `Are you sure you want to remove the relationship to this burial site from this work order?
         Note that the record will remain.`,
             contextualColorName: 'warning',
@@ -473,8 +473,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.burialSites.length === 0) {
                     searchResultsContainerElement.innerHTML = `<div class="message is-info">
-            <p class="message-body">There are no records that meet the search criteria.</p>
-            </div>`;
+                <p class="message-body">There are no records that meet the search criteria.</p>
+                </div>`;
                     return;
                 }
                 searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">

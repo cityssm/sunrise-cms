@@ -62,7 +62,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function getBurialSites() {
         // eslint-disable-next-line no-unsanitized/property
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(`Loading Burial Sites...`);
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Burial Sites...');
         cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, searchFilterFormElement, renderBurialSites);
     }
     function resetOffsetAndGetBurialSites() {

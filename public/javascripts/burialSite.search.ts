@@ -113,7 +113,7 @@ declare const exports: Record<string, unknown>
   function getBurialSites(): void {
     // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
-      `Loading Burial Sites...`
+      'Loading Burial Sites...'
     )
 
     cityssm.postJSON(

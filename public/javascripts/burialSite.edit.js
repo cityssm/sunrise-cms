@@ -32,14 +32,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        message: `Burial Site Updated Successfully`,
+                        message: 'Burial Site Updated Successfully',
                         contextualColorName: 'success'
                     });
                 }
             }
             else {
                 bulmaJS.alert({
-                    title: `Error Updating Burial Site`,
+                    title: 'Error Updating Burial Site',
                     message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
@@ -67,7 +67,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        title: `Error Deleting Burial Site`,
+                        title: 'Error Deleting Burial Site',
                         message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
@@ -75,11 +75,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         bulmaJS.confirm({
-            title: `Delete Burial Site`,
-            message: `Are you sure you want to delete this burial site?`,
+            title: 'Delete Burial Site',
+            message: 'Are you sure you want to delete this burial site?',
             contextualColorName: 'warning',
             okButton: {
-                text: `Yes, Delete Burial Site`,
+                text: 'Yes, Delete Burial Site',
                 callbackFunction: doDelete
             }
         });

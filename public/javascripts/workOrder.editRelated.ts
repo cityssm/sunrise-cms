@@ -65,7 +65,7 @@ declare const exports: Record<string, unknown>
     }
 
     bulmaJS.confirm({
-      title: `Delete Contract Relationship`,
+      title: 'Delete Contract Relationship',
       message: `Are you sure you want to remove the relationship to this contract record from this work order?
         Note that the contract will remain.`,
       contextualColorName: 'warning',
@@ -133,7 +133,7 @@ declare const exports: Record<string, unknown>
           renderRelatedBurialSitesAndContracts()
         } else {
           bulmaJS.alert({
-            title: `Error Adding Contract`,
+            title: 'Error Adding Contract',
             message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
@@ -207,8 +207,8 @@ declare const exports: Record<string, unknown>
       rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
       ${
         isActive
-          ? `<i class="fas fa-play" title="Current Contract"></i>`
-          : `<i class="fas fa-stop" title="Previous Contract"></i>`
+          ? '<i class="fas fa-play" title="Current Contract"></i>'
+          : '<i class="fas fa-stop" title="Previous Contract"></i>'
       }
       </td><td>
         <a class="has-text-weight-bold" href="${sunrise.getContractURL(contract.contractId)}">
@@ -238,7 +238,7 @@ declare const exports: Record<string, unknown>
       } else {
         rowElement.insertAdjacentHTML(
           'beforeend',
-          `<td><span class="has-text-grey">(No Burial Site)</span></td>`
+          '<td><span class="has-text-grey">(No Burial Site)</span></td>'
         )
       }
 
@@ -268,7 +268,7 @@ declare const exports: Record<string, unknown>
         </td><td>
           ${
             contract.contractInterments!.length === 0
-              ? `<span class="has-text-grey">(No Interments)</span>`
+              ? '<span class="has-text-grey">(No Interments)</span>'
               : `<ul class="fa-ul ml-5">${intermentsHTML}</ul>`
           }
         </td><td>
@@ -440,7 +440,7 @@ declare const exports: Record<string, unknown>
     }
 
     bulmaJS.confirm({
-      title: `Delete Burial Site Relationship`,
+      title: 'Delete Burial Site Relationship',
       message: `Are you sure you want to remove the relationship to this burial site from this work order?
         Note that the record will remain.`,
       contextualColorName: 'warning',
@@ -749,8 +749,8 @@ declare const exports: Record<string, unknown>
 
             if (responseJSON.burialSites.length === 0) {
               searchResultsContainerElement.innerHTML = `<div class="message is-info">
-            <p class="message-body">There are no records that meet the search criteria.</p>
-            </div>`
+                <p class="message-body">There are no records that meet the search criteria.</p>
+                </div>`
 
               return
             }

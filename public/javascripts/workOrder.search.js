@@ -27,7 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               aria-label="Burial Site"></i>
           </span>
           ${cityssm.escapeHTML((burialSite.burialSiteName ?? '') === ''
-                    ? `(No Burial Site Name)`
+                    ? '(No Burial Site Name)'
                     : burialSite.burialSiteName ?? '')}
           </li>`;
             }

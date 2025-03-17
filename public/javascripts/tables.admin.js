@@ -352,13 +352,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 burialSiteStatuses = responseJSON.burialSiteStatuses;
                 bulmaJS.alert({
-                    message: `Burial Site Status Updated Successfully`,
+                    message: 'Burial Site Status Updated Successfully',
                     contextualColorName: 'success'
                 });
             }
             else {
                 bulmaJS.alert({
-                    title: `Error Updating Burial Site Status`,
+                    title: 'Error Updating Burial Site Status',
                     message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
@@ -382,13 +382,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         tableRowElement.remove();
                     }
                     bulmaJS.alert({
-                        message: `Burial Site Status Deleted Successfully`,
+                        message: 'Burial Site Status Deleted Successfully',
                         contextualColorName: 'success'
                     });
                 }
                 else {
                     bulmaJS.alert({
-                        title: `Error Deleting Burial Site Status`,
+                        title: 'Error Deleting Burial Site Status',
                         message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
@@ -396,7 +396,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         bulmaJS.confirm({
-            title: `Delete Burial Site Status`,
+            title: 'Delete Burial Site Status',
             message: `Are you sure you want to delete this status?<br />
           Note that no burial sites will be removed.`,
             messageIsHtml: true,
@@ -424,7 +424,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
-                    title: `Error Moving Burial Site Status`,
+                    title: 'Error Moving Burial Site Status',
                     message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
@@ -500,7 +500,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
-                    title: `Error Adding Burial Site Status`,
+                    title: 'Error Adding Burial Site Status',
                     message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });

@@ -59,7 +59,7 @@ declare const exports: Record<string, unknown>
           </span>
           ${cityssm.escapeHTML(
             (burialSite.burialSiteName ?? '') === ''
-              ? `(No Burial Site Name)`
+              ? '(No Burial Site Name)'
               : burialSite.burialSiteName ?? ''
           )}
           </li>`

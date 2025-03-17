@@ -539,12 +539,12 @@ declare const bulmaJS: BulmaJS
           burialSiteStatuses = responseJSON.burialSiteStatuses
 
           bulmaJS.alert({
-            message: `Burial Site Status Updated Successfully`,
+            message: 'Burial Site Status Updated Successfully',
             contextualColorName: 'success'
           })
         } else {
           bulmaJS.alert({
-            title: `Error Updating Burial Site Status`,
+            title: 'Error Updating Burial Site Status',
             message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
@@ -579,12 +579,12 @@ declare const bulmaJS: BulmaJS
             }
 
             bulmaJS.alert({
-              message: `Burial Site Status Deleted Successfully`,
+              message: 'Burial Site Status Deleted Successfully',
               contextualColorName: 'success'
             })
           } else {
             bulmaJS.alert({
-              title: `Error Deleting Burial Site Status`,
+              title: 'Error Deleting Burial Site Status',
               message: responseJSON.errorMessage ?? '',
               contextualColorName: 'danger'
             })
@@ -594,7 +594,7 @@ declare const bulmaJS: BulmaJS
     }
 
     bulmaJS.confirm({
-      title: `Delete Burial Site Status`,
+      title: 'Delete Burial Site Status',
       message: `Are you sure you want to delete this status?<br />
           Note that no burial sites will be removed.`,
       messageIsHtml: true,
@@ -631,7 +631,7 @@ declare const bulmaJS: BulmaJS
           renderBurialSiteStatuses()
         } else {
           bulmaJS.alert({
-            title: `Error Moving Burial Site Status`,
+            title: 'Error Moving Burial Site Status',
             message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
@@ -738,7 +738,7 @@ declare const bulmaJS: BulmaJS
           formElement.querySelector('input')?.focus()
         } else {
           bulmaJS.alert({
-            title: `Error Adding Burial Site Status`,
+            title: 'Error Adding Burial Site Status',
             message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
