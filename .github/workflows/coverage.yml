@@ -1,0 +1,59 @@
+name: Coverage Testing
+
+on: [workflow_dispatch, push, pull_request]
+
+permissions: read-all
+
+jobs:
+  Coverage:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [ 18, 20, 21 ]
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
+    name: Node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install Application
+        run: |
+          npm ci
+          npm install -g mocha c8 cypress@13
+
+      - name: Copy Test Config
+        run: cp ./data/config.testing.js ./data/config.js
+        
+      - name: Test Application Startup
+        run: npm run test:startup
+
+      - name: Verify Cypress
+        run: cypress verify
+        env:
+          CYPRESS_VERIFY_TIMEOUT: 600000
+
+      - name: Run Coverage Testing
+        run: c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit
+
+      - name: Codecov
+        if: ${{ github.event_name != 'pull_request' && env.CODECOV_TOKEN != '' && matrix.node == 20 }}
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -t ${CODECOV_TOKEN}
+
+      - name: DeepSource
+        if: ${{ github.event_name != 'pull_request' && env.DEEPSOURCE_DSN != '' && matrix.node == 20 }}
+        run: |
+          # Install deepsource CLI
+          curl https://deepsource.io/cli | sh
+    
+          # From the root directory, run the report coverage command
+          ./bin/deepsource report --analyzer test-coverage --key javascript --value-file ./coverage/lcov.info
