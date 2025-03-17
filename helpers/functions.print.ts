@@ -30,7 +30,7 @@ interface ReportData {
 
 const screenPrintConfigs: Record<string, PrintConfig> = {
   contract: {
-    title: `Burial Site Contract Print`,
+    title: "Burial Site Contract Print",
     params: ['contractId']
   }
 }

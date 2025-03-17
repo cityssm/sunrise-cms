@@ -24,7 +24,7 @@ declare const exports: Record<string, unknown>
   function renderResults(): void {
     // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
-      `Loading Funeral Homes...`
+      "Loading Funeral Homes..."
     )
 
     let searchResultCount = 0

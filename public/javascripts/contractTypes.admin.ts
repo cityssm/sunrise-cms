@@ -87,7 +87,7 @@ type ResponseJSON =
       renderContractTypes()
     } else {
       bulmaJS.alert({
-        title: `Error Updating Contract Type`,
+        title: "Error Updating Contract Type",
         message: responseJSON.errorMessage ?? '',
         contextualColorName: 'danger'
       })
@@ -115,11 +115,11 @@ type ResponseJSON =
     }
 
     bulmaJS.confirm({
-      title: `Delete Contract Type`,
-      message: `Are you sure you want to delete this contract type?`,
+      title: "Delete Contract Type",
+      message: "Are you sure you want to delete this contract type?",
       contextualColorName: 'warning',
       okButton: {
-        text: `Yes, Delete Contract Type`,
+        text: "Yes, Delete Contract Type",
         callbackFunction: doDelete
       }
     })
@@ -1007,7 +1007,7 @@ type ResponseJSON =
               renderContractTypes()
             } else {
               bulmaJS.alert({
-                title: `Error Adding Contract Type`,
+                title: "Error Adding Contract Type",
                 message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })

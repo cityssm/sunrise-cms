@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         else {
             bulmaJS.alert({
-                title: `Error Updating Contract Type`,
+                title: "Error Updating Contract Type",
                 message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
             });
@@ -53,11 +53,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, contractTypeResponseHandler);
         }
         bulmaJS.confirm({
-            title: `Delete Contract Type`,
-            message: `Are you sure you want to delete this contract type?`,
+            title: "Delete Contract Type",
+            message: "Are you sure you want to delete this contract type?",
             contextualColorName: 'warning',
             okButton: {
-                text: `Yes, Delete Contract Type`,
+                text: "Yes, Delete Contract Type",
                 callbackFunction: doDelete
             }
         });
@@ -582,7 +582,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        title: `Error Adding Contract Type`,
+                        title: "Error Adding Contract Type",
                         message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });

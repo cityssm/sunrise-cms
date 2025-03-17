@@ -56,13 +56,13 @@ declare const exports: Record<string, unknown>
             )
           } else {
             bulmaJS.alert({
-              message: `Funeral Home Updated Successfully`,
+              message: "Funeral Home Updated Successfully",
               contextualColorName: 'success'
             })
           }
         } else {
           bulmaJS.alert({
-            title: `Error Updating Funeral Home`,
+            title: "Error Updating Funeral Home",
             message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
@@ -101,7 +101,7 @@ declare const exports: Record<string, unknown>
               globalThis.location.href = sunrise.getFuneralHomeURL()
             } else {
               bulmaJS.alert({
-                title: `Error Deleting Funeral Home`,
+                title: "Error Deleting Funeral Home",
                 message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })
@@ -111,11 +111,11 @@ declare const exports: Record<string, unknown>
       }
 
       bulmaJS.confirm({
-        title: `Delete Funeral Home`,
-        message: `Are you sure you want to delete this funeral home?`,
+        title: "Delete Funeral Home",
+        message: "Are you sure you want to delete this funeral home?",
         contextualColorName: 'warning',
         okButton: {
-          text: `Yes, Delete Funeral Home`,
+          text: "Yes, Delete Funeral Home",
           callbackFunction: doDelete
         }
       })

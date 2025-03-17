@@ -5,7 +5,7 @@ export default async function handler(request, response) {
     const burialSiteTypes = await getBurialSiteTypes();
     const contractTypes = await getContractTypes();
     response.render('contract-search', {
-        headTitle: `Contract Search`,
+        headTitle: "Contract Search",
         cemeteries,
         burialSiteTypes,
         contractTypes,

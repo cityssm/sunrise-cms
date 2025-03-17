@@ -9,7 +9,7 @@ export default async function handler(
   const funeralHomes = await getFuneralHomes()
 
   response.render('funeralHome-search', {
-    headTitle: `Funeral Home Search`,
+    headTitle: "Funeral Home Search",
     funeralHomes
   })
 }

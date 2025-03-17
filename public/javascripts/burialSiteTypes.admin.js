@@ -35,7 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         else {
             bulmaJS.alert({
-                title: `Error Updating Burial Site Type`,
+                title: "Error Updating Burial Site Type",
                 message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
             });
@@ -49,11 +49,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, burialSiteTypeResponseHandler);
         }
         bulmaJS.confirm({
-            title: `Delete Burial Site Type`,
-            message: `Are you sure you want to delete this burial site type?`,
+            title: "Delete Burial Site Type",
+            message: "Are you sure you want to delete this burial site type?",
             contextualColorName: 'warning',
             okButton: {
-                text: `Yes, Delete Burial Site Type`,
+                text: "Yes, Delete Burial Site Type",
                 callbackFunction: doDelete
             }
         });
@@ -389,7 +389,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        title: `Error Adding Burial Site Type`,
+                        title: "Error Adding Burial Site Type",
                         message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });

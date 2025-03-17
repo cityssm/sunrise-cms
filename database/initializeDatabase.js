@@ -393,7 +393,7 @@ export async function initializeDatabase() {
     return true;
 }
 async function initializeData() {
-    debug(`Initializing data...`);
+    debug("Initializing data...");
     await addRecord('BurialSiteTypes', 'Casket Grave', 1, initializingUser);
     await addRecord('BurialSiteTypes', 'Columbarium', 2, initializingUser);
     await addRecord('BurialSiteTypes', 'Mausoleum', 2, initializingUser);

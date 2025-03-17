@@ -461,7 +461,7 @@ export async function initializeDatabase(): Promise<boolean> {
 }
 
 async function initializeData(): Promise<void> {
-  debug(`Initializing data...`)
+  debug("Initializing data...")
 
   await addRecord('BurialSiteTypes', 'Casket Grave', 1, initializingUser)
   await addRecord('BurialSiteTypes', 'Columbarium', 2, initializingUser)

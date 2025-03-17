@@ -79,7 +79,7 @@ type ResponseJSON =
       renderBurialSiteTypes()
     } else {
       bulmaJS.alert({
-        title: `Error Updating Burial Site Type`,
+        title: "Error Updating Burial Site Type",
         message: responseJSON.errorMessage ?? '',
         contextualColorName: 'danger'
       })
@@ -107,11 +107,11 @@ type ResponseJSON =
     }
 
     bulmaJS.confirm({
-      title: `Delete Burial Site Type`,
-      message: `Are you sure you want to delete this burial site type?`,
+      title: "Delete Burial Site Type",
+      message: "Are you sure you want to delete this burial site type?",
       contextualColorName: 'warning',
       okButton: {
-        text: `Yes, Delete Burial Site Type`,
+        text: "Yes, Delete Burial Site Type",
         callbackFunction: doDelete
       }
     })
@@ -683,7 +683,7 @@ type ResponseJSON =
               renderBurialSiteTypes()
             } else {
               bulmaJS.alert({
-                title: `Error Adding Burial Site Type`,
+                title: "Error Adding Burial Site Type",
                 message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })

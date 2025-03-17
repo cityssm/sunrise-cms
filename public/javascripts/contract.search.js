@@ -71,7 +71,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <span class="is-size-7">#${contract.contractId}</span>
           </td><td>
             ${(contract.burialSiteId ?? -1) === -1
-                ? `<span class="has-text-grey">(No Burial Site)</span>`
+                ? '<span class="has-text-grey">(No Burial Site)</span>'
                 : `<a class="has-tooltip-right" data-tooltip="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
                     href="${sunrise.getBurialSiteURL(contract.burialSiteId)}">
                     ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
@@ -123,7 +123,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function getContracts() {
         // eslint-disable-next-line no-unsanitized/property
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(`Loading Contracts...`);
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML("Loading Contracts...");
         cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doSearchContracts`, searchFilterFormElement, renderContracts);
     }
     function resetOffsetAndGetContracts() {

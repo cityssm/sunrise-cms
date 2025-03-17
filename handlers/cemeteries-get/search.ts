@@ -9,7 +9,7 @@ export default async function handler(
   const cemeteries = await getCemeteries()
 
   response.render('cemetery-search', {
-    headTitle: `Cemetery Search`,
+    headTitle: "Cemetery Search",
     cemeteries
   })
 }

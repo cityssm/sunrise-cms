@@ -609,7 +609,7 @@ declare const exports: Record<string, unknown>
               } else {
                 rowElement.insertAdjacentHTML(
                   'beforeend',
-                  `<td><span class="has-text-grey">(No Burial Site)</span></td>`
+                  '<td><span class="has-text-grey">(No Burial Site)</span></td>'
                 )
               }
 
