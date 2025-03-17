@@ -20,7 +20,7 @@ export default async function getReportData(
 
   switch (reportName) {
     case 'cemeteries-all': {
-      sql = 'select * from Maps'
+      sql = 'select * from Cemeteries'
       break
     }
 
@@ -147,6 +147,11 @@ export default async function getReportData(
       break
     }
 
+    case 'contractInterments-all': {
+      sql = 'select * from ContractInterments'
+      break
+    }
+
     case 'contractTransactions-all': {
       sql = 'select * from ContractTransactions'
       break
@@ -199,8 +204,8 @@ export default async function getReportData(
       break
     }
 
-    case 'workOrderLots-all': {
-      sql = 'select * from WorkOrderLots'
+    case 'workOrderBurialSites-all': {
+      sql = 'select * from WorkOrderBurialSites'
       break
     }
 

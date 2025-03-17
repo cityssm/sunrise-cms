@@ -6,7 +6,7 @@ export default async function getReportData(reportName, reportParameters = {}) {
     const sqlParameters = [];
     switch (reportName) {
         case 'cemeteries-all': {
-            sql = 'select * from Maps';
+            sql = 'select * from Cemeteries';
             break;
         }
         case 'cemeteries-formatted': {
@@ -111,6 +111,10 @@ export default async function getReportData(reportName, reportParameters = {}) {
             sql = 'select * from ContractFields';
             break;
         }
+        case 'contractInterments-all': {
+            sql = 'select * from ContractInterments';
+            break;
+        }
         case 'contractTransactions-all': {
             sql = 'select * from ContractTransactions';
             break;
@@ -153,8 +157,8 @@ export default async function getReportData(reportName, reportParameters = {}) {
             sql = 'select * from WorkOrderComments';
             break;
         }
-        case 'workOrderLots-all': {
-            sql = 'select * from WorkOrderLots';
+        case 'workOrderBurialSites-all': {
+            sql = 'select * from WorkOrderBurialSites';
             break;
         }
         case 'workOrderMilestones-all': {
