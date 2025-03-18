@@ -1,4 +1,4 @@
-import { DateString, TimeString } from "@cityssm/utils-datetime"
+import type { DateString, TimeString } from "@cityssm/utils-datetime"
 
 export interface Record {
   recordCreate_userName?: string

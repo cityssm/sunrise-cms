@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
-
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { WorkOrderMilestone } from '../../types/recordTypes.js'
@@ -153,9 +150,8 @@ declare const exports: Record<string, unknown>
     }
 
     // eslint-disable-next-line no-unsanitized/property
-    milestoneCalendarContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
-      'Loading Milestones...'
-    )
+    milestoneCalendarContainerElement.innerHTML =
+      sunrise.getLoadingParagraphHTML('Loading Milestones...')
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`,

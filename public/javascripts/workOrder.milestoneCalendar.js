@@ -1,6 +1,4 @@
 "use strict";
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/prefer-module */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
@@ -101,7 +99,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             event.preventDefault();
         }
         // eslint-disable-next-line no-unsanitized/property
-        milestoneCalendarContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Milestones...');
+        milestoneCalendarContainerElement.innerHTML =
+            sunrise.getLoadingParagraphHTML('Loading Milestones...');
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`, workOrderSearchFiltersFormElement, (responseJSON) => {
             renderMilestones(responseJSON.workOrderMilestones);
         });
