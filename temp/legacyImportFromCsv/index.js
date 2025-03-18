@@ -26,7 +26,7 @@ import { getCemeteryIdByKey } from './data.cemeteries.js';
 import { getCommittalTypeIdByKey } from './data.committalTypes.js';
 import { getDeathAgePeriod } from './data.deathAgePeriods.js';
 import { getFeeIdByFeeDescription } from './data.fees.js';
-import { getFuneralHomeIdByKey } from './data.funeralHomes.js';
+import { getFuneralHomeIdByKey, initializeFuneralHomes } from './data.funeralHomes.js';
 import * as importIds from './data.ids.js';
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js';
 const user = {
@@ -806,12 +806,12 @@ async function importFromWorkOrderCSV() {
 console.log(`Started ${new Date().toLocaleString()}`);
 console.time('importFromCsv');
 // Purge Tables
-//purgeTables()
-//purgeConfigTables()
+purgeTables();
+purgeConfigTables();
 // Initialize SSM Data
-//await initializeFuneralHomes(user)
+await initializeFuneralHomes(user);
 // Do Imports
-//await importFromMasterCSV()
+await importFromMasterCSV();
 await importFromPrepaidCSV();
 await importFromWorkOrderCSV();
 console.timeEnd('importFromCsv');

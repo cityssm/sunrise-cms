@@ -1394,14 +1394,14 @@ console.log(`Started ${new Date().toLocaleString()}`)
 console.time('importFromCsv')
 
 // Purge Tables
-//purgeTables()
-//purgeConfigTables()
+purgeTables()
+purgeConfigTables()
 
 // Initialize SSM Data
-//await initializeFuneralHomes(user)
+await initializeFuneralHomes(user)
 
 // Do Imports
-//await importFromMasterCSV()
+await importFromMasterCSV()
 await importFromPrepaidCSV()
 await importFromWorkOrderCSV()
 
