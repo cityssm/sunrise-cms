@@ -1,5 +1,3 @@
-<div align=center>
-
 # Sunrise Cemetery Management System (CMS)
 
 [![DeepSource](https://app.deepsource.com/gh/cityssm/sunrise-cms.svg/?label=active+issues&show_trend=true&token=AhEAYh9dbdDAe7cgW95_SVqP)](https://app.deepsource.com/gh/cityssm/sunrise-cms/)
@@ -13,12 +11,10 @@
 
 **A web-based application to assist cemetery managers with managing their cemetery records**
 
-</div>
-
-This is a major refactoring of the
+This is a major refactoring of the now archived
 [Lot Occupancy System](https://github.com/cityssm/lot-occupancy-system),
-originally built with multiple focuses. This fork reworks the project to focus exculsively
-on cemetery management.
+originally built with multiple focuses. This fork completely reworks the project
+to focus exculsively on cemetery management.
 
 ## About this Project
 
