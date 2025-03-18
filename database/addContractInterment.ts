@@ -1,4 +1,5 @@
 import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
+import type { PoolConnection } from 'better-sqlite-pool'
 
 import { acquireConnection } from './pool.js'
 
@@ -14,16 +15,17 @@ export interface AddForm {
   birthPlace: string
   deathDateString: DateString | ''
   deathPlace: string
-  deathAge: string
+  deathAge: string | number
   deathAgePeriod: string
   intermentContainerTypeId: string | number
 }
 
 export default async function addContractInterment(
   contractForm: AddForm,
-  user: User
+  user: User,
+  connectedDatabase?: PoolConnection
 ): Promise<number> {
-  const database = await acquireConnection()
+  const database = connectedDatabase ?? (await acquireConnection())
 
   const maxIntermentNumber = (database
     .prepare(
@@ -73,7 +75,9 @@ export default async function addContractInterment(
       rightNowMillis
     )
 
-  database.release()
+  if (connectedDatabase === undefined) {
+    database.release()
+  }
 
   return newIntermentNumber
 }

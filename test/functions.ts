@@ -180,7 +180,7 @@ describe('functions.cache', () => {
 })
 
 describe('functions.sqlFilters', () => {
-  describe('LotName filter', () => {
+  describe('BurialSiteName filter', () => {
     it('returns startsWith filter', () => {
       const filter = sqlFilterFunctions.getBurialSiteNameWhereClause(
         'TEST1 TEST2',
@@ -282,7 +282,7 @@ describe('functions.sqlFilters', () => {
     })
   })
 
-  describe('OccupantName filter', () => {
+  describe('DeceasedName filter', () => {
     it('returns filter', () => {
       const filter = sqlFilterFunctions.getDeceasedNameWhereClause(
         'TEST1 TEST2',
@@ -291,10 +291,10 @@ describe('functions.sqlFilters', () => {
 
       assert.strictEqual(
         filter.sqlWhereClause,
-        ' and (instr(lower(o.occupantName), ?) or instr(lower(o.occupantFamilyName), ?)) and (instr(lower(o.occupantName), ?) or instr(lower(o.occupantFamilyName), ?))'
+        ' and instr(lower(o.deceasedName), ?) and instr(lower(o.deceasedName), ?)'
       )
 
-      assert.ok(filter.sqlParameters.length === 4)
+      assert.ok(filter.sqlParameters.length === 2)
 
       assert.ok(filter.sqlParameters.includes('test1'))
       assert.ok(filter.sqlParameters.includes('test2'))

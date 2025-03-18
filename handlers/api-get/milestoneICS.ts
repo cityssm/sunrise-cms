@@ -45,24 +45,24 @@ function buildEventSummary(milestone: WorkOrderMilestone): string {
       : milestone.workOrderMilestoneType ?? ''
     ).trim()
 
-  let occupantCount = 0
+  let intermentCount = 0
 
   for (const contract of milestone.workOrderContracts ?? []) {
-    for (const occupant of contract.contractOccupants ?? []) {
-      occupantCount += 1
+    for (const interment of contract.contractInterments ?? []) {
+      intermentCount += 1
 
-      if (occupantCount === 1) {
+      if (intermentCount === 1) {
         if (summary !== '') {
           summary += ': '
         }
 
-        summary += `${occupant.occupantName ?? ''} ${occupant.occupantFamilyName ?? ''}`
+        summary += interment.deceasedName ?? ''
       }
     }
   }
 
-  if (occupantCount > 1) {
-    summary += ` plus ${(occupantCount - 1).toString()}`
+  if (intermentCount > 1) {
+    summary += ` plus ${(intermentCount - 1).toString()}`
   }
 
   return summary
@@ -87,38 +87,34 @@ function buildEventDescriptionHTML_occupancies(
       <th>Burial Site</th>
       <th>Start Date</th>
       <th>End Date</th>
-      <th>${escapeHTML(getConfigProperty('aliases.occupants'))}</th>
+      <th>Interments</th>
       </tr></thead>
       <tbody>`
 
-    for (const occupancy of milestone.workOrderContracts ?? []) {
+    for (const contract of milestone.workOrderContracts ?? []) {
       descriptionHTML += `<tr>
           <td>
-            <a href="${urlRoot}/contracts/${occupancy.contractId}">
-              ${escapeHTML(occupancy.contractType ?? '')}
+            <a href="${urlRoot}/contracts/${contract.contractId}">
+              ${escapeHTML(contract.contractType ?? '')}
             </a>
           </td>
           <td>
-            ${occupancy.burialSiteName ? escapeHTML(occupancy.burialSiteName) : '(Not Set)'}
+            ${contract.burialSiteName ? escapeHTML(contract.burialSiteName) : '(Not Set)'}
           </td>
           <td>
-            ${occupancy.contractStartDateString}
+            ${contract.contractStartDateString}
           </td>
           <td>
             ${
-              occupancy.contractEndDate
-                ? occupancy.contractEndDateString
+              contract.contractEndDate
+                ? contract.contractEndDateString
                 : '(No End Date)'
             }
           </td>
           <td>`
 
-      for (const occupant of occupancy.contractOccupants ?? []) {
-        descriptionHTML += `${escapeHTML(
-          occupant.lotOccupantType ?? ''
-        )}: ${escapeHTML(occupant.occupantName ?? '')} ${escapeHTML(
-          occupant.occupantFamilyName ?? ''
-        )}<br />`
+      for (const interment of contract.contractInterments ?? []) {
+        descriptionHTML += `${escapeHTML(interment.deceasedName ?? '')}<br />`
       }
 
       descriptionHTML += '</td></tr>'
@@ -246,6 +242,7 @@ function buildEventLocation(milestone: WorkOrderMilestone): string {
   return burialSiteNames.join(', ')
 }
 
+// eslint-disable-next-line complexity
 export default async function handler(
   request: Request,
   response: Response
@@ -286,7 +283,7 @@ export default async function handler(
   if (request.query.workOrderId && workOrderMilestones.length > 0) {
     calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber}`)
     calendar.url(
-      `${urlRoot}/workOrders/${workOrderMilestones[0].workOrderId?.toString()}`
+      `${urlRoot}/workOrders/${workOrderMilestones[0].workOrderId.toString()}`
     )
   }
 
@@ -312,7 +309,7 @@ export default async function handler(
       Number.parseInt(milestoneTimePieces[4], 10)
     )
 
-    const milestoneEndDate = new Date(milestoneDate.getTime())
+    const milestoneEndDate = new Date(milestoneDate)
     milestoneEndDate.setHours(milestoneEndDate.getHours() + 1)
 
     // Build summary (title in Outlook)
@@ -372,21 +369,17 @@ export default async function handler(
     if (milestone.workOrderContracts!.length > 0) {
       let organizerSet = false
       for (const contract of milestone.workOrderContracts ?? []) {
-        for (const occupant of contract.contractOccupants ?? []) {
+        for (const interment of contract.contractInterments ?? []) {
           if (organizerSet) {
             calendarEvent.createAttendee({
-              name: `${occupant.occupantName ?? ''} ${
-                occupant.occupantFamilyName ?? ''
-              }`,
+              name: interment.deceasedName ?? '',
               email: getConfigProperty(
                 'settings.workOrders.calendarEmailAddress'
               )
             })
           } else {
             calendarEvent.organizer({
-              name: `${occupant.occupantName ?? ''} ${
-                occupant.occupantFamilyName ?? ''
-              }`,
+              name: interment.deceasedName ?? '',
               email: getConfigProperty(
                 'settings.workOrders.calendarEmailAddress'
               )

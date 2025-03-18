@@ -65,34 +65,28 @@
     <% } else { %>
         <table class="table is-fullwidth">
             <thead>
-                <tr>
-                    <th><%= configFunctions.getConfigProperty("aliases.occupant") %> Type</th>
-                    <th><%= configFunctions.getConfigProperty("aliases.occupant") %></th>
-                    <th>Address</th>
-                    <th>Phone Number</th>
-                </tr>
+              <tr>
+                <th>Interment</th>
+                <th>Address</th>
+              </tr>
             </thead>
             <tbody>
-                <% for (const contractOccupant of contract.contractOccupants) { %>
+              <% for (const contractInterment of contract.contractInterments) { %>
                 <tr>
-                    <td><%= contractOccupant.lotOccupantType %></td>
-                    <td><%= contractOccupant.occupantName %> <%= contractOccupant.occupantFamilyName %></td>
-                    <td>
-                        <%= contractOccupant.occupantAddress1 %><br />
-                        <% if (contractOccupant.occupantAddress2 && contractOccupant.occupantAddress2 !== "") { %>
-                            <%= contractOccupant.occupantAddress2 %><br />
-                        <% } %>
-                        <% if (contractOccupant.occupantCity) { %>
-                            <%= contractOccupant.occupantCity %>, 
-                        <% } %>
-                        <%= contractOccupant.occupantProvince %><br />
-                        <%= contractOccupant.occupantPostalCode %>
-                    </td>
-                    <td>
-                        <%= contractOccupant.occupantPhoneNumber %>
-                    </td>
+                  <td><%= contractInterment.deceasedName %></td>
+                  <td>
+                    <%= contractInterment.deceasedAddress1 %><br />
+                    <% if (contractInterment.deceasedAddress2 && contractInterment.deceasedAddress2 !== "") { %>
+                        <%= contractInterment.deceasedAddress2 %><br />
+                    <% } %>
+                    <% if (contractInterment.deceasedCity) { %>
+                        <%= contractInterment.deceasedCity %>, 
+                    <% } %>
+                    <%= contractInterment.deceasedProvince %><br />
+                    <%= contractInterment.deceasedPostalCode %>
+                  </td>
                 </tr>
-                <% } %>
+              <% } %>
             </tbody>
         </table>
     <% } %>
@@ -105,9 +99,9 @@
     <table class="table is-fullwidth">
         <thead>
             <tr>
-                <th>Commentor</th>
-                <th>Comment Date</th>
-                <th>Comment</th>
+              <th>Commentor</th>
+              <th>Comment Date</th>
+              <th>Comment</th>
             </tr>
         </thead>
         <tbody>

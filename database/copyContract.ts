@@ -4,7 +4,7 @@ import type { Contract } from '../types/recordTypes.js'
 
 import addContract from './addContract.js'
 import addContractComment from './addContractComment.js'
-// import addContractOccupant from './addContractOccupant.js'
+import addContractInterment from './addContractInterment.js'
 import getContract from './getContract.js'
 import { acquireConnection } from './pool.js'
 
@@ -14,17 +14,29 @@ export default async function copyContract(
 ): Promise<number> {
   const database = await acquireConnection()
 
-  const oldContract = (await getContract(
-    oldContractId,
-    database
-  )) as Contract
+  const oldContract = (await getContract(oldContractId, database)) as Contract
 
   const newContractId = await addContract(
     {
       burialSiteId: oldContract.burialSiteId ?? '',
       contractTypeId: oldContract.contractTypeId,
       contractStartDateString: dateToString(new Date()),
-      contractEndDateString: ''
+      contractEndDateString: '',
+
+      purchaserName: oldContract.purchaserName,
+      purchaserAddress1: oldContract.purchaserAddress1,
+      purchaserAddress2: oldContract.purchaserAddress2,
+      purchaserCity: oldContract.purchaserCity,
+      purchaserProvince: oldContract.purchaserProvince,
+      purchaserPostalCode: oldContract.purchaserPostalCode,
+      purchaserPhoneNumber: oldContract.purchaserPhoneNumber,
+      purchaserEmail: oldContract.purchaserEmail,
+      purchaserRelationship: oldContract.purchaserRelationship,
+
+      funeralHomeId: oldContract.funeralHomeId,
+      funeralDirectorName: oldContract.funeralDirectorName,
+      funeralDateString: oldContract.funeralDateString ?? '',
+      funeralTimeString: oldContract.funeralTimeString ?? ''
     },
     user,
     database
@@ -57,30 +69,33 @@ export default async function copyContract(
   }
 
   /*
-   * Copy Occupants
+   * Copy Interments
    */
 
-  /*
-  for (const occupant of oldContract.contractOccupants ?? []) {
-    await addContractOccupant(
+  for (const interment of oldContract.contractInterments ?? []) {
+    await addContractInterment(
       {
         contractId: newContractId,
-        lotOccupantTypeId: occupant.lotOccupantTypeId!,
-        occupantName: occupant.occupantName!,
-        occupantFamilyName: occupant.occupantFamilyName!,
-        occupantAddress1: occupant.occupantAddress1!,
-        occupantAddress2: occupant.occupantAddress2!,
-        occupantCity: occupant.occupantCity!,
-        occupantProvince: occupant.occupantProvince!,
-        occupantPostalCode: occupant.occupantPostalCode!,
-        occupantPhoneNumber: occupant.occupantPhoneNumber!,
-        occupantEmailAddress: occupant.occupantEmailAddress!
+        deceasedName: interment.deceasedName ?? '',
+        deceasedAddress1: interment.deceasedAddress1 ?? '',
+        deceasedAddress2: interment.deceasedAddress2 ?? '',
+        deceasedCity: interment.deceasedCity ?? '',
+        deceasedProvince: interment.deceasedProvince ?? '',
+        deceasedPostalCode: interment.deceasedPostalCode ?? '',
+
+        birthDateString: interment.birthDateString ?? '',
+        birthPlace: interment.birthPlace ?? '',
+        deathDateString: interment.deathDateString ?? '',
+        deathPlace: interment.deathPlace ?? '',
+
+        deathAge: interment.deathAge ?? '',
+        deathAgePeriod: interment.deathAgePeriod ?? '',
+        intermentContainerTypeId: interment.intermentContainerTypeId ?? ''
       },
       user,
       database
     )
   }
-  */
 
   /*
    * Add Comment

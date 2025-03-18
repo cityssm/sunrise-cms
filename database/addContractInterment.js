@@ -1,7 +1,7 @@
 import { dateStringToInteger } from '@cityssm/utils-datetime';
 import { acquireConnection } from './pool.js';
-export default async function addContractInterment(contractForm, user) {
-    const database = await acquireConnection();
+export default async function addContractInterment(contractForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? (await acquireConnection());
     const maxIntermentNumber = (database
         .prepare(`select max(intermentNumber) as maxIntermentNumber
       from ContractInterments
@@ -25,6 +25,8 @@ export default async function addContractInterment(contractForm, user) {
         : dateStringToInteger(contractForm.deathDateString), contractForm.deathPlace, contractForm.intermentContainerTypeId === ''
         ? undefined
         : contractForm.intermentContainerTypeId, user.userName, rightNowMillis, user.userName, rightNowMillis);
-    database.release();
+    if (connectedDatabase === undefined) {
+        database.release();
+    }
     return newIntermentNumber;
 }

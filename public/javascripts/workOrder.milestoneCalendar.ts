@@ -31,6 +31,7 @@ declare const exports: Record<string, unknown>
     '#container--milestoneCalendar'
   ) as HTMLElement
 
+  // eslint-disable-next-line complexity
   function renderMilestones(workOrderMilestones: WorkOrderMilestone[]): void {
     if (workOrderMilestones.length === 0) {
       milestoneCalendarContainerElement.innerHTML = `<div class="message is-info">
@@ -80,29 +81,26 @@ declare const exports: Record<string, unknown>
 
       let contractHTML = ''
 
-      for (const lot of milestone.workOrderLots ?? []) {
+      for (const burialSite of milestone.workOrderBurialSites ?? []) {
         contractHTML += `<li class="has-tooltip-left"
-          data-tooltip="${cityssm.escapeHTML(lot.cemeteryName ?? '')}">
+          data-tooltip="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
           <i class="fas fa-vector-square"
-            aria-label="${sunrise.escapedAliases.Lot}"></i>
+            aria-label="Burial Site"></i>
           </span>
-          ${cityssm.escapeHTML(lot.burialSiteName ?? '')}
+          ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
           </li>`
       }
 
       for (const contract of milestone.workOrderContracts ?? []) {
-        for (const occupant of contract.contractOccupants ?? []) {
+        for (const interment of contract.contractInterments ?? []) {
           contractHTML += `<li class="has-tooltip-left"
-            data-tooltip="${cityssm.escapeHTML(
-              occupant.lotOccupantType ?? ''
-            )}">
+            data-tooltip="Interment">
             <span class="fa-li">
             <i class="fas fa-user"
-              aria-label="${sunrise.escapedAliases.Occupancy}"></i>
+              aria-label="Interment"></i>
             </span>
-            ${cityssm.escapeHTML(occupant.occupantName ?? '')}
-            ${cityssm.escapeHTML(occupant.occupantFamilyName ?? '')}
+            ${cityssm.escapeHTML(interment.deceasedName ?? '')}
             </li>`
         }
       }

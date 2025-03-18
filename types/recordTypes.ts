@@ -1,3 +1,5 @@
+import { DateString, TimeString } from "@cityssm/utils-datetime"
+
 export interface Record {
   recordCreate_userName?: string
   recordCreate_timeMillis?: number
@@ -247,11 +249,11 @@ export interface ContractInterment extends Record {
   deceasedPostalCode?: string
 
   birthDate?: number
-  birthDateString?: string
+  birthDateString?: DateString
   birthPlace?: string
 
   deathDate?: number
-  deathDateString?: string
+  deathDateString?: DateString
   deathPlace?: string 
   deathAge?: number
   deathAgePeriod?: string
@@ -328,9 +330,9 @@ export interface Contract extends Record {
   funeralHomePostalCode?: string
 
   funeralDate?: number
-  funeralDateString?: string
+  funeralDateString?: DateString
   funeralTime?: number
-  funeralTimeString?: string
+  funeralTimeString?: TimeString
   committalTypeId?: number
   committalType?: string
 
