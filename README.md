@@ -2,6 +2,11 @@
 
 # Sunrise Cemetery Management System (CMS)
 
+[![DeepSource](https://app.deepsource.com/gh/cityssm/sunrise-cms.svg/?label=active+issues&show_trend=true&token=AhEAYh9dbdDAe7cgW95_SVqP)](https://app.deepsource.com/gh/cityssm/sunrise-cms/)
+[![codecov](https://codecov.io/gh/cityssm/sunrise-cms/graph/badge.svg?token=OY7SWY1PLC)](https://codecov.io/gh/cityssm/sunrise-cms)
+[![sunrise-cms](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/26a4bi&style=flat&logo=cypress)](https://cloud.cypress.io/projects/26a4bi/runs)
+[![Coverage Testing](https://github.com/cityssm/sunrise-cms/actions/workflows/coverage.yml/badge.svg)](https://github.com/cityssm/sunrise-cms/actions/workflows/coverage.yml)
+
 ![Sunrise CMS Logo](./public/images/sunrise-cms.png)
 
 🚧 **In development** 🚧
