@@ -14,6 +14,8 @@ export default async function updateContractInterment(contractForm, user) {
         birthPlace = ?,
         deathDate = ?,
         deathPlace = ?,
+        deathAge = ?,
+        deathAgePeriod = ?,
         intermentContainerTypeId = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
@@ -24,7 +26,7 @@ export default async function updateContractInterment(contractForm, user) {
         ? undefined
         : dateStringToInteger(contractForm.birthDateString), contractForm.birthPlace, contractForm.deathDateString === ''
         ? undefined
-        : dateStringToInteger(contractForm.deathDateString), contractForm.deathPlace, contractForm.intermentContainerTypeId === ''
+        : dateStringToInteger(contractForm.deathDateString), contractForm.deathPlace, contractForm.deathAge, contractForm.deathAgePeriod, contractForm.intermentContainerTypeId === ''
         ? undefined
         : contractForm.intermentContainerTypeId, user.userName, Date.now(), contractForm.contractId, contractForm.intermentNumber);
     database.release();

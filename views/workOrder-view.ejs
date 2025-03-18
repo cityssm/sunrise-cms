@@ -148,78 +148,79 @@
           <div class="tab-container">
               <div class="<%= (tabToSelect === "contracts" ? "" : "is-hidden") %>" id="relatedTab--contracts">
                   <% if (workOrder.workOrderContracts.length === 0) { %>
-                      <div class="message is-info">
-                        <p class="message-body">
-                          There are no contracts associated with this work order.
-                        </p>
-                      </div>
+                    <div class="message is-info">
+                      <p class="message-body">
+                        There are no contracts associated with this work order.
+                      </p>
+                    </div>
                   <% } else { %>
-                      <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
-                      <table class="table is-fullwidth is-striped is-hoverable">
-                          <thead>
+                    <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
+                    <table class="table is-fullwidth is-striped is-hoverable">
+                        <thead>
+                          <tr>
+                            <th class="has-width-1"></th>
+                            <th>Contract Type</th>
+                            <th>Burial Site</th>
+                            <th>Contract Date</th>
+                            <th>End Date</th>
+                            <th>Interments</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% for (const contract of workOrder.workOrderContracts) { %>
+                            <% const isActive = !(contract.contractEndDate && contract.contractEndDate < currentDate); %>
                             <tr>
-                              <th class="has-width-1"></th>
-                              <th>Contract Type</th>
-                              <th>Burial Site</th>
-                              <th>Contract Date</th>
-                              <th>End Date</th>
-                              <th>Interments</th>
+                              <td class="has-text-centered">
+                                <% if (isActive) { %>
+                                  <i class="fas fa-play" title="Current Contract"></i>
+                                <% } else { %>
+                                  <i class="fas fa-stop" title="Previous Contract"></i>
+                                <% } %>
+                              </td>
+                              <td>
+                                <a class="has-text-weight-bold"
+                                  href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
+                                  <%= contract.contractType %>
+                                </a><br />
+                                <span class="is-size-7">
+                                  #<%= contract.contractId %>
+                                </span>
+                              </td>
+                              <td>
+                                  <% if (contract.burialSiteId) { %>
+                                      <%= contract.burialSiteName %>
+                                  <% } else { %>
+                                      <span class="has-text-grey">(No Burial Site)</span>
+                                  <% } %>
+                              </td>
+                              <td><%= contract.contractStartDateString %></td>
+                              <td>
+                                  <% if (contract.contractEndDate) { %>
+                                      <%= contract.contractEndDateString %>
+                                  <% } else { %>
+                                      <span class="has-text-grey">(No End Date)</span>
+                                  <% } %>
+                              </td>
+                              <td>
+                                <% if (contract.contractInterments.length === 0) { %>
+                                  <span class="has-text-grey">
+                                    (No Interments)
+                                  </span>
+                                <% } else { %>
+                                  <ul class="fa-ul ml-5">
+                                    <% for (const interment of contract.contractInterments) { %>
+                                      <li>
+                                        <span class="fa-li"><i class="fas fa-user" aria-hidden="true"></i></span>
+                                        <%= interment.deceasedName %>
+                                      </li>
+                                    <% } %>
+                                  </ul>
+                                <% } %>
+                              </td>
                             </tr>
-                          </thead>
-                          <tbody>
-                              <% for (const contract of workOrder.workOrderContracts) { %>
-                                  <% const isActive = !(contract.contractEndDate && contract.contractEndDate < currentDate); %>
-                                  <tr>
-                                      <td class="has-text-centered">
-                                        <% if (isActive) { %>
-                                          <i class="fas fa-play" title="Current Contract"></i>
-                                        <% } else { %>
-                                          <i class="fas fa-stop" title="Previous Contract"></i>
-                                        <% } %>
-                                      </td>
-                                      <td>
-                                        <a class="has-text-weight-bold"
-                                          href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
-                                          <%= contract.contractType %>
-                                        </a><br />
-                                        <span class="is-size-7">
-                                          #<%= contract.contractId %>
-                                        </span>
-                                      </td>
-                                      <td>
-                                          <% if (contract.burialSiteId) { %>
-                                              <%= contract.burialSiteName %>
-                                          <% } else { %>
-                                              <span class="has-text-grey">(No Burial Site)</span>
-                                          <% } %>
-                                      </td>
-                                      <td><%= contract.contractStartDateString %></td>
-                                      <td>
-                                          <% if (contract.contractEndDate) { %>
-                                              <%= contract.contractEndDateString %>
-                                          <% } else { %>
-                                              <span class="has-text-grey">(No End Date)</span>
-                                          <% } %>
-                                      </td>
-                                      <td>
-                                        <% if (contract.contractInterments.length === 0) { %>
-                                          <span class="has-text-grey">
-                                            (No Interments)
-                                          </span>
-                                        <% } else { %>
-                                          <ul class="fa-ul ml-5">
-                                            <% for (const interment of contract.contractInterments) { %>
-                                              <li>
-                                                <%= interment.deceasedName %>
-                                              </li>
-                                            <% } %>
-                                          </ul>
-                                        <% } %>
-                                      </td>
-                                  </tr>
-                              <% } %>
-                          </tbody>
-                      </table>
+                          <% } %>
+                        </tbody>
+                    </table>
                   <% } %>
               </div>
               <div class="<%= (tabToSelect === "burialSites" ? "" : "is-hidden") %>" id="relatedTab--burialSites">
@@ -293,36 +294,36 @@
     <div class="column is-4-desktop">
       <div class="panel">
         <div class="panel-heading">
-            <div class="level is-mobile">
-              <div class="level-left">
-                <div class="level-item">
-                  <h2 class="title is-5 has-text-weight-bold">Milestones</h2>
-                </div>
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="title is-5 has-text-weight-bold">Milestones</h2>
               </div>
-              <div class="level-right">
-                <div class="level-item">
-                  <div class="dropdown is-right has-text-weight-normal">
-                    <div class="dropdown-trigger">
-                      <button class="button is-small has-tooltip-left" type="button" data-tooltip="Milestone Options" aria-label="Options">
-                        <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
-                      </button>
-                    </div>
-                    <div class="dropdown-menu">
-                      <div class="dropdown-content">
-                        <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
-                          <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
-                          <span>Download iCalendar</span>
-                        </a>
-                        <a class="dropdown-item" href="<%= urlPrefix %>/reports/workOrderMilestones-byWorkOrderId/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" download>
-                          <span class="icon is-small"><i class="fas fa-download" aria-hidden="true"></i></span>
-                          <span>Export as CSV</span>
-                        </a>
-                      </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <div class="dropdown is-right has-text-weight-normal">
+                  <div class="dropdown-trigger">
+                    <button class="button is-small has-tooltip-left" type="button" data-tooltip="Milestone Options" aria-label="Options">
+                      <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-content">
+                      <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
+                        <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
+                        <span>Download iCalendar</span>
+                      </a>
+                      <a class="dropdown-item" href="<%= urlPrefix %>/reports/workOrderMilestones-byWorkOrderId/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" download>
+                        <span class="icon is-small"><i class="fas fa-download" aria-hidden="true"></i></span>
+                        <span>Export as CSV</span>
+                      </a>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
         </div>
         <% for (const milestone of workOrder.workOrderMilestones) { %>
           <div class="panel-block is-block">

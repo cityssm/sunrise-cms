@@ -55,8 +55,8 @@ export default async function updateFee(
         ? 0
         : feeForm.feeAmount,
       feeForm.feeFunction ?? undefined,
-      feeForm.taxAmount ?? undefined,
-      feeForm.taxPercentage ?? undefined,
+      feeForm.taxAmount === '' ? undefined : feeForm.taxAmount,
+      feeForm.taxPercentage === '' ? undefined : feeForm.taxPercentage,
       feeForm.includeQuantity === '' ? 0 : 1,
       feeForm.quantityUnit,
       feeForm.isRequired === '' ? 0 : 1,

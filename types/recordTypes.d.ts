@@ -28,6 +28,7 @@ export interface Cemetery extends Record {
 }
 export interface FuneralHome extends Record {
     funeralHomeId?: number;
+    funeralHomeKey?: string;
     funeralHomeName?: string;
     funeralHomeAddress1?: string;
     funeralHomeAddress2?: string;
@@ -172,12 +173,14 @@ export interface DynamicsGPDocument {
 export interface IntermentContainerType extends Record {
     intermentContainerTypeId: number;
     intermentContainerType: string;
+    intermentContainerTypeKey: string;
     isCremationType: boolean;
     orderNumber?: number;
 }
 export interface CommittalType extends Record {
     committalTypeId: number;
     committalType: string;
+    committalTypeKey: string;
     orderNumber?: number;
 }
 export interface ContractInterment extends Record {
@@ -195,6 +198,8 @@ export interface ContractInterment extends Record {
     deathDate?: number;
     deathDateString?: string;
     deathPlace?: string;
+    deathAge?: number;
+    deathAgePeriod?: string;
     intermentContainerTypeId?: number;
     intermentContainerType?: string;
     isCremationType?: boolean;
@@ -242,6 +247,7 @@ export interface Contract extends Record {
     purchaserEmail?: string;
     purchaserRelationship?: string;
     funeralHomeId?: number;
+    funeralHomeKey?: string;
     funeralHomeName?: string;
     funeralDirectorName?: string;
     funeralHomeAddress1?: string;

@@ -1,5 +1,6 @@
 export interface AddForm {
     intermentContainerType: string;
+    intermentContainerTypeKey?: string;
     isCremationType?: string;
     orderNumber?: number;
 }

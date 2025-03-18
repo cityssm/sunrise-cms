@@ -1,6 +1,6 @@
 import getBurialSiteComments from './getBurialSiteComments.js';
-import getBurialSiteInterments from './getContracts.js';
 import getBurialSiteFields from './getBurialSiteFields.js';
+import getContracts from './getContracts.js';
 import { acquireConnection } from './pool.js';
 const baseSQL = `select l.burialSiteId,
   l.burialSiteTypeId, t.burialSiteType,
@@ -24,7 +24,7 @@ async function _getBurialSite(sql, burialSiteIdOrLotName) {
     const database = await acquireConnection();
     const burialSite = database.prepare(sql).get(burialSiteIdOrLotName);
     if (burialSite !== undefined) {
-        const contracts = await getBurialSiteInterments({
+        const contracts = await getContracts({
             burialSiteId: burialSite.burialSiteId
         }, {
             includeInterments: true,

@@ -32,6 +32,7 @@ export interface Config {
     contracts: {
       burialSiteIdIsRequired?: boolean
       contractEndDateIsRequired?: boolean
+      deathAgePeriods?: string[]
       prints?: string[]
     }
     workOrders: {

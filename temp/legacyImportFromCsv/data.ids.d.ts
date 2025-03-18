@@ -1,0 +1,12 @@
+export declare const availableBurialSiteStatusId: number;
+export declare const reservedBurialSiteStatusId: number;
+export declare const takenBurialSiteStatusId: number;
+export declare const preneedContractType: import("../../types/recordTypes.js").ContractType;
+export declare const deceasedContractType: import("../../types/recordTypes.js").ContractType;
+export declare const cremationContractType: import("../../types/recordTypes.js").ContractType;
+export declare const acknowledgedWorkOrderMilestoneTypeId: number | undefined;
+export declare const deathWorkOrderMilestoneTypeId: number | undefined;
+export declare const funeralWorkOrderMilestoneTypeId: number | undefined;
+export declare const cremationWorkOrderMilestoneTypeId: number | undefined;
+export declare const intermentWorkOrderMilestoneTypeId: number | undefined;
+export declare const workOrderTypeId = 1;

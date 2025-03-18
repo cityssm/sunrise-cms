@@ -1,12 +1,12 @@
 import { acquireConnection } from './pool.js'
 
 export interface AddFeeForm {
-  feeCategoryId: string
+  feeCategoryId: string | number
   feeName: string
   feeDescription: string
   feeAccount: string
-  contractTypeId: string
-  burialSiteTypeId: string
+  contractTypeId: string | number
+  burialSiteTypeId: string | number
   feeAmount?: string
   feeFunction?: string
   taxAmount?: string
@@ -46,10 +46,10 @@ export default async function addFee(
       feeForm.feeAccount,
       feeForm.contractTypeId === '' ? undefined : feeForm.contractTypeId,
       feeForm.burialSiteTypeId === '' ? undefined : feeForm.burialSiteTypeId,
-      feeForm.feeAmount ?? undefined,
+      feeForm.feeAmount === '' ? undefined : feeForm.feeAmount,
       feeForm.feeFunction ?? undefined,
-      feeForm.taxAmount ?? undefined,
-      feeForm.taxPercentage ?? undefined,
+      feeForm.taxAmount === '' ? undefined : feeForm.taxAmount,
+      feeForm.taxPercentage === '' ? undefined : feeForm.taxPercentage,
       (feeForm.includeQuantity ?? '') === '' ? 0 : 1,
       feeForm.quantityUnit,
       (feeForm.isRequired ?? '') === '' ? 0 : 1,

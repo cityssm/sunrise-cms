@@ -10,7 +10,7 @@ export default async function getIntermentContainerTypes(): Promise<
 
   const containerTypes = database
     .prepare(
-      `select intermentContainerTypeId, intermentContainerType, isCremationType, orderNumber
+      `select intermentContainerTypeId, intermentContainerType, intermentContainerTypeKey, isCremationType, orderNumber
         from IntermentContainerTypes
         where recordDelete_timeMillis is null
         order by isCremationType, orderNumber, intermentContainerType, intermentContainerTypeId`

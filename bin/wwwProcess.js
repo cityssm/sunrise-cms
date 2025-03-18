@@ -4,9 +4,14 @@ import http from 'node:http';
 import Debug from 'debug';
 import exitHook from 'exit-hook';
 import { app } from '../app.js';
+import { initializeDatabase } from '../database/initializeDatabase.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:wwwProcess:${process.pid}`);
+if (process.send === undefined) {
+    // INITIALIZE THE DATABASE
+    await initializeDatabase();
+}
 function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;

@@ -11,6 +11,8 @@ export interface AddForm {
     birthPlace: string;
     deathDateString: DateString | '';
     deathPlace: string;
+    deathAge: string;
+    deathAgePeriod: string;
     intermentContainerTypeId: string | number;
 }
 export default function addContractInterment(contractForm: AddForm, user: User): Promise<number>;

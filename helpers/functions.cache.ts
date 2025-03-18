@@ -418,7 +418,9 @@ export function clearCacheByTableName(
         process.send(workerMessage)
       }
     }
-  } catch {}
+  } catch {
+    // ignore
+  }
 }
 
 process.on('message', (message: WorkerMessage) => {

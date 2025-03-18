@@ -605,7 +605,7 @@
                     Date of Death
                   </label>
                   <div class="control has-icons-left">
-                    <input class="input" id="contract--deathDateString" name="deathDateString" type="date" value="<%= contract.deceasedDateOfDeathString %>" />
+                    <input class="input" id="contract--deathDateString" name="deathDateString" type="date" value="<%= contract.deathDateString %>" />
                     <span class="icon is-left">
                       <i class="fas fa-calendar" aria-hidden="true"></i>
                     </span>
@@ -618,8 +618,26 @@
                     Place of Death
                   </label>
                   <div class="control">
-                    <input class="input" id="contract--deathPlace" name="deathPlace" type="text" maxlength="100" autocomplete="off" value="<%= contract.deceasedPlaceOfDeath %>" />
+                    <input class="input" id="contract--deathPlace" name="deathPlace" type="text" maxlength="100" autocomplete="off" value="<%= contract.deathPlace %>" />
                   </div>
+                </div>
+              </div>
+            </div>
+            <label class="label" for="contract--deathAge">Death Age</label>
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input class="input has-text-right" id="contract--deathAge" name="deathAge" type="number" min="0" max="150" value="<%= contract.deathAge %>" />
+              </div>
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select id="contract--deathAgePeriod" name="deathAgePeriod" aria-label="Death Age Period">
+                    <% for (const period of configFunctions.getConfigProperty('settings.contracts.deathAgePeriods')) { %>
+                      <option value="<%= period %>"
+                        <%= (contract.deathAgePeriod === period ? " selected" : "") %>>
+                        <%= period %>
+                      </option>
+                    <% } %>
+                  </select>
                 </div>
               </div>
             </div>
@@ -842,6 +860,7 @@
 
     exports.contractInterments = <%- JSON.stringify(contract.contractInterments) %>;
     exports.intermentContainerTypes = <%- JSON.stringify(intermentContainerTypes) %>;
+    exports.deathAgePeriods = <%- JSON.stringify(configFunctions.getConfigProperty('settings.contracts.deathAgePeriods')) %>;
     exports.contractComments = <%- JSON.stringify(contract.contractComments) %>;
     exports.contractFees = <%- JSON.stringify(contract.contractFees) %>;
     exports.contractTransactions = <%- JSON.stringify(contract.contractTransactions) %>;

@@ -7,7 +7,7 @@ export default async function getFuneralHomes(): Promise<FuneralHome[]> {
 
   const funeralHomes = database
     .prepare(
-      `select funeralHomeId, funeralHomeName,
+      `select funeralHomeId, funeralHomeKey, funeralHomeName,
         funeralHomeAddress1, funeralHomeAddress2,
         funeralHomeCity, funeralHomeProvince, funeralHomePostalCode, funeralHomePhoneNumber
         from FuneralHomes f

@@ -15,6 +15,8 @@ export interface UpdateForm {
   birthPlace: string
   deathDateString: DateString | ''
   deathPlace: string
+  deathAge: string
+  deathAgePeriod: string
   intermentContainerTypeId: string | number
 }
 
@@ -37,6 +39,8 @@ export default async function updateContractInterment(
         birthPlace = ?,
         deathDate = ?,
         deathPlace = ?,
+        deathAge = ?,
+        deathAgePeriod = ?,
         intermentContainerTypeId = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
@@ -59,6 +63,8 @@ export default async function updateContractInterment(
         ? undefined
         : dateStringToInteger(contractForm.deathDateString),
       contractForm.deathPlace,
+      contractForm.deathAge,
+      contractForm.deathAgePeriod,
       contractForm.intermentContainerTypeId === ''
         ? undefined
         : contractForm.intermentContainerTypeId,

@@ -2,6 +2,7 @@ import { acquireConnection } from './pool.js'
 
 export interface AddForm {
   funeralHomeName: string
+  funeralHomeKey: string
   funeralHomeAddress1: string
   funeralHomeAddress2: string
   funeralHomeCity: string
@@ -21,14 +22,15 @@ export default async function addFuneralHome(
   const result = database
     .prepare(
       `insert into FuneralHomes (
-        funeralHomeName, funeralHomeAddress1, funeralHomeAddress2,
+        funeralHomeName, funeralHomeKey, funeralHomeAddress1, funeralHomeAddress2,
         funeralHomeCity, funeralHomeProvince, funeralHomePostalCode, funeralHomePhoneNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       addForm.funeralHomeName,
+      addForm.funeralHomeKey,
       addForm.funeralHomeAddress1,
       addForm.funeralHomeAddress2,
       addForm.funeralHomeCity,

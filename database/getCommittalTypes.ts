@@ -8,7 +8,7 @@ export default async function getCommittalTypes(): Promise<CommittalType[]> {
 
   const committalTypes = database
     .prepare(
-      `select committalTypeId, committalType, orderNumber
+      `select committalTypeId, committalTypeKey, committalType, orderNumber
         from CommittalTypes
         where recordDelete_timeMillis is null
         order by orderNumber, committalType, committalTypeId`

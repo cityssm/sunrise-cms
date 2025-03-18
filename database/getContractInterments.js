@@ -12,6 +12,7 @@ export default async function getContractInterments(contractId, connectedDatabas
         o.birthPlace,
         o.deathDate, userFn_dateIntegerToString(o.deathDate) as deathDateString,
         o.deathPlace,
+        o.deathAge, o.deathAgePeriod,
         
         o.intermentContainerTypeId, t.intermentContainerType, t.isCremationType
 

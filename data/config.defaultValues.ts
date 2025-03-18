@@ -57,6 +57,8 @@ export const configDefaultValues = {
 
 
   'settings.contracts.burialSiteIdIsRequired': true,
+  'settings.contracts.contractEndDateIsRequired': false,
+  'settings.contracts.deathAgePeriods': ['Years', 'Months', 'Days', 'Stillborn'],
   'settings.contracts.prints': ['screen/contract'],
 
   'settings.fees.taxPercentageDefault': 0,

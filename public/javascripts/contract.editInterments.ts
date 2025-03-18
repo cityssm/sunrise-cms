@@ -17,6 +17,9 @@ declare const exports: Record<string, unknown>
   let contractInterments = exports.contractInterments as ContractInterment[]
   delete exports.contractInterments
 
+  const deathAgePeriods = exports.deathAgePeriods as string[]
+  delete exports.deathAgePeriods
+
   const intermentContainerTypes =
     exports.intermentContainerTypes as IntermentContainerType[]
   delete exports.intermentContainerTypes
@@ -111,6 +114,37 @@ declare const exports: Record<string, unknown>
         modalElement
           .querySelector('#contractIntermentEdit--deathPlace')
           ?.setAttribute('value', contractInterment.deathPlace ?? '')
+
+        modalElement
+          .querySelector('#contractIntermentEdit--deathAge')
+          ?.setAttribute('value', contractInterment.deathAge?.toString() ?? '')
+
+        const deathAgePeriodElement = modalElement.querySelector(
+          '#contractIntermentEdit--deathAgePeriod'
+        ) as HTMLSelectElement
+
+        let deathAgePeriodIsFound = false
+
+        for (const deathAgePeriod of deathAgePeriods) {
+          const optionElement = document.createElement('option')
+          optionElement.value = deathAgePeriod
+          optionElement.text = deathAgePeriod
+
+          if (deathAgePeriod === contractInterment.deathAgePeriod) {
+            optionElement.selected = true
+            deathAgePeriodIsFound = true
+          }
+
+          deathAgePeriodElement.append(optionElement)
+        }
+
+        if (!deathAgePeriodIsFound) {
+          const optionElement = document.createElement('option')
+          optionElement.value = contractInterment.deathAgePeriod ?? ''
+          optionElement.text = contractInterment.deathAgePeriod ?? '(Not Set)'
+          optionElement.selected = true
+          deathAgePeriodElement.append(optionElement)
+        }
 
         const containerTypeElement = modalElement.querySelector(
           '#contractIntermentEdit--intermentContainerTypeId'
@@ -211,6 +245,7 @@ declare const exports: Record<string, unknown>
     })
   }
 
+  // eslint-disable-next-line complexity
   function renderContractInterments(): void {
     const containerElement = document.querySelector(
       '#container--contractInterments'
@@ -267,6 +302,15 @@ declare const exports: Record<string, unknown>
               <div class="column">
                 ${cityssm.escapeHTML(interment.deathDateString ?? '(No Death Date)')}<br />
                 ${cityssm.escapeHTML(interment.deathPlace ?? '(No Death Place)')}
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
+                <strong>Age:</strong>
+              </div>
+              <div class="column">
+                ${cityssm.escapeHTML(interment.deathAge === undefined ? '(No Age)' : interment.deathAge.toString())}
+                ${cityssm.escapeHTML(interment.deathAgePeriod ?? '')}
               </div>
             </div>
             <div class="columns">
@@ -334,6 +378,18 @@ declare const exports: Record<string, unknown>
           modalElement
             .querySelector('#contractIntermentAdd--contractId')
             ?.setAttribute('value', contractId)
+
+          const deathAgePeriodElement = modalElement.querySelector(
+            '#contractIntermentAdd--deathAgePeriod'
+          ) as HTMLSelectElement
+
+          for (const deathAgePeriod of deathAgePeriods) {
+            const optionElement = document.createElement('option')
+            optionElement.value = deathAgePeriod
+            optionElement.text = deathAgePeriod
+
+            deathAgePeriodElement.append(optionElement)
+          }
 
           const containerTypeElement = modalElement.querySelector(
             '#contractIntermentAdd--intermentContainerTypeId'

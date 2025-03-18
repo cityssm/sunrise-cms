@@ -243,7 +243,9 @@ export function clearCacheByTableName(tableName, relayMessage = true) {
             }
         }
     }
-    catch { }
+    catch {
+        // ignore
+    }
 }
 process.on('message', (message) => {
     if (message.messageType === 'clearCache' && message.pid !== process.pid) {

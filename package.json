@@ -18,8 +18,7 @@
     "test": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true mocha --timeout 30000 --exit",
     "test:startup": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true STARTUP_TEST=true node ./bin/www.js",
     "coverage": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 30000 --exit",
-    "temp:legacy:importFromCsv": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node ./temp/legacy.importFromCsv.js",
-    "temp:so:exportMaps": "node ./temp/so.exportMaps.js"
+    "temp:legacyImportFromCsv": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node ./temp/legacyImportFromCsv/index.js"
   },
   "repository": {
     "type": "git",

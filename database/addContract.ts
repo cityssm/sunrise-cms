@@ -46,6 +46,8 @@ export interface AddContractForm {
   birthPlace?: string
   deathDateString?: DateString | ''
   deathPlace?: string
+  deathAge?: string
+  deathAgePeriod?: string
   intermentContainerTypeId?: string | number
 }
 
@@ -148,10 +150,11 @@ export default async function addContract(
           deceasedCity, deceasedProvince, deceasedPostalCode,
           birthDate, deathDate,
           birthPlace, deathPlace,
+          deathAge, deathAgePeriod,
           intermentContainerTypeId,
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
-          values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+          values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
       )
 
       .run(
@@ -171,6 +174,8 @@ export default async function addContract(
           : dateStringToInteger(addForm.deathDateString as DateString),
         addForm.birthPlace ?? '',
         addForm.deathPlace ?? '',
+        addForm.deathAge ?? undefined,
+        addForm.deathAgePeriod ?? '',
         addForm.intermentContainerTypeId === ''
           ? undefined
           : addForm.intermentContainerTypeId,

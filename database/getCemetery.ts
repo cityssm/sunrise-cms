@@ -4,8 +4,9 @@ import type { Cemetery } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-export default async function getCemetery(
-  cemeteryId: number | string,
+async function _getCemetery(
+  keyColumn: 'cemeteryId' | 'cemeteryKey',
+  cemeteryIdOrKey: number | string,
   connectedDatabase?: PoolConnection
 ): Promise<Cemetery | undefined> {
   const database = connectedDatabase ?? (await acquireConnection())
@@ -22,7 +23,7 @@ export default async function getCemetery(
         count(l.burialSiteId) as burialSiteCount
         from Cemeteries m
         left join BurialSites l on m.cemeteryId = l.cemeteryId and l.recordDelete_timeMillis is null
-        where m.cemeteryId = ?
+        where m.${keyColumn} = ?
           and m.recordDelete_timeMillis is null
         group by m.cemeteryId, m.cemeteryName, m.cemeteryDescription,
           m.cemeteryLatitude, m.cemeteryLongitude, m.cemeterySvg,
@@ -32,11 +33,25 @@ export default async function getCemetery(
           m.recordUpdate_userName, m.recordUpdate_timeMillis,
           m.recordDelete_userName, m.recordDelete_timeMillis`
     )
-    .get(cemeteryId) as Cemetery | undefined
+    .get(cemeteryIdOrKey) as Cemetery | undefined
 
   if (connectedDatabase === undefined) {
     database.release()
   }
 
   return cemetery
+}
+
+export default async function getCemetery(
+  cemeteryId: number | string,
+  connectedDatabase?: PoolConnection
+): Promise<Cemetery | undefined> {
+  return await _getCemetery('cemeteryId', cemeteryId, connectedDatabase)
+}
+
+export async function getCemeteryByKey(
+  cemeteryKey: string,
+  connectedDatabase?: PoolConnection
+): Promise<Cemetery | undefined> {
+  return await _getCemetery('cemeteryKey', cemeteryKey, connectedDatabase)
 }

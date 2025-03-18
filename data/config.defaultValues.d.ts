@@ -28,6 +28,8 @@ export declare const configDefaultValues: {
     'settings.provinceDefault': string;
     'settings.burialSites.burialSiteNameSegments': ConfigBurialSiteNameSegments;
     'settings.contracts.burialSiteIdIsRequired': boolean;
+    'settings.contracts.contractEndDateIsRequired': boolean;
+    'settings.contracts.deathAgePeriods': string[];
     'settings.contracts.prints': string[];
     'settings.fees.taxPercentageDefault': number;
     'settings.workOrders.workOrderNumberLength': number;

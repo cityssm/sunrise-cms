@@ -31,6 +31,8 @@ export interface AddContractForm {
     birthPlace?: string;
     deathDateString?: DateString | '';
     deathPlace?: string;
+    deathAge?: string;
+    deathAgePeriod?: string;
     intermentContainerTypeId?: string | number;
 }
 export default function addContract(addForm: AddContractForm, user: User, connectedDatabase?: PoolConnection): Promise<number>;

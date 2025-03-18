@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const contractId = document.querySelector('#contract--contractId').value;
     let contractInterments = exports.contractInterments;
     delete exports.contractInterments;
+    const deathAgePeriods = exports.deathAgePeriods;
+    delete exports.deathAgePeriods;
     const intermentContainerTypes = exports.intermentContainerTypes;
     delete exports.intermentContainerTypes;
     function openEditContractInterment(clickEvent) {
@@ -66,6 +68,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement
                     .querySelector('#contractIntermentEdit--deathPlace')
                     ?.setAttribute('value', contractInterment.deathPlace ?? '');
+                modalElement
+                    .querySelector('#contractIntermentEdit--deathAge')
+                    ?.setAttribute('value', contractInterment.deathAge?.toString() ?? '');
+                const deathAgePeriodElement = modalElement.querySelector('#contractIntermentEdit--deathAgePeriod');
+                let deathAgePeriodIsFound = false;
+                for (const deathAgePeriod of deathAgePeriods) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = deathAgePeriod;
+                    optionElement.text = deathAgePeriod;
+                    if (deathAgePeriod === contractInterment.deathAgePeriod) {
+                        optionElement.selected = true;
+                        deathAgePeriodIsFound = true;
+                    }
+                    deathAgePeriodElement.append(optionElement);
+                }
+                if (!deathAgePeriodIsFound) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = contractInterment.deathAgePeriod ?? '';
+                    optionElement.text = contractInterment.deathAgePeriod ?? '(Not Set)';
+                    optionElement.selected = true;
+                    deathAgePeriodElement.append(optionElement);
+                }
                 const containerTypeElement = modalElement.querySelector('#contractIntermentEdit--intermentContainerTypeId');
                 let containerTypeIsFound = false;
                 for (const containerType of intermentContainerTypes) {
@@ -131,6 +155,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
+    // eslint-disable-next-line complexity
     function renderContractInterments() {
         const containerElement = document.querySelector('#container--contractInterments');
         if (contractInterments.length === 0) {
@@ -182,6 +207,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             </div>
             <div class="columns">
               <div class="column">
+                <strong>Age:</strong>
+              </div>
+              <div class="column">
+                ${cityssm.escapeHTML(interment.deathAge === undefined ? '(No Age)' : interment.deathAge.toString())}
+                ${cityssm.escapeHTML(interment.deathAgePeriod ?? '')}
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
                 <strong>Container:</strong>
               </div>
               <div class="column">
@@ -229,6 +263,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement
                     .querySelector('#contractIntermentAdd--contractId')
                     ?.setAttribute('value', contractId);
+                const deathAgePeriodElement = modalElement.querySelector('#contractIntermentAdd--deathAgePeriod');
+                for (const deathAgePeriod of deathAgePeriods) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = deathAgePeriod;
+                    optionElement.text = deathAgePeriod;
+                    deathAgePeriodElement.append(optionElement);
+                }
                 const containerTypeElement = modalElement.querySelector('#contractIntermentAdd--intermentContainerTypeId');
                 for (const containerType of intermentContainerTypes) {
                     const optionElement = document.createElement('option');

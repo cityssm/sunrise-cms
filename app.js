@@ -9,7 +9,6 @@ import rateLimit from 'express-rate-limit';
 import session from 'express-session';
 import createError from 'http-errors';
 import FileStore from 'session-file-store';
-import { initializeDatabase } from './database/initializeDatabase.js';
 import { DEBUG_NAMESPACE } from './debug.config.js';
 import * as permissionHandlers from './handlers/permissions.js';
 import * as configFunctions from './helpers/config.helpers.js';
@@ -29,10 +28,6 @@ import routerReports from './routes/reports.js';
 import routerWorkOrders from './routes/workOrders.js';
 import { version } from './version.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid}`);
-/*
- * INITIALIZE THE DATABASE
- */
-await initializeDatabase();
 /*
  * INITIALIZE APP
  */

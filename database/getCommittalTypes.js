@@ -3,7 +3,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export default async function getCommittalTypes() {
     const database = await acquireConnection();
     const committalTypes = database
-        .prepare(`select committalTypeId, committalType, orderNumber
+        .prepare(`select committalTypeId, committalTypeKey, committalType, orderNumber
         from CommittalTypes
         where recordDelete_timeMillis is null
         order by orderNumber, committalType, committalTypeId`)

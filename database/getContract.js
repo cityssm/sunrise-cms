@@ -20,7 +20,7 @@ export default async function getContract(contractId, connectedDatabase) {
         o.purchaserName, o.purchaserAddress1, o.purchaserAddress2,
         o.purchaserCity, o.purchaserProvince, o.purchaserPostalCode,
         o.purchaserPhoneNumber, o.purchaserEmail, o.purchaserRelationship,
-        o.funeralHomeId, o.funeralDirectorName,
+        o.funeralHomeId, o.funeralDirectorName, f.funeralHomeKey,
         f.funeralHomeName, f.funeralHomeAddress1, f.funeralHomeAddress2,
         f.funeralHomeCity, f.funeralHomeProvince, f.funeralHomePostalCode,
         o.funeralDate, userFn_dateIntegerToString(o.funeralDate) as funeralDateString,

@@ -2,24 +2,37 @@ import type { Cemetery, FuneralHome } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-export default async function getFuneralHome(
-  funeralHomeId: number | string
+async function _getFuneralHome(
+  keyColumn: 'funeralHomeId' | 'funeralHomeKey',
+  funeralHomeIdOrKey: number | string
 ): Promise<FuneralHome | undefined> {
   const database = await acquireConnection()
 
   const funeralHome = database
     .prepare(
-      `select funeralHomeId, funeralHomeName,
+      `select funeralHomeId, funeralHomeKey, funeralHomeName,
         funeralHomeAddress1, funeralHomeAddress2,
         funeralHomeCity, funeralHomeProvince, funeralHomePostalCode, funeralHomePhoneNumber
         from FuneralHomes f
         where f.recordDelete_timeMillis is null
-        and f.funeralHomeId = ?
+        and f.${keyColumn} = ?
         order by f.funeralHomeName, f.funeralHomeId`
     )
-    .get(funeralHomeId) as Cemetery | undefined
+    .get(funeralHomeIdOrKey) as Cemetery | undefined
 
   database.release()
 
   return funeralHome
+}
+
+export default async function getFuneralHome(
+  funeralHomeId: number | string
+): Promise<FuneralHome | undefined> {
+  return await _getFuneralHome('funeralHomeId', funeralHomeId)
+}
+
+export async function getFuneralHomeByKey(
+  funeralHomeKey: string
+): Promise<FuneralHome | undefined> {
+  return await _getFuneralHome('funeralHomeKey', funeralHomeKey)
 }

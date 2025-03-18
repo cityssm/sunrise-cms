@@ -1,8 +1,8 @@
 import type { BurialSite } from '../types/recordTypes.js'
 
 import getBurialSiteComments from './getBurialSiteComments.js'
-import getBurialSiteInterments from './getContracts.js'
 import getBurialSiteFields from './getBurialSiteFields.js'
+import getContracts from './getContracts.js'
 import { acquireConnection } from './pool.js'
 
 const baseSQL = `select l.burialSiteId,
@@ -33,7 +33,7 @@ async function _getBurialSite(
   const burialSite = database.prepare(sql).get(burialSiteIdOrLotName) as BurialSite | undefined
 
   if (burialSite !== undefined) {
-    const contracts = await getBurialSiteInterments(
+    const contracts = await getContracts(
       {
         burialSiteId: burialSite.burialSiteId
       },

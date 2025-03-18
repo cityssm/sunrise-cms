@@ -8,11 +8,15 @@ import { secondsToMillis } from '@cityssm/to-millis'
 import Debug from 'debug'
 import exitHook from 'exit-hook'
 
+import { initializeDatabase } from '../database/initializeDatabase.js'
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import type { WorkerMessage } from '../types/applicationTypes.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:www:${process.pid}`)
+
+// INITIALIZE THE DATABASE
+await initializeDatabase()
 
 const directoryName = path.dirname(fileURLToPath(import.meta.url))
 
@@ -42,6 +46,7 @@ for (let index = 0; index < processCount; index += 1) {
 
 cluster.on('message', (worker, message: WorkerMessage) => {
   for (const [pid, activeWorker] of activeWorkers.entries()) {
+    // eslint-disable-next-line sonarjs/different-types-comparison, @typescript-eslint/no-unnecessary-condition
     if (activeWorker === undefined || pid === message.pid) {
       continue
     }

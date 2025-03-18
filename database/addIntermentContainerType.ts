@@ -4,6 +4,7 @@ import { acquireConnection } from './pool.js'
 
 export interface AddForm {
   intermentContainerType: string
+  intermentContainerTypeKey?: string
   isCremationType?: string
   orderNumber?: number
 }
@@ -19,13 +20,14 @@ export default async function addIntermentContainerType(
   const result = database
     .prepare(
       `insert into IntermentContainerTypes (
-        intermentContainerType, isCremationType, orderNumber,
+        intermentContainerType, intermentContainerTypeKey, isCremationType, orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       addForm.intermentContainerType,
+      addForm.intermentContainerTypeKey ?? '',
       addForm.isCremationType === undefined ? 0 : 1,
       addForm.orderNumber ?? -1,
       user.userName,

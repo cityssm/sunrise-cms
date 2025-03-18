@@ -1,10 +1,10 @@
 export interface AddFeeForm {
-    feeCategoryId: string;
+    feeCategoryId: string | number;
     feeName: string;
     feeDescription: string;
     feeAccount: string;
-    contractTypeId: string;
-    burialSiteTypeId: string;
+    contractTypeId: string | number;
+    burialSiteTypeId: string | number;
     feeAmount?: string;
     feeFunction?: string;
     taxAmount?: string;

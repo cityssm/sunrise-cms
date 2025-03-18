@@ -7,6 +7,7 @@ import Debug from 'debug'
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 import { sunriseDB as databasePath } from '../helpers/database.helpers.js'
 
+import addCommittalType from './addCommittalType.js'
 import addContractType from './addContractType.js'
 import addFeeCategory from './addFeeCategory.js'
 import addIntermentContainerType from './addIntermentContainerType.js'
@@ -143,6 +144,7 @@ const createStatements = [
   `create table if not exists FuneralHomes (
     funeralHomeId integer not null primary key autoincrement,
     funeralHomeName varchar(200) not null,
+    funeralHomeKey varchar(20) not null default '',
     funeralHomeAddress1 varchar(50),
     funeralHomeAddress2 varchar(50),
     funeralHomeCity varchar(20),
@@ -195,6 +197,7 @@ const createStatements = [
 
   `create table if not exists CommittalTypes (
     committalTypeId integer not null primary key autoincrement,
+    committalTypeKey varchar(20) not null default '',
     committalType varchar(100) not null,
     orderNumber smallint not null default 0,
     ${recordColumns})`,
@@ -259,6 +262,7 @@ const createStatements = [
   `create table if not exists IntermentContainerTypes (
     intermentContainerTypeId integer not null primary key autoincrement,
     intermentContainerType varchar(100) not null,
+    intermentContainerTypeKey varchar(20) not null default '',
     isCremationType bit not null default 0,
     orderNumber smallint not null default 0,
     ${recordColumns})`,
@@ -284,6 +288,8 @@ const createStatements = [
 
     deathDate integer,
     deathPlace varchar(100),
+    deathAge integer,
+    deathAgePeriod varchar(10),
 
     intermentContainerTypeId integer,
 
@@ -461,7 +467,7 @@ export async function initializeDatabase(): Promise<boolean> {
 }
 
 async function initializeData(): Promise<void> {
-  debug("Initializing data...")
+  debug('Initializing data...')
 
   await addRecord('BurialSiteTypes', 'Casket Grave', 1, initializingUser)
   await addRecord('BurialSiteTypes', 'Columbarium', 2, initializingUser)
@@ -506,6 +512,7 @@ async function initializeData(): Promise<void> {
   await addIntermentContainerType(
     {
       intermentContainerType: 'No Shell',
+      intermentContainerTypeKey: 'NS',
       orderNumber: 1
     },
     initializingUser
@@ -514,6 +521,7 @@ async function initializeData(): Promise<void> {
   await addIntermentContainerType(
     {
       intermentContainerType: 'Concrete Liner',
+      intermentContainerTypeKey: 'CL',
       orderNumber: 2
     },
     initializingUser
@@ -522,6 +530,7 @@ async function initializeData(): Promise<void> {
   await addIntermentContainerType(
     {
       intermentContainerType: 'Unpainted Vault',
+      intermentContainerTypeKey: 'UV',
       orderNumber: 3
     },
     initializingUser
@@ -530,24 +539,32 @@ async function initializeData(): Promise<void> {
   await addIntermentContainerType(
     {
       intermentContainerType: 'Concrete Vault',
+      intermentContainerTypeKey: 'CV',
       orderNumber: 4
     },
     initializingUser
   )
 
   await addIntermentContainerType(
-    { intermentContainerType: 'Wooden Shell', orderNumber: 5 },
+    {
+      intermentContainerType: 'Wooden Shell',
+      intermentContainerTypeKey: 'WS',
+      orderNumber: 5
+    },
     initializingUser
   )
 
   await addIntermentContainerType(
-    { intermentContainerType: 'Steel Vault', orderNumber: 6 },
+    { intermentContainerType: 'Steel Vault',
+      intermentContainerTypeKey: 'SV',
+      orderNumber: 6 },
     initializingUser
   )
 
   await addIntermentContainerType(
     {
       intermentContainerType: 'Urn',
+      intermentContainerTypeKey: 'U',
       isCremationType: '1',
       orderNumber: 7
     },
@@ -556,9 +573,23 @@ async function initializeData(): Promise<void> {
 
   // Committal Types
 
-  await addRecord('CommittalTypes', 'Graveside', 1, initializingUser)
-  await addRecord('CommittalTypes', 'Chapel', 2, initializingUser)
-  await addRecord('CommittalTypes', 'Church', 3, initializingUser)
+  await addCommittalType({
+    committalType: 'Graveside',
+    committalTypeKey: 'GS',
+    orderNumber: 1
+  }, initializingUser) 
+
+  await addCommittalType({
+    committalType: 'Chapel',
+    committalTypeKey: 'CS',
+    orderNumber: 2
+  }, initializingUser)
+
+  await addCommittalType({
+    committalType: 'Church',
+    committalTypeKey: 'CH',
+    orderNumber: 3
+  }, initializingUser)
 
   /*
    * Fee Categories

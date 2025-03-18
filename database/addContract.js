@@ -52,15 +52,16 @@ export default async function addContract(addForm, user, connectedDatabase) {
           deceasedCity, deceasedProvince, deceasedPostalCode,
           birthDate, deathDate,
           birthPlace, deathPlace,
+          deathAge, deathAgePeriod,
           intermentContainerTypeId,
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
-          values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+          values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
             .run(contractId, 1, addForm.deceasedName ?? '', addForm.deceasedAddress1 ?? '', addForm.deceasedAddress2 ?? '', addForm.deceasedCity ?? '', addForm.deceasedProvince ?? '', addForm.deceasedPostalCode ?? '', addForm.birthDateString === ''
             ? undefined
             : dateStringToInteger(addForm.birthDateString), addForm.deathDateString === ''
             ? undefined
-            : dateStringToInteger(addForm.deathDateString), addForm.birthPlace ?? '', addForm.deathPlace ?? '', addForm.intermentContainerTypeId === ''
+            : dateStringToInteger(addForm.deathDateString), addForm.birthPlace ?? '', addForm.deathPlace ?? '', addForm.deathAge ?? undefined, addForm.deathAgePeriod ?? '', addForm.intermentContainerTypeId === ''
             ? undefined
             : addForm.intermentContainerTypeId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
