@@ -1,4 +1,3 @@
-import { getSolidIconClasses } from '@cityssm/font-awesome-v5-iconclasses'
 import type { Request, Response } from 'express'
 
 import {

@@ -4,6 +4,7 @@ import addContractComment from './addContractComment.js';
 import addContractInterment from './addContractInterment.js';
 import getContract from './getContract.js';
 import { acquireConnection } from './pool.js';
+// eslint-disable-next-line complexity
 export default async function copyContract(oldContractId, user) {
     const database = await acquireConnection();
     const oldContract = (await getContract(oldContractId, database));

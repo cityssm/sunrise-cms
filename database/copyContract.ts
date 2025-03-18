@@ -8,6 +8,7 @@ import addContractInterment from './addContractInterment.js'
 import getContract from './getContract.js'
 import { acquireConnection } from './pool.js'
 
+// eslint-disable-next-line complexity
 export default async function copyContract(
   oldContractId: number | string,
   user: User

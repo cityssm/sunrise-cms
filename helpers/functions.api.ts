@@ -1,7 +1,7 @@
+import { randomUUID } from 'node:crypto'
 import fs from 'node:fs/promises'
 
 import Debug from 'debug'
-import { v4 as uuidV4 } from 'uuid'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 
@@ -29,7 +29,7 @@ async function saveApiKeys(): Promise<void> {
 }
 
 function generateApiKey(apiKeyPrefix: string): string {
-  return `${apiKeyPrefix}-${uuidV4()}-${Date.now().toString()}`
+  return `${apiKeyPrefix}-${randomUUID()}-${Date.now().toString()}`
 }
 
 export async function regenerateApiKey(userName: string): Promise<void> {
