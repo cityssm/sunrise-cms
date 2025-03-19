@@ -13,7 +13,10 @@
 
   <link rel="icon" href="<%= urlPrefix + configFunctions.getConfigProperty("application.logoURL") %>" />
 
-  <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/style.css" />
+  <link rel="stylesheet" href="<%= urlPrefix %>/lib/cityssm-bulma-sticky-table/bulma-with-sticky-table.css" />
+  <link rel="stylesheet" href="<%= urlPrefix %>/lib/bulma-tooltip/bulma-tooltip.min.css" />
+  <link rel="stylesheet" href="<%= urlPrefix %>/lib/cityssm-fa-glow/fa-glow.min.css" />
+  <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/sunrise.css" />
   <link rel="stylesheet" href="<%= urlPrefix %>/lib/leaflet/leaflet.css" />
 </head>
 
@@ -23,7 +26,7 @@
     <div class="container">
       <div class="navbar-brand">
         <a class="navbar-item" href="<%= urlPrefix %>/dashboard" accesskey="0">
-          <img class="mr-3"
+          <img
             src="<%= urlPrefix + configFunctions.getConfigProperty("application.logoURL") %>"
             alt=""
             height="28" />
@@ -39,14 +42,14 @@
         <div class="navbar-menu">
           <div class="navbar-start">
             <a class="navbar-item" href="<%= urlPrefix %>/workOrders" accesskey="1">
-              <span class="icon mr-1">
+              <span class="icon">
                 <i class="fas fa-hard-hat" aria-hidden="true"></i>
               </span>
               <span>Work Orders</span>
             </a>
 
             <a class="navbar-item" href="<%= urlPrefix %>/contracts" accesskey="2">
-              <span class="icon mr-1">
+              <span class="icon">
                 <span class="fa-layers fa-fw" aria-hidden="true">
                   <i class="fas fa-vector-square"></i>
                   <i class="fas fa-user" data-fa-transform="shrink-10"></i>
@@ -58,32 +61,32 @@
             <div class="navbar-item has-dropdown">
               <a class="navbar-link is-arrowless" href="#">
                 <span>More</span>
-                <span class="icon ml-1">
+                <span class="icon">
                   <i class="fas fa-angle-down" aria-hidden="true"></i>
                 </span>
               </a>
               <div class="navbar-dropdown">
                 <a class="navbar-item" href="<%= urlPrefix %>/funeralHomes">
-                  <span class="icon mr-1">
+                  <span class="icon">
                     <i class="fas fa-fw fa-place-of-worship" aria-hidden="true"></i>
                   </span>
                   <span>Funeral Homes</span>
                 </a>
                 <a class="navbar-item" href="<%= urlPrefix %>/burialSites" accesskey="3">
-                  <span class="icon mr-1">
+                  <span class="icon">
                     <i class="fas fa-fw fa-vector-square" aria-hidden="true"></i>
                   </span>
                   <span>Burial Sites</span>
                 </a>
                 <a class="navbar-item" href="<%= urlPrefix %>/cemeteries" accesskey="4">
-                  <span class="icon mr-1">
+                  <span class="icon">
                     <i class="far fa-fw fa-map" aria-hidden="true"></i>
                   </span>
                   <span>Cemeteries</span>
                 </a>
                 <hr class="navbar-divider" />
                 <a class="navbar-item" href="<%= urlPrefix %>/reports">
-                  <span class="icon mr-1">
+                  <span class="icon">
                     <i class="fas fa-fw fa-file" aria-hidden="true"></i>
                   </span>
                   <span>Reports</span>
@@ -93,7 +96,7 @@
                   target="_blank"
                   accesskey="h"
                   rel="noopener noreferrer">
-                  <span class="icon mr-1">
+                  <span class="icon">
                     <i class="fas fa-fw fa-question-circle" aria-hidden="true"></i>
                   </span>
                   <span>Help</span>
@@ -104,7 +107,7 @@
 
           <div class="navbar-end">
             <a class="navbar-item" id="cityssm-theme--logout-button" role="button" href="#" accesskey="x">
-              <span class="icon mr-1">
+              <span class="icon">
                 <i class="fas fa-fw fa-sign-out-alt" aria-hidden="true"></i>
               </span>
               <span>Log Out <%=user.userName %></span>

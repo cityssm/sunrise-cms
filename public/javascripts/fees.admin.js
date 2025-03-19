@@ -31,7 +31,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             feeCategoryContainerElement.innerHTML = `<div class="panel-heading">
         <div class="columns">
           <div class="column">
-            <h2 class="title is-4 mb-2">${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}</h2>
+            <h2 class="title is-5 has-text-white mb-2">${cityssm.escapeHTML(feeCategory.feeCategory)}</h2>
             ${feeCategory.isGroupedFee
                 ? '<span class="tag">Grouped Fee</span>'
                 : ''}
@@ -73,7 +73,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <div class="message is-info">
               <p class="message-body">
                 There are no fees in the
-                "${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}"
+                "${cityssm.escapeHTML(feeCategory.feeCategory)}"
                 category.
               </p>
             </div>
@@ -95,9 +95,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <p>
               <a class="has-text-weight-bold a--editFee" href="#">${cityssm.escapeHTML(fee.feeName ?? '')}</a><br />
               <small>
-              ${
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                cityssm
+              ${cityssm
                     .escapeHTML(fee.feeDescription ?? '')
                     .replaceAll('\n', '<br />')}
               </small>

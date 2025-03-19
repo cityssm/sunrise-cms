@@ -182,7 +182,7 @@ declare const bulmaJS: BulmaJS
             </div>
             <div class="control">
               <button class="button is-success" type="submit" aria-label="Save">
-                <i class="fas fa-save" aria-hidden="true"></i>
+                <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
               </button>
             </div>
           </div>
@@ -198,7 +198,7 @@ declare const bulmaJS: BulmaJS
           </div>
           <div class="control">
             <button class="button is-danger is-light button--deleteWorkOrderType" data-tooltip="Delete Work Order Type" type="button" aria-label="Delete Work Order Type">
-              <i class="fas fa-trash" aria-hidden="true"></i>
+              <span class="icon"><i class="fas fa-trash" aria-hidden="true"></i></span>
             </button>
           </div>
         </div>
@@ -432,7 +432,7 @@ declare const bulmaJS: BulmaJS
             </div>
             <div class="control">
               <button class="button is-success" type="submit" aria-label="Save">
-                <i class="fas fa-save" aria-hidden="true"></i>
+                <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
               </button>
             </div>
           </div>
@@ -448,7 +448,7 @@ declare const bulmaJS: BulmaJS
           </div>
           <div class="control">
             <button class="button is-danger is-light button--deleteWorkOrderMilestoneType" data-tooltip="Delete Milestone Type" type="button" aria-label="Delete Milestone Type">
-              <i class="fas fa-trash" aria-hidden="true"></i>
+              <span class="icon"><i class="fas fa-trash" aria-hidden="true"></i></span>
             </button>
           </div>
         </div>
@@ -675,7 +675,7 @@ declare const bulmaJS: BulmaJS
             </div>
             <div class="control">
               <button class="button is-success" type="submit" aria-label="Save">
-                <i class="fas fa-save" aria-hidden="true"></i>\
+                <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
               </button>
             </div>
           </div>
@@ -691,7 +691,7 @@ declare const bulmaJS: BulmaJS
           </div>
           <div class="control">
             <button class="button is-danger is-light button--deleteBurialSiteStatus" data-tooltip="Delete Status" type="button" aria-label="Delete Status">
-              <i class="fas fa-trash" aria-hidden="true"></i>
+              <span class="icon"><i class="fas fa-trash" aria-hidden="true"></i></span>
             </button>
           </div>
         </div>

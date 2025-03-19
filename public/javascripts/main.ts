@@ -203,14 +203,14 @@ declare const exports: Record<string, unknown> & {
       <button
           class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
           data-tooltip="Move Up" data-direction="up" type="button" aria-label="Move Up">
-      <i class="fas fa-arrow-up" aria-hidden="true"></i>
+        <span class="icon"><i class="fas fa-arrow-up" aria-hidden="true"></i></span>
       </button>
       </div>
       <div class="control">
       <button
           class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
           data-tooltip="Move Down" data-direction="down" type="button" aria-label="Move Down">
-      <i class="fas fa-arrow-down" aria-hidden="true"></i>
+        <span class="icon"><i class="fas fa-arrow-down" aria-hidden="true"></i></span>
       </button>
       </div>
       </div>`

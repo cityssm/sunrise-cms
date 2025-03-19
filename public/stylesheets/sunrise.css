@@ -1,0 +1,162 @@
+.has-min-page-height {
+  min-height: 100vh;
+}
+
+/* to fix page titles inside level components, set on .level-left */
+
+.has-flex-shrink-1 {
+  flex-shrink: 1;
+}
+
+.has-border-radius-3 {
+  border-radius: 3px;
+}
+
+/*
+ * Tabs
+ */
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.is-active {
+  display: block;
+}
+
+/*
+ * Login page
+ */
+
+#is-login-page {
+  overflow: auto;
+  background-position: top center;
+  background-size: cover;
+}
+
+#is-login-page body > .columns {
+  min-height: 100vh;
+}
+
+/*
+ * Print
+ */
+
+.container.is-page {
+  width: 8.5in;
+  padding: 10px 20px 20px;
+  margin: 20px auto;
+  background-color: var(--bulma-white);
+  border: 1px solid var(--bulma-black);
+}
+
+@media print {
+  .container.is-page {
+    width: 100%;
+    padding: 0;
+    border: 0;
+  }
+}
+
+/*
+ * z-index to compensate for leaflet
+ */
+
+.navbar.is-fixed-top {
+  z-index: 1100;
+}
+
+.modal {
+  z-index: 1200;
+}
+
+/*
+ * Static button pointer events
+ */
+
+span.button.is-static {
+  pointer-events: all;
+  cursor: default;
+}
+
+/*
+ * Fixed Level
+ */
+
+.level.is-fixed-bottom {
+  z-index: 1100;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px;
+  margin: 0;
+
+  &.has-shadow {
+    box-shadow: 0 -2px 0 0 #f5f5f5;
+  }
+}
+
+/*
+ * Fixed bottom
+ */
+
+@media screen {
+  .fixed-container {
+    position: fixed;
+    z-index: 30;
+    display: inline-block;
+  }
+
+  .fixed-container.is-fixed-bottom-right {
+    right: 0;
+    bottom: 0;
+  }
+
+  .fixed-container.is-fixed-bottom {
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+/*
+ * Circle Button
+ */
+
+.button.is-circle {
+  width: 2.2em;
+  height: 2.2em;
+  font-size: 2em;
+  border-radius: 50%;
+}
+
+/*
+ * Modal right-justified button spacing
+ */
+
+.modal .buttons.is-block.has-text-right > .button {
+  margin-left: 0.5em;
+}
+
+/*
+ * Form elements
+ */
+
+.textarea {
+  resize: vertical;
+}
+
+.input[type='number'] {
+  -moz-appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+  }
+}
+
+.select option:disabled {
+  display: none;
+}

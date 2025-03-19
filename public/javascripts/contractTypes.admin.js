@@ -438,7 +438,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="title is-4">(All Contract Types)</h2>
+              <h2 class="title is-4 has-text-white">(All Contract Types)</h2>
             </div>
           </div>
           <div class="level-right">
@@ -486,7 +486,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </button>
             </div>
             <div class="level-item">
-              <h2 class="title is-4">${cityssm.escapeHTML(contractType.contractType)}</h2>
+              <h2 class="title is-4 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
             </div>
             ${contractType.isPreneed
                 ? `<div class="level-item">
@@ -547,7 +547,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="title is-4">${cityssm.escapeHTML(contractType.contractType)}</h2>
+              <h2 class="title is-4 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
             </div>
           </div>
           <div class="level-right">

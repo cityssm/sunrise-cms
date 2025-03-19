@@ -1,7 +1,0 @@
-{
-  "reject": [
-    "@cityssm/bulma-sticky-table",
-    "bulma",
-    "bulma-calendar"
-  ]
-}

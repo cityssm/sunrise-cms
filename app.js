@@ -70,7 +70,11 @@ if (urlPrefix !== '') {
     debug(`urlPrefix = ${urlPrefix}`);
 }
 app.use(urlPrefix, express.static(path.join('public')));
+app.use(`${urlPrefix}/lib/bulma`, express.static(path.join('node_modules', 'bulma', 'css')));
+app.use(`${urlPrefix}/lib/bulma-tooltip`, express.static(path.join('node_modules', 'bulma-tooltip', 'dist', 'css')));
 app.use(`${urlPrefix}/lib/cityssm-bulma-js/bulma-js.js`, express.static(path.join('node_modules', '@cityssm', 'bulma-js', 'dist', 'bulma-js.js')));
+app.use(`${urlPrefix}/lib/cityssm-fa-glow`, express.static(path.join('node_modules', '@cityssm', 'fa-glow')));
+app.use(`${urlPrefix}/lib/cityssm-bulma-sticky-table`, express.static(path.join('node_modules', '@cityssm', 'bulma-sticky-table')));
 app.use(`${urlPrefix}/lib/cityssm-bulma-webapp-js`, express.static(path.join('node_modules', '@cityssm', 'bulma-webapp-js', 'dist')));
 app.use(`${urlPrefix}/lib/fa`, express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free')));
 app.use(`${urlPrefix}/lib/leaflet`, express.static(path.join('node_modules', 'leaflet', 'dist')));
