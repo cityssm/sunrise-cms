@@ -13,7 +13,7 @@ declare const bulmaJS: BulmaJS
       document.querySelector('main')?.getAttribute('data-url-prefix') ?? ''
 
     globalThis.localStorage.clear()
-    globalThis.location.href = urlPrefix + '/logout'
+    globalThis.location.href = `${urlPrefix}/logout`
   }
 
   document
@@ -46,7 +46,7 @@ declare const bulmaJS: BulmaJS
 
   function doKeepAlive(): void {
     cityssm.postJSON(
-      urlPrefix + '/keepAlive',
+      `${urlPrefix}/keepAlive`,
       {
         t: Date.now()
       },

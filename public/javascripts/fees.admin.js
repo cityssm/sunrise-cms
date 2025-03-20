@@ -497,7 +497,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             function doDelete() {
                 cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteFee`, {
                     feeId
-                }, (rawResponseJSON) => {
+                }, 
+                // eslint-disable-next-line sonarjs/no-nested-functions
+                (rawResponseJSON) => {
                     const responseJSON = rawResponseJSON;
                     if (responseJSON.success) {
                         feeCategories = responseJSON.feeCategories;

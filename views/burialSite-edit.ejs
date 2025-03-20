@@ -343,13 +343,19 @@
           <div class="field">
             <label class="label" for="burialSite--burialSiteLatitude">Latitude</label>
             <div class="control">
-              <input class="input" id="burialSite--burialSiteLatitude" name="burialSiteLatitude" type="number" min="-90" max="90" step="0.00000001" value="<%= burialSite.burialSiteLatitude %>" onwheel="return false" />
+              <input class="input" id="burialSite--burialSiteLatitude" name="burialSiteLatitude" type="number"
+                min="<%= configFunctions.getConfigProperty('settings.latitudeMin') %>"
+                max="<%= configFunctions.getConfigProperty('settings.latitudeMax') %>"
+                step="0.00000001" value="<%= burialSite.burialSiteLatitude %>" onwheel="return false" />
             </div>
           </div>
           <div class="field">
             <label class="label" for="burialSite--burialSiteLongitude">Longitude</label>
             <div class="control">
-              <input class="input" id="burialSite--burialSiteLongitude" name="burialSiteLongitude" type="number" min="-180" max="180" step="0.00000001" value="<%= burialSite.burialSiteLongitude %>" onwheel="return false" />
+              <input class="input" id="burialSite--burialSiteLongitude" name="burialSiteLongitude" type="number"
+                min="<%= configFunctions.getConfigProperty('settings.longitudeMin') %>"
+                max="<%= configFunctions.getConfigProperty('settings.longitudeMax') %>"
+                step="0.00000001" value="<%= burialSite.burialSiteLongitude %>" onwheel="return false" />
             </div>
           </div>
         </div>

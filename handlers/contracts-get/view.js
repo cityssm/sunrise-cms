@@ -9,7 +9,7 @@ export default async function handler(request, response) {
     }
     const contractTypePrints = await getContractTypePrintsById(contract.contractTypeId);
     response.render('contract-view', {
-        headTitle: 'Contract View',
+        headTitle: `Contract #${contract.contractId.toString()}`,
         contract,
         contractTypePrints
     });

@@ -213,8 +213,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.openHtmlModal('burialSite-editComment', {
             onshow(modalElement) {
                 sunrise.populateAliases(modalElement);
-                modalElement.querySelector('#burialSiteCommentEdit--burialSiteId').value = burialSiteId;
-                modalElement.querySelector('#burialSiteCommentEdit--burialSiteCommentId').value = burialSiteCommentId.toString();
+                modalElement
+                    .querySelector('#burialSiteCommentEdit--burialSiteId')
+                    ?.setAttribute('value', burialSiteId);
+                modalElement
+                    .querySelector('#burialSiteCommentEdit--burialSiteCommentId')
+                    ?.setAttribute('value', burialSiteCommentId.toString());
                 modalElement.querySelector('#burialSiteCommentEdit--comment').value = burialSiteComment.comment ?? '';
                 const commentDateStringElement = modalElement.querySelector('#burialSiteCommentEdit--commentDateString');
                 commentDateStringElement.value =
@@ -339,7 +343,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.openHtmlModal('burialSite-addComment', {
             onshow(modalElement) {
                 sunrise.populateAliases(modalElement);
-                modalElement.querySelector('#burialSiteCommentAdd--burialSiteId').value = burialSiteId;
+                modalElement
+                    .querySelector('#burialSiteCommentAdd--burialSiteId')
+                    ?.setAttribute('value', burialSiteId);
                 modalElement
                     .querySelector('form')
                     ?.addEventListener('submit', doAddComment);

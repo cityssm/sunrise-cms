@@ -31,7 +31,9 @@ function cacheBurialSiteIds(burialSiteId, nextBurialSiteId, relayMessage = true)
             process.send(workerMessage);
         }
     }
-    catch { }
+    catch {
+        // Ignore
+    }
 }
 export async function getNextBurialSiteId(burialSiteId) {
     let nextBurialSiteId = nextBurialSiteIdCache.get(burialSiteId);
@@ -82,7 +84,9 @@ export function clearNextPreviousBurialSiteIdCache(burialSiteId = -1, relayMessa
             process.send(workerMessage);
         }
     }
-    catch { }
+    catch {
+        // Ignore
+    }
 }
 const segmentConfig = getConfigProperty('settings.burialSites.burialSiteNameSegments');
 export function buildBurialSiteName(cemeteryKey, segments) {

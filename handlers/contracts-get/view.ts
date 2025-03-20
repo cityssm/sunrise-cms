@@ -26,7 +26,7 @@ export default async function handler(
   )
 
   response.render('contract-view', {
-    headTitle: 'Contract View',
+    headTitle: `Contract #${contract.contractId.toString()}`,
     contract,
     contractTypePrints
   })

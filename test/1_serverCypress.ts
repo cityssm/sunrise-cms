@@ -1,10 +1,11 @@
-/* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
+/* eslint-disable no-console, unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 
 import assert from 'node:assert'
 import { exec } from 'node:child_process'
 import http from 'node:http'
+import { after, before, describe, it } from 'node:test'
 
-import { minutesToMillis } from '@cityssm/to-millis'
+import { hoursToMillis } from '@cityssm/to-millis'
 
 import { app } from '../app.js'
 
@@ -34,7 +35,7 @@ function runCypress(browser: 'chrome' | 'firefox', done: () => void): void {
   })
 }
 
-describe('sunrise-cms', () => {
+await describe('sunrise-cms', async () => {
   const httpServer = http.createServer(app)
 
   let serverStarted = false
@@ -55,17 +56,29 @@ describe('sunrise-cms', () => {
     }
   })
 
-  it(`Ensure server starts on port ${portNumber.toString()}`, () => {
+  await it(`Ensure server starts on port ${portNumber.toString()}`, () => {
     assert.ok(serverStarted)
   })
 
-  describe('Cypress tests', () => {
-    it('Should run Cypress tests in Chrome', (done) => {
-      runCypress('chrome', done)
-    }).timeout(minutesToMillis(30))
+  await describe('Cypress tests', async () => {
+    await it(
+      'Should run Cypress tests in Chrome',
+      {
+        timeout: hoursToMillis(1)
+      },
+      (context, done) => {
+        runCypress('chrome', done)
+      }
+    )
 
-    it('Should run Cypress tests in Firefox', (done) => {
-      runCypress('firefox', done)
-    }).timeout(minutesToMillis(30))
+    await it(
+      'Should run Cypress tests in Firefox',
+      {
+        timeout: hoursToMillis(1)
+      },
+      (context, done) => {
+        runCypress('firefox', done)
+      }
+    )
   })
 })

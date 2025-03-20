@@ -4,7 +4,7 @@ export const configDefaultValues = {
     'application.applicationName': 'Sunrise CMS',
     'application.backgroundURL': '/images/cemetery-background.jpg',
     'application.logoURL': '/images/sunrise-cms.svg',
-    'application.httpPort': 7000,
+    'application.httpPort': 9000,
     'application.userDomain': '',
     'application.useTestDatabases': false,
     'application.maximumProcesses': 4,
@@ -25,8 +25,13 @@ export const configDefaultValues = {
     'aliases.workOrderCloseDate': 'Completion Date',
     'settings.cityDefault': '',
     'settings.provinceDefault': '',
+    'settings.latitudeMin': -90,
+    'settings.latitudeMax': 90,
+    'settings.longitudeMin': -180,
+    'settings.longitudeMax': 180,
     'settings.burialSites.burialSiteNameSegments': {
         separator: '-',
+        includeCemeteryKey: false,
         segments: {
             1: {
                 isRequired: true,
@@ -37,9 +42,23 @@ export const configDefaultValues = {
             }
         }
     },
+    'settings.burialSites.burialSiteNameSegments.includeCemeteryKey': false,
     'settings.contracts.burialSiteIdIsRequired': true,
     'settings.contracts.contractEndDateIsRequired': false,
-    'settings.contracts.deathAgePeriods': ['Years', 'Months', 'Days', 'Stillborn'],
+    'settings.contracts.purchaserRelationships': [
+        'Spouse',
+        'Child',
+        'Parent',
+        'Sibling',
+        'Friend',
+        'Self'
+    ],
+    'settings.contracts.deathAgePeriods': [
+        'Years',
+        'Months',
+        'Days',
+        'Stillborn'
+    ],
     'settings.contracts.prints': ['screen/contract'],
     'settings.fees.taxPercentageDefault': 0,
     'settings.workOrders.workOrderNumberLength': 6,

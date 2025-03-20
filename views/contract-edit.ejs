@@ -158,7 +158,7 @@
                   required accesskey="f"
                   <%= (isCreate ? " autofocus" : "") %>>
                   <% if (isCreate) { %>
-                    <option value="" data-is-preneed="false">(No Type)</option>
+                    <option value="" data-is-preneed="false">(Select a Type)</option>
                   <% } %>
                   <% let typeIsFound = false; %>
                   <% for (const contractType of contractTypes) { %>
@@ -498,9 +498,17 @@
               </span>
             </label>
             <div class="control">
-              <input class="input" id="contract--purchaserRelationship" name="purchaserRelationship" type="text" maxlength="100" autocomplete="off" value="<%= contract.purchaserRelationship %>" />
+              <input class="input" id="contract--purchaserRelationship" name="purchaserRelationship" type="text"
+                maxlength="100" autocomplete="off"
+                list="datalist--purchaserRelationships"
+                value="<%= contract.purchaserRelationship %>" />
             </div>
           </div>
+          <datalist id="datalist--purchaserRelationships">
+            <% for (const relationship of configFunctions.getConfigProperty('settings.contracts.purchaserRelationships')) { %>
+              <option value="<%= relationship %>">
+            <% } %>
+          </datalist>
         </div>
       </div>
     </div>

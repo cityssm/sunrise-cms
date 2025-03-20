@@ -457,16 +457,14 @@ declare const bulmaJS: BulmaJS
       tableRowElement
         .querySelector('form')
         ?.addEventListener('submit', updateWorkOrderMilestoneType)
-      ;(
-        tableRowElement.querySelector(
-          '.button--moveWorkOrderMilestoneTypeUp'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveWorkOrderMilestoneType)
-      ;(
-        tableRowElement.querySelector(
-          '.button--moveWorkOrderMilestoneTypeDown'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveWorkOrderMilestoneType)
+
+      tableRowElement
+        .querySelector('.button--moveWorkOrderMilestoneTypeUp')
+        ?.addEventListener('click', moveWorkOrderMilestoneType)
+
+      tableRowElement
+        .querySelector('.button--moveWorkOrderMilestoneTypeDown')
+        ?.addEventListener('click', moveWorkOrderMilestoneType)
 
       tableRowElement
         .querySelector('.button--deleteWorkOrderMilestoneType')
@@ -475,37 +473,36 @@ declare const bulmaJS: BulmaJS
       containerElement.append(tableRowElement)
     }
   }
-  ;(
-    document.querySelector(
-      '#form--addWorkOrderMilestoneType'
-    ) as HTMLFormElement
-  ).addEventListener('submit', (submitEvent: SubmitEvent) => {
-    submitEvent.preventDefault()
 
-    const formElement = submitEvent.currentTarget as HTMLFormElement
+  document
+    .querySelector('#form--addWorkOrderMilestoneType')
+    ?.addEventListener('submit', (submitEvent: SubmitEvent) => {
+      submitEvent.preventDefault()
 
-    cityssm.postJSON(
-      `${sunrise.urlPrefix}/admin/doAddWorkOrderMilestoneType`,
-      formElement,
-      (rawResponseJSON) => {
-        const responseJSON =
-          rawResponseJSON as WorkOrderMilestoneTypeResponseJSON
+      const formElement = submitEvent.currentTarget as HTMLFormElement
 
-        if (responseJSON.success) {
-          workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes
-          renderWorkOrderMilestoneTypes()
-          formElement.reset()
-          formElement.querySelector('input')?.focus()
-        } else {
-          bulmaJS.alert({
-            title: 'Error Adding Work Order Milestone Type',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
-          })
+      cityssm.postJSON(
+        `${sunrise.urlPrefix}/admin/doAddWorkOrderMilestoneType`,
+        formElement,
+        (rawResponseJSON) => {
+          const responseJSON =
+            rawResponseJSON as WorkOrderMilestoneTypeResponseJSON
+
+          if (responseJSON.success) {
+            workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes
+            renderWorkOrderMilestoneTypes()
+            formElement.reset()
+            formElement.querySelector('input')?.focus()
+          } else {
+            bulmaJS.alert({
+              title: 'Error Adding Work Order Milestone Type',
+              message: responseJSON.errorMessage ?? '',
+              contextualColorName: 'danger'
+            })
+          }
         }
-      }
-    )
-  })
+      )
+    })
 
   renderWorkOrderMilestoneTypes()
 

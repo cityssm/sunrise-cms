@@ -310,16 +310,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
             tableRowElement
                 .querySelector('form')
                 ?.addEventListener('submit', updateWorkOrderMilestoneType);
-            tableRowElement.querySelector('.button--moveWorkOrderMilestoneTypeUp').addEventListener('click', moveWorkOrderMilestoneType);
-            tableRowElement.querySelector('.button--moveWorkOrderMilestoneTypeDown').addEventListener('click', moveWorkOrderMilestoneType);
+            tableRowElement
+                .querySelector('.button--moveWorkOrderMilestoneTypeUp')
+                ?.addEventListener('click', moveWorkOrderMilestoneType);
+            tableRowElement
+                .querySelector('.button--moveWorkOrderMilestoneTypeDown')
+                ?.addEventListener('click', moveWorkOrderMilestoneType);
             tableRowElement
                 .querySelector('.button--deleteWorkOrderMilestoneType')
                 ?.addEventListener('click', deleteWorkOrderMilestoneType);
             containerElement.append(tableRowElement);
         }
     }
-    ;
-    document.querySelector('#form--addWorkOrderMilestoneType').addEventListener('submit', (submitEvent) => {
+    document
+        .querySelector('#form--addWorkOrderMilestoneType')
+        ?.addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddWorkOrderMilestoneType`, formElement, (rawResponseJSON) => {

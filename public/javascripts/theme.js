@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function doLogout() {
         const urlPrefix = document.querySelector('main')?.getAttribute('data-url-prefix') ?? '';
         globalThis.localStorage.clear();
-        globalThis.location.href = urlPrefix + '/logout';
+        globalThis.location.href = `${urlPrefix}/logout`;
     }
     document
         .querySelector('#cityssm-theme--logout-button')
@@ -27,7 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         .querySelector('main')
         ?.getAttribute('data-session-keep-alive-millis');
     function doKeepAlive() {
-        cityssm.postJSON(urlPrefix + '/keepAlive', {
+        cityssm.postJSON(`${urlPrefix}/keepAlive`, {
             t: Date.now()
         }, () => {
             // Do nothing

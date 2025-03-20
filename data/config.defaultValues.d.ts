@@ -26,9 +26,15 @@ export declare const configDefaultValues: {
     'aliases.workOrderCloseDate': string;
     'settings.cityDefault': string;
     'settings.provinceDefault': string;
+    'settings.latitudeMin': number;
+    'settings.latitudeMax': number;
+    'settings.longitudeMin': number;
+    'settings.longitudeMax': number;
     'settings.burialSites.burialSiteNameSegments': ConfigBurialSiteNameSegments;
+    'settings.burialSites.burialSiteNameSegments.includeCemeteryKey': boolean;
     'settings.contracts.burialSiteIdIsRequired': boolean;
     'settings.contracts.contractEndDateIsRequired': boolean;
+    'settings.contracts.purchaserRelationships': string[];
     'settings.contracts.deathAgePeriods': string[];
     'settings.contracts.prints': string[];
     'settings.fees.taxPercentageDefault': number;

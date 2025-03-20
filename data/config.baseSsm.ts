@@ -18,7 +18,7 @@ config.settings.burialSites.burialSiteNameSegments = {
       maxLength: 1
     },
     2: {
-      isRequired: true,
+      isRequired: false,
       isAvailable: true,
       label: 'Range',
       minLength: 1,
@@ -42,6 +42,11 @@ config.settings.burialSites.burialSiteNameSegments = {
 }
 
 config.settings.cityDefault = 'Sault Ste. Marie'
+
+config.settings.latitudeMax = 46.75
+config.settings.latitudeMin = 46.4
+config.settings.longitudeMax = -84.2
+config.settings.longitudeMin = -84.5
 
 config.settings.contracts.prints = [
   'pdf/ssm.cemetery.burialPermit',

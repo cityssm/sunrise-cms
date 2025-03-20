@@ -267,17 +267,17 @@ export interface ContractInterment extends Record {
 }
 
 export interface ContractComment extends Record {
-  contractCommentId?: number
+  contractCommentId: number
   contractId?: number
 
-  commentDate?: number
-  commentDateString?: string
+  commentDate: number
+  commentDateString: string
 
-  commentTime?: number
-  commentTimeString?: string
-  commentTimePeriodString?: string
+  commentTime: number
+  commentTimeString: string
+  commentTimePeriodString: string
 
-  comment?: string
+  comment: string
 }
 
 export interface ContractField extends ContractTypeField, Record {

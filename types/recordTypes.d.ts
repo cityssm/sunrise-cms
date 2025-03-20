@@ -208,14 +208,14 @@ export interface ContractInterment extends Record {
     recordUpdate_timeMillisMax?: number;
 }
 export interface ContractComment extends Record {
-    contractCommentId?: number;
+    contractCommentId: number;
     contractId?: number;
-    commentDate?: number;
-    commentDateString?: string;
-    commentTime?: number;
-    commentTimeString?: string;
-    commentTimePeriodString?: string;
-    comment?: string;
+    commentDate: number;
+    commentDateString: string;
+    commentTime: number;
+    commentTimeString: string;
+    commentTimePeriodString: string;
+    comment: string;
 }
 export interface ContractField extends ContractTypeField, Record {
     contractId: number;

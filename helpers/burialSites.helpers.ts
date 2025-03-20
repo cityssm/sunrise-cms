@@ -52,7 +52,9 @@ function cacheBurialSiteIds(
 
       process.send(workerMessage)
     }
-  } catch {}
+  } catch {
+    // Ignore
+  }
 }
 
 export async function getNextBurialSiteId(
@@ -131,7 +133,9 @@ export function clearNextPreviousBurialSiteIdCache(
 
       process.send(workerMessage)
     }
-  } catch {}
+  } catch {
+    // Ignore
+  }
 }
 
 const segmentConfig = getConfigProperty(

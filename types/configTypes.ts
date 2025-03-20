@@ -23,6 +23,10 @@ export interface Config {
   settings: {
     cityDefault?: string
     provinceDefault?: string
+    latitudeMin?: number
+    latitudeMax?: number
+    longitudeMin?: number
+    longitudeMax?: number
     fees: {
       taxPercentageDefault?: number
     }
@@ -32,6 +36,7 @@ export interface Config {
     contracts: {
       burialSiteIdIsRequired?: boolean
       contractEndDateIsRequired?: boolean
+      purchaserRelationships?: string[]
       deathAgePeriods?: string[]
       prints?: string[]
     }

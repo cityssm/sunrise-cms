@@ -1,20 +1,18 @@
 import assert from 'node:assert';
 import fs from 'node:fs';
-// skipcq: JS-C1003 - Testing functions
+import { before, describe, it } from 'node:test';
 import * as cacheFunctions from '../helpers/functions.cache.js';
-// skipcq: JS-C1003 - Testing functions
 import * as sqlFilterFunctions from '../helpers/functions.sqlFilters.js';
-// skipcq: JS-C1003 - Testing functions
 import * as userFunctions from '../helpers/functions.user.js';
-describe('functions.cache', () => {
+await describe('functions.cache', async () => {
     const badId = -3;
     // eslint-disable-next-line no-secrets/no-secrets
     const badName = 'qwertyuiopasdfghjklzxcvbnm';
     before(() => {
         cacheFunctions.clearCaches();
     });
-    describe('Burial Site Statuses', () => {
-        it('returns Burial Site Statuses', async () => {
+    await describe('Burial Site Statuses', async () => {
+        await it('returns Burial Site Statuses', async () => {
             cacheFunctions.clearCacheByTableName('BurialSiteStatuses');
             const burialSiteStatuses = await cacheFunctions.getBurialSiteStatuses();
             assert.ok(burialSiteStatuses.length > 0);
@@ -25,17 +23,17 @@ describe('functions.cache', () => {
                 assert.strictEqual(burialSiteStatus.burialSiteStatus, byName?.burialSiteStatus);
             }
         });
-        it('returns undefined with a bad burialSiteStatusId', async () => {
+        await it('returns undefined with a bad burialSiteStatusId', async () => {
             const byBadId = await cacheFunctions.getBurialSiteStatusById(badId);
             assert.ok(byBadId === undefined);
         });
-        it('returns undefined with a bad lotStatus', async () => {
+        await it('returns undefined with a bad lotStatus', async () => {
             const byBadName = await cacheFunctions.getBurialSiteStatusByBurialSiteStatus(badName);
             assert.ok(byBadName === undefined);
         });
     });
-    describe('Lot Types', () => {
-        it('returns Lot Types', async () => {
+    await describe('Burial Site Types', async () => {
+        await it('returns Burial Site Types', async () => {
             cacheFunctions.clearCacheByTableName('BurialSiteTypes');
             const burialSiteTypes = await cacheFunctions.getBurialSiteTypes();
             assert.ok(burialSiteTypes.length > 0);
@@ -46,17 +44,17 @@ describe('functions.cache', () => {
                 assert.strictEqual(burialSiteType.burialSiteType, byName?.burialSiteType);
             }
         });
-        it('returns undefined with a bad burialSiteTypeId', async () => {
+        await it('returns undefined with a bad burialSiteTypeId', async () => {
             const byBadId = await cacheFunctions.getBurialSiteTypeById(badId);
             assert.ok(byBadId === undefined);
         });
-        it('returns undefined with a bad lotType', async () => {
+        await it('returns undefined with a bad lotType', async () => {
             const byBadName = await cacheFunctions.getBurialSiteTypesByBurialSiteType(badName);
             assert.ok(byBadName === undefined);
         });
     });
-    describe('Occupancy Types', () => {
-        it('returns Contract Types', async () => {
+    await describe('Contract Types', async () => {
+        await it('returns Contract Types', async () => {
             cacheFunctions.clearCacheByTableName('ContractTypes');
             const contractTypes = await cacheFunctions.getContractTypes();
             assert.ok(contractTypes.length > 0);
@@ -67,17 +65,17 @@ describe('functions.cache', () => {
                 assert.strictEqual(contractType.contractType, byName?.contractType);
             }
         });
-        it('returns undefined with a bad contractTypeId', async () => {
+        await it('returns undefined with a bad contractTypeId', async () => {
             const byBadId = await cacheFunctions.getContractTypeById(badId);
             assert.ok(byBadId === undefined);
         });
-        it('returns undefined with a bad contractType', async () => {
+        await it('returns undefined with a bad contractType', async () => {
             const byBadName = await cacheFunctions.getContractTypeByContractType(badName);
             assert.ok(byBadName === undefined);
         });
     });
-    describe('Work Order Types', () => {
-        it('returns Work Order Types', async () => {
+    await describe('Work Order Types', async () => {
+        await it('returns Work Order Types', async () => {
             cacheFunctions.clearCacheByTableName('WorkOrderTypes');
             const workOrderTypes = await cacheFunctions.getWorkOrderTypes();
             assert.ok(workOrderTypes.length > 0);
@@ -86,13 +84,13 @@ describe('functions.cache', () => {
                 assert.strictEqual(workOrderType.workOrderTypeId, byId?.workOrderTypeId);
             }
         });
-        it('returns undefined with a bad workOrderTypeId', async () => {
+        await it('returns undefined with a bad workOrderTypeId', async () => {
             const byBadId = await cacheFunctions.getWorkOrderTypeById(badId);
             assert.ok(byBadId === undefined);
         });
     });
-    describe('Work Order Milestone Types', () => {
-        it('returns Work Order Milestone Types', async () => {
+    await describe('Work Order Milestone Types', async () => {
+        await it('returns Work Order Milestone Types', async () => {
             cacheFunctions.clearCacheByTableName('WorkOrderMilestoneTypes');
             const workOrderMilestoneTypes = await cacheFunctions.getWorkOrderMilestoneTypes();
             assert.ok(workOrderMilestoneTypes.length > 0);
@@ -103,49 +101,49 @@ describe('functions.cache', () => {
                 assert.strictEqual(workOrderMilestoneType.workOrderMilestoneType, byName?.workOrderMilestoneType);
             }
         });
-        it('returns undefined with a bad workOrderMilestoneTypeId', async () => {
+        await it('returns undefined with a bad workOrderMilestoneTypeId', async () => {
             const byBadId = await cacheFunctions.getWorkOrderMilestoneTypeById(badId);
             assert.ok(byBadId === undefined);
         });
-        it('returns undefined with a bad workOrderMilestoneType', async () => {
+        await it('returns undefined with a bad workOrderMilestoneType', async () => {
             const byBadName = await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(badName);
             assert.ok(byBadName === undefined);
         });
     });
 });
-describe('functions.sqlFilters', () => {
-    describe('BurialSiteName filter', () => {
-        it('returns startsWith filter', () => {
+await describe('functions.sqlFilters', async () => {
+    await describe('BurialSiteName filter', async () => {
+        await it('returns startsWith filter', () => {
             const filter = sqlFilterFunctions.getBurialSiteNameWhereClause('TEST1 TEST2', 'startsWith', 'l');
             assert.strictEqual(filter.sqlWhereClause, " and l.burialSiteName like ? || '%'");
             assert.strictEqual(filter.sqlParameters.length, 1);
             assert.ok(filter.sqlParameters.includes('TEST1 TEST2'));
         });
-        it('returns endsWith filter', () => {
+        await it('returns endsWith filter', () => {
             const filter = sqlFilterFunctions.getBurialSiteNameWhereClause('TEST1 TEST2', 'endsWith', 'l');
             assert.strictEqual(filter.sqlWhereClause, " and l.burialSiteName like '%' || ?");
             assert.strictEqual(filter.sqlParameters.length, 1);
             assert.strictEqual(filter.sqlParameters[0], 'TEST1 TEST2');
         });
-        it('returns contains filter', () => {
+        await it('returns contains filter', () => {
             const filter = sqlFilterFunctions.getBurialSiteNameWhereClause('TEST1 TEST2', '', 'l');
             assert.strictEqual(filter.sqlWhereClause, ' and instr(lower(l.burialSiteName), ?) and instr(lower(l.burialSiteName), ?)');
             assert.ok(filter.sqlParameters.includes('test1'));
             assert.ok(filter.sqlParameters.includes('test2'));
         });
-        it('handles empty filter', () => {
+        await it('handles empty filter', () => {
             const filter = sqlFilterFunctions.getBurialSiteNameWhereClause('', '');
             assert.strictEqual(filter.sqlWhereClause, '');
             assert.strictEqual(filter.sqlParameters.length, 0);
         });
-        it('handles undefined filter', () => {
+        await it('handles undefined filter', () => {
             const filter = sqlFilterFunctions.getBurialSiteNameWhereClause(undefined, undefined, 'l');
             assert.strictEqual(filter.sqlWhereClause, '');
             assert.strictEqual(filter.sqlParameters.length, 0);
         });
     });
-    describe('OccupancyTime filter', () => {
-        it('creates three different filters', () => {
+    await describe('OccupancyTime filter', async () => {
+        await it('creates three different filters', () => {
             const currentFilter = sqlFilterFunctions.getContractTimeWhereClause('current');
             assert.notStrictEqual(currentFilter.sqlWhereClause, '');
             const pastFilter = sqlFilterFunctions.getContractTimeWhereClause('past');
@@ -156,50 +154,50 @@ describe('functions.sqlFilters', () => {
             assert.notStrictEqual(currentFilter.sqlWhereClause, futureFilter.sqlWhereClause);
             assert.notStrictEqual(pastFilter.sqlWhereClause, futureFilter.sqlWhereClause);
         });
-        it('handles empty filter', () => {
+        await it('handles empty filter', () => {
             const filter = sqlFilterFunctions.getContractTimeWhereClause('');
             assert.strictEqual(filter.sqlWhereClause, '');
             assert.strictEqual(filter.sqlParameters.length, 0);
         });
-        it('handles undefined filter', () => {
+        await it('handles undefined filter', () => {
             const filter = sqlFilterFunctions.getContractTimeWhereClause(undefined, 'o');
             assert.strictEqual(filter.sqlWhereClause, '');
             assert.strictEqual(filter.sqlParameters.length, 0);
         });
     });
-    describe('DeceasedName filter', () => {
-        it('returns filter', () => {
+    await describe('DeceasedName filter', async () => {
+        await it('returns filter', () => {
             const filter = sqlFilterFunctions.getDeceasedNameWhereClause('TEST1 TEST2', 'o');
             assert.strictEqual(filter.sqlWhereClause, ' and instr(lower(o.deceasedName), ?) and instr(lower(o.deceasedName), ?)');
             assert.ok(filter.sqlParameters.length === 2);
             assert.ok(filter.sqlParameters.includes('test1'));
             assert.ok(filter.sqlParameters.includes('test2'));
         });
-        it('handles empty filter', () => {
+        await it('handles empty filter', () => {
             const filter = sqlFilterFunctions.getDeceasedNameWhereClause('');
             assert.strictEqual(filter.sqlWhereClause, '');
             assert.strictEqual(filter.sqlParameters.length, 0);
         });
-        it('handles undefined filter', () => {
+        await it('handles undefined filter', () => {
             const filter = sqlFilterFunctions.getDeceasedNameWhereClause(undefined, 'o');
             assert.strictEqual(filter.sqlWhereClause, '');
             assert.strictEqual(filter.sqlParameters.length, 0);
         });
     });
 });
-describe('functions.user', () => {
-    describe('unauthenticated, no user in session', () => {
+await describe('functions.user', async () => {
+    await describe('unauthenticated, no user in session', async () => {
         const noUserRequest = {
             session: {}
         };
-        it('can not update', () => {
+        await it('can not update', () => {
             assert.strictEqual(userFunctions.userCanUpdate(noUserRequest), false);
         });
-        it('is not admin', () => {
+        await it('is not admin', () => {
             assert.strictEqual(userFunctions.userIsAdmin(noUserRequest), false);
         });
     });
-    describe('read only user, no update, no admin', () => {
+    await describe('read only user, no update, no admin', async () => {
         const readOnlyRequest = {
             session: {
                 user: {
@@ -212,14 +210,14 @@ describe('functions.user', () => {
                 }
             }
         };
-        it('can not update', () => {
+        await it('can not update', () => {
             assert.strictEqual(userFunctions.userCanUpdate(readOnlyRequest), false);
         });
-        it('is not admin', () => {
+        await it('is not admin', () => {
             assert.strictEqual(userFunctions.userIsAdmin(readOnlyRequest), false);
         });
     });
-    describe('update only user, no admin', () => {
+    await describe('update only user, no admin', async () => {
         const updateOnlyRequest = {
             session: {
                 user: {
@@ -232,14 +230,14 @@ describe('functions.user', () => {
                 }
             }
         };
-        it('can update', () => {
+        await it('can update', () => {
             assert.strictEqual(userFunctions.userCanUpdate(updateOnlyRequest), true);
         });
-        it('is not admin', () => {
+        await it('is not admin', () => {
             assert.strictEqual(userFunctions.userIsAdmin(updateOnlyRequest), false);
         });
     });
-    describe('admin only user, no update', () => {
+    await describe('admin only user, no update', async () => {
         const adminOnlyRequest = {
             session: {
                 user: {
@@ -252,14 +250,14 @@ describe('functions.user', () => {
                 }
             }
         };
-        it('can not update', () => {
+        await it('can not update', () => {
             assert.strictEqual(userFunctions.userCanUpdate(adminOnlyRequest), false);
         });
-        it('is admin', () => {
+        await it('is admin', () => {
             assert.strictEqual(userFunctions.userIsAdmin(adminOnlyRequest), true);
         });
     });
-    describe('update admin user', () => {
+    await describe('update admin user', async () => {
         const updateAdminRequest = {
             session: {
                 user: {
@@ -272,15 +270,15 @@ describe('functions.user', () => {
                 }
             }
         };
-        it('can update', () => {
+        await it('can update', () => {
             assert.strictEqual(userFunctions.userCanUpdate(updateAdminRequest), true);
         });
-        it('is admin', () => {
+        await it('is admin', () => {
             assert.strictEqual(userFunctions.userIsAdmin(updateAdminRequest), true);
         });
     });
-    describe('API key check', () => {
-        it('authenticates with a valid API key', async () => {
+    await describe('API key check', async () => {
+        await it('authenticates with a valid API key', async () => {
             const apiKeysJSON = JSON.parse(fs.readFileSync('data/apiKeys.json', 'utf8'));
             const apiKey = Object.values(apiKeysJSON)[0];
             const apiRequest = {
@@ -290,7 +288,7 @@ describe('functions.user', () => {
             };
             assert.strictEqual(await userFunctions.apiKeyIsValid(apiRequest), true);
         });
-        it('fails to authenticate with an invalid API key', async () => {
+        await it('fails to authenticate with an invalid API key', async () => {
             const apiRequest = {
                 params: {
                     apiKey: 'badKey'
@@ -298,7 +296,7 @@ describe('functions.user', () => {
             };
             assert.strictEqual(await userFunctions.apiKeyIsValid(apiRequest), false);
         });
-        it('fails to authenticate with no API key', async () => {
+        await it('fails to authenticate with no API key', async () => {
             const apiRequest = {
                 params: {}
             };

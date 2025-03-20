@@ -254,20 +254,28 @@
                         <strong>Birth:</strong>
                       </div>
                       <div class="column">
-                        <%= contractInterment.birthDateString ?? '(No Birth Date)' %><br />
-                        <%= contractInterment.birthPlace ?? '(No Birth Place)' %>
+                        <% if (contractInterment.birthDateString === '') { %>
+                          <span class="has-text-grey">(No Birth Date)</span>
+                        <% } else { %>
+                          <%= contractInterment.birthDateString %>
+                        <% } %><br />
+                        <%= contractInterment.birthPlace %>
                       </div>
                     </div>
-                    <div class="columns">
+                    <div class="columns mb-0">
                       <div class="column">
                         <strong>Death:</strong>
                       </div>
                       <div class="column">
-                        <%= contractInterment.deathDateString ?? '(No Death Date)' %><br />
-                        <%= contractInterment.deathPlace ?? '(No Death Place)' %>
+                        <% if (contractInterment.deathDateString === '') { %>
+                          <span class="has-text-grey">(No Death Date)</span>
+                        <% } else { %>
+                          <%= contractInterment.deathDateString %>
+                        <% } %><br />
+                        <%= contractInterment.deathPlace %>
                       </div>
                     </div>
-                    <div class="columns">
+                    <div class="columns mb-0">
                       <div class="column">
                         <strong>Age:</strong>
                       </div>

@@ -9,15 +9,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const contractCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
             .contractCommentId ?? '', 10);
         const contractComment = contractComments.find((currentComment) => currentComment.contractCommentId === contractCommentId);
-        let editFormElement;
-        let editCloseModalFunction;
+        let editFormElement = undefined;
+        let editCloseModalFunction = undefined;
         function editContractComment(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractComment`, editFormElement, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     contractComments = responseJSON.contractComments ?? [];
-                    editCloseModalFunction();
+                    if (editCloseModalFunction !== undefined) {
+                        editCloseModalFunction();
+                    }
                     renderContractComments();
                 }
                 else {
@@ -32,18 +34,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.openHtmlModal('contract-editComment', {
             onshow(modalElement) {
                 sunrise.populateAliases(modalElement);
-                modalElement.querySelector('#contractCommentEdit--contractId').value = contractId;
-                modalElement.querySelector('#contractCommentEdit--contractCommentId').value = contractCommentId.toString();
-                modalElement.querySelector('#contractCommentEdit--comment').value = contractComment.comment ?? '';
+                modalElement
+                    .querySelector('#contractCommentEdit--contractId')
+                    ?.setAttribute('value', contractId);
+                modalElement
+                    .querySelector('#contractCommentEdit--contractCommentId')
+                    ?.setAttribute('value', contractCommentId.toString());
+                modalElement.querySelector('#contractCommentEdit--comment').value = contractComment.comment;
                 const contractCommentDateStringElement = modalElement.querySelector('#contractCommentEdit--commentDateString');
                 contractCommentDateStringElement.value =
-                    contractComment.commentDateString ?? '';
+                    contractComment.commentDateString;
                 const currentDateString = cityssm.dateToString(new Date());
                 contractCommentDateStringElement.max =
+                    // eslint-disable-next-line unicorn/prefer-math-min-max
                     contractComment.commentDateString <= currentDateString
                         ? currentDateString
-                        : contractComment.commentDateString ?? '';
-                modalElement.querySelector('#contractCommentEdit--commentTimeString').value = contractComment.commentTimeString ?? '';
+                        : contractComment.commentDateString;
+                modalElement.querySelector('#contractCommentEdit--commentTimeString').value = contractComment.commentTimeString;
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
@@ -109,15 +116,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
         for (const contractComment of contractComments) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.contractCommentId =
-                contractComment.contractCommentId?.toString();
+                contractComment.contractCommentId.toString();
             tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
           <td>
-            ${cityssm.escapeHTML(contractComment.commentDateString ?? '')}
+            ${cityssm.escapeHTML(contractComment.commentDateString)}
             ${cityssm.escapeHTML(contractComment.commentTime === 0
                 ? ''
-                : contractComment.commentTimePeriodString ?? '')}
+                : contractComment.commentTimePeriodString)}
           </td>
-          <td>${cityssm.escapeHTML(contractComment.comment ?? '')}</td>
+          <td>${cityssm.escapeHTML(contractComment.comment)}</td>
           <td class="is-hidden-print">
             <div class="buttons are-small is-justify-content-end">
             <button class="button is-primary button--edit" type="button">
@@ -151,7 +158,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     contractComments = responseJSON.contractComments;
-                    addCloseModalFunction();
+                    if (addCloseModalFunction !== undefined) {
+                        addCloseModalFunction();
+                    }
                     renderContractComments();
                 }
                 else {

@@ -333,20 +333,18 @@ declare const exports: Record<string, unknown>
     cityssm.openHtmlModal('burialSite-editComment', {
       onshow(modalElement) {
         sunrise.populateAliases(modalElement)
-        ;(
-          modalElement.querySelector(
-            '#burialSiteCommentEdit--burialSiteId'
-          ) as HTMLInputElement
-        ).value = burialSiteId
-        ;(
-          modalElement.querySelector(
-            '#burialSiteCommentEdit--burialSiteCommentId'
-          ) as HTMLInputElement
-        ).value = burialSiteCommentId.toString()
+
+        modalElement
+          .querySelector('#burialSiteCommentEdit--burialSiteId')
+          ?.setAttribute('value', burialSiteId)
+
+        modalElement
+          .querySelector('#burialSiteCommentEdit--burialSiteCommentId')
+          ?.setAttribute('value', burialSiteCommentId.toString())
         ;(
           modalElement.querySelector(
             '#burialSiteCommentEdit--comment'
-          ) as HTMLInputElement
+          ) as HTMLTextAreaElement
         ).value = burialSiteComment.comment ?? ''
 
         const commentDateStringElement = modalElement.querySelector(
@@ -526,11 +524,11 @@ declare const exports: Record<string, unknown>
     cityssm.openHtmlModal('burialSite-addComment', {
       onshow(modalElement) {
         sunrise.populateAliases(modalElement)
-        ;(
-          modalElement.querySelector(
-            '#burialSiteCommentAdd--burialSiteId'
-          ) as HTMLInputElement
-        ).value = burialSiteId
+
+        modalElement
+          .querySelector('#burialSiteCommentAdd--burialSiteId')
+          ?.setAttribute('value', burialSiteId)
+
         modalElement
           .querySelector('form')
           ?.addEventListener('submit', doAddComment)

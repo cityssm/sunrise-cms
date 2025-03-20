@@ -791,6 +791,7 @@ declare const exports: Record<string, unknown>
           {
             feeId
           },
+          // eslint-disable-next-line sonarjs/no-nested-functions
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as ResponseJSON
 

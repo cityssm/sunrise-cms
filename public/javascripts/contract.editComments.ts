@@ -29,8 +29,8 @@ declare const exports: Record<string, unknown>
       (currentComment) => currentComment.contractCommentId === contractCommentId
     ) as ContractComment
 
-    let editFormElement: HTMLFormElement
-    let editCloseModalFunction: () => void
+    let editFormElement: HTMLFormElement | undefined = undefined
+    let editCloseModalFunction: (() => void) | undefined = undefined
 
     function editContractComment(submitEvent: SubmitEvent): void {
       submitEvent.preventDefault()
@@ -47,7 +47,11 @@ declare const exports: Record<string, unknown>
 
           if (responseJSON.success) {
             contractComments = responseJSON.contractComments ?? []
-            editCloseModalFunction()
+
+            if (editCloseModalFunction !== undefined) {
+              editCloseModalFunction()
+            }
+
             renderContractComments()
           } else {
             bulmaJS.alert({
@@ -63,44 +67,42 @@ declare const exports: Record<string, unknown>
     cityssm.openHtmlModal('contract-editComment', {
       onshow(modalElement) {
         sunrise.populateAliases(modalElement)
-        ;(
-          modalElement.querySelector(
-            '#contractCommentEdit--contractId'
-          ) as HTMLInputElement
-        ).value = contractId
-        ;(
-          modalElement.querySelector(
-            '#contractCommentEdit--contractCommentId'
-          ) as HTMLInputElement
-        ).value = contractCommentId.toString()
+
+        modalElement
+          .querySelector('#contractCommentEdit--contractId')
+          ?.setAttribute('value', contractId)
+
+        modalElement
+          .querySelector('#contractCommentEdit--contractCommentId')
+          ?.setAttribute('value', contractCommentId.toString())
         ;(
           modalElement.querySelector(
             '#contractCommentEdit--comment'
-          ) as HTMLInputElement
-        ).value = contractComment.comment ?? ''
+          ) as HTMLTextAreaElement
+        ).value = contractComment.comment
 
         const contractCommentDateStringElement = modalElement.querySelector(
           '#contractCommentEdit--commentDateString'
         ) as HTMLInputElement
 
         contractCommentDateStringElement.value =
-          contractComment.commentDateString ?? ''
+          contractComment.commentDateString
 
         const currentDateString = cityssm.dateToString(new Date())
 
         contractCommentDateStringElement.max =
-          contractComment.commentDateString! <= currentDateString
+          // eslint-disable-next-line unicorn/prefer-math-min-max
+          contractComment.commentDateString <= currentDateString
             ? currentDateString
-            : contractComment.commentDateString ?? ''
+            : contractComment.commentDateString
         ;(
           modalElement.querySelector(
             '#contractCommentEdit--commentTimeString'
           ) as HTMLInputElement
-        ).value = contractComment.commentTimeString ?? ''
+        ).value = contractComment.commentTimeString
       },
       onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
-
         ;(
           modalElement.querySelector(
             '#contractCommentEdit--comment'
@@ -190,18 +192,18 @@ declare const exports: Record<string, unknown>
     for (const contractComment of contractComments) {
       const tableRowElement = document.createElement('tr')
       tableRowElement.dataset.contractCommentId =
-        contractComment.contractCommentId?.toString()
+        contractComment.contractCommentId.toString()
 
       tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
           <td>
-            ${cityssm.escapeHTML(contractComment.commentDateString ?? '')}
+            ${cityssm.escapeHTML(contractComment.commentDateString)}
             ${cityssm.escapeHTML(
               contractComment.commentTime === 0
                 ? ''
-                : contractComment.commentTimePeriodString ?? ''
+                : contractComment.commentTimePeriodString
             )}
           </td>
-          <td>${cityssm.escapeHTML(contractComment.comment ?? '')}</td>
+          <td>${cityssm.escapeHTML(contractComment.comment)}</td>
           <td class="is-hidden-print">
             <div class="buttons are-small is-justify-content-end">
             <button class="button is-primary button--edit" type="button">
@@ -232,8 +234,8 @@ declare const exports: Record<string, unknown>
   document
     .querySelector('#button--addComment')
     ?.addEventListener('click', () => {
-      let addFormElement: HTMLFormElement
-      let addCloseModalFunction: () => void
+      let addFormElement: HTMLFormElement | undefined
+      let addCloseModalFunction: (() => void) | undefined
 
       function addComment(submitEvent: SubmitEvent): void {
         submitEvent.preventDefault()
@@ -250,7 +252,11 @@ declare const exports: Record<string, unknown>
 
             if (responseJSON.success) {
               contractComments = responseJSON.contractComments
-              addCloseModalFunction()
+
+              if (addCloseModalFunction !== undefined) {
+                addCloseModalFunction()
+              }
+
               renderContractComments()
             } else {
               bulmaJS.alert({
