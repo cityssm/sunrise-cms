@@ -20,9 +20,7 @@ describe('Login Page', () => {
             .invoke('attr', 'type')
             .should('equal', 'password');
     });
-    // This test is skipped because the help link is not present since the refactoring.
-    // It will return.
-    it.skip('Contains a help link', () => {
+    it('Contains a help link', () => {
         cy.get('a').contains('help', {
             matchCase: false
         });
