@@ -1,4 +1,4 @@
-[Home](https://cityssm.github.io/sunrise-csm/)
+[Home](https://cityssm.github.io/sunrise-cms/)
 
 # Help Documentation
 
