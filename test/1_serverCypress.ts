@@ -40,11 +40,12 @@ await describe('sunrise-cms', async () => {
 
   let serverStarted = false
 
-  before(() => {
+  before((context, done) => {
     httpServer.listen(portNumber)
 
     httpServer.on('listening', () => {
       serverStarted = true
+      done()
     })
   })
 

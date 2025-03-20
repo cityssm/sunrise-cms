@@ -27,10 +27,11 @@ function runCypress(browser, done) {
 await describe('sunrise-cms', async () => {
     const httpServer = http.createServer(app);
     let serverStarted = false;
-    before(() => {
+    before((context, done) => {
         httpServer.listen(portNumber);
         httpServer.on('listening', () => {
             serverStarted = true;
+            done();
         });
     });
     after(() => {
