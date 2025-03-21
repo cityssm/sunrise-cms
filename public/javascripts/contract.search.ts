@@ -53,14 +53,14 @@ declare const exports: Record<string, unknown>
       let contractTimeHTML = ''
 
       if (
-        contract.contractStartDateString! <= nowDateString &&
+        contract.contractStartDateString <= nowDateString &&
         (contract.contractEndDateString === '' ||
           contract.contractEndDateString! >= nowDateString)
       ) {
         contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Current Contract">
           <i class="fas fa-play" aria-label="Current Contract"></i>
           </span>`
-      } else if (contract.contractStartDateString! > nowDateString) {
+      } else if (contract.contractStartDateString > nowDateString) {
         contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Future Contract">
           <i class="fas fa-fast-forward" aria-label="Future Contract"></i>
           </span>`
@@ -154,7 +154,7 @@ declare const exports: Record<string, unknown>
               contract.printEJS
                 ? `<a class="button is-small" data-tooltip="Print"
                     href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}" target="_blank">
-                    <i class="fas fa-print" aria-label="Print"></i>
+                    <span class="icon"><i class="fas fa-print" aria-label="Print"></i></span>
                     </a>`
                 : ''
             }</td></tr>`

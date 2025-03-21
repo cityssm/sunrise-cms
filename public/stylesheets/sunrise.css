@@ -160,3 +160,29 @@ span.button.is-static {
 .select option:disabled {
   display: none;
 }
+
+/*
+ * SVG
+ */
+
+.image svg {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.image svg .highlight.is-danger,
+.image svg .highlight path.is-danger {
+  stroke: var(--bulma-danger-dark) !important;
+  fill: rgba(var(--bulma-danger-light), 0.6);
+}
+
+.image svg .highlight.is-success,
+.image svg .highlight path.is-success {
+  stroke: var(--bulma-success-dark) !important;
+  fill: rgba(var(--bulma-success-light), 0.6);
+}
+
+.image svg text {
+  user-select: none;
+}

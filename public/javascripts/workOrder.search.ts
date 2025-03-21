@@ -139,7 +139,7 @@ declare const exports: Record<string, unknown>
                   <a class="button is-small" data-tooltip="Print"
                     href="${sunrise.urlPrefix}/print/${workOrderPrints[0]}/?workOrderId=${workOrder.workOrderId.toString()}"
                     target="_blank">
-                    <i class="fas fa-print" aria-label="Print"></i>
+                    <span class="icon"><i class="fas fa-print" aria-label="Print"></i></span>
                   </a>
                   </td>`
               : ''

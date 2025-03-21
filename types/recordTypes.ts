@@ -303,21 +303,21 @@ export interface Contract extends Record {
   cemeteryId?: number
   cemeteryName?: string
 
-  contractStartDate?: number
-  contractStartDateString?: string
+  contractStartDate: number
+  contractStartDateString: string
 
   contractEndDate?: number
   contractEndDateString?: string
 
-  purchaserName?: string
-  purchaserAddress1?: string
-  purchaserAddress2?: string
-  purchaserCity?: string
-  purchaserProvince?: string
-  purchaserPostalCode?: string
-  purchaserPhoneNumber?: string 
-  purchaserEmail?: string
-  purchaserRelationship?: string
+  purchaserName: string
+  purchaserAddress1: string
+  purchaserAddress2: string
+  purchaserCity: string
+  purchaserProvince: string
+  purchaserPostalCode: string
+  purchaserPhoneNumber: string 
+  purchaserEmail: string
+  purchaserRelationship: string
 
   funeralHomeId?: number
   funeralHomeKey?: string

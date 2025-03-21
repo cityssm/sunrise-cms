@@ -7,40 +7,70 @@
       <a class="<%= (headTitle === "Fee Management" ? "is-active" : "") %>"
         href="<%= urlPrefix %>/admin/fees"
         aria-label="Fee Management">
-        <span class="icon"><i class="fas fa-fw fa-dollar-sign" aria-hidden="true"></i></span>
-        <span class="is-hidden-touch">Fee Management</span>
+        <div class="columns is-1 is-mobile">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fas fa-fw fa-dollar-sign" aria-hidden="true"></i></span>
+          </div>
+          <div class="column is-hidden-touch">
+            Fee Management
+          </div>
+        </div>
       </a>
     </li>
     <li>
       <a class="<%= (headTitle === "Contract Type Management" ? "is-active" : "") %>"
         href="<%= urlPrefix %>/admin/contractTypes"
         aria-label="Contract Type Management">
-        <span class="icon"><i class="fas fa-fw fa-user-friends" aria-hidden="true"></i></span>
-        <span class="is-hidden-touch">Contract Type Management</span>
+        <div class="columns is-1 is-mobile">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fas fa-fw fa-file-signature" aria-hidden="true"></i></span>
+          </div>
+          <div class="column is-hidden-touch">
+            Contract Type Management
+          </div>
+        </div>
       </a>
     </li>
     <li>
       <a class="<%= (headTitle === "Burial Site Type Management" ? "is-active" : "") %>"
         href="<%= urlPrefix %>/admin/burialSiteTypes"
         aria-label="Burial Site Type Management">
-        <span class="icon"><i class="fas fa-fw fa-vector-square" aria-hidden="true"></i></span>
-        <span class="is-hidden-touch">Burial Site Type Management</span>
+        <div class="columns is-1 is-mobile">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fas fa-fw fa-vector-square" aria-hidden="true"></i></span>
+          </div>
+          <div class="column is-hidden-touch">
+            Burial Site Type Management
+          </div>
+        </div>
       </a>
     </li>
     <li>
       <a class="<%= (headTitle === "Config Table Management" ? "is-active" : "") %>"
         href="<%= urlPrefix %>/admin/tables"
         aria-label="Config Table Management">
-        <span class="icon"><i class="fas fa-fw fa-table" aria-hidden="true"></i></span>
-        <span class="is-hidden-touch">Config Table Management</span>
+        <div class="columns is-1 is-mobile">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fas fa-fw fa-table" aria-hidden="true"></i></span>
+          </div>
+          <div class="column is-hidden-touch">
+            Config Table Management
+          </div>
+        </div>
       </a>
     </li>
     <li>
       <a class="<%= (headTitle === "Database Maintenance" ? "is-active" : "") %>"\
         href="<%= urlPrefix %>/admin/database"
         aria-label="Database Maintenance">
-        <span class="icon"><i class="fas fa-fw fa-database" aria-hidden="true"></i></span>
-        <span class="is-hidden-touch">Database Maintenance</span>
+        <div class="columns is-1 is-mobile">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fas fa-fw fa-database" aria-hidden="true"></i></span>
+          </div>
+          <div class="column is-hidden-touch">
+            Database Maintenance
+          </div>
+        </div>
       </a>
     </li>
     <% if (configFunctions.getConfigProperty("application.ntfyStartup")) { %>
@@ -48,8 +78,14 @@
         <a class="<%= (headTitle === "Ntfy Startup Notification" ? "is-active" : "") %>"
           href="<%= urlPrefix %>/admin/ntfyStartup"
           aria-label="Ntfy Startup Notification">
-          <span class="icon"><i class="far fa-fw fa-comment-alt" aria-hidden="true"></i></span>
-          <span class="is-hidden-touch">Ntfy Startup Notification</span>
+          <div class="columns is-1 is-mobile">
+            <div class="column is-narrow">
+              <span class="icon"><i class="far fa-fw fa-comment-alt" aria-hidden="true"></i></span>
+            </div>
+            <div class="column is-hidden-touch">
+              Ntfy Startup Notification
+            </div>
+          </div>
         </a>
       </li>
     <% } %>

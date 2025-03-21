@@ -70,7 +70,7 @@ declare const exports: Record<string, unknown>
             }<br />
             ${
               (burialSite.contractCount ?? 0) > 0
-                ? '<span class="is-size-7">Currently Occupied</span>'
+                ? '<span class="is-size-7">Has Current Contracts</span>'
                 : ''
             }
           </td>

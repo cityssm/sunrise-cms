@@ -93,7 +93,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${contract.printEJS
                 ? `<a class="button is-small" data-tooltip="Print"
                     href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}" target="_blank">
-                    <i class="fas fa-print" aria-label="Print"></i>
+                    <span class="icon"><i class="fas fa-print" aria-label="Print"></i></span>
                     </a>`
                 : ''}</td></tr>`);
         }
