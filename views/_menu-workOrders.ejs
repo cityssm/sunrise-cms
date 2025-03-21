@@ -7,8 +7,12 @@
       <a class="<%= (headTitle === "Work Order Search" ? "is-active" : "") %>"
         href="<%= urlPrefix %>/workOrders"
         aria-label="Work Order Search">
-        <span class="icon"><i class="fas fa-fw fa-hard-hat" aria-hidden="true"></i></span>
-        <span class="is-hidden-touch">Work Order Search</span>
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fas fa-fw fa-search" aria-hidden="true"></i></span>
+          </div>
+          <div class="column is-hidden-touch">Work Order Search</div>
+        </div>
       </a>
     </li>
   </ul>
@@ -20,16 +24,24 @@
       <a class="<%= (headTitle.endsWith("Milestone Calendar") ? "is-active" : "") %>"
         href="<%= urlPrefix %>/workOrders/milestoneCalendar"
         aria-label="Milestone Calendar">
-        <span class="icon"><i class="fas fa-fw fa-calendar" aria-hidden="true"></i></span>
-        <span class="is-hidden-touch">Milestone Calendar</span>
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fas fa-fw fa-calendar" aria-hidden="true"></i></span>
+          </div>
+          <div class="column is-hidden-touch">Milestone Calendar</div>
+        </div>
       </a>
     </li>
     <li>
       <a class="<%= (headTitle.endsWith("Outlook Integration") ? "is-active" : "") %>"
         href="<%= urlPrefix %>/workOrders/outlook"
         aria-label="Outlook Integration">
-        <span class="icon"><i class="fas fa-fw fa-envelope-open-text" aria-hidden="true"></i></span>
-        <span class="is-hidden-touch">Outlook Integration</span>
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fas fa-fw fa-envelope-open-text" aria-hidden="true"></i></span>
+          </div>
+          <div class="column is-hidden-touch">Outlook Integration</div>
+        </div>
       </a>
     </li>
   </ul>
