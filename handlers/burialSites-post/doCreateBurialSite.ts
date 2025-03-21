@@ -9,17 +9,24 @@ export default async function handler(
   request: Request<unknown, unknown, AddBurialSiteForm>,
   response: Response
 ): Promise<void> {
-  const burialSiteId = await addBurialSite(
-    request.body,
-    request.session.user as User
-  )
+  try {
+    const burialSiteId = await addBurialSite(
+      request.body,
+      request.session.user as User
+    )
 
-  response.json({
-    success: true,
-    burialSiteId
-  })
+    response.json({
+      success: true,
+      burialSiteId
+    })
 
-  response.on('finish', () => {
-    clearNextPreviousBurialSiteIdCache(-1)
-  })
+    response.on('finish', () => {
+      clearNextPreviousBurialSiteIdCache(-1)
+    })
+  } catch (error) {
+    response.json({
+      success: false,
+      errorMessage: (error as Error).message
+    })
+  }
 }

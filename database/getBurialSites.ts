@@ -148,11 +148,7 @@ export default async function getBurialSites(
               : ''
           }
           ${sqlWhereClause}
-          order by l.burialSiteNameSegment1,
-            l.burialSiteNameSegment2,
-            l.burialSiteNameSegment3,
-            l.burialSiteNameSegment4,
-            l.burialSiteNameSegment5,
+          order by l.burialSiteName,
             l.burialSiteId
           ${
             options.limit === -1

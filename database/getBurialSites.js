@@ -91,11 +91,7 @@ export default async function getBurialSites(filters, options, connectedDatabase
                   group by burialSiteId) o on l.burialSiteId = o.burialSiteId`
             : ''}
           ${sqlWhereClause}
-          order by l.burialSiteNameSegment1,
-            l.burialSiteNameSegment2,
-            l.burialSiteNameSegment3,
-            l.burialSiteNameSegment4,
-            l.burialSiteNameSegment5,
+          order by l.burialSiteName,
             l.burialSiteId
           ${options.limit === -1
             ? ''

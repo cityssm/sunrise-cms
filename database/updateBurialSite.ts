@@ -27,6 +27,13 @@ export interface UpdateBurialSiteForm {
   [fieldValue_burialSiteTypeFieldId: string]: unknown
 }
 
+/**
+ * Updates a burial site.
+ * @param updateForm - The burial site's updated information
+ * @param user - The user making the request
+ * @returns True if the burial site was updated.
+ * @throws If an active burial site with the same name already exists.
+ */
 export default async function updateBurialSite(
   updateForm: UpdateBurialSiteForm,
   user: User
@@ -34,14 +41,29 @@ export default async function updateBurialSite(
   const database = await acquireConnection()
 
   const cemetery =
-  updateForm.cemeteryId === ''
+    updateForm.cemeteryId === ''
       ? undefined
       : await getCemetery(updateForm.cemeteryId, database)
 
-  const burialSiteName = buildBurialSiteName(
-    cemetery?.cemeteryKey,
-    updateForm
-  )
+  const burialSiteName = buildBurialSiteName(cemetery?.cemeteryKey, updateForm)
+
+  // Ensure no active burial sites share the same name
+
+  const existingBurialSite = database
+    .prepare(
+      `select burialSiteId
+        from BurialSites
+        where burialSiteName = ?
+        and burialSiteId <> ?
+        and recordDelete_timeMillis is null`
+    )
+    .pluck()
+    .get(burialSiteName, updateForm.burialSiteId) as number | undefined
+
+  if (existingBurialSite !== undefined) {
+    database.release()
+    throw new Error('An active burial site with that name already exists.')
+  }
 
   const result = database
     .prepare(
