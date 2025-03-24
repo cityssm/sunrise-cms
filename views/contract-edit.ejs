@@ -368,7 +368,7 @@
           <div class="columns is-mobile mb-0">
             <div class="column">
               <div class="field">
-                <label class="label" for="contract--funeralDateString">Funeral Date</label>
+                <label class="label" for="contract--funeralDateString">Service Date</label>
                 <div class="control has-icons-left">
                   <input class="input" id="contract--funeralDateString" name="funeralDateString" type="date"
                     value="<%= contract.funeralDateString %>" />
@@ -451,7 +451,9 @@
               <div class="field">
                 <label class="label" for="contract--purchaserCity">City</label>
                 <div class="control">
-                  <input class="input" id="contract--purchaserCity" name="purchaserCity" type="text" maxlength="20" value="<%= contract.purchaserCity %>" />
+                  <input class="input" id="contract--purchaserCity" name="purchaserCity" type="text" maxlength="20"
+                    value="<%= contract.purchaserCity %>"
+                    list="datalist--cityDefault" />
                 </div>
               </div>
             </div>
@@ -560,7 +562,9 @@
                 <div class="field">
                   <label class="label" for="contract--deceasedCity">City</label>
                   <div class="control">
-                    <input class="input" id="contract--deceasedCity" name="deceasedCity" type="text" maxlength="20" value="<%= contract.deceasedCity %>" />
+                    <input class="input" id="contract--deceasedCity" name="deceasedCity" type="text" maxlength="20"
+                      value="<%= contract.deceasedCity %>"
+                      list="datalist--cityDefault" />
                   </div>
                 </div>
               </div>
@@ -601,7 +605,9 @@
                     Place of Birth
                   </label>
                   <div class="control">
-                    <input class="input" id="contract--birthPlace" name="birthPlace" type="text" maxlength="100" autocomplete="off" value="<%= contract.deceasedPlaceOfBirth %>" />
+                    <input class="input" id="contract--birthPlace" name="birthPlace" type="text" maxlength="100" autocomplete="off"
+                      value="<%= contract.deceasedPlaceOfBirth %>"
+                      list="datalist--cityDefault" />
                   </div>
                 </div>
               </div>
@@ -626,7 +632,9 @@
                     Place of Death
                   </label>
                   <div class="control">
-                    <input class="input" id="contract--deathPlace" name="deathPlace" type="text" maxlength="100" autocomplete="off" value="<%= contract.deathPlace %>" />
+                    <input class="input" id="contract--deathPlace" name="deathPlace" type="text" maxlength="100" autocomplete="off"
+                      value="<%= contract.deathPlace %>"
+                      list="datalist--cityDefault" />
                   </div>
                 </div>
               </div>
@@ -858,11 +866,15 @@
     <div class="panel-block is-block" id="container--contractComments"></div>
   </div>
 <% } %>
+
+<datalist id="datalist--cityDefault">
+  <option value="<%= configFunctions.getConfigProperty('settings.cityDefault') %>">
+</datalist>
     
 <%- include('_footerA'); -%>
 
-<script>
-  <% if (!isCreate) { %>
+<% if (!isCreate) { %>
+  <script>
     exports.cityDefault = "<%= configFunctions.getConfigProperty('settings.cityDefault') %>";
     exports.provinceDefault = "<%= configFunctions.getConfigProperty('settings.provinceDefault') %>";
 
@@ -874,8 +886,8 @@
     exports.contractTransactions = <%- JSON.stringify(contract.contractTransactions) %>;
 
     exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
-  <% } %>
-</script>
+  </script>
+<% } %>
 
 <script src="<%= urlPrefix %>/javascripts/contract.edit.js"></script>
 <% if (!isCreate) { %>

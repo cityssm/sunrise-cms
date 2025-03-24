@@ -666,6 +666,17 @@ declare const exports: Record<string, unknown>
       milestonesPanelElement.append(panelBlockElement)
     }
 
+    if (workOrderMilestones.length === 0) {
+      milestonesPanelElement.insertAdjacentHTML(
+        'beforeend',
+        `<div class="panel-block is-block">
+          <div class="message is-info">
+            <p class="message-body">There are no milestones on this work order.</p>
+          </div>
+        </div>`
+      )
+    }
+
     bulmaJS.init(milestonesPanelElement)
   }
 
@@ -674,133 +685,126 @@ declare const exports: Record<string, unknown>
     delete exports.workOrderMilestones
 
     renderMilestones()
+  }
 
-    document
-      .querySelector('#button--addMilestone')
-      ?.addEventListener('click', () => {
-        let addFormElement: HTMLFormElement
-        let workOrderMilestoneDateStringElement: HTMLInputElement
-        let addCloseModalFunction: () => void
+  document
+    .querySelector('#button--addMilestone')
+    ?.addEventListener('click', () => {
+      let addFormElement: HTMLFormElement
+      let workOrderMilestoneDateStringElement: HTMLInputElement
+      let addCloseModalFunction: () => void
 
-        function doAdd(submitEvent?: SubmitEvent): void {
-          if (submitEvent) {
-            submitEvent.preventDefault()
-          }
-
-          const currentDateString = cityssm.dateToString(new Date())
-
-          function _doAdd(): void {
-            cityssm.postJSON(
-              `${sunrise.urlPrefix}/workOrders/doAddWorkOrderMilestone`,
-              addFormElement,
-              (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON as {
-                  success: boolean
-                  errorMessage?: string
-                  workOrderMilestones?: WorkOrderMilestone[]
-                }
-
-                processMilestoneResponse(responseJSON)
-
-                if (responseJSON.success) {
-                  addCloseModalFunction()
-                }
-              }
-            )
-          }
-
-          const milestoneDateString = workOrderMilestoneDateStringElement.value
-
-          if (
-            milestoneDateString !== '' &&
-            milestoneDateString < currentDateString
-          ) {
-            bulmaJS.confirm({
-              title: 'Milestone Date in the Past',
-              message:
-                'Are you sure you want to create a milestone with a date in the past?',
-              contextualColorName: 'warning',
-              okButton: {
-                text: 'Yes, Create a Past Milestone',
-                callbackFunction: _doAdd
-              }
-            })
-          } else {
-            _doAdd()
-          }
+      function doAdd(submitEvent?: SubmitEvent): void {
+        if (submitEvent) {
+          submitEvent.preventDefault()
         }
 
-        cityssm.openHtmlModal('workOrder-addMilestone', {
-          onshow(modalElement) {
-            ;(
-              modalElement.querySelector(
-                '#milestoneAdd--workOrderId'
-              ) as HTMLInputElement
-            ).value = workOrderId
+        const currentDateString = cityssm.dateToString(new Date())
 
-            const milestoneTypeElement = modalElement.querySelector(
+        function _doAdd(): void {
+          cityssm.postJSON(
+            `${sunrise.urlPrefix}/workOrders/doAddWorkOrderMilestone`,
+            addFormElement,
+            (rawResponseJSON) => {
+              const responseJSON = rawResponseJSON as {
+                success: boolean
+                errorMessage?: string
+                workOrderMilestones?: WorkOrderMilestone[]
+              }
+
+              processMilestoneResponse(responseJSON)
+
+              if (responseJSON.success) {
+                addCloseModalFunction()
+              }
+            }
+          )
+        }
+
+        const milestoneDateString = workOrderMilestoneDateStringElement.value
+
+        if (
+          milestoneDateString !== '' &&
+          milestoneDateString < currentDateString
+        ) {
+          bulmaJS.confirm({
+            title: 'Milestone Date in the Past',
+            message:
+              'Are you sure you want to create a milestone with a date in the past?',
+            contextualColorName: 'warning',
+            okButton: {
+              text: 'Yes, Create a Past Milestone',
+              callbackFunction: _doAdd
+            }
+          })
+        } else {
+          _doAdd()
+        }
+      }
+
+      cityssm.openHtmlModal('workOrder-addMilestone', {
+        onshow(modalElement) {
+          ;(
+            modalElement.querySelector(
+              '#milestoneAdd--workOrderId'
+            ) as HTMLInputElement
+          ).value = workOrderId
+
+          const milestoneTypeElement = modalElement.querySelector(
+            '#milestoneAdd--workOrderMilestoneTypeId'
+          ) as HTMLSelectElement
+
+          for (const milestoneType of exports.workOrderMilestoneTypes as WorkOrderMilestoneType[]) {
+            const optionElement = document.createElement('option')
+
+            optionElement.value =
+              milestoneType.workOrderMilestoneTypeId.toString()
+            optionElement.textContent = milestoneType.workOrderMilestoneType
+
+            milestoneTypeElement.append(optionElement)
+          }
+
+          workOrderMilestoneDateStringElement = modalElement.querySelector(
+            '#milestoneAdd--workOrderMilestoneDateString'
+          ) as HTMLInputElement
+
+          workOrderMilestoneDateStringElement.valueAsDate = new Date()
+        },
+        onshown(modalElement, closeModalFunction) {
+          addCloseModalFunction = closeModalFunction
+
+          bulmaJS.toggleHtmlClipped()
+          ;(
+            modalElement.querySelector(
               '#milestoneAdd--workOrderMilestoneTypeId'
             ) as HTMLSelectElement
+          ).focus()
 
-            for (const milestoneType of exports.workOrderMilestoneTypes as WorkOrderMilestoneType[]) {
-              const optionElement = document.createElement('option')
+          addFormElement = modalElement.querySelector('form') as HTMLFormElement
+          addFormElement.addEventListener('submit', doAdd)
 
-              optionElement.value =
-                milestoneType.workOrderMilestoneTypeId.toString()
-              optionElement.textContent = milestoneType.workOrderMilestoneType
+          const conflictingMilestonePanelElement = document.querySelector(
+            '#milestoneAdd--conflictingMilestonesPanel'
+          ) as HTMLElement
 
-              milestoneTypeElement.append(optionElement)
-            }
-
-            workOrderMilestoneDateStringElement = modalElement.querySelector(
-              '#milestoneAdd--workOrderMilestoneDateString'
-            ) as HTMLInputElement
-
-            workOrderMilestoneDateStringElement.valueAsDate = new Date()
-          },
-          onshown(modalElement, closeModalFunction) {
-            addCloseModalFunction = closeModalFunction
-
-            bulmaJS.toggleHtmlClipped()
-            ;(
-              modalElement.querySelector(
-                '#milestoneAdd--workOrderMilestoneTypeId'
-              ) as HTMLSelectElement
-            ).focus()
-
-            addFormElement = modalElement.querySelector(
-              'form'
-            ) as HTMLFormElement
-            addFormElement.addEventListener('submit', doAdd)
-
-            const conflictingMilestonePanelElement = document.querySelector(
-              '#milestoneAdd--conflictingMilestonesPanel'
-            ) as HTMLElement
-
-            workOrderMilestoneDateStringElement.addEventListener(
-              'change',
-              () => {
-                refreshConflictingMilestones(
-                  workOrderMilestoneDateStringElement.value,
-                  conflictingMilestonePanelElement
-                )
-              }
-            )
-
+          workOrderMilestoneDateStringElement.addEventListener('change', () => {
             refreshConflictingMilestones(
               workOrderMilestoneDateStringElement.value,
               conflictingMilestonePanelElement
             )
-          },
-          onremoved() {
-            bulmaJS.toggleHtmlClipped()
-            ;(
-              document.querySelector(
-                '#button--addMilestone'
-              ) as HTMLButtonElement
-            ).focus()
-          }
-        })
+          })
+
+          refreshConflictingMilestones(
+            workOrderMilestoneDateStringElement.value,
+            conflictingMilestonePanelElement
+          )
+        },
+        onremoved() {
+          bulmaJS.toggleHtmlClipped()
+          ;(
+            document.querySelector('#button--addMilestone') as HTMLButtonElement
+          ).focus()
+        }
       })
-  }
+    })
 })()

@@ -1,5 +1,5 @@
 import path from 'node:path';
-import * as dateTimeFns from '@cityssm/utils-datetime';
+import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import csurf from 'csurf';
@@ -129,7 +129,7 @@ app.use((request, response, next) => {
     response.locals.csrfToken = request.csrfToken();
     response.locals.configFunctions = configFunctions;
     response.locals.printFunctions = printFunctions;
-    response.locals.dateTimeFunctions = dateTimeFns;
+    response.locals.dateTimeFunctions = dateTimeFunctions;
     response.locals.urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
     next();
 });

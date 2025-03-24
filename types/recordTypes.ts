@@ -1,4 +1,4 @@
-import type { DateString, TimeString } from "@cityssm/utils-datetime"
+import type { DateString, TimeString } from '@cityssm/utils-datetime'
 
 export interface Record {
   recordCreate_userName?: string
@@ -146,7 +146,7 @@ export interface ContractTypeField {
   contractTypeFieldId: number
   contractTypeId?: number
   contractTypeField?: string
-  
+
   fieldType: string
   fieldValues?: string
   isRequired?: boolean
@@ -240,7 +240,7 @@ export interface CommittalType extends Record {
 export interface ContractInterment extends Record {
   contractId?: number
   intermentNumber?: number
-  
+
   deceasedName?: string
   deceasedAddress1?: string
   deceasedAddress2?: string
@@ -254,8 +254,8 @@ export interface ContractInterment extends Record {
 
   deathDate?: number
   deathDateString?: DateString
-  deathPlace?: string 
-  deathAge?: number
+  deathPlace?: string
+  deathAge?: number | null
   deathAgePeriod?: string
 
   intermentContainerTypeId?: number
@@ -299,7 +299,7 @@ export interface Contract extends Record {
   burialSiteTypeId?: number
   burialSiteType?: string
   burialSiteName?: string
-  
+
   cemeteryId?: number
   cemeteryName?: string
 
@@ -315,7 +315,7 @@ export interface Contract extends Record {
   purchaserCity: string
   purchaserProvince: string
   purchaserPostalCode: string
-  purchaserPhoneNumber: string 
+  purchaserPhoneNumber: string
   purchaserEmail: string
   purchaserRelationship: string
 
@@ -331,8 +331,11 @@ export interface Contract extends Record {
 
   funeralDate?: number
   funeralDateString?: DateString
+
   funeralTime?: number
   funeralTimeString?: TimeString
+  funeralTimePeriodString?: string
+
   committalTypeId?: number
   committalType?: string
 

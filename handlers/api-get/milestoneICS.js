@@ -42,7 +42,7 @@ function buildEventSummary(milestone) {
 // eslint-disable-next-line @typescript-eslint/naming-convention
 function buildEventDescriptionHTML_occupancies(request, milestone) {
     let descriptionHTML = '';
-    if (milestone.workOrderContracts.length > 0) {
+    if ((milestone.workOrderContracts ?? []).length > 0) {
         const urlRoot = getUrlRoot(request);
         descriptionHTML = `<h2>
       Related Contracts
@@ -248,7 +248,7 @@ export default async function handler(request, response) {
         const location = buildEventLocation(milestone);
         calendarEvent.location(location);
         // Set organizer / attendees
-        if (milestone.workOrderContracts.length > 0) {
+        if ((milestone.workOrderContracts ?? []).length > 0) {
             let organizerSet = false;
             for (const contract of milestone.workOrderContracts ?? []) {
                 for (const interment of contract.contractInterments ?? []) {

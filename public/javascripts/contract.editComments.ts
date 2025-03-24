@@ -29,8 +29,8 @@ declare const exports: Record<string, unknown>
       (currentComment) => currentComment.contractCommentId === contractCommentId
     ) as ContractComment
 
-    let editFormElement: HTMLFormElement | undefined = undefined
-    let editCloseModalFunction: (() => void) | undefined = undefined
+    let editFormElement: HTMLFormElement | undefined
+    let editCloseModalFunction: (() => void) | undefined
 
     function editContractComment(submitEvent: SubmitEvent): void {
       submitEvent.preventDefault()

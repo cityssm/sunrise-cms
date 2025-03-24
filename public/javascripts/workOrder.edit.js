@@ -419,81 +419,88 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ?.addEventListener('click', deleteMilestone);
             milestonesPanelElement.append(panelBlockElement);
         }
+        if (workOrderMilestones.length === 0) {
+            milestonesPanelElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
+          <div class="message is-info">
+            <p class="message-body">There are no milestones on this work order.</p>
+          </div>
+        </div>`);
+        }
         bulmaJS.init(milestonesPanelElement);
     }
     if (!isCreate) {
         workOrderMilestones = exports.workOrderMilestones;
         delete exports.workOrderMilestones;
         renderMilestones();
-        document
-            .querySelector('#button--addMilestone')
-            ?.addEventListener('click', () => {
-            let addFormElement;
-            let workOrderMilestoneDateStringElement;
-            let addCloseModalFunction;
-            function doAdd(submitEvent) {
-                if (submitEvent) {
-                    submitEvent.preventDefault();
-                }
-                const currentDateString = cityssm.dateToString(new Date());
-                function _doAdd() {
-                    cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderMilestone`, addFormElement, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
-                        processMilestoneResponse(responseJSON);
-                        if (responseJSON.success) {
-                            addCloseModalFunction();
-                        }
-                    });
-                }
-                const milestoneDateString = workOrderMilestoneDateStringElement.value;
-                if (milestoneDateString !== '' &&
-                    milestoneDateString < currentDateString) {
-                    bulmaJS.confirm({
-                        title: 'Milestone Date in the Past',
-                        message: 'Are you sure you want to create a milestone with a date in the past?',
-                        contextualColorName: 'warning',
-                        okButton: {
-                            text: 'Yes, Create a Past Milestone',
-                            callbackFunction: _doAdd
-                        }
-                    });
-                }
-                else {
-                    _doAdd();
-                }
-            }
-            cityssm.openHtmlModal('workOrder-addMilestone', {
-                onshow(modalElement) {
-                    ;
-                    modalElement.querySelector('#milestoneAdd--workOrderId').value = workOrderId;
-                    const milestoneTypeElement = modalElement.querySelector('#milestoneAdd--workOrderMilestoneTypeId');
-                    for (const milestoneType of exports.workOrderMilestoneTypes) {
-                        const optionElement = document.createElement('option');
-                        optionElement.value =
-                            milestoneType.workOrderMilestoneTypeId.toString();
-                        optionElement.textContent = milestoneType.workOrderMilestoneType;
-                        milestoneTypeElement.append(optionElement);
-                    }
-                    workOrderMilestoneDateStringElement = modalElement.querySelector('#milestoneAdd--workOrderMilestoneDateString');
-                    workOrderMilestoneDateStringElement.valueAsDate = new Date();
-                },
-                onshown(modalElement, closeModalFunction) {
-                    addCloseModalFunction = closeModalFunction;
-                    bulmaJS.toggleHtmlClipped();
-                    modalElement.querySelector('#milestoneAdd--workOrderMilestoneTypeId').focus();
-                    addFormElement = modalElement.querySelector('form');
-                    addFormElement.addEventListener('submit', doAdd);
-                    const conflictingMilestonePanelElement = document.querySelector('#milestoneAdd--conflictingMilestonesPanel');
-                    workOrderMilestoneDateStringElement.addEventListener('change', () => {
-                        refreshConflictingMilestones(workOrderMilestoneDateStringElement.value, conflictingMilestonePanelElement);
-                    });
-                    refreshConflictingMilestones(workOrderMilestoneDateStringElement.value, conflictingMilestonePanelElement);
-                },
-                onremoved() {
-                    bulmaJS.toggleHtmlClipped();
-                    document.querySelector('#button--addMilestone').focus();
-                }
-            });
-        });
     }
+    document
+        .querySelector('#button--addMilestone')
+        ?.addEventListener('click', () => {
+        let addFormElement;
+        let workOrderMilestoneDateStringElement;
+        let addCloseModalFunction;
+        function doAdd(submitEvent) {
+            if (submitEvent) {
+                submitEvent.preventDefault();
+            }
+            const currentDateString = cityssm.dateToString(new Date());
+            function _doAdd() {
+                cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderMilestone`, addFormElement, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    processMilestoneResponse(responseJSON);
+                    if (responseJSON.success) {
+                        addCloseModalFunction();
+                    }
+                });
+            }
+            const milestoneDateString = workOrderMilestoneDateStringElement.value;
+            if (milestoneDateString !== '' &&
+                milestoneDateString < currentDateString) {
+                bulmaJS.confirm({
+                    title: 'Milestone Date in the Past',
+                    message: 'Are you sure you want to create a milestone with a date in the past?',
+                    contextualColorName: 'warning',
+                    okButton: {
+                        text: 'Yes, Create a Past Milestone',
+                        callbackFunction: _doAdd
+                    }
+                });
+            }
+            else {
+                _doAdd();
+            }
+        }
+        cityssm.openHtmlModal('workOrder-addMilestone', {
+            onshow(modalElement) {
+                ;
+                modalElement.querySelector('#milestoneAdd--workOrderId').value = workOrderId;
+                const milestoneTypeElement = modalElement.querySelector('#milestoneAdd--workOrderMilestoneTypeId');
+                for (const milestoneType of exports.workOrderMilestoneTypes) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value =
+                        milestoneType.workOrderMilestoneTypeId.toString();
+                    optionElement.textContent = milestoneType.workOrderMilestoneType;
+                    milestoneTypeElement.append(optionElement);
+                }
+                workOrderMilestoneDateStringElement = modalElement.querySelector('#milestoneAdd--workOrderMilestoneDateString');
+                workOrderMilestoneDateStringElement.valueAsDate = new Date();
+            },
+            onshown(modalElement, closeModalFunction) {
+                addCloseModalFunction = closeModalFunction;
+                bulmaJS.toggleHtmlClipped();
+                modalElement.querySelector('#milestoneAdd--workOrderMilestoneTypeId').focus();
+                addFormElement = modalElement.querySelector('form');
+                addFormElement.addEventListener('submit', doAdd);
+                const conflictingMilestonePanelElement = document.querySelector('#milestoneAdd--conflictingMilestonesPanel');
+                workOrderMilestoneDateStringElement.addEventListener('change', () => {
+                    refreshConflictingMilestones(workOrderMilestoneDateStringElement.value, conflictingMilestonePanelElement);
+                });
+                refreshConflictingMilestones(workOrderMilestoneDateStringElement.value, conflictingMilestonePanelElement);
+            },
+            onremoved() {
+                bulmaJS.toggleHtmlClipped();
+                document.querySelector('#button--addMilestone').focus();
+            }
+        });
+    });
 })();

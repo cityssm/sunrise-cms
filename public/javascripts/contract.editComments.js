@@ -9,8 +9,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const contractCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
             .contractCommentId ?? '', 10);
         const contractComment = contractComments.find((currentComment) => currentComment.contractCommentId === contractCommentId);
-        let editFormElement = undefined;
-        let editCloseModalFunction = undefined;
+        let editFormElement;
+        let editCloseModalFunction;
         function editContractComment(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractComment`, editFormElement, (rawResponseJSON) => {

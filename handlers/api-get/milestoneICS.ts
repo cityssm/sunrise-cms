@@ -75,7 +75,7 @@ function buildEventDescriptionHTML_occupancies(
 ): string {
   let descriptionHTML = ''
 
-  if (milestone.workOrderContracts!.length > 0) {
+  if ((milestone.workOrderContracts ?? []).length > 0) {
     const urlRoot = getUrlRoot(request)
 
     descriptionHTML = `<h2>
@@ -366,7 +366,7 @@ export default async function handler(
     calendarEvent.location(location)
 
     // Set organizer / attendees
-    if (milestone.workOrderContracts!.length > 0) {
+    if ((milestone.workOrderContracts ?? []).length > 0) {
       let organizerSet = false
       for (const contract of milestone.workOrderContracts ?? []) {
         for (const interment of contract.contractInterments ?? []) {
