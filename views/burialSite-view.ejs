@@ -104,7 +104,7 @@
         <h2 class="panel-heading">Image</h2>
         <div class="panel-block is-block">
           <% const imageURL = urlPrefix + "/images/cemeteries/" + burialSite.cemeterySvg %>
-          <div class="image" id="burialSite--cemeterySvg" data-map-key="<%= burialSite.cemeterySvgId %>">
+          <div class="image" id="burialSite--cemeterySvg" data-cemetery-svg-id="<%= burialSite.cemeterySvgId %>">
             <%- include('../public/images/cemeteries/' + burialSite.cemeterySvg); -%>
           </div>
         </div>

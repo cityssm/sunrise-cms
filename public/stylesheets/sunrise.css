@@ -179,8 +179,8 @@ span.button.is-static {
 
 .image svg .highlight.is-success,
 .image svg .highlight path.is-success {
-  stroke: var(--bulma-success-dark) !important;
-  fill: rgba(var(--bulma-success-light), 0.6);
+  stroke: rgb(72, 199, 142) !important;
+  fill: rgba(72, 199, 142, 0.6);
 }
 
 .image svg text {
