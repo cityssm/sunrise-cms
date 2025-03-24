@@ -31,6 +31,7 @@ export interface GetContractsFilters {
   burialSiteNameSearchType?: '' | 'startsWith' | 'endsWith'
   burialSiteName?: string
   burialSiteTypeId?: number | string
+  funeralHomeId?: number | string
   workOrderId?: number | string
   notWorkOrderId?: number | string
 }
@@ -44,6 +45,7 @@ export interface GetContractsOptions {
   includeTransactions: boolean
 }
 
+// eslint-disable-next-line complexity
 function buildWhereClause(filters: GetContractsFilters): {
   sqlWhereClause: string
   sqlParameters: unknown[]
@@ -114,6 +116,11 @@ function buildWhereClause(filters: GetContractsFilters): {
   if ((filters.burialSiteTypeId ?? '') !== '') {
     sqlWhereClause += ' and l.burialSiteTypeId = ?'
     sqlParameters.push(filters.burialSiteTypeId)
+  }
+
+  if ((filters.funeralHomeId ?? '') !== '') {
+    sqlWhereClause += ' and o.funeralHomeId = ?'
+    sqlParameters.push(filters.funeralHomeId)
   }
 
   if ((filters.workOrderId ?? '') !== '') {

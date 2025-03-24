@@ -6,6 +6,7 @@ import getContractFees from './getContractFees.js';
 import getContractInterments from './getContractInterments.js';
 import getContractTransactions from './getContractTransactions.js';
 import { acquireConnection } from './pool.js';
+// eslint-disable-next-line complexity
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where o.recordDelete_timeMillis is null';
     const sqlParameters = [];
@@ -49,6 +50,10 @@ function buildWhereClause(filters) {
     if ((filters.burialSiteTypeId ?? '') !== '') {
         sqlWhereClause += ' and l.burialSiteTypeId = ?';
         sqlParameters.push(filters.burialSiteTypeId);
+    }
+    if ((filters.funeralHomeId ?? '') !== '') {
+        sqlWhereClause += ' and o.funeralHomeId = ?';
+        sqlParameters.push(filters.funeralHomeId);
     }
     if ((filters.workOrderId ?? '') !== '') {
         sqlWhereClause +=

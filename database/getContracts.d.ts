@@ -12,6 +12,7 @@ export interface GetContractsFilters {
     burialSiteNameSearchType?: '' | 'startsWith' | 'endsWith';
     burialSiteName?: string;
     burialSiteTypeId?: number | string;
+    funeralHomeId?: number | string;
     workOrderId?: number | string;
     notWorkOrderId?: number | string;
 }
