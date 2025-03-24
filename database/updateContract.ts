@@ -1,4 +1,9 @@
-import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
+import {
+  type DateString,
+  type TimeString,
+  dateStringToInteger,
+  timeStringToInteger
+} from '@cityssm/utils-datetime'
 
 import addOrUpdateContractField from './addOrUpdateContractField.js'
 import deleteContractField from './deleteContractField.js'
@@ -13,7 +18,10 @@ export interface UpdateContractForm {
   contractEndDateString: DateString | ''
 
   funeralHomeId?: string | number
-  funeralDirectorName?: string
+  funeralDirectorName: string
+  funeralDateString: DateString | ''
+  funeralTimeString: TimeString | ''
+  committalTypeId?: string | number
 
   purchaserName?: string
   purchaserAddress1?: string
@@ -29,6 +37,7 @@ export interface UpdateContractForm {
   [fieldValue_contractTypeFieldId: `fieldValue_${string}`]: unknown
 }
 
+// eslint-disable-next-line complexity
 export default async function updateContract(
   updateForm: UpdateContractForm,
   user: User
@@ -44,6 +53,9 @@ export default async function updateContract(
         contractEndDate = ?,
         funeralHomeId = ?,
         funeralDirectorName = ?,
+        funeralDate = ?,
+        funeralTime = ?,
+        committalTypeId = ?,
         purchaserName = ?,
         purchaserAddress1 = ?,
         purchaserAddress2 = ?,
@@ -66,7 +78,16 @@ export default async function updateContract(
         ? undefined
         : dateStringToInteger(updateForm.contractEndDateString),
       updateForm.funeralHomeId === '' ? undefined : updateForm.funeralHomeId,
-      updateForm.funeralDirectorName ?? '',
+      updateForm.funeralDirectorName,
+      updateForm.funeralDateString === ''
+        ? undefined
+        : dateStringToInteger(updateForm.funeralDateString),
+      updateForm.funeralTimeString === ''
+        ? undefined
+        : timeStringToInteger(updateForm.funeralTimeString),
+      updateForm.committalTypeId === ''
+        ? undefined
+        : updateForm.committalTypeId,
       updateForm.purchaserName ?? '',
       updateForm.purchaserAddress1 ?? '',
       updateForm.purchaserAddress2 ?? '',
@@ -82,9 +103,9 @@ export default async function updateContract(
     )
 
   if (result.changes > 0) {
-    const contractTypeFieldIds = (
-      updateForm.contractTypeFieldIds ?? ''
-    ).split(',')
+    const contractTypeFieldIds = (updateForm.contractTypeFieldIds ?? '').split(
+      ','
+    )
 
     for (const contractTypeFieldId of contractTypeFieldIds) {
       const fieldValue = updateForm[

@@ -143,6 +143,71 @@
   </div>
 </div>
 
+<div class="panel">
+  <h2 class="panel-heading">Funeral</h2>
+  <div class="panel-block is-block">
+    <div class="columns">
+      <div class="column">
+        <p>
+          <strong>Funeral Home</strong><br />
+          <%= contract.funeralHomeName %><br />
+          <span class="is-size-7">
+            <% if (contract.funeralHomeAddress1) { %>
+              <%= contract.funeralHomeAddress1 %><br />
+            <% } %>
+            <% if (contract.funeralHomeAddress2) { %>
+              <%= contract.funeralHomeAddress2 %><br />
+            <% } %>
+            <% if (contract.funeralHomeCity) { %>
+              <%= contract.funeralHomeCity %>, 
+            <% } %>
+            <%= contract.funeralHomeProvince %><br />
+            <%= contract.funeralHomePostalCode %>
+          </span>
+        </p>
+      </div>
+      <div class="column">
+        <% if ((contract.funeralHomePhoneNumber ?? '') !== '') { %>
+          <p class="mb-2">
+            <strong>Phone</strong><br />
+            <%= contract.funeralHomePhoneNumber %>
+          </p>
+        <% } %>
+        <% if ((contract.funeralHomeEmail ?? '') !== '') { %>
+          <p class="mb-2">
+            <strong>Email</strong><br />
+            <%= contract.funeralHomeEmail %>
+          </p>
+        <% } %>
+        <p>
+          <strong>Director</strong><br />
+          <%= contract.funeralDirectorName %>
+        </p>
+      </div>
+      <div class="column">
+        <div class="columns">
+          <div class="column">
+            <p>
+              <strong>Service Date</strong><br />
+              <%= contract.funeralDateString %>
+            </p>
+          </div>
+          <div class="column">
+            <p>
+              <strong>Service Time</strong><br />
+              <%= contract.funeralTimePeriodString %>
+            </p>
+          </div>
+        </div>
+        <p>
+          <strong>Committal Type</strong><br />
+          <%= contract.committalType %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="columns">
   <div class="column">
     <div class="panel">

@@ -1,4 +1,4 @@
-import { dateIntegerToString, timeIntegerToString } from '@cityssm/utils-datetime';
+import { dateIntegerToString, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
 import getContractComments from './getContractComments.js';
 import getContractFees from './getContractFees.js';
 import getContractFields from './getContractFields.js';
@@ -10,6 +10,7 @@ export default async function getContract(contractId, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
+    database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
     const contract = database
         .prepare(`select o.contractId,
         o.contractTypeId, t.contractType, t.isPreneed,
@@ -24,7 +25,9 @@ export default async function getContract(contractId, connectedDatabase) {
         f.funeralHomeName, f.funeralHomeAddress1, f.funeralHomeAddress2,
         f.funeralHomeCity, f.funeralHomeProvince, f.funeralHomePostalCode,
         o.funeralDate, userFn_dateIntegerToString(o.funeralDate) as funeralDateString,
-        o.funeralTime, userFn_timeIntegerToString(o.funeralTime) as funeralTimeString,
+        o.funeralTime,
+        userFn_timeIntegerToString(o.funeralTime) as funeralTimeString,
+        userFn_timeIntegerToPeriodString(o.funeralTime) as funeralTimePeriodString,
         o.committalTypeId, c.committalType,
         o.recordUpdate_timeMillis
         from Contracts o

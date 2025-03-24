@@ -210,7 +210,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 <strong>Age:</strong>
               </div>
               <div class="column">
-                ${cityssm.escapeHTML(interment.deathAge === undefined ? '(No Age)' : interment.deathAge.toString())}
+                ${cityssm.escapeHTML((interment.deathAge ?? '') === '' ? '(No Age)' : interment.deathAge?.toString() ?? '')}<br />
                 ${cityssm.escapeHTML(interment.deathAgePeriod ?? '')}
               </div>
             </div>

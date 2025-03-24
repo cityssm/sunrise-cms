@@ -1,7 +1,8 @@
-import { dateStringToInteger } from '@cityssm/utils-datetime';
+import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
 import deleteContractField from './deleteContractField.js';
 import { acquireConnection } from './pool.js';
+// eslint-disable-next-line complexity
 export default async function updateContract(updateForm, user) {
     const database = await acquireConnection();
     const result = database
@@ -12,6 +13,9 @@ export default async function updateContract(updateForm, user) {
         contractEndDate = ?,
         funeralHomeId = ?,
         funeralDirectorName = ?,
+        funeralDate = ?,
+        funeralTime = ?,
+        committalTypeId = ?,
         purchaserName = ?,
         purchaserAddress1 = ?,
         purchaserAddress2 = ?,
@@ -27,7 +31,13 @@ export default async function updateContract(updateForm, user) {
         and recordDelete_timeMillis is null`)
         .run(updateForm.contractTypeId, updateForm.burialSiteId === '' ? undefined : updateForm.burialSiteId, dateStringToInteger(updateForm.contractStartDateString), updateForm.contractEndDateString === ''
         ? undefined
-        : dateStringToInteger(updateForm.contractEndDateString), updateForm.funeralHomeId === '' ? undefined : updateForm.funeralHomeId, updateForm.funeralDirectorName ?? '', updateForm.purchaserName ?? '', updateForm.purchaserAddress1 ?? '', updateForm.purchaserAddress2 ?? '', updateForm.purchaserCity ?? '', updateForm.purchaserProvince ?? '', updateForm.purchaserPostalCode ?? '', updateForm.purchaserPhoneNumber ?? '', updateForm.purchaserEmail ?? '', updateForm.purchaserRelationship ?? '', user.userName, Date.now(), updateForm.contractId);
+        : dateStringToInteger(updateForm.contractEndDateString), updateForm.funeralHomeId === '' ? undefined : updateForm.funeralHomeId, updateForm.funeralDirectorName, updateForm.funeralDateString === ''
+        ? undefined
+        : dateStringToInteger(updateForm.funeralDateString), updateForm.funeralTimeString === ''
+        ? undefined
+        : timeStringToInteger(updateForm.funeralTimeString), updateForm.committalTypeId === ''
+        ? undefined
+        : updateForm.committalTypeId, updateForm.purchaserName ?? '', updateForm.purchaserAddress1 ?? '', updateForm.purchaserAddress2 ?? '', updateForm.purchaserCity ?? '', updateForm.purchaserProvince ?? '', updateForm.purchaserPostalCode ?? '', updateForm.purchaserPhoneNumber ?? '', updateForm.purchaserEmail ?? '', updateForm.purchaserRelationship ?? '', user.userName, Date.now(), updateForm.contractId);
     if (result.changes > 0) {
         const contractTypeFieldIds = (updateForm.contractTypeFieldIds ?? '').split(',');
         for (const contractTypeFieldId of contractTypeFieldIds) {

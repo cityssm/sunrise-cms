@@ -1,4 +1,4 @@
-import { type DateString } from '@cityssm/utils-datetime';
+import { type DateString, type TimeString } from '@cityssm/utils-datetime';
 export interface UpdateContractForm {
     contractId: string | number;
     contractTypeId: string | number;
@@ -6,7 +6,10 @@ export interface UpdateContractForm {
     contractStartDateString: DateString;
     contractEndDateString: DateString | '';
     funeralHomeId?: string | number;
-    funeralDirectorName?: string;
+    funeralDirectorName: string;
+    funeralDateString: DateString | '';
+    funeralTimeString: TimeString | '';
+    committalTypeId?: string | number;
     purchaserName?: string;
     purchaserAddress1?: string;
     purchaserAddress2?: string;
