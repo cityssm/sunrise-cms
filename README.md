@@ -9,7 +9,9 @@
 
 🚧 **In development** 🚧
 
-**A web-based application to assist cemetery managers with managing their cemetery records**
+**A web-based application to assist cemetery managers with managing their cemetery records.**
+
+![Burial Site View](./docs/burialSite-view.png)
 
 This is a major refactoring of the now archived
 [Lot Occupancy System](https://github.com/cityssm/lot-occupancy-system),
