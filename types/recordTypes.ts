@@ -290,8 +290,8 @@ export interface Contract extends Record {
   contractId: number
 
   contractTypeId: number
-  contractType?: string
-  isPreneed?: boolean
+  contractType: string
+  isPreneed: boolean
 
   printEJS?: string
 
@@ -319,10 +319,11 @@ export interface Contract extends Record {
   purchaserEmail: string
   purchaserRelationship: string
 
-  funeralHomeId?: number
+  funeralHomeId: number | null
+  funeralDirectorName: string
+  funeralHomeName: string | null
+
   funeralHomeKey?: string
-  funeralHomeName?: string
-  funeralDirectorName?: string
   funeralHomeAddress1?: string
   funeralHomeAddress2?: string
   funeralHomeCity?: string

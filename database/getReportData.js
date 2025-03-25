@@ -49,21 +49,6 @@ export default async function getReportData(reportName, reportParameters = {}) {
     // eslint-disable-next-line security/detect-object-injection
     if (simpleReports[reportName] === undefined) {
         switch (reportName) {
-            case 'burialSites-byBurialSiteTypeId': {
-                sql = `select l.burialSiteId,
-          m.cemeteryName,
-          l.burialSiteName,
-          t.burialSiteType,
-          s.burialSiteStatus
-          from BurialSites l
-          left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
-          left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
-          left join Cemeteries m on l.cemeteryId = m.cemeteryId
-          where l.recordDelete_timeMillis is null
-          and l.burialSiteTypeId = ?`;
-                sqlParameters.push(reportParameters.burialSiteTypeId);
-                break;
-            }
             case 'burialSites-byBurialSiteStatusId': {
                 sql = `select l.burialSiteId,
           m.cemeteryName,
@@ -79,6 +64,21 @@ export default async function getReportData(reportName, reportParameters = {}) {
                 sqlParameters.push(reportParameters.burialSiteStatusId);
                 break;
             }
+            case 'burialSites-byBurialSiteTypeId': {
+                sql = `select l.burialSiteId,
+          m.cemeteryName,
+          l.burialSiteName,
+          t.burialSiteType,
+          s.burialSiteStatus
+          from BurialSites l
+          left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
+          left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
+          left join Cemeteries m on l.cemeteryId = m.cemeteryId
+          where l.recordDelete_timeMillis is null
+          and l.burialSiteTypeId = ?`;
+                sqlParameters.push(reportParameters.burialSiteTypeId);
+                break;
+            }
             case 'burialSites-byCemeteryId': {
                 sql = `select l.burialSiteId,
           m.cemeteryName,
@@ -92,6 +92,20 @@ export default async function getReportData(reportName, reportParameters = {}) {
           where l.recordDelete_timeMillis is null
           and l.cemeteryId = ?`;
                 sqlParameters.push(reportParameters.cemeteryId);
+                break;
+            }
+            case 'contractInterments-byContractId': {
+                sql = `select i.contractId, i.intermentNumber,
+          i.deceasedName, i.deceasedAddress1, i.deceasedAddress2,
+          i.deceasedCity, i.deceasedProvince, i.deceasedPostalCode,
+          i.birthDate, i.birthPlace,
+          i.deathDate, i.deathPlace,
+          i.deathAge, i.deathAgePeriod
+          from ContractInterments i
+          left join IntermentContainerTypes t on i.intermentContainerTypeId = t.intermentContainerTypeId
+          where i.recordDelete_timeMillis is null
+          and i.contractId = ?`;
+                sqlParameters.push(reportParameters.contractId);
                 break;
             }
             case 'contracts-current-byCemeteryId': {
@@ -111,20 +125,6 @@ export default async function getReportData(reportName, reportParameters = {}) {
                 sqlParameters.push(dateToInteger(new Date()), reportParameters.cemeteryId);
                 break;
             }
-            case 'contractInterments-byContractId': {
-                sql = `select i.contractId, i.intermentNumber,
-          i.deceasedName, i.deceasedAddress1, i.deceasedAddress2,
-          i.deceasedCity, i.deceasedProvince, i.deceasedPostalCode,
-          i.birthDate, i.birthPlace,
-          i.deathDate, i.deathPlace,
-          i.deathAge, i.deathAgePeriod
-          from ContractInterments i
-          left join IntermentContainerTypes t on i.intermentContainerTypeId = t.intermentContainerTypeId
-          where i.recordDelete_timeMillis is null
-          and i.contractId = ?`;
-                sqlParameters.push(reportParameters.contractId);
-                break;
-            }
             case 'contractTransactions-byTransactionDateString': {
                 sql = `select t.contractId, t.transactionIndex,
           t.transactionDate, t.transactionTime,
@@ -134,6 +134,20 @@ export default async function getReportData(reportName, reportParameters = {}) {
           where t.recordDelete_timeMillis is null
           and t.transactionDate = ?`;
                 sqlParameters.push(dateStringToInteger(reportParameters.transactionDateString));
+                break;
+            }
+            case 'workOrderMilestones-byWorkOrderId': {
+                sql = `select t.workOrderMilestoneType,
+          m.workOrderMilestoneDate,
+          m.workOrderMilestoneTime,
+          m.workOrderMilestoneDescription,
+          m.workOrderMilestoneCompletionDate,
+          m.workOrderMilestoneCompletionTime
+          from WorkOrderMilestones m
+          left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId
+          where m.recordDelete_timeMillis is null
+          and m.workOrderId = ?`;
+                sqlParameters.push(reportParameters.workOrderId);
                 break;
             }
             case 'workOrders-open': {
@@ -153,20 +167,6 @@ export default async function getReportData(reportName, reportParameters = {}) {
           ) m on w.workOrderId = m.workOrderId
           where w.recordDelete_timeMillis is null
           and w.workOrderCloseDate is null`;
-                break;
-            }
-            case 'workOrderMilestones-byWorkOrderId': {
-                sql = `select t.workOrderMilestoneType,
-          m.workOrderMilestoneDate,
-          m.workOrderMilestoneTime,
-          m.workOrderMilestoneDescription,
-          m.workOrderMilestoneCompletionDate,
-          m.workOrderMilestoneCompletionTime
-          from WorkOrderMilestones m
-          left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId
-          where m.recordDelete_timeMillis is null
-          and m.workOrderId = ?`;
-                sqlParameters.push(reportParameters.workOrderId);
                 break;
             }
             default: {

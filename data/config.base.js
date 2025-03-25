@@ -1,19 +1,19 @@
 export const config = {
-    application: {},
-    session: {},
-    reverseProxy: {},
-    users: {},
     aliases: {},
+    application: {},
+    reverseProxy: {},
+    session: {},
     settings: {
-        fees: {},
+        adminCleanup: {},
         burialSites: {},
         contracts: {},
-        workOrders: {},
-        adminCleanup: {},
-        printPdf: {},
         dynamicsGP: {
             integrationIsEnabled: false
-        }
-    }
+        },
+        fees: {},
+        printPdf: {},
+        workOrders: {}
+    },
+    users: {}
 };
 export default config;

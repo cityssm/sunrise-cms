@@ -7,14 +7,14 @@ import { minutesToSeconds } from '@cityssm/to-millis'
 import Debug from 'debug'
 import NodeCache from 'node-cache'
 
-import getNextBurialSiteIdFromDatabase from '../database/getNextBurialSiteId.js'
-import getPreviousBurialSiteIdFromDatabase from '../database/getPreviousBurialSiteId.js'
-import { DEBUG_NAMESPACE } from '../debug.config.js'
 import type {
   CacheBurialSiteIdsWorkerMessage,
   ClearNextPreviousBurialSiteIdsCacheWorkerMessage
 } from '../types/applicationTypes.js'
 
+import getNextBurialSiteIdFromDatabase from '../database/getNextBurialSiteId.js'
+import getPreviousBurialSiteIdFromDatabase from '../database/getPreviousBurialSiteId.js'
+import { DEBUG_NAMESPACE } from '../debug.config.js'
 import { getConfigProperty } from './config.helpers.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:burialSites.helpers:${process.pid}`)
@@ -28,26 +28,44 @@ const previousBurialSiteIdCache = new NodeCache(cacheOptions)
 
 const nextBurialSiteIdCache = new NodeCache(cacheOptions)
 
-function cacheBurialSiteIds(
-  burialSiteId: number,
-  nextBurialSiteId: number,
+export function clearNextPreviousBurialSiteIdCache(
+  burialSiteId = -1,
   relayMessage = true
 ): void {
-  previousBurialSiteIdCache.set(nextBurialSiteId, burialSiteId)
-  nextBurialSiteIdCache.set(burialSiteId, nextBurialSiteId)
+  if (burialSiteId === -1) {
+    previousBurialSiteIdCache.flushAll()
+    nextBurialSiteIdCache.flushAll()
+    return
+  }
+
+  const previousBurialSiteId: number | undefined =
+    previousBurialSiteIdCache.get(burialSiteId)
+
+  if (previousBurialSiteId !== undefined) {
+    nextBurialSiteIdCache.del(previousBurialSiteId)
+    previousBurialSiteIdCache.del(burialSiteId)
+  }
+
+  const nextBurialSiteId: number | undefined =
+    nextBurialSiteIdCache.get(burialSiteId)
+
+  if (nextBurialSiteId !== undefined) {
+    previousBurialSiteIdCache.del(nextBurialSiteId)
+    nextBurialSiteIdCache.del(burialSiteId)
+  }
 
   try {
     if (relayMessage && cluster.isWorker && process.send !== undefined) {
-      const workerMessage: CacheBurialSiteIdsWorkerMessage = {
-        messageType: 'cacheBurialSiteIds',
+      const workerMessage: ClearNextPreviousBurialSiteIdsCacheWorkerMessage = {
         burialSiteId,
-        nextBurialSiteId,
-        timeMillis: Date.now(),
-        pid: process.pid
+        // eslint-disable-next-line no-secrets/no-secrets
+        messageType: 'clearNextPreviousBurialSiteIdCache',
+        pid: process.pid,
+        timeMillis: Date.now()
       }
 
       debug(
-        `Sending cache burial site ids from worker: (${burialSiteId}, ${nextBurialSiteId})`
+        `Sending clear next/previous burial site cache from worker: ${burialSiteId}`
       )
 
       process.send(workerMessage)
@@ -91,44 +109,26 @@ export async function getPreviousBurialSiteId(
   return previousBurialSiteId
 }
 
-export function clearNextPreviousBurialSiteIdCache(
-  burialSiteId = -1,
+function cacheBurialSiteIds(
+  burialSiteId: number,
+  nextBurialSiteId: number,
   relayMessage = true
 ): void {
-  if (burialSiteId === -1) {
-    previousBurialSiteIdCache.flushAll()
-    nextBurialSiteIdCache.flushAll()
-    return
-  }
-
-  const previousBurialSiteId: number | undefined =
-    previousBurialSiteIdCache.get(burialSiteId)
-
-  if (previousBurialSiteId !== undefined) {
-    nextBurialSiteIdCache.del(previousBurialSiteId)
-    previousBurialSiteIdCache.del(burialSiteId)
-  }
-
-  const nextBurialSiteId: number | undefined =
-    nextBurialSiteIdCache.get(burialSiteId)
-
-  if (nextBurialSiteId !== undefined) {
-    previousBurialSiteIdCache.del(nextBurialSiteId)
-    nextBurialSiteIdCache.del(burialSiteId)
-  }
+  previousBurialSiteIdCache.set(nextBurialSiteId, burialSiteId)
+  nextBurialSiteIdCache.set(burialSiteId, nextBurialSiteId)
 
   try {
     if (relayMessage && cluster.isWorker && process.send !== undefined) {
-      const workerMessage: ClearNextPreviousBurialSiteIdsCacheWorkerMessage = {
-        // eslint-disable-next-line no-secrets/no-secrets
-        messageType: 'clearNextPreviousBurialSiteIdCache',
+      const workerMessage: CacheBurialSiteIdsWorkerMessage = {
         burialSiteId,
-        timeMillis: Date.now(),
-        pid: process.pid
+        messageType: 'cacheBurialSiteIds',
+        nextBurialSiteId,
+        pid: process.pid,
+        timeMillis: Date.now()
       }
 
       debug(
-        `Sending clear next/previous burial site cache from worker: ${burialSiteId}`
+        `Sending cache burial site ids from worker: (${burialSiteId}, ${nextBurialSiteId})`
       )
 
       process.send(workerMessage)
@@ -179,8 +179,8 @@ process.on(
   'message',
   (
     message:
-      | ClearNextPreviousBurialSiteIdsCacheWorkerMessage
       | CacheBurialSiteIdsWorkerMessage
+      | ClearNextPreviousBurialSiteIdsCacheWorkerMessage
   ) => {
     if (message.pid !== process.pid) {
       switch (message.messageType) {

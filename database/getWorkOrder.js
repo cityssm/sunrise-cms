@@ -13,6 +13,16 @@ const baseSQL = `select w.workOrderId,
     from WorkOrders w
     left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
     where w.recordDelete_timeMillis is null`;
+export default async function getWorkOrder(workOrderId, options, connectedDatabase) {
+    return await _getWorkOrder(`${baseSQL} and w.workOrderId = ?`, workOrderId, options, connectedDatabase);
+}
+export async function getWorkOrderByWorkOrderNumber(workOrderNumber) {
+    return await _getWorkOrder(`${baseSQL} and w.workOrderNumber = ?`, workOrderNumber, {
+        includeBurialSites: true,
+        includeComments: true,
+        includeMilestones: true
+    });
+}
 async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
@@ -22,22 +32,21 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
             const burialSiteResults = await getBurialSites({
                 workOrderId: workOrder.workOrderId
             }, {
+                includeContractCount: false,
                 limit: -1,
-                offset: 0,
-                includeContractCount: false
+                offset: 0
             }, database);
             workOrder.workOrderBurialSites = burialSiteResults.burialSites;
             const workOrderContractsResults = await getContracts({
                 workOrderId: workOrder.workOrderId
             }, {
-                limit: -1,
-                offset: 0,
-                includeInterments: true,
                 includeFees: false,
-                includeTransactions: false
+                includeInterments: true,
+                includeTransactions: false,
+                limit: -1,
+                offset: 0
             }, database);
-            workOrder.workOrderContracts =
-                workOrderContractsResults.contracts;
+            workOrder.workOrderContracts = workOrderContractsResults.contracts;
         }
         if (options.includeComments) {
             workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);
@@ -55,14 +64,4 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
         database.release();
     }
     return workOrder;
-}
-export async function getWorkOrderByWorkOrderNumber(workOrderNumber) {
-    return await _getWorkOrder(`${baseSQL} and w.workOrderNumber = ?`, workOrderNumber, {
-        includeBurialSites: true,
-        includeComments: true,
-        includeMilestones: true
-    });
-}
-export default async function getWorkOrder(workOrderId, options, connectedDatabase) {
-    return await _getWorkOrder(`${baseSQL} and w.workOrderId = ?`, workOrderId, options, connectedDatabase);
 }

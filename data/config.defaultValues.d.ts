@@ -14,13 +14,13 @@ export declare const configDefaultValues: {
     'reverseProxy.disableEtag': boolean;
     'reverseProxy.urlPrefix': string;
     'session.cookieName': string;
-    'session.secret': string;
-    'session.maxAgeMillis': number;
     'session.doKeepAlive': boolean;
-    'users.testing': string[];
+    'session.maxAgeMillis': number;
+    'session.secret': string;
     'users.canLogin': string[];
     'users.canUpdate': string[];
     'users.isAdmin': string[];
+    'users.testing': string[];
     'aliases.externalReceiptNumber': string;
     'aliases.workOrderOpenDate': string;
     'aliases.workOrderCloseDate': string;

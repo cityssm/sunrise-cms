@@ -15,19 +15,32 @@ const cacheOptions = {
 };
 const previousBurialSiteIdCache = new NodeCache(cacheOptions);
 const nextBurialSiteIdCache = new NodeCache(cacheOptions);
-function cacheBurialSiteIds(burialSiteId, nextBurialSiteId, relayMessage = true) {
-    previousBurialSiteIdCache.set(nextBurialSiteId, burialSiteId);
-    nextBurialSiteIdCache.set(burialSiteId, nextBurialSiteId);
+export function clearNextPreviousBurialSiteIdCache(burialSiteId = -1, relayMessage = true) {
+    if (burialSiteId === -1) {
+        previousBurialSiteIdCache.flushAll();
+        nextBurialSiteIdCache.flushAll();
+        return;
+    }
+    const previousBurialSiteId = previousBurialSiteIdCache.get(burialSiteId);
+    if (previousBurialSiteId !== undefined) {
+        nextBurialSiteIdCache.del(previousBurialSiteId);
+        previousBurialSiteIdCache.del(burialSiteId);
+    }
+    const nextBurialSiteId = nextBurialSiteIdCache.get(burialSiteId);
+    if (nextBurialSiteId !== undefined) {
+        previousBurialSiteIdCache.del(nextBurialSiteId);
+        nextBurialSiteIdCache.del(burialSiteId);
+    }
     try {
         if (relayMessage && cluster.isWorker && process.send !== undefined) {
             const workerMessage = {
-                messageType: 'cacheBurialSiteIds',
                 burialSiteId,
-                nextBurialSiteId,
-                timeMillis: Date.now(),
-                pid: process.pid
+                // eslint-disable-next-line no-secrets/no-secrets
+                messageType: 'clearNextPreviousBurialSiteIdCache',
+                pid: process.pid,
+                timeMillis: Date.now()
             };
-            debug(`Sending cache burial site ids from worker: (${burialSiteId}, ${nextBurialSiteId})`);
+            debug(`Sending clear next/previous burial site cache from worker: ${burialSiteId}`);
             process.send(workerMessage);
         }
     }
@@ -55,32 +68,19 @@ export async function getPreviousBurialSiteId(burialSiteId) {
     }
     return previousBurialSiteId;
 }
-export function clearNextPreviousBurialSiteIdCache(burialSiteId = -1, relayMessage = true) {
-    if (burialSiteId === -1) {
-        previousBurialSiteIdCache.flushAll();
-        nextBurialSiteIdCache.flushAll();
-        return;
-    }
-    const previousBurialSiteId = previousBurialSiteIdCache.get(burialSiteId);
-    if (previousBurialSiteId !== undefined) {
-        nextBurialSiteIdCache.del(previousBurialSiteId);
-        previousBurialSiteIdCache.del(burialSiteId);
-    }
-    const nextBurialSiteId = nextBurialSiteIdCache.get(burialSiteId);
-    if (nextBurialSiteId !== undefined) {
-        previousBurialSiteIdCache.del(nextBurialSiteId);
-        nextBurialSiteIdCache.del(burialSiteId);
-    }
+function cacheBurialSiteIds(burialSiteId, nextBurialSiteId, relayMessage = true) {
+    previousBurialSiteIdCache.set(nextBurialSiteId, burialSiteId);
+    nextBurialSiteIdCache.set(burialSiteId, nextBurialSiteId);
     try {
         if (relayMessage && cluster.isWorker && process.send !== undefined) {
             const workerMessage = {
-                // eslint-disable-next-line no-secrets/no-secrets
-                messageType: 'clearNextPreviousBurialSiteIdCache',
                 burialSiteId,
-                timeMillis: Date.now(),
-                pid: process.pid
+                messageType: 'cacheBurialSiteIds',
+                nextBurialSiteId,
+                pid: process.pid,
+                timeMillis: Date.now()
             };
-            debug(`Sending clear next/previous burial site cache from worker: ${burialSiteId}`);
+            debug(`Sending cache burial site ids from worker: (${burialSiteId}, ${nextBurialSiteId})`);
             process.send(workerMessage);
         }
     }

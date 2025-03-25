@@ -1,5 +1,6 @@
-import { hoursToMillis } from '@cityssm/to-millis'
 import type { config as MSSQLConfig } from 'mssql'
+
+import { hoursToMillis } from '@cityssm/to-millis'
 
 import type {
   ConfigActiveDirectory,
@@ -26,14 +27,14 @@ export const configDefaultValues = {
   'reverseProxy.urlPrefix': '',
 
   'session.cookieName': 'sunrise-user-sid',
-  'session.secret': 'cityssm/sunrise',
-  'session.maxAgeMillis': hoursToMillis(1),
   'session.doKeepAlive': false,
+  'session.maxAgeMillis': hoursToMillis(1),
+  'session.secret': 'cityssm/sunrise',
 
-  'users.testing': [] as string[],
   'users.canLogin': ['administrator'],
   'users.canUpdate': [] as string[],
   'users.isAdmin': ['administrator'],
+  'users.testing': [] as string[],
 
   'aliases.externalReceiptNumber': 'External Receipt Number',
   'aliases.workOrderOpenDate': 'Order Date',

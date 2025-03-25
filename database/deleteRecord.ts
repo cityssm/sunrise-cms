@@ -1,62 +1,62 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js'
-
 import { acquireConnection } from './pool.js'
 
 type RecordTable =
+  | 'BurialSiteComments'
+  | 'BurialSites'
+  | 'BurialSiteStatuses'
+  | 'BurialSiteTypeFields'
+  | 'BurialSiteTypes'
+  | 'Cemeteries'
+  | 'ContractComments'
+  | 'Contracts'
+  | 'ContractTypeFields'
+  | 'ContractTypes'
   | 'FeeCategories'
   | 'Fees'
-  | 'BurialSites'
-  | 'BurialSiteComments'
-  | 'Contracts'
-  | 'ContractComments'
-  | 'BurialSiteStatuses'
-  | 'BurialSiteTypes'
-  | 'BurialSiteTypeFields'
-  | 'Cemeteries'
   | 'FuneralHomes'
-  | 'ContractTypes'
-  | 'ContractTypeFields'
-  | 'WorkOrders'
   | 'WorkOrderComments'
   | 'WorkOrderMilestones'
   | 'WorkOrderMilestoneTypes'
+  | 'WorkOrders'
   | 'WorkOrderTypes'
 
-const recordIdColumns = new Map<RecordTable, string>()
-recordIdColumns.set('FeeCategories', 'feeCategoryId')
-recordIdColumns.set('Fees', 'feeId')
-recordIdColumns.set('BurialSites', 'burialSiteId')
-recordIdColumns.set('BurialSiteComments', 'burialSiteCommentId')
-recordIdColumns.set('Contracts', 'contractId')
-recordIdColumns.set('ContractComments', 'contractCommentId')
-recordIdColumns.set('BurialSiteStatuses', 'burialSiteStatusId')
-recordIdColumns.set('BurialSiteTypes', 'burialSiteTypeId')
-recordIdColumns.set('BurialSiteTypeFields', 'burialSiteTypeFieldId')
-recordIdColumns.set('Cemeteries', 'cemeteryId')
-recordIdColumns.set('FuneralHomes', 'funeralHomeId')
-recordIdColumns.set('ContractTypes', 'contractTypeId')
-recordIdColumns.set('ContractTypeFields', 'contractTypeFieldId')
-recordIdColumns.set('WorkOrders', 'workOrderId')
-recordIdColumns.set('WorkOrderComments', 'workOrderCommentId')
-recordIdColumns.set('WorkOrderMilestones', 'workOrderMilestoneId')
-recordIdColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId')
-recordIdColumns.set('WorkOrderTypes', 'workOrderTypeId')
-
-const relatedTables = new Map<RecordTable, string[]>()
-relatedTables.set('FeeCategories', ['Fees'])
-relatedTables.set('BurialSites', ['BurialSiteFields', 'BurialSiteComments'])
-relatedTables.set('Contracts', [
-  'ContractFields',
-  'ContractComments'
+const recordIdColumns = new Map<RecordTable, string>([
+  ['BurialSiteComments', 'burialSiteCommentId'],
+  ['BurialSites', 'burialSiteId'],
+  ['BurialSiteStatuses', 'burialSiteStatusId'],
+  ['BurialSiteTypeFields', 'burialSiteTypeFieldId'],
+  ['BurialSiteTypes', 'burialSiteTypeId'],
+  ['Cemeteries', 'cemeteryId'],
+  ['ContractComments', 'contractCommentId'],
+  ['Contracts', 'contractId'],
+  ['ContractTypeFields', 'contractTypeFieldId'],
+  ['ContractTypes', 'contractTypeId'],
+  ['FeeCategories', 'feeCategoryId'],
+  ['Fees', 'feeId'],
+  ['FuneralHomes', 'funeralHomeId'],
+  ['WorkOrderComments', 'workOrderCommentId'],
+  ['WorkOrderMilestones', 'workOrderMilestoneId'],
+  ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
+  ['WorkOrders', 'workOrderId'],
+  ['WorkOrderTypes', 'workOrderTypeId']
 ])
-relatedTables.set('BurialSiteTypes', ['BurialSiteTypeFields'])
-relatedTables.set('Cemeteries', ['BurialSites'])
-relatedTables.set('ContractTypes', ['ContractTypePrints', 'ContractTypeFields'])
-relatedTables.set('WorkOrders', [
-  'WorkOrderMilestones',
-  'WorkOrderLots',
-  'WorkOrderContracts',
-  'WorkOrderComments'
+
+const relatedTables = new Map<RecordTable, string[]>([
+  ['BurialSites', ['BurialSiteFields', 'BurialSiteComments']],
+  ['BurialSiteTypes', ['BurialSiteTypeFields']],
+  ['Cemeteries', ['BurialSites']],
+  ['Contracts', ['ContractFields', 'ContractComments']],
+  ['ContractTypes', ['ContractTypePrints', 'ContractTypeFields']],
+  [
+    'WorkOrders',
+    [
+      'WorkOrderMilestones',
+      'WorkOrderLots',
+      'WorkOrderContracts',
+      'WorkOrderComments'
+    ]
+  ]
 ])
 
 export async function deleteRecord(

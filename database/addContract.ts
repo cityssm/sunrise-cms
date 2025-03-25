@@ -1,54 +1,55 @@
+import type { PoolConnection } from 'better-sqlite-pool'
+
 import {
   type DateString,
-  type TimeString,
   dateStringToInteger,
+  type TimeString,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
-import type { PoolConnection } from 'better-sqlite-pool'
 
 import addOrUpdateContractField from './addOrUpdateContractField.js'
 import { acquireConnection } from './pool.js'
 
 export interface AddContractForm {
-  contractTypeId: string | number
-  burialSiteId: string | number
-
-  contractStartDateString: DateString | ''
-  contractEndDateString: DateString | ''
-
-  contractTypeFieldIds?: string
   [fieldValue_contractTypeFieldId: `fieldValue_${string}`]: unknown
+  birthDateString?: '' | DateString
 
-  purchaserName?: string
-  purchaserAddress1?: string
-  purchaserAddress2?: string
-  purchaserCity?: string
-  purchaserProvince?: string
-  purchaserPostalCode?: string
-  purchaserPhoneNumber?: string
-  purchaserEmail?: string
-  purchaserRelationship?: string
+  birthPlace?: string
+  burialSiteId: number | string
 
-  funeralHomeId?: string | number
-  funeralDirectorName?: string
-  funeralDateString?: DateString | ''
-  funeralTimeString?: TimeString | ''
-  committalTypeId?: string | number
+  committalTypeId?: number | string
+  contractEndDateString: '' | DateString
 
-  deceasedName?: string
+  contractStartDateString: '' | DateString
+  contractTypeFieldIds?: string
+  contractTypeId: number | string
+  deathAge?: string
+  deathAgePeriod?: string
+  deathDateString?: '' | DateString
+  deathPlace?: string
+
   deceasedAddress1?: string
   deceasedAddress2?: string
   deceasedCity?: string
-  deceasedProvince?: string
+  deceasedName?: string
   deceasedPostalCode?: string
+  deceasedProvince?: string
 
-  birthDateString?: DateString | ''
-  birthPlace?: string
-  deathDateString?: DateString | ''
-  deathPlace?: string
-  deathAge?: string
-  deathAgePeriod?: string
-  intermentContainerTypeId?: string | number
+  funeralDateString?: '' | DateString
+  funeralDirectorName?: string
+  funeralHomeId?: number | string
+  funeralTimeString?: '' | TimeString
+  intermentContainerTypeId?: number | string
+
+  purchaserAddress1?: string
+  purchaserAddress2?: string
+  purchaserCity?: string
+  purchaserEmail?: string
+  purchaserName?: string
+  purchaserPhoneNumber?: string
+  purchaserPostalCode?: string
+  purchaserProvince?: string
+  purchaserRelationship?: string
 }
 
 // eslint-disable-next-line complexity

@@ -20,24 +20,24 @@ export default async function copyContract(
   const newContractId = await addContract(
     {
       burialSiteId: oldContract.burialSiteId ?? '',
-      contractTypeId: oldContract.contractTypeId,
-      contractStartDateString: dateToString(new Date()),
       contractEndDateString: '',
+      contractStartDateString: dateToString(new Date()),
+      contractTypeId: oldContract.contractTypeId,
 
-      purchaserName: oldContract.purchaserName,
+      funeralDateString: oldContract.funeralDateString ?? '',
+      funeralDirectorName: oldContract.funeralDirectorName,
+      funeralHomeId: oldContract.funeralHomeId ?? '',
+      funeralTimeString: oldContract.funeralTimeString ?? '',
       purchaserAddress1: oldContract.purchaserAddress1,
       purchaserAddress2: oldContract.purchaserAddress2,
       purchaserCity: oldContract.purchaserCity,
-      purchaserProvince: oldContract.purchaserProvince,
-      purchaserPostalCode: oldContract.purchaserPostalCode,
-      purchaserPhoneNumber: oldContract.purchaserPhoneNumber,
       purchaserEmail: oldContract.purchaserEmail,
-      purchaserRelationship: oldContract.purchaserRelationship,
+      purchaserName: oldContract.purchaserName,
 
-      funeralHomeId: oldContract.funeralHomeId,
-      funeralDirectorName: oldContract.funeralDirectorName,
-      funeralDateString: oldContract.funeralDateString ?? '',
-      funeralTimeString: oldContract.funeralTimeString ?? ''
+      purchaserPhoneNumber: oldContract.purchaserPhoneNumber,
+      purchaserPostalCode: oldContract.purchaserPostalCode,
+      purchaserProvince: oldContract.purchaserProvince,
+      purchaserRelationship: oldContract.purchaserRelationship
     },
     user,
     database
@@ -76,21 +76,21 @@ export default async function copyContract(
   for (const interment of oldContract.contractInterments ?? []) {
     await addContractInterment(
       {
-        contractId: newContractId,
-        deceasedName: interment.deceasedName ?? '',
-        deceasedAddress1: interment.deceasedAddress1 ?? '',
-        deceasedAddress2: interment.deceasedAddress2 ?? '',
-        deceasedCity: interment.deceasedCity ?? '',
-        deceasedProvince: interment.deceasedProvince ?? '',
-        deceasedPostalCode: interment.deceasedPostalCode ?? '',
-
         birthDateString: interment.birthDateString ?? '',
         birthPlace: interment.birthPlace ?? '',
+        contractId: newContractId,
+        deathAge: interment.deathAge ?? '',
+        deathAgePeriod: interment.deathAgePeriod ?? '',
         deathDateString: interment.deathDateString ?? '',
         deathPlace: interment.deathPlace ?? '',
 
-        deathAge: interment.deathAge ?? '',
-        deathAgePeriod: interment.deathAgePeriod ?? '',
+        deceasedAddress1: interment.deceasedAddress1 ?? '',
+        deceasedAddress2: interment.deceasedAddress2 ?? '',
+        deceasedCity: interment.deceasedCity ?? '',
+        deceasedName: interment.deceasedName ?? '',
+
+        deceasedPostalCode: interment.deceasedPostalCode ?? '',
+        deceasedProvince: interment.deceasedProvince ?? '',
         intermentContainerTypeId: interment.intermentContainerTypeId ?? ''
       },
       user,
@@ -104,8 +104,8 @@ export default async function copyContract(
 
   await addContractComment(
     {
-      contractId: newContractId,
-      comment: `New record copied from #${oldContractId}.`
+      comment: `New record copied from #${oldContractId}.`,
+      contractId: newContractId
     },
     user
   )

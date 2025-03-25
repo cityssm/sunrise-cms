@@ -10,33 +10,6 @@ const debug = Debug(`${DEBUG_NAMESPACE}:functions.api`)
 const apiKeyPath = 'data/apiKeys.json'
 let apiKeys: Record<string, string> | undefined
 
-async function loadApiKeys(): Promise<void> {
-  try {
-    const fileData = await fs.readFile(apiKeyPath, 'utf8')
-    apiKeys = JSON.parse(fileData) as Record<string, string>
-  } catch (error) {
-    debug(error)
-    apiKeys = {}
-  }
-}
-
-async function saveApiKeys(): Promise<void> {
-  try {
-    await fs.writeFile(apiKeyPath, JSON.stringify(apiKeys), 'utf8')
-  } catch (error) {
-    debug(error)
-  }
-}
-
-function generateApiKey(apiKeyPrefix: string): string {
-  return `${apiKeyPrefix}-${randomUUID()}-${Date.now().toString()}`
-}
-
-export async function regenerateApiKey(userName: string): Promise<void> {
-  apiKeys[userName] = generateApiKey(userName)
-  await saveApiKeys()
-}
-
 export async function getApiKey(userName: string): Promise<string> {
   if (apiKeys === undefined) {
     await loadApiKeys()
@@ -67,4 +40,31 @@ export async function getUserNameFromApiKey(
   }
 
   return undefined
+}
+
+export async function regenerateApiKey(userName: string): Promise<void> {
+  apiKeys[userName] = generateApiKey(userName)
+  await saveApiKeys()
+}
+
+function generateApiKey(apiKeyPrefix: string): string {
+  return `${apiKeyPrefix}-${randomUUID()}-${Date.now().toString()}`
+}
+
+async function loadApiKeys(): Promise<void> {
+  try {
+    const fileData = await fs.readFile(apiKeyPath, 'utf8')
+    apiKeys = JSON.parse(fileData) as Record<string, string>
+  } catch (error) {
+    debug(error)
+    apiKeys = {}
+  }
+}
+
+async function saveApiKeys(): Promise<void> {
+  try {
+    await fs.writeFile(apiKeyPath, JSON.stringify(apiKeys), 'utf8')
+  } catch (error) {
+    debug(error)
+  }
 }

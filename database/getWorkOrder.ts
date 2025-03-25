@@ -1,5 +1,6 @@
-import { dateIntegerToString } from '@cityssm/utils-datetime'
 import type { PoolConnection } from 'better-sqlite-pool'
+
+import { dateIntegerToString } from '@cityssm/utils-datetime'
 
 import type { WorkOrder } from '../types/recordTypes.js'
 
@@ -25,19 +26,46 @@ const baseSQL = `select w.workOrderId,
     left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
     where w.recordDelete_timeMillis is null`
 
+export default async function getWorkOrder(
+  workOrderId: number | string,
+  options: WorkOrderOptions,
+  connectedDatabase?: PoolConnection
+): Promise<undefined | WorkOrder> {
+  return await _getWorkOrder(
+    `${baseSQL} and w.workOrderId = ?`,
+    workOrderId,
+    options,
+    connectedDatabase
+  )
+}
+
+export async function getWorkOrderByWorkOrderNumber(
+  workOrderNumber: string
+): Promise<undefined | WorkOrder> {
+  return await _getWorkOrder(
+    `${baseSQL} and w.workOrderNumber = ?`,
+    workOrderNumber,
+    {
+      includeBurialSites: true,
+      includeComments: true,
+      includeMilestones: true
+    }
+  )
+}
+
 async function _getWorkOrder(
   sql: string,
   workOrderIdOrWorkOrderNumber: number | string,
   options: WorkOrderOptions,
   connectedDatabase?: PoolConnection
-): Promise<WorkOrder | undefined> {
+): Promise<undefined | WorkOrder> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 
   const workOrder = database.prepare(sql).get(workOrderIdOrWorkOrderNumber) as
-    | WorkOrder
     | undefined
+    | WorkOrder
 
   if (workOrder !== undefined) {
     if (options.includeBurialSites) {
@@ -46,9 +74,9 @@ async function _getWorkOrder(
           workOrderId: workOrder.workOrderId
         },
         {
+          includeContractCount: false,
           limit: -1,
-          offset: 0,
-          includeContractCount: false
+          offset: 0
         },
         database
       )
@@ -60,17 +88,16 @@ async function _getWorkOrder(
           workOrderId: workOrder.workOrderId
         },
         {
-          limit: -1,
-          offset: 0,
-          includeInterments: true,
           includeFees: false,
-          includeTransactions: false
+          includeInterments: true,
+          includeTransactions: false,
+          limit: -1,
+          offset: 0
         },
         database
       )
 
-      workOrder.workOrderContracts =
-        workOrderContractsResults.contracts
+      workOrder.workOrderContracts = workOrderContractsResults.contracts
     }
 
     if (options.includeComments) {
@@ -99,31 +126,4 @@ async function _getWorkOrder(
   }
 
   return workOrder
-}
-
-export async function getWorkOrderByWorkOrderNumber(
-  workOrderNumber: string
-): Promise<WorkOrder | undefined> {
-  return await _getWorkOrder(
-    `${baseSQL} and w.workOrderNumber = ?`,
-    workOrderNumber,
-    {
-      includeBurialSites: true,
-      includeComments: true,
-      includeMilestones: true
-    }
-  )
-}
-
-export default async function getWorkOrder(
-  workOrderId: number | string,
-  options: WorkOrderOptions,
-  connectedDatabase?: PoolConnection
-): Promise<WorkOrder | undefined> {
-  return await _getWorkOrder(
-    `${baseSQL} and w.workOrderId = ?`,
-    workOrderId,
-    options,
-    connectedDatabase
-  )
 }
