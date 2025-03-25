@@ -1,75 +1,17 @@
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import getContracts from './getContracts.js';
 import getBurialSites from './getBurialSites.js';
+import getContracts from './getContracts.js';
 import { acquireConnection } from './pool.js';
 // eslint-disable-next-line security/detect-unsafe-regex
 const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/;
-function buildWhereClause(filters) {
-    let sqlWhereClause = ' where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null';
-    const sqlParameters = [];
-    if ((filters.workOrderId ?? '') !== '') {
-        sqlWhereClause += ' and m.workOrderId = ?';
-        sqlParameters.push(filters.workOrderId);
-    }
-    const date = new Date();
-    const currentDateNumber = dateToInteger(date);
-    date.setDate(date.getDate() -
-        getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays'));
-    const recentBeforeDateNumber = dateToInteger(date);
-    date.setDate(date.getDate() +
-        getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays') +
-        getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentAfterDays'));
-    const recentAfterDateNumber = dateToInteger(date);
-    switch (filters.workOrderMilestoneDateFilter) {
-        case 'upcomingMissed': {
-            sqlWhereClause +=
-                ' and (m.workOrderMilestoneCompletionDate is null or m.workOrderMilestoneDate >= ?)';
-            sqlParameters.push(currentDateNumber);
-            break;
-        }
-        case 'recent': {
-            sqlWhereClause +=
-                ' and m.workOrderMilestoneDate >= ? and m.workOrderMilestoneDate <= ?';
-            sqlParameters.push(recentBeforeDateNumber, recentAfterDateNumber);
-            break;
-        }
-        case 'blank': {
-            sqlWhereClause += ' and m.workOrderMilestoneDate = 0';
-            break;
-        }
-        case 'notBlank': {
-            sqlWhereClause += ' and m.workOrderMilestoneDate > 0';
-            break;
-        }
-    }
-    if (filters.workOrderMilestoneDateString !== undefined &&
-        filters.workOrderMilestoneDateString !== '') {
-        sqlWhereClause += ' and m.workOrderMilestoneDate = ?';
-        sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString));
-    }
-    if (filters.workOrderTypeIds !== undefined &&
-        filters.workOrderTypeIds !== '' &&
-        commaSeparatedNumbersRegex.test(filters.workOrderTypeIds)) {
-        sqlWhereClause += ` and w.workOrderTypeId in (${filters.workOrderTypeIds})`;
-    }
-    if (filters.workOrderMilestoneTypeIds !== undefined &&
-        filters.workOrderMilestoneTypeIds !== '' &&
-        commaSeparatedNumbersRegex.test(filters.workOrderMilestoneTypeIds)) {
-        sqlWhereClause += ` and m.workOrderMilestoneTypeId in (${filters.workOrderMilestoneTypeIds})`;
-    }
-    return {
-        sqlWhereClause,
-        sqlParameters
-    };
-}
 export default async function getWorkOrderMilestones(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? (await acquireConnection());
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
     // Filters
-    const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
+    const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     // Order By
     let orderByClause = '';
     switch (options.orderBy) {
@@ -135,16 +77,73 @@ export default async function getWorkOrderMilestones(filters, options, connected
             }, {
                 limit: -1,
                 offset: 0,
-                includeInterments: true,
                 includeFees: false,
+                includeInterments: true,
                 includeTransactions: false
             }, database);
-            workOrderMilestone.workOrderContracts =
-                contracts.contracts;
+            workOrderMilestone.workOrderContracts = contracts.contracts;
         }
     }
     if (connectedDatabase === undefined) {
         database.release();
     }
     return workOrderMilestones;
+}
+function buildWhereClause(filters) {
+    let sqlWhereClause = ' where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null';
+    const sqlParameters = [];
+    if ((filters.workOrderId ?? '') !== '') {
+        sqlWhereClause += ' and m.workOrderId = ?';
+        sqlParameters.push(filters.workOrderId);
+    }
+    const date = new Date();
+    const currentDateNumber = dateToInteger(date);
+    date.setDate(date.getDate() -
+        getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays'));
+    const recentBeforeDateNumber = dateToInteger(date);
+    date.setDate(date.getDate() +
+        getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays') +
+        getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentAfterDays'));
+    const recentAfterDateNumber = dateToInteger(date);
+    switch (filters.workOrderMilestoneDateFilter) {
+        case 'blank': {
+            sqlWhereClause += ' and m.workOrderMilestoneDate = 0';
+            break;
+        }
+        case 'notBlank': {
+            sqlWhereClause += ' and m.workOrderMilestoneDate > 0';
+            break;
+        }
+        case 'recent': {
+            sqlWhereClause +=
+                ' and m.workOrderMilestoneDate >= ? and m.workOrderMilestoneDate <= ?';
+            sqlParameters.push(recentBeforeDateNumber, recentAfterDateNumber);
+            break;
+        }
+        case 'upcomingMissed': {
+            sqlWhereClause +=
+                ' and (m.workOrderMilestoneCompletionDate is null or m.workOrderMilestoneDate >= ?)';
+            sqlParameters.push(currentDateNumber);
+            break;
+        }
+    }
+    if (filters.workOrderMilestoneDateString !== undefined &&
+        filters.workOrderMilestoneDateString !== '') {
+        sqlWhereClause += ' and m.workOrderMilestoneDate = ?';
+        sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString));
+    }
+    if (filters.workOrderTypeIds !== undefined &&
+        filters.workOrderTypeIds !== '' &&
+        commaSeparatedNumbersRegex.test(filters.workOrderTypeIds)) {
+        sqlWhereClause += ` and w.workOrderTypeId in (${filters.workOrderTypeIds})`;
+    }
+    if (filters.workOrderMilestoneTypeIds !== undefined &&
+        filters.workOrderMilestoneTypeIds !== '' &&
+        commaSeparatedNumbersRegex.test(filters.workOrderMilestoneTypeIds)) {
+        sqlWhereClause += ` and m.workOrderMilestoneTypeId in (${filters.workOrderMilestoneTypeIds})`;
+    }
+    return {
+        sqlParameters,
+        sqlWhereClause
+    };
 }

@@ -8,10 +8,10 @@ import {
 import { acquireConnection } from './pool.js'
 
 export interface UpdateBurialSiteCommentForm {
-  burialSiteCommentId: string | number
+  burialSiteCommentId: number | string
+  comment: string
   commentDateString: DateString
   commentTimeString: TimeString
-  comment: string
 }
 
 export default async function updateBurialSiteComment(

@@ -16,16 +16,16 @@ export interface Config {
     };
     aliases: {
         externalReceiptNumber?: string;
-        workOrderOpenDate?: string;
         workOrderCloseDate?: string;
+        workOrderOpenDate?: string;
     };
     settings: {
         cityDefault?: string;
         provinceDefault?: string;
-        latitudeMin?: number;
         latitudeMax?: number;
-        longitudeMin?: number;
+        latitudeMin?: number;
         longitudeMax?: number;
+        longitudeMin?: number;
         fees: {
             taxPercentageDefault?: number;
         };
@@ -96,10 +96,10 @@ export interface ConfigBurialSiteNameSegments {
         isAvailable?: boolean;
         isRequired?: boolean;
         label?: string;
+        maxLength?: number;
+        minLength?: number;
         prefix?: string;
         suffix?: string;
-        minLength?: number;
-        maxLength?: number;
     }>>;
 }
 export {};

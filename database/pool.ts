@@ -1,4 +1,4 @@
-import { Pool, type PoolConnection } from 'better-sqlite-pool'
+import { type PoolConnection, Pool } from 'better-sqlite-pool'
 import Debug from 'debug'
 import exitHook from 'exit-hook'
 

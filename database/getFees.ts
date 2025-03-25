@@ -6,8 +6,8 @@ import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 interface GetFeesFilters {
-  contractTypeId?: number | string
   burialSiteTypeId?: number | string
+  contractTypeId?: number | string
 }
 
 export default async function getFees(

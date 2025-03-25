@@ -19,8 +19,8 @@ if (process.send === undefined) {
 }
 
 interface ServerError extends Error {
-  syscall: string
   code: string
+  syscall: string
 }
 
 function onError(error: ServerError): void {

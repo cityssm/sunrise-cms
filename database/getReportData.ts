@@ -1,6 +1,6 @@
 import {
-  dateIntegerToString,
   type DateString,
+  dateIntegerToString,
   dateStringToInteger,
   dateToInteger,
   timeIntegerToString
@@ -37,6 +37,7 @@ const simpleReports: Record<`${string}-all` | `${string}-formatted`, string> = {
   'contractTransactions-all': 'select * from ContractTransactions',
   'contractTypeFields-all': 'select * from ContractTypeFields',
   'contractTypes-all': 'select * from ContractTypes',
+
   'feeCategories-all': 'select * from FeeCategories',
   'fees-all': 'select * from Fees',
 
@@ -50,6 +51,7 @@ const simpleReports: Record<`${string}-all` | `${string}-formatted`, string> = {
     where recordDelete_timeMillis is null`,
 
   'intermentContainerTypes-all': 'select * from IntermentContainerTypes',
+  
   'workOrderBurialSites-all': 'select * from WorkOrderBurialSites',
   'workOrderComments-all': 'select * from WorkOrderComments',
   'workOrderMilestones-all': 'select * from WorkOrderMilestones',
@@ -61,7 +63,7 @@ const simpleReports: Record<`${string}-all` | `${string}-formatted`, string> = {
 export default async function getReportData(
   reportName: string,
   reportParameters: ReportParameters = {}
-): Promise<undefined | unknown[]> {
+): Promise<unknown[] | undefined> {
   let sql = ''
   const sqlParameters: unknown[] = []
 

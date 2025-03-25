@@ -1,9 +1,10 @@
+import type { PoolConnection } from 'better-sqlite-pool'
+
 import {
   type DateString,
   dateIntegerToString,
   dateStringToInteger
 } from '@cityssm/utils-datetime'
-import type { PoolConnection } from 'better-sqlite-pool'
 
 import {
   getBurialSiteNameWhereClause,
@@ -19,154 +20,22 @@ import { acquireConnection } from './pool.js'
 
 export interface GetWorkOrdersFilters {
   workOrderTypeId?: number | string
-  workOrderOpenStatus?: '' | 'open' | 'closed'
+
   workOrderOpenDateString?: string
-  deceasedName?: string
+  workOrderOpenStatus?: '' | 'closed' | 'open'
+
   burialSiteName?: string
   contractId?: number | string
+  deceasedName?: string
 }
 
 interface GetWorkOrdersOptions {
   limit: number
   offset: number
+
   includeBurialSites?: boolean
   includeComments?: boolean
   includeMilestones?: boolean
-}
-
-function buildWhereClause(filters: GetWorkOrdersFilters): {
-  sqlWhereClause: string
-  sqlParameters: unknown[]
-} {
-  let sqlWhereClause = ' where w.recordDelete_timeMillis is null'
-  const sqlParameters: unknown[] = []
-
-  if ((filters.workOrderTypeId ?? '') !== '') {
-    sqlWhereClause += ' and w.workOrderTypeId = ?'
-    sqlParameters.push(filters.workOrderTypeId)
-  }
-
-  if ((filters.workOrderOpenStatus ?? '') !== '') {
-    if (filters.workOrderOpenStatus === 'open') {
-      sqlWhereClause += ' and w.workOrderCloseDate is null'
-    } else if (filters.workOrderOpenStatus === 'closed') {
-      sqlWhereClause += ' and w.workOrderCloseDate is not null'
-    }
-  }
-
-  if ((filters.workOrderOpenDateString ?? '') !== '') {
-    sqlWhereClause += ' and w.workOrderOpenDate = ?'
-    sqlParameters.push(
-      dateStringToInteger(filters.workOrderOpenDateString as DateString)
-    )
-  }
-
-  const deceasedNameFilters = getDeceasedNameWhereClause(
-    filters.deceasedName,
-    'o'
-  )
-  if (deceasedNameFilters.sqlParameters.length > 0) {
-    sqlWhereClause +=
-      ` and w.workOrderId in (
-        select workOrderId from WorkOrderContracts o
-        where recordDelete_timeMillis is null
-        and o.contractId in (
-          select contractId from ContractInterments o where recordDelete_timeMillis is null
-          ${deceasedNameFilters.sqlWhereClause}
-        ))`
-    sqlParameters.push(...deceasedNameFilters.sqlParameters)
-  }
-
-  const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, '', 'l')
-  if (burialSiteNameFilters.sqlParameters.length > 0) {
-    sqlWhereClause +=
-      ` and w.workOrderId in (
-        select workOrderId from WorkOrderBurialSites
-        where recordDelete_timeMillis is null
-        and burialSiteId in (
-          select burialSiteId from BurialSites l
-          where recordDelete_timeMillis is null
-          ${burialSiteNameFilters.sqlWhereClause}
-        ))`
-    sqlParameters.push(...burialSiteNameFilters.sqlParameters)
-  }
-
-  if ((filters.contractId ?? '') !== '') {
-    sqlWhereClause +=
-      ' and w.workOrderId in (select workOrderId from WorkOrderContracts where recordDelete_timeMillis is null and contractId = ?)'
-    sqlParameters.push(filters.contractId)
-  }
-
-  return {
-    sqlWhereClause,
-    sqlParameters
-  }
-}
-
-async function addInclusions(
-  workOrder: WorkOrder,
-  options: GetWorkOrdersOptions,
-  database: PoolConnection
-): Promise<WorkOrder> {
-  if (options.includeComments ?? false) {
-    workOrder.workOrderComments = await getWorkOrderComments(
-      workOrder.workOrderId,
-      database
-    )
-  }
-
-  if (options.includeBurialSites ?? false) {
-    if (workOrder.workOrderBurialSiteCount === 0) {
-      workOrder.workOrderBurialSites = []
-    } else {
-      const workOrderBurialSitesResults = await getBurialSites(
-        {
-          workOrderId: workOrder.workOrderId
-        },
-        {
-          limit: -1,
-          offset: 0,
-          includeContractCount: false
-        },
-        database
-      )
-
-      workOrder.workOrderBurialSites = workOrderBurialSitesResults.burialSites
-    }
-
-    const contracts = await getContracts(
-      {
-        workOrderId: workOrder.workOrderId
-      },
-      {
-        limit: -1,
-        offset: 0,
-        includeInterments: true,
-        includeFees: false,
-        includeTransactions: false
-      },
-      database
-    )
-
-    workOrder.workOrderContracts = contracts.contracts
-  }
-
-  if (options.includeMilestones ?? false) {
-    workOrder.workOrderMilestones =
-      workOrder.workOrderMilestoneCount === 0
-        ? []
-        : await getWorkOrderMilestones(
-            {
-              workOrderId: workOrder.workOrderId
-            },
-            {
-              orderBy: 'date'
-            },
-            database
-          )
-  }
-
-  return workOrder
 }
 
 export async function getWorkOrders(
@@ -178,14 +47,14 @@ export async function getWorkOrders(
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 
-  const { sqlWhereClause, sqlParameters } = buildWhereClause(filters)
+  const { sqlParameters, sqlWhereClause } = buildWhereClause(filters)
 
   const count: number = (
     database
       .prepare(
         `select count(*) as recordCount
-        from WorkOrders w
-        ${sqlWhereClause}`
+          from WorkOrders w
+          ${sqlWhereClause}`
       )
       .get(sqlParameters) as { recordCount: number }
   ).recordCount
@@ -246,6 +115,145 @@ export async function getWorkOrders(
   return {
     count,
     workOrders
+  }
+}
+
+async function addInclusions(
+  workOrder: WorkOrder,
+  options: GetWorkOrdersOptions,
+  database: PoolConnection
+): Promise<WorkOrder> {
+  if (options.includeComments ?? false) {
+    workOrder.workOrderComments = await getWorkOrderComments(
+      workOrder.workOrderId,
+      database
+    )
+  }
+
+  if (options.includeBurialSites ?? false) {
+    if (workOrder.workOrderBurialSiteCount === 0) {
+      workOrder.workOrderBurialSites = []
+    } else {
+      const workOrderBurialSitesResults = await getBurialSites(
+        {
+          workOrderId: workOrder.workOrderId
+        },
+        {
+          limit: -1,
+          offset: 0,
+
+          includeContractCount: false
+        },
+        database
+      )
+
+      workOrder.workOrderBurialSites = workOrderBurialSitesResults.burialSites
+    }
+
+    const contracts = await getContracts(
+      {
+        workOrderId: workOrder.workOrderId
+      },
+      {
+        limit: -1,
+        offset: 0,
+
+        includeFees: false,
+        includeInterments: true,
+        includeTransactions: false
+      },
+      database
+    )
+
+    workOrder.workOrderContracts = contracts.contracts
+  }
+
+  if (options.includeMilestones ?? false) {
+    workOrder.workOrderMilestones =
+      workOrder.workOrderMilestoneCount === 0
+        ? []
+        : await getWorkOrderMilestones(
+            {
+              workOrderId: workOrder.workOrderId
+            },
+            {
+              orderBy: 'date'
+            },
+            database
+          )
+  }
+
+  return workOrder
+}
+
+function buildWhereClause(filters: GetWorkOrdersFilters): {
+  sqlParameters: unknown[]
+  sqlWhereClause: string
+} {
+  let sqlWhereClause = ' where w.recordDelete_timeMillis is null'
+  const sqlParameters: unknown[] = []
+
+  if ((filters.workOrderTypeId ?? '') !== '') {
+    sqlWhereClause += ' and w.workOrderTypeId = ?'
+    sqlParameters.push(filters.workOrderTypeId)
+  }
+
+  if ((filters.workOrderOpenStatus ?? '') !== '') {
+    if (filters.workOrderOpenStatus === 'open') {
+      sqlWhereClause += ' and w.workOrderCloseDate is null'
+    } else if (filters.workOrderOpenStatus === 'closed') {
+      sqlWhereClause += ' and w.workOrderCloseDate is not null'
+    }
+  }
+
+  if ((filters.workOrderOpenDateString ?? '') !== '') {
+    sqlWhereClause += ' and w.workOrderOpenDate = ?'
+    sqlParameters.push(
+      dateStringToInteger(filters.workOrderOpenDateString as DateString)
+    )
+  }
+
+  const deceasedNameFilters = getDeceasedNameWhereClause(
+    filters.deceasedName,
+    'o'
+  )
+  if (deceasedNameFilters.sqlParameters.length > 0) {
+    sqlWhereClause += ` and w.workOrderId in (
+        select workOrderId from WorkOrderContracts o
+        where recordDelete_timeMillis is null
+        and o.contractId in (
+          select contractId from ContractInterments o where recordDelete_timeMillis is null
+          ${deceasedNameFilters.sqlWhereClause}
+        ))`
+    sqlParameters.push(...deceasedNameFilters.sqlParameters)
+  }
+
+  const burialSiteNameFilters = getBurialSiteNameWhereClause(
+    filters.burialSiteName,
+    '',
+    'l'
+  )
+  if (burialSiteNameFilters.sqlParameters.length > 0) {
+    sqlWhereClause += ` and w.workOrderId in (
+        select workOrderId from WorkOrderBurialSites
+        where recordDelete_timeMillis is null
+        and burialSiteId in (
+          select burialSiteId from BurialSites l
+          where recordDelete_timeMillis is null
+          ${burialSiteNameFilters.sqlWhereClause}
+        ))`
+    sqlParameters.push(...burialSiteNameFilters.sqlParameters)
+  }
+
+  if ((filters.contractId ?? '') !== '') {
+    sqlWhereClause +=
+      ' and w.workOrderId in (select workOrderId from WorkOrderContracts where recordDelete_timeMillis is null and contractId = ?)'
+    sqlParameters.push(filters.contractId)
+  }
+
+  return {
+    sqlParameters,
+    sqlWhereClause
   }
 }
 

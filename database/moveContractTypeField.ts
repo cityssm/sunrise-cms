@@ -5,22 +5,6 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-function getCurrentField(
-  contractTypeFieldId: number | string,
-  connectedDatabase: PoolConnection
-): { contractTypeId?: number; orderNumber: number } {
-  return connectedDatabase
-    .prepare(
-      `select contractTypeId, orderNumber
-        from ContractTypeFields
-        where contractTypeFieldId = ?`
-    )
-    .get(contractTypeFieldId) as {
-    contractTypeId?: number
-    orderNumber: number
-  }
-}
-
 export async function moveContractTypeFieldDown(
   contractTypeFieldId: number | string
 ): Promise<boolean> {
@@ -197,4 +181,20 @@ export async function moveContractTypeFieldUpToTop(
   clearCacheByTableName('ContractTypeFields')
 
   return true
+}
+
+function getCurrentField(
+  contractTypeFieldId: number | string,
+  connectedDatabase: PoolConnection
+): { contractTypeId?: number; orderNumber: number } {
+  return connectedDatabase
+    .prepare(
+      `select contractTypeId, orderNumber
+        from ContractTypeFields
+        where contractTypeFieldId = ?`
+    )
+    .get(contractTypeFieldId) as {
+    contractTypeId?: number
+    orderNumber: number
+  }
 }

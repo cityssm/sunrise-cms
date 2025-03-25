@@ -6,7 +6,7 @@ import getCemetery from './getCemetery.js'
 import { acquireConnection } from './pool.js'
 
 export interface UpdateBurialSiteForm {
-  burialSiteId: string | number
+  burialSiteId: number | string
 
   burialSiteNameSegment1?: string
   burialSiteNameSegment2?: string
@@ -14,17 +14,17 @@ export interface UpdateBurialSiteForm {
   burialSiteNameSegment4?: string
   burialSiteNameSegment5?: string
 
-  burialSiteTypeId: string | number
-  burialSiteStatusId: string | number
+  burialSiteStatusId: number | string
+  burialSiteTypeId: number | string
 
-  cemeteryId: string | number
+  cemeteryId: number | string
   cemeterySvgId: string
 
   burialSiteLatitude: string
   burialSiteLongitude: string
 
-  burialSiteTypeFieldIds?: string
   [fieldValue_burialSiteTypeFieldId: string]: unknown
+  burialSiteTypeFieldIds?: string
 }
 
 /**

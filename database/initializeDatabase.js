@@ -377,9 +377,9 @@ const createStatements = [
 const initializingUser = {
     userName: 'databaseInit',
     userProperties: {
+        apiKey: '',
         canUpdate: true,
-        isAdmin: true,
-        apiKey: ''
+        isAdmin: true
     }
 };
 export async function initializeDatabase() {
@@ -449,9 +449,11 @@ async function initializeData() {
         intermentContainerTypeKey: 'WS',
         orderNumber: 5
     }, initializingUser);
-    await addIntermentContainerType({ intermentContainerType: 'Steel Vault',
+    await addIntermentContainerType({
+        intermentContainerType: 'Steel Vault',
         intermentContainerTypeKey: 'SV',
-        orderNumber: 6 }, initializingUser);
+        orderNumber: 6
+    }, initializingUser);
     await addIntermentContainerType({
         intermentContainerType: 'Urn',
         intermentContainerTypeKey: 'U',

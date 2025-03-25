@@ -30,7 +30,7 @@ export default async function getWorkOrder(
   workOrderId: number | string,
   options: WorkOrderOptions,
   connectedDatabase?: PoolConnection
-): Promise<undefined | WorkOrder> {
+): Promise<WorkOrder | undefined> {
   return await _getWorkOrder(
     `${baseSQL} and w.workOrderId = ?`,
     workOrderId,
@@ -41,7 +41,7 @@ export default async function getWorkOrder(
 
 export async function getWorkOrderByWorkOrderNumber(
   workOrderNumber: string
-): Promise<undefined | WorkOrder> {
+): Promise<WorkOrder | undefined> {
   return await _getWorkOrder(
     `${baseSQL} and w.workOrderNumber = ?`,
     workOrderNumber,
@@ -58,14 +58,14 @@ async function _getWorkOrder(
   workOrderIdOrWorkOrderNumber: number | string,
   options: WorkOrderOptions,
   connectedDatabase?: PoolConnection
-): Promise<undefined | WorkOrder> {
+): Promise<WorkOrder | undefined> {
   const database = connectedDatabase ?? (await acquireConnection())
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 
   const workOrder = database.prepare(sql).get(workOrderIdOrWorkOrderNumber) as
-    | undefined
     | WorkOrder
+    | undefined
 
   if (workOrder !== undefined) {
     if (options.includeBurialSites) {

@@ -5,20 +5,6 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-function getCurrentField(
-  burialSiteTypeFieldId: number | string,
-  connectedDatabase: PoolConnection
-): { burialSiteTypeId?: number; orderNumber: number } {
-  return connectedDatabase
-    .prepare(
-      'select burialSiteTypeId, orderNumber from BurialSiteTypeFields where burialSiteTypeFieldId = ?'
-    )
-    .get(burialSiteTypeFieldId) as {
-    burialSiteTypeId?: number
-    orderNumber: number
-  }
-}
-
 export async function moveBurialSiteTypeFieldDown(
   burialSiteTypeFieldId: number | string
 ): Promise<boolean> {
@@ -160,4 +146,18 @@ export async function moveBurialSiteTypeFieldUpToTop(
   clearCacheByTableName('BurialSiteTypeFields')
 
   return true
+}
+
+function getCurrentField(
+  burialSiteTypeFieldId: number | string,
+  connectedDatabase: PoolConnection
+): { burialSiteTypeId?: number; orderNumber: number } {
+  return connectedDatabase
+    .prepare(
+      'select burialSiteTypeId, orderNumber from BurialSiteTypeFields where burialSiteTypeFieldId = ?'
+    )
+    .get(burialSiteTypeFieldId) as {
+    burialSiteTypeId?: number
+    orderNumber: number
+  }
 }

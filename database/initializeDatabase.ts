@@ -434,9 +434,9 @@ const createStatements = [
 const initializingUser: User = {
   userName: 'databaseInit',
   userProperties: {
+    apiKey: '',
     canUpdate: true,
-    isAdmin: true,
-    apiKey: ''
+    isAdmin: true
   }
 }
 
@@ -555,9 +555,11 @@ async function initializeData(): Promise<void> {
   )
 
   await addIntermentContainerType(
-    { intermentContainerType: 'Steel Vault',
+    {
+      intermentContainerType: 'Steel Vault',
       intermentContainerTypeKey: 'SV',
-      orderNumber: 6 },
+      orderNumber: 6
+    },
     initializingUser
   )
 
@@ -573,23 +575,32 @@ async function initializeData(): Promise<void> {
 
   // Committal Types
 
-  await addCommittalType({
-    committalType: 'Graveside',
-    committalTypeKey: 'GS',
-    orderNumber: 1
-  }, initializingUser) 
+  await addCommittalType(
+    {
+      committalType: 'Graveside',
+      committalTypeKey: 'GS',
+      orderNumber: 1
+    },
+    initializingUser
+  )
 
-  await addCommittalType({
-    committalType: 'Chapel',
-    committalTypeKey: 'CS',
-    orderNumber: 2
-  }, initializingUser)
+  await addCommittalType(
+    {
+      committalType: 'Chapel',
+      committalTypeKey: 'CS',
+      orderNumber: 2
+    },
+    initializingUser
+  )
 
-  await addCommittalType({
-    committalType: 'Church',
-    committalTypeKey: 'CH',
-    orderNumber: 3
-  }, initializingUser)
+  await addCommittalType(
+    {
+      committalType: 'Church',
+      committalTypeKey: 'CH',
+      orderNumber: 3
+    },
+    initializingUser
+  )
 
   /*
    * Fee Categories

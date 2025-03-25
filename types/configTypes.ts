@@ -2,37 +2,47 @@ import type { config as MSSQLConfig } from 'mssql'
 
 export interface Config {
   application: ConfigApplication
+
   session: ConfigSession
+
   reverseProxy: {
     disableCompression?: boolean
     disableEtag?: boolean
     urlPrefix?: string
   }
+
   activeDirectory?: ConfigActiveDirectory
+
   users: {
     testing?: Array<`*${string}`>
     canLogin?: string[]
     canUpdate?: string[]
     isAdmin?: string[]
   }
+
   aliases: {
     externalReceiptNumber?: string
-    workOrderOpenDate?: string
     workOrderCloseDate?: string
+    workOrderOpenDate?: string
   }
+
   settings: {
     cityDefault?: string
     provinceDefault?: string
-    latitudeMin?: number
+
     latitudeMax?: number
-    longitudeMin?: number
+    latitudeMin?: number
     longitudeMax?: number
+    longitudeMin?: number
+
     fees: {
       taxPercentageDefault?: number
     }
+
     burialSites: {
       burialSiteNameSegments?: ConfigBurialSiteNameSegments
     }
+
     contracts: {
       burialSiteIdIsRequired?: boolean
       contractEndDateIsRequired?: boolean
@@ -40,6 +50,7 @@ export interface Config {
       deathAgePeriods?: string[]
       prints?: string[]
     }
+
     workOrders: {
       workOrderNumberLength?: number
       workOrderMilestoneDateRecentBeforeDays?: number
@@ -47,12 +58,15 @@ export interface Config {
       calendarEmailAddress?: string
       prints?: string[]
     }
+
     adminCleanup: {
       recordDeleteAgeDays?: number
     }
+
     printPdf: {
       contentDisposition?: 'attachment' | 'inline'
     }
+
     dynamicsGP?: {
       integrationIsEnabled: boolean
       mssqlConfig?: MSSQLConfig
@@ -109,10 +123,10 @@ export interface ConfigBurialSiteNameSegments {
         isAvailable?: boolean
         isRequired?: boolean
         label?: string
+        maxLength?: number
+        minLength?: number
         prefix?: string
         suffix?: string
-        minLength?: number
-        maxLength?: number
       }
     >
   >

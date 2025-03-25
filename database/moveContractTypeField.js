@@ -1,13 +1,6 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
 import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-function getCurrentField(contractTypeFieldId, connectedDatabase) {
-    return connectedDatabase
-        .prepare(`select contractTypeId, orderNumber
-        from ContractTypeFields
-        where contractTypeFieldId = ?`)
-        .get(contractTypeFieldId);
-}
 export async function moveContractTypeFieldDown(contractTypeFieldId) {
     const database = await acquireConnection();
     const currentField = getCurrentField(contractTypeFieldId, database);
@@ -99,4 +92,11 @@ export async function moveContractTypeFieldUpToTop(contractTypeFieldId) {
     database.release();
     clearCacheByTableName('ContractTypeFields');
     return true;
+}
+function getCurrentField(contractTypeFieldId, connectedDatabase) {
+    return connectedDatabase
+        .prepare(`select contractTypeId, orderNumber
+        from ContractTypeFields
+        where contractTypeFieldId = ?`)
+        .get(contractTypeFieldId);
 }
