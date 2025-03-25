@@ -2,8 +2,8 @@ import type { PoolConnection } from 'better-sqlite-pool'
 
 import {
   type DateString,
-  dateStringToInteger,
   type TimeString,
+  dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 
@@ -11,35 +11,19 @@ import addOrUpdateContractField from './addOrUpdateContractField.js'
 import { acquireConnection } from './pool.js'
 
 export interface AddContractForm {
-  [fieldValue_contractTypeFieldId: `fieldValue_${string}`]: unknown
-  birthDateString?: '' | DateString
-
-  birthPlace?: string
   burialSiteId: number | string
+  contractEndDateString: '' | DateString
+  contractStartDateString: '' | DateString
+  contractTypeId: number | string
+
+  [fieldValue_contractTypeFieldId: `fieldValue_${string}`]: unknown
+  contractTypeFieldIds?: string
 
   committalTypeId?: number | string
-  contractEndDateString: '' | DateString
-
-  contractStartDateString: '' | DateString
-  contractTypeFieldIds?: string
-  contractTypeId: number | string
-  deathAge?: string
-  deathAgePeriod?: string
-  deathDateString?: '' | DateString
-  deathPlace?: string
-
-  deceasedAddress1?: string
-  deceasedAddress2?: string
-  deceasedCity?: string
-  deceasedName?: string
-  deceasedPostalCode?: string
-  deceasedProvince?: string
-
   funeralDateString?: '' | DateString
   funeralDirectorName?: string
   funeralHomeId?: number | string
   funeralTimeString?: '' | TimeString
-  intermentContainerTypeId?: number | string
 
   purchaserAddress1?: string
   purchaserAddress2?: string
@@ -50,6 +34,20 @@ export interface AddContractForm {
   purchaserPostalCode?: string
   purchaserProvince?: string
   purchaserRelationship?: string
+
+  birthDateString?: '' | DateString
+  birthPlace?: string
+  deathAge?: string
+  deathAgePeriod?: string
+  deathDateString?: '' | DateString
+  deathPlace?: string
+  deceasedAddress1?: string
+  deceasedAddress2?: string
+  deceasedCity?: string
+  deceasedName?: string
+  deceasedPostalCode?: string
+  deceasedProvince?: string
+  intermentContainerTypeId?: number | string
 }
 
 // eslint-disable-next-line complexity

@@ -4,13 +4,13 @@ export function getBurialSiteNameWhereClause(burialSiteName = '', burialSiteName
     const sqlParameters = [];
     if (burialSiteName !== '') {
         switch (burialSiteNameSearchType) {
-            case 'startsWith': {
-                sqlWhereClause += ` and ${burialSitesTableAlias}.burialSiteName like ? || '%'`;
+            case 'endsWith': {
+                sqlWhereClause += ` and ${burialSitesTableAlias}.burialSiteName like '%' || ?`;
                 sqlParameters.push(burialSiteName);
                 break;
             }
-            case 'endsWith': {
-                sqlWhereClause += ` and ${burialSitesTableAlias}.burialSiteName like '%' || ?`;
+            case 'startsWith': {
+                sqlWhereClause += ` and ${burialSitesTableAlias}.burialSiteName like ? || '%'`;
                 sqlParameters.push(burialSiteName);
                 break;
             }
@@ -29,8 +29,8 @@ export function getBurialSiteNameWhereClause(burialSiteName = '', burialSiteName
         }
     }
     return {
-        sqlWhereClause,
-        sqlParameters
+        sqlParameters,
+        sqlWhereClause
     };
 }
 export function getContractTimeWhereClause(contractTime, contractsTableAlias = 'o') {
@@ -45,22 +45,22 @@ export function getContractTimeWhereClause(contractTime, contractsTableAlias = '
             sqlParameters.push(currentDateString, currentDateString);
             break;
         }
-        case 'past': {
-            sqlWhereClause +=
-                ` and ${contractsTableAlias}.contractEndDate < ?`;
-            sqlParameters.push(currentDateString);
-            break;
-        }
         case 'future': {
             sqlWhereClause +=
                 ` and ${contractsTableAlias}.contractStartDate > ?`;
             sqlParameters.push(currentDateString);
             break;
         }
+        case 'past': {
+            sqlWhereClause +=
+                ` and ${contractsTableAlias}.contractEndDate < ?`;
+            sqlParameters.push(currentDateString);
+            break;
+        }
     }
     return {
-        sqlWhereClause,
-        sqlParameters
+        sqlParameters,
+        sqlWhereClause
     };
 }
 export function getDeceasedNameWhereClause(deceasedName = '', tableAlias = 'o') {
@@ -77,7 +77,7 @@ export function getDeceasedNameWhereClause(deceasedName = '', tableAlias = 'o') 
         sqlParameters.push(namePiece);
     }
     return {
-        sqlWhereClause,
-        sqlParameters
+        sqlParameters,
+        sqlWhereClause
     };
 }

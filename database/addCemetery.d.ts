@@ -1,15 +1,15 @@
 export interface AddCemeteryForm {
-    cemeteryName: string;
-    cemeteryKey: string;
     cemeteryDescription: string;
-    cemeterySvg: string;
+    cemeteryKey: string;
+    cemeteryName: string;
     cemeteryLatitude: string;
     cemeteryLongitude: string;
+    cemeterySvg: string;
     cemeteryAddress1: string;
     cemeteryAddress2: string;
     cemeteryCity: string;
-    cemeteryProvince: string;
     cemeteryPostalCode: string;
+    cemeteryProvince: string;
     cemeteryPhoneNumber: string;
 }
 export default function addCemetery(addForm: AddCemeteryForm, user: User): Promise<number>;

@@ -12,8 +12,8 @@ import * as configFunctions from './config.helpers.js'
 import * as contractFunctions from './contracts.helpers.js'
 
 interface PrintConfig {
-  title: string
   params: string[]
+  title: string
 }
 
 interface ReportData {
@@ -24,8 +24,8 @@ interface ReportData {
   workOrder?: WorkOrder
 
   configFunctions: unknown
-  dateTimeFunctions: unknown
   contractFunctions: unknown
+  dateTimeFunctions: unknown
 }
 
 const screenPrintConfigs: Record<string, PrintConfig> = {
@@ -72,11 +72,11 @@ export function getPrintConfig(
   const printNameSplit = screenOrPdfPrintName.split('/')
 
   switch (printNameSplit[0]) {
-    case 'screen': {
-      return getScreenPrintConfig(printNameSplit[1])
-    }
     case 'pdf': {
       return getPdfPrintConfig(printNameSplit[1])
+    }
+    case 'screen': {
+      return getScreenPrintConfig(printNameSplit[1])
     }
   }
 
@@ -89,9 +89,10 @@ export async function getReportData(
 ): Promise<ReportData> {
   const reportData: ReportData = {
     headTitle: printConfig.title,
+
     configFunctions,
-    dateTimeFunctions,
-    contractFunctions
+    contractFunctions,
+    dateTimeFunctions
   }
 
   if (

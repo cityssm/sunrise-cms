@@ -1,19 +1,20 @@
 import { acquireConnection } from './pool.js'
 
 export interface AddCemeteryForm {
-  cemeteryName: string
-  cemeteryKey: string
   cemeteryDescription: string
+  cemeteryKey: string
+  cemeteryName: string
 
-  cemeterySvg: string
   cemeteryLatitude: string
   cemeteryLongitude: string
+  cemeterySvg: string
 
   cemeteryAddress1: string
   cemeteryAddress2: string
   cemeteryCity: string
-  cemeteryProvince: string
   cemeteryPostalCode: string
+  cemeteryProvince: string
+  
   cemeteryPhoneNumber: string
 }
 

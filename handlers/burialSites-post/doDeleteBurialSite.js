@@ -1,12 +1,17 @@
-import { deleteRecord } from '../../database/deleteRecord.js';
+import { deleteBurialSite } from '../../database/deleteBurialSite.js';
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js';
 export default async function handler(request, response) {
     const burialSiteId = Number.parseInt(request.body.burialSiteId, 10);
-    const success = await deleteRecord('BurialSites', burialSiteId, request.session.user);
+    const success = await deleteBurialSite(burialSiteId, request.session.user);
     response.json({
+        errorMessage: success
+            ? ''
+            : 'Note that burial sites with active contracts cannot be deleted.',
         success
     });
-    response.on('finish', () => {
-        clearNextPreviousBurialSiteIdCache(burialSiteId);
-    });
+    if (success) {
+        response.on('finish', () => {
+            clearNextPreviousBurialSiteIdCache(burialSiteId);
+        });
+    }
 }

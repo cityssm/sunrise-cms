@@ -2,11 +2,9 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js';
 import { acquireConnection } from './pool.js';
 const recordIdColumns = new Map([
     ['BurialSiteComments', 'burialSiteCommentId'],
-    ['BurialSites', 'burialSiteId'],
     ['BurialSiteStatuses', 'burialSiteStatusId'],
     ['BurialSiteTypeFields', 'burialSiteTypeFieldId'],
     ['BurialSiteTypes', 'burialSiteTypeId'],
-    ['Cemeteries', 'cemeteryId'],
     ['ContractComments', 'contractCommentId'],
     ['Contracts', 'contractId'],
     ['ContractTypeFields', 'contractTypeFieldId'],
@@ -21,9 +19,7 @@ const recordIdColumns = new Map([
     ['WorkOrderTypes', 'workOrderTypeId']
 ]);
 const relatedTables = new Map([
-    ['BurialSites', ['BurialSiteFields', 'BurialSiteComments']],
     ['BurialSiteTypes', ['BurialSiteTypeFields']],
-    ['Cemeteries', ['BurialSites']],
     ['Contracts', ['ContractFields', 'ContractComments']],
     ['ContractTypes', ['ContractTypePrints', 'ContractTypeFields']],
     [

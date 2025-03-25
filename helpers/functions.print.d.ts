@@ -1,7 +1,7 @@
 import type { BurialSite, Contract, WorkOrder } from '../types/recordTypes.js';
 interface PrintConfig {
-    title: string;
     params: string[];
+    title: string;
 }
 interface ReportData {
     headTitle: string;
@@ -9,8 +9,8 @@ interface ReportData {
     contract?: Contract;
     workOrder?: WorkOrder;
     configFunctions: unknown;
-    dateTimeFunctions: unknown;
     contractFunctions: unknown;
+    dateTimeFunctions: unknown;
 }
 export declare function getScreenPrintConfig(printName: string): PrintConfig | undefined;
 export declare function getPdfPrintConfig(printName: string): PrintConfig | undefined;

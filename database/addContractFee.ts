@@ -13,8 +13,9 @@ import { acquireConnection } from './pool.js'
 export interface AddContractFeeForm {
   contractId: number | string
   feeId: number | string
-  quantity: number | string
+
   feeAmount?: number | string
+  quantity: number | string
   taxAmount?: number | string
 }
 

@@ -54,9 +54,10 @@ declare const exports: Record<string, unknown>
       formElement,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
-          success: boolean
-          contractId?: number
           errorMessage?: string
+          success: boolean
+
+          contractId?: number
         }
 
         if (responseJSON.success) {

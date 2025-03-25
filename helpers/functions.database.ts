@@ -5,7 +5,7 @@ import {
   sunriseDB as databasePath
 } from '../helpers/database.helpers.js'
 
-export async function backupDatabase(): Promise<string | false> {
+export async function backupDatabase(): Promise<false | string> {
   const databasePathSplit = databasePath.split(/[/\\]/)
 
   const backupDatabasePath = `${backupFolder}/${databasePathSplit.at(-1)}.${Date.now().toString()}`

@@ -11,16 +11,17 @@ export interface AddBurialSiteForm {
   burialSiteNameSegment4?: string
   burialSiteNameSegment5?: string
 
-  burialSiteTypeId: string | number
-  burialSiteStatusId: string | number
+  burialSiteStatusId: number | string
+  burialSiteTypeId: number | string
 
-  cemeteryId: string | number
+  cemeteryId: number | string
   cemeterySvgId: string
 
   burialSiteLatitude: string
   burialSiteLongitude: string
 
   burialSiteTypeFieldIds?: string
+  
   [fieldValue_burialSiteTypeFieldId: string]: unknown
 }
 

@@ -1,10 +1,10 @@
-type BurialSiteNameSearchType = 'startsWith' | 'endsWith' | '';
+type BurialSiteNameSearchType = '' | 'endsWith' | 'startsWith';
+type ContractTime = '' | 'current' | 'future' | 'past';
 interface WhereClauseReturn {
-    sqlWhereClause: string;
     sqlParameters: unknown[];
+    sqlWhereClause: string;
 }
 export declare function getBurialSiteNameWhereClause(burialSiteName?: string, burialSiteNameSearchType?: BurialSiteNameSearchType, burialSitesTableAlias?: string): WhereClauseReturn;
-type ContractTime = '' | 'current' | 'past' | 'future';
 export declare function getContractTimeWhereClause(contractTime: ContractTime | undefined, contractsTableAlias?: string): WhereClauseReturn;
 export declare function getDeceasedNameWhereClause(deceasedName?: string, tableAlias?: string): WhereClauseReturn;
 export {};

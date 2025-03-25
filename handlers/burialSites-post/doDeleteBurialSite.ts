@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { deleteRecord } from '../../database/deleteRecord.js'
+import { deleteBurialSite } from '../../database/deleteBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
 export default async function handler(
@@ -9,17 +9,21 @@ export default async function handler(
 ): Promise<void> {
   const burialSiteId = Number.parseInt(request.body.burialSiteId, 10)
 
-  const success = await deleteRecord(
-    'BurialSites',
+  const success = await deleteBurialSite(
     burialSiteId,
     request.session.user as User
   )
 
   response.json({
+    errorMessage: success
+      ? ''
+      : 'Note that burial sites with active contracts cannot be deleted.',
     success
   })
 
-  response.on('finish', () => {
-    clearNextPreviousBurialSiteIdCache(burialSiteId)
-  })
+  if (success) {
+    response.on('finish', () => {
+      clearNextPreviousBurialSiteIdCache(burialSiteId)
+    })
+  }
 }

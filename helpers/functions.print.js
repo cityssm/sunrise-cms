@@ -40,11 +40,11 @@ export function getPdfPrintConfig(printName) {
 export function getPrintConfig(screenOrPdfPrintName) {
     const printNameSplit = screenOrPdfPrintName.split('/');
     switch (printNameSplit[0]) {
-        case 'screen': {
-            return getScreenPrintConfig(printNameSplit[1]);
-        }
         case 'pdf': {
             return getPdfPrintConfig(printNameSplit[1]);
+        }
+        case 'screen': {
+            return getScreenPrintConfig(printNameSplit[1]);
         }
     }
     return undefined;
@@ -53,8 +53,8 @@ export async function getReportData(printConfig, requestQuery) {
     const reportData = {
         headTitle: printConfig.title,
         configFunctions,
-        dateTimeFunctions,
-        contractFunctions
+        contractFunctions,
+        dateTimeFunctions
     };
     if (printConfig.params.includes('contractId') &&
         typeof requestQuery.contractId === 'string') {

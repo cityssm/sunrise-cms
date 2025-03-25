@@ -52,9 +52,9 @@ declare const exports: Record<string, unknown>
       formElement,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
-          success: boolean
           burialSiteId?: number
           errorMessage?: string
+          success: boolean
         }
 
         if (responseJSON.success) {
@@ -106,8 +106,8 @@ declare const exports: Record<string, unknown>
           },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
-              success: boolean
               errorMessage?: string
+              success: boolean
             }
 
             if (responseJSON.success) {
@@ -309,9 +309,9 @@ declare const exports: Record<string, unknown>
         editFormElement,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
-            errorMessage?: string
             burialSiteComments: BurialSiteComment[]
+            errorMessage?: string
+            success: boolean
           }
 
           if (responseJSON.success) {

@@ -1,13 +1,12 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js'
+
 import { acquireConnection } from './pool.js'
 
 type RecordTable =
   | 'BurialSiteComments'
-  | 'BurialSites'
   | 'BurialSiteStatuses'
   | 'BurialSiteTypeFields'
   | 'BurialSiteTypes'
-  | 'Cemeteries'
   | 'ContractComments'
   | 'Contracts'
   | 'ContractTypeFields'
@@ -23,11 +22,9 @@ type RecordTable =
 
 const recordIdColumns = new Map<RecordTable, string>([
   ['BurialSiteComments', 'burialSiteCommentId'],
-  ['BurialSites', 'burialSiteId'],
   ['BurialSiteStatuses', 'burialSiteStatusId'],
   ['BurialSiteTypeFields', 'burialSiteTypeFieldId'],
   ['BurialSiteTypes', 'burialSiteTypeId'],
-  ['Cemeteries', 'cemeteryId'],
   ['ContractComments', 'contractCommentId'],
   ['Contracts', 'contractId'],
   ['ContractTypeFields', 'contractTypeFieldId'],
@@ -43,9 +40,7 @@ const recordIdColumns = new Map<RecordTable, string>([
 ])
 
 const relatedTables = new Map<RecordTable, string[]>([
-  ['BurialSites', ['BurialSiteFields', 'BurialSiteComments']],
   ['BurialSiteTypes', ['BurialSiteTypeFields']],
-  ['Cemeteries', ['BurialSites']],
   ['Contracts', ['ContractFields', 'ContractComments']],
   ['ContractTypes', ['ContractTypePrints', 'ContractTypeFields']],
   [

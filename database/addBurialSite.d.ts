@@ -4,9 +4,9 @@ export interface AddBurialSiteForm {
     burialSiteNameSegment3?: string;
     burialSiteNameSegment4?: string;
     burialSiteNameSegment5?: string;
-    burialSiteTypeId: string | number;
-    burialSiteStatusId: string | number;
-    cemeteryId: string | number;
+    burialSiteStatusId: number | string;
+    burialSiteTypeId: number | string;
+    cemeteryId: number | string;
     cemeterySvgId: string;
     burialSiteLatitude: string;
     burialSiteLongitude: string;

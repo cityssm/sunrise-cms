@@ -1,10 +1,12 @@
 import { dateToInteger } from '@cityssm/utils-datetime'
 
-type BurialSiteNameSearchType = 'startsWith' | 'endsWith' | ''
+type BurialSiteNameSearchType = '' | 'endsWith' | 'startsWith'
+
+type ContractTime = '' | 'current' | 'future' | 'past'
 
 interface WhereClauseReturn {
-  sqlWhereClause: string
   sqlParameters: unknown[]
+  sqlWhereClause: string
 }
 
 export function getBurialSiteNameWhereClause(
@@ -17,13 +19,13 @@ export function getBurialSiteNameWhereClause(
 
   if (burialSiteName !== '') {
     switch (burialSiteNameSearchType) {
-      case 'startsWith': {
-        sqlWhereClause += ` and ${burialSitesTableAlias}.burialSiteName like ? || '%'`
+      case 'endsWith': {
+        sqlWhereClause += ` and ${burialSitesTableAlias}.burialSiteName like '%' || ?`
         sqlParameters.push(burialSiteName)
         break
       }
-      case 'endsWith': {
-        sqlWhereClause += ` and ${burialSitesTableAlias}.burialSiteName like '%' || ?`
+      case 'startsWith': {
+        sqlWhereClause += ` and ${burialSitesTableAlias}.burialSiteName like ? || '%'`
         sqlParameters.push(burialSiteName)
         break
       }
@@ -47,12 +49,10 @@ export function getBurialSiteNameWhereClause(
   }
 
   return {
-    sqlWhereClause,
-    sqlParameters
+    sqlParameters,
+    sqlWhereClause
   }
 }
-
-type ContractTime = '' | 'current' | 'past' | 'future'
 
 export function getContractTimeWhereClause(
   contractTime: ContractTime | undefined,
@@ -72,24 +72,24 @@ export function getContractTimeWhereClause(
       break
     }
 
-    case 'past': {
-      sqlWhereClause +=
-        ` and ${contractsTableAlias}.contractEndDate < ?`
-      sqlParameters.push(currentDateString)
-      break
-    }
-
     case 'future': {
       sqlWhereClause +=
         ` and ${contractsTableAlias}.contractStartDate > ?`
       sqlParameters.push(currentDateString)
       break
     }
+
+    case 'past': {
+      sqlWhereClause +=
+        ` and ${contractsTableAlias}.contractEndDate < ?`
+      sqlParameters.push(currentDateString)
+      break
+    }
   }
 
   return {
-    sqlWhereClause,
-    sqlParameters
+    sqlParameters,
+    sqlWhereClause
   }
 }
 
@@ -115,7 +115,7 @@ export function getDeceasedNameWhereClause(
   }
 
   return {
-    sqlWhereClause,
-    sqlParameters
+    sqlParameters,
+    sqlWhereClause
   }
 }
