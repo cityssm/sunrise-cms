@@ -214,7 +214,8 @@ export default async function getContracts(
           o.purchaserName, o.purchaserAddress1, o.purchaserAddress2,
           o.purchaserCity, o.purchaserProvince, o.purchaserPostalCode,
           o.purchaserPhoneNumber, o.purchaserEmail, o.purchaserRelationship,
-          o.funeralHomeId, o.funeralDirectorName,
+          o.funeralHomeId, o.funeralDirectorName, f.funeralHomeName,
+
           o.funeralDate, userFn_dateIntegerToString(o.funeralDate) as funeralDateString,
           o.funeralTime, userFn_timeIntegerToString(o.funeralTime) as funeralTimeString,
           o.committalTypeId, c.committalType
@@ -224,6 +225,7 @@ export default async function getContracts(
           left join BurialSites l on o.burialSiteId = l.burialSiteId
           left join BurialSiteTypes lt on l.burialSiteTypeId = lt.burialSiteTypeId
           left join Cemeteries m on l.cemeteryId = m.cemeteryId
+          left join FuneralHomes f on o.funeralHomeId = f.funeralHomeId
           ${sqlWhereClause}
           order by o.contractStartDate desc, ifnull(o.contractEndDate, 99999999) desc,
             l.burialSiteNameSegment1,
