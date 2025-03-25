@@ -416,8 +416,10 @@
             <div class="level-item">
               <h2 class="has-text-weight-bold is-size-5">
                 Contracts
-                <span class="tag"><%= burialSite.contracts.length %></span>
-              </h2> 
+              </h2>
+            </div>
+            <div class="level-item">
+              <span class="tag"><%= burialSite.contracts.length %></span>
             </div>
           </div>
           <div class="level-right">
@@ -427,6 +429,15 @@
                 <span>Create New Contract</span>
               </a>
             </div>
+            <% if (burialSite.contracts.length > 0) { %>
+              <div class="level-item">
+                <button class="button is-info is-small"
+                  id="burialSite--contractsToggle" type="button">
+                  <span class="icon"><i class="fas fa-eye" aria-hidden="true"></i></span>
+                  <span>Show/Hide Past Contracts</span>
+                </button>
+              </div>
+            <% } %>
           </div>
         </div>
       </div>
@@ -438,7 +449,7 @@
             </p>
           </div>
         <% } else { %>
-          <table class="table is-fullwidth is-striped is-hoverable">
+          <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
             <thead>
               <tr>
                 <th class="has-width-10">&nbsp;</th>
@@ -448,11 +459,11 @@
                 <th>Interments</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="burialSite--contractsTbody">
               <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
               <% for (const contract of burialSite.contracts) { %>
                 <% const isActive = !(contract.contractEndDate && contract.contractEndDate < currentDate); %>
-                <tr>
+                <tr data-is-active="<%= isActive %>" class="<%= isActive ? "" : "is-hidden" %>">
                   <td class="has-text-centered">
                     <% if (isActive) { %>
                       <i class="fas fa-play" title="Current Contract"></i>

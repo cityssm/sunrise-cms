@@ -144,10 +144,29 @@
 <% } %>
 
 <div class="panel">
-  <h2 class="panel-heading">
-    Contracts
-    <span class="tag"><%= burialSite.contracts.length %></span>
-  </h2>
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="has-text-weight-bold">Contracts</h2>
+        </div>
+        <div class="level-item">
+          <span class="tag"><%= burialSite.contracts.length %></span>
+        </div>
+      </div>
+      <% if (burialSite.contracts.length > 0) { %>
+        <div class="level-right">
+          <div class="level-item">
+            <button class="button is-info is-small"
+              id="burialSite--contractsToggle" type="button">
+              <span class="icon"><i class="fas fa-eye" aria-hidden="true"></i></span>
+              <span>Show/Hide Past Contracts</span>
+            </button>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
   <div class="panel-block is-block">
     <% if (burialSite.contracts.length === 0) { %>
       <div class="message is-info">
@@ -156,7 +175,7 @@
         </p>
       </div>
     <% } else { %>
-      <table class="table is-fullwidth is-striped is-hoverable">
+      <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
         <thead>
           <tr>
             <th class="has-width-10">&nbsp;</th>
@@ -166,11 +185,11 @@
             <th>Interments</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="burialSite--contractsTbody">
           <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
           <% for (const contract of burialSite.contracts) { %>
             <% const isActive = !(contract.contractEndDate && contract.contractEndDate < currentDate); %>
-            <tr>
+            <tr data-is-active="<%= isActive %>" class="<%= isActive ? "" : "is-hidden" %>">
               <td class="has-text-centered">
                 <% if (isActive) { %>
                   <i class="fas fa-play" title="Current Contract"></i>

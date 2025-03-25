@@ -8,7 +8,6 @@ import type {
   BurialSiteComment,
   BurialSiteTypeField
 } from '../../types/recordTypes.js'
-
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
@@ -401,9 +400,9 @@ declare const exports: Record<string, unknown>
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
-            errorMessage?: string
             burialSiteComments: BurialSiteComment[]
+            errorMessage?: string
+            success: boolean
           }
 
           if (responseJSON.success) {
@@ -508,8 +507,8 @@ declare const exports: Record<string, unknown>
         formEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
             burialSiteComments: BurialSiteComment[]
+            success: boolean
           }
 
           if (responseJSON.success) {
@@ -559,4 +558,20 @@ declare const exports: Record<string, unknown>
       ?.addEventListener('click', openAddCommentModal)
     renderBurialSiteComments()
   }
+
+  /*
+   * Contracts
+   */
+
+  document
+    .querySelector('#burialSite--contractsToggle')
+    ?.addEventListener('click', () => {
+      const tableRowElements = document.querySelectorAll(
+        '#burialSite--contractsTbody tr[data-is-active="false"]'
+      )
+
+      for (const tableRowElement of tableRowElements) {
+        tableRowElement.classList.toggle('is-hidden')
+      }
+    })
 })()
