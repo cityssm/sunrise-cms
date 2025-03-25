@@ -1,7 +1,6 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { Contract } from '../../types/recordTypes.js'
-
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
@@ -30,9 +29,9 @@ declare const exports: Record<string, unknown>
   // eslint-disable-next-line complexity
   function renderContracts(rawResponseJSON: unknown): void {
     const responseJSON = rawResponseJSON as {
+      contracts: Contract[]
       count: number
       offset: number
-      contracts: Contract[]
     }
 
     if (responseJSON.contracts.length === 0) {
@@ -70,12 +69,32 @@ declare const exports: Record<string, unknown>
           </span>`
       }
 
-      let deceasedHTML = ''
+      let contactsHTML = ''
 
       for (const interment of contract.contractInterments ?? []) {
-        deceasedHTML += `<li class="has-tooltip-left">
+        contactsHTML += `<li class="has-tooltip-left"
+          data-tooltip="${contract.isPreneed ? 'Recipient' : 'Deceased'}">
           <span class="fa-li"><i class="fas fa-user"></i></span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+          </li>`
+      }
+
+      if (contract.purchaserName !== '') {
+        contactsHTML += `<li class="has-tooltip-left has-text-grey"
+          data-tooltip="Purchaser">
+          <span class="fa-li"><i class="fas fa-hand-holding-dollar"></i></span>
+          ${cityssm.escapeHTML(contract.purchaserName)}
+          </li>`
+      }
+
+      if (
+        contract.funeralHomeName !== null &&
+        contract.funeralHomeName !== ''
+      ) {
+        contactsHTML += `<li class="has-tooltip-left has-text-grey"
+          data-tooltip="Funeral Home">
+          <span class="fa-li"><i class="fas fa-church"></i></span>
+          ${cityssm.escapeHTML(contract.funeralHomeName)}
           </li>`
       }
 
@@ -120,7 +139,7 @@ declare const exports: Record<string, unknown>
           </td><td>
             <a class="has-text-weight-bold"
               href="${sunrise.getContractURL(contract.contractId)}">
-              ${cityssm.escapeHTML(contract.contractType ?? '')}
+              ${cityssm.escapeHTML(contract.contractType)}
             </a><br />
             <span class="is-size-7">#${contract.contractId}</span>
           </td><td>
@@ -143,9 +162,9 @@ declare const exports: Record<string, unknown>
             }
           </td><td>
             ${
-              deceasedHTML === ''
+              contactsHTML === ''
                 ? ''
-                : `<ul class="fa-ul ml-5">${deceasedHTML}</ul>`
+                : `<ul class="fa-ul ml-5">${contactsHTML}</ul>`
             }
           </td><td>
             ${feeIconHTML}
@@ -168,7 +187,7 @@ declare const exports: Record<string, unknown>
       <th>Burial Site</th>
       <th>Contract Date</th>
       <th>End Date</th>
-      <th>Recipient / Deceased</th>
+      <th>Contacts</th>
       <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
       <th class="has-width-1"><span class="is-sr-only">Print</span></th>
       </tr></thead>
@@ -200,7 +219,7 @@ declare const exports: Record<string, unknown>
   function getContracts(): void {
     // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
-      "Loading Contracts..."
+      'Loading Contracts...'
     )
 
     cityssm.postJSON(

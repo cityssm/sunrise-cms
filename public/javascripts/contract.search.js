@@ -38,11 +38,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
           <i class="fas fa-stop" aria-label="Past Contract"></i>
           </span>`;
             }
-            let deceasedHTML = '';
+            let contactsHTML = '';
             for (const interment of contract.contractInterments ?? []) {
-                deceasedHTML += `<li class="has-tooltip-left">
+                contactsHTML += `<li class="has-tooltip-left"
+          data-tooltip="${contract.isPreneed ? 'Recipient' : 'Deceased'}">
           <span class="fa-li"><i class="fas fa-user"></i></span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+          </li>`;
+            }
+            if (contract.purchaserName !== '') {
+                contactsHTML += `<li class="has-tooltip-left has-text-grey"
+          data-tooltip="Purchaser">
+          <span class="fa-li"><i class="fas fa-hand-holding-dollar"></i></span>
+          ${cityssm.escapeHTML(contract.purchaserName)}
+          </li>`;
+            }
+            if (contract.funeralHomeName !== null &&
+                contract.funeralHomeName !== '') {
+                contactsHTML += `<li class="has-tooltip-left has-text-grey"
+          data-tooltip="Funeral Home">
+          <span class="fa-li"><i class="fas fa-church"></i></span>
+          ${cityssm.escapeHTML(contract.funeralHomeName)}
           </li>`;
             }
             const feeTotal = (contract.contractFees?.reduce((soFar, currentFee) => soFar +
@@ -66,7 +82,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </td><td>
             <a class="has-text-weight-bold"
               href="${sunrise.getContractURL(contract.contractId)}">
-              ${cityssm.escapeHTML(contract.contractType ?? '')}
+              ${cityssm.escapeHTML(contract.contractType)}
             </a><br />
             <span class="is-size-7">#${contract.contractId}</span>
           </td><td>
@@ -84,9 +100,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ? contract.contractEndDateString
                 : '<span class="has-text-grey">(No End Date)</span>'}
           </td><td>
-            ${deceasedHTML === ''
+            ${contactsHTML === ''
                 ? ''
-                : `<ul class="fa-ul ml-5">${deceasedHTML}</ul>`}
+                : `<ul class="fa-ul ml-5">${contactsHTML}</ul>`}
           </td><td>
             ${feeIconHTML}
           </td><td>
@@ -104,7 +120,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
       <th>Burial Site</th>
       <th>Contract Date</th>
       <th>End Date</th>
-      <th>Recipient / Deceased</th>
+      <th>Contacts</th>
       <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
       <th class="has-width-1"><span class="is-sr-only">Print</span></th>
       </tr></thead>
@@ -123,7 +139,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function getContracts() {
         // eslint-disable-next-line no-unsanitized/property
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML("Loading Contracts...");
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Contracts...');
         cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doSearchContracts`, searchFilterFormElement, renderContracts);
     }
     function resetOffsetAndGetContracts() {
