@@ -7,14 +7,14 @@ import { minutesToSeconds } from '@cityssm/to-millis'
 import Debug from 'debug'
 import NodeCache from 'node-cache'
 
+import getNextBurialSiteIdFromDatabase from '../database/getNextBurialSiteId.js'
+import getPreviousBurialSiteIdFromDatabase from '../database/getPreviousBurialSiteId.js'
+import { DEBUG_NAMESPACE } from '../debug.config.js'
 import type {
   CacheBurialSiteIdsWorkerMessage,
   ClearNextPreviousBurialSiteIdsCacheWorkerMessage
 } from '../types/applicationTypes.js'
 
-import getNextBurialSiteIdFromDatabase from '../database/getNextBurialSiteId.js'
-import getPreviousBurialSiteIdFromDatabase from '../database/getPreviousBurialSiteId.js'
-import { DEBUG_NAMESPACE } from '../debug.config.js'
 import { getConfigProperty } from './config.helpers.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:burialSites.helpers:${process.pid}`)

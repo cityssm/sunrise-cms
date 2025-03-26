@@ -1,15 +1,16 @@
-const recordIdColumns = new Map();
-recordIdColumns.set('FeeCategories', 'feeCategoryId');
-recordIdColumns.set('Fees', 'feeId');
-recordIdColumns.set('BurialSiteStatuses', 'burialSiteStatusId');
-recordIdColumns.set('BurialSiteTypes', 'burialSiteTypeId');
-recordIdColumns.set('BurialSiteTypeFields', 'burialSiteTypeFieldId');
-recordIdColumns.set('IntermentContainerTypes', 'intermentContainerTypeId');
-recordIdColumns.set('CommittalTypes', 'committalTypeId');
-recordIdColumns.set('ContractTypes', 'contractTypeId');
-recordIdColumns.set('ContractTypeFields', 'contractTypeFieldId');
-recordIdColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId');
-recordIdColumns.set('WorkOrderTypes', 'workOrderTypeId');
+const recordIdColumns = new Map([
+    ['BurialSiteStatuses', 'burialSiteStatusId'],
+    ['BurialSiteTypeFields', 'burialSiteTypeFieldId'],
+    ['BurialSiteTypes', 'burialSiteTypeId'],
+    ['CommittalTypes', 'committalTypeId'],
+    ['ContractTypeFields', 'contractTypeFieldId'],
+    ['ContractTypes', 'contractTypeId'],
+    ['FeeCategories', 'feeCategoryId'],
+    ['Fees', 'feeId'],
+    ['IntermentContainerTypes', 'intermentContainerTypeId'],
+    ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
+    ['WorkOrderTypes', 'workOrderTypeId']
+]);
 export function updateRecordOrderNumber(recordTable, recordId, orderNumber, connectedDatabase) {
     const result = connectedDatabase
         .prepare(`update ${recordTable}

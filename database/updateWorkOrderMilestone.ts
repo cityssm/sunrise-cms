@@ -6,11 +6,12 @@ import {
 import { acquireConnection } from './pool.js'
 
 export interface UpdateWorkOrderMilestoneForm {
-  workOrderMilestoneId: string | number
-  workOrderMilestoneTypeId: number | string
+  workOrderMilestoneId: number | string
+
   workOrderMilestoneDateString: string
-  workOrderMilestoneTimeString?: string
   workOrderMilestoneDescription: string
+  workOrderMilestoneTimeString?: string
+  workOrderMilestoneTypeId: number | string
 }
 
 export default async function updateWorkOrderMilestone(

@@ -1,19 +1,14 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
 import { acquireConnection } from './pool.js';
-const recordNameIdColumns = new Map();
-recordNameIdColumns.set('BurialSiteStatuses', [
-    'burialSiteStatus',
-    'burialSiteStatusId'
+const recordNameIdColumns = new Map([
+    ['BurialSiteStatuses', ['burialSiteStatus', 'burialSiteStatusId']],
+    ['BurialSiteTypes', ['burialSiteType', 'burialSiteTypeId']],
+    [
+        'WorkOrderMilestoneTypes',
+        ['workOrderMilestoneType', 'workOrderMilestoneTypeId']
+    ],
+    ['WorkOrderTypes', ['workOrderType', 'workOrderTypeId']]
 ]);
-recordNameIdColumns.set('BurialSiteTypes', [
-    'burialSiteType',
-    'burialSiteTypeId'
-]);
-recordNameIdColumns.set('WorkOrderMilestoneTypes', [
-    'workOrderMilestoneType',
-    'workOrderMilestoneTypeId'
-]);
-recordNameIdColumns.set('WorkOrderTypes', ['workOrderType', 'workOrderTypeId']);
 export async function updateRecord(recordTable, recordId, recordName, user) {
     const database = await acquireConnection();
     const result = database

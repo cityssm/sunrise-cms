@@ -1,8 +1,8 @@
 import {
   type DiamondCashReceipt,
   type DiamondExtendedGPInvoice,
-  DynamicsGP,
-  type GPInvoice
+  type GPInvoice,
+  DynamicsGP
 } from '@cityssm/dynamics-gp'
 
 import type { DynamicsGPLookup } from '../types/configTypes.js'
@@ -10,72 +10,32 @@ import type { DynamicsGPDocument } from '../types/recordTypes.js'
 
 import { getConfigProperty } from './config.helpers.js'
 
-// eslint-disable-next-line @typescript-eslint/init-declarations
 let gp: DynamicsGP
 
 if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
   gp = new DynamicsGP(getConfigProperty('settings.dynamicsGP.mssqlConfig'))
 }
 
-function filterCashReceipt(
-  cashReceipt: DiamondCashReceipt
-): DiamondCashReceipt | undefined {
-  const accountCodes = getConfigProperty('settings.dynamicsGP.accountCodes')
-
-  if (accountCodes.length > 0) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    for (const detail of cashReceipt?.details ?? []) {
-      if (accountCodes.includes(detail.accountCode)) {
-        return cashReceipt
-      }
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    for (const distribution of cashReceipt?.distributions ?? []) {
-      if (accountCodes.includes(distribution.accountCode)) {
-        return cashReceipt
-      }
-    }
-
+export async function getDynamicsGPDocument(
+  documentNumber: string
+): Promise<DynamicsGPDocument | undefined> {
+  if (!getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
     return undefined
   }
 
-  return cashReceipt
-}
+  let document: DynamicsGPDocument | undefined
 
-function filterInvoice(invoice: GPInvoice): GPInvoice | undefined {
-  const itemNumbers = getConfigProperty('settings.dynamicsGP.itemNumbers')
+  for (const lookupType of getConfigProperty(
+    'settings.dynamicsGP.lookupOrder'
+  )) {
+    document = await _getDynamicsGPDocument(documentNumber, lookupType)
 
-  for (const itemNumber of itemNumbers) {
-    const found = invoice.lineItems.some((itemRecord) => itemRecord.itemNumber === itemNumber)
-
-    if (!found) {
-      return undefined
+    if (document !== undefined) {
+      break
     }
   }
 
-  return invoice
-}
-
-function filterExtendedInvoice(
-  invoice: DiamondExtendedGPInvoice
-): DiamondExtendedGPInvoice | undefined {
-  if (filterInvoice(invoice) === undefined) {
-    return undefined
-  }
-
-  const trialBalanceCodes = getConfigProperty(
-    'settings.dynamicsGP.trialBalanceCodes'
-  )
-
-  if (
-    trialBalanceCodes.length > 0 &&
-    trialBalanceCodes.includes(invoice.trialBalanceCode ?? '')
-  ) {
-    return invoice
-  }
-
-  return undefined
+  return document
 }
 
 async function _getDynamicsGPDocument(
@@ -85,30 +45,6 @@ async function _getDynamicsGPDocument(
   let document: DynamicsGPDocument | undefined
 
   switch (lookupType) {
-    case 'invoice': {
-      let invoice = await gp.getInvoiceByInvoiceNumber(documentNumber)
-
-      if (invoice !== undefined) {
-        invoice = filterInvoice(invoice)
-      }
-
-      if (invoice !== undefined) {
-        document = {
-          documentType: 'Invoice',
-          documentNumber: invoice.invoiceNumber,
-          documentDate: invoice.documentDate,
-          documentDescription: [
-            invoice.comment1,
-            invoice.comment2,
-            invoice.comment3,
-            invoice.comment4
-          ],
-          documentTotal: invoice.documentAmount
-        }
-      }
-
-      break
-    }
     case 'diamond/cashReceipt': {
       let receipt: DiamondCashReceipt | undefined =
         await gp.getDiamondCashReceiptByDocumentNumber(documentNumber)
@@ -160,29 +96,94 @@ async function _getDynamicsGPDocument(
 
       break
     }
-  }
+    case 'invoice': {
+      let invoice = await gp.getInvoiceByInvoiceNumber(documentNumber)
 
-  return document
-}
+      if (invoice !== undefined) {
+        invoice = filterInvoice(invoice)
+      }
 
-export async function getDynamicsGPDocument(
-  documentNumber: string
-): Promise<DynamicsGPDocument | undefined> {
-  if (!getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
-    return undefined
-  }
+      if (invoice !== undefined) {
+        document = {
+          documentType: 'Invoice',
+          documentNumber: invoice.invoiceNumber,
+          documentDate: invoice.documentDate,
+          documentDescription: [
+            invoice.comment1,
+            invoice.comment2,
+            invoice.comment3,
+            invoice.comment4
+          ],
+          documentTotal: invoice.documentAmount
+        }
+      }
 
-  let document: DynamicsGPDocument | undefined
-
-  for (const lookupType of getConfigProperty(
-    'settings.dynamicsGP.lookupOrder'
-  )) {
-    document = await _getDynamicsGPDocument(documentNumber, lookupType)
-
-    if (document !== undefined) {
       break
     }
   }
 
   return document
+}
+
+function filterCashReceipt(
+  cashReceipt: DiamondCashReceipt
+): DiamondCashReceipt | undefined {
+  const accountCodes = getConfigProperty('settings.dynamicsGP.accountCodes')
+
+  if (accountCodes.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    for (const detail of cashReceipt?.details ?? []) {
+      if (accountCodes.includes(detail.accountCode)) {
+        return cashReceipt
+      }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    for (const distribution of cashReceipt?.distributions ?? []) {
+      if (accountCodes.includes(distribution.accountCode)) {
+        return cashReceipt
+      }
+    }
+
+    return undefined
+  }
+
+  return cashReceipt
+}
+
+function filterExtendedInvoice(
+  invoice: DiamondExtendedGPInvoice
+): DiamondExtendedGPInvoice | undefined {
+  if (filterInvoice(invoice) === undefined) {
+    return undefined
+  }
+
+  const trialBalanceCodes = getConfigProperty(
+    'settings.dynamicsGP.trialBalanceCodes'
+  )
+
+  if (
+    trialBalanceCodes.length > 0 &&
+    trialBalanceCodes.includes(invoice.trialBalanceCode ?? '')
+  ) {
+    return invoice
+  }
+
+  return undefined
+}
+
+function filterInvoice(invoice: GPInvoice): GPInvoice | undefined {
+  const itemNumbers = getConfigProperty('settings.dynamicsGP.itemNumbers')
+
+  for (const itemNumber of itemNumbers) {
+    const found = invoice.lineItems.some(
+      (itemRecord) => itemRecord.itemNumber === itemNumber
+    )
+
+    if (!found) {
+      return undefined
+    }
+  }
+
+  return invoice
 }

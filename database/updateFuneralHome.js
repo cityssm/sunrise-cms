@@ -6,7 +6,8 @@ export default async function updateFuneralHome(updateForm, user) {
         .prepare(`update FuneralHomes
         set funeralHomeName = ?,
           funeralHomeAddress1 = ?, funeralHomeAddress2 = ?,
-          funeralHomeCity = ?, funeralHomeProvince = ?, funeralHomePostalCode = ?, funeralHomePhoneNumber = ?,
+          funeralHomeCity = ?, funeralHomeProvince = ?, funeralHomePostalCode = ?,
+          funeralHomePhoneNumber = ?,
           recordUpdate_userName = ?, recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
           and funeralHomeId = ?`)

@@ -20,6 +20,12 @@ const baseSQL = `select l.burialSiteId,
   left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
   left join Cemeteries m on l.cemeteryId = m.cemeteryId
   where l.recordDelete_timeMillis is null`;
+export default async function getBurialSite(burialSiteId) {
+    return await _getBurialSite(`${baseSQL} and l.burialSiteId = ?`, burialSiteId);
+}
+export async function getBurialSiteByBurialSiteName(burialSiteName) {
+    return await _getBurialSite(`${baseSQL} and l.burialSiteName = ?`, burialSiteName);
+}
 async function _getBurialSite(sql, burialSiteIdOrLotName) {
     const database = await acquireConnection();
     const burialSite = database.prepare(sql).get(burialSiteIdOrLotName);
@@ -27,11 +33,11 @@ async function _getBurialSite(sql, burialSiteIdOrLotName) {
         const contracts = await getContracts({
             burialSiteId: burialSite.burialSiteId
         }, {
-            includeInterments: true,
-            includeFees: false,
-            includeTransactions: false,
             limit: -1,
-            offset: 0
+            offset: 0,
+            includeFees: false,
+            includeInterments: true,
+            includeTransactions: false
         }, database);
         burialSite.contracts = contracts.contracts;
         burialSite.burialSiteFields = await getBurialSiteFields(burialSite.burialSiteId, database);
@@ -39,10 +45,4 @@ async function _getBurialSite(sql, burialSiteIdOrLotName) {
     }
     database.release();
     return burialSite;
-}
-export async function getBurialSiteByBurialSiteName(burialSiteName) {
-    return await _getBurialSite(`${baseSQL} and l.burialSiteName = ?`, burialSiteName);
-}
-export default async function getBurialSite(burialSiteId) {
-    return await _getBurialSite(`${baseSQL} and l.burialSiteId = ?`, burialSiteId);
 }

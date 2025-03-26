@@ -3,11 +3,13 @@ import { acquireConnection } from './pool.js'
 export interface UpdateForm {
   funeralHomeId: number | string
   funeralHomeName: string
+
   funeralHomeAddress1: string
   funeralHomeAddress2: string
   funeralHomeCity: string
-  funeralHomeProvince: string
   funeralHomePostalCode: string
+  funeralHomeProvince: string
+
   funeralHomePhoneNumber: string
 }
 
@@ -24,7 +26,8 @@ export default async function updateFuneralHome(
       `update FuneralHomes
         set funeralHomeName = ?,
           funeralHomeAddress1 = ?, funeralHomeAddress2 = ?,
-          funeralHomeCity = ?, funeralHomeProvince = ?, funeralHomePostalCode = ?, funeralHomePhoneNumber = ?,
+          funeralHomeCity = ?, funeralHomeProvince = ?, funeralHomePostalCode = ?,
+          funeralHomePhoneNumber = ?,
           recordUpdate_userName = ?, recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
           and funeralHomeId = ?`

@@ -1,5 +1,5 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @cspell/spellchecker, @typescript-eslint/no-non-null-assertion, no-console, max-lines */
+/* eslint-disable @cspell/spellchecker, @typescript-eslint/no-non-null-assertion, no-console, max-lines, perfectionist/sort-interfaces */
 
 import fs from 'node:fs'
 

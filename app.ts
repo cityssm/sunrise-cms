@@ -29,6 +29,7 @@ import routerPrint from './routes/print.js'
 import routerReports from './routes/reports.js'
 import routerWorkOrders from './routes/workOrders.js'
 import { version } from './version.js'
+import { secondsToMillis } from '@cityssm/to-millis'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid}`)
 
@@ -69,6 +70,7 @@ app.use(
 
 app.use(cookieParser())
 app.use(
+  // eslint-disable-next-line sonarjs/insecure-cookie, sonarjs/cookie-no-httponly
   csurf({
     cookie: true
   })
@@ -80,8 +82,8 @@ app.use(
 
 app.use(
   rateLimit({
-    windowMs: 10_000,
-    max: useTestDatabases ? 1_000_000 : 200
+    max: useTestDatabases ? 1_000_000 : 200,
+    windowMs: secondsToMillis(10)
   })
 )
 
@@ -99,16 +101,12 @@ app.use(urlPrefix, express.static(path.join('public')))
 
 app.use(
   `${urlPrefix}/lib/bulma`,
-  express.static(
-    path.join('node_modules', 'bulma', 'css')
-  )
+  express.static(path.join('node_modules', 'bulma', 'css'))
 )
 
 app.use(
   `${urlPrefix}/lib/bulma-tooltip`,
-  express.static(
-    path.join('node_modules', 'bulma-tooltip', 'dist', 'css')
-  )
+  express.static(path.join('node_modules', 'bulma-tooltip', 'dist', 'css'))
 )
 
 app.use(
@@ -120,16 +118,12 @@ app.use(
 
 app.use(
   `${urlPrefix}/lib/cityssm-fa-glow`,
-  express.static(
-    path.join('node_modules', '@cityssm', 'fa-glow')
-  )
+  express.static(path.join('node_modules', '@cityssm', 'fa-glow'))
 )
 
 app.use(
   `${urlPrefix}/lib/cityssm-bulma-sticky-table`,
-  express.static(
-    path.join('node_modules', '@cityssm', 'bulma-sticky-table')
-  )
+  express.static(path.join('node_modules', '@cityssm', 'bulma-sticky-table'))
 )
 
 app.use(
@@ -166,20 +160,22 @@ const FileStoreSession = FileStore(session)
 // Initialize session
 app.use(
   session({
-    store: new FileStoreSession({
-      path: './data/sessions',
-      logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid}`),
-      retries: 20
-    }),
     name: sessionCookieName,
-    secret: configFunctions.getConfigProperty('session.secret'),
-    resave: true,
-    saveUninitialized: false,
-    rolling: true,
+
     cookie: {
       maxAge: configFunctions.getConfigProperty('session.maxAgeMillis'),
       sameSite: 'strict'
-    }
+    },
+    secret: configFunctions.getConfigProperty('session.secret'),
+    store: new FileStoreSession({
+      logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid}`),
+      path: './data/sessions',
+      retries: 20
+    }),
+
+    resave: true,
+    rolling: true,
+    saveUninitialized: false
   })
 )
 

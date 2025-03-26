@@ -1,74 +1,25 @@
 import { DynamicsGP } from '@cityssm/dynamics-gp';
 import { getConfigProperty } from './config.helpers.js';
-// eslint-disable-next-line @typescript-eslint/init-declarations
 let gp;
 if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
     gp = new DynamicsGP(getConfigProperty('settings.dynamicsGP.mssqlConfig'));
 }
-function filterCashReceipt(cashReceipt) {
-    const accountCodes = getConfigProperty('settings.dynamicsGP.accountCodes');
-    if (accountCodes.length > 0) {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        for (const detail of cashReceipt?.details ?? []) {
-            if (accountCodes.includes(detail.accountCode)) {
-                return cashReceipt;
-            }
-        }
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        for (const distribution of cashReceipt?.distributions ?? []) {
-            if (accountCodes.includes(distribution.accountCode)) {
-                return cashReceipt;
-            }
-        }
+export async function getDynamicsGPDocument(documentNumber) {
+    if (!getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
         return undefined;
     }
-    return cashReceipt;
-}
-function filterInvoice(invoice) {
-    const itemNumbers = getConfigProperty('settings.dynamicsGP.itemNumbers');
-    for (const itemNumber of itemNumbers) {
-        const found = invoice.lineItems.some((itemRecord) => itemRecord.itemNumber === itemNumber);
-        if (!found) {
-            return undefined;
+    let document;
+    for (const lookupType of getConfigProperty('settings.dynamicsGP.lookupOrder')) {
+        document = await _getDynamicsGPDocument(documentNumber, lookupType);
+        if (document !== undefined) {
+            break;
         }
     }
-    return invoice;
-}
-function filterExtendedInvoice(invoice) {
-    if (filterInvoice(invoice) === undefined) {
-        return undefined;
-    }
-    const trialBalanceCodes = getConfigProperty('settings.dynamicsGP.trialBalanceCodes');
-    if (trialBalanceCodes.length > 0 &&
-        trialBalanceCodes.includes(invoice.trialBalanceCode ?? '')) {
-        return invoice;
-    }
-    return undefined;
+    return document;
 }
 async function _getDynamicsGPDocument(documentNumber, lookupType) {
     let document;
     switch (lookupType) {
-        case 'invoice': {
-            let invoice = await gp.getInvoiceByInvoiceNumber(documentNumber);
-            if (invoice !== undefined) {
-                invoice = filterInvoice(invoice);
-            }
-            if (invoice !== undefined) {
-                document = {
-                    documentType: 'Invoice',
-                    documentNumber: invoice.invoiceNumber,
-                    documentDate: invoice.documentDate,
-                    documentDescription: [
-                        invoice.comment1,
-                        invoice.comment2,
-                        invoice.comment3,
-                        invoice.comment4
-                    ],
-                    documentTotal: invoice.documentAmount
-                };
-            }
-            break;
-        }
         case 'diamond/cashReceipt': {
             let receipt = await gp.getDiamondCashReceiptByDocumentNumber(documentNumber);
             if (receipt !== undefined) {
@@ -112,19 +63,67 @@ async function _getDynamicsGPDocument(documentNumber, lookupType) {
             }
             break;
         }
-    }
-    return document;
-}
-export async function getDynamicsGPDocument(documentNumber) {
-    if (!getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
-        return undefined;
-    }
-    let document;
-    for (const lookupType of getConfigProperty('settings.dynamicsGP.lookupOrder')) {
-        document = await _getDynamicsGPDocument(documentNumber, lookupType);
-        if (document !== undefined) {
+        case 'invoice': {
+            let invoice = await gp.getInvoiceByInvoiceNumber(documentNumber);
+            if (invoice !== undefined) {
+                invoice = filterInvoice(invoice);
+            }
+            if (invoice !== undefined) {
+                document = {
+                    documentType: 'Invoice',
+                    documentNumber: invoice.invoiceNumber,
+                    documentDate: invoice.documentDate,
+                    documentDescription: [
+                        invoice.comment1,
+                        invoice.comment2,
+                        invoice.comment3,
+                        invoice.comment4
+                    ],
+                    documentTotal: invoice.documentAmount
+                };
+            }
             break;
         }
     }
     return document;
+}
+function filterCashReceipt(cashReceipt) {
+    const accountCodes = getConfigProperty('settings.dynamicsGP.accountCodes');
+    if (accountCodes.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        for (const detail of cashReceipt?.details ?? []) {
+            if (accountCodes.includes(detail.accountCode)) {
+                return cashReceipt;
+            }
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        for (const distribution of cashReceipt?.distributions ?? []) {
+            if (accountCodes.includes(distribution.accountCode)) {
+                return cashReceipt;
+            }
+        }
+        return undefined;
+    }
+    return cashReceipt;
+}
+function filterExtendedInvoice(invoice) {
+    if (filterInvoice(invoice) === undefined) {
+        return undefined;
+    }
+    const trialBalanceCodes = getConfigProperty('settings.dynamicsGP.trialBalanceCodes');
+    if (trialBalanceCodes.length > 0 &&
+        trialBalanceCodes.includes(invoice.trialBalanceCode ?? '')) {
+        return invoice;
+    }
+    return undefined;
+}
+function filterInvoice(invoice) {
+    const itemNumbers = getConfigProperty('settings.dynamicsGP.itemNumbers');
+    for (const itemNumber of itemNumbers) {
+        const found = invoice.lineItems.some((itemRecord) => itemRecord.itemNumber === itemNumber);
+        if (!found) {
+            return undefined;
+        }
+    }
+    return invoice;
 }

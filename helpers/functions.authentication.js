@@ -2,6 +2,12 @@ import ActiveDirectory from 'activedirectory2';
 import { getConfigProperty } from './config.helpers.js';
 const userDomain = getConfigProperty('application.userDomain');
 const activeDirectoryConfig = getConfigProperty('activeDirectory');
+export async function authenticate(userName, password) {
+    if ((userName ?? '') === '' || (password ?? '') === '') {
+        return false;
+    }
+    return await authenticateViaActiveDirectory(userName ?? '', password ?? '');
+}
 async function authenticateViaActiveDirectory(userName, password) {
     return await new Promise((resolve) => {
         try {
@@ -19,33 +25,27 @@ async function authenticateViaActiveDirectory(userName, password) {
         }
     });
 }
-export async function authenticate(userName, password) {
-    if ((userName ?? '') === '' || (password ?? '') === '') {
-        return false;
-    }
-    return await authenticateViaActiveDirectory(userName ?? '', password ?? '');
-}
 /* eslint-disable @cspell/spellchecker */
 const safeRedirects = new Set([
-    '/admin/cleanup',
-    '/admin/fees',
     '/admin/burialsitetypes',
+    '/admin/cleanup',
     '/admin/contracttypes',
+    '/admin/fees',
     '/admin/tables',
-    '/contracts',
-    '/contracts/new',
-    '/burialSites',
-    '/burialSites/new',
+    '/burialsites',
+    '/burialsites/new',
     '/cemeteries',
     '/cemeteries/new',
+    '/contracts',
+    '/contracts/new',
+    '/reports',
     '/workorders',
-    '/workorders/new',
     '/workorders/milestonecalendar',
-    '/workorders/outlook',
-    '/reports'
+    '/workorders/new',
+    '/workorders/outlook'
 ]);
 /* eslint-enable @cspell/spellchecker */
-const recordUrl = /^\/(?:cemeteries|burialSites|contracts|workorders)\/\d+(?:\/edit)?$/;
+const recordUrl = /^\/(?:cemeteries|burialsites|contracts|workorders)\/\d+(?:\/edit)?$/;
 const printUrl = /^\/print\/(?:pdf|screen)\/[\d/=?A-Za-z-]+$/;
 export function getSafeRedirectURL(possibleRedirectURL = '') {
     const urlPrefix = getConfigProperty('reverseProxy.urlPrefix');

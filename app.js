@@ -27,6 +27,7 @@ import routerPrint from './routes/print.js';
 import routerReports from './routes/reports.js';
 import routerWorkOrders from './routes/workOrders.js';
 import { version } from './version.js';
+import { secondsToMillis } from '@cityssm/to-millis';
 const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid}`);
 /*
  * INITIALIZE APP
@@ -52,15 +53,17 @@ app.use(express.urlencoded({
     extended: false
 }));
 app.use(cookieParser());
-app.use(csurf({
+app.use(
+// eslint-disable-next-line sonarjs/insecure-cookie, sonarjs/cookie-no-httponly
+csurf({
     cookie: true
 }));
 /*
  * Rate Limiter
  */
 app.use(rateLimit({
-    windowMs: 10_000,
-    max: useTestDatabases ? 1_000_000 : 200
+    max: useTestDatabases ? 1_000_000 : 200,
+    windowMs: secondsToMillis(10)
 }));
 /*
  * STATIC ROUTES
@@ -86,20 +89,20 @@ const sessionCookieName = configFunctions.getConfigProperty('session.cookieName'
 const FileStoreSession = FileStore(session);
 // Initialize session
 app.use(session({
-    store: new FileStoreSession({
-        path: './data/sessions',
-        logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid}`),
-        retries: 20
-    }),
     name: sessionCookieName,
-    secret: configFunctions.getConfigProperty('session.secret'),
-    resave: true,
-    saveUninitialized: false,
-    rolling: true,
     cookie: {
         maxAge: configFunctions.getConfigProperty('session.maxAgeMillis'),
         sameSite: 'strict'
-    }
+    },
+    secret: configFunctions.getConfigProperty('session.secret'),
+    store: new FileStoreSession({
+        logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid}`),
+        path: './data/sessions',
+        retries: 20
+    }),
+    resave: true,
+    rolling: true,
+    saveUninitialized: false
 }));
 // Clear cookie if no corresponding session
 app.use((request, response, next) => {

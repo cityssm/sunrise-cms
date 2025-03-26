@@ -3,6 +3,24 @@ import type {
   ContractFee
 } from '../types/recordTypes.js'
 
+export function getFeesByFeeCategory(
+  contract: Contract,
+  feeCategory: string,
+  feeCategoryContains = false
+): ContractFee[] {
+  const feeCategoryLowerCase = feeCategory.toLowerCase()
+
+  return (contract.contractFees ?? []).filter(
+    (possibleFee) =>
+      feeCategoryContains
+        ? (possibleFee.feeCategory as string)
+            .toLowerCase()
+            .includes(feeCategoryLowerCase)
+        : (possibleFee.feeCategory as string).toLowerCase() ===
+          feeCategoryLowerCase
+  )
+}
+
 export function getFieldValueByContractTypeField(
   contract: Contract,
   contractTypeField: string
@@ -20,24 +38,6 @@ export function getFieldValueByContractTypeField(
   }
 
   return field.fieldValue
-}
-
-export function getFeesByFeeCategory(
-  contract: Contract,
-  feeCategory: string,
-  feeCategoryContains = false
-): ContractFee[] {
-  const feeCategoryLowerCase = feeCategory.toLowerCase()
-
-  return (contract.contractFees ?? []).filter(
-    (possibleFee) =>
-      feeCategoryContains
-        ? (possibleFee.feeCategory as string)
-            .toLowerCase()
-            .includes(feeCategoryLowerCase)
-        : (possibleFee.feeCategory as string).toLowerCase() ===
-          feeCategoryLowerCase
-  )
 }
 
 export function getTransactionTotal(

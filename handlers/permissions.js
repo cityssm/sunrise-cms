@@ -3,8 +3,8 @@ import { apiKeyIsValid, userCanUpdate, userIsAdmin } from '../helpers/functions.
 const urlPrefix = getConfigProperty('reverseProxy.urlPrefix');
 const forbiddenStatus = 403;
 const forbiddenJSON = {
-    success: false,
-    message: 'Forbidden'
+    message: 'Forbidden',
+    success: false
 };
 const forbiddenRedirectURL = `${urlPrefix}/dashboard/?error=accessDenied`;
 export function adminGetHandler(request, response, next) {
@@ -21,6 +21,14 @@ export function adminPostHandler(request, response, next) {
     }
     response.status(forbiddenStatus).json(forbiddenJSON);
 }
+export async function apiGetHandler(request, response, next) {
+    if (await apiKeyIsValid(request)) {
+        next();
+    }
+    else {
+        response.redirect(`${urlPrefix}/login`);
+    }
+}
 export function updateGetHandler(request, response, next) {
     if (userCanUpdate(request)) {
         next();
@@ -34,12 +42,4 @@ export function updatePostHandler(request, response, next) {
         return;
     }
     response.status(forbiddenStatus).json(forbiddenJSON);
-}
-export async function apiGetHandler(request, response, next) {
-    if (await apiKeyIsValid(request)) {
-        next();
-    }
-    else {
-        response.redirect(`${urlPrefix}/login`);
-    }
 }

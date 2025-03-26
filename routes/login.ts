@@ -40,7 +40,7 @@ async function postHandler(
   request: Request<
     unknown,
     unknown,
-    { userName: string; password: string; redirect: string }
+    { password: string; redirect: string; userName: string; }
   >,
   response: Response
 ): Promise<void> {
@@ -109,9 +109,9 @@ async function postHandler(
     response.redirect(redirectURL)
   } else {
     response.render('login', {
-      userName,
       message: 'Login Failed',
       redirect: redirectURL,
+      userName,
       useTestDatabases
     })
   }

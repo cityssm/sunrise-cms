@@ -1,11 +1,5 @@
-import { getUserNameFromApiKey } from './functions.api.js'
 import { getConfigProperty } from './config.helpers.js'
-
-export interface UserRequest {
-  session?: {
-    user?: User
-  }
-}
+import { getUserNameFromApiKey } from './functions.api.js'
 
 export interface APIRequest {
   params?: {
@@ -13,12 +7,10 @@ export interface APIRequest {
   }
 }
 
-export function userIsAdmin(request: UserRequest): boolean {
-  return request.session?.user?.userProperties?.isAdmin ?? false
-}
-
-export function userCanUpdate(request: UserRequest): boolean {
-  return request.session?.user?.userProperties?.canUpdate ?? false
+export interface UserRequest {
+  session?: {
+    user?: User
+  }
 }
 
 export async function apiKeyIsValid(request: APIRequest): Promise<boolean> {
@@ -37,4 +29,12 @@ export async function apiKeyIsValid(request: APIRequest): Promise<boolean> {
   return getConfigProperty('users.canLogin').some(
     (currentUserName) => userName === currentUserName.toLowerCase()
   )
+}
+
+export function userCanUpdate(request: UserRequest): boolean {
+  return request.session?.user?.userProperties?.canUpdate ?? false
+}
+
+export function userIsAdmin(request: UserRequest): boolean {
+  return request.session?.user?.userProperties?.isAdmin ?? false
 }

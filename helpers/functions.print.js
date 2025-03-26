@@ -8,8 +8,8 @@ import * as configFunctions from './config.helpers.js';
 import * as contractFunctions from './contracts.helpers.js';
 const screenPrintConfigs = {
     contract: {
-        title: "Burial Site Contract Print",
-        params: ['contractId']
+        params: ['contractId'],
+        title: "Burial Site Contract Print"
     }
 };
 export function getScreenPrintConfig(printName) {
@@ -17,21 +17,21 @@ export function getScreenPrintConfig(printName) {
 }
 const pdfPrintConfigs = {
     workOrder: {
-        title: 'Work Order Field Sheet',
-        params: ['workOrderId']
+        params: ['workOrderId'],
+        title: 'Work Order Field Sheet'
     },
     'workOrder-commentLog': {
-        title: 'Work Order Field Sheet - Comment Log',
-        params: ['workOrderId']
+        params: ['workOrderId'],
+        title: 'Work Order Field Sheet - Comment Log'
     },
     // Occupancy
     'ssm.cemetery.burialPermit': {
-        title: 'Burial Permit',
-        params: ['contractId']
+        params: ['contractId'],
+        title: 'Burial Permit'
     },
     'ssm.cemetery.contract': {
-        title: 'Contract for Purchase of Interment Rights',
-        params: ['contractId']
+        params: ['contractId'],
+        title: 'Contract for Purchase of Interment Rights'
     }
 };
 export function getPdfPrintConfig(printName) {

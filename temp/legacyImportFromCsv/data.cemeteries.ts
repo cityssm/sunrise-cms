@@ -45,16 +45,21 @@ export async function getCemeteryIdByKey(
     const cemeteryId = await addCemetery(
       {
         cemeteryName: cemeteryToCemeteryName[cemeteryKey] ?? cemeteryKey,
-        cemeteryKey,
+
         cemeteryDescription: '',
+        cemeteryKey,
+
         cemeterySvg: '',
+
         cemeteryLatitude: '',
         cemeteryLongitude: '',
+
         cemeteryAddress1: '',
         cemeteryAddress2: '',
         cemeteryCity: 'Sault Ste. Marie',
-        cemeteryProvince: 'ON',
         cemeteryPostalCode: '',
+        cemeteryProvince: 'ON',
+
         cemeteryPhoneNumber: ''
       },
       user

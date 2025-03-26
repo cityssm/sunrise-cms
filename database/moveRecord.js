@@ -1,21 +1,14 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
 import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-const recordIdColumns = new Map();
-recordIdColumns.set('FeeCategories', 'feeCategoryId');
-recordIdColumns.set('BurialSiteStatuses', 'burialSiteStatusId');
-recordIdColumns.set('BurialSiteTypes', 'burialSiteTypeId');
-recordIdColumns.set('ContractTypes', 'contractTypeId');
-recordIdColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId');
-recordIdColumns.set('WorkOrderTypes', 'workOrderTypeId');
-function getCurrentOrderNumber(recordTable, recordId, database) {
-    const currentOrderNumber = database
-        .prepare(`select orderNumber
-          from ${recordTable}
-          where ${recordIdColumns.get(recordTable)} = ?`)
-        .get(recordId).orderNumber;
-    return currentOrderNumber;
-}
+const recordIdColumns = new Map([
+    ['BurialSiteStatuses', 'burialSiteStatusId'],
+    ['BurialSiteTypes', 'burialSiteTypeId'],
+    ['ContractTypes', 'contractTypeId'],
+    ['FeeCategories', 'feeCategoryId'],
+    ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
+    ['WorkOrderTypes', 'workOrderTypeId']
+]);
 export async function moveRecordDown(recordTable, recordId) {
     const database = await acquireConnection();
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
@@ -84,4 +77,12 @@ export async function moveRecordUpToTop(recordTable, recordId) {
     database.release();
     clearCacheByTableName(recordTable);
     return true;
+}
+function getCurrentOrderNumber(recordTable, recordId, database) {
+    const currentOrderNumber = database
+        .prepare(`select orderNumber
+          from ${recordTable}
+          where ${recordIdColumns.get(recordTable)} = ?`)
+        .get(recordId).orderNumber;
+    return currentOrderNumber;
 }

@@ -6,6 +6,17 @@ const userDomain = getConfigProperty('application.userDomain')
 
 const activeDirectoryConfig = getConfigProperty('activeDirectory')
 
+export async function authenticate(
+  userName: string | undefined,
+  password: string | undefined
+): Promise<boolean> {
+  if ((userName ?? '') === '' || (password ?? '') === '') {
+    return false
+  }
+
+  return await authenticateViaActiveDirectory(userName ?? '', password ?? '')
+}
+
 async function authenticateViaActiveDirectory(
   userName: string,
   password: string
@@ -29,41 +40,30 @@ async function authenticateViaActiveDirectory(
   })
 }
 
-export async function authenticate(
-  userName: string | undefined,
-  password: string | undefined
-): Promise<boolean> {
-  if ((userName ?? '') === '' || (password ?? '') === '') {
-    return false
-  }
-
-  return await authenticateViaActiveDirectory(userName ?? '', password ?? '')
-}
-
 /* eslint-disable @cspell/spellchecker */
 
 const safeRedirects = new Set([
-  '/admin/cleanup',
-  '/admin/fees',
   '/admin/burialsitetypes',
+  '/admin/cleanup',
   '/admin/contracttypes',
+  '/admin/fees',
   '/admin/tables',
-  '/contracts',
-  '/contracts/new',
-  '/burialSites',
-  '/burialSites/new',
+  '/burialsites',
+  '/burialsites/new',
   '/cemeteries',
   '/cemeteries/new',
+  '/contracts',
+  '/contracts/new',
+  '/reports',
   '/workorders',
-  '/workorders/new',
   '/workorders/milestonecalendar',
-  '/workorders/outlook',
-  '/reports'
+  '/workorders/new',
+  '/workorders/outlook'
 ])
 
 /* eslint-enable @cspell/spellchecker */
 
-const recordUrl = /^\/(?:cemeteries|burialSites|contracts|workorders)\/\d+(?:\/edit)?$/
+const recordUrl = /^\/(?:cemeteries|burialsites|contracts|workorders)\/\d+(?:\/edit)?$/
 
 const printUrl = /^\/print\/(?:pdf|screen)\/[\d/=?A-Za-z-]+$/
 

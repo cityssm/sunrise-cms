@@ -4,6 +4,7 @@ import { acquireConnection } from './pool.js'
 
 export interface UpdateForm {
   contractTypeId: number | string
+  
   contractType: string
   isPreneed?: string
 }

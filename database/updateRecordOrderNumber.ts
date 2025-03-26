@@ -1,30 +1,31 @@
 import type { PoolConnection } from 'better-sqlite-pool'
 
 type RecordTable =
+  | 'BurialSiteStatuses'
+  | 'BurialSiteTypeFields'
+  | 'BurialSiteTypes'
+  | 'CommittalTypes'
+  | 'ContractTypeFields'
+  | 'ContractTypes'
   | 'FeeCategories'
   | 'Fees'
-  | 'BurialSiteStatuses'
-  | 'BurialSiteTypes'
-  | 'BurialSiteTypeFields'
   | 'IntermentContainerTypes'
-  | 'CommittalTypes'
-  | 'ContractTypes'
-  | 'ContractTypeFields'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
 
-const recordIdColumns = new Map<RecordTable, string>()
-recordIdColumns.set('FeeCategories', 'feeCategoryId')
-recordIdColumns.set('Fees', 'feeId')
-recordIdColumns.set('BurialSiteStatuses', 'burialSiteStatusId')
-recordIdColumns.set('BurialSiteTypes', 'burialSiteTypeId')
-recordIdColumns.set('BurialSiteTypeFields', 'burialSiteTypeFieldId')
-recordIdColumns.set('IntermentContainerTypes', 'intermentContainerTypeId')
-recordIdColumns.set('CommittalTypes', 'committalTypeId')
-recordIdColumns.set('ContractTypes', 'contractTypeId')
-recordIdColumns.set('ContractTypeFields', 'contractTypeFieldId')
-recordIdColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId')
-recordIdColumns.set('WorkOrderTypes', 'workOrderTypeId')
+const recordIdColumns = new Map<RecordTable, string>([
+  ['BurialSiteStatuses', 'burialSiteStatusId'],
+  ['BurialSiteTypeFields', 'burialSiteTypeFieldId'],
+  ['BurialSiteTypes', 'burialSiteTypeId'],
+  ['CommittalTypes', 'committalTypeId'],
+  ['ContractTypeFields', 'contractTypeFieldId'],
+  ['ContractTypes', 'contractTypeId'],
+  ['FeeCategories', 'feeCategoryId'],
+  ['Fees', 'feeId'],
+  ['IntermentContainerTypes', 'intermentContainerTypeId'],
+  ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
+  ['WorkOrderTypes', 'workOrderTypeId']
+])
 
 export function updateRecordOrderNumber(
   recordTable: RecordTable,

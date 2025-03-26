@@ -4,8 +4,8 @@ export interface UpdateForm {
     funeralHomeAddress1: string;
     funeralHomeAddress2: string;
     funeralHomeCity: string;
-    funeralHomeProvince: string;
     funeralHomePostalCode: string;
+    funeralHomeProvince: string;
     funeralHomePhoneNumber: string;
 }
 export default function updateFuneralHome(updateForm: UpdateForm, user: User): Promise<boolean>;

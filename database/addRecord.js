@@ -1,10 +1,11 @@
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
 import { acquireConnection } from './pool.js';
-const recordNameColumns = new Map();
-recordNameColumns.set('BurialSiteStatuses', 'burialSiteStatus');
-recordNameColumns.set('BurialSiteTypes', 'burialSiteType');
-recordNameColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneType');
-recordNameColumns.set('WorkOrderTypes', 'workOrderType');
+const recordNameColumns = new Map([
+    ['BurialSiteStatuses', 'burialSiteStatus'],
+    ['BurialSiteTypes', 'burialSiteType'],
+    ['WorkOrderMilestoneTypes', 'workOrderMilestoneType'],
+    ['WorkOrderTypes', 'workOrderType']
+]);
 export default async function addRecord(recordTable, recordName, orderNumber, user) {
     const database = await acquireConnection();
     const rightNowMillis = Date.now();

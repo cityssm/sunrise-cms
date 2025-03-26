@@ -8,10 +8,11 @@ import {
 import { acquireConnection } from './pool.js'
 
 export interface UpdateWorkOrderCommentForm {
-  workOrderCommentId: string | number
+  workOrderCommentId: number | string
+
+  comment: string
   commentDateString: DateString
   commentTimeString: TimeString
-  comment: string
 }
 
 export default async function updateWorkOrderComment(

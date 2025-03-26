@@ -15,6 +15,7 @@ export interface Config {
 
   users: {
     testing?: Array<`*${string}`>
+    
     canLogin?: string[]
     canUpdate?: string[]
     isAdmin?: string[]
@@ -46,17 +47,17 @@ export interface Config {
     contracts: {
       burialSiteIdIsRequired?: boolean
       contractEndDateIsRequired?: boolean
-      purchaserRelationships?: string[]
       deathAgePeriods?: string[]
       prints?: string[]
+      purchaserRelationships?: string[]
     }
 
     workOrders: {
-      workOrderNumberLength?: number
-      workOrderMilestoneDateRecentBeforeDays?: number
-      workOrderMilestoneDateRecentAfterDays?: number
       calendarEmailAddress?: string
       prints?: string[]
+      workOrderMilestoneDateRecentAfterDays?: number
+      workOrderMilestoneDateRecentBeforeDays?: number
+      workOrderNumberLength?: number
     }
 
     adminCleanup: {
@@ -95,15 +96,15 @@ interface ConfigApplication {
 }
 
 export interface ConfigNtfyStartup {
-  topic: string
   server?: string
+  topic: string
 }
 
 interface ConfigSession {
   cookieName?: string
-  secret?: string
-  maxAgeMillis?: number
   doKeepAlive?: boolean
+  maxAgeMillis?: number
+  secret?: string
 }
 
 export interface ConfigActiveDirectory {
@@ -114,7 +115,6 @@ export interface ConfigActiveDirectory {
 }
 
 export interface ConfigBurialSiteNameSegments {
-  separator?: string
   includeCemeteryKey?: boolean
   segments: Partial<
     Record<
@@ -130,4 +130,5 @@ export interface ConfigBurialSiteNameSegments {
       }
     >
   >
+  separator?: string
 }

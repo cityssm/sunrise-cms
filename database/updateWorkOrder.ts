@@ -5,9 +5,10 @@ import { acquireConnection } from './pool.js'
 export interface UpdateWorkOrderForm {
   workOrderId: string
   workOrderNumber: string
-  workOrderTypeId: string
+
   workOrderDescription: string
   workOrderOpenDateString: DateString
+  workOrderTypeId: string
 }
 
 export default async function updateWorkOrder(

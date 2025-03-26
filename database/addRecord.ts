@@ -8,11 +8,12 @@ type RecordTable =
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
 
-const recordNameColumns = new Map<RecordTable, string>()
-recordNameColumns.set('BurialSiteStatuses', 'burialSiteStatus')
-recordNameColumns.set('BurialSiteTypes', 'burialSiteType')
-recordNameColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneType')
-recordNameColumns.set('WorkOrderTypes', 'workOrderType')
+const recordNameColumns = new Map<RecordTable, string>([
+  ['BurialSiteStatuses', 'burialSiteStatus'],
+  ['BurialSiteTypes', 'burialSiteType'],
+  ['WorkOrderMilestoneTypes', 'workOrderMilestoneType'],
+  ['WorkOrderTypes', 'workOrderType']
+])
 
 export default async function addRecord(
   recordTable: RecordTable,

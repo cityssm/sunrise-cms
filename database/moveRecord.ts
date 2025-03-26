@@ -6,38 +6,21 @@ import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 type RecordTable =
-  | 'FeeCategories'
   | 'BurialSiteStatuses'
   | 'BurialSiteTypes'
   | 'ContractTypes'
+  | 'FeeCategories'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
 
-const recordIdColumns = new Map<RecordTable, string>()
-recordIdColumns.set('FeeCategories', 'feeCategoryId')
-recordIdColumns.set('BurialSiteStatuses', 'burialSiteStatusId')
-recordIdColumns.set('BurialSiteTypes', 'burialSiteTypeId')
-recordIdColumns.set('ContractTypes', 'contractTypeId')
-recordIdColumns.set('WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId')
-recordIdColumns.set('WorkOrderTypes', 'workOrderTypeId')
-
-function getCurrentOrderNumber(
-  recordTable: RecordTable,
-  recordId: number | string,
-  database: sqlite.Database
-): number {
-  const currentOrderNumber: number = (
-    database
-      .prepare(
-        `select orderNumber
-          from ${recordTable}
-          where ${recordIdColumns.get(recordTable)} = ?`
-      )
-      .get(recordId) as { orderNumber: number }
-  ).orderNumber
-
-  return currentOrderNumber
-}
+const recordIdColumns = new Map<RecordTable, string>([
+  ['BurialSiteStatuses', 'burialSiteStatusId'],
+  ['BurialSiteTypes', 'burialSiteTypeId'],
+  ['ContractTypes', 'contractTypeId'],
+  ['FeeCategories', 'feeCategoryId'],
+  ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
+  ['WorkOrderTypes', 'workOrderTypeId']
+])
 
 export async function moveRecordDown(
   recordTable: RecordTable,
@@ -186,4 +169,22 @@ export async function moveRecordUpToTop(
   clearCacheByTableName(recordTable)
 
   return true
+}
+
+function getCurrentOrderNumber(
+  recordTable: RecordTable,
+  recordId: number | string,
+  database: sqlite.Database
+): number {
+  const currentOrderNumber: number = (
+    database
+      .prepare(
+        `select orderNumber
+          from ${recordTable}
+          where ${recordIdColumns.get(recordTable)} = ?`
+      )
+      .get(recordId) as { orderNumber: number }
+  ).orderNumber
+
+  return currentOrderNumber
 }

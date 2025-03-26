@@ -4,13 +4,14 @@ import { acquireConnection } from './pool.js'
 
 export interface UpdateContractTypeFieldForm {
   contractTypeFieldId: number | string
+
   contractTypeField: string
-  isRequired: '0' | '1'
   fieldType?: string
-  minLength?: string
-  maxLength?: string
-  pattern?: string
   fieldValues: string
+  isRequired: '0' | '1'
+  maxLength?: string
+  minLength?: string
+  pattern?: string
 }
 
 export default async function updateContractTypeField(

@@ -12,8 +12,8 @@ const urlPrefix = getConfigProperty('reverseProxy.urlPrefix')
 const forbiddenStatus = 403
 
 const forbiddenJSON = {
-  success: false,
-  message: 'Forbidden'
+  message: 'Forbidden',
+  success: false
 }
 
 const forbiddenRedirectURL = `${urlPrefix}/dashboard/?error=accessDenied`
@@ -44,6 +44,18 @@ export function adminPostHandler(
   response.status(forbiddenStatus).json(forbiddenJSON)
 }
 
+export async function apiGetHandler(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> {
+  if (await apiKeyIsValid(request)) {
+    next()
+  } else {
+    response.redirect(`${urlPrefix}/login`)
+  }
+}
+
 export function updateGetHandler(
   request: Request,
   response: Response,
@@ -68,16 +80,4 @@ export function updatePostHandler(
   }
 
   response.status(forbiddenStatus).json(forbiddenJSON)
-}
-
-export async function apiGetHandler(
-  request: Request,
-  response: Response,
-  next: NextFunction
-): Promise<void> {
-  if (await apiKeyIsValid(request)) {
-    next()
-  } else {
-    response.redirect(`${urlPrefix}/login`)
-  }
 }

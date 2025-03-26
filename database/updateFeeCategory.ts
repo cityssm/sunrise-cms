@@ -2,6 +2,7 @@ import { acquireConnection } from './pool.js'
 
 export interface UpdateFeeCategoryForm {
   feeCategoryId: number | string
+  
   feeCategory: string
   isGroupedFee?: '1'
 }
