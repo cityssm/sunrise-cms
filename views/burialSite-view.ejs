@@ -143,6 +143,18 @@
   </div>
 <% } %>
 
+<%
+  let activeCount = 0
+  let pastCount = 0
+
+  for (const contract of burialSite.contracts) {
+    if (contract.contractEndDate && contract.contractEndDate < dateTimeFunctions.dateToInteger(new Date())) {
+      pastCount++
+    } else {
+      activeCount++
+    }
+  }
+%>
 <div class="panel">
   <div class="panel-heading">
     <div class="level is-mobile">
@@ -150,9 +162,31 @@
         <div class="level-item">
           <h2 class="has-text-weight-bold">Contracts</h2>
         </div>
-        <div class="level-item">
-          <span class="tag"><%= burialSite.contracts.length %></span>
-        </div>
+        <% if (activeCount > 0) { %>
+          <div class="level-item">
+            <span class="tag is-success">
+              <span class="icon is-small">
+                <i class="fas fa-play" aria-hidden="true"></i>
+              </span>
+              <span>
+                <%= activeCount %>
+                Active
+              </span>
+            </span>
+          </div>
+        <% } %>
+        <% if (pastCount > 0) { %>
+          <div class="level-item">
+            <span class="tag">
+              <span class="icon is-small">
+                <i class="fas fa-stop" aria-hidden="true"></i>
+              </span>
+              <span>
+                <%= pastCount %> Past
+              </span>
+            </span>
+          </div>
+        <% } %>
       </div>
       <% if (burialSite.contracts.length > 0) { %>
         <div class="level-right">
