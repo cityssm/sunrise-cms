@@ -76,6 +76,8 @@ export async function handler(
       format: 'letter',
       printBackground: true,
       preferCSSPageSize: true
+    }, {
+      usePackagePuppeteer: true
     })
 
     pdfCallbackFunction(Buffer.from(pdf))

@@ -65,6 +65,7 @@ export interface Config {
     }
 
     printPdf: {
+      browser?: 'chrome' | 'firefox',
       contentDisposition?: 'attachment' | 'inline'
     }
 

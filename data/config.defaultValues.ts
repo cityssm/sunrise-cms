@@ -14,11 +14,11 @@ export const configDefaultValues = {
 
   'application.applicationName': 'Sunrise CMS',
   'application.backgroundURL': '/images/cemetery-background.jpg',
-  'application.logoURL': '/images/sunrise-cms.svg',
   'application.httpPort': 9000,
+  'application.logoURL': '/images/sunrise-cms.svg',
+  'application.maximumProcesses': 4,
   'application.userDomain': '',
   'application.useTestDatabases': false,
-  'application.maximumProcesses': 4,
 
   'application.ntfyStartup': undefined as ConfigNtfyStartup | undefined,
 
@@ -37,16 +37,16 @@ export const configDefaultValues = {
   'users.testing': [] as string[],
 
   'aliases.externalReceiptNumber': 'External Receipt Number',
-  'aliases.workOrderOpenDate': 'Order Date',
   'aliases.workOrderCloseDate': 'Completion Date',
+  'aliases.workOrderOpenDate': 'Order Date',
 
   'settings.cityDefault': '',
   'settings.provinceDefault': '',
 
-  'settings.latitudeMin': -90,
   'settings.latitudeMax': 90,
-  'settings.longitudeMin': -180,
+  'settings.latitudeMin': -90,
   'settings.longitudeMax': 180,
+  'settings.longitudeMin': -180,
 
   'settings.burialSites.burialSiteNameSegments': {
     separator: '-',
@@ -66,6 +66,13 @@ export const configDefaultValues = {
 
   'settings.contracts.burialSiteIdIsRequired': true,
   'settings.contracts.contractEndDateIsRequired': false,
+  'settings.contracts.deathAgePeriods': [
+    'Years',
+    'Months',
+    'Days',
+    'Stillborn'
+  ],
+  'settings.contracts.prints': ['screen/contract'],
   'settings.contracts.purchaserRelationships': [
     'Spouse',
     'Child',
@@ -74,25 +81,19 @@ export const configDefaultValues = {
     'Friend',
     'Self'
   ],
-  'settings.contracts.deathAgePeriods': [
-    'Years',
-    'Months',
-    'Days',
-    'Stillborn'
-  ],
-  'settings.contracts.prints': ['screen/contract'],
 
   'settings.fees.taxPercentageDefault': 0,
 
   'settings.workOrders.workOrderNumberLength': 6,
 
-  'settings.workOrders.workOrderMilestoneDateRecentBeforeDays': 5,
-  'settings.workOrders.workOrderMilestoneDateRecentAfterDays': 60,
   'settings.workOrders.calendarEmailAddress': 'no-reply@127.0.0.1',
   'settings.workOrders.prints': ['pdf/workOrder', 'pdf/workOrder-commentLog'],
+  'settings.workOrders.workOrderMilestoneDateRecentAfterDays': 60,
+  'settings.workOrders.workOrderMilestoneDateRecentBeforeDays': 5,
 
   'settings.adminCleanup.recordDeleteAgeDays': 60,
 
+  'settings.printPdf.browser': 'chrome' as 'chrome' | 'firefox',
   'settings.printPdf.contentDisposition': 'attachment' as
     | 'attachment'
     | 'inline',

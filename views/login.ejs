@@ -25,68 +25,74 @@
             <img src="<%= urlPrefix + configFunctions.getConfigProperty("application.logoURL") %>" alt="" style="max-height:400px" />
           </div>
           <div class="column">
-              <h1 class="title is-3 has-text-centered">
+            <h1 class="title is-3 has-text-centered">
               <%= configFunctions.getConfigProperty("application.applicationName") %>
-              </h1>
-              <form id="form--login" method="post" action="<%= urlPrefix %>/login">
-                <input name="_csrf" type="hidden" value="<%= csrfToken %>" />
-                <input name="redirect" type="hidden" value="<%= redirect %>" />
+            </h1>
+            <form id="form--login" method="post" action="<%= urlPrefix %>/login">
+              <input name="_csrf" type="hidden" value="<%= csrfToken %>" />
+              <input name="redirect" type="hidden" value="<%= redirect %>" />
 
-                <div class="field has-addons">
-                  <div class="control">
-                    <span class="button is-static"><%= configFunctions.getConfigProperty("application.userDomain") %>\</span>
-                  </div>
-                  <div class="control is-expanded">
-                    <input class="input" id="login--userName" name="userName" type="text" placeholder="User Name" value="<%= userName %>" aria-label="User Name" autofocus required />
-                  </div>
+              <div class="field has-addons">
+                <div class="control">
+                  <span class="button is-static"><%= configFunctions.getConfigProperty("application.userDomain") %>\</span>
                 </div>
-                <div class="field">
-                  <label class="sr-only" for="login--password">Password</label>
-                  <div class="control has-icons-left has-tooltip-right" data-tooltip="Password" >
-                    <input class="input" id="login--password" name="password" type="password" placeholder="Password" required />
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-key" aria-hidden="true"></i>
-                    </span>
-                  </div>
+                <div class="control is-expanded">
+                  <input class="input" id="login--userName" name="userName" type="text" placeholder="User Name" value="<%= userName %>" aria-label="User Name" autofocus required />
                 </div>
-                <% if (useTestDatabases) { %>
-                  <div class="message is-small is-warning">
-                    <p class="message-body has-text-centered">
-                      Testing databases in use!
-                    </p>
-                  </div>
-                <% } %>
-                <div class="level is-mobile">
-                  <div class="level-left has-text-danger">
-                    <% if (message !== "") { %>
-                      <span class="icon">
-                        <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
-                      </span>
-                      <span><%= message %></span>
-                    <% } %>
-                  </div>
-                  <div class="level-right has-text-right">
-                    <button class="button is-link" type="submit">
-                      <span class="icon">
-                        <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
-                      </span>
-                      <span>Log In</span>
-                    </button>
-                  </div>
-                </div>
-              </form>
-              <hr />
-              <div class="has-text-right has-text-grey-dark is-size-7">
-                Build <%= buildNumber %><br />
-                <a class="has-text-grey-dark" href="https://cityssm.github.io/sunrise-cms/docs" target="_blank" rel="nofollow noreferrer" accesskey="h">
-                  <i class="fas fa-question-circle" aria-hidden="true"></i>
-                  Help
-                </a>
-                <a class="has-text-grey-dark ml-4" href="https://github.com/cityssm/sunrise-cms" target="_blank" rel="noreferrer">
-                  <i class="fab fa-github" aria-hidden="true"></i>
-                  GitHub
-                </a>
               </div>
+              <div class="field">
+                <label class="sr-only" for="login--password">Password</label>
+                <div class="control has-icons-left has-tooltip-right" data-tooltip="Password" >
+                  <input class="input" id="login--password" name="password" type="password" placeholder="Password" required />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-key" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+              <% if (useTestDatabases) { %>
+                <div class="message is-small is-warning">
+                  <p class="message-body has-text-centered">
+                    Testing databases in use!
+                  </p>
+                </div>
+              <% } %>
+              <div class="level is-mobile">
+                <div class="level-left has-text-danger">
+                  <% if (message !== "") { %>
+                    <span class="icon">
+                      <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                    </span>
+                    <span><%= message %></span>
+                  <% } %>
+                </div>
+                <div class="level-right has-text-right">
+                  <button class="button is-link" type="submit">
+                    <span class="icon">
+                      <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                    </span>
+                    <span>Log In</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+            <hr />
+            <p class="has-text-right has-text-grey-dark is-size-7">
+              Build <%= buildNumber %>
+            </p>
+            <p class="has-text-right has-text-grey-dark is-size-7">
+              <a class="has-text-grey-dark" href="https://cityssm.github.io/sunrise-cms/docs" target="_blank" rel="nofollow noreferrer" accesskey="h">
+                <span class="icon is-small">
+                  <i class="fas fa-question-circle" aria-hidden="true"></i>
+                </span>
+                <span>Help</span>
+              </a>
+              <a class="has-text-grey-dark ml-4" href="https://github.com/cityssm/sunrise-cms" target="_blank" rel="noreferrer">
+                <span class="icon is-small">
+                  <i class="fab fa-github" aria-hidden="true"></i>
+                </span>
+                <span>GitHub</span>
+              </a>
+            </p>
           </div>
         </div>
       </main>
@@ -97,7 +103,7 @@
   <script>
     try {
       window.localStorage.clear();
-    } catch (e) {}
+    } catch (e) { }
   </script>
 </body>
 

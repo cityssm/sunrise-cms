@@ -50,6 +50,7 @@ export interface Config {
             recordDeleteAgeDays?: number;
         };
         printPdf: {
+            browser?: 'chrome' | 'firefox';
             contentDisposition?: 'attachment' | 'inline';
         };
         dynamicsGP?: {

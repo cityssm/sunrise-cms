@@ -34,6 +34,8 @@ export async function handler(request, response, next) {
             format: 'letter',
             printBackground: true,
             preferCSSPageSize: true
+        }, {
+            usePackagePuppeteer: true
         });
         pdfCallbackFunction(Buffer.from(pdf));
     }

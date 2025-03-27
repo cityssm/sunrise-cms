@@ -44,6 +44,7 @@ config.settings.contracts.prints = [
     'pdf/ssm.cemetery.burialPermit',
     'pdf/ssm.cemetery.contract'
 ];
+config.settings.printPdf.browser = 'firefox';
 config.settings.workOrders.workOrderNumberLength = 6;
 config.settings.workOrders.workOrderMilestoneDateRecentBeforeDays = 7;
 config.settings.workOrders.workOrderMilestoneDateRecentAfterDays = 30;
