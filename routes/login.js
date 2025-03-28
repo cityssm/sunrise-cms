@@ -40,7 +40,7 @@ async function postHandler(request, response) {
     else if (userName !== '' && passwordPlain !== '') {
         isAuthenticated = await authenticate(userName, passwordPlain);
     }
-    let userObject = undefined;
+    let userObject;
     if (isAuthenticated) {
         const userNameLowerCase = userName.toLowerCase();
         const canLogin = getConfigProperty('users.canLogin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());

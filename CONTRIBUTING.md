@@ -1,4 +1,4 @@
-# Thank you for your interest in making the Lot Occupancy System better
+# Thank you for your interest in making Sunrise CMS better
 
 Together, we can build high quality software that meets the needs of municipalities,
 while remaining open and budget conscious.

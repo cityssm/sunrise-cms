@@ -17,10 +17,9 @@ export const configDefaultValues = {
   'application.httpPort': 9000,
   'application.logoURL': '/images/sunrise-cms.svg',
   'application.maximumProcesses': 4,
+  'application.ntfyStartup': undefined as ConfigNtfyStartup | undefined,
   'application.userDomain': '',
   'application.useTestDatabases': false,
-
-  'application.ntfyStartup': undefined as ConfigNtfyStartup | undefined,
 
   'reverseProxy.disableCompression': false,
   'reverseProxy.disableEtag': false,
@@ -49,15 +48,16 @@ export const configDefaultValues = {
   'settings.longitudeMin': -180,
 
   'settings.burialSites.burialSiteNameSegments': {
-    separator: '-',
     includeCemeteryKey: false,
+    separator: '-',
+
     segments: {
       1: {
-        isRequired: true,
         isAvailable: true,
+        isRequired: true,
         label: 'Plot Number',
-        minLength: 1,
-        maxLength: 20
+        maxLength: 20,
+        minLength: 1
       }
     }
   } as unknown as ConfigBurialSiteNameSegments,

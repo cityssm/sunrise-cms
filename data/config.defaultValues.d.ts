@@ -7,9 +7,9 @@ export declare const configDefaultValues: {
     'application.httpPort': number;
     'application.logoURL': string;
     'application.maximumProcesses': number;
+    'application.ntfyStartup': ConfigNtfyStartup | undefined;
     'application.userDomain': string;
     'application.useTestDatabases': boolean;
-    'application.ntfyStartup': ConfigNtfyStartup | undefined;
     'reverseProxy.disableCompression': boolean;
     'reverseProxy.disableEtag': boolean;
     'reverseProxy.urlPrefix': string;

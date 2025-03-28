@@ -72,7 +72,7 @@ async function postHandler(
     isAuthenticated = await authenticate(userName, passwordPlain)
   }
 
-  let userObject: User | undefined = undefined
+  let userObject: User | undefined
 
   if (isAuthenticated) {
     const userNameLowerCase = userName.toLowerCase()

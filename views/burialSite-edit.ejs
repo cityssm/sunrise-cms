@@ -127,8 +127,8 @@
                     name="burialSiteNameSegment<%= segmentIndexString %>"
                     value="<%= burialSite[`burialSiteNameSegment${segmentIndex}`] %>"
                     type="text"
-                    minlength="<%= Math.min(segment.minLength ?? 1, 20) %>" 
-                    maxlength="<%= Math.min(segment.maxLength ?? 20, 20) %>"
+                    minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>" 
+                    maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
                     placeholder="<%= segment.label ?? '' %>"
                     aria-label="<%= segment.label ?? '' %>"
                     <%= (segment.isRequired ?? false) ? ' required' : '' %>

@@ -7,36 +7,37 @@ export const config: Config = { ...cemeteryConfig }
 config.aliases.externalReceiptNumber = 'GP Receipt Number'
 
 config.settings.burialSites.burialSiteNameSegments = {
-  separator: '-',
   includeCemeteryKey: true,
+  separator: '-',
+  
   segments: {
     1: {
-      isRequired: false,
       isAvailable: true,
+      isRequired: false,
       label: 'Block',
-      minLength: 1,
-      maxLength: 1
+      maxLength: 1,
+      minLength: 1
     },
     2: {
-      isRequired: false,
       isAvailable: true,
+      isRequired: false,
       label: 'Range',
-      minLength: 1,
-      maxLength: 3
+      maxLength: 3,
+      minLength: 1
     },
     3: {
-      isRequired: true,
       isAvailable: true,
+      isRequired: true,
       label: 'Lot',
-      minLength: 1,
-      maxLength: 4
+      maxLength: 4,
+      minLength: 1
     },
     4: {
-      isRequired: true,
       isAvailable: true,
+      isRequired: true,
       label: 'Grave',
-      minLength: 1,
-      maxLength: 2
+      maxLength: 2,
+      minLength: 1
     }
   }
 }

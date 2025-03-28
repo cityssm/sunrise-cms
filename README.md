@@ -15,15 +15,32 @@
 
 This is a major refactoring of the now archived
 [Lot Occupancy System](https://github.com/cityssm/lot-occupancy-system),
-originally built with multiple focuses. This fork completely reworks the project
+originally built with multiple focuses in mind. This fork completely reworks the project
 to focus exculsively on cemetery management.
+
+## Why Sunrise CMS?
+
+### ✔️ Cemetery Maps are NOT Required
+
+Many cemetery applications rely on maps to drill down into burial sites.
+In Sunrise CMS, maps are completely optional, greatly reducing the effort needed to get started.
+
+### ✔️ The System Requirements are Very Low
+
+Sunrise CMS does not need an expensive server to run.
+No separate database server is required either.
+The whole application could run on a current, modest workstation.
+
+### ✔️ Sunrise CMS is Free and Open Source
+
+There's no cost to use it.
 
 ## About this Project
 
-- [Code of Conduct](CODE_OF_CONDUCT.md)
-- [Contributing Guidelines](CONTRIBUTING.md)
-- [Security Policy](SECURITY.md)
-- [MIT Licence](LICENSE.md)
+- 🤗 [Code of Conduct](CODE_OF_CONDUCT.md)
+- 🥰 [Contributing Guidelines](CONTRIBUTING.md)
+- 🛡️ [Security Policy](SECURITY.md)
+- 📃 [MIT Licence](LICENSE.md)
 
 Although the system is quite niche, it's being released in an open source environment in hopes to pool developer resources from other municipalities looking to move away from older, legacy systems.
 

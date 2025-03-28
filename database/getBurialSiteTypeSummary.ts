@@ -2,12 +2,12 @@ import type { BurialSiteType } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-interface GetFilters {
-  cemeteryId?: number | string
-}
-
 interface BurialSiteTypeSummary extends BurialSiteType {
   lotCount: number
+}
+
+interface GetFilters {
+  cemeteryId?: number | string
 }
 
 export default async function getBurialSiteTypeSummary(
