@@ -105,6 +105,8 @@ const createStatements = [
 
     cemeteryId integer,
     cemeterySvgId varchar(100),
+    burialSiteImage varchar(100) not null default '',
+
     burialSiteLatitude decimal(10, 8)
       check (burialSiteLatitude between -90 and 90),
     burialSiteLongitude decimal(11, 8)

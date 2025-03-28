@@ -19,6 +19,8 @@ export interface BurialSite extends Record {
   cemeterySvg?: string
   cemeterySvgId?: string
 
+  burialSiteImage?: string
+
   burialSiteLatitude?: number
   burialSiteLongitude?: number
 

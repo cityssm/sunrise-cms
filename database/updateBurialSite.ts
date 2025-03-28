@@ -17,6 +17,7 @@ export interface UpdateBurialSiteForm {
   burialSiteStatusId: number | string
   burialSiteTypeId: number | string
 
+  burialSiteImage: string
   cemeteryId: number | string
   cemeterySvgId: string
 
@@ -78,6 +79,7 @@ export default async function updateBurialSite(
         burialSiteStatusId = ?,
         cemeteryId = ?,
         cemeterySvgId = ?,
+        burialSiteImage = ?,
         burialSiteLatitude = ?,
         burialSiteLongitude = ?,
         recordUpdate_userName = ?,
@@ -98,6 +100,7 @@ export default async function updateBurialSite(
         : updateForm.burialSiteStatusId,
       updateForm.cemeteryId === '' ? undefined : updateForm.cemeteryId,
       updateForm.cemeterySvgId,
+      updateForm.burialSiteImage,
       updateForm.burialSiteLatitude === ''
         ? undefined
         : updateForm.burialSiteLatitude,

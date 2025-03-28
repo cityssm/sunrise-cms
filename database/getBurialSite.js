@@ -12,7 +12,7 @@ const baseSQL = `select l.burialSiteId,
   l.burialSiteName,
   l.burialSiteStatusId, s.burialSiteStatus,
   l.cemeteryId, m.cemeteryName,
-  m.cemeterySvg, l.cemeterySvgId,
+  m.cemeterySvg, l.cemeterySvgId, l.burialSiteImage,
   l.burialSiteLatitude, l.burialSiteLongitude
 
   from BurialSites l

@@ -98,19 +98,28 @@
       </div>
     </div>
   </div>
-  <% if (burialSite.cemeterySvg) { %>
-    <div class="column">
-      <div class="panel">
-        <h2 class="panel-heading">Image</h2>
-        <div class="panel-block is-block">
-          <% const imageURL = urlPrefix + "/images/cemeteries/" + burialSite.cemeterySvg %>
-          <div class="image" id="burialSite--cemeterySvg" data-cemetery-svg-id="<%= burialSite.cemeterySvgId %>">
-            <%- include('../public/images/cemeteries/' + burialSite.cemeterySvg); -%>
+
+  <div class="column">
+    <div class="panel">
+      <h2 class="panel-heading">Image</h2>
+      <div class="panel-block is-block">
+        <% if (burialSite.burialSiteImage) { %>
+          <div class="image">
+            <img src="<%= urlPrefix %>/internal/images/burialSites/<%= burialSite.burialSiteImage %>" alt="Burial Site Image" />
           </div>
-        </div>
+        <% } else if (burialSite.cemeterySvg) { %>
+          <% const imageURL = urlPrefix + "/internal/images/cemeteries/" + burialSite.cemeterySvg %>
+          <div class="image" id="burialSite--cemeterySvg" data-cemetery-svg-id="<%= burialSite.cemeterySvgId %>">
+            <%- include('../public-internal/images/cemeteries/' + burialSite.cemeterySvg); -%>
+          </div>
+        <% } else { %>
+          <div class="message is-info">
+            <p class="message-body">There are no images associated with this burial site.</p>
+          </div>
+        <% } %> 
       </div>
     </div>
-  <% } %>
+  </div>
 </div>
 
 

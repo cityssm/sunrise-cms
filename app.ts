@@ -1,5 +1,6 @@
 import path from 'node:path'
 
+import { secondsToMillis } from '@cityssm/to-millis'
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
@@ -29,7 +30,6 @@ import routerPrint from './routes/print.js'
 import routerReports from './routes/reports.js'
 import routerWorkOrders from './routes/workOrders.js'
 import { version } from './version.js'
-import { secondsToMillis } from '@cityssm/to-millis'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid}`)
 
@@ -88,6 +88,49 @@ app.use(
 )
 
 /*
+ * SESSION MANAGEMENT
+ */
+
+const sessionCookieName: string =
+  configFunctions.getConfigProperty('session.cookieName')
+
+const FileStoreSession = FileStore(session)
+
+// Initialize session
+app.use(
+  session({
+    name: sessionCookieName,
+
+    cookie: {
+      maxAge: configFunctions.getConfigProperty('session.maxAgeMillis'),
+      sameSite: 'strict'
+    },
+    secret: configFunctions.getConfigProperty('session.secret'),
+    store: new FileStoreSession({
+      logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid}`),
+      path: './data/sessions',
+      retries: 20
+    }),
+
+    resave: true,
+    rolling: true,
+    saveUninitialized: false
+  })
+)
+
+// Clear cookie if no corresponding session
+app.use((request, response, next) => {
+  if (
+    Object.hasOwn(request.cookies, sessionCookieName) &&
+    !Object.hasOwn(request.session, 'user')
+  ) {
+    response.clearCookie(sessionCookieName)
+  }
+
+  next()
+})
+
+/*
  * STATIC ROUTES
  */
 
@@ -96,6 +139,22 @@ const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix')
 if (urlPrefix !== '') {
   debug(`urlPrefix = ${urlPrefix}`)
 }
+
+app.use(
+  `${urlPrefix}/internal`,
+  (request, response, next) => {
+    if (
+      Object.hasOwn(request.session, 'user') &&
+      Object.hasOwn(request.cookies, sessionCookieName)
+    ) {
+      next()
+      return
+    }
+
+    response.sendStatus(403)
+  },
+  express.static(path.join('public-internal'))
+)
 
 app.use(urlPrefix, express.static(path.join('public')))
 
@@ -149,47 +208,8 @@ app.use(
 )
 
 /*
- * SESSION MANAGEMENT
+ * ROUTES
  */
-
-const sessionCookieName: string =
-  configFunctions.getConfigProperty('session.cookieName')
-
-const FileStoreSession = FileStore(session)
-
-// Initialize session
-app.use(
-  session({
-    name: sessionCookieName,
-
-    cookie: {
-      maxAge: configFunctions.getConfigProperty('session.maxAgeMillis'),
-      sameSite: 'strict'
-    },
-    secret: configFunctions.getConfigProperty('session.secret'),
-    store: new FileStoreSession({
-      logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid}`),
-      path: './data/sessions',
-      retries: 20
-    }),
-
-    resave: true,
-    rolling: true,
-    saveUninitialized: false
-  })
-)
-
-// Clear cookie if no corresponding session
-app.use((request, response, next) => {
-  if (
-    Object.hasOwn(request.cookies, sessionCookieName) &&
-    !Object.hasOwn(request.session, 'user')
-  ) {
-    response.clearCookie(sessionCookieName)
-  }
-
-  next()
-})
 
 // Redirect logged in users
 const sessionChecker = (
@@ -211,10 +231,6 @@ const sessionChecker = (
     `${urlPrefix}/login?redirect=${encodeURIComponent(redirectUrl)}`
   )
 }
-
-/*
- * ROUTES
- */
 
 // Make the user and config objects available to the templates
 

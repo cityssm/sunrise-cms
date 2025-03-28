@@ -113,9 +113,9 @@
           <h2 class="panel-heading">Image</h2>
           <div class="panel-block is-block">
             <% if (cemetery.cemeterySvg) { %>
-              <% const imageURL = urlPrefix + "/images/cemeteries/" + cemetery.cemeterySvg %>
-              <a class="image" href="<%= urlPrefix %>/images/cemeteries/<%= cemetery.cemeterySvg %>" target="_blank">
-                <%- include('../public/images/cemeteries/' + cemetery.cemeterySvg); -%>
+              <% const imageURL = urlPrefix + "/internal/images/cemeteries/" + cemetery.cemeterySvg %>
+              <a class="image" href="<%= urlPrefix %>/internal/images/cemeteries/<%= cemetery.cemeterySvg %>" target="_blank">
+                <%- include('../public-internal/images/cemeteries/' + cemetery.cemeterySvg); -%>
               </a>
             <% } else { %>
               <div class="message is-info">

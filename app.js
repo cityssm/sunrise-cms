@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { secondsToMillis } from '@cityssm/to-millis';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
@@ -27,7 +28,6 @@ import routerPrint from './routes/print.js';
 import routerReports from './routes/reports.js';
 import routerWorkOrders from './routes/workOrders.js';
 import { version } from './version.js';
-import { secondsToMillis } from '@cityssm/to-millis';
 const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid}`);
 /*
  * INITIALIZE APP
@@ -66,23 +66,6 @@ app.use(rateLimit({
     windowMs: secondsToMillis(10)
 }));
 /*
- * STATIC ROUTES
- */
-const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
-if (urlPrefix !== '') {
-    debug(`urlPrefix = ${urlPrefix}`);
-}
-app.use(urlPrefix, express.static(path.join('public')));
-app.use(`${urlPrefix}/lib/bulma`, express.static(path.join('node_modules', 'bulma', 'css')));
-app.use(`${urlPrefix}/lib/bulma-tooltip`, express.static(path.join('node_modules', 'bulma-tooltip', 'dist', 'css')));
-app.use(`${urlPrefix}/lib/cityssm-bulma-js/bulma-js.js`, express.static(path.join('node_modules', '@cityssm', 'bulma-js', 'dist', 'bulma-js.js')));
-app.use(`${urlPrefix}/lib/cityssm-fa-glow`, express.static(path.join('node_modules', '@cityssm', 'fa-glow')));
-app.use(`${urlPrefix}/lib/cityssm-bulma-sticky-table`, express.static(path.join('node_modules', '@cityssm', 'bulma-sticky-table')));
-app.use(`${urlPrefix}/lib/cityssm-bulma-webapp-js`, express.static(path.join('node_modules', '@cityssm', 'bulma-webapp-js', 'dist')));
-app.use(`${urlPrefix}/lib/fa`, express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free')));
-app.use(`${urlPrefix}/lib/leaflet`, express.static(path.join('node_modules', 'leaflet', 'dist')));
-app.use(`${urlPrefix}/lib/randomcolor/randomColor.js`, express.static(path.join('node_modules', 'randomcolor', 'randomColor.js')));
-/*
  * SESSION MANAGEMENT
  */
 const sessionCookieName = configFunctions.getConfigProperty('session.cookieName');
@@ -112,6 +95,34 @@ app.use((request, response, next) => {
     }
     next();
 });
+/*
+ * STATIC ROUTES
+ */
+const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
+if (urlPrefix !== '') {
+    debug(`urlPrefix = ${urlPrefix}`);
+}
+app.use(`${urlPrefix}/internal`, (request, response, next) => {
+    if (Object.hasOwn(request.session, 'user') &&
+        Object.hasOwn(request.cookies, sessionCookieName)) {
+        next();
+        return;
+    }
+    response.sendStatus(403);
+}, express.static(path.join('public-internal')));
+app.use(urlPrefix, express.static(path.join('public')));
+app.use(`${urlPrefix}/lib/bulma`, express.static(path.join('node_modules', 'bulma', 'css')));
+app.use(`${urlPrefix}/lib/bulma-tooltip`, express.static(path.join('node_modules', 'bulma-tooltip', 'dist', 'css')));
+app.use(`${urlPrefix}/lib/cityssm-bulma-js/bulma-js.js`, express.static(path.join('node_modules', '@cityssm', 'bulma-js', 'dist', 'bulma-js.js')));
+app.use(`${urlPrefix}/lib/cityssm-fa-glow`, express.static(path.join('node_modules', '@cityssm', 'fa-glow')));
+app.use(`${urlPrefix}/lib/cityssm-bulma-sticky-table`, express.static(path.join('node_modules', '@cityssm', 'bulma-sticky-table')));
+app.use(`${urlPrefix}/lib/cityssm-bulma-webapp-js`, express.static(path.join('node_modules', '@cityssm', 'bulma-webapp-js', 'dist')));
+app.use(`${urlPrefix}/lib/fa`, express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free')));
+app.use(`${urlPrefix}/lib/leaflet`, express.static(path.join('node_modules', 'leaflet', 'dist')));
+app.use(`${urlPrefix}/lib/randomcolor/randomColor.js`, express.static(path.join('node_modules', 'randomcolor', 'randomColor.js')));
+/*
+ * ROUTES
+ */
 // Redirect logged in users
 const sessionChecker = (request, response, next) => {
     if (Object.hasOwn(request.session, 'user') &&
@@ -122,9 +133,6 @@ const sessionChecker = (request, response, next) => {
     const redirectUrl = getSafeRedirectURL(request.originalUrl);
     response.redirect(`${urlPrefix}/login?redirect=${encodeURIComponent(redirectUrl)}`);
 };
-/*
- * ROUTES
- */
 // Make the user and config objects available to the templates
 app.use((request, response, next) => {
     response.locals.buildNumber = version;

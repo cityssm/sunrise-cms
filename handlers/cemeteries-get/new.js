@@ -1,5 +1,5 @@
-import { getCemeterySVGs } from '../../helpers/cemeteries.helpers.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
+import { getCemeterySVGs } from '../../helpers/images.helpers.js';
 export default async function handler(_request, response) {
     const cemetery = {
         cemeteryCity: getConfigProperty('settings.cityDefault'),
@@ -8,8 +8,8 @@ export default async function handler(_request, response) {
     const cemeterySVGs = await getCemeterySVGs();
     response.render('cemetery-edit', {
         headTitle: "Create a Cemetery",
-        isCreate: true,
         cemetery,
-        cemeterySVGs
+        cemeterySVGs,
+        isCreate: true,
     });
 }

@@ -41,6 +41,7 @@ export default async function updateBurialSite(updateForm, user) {
         burialSiteStatusId = ?,
         cemeteryId = ?,
         cemeterySvgId = ?,
+        burialSiteImage = ?,
         burialSiteLatitude = ?,
         burialSiteLongitude = ?,
         recordUpdate_userName = ?,
@@ -49,7 +50,7 @@ export default async function updateBurialSite(updateForm, user) {
         and recordDelete_timeMillis is null`)
         .run(updateForm.burialSiteNameSegment1 ?? '', updateForm.burialSiteNameSegment2 ?? '', updateForm.burialSiteNameSegment3 ?? '', updateForm.burialSiteNameSegment4 ?? '', updateForm.burialSiteNameSegment5 ?? '', burialSiteName, updateForm.burialSiteTypeId, updateForm.burialSiteStatusId === ''
         ? undefined
-        : updateForm.burialSiteStatusId, updateForm.cemeteryId === '' ? undefined : updateForm.cemeteryId, updateForm.cemeterySvgId, updateForm.burialSiteLatitude === ''
+        : updateForm.burialSiteStatusId, updateForm.cemeteryId === '' ? undefined : updateForm.cemeteryId, updateForm.cemeterySvgId, updateForm.burialSiteImage, updateForm.burialSiteLatitude === ''
         ? undefined
         : updateForm.burialSiteLatitude, updateForm.burialSiteLongitude === ''
         ? undefined

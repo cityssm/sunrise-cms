@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import { getCemeterySVGs } from '../../helpers/cemeteries.helpers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { getCemeterySVGs } from '../../helpers/images.helpers.js'
 import type { Cemetery } from '../../types/recordTypes.js'
 
 export default async function handler(
@@ -17,8 +17,9 @@ export default async function handler(
 
   response.render('cemetery-edit', {
     headTitle: "Create a Cemetery",
-    isCreate: true,
+
     cemetery,
-    cemeterySVGs
+    cemeterySVGs,
+    isCreate: true,
   })
 }

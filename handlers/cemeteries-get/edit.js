@@ -1,8 +1,8 @@
 import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js';
 import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js';
 import getCemetery from '../../database/getCemetery.js';
-import { getCemeterySVGs } from '../../helpers/cemeteries.helpers.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
+import { getCemeterySVGs } from '../../helpers/images.helpers.js';
 export default async function handler(request, response) {
     const cemetery = await getCemetery(request.params.cemeteryId);
     if (cemetery === undefined) {
@@ -18,10 +18,10 @@ export default async function handler(request, response) {
     });
     response.render('cemetery-edit', {
         headTitle: cemetery.cemeteryName,
-        isCreate: false,
         cemetery,
         cemeterySVGs,
-        burialSiteTypeSummary,
-        burialSiteStatusSummary
+        isCreate: false,
+        burialSiteStatusSummary,
+        burialSiteTypeSummary
     });
 }

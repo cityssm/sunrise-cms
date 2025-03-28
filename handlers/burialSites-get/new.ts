@@ -5,6 +5,7 @@ import {
   getBurialSiteStatuses,
   getBurialSiteTypes
 } from '../../helpers/functions.cache.js'
+import { getBurialSiteImages } from '../../helpers/images.helpers.js'
 import type { BurialSite } from '../../types/recordTypes.js'
 
 export default async function handler(
@@ -31,15 +32,19 @@ export default async function handler(
     }
   }
 
+  const burialSiteImages = await getBurialSiteImages()
   const burialSiteTypes = await getBurialSiteTypes()
   const burialSiteStatuses = await getBurialSiteStatuses()
 
   response.render('burialSite-edit', {
     headTitle: 'Create a New Burial Site',
+
     burialSite,
     isCreate: true,
-    cemeteries,
+
+    burialSiteImages,
+    burialSiteStatuses,
     burialSiteTypes,
-    burialSiteStatuses
+    cemeteries,
   })
 }

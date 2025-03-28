@@ -14,6 +14,7 @@ export interface AddBurialSiteForm {
   burialSiteStatusId: number | string
   burialSiteTypeId: number | string
 
+  burialSiteImage: string
   cemeteryId: number | string
   cemeterySvgId: string
 
@@ -77,7 +78,7 @@ export default async function addBurialSite(
         burialSiteNameSegment5,
         burialSiteName,
         burialSiteTypeId, burialSiteStatusId,
-        cemeteryId, cemeterySvgId,
+        cemeteryId, cemeterySvgId, burialSiteImage,
         burialSiteLatitude, burialSiteLongitude,
 
         recordCreate_userName, recordCreate_timeMillis,
@@ -99,6 +100,7 @@ export default async function addBurialSite(
         : burialSiteForm.burialSiteStatusId,
       burialSiteForm.cemeteryId === '' ? undefined : burialSiteForm.cemeteryId,
       burialSiteForm.cemeterySvgId,
+      burialSiteForm.burialSiteImage,
       burialSiteForm.burialSiteLatitude === ''
         ? undefined
         : burialSiteForm.burialSiteLatitude,

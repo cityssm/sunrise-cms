@@ -22,6 +22,7 @@ export default async function handler(
 
   response.render('burialSite-view', {
     headTitle: burialSite.burialSiteName,
+    
     burialSite
   })
 
