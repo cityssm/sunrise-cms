@@ -381,10 +381,10 @@ declare const exports: Record<string, unknown>
       burialSiteSelectCloseModalFunction()
     }
 
-    function selectExistingBurialSite(clickEvent: Event): void {
-      clickEvent.preventDefault()
+    function selectExistingBurialSite(selectClickEvent: Event): void {
+      selectClickEvent.preventDefault()
 
-      const selectedBurialSiteElement = clickEvent.currentTarget as HTMLElement
+      const selectedBurialSiteElement = selectClickEvent.currentTarget as HTMLElement
 
       renderSelectedBurialSiteAndClose(
         selectedBurialSiteElement.dataset.burialSiteId ?? '',

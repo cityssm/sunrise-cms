@@ -245,9 +245,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             setUnsavedChanges();
             burialSiteSelectCloseModalFunction();
         }
-        function selectExistingBurialSite(clickEvent) {
-            clickEvent.preventDefault();
-            const selectedBurialSiteElement = clickEvent.currentTarget;
+        function selectExistingBurialSite(selectClickEvent) {
+            selectClickEvent.preventDefault();
+            const selectedBurialSiteElement = selectClickEvent.currentTarget;
             renderSelectedBurialSiteAndClose(selectedBurialSiteElement.dataset.burialSiteId ?? '', selectedBurialSiteElement.dataset.burialSiteName ?? '');
         }
         function searchBurialSites() {

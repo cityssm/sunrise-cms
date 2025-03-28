@@ -782,8 +782,8 @@ declare const exports: Record<string, unknown>
       )
     }
 
-    function confirmDeleteFee(clickEvent: Event): void {
-      clickEvent.preventDefault()
+    function confirmDeleteFee(confirmDeleteFeeClickEvent: Event): void {
+      confirmDeleteFeeClickEvent.preventDefault()
 
       function doDelete(): void {
         cityssm.postJSON(
@@ -890,12 +890,12 @@ declare const exports: Record<string, unknown>
           '#feeEdit--feeCategoryId'
         ) as HTMLSelectElement
 
-        for (const feeCategory of feeCategories) {
+        for (const feeCategoryOption of feeCategories) {
           const optionElement = document.createElement('option')
-          optionElement.value = feeCategory.feeCategoryId.toString()
-          optionElement.textContent = feeCategory.feeCategory
+          optionElement.value = feeCategoryOption.feeCategoryId.toString()
+          optionElement.textContent = feeCategoryOption.feeCategory
 
-          if (feeCategory.feeCategoryId === feeCategoryId) {
+          if (feeCategoryOption.feeCategoryId === feeCategoryId) {
             optionElement.selected = true
           }
 

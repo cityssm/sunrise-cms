@@ -398,7 +398,7 @@ declare const exports: Record<string, unknown>
       ) as HTMLElement
     ).dataset.workOrderMilestoneId
 
-    function doDelete(): void {
+    function doDeleteMilestone(): void {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderMilestone`,
         {
@@ -415,7 +415,7 @@ declare const exports: Record<string, unknown>
       contextualColorName: 'warning',
       okButton: {
         text: 'Yes, Delete Milestone',
-        callbackFunction: doDelete
+        callbackFunction: doDeleteMilestone
       }
     })
   }
@@ -799,6 +799,7 @@ declare const exports: Record<string, unknown>
             conflictingMilestonePanelElement
           )
         },
+        
         onremoved() {
           bulmaJS.toggleHtmlClipped()
           ;(

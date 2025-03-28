@@ -255,7 +255,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function deleteMilestone(clickEvent) {
         clickEvent.preventDefault();
         const workOrderMilestoneId = clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId;
-        function doDelete() {
+        function doDeleteMilestone() {
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderMilestone`, {
                 workOrderMilestoneId,
                 workOrderId
@@ -267,7 +267,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             contextualColorName: 'warning',
             okButton: {
                 text: 'Yes, Delete Milestone',
-                callbackFunction: doDelete
+                callbackFunction: doDeleteMilestone
             }
         });
     }

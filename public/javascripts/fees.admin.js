@@ -492,8 +492,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         }
-        function confirmDeleteFee(clickEvent) {
-            clickEvent.preventDefault();
+        function confirmDeleteFee(confirmDeleteFeeClickEvent) {
+            confirmDeleteFeeClickEvent.preventDefault();
             function doDelete() {
                 cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteFee`, {
                     feeId
@@ -562,11 +562,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 editModalElement = modalElement;
                 modalElement.querySelector('#feeEdit--feeId').value = fee.feeId.toString();
                 const feeCategoryElement = modalElement.querySelector('#feeEdit--feeCategoryId');
-                for (const feeCategory of feeCategories) {
+                for (const feeCategoryOption of feeCategories) {
                     const optionElement = document.createElement('option');
-                    optionElement.value = feeCategory.feeCategoryId.toString();
-                    optionElement.textContent = feeCategory.feeCategory;
-                    if (feeCategory.feeCategoryId === feeCategoryId) {
+                    optionElement.value = feeCategoryOption.feeCategoryId.toString();
+                    optionElement.textContent = feeCategoryOption.feeCategory;
+                    if (feeCategoryOption.feeCategoryId === feeCategoryId) {
                         optionElement.selected = true;
                     }
                     feeCategoryElement.append(optionElement);
