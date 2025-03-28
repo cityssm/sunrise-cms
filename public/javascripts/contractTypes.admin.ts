@@ -18,14 +18,16 @@ declare const exports: Record<string, unknown>
 
 type ResponseJSON =
   | {
-      success: true
-      contractTypes: ContractType[]
-      allContractTypeFields: ContractTypeField[]
-      contractTypeFieldId?: number
+      success: false
+
+      errorMessage?: string
     }
   | {
-      success: false
-      errorMessage?: string
+      success: true
+
+      allContractTypeFields: ContractTypeField[]
+      contractTypeFieldId?: number
+      contractTypes: ContractType[]
     }
 ;(() => {
   const sunrise = exports.sunrise as Sunrise
@@ -589,6 +591,10 @@ type ResponseJSON =
     }
   }
 
+  /*
+   * Prints
+   */
+
   function openAddContractTypePrint(clickEvent: Event): void {
     const contractTypeId =
       (
@@ -757,7 +763,7 @@ type ResponseJSON =
               ${cityssm.escapeHTML(printTitle || printEJS)}
             </div>
           </div>
-          <div class="level-right">
+          <div class="level-right is-hidden-print">
             <div class="level-item">
               ${sunrise.getMoveUpDownButtonFieldHTML(
                 'button--moveContractTypePrintUp',
@@ -791,6 +797,10 @@ type ResponseJSON =
     }
   }
 
+  /*
+   * Both
+   */
+
   function renderContractTypes(): void {
     contractTypesContainerElement.innerHTML = `<div class="panel container--contractType" id="container--allContractTypeFields" data-contract-type-id="">
       <div class="panel-heading">
@@ -800,7 +810,7 @@ type ResponseJSON =
               <h2 class="title is-4 has-text-white">(All Contract Types)</h2>
             </div>
           </div>
-          <div class="level-right">
+          <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-success is-small button--addContractTypeField" type="button">
                 <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
@@ -880,7 +890,7 @@ type ResponseJSON =
                 : ''
             }
           </div>
-          <div class="level-right">
+          <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-danger is-small button--deleteContractType" type="button">
                 <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
@@ -962,7 +972,7 @@ type ResponseJSON =
               <h2 class="title is-4 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
             </div>
           </div>
-          <div class="level-right">
+          <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-success is-small button--addContractTypePrint" type="button">
                 <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>

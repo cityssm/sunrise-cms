@@ -107,6 +107,7 @@ declare const exports: Record<string, unknown>
             .querySelector('form')
             ?.addEventListener('submit', doCreate)
         },
+        
         onremoved() {
           bulmaJS.toggleHtmlClipped()
           ;(

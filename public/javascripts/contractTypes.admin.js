@@ -315,6 +315,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         }
     }
+    /*
+     * Prints
+     */
     function openAddContractTypePrint(clickEvent) {
         const contractTypeId = clickEvent.currentTarget.closest('.container--contractTypePrintList').dataset.contractTypeId ?? '';
         let closeAddModalFunction;
@@ -412,7 +415,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               ${cityssm.escapeHTML(printTitle || printEJS)}
             </div>
           </div>
-          <div class="level-right">
+          <div class="level-right is-hidden-print">
             <div class="level-item">
               ${sunrise.getMoveUpDownButtonFieldHTML('button--moveContractTypePrintUp', 'button--moveContractTypePrintDown')}
             </div>
@@ -432,6 +435,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         }
     }
+    /*
+     * Both
+     */
     function renderContractTypes() {
         contractTypesContainerElement.innerHTML = `<div class="panel container--contractType" id="container--allContractTypeFields" data-contract-type-id="">
       <div class="panel-heading">
@@ -441,7 +447,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               <h2 class="title is-4 has-text-white">(All Contract Types)</h2>
             </div>
           </div>
-          <div class="level-right">
+          <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-success is-small button--addContractTypeField" type="button">
                 <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
@@ -494,7 +500,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     </div>`
                 : ''}
           </div>
-          <div class="level-right">
+          <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-danger is-small button--deleteContractType" type="button">
                 <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
@@ -550,7 +556,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               <h2 class="title is-4 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
             </div>
           </div>
-          <div class="level-right">
+          <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-success is-small button--addContractTypePrint" type="button">
                 <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>

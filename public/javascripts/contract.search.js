@@ -76,7 +76,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </span>`;
             }
             // eslint-disable-next-line no-unsanitized/method
-            resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
+            resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr class="avoid-page-break">
           <td class="has-width-1">
             ${contractTimeHTML}
           </td><td>
@@ -105,7 +105,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : `<ul class="fa-ul ml-5">${contactsHTML}</ul>`}
           </td><td>
             ${feeIconHTML}
-          </td><td>
+          </td><td class="is-hidden-print">
             ${contract.printEJS
                 ? `<a class="button is-small" data-tooltip="Print"
                     href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}" target="_blank">
@@ -122,7 +122,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
       <th>End Date</th>
       <th>Contacts</th>
       <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
-      <th class="has-width-1"><span class="is-sr-only">Print</span></th>
+      <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Print</span></th>
       </tr></thead>
       <table>`;
         searchResultsContainerElement

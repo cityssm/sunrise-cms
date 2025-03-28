@@ -133,7 +133,7 @@ declare const exports: Record<string, unknown>
       // eslint-disable-next-line no-unsanitized/method
       resultsTbodyElement.insertAdjacentHTML(
         'beforeend',
-        `<tr>
+        `<tr class="avoid-page-break">
           <td class="has-width-1">
             ${contractTimeHTML}
           </td><td>
@@ -168,7 +168,7 @@ declare const exports: Record<string, unknown>
             }
           </td><td>
             ${feeIconHTML}
-          </td><td>
+          </td><td class="is-hidden-print">
             ${
               contract.printEJS
                 ? `<a class="button is-small" data-tooltip="Print"
@@ -189,7 +189,7 @@ declare const exports: Record<string, unknown>
       <th>End Date</th>
       <th>Contacts</th>
       <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
-      <th class="has-width-1"><span class="is-sr-only">Print</span></th>
+      <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Print</span></th>
       </tr></thead>
       <table>`
 

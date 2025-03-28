@@ -187,3 +187,23 @@ span.button.is-static {
 .image svg text {
   user-select: none;
 }
+
+/*
+ * Print
+ */
+
+@media print {
+  .is-hidden-print,
+  .navbar.is-fixed-top,
+  .breadcrumb {
+    display: none !important;
+  }
+
+  html.has-navbar-fixed-top {
+    padding-top: 0 !important;
+  }
+}
+
+.avoid-page-break {
+  page-break-inside: avoid;
+}

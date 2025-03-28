@@ -29,12 +29,14 @@ declare const exports: Record<string, unknown>
 
   type ResponseJSON =
     | {
-        success: true
-        feeCategories: FeeCategory[]
+        success: false
+
+        errorMessage?: string
       }
     | {
-        success: false
-        errorMessage?: string
+        success: true
+
+        feeCategories: FeeCategory[]
       }
 
   function getFeeCategory(feeCategoryId: number): FeeCategory {
@@ -80,7 +82,7 @@ declare const exports: Record<string, unknown>
                 : ''
             }
           </div>
-          <div class="column is-narrow">
+          <div class="column is-narrow is-hidden-print">
             <div class="field is-grouped is-justify-content-end">
             ${
               feeCategory.fees.length === 0
@@ -156,11 +158,9 @@ declare const exports: Record<string, unknown>
             <p>
               <a class="has-text-weight-bold a--editFee" href="#">${cityssm.escapeHTML(fee.feeName ?? '')}</a><br />
               <small>
-              ${
-                cityssm
-                  .escapeHTML(fee.feeDescription ?? '')
-                  .replaceAll('\n', '<br />')
-              }
+              ${cityssm
+                .escapeHTML(fee.feeDescription ?? '')
+                .replaceAll('\n', '<br />')}
               </small>
             </p>
             ${
@@ -225,7 +225,7 @@ declare const exports: Record<string, unknown>
               </div>
             </div>
           </div>
-          <div class="column is-narrow">
+          <div class="column is-narrow is-hidden-print">
             ${sunrise.getMoveUpDownButtonFieldHTML(
               'button--moveFeeUp',
               'button--moveFeeDown'

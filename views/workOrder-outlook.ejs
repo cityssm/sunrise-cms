@@ -1,89 +1,89 @@
 <%- include('_header'); -%>
 
 <div class="columns is-mobile">
-    <div class="column is-2-desktop is-narrow-touch">
-      <%- include('_menu-workOrders'); -%>
-    </div>
-    <div class="column">
-        <nav class="breadcrumb">
-            <ul>
-                <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-                <li>
-                    <a href="<%= urlPrefix %>/workOrders">
-                        <span class="icon is-small"><i class="fas fa-hard-hat" aria-hidden="true"></i></span>
-                        <span>Work Orders</span>
-                    </a>
-                </li>
-                <li class="is-active">
-                    <a href="#" aria-current="page">
-                        Outlook Integration
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <h1 class="title is-1">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('_menu-workOrders'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li>
+          <a href="<%= urlPrefix %>/workOrders">
+            <span class="icon is-small"><i class="fas fa-hard-hat" aria-hidden="true"></i></span>
+            <span>Work Orders</span>
+          </a>
+        </li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
             Outlook Integration
-        </h1>
+          </a>
+        </li>
+      </ul>
+    </nav>
 
-        <div class="panel" id="panel--icsFilters">
-            <h2 class="panel-heading">Work Order Milestone Calendar (ICS)</h2>
-            <div class="panel-block is-block">
-                <div class="message is-info">
-                    <p class="message-body">
-                        Recent milestones can be exported in the iCalendar format.
-                        They can then imported into Outlook as Internet calendars that can be regularly refreshed.
-                    </p>
-                </div>
-                <div class="columns">
-                    <div class="column">
-                        <label class="label" for="icsFilters--workOrderTypeIds">Work Order Types</label>
-                        <label class="checkbox is-block">
-                            <input id="icsFilters--workOrderTypeIds-all" type="checkbox" checked />
-                            All Work Order Types
-                        </label>
-                        <div class="control mt-2">
-                            <div class="select is-multiple is-fullwidth">
-                                <select id="icsFilters--workOrderTypeIds" multiple size="<%= Math.min(Math.max(workOrderTypes.length, workOrderMilestoneTypes.length), 6) %>" disabled>
-                                    <% for (const workOrderType of workOrderTypes) { %>
-                                        <option value="<%= workOrderType.workOrderTypeId %>" selected>
-                                            <%= workOrderType.workOrderType %>
-                                        </option>
-                                    <% } %>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <label class="label" for="icsFilters--workOrderMilestoneTypeIds">Milestone Types</label>
-                        <label class="checkbox is-block">
-                            <input id="icsFilters--workOrderMilestoneTypeIds-all" type="checkbox" checked />
-                            All Work Order Milestone Types
-                        </label>
-                        <div class="control mt-2">
-                            <div class="select is-multiple is-fullwidth">
-                                <select id="icsFilters--workOrderMilestoneTypeIds" multiple size="<%= Math.min(Math.max(workOrderTypes.length, workOrderMilestoneTypes.length), 6) %>" disabled>
-                                    <% for (const workOrderMilestoneType of workOrderMilestoneTypes) { %>
-                                        <option value="<%= workOrderMilestoneType.workOrderMilestoneTypeId %>" selected>
-                                            <%= workOrderMilestoneType.workOrderMilestoneType %>
-                                        </option>
-                                    <% } %>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <h1 class="title is-1">
+      Outlook Integration
+    </h1>
+
+    <div class="panel" id="panel--icsFilters">
+        <h2 class="panel-heading">Work Order Milestone Calendar (ICS)</h2>
+        <div class="panel-block is-block">
+            <div class="message is-info">
+                <p class="message-body">
+                    Recent milestones can be exported in the iCalendar format.
+                    They can then imported into Outlook as Internet calendars that can be regularly refreshed.
+                </p>
             </div>
-            <div class="panel-block is-block">
-                <div class="field">
-                    <label class="label" for="icsFilters--calendarURL">ICS Calendar Link</label>
-                    <div class="control">
-                        <textarea class="textarea" id="icsFilters--calendarURL" name="calendarURL" style="cursor:text" readonly></textarea>
+            <div class="columns">
+                <div class="column">
+                    <label class="label" for="icsFilters--workOrderTypeIds">Work Order Types</label>
+                    <label class="checkbox is-block">
+                        <input id="icsFilters--workOrderTypeIds-all" type="checkbox" checked />
+                        All Work Order Types
+                    </label>
+                    <div class="control mt-2">
+                        <div class="select is-multiple is-fullwidth">
+                            <select id="icsFilters--workOrderTypeIds" multiple size="<%= Math.min(Math.max(workOrderTypes.length, workOrderMilestoneTypes.length), 6) %>" disabled>
+                                <% for (const workOrderType of workOrderTypes) { %>
+                                    <option value="<%= workOrderType.workOrderTypeId %>" selected>
+                                        <%= workOrderType.workOrderType %>
+                                    </option>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <label class="label" for="icsFilters--workOrderMilestoneTypeIds">Milestone Types</label>
+                    <label class="checkbox is-block">
+                        <input id="icsFilters--workOrderMilestoneTypeIds-all" type="checkbox" checked />
+                        All Work Order Milestone Types
+                    </label>
+                    <div class="control mt-2">
+                        <div class="select is-multiple is-fullwidth">
+                            <select id="icsFilters--workOrderMilestoneTypeIds" multiple size="<%= Math.min(Math.max(workOrderTypes.length, workOrderMilestoneTypes.length), 6) %>" disabled>
+                                <% for (const workOrderMilestoneType of workOrderMilestoneTypes) { %>
+                                    <option value="<%= workOrderMilestoneType.workOrderMilestoneTypeId %>" selected>
+                                        <%= workOrderMilestoneType.workOrderMilestoneType %>
+                                    </option>
+                                <% } %>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="panel-block is-block">
+            <div class="field">
+                <label class="label" for="icsFilters--calendarURL">ICS Calendar Link</label>
+                <div class="control">
+                    <textarea class="textarea" id="icsFilters--calendarURL" name="calendarURL" style="cursor:text" readonly></textarea>
+                </div>
+            </div>
+        </div>
     </div>
+  </div>
 </div>
 
 <%- include('_footerA'); -%>

@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ? '<span class="tag">Grouped Fee</span>'
                 : ''}
           </div>
-          <div class="column is-narrow">
+          <div class="column is-narrow is-hidden-print">
             <div class="field is-grouped is-justify-content-end">
             ${feeCategory.fees.length === 0
                 ? `<div class="control">
@@ -151,7 +151,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </div>
             </div>
           </div>
-          <div class="column is-narrow">
+          <div class="column is-narrow is-hidden-print">
             ${sunrise.getMoveUpDownButtonFieldHTML('button--moveFeeUp', 'button--moveFeeDown')}
           </div>
         </div>`;

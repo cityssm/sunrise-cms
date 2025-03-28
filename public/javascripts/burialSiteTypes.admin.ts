@@ -18,13 +18,15 @@ declare const exports: Record<string, unknown>
 
 type ResponseJSON =
   | {
-      success: true
-      burialSiteTypes: BurialSiteType[]
-      burialSiteTypeFieldId?: number
+      success: false
+
+      errorMessage?: string
     }
   | {
-      success: false
-      errorMessage?: string
+      success: true
+
+      burialSiteTypeFieldId?: number
+      burialSiteTypes: BurialSiteType[]
     }
 ;(() => {
   const sunrise = exports.sunrise as Sunrise
@@ -176,6 +178,7 @@ type ResponseJSON =
 
         bulmaJS.toggleHtmlClipped()
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
@@ -241,6 +244,7 @@ type ResponseJSON =
 
         bulmaJS.toggleHtmlClipped()
       },
+      
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
@@ -440,6 +444,7 @@ type ResponseJSON =
           .querySelector('#button--deleteBurialSiteTypeField')
           ?.addEventListener('click', confirmDoDelete)
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
         cityssm.disableNavBlocker()
@@ -529,7 +534,7 @@ type ResponseJSON =
               </a>
             </div>
           </div>
-          <div class="level-right">
+          <div class="level-right is-hidden-print">
             <div class="level-item">
               ${sunrise.getMoveUpDownButtonFieldHTML(
                 'button--moveBurialSiteTypeFieldUp',
@@ -598,7 +603,7 @@ type ResponseJSON =
               <h2 class="title is-4 has-text-white">${cityssm.escapeHTML(burialSiteType.burialSiteType)}</h2>
             </div>
           </div>
-          <div class="level-right">
+          <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-danger is-small button--deleteBurialSiteType" type="button">
                 <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>

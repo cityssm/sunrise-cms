@@ -286,7 +286,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </a>
             </div>
           </div>
-          <div class="level-right">
+          <div class="level-right is-hidden-print">
             <div class="level-item">
               ${sunrise.getMoveUpDownButtonFieldHTML('button--moveBurialSiteTypeFieldUp', 
                 // eslint-disable-next-line no-secrets/no-secrets
@@ -331,7 +331,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               <h2 class="title is-4 has-text-white">${cityssm.escapeHTML(burialSiteType.burialSiteType)}</h2>
             </div>
           </div>
-          <div class="level-right">
+          <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-danger is-small button--deleteBurialSiteType" type="button">
                 <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>

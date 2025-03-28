@@ -77,12 +77,22 @@ declare const exports: Record<string, unknown>
             ${cityssm.escapeHTML(interment.deceasedName ?? '')}
             </li>`
         }
+
+        if (contract.funeralHomeName !== null) {
+          relatedHTML += `<li class="has-tooltip-left"
+            data-tooltip="Funeral Home">
+            <span class="fa-li">
+              <i class="fas fa-fw fa-church"></i>
+            </span>
+            ${cityssm.escapeHTML(contract.funeralHomeName)}
+            </li>`
+        }
       }
 
       // eslint-disable-next-line no-unsanitized/method
       resultsTbodyElement.insertAdjacentHTML(
         'beforeend',
-        `<tr>
+        `<tr class="avoid-page-break">
           <td>
             <a class="has-text-weight-bold" href="${sunrise.getWorkOrderURL(workOrder.workOrderId)}">
               ${
