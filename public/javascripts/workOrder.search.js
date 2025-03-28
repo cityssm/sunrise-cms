@@ -45,7 +45,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     relatedHTML += `<li class="has-tooltip-left"
             data-tooltip="Funeral Home">
             <span class="fa-li">
-              <i class="fas fa-fw fa-church"></i>
+              <i class="fas fa-fw fa-place-of-worship"></i>
             </span>
             ${cityssm.escapeHTML(contract.funeralHomeName)}
             </li>`;

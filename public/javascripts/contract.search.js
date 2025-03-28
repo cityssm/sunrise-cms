@@ -57,7 +57,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 contract.funeralHomeName !== '') {
                 contactsHTML += `<li class="has-tooltip-left has-text-grey"
           data-tooltip="Funeral Home">
-          <span class="fa-li"><i class="fas fa-church"></i></span>
+          <span class="fa-li"><i class="fas fa-place-of-worship"></i></span>
           ${cityssm.escapeHTML(contract.funeralHomeName)}
           </li>`;
             }
