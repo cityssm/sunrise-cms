@@ -5,7 +5,7 @@
 [![sunrise-cms](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/26a4bi&style=flat&logo=cypress)](https://cloud.cypress.io/projects/26a4bi/runs)
 [![Coverage Testing](https://github.com/cityssm/sunrise-cms/actions/workflows/coverage.yml/badge.svg)](https://github.com/cityssm/sunrise-cms/actions/workflows/coverage.yml)
 
-![Sunrise CMS Logo](./public/images/sunrise-cms.png)
+![Sunrise CMS](./docs/socialPreview.png)
 
 🚧 **In development** 🚧
 
