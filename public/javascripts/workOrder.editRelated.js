@@ -171,7 +171,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : `<ul class="fa-ul ml-5">${intermentsHTML}</ul>`}
         </td><td>
           <button class="button is-small is-light is-danger button--deleteContract" data-tooltip="Delete Relationship" type="button">
-            <i class="fas fa-trash" aria-hidden="true"></i>
+            <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
           </button>
         </td>`);
             rowElement
@@ -317,12 +317,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
           ${burialSite.burialSiteStatusId
                 ? cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
                 : '<span class="has-text-grey">(No Status)</span>'}
-        </td><td class="is-nowrap">
+        </td><td class="has-text-right is-nowrap">
           <button class="button is-small is-light is-info button--editBurialSiteStatus" data-tooltip="Update Status" type="button">
-          <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+            <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
           </button>
           <button class="button is-small is-light is-danger button--deleteBurialSite" data-tooltip="Delete Relationship" type="button">
-          <i class="fas fa-trash" aria-hidden="true"></i>
+            <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
           </button>
         </td>`;
             rowElement
@@ -350,13 +350,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     document
         .querySelector('#button--addContract')
-        ?.addEventListener('click', () => {
+        ?.addEventListener('click', (addClickEvent) => {
+        addClickEvent.preventDefault();
         let searchFormElement;
         let searchResultsContainerElement;
         function doSearch(event) {
-            if (event) {
-                event.preventDefault();
-            }
+            event?.preventDefault();
             // eslint-disable-next-line no-unsanitized/property
             searchResultsContainerElement.innerHTML =
                 sunrise.getLoadingParagraphHTML('Searching...');
@@ -459,13 +458,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     document
         .querySelector('#button--addBurialSite')
-        ?.addEventListener('click', () => {
+        ?.addEventListener('click', (addClickEvent) => {
+        addClickEvent.preventDefault();
         let searchFormElement;
         let searchResultsContainerElement;
         function doSearch(event) {
-            if (event) {
-                event.preventDefault();
-            }
+            event?.preventDefault();
             // eslint-disable-next-line no-unsanitized/property
             searchResultsContainerElement.innerHTML =
                 sunrise.getLoadingParagraphHTML('Searching...');
@@ -490,7 +488,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 for (const burialSite of responseJSON.burialSites) {
                     const rowElement = document.createElement('tr');
                     rowElement.className = 'container--burialSite';
-                    rowElement.dataset.burialSiteId = burialSite.burialSiteId.toString();
+                    rowElement.dataset.burialSiteId =
+                        burialSite.burialSiteId.toString();
                     rowElement.innerHTML = `<td class="has-text-centered">
                   <button class="button is-small is-success button--addBurialSite" data-tooltip="Add" type="button" aria-label="Add">
                     <i class="fas fa-plus" aria-hidden="true"></i>

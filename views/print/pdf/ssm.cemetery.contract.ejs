@@ -2,463 +2,463 @@
   <head>
     <title><%= headTitle %></title>
     <style>
-        <%- include('style.css'); %>
+      <%- include('style.css'); %>
 
-        body {
-          margin: 0 50px;
-        }
+      body {
+        margin: 0 50px;
+      }
 
-        @page {
-          margin: 50px 0;
-        }
+      @page {
+        margin: 50px 0;
+      }
 
-        .termsList {
-          counter-reset: list;
-        }
+      .termsList {
+        counter-reset: list;
+      }
 
-        .termsList > li {
-          list-style: none;
-          position: relative;
-          padding-bottom: 10px;
-        }
+      .termsList > li {
+        list-style: none;
+        position: relative;
+        padding-bottom: 10px;
+      }
 
-        .termsList > li::before {
-          content: "(" counter(list, lower-alpha) ")";
-          counter-increment: list;
-          position: absolute;
-          left: -1.8em;
-        }
+      .termsList > li::before {
+        content: "(" counter(list, lower-alpha) ")";
+        counter-increment: list;
+        position: absolute;
+        left: -1.8em;
+      }
 
-        .confirmList > li {
-          list-style: none;
-          position: relative;
-          padding-bottom: 10px;
-        }
+      .confirmList > li {
+        list-style: none;
+        position: relative;
+        padding-bottom: 10px;
+      }
 
-        .confirmList > li::before {
-          content: "";
-          position: absolute;
-          border: 2px solid black;
-          width: 0.8em;
-          height: 0.8em;
-          left: -1.4em;
-          top: -0.1em;
-          font-size: 15pt;
-        }
+      .confirmList > li::before {
+        content: "";
+        position: absolute;
+        border: 2px solid black;
+        width: 0.8em;
+        height: 0.8em;
+        left: -1.4em;
+        top: -0.1em;
+        font-size: 15pt;
+      }
     </style>
   </head>
   <body class="is-10pt">
-      <h1 class="is-12pt has-text-centered is-capitalized">
-        Contract for the Purchase of Interment Rights or<br />
-        Cemetery Services
-      </h1>
-      <p class="has-text-centered">
-        in
-        <span class="field" style="width:300px">
-          <%= contract.cemeteryName %>
-        </span>
-        cemetery<br />
-        <span class="is-capitalized">operated by</span><br />
-        The Corporation of the City of Sault Ste. Marie, 99 Foster Drive<br />
-        Sault Ste. Marie Ontario &nbsp; P6A 5X6
-      </p>
-      <p>
-        Contract No.
-        <span class="field">
-          <%= contract.contractId %>
-        </span>
-      </p>
-      <p>
-        Date of Purchase
-        <span class="field">
-          <%= contract.contractStartDateString %>
-        </span>
-      </p>
-      <table class="layout-table is-10pt" style="table-layout:fixed">
-          <tbody>
+    <h1 class="is-12pt has-text-centered is-capitalized">
+      Contract for the Purchase of Interment Rights or<br />
+      Cemetery Services
+    </h1>
+    <p class="has-text-centered">
+      in
+      <span class="field" style="width:300px">
+        <%= contract.cemeteryName %>
+      </span>
+      cemetery<br />
+      <span class="is-capitalized">operated by</span><br />
+      The Corporation of the City of Sault Ste. Marie, 99 Foster Drive<br />
+      Sault Ste. Marie Ontario &nbsp; P6A 5X6
+    </p>
+    <p>
+      Contract No.
+      <span class="field">
+        <%= contract.contractId %>
+      </span>
+    </p>
+    <p>
+      Date of Purchase
+      <span class="field">
+        <%= contract.contractStartDateString %>
+      </span>
+    </p>
+    <table class="layout-table is-10pt" style="table-layout:fixed">
+      <tbody>
+        <tr>
+          <td>
+            <h2 class="is-10pt">Purchaser</h2>
+            <table class="is-10pt layout-table">
+              <tbody>
+                <tr>
+                  <th class="has-text-left">Name:</th>
+                  <td class="has-border-bottom">
+                    <%= contract.purchaserName %>
+                  </td>
+                </tr><tr>
+                  <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
+                  <td class="has-border-bottom"><%= contract.purchaserAddress1 %>&nbsp;</td>
+                </tr><tr>
+                  <td class="has-border-bottom"><%= contract.purchaserAddress2 %>&nbsp;</td>
+                </tr><tr>
+                  <th class="has-text-left">City:</th>
+                  <td class="has-border-bottom"><%= contract.purchaserCity %>&nbsp;</td>
+                </tr><tr>
+                  <th class="has-text-left">Province:</th>
+                  <td class="has-border-bottom"><%= contract.purchaserProvince %>&nbsp;</td>
+                </tr><tr>
+                  <th class="has-text-left has-text-nowrap">Postal Code:</th>
+                  <td class="has-border-bottom" style="width:100%"><%= contract.purchaserPostalCode %>&nbsp;</td>
+                </tr><tr>
+                  <th class="has-text-left">Telephone:</th>
+                  <td class="has-border-bottom"><%= contract.purchaserPhoneNumber %>&nbsp;</td>
+                </tr><tr>
+                  <th class="has-text-left">E-mail:</th>
+                  <td class="has-border-bottom"><%= contract.purchaserEmail %>&nbsp;</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+          <td>
+            <h2 class="is-10pt">Recipient</h2>
+            <%
+              const recipient = contract.contractInterments[0]
+            %>
+            <table class="is-10pt layout-table">
+              <tbody>
+                <tr>
+                  <th class="has-text-left">Name:</th>
+                  <td class="has-border-bottom">
+                    <%= recipient ? recipient.deceasedName : "" %>
+                  </td>
+                </tr><tr>
+                  <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
+                  <td class="has-border-bottom"><%= recipient ? recipient.deceasedAddress1 : "" %>&nbsp;</td>
+                </tr><tr>
+                  <td class="has-border-bottom"><%= recipient ? recipient.deceasedAddress2 : "" %>&nbsp;</td>
+                </tr><tr>
+                  <th class="has-text-left">City:</th>
+                  <td class="has-border-bottom"><%= recipient ? recipient.deceasedCity : "" %>&nbsp;</td>
+                </tr><tr>
+                  <th class="has-text-left">Province:</th>
+                  <td class="has-border-bottom"><%= recipient ? recipient.deceasedProvince : "" %>&nbsp;</td>
+                </tr><tr>
+                  <th class="has-text-left">Postal Code:</th>
+                  <td class="has-border-bottom"><%= recipient ? recipient.deceasedPostalCode : "" %>&nbsp;</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Purchaser's relationship to Recipient:
+      <span class="field" style="width:550px">
+        <%= contract.purchaserRelationship %>
+        &nbsp;
+      </span>
+    </p>
+    <p>
+      This Contract for Purchase of Interment Rights or Cemetery Services
+      is between the Purchaser and The Corporation of the City of Sault Ste. Marie (Corporation)
+      concerning interment rights or cemetery services for the Recipient(s)
+      as identified in this Contract.
+    </p>
+    <p>
+      The Purchaser (if different than the Recipient)
+      represents being legally authorized or charged with the responsibility for
+      the Recipient's interment rights and prepaid cemetery services 
+      specified in this Contract. This Contract will be enforceable to
+      the benefit of and be binding upon the parties hereto 
+      and their respective heirs, executors, administrators, successors, and assigns.
+    </p>
+    <table class="layout-table" style="table-layout:fixed">
+      <tr>
+        <td>
+          <h2 class="is-10pt is-capitalized">Details</h2>
+          <table class="is-10pt data-table">
             <tr>
-              <td>
-                <h2 class="is-10pt">Purchaser</h2>
-                <table class="is-10pt layout-table">
-                  <tbody>
-                    <tr>
-                      <th class="has-text-left">Name:</th>
-                      <td class="has-border-bottom">
-                        <%= contract.purchaserName %>
-                      </td>
-                    </tr><tr>
-                      <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
-                      <td class="has-border-bottom"><%= contract.purchaserAddress1 %>&nbsp;</td>
-                    </tr><tr>
-                      <td class="has-border-bottom"><%= contract.purchaserAddress2 %>&nbsp;</td>
-                    </tr><tr>
-                      <th class="has-text-left">City:</th>
-                      <td class="has-border-bottom"><%= contract.purchaserCity %>&nbsp;</td>
-                    </tr><tr>
-                      <th class="has-text-left">Province:</th>
-                      <td class="has-border-bottom"><%= contract.purchaserProvince %>&nbsp;</td>
-                    </tr><tr>
-                      <th class="has-text-left has-text-nowrap">Postal Code:</th>
-                      <td class="has-border-bottom" style="width:100%"><%= contract.purchaserPostalCode %>&nbsp;</td>
-                    </tr><tr>
-                      <th class="has-text-left">Telephone:</th>
-                      <td class="has-border-bottom"><%= contract.purchaserPhoneNumber %>&nbsp;</td>
-                    </tr><tr>
-                      <th class="has-text-left">E-mail:</th>
-                      <td class="has-border-bottom"><%= contract.purchaserEmail %>&nbsp;</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-              <td>
-                <h2 class="is-10pt">Recipient</h2>
-                <%
-                  const recipient = contract.contractInterments[0]
-                %>
-                <table class="is-10pt layout-table">
-                  <tbody>
-                    <tr>
-                        <th class="has-text-left">Name:</th>
-                        <td class="has-border-bottom">
-                          <%= recipient ? recipient.deceasedName : "" %>
-                        </td>
-                    </tr><tr>
-                        <th class="has-text-left" rowspan="2" style="vertical-align:top">Address:</th>
-                        <td class="has-border-bottom"><%= recipient ? recipient.deceasedAddress1 : "" %>&nbsp;</td>
-                    </tr><tr>
-                        <td class="has-border-bottom"><%= recipient ? recipient.deceasedAddress2 : "" %>&nbsp;</td>
-                    </tr><tr>
-                        <th class="has-text-left">City:</th>
-                        <td class="has-border-bottom"><%= recipient ? recipient.deceasedCity : "" %>&nbsp;</td>
-                    </tr><tr>
-                        <th class="has-text-left">Province:</th>
-                        <td class="has-border-bottom"><%= recipient ? recipient.deceasedProvince : "" %>&nbsp;</td>
-                    </tr><tr>
-                        <th class="has-text-left">Postal Code:</th>
-                        <td class="has-border-bottom"><%= recipient ? recipient.deceasedPostalCode : "" %>&nbsp;</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
+              <td>Cemetery</td>
+              <td><%= contract.cemeteryName ?? '(No ' + configFunctions.getConfigProperty("aliases.map") + ')' %></td>
             </tr>
-          </tbody>
-      </table>
-      <p>
-        Purchaser's relationship to Recipient:
-        <span class="field" style="width:550px">
-          <%= contract.purchaserRelationship %>
-          &nbsp;
-        </span>
-      </p>
-      <p>
-        This Contract for Purchase of Interment Rights or Cemetery Services
-        is between the Purchaser and The Corporation of the City of Sault Ste. Marie (Corporation)
-        concerning interment rights or cemetery services for the Recipient(s)
-        as identified in this Contract.
-      </p>
-      <p>
-        The Purchaser (if different than the Recipient)
-        represents being legally authorized or charged with the responsibility for
-        the Recipient's interment rights and prepaid cemetery services 
-        specified in this Contract. This Contract will be enforceable to
-        the benefit of and be binding upon the parties hereto 
-        and their respective heirs, executors, administrators, successors, and assigns.
-      </p>
-      <table class="layout-table" style="table-layout:fixed">
-        <tr>
-          <td>
-            <h2 class="is-10pt is-capitalized">Details</h2>
-            <table class="is-10pt data-table">
-              <tr>
-                <td>Cemetery</td>
-                <td><%= contract.cemeteryName ?? '(No ' + configFunctions.getConfigProperty("aliases.map") + ')' %></td>
-              </tr>
-              <tr>
-                <td>Burial Site</td>
-                <td><%= contract.burialSiteName ?? '(No ' + configFunctions.getConfigProperty("aliases.lot") + ')' %></td>
-              </tr>
-              <% 
-                for (const field of contract.contractFields) { 
-                  if (!recipientFields.includes(field.contractTypeField) && field.contractFieldValue) {
-              %>
-                  <tr>
-                    <td><%= field.contractTypeField %></td>
-                    <td><%= field.contractFieldValue %></td>
-                  </tr>
-              <% 
-                  }
+            <tr>
+              <td>Burial Site</td>
+              <td><%= contract.burialSiteName ?? '(No ' + configFunctions.getConfigProperty("aliases.lot") + ')' %></td>
+            </tr>
+            <% 
+              for (const field of contract.contractFields) { 
+                if (!recipientFields.includes(field.contractTypeField) && field.contractFieldValue) {
+            %>
+                <tr>
+                  <td><%= field.contractTypeField %></td>
+                  <td><%= field.contractFieldValue %></td>
+                </tr>
+            <% 
                 }
+              }
+            %>
+          </table>
+        </td>
+        <td>
+          <h2 class="is-10pt is-capitalized">Interment Rights and Services</h2>
+          <table class="is-10pt data-table">
+            <tbody>
+              <%
+                let currentFeeCategory = "";
+                let feeAmountTotal = 0;
+                let taxAmountTotal = 0;
               %>
-            </table>
-          </td>
-          <td>
-            <h2 class="is-10pt is-capitalized">Interment Rights and Services</h2>
-            <table class="is-10pt data-table">
-                <tbody>
-                    <%
-                      let currentFeeCategory = "";
-                      let feeAmountTotal = 0;
-                      let taxAmountTotal = 0;
-                    %>
-                    <% for (const fee of contract.contractFees) { %>
-                        <% if (currentFeeCategory !== fee.feeCategory) { %>
-                          <tr>
-                            <td colspan="3">
-                              <strong><%= fee.feeCategory %></strong>
-                            </td>
-                          </tr>
-                          <% currentFeeCategory = fee.feeCategory; %>
-                        <% } %>
-                        <tr>
-                          <td <% if (fee.quantity === 1) { %>colspan="2"<% } %>>
-                            <%= fee.feeName %>
-                          </td>
-                          <% if (fee.quantity !== 1) { %>
-                            <td class="has-text-right is-8pt has-text-nowrap">
-                              $<%= fee.feeAmount.toFixed(2) %>
-                              &times;
-                              <%= fee.quantity %>
-                            </td>
-                          <% } %>
-                          <td class="has-text-right">
-                            $<%= fee.feeAmount.toFixed(2) %>
-                          </td>
-                        </tr>
-                        <%
-                          feeAmountTotal += fee.feeAmount * fee.quantity;
-                          taxAmountTotal += fee.taxAmount * fee.quantity;
-                        %>
-                    <% } %>
-                    <tr>
-                      <td colspan="2"><strong>Sub Total</strong></td>
-                      <td class="has-text-right">
-                        <strong>$<%= feeAmountTotal.toFixed(2) %></strong>
-                      </td>
-                    </tr><tr>
-                      <td colspan="2">HST</td>
-                      <td class="has-text-right">
-                        $<%= taxAmountTotal.toFixed(2) %>
-                      </td>
-                    </tr><tr>
-                      <td colspan="2"><strong>Total Sale</strong></td>
-                      <td class="has-text-right">
-                        <strong>$<%= (feeAmountTotal + taxAmountTotal).toFixed(2) %></strong>
-                      </td>
-                    </tr><tr>
-                      <td colspan="2"><strong>Balance Owing</strong></td>
-                      <td class="has-text-right">
-                        <strong>$<%= (feeAmountTotal + taxAmountTotal - contractFunctions.getTransactionTotal(contract)).toFixed(2) %></strong>
-                      </td>
-                    </tr>
-                </tbody>
-            </table>
-          </td>
-        </tr>
-      </table>
+              <% for (const fee of contract.contractFees) { %>
+                <% if (currentFeeCategory !== fee.feeCategory) { %>
+                  <tr>
+                    <td colspan="3">
+                      <strong><%= fee.feeCategory %></strong>
+                    </td>
+                  </tr>
+                  <% currentFeeCategory = fee.feeCategory; %>
+                <% } %>
+                <tr>
+                  <td <% if (fee.quantity === 1) { %>colspan="2"<% } %>>
+                    <%= fee.feeName %>
+                  </td>
+                  <% if (fee.quantity !== 1) { %>
+                    <td class="has-text-right is-8pt has-text-nowrap">
+                      $<%= fee.feeAmount.toFixed(2) %>
+                      &times;
+                      <%= fee.quantity %>
+                    </td>
+                  <% } %>
+                  <td class="has-text-right">
+                    $<%= fee.feeAmount.toFixed(2) %>
+                  </td>
+                </tr>
+                <%
+                  feeAmountTotal += fee.feeAmount * fee.quantity;
+                  taxAmountTotal += fee.taxAmount * fee.quantity;
+                %>
+              <% } %>
+              <tr>
+                <td colspan="2"><strong>Sub Total</strong></td>
+                <td class="has-text-right">
+                  <strong>$<%= feeAmountTotal.toFixed(2) %></strong>
+                </td>
+              </tr><tr>
+                <td colspan="2">HST</td>
+                <td class="has-text-right">
+                  $<%= taxAmountTotal.toFixed(2) %>
+                </td>
+              </tr><tr>
+                <td colspan="2"><strong>Total Sale</strong></td>
+                <td class="has-text-right">
+                  <strong>$<%= (feeAmountTotal + taxAmountTotal).toFixed(2) %></strong>
+                </td>
+              </tr><tr>
+                <td colspan="2"><strong>Balance Owing</strong></td>
+                <td class="has-text-right">
+                  <strong>$<%= (feeAmountTotal + taxAmountTotal - contractFunctions.getTransactionTotal(contract)).toFixed(2) %></strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </table>
 
-      <!-- PAGE BREAK -->
+    <!-- PAGE BREAK -->
 
-      <h2 class="is-10pt" style="page-break-before:always">
-        Contribution Levels to the Care and Maintenance Fund<br />
-        (based on the price of Interment Rights and as prescribed by the <em>Funeral, Burial and Cremation Services Act</em>)
-      </h2>
+    <h2 class="is-10pt" style="page-break-before:always">
+      Contribution Levels to the Care and Maintenance Fund<br />
+      (based on the price of Interment Rights and as prescribed by the <em>Funeral, Burial and Cremation Services Act</em>)
+    </h2>
 
-      <table class="layout-table is-10pt">
-        <tr>
-          <td>Niches</td>
-          <td>the greater of 15% and $100</td>
-        </tr>
-        <tr>
-          <td>Crypts</td>
-          <td>the greater of 20% and $500</td>
-        </tr>
-        <tr>
-          <td>
-            In-ground grave (2.23 sq.m. or 24 sq.ft. or larger)
-          </td>
-          <td>
-            the greater of 40% and $250
-          </td>
-        </tr>
-        <tr>
-          <td>In-ground grave (smaller than 2.23 sq.m. or 24 sq ft)</td>
-          <td>the greater of 40% and $150</td>
-        </tr>
-      </table>
-      
-      <h2 class="is-10pt">
-        Contribution Levels to the Care and Maintenance Fund - Markers<br />
-        (as prescribed by the <em>Funeral, Burial and Cremation Services Act</em>)
-      </h2>
+    <table class="layout-table is-10pt">
+      <tr>
+        <td>Niches</td>
+        <td>the greater of 15% and $100</td>
+      </tr>
+      <tr>
+        <td>Crypts</td>
+        <td>the greater of 20% and $500</td>
+      </tr>
+      <tr>
+        <td>
+          In-ground grave (2.23 sq.m. or 24 sq.ft. or larger)
+        </td>
+        <td>
+          the greater of 40% and $250
+        </td>
+      </tr>
+      <tr>
+        <td>In-ground grave (smaller than 2.23 sq.m. or 24 sq ft)</td>
+        <td>the greater of 40% and $150</td>
+      </tr>
+    </table>
+    
+    <h2 class="is-10pt">
+      Contribution Levels to the Care and Maintenance Fund - Markers<br />
+      (as prescribed by the <em>Funeral, Burial and Cremation Services Act</em>)
+    </h2>
 
-      <table class="layout-table is-10pt">
-        <tr>
-          <td>Flat marker measuring less than 1,116.3 sq.m. (173 sq.in.)</td>
-          <td class="has-text-right">$0.00</td>
-        </tr>
-        <tr>
-          <td>Flat marker measuring over 1,116.3 sq.m. (173 sq.in.)</td>
-          <td class="has-text-right">$50.00</td>
-        </tr>
-        <tr>
-          <td>
-            Upright monument measuring more than 1.22 m. (4 ft.) or less in height or length,
-            including the base
-          </td>
-          <td class="has-text-right">$100.00</td>
-        </tr>
-        <tr>
-          <td>
-            Upright monument measuring more than 1.22m. (4 ft.) either in height or length,
-            including the base
-          </td>
-          <td class="has-text-right">$200.00</td>
-        </tr>
-      </table>
-      
-      <h2 class="is-10pt">Contract Terms and Conditions</h2>
+    <table class="layout-table is-10pt">
+      <tr>
+        <td>Flat marker measuring less than 1,116.3 sq.m. (173 sq.in.)</td>
+        <td class="has-text-right">$0.00</td>
+      </tr>
+      <tr>
+        <td>Flat marker measuring over 1,116.3 sq.m. (173 sq.in.)</td>
+        <td class="has-text-right">$50.00</td>
+      </tr>
+      <tr>
+        <td>
+          Upright monument measuring more than 1.22 m. (4 ft.) or less in height or length,
+          including the base
+        </td>
+        <td class="has-text-right">$100.00</td>
+      </tr>
+      <tr>
+        <td>
+          Upright monument measuring more than 1.22m. (4 ft.) either in height or length,
+          including the base
+        </td>
+        <td class="has-text-right">$200.00</td>
+      </tr>
+    </table>
+    
+    <h2 class="is-10pt">Contract Terms and Conditions</h2>
 
-      <ol class="termsList">
-          <li>
-              The Purchaser may only cancel a contract for interment rights or cemetery services upon written notice of cancellation
-              to the City Clerk in accordance with the <em>Funeral, Burial and Cremation Services Act</em> and the terms and conditions set
-              out herein.
-          </li>
-          <li>
-              Where interment rights have not been exercised and none of the contracted cemetery services have been provided
-              and where the contract is cancelled within thirty (30) days of its execution, the Corporation shall refund the Purchaser
-              all moneys paid less an administrative fee as set out in the Price List.
-          </li>
-          <li>
-              Where interment rights have not been exercised and part of the contracted cemetery services have been provided,
-              and where the contract is cancelled within thirty (30) days of its execution, the Corporation shall refund the Purchaser
-              the amount described in (b) above which shall be reduced by the cost of cemetery services provided as set out in the
-              current Price List.
-          </li>
-          <li>
-              A contract for interment rights cannot be cancelled more than thirty (30) days after the date of execution of the
-              contract.
-          </li>
-          <li>
-              Where a contract for cemetery services is cancelled more than thirty (30) days after the date of execution of the
-              contract, the Purchaser shall be refunded the amount described in (b) and (c) above plus the amount of income
-              earned on that money.
-          </li>
-          <li>
-              Written consent of all surviving interment rights holder(s), if any, and any other required documentation as set out in
-              Cemetery By-law 2012-129 is required for: cremation, interments, disinterments, and the placement of markers,
-              inscriptions or photos.
-          </li>
-          <li>
-              Transfer or resale of the above listed interment rights to a third party is permitted, subject to the provisions of
-              Cemetery By-law 2012-129 and the <em>Funeral, Burial and Cremation Services Act</em>. A Certificate of Interment Rights
-              holder shall not resell interment rights for an amount that is greater than the price of those rights as indicated on the
-              current Price List, inclusive of the care and maintenance component.
-          </li>
-          <li>
-              No Certificate of Interment Rights holder(s) may subdivide and sell or transfer a portion of interment rights.
-          </li>
-          <li>
-              An Interment Rights Certificate will not be issued until this Contract has been paid in full.
-          </li>
-          <li>
-              A marker, purchased and/or installed by anyone other than the Certificate of Interment Rights holder(s) may be
-              removed by cemetery staff upon the written request of the Certificate of Interment Rights holder(s).
-          </li>
-          <li>
-              Dead human bodies cannot be cremated if there is a pacemaker or radioactive implant in the body or if the body is in
-              a container made of or containing non-flammable or hazardous material or chlorinated or fibre-reinforced plastic.
-          </li>
-          <li>
-              Dead human bodies will not be cremated unless a coroner's certificate has been provided to the operator.
-          </li>
-          <li>
-              The Corporation shall not be responsible in the event that it is unable to or prevented from carrying out this Contract
-              due to causes beyond its control.
-          </li>
-      </ol>
+    <ol class="termsList">
+      <li>
+        The Purchaser may only cancel a contract for interment rights or cemetery services upon written notice of cancellation
+        to the City Clerk in accordance with the <em>Funeral, Burial and Cremation Services Act</em> and the terms and conditions set
+        out herein.
+      </li>
+      <li>
+        Where interment rights have not been exercised and none of the contracted cemetery services have been provided
+        and where the contract is cancelled within thirty (30) days of its execution, the Corporation shall refund the Purchaser
+        all moneys paid less an administrative fee as set out in the Price List.
+      </li>
+      <li>
+        Where interment rights have not been exercised and part of the contracted cemetery services have been provided,
+        and where the contract is cancelled within thirty (30) days of its execution, the Corporation shall refund the Purchaser
+        the amount described in (b) above which shall be reduced by the cost of cemetery services provided as set out in the
+        current Price List.
+      </li>
+      <li>
+        A contract for interment rights cannot be cancelled more than thirty (30) days after the date of execution of the
+        contract.
+      </li>
+      <li>
+        Where a contract for cemetery services is cancelled more than thirty (30) days after the date of execution of the
+        contract, the Purchaser shall be refunded the amount described in (b) and (c) above plus the amount of income
+        earned on that money.
+      </li>
+      <li>
+        Written consent of all surviving interment rights holder(s), if any, and any other required documentation as set out in
+        Cemetery By-law 2012-129 is required for: cremation, interments, disinterments, and the placement of markers,
+        inscriptions or photos.
+      </li>
+      <li>
+        Transfer or resale of the above listed interment rights to a third party is permitted, subject to the provisions of
+        Cemetery By-law 2012-129 and the <em>Funeral, Burial and Cremation Services Act</em>. A Certificate of Interment Rights
+        holder shall not resell interment rights for an amount that is greater than the price of those rights as indicated on the
+        current Price List, inclusive of the care and maintenance component.
+      </li>
+      <li>
+        No Certificate of Interment Rights holder(s) may subdivide and sell or transfer a portion of interment rights.
+      </li>
+      <li>
+        An Interment Rights Certificate will not be issued until this Contract has been paid in full.
+      </li>
+      <li>
+        A marker, purchased and/or installed by anyone other than the Certificate of Interment Rights holder(s) may be
+        removed by cemetery staff upon the written request of the Certificate of Interment Rights holder(s).
+      </li>
+      <li>
+        Dead human bodies cannot be cremated if there is a pacemaker or radioactive implant in the body or if the body is in
+        a container made of or containing non-flammable or hazardous material or chlorinated or fibre-reinforced plastic.
+      </li>
+      <li>
+        Dead human bodies will not be cremated unless a coroner's certificate has been provided to the operator.
+      </li>
+      <li>
+        The Corporation shall not be responsible in the event that it is unable to or prevented from carrying out this Contract
+        due to causes beyond its control.
+      </li>
+    </ol>
 
-      <!-- PAGE BREAK -->
+    <!-- PAGE BREAK -->
 
-      <h2 class="is-10pt" style="page-break-before:always">Payment Terms</h2>
-      <p>
-          All pre-need interment rights and cemetery services must be paid in full at the time of ordering.
-      </p>
-      <p>
-          In the case of at-need interment rights and cemetery services, the interment rights and services directly related to the
-          deceased will be invoiced by the Corporation and interest shall be charged at the rate determined by the Treasurer on the
-          unpaid balance after thirty (30) days from the date of invoice. Such services do not include interment rights in a
-          mausoleum.
-      </p>
-      <p>
-          Any rights of cancellation of this Contract, whether within thirty (30) days or after thirty (30) days can only be exercised by
-          the Purchaser or his or her Estate Trustee.
-      </p>
+    <h2 class="is-10pt" style="page-break-before:always">Payment Terms</h2>
+    <p>
+      All pre-need interment rights and cemetery services must be paid in full at the time of ordering.
+    </p>
+    <p>
+      In the case of at-need interment rights and cemetery services, the interment rights and services directly related to the
+      deceased will be invoiced by the Corporation and interest shall be charged at the rate determined by the Treasurer on the
+      unpaid balance after thirty (30) days from the date of invoice. Such services do not include interment rights in a
+      mausoleum.
+    </p>
+    <p>
+      Any rights of cancellation of this Contract, whether within thirty (30) days or after thirty (30) days can only be exercised by
+      the Purchaser or his or her Estate Trustee.
+    </p>
 
-      <h2 class="is-10pt">Personal Information</h2>
+    <h2 class="is-10pt">Personal Information</h2>
 
-      <p>
-          The Purchaser acknowledges and provides consent to permit the Corporation to collect, use and disclose personal
-          information in accordance with the requirements under the <em>Funeral, Burial and Cremation Services Act</em> and the
-          regulations made thereunder for information within the cemetery/crematorium public register. The Purchaser also
-          understands that the Corporation does not rent or sell personal information to third party organizations.
-      </p>
-      <p>
-          All information provided by the Purchaser to the Corporation shall be held, retained, disclosed, and destroyed, as the case
-          may be, in accordance with the provisions of the <em>Municipal Freedom of Information and Protection of Privacy Act</em>.
-      </p>
+    <p>
+      The Purchaser acknowledges and provides consent to permit the Corporation to collect, use and disclose personal
+      information in accordance with the requirements under the <em>Funeral, Burial and Cremation Services Act</em> and the
+      regulations made thereunder for information within the cemetery/crematorium public register. The Purchaser also
+      understands that the Corporation does not rent or sell personal information to third party organizations.
+    </p>
+    <p>
+      All information provided by the Purchaser to the Corporation shall be held, retained, disclosed, and destroyed, as the case
+      may be, in accordance with the provisions of the <em>Municipal Freedom of Information and Protection of Privacy Act</em>.
+    </p>
 
-      <h2 class="is-10pt">Consumer Information Guide and Cemetery Price List</h2>
+    <h2 class="is-10pt">Consumer Information Guide and Cemetery Price List</h2>
 
-      <p>
-          By initialling below, the Purchaser acknowledges receiving a copy of the Ontario Government's Consumer Information
-          Guide (where made available by the Registrar) and the Cemetery Price List at the time of entering into this Contract.
-      </p>
+    <p>
+        By initialling below, the Purchaser acknowledges receiving a copy of the Ontario Government's Consumer Information
+        Guide (where made available by the Registrar) and the Cemetery Price List at the time of entering into this Contract.
+    </p>
 
-      <ul class="confirmList">
-          <li>
-              I hereby acknowledge that I have been offered and/or received a copy of the Ontario Government's Consumer
-              Information Guide and the Cemetery Price List.
-          </li>
-          <li>
-              I have reviewed the terms and conditions of the Contract and hereby confirm that the interment rights and cemetery
-              services as specified in this Contract are complete and correct. I direct the Corporation to proceed with the sale of the
-              interment right(s) as identified in this Contract in accordance with the Cemetery By-law 2012-129 which is now or at any
-              time hereinafter in force.
-          </li>
-          <li>
-              I hereby acknowledge that I have received and reviewed a copy of Cemetery By-law 2012-129.
-          </li>
-          <li>
-              I acknowledge having received a copy of this Contract, and will assume full responsibility for payment of the total
-              Contract price to the Corporation in accordance with the terms and conditions of the Contract.
-          </li>
-      </ul>
+    <ul class="confirmList">
+      <li>
+        I hereby acknowledge that I have been offered and/or received a copy of the Ontario Government's Consumer
+        Information Guide and the Cemetery Price List.
+      </li>
+      <li>
+        I have reviewed the terms and conditions of the Contract and hereby confirm that the interment rights and cemetery
+        services as specified in this Contract are complete and correct. I direct the Corporation to proceed with the sale of the
+        interment right(s) as identified in this Contract in accordance with the Cemetery By-law 2012-129 which is now or at any
+        time hereinafter in force.
+      </li>
+      <li>
+        I hereby acknowledge that I have received and reviewed a copy of Cemetery By-law 2012-129.
+      </li>
+      <li>
+        I acknowledge having received a copy of this Contract, and will assume full responsibility for payment of the total
+        Contract price to the Corporation in accordance with the terms and conditions of the Contract.
+      </li>
+    </ul>
 
-      <p>
-          The Contract date set out below is the date on which this Contract is accepted by the Corporation.
-      </p>
+    <p>
+      The Contract date set out below is the date on which this Contract is accepted by the Corporation.
+    </p>
 
-      <p>
-          Purchaser:
-          <span class="field" style="width:400px">&nbsp;</span>
-          Date:
-          <span class="field" style="width:200px">&nbsp;</span>
-      </p>
-      <p>
-          Purchaser:
-          <span class="field" style="width:400px">&nbsp;</span>
-          Date:
-          <span class="field" style="width:200px">&nbsp;</span>
-      </p>
+    <p>
+      Purchaser:
+      <span class="field" style="width:400px">&nbsp;</span>
+      Date:
+      <span class="field" style="width:200px">&nbsp;</span>
+    </p>
+    <p>
+      Purchaser:
+      <span class="field" style="width:400px">&nbsp;</span>
+      Date:
+      <span class="field" style="width:200px">&nbsp;</span>
+    </p>
 
-      <p class="has-text-right mt-4">
-          Accepted on behalf of The Corporation<br />
-          of the City of Sault Ste. Marie by:
-      </p>
-      <p class="has-text-right">
-          Name:
-          <span class="field" style="width:300px">&nbsp;</span>
-      </p>
+    <p class="has-text-right mt-4">
+      Accepted on behalf of The Corporation<br />
+      of the City of Sault Ste. Marie by:
+    </p>
+    <p class="has-text-right">
+      Name:
+      <span class="field" style="width:300px">&nbsp;</span>
+    </p>
   </body>
 </html>

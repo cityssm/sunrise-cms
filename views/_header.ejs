@@ -40,81 +40,81 @@
         </a>
       </div>
 
-        <div class="navbar-menu">
-          <div class="navbar-start">
-            <a class="navbar-item" href="<%= urlPrefix %>/workOrders" accesskey="1">
-              <span class="icon">
-                <i class="fas fa-hard-hat" aria-hidden="true"></i>
-              </span>
-              <span>Work Orders</span>
-            </a>
+      <div class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item" href="<%= urlPrefix %>/workOrders" accesskey="1">
+            <span class="icon">
+              <i class="fas fa-hard-hat" aria-hidden="true"></i>
+            </span>
+            <span>Work Orders</span>
+          </a>
 
-            <a class="navbar-item" href="<%= urlPrefix %>/contracts" accesskey="2">
-              <span class="icon">
-                <span class="fa-layers fa-fw" aria-hidden="true">
-                  <i class="fas fa-vector-square"></i>
-                  <i class="fas fa-user" data-fa-transform="shrink-10"></i>
-                </span>
+          <a class="navbar-item" href="<%= urlPrefix %>/contracts" accesskey="2">
+            <span class="icon">
+              <span class="fa-layers fa-fw" aria-hidden="true">
+                <i class="fas fa-vector-square"></i>
+                <i class="fas fa-user" data-fa-transform="shrink-10"></i>
               </span>
-              <span>Contracts</span>
+            </span>
+            <span>Contracts</span>
+          </a>
+            
+          <div class="navbar-item has-dropdown">
+            <a class="navbar-link is-arrowless" href="#">
+              <span>More</span>
+              <span class="icon">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
             </a>
-              
-            <div class="navbar-item has-dropdown">
-              <a class="navbar-link is-arrowless" href="#">
-                <span>More</span>
+            <div class="navbar-dropdown">
+              <a class="navbar-item" href="<%= urlPrefix %>/funeralHomes">
                 <span class="icon">
-                  <i class="fas fa-angle-down" aria-hidden="true"></i>
+                  <i class="fas fa-fw fa-place-of-worship" aria-hidden="true"></i>
                 </span>
+                <span>Funeral Homes</span>
               </a>
-              <div class="navbar-dropdown">
-                <a class="navbar-item" href="<%= urlPrefix %>/funeralHomes">
-                  <span class="icon">
-                    <i class="fas fa-fw fa-place-of-worship" aria-hidden="true"></i>
-                  </span>
-                  <span>Funeral Homes</span>
-                </a>
-                <a class="navbar-item" href="<%= urlPrefix %>/burialSites" accesskey="3">
-                  <span class="icon">
-                    <i class="fas fa-fw fa-vector-square" aria-hidden="true"></i>
-                  </span>
-                  <span>Burial Sites</span>
-                </a>
-                <a class="navbar-item" href="<%= urlPrefix %>/cemeteries" accesskey="4">
-                  <span class="icon">
-                    <i class="far fa-fw fa-map" aria-hidden="true"></i>
-                  </span>
-                  <span>Cemeteries</span>
-                </a>
-                <hr class="navbar-divider" />
-                <a class="navbar-item" href="<%= urlPrefix %>/reports">
-                  <span class="icon">
-                    <i class="fas fa-fw fa-file" aria-hidden="true"></i>
-                  </span>
-                  <span>Reports</span>
-                </a>
-                <hr class="navbar-divider" />
-                <a class="navbar-item" href="https://cityssm.github.io/sunrise-cms/docs"
-                  target="_blank"
-                  accesskey="h"
-                  rel="noopener noreferrer">
-                  <span class="icon">
-                    <i class="fas fa-fw fa-question-circle" aria-hidden="true"></i>
-                  </span>
-                  <span>Help</span>
-                </a>
-              </div>
+              <a class="navbar-item" href="<%= urlPrefix %>/burialSites" accesskey="3">
+                <span class="icon">
+                  <i class="fas fa-fw fa-vector-square" aria-hidden="true"></i>
+                </span>
+                <span>Burial Sites</span>
+              </a>
+              <a class="navbar-item" href="<%= urlPrefix %>/cemeteries" accesskey="4">
+                <span class="icon">
+                  <i class="far fa-fw fa-map" aria-hidden="true"></i>
+                </span>
+                <span>Cemeteries</span>
+              </a>
+              <hr class="navbar-divider" />
+              <a class="navbar-item" href="<%= urlPrefix %>/reports">
+                <span class="icon">
+                  <i class="fas fa-fw fa-file" aria-hidden="true"></i>
+                </span>
+                <span>Reports</span>
+              </a>
+              <hr class="navbar-divider" />
+              <a class="navbar-item" href="https://cityssm.github.io/sunrise-cms/docs"
+                target="_blank"
+                accesskey="h"
+                rel="noopener noreferrer">
+                <span class="icon">
+                  <i class="fas fa-fw fa-question-circle" aria-hidden="true"></i>
+                </span>
+                <span>Help</span>
+              </a>
             </div>
           </div>
-
-          <div class="navbar-end">
-            <a class="navbar-item" id="cityssm-theme--logout-button" role="button" href="#" accesskey="x">
-              <span class="icon">
-                <i class="fas fa-fw fa-sign-out-alt" aria-hidden="true"></i>
-              </span>
-              <span>Log Out <%=user.userName %></span>
-            </a>
-          </div>
         </div>
+
+        <div class="navbar-end">
+          <a class="navbar-item" id="cityssm-theme--logout-button" role="button" href="#" accesskey="x">
+            <span class="icon">
+              <i class="fas fa-fw fa-sign-out-alt" aria-hidden="true"></i>
+            </span>
+            <span>Log Out <%=user.userName %></span>
+          </a>
+        </div>
+      </div>
     </div>
   </nav>
 

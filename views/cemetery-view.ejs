@@ -96,7 +96,20 @@
 <div class="columns">
   <div class="column">
     <div class="panel">
-      <h2 class="panel-heading">Geographic Location</h2>
+      <div class="panel-heading">
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="title is-5 has-text-weight-bold has-text-white">Geographic Location</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="panel-block is-block">
         <% if (cemetery.cemeteryLatitude && cemetery.cemeteryLongitude) { %>
           <div id="cemetery--leaflet" data-cemetery-latitude="<%= cemetery.cemeteryLatitude %>" data-cemetery-longitude="<%= cemetery.cemeteryLongitude %>" style="height:300px"></div>
@@ -112,7 +125,20 @@
   </div>
   <div class="column">
     <div class="panel">
-      <h2 class="panel-heading">Image</h2>
+      <div class="panel-heading">
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="title is-5 has-text-weight-bold has-text-white">Image</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <i class="fas fa-image" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="panel-block is-block">
         <% if (cemetery.cemeterySvg) { %>
           <% const imageURL = urlPrefix + "/internal/images/cemeteries/" + cemetery.cemeterySvg %>

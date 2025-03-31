@@ -192,11 +192,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 <strong>Birth:</strong>
               </div>
               <div class="column">
-                ${cityssm.escapeHTML(interment.birthDateString ?? '(No Birth Date)')}<br />
+                ${cityssm.escapeHTML((interment.birthDateString ?? '') === ''
+                ? '(No Birth Date)'
+                : interment.birthDateString ?? '')}<br />
                 ${cityssm.escapeHTML(interment.birthPlace ?? '(No Birth Place)')}
               </div>
             </div>
-            <div class="columns">
+            <div class="columns mb-0">
               <div class="column">
                 <strong>Death:</strong>
               </div>
@@ -205,12 +207,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ${cityssm.escapeHTML(interment.deathPlace ?? '(No Death Place)')}
               </div>
             </div>
-            <div class="columns">
+            <div class="columns mb-0">
               <div class="column">
                 <strong>Age:</strong>
               </div>
               <div class="column">
-                ${cityssm.escapeHTML((interment.deathAge ?? '') === '' ? '(No Age)' : interment.deathAge?.toString() ?? '')}<br />
+                ${cityssm.escapeHTML((interment.deathAge ?? '') === '' ? '(No Age)' : interment.deathAge?.toString() ?? '')}
                 ${cityssm.escapeHTML(interment.deathAgePeriod ?? '')}
               </div>
             </div>

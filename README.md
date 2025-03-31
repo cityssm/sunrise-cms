@@ -31,6 +31,15 @@ Sunrise CMS does not need an expensive server to run.
 No separate database server is required either.
 The whole application could run on a current, modest workstation.
 
+### ✔️ Track Unlimited Cemeteries and Burial Sites
+
+There are no limits to the number of records that can be tracked in Sunrise CMS.
+
+### ✔️ Includes a Built-In Work Order System
+
+In addition to tracking data related to cemetery plots,
+Sunrise CMS can also track work order activities, like grave maintenance.
+
 ### ✔️ Sunrise CMS is Free and Open Source
 
 There's no cost to use it.

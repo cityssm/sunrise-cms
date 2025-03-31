@@ -75,46 +75,46 @@
       </div>
     </div>
     <div class="columns">
-    <div class="column">
+      <div class="column">
         <div class="field">
-        <label class="label" for="searchFilter--cemeteryId">Cemetery</label>
-        <div class="control has-icons-left">
+          <label class="label" for="searchFilter--cemeteryId">Cemetery</label>
+          <div class="control has-icons-left">
             <div class="select is-fullwidth">
-            <select id="searchFilter--cemeteryId" name="cemeteryId">
+              <select id="searchFilter--cemeteryId" name="cemeteryId">
                 <option value="">(All Cemeteries)</option>
                 <% for (const cemetery of cemeteries) { %>
                 <option value="<%= cemetery.cemeteryId %>" <%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>>
-                    <%= cemetery.cemeteryName || "(No Name)" %>
+                  <%= cemetery.cemeteryName || "(No Name)" %>
                 </option>
                 <% } %>
-            </select>
+              </select>
             </div>
             <span class="icon is-small is-left">
-                <i class="fas fa-search" aria-hidden="true"></i>
+              <i class="fas fa-search" aria-hidden="true"></i>
             </span>
+          </div>
         </div>
-        </div>
-    </div>
-    <div class="column">
+      </div>
+      <div class="column">
         <div class="field">
-            <label class="label" for="searchFilter--burialSiteStatusId">Status</label>
-            <div class="control has-icons-left">
-                <div class="select is-fullwidth">
-                    <select id="searchFilter--burialSiteStatusId" name="burialSiteStatusId">
-                        <option value="">(All Statuses)</option>
-                        <% for (const burialSiteStatus of burialSiteStatuses) { %>
-                        <option value="<%= burialSiteStatus.burialSiteStatusId %>" <%= (burialSiteStatus.burialSiteStatusId.toString() === burialSiteStatusId) ? " selected" : "" %>>
-                            <%= burialSiteStatus.burialSiteStatus %>
-                        </option>
-                        <% } %>
-                    </select>
-                </div>
-                <span class="icon is-small is-left">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                </span>
+          <label class="label" for="searchFilter--burialSiteStatusId">Status</label>
+          <div class="control has-icons-left">
+            <div class="select is-fullwidth">
+              <select id="searchFilter--burialSiteStatusId" name="burialSiteStatusId">
+                <option value="">(All Statuses)</option>
+                <% for (const burialSiteStatus of burialSiteStatuses) { %>
+                <option value="<%= burialSiteStatus.burialSiteStatusId %>" <%= (burialSiteStatus.burialSiteStatusId.toString() === burialSiteStatusId) ? " selected" : "" %>>
+                  <%= burialSiteStatus.burialSiteStatus %>
+                </option>
+                <% } %>
+              </select>
             </div>
+            <span class="icon is-small is-left">
+              <i class="fas fa-search" aria-hidden="true"></i>
+            </span>
+          </div>
         </div>
-    </div>
+      </div>
     </div>
   </form>
 </div>

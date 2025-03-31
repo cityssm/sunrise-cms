@@ -5,7 +5,7 @@ export default async function handler(request, response) {
     const burialSiteStatuses = await getBurialSiteStatuses();
     response.json({
         success: true,
-        burialSiteStatusId,
-        burialSiteStatuses
+        burialSiteStatuses,
+        burialSiteStatusId
     });
 }

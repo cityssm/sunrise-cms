@@ -1,47 +1,46 @@
 <html>
-    <head>
-      <title><%= headTitle %></title>
-      <style>
-        <%- include('style.css'); %>
-      </style>
-    </head>
-    <body>
-        <%- include('_workOrder-header.ejs'); %>
+  <head>
+    <title><%= headTitle %></title>
+    <style>
+      <%- include('style.css'); %>
+    </style>
+  </head>
+  <body>
+    <%- include('_workOrder-header.ejs'); %>
 
-        <h2 class="mb-0">Comments</h2>
+    <h2 class="mb-0">Comments</h2>
 
-        <% if (workOrder.workOrderComments.length === 0) { %>
-            <p>There are no comments associated with this work order.</p>
-        <% } else { %>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Commentor</th>
-                        <th>Comment Time</th>
-                        <th>Comment</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (const comment of workOrder.workOrderComments) { %>
-                        <tr>
-                            <td><%= comment.recordUpdate_userName %></td>
-                            <td><%= comment.workOrderCommentDateString %> <%= comment.workOrderCommentTimePeriodString %></td>
-                            <td><%= comment.workOrderComment %></td>
-                        </tr>
-                    <% } %>
-                </tbody>
-            </table>
-        <% } %>
-            
-
-        <p class="has-text-right is-italic is-8pt" style="position:absolute;bottom:10px;right:10px">
-            <%
-                const recordCreateDate = new Date(workOrder.recordCreate_timeMillis);
-                const currentDate = new Date();
-            %>
-            Work order created <%= dateTimeFunctions.dateToString(recordCreateDate) %> at <%= dateTimeFunctions.dateToTimeString(recordCreateDate) %>.
-            Printed <%= dateTimeFunctions.dateToString(currentDate) %> at <%= dateTimeFunctions.dateToTimeString(currentDate) %>.<br />
-            workOrderId = <%= workOrder.workOrderId %>            
-        </p>
-    </body>
+    <% if (workOrder.workOrderComments.length === 0) { %>
+      <p>There are no comments associated with this work order.</p>
+    <% } else { %>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Commentor</th>
+            <th>Comment Time</th>
+            <th>Comment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (const comment of workOrder.workOrderComments) { %>
+            <tr>
+              <td><%= comment.recordUpdate_userName %></td>
+              <td><%= comment.workOrderCommentDateString %> <%= comment.workOrderCommentTimePeriodString %></td>
+              <td><%= comment.workOrderComment %></td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <% } %>
+          
+    <p class="has-text-right is-italic is-8pt" style="position:absolute;bottom:10px;right:10px">
+      <%
+        const recordCreateDate = new Date(workOrder.recordCreate_timeMillis);
+        const currentDate = new Date();
+      %>
+      Work order created <%= dateTimeFunctions.dateToString(recordCreateDate) %> at <%= dateTimeFunctions.dateToTimeString(recordCreateDate) %>.
+      Printed <%= dateTimeFunctions.dateToString(currentDate) %> at <%= dateTimeFunctions.dateToTimeString(currentDate) %>.<br />
+      workOrderId = <%= workOrder.workOrderId %>            
+    </p>
+  </body>
 </html>

@@ -273,7 +273,7 @@ declare const exports: Record<string, unknown>
           }
         </td><td>
           <button class="button is-small is-light is-danger button--deleteContract" data-tooltip="Delete Relationship" type="button">
-            <i class="fas fa-trash" aria-hidden="true"></i>
+            <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
           </button>
         </td>`
       )
@@ -502,12 +502,12 @@ declare const exports: Record<string, unknown>
               ? cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
               : '<span class="has-text-grey">(No Status)</span>'
           }
-        </td><td class="is-nowrap">
+        </td><td class="has-text-right is-nowrap">
           <button class="button is-small is-light is-info button--editBurialSiteStatus" data-tooltip="Update Status" type="button">
-          <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+            <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
           </button>
           <button class="button is-small is-light is-danger button--deleteBurialSite" data-tooltip="Delete Relationship" type="button">
-          <i class="fas fa-trash" aria-hidden="true"></i>
+            <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
           </button>
         </td>`
 
@@ -546,14 +546,14 @@ declare const exports: Record<string, unknown>
 
   document
     .querySelector('#button--addContract')
-    ?.addEventListener('click', () => {
+    ?.addEventListener('click', (addClickEvent) => {
+      addClickEvent.preventDefault()
+
       let searchFormElement: HTMLFormElement
       let searchResultsContainerElement: HTMLElement
 
       function doSearch(event?: Event): void {
-        if (event) {
-          event.preventDefault()
-        }
+        event?.preventDefault()
 
         // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML =
@@ -703,6 +703,7 @@ declare const exports: Record<string, unknown>
 
           searchFormElement.addEventListener('submit', doSearch)
         },
+        
         onremoved() {
           bulmaJS.toggleHtmlClipped()
           ;(
@@ -728,14 +729,14 @@ declare const exports: Record<string, unknown>
 
   document
     .querySelector('#button--addBurialSite')
-    ?.addEventListener('click', () => {
+    ?.addEventListener('click', (addClickEvent) => {
+      addClickEvent.preventDefault()
+
       let searchFormElement: HTMLFormElement
       let searchResultsContainerElement: HTMLElement
 
       function doSearch(event?: Event): void {
-        if (event) {
-          event.preventDefault()
-        }
+        event?.preventDefault()
 
         // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML =
@@ -745,7 +746,9 @@ declare const exports: Record<string, unknown>
           `${sunrise.urlPrefix}/burialSites/doSearchBurialSites`,
           searchFormElement,
           (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as { burialSites: BurialSite[] }
+            const responseJSON = rawResponseJSON as {
+              burialSites: BurialSite[]
+            }
 
             if (responseJSON.burialSites.length === 0) {
               searchResultsContainerElement.innerHTML = `<div class="message is-info">
@@ -769,7 +772,8 @@ declare const exports: Record<string, unknown>
             for (const burialSite of responseJSON.burialSites) {
               const rowElement = document.createElement('tr')
               rowElement.className = 'container--burialSite'
-              rowElement.dataset.burialSiteId = burialSite.burialSiteId.toString()
+              rowElement.dataset.burialSiteId =
+                burialSite.burialSiteId.toString()
 
               rowElement.innerHTML = `<td class="has-text-centered">
                   <button class="button is-small is-success button--addBurialSite" data-tooltip="Add" type="button" aria-label="Add">
@@ -843,6 +847,7 @@ declare const exports: Record<string, unknown>
 
           searchFormElement.addEventListener('submit', doSearch)
         },
+
         onremoved() {
           bulmaJS.toggleHtmlClipped()
           ;(

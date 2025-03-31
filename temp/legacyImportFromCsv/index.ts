@@ -322,10 +322,14 @@ async function importFromMasterCSV(): Promise<void> {
                   burialSiteNameSegment2,
                   burialSiteNameSegment3,
                   burialSiteNameSegment4,
-                  burialSiteTypeId,
+
                   burialSiteStatusId: importIds.availableBurialSiteStatusId,
+                  burialSiteTypeId,
+
+                  burialSiteImage: '',
                   cemeteryId,
                   cemeterySvgId: '',
+
                   burialSiteLatitude: '',
                   burialSiteLongitude: ''
                 },

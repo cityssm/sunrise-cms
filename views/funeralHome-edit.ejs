@@ -83,76 +83,75 @@
       </button>
     </div>
   </div>
-  
 </div>
 
 <form id="form--funeralHome">
-    <input id="funeralHome--funeralHomeId" name="funeralHomeId" type="hidden" value="<%= funeralHome.funeralHomeId %>" />
+  <input id="funeralHome--funeralHomeId" name="funeralHomeId" type="hidden" value="<%= funeralHome.funeralHomeId %>" />
 
-    <div class="columns">
-        <div class="column">
-          <div class="panel">
-            <div class="panel-block is-block">
+  <div class="columns">
+    <div class="column">
+      <div class="panel">
+        <div class="panel-block is-block">
+          <div class="field">
+            <label class="label" for="funeralHome--funeralHomeName">Funeral Home Name</label>
+            <div class="control">
+              <input class="input" id="funeralHome--funeralHomeName" name="funeralHomeName" type="text"
+                value="<%= funeralHome.funeralHomeName %>" maxlength="200" required
+                accesskey="f"
+                <%= (isCreate ? " autofocus" : "") %> />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="funeralHome--funeralHomeAddress1">Address</label>
+            <div class="control">
+              <input class="input" id="funeralHome--funeralHomeAddress1" name="funeralHomeAddress1" type="text" value="<%= funeralHome.funeralHomeAddress1 %>" maxlength="50" placeholder="Line 1" />
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <input class="input" id="funeralHome--funeralHomeAddress2" name="funeralHomeAddress2" type="text" value="<%= funeralHome.funeralHomeAddress2 %>" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-8">
               <div class="field">
-                <label class="label" for="funeralHome--funeralHomeName">Funeral Home Name</label>
+                <label class="label" for="funeralHome--funeralHomeCity">City</label>
                 <div class="control">
-                  <input class="input" id="funeralHome--funeralHomeName" name="funeralHomeName" type="text"
-                    value="<%= funeralHome.funeralHomeName %>" maxlength="200" required
-                    accesskey="f"
-                    <%= (isCreate ? " autofocus" : "") %> />
+                  <input class="input" id="funeralHome--funeralHomeCity" name="funeralHomeCity" value="<%= funeralHome.funeralHomeCity %>" maxlength="20" />
                 </div>
               </div>
+            </div>
+            <div class="column">
               <div class="field">
-                <label class="label" for="funeralHome--funeralHomeAddress1">Address</label>
+                <label class="label" for="funeralHome--funeralHomeProvince">Province</label>
                 <div class="control">
-                  <input class="input" id="funeralHome--funeralHomeAddress1" name="funeralHomeAddress1" type="text" value="<%= funeralHome.funeralHomeAddress1 %>" maxlength="50" placeholder="Line 1" />
+                  <input class="input" id="funeralHome--funeralHomeProvince" name="funeralHomeProvince" value="<%= funeralHome.funeralHomeProvince %>" maxlength="2" />
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
               <div class="field">
+                <label class="label" for="funeralHome--funeralHomePostalCode">Postal Code</label>
                 <div class="control">
-                  <input class="input" id="funeralHome--funeralHomeAddress2" name="funeralHomeAddress2" type="text" value="<%= funeralHome.funeralHomeAddress2 %>" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
+                  <input class="input" id="funeralHome--funeralHomePostalCode" name="funeralHomePostalCode" value="<%= funeralHome.funeralHomePostalCode %>" maxlength="7" />
                 </div>
               </div>
-              <div class="columns">
-                <div class="column is-8">
-                  <div class="field">
-                    <label class="label" for="funeralHome--funeralHomeCity">City</label>
-                    <div class="control">
-                      <input class="input" id="funeralHome--funeralHomeCity" name="funeralHomeCity" value="<%= funeralHome.funeralHomeCity %>" maxlength="20" />
-                    </div>
-                  </div>
-                </div>
-                <div class="column">
-                  <div class="field">
-                    <label class="label" for="funeralHome--funeralHomeProvince">Province</label>
-                    <div class="control">
-                      <input class="input" id="funeralHome--funeralHomeProvince" name="funeralHomeProvince" value="<%= funeralHome.funeralHomeProvince %>" maxlength="2" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="columns">
-                <div class="column">
-                  <div class="field">
-                    <label class="label" for="funeralHome--funeralHomePostalCode">Postal Code</label>
-                    <div class="control">
-                      <input class="input" id="funeralHome--funeralHomePostalCode" name="funeralHomePostalCode" value="<%= funeralHome.funeralHomePostalCode %>" maxlength="7" />
-                    </div>
-                  </div>
-                </div>
-                <div class="column">
-                  <div class="field">
-                    <label class="label" for="funeralHome--funeralHomePhoneNumber">Phone Number</label>
-                    <div class="control">
-                      <input class="input" id="funeralHome--funeralHomePhoneNumber" name="funeralHomePhoneNumber" value="<%= funeralHome.funeralHomePhoneNumber %>" maxlength="30" />
-                    </div>
-                  </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="funeralHome--funeralHomePhoneNumber">Phone Number</label>
+                <div class="control">
+                  <input class="input" id="funeralHome--funeralHomePhoneNumber" name="funeralHomePhoneNumber" value="<%= funeralHome.funeralHomePhoneNumber %>" maxlength="30" />
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
     </div>
+  </div>
 </form>
 
 <%- include('_footerA'); -%>

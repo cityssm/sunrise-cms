@@ -5,79 +5,79 @@
     <%- include('_menu-admin'); -%>
   </div>
   <div class="column">
-      <nav class="breadcrumb">
-        <ul>
-          <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-          <li>
-            <a href="#">
-              <span class="icon is-small"><i class="fas fa-cog" aria-hidden="true"></i></span>
-              <span>Administrator Tools</span>
-            </a>
-          </li>
-          <li class="is-active">
-            <a href="#" aria-current="page">
-              Contract Type Management
-            </a>
-          </li>
-        </ul>
-      </nav>
-      
-      <div class="columns is-vcentered">
-        <div class="column">
-          <h1 class="title is-1">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li>
+          <a href="#">
+            <span class="icon is-small"><i class="fas fa-cog" aria-hidden="true"></i></span>
+            <span>Administrator Tools</span>
+          </a>
+        </li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
             Contract Type Management
-          </h1>
-        </div>
-        <div class="column has-text-right is-narrow is-hidden-print">
-          <button class="button is-success" id="button--addContractType" type="button" accesskey="n">
-            <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
-            <span>Add Contract Type</span>
-          </button>
-        </div>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
+    <div class="columns is-vcentered">
+      <div class="column">
+        <h1 class="title is-1">
+          Contract Type Management
+        </h1>
       </div>
-      
-      <div class="tabs is-boxed" role="tablist">
-        <ul role="presentation">
-          <li class="is-active" role="presentation">
-            <a href="#tab--contractTypes">
-              <i class="fas fa-user-friends" aria-hidden="true"></i>
-              <span class="ml-2">Types and Fields</span>
-            </a>
-          </li>
-          <li role="presentation">
-            <a href="#tab--contractTypePrints">
-              <i class="fas fa-print" aria-hidden="true"></i>
-              <span class="ml-2">Prints</span>
-            </a>
-          </li>
-        </ul>
+      <div class="column has-text-right is-narrow is-hidden-print">
+        <button class="button is-success" id="button--addContractType" type="button" accesskey="n">
+          <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+          <span>Add Contract Type</span>
+        </button>
       </div>
-      <div class="tab-container">
-        <div id="tab--contractTypes">
-          <div id="container--contractTypes"></div>
-        </div>
-        <div class="is-hidden" id="tab--contractTypePrints">
-          <div class="columns">
-            <div class="column">
-              <div id="container--contractTypePrints"></div>
-            </div>
-            <div class="column is-4">
-              <div class="box">
-                <h2 class="title is-6">Available Prints</h2>
-                <ul class="fa-ul">
-                  <% for (const [printEJS, printTitle] of Object.entries(contractTypePrintTitles)) { %>
-                    <% const printIconClass = printEJS.startsWith("pdf/") ? "fa-file-pdf" : "fa-file" %>
-                    <li>
-                      <span class="fa-li"><i class="fas <%= printIconClass %>" aria-hidden="true"></i></span>
-                      <%= printTitle %>
-                    </li>
-                  <% } %>
-                </ul>
-              </div>
+    </div>
+    
+    <div class="tabs is-boxed" role="tablist">
+      <ul role="presentation">
+        <li class="is-active" role="presentation">
+          <a href="#tab--contractTypes">
+            <i class="fas fa-user-friends" aria-hidden="true"></i>
+            <span class="ml-2">Types and Fields</span>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#tab--contractTypePrints">
+            <i class="fas fa-print" aria-hidden="true"></i>
+            <span class="ml-2">Prints</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="tab-container">
+      <div id="tab--contractTypes">
+        <div id="container--contractTypes"></div>
+      </div>
+      <div class="is-hidden" id="tab--contractTypePrints">
+        <div class="columns">
+          <div class="column">
+            <div id="container--contractTypePrints"></div>
+          </div>
+          <div class="column is-4">
+            <div class="box">
+              <h2 class="title is-6">Available Prints</h2>
+              <ul class="fa-ul">
+                <% for (const [printEJS, printTitle] of Object.entries(contractTypePrintTitles)) { %>
+                  <% const printIconClass = printEJS.startsWith("pdf/") ? "fa-file-pdf" : "fa-file" %>
+                  <li>
+                    <span class="fa-li"><i class="fas <%= printIconClass %>" aria-hidden="true"></i></span>
+                    <%= printTitle %>
+                  </li>
+                <% } %>
+              </ul>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </div>
 </div>
 

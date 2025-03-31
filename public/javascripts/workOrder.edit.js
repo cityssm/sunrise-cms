@@ -382,7 +382,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           <div class="dropdown is-right">
             <div class="dropdown-trigger">
               <button class="button is-small" data-tooltip="Options" type="button" aria-label="Options">
-                <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                <span class="icon is-small"><i class="fas fa-ellipsis-v" aria-hidden="true"></i></span>
               </button>
             </div>
             <div class="dropdown-menu">

@@ -3,26 +3,26 @@ import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 import type { Sunrise } from './types.js'
 
 type RandomColorHue =
-  | 'red'
-  | 'orange'
-  | 'yellow'
-  | 'green'
   | 'blue'
-  | 'purple'
-  | 'pink'
+  | 'green'
   | 'monochrome'
-type RandomColorLuminosity = 'bright' | 'light' | 'dark'
+  | 'orange'
+  | 'pink'
+  | 'purple'
+  | 'red'
+  | 'yellow'
+type RandomColorLuminosity = 'bright' | 'dark' | 'light'
 
 declare const cityssm: cityssmGlobal
 declare const exports: Record<string, unknown> & {
   aliases: Record<string, string>
   randomColor: (options?: {
+    alpha?: number
+    count?: number
+    format?: 'hex' | 'hsl' | 'hsla' | 'hslArray' | 'rgb' | 'rgba' | 'rgbArray'
     hue?: RandomColorHue
     luminosity?: RandomColorLuminosity
-    count?: number
     seed?: number | string
-    format?: 'rgb' | 'rgba' | 'rgbArray' | 'hsl' | 'hsla' | 'hslArray' | 'hex'
-    alpha?: number
   }) => string
 }
 ;(() => {
@@ -55,7 +55,7 @@ declare const exports: Record<string, unknown> & {
   function highlightMap(
     mapContainerElement: HTMLElement,
     mapKey: string,
-    contextualClass: 'success' | 'danger'
+    contextualClass: 'danger' | 'success'
   ): void {
     // Search for ID
     let svgId = mapKey
@@ -175,7 +175,6 @@ declare const exports: Record<string, unknown> & {
     }
 
     return exports.randomColor({
-      seed: actualSeedString + actualSeedString,
       hue: hues[
         (actualSeedString.codePointAt(actualSeedString.length - 1) as number) %
           hues.length
@@ -185,7 +184,8 @@ declare const exports: Record<string, unknown> & {
           (actualSeedString.codePointAt(
             actualSeedString.length - 2
           ) as number) % luminosity.length
-        ]
+        ],
+      seed: actualSeedString + actualSeedString
     })
   }
 
@@ -271,10 +271,10 @@ declare const exports: Record<string, unknown> & {
 
   function getRecordURL(
     recordTypePlural:
-      | 'cemeteries'
       | 'burialSites'
-      | 'funeralHomes'
+      | 'cemeteries'
       | 'contracts'
+      | 'funeralHomes'
       | 'workOrders',
     recordId: number | string,
     edit: boolean,
@@ -342,29 +342,30 @@ declare const exports: Record<string, unknown> & {
    */
 
   const sunrise: Sunrise = {
-    urlPrefix,
     apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
     dynamicsGPIntegrationIsEnabled,
+    urlPrefix,
+
     highlightMap,
     initializeUnlockFieldButtons,
 
-    populateAliases,
     escapedAliases,
+    populateAliases,
 
     getRandomColor,
 
-    setUnsavedChanges,
     clearUnsavedChanges,
     hasUnsavedChanges,
+    setUnsavedChanges,
 
-    getMoveUpDownButtonFieldHTML,
     getLoadingParagraphHTML,
+    getMoveUpDownButtonFieldHTML,
     getSearchResultsPagerHTML,
 
-    getCemeteryURL,
     getBurialSiteURL,
-    getFuneralHomeURL,
+    getCemeteryURL,
     getContractURL,
+    getFuneralHomeURL,
     getWorkOrderURL
   }
 

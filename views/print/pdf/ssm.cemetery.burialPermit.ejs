@@ -1,74 +1,74 @@
 <% const deceased = contract.contractInterments[0]; %>
 
 <html>
-    <head>
-      <title><%= headTitle %></title>
-      <style>
-        <%- include('style.css'); %>
-      </style>
-    </head>
-    <body style="margin:100px 80px">
-      <p class="mb-2 has-text-centered is-capitalized">Province of Ontario</p>
-      <p class="has-text-centered is-italic">Vital Statistics Act</p>
-      <h1 class="has-text-centered is-capitalized mt-4 mb-4">Burial Permit</h1>
+  <head>
+    <title><%= headTitle %></title>
+    <style>
+      <%- include('style.css'); %>
+    </style>
+  </head>
+  <body style="margin:100px 80px">
+    <p class="mb-2 has-text-centered is-capitalized">Province of Ontario</p>
+    <p class="has-text-centered is-italic">Vital Statistics Act</p>
+    <h1 class="has-text-centered is-capitalized mt-4 mb-4">Burial Permit</h1>
 
-      <p>
-        Under the <span class="is-italic">Vital Statistics Act</span>
-        and the regulations,
-        subject to the limitations thereof,
-        this permit is granted to:<br />
-      </p>
+    <p>
+      Under the <span class="is-italic">Vital Statistics Act</span>
+      and the regulations,
+      subject to the limitations thereof,
+      this permit is granted to:<br />
+    </p>
 
-      <p class="has-text-centered">
-        <strong><%= contract.funeralHomeName %></strong><br />
-        <%= contract.funeralHomeAddress1 %><br />
-        <% if (contract.funeralHomeAddress2) { %><%= contract.funeralHomeAddress2 %><br /><% } %>
-        <%= contract.funeralHomeCity %>, <%= contract.funeralHomeProvince %><br />
-        <%= contract.funeralHomePostalCode %>
-      </p>
+    <p class="has-text-centered">
+      <strong><%= contract.funeralHomeName %></strong><br />
+      <%= contract.funeralHomeAddress1 %><br />
+      <% if (contract.funeralHomeAddress2) { %><%= contract.funeralHomeAddress2 %><br /><% } %>
+      <%= contract.funeralHomeCity %>, <%= contract.funeralHomeProvince %><br />
+      <%= contract.funeralHomePostalCode %>
+    </p>
 
-      <p class="mt-4">
-        for the purpose of the burial or other disposition of the body of:
-      </p>
+    <p class="mt-4">
+      for the purpose of the burial or other disposition of the body of:
+    </p>
 
-      <p class="has-text-centered">
-        <% if (!contract.isPreneed && deceased !== undefined) { %>
-          <strong><%= deceased.deceasedName %></strong>
-        <% } %>
-      </p>
+    <p class="has-text-centered">
+      <% if (!contract.isPreneed && deceased !== undefined) { %>
+        <strong><%= deceased.deceasedName %></strong>
+      <% } %>
+    </p>
 
-      <p>
-        who died at
-        <span class="field has-text-centered" style="width:300px">
-          &nbsp;
-          <%= deceased?.deathPlace ?? '' %>
-          &nbsp;
-        </span>
-        in Ontario on
-        <span class="field has-text-centered" style="width:150px">
-          &nbsp;
-          <%= deceased?.deathDateString %>
-          &nbsp;
-        </span>
-        .
-      </p>
-
-      <p class="has-text-right mt-6">
-        <span class="field mb-1" style="width:300px">&nbsp;</span><br />
-        <span class="is-8pt">(Signature of Division Registrar)</span>
-      </p>
-
-      <p class="has-text-right">
-        Sault Ste. Marie
+    <p>
+      who died at
+      <span class="field has-text-centered" style="width:300px">
         &nbsp;
+        <%= deceased?.deathPlace ?? '' %>
         &nbsp;
+      </span>
+      in Ontario on
+      <span class="field has-text-centered" style="width:150px">
         &nbsp;
-        5724
-      </p>
+        <%= deceased?.deathDateString %>
+        &nbsp;
+      </span>
+      .
+    </p>
 
-      <p class="has-text-right mt-4">
-        <span class="field mb-1" style="width:150px">&nbsp;</span><br />
-        <span class="is-8pt">(Year Month Day)</span>
-      </p>
-    </body>
+    <p class="has-text-right mt-6">
+      <span class="field mb-1" style="width:300px">&nbsp;</span><br />
+      <span class="is-8pt">(Signature of Division Registrar)</span>
+    </p>
+
+    <p class="has-text-right">
+      Sault Ste. Marie
+      &nbsp;
+      &nbsp;
+      &nbsp;
+      5724
+    </p>
+
+    <p class="has-text-right mt-4">
+      <span class="field mb-1" style="width:150px">&nbsp;</span><br />
+      <span class="is-8pt">(Year Month Day)</span>
+    </p>
+  </body>
 </html>

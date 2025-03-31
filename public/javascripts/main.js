@@ -103,10 +103,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             actualSeedString += 'a1';
         }
         return exports.randomColor({
-            seed: actualSeedString + actualSeedString,
             hue: hues[actualSeedString.codePointAt(actualSeedString.length - 1) %
                 hues.length],
-            luminosity: luminosity[actualSeedString.codePointAt(actualSeedString.length - 2) % luminosity.length]
+            luminosity: luminosity[actualSeedString.codePointAt(actualSeedString.length - 2) % luminosity.length],
+            seed: actualSeedString + actualSeedString
         });
     }
     /*
@@ -202,24 +202,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
      * Declare sunrise
      */
     const sunrise = {
-        urlPrefix,
         apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
         dynamicsGPIntegrationIsEnabled,
+        urlPrefix,
         highlightMap,
         initializeUnlockFieldButtons,
-        populateAliases,
         escapedAliases,
+        populateAliases,
         getRandomColor,
-        setUnsavedChanges,
         clearUnsavedChanges,
         hasUnsavedChanges,
-        getMoveUpDownButtonFieldHTML,
+        setUnsavedChanges,
         getLoadingParagraphHTML,
+        getMoveUpDownButtonFieldHTML,
         getSearchResultsPagerHTML,
-        getCemeteryURL,
         getBurialSiteURL,
-        getFuneralHomeURL,
+        getCemeteryURL,
         getContractURL,
+        getFuneralHomeURL,
         getWorkOrderURL
     };
     exports.sunrise = sunrise;
