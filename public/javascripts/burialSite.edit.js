@@ -183,6 +183,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
+    // Leaflet Map
+    document
+        .querySelector('#button--selectCoordinate')
+        ?.addEventListener('click', (clickEvent) => {
+        clickEvent.preventDefault();
+        sunrise.openLeafletCoordinateSelectorModal({
+            latitudeElement: document.querySelector('#burialSite--burialSiteLatitude'),
+            longitudeElement: document.querySelector('#burialSite--burialSiteLongitude'),
+            callbackFunction: () => {
+                sunrise.setUnsavedChanges();
+            }
+        });
+    });
     // Comments
     let burialSiteComments = exports.burialSiteComments;
     delete exports.burialSiteComments;

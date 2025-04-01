@@ -19,7 +19,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         return _hasUnsavedChanges;
     }
     /*
-     * Mapping
+     * SVG Mapping
      */
     function highlightMap(mapContainerElement, mapKey, contextualClass) {
         // Search for ID
@@ -41,6 +41,71 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         }
     }
+    /*
+     * Leaflet Mapping
+     */
+    const leafletConstants = {
+        tileLayerURL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        defaultZoom: 15,
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    };
+    function openLeafletCoordinateSelectorModal(options) {
+        const latitude = Number.parseFloat(options.latitudeElement.value);
+        const longitude = Number.parseFloat(options.longitudeElement.value);
+        let currentMarker;
+        cityssm.openHtmlModal('leaflet-selectCoordinate', {
+            onshown(modalElement, closeModalFunction) {
+                bulmaJS.toggleHtmlClipped();
+                /*
+                 * Set up the Leaflet map
+                 */
+                const mapContainerElement = modalElement.querySelector('.leaflet-map');
+                // eslint-disable-next-line unicorn/no-array-callback-reference
+                const map = L.map(mapContainerElement);
+                L.tileLayer(sunrise.leafletConstants.tileLayerURL, {
+                    attribution: sunrise.leafletConstants.attribution,
+                    maxZoom: sunrise.leafletConstants.maxZoom
+                }).addTo(map);
+                if (!Number.isNaN(latitude) && !Number.isNaN(longitude)) {
+                    const mapCoordinates = [latitude, longitude];
+                    map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom);
+                    currentMarker = L.marker(mapCoordinates).addTo(map);
+                }
+                else {
+                    const middleLatitude = (Number.parseFloat(options.latitudeElement.min) + Number.parseFloat(options.latitudeElement.max)) / 2;
+                    const middleLongitude = (Number.parseFloat(options.longitudeElement.min) + Number.parseFloat(options.longitudeElement.max)) / 2;
+                    const mapCoordinates = [middleLatitude, middleLongitude];
+                    map.setView(mapCoordinates, 5);
+                }
+                map.on('click', (clickEvent) => {
+                    const mapCoordinates = clickEvent.latlng;
+                    if (currentMarker !== undefined) {
+                        currentMarker.remove();
+                    }
+                    currentMarker = L.marker(mapCoordinates).addTo(map);
+                });
+                modalElement
+                    .querySelector('.is-update-button')
+                    ?.addEventListener('click', (clickEvent) => {
+                    clickEvent.preventDefault();
+                    if (currentMarker !== undefined) {
+                        const mapCoordinates = currentMarker.getLatLng();
+                        options.latitudeElement.value = mapCoordinates.lat.toFixed(8);
+                        options.longitudeElement.value = mapCoordinates.lng.toFixed(8);
+                        options.callbackFunction(mapCoordinates.lat, mapCoordinates.lng);
+                    }
+                    closeModalFunction();
+                });
+            },
+            onremoved() {
+                bulmaJS.toggleHtmlClipped();
+            }
+        });
+    }
+    /*
+     * Field Unlocking
+     */
     function unlockField(clickEvent) {
         const fieldElement = clickEvent.currentTarget.closest('.field');
         const inputOrSelectElement = fieldElement.querySelector('input, select');
@@ -206,6 +271,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         dynamicsGPIntegrationIsEnabled,
         urlPrefix,
         highlightMap,
+        leafletConstants,
+        openLeafletCoordinateSelectorModal,
         initializeUnlockFieldButtons,
         escapedAliases,
         populateAliases,

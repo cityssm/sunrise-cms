@@ -59,42 +59,70 @@
   </div>
 </div>
 
+<div class="panel">
+  <div class="panel-block is-block">
+    <div class="columns">
+      <div class="column">
+        <p class="mb-2">
+          <strong>Cemetery</strong><br />
+          <a href="<%= urlPrefix %>/cemeteries/<%= burialSite.cemeteryId %>">
+            <%= burialSite.cemeteryName || "(No Name)" %>
+          </a>
+        </p>
+        <p class="mb-2">
+          <strong>Burial Site Type</strong><br />
+          <%= burialSite.burialSiteType %>
+        </p>
+        <p>
+          <strong>Status</strong><br />
+          <%= burialSite.burialSiteStatus %>
+        </p>
+      </div>
+      <% if (burialSite.burialSiteFields.length > 0) { %>
+        <div class="column">
+          <% for (const burialSiteField of burialSite.burialSiteFields) { %>
+            <p class="mb-2">
+              <strong><%= burialSiteField.burialSiteTypeField %></strong><br />
+              <% if (burialSiteField.fieldValue) { %>
+                <%= burialSiteField.fieldValue %>
+              <% } else { %>
+                <span class="has-text-grey">(No Value)</span>
+              <% } %>
+            </p>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
 <div class="columns">
   <div class="column">
     <div class="panel">
+      <div class="panel-heading">
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="title is-5 has-text-weight-bold has-text-white">Geographic Location</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="panel-block is-block">
-        <div class="columns">
-          <div class="column">
-            <p class="mb-2">
-              <strong>Cemetery</strong><br />
-              <a href="<%= urlPrefix %>/cemeteries/<%= burialSite.cemeteryId %>">
-                <%= burialSite.cemeteryName || "(No Name)" %>
-              </a>
-            </p>
-            <p class="mb-2">
-              <strong>Burial Site Type</strong><br />
-              <%= burialSite.burialSiteType %>
-            </p>
-            <p>
-              <strong>Status</strong><br />
-              <%= burialSite.burialSiteStatus %>
+        <% if (burialSite.burialSiteLatitude && burialSite.burialSiteLongitude) { %>
+          <div id="burialSite--leaflet" data-latitude="<%= burialSite.burialSiteLatitude %>" data-longitude="<%= burialSite.burialSiteLongitude %>" style="height:300px"></div>
+        <% } else { %>
+          <div class="message is-info">
+            <p class="message-body">
+              There are no geographic coordinates associated with this burial site.
             </p>
           </div>
-          <% if (burialSite.burialSiteFields.length > 0) { %>
-            <div class="column">
-              <% for (const burialSiteField of burialSite.burialSiteFields) { %>
-                <p class="mb-2">
-                  <strong><%= burialSiteField.burialSiteTypeField %></strong><br />
-                  <% if (burialSiteField.fieldValue) { %>
-                    <%= burialSiteField.fieldValue %>
-                  <% } else { %>
-                    <span class="has-text-grey">(No Value)</span>
-                  <% } %>
-                </p>
-              <% } %>
-            </div>
-          <% } %>
-        </div>
+        <% } %>
       </div>
     </div>
   </div>

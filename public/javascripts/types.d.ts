@@ -1,7 +1,18 @@
 export interface Sunrise {
-    urlPrefix: string;
     apiKey: string;
+    urlPrefix: string;
     highlightMap: (mapContainerElement: HTMLElement, mapKey: string, contextualClass: 'danger' | 'success') => void;
+    leafletConstants: {
+        tileLayerURL: string;
+        defaultZoom: number;
+        maxZoom: number;
+        attribution: string;
+    };
+    openLeafletCoordinateSelectorModal: (options: {
+        latitudeElement: HTMLInputElement;
+        longitudeElement: HTMLInputElement;
+        callbackFunction: (latitude: number, longitude: number) => void;
+    }) => void;
     initializeUnlockFieldButtons: (containerElement: HTMLElement) => void;
     populateAliases: (containerElement: HTMLElement) => void;
     escapedAliases: {

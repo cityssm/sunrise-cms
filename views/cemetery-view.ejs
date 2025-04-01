@@ -112,7 +112,7 @@
       </div>
       <div class="panel-block is-block">
         <% if (cemetery.cemeteryLatitude && cemetery.cemeteryLongitude) { %>
-          <div id="cemetery--leaflet" data-cemetery-latitude="<%= cemetery.cemeteryLatitude %>" data-cemetery-longitude="<%= cemetery.cemeteryLongitude %>" style="height:300px"></div>
+          <div id="cemetery--leaflet" data-latitude="<%= cemetery.cemeteryLatitude %>" data-longitude="<%= cemetery.cemeteryLongitude %>" style="height:300px"></div>
         <% } else { %>
           <div class="message is-info">
             <p class="message-body">

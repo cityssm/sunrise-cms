@@ -281,6 +281,27 @@ declare const exports: Record<string, unknown>
     })
   }
 
+  // Leaflet Map
+
+  document
+    .querySelector('#button--selectCoordinate')
+    ?.addEventListener('click', (clickEvent) => {
+      clickEvent.preventDefault()
+
+      sunrise.openLeafletCoordinateSelectorModal({
+        latitudeElement: document.querySelector(
+          '#burialSite--burialSiteLatitude'
+        ) as HTMLInputElement,
+        longitudeElement: document.querySelector(
+          '#burialSite--burialSiteLongitude'
+        ) as HTMLInputElement,
+
+        callbackFunction: () => {
+          sunrise.setUnsavedChanges()
+        }
+      })
+    })
+
   // Comments
 
   let burialSiteComments = exports.burialSiteComments as BurialSiteComment[]
