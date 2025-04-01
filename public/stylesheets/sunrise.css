@@ -83,18 +83,23 @@ span.button.is-static {
  * Fixed Level
  */
 
+.columns.is-fixed-bottom,
 .level.is-fixed-bottom {
   z-index: 1100;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 15px;
   margin: 0;
+}
 
-  &.has-shadow {
-    box-shadow: 0 -2px 0 0 #f5f5f5;
-  }
+.level.is-fixed-bottom {
+  padding: 15px;
+}
+
+.columns.is-fixed-bottom.has-shadow,
+.level.is-fixed-bottom.has-shadow {
+  box-shadow: 0 -2px 0 0 #f5f5f5;
 }
 
 /*

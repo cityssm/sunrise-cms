@@ -28,24 +28,22 @@
   <%= contract.burialSiteName || "(No Burial Site)" %>
 </h1>
 
-<div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
-  <div class="level-left">
-    <span class="level-item has-text-weight-bold">
+<div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
+  <div class="column">
+    <span class="has-text-weight-bold">
       Contract #<%= contract.contractId %>:
       <%= contract.burialSiteName ?? "(No Burial Site)" %>
     </span>
   </div>
-  <div class="level-right">
-    <% if (contractTypePrints.length > 0) { %>
-      <% if (contractTypePrints.length === 1) { %>
-        <div class="level-item">
+  <div class="column is-narrow has-text-right">
+    <div class="buttons is-right">
+      <% if (contractTypePrints.length > 0) { %>
+        <% if (contractTypePrints.length === 1) { %>
           <a href="<%= urlPrefix %>/print/<%= contractTypePrints[0] %>/?contractId=<%= contract.contractId %>" target="_blank" aria-label="Print">
             <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
             <span class="is-hidden-touch">Print</span>
           </a>
-        </div>
-      <% } else { %>
-        <div class="level-item">
+        <% } else { %>
           <div class="dropdown is-right is-up">
             <div class="dropdown-trigger">
               <button class="button" type="button" aria-label="Print">
@@ -68,11 +66,9 @@
               </div>
             </div>
           </div>
-        </div>
+        <% } %>
       <% } %>
-    <% } %>
-    <% if (user.userProperties.canUpdate) { %>
-      <div class="level-item">
+      <% if (user.userProperties.canUpdate) { %>
         <a class="button <%= (contract.contractEndDate ? "is-warning" : "is-primary") %>"
           href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/edit"
           accesskey="e">
@@ -80,8 +76,8 @@
           <span class="is-hidden-mobile">Switch to Edit Mode</span>
           <span class="is-hidden-tablet">Edit</span>
         </a>
-      </div>
-    <% } %>
+      <% } %>
+    </div>
   </div>
 </div>
 

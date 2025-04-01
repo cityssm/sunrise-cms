@@ -27,15 +27,15 @@
 </div>
 
 <% if (user.userProperties.canUpdate) { %>
-<div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-  <a class="button is-circle is-primary has-tooltip-left"
-    data-tooltip="Create a New Funeral Home"
-    href="<%= urlPrefix %>/funeralHomes/new"
-    accesskey="n">
-    <i class="fas fa-plus" aria-hidden="true"></i>
-    <span class="sr-only">Create a New Funeral Home</span>
-  </a>
-</div>
+  <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+    <a class="button is-circle is-primary has-tooltip-left"
+      data-tooltip="Create a New Funeral Home"
+      href="<%= urlPrefix %>/funeralHomes/new"
+      accesskey="n">
+      <i class="fas fa-plus" aria-hidden="true"></i>
+      <span class="sr-only">Create a New Funeral Home</span>
+    </a>
+  </div>
 <% } %>
 
 <div class="box">

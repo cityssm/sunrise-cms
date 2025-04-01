@@ -36,23 +36,21 @@
   <% } %>
 </h1>
 
-<div class="level is-fixed-bottom is-mobile has-background-white has-shadow is-hidden-print">
-  <div class="level-left">
+<div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
+  <div class="column">
     <% if (!isCreate) { %>
-      <span class="level-item has-text-weight-bold">
+      <span class="has-text-weight-bold">
         <%= cemetery.cemeteryName || "(No Name)" %>
       </span>
     <% } %>
   </div>
-  <div class="level-right">
-    <% if (isCreate) { %>
-      <div class="level-item">
+  <div class="column is-narrow has-text-right">
+    <div class="buttons is-right">
+      <% if (isCreate) { %>
         <a class="button is-danger is-light" href="<%= urlPrefix %>/cemeteries">
           Cancel
         </a>
-      </div>
-    <% } else { %>
-      <div class="level-item">
+      <% } else { %>
         <div class="dropdown is-right is-up">
           <div class="dropdown-trigger">
             <button class="button" type="button">
@@ -71,14 +69,12 @@
             </div>
           </div>
         </div>
-      </div>
-    <% } %>
-    <div class="level-item">
+      <% } %>
       <button class="button is-primary is-light" type="submit" form="form--cemetery">
         <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
         <span>
           <%= (isCreate ? "Create": "Update") %>
-          Cemetery
+          <span class="is-hidden-mobile">Cemetery</span>
         </span>
       </button>
     </div>
@@ -126,7 +122,7 @@
     <div class="column">
       <div class="panel">
         <div class="panel-heading">
-          <div class="level">
+          <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
                 <h2 class="title is-5 has-text-weight-bold has-text-white">Address</h2>
@@ -140,53 +136,53 @@
           </div>
         </div>
         <div class="panel-block is-block">
-            <div class="field">
-              <label class="label" for="cemetery--cemeteryAddress1">Address</label>
-              <div class="control">
-                <input class="input" id="cemetery--cemeteryAddress1" name="cemeteryAddress1" type="text" value="<%= cemetery.cemeteryAddress1 %>" maxlength="50" placeholder="Line 1" />
-              </div>
+          <div class="field">
+            <label class="label" for="cemetery--cemeteryAddress1">Address</label>
+            <div class="control">
+              <input class="input" id="cemetery--cemeteryAddress1" name="cemeteryAddress1" type="text" value="<%= cemetery.cemeteryAddress1 %>" maxlength="50" placeholder="Line 1" />
             </div>
-            <div class="field">
-              <div class="control">
-                <input class="input" id="cemetery--cemeteryAddress2" name="cemeteryAddress2" type="text" value="<%= cemetery.cemeteryAddress2 %>" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
-              </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <input class="input" id="cemetery--cemeteryAddress2" name="cemeteryAddress2" type="text" value="<%= cemetery.cemeteryAddress2 %>" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
             </div>
-            <div class="columns">
-              <div class="column is-8">
-                <div class="field">
-                  <label class="label" for="cemetery--cemeteryCity">City</label>
-                  <div class="control">
-                    <input class="input" id="cemetery--cemeteryCity" name="cemeteryCity" value="<%= cemetery.cemeteryCity %>" maxlength="20" />
-                  </div>
-                </div>
-              </div>
-              <div class="column">
-                <div class="field">
-                  <label class="label" for="cemetery--cemeteryProvince">Province</label>
-                  <div class="control">
-                    <input class="input" id="cemetery--cemeteryProvince" name="cemeteryProvince" value="<%= cemetery.cemeteryProvince %>" maxlength="2" />
-                  </div>
+          </div>
+          <div class="columns">
+            <div class="column is-8">
+              <div class="field">
+                <label class="label" for="cemetery--cemeteryCity">City</label>
+                <div class="control">
+                  <input class="input" id="cemetery--cemeteryCity" name="cemeteryCity" value="<%= cemetery.cemeteryCity %>" maxlength="20" />
                 </div>
               </div>
             </div>
-            <div class="columns">
-              <div class="column">
-                <div class="field">
-                  <label class="label" for="cemetery--cemeteryPostalCode">Postal Code</label>
-                  <div class="control">
-                    <input class="input" id="cemetery--cemeteryPostalCode" name="cemeteryPostalCode" value="<%= cemetery.cemeteryPostalCode %>" maxlength="7" />
-                  </div>
-                </div>
-              </div>
-              <div class="column">
-                <div class="field">
-                  <label class="label" for="cemetery--cemeteryPhoneNumber">Phone Number</label>
-                  <div class="control">
-                    <input class="input" id="cemetery--cemeteryPhoneNumber" name="cemeteryPhoneNumber" value="<%= cemetery.cemeteryPhoneNumber %>" maxlength="30" />
-                  </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="cemetery--cemeteryProvince">Province</label>
+                <div class="control">
+                  <input class="input" id="cemetery--cemeteryProvince" name="cemeteryProvince" value="<%= cemetery.cemeteryProvince %>" maxlength="2" />
                 </div>
               </div>
             </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="cemetery--cemeteryPostalCode">Postal Code</label>
+                <div class="control">
+                  <input class="input" id="cemetery--cemeteryPostalCode" name="cemeteryPostalCode" value="<%= cemetery.cemeteryPostalCode %>" maxlength="7" />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="cemetery--cemeteryPhoneNumber">Phone Number</label>
+                <div class="control">
+                  <input class="input" id="cemetery--cemeteryPhoneNumber" name="cemeteryPhoneNumber" value="<%= cemetery.cemeteryPhoneNumber %>" maxlength="30" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -195,7 +191,7 @@
     <div class="column">
       <div class="panel">
         <div class="panel-heading">
-          <div class="level">
+          <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
                 <h2 class="title is-5 has-text-weight-bold has-text-white">Geographic Location</h2>
