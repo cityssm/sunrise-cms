@@ -421,7 +421,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             </div>
             <div class="level-item">
               <button class="button is-small is-danger button--deleteContractTypePrint" data-tooltip="Delete" type="button" aria-label="Delete Print">
-                <i class="fas fa-trash" aria-hidden="true"></i>
+                <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
               </button>
             </div>
           </div>
