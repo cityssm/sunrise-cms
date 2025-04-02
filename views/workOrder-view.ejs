@@ -17,10 +17,28 @@
   </ul>
 </nav>
 
-<h1 class="title is-1">
-  Work Order
-  #<%= workOrder.workOrderNumber || "(No Number)" %>
-</h1>
+<div class="level is-mobile">
+  <div class="level-left">
+    <div class="level-item">
+      <h1 class="title is-1">
+        Work Order
+        #<%= workOrder.workOrderNumber || "(No Number)" %>
+      </h1>
+    </div>
+  </div>
+  <% if (workOrder.workOrderCloseDate) { %>
+    <div class="level-right">
+      <div class="level-item">
+        <span class="tag is-info is-medium">
+          <span class="icon is-small">
+            <i class="fas fa-stop" aria-hidden="true"></i>
+          </span>
+          <span>Closed</span>
+        </span>
+      </div>
+    </div>
+  <% } %>
+</div>
 
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column">
@@ -65,7 +83,8 @@
       <% if (user.userProperties.canUpdate) { %>
         <% if (workOrder.workOrderCloseDate) { %>
           <button class="button is-warning" id="button--reopenWorkOrder" data-work-order-id="<%= workOrder.workOrderId %>" type="button">
-            Reopen Work Order
+            <span class="icon"><i class="fas fa-undo" aria-hidden="true"></i></span>
+            <span>Reopen Work Order</span>
         </button>
         <% } else { %>
           <a class="button is-primary"

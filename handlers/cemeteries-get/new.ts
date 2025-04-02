@@ -10,16 +10,24 @@ export default async function handler(
 ): Promise<void> {
   const cemetery: Cemetery = {
     cemeteryCity: getConfigProperty('settings.cityDefault'),
-    cemeteryProvince: getConfigProperty('settings.provinceDefault')
+    cemeteryProvince: getConfigProperty('settings.provinceDefault'),
+
+    cemeteryAddress1: '',
+    cemeteryAddress2: '',
+    cemeteryDescription: '',
+    cemeteryKey: '',
+    cemeteryName: '',
+    cemeteryPhoneNumber: '',
+    cemeteryPostalCode: ''
   }
 
   const cemeterySVGs = await getCemeterySVGs()
 
   response.render('cemetery-edit', {
-    headTitle: "Create a Cemetery",
+    headTitle: 'Create a Cemetery',
 
     cemetery,
     cemeterySVGs,
-    isCreate: true,
+    isCreate: true
   })
 }

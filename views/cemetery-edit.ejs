@@ -90,20 +90,31 @@
         <div class="panel-block is-block">
           <div class="field">
             <label class="label" for="cemetery--cemeteryName">Cemetery Name</label>
-            <div class="control">
+            <div class="control has-icons-right">
               <input class="input" id="cemetery--cemeteryName" name="cemeteryName" type="text"
                 value="<%= cemetery.cemeteryName %>" maxlength="200" required
                 accesskey="f"
                 <%= (isCreate ? " autofocus" : "") %> />
+              <span class="icon is-small is-right">
+                <i class="fas fa-asterisk" aria-hidden="true"></i>
+              </span>
             </div>
           </div>
+          <%
+            const cemeteryKeyIsRequired = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments.includeCemeteryKey');
+          %>
           <div class="field">
             <label class="label" for="cemetery--cemeteryKey">Cemetery Key</label>
-            <div class="control">
+            <div class="control has-icons-right">
               <input class="input" id="cemetery--cemeteryKey" name="cemeteryKey" type="text"
                 value="<%= cemetery.cemeteryKey %>" maxlength="20"
-                <%= configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments.includeCemeteryKey') ? ' required' : '' %> />
-              <% if (configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments.includeCemeteryKey')) { %>
+                <%= cemeteryKeyIsRequired ? ' required' : '' %> />
+              <% if (cemeteryKeyIsRequired) { %>
+                <span class="icon is-small is-right">
+                  <i class="fas fa-asterisk" aria-hidden="true"></i>
+                </span>
+              <% } %>
+              <% if (cemeteryKeyIsRequired) { %>
                 <p class="help">
                   The cemetery key is prepended to the burial site names.
                 </p>
