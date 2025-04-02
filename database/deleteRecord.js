@@ -26,7 +26,7 @@ const relatedTables = new Map([
         'WorkOrders',
         [
             'WorkOrderMilestones',
-            'WorkOrderLots',
+            'WorkOrderBurialSites',
             'WorkOrderContracts',
             'WorkOrderComments'
         ]

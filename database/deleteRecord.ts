@@ -47,7 +47,7 @@ const relatedTables = new Map<RecordTable, string[]>([
     'WorkOrders',
     [
       'WorkOrderMilestones',
-      'WorkOrderLots',
+      'WorkOrderBurialSites',
       'WorkOrderContracts',
       'WorkOrderComments'
     ]
