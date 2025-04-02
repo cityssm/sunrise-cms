@@ -577,6 +577,7 @@ declare const exports: Record<string, unknown>
       onshown() {
         bulmaJS.toggleHtmlClipped()
       },
+      
       onhidden() {
         renderContractFees()
       },
