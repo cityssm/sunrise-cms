@@ -1,25 +1,33 @@
+import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
+
+import getBurialSites from './getBurialSites.js'
 import { acquireConnection } from './pool.js'
 
 export interface UpdateCemeteryForm {
   cemeteryId: string
-  cemeteryName: string
-  cemeteryKey: string
+
   cemeteryDescription: string
-  cemeterySvg: string
-  cemeteryLatitude: string
-  cemeteryLongitude: string
+  cemeteryKey: string
+  cemeteryName: string
+
   cemeteryAddress1: string
   cemeteryAddress2: string
   cemeteryCity: string
-  cemeteryProvince: string
   cemeteryPostalCode: string
+  cemeteryProvince: string
+
   cemeteryPhoneNumber: string
+
+  cemeteryLatitude: string
+  cemeteryLongitude: string
+  cemeterySvg: string
 }
 
 export default async function updateCemetery(
   updateForm: UpdateCemeteryForm,
   user: User
-): Promise<boolean> {
+): Promise<{ doRebuildBurialSiteNames: boolean; success: boolean; }> {
   const database = await acquireConnection()
 
   const result = database
@@ -64,7 +72,46 @@ export default async function updateCemetery(
       updateForm.cemeteryId
     )
 
+  /*
+   * Check if burial site names need to be updated
+   */
+
+  let doRebuildBurialSiteNames = false
+
+  if (
+    getConfigProperty(
+      'settings.burialSites.burialSiteNameSegments.includeCemeteryKey'
+    )
+  ) {
+    const burialSites = await getBurialSites(
+      { cemeteryId: updateForm.cemeteryId },
+      { limit: 1, offset: 0 },
+      database
+    )
+
+    if (
+      burialSites.count > 0 &&
+      buildBurialSiteName(updateForm.cemeteryKey, {
+        burialSiteNameSegment1:
+          burialSites.burialSites[0].burialSiteNameSegment1,
+        burialSiteNameSegment2:
+          burialSites.burialSites[0].burialSiteNameSegment2,
+        burialSiteNameSegment3:
+          burialSites.burialSites[0].burialSiteNameSegment3,
+        burialSiteNameSegment4:
+          burialSites.burialSites[0].burialSiteNameSegment4,
+        burialSiteNameSegment5:
+          burialSites.burialSites[0].burialSiteNameSegment5
+      }) !== burialSites.burialSites[0].burialSiteName
+    ) {
+      doRebuildBurialSiteNames = true
+    }
+  }
+
   database.release()
 
-  return result.changes > 0
+  return {
+    doRebuildBurialSiteNames,
+    success: result.changes > 0
+  }
 }
