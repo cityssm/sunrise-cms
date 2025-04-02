@@ -53,7 +53,7 @@
               </a>
             </div>
             <div class="dropdown-menu">
-              <div class="dropdown-content">
+              <div class="dropdown-content has-text-left">
                 <% for (const printName of contractTypePrints) { %>
                   <% const printConfig = printFunctions.getPrintConfig(printName); %>
                   <% if (printConfig) { %>
@@ -160,7 +160,11 @@
       <div class="column">
         <p>
           <strong>Funeral Home</strong><br />
-          <%= contract.funeralHomeName %><br />
+          <% if (contract.funeralHomeName === null) { %>
+            <span class="has-text-grey">(No Funeral Home)</span>
+          <% } else { %>
+            <%= contract.funeralHomeName %>
+          <% } %><br />
           <span class="is-size-7">
             <% if (contract.funeralHomeAddress1) { %>
               <%= contract.funeralHomeAddress1 %><br />

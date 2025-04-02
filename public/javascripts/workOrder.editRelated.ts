@@ -212,7 +212,7 @@ declare const exports: Record<string, unknown>
       }
       </td><td>
         <a class="has-text-weight-bold" href="${sunrise.getContractURL(contract.contractId)}">
-          ${cityssm.escapeHTML(contract.contractType ?? '')}
+          ${cityssm.escapeHTML(contract.contractType)}
         </a><br />
         <span class="is-size-7">#${contract.contractId}</span>
       </td>`
@@ -635,7 +635,7 @@ declare const exports: Record<string, unknown>
                           )})
                           </span>`
                       : cityssm.escapeHTML(
-                          contract.contractInterments![0].deceasedName
+                          contract.contractInterments![0].deceasedName ?? ''
                         ) +
                         (contract.contractInterments!.length > 1
                           ? ` plus

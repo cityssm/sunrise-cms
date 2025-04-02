@@ -47,7 +47,7 @@
               </button>
             </div>
             <div class="dropdown-menu">
-              <div class="dropdown-content">
+              <div class="dropdown-content has-text-left">
                 <% for (const printName of configFunctions.getConfigProperty("settings.workOrders.prints")) { %>
                   <% const printConfig = printFunctions.getPrintConfig(printName); %>
                   <% if (printConfig) { %>

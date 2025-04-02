@@ -248,7 +248,7 @@ declare const exports: Record<string, unknown>
               : ''
           }
           <button class="button is-danger is-light button--delete" data-tooltip="Delete Fee" type="button">
-            <i class="fas fa-trash" aria-hidden="true"></i>
+            <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
           </button>
           </div>
           </td>`
@@ -458,7 +458,7 @@ declare const exports: Record<string, unknown>
         categoryContainerElement.innerHTML = `<div class="columns is-vcentered">
         <div class="column">
           <h4 class="title is-5">
-          ${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}
+          ${cityssm.escapeHTML(feeCategory.feeCategory)}
           </h4>
         </div>
         </div>
@@ -498,7 +498,7 @@ declare const exports: Record<string, unknown>
           let includeFee = true
 
           const feeSearchString =
-            `${feeCategory.feeCategory ?? ''} ${fee.feeName ?? ''} ${fee.feeDescription ?? ''}`.toLowerCase()
+            `${feeCategory.feeCategory} ${fee.feeName ?? ''} ${fee.feeDescription ?? ''}`.toLowerCase()
 
           for (const filterStringPiece of filterStringPieces) {
             if (!feeSearchString.includes(filterStringPiece)) {
@@ -687,7 +687,6 @@ declare const exports: Record<string, unknown>
       },
       onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
-
         ;(
           modalElement.querySelector(
             '#contractTransactionEdit--transactionAmount'
@@ -837,7 +836,7 @@ declare const exports: Record<string, unknown>
                 <span>Edit</span>
               </button>
               <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
-                <i class="fas fa-trash" aria-hidden="true"></i>
+                <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
               </button>
             </div>
           </td>`

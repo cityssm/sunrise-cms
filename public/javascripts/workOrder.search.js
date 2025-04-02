@@ -34,7 +34,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             for (const contract of workOrder.workOrderContracts ?? []) {
                 for (const interment of contract.contractInterments ?? []) {
                     relatedHTML += `<li class="has-tooltip-left"
-            data-tooltip="${cityssm.escapeHTML(contract.isPreneed ?? false ? 'Recipient' : 'Deceased')}">
+            data-tooltip="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
             <span class="fa-li">
               <i class="fas fa-fw fa-user"></i>
             </span>

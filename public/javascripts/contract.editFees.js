@@ -158,7 +158,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                   </button>`
                 : ''}
           <button class="button is-danger is-light button--delete" data-tooltip="Delete Fee" type="button">
-            <i class="fas fa-trash" aria-hidden="true"></i>
+            <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
           </button>
           </div>
           </td>`;
@@ -289,7 +289,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 categoryContainerElement.innerHTML = `<div class="columns is-vcentered">
         <div class="column">
           <h4 class="title is-5">
-          ${cityssm.escapeHTML(feeCategory.feeCategory ?? '')}
+          ${cityssm.escapeHTML(feeCategory.feeCategory)}
           </h4>
         </div>
         </div>
@@ -315,7 +315,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         continue;
                     }
                     let includeFee = true;
-                    const feeSearchString = `${feeCategory.feeCategory ?? ''} ${fee.feeName ?? ''} ${fee.feeDescription ?? ''}`.toLowerCase();
+                    const feeSearchString = `${feeCategory.feeCategory} ${fee.feeName ?? ''} ${fee.feeDescription ?? ''}`.toLowerCase();
                     for (const filterStringPiece of filterStringPieces) {
                         if (!feeSearchString.includes(filterStringPiece)) {
                             includeFee = false;
@@ -535,7 +535,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 <span>Edit</span>
               </button>
               <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
-                <i class="fas fa-trash" aria-hidden="true"></i>
+                <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
               </button>
             </div>
           </td>`;

@@ -75,7 +75,9 @@ declare const exports: Record<string, unknown>
       feeCategoryContainerElement.innerHTML = `<div class="panel-heading">
         <div class="columns">
           <div class="column">
-            <h2 class="title is-5 has-text-white mb-2">${cityssm.escapeHTML(feeCategory.feeCategory)}</h2>
+            <h2 class="title is-5 has-text-white mb-2">
+              ${cityssm.escapeHTML(feeCategory.feeCategory)}
+            </h2>
             ${
               feeCategory.isGroupedFee
                 ? '<span class="tag">Grouped Fee</span>'
@@ -156,7 +158,9 @@ declare const exports: Record<string, unknown>
         panelBlockElement.innerHTML = `<div class="columns">
           <div class="column is-half">
             <p>
-              <a class="has-text-weight-bold a--editFee" href="#">${cityssm.escapeHTML(fee.feeName ?? '')}</a><br />
+              <a class="has-text-weight-bold a--editFee" href="#">
+                ${cityssm.escapeHTML(fee.feeName ?? '')}
+              </a><br />
               <small>
               ${cityssm
                 .escapeHTML(fee.feeDescription ?? '')
@@ -323,6 +327,7 @@ declare const exports: Record<string, unknown>
             .querySelector('form')
             ?.addEventListener('submit', doAddFeeCategory)
         },
+
         onremoved() {
           bulmaJS.toggleHtmlClipped()
           ;(
@@ -407,6 +412,7 @@ declare const exports: Record<string, unknown>
           ) as HTMLInputElement
         ).focus()
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
@@ -653,6 +659,7 @@ declare const exports: Record<string, unknown>
               ).value === ''
           })
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
@@ -1011,6 +1018,7 @@ declare const exports: Record<string, unknown>
           .querySelector('.button--deleteFee')
           ?.addEventListener('click', confirmDeleteFee)
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }

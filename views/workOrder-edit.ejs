@@ -67,7 +67,7 @@
               </button>
             </div>
             <div class="dropdown-menu">
-              <div class="dropdown-content">
+              <div class="dropdown-content has-text-left">
                 <% for (const printName of configFunctions.getConfigProperty("settings.workOrders.prints")) { %>
                   <% const printConfig = printFunctions.getPrintConfig(printName); %>
                   <% if (printConfig) { %>
@@ -98,7 +98,7 @@
             </button>
           </div>
           <div class="dropdown-menu">
-            <div class="dropdown-content">
+            <div class="dropdown-content has-text-left">
               <a class="dropdown-item" id="button--deleteWorkOrder" href="#">
                 <span class="icon is-small">
                   <i class="fas fa-trash has-text-danger" aria-hidden="true"></i>
@@ -120,7 +120,7 @@
   </div>
 </div>
 
-<div class="columns">
+<div class="columns is-multiline">
   <div class="column">
     <form id="form--workOrderEdit">
       <input id="workOrderEdit--workOrderId" name="workOrderId" type="hidden" value="<%= workOrder.workOrderId %>" />
@@ -278,7 +278,7 @@
   </div>
 
   <% if (!isCreate) { %>
-    <div class="column is-full-desktop is-4-widescreen">
+    <div class="column is-full-tablet is-full-desktop is-4-widescreen">
       <div class="panel" id="panel--milestones">
         <div class="panel-heading">
           <div class="level is-mobile">

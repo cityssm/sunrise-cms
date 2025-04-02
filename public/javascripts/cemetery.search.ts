@@ -20,11 +20,10 @@ declare const exports: Record<string, unknown>
     '#container--searchResults'
   ) as HTMLElement
 
-  // eslint-disable-next-line complexity
   function renderResults(): void {
     // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
-      "Loading Cemeteries..."
+      'Loading Cemeteries...'
     )
 
     let searchResultCount = 0
@@ -36,9 +35,9 @@ declare const exports: Record<string, unknown>
       .split(' ')
 
     for (const cemetery of cemeteries) {
-      const cemeterySearchString = `${cemetery.cemeteryName ?? ''} ${
-        cemetery.cemeteryDescription ?? ''
-      } ${cemetery.cemeteryAddress1 ?? ''} ${cemetery.cemeteryAddress2 ?? ''}`.toLowerCase()
+      const cemeterySearchString = `${cemetery.cemeteryName} ${
+        cemetery.cemeteryDescription
+      } ${cemetery.cemeteryAddress1} ${cemetery.cemeteryAddress2}`.toLowerCase()
 
       let showCemetery = true
 
@@ -62,35 +61,34 @@ declare const exports: Record<string, unknown>
           <td>
             <a class="has-text-weight-bold" href="${sunrise.getCemeteryURL(cemetery.cemeteryId)}">
               ${cityssm.escapeHTML(
-                (cemetery.cemeteryName ?? '') === '' ? '(No Name)' : cemetery.cemeteryName ?? ''
+                cemetery.cemeteryName === ''
+                  ? '(No Name)'
+                  : cemetery.cemeteryName
               )}
             </a><br />
             <span class="is-size-7">
-              ${cityssm.escapeHTML(cemetery.cemeteryDescription ?? '')}
+              ${cityssm.escapeHTML(cemetery.cemeteryDescription)}
             </span>
           </td><td>
             ${
-              (cemetery.cemeteryAddress1 ?? '') === ''
+              cemetery.cemeteryAddress1 === ''
                 ? ''
-                : `${cityssm.escapeHTML(cemetery.cemeteryAddress1 ?? '')}<br />`
+                : `${cityssm.escapeHTML(cemetery.cemeteryAddress1)}<br />`
             }
             ${
-              (cemetery.cemeteryAddress2 ?? '') === ''
+              cemetery.cemeteryAddress2 === ''
                 ? ''
-                : `${cityssm.escapeHTML(cemetery.cemeteryAddress2 ?? '')}<br />`
+                : `${cityssm.escapeHTML(cemetery.cemeteryAddress2)}<br />`
             }
             ${
-              cemetery.cemeteryCity || cemetery.cemeteryProvince
-                ? `${cityssm.escapeHTML(cemetery.cemeteryCity ?? '')}, ${cityssm.escapeHTML(cemetery.cemeteryProvince ?? '')}<br />`
+              cemetery.cemeteryCity !== '' || cemetery.cemeteryProvince !== ''
+                ? `<span class="is-size-7">
+                    ${cityssm.escapeHTML(cemetery.cemeteryCity)}, ${cityssm.escapeHTML(cemetery.cemeteryProvince)}
+                    </span>`
                 : ''
             }
-            ${
-              (cemetery.cemeteryPostalCode ?? '') === ''
-                ? ''
-                : cityssm.escapeHTML(cemetery.cemeteryPostalCode ?? '')
-            }
           </td><td>
-            ${cityssm.escapeHTML(cemetery.cemeteryPhoneNumber ?? '')}
+            ${cityssm.escapeHTML(cemetery.cemeteryPhoneNumber)}
           </td><td class="has-text-centered">
             ${
               cemetery.cemeteryLatitude && cemetery.cemeteryLongitude

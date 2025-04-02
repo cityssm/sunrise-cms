@@ -127,7 +127,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : '<i class="fas fa-stop" title="Previous Contract"></i>'}
       </td><td>
         <a class="has-text-weight-bold" href="${sunrise.getContractURL(contract.contractId)}">
-          ${cityssm.escapeHTML(contract.contractType ?? '')}
+          ${cityssm.escapeHTML(contract.contractType)}
         </a><br />
         <span class="is-size-7">#${contract.contractId}</span>
       </td>`;
@@ -410,7 +410,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             ? 'Recipients'
                             : 'Deceased')})
                           </span>`
-                        : cityssm.escapeHTML(contract.contractInterments[0].deceasedName) +
+                        : cityssm.escapeHTML(contract.contractInterments[0].deceasedName ?? '') +
                             (contract.contractInterments.length > 1
                                 ? ` plus
                               ${(contract.contractInterments.length - 1).toString()}`

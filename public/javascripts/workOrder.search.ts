@@ -69,7 +69,7 @@ declare const exports: Record<string, unknown>
         for (const interment of contract.contractInterments ?? []) {
           relatedHTML += `<li class="has-tooltip-left"
             data-tooltip="${cityssm.escapeHTML(
-              contract.isPreneed ?? false ? 'Recipient' : 'Deceased'
+              contract.isPreneed ? 'Recipient' : 'Deceased'
             )}">
             <span class="fa-li">
               <i class="fas fa-fw fa-user"></i>

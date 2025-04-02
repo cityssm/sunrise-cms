@@ -64,18 +64,18 @@ export interface BurialSiteTypeField extends Record {
 }
 export interface Cemetery extends Record {
     cemeteryId?: number;
-    cemeteryDescription?: string;
-    cemeteryKey?: string;
-    cemeteryName?: string;
+    cemeteryDescription: string;
+    cemeteryKey: string;
+    cemeteryName: string;
     cemeteryLatitude?: number;
     cemeteryLongitude?: number;
     cemeterySvg?: string;
-    cemeteryAddress1?: string;
-    cemeteryAddress2?: string;
-    cemeteryCity?: string;
-    cemeteryPostalCode?: string;
-    cemeteryProvince?: string;
-    cemeteryPhoneNumber?: string;
+    cemeteryAddress1: string;
+    cemeteryAddress2: string;
+    cemeteryCity: string;
+    cemeteryPostalCode: string;
+    cemeteryProvince: string;
+    cemeteryPhoneNumber: string;
     burialSiteCount?: number;
 }
 export interface CommittalType extends Record {
