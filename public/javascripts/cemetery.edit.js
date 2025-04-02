@@ -48,7 +48,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     if (responseJSON.doRebuildBurialSiteNames ?? false) {
                         bulmaJS.alert({
                             message: `<strong>Cemetery Updated Successfully</strong><br />
-                  Note that rebuilding burial site names  may take a few minutes.`,
+                  Note that rebuilding burial site names may take a few minutes.`,
                             messageIsHtml: true,
                             contextualColorName: 'warning'
                         });
