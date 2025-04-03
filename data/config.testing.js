@@ -8,5 +8,6 @@ config.users = {
     canUpdate: ['*testUpdate'],
     isAdmin: ['*testAdmin']
 };
+config.settings.publicInternalPath = 'public-internal';
 config.settings.dynamicsGP.integrationIsEnabled = false;
 export default config;
