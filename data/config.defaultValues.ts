@@ -42,6 +42,8 @@ export const configDefaultValues = {
   'settings.cityDefault': '',
   'settings.provinceDefault': '',
 
+  'settings.publicInternalPath': 'public-internal',
+
   'settings.latitudeMax': 90,
   'settings.latitudeMin': -90,
   'settings.longitudeMax': 180,

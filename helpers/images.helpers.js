@@ -1,8 +1,10 @@
 import fs from 'node:fs/promises';
+import path from 'node:path';
+import { getConfigProperty } from './config.helpers.js';
 let burialSiteImages;
 export async function getBurialSiteImages() {
     if (burialSiteImages === undefined) {
-        const files = await fs.readdir('./public-internal/images/burialSites/');
+        const files = await fs.readdir(path.join(getConfigProperty('settings.publicInternalPath'), 'images', 'burialSites'));
         const images = [];
         for (const file of files) {
             const lowerCaseFileName = file.toLowerCase();
@@ -19,7 +21,7 @@ export async function getBurialSiteImages() {
 let cemeterySVGs;
 export async function getCemeterySVGs() {
     if (cemeterySVGs === undefined) {
-        const files = await fs.readdir('./public-internal/images/cemeteries/');
+        const files = await fs.readdir(path.join(getConfigProperty('settings.publicInternalPath'), 'images', 'cemeteries'));
         const SVGs = [];
         for (const file of files) {
             if (file.toLowerCase().endsWith('.svg')) {

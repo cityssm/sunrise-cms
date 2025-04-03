@@ -148,7 +148,7 @@
         <% } else if (burialSite.cemeterySvg) { %>
           <% const imageURL = urlPrefix + "/internal/images/cemeteries/" + burialSite.cemeterySvg %>
           <div class="image" id="burialSite--cemeterySvg" data-cemetery-svg-id="<%= burialSite.cemeterySvgId %>">
-            <%- include('../public-internal/images/cemeteries/' + burialSite.cemeterySvg); -%>
+            <%- include('../' + configFunctions.getConfigProperty('settings.publicInternalPath') + '/images/cemeteries/' + burialSite.cemeterySvg); -%>
           </div>
         <% } else { %>
           <div class="message is-info">

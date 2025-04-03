@@ -26,6 +26,7 @@ export interface Config {
         latitudeMin?: number;
         longitudeMax?: number;
         longitudeMin?: number;
+        publicInternalPath?: string;
         fees: {
             taxPercentageDefault?: number;
         };

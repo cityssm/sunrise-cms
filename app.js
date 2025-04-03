@@ -109,7 +109,7 @@ app.use(`${urlPrefix}/internal`, (request, response, next) => {
         return;
     }
     response.sendStatus(403);
-}, express.static(path.join('public-internal')));
+}, express.static(configFunctions.getConfigProperty('settings.publicInternalPath')));
 app.use(urlPrefix, express.static(path.join('public')));
 app.use(`${urlPrefix}/lib/bulma`, express.static(path.join('node_modules', 'bulma', 'css')));
 app.use(`${urlPrefix}/lib/bulma-tooltip`, express.static(path.join('node_modules', 'bulma-tooltip', 'dist', 'css')));

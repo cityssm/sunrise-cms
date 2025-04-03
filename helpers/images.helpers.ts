@@ -1,10 +1,19 @@
 import fs from 'node:fs/promises'
+import path from 'node:path'
+
+import { getConfigProperty } from './config.helpers.js'
 
 let burialSiteImages: string[] | undefined
 
 export async function getBurialSiteImages(): Promise<string[]> {
   if (burialSiteImages === undefined) {
-    const files = await fs.readdir('./public-internal/images/burialSites/')
+    const files = await fs.readdir(
+      path.join(
+        getConfigProperty('settings.publicInternalPath'),
+        'images',
+        'burialSites'
+      )
+    )
 
     const images: string[] = []
 
@@ -29,7 +38,11 @@ let cemeterySVGs: string[] | undefined
 
 export async function getCemeterySVGs(): Promise<string[]> {
   if (cemeterySVGs === undefined) {
-    const files = await fs.readdir('./public-internal/images/cemeteries/')
+    const files = await fs.readdir(path.join(
+      getConfigProperty('settings.publicInternalPath'),
+      'images',
+      'cemeteries'
+    ))
 
     const SVGs: string[] = []
 

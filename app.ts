@@ -153,7 +153,7 @@ app.use(
 
     response.sendStatus(403)
   },
-  express.static(path.join('public-internal'))
+  express.static(configFunctions.getConfigProperty('settings.publicInternalPath'))
 )
 
 app.use(urlPrefix, express.static(path.join('public')))

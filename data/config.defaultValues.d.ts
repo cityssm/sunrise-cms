@@ -26,6 +26,7 @@ export declare const configDefaultValues: {
     'aliases.workOrderOpenDate': string;
     'settings.cityDefault': string;
     'settings.provinceDefault': string;
+    'settings.publicInternalPath': string;
     'settings.latitudeMax': number;
     'settings.latitudeMin': number;
     'settings.longitudeMax': number;

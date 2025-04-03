@@ -87,178 +87,174 @@
 
   <div class="panel">
     <div class="panel-block is-block">
-      <div class="columns">
-        <div class="column is-7-desktop is-8-widescreen">
-          <div class="columns is-multiline">
-            <div class="column is-full-desktop is-6-widescreen">
+      <div class="columns is-multiline">
+        <div class="column is-6-tablet is-6-desktop is-4-widescreen">
+          <%
+            const burialSiteNameSegments = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments')
+          %>
+          <label class="label" for="burialSite--burialSiteNameSegment1">
+            Burial Site Name
+          </label>
+          <div class="field has-addons">
+            <% for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) { %>
               <%
-                const burialSiteNameSegments = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments')
+                const segmentIndexString = segmentIndex.toString();
+                const segment = burialSiteNameSegments.segments[segmentIndexString];
               %>
-              <label class="label" for="burialSite--burialSiteNameSegment1">
-                Burial Site Name
-              </label>
-              <div class="field has-addons">
-                <% for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) { %>
-                  <%
-                    const segmentIndexString = segmentIndex.toString();
-                    const segment = burialSiteNameSegments.segments[segmentIndexString];
-                  %>
-                  <% if (segment?.isAvailable ?? false) { %>
-                    <% if (segmentIndex !== 1 && (burialSiteNameSegments.separator ?? '') !== '') { %>
-                      <p class="control">
-                        <span class="button is-static">
-                          <%= burialSiteNameSegments.separator %>
-                        </span>
-                      </p>
-                    <% } %>
-                    <% if ((segment.prefix ?? '') !== '') { %>
-                      <p class="control">
-                        <span class="button is-static">
-                          <%= segment.prefix %>
-                        </span>
-                      </p>
-                    <% } %>
-                    <div class="control"
-                      data-tooltip="<%= segment.label ?? '' %>">
-
-                      <input class="input" id="burialSite--burialSiteNameSegment<%= segmentIndexString %>"
-                        name="burialSiteNameSegment<%= segmentIndexString %>"
-                        value="<%= burialSite[`burialSiteNameSegment${segmentIndex}`] %>"
-                        type="text"
-                        minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>" 
-                        maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
-                        placeholder="<%= segment.label ?? '' %>"
-                        aria-label="<%= segment.label ?? '' %>"
-                        <%= (segment.isRequired ?? false) ? ' required' : '' %>
-                        <%= segmentIndex === 1 ? ' accesskey="f"' : '' %>
-                        <%= (isCreate && segmentIndex === 1 ? " autofocus" : "") %> />
-                    </div>
-                    <% if ((segment.suffix ?? '') !== '') { %>
-                      <p class="control">
-                        <span class="button is-static">
-                          <%= segment.suffix %>
-                        </span>
-                      </p>
-                    <% } %>
-                  <% } %>
+              <% if (segment?.isAvailable ?? false) { %>
+                <% if (segmentIndex !== 1 && (burialSiteNameSegments.separator ?? '') !== '') { %>
+                  <p class="control">
+                    <span class="button is-static">
+                      <%= burialSiteNameSegments.separator %>
+                    </span>
+                  </p>
                 <% } %>
-              </div>
+                <% if ((segment.prefix ?? '') !== '') { %>
+                  <p class="control">
+                    <span class="button is-static">
+                      <%= segment.prefix %>
+                    </span>
+                  </p>
+                <% } %>
+                <div class="control"
+                  data-tooltip="<%= segment.label ?? '' %>">
 
-              <label class="label" for="burialSite--cemeteryId">Cemetery</label>
-              <div class="field has-addons">
-                <div class="control is-expanded">
-                  <div class="select is-fullwidth">
-                    <select
-                      <% if (!isCreate) { %>
-                        class="is-readonly"
-                      <% } %>
-                      id="burialSite--cemeteryId" name="cemeteryId">
-                      <option value="" <%= (!isCreate && burialSite.cemeteryId ? " disabled" : "") %>>
-                        (No Cemetery Selected)
-                      </option>
-                      <% let cemeteryIsFound = false; %>
-                      <% for (const cemetery of cemeteries) { %>
-                        <%
-                          if (burialSite.cemeteryId === cemetery.cemeteryId) {
-                            cemeteryIsFound = true;
-                          }
-                        %>
-                        <option value="<%= cemetery.cemeteryId %>"
-                          <%= (burialSite.cemeteryId === cemetery.cemeteryId ? " selected" : "") %>
-                          <%= (!isCreate && burialSite.cemeteryId !== cemetery.cemeteryId ? " disabled" : "") %>>
-                          <%= cemetery.cemeteryName || "(No Name)"  %>
-                        </option>
-                      <% } %>
-                      <% if (burialSite.cemeteryId && !cemeteryIsFound) { %>
-                        <option value="<%= burialSite.cemeteryId %>" selected>
-                          <%= burialSite.cemeteryName %>
-                        </option>
-                      <% } %>
-                    </select>
-                  </div>
+                  <input class="input" id="burialSite--burialSiteNameSegment<%= segmentIndexString %>"
+                    name="burialSiteNameSegment<%= segmentIndexString %>"
+                    value="<%= burialSite[`burialSiteNameSegment${segmentIndex}`] %>"
+                    type="text"
+                    minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>" 
+                    maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
+                    placeholder="<%= segment.label ?? '' %>"
+                    aria-label="<%= segment.label ?? '' %>"
+                    <%= (segment.isRequired ?? false) ? ' required' : '' %>
+                    <%= segmentIndex === 1 ? ' accesskey="f"' : '' %>
+                    <%= (isCreate && segmentIndex === 1 ? " autofocus" : "") %> />
                 </div>
-                <div class="control">
-                  <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
-                    <span class="icon"><i class="fas fa-unlock" aria-hidden="true"></i></span>
-                  </button>
-                </div>
+                <% if ((segment.suffix ?? '') !== '') { %>
+                  <p class="control">
+                    <span class="button is-static">
+                      <%= segment.suffix %>
+                    </span>
+                  </p>
+                <% } %>
+              <% } %>
+            <% } %>
+          </div>
+
+          <label class="label" for="burialSite--cemeteryId">Cemetery</label>
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select
+                  <% if (!isCreate) { %>
+                    class="is-readonly"
+                  <% } %>
+                  id="burialSite--cemeteryId" name="cemeteryId">
+                  <option value="" <%= (!isCreate && burialSite.cemeteryId ? " disabled" : "") %>>
+                    (No Cemetery Selected)
+                  </option>
+                  <% let cemeteryIsFound = false; %>
+                  <% for (const cemetery of cemeteries) { %>
+                    <%
+                      if (burialSite.cemeteryId === cemetery.cemeteryId) {
+                        cemeteryIsFound = true;
+                      }
+                    %>
+                    <option value="<%= cemetery.cemeteryId %>"
+                      <%= (burialSite.cemeteryId === cemetery.cemeteryId ? " selected" : "") %>
+                      <%= (!isCreate && burialSite.cemeteryId !== cemetery.cemeteryId ? " disabled" : "") %>>
+                      <%= cemetery.cemeteryName || "(No Name)"  %>
+                    </option>
+                  <% } %>
+                  <% if (burialSite.cemeteryId && !cemeteryIsFound) { %>
+                    <option value="<%= burialSite.cemeteryId %>" selected>
+                      <%= burialSite.cemeteryName %>
+                    </option>
+                  <% } %>
+                </select>
               </div>
             </div>
-            <div class="column">
-              <label class="label" for="burialSite--burialSiteTypeId">
-                Burial Site Type
-              </label>
-              <div class="field has-addons">
-                <div class="control is-expanded">
-                  <div class="select is-fullwidth">
-                    <select 
-                      <% if (!isCreate) { %>
-                          class="is-readonly" 
-                      <% } %>
-                      id="burialSite--burialSiteTypeId" name="burialSiteTypeId" required>
-                      <% if (isCreate) { %>
-                        <option value="">(No Type)</option>
-                      <% } %>
-                      <% let typeIsFound = false; %>
-                      <% for (const burialSiteType of burialSiteTypes) { %>
-                        <% 
-                          if (burialSite.burialSiteTypeId === burialSiteType.burialSiteTypeId) {
-                            typeIsFound = true;
-                          }
-                        %>
-                        <option value="<%= burialSiteType.burialSiteTypeId %>"
-                          <%= (burialSite.burialSiteTypeId === burialSiteType.burialSiteTypeId ? " selected" : "") %>
-                          <%= (!isCreate && burialSite.burialSiteTypeId !== burialSiteType.burialSiteTypeId ? " disabled" : "") %>>
-                          <%= burialSiteType.burialSiteType %>
-                        </option>
-                      <% } %>
-                      <% if (burialSite.burialSiteTypeId && !typeIsFound) { %>
-                        <option value="<%= burialSite.burialSiteTypeId %>" selected>
-                          <%= burialSite.burialSiteType %>
-                        </option>
-                      <% } %>
-                    </select>
-                  </div>
-                </div>
-                <div class="control">
-                  <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
-                    <span class="icon"><i class="fas fa-unlock" aria-hidden="true"></i></span>
-                  </button>
-                </div>
+            <div class="control">
+              <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
+                <span class="icon"><i class="fas fa-unlock" aria-hidden="true"></i></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="column is-6-tablet is-6-desktop is-4-widescreen">
+          <label class="label" for="burialSite--burialSiteTypeId">
+            Burial Site Type
+          </label>
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select 
+                  <% if (!isCreate) { %>
+                      class="is-readonly" 
+                  <% } %>
+                  id="burialSite--burialSiteTypeId" name="burialSiteTypeId" required>
+                  <% if (isCreate) { %>
+                    <option value="">(No Type)</option>
+                  <% } %>
+                  <% let typeIsFound = false; %>
+                  <% for (const burialSiteType of burialSiteTypes) { %>
+                    <% 
+                      if (burialSite.burialSiteTypeId === burialSiteType.burialSiteTypeId) {
+                        typeIsFound = true;
+                      }
+                    %>
+                    <option value="<%= burialSiteType.burialSiteTypeId %>"
+                      <%= (burialSite.burialSiteTypeId === burialSiteType.burialSiteTypeId ? " selected" : "") %>
+                      <%= (!isCreate && burialSite.burialSiteTypeId !== burialSiteType.burialSiteTypeId ? " disabled" : "") %>>
+                      <%= burialSiteType.burialSiteType %>
+                    </option>
+                  <% } %>
+                  <% if (burialSite.burialSiteTypeId && !typeIsFound) { %>
+                    <option value="<%= burialSite.burialSiteTypeId %>" selected>
+                      <%= burialSite.burialSiteType %>
+                    </option>
+                  <% } %>
+                </select>
               </div>
-              <label class="label" for="burialSite--burialSiteStatusId">
-                Burial Site Status
-              </label>
-              <div class="field">
-                <div class="control">
-                  <div class="select is-fullwidth">
-                    <select id="burialSite--burialSiteStatusId" name="burialSiteStatusId">
-                      <option value="">(No Status)</option>
-                      <% let statusIsFound = false; %>
-                      <% for (const burialSiteStatus of burialSiteStatuses) { %>
-                        <% 
-                          if (burialSite.burialSiteStatusId === burialSiteStatus.burialSiteStatusId) {
-                            statusIsFound = true;
-                          }
-                        %>
-                        <option value="<%= burialSiteStatus.burialSiteStatusId %>"
-                          <%= (burialSite.burialSiteStatusId === burialSiteStatus.burialSiteStatusId ? " selected" : "") %>>
-                          <%= burialSiteStatus.burialSiteStatus %>
-                        </option>
-                      <% } %>
-                      <% if (burialSite.burialSiteStatusId && !statusIsFound) { %>
-                        <option value="<%= burialSite.burialSiteStatusId %>" selected>
-                          <%= burialSite.burialSiteStatus %>
-                        </option>
-                      <% } %>
-                    </select>
-                  </div>
-                </div>
+            </div>
+            <div class="control">
+              <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
+                <span class="icon"><i class="fas fa-unlock" aria-hidden="true"></i></span>
+              </button>
+            </div>
+          </div>
+          <label class="label" for="burialSite--burialSiteStatusId">
+            Burial Site Status
+          </label>
+          <div class="field">
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="burialSite--burialSiteStatusId" name="burialSiteStatusId">
+                  <option value="">(No Status)</option>
+                  <% let statusIsFound = false; %>
+                  <% for (const burialSiteStatus of burialSiteStatuses) { %>
+                    <% 
+                      if (burialSite.burialSiteStatusId === burialSiteStatus.burialSiteStatusId) {
+                        statusIsFound = true;
+                      }
+                    %>
+                    <option value="<%= burialSiteStatus.burialSiteStatusId %>"
+                      <%= (burialSite.burialSiteStatusId === burialSiteStatus.burialSiteStatusId ? " selected" : "") %>>
+                      <%= burialSiteStatus.burialSiteStatus %>
+                    </option>
+                  <% } %>
+                  <% if (burialSite.burialSiteStatusId && !statusIsFound) { %>
+                    <option value="<%= burialSite.burialSiteStatusId %>" selected>
+                      <%= burialSite.burialSiteStatus %>
+                    </option>
+                  <% } %>
+                </select>
               </div>
             </div>
           </div>
         </div>
-        <div class="column">
+        <div class="column is-full-desktop is-4-widescreen">
           <div id="container--burialSiteFields">
             <% if (isCreate) { %>
               <div class="message is-info">

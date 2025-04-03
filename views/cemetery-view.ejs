@@ -142,8 +142,8 @@
       <div class="panel-block is-block">
         <% if (cemetery.cemeterySvg) { %>
           <% const imageURL = urlPrefix + "/internal/images/cemeteries/" + cemetery.cemeterySvg %>
-          <a class="image" href="<%= urlPrefix %>/internal/images/cemeteries/<%= cemetery.cemeterySvg %>" target="_blank">
-            <%- include('../public-internal/images/cemeteries/' + cemetery.cemeterySvg); -%>
+          <a class="image" href="<%= imageURL %>" target="_blank">
+            <%- include('../' + configFunctions.getConfigProperty('settings.publicInternalPath') + '/images/cemeteries/' + cemetery.cemeterySvg); -%>
           </a>
         <% } else { %>
           <div class="message is-info">
