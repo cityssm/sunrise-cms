@@ -6,9 +6,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:functions.api`);
 const apiKeyPath = 'data/apiKeys.json';
 let apiKeys;
 export async function getApiKey(userName) {
-    if (apiKeys === undefined) {
-        await loadApiKeys();
-    }
+    apiKeys ??= await loadApiKeys();
     if (!Object.hasOwn(apiKeys, userName)) {
         await regenerateApiKey(userName);
     }
@@ -18,9 +16,7 @@ export async function getApiKeyFromUser(user) {
     return await getApiKey(user.userName);
 }
 export async function getUserNameFromApiKey(apiKey) {
-    if (apiKeys === undefined) {
-        await loadApiKeys();
-    }
+    apiKeys ??= await loadApiKeys();
     for (const [userName, currentApiKey] of Object.entries(apiKeys)) {
         if (apiKey === currentApiKey) {
             return userName;
@@ -29,6 +25,7 @@ export async function getUserNameFromApiKey(apiKey) {
     return undefined;
 }
 export async function regenerateApiKey(userName) {
+    apiKeys ??= await loadApiKeys();
     apiKeys[userName] = generateApiKey(userName);
     await saveApiKeys();
 }
@@ -44,6 +41,7 @@ async function loadApiKeys() {
         debug(error);
         apiKeys = {};
     }
+    return apiKeys;
 }
 async function saveApiKeys() {
     try {

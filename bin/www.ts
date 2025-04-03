@@ -25,7 +25,9 @@ const processCount = Math.min(
   os.cpus().length
 )
 
-process.title = `${getConfigProperty('application.applicationName')} (Primary)`
+const applicationName = getConfigProperty('application.applicationName')
+
+process.title = `${applicationName} (Primary)`
 
 debug(`Primary pid:   ${process.pid}`)
 debug(`Primary title: ${process.title}`)
@@ -71,17 +73,17 @@ if (ntfyStartupConfig !== undefined) {
   const server = ntfyStartupConfig.server
 
   const ntfyStartupMessage: NtfyMessageOptions = {
-    topic,
-    title: getConfigProperty('application.applicationName'),
     message: 'Application Started',
-    tags: ['arrow_up']
+    tags: ['arrow_up'],
+    title: applicationName,
+    topic
   }
 
   const ntfyShutdownMessage: NtfyMessageOptions = {
-    topic,
-    title: getConfigProperty('application.applicationName'),
     message: 'Application Shut Down',
-    tags: ['arrow_down']
+    tags: ['arrow_down'],
+    title: applicationName,
+    topic
   }
 
   if (server !== undefined) {

@@ -11,9 +11,7 @@ const apiKeyPath = 'data/apiKeys.json'
 let apiKeys: Record<string, string> | undefined
 
 export async function getApiKey(userName: string): Promise<string> {
-  if (apiKeys === undefined) {
-    await loadApiKeys()
-  }
+  apiKeys ??= await loadApiKeys()
 
   if (!Object.hasOwn(apiKeys, userName)) {
     await regenerateApiKey(userName)
@@ -29,9 +27,7 @@ export async function getApiKeyFromUser(user: User): Promise<string> {
 export async function getUserNameFromApiKey(
   apiKey: string
 ): Promise<string | undefined> {
-  if (apiKeys === undefined) {
-    await loadApiKeys()
-  }
+  apiKeys ??= await loadApiKeys()
 
   for (const [userName, currentApiKey] of Object.entries(apiKeys)) {
     if (apiKey === currentApiKey) {
@@ -43,6 +39,7 @@ export async function getUserNameFromApiKey(
 }
 
 export async function regenerateApiKey(userName: string): Promise<void> {
+  apiKeys ??= await loadApiKeys()
   apiKeys[userName] = generateApiKey(userName)
   await saveApiKeys()
 }
@@ -51,7 +48,7 @@ function generateApiKey(apiKeyPrefix: string): string {
   return `${apiKeyPrefix}-${randomUUID()}-${Date.now().toString()}`
 }
 
-async function loadApiKeys(): Promise<void> {
+async function loadApiKeys(): Promise<Record<string, string>> {
   try {
     const fileData = await fs.readFile(apiKeyPath, 'utf8')
     apiKeys = JSON.parse(fileData) as Record<string, string>
@@ -59,6 +56,8 @@ async function loadApiKeys(): Promise<void> {
     debug(error)
     apiKeys = {}
   }
+
+  return apiKeys
 }
 
 async function saveApiKeys(): Promise<void> {

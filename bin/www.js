@@ -14,7 +14,8 @@ const debug = Debug(`${DEBUG_NAMESPACE}:www:${process.pid}`);
 await initializeDatabase();
 const directoryName = path.dirname(fileURLToPath(import.meta.url));
 const processCount = Math.min(getConfigProperty('application.maximumProcesses'), os.cpus().length);
-process.title = `${getConfigProperty('application.applicationName')} (Primary)`;
+const applicationName = getConfigProperty('application.applicationName');
+process.title = `${applicationName} (Primary)`;
 debug(`Primary pid:   ${process.pid}`);
 debug(`Primary title: ${process.title}`);
 debug(`Launching ${processCount} processes`);
@@ -48,16 +49,16 @@ if (ntfyStartupConfig !== undefined) {
     const topic = ntfyStartupConfig.topic;
     const server = ntfyStartupConfig.server;
     const ntfyStartupMessage = {
-        topic,
-        title: getConfigProperty('application.applicationName'),
         message: 'Application Started',
-        tags: ['arrow_up']
+        tags: ['arrow_up'],
+        title: applicationName,
+        topic
     };
     const ntfyShutdownMessage = {
-        topic,
-        title: getConfigProperty('application.applicationName'),
         message: 'Application Shut Down',
-        tags: ['arrow_down']
+        tags: ['arrow_down'],
+        title: applicationName,
+        topic
     };
     if (server !== undefined) {
         ntfyStartupMessage.server = server;
