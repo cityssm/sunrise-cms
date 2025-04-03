@@ -342,7 +342,7 @@ async function importFromMasterCSV(): Promise<void> {
        * Preneed Record
        */
 
-      let preneedContractStartDateString: DateString | ''
+      let preneedContractStartDateString: '' | DateString
       let preneedContractId: number
 
       if (masterRow.CM_PRENEED_OWNER !== '' || masterRow.CM_STATUS === 'P') {
@@ -352,7 +352,7 @@ async function importFromMasterCSV(): Promise<void> {
           masterRow.CM_PURCHASE_DAY
         )
 
-        let contractEndDateString: DateString | '' = ''
+        let contractEndDateString: '' | DateString = ''
 
         if (
           masterRow.CM_INTERMENT_YR !== '' &&
@@ -418,8 +418,9 @@ async function importFromMasterCSV(): Promise<void> {
             purchaserCity: masterRow.CM_CITY,
             purchaserProvince: masterRow.CM_PROV,
             purchaserPostalCode,
-            purchaserPhoneNumber: '',
+
             purchaserEmail: '',
+            purchaserPhoneNumber: '',
 
             deceasedName:
               masterRow.CM_DECEASED_NAME === ''
@@ -731,14 +732,19 @@ async function importFromPrepaidCSV(): Promise<void> {
               burialSiteNameSegment2,
               burialSiteNameSegment3,
               burialSiteNameSegment4,
-              burialSiteTypeId,
+
               burialSiteStatusId: importIds.reservedBurialSiteStatusId,
+              burialSiteTypeId,
+
               cemeteryId,
               cemeterySvgId: burialSiteName.includes(',')
                 ? burialSiteName.split(',')[0]
                 : burialSiteName,
+
               burialSiteLatitude: '',
-              burialSiteLongitude: ''
+              burialSiteLongitude: '',
+
+              burialSiteImage: ''
             },
             user
           )
@@ -1079,16 +1085,20 @@ async function importFromWorkOrderCSV(): Promise<void> {
 
           const burialSiteId = await addBurialSite(
             {
-              cemeteryId,
               burialSiteNameSegment1,
               burialSiteNameSegment2,
               burialSiteNameSegment3,
               burialSiteNameSegment4,
+              
+              cemeteryId,
               cemeterySvgId: burialSiteName.includes(',')
                 ? burialSiteName.split(',')[0]
                 : burialSiteName,
+
               burialSiteStatusId: importIds.takenBurialSiteStatusId,
               burialSiteTypeId,
+
+              burialSiteImage: '',
               burialSiteLatitude: '',
               burialSiteLongitude: ''
             },
@@ -1098,8 +1108,8 @@ async function importFromWorkOrderCSV(): Promise<void> {
           burialSite = await getBurialSite(burialSiteId)
         }
 
-        const workOrderContainsLot = workOrder.workOrderBurialSites!.find(
-          (possibleLot) => (possibleLot.burialSiteId = burialSite.burialSiteId)
+        const workOrderContainsLot = workOrder?.workOrderBurialSites?.find(
+          (possibleLot) => (possibleLot.burialSiteId === burialSite?.burialSiteId)
         )
 
         if (!workOrderContainsLot) {
@@ -1174,11 +1184,12 @@ async function importFromWorkOrderCSV(): Promise<void> {
           committalTypeId,
 
           deceasedName: workOrderRow.WO_DECEASED_NAME,
+
           deceasedAddress1: workOrderRow.WO_ADDRESS,
           deceasedAddress2: '',
           deceasedCity: workOrderRow.WO_CITY,
-          deceasedProvince: workOrderRow.WO_PROV.slice(0, 2),
           deceasedPostalCode: `${workOrderRow.WO_POST1} ${workOrderRow.WO_POST2}`,
+          deceasedProvince: workOrderRow.WO_PROV.slice(0, 2),
 
           deathDateString:
             workOrderRow.WO_DEATH_YR === ''

@@ -182,8 +182,8 @@ async function importFromMasterCSV() {
                     purchaserCity: masterRow.CM_CITY,
                     purchaserProvince: masterRow.CM_PROV,
                     purchaserPostalCode,
-                    purchaserPhoneNumber: '',
                     purchaserEmail: '',
+                    purchaserPhoneNumber: '',
                     deceasedName: masterRow.CM_DECEASED_NAME === ''
                         ? masterRow.CM_PRENEED_OWNER
                         : masterRow.CM_DECEASED_NAME,
@@ -379,14 +379,15 @@ async function importFromPrepaidCSV() {
                         burialSiteNameSegment2,
                         burialSiteNameSegment3,
                         burialSiteNameSegment4,
-                        burialSiteTypeId,
                         burialSiteStatusId: importIds.reservedBurialSiteStatusId,
+                        burialSiteTypeId,
                         cemeteryId,
                         cemeterySvgId: burialSiteName.includes(',')
                             ? burialSiteName.split(',')[0]
                             : burialSiteName,
                         burialSiteLatitude: '',
-                        burialSiteLongitude: ''
+                        burialSiteLongitude: '',
+                        burialSiteImage: ''
                     }, user);
                     burialSite = await getBurialSite(burialSiteId);
                 }
@@ -611,22 +612,23 @@ async function importFromWorkOrderCSV() {
                     const cemeteryId = await getCemeteryIdByKey(workOrderRow.WO_CEMETERY, user);
                     const burialSiteTypeId = getBurialSiteTypeId(workOrderRow.WO_CEMETERY);
                     const burialSiteId = await addBurialSite({
-                        cemeteryId,
                         burialSiteNameSegment1,
                         burialSiteNameSegment2,
                         burialSiteNameSegment3,
                         burialSiteNameSegment4,
+                        cemeteryId,
                         cemeterySvgId: burialSiteName.includes(',')
                             ? burialSiteName.split(',')[0]
                             : burialSiteName,
                         burialSiteStatusId: importIds.takenBurialSiteStatusId,
                         burialSiteTypeId,
+                        burialSiteImage: '',
                         burialSiteLatitude: '',
                         burialSiteLongitude: ''
                     }, user);
                     burialSite = await getBurialSite(burialSiteId);
                 }
-                const workOrderContainsLot = workOrder.workOrderBurialSites.find((possibleLot) => (possibleLot.burialSiteId = burialSite.burialSiteId));
+                const workOrderContainsLot = workOrder?.workOrderBurialSites?.find((possibleLot) => (possibleLot.burialSiteId === burialSite?.burialSiteId));
                 if (!workOrderContainsLot) {
                     await addWorkOrderBurialSite({
                         workOrderId: workOrder.workOrderId,
@@ -671,8 +673,8 @@ async function importFromWorkOrderCSV() {
                 deceasedAddress1: workOrderRow.WO_ADDRESS,
                 deceasedAddress2: '',
                 deceasedCity: workOrderRow.WO_CITY,
-                deceasedProvince: workOrderRow.WO_PROV.slice(0, 2),
                 deceasedPostalCode: `${workOrderRow.WO_POST1} ${workOrderRow.WO_POST2}`,
+                deceasedProvince: workOrderRow.WO_PROV.slice(0, 2),
                 deathDateString: workOrderRow.WO_DEATH_YR === ''
                     ? ''
                     : formatDateString(workOrderRow.WO_DEATH_YR, workOrderRow.WO_DEATH_MON, workOrderRow.WO_DEATH_DAY),

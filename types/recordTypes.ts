@@ -336,11 +336,13 @@ export interface FuneralHome extends Record {
   funeralHomeId?: number
   funeralHomeKey?: string
   funeralHomeName?: string
+
   funeralHomeAddress1?: string
   funeralHomeAddress2?: string
   funeralHomeCity?: string
-  funeralHomeProvince?: string
   funeralHomePostalCode?: string
+  funeralHomeProvince?: string
+
   funeralHomePhoneNumber?: string
 }
 

@@ -23,7 +23,7 @@ const cemeteryToCemeteryName = {
 const cemeteryCache = new Map<string, number>()
 
 export async function getCemeteryIdByKey(
-  cemeteryKey: string,
+  cemeteryKeyToSearch: string | undefined,
   user: User
 ): Promise<number> {
   /*
@@ -32,6 +32,8 @@ export async function getCemeteryIdByKey(
         mapCacheKey += "-" + masterRow.CM_BLOCK;
     }
     */
+
+  const cemeteryKey = cemeteryKeyToSearch ?? ''
 
   if (cemeteryCache.has(cemeteryKey)) {
     return cemeteryCache.get(cemeteryKey) as number
@@ -47,7 +49,7 @@ export async function getCemeteryIdByKey(
         cemeteryName: cemeteryToCemeteryName[cemeteryKey] ?? cemeteryKey,
 
         cemeteryDescription: '',
-        cemeteryKey,
+        cemeteryKey: cemeteryKey,
 
         cemeterySvg: '',
 

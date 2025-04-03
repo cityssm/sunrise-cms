@@ -18,13 +18,14 @@ const cemeteryToCemeteryName = {
     WS: 'West Section'
 };
 const cemeteryCache = new Map();
-export async function getCemeteryIdByKey(cemeteryKey, user) {
+export async function getCemeteryIdByKey(cemeteryKeyToSearch, user) {
     /*
       if (masterRow.CM_CEMETERY === "HS" &&
           (masterRow.CM_BLOCK === "F" || masterRow.CM_BLOCK === "G" || masterRow.CM_BLOCK === "H" || masterRow.CM_BLOCK === "J")) {
           mapCacheKey += "-" + masterRow.CM_BLOCK;
       }
       */
+    const cemeteryKey = cemeteryKeyToSearch ?? '';
     if (cemeteryCache.has(cemeteryKey)) {
         return cemeteryCache.get(cemeteryKey);
     }
@@ -34,7 +35,7 @@ export async function getCemeteryIdByKey(cemeteryKey, user) {
         const cemeteryId = await addCemetery({
             cemeteryName: cemeteryToCemeteryName[cemeteryKey] ?? cemeteryKey,
             cemeteryDescription: '',
-            cemeteryKey,
+            cemeteryKey: cemeteryKey,
             cemeterySvg: '',
             cemeteryLatitude: '',
             cemeteryLongitude: '',

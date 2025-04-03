@@ -5,7 +5,7 @@ import getCemetery from './getCemetery.js'
 import { acquireConnection } from './pool.js'
 
 export interface AddBurialSiteForm {
-  burialSiteNameSegment1: string
+  burialSiteNameSegment1?: string
   burialSiteNameSegment2?: string
   burialSiteNameSegment3?: string
   burialSiteNameSegment4?: string
@@ -83,12 +83,12 @@ export default async function addBurialSite(
 
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis) 
-        values (?, ?,
+        values (?, ?, ?,
           ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
           ?, ?, ?, ?)`
     )
     .run(
-      burialSiteForm.burialSiteNameSegment1,
+      burialSiteForm.burialSiteNameSegment1 ?? '',
       burialSiteForm.burialSiteNameSegment2 ?? '',
       burialSiteForm.burialSiteNameSegment3 ?? '',
       burialSiteForm.burialSiteNameSegment4 ?? '',

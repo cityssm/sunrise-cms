@@ -447,19 +447,28 @@
             <label class="label" for="contract--purchaserName">
               Purchaser Name
             </label>
-            <div class="control">
-              <input class="input" id="contract--purchaserName" name="purchaserName" type="text" maxlength="100" autocomplete="off" required value="<%= contract.purchaserName %>" />
+            <div class="control has-icons-right">
+              <input class="input" id="contract--purchaserName" name="purchaserName" type="text"
+                maxlength="100" autocomplete="off" required
+                value="<%= contract.purchaserName %>" />
+              <span class="icon is-right">
+                <i class="fas fa-asterisk" aria-hidden="true"></i>
+              </span>
             </div>
           </div>
           <div class="field">
             <label class="label" for="contract--purchaserAddress1">Address</label>
             <div class="control">
-              <input class="input" id="contract--purchaserAddress1" name="purchaserAddress1" type="text" maxlength="50" placeholder="Line 1" autocomplete="off" value="<%= contract.purchaserAddress1 %>" />
+              <input class="input" id="contract--purchaserAddress1" name="purchaserAddress1" type="text"
+                maxlength="50" placeholder="Line 1" autocomplete="off"
+                value="<%= contract.purchaserAddress1 %>" />
             </div>
           </div>
           <div class="field">
             <div class="control">
-              <input class="input" id="contract--purchaserAddress2" name="purchaserAddress2" type="text" maxlength="50" placeholder="Line 2" autocomplete="off" aria-label="Address Line 2" value="<%= contract.purchaserAddress2 %>" />
+              <input class="input" id="contract--purchaserAddress2" name="purchaserAddress2" type="text"
+                maxlength="50" placeholder="Line 2" autocomplete="off" aria-label="Address Line 2"
+                value="<%= contract.purchaserAddress2 %>" />
             </div>
           </div>
           <div class="field">
@@ -475,7 +484,8 @@
               <div class="field">
                 <label class="label" for="contract--purchaserProvince">Province</label>
                 <div class="control">
-                  <input class="input" id="contract--purchaserProvince" name="purchaserProvince" type="text" maxlength="2" value="<%= contract.purchaserProvince %>" />
+                  <input class="input" id="contract--purchaserProvince" name="purchaserProvince" type="text" maxlength="2"
+                    value="<%= contract.purchaserProvince %>" />
                 </div>
               </div>
             </div>
@@ -483,7 +493,9 @@
               <div class="field">
                 <label class="label" for="contract--purchaserPostalCode">Postal Code</label>
                 <div class="control">
-                  <input class="input" id="contract--purchaserPostalCode" name="purchaserPostalCode" type="text" maxlength="7" autocomplete="off" value="<%= contract.purchaserPostalCode %>"  />
+                  <input class="input" id="contract--purchaserPostalCode" name="purchaserPostalCode" type="text"
+                    maxlength="7" autocomplete="off"
+                    value="<%= contract.purchaserPostalCode %>"  />
                 </div>
               </div>
             </div>
@@ -493,7 +505,9 @@
               <div class="field">
                 <label class="label" for="contract--purchaserPhoneNumber">Phone Number</label>
                 <div class="control">
-                  <input class="input" id="contract--purchaserPhoneNumber" name="purchaserPhoneNumber" type="text" maxlength="30" autocomplete="off" value="<%= contract.purchaserPhoneNumber %>" />
+                  <input class="input" id="contract--purchaserPhoneNumber" name="purchaserPhoneNumber" type="text"
+                    maxlength="30" autocomplete="off"
+                    value="<%= contract.purchaserPhoneNumber %>" />
                 </div>
               </div>
             </div>
@@ -501,7 +515,9 @@
               <div class="field">
                 <label class="label" for="contract--purchaserEmail">Email Address</label>
                 <div class="control">
-                  <input class="input" id="contract--purchaserEmail" name="purchaserEmail" type="email" maxlength="100" autocomplete="off" value="<%= contract.purchaserEmail %>" />
+                  <input class="input" id="contract--purchaserEmail" name="purchaserEmail" type="email"
+                    maxlength="100" autocomplete="off"
+                    value="<%= contract.purchaserEmail %>" />
                 </div>
               </div>
             </div>
@@ -556,19 +572,28 @@
                 <span class="is-recipient-or-deceased"><%= (contract.isPreneed ? "Recipient" : "Deceased") %></span>
                 Name
               </label>
-              <div class="control">
-                <input class="input" id="contract--deceasedName" name="deceasedName" type="text" maxlength="100" autocomplete="off" required value="<%= contract.deceasedName %>" />
+              <div class="control has-icons-right">
+                <input class="input" id="contract--deceasedName" name="deceasedName" type="text"
+                  maxlength="100" autocomplete="off" required
+                  value="<%= contract.deceasedName %>" />
+                <span class="icon is-right">
+                  <i class="fas fa-asterisk" aria-hidden="true"></i>
+                </span>
               </div>
             </div>
             <div class="field">
               <label class="label" for="contract--deceasedAddress1">Address</label>
               <div class="control">
-                <input class="input" id="contract--deceasedAddress1" name="deceasedAddress1" type="text" maxlength="50" placeholder="Line 1" autocomplete="off" value="<%= contract.deceasedAddress1 %>" />
+                <input class="input" id="contract--deceasedAddress1" name="deceasedAddress1" type="text"
+                  maxlength="50" placeholder="Line 1" autocomplete="off"
+                  value="<%= contract.deceasedAddress1 %>" />
               </div>
             </div>
             <div class="field">
               <div class="control">
-                <input class="input" id="contract--deceasedAddress2" name="deceasedAddress2" type="text" maxlength="50" placeholder="Line 2" autocomplete="off" aria-label="Address Line 2" value="<%= contract.deceasedAddress2 %>" />
+                <input class="input" id="contract--deceasedAddress2" name="deceasedAddress2" type="text"
+                  maxlength="50" placeholder="Line 2" autocomplete="off" aria-label="Address Line 2"
+                  value="<%= contract.deceasedAddress2 %>" />
               </div>
             </div>
             <div class="field">
@@ -584,7 +609,9 @@
                 <div class="field">
                   <label class="label" for="contract--deceasedProvince">Province</label>
                   <div class="control">
-                    <input class="input" id="contract--deceasedProvince" name="deceasedProvince" type="text" maxlength="2" value="<%= contract.deceasedProvince %>" />
+                    <input class="input" id="contract--deceasedProvince" name="deceasedProvince" type="text"
+                      maxlength="2"
+                      value="<%= contract.deceasedProvince %>" />
                   </div>
                 </div>
               </div>
@@ -592,7 +619,9 @@
                 <div class="field">
                   <label class="label" for="contract--deceasedPostalCode">Postal Code</label>
                   <div class="control">
-                    <input class="input" id="contract--deceasedPostalCode" name="deceasedPostalCode" type="text" maxlength="7" autocomplete="off" value="<%= contract.deceasedPostalCode %>" />
+                    <input class="input" id="contract--deceasedPostalCode" name="deceasedPostalCode" type="text"
+                      maxlength="7" autocomplete="off"
+                      value="<%= contract.deceasedPostalCode %>" />
                   </div>
                 </div>
               </div>
@@ -604,7 +633,8 @@
                     Date of Birth
                   </label>
                   <div class="control has-icons-left">
-                    <input class="input" id="contract--birthDateString" name="birthDateString" type="date" value="<%= contract.birthDateString %>" />
+                    <input class="input" id="contract--birthDateString" name="birthDateString" type="date"
+                      value="<%= contract.birthDateString %>" />
                     <span class="icon is-left">
                       <i class="fas fa-calendar" aria-hidden="true"></i>
                     </span>
@@ -631,7 +661,8 @@
                     Date of Death
                   </label>
                   <div class="control has-icons-left">
-                    <input class="input" id="contract--deathDateString" name="deathDateString" type="date" value="<%= contract.deathDateString %>" />
+                    <input class="input" id="contract--deathDateString" name="deathDateString" type="date"
+                      value="<%= contract.deathDateString %>" />
                     <span class="icon is-left">
                       <i class="fas fa-calendar" aria-hidden="true"></i>
                     </span>
@@ -654,7 +685,9 @@
             <label class="label" for="contract--deathAge">Death Age</label>
             <div class="field has-addons">
               <div class="control is-expanded">
-                <input class="input has-text-right" id="contract--deathAge" name="deathAge" type="number" min="0" max="150" value="<%= contract.deathAge %>" />
+                <input class="input has-text-right" id="contract--deathAge" name="deathAge" type="number"
+                  min="0" max="150"
+                  value="<%= contract.deathAge %>" />
               </div>
               <div class="control is-expanded">
                 <div class="select is-fullwidth">

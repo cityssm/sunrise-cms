@@ -248,8 +248,8 @@ export interface FuneralHome extends Record {
     funeralHomeAddress1?: string;
     funeralHomeAddress2?: string;
     funeralHomeCity?: string;
-    funeralHomeProvince?: string;
     funeralHomePostalCode?: string;
+    funeralHomeProvince?: string;
     funeralHomePhoneNumber?: string;
 }
 export interface IntermentContainerType extends Record {
