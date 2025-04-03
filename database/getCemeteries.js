@@ -2,7 +2,7 @@ import { acquireConnection } from './pool.js';
 export default async function getCemeteries() {
     const database = await acquireConnection();
     const cemeteries = database
-        .prepare(`select m.cemeteryId, m.cemeteryName, m.cemeteryDescription,
+        .prepare(`select m.cemeteryId, m.cemeteryName, m.cemeteryKey, m.cemeteryDescription,
         m.cemeteryLatitude, m.cemeteryLongitude, m.cemeterySvg,
         m.cemeteryAddress1, m.cemeteryAddress2, m.cemeteryCity, m.cemeteryProvince, m.cemeteryPostalCode,
         m.cemeteryPhoneNumber,

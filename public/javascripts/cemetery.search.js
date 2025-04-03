@@ -15,7 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .toLowerCase()
             .split(' ');
         for (const cemetery of cemeteries) {
-            const cemeterySearchString = `${cemetery.cemeteryName} ${cemetery.cemeteryDescription} ${cemetery.cemeteryAddress1} ${cemetery.cemeteryAddress2}`.toLowerCase();
+            const cemeterySearchString = [
+                cemetery.cemeteryName,
+                cemetery.cemeteryKey,
+                cemetery.cemeteryDescription,
+                cemetery.cemeteryAddress1,
+                cemetery.cemeteryAddress2
+            ]
+                .join(' ')
+                .toLowerCase();
             let showCemetery = true;
             for (const filterStringPiece of filterStringSplit) {
                 if (!cemeterySearchString.includes(filterStringPiece)) {
@@ -38,6 +46,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <span class="is-size-7">
               ${cityssm.escapeHTML(cemetery.cemeteryDescription)}
             </span>
+          </td><td>
+            ${cityssm.escapeHTML(cemetery.cemeteryKey)}
           </td><td>
             ${cemetery.cemeteryAddress1 === ''
                 ? ''
@@ -79,6 +89,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 'table is-fullwidth is-striped is-hoverable has-sticky-header';
             searchResultsTableElement.innerHTML = `<thead><tr>
         <th>Cemetery</th>
+        <th>Key</th>
         <th>Address</th>
         <th>Phone Number</th>
         <th class="has-text-centered">Coordinates</th>

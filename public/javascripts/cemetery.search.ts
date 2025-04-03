@@ -35,9 +35,15 @@ declare const exports: Record<string, unknown>
       .split(' ')
 
     for (const cemetery of cemeteries) {
-      const cemeterySearchString = `${cemetery.cemeteryName} ${
-        cemetery.cemeteryDescription
-      } ${cemetery.cemeteryAddress1} ${cemetery.cemeteryAddress2}`.toLowerCase()
+      const cemeterySearchString = [
+        cemetery.cemeteryName,
+        cemetery.cemeteryKey,
+        cemetery.cemeteryDescription,
+        cemetery.cemeteryAddress1,
+        cemetery.cemeteryAddress2
+      ]
+        .join(' ')
+        .toLowerCase()
 
       let showCemetery = true
 
@@ -69,6 +75,8 @@ declare const exports: Record<string, unknown>
             <span class="is-size-7">
               ${cityssm.escapeHTML(cemetery.cemeteryDescription)}
             </span>
+          </td><td>
+            ${cityssm.escapeHTML(cemetery.cemeteryKey)}
           </td><td>
             ${
               cemetery.cemeteryAddress1 === ''
@@ -124,6 +132,7 @@ declare const exports: Record<string, unknown>
 
       searchResultsTableElement.innerHTML = `<thead><tr>
         <th>Cemetery</th>
+        <th>Key</th>
         <th>Address</th>
         <th>Phone Number</th>
         <th class="has-text-centered">Coordinates</th>
