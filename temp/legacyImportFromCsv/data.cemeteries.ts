@@ -49,7 +49,7 @@ export async function getCemeteryIdByKey(
         cemeteryName: cemeteryToCemeteryName[cemeteryKey] ?? cemeteryKey,
 
         cemeteryDescription: '',
-        cemeteryKey: cemeteryKey,
+        cemeteryKey,
 
         cemeterySvg: '',
 

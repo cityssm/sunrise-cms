@@ -35,7 +35,7 @@ export async function getCemeteryIdByKey(cemeteryKeyToSearch, user) {
         const cemeteryId = await addCemetery({
             cemeteryName: cemeteryToCemeteryName[cemeteryKey] ?? cemeteryKey,
             cemeteryDescription: '',
-            cemeteryKey: cemeteryKey,
+            cemeteryKey,
             cemeterySvg: '',
             cemeteryLatitude: '',
             cemeteryLongitude: '',

@@ -325,7 +325,7 @@ export interface Fee extends Record {
 
 export interface FeeCategory extends Record {
   feeCategoryId: number
-  
+
   feeCategory: string
   fees: Fee[]
   isGroupedFee: boolean
@@ -355,18 +355,18 @@ export interface IntermentContainerType extends Record {
 }
 
 export interface Record {
-  recordCreate_userName?: string
-  recordCreate_timeMillis?: number
   recordCreate_dateString?: string
+  recordCreate_timeMillis?: number
+  recordCreate_userName?: string
 
-  recordUpdate_userName?: string
-  recordUpdate_timeMillis?: number
   recordUpdate_dateString?: string
+  recordUpdate_timeMillis?: number
   recordUpdate_timeString?: string
+  recordUpdate_userName?: string
 
-  recordDelete_userName?: string
-  recordDelete_timeMillis?: number
   recordDelete_dateString?: string
+  recordDelete_timeMillis?: number
+  recordDelete_userName?: string
 }
 
 /*
@@ -376,11 +376,11 @@ export interface Record {
 export interface WorkOrder extends Record {
   workOrderId: number
 
-  workOrderTypeId?: number
   workOrderType?: string
+  workOrderTypeId?: number
 
-  workOrderNumber?: string
   workOrderDescription?: string
+  workOrderNumber?: string
 
   workOrderOpenDate?: number
   workOrderOpenDateString?: string
@@ -463,9 +463,9 @@ declare global {
 }
 
 export interface UserProperties {
+  apiKey: string
   canUpdate: boolean
   isAdmin: boolean
-  apiKey: string
 }
 
 declare module 'express-session' {

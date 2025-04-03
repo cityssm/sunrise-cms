@@ -1,5 +1,3 @@
-import path from 'node:path'
-
 import type { Config } from '../types/configTypes.js'
 
 import { config as cemeteryConfig } from './config.baseOntario.js'
@@ -8,12 +6,13 @@ export const config: Config = { ...cemeteryConfig }
 
 config.aliases.externalReceiptNumber = 'GP Receipt Number'
 
-config.settings.publicInternalPath = path.join('..', 'sunrise-cms-saultstemarie', 'public-internal')
+config.settings.publicInternalPath =
+  '../sunrise-cms-saultstemarie/public-internal'
 
 config.settings.burialSites.burialSiteNameSegments = {
   includeCemeteryKey: true,
   separator: '-',
-  
+
   segments: {
     1: {
       isAvailable: true,

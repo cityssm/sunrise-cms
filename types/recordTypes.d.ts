@@ -260,23 +260,23 @@ export interface IntermentContainerType extends Record {
     orderNumber?: number;
 }
 export interface Record {
-    recordCreate_userName?: string;
-    recordCreate_timeMillis?: number;
     recordCreate_dateString?: string;
-    recordUpdate_userName?: string;
-    recordUpdate_timeMillis?: number;
+    recordCreate_timeMillis?: number;
+    recordCreate_userName?: string;
     recordUpdate_dateString?: string;
+    recordUpdate_timeMillis?: number;
     recordUpdate_timeString?: string;
-    recordDelete_userName?: string;
-    recordDelete_timeMillis?: number;
+    recordUpdate_userName?: string;
     recordDelete_dateString?: string;
+    recordDelete_timeMillis?: number;
+    recordDelete_userName?: string;
 }
 export interface WorkOrder extends Record {
     workOrderId: number;
-    workOrderTypeId?: number;
     workOrderType?: string;
-    workOrderNumber?: string;
+    workOrderTypeId?: number;
     workOrderDescription?: string;
+    workOrderNumber?: string;
     workOrderOpenDate?: number;
     workOrderOpenDateString?: string;
     workOrderCloseDate?: number;
@@ -333,9 +333,9 @@ declare global {
     }
 }
 export interface UserProperties {
+    apiKey: string;
     canUpdate: boolean;
     isAdmin: boolean;
-    apiKey: string;
 }
 declare module 'express-session' {
     interface Session {
