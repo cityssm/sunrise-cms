@@ -2,7 +2,6 @@ import type { PoolConnection } from 'better-sqlite-pool'
 
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
 
-import getBurialSites from './getBurialSites.js'
 import getCemetery from './getCemetery.js'
 import { acquireConnection } from './pool.js'
 
@@ -27,44 +26,39 @@ export default async function rebuildBurialSiteNames(
     return 0
   }
 
-  /*
-   * Get the burial sites
-   */
-
-  const burialSites = await getBurialSites(
-    {
-      cemeteryId
-    },
-    {
-      limit: -1,
-      offset: 0
-    },
-    database
-  )
-
-  let updateCount = 0
-
-  for (const burialSite of burialSites.burialSites) {
-    const burialSiteName = buildBurialSiteName(cemetery.cemeteryKey, burialSite)
-
-    if (burialSiteName !== burialSite.burialSiteName) {
-      const result = database
-        .prepare(
-          `update BurialSites
-            set burialSiteName = ?,
-            recordUpdate_userName = ?,
-            recordUpdate_timeMillis = ?
-            where burialSiteId = ?
-            and recordDelete_timeMillis is null`
-        )
-        .run(burialSiteName, user.userName, Date.now(), burialSite.burialSiteId)
-
-      updateCount += result.changes
-    }
-  }
+  const result = database
+    .function('buildBurialSiteName', buildBurialSiteNameUserFunction)
+    .prepare(
+      `update BurialSites
+        set burialSiteName = buildBurialSiteName(?, burialSiteNameSegment1, burialSiteNameSegment2, burialSiteNameSegment3, burialSiteNameSegment4, burialSiteNameSegment5),
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where cemeteryId = ?
+        and recordDelete_timeMillis is null`
+    )
+    .run(cemetery.cemeteryKey, user.userName, Date.now(), cemeteryId)
 
   if (connectedDatabase === undefined) {
     database.release()
   }
-  return updateCount
+
+  return result.changes
+}
+
+// eslint-disable-next-line @typescript-eslint/max-params
+function buildBurialSiteNameUserFunction(
+  cemeteryKey: string,
+  burialSiteNameSegment1: string,
+  burialSiteNameSegment2: string,
+  burialSiteNameSegment3: string,
+  burialSiteNameSegment4: string,
+  burialSiteNameSegment5: string
+): string {
+  return buildBurialSiteName(cemeteryKey, {
+    burialSiteNameSegment1,
+    burialSiteNameSegment2,
+    burialSiteNameSegment3,
+    burialSiteNameSegment4,
+    burialSiteNameSegment5
+  })
 }
