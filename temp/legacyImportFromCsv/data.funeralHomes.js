@@ -69,6 +69,16 @@ const funeralHomes = [
         funeralHomeProvince: 'ON',
         funeralHomePostalCode: 'P6A 1P7',
         funeralHomePhoneNumber: '705-759-8456'
+    },
+    {
+        funeralHomeKey: 'ME',
+        funeralHomeName: "Menard Funeral Home",
+        funeralHomeAddress1: '72 Lakeside Avenue',
+        funeralHomeAddress2: '',
+        funeralHomeCity: 'Blind River',
+        funeralHomeProvince: 'ON',
+        funeralHomePostalCode: 'P0R 1B0',
+        funeralHomePhoneNumber: '705-356-7151'
     }
 ];
 const funeralHomeKeyToId = new Map();
