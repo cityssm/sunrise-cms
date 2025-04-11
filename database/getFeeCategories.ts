@@ -7,8 +7,8 @@ import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 interface GetFeeCategoriesFilters {
-  contractTypeId?: number | string
   burialSiteTypeId?: number | string
+  contractTypeId?: number | string
   feeCategoryId?: number | string
 }
 

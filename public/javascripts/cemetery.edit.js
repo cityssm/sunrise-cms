@@ -45,20 +45,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     globalThis.location.href = sunrise.getCemeteryURL(responseJSON.cemeteryId, true);
                 }
                 else {
-                    if (responseJSON.doRebuildBurialSiteNames ?? false) {
-                        bulmaJS.alert({
-                            message: `<strong>Cemetery Updated Successfully</strong><br />
-                  Note that rebuilding burial site names may take a few minutes.`,
-                            messageIsHtml: true,
-                            contextualColorName: 'warning'
-                        });
-                    }
-                    else {
-                        bulmaJS.alert({
-                            message: 'Cemetery Updated Successfully',
-                            contextualColorName: 'success'
-                        });
-                    }
+                    bulmaJS.alert({
+                        message: 'Cemetery Updated Successfully',
+                        contextualColorName: 'success'
+                    });
                 }
             }
             else {

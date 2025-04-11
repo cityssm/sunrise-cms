@@ -10,19 +10,18 @@ export default async function handler(
   request: Request<unknown, unknown, UpdateCemeteryForm>,
   response: Response
 ): Promise<void> {
-  const result = await updateCemetery(
+  const success = await updateCemetery(
     request.body,
     request.session.user as User
   )
 
   response.json({
-    success: result.success,
+    success,
 
-    cemeteryId: request.body.cemeteryId,
-    doRebuildBurialSiteNames: result.doRebuildBurialSiteNames
+    cemeteryId: request.body.cemeteryId
   })
 
-  if (result.doRebuildBurialSiteNames) {
+  if (success) {
     response.on('finish', () => {
       void rebuildBurialSiteNames(
         request.body.cemeteryId,

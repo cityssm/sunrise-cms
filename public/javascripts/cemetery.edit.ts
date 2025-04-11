@@ -71,7 +71,6 @@ declare const exports: Record<string, unknown>
         const responseJSON = rawResponseJSON as {
           success: boolean
           cemeteryId?: number
-          doRebuildBurialSiteNames?: boolean
           errorMessage?: string
         }
 
@@ -84,20 +83,10 @@ declare const exports: Record<string, unknown>
               true
             )
           } else {
-            if (responseJSON.doRebuildBurialSiteNames ?? false) {
-              bulmaJS.alert({
-                message: `<strong>Cemetery Updated Successfully</strong><br />
-                  Note that rebuilding burial site names may take a few minutes.`,
-                messageIsHtml: true,
-                contextualColorName: 'warning'
-              })
-            } else {
-
-              bulmaJS.alert({
-                message: 'Cemetery Updated Successfully',
-                contextualColorName: 'success'
-              })
-            }
+            bulmaJS.alert({
+              message: 'Cemetery Updated Successfully',
+              contextualColorName: 'success'
+            })
           }
         } else {
           bulmaJS.alert({

@@ -127,6 +127,27 @@
               <textarea class="textarea" id="cemetery--cemeteryDescription" name="cemeteryDescription"><%= cemetery.cemeteryDescription %></textarea>
             </div>
           </div>
+          <div class="field">
+            <label class="label" for="cemetery--parentCemeteryId">Parent Cemetery</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="cemetery--parentCemeteryId" name="parentCemeteryId">
+                  <option value="">(No Parent Cemetery)</option>
+                  <% for (const parentCemetery of cemeteries) { %>
+                    <%
+                      if (parentCemetery.cemeteryId === cemetery.cemeteryId || parentCemetery.parentCemeteryId !== null) {
+                        // Skip the current cemetery and any cemeteries that are already a parent
+                        continue;
+                      }
+                    %>
+                    <option value="<%= parentCemetery.cemeteryId %>" <%= (cemetery.parentCemeteryId === parentCemetery.cemeteryId) ? " selected" : "" %>>
+                      <%= parentCemetery.cemeteryName === '' ? '(No Name)' : parentCemetery.cemeteryName %>
+                    </option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

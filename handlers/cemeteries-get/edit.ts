@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 
 import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js'
 import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js'
+import getCemeteries from '../../database/getCemeteries.js'
 import getCemetery from '../../database/getCemetery.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getCemeterySVGs } from '../../helpers/images.helpers.js'
@@ -18,6 +19,8 @@ export default async function handler(
     )
     return
   }
+
+  const cemeteries = await getCemeteries()
 
   const cemeterySVGs = await getCemeterySVGs()
 
@@ -37,6 +40,7 @@ export default async function handler(
     isCreate: false,
 
     burialSiteStatusSummary,
-    burialSiteTypeSummary
+    burialSiteTypeSummary,
+    cemeteries
   })
 }

@@ -86,7 +86,9 @@ const createStatements = [
     cemeteryProvince varchar(2),
     cemeteryPostalCode varchar(7),
     cemeteryPhoneNumber varchar(30),
-    ${recordColumns})`,
+    parentCemeteryId integer,
+    ${recordColumns},
+    foreign key (parentCemeteryId) references Cemeteries (cemeteryId))`,
 
   /*
    * Burial Sites

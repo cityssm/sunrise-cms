@@ -3,6 +3,7 @@ export interface UpdateCemeteryForm {
     cemeteryDescription: string;
     cemeteryKey: string;
     cemeteryName: string;
+    parentCemeteryId: string;
     cemeteryAddress1: string;
     cemeteryAddress2: string;
     cemeteryCity: string;
@@ -13,7 +14,4 @@ export interface UpdateCemeteryForm {
     cemeteryLongitude: string;
     cemeterySvg: string;
 }
-export default function updateCemetery(updateForm: UpdateCemeteryForm, user: User): Promise<{
-    doRebuildBurialSiteNames: boolean;
-    success: boolean;
-}>;
+export default function updateCemetery(updateForm: UpdateCemeteryForm, user: User): Promise<boolean>;

@@ -2,6 +2,18 @@ import type { Cemetery, FuneralHome } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
+export default async function getFuneralHome(
+  funeralHomeId: number | string
+): Promise<FuneralHome | undefined> {
+  return await _getFuneralHome('funeralHomeId', funeralHomeId)
+}
+
+export async function getFuneralHomeByKey(
+  funeralHomeKey: string
+): Promise<FuneralHome | undefined> {
+  return await _getFuneralHome('funeralHomeKey', funeralHomeKey)
+}
+
 async function _getFuneralHome(
   keyColumn: 'funeralHomeId' | 'funeralHomeKey',
   funeralHomeIdOrKey: number | string
@@ -23,16 +35,4 @@ async function _getFuneralHome(
   database.release()
 
   return funeralHome
-}
-
-export default async function getFuneralHome(
-  funeralHomeId: number | string
-): Promise<FuneralHome | undefined> {
-  return await _getFuneralHome('funeralHomeId', funeralHomeId)
-}
-
-export async function getFuneralHomeByKey(
-  funeralHomeKey: string
-): Promise<FuneralHome | undefined> {
-  return await _getFuneralHome('funeralHomeKey', funeralHomeKey)
 }

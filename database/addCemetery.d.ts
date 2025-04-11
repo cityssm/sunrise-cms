@@ -2,6 +2,7 @@ export interface AddCemeteryForm {
     cemeteryDescription: string;
     cemeteryKey: string;
     cemeteryName: string;
+    parentCemeteryId: string;
     cemeteryLatitude: string;
     cemeteryLongitude: string;
     cemeterySvg: string;

@@ -4,6 +4,7 @@ export interface AddCemeteryForm {
   cemeteryDescription: string
   cemeteryKey: string
   cemeteryName: string
+  parentCemeteryId: string
 
   cemeteryLatitude: string
   cemeteryLongitude: string
@@ -14,7 +15,7 @@ export interface AddCemeteryForm {
   cemeteryCity: string
   cemeteryPostalCode: string
   cemeteryProvince: string
-  
+
   cemeteryPhoneNumber: string
 }
 
@@ -34,9 +35,10 @@ export default async function addCemetery(
         cemeteryAddress1, cemeteryAddress2,
         cemeteryCity, cemeteryProvince, cemeteryPostalCode,
         cemeteryPhoneNumber,
+        parentCemeteryId,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       addForm.cemeteryName,
@@ -51,6 +53,7 @@ export default async function addCemetery(
       addForm.cemeteryProvince,
       addForm.cemeteryPostalCode,
       addForm.cemeteryPhoneNumber,
+      addForm.parentCemeteryId === '' ? undefined : addForm.parentCemeteryId,
       user.userName,
       rightNowMillis,
       user.userName,

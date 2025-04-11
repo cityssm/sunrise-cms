@@ -71,6 +71,13 @@ declare const exports: Record<string, unknown>
                   ? '(No Name)'
                   : cemetery.cemeteryName
               )}
+              ${
+                cemetery.cemeteryName === ''
+                  ? `<span class="icon is-small has-text-danger">
+                      <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                      </span>`
+                  : ''
+              }
             </a><br />
             <span class="is-size-7">
               ${cityssm.escapeHTML(cemetery.cemeteryDescription)}
@@ -97,6 +104,14 @@ declare const exports: Record<string, unknown>
             }
           </td><td>
             ${cityssm.escapeHTML(cemetery.cemeteryPhoneNumber)}
+          </td><td class="has-text-centered">
+            ${
+              cemetery.parentCemeteryId === null
+                ? ''
+                : `<span data-tooltip="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
+                    <i class="fas fa-turn-up" role="img" aria-label="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}"></i>
+                    </span>`
+            }
           </td><td class="has-text-centered">
             ${
               cemetery.cemeteryLatitude && cemetery.cemeteryLongitude
@@ -135,6 +150,7 @@ declare const exports: Record<string, unknown>
         <th>Key</th>
         <th>Address</th>
         <th>Phone Number</th>
+        <th class="has-text-centered">Parent</th>
         <th class="has-text-centered">Coordinates</th>
         <th class="has-text-centered">Image</th>
         <th class="has-text-right">Burial Site Count</th>

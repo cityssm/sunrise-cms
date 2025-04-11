@@ -94,6 +94,9 @@ export interface Cemetery extends Record {
   cemeteryKey: string
   cemeteryName: string
 
+  parentCemeteryId?: number | null
+  parentCemeteryName?: string | null
+
   cemeteryLatitude?: number
   cemeteryLongitude?: number
   cemeterySvg?: string

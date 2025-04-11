@@ -44,7 +44,8 @@ export async function getCemeteryIdByKey(cemeteryKeyToSearch, user) {
             cemeteryCity: 'Sault Ste. Marie',
             cemeteryPostalCode: '',
             cemeteryProvince: 'ON',
-            cemeteryPhoneNumber: ''
+            cemeteryPhoneNumber: '',
+            parentCemeteryId: '',
         }, user);
         cemeteryCache.set(cemeteryKey, cemeteryId);
     }

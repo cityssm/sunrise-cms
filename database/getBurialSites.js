@@ -8,8 +8,8 @@ function buildWhereClause(filters) {
     sqlWhereClause += burialSiteNameFilters.sqlWhereClause;
     sqlParameters.push(...burialSiteNameFilters.sqlParameters);
     if ((filters.cemeteryId ?? '') !== '') {
-        sqlWhereClause += ' and l.cemeteryId = ?';
-        sqlParameters.push(filters.cemeteryId);
+        sqlWhereClause += ' and (m.cemeteryId = ? or m.parentCemeteryId = ?)';
+        sqlParameters.push(filters.cemeteryId, filters.cemeteryId);
     }
     if ((filters.burialSiteTypeId ?? '') !== '') {
         sqlWhereClause += ' and l.burialSiteTypeId = ?';
@@ -47,6 +47,7 @@ export default async function getBurialSites(filters, options, connectedDatabase
         count = database
             .prepare(`select count(*) as recordCount
             from BurialSites l
+            left join Cemeteries m on l.cemeteryId = m.cemeteryId
             left join (
               select burialSiteId, count(contractId) as contractCount from Contracts
               where recordDelete_timeMillis is null

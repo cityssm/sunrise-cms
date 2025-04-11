@@ -1,4 +1,10 @@
 import { acquireConnection } from './pool.js';
+export default async function getFuneralHome(funeralHomeId) {
+    return await _getFuneralHome('funeralHomeId', funeralHomeId);
+}
+export async function getFuneralHomeByKey(funeralHomeKey) {
+    return await _getFuneralHome('funeralHomeKey', funeralHomeKey);
+}
 async function _getFuneralHome(keyColumn, funeralHomeIdOrKey) {
     const database = await acquireConnection();
     const funeralHome = database
@@ -12,10 +18,4 @@ async function _getFuneralHome(keyColumn, funeralHomeIdOrKey) {
         .get(funeralHomeIdOrKey);
     database.release();
     return funeralHome;
-}
-export default async function getFuneralHome(funeralHomeId) {
-    return await _getFuneralHome('funeralHomeId', funeralHomeId);
-}
-export async function getFuneralHomeByKey(funeralHomeKey) {
-    return await _getFuneralHome('funeralHomeKey', funeralHomeKey);
 }

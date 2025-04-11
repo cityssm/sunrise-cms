@@ -1,20 +1,20 @@
-import { type DateString } from '@cityssm/utils-datetime';
 import type { PoolConnection } from 'better-sqlite-pool';
+import { type DateString } from '@cityssm/utils-datetime';
 import type { Contract } from '../types/recordTypes.js';
 export interface GetContractsFilters {
     burialSiteId?: number | string;
-    contractTime?: '' | 'past' | 'current' | 'future';
+    contractTime?: '' | 'current' | 'future' | 'past';
     contractStartDateString?: DateString;
     contractEffectiveDateString?: string;
     deceasedName?: string;
     contractTypeId?: number | string;
     cemeteryId?: number | string;
-    burialSiteNameSearchType?: '' | 'startsWith' | 'endsWith';
     burialSiteName?: string;
+    burialSiteNameSearchType?: '' | 'startsWith' | 'endsWith';
     burialSiteTypeId?: number | string;
     funeralHomeId?: number | string;
-    workOrderId?: number | string;
     notWorkOrderId?: number | string;
+    workOrderId?: number | string;
 }
 export interface GetContractsOptions {
     /** -1 for no limit */

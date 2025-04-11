@@ -89,6 +89,14 @@
           <%= cemetery.cemeteryPhoneNumber %>
         </div>
       <% } %>
+      <% if (cemetery.parentCemeteryId !== null) { %>
+        <div class="column">
+          <strong>Parent Cemetery</strong><br />
+          <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.parentCemeteryId %>">
+            <%= (cemetery.parentCemeteryName ?? '') === '' ? "(No Name)" : cemetery.parentCemeteryName %>
+          </a>
+        </div>
+      <% } %>
     </div>
   </div>
 </div>

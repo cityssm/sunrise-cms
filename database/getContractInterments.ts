@@ -1,7 +1,8 @@
+import type { PoolConnection } from 'better-sqlite-pool'
+
 import {
   dateIntegerToString
 } from '@cityssm/utils-datetime'
-import type { PoolConnection } from 'better-sqlite-pool'
 
 import type { ContractInterment } from '../types/recordTypes.js'
 
