@@ -807,7 +807,7 @@ type ResponseJSON =
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="title is-4 has-text-white">(All Contract Types)</h2>
+              <h2 class="title is-5 has-text-white">(All Contract Types)</h2>
             </div>
           </div>
           <div class="level-right is-hidden-print">
@@ -880,7 +880,7 @@ type ResponseJSON =
               </button>
             </div>
             <div class="level-item">
-              <h2 class="title is-4 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
+              <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
             </div>
             ${
               contractType.isPreneed
@@ -969,7 +969,7 @@ type ResponseJSON =
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="title is-4 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
+              <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
             </div>
           </div>
           <div class="level-right is-hidden-print">

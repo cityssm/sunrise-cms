@@ -600,7 +600,7 @@ type ResponseJSON =
               </button>
             </div>
             <div class="level-item">
-              <h2 class="title is-4 has-text-white">${cityssm.escapeHTML(burialSiteType.burialSiteType)}</h2>
+              <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(burialSiteType.burialSiteType)}</h2>
             </div>
           </div>
           <div class="level-right is-hidden-print">

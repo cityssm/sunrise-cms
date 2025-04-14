@@ -73,9 +73,9 @@ declare const exports: Record<string, unknown>
 
       // eslint-disable-next-line no-unsanitized/property
       feeCategoryContainerElement.innerHTML = `<div class="panel-heading">
-        <div class="columns">
+        <div class="columns is-vcentered">
           <div class="column">
-            <h2 class="title is-5 has-text-white mb-2">
+            <h2 class="title is-5 has-text-white">
               ${cityssm.escapeHTML(feeCategory.feeCategory)}
             </h2>
             ${
