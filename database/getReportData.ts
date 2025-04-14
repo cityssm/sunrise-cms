@@ -29,6 +29,7 @@ const simpleReports: Record<`${string}-all` | `${string}-formatted`, string> = {
     where recordDelete_timeMillis is null
     order by cemeteryName`,
 
+  'committalTypes-all': 'select * from CommittalTypes',
   'contractComments-all': 'select * from ContractComments',
   'contractFees-all': 'select * from ContractFees',
   'contractFields-all': 'select * from ContractFields',
@@ -36,6 +37,7 @@ const simpleReports: Record<`${string}-all` | `${string}-formatted`, string> = {
   'contracts-all': 'select * from Contracts',
   'contractTransactions-all': 'select * from ContractTransactions',
   'contractTypeFields-all': 'select * from ContractTypeFields',
+  'contractTypePrints-all': 'select * from ContractTypePrints',
   'contractTypes-all': 'select * from ContractTypes',
 
   'feeCategories-all': 'select * from FeeCategories',
@@ -51,7 +53,7 @@ const simpleReports: Record<`${string}-all` | `${string}-formatted`, string> = {
     where recordDelete_timeMillis is null`,
 
   'intermentContainerTypes-all': 'select * from IntermentContainerTypes',
-  
+
   'workOrderBurialSites-all': 'select * from WorkOrderBurialSites',
   'workOrderComments-all': 'select * from WorkOrderComments',
   'workOrderMilestones-all': 'select * from WorkOrderMilestones',
