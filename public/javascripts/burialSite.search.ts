@@ -28,9 +28,9 @@ declare const exports: Record<string, unknown>
 
   function renderBurialSites(rawResponseJSON: unknown): void {
     const responseJSON = rawResponseJSON as {
+      burialSites: BurialSite[]
       count: number
       offset: number
-      burialSites: BurialSite[]
     }
 
     if (responseJSON.burialSites.length === 0) {

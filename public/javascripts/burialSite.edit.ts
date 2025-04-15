@@ -8,6 +8,7 @@ import type {
   BurialSiteComment,
   BurialSiteTypeField
 } from '../../types/recordTypes.js'
+
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
@@ -399,6 +400,7 @@ declare const exports: Record<string, unknown>
 
         editCloseModalFunction = closeModalFunction
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
@@ -562,6 +564,7 @@ declare const exports: Record<string, unknown>
           ) as HTMLTextAreaElement
         ).focus()
       },
+      
       onremoved() {
         bulmaJS.toggleHtmlClipped()
         ;(

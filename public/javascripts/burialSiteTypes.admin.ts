@@ -364,7 +364,8 @@ type ResponseJSON =
       bulmaJS.confirm({
         title: 'Delete Field',
         message:
-          'Are you sure you want to delete this field?  Note that historical records that make use of this field will not be affected.',
+          `Are you sure you want to delete this field? 
+            Note that historical records that make use of this field will not be affected.`,
         contextualColorName: 'warning',
         okButton: {
           text: 'Yes, Delete Field',
@@ -713,6 +714,7 @@ type ResponseJSON =
 
           bulmaJS.toggleHtmlClipped()
         },
+        
         onremoved() {
           bulmaJS.toggleHtmlClipped()
         }
