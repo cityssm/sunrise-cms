@@ -22,6 +22,7 @@ export default async function handler(
 
   response.json({
     success,
+    
     feeCategories
   })
 }

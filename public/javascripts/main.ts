@@ -137,10 +137,19 @@ declare const exports: Record<string, unknown> & {
           map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom)
           currentMarker = L.marker(mapCoordinates).addTo(map)
         } else {
-          const middleLatitude = (Number.parseFloat(options.latitudeElement.min) + Number.parseFloat(options.latitudeElement.max)) / 2
-          const middleLongitude = (Number.parseFloat(options.longitudeElement.min) + Number.parseFloat(options.longitudeElement.max)) / 2
+          const middleLatitude =
+            (Number.parseFloat(options.latitudeElement.min) +
+              Number.parseFloat(options.latitudeElement.max)) /
+            2
+          const middleLongitude =
+            (Number.parseFloat(options.longitudeElement.min) +
+              Number.parseFloat(options.longitudeElement.max)) /
+            2
 
-          const mapCoordinates: Leaflet.LatLngTuple = [middleLatitude, middleLongitude]
+          const mapCoordinates: Leaflet.LatLngTuple = [
+            middleLatitude,
+            middleLongitude
+          ]
           map.setView(mapCoordinates, 5)
         }
 

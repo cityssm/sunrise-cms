@@ -12,7 +12,7 @@ export default async function handler(
 ): Promise<void> {
   const success = await deleteRecord(
     'ContractTypes',
-    request.body.contractTypeId as string,
+    request.body.contractTypeId,
     request.session.user as User
   )
 
@@ -21,7 +21,8 @@ export default async function handler(
 
   response.json({
     success,
-    contractTypes,
-    allContractTypeFields
+
+    allContractTypeFields,
+    contractTypes
   })
 }

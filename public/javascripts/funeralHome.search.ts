@@ -76,7 +76,8 @@ declare const exports: Record<string, unknown>
             }
             ${
               funeralHome.funeralHomeCity || funeralHome.funeralHomeProvince
-                ? `${cityssm.escapeHTML(funeralHome.funeralHomeCity ?? '')}, ${cityssm.escapeHTML(funeralHome.funeralHomeProvince ?? '')}<br />`
+                ? `${cityssm.escapeHTML(funeralHome.funeralHomeCity ?? '')},
+                    ${cityssm.escapeHTML(funeralHome.funeralHomeProvince ?? '')}<br />`
                 : ''
             }
             ${

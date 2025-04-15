@@ -1,6 +1,7 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { Contract } from '../../types/recordTypes.js'
+
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal

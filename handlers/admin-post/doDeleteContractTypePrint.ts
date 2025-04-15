@@ -25,7 +25,8 @@ export default async function handler(
 
   response.json({
     success,
-    contractTypes,
-    allContractTypeFields
+
+    allContractTypeFields,
+    contractTypes
   })
 }

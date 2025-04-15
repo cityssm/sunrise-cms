@@ -73,9 +73,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     currentMarker = L.marker(mapCoordinates).addTo(map);
                 }
                 else {
-                    const middleLatitude = (Number.parseFloat(options.latitudeElement.min) + Number.parseFloat(options.latitudeElement.max)) / 2;
-                    const middleLongitude = (Number.parseFloat(options.longitudeElement.min) + Number.parseFloat(options.longitudeElement.max)) / 2;
-                    const mapCoordinates = [middleLatitude, middleLongitude];
+                    const middleLatitude = (Number.parseFloat(options.latitudeElement.min) +
+                        Number.parseFloat(options.latitudeElement.max)) /
+                        2;
+                    const middleLongitude = (Number.parseFloat(options.longitudeElement.min) +
+                        Number.parseFloat(options.longitudeElement.max)) /
+                        2;
+                    const mapCoordinates = [
+                        middleLatitude,
+                        middleLongitude
+                    ];
                     map.setView(mapCoordinates, 5);
                 }
                 map.on('click', (clickEvent) => {

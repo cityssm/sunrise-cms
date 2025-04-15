@@ -42,7 +42,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ? ''
                 : `${cityssm.escapeHTML(funeralHome.funeralHomeAddress2 ?? '')}<br />`}
             ${funeralHome.funeralHomeCity || funeralHome.funeralHomeProvince
-                ? `${cityssm.escapeHTML(funeralHome.funeralHomeCity ?? '')}, ${cityssm.escapeHTML(funeralHome.funeralHomeProvince ?? '')}<br />`
+                ? `${cityssm.escapeHTML(funeralHome.funeralHomeCity ?? '')},
+                    ${cityssm.escapeHTML(funeralHome.funeralHomeProvince ?? '')}<br />`
                 : ''}
             ${(funeralHome.funeralHomePostalCode ?? '') === ''
                 ? ''

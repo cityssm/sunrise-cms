@@ -6,7 +6,7 @@ export default async function handler(request, response) {
     const allContractTypeFields = await getAllContractTypeFields();
     response.json({
         success,
-        contractTypes,
-        allContractTypeFields
+        allContractTypeFields,
+        contractTypes
     });
 }

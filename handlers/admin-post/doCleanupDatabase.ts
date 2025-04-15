@@ -10,6 +10,7 @@ export default async function handler(
 
   response.json({
     success: true,
+    
     inactivatedRecordCount: recordCounts.inactivatedRecordCount,
     purgedRecordCount: recordCounts.purgedRecordCount
   })

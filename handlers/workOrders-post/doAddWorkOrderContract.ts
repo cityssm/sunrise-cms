@@ -7,14 +7,14 @@ export default async function handler(
   request: Request<
     unknown,
     unknown,
-    { workOrderId: string; contractId: string }
+    { contractId: string; workOrderId: string; }
   >,
   response: Response
 ): Promise<void> {
   const success = await addWorkOrderContract(
     {
-      workOrderId: request.body.workOrderId,
-      contractId: request.body.contractId
+      contractId: request.body.contractId,
+      workOrderId: request.body.workOrderId
     },
     request.session.user as User
   )
