@@ -6,17 +6,17 @@ import addWorkOrderMilestone, {
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<unknown, unknown, AddWorkOrderMilestoneForm>,
   response: Response
 ): Promise<void> {
   const success = await addWorkOrderMilestone(
-    request.body as AddWorkOrderMilestoneForm,
+    request.body,
     request.session.user as User
   )
 
   const workOrderMilestones = await getWorkOrderMilestones(
     {
-      workOrderId: request.body.workOrderId as string
+      workOrderId: request.body.workOrderId
     },
     {
       orderBy: 'completion'

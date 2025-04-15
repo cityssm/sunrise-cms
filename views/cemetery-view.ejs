@@ -121,6 +121,14 @@
       <div class="panel-block is-block">
         <% if (cemetery.cemeteryLatitude && cemetery.cemeteryLongitude) { %>
           <div id="cemetery--leaflet" data-latitude="<%= cemetery.cemeteryLatitude %>" data-longitude="<%= cemetery.cemeteryLongitude %>" style="height:300px"></div>
+        <% } else if (cemetery.parentCemeteryLatitude && cemetery.parentCemeteryLongitude) { %>
+          <div class="message is-info">
+            <p class="message-body">
+              <strong>Coordinates not available for this child cemtery.</strong><br />
+              Coordinates for the parent cemetery are shown instead.
+            </p>
+          </div>
+          <div id="cemetery--leaflet" data-latitude="<%= cemetery.parentCemeteryLatitude %>" data-longitude="<%= cemetery.parentCemeteryLongitude %>" style="height:300px"></div>
         <% } else { %>
           <div class="message is-info">
             <p class="message-body">

@@ -26,8 +26,9 @@ export default async function handler(
     {
       limit: -1,
       offset: 0,
-      includeInterments: true,
+
       includeFees: false,
+      includeInterments: true,
       includeTransactions: false
     }
   )

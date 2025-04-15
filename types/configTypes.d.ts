@@ -30,8 +30,12 @@ export interface Config {
         fees: {
             taxPercentageDefault?: number;
         };
+        cemeteries: {
+            refreshImageChanges?: boolean;
+        };
         burialSites: {
             burialSiteNameSegments?: ConfigBurialSiteNameSegments;
+            refreshImageChanges?: boolean;
         };
         contracts: {
             burialSiteIdIsRequired?: boolean;

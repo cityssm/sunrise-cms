@@ -5,11 +5,11 @@ import closeWorkOrder, {
 } from '../../database/closeWorkOrder.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<unknown, unknown, CloseWorkOrderForm>,
   response: Response
 ): Promise<void> {
   const success = await closeWorkOrder(
-    request.body as CloseWorkOrderForm,
+    request.body,
     request.session.user as User
   )
 
@@ -17,4 +17,3 @@ export default async function handler(
     success
   })
 }
-

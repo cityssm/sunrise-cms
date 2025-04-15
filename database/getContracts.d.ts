@@ -3,14 +3,14 @@ import { type DateString } from '@cityssm/utils-datetime';
 import type { Contract } from '../types/recordTypes.js';
 export interface GetContractsFilters {
     burialSiteId?: number | string;
-    contractTime?: '' | 'current' | 'future' | 'past';
-    contractStartDateString?: DateString;
     contractEffectiveDateString?: string;
+    contractStartDateString?: DateString;
+    contractTime?: '' | 'current' | 'future' | 'past';
     deceasedName?: string;
     contractTypeId?: number | string;
     cemeteryId?: number | string;
     burialSiteName?: string;
-    burialSiteNameSearchType?: '' | 'startsWith' | 'endsWith';
+    burialSiteNameSearchType?: '' | 'endsWith' | 'startsWith';
     burialSiteTypeId?: number | string;
     funeralHomeId?: number | string;
     notWorkOrderId?: number | string;

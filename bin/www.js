@@ -23,6 +23,7 @@ const clusterSettings = {
     exec: `${directoryName}/wwwProcess.js`
 };
 cluster.setupPrimary(clusterSettings);
+let doShutdown = false;
 const activeWorkers = new Map();
 for (let index = 0; index < processCount; index += 1) {
     const worker = cluster.fork();
@@ -41,8 +42,11 @@ cluster.on('message', (worker, message) => {
 cluster.on('exit', (worker) => {
     debug(`Worker ${(worker.process.pid ?? 0).toString()} has been killed`);
     activeWorkers.delete(worker.process.pid ?? 0);
-    debug('Starting another worker');
-    cluster.fork();
+    if (!doShutdown) {
+        debug('Starting another worker');
+        const newWorker = cluster.fork();
+        activeWorkers.set(newWorker.process.pid ?? 0, newWorker);
+    }
 });
 const ntfyStartupConfig = getConfigProperty('application.ntfyStartup');
 if (ntfyStartupConfig !== undefined) {
@@ -75,7 +79,16 @@ if (process.env.STARTUP_TEST === 'true') {
     debug(`Killing processes in ${killSeconds} seconds...`);
     setTimeout(() => {
         debug('Killing processes');
+        doShutdown = true;
         // eslint-disable-next-line unicorn/no-process-exit
         process.exit(0);
     }, secondsToMillis(killSeconds));
 }
+exitHook(() => {
+    doShutdown = true;
+    debug('Shutting down...');
+    for (const worker of activeWorkers.values()) {
+        debug(`Killing worker ${worker.process.pid}`);
+        worker.kill();
+    }
+});

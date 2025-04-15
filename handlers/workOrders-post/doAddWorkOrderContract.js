@@ -10,8 +10,8 @@ export default async function handler(request, response) {
     }, {
         limit: -1,
         offset: 0,
-        includeInterments: true,
         includeFees: false,
+        includeInterments: true,
         includeTransactions: false
     });
     response.json({

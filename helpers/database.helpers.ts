@@ -1,3 +1,5 @@
+import fs from 'node:fs/promises'
+
 import Debug from 'debug'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
@@ -19,4 +21,17 @@ export const sunriseDBTesting = 'data/sunrise-testing.db'
 
 export const sunriseDB = useTestDatabases ? sunriseDBTesting : sunriseDBLive
 
-export const backupFolder = 'data/backups'
+const backupFolder = 'data/backups'
+
+export async function backupDatabase(): Promise<false | string> {
+  const databasePathSplit = sunriseDB.split(/[/\\]/)
+
+  const backupDatabasePath = `${backupFolder}/${databasePathSplit.at(-1)}.${Date.now().toString()}`
+
+  try {
+    await fs.copyFile(sunriseDB, backupDatabasePath)
+    return backupDatabasePath
+  } catch {
+    return false
+  }
+}

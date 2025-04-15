@@ -7,14 +7,14 @@ export default async function handler(
   request: Request<
     unknown,
     unknown,
-    { workOrderId: string; burialSiteId: string }
+    { burialSiteId: string; workOrderId: string; }
   >,
   response: Response
 ): Promise<void> {
   const success = await addWorkOrderBurialSite(
     {
-      workOrderId: request.body.workOrderId,
-      burialSiteId: request.body.burialSiteId
+      burialSiteId: request.body.burialSiteId,
+      workOrderId: request.body.workOrderId
     },
     request.session.user as User
   )
@@ -26,6 +26,7 @@ export default async function handler(
     {
       limit: -1,
       offset: 0,
+
       includeContractCount: false
     }
   )

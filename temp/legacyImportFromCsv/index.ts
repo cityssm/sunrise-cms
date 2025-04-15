@@ -485,7 +485,7 @@ async function importFromMasterCSV(): Promise<void> {
        * Interment Record
        */
 
-      let deceasedContractStartDateString: DateString | ''
+      let deceasedContractStartDateString: '' | DateString
       let deceasedContractId: number
 
       if (masterRow.CM_DECEASED_NAME !== '') {

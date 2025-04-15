@@ -30,6 +30,7 @@ export const configDefaultValues = {
     'settings.latitudeMin': -90,
     'settings.longitudeMax': 180,
     'settings.longitudeMin': -180,
+    'settings.cemeteries.refreshImageChanges': false,
     'settings.burialSites.burialSiteNameSegments': {
         includeCemeteryKey: false,
         separator: '-',
@@ -44,6 +45,7 @@ export const configDefaultValues = {
         }
     },
     'settings.burialSites.burialSiteNameSegments.includeCemeteryKey': false,
+    'settings.burialSites.refreshImageChanges': false,
     'settings.contracts.burialSiteIdIsRequired': true,
     'settings.contracts.contractEndDateIsRequired': false,
     'settings.contracts.deathAgePeriods': [

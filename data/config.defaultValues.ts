@@ -49,6 +49,8 @@ export const configDefaultValues = {
   'settings.longitudeMax': 180,
   'settings.longitudeMin': -180,
 
+  'settings.cemeteries.refreshImageChanges': false,
+
   'settings.burialSites.burialSiteNameSegments': {
     includeCemeteryKey: false,
     separator: '-',
@@ -65,6 +67,8 @@ export const configDefaultValues = {
   } as unknown as ConfigBurialSiteNameSegments,
 
   'settings.burialSites.burialSiteNameSegments.includeCemeteryKey': false,
+
+  'settings.burialSites.refreshImageChanges': false,
 
   'settings.contracts.burialSiteIdIsRequired': true,
   'settings.contracts.contractEndDateIsRequired': false,

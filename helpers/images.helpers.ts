@@ -1,30 +1,44 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
+import chokidar from 'chokidar'
+import Debug from 'debug'
+
+import { DEBUG_NAMESPACE } from '../debug.config.js'
+
 import { getConfigProperty } from './config.helpers.js'
 
-let burialSiteImages: string[] | undefined
+const debug = Debug(`${DEBUG_NAMESPACE}:images.helpers`)
+
+/*
+ * Burial Site Images
+ */
+
+const burialSiteImagesFolder = path.join(
+  getConfigProperty('settings.publicInternalPath'),
+  'images',
+  'burialSites'
+)
+
+const burialSiteImageFileExtensions = ['jpg', 'jpeg', 'png']
+
+let burialSiteImages: string[] = []
 
 export async function getBurialSiteImages(): Promise<string[]> {
-  if (burialSiteImages === undefined) {
-    const files = await fs.readdir(
-      path.join(
-        getConfigProperty('settings.publicInternalPath'),
-        'images',
-        'burialSites'
-      )
-    )
+  if (burialSiteImages.length === 0) {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    const files = await fs.readdir(burialSiteImagesFolder)
 
     const images: string[] = []
 
     for (const file of files) {
       const lowerCaseFileName = file.toLowerCase()
-      if (
-        lowerCaseFileName.endsWith('.jpg') ||
-        lowerCaseFileName.endsWith('.jpeg') ||
-        lowerCaseFileName.endsWith('.png')
-      ) {
-        images.push(file)
+
+      for (const fileExtension of burialSiteImageFileExtensions) {
+        if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
+          images.push(file)
+          break
+        }
       }
     }
 
@@ -34,21 +48,53 @@ export async function getBurialSiteImages(): Promise<string[]> {
   return burialSiteImages
 }
 
-let cemeterySVGs: string[] | undefined
+function clearCachedBurialSiteImages(): void {
+  debug('Burial site images folder changed.')
+  burialSiteImages = []
+}
+
+if (getConfigProperty('settings.burialSites.refreshImageChanges')) {
+  debug('Burial site images watcher enabled.')
+
+  const burialSitesWatcher = chokidar.watch(burialSiteImagesFolder, {
+    ignoreInitial: true,
+    persistent: true
+  })
+
+  burialSitesWatcher.on('add', clearCachedBurialSiteImages)
+  burialSitesWatcher.on('change', clearCachedBurialSiteImages)
+  burialSitesWatcher.on('unlink', clearCachedBurialSiteImages)
+}
+
+/*
+ * Cemetery SVGs
+ */
+
+const cemeterySVGsFolder = path.join(
+  getConfigProperty('settings.publicInternalPath'),
+  'images',
+  'cemeteries'
+)
+
+const cemeterySVGFileExtensions = ['svg']
+
+let cemeterySVGs: string[] = []
 
 export async function getCemeterySVGs(): Promise<string[]> {
-  if (cemeterySVGs === undefined) {
-    const files = await fs.readdir(path.join(
-      getConfigProperty('settings.publicInternalPath'),
-      'images',
-      'cemeteries'
-    ))
+  if (cemeterySVGs.length === 0) {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    const files = await fs.readdir(cemeterySVGsFolder)
 
     const SVGs: string[] = []
 
     for (const file of files) {
-      if (file.toLowerCase().endsWith('.svg')) {
-        SVGs.push(file)
+      const lowerCaseFileName = file.toLowerCase()
+
+      for (const fileExtension of cemeterySVGFileExtensions) {
+        if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
+          SVGs.push(file)
+          break
+        }
       }
     }
 
@@ -56,4 +102,22 @@ export async function getCemeterySVGs(): Promise<string[]> {
   }
 
   return cemeterySVGs
+}
+
+function clearCachedCemeterySVGs(): void {
+  debug('Cemetery SVGs folder changed.')
+  cemeterySVGs = []
+}
+
+if (getConfigProperty('settings.cemeteries.refreshImageChanges')) {
+  debug('Cemetery SVGs watcher enabled.')
+
+  const cemeteryWatcher = chokidar.watch(cemeterySVGsFolder, {
+    ignoreInitial: true,
+    persistent: true
+  })
+
+  cemeteryWatcher.on('add', clearCachedCemeterySVGs)
+  cemeteryWatcher.on('change', clearCachedCemeterySVGs)
+  cemeteryWatcher.on('unlink', clearCachedCemeterySVGs)
 }

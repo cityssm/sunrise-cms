@@ -42,8 +42,13 @@ export interface Config {
       taxPercentageDefault?: number
     }
 
+    cemeteries: {
+      refreshImageChanges?: boolean
+    }
+
     burialSites: {
       burialSiteNameSegments?: ConfigBurialSiteNameSegments
+      refreshImageChanges?: boolean
     }
 
     contracts: {

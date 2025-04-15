@@ -4,6 +4,20 @@ import type { Cemetery } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
+export default async function getCemetery(
+  cemeteryId: number | string,
+  connectedDatabase?: PoolConnection
+): Promise<Cemetery | undefined> {
+  return await _getCemetery('cemeteryId', cemeteryId, connectedDatabase)
+}
+
+export async function getCemeteryByKey(
+  cemeteryKey: string,
+  connectedDatabase?: PoolConnection
+): Promise<Cemetery | undefined> {
+  return await _getCemetery('cemeteryKey', cemeteryKey, connectedDatabase)
+}
+
 async function _getCemetery(
   keyColumn: 'cemeteryId' | 'cemeteryKey',
   cemeteryIdOrKey: number | string,
@@ -17,7 +31,11 @@ async function _getCemetery(
         m.cemeteryLatitude, m.cemeteryLongitude, m.cemeterySvg,
         m.cemeteryAddress1, m.cemeteryAddress2, m.cemeteryCity, m.cemeteryProvince, m.cemeteryPostalCode,
         m.cemeteryPhoneNumber,
+
         p.cemeteryId as parentCemeteryId, p.cemeteryName as parentCemeteryName,
+        p.cemeteryLatitude as parentCemeteryLatitude, p.cemeteryLongitude as parentCemeteryLongitude,
+        p.cemeterySvg as parentCemeterySvg,
+
         m.recordCreate_userName, m.recordCreate_timeMillis,
         m.recordUpdate_userName, m.recordUpdate_timeMillis,
         m.recordDelete_userName, m.recordDelete_timeMillis,
@@ -43,18 +61,4 @@ async function _getCemetery(
   }
 
   return cemetery
-}
-
-export default async function getCemetery(
-  cemeteryId: number | string,
-  connectedDatabase?: PoolConnection
-): Promise<Cemetery | undefined> {
-  return await _getCemetery('cemeteryId', cemeteryId, connectedDatabase)
-}
-
-export async function getCemeteryByKey(
-  cemeteryKey: string,
-  connectedDatabase?: PoolConnection
-): Promise<Cemetery | undefined> {
-  return await _getCemetery('cemeteryKey', cemeteryKey, connectedDatabase)
 }

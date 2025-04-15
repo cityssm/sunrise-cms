@@ -113,6 +113,14 @@
       <div class="panel-block is-block">
         <% if (burialSite.burialSiteLatitude && burialSite.burialSiteLongitude) { %>
           <div id="burialSite--leaflet" data-latitude="<%= burialSite.burialSiteLatitude %>" data-longitude="<%= burialSite.burialSiteLongitude %>" style="height:300px"></div>
+        <% } else if (burialSite.cemeteryLatitude && burialSite.cemeteryLongitude) { %>
+          <div class="message is-info">
+            <p class="message-body">
+              <strong>Coordinates not available for this burial site.</strong><br />
+              Coordinates for the cemetery are shown instead.
+            </p>
+          </div>
+          <div id="burialSite--leaflet" data-latitude="<%= burialSite.cemeteryLatitude %>" data-longitude="<%= burialSite.cemeteryLongitude %>" style="height:300px"></div>
         <% } else { %>
           <div class="message is-info">
             <p class="message-body">

@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { backupDatabase } from '../../helpers/functions.database.js'
+import { backupDatabase } from '../../helpers/database.helpers.js'
 
 export default async function handler(
   _request: Request,
@@ -9,7 +9,7 @@ export default async function handler(
   const backupDatabasePath = await backupDatabase()
 
   if (typeof backupDatabasePath === 'string') {
-    const backupDatabasePathSplit = backupDatabasePath.split(/[/\\]/g)
+    const backupDatabasePathSplit = backupDatabasePath.split(/[/\\]/)
 
     const fileName = backupDatabasePathSplit.at(-1)
 

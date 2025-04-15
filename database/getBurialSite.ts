@@ -14,7 +14,9 @@ const baseSQL = `select l.burialSiteId,
   l.burialSiteNameSegment5,
   l.burialSiteName,
   l.burialSiteStatusId, s.burialSiteStatus,
+
   l.cemeteryId, m.cemeteryName,
+  m.cemeteryLatitude, m.cemeteryLongitude,
   m.cemeterySvg, l.cemeterySvgId, l.burialSiteImage,
   l.burialSiteLatitude, l.burialSiteLongitude
 

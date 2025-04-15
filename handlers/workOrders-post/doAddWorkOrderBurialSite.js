@@ -2,8 +2,8 @@ import addWorkOrderBurialSite from '../../database/addWorkOrderBurialSite.js';
 import getBurialSites from '../../database/getBurialSites.js';
 export default async function handler(request, response) {
     const success = await addWorkOrderBurialSite({
-        workOrderId: request.body.workOrderId,
-        burialSiteId: request.body.burialSiteId
+        burialSiteId: request.body.burialSiteId,
+        workOrderId: request.body.workOrderId
     }, request.session.user);
     const results = await getBurialSites({
         workOrderId: request.body.workOrderId

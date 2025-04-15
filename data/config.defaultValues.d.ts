@@ -31,8 +31,10 @@ export declare const configDefaultValues: {
     'settings.latitudeMin': number;
     'settings.longitudeMax': number;
     'settings.longitudeMin': number;
+    'settings.cemeteries.refreshImageChanges': boolean;
     'settings.burialSites.burialSiteNameSegments': ConfigBurialSiteNameSegments;
     'settings.burialSites.burialSiteNameSegments.includeCemeteryKey': boolean;
+    'settings.burialSites.refreshImageChanges': boolean;
     'settings.contracts.burialSiteIdIsRequired': boolean;
     'settings.contracts.contractEndDateIsRequired': boolean;
     'settings.contracts.deathAgePeriods': string[];
