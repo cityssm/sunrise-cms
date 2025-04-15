@@ -15,13 +15,13 @@ which is able to run on budget hardware.
 _More is better_, however under stress tests,
 the application peaked at the following:
 
-- 2 GB of RAM
+- 512 MB of RAM
 - 1 GB of storage for application, dependencies, and data.
 
 ## Step 1: Install Node.js 18 or better and npm
 
 [Node.js](https://nodejs.org) is a JavaScript runtime environment.
-Sunrise CMS is built to run on Node.js.
+Sunrise CMS is built to run on Node.js, and is regularly tested on the currently supported LTS versions.
 
 [npm](https://www.npmjs.com/) is a package manager that contains all the prerequisites
 for Sunrise CMS.
@@ -82,5 +82,4 @@ The included `windowsService-install.bat` script simplifies
 the process of keeping the application running in a Windows environment
 by creating a service that can start with the hosting server.
 
-    > npm link node-windows
     > windowsService-install

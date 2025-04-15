@@ -18,6 +18,8 @@ This is a major refactoring of the now archived
 originally built with multiple focuses in mind. This fork completely reworks the project
 to focus exculsively on cemetery management.
 
+[**User Documentation (In the Works)**](./docs/README.md)
+
 ## Why Sunrise CMS?
 
 ### ✔️ Cemetery Maps are NOT Required
@@ -46,6 +48,7 @@ There's no cost to use it.
 
 ## About this Project
 
+- 📘 [Documentation](./docs/README.md)
 - 🤗 [Code of Conduct](CODE_OF_CONDUCT.md)
 - 🥰 [Contributing Guidelines](CONTRIBUTING.md)
 - 🛡️ [Security Policy](SECURITY.md)
@@ -54,3 +57,13 @@ There's no cost to use it.
 Although the system is quite niche, it's being released in an open source environment in hopes to pool developer resources from other municipalities looking to move away from older, legacy systems.
 
 It is being shared to start the dialog among other municipalities and present an option to those who may be looking to refresh their own cemetery systems.
+
+## More City Management Applications from the City of Sault Ste. Marie
+
+[**General Licence Manager**](https://cityssm.github.io/general-licence-manager/)<br />
+An application built to manage the general licences issued by municipalities.
+
+[**Attendance Tracking**](https://cityssm.github.io/attendance-tracking/)<br />
+Track employee absences, call outs, and more.
+
+💡 Discover even more on [the City of Sault Ste. Marie's GitHub page](https://cityssm.github.io/).
