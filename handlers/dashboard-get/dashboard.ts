@@ -1,5 +1,6 @@
-import { dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
+
+import { dateToString } from '@cityssm/utils-datetime'
 
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js'
 

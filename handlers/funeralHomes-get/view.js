@@ -8,7 +8,6 @@ export default async function handler(request, response) {
     }
     response.render('funeralHome-view', {
         headTitle: funeralHome.funeralHomeName,
-        isCreate: false,
         funeralHome
     });
 }

@@ -4,7 +4,8 @@
 
 # Installation
 
-While Sunrise CMS can run on a high end server, that is by no means a requirement.
+While the Sunrise Cemetery Management System (CMS) can run on a high end server,
+that is by no means a requirement.
 Most user workstations are sufficient for modest installations.
 
 ## Minimum Requirements

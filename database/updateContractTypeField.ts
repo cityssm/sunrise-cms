@@ -24,16 +24,16 @@ export default async function updateContractTypeField(
     .prepare(
       `update ContractTypeFields
         set contractTypeField = ?,
-        isRequired = ?,
-        fieldType = ?,
-        minLength = ?,
-        maxLength = ?,
-        pattern = ?,
-        fieldValues = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          isRequired = ?,
+          fieldType = ?,
+          minLength = ?,
+          maxLength = ?,
+          pattern = ?,
+          fieldValues = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where contractTypeFieldId = ?
-        and recordDelete_timeMillis is null`
+          and recordDelete_timeMillis is null`
     )
     .run(
       updateForm.contractTypeField,

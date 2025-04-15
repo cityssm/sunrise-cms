@@ -10,6 +10,7 @@ export default async function handler(
 
   response.render('admin-burialSiteTypes', {
     headTitle: "Burial Site Type Management",
+    
     burialSiteTypes
   })
 }

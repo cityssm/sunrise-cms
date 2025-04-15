@@ -14,8 +14,8 @@ export default async function handler(
 
   response.render('workOrder-outlook', {
     headTitle: 'Work Order Outlook Integration',
-    workOrderTypes,
-    workOrderMilestoneTypes
+
+    workOrderMilestoneTypes,
+    workOrderTypes
   })
 }
-

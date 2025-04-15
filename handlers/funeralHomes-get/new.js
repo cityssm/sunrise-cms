@@ -5,8 +5,8 @@ export default function handler(_request, response) {
         funeralHomeProvince: getConfigProperty('settings.provinceDefault')
     };
     response.render('funeralHome-edit', {
-        headTitle: "Create a Funeral Home",
-        isCreate: true,
-        funeralHome
+        headTitle: 'Create a Funeral Home',
+        funeralHome,
+        isCreate: true
     });
 }

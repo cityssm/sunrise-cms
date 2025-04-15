@@ -2,11 +2,11 @@
 
 # Sunrise CMS Help Documentation
 
-**Thank you for taking the time to read the documentation.**
+**Thank you for taking the time to read the Sunrise Cemetery Management System (CMS) documentation.**
 
 ![Burial Site View](./burialSite-view.png)
 
-**Coming soon.**
+**In development**
 
 ## 👩 User Documentation
 

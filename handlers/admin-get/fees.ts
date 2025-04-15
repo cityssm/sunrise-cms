@@ -22,8 +22,9 @@ export default async function handler(
 
   response.render('admin-fees', {
     headTitle: 'Fee Management',
-    feeCategories,
+
+    burialSiteTypes,
     contractTypes,
-    burialSiteTypes
+    feeCategories
   })
 }

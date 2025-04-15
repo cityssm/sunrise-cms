@@ -8,8 +8,8 @@ export default async function handler(_request, response) {
     const burialSiteTypes = await getBurialSiteTypes();
     response.render('admin-fees', {
         headTitle: 'Fee Management',
-        feeCategories,
+        burialSiteTypes,
         contractTypes,
-        burialSiteTypes
+        feeCategories
     });
 }

@@ -3,14 +3,14 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 import { acquireConnection } from './pool.js'
 
 export interface AddBurialSiteTypeFieldForm {
-  burialSiteTypeId: string | number
+  burialSiteTypeId: number | string
   burialSiteTypeField: string
   fieldType?: string
   fieldValues?: string
   isRequired?: string
   pattern?: string
-  minLength?: string | number
-  maxLength?: string | number
+  minLength?: number | string
+  maxLength?: number | string
   orderNumber?: number
 }
 

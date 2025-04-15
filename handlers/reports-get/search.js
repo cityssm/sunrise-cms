@@ -8,9 +8,9 @@ export default async function handler(_request, response) {
     const burialSiteStatuses = await getBurialSiteStatuses();
     response.render('report-search', {
         headTitle: 'Reports',
-        todayDateString: dateToString(rightNow),
-        cemeteries,
+        burialSiteStatuses,
         burialSiteTypes,
-        burialSiteStatuses
+        cemeteries,
+        todayDateString: dateToString(rightNow)
     });
 }

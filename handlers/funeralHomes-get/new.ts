@@ -10,8 +10,9 @@ export default function handler(_request: Request, response: Response): void {
   }
 
   response.render('funeralHome-edit', {
-    headTitle: "Create a Funeral Home",
-    isCreate: true,
-    funeralHome
+    headTitle: 'Create a Funeral Home',
+
+    funeralHome,
+    isCreate: true
   })
 }

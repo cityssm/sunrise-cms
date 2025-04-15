@@ -8,7 +8,7 @@ export default async function handler(request, response) {
     }
     response.render('funeralHome-edit', {
         headTitle: funeralHome.funeralHomeName,
-        isCreate: false,
-        funeralHome
+        funeralHome,
+        isCreate: false
     });
 }

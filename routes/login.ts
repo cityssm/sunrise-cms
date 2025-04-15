@@ -2,13 +2,13 @@ import Debug from 'debug'
 import { type Request, type Response, Router } from 'express'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
-import { getConfigProperty } from '../helpers/config.helpers.js'
-import { useTestDatabases } from '../helpers/database.helpers.js'
-import { getApiKey } from '../helpers/functions.api.js'
 import {
   authenticate,
   getSafeRedirectURL
-} from '../helpers/functions.authentication.js'
+} from '../helpers/authentication.helpers.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
+import { useTestDatabases } from '../helpers/database.helpers.js'
+import { getApiKey } from '../helpers/functions.api.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:login`)
 
@@ -40,7 +40,7 @@ async function postHandler(
   request: Request<
     unknown,
     unknown,
-    { password: string; redirect: string; userName: string; }
+    { password: string; redirect: string; userName: string }
   >,
   response: Response
 ): Promise<void> {

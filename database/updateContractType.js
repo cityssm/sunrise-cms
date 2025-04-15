@@ -6,11 +6,11 @@ export default async function updateContractType(updateForm, user) {
     const result = database
         .prepare(`update ContractTypes
         set contractType = ?,
-        isPreneed = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          isPreneed = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and contractTypeId = ?`)
+          and contractTypeId = ?`)
         .run(updateForm.contractType, updateForm.isPreneed === undefined ? 0 : 1, user.userName, rightNowMillis, updateForm.contractTypeId);
     database.release();
     clearCacheByTableName('ContractTypes');

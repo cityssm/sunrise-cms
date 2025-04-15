@@ -12,8 +12,8 @@ export default async function handler(
 
   response.render('workOrder-search', {
     headTitle: 'Work Order Search',
-    workOrderTypes,
-    workOrderOpenDateString
+
+    workOrderOpenDateString,
+    workOrderTypes
   })
 }
-

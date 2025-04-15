@@ -3,8 +3,8 @@ export interface UpdateBurialSiteTypeFieldForm {
     burialSiteTypeField: string;
     isRequired: '0' | '1';
     fieldType?: string;
-    minLength?: string;
     maxLength?: string;
+    minLength?: string;
     pattern?: string;
     fieldValues: string;
 }

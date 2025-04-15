@@ -8,7 +8,7 @@ import {
 import { acquireConnection } from './pool.js'
 
 export interface UpdateForm {
-  contractCommentId: string | number
+  contractCommentId: number | string
   commentDateString: DateString
   commentTimeString: TimeString
   comment: string

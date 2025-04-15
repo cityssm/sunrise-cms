@@ -21,6 +21,13 @@ export interface UpdateCemeteryForm {
   cemeterySvg: string
 }
 
+/**
+ * Updates a cemetery in the database.
+ * Be sure to rebuild burial site names after updating a cemetery.
+ * @param updateForm - The form data from the update cemetery form.
+ * @param user - The user who is updating the cemetery.
+ * @returns `true` if the cemetery was updated successfully, `false` otherwise.
+ */
 export default async function updateCemetery(
   updateForm: UpdateCemeteryForm,
   user: User

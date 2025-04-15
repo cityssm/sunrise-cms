@@ -8,12 +8,14 @@ import {
 import { acquireConnection } from './pool.js'
 
 export interface ContractTransactionUpdateForm {
-  contractId: string | number
-  transactionIndex: string | number
+  contractId: number | string
+  transactionIndex: number | string
+
   transactionDateString: DateString
   transactionTimeString: TimeString
-  transactionAmount: string | number
+
   externalReceiptNumber: string
+  transactionAmount: number | string
   transactionNote: string
 }
 

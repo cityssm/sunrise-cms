@@ -1,5 +1,6 @@
-import { dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
+
+import { dateToString } from '@cityssm/utils-datetime'
 
 import getCemeteries from '../../database/getCemeteries.js'
 import {
@@ -19,9 +20,10 @@ export default async function handler(
 
   response.render('report-search', {
     headTitle: 'Reports',
-    todayDateString: dateToString(rightNow),
-    cemeteries,
+
+    burialSiteStatuses,
     burialSiteTypes,
-    burialSiteStatuses
+    cemeteries,
+    todayDateString: dateToString(rightNow)
   })
 }

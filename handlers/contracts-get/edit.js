@@ -17,10 +17,10 @@ export default async function handler(request, response) {
     response.render('contract-edit', {
         headTitle: 'Contract Update',
         contract,
+        committalTypes,
         contractTypePrints,
         contractTypes,
         funeralHomes,
-        committalTypes,
         intermentContainerTypes,
         workOrderTypes,
         isCreate: false

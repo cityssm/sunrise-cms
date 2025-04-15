@@ -3,21 +3,26 @@ import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
 import { acquireConnection } from './pool.js'
 
 export interface UpdateForm {
-  contractId: string | number
-  intermentNumber: string | number
+  contractId: number | string
+  intermentNumber: number | string
+
   deceasedName: string
+
   deceasedAddress1: string
   deceasedAddress2: string
   deceasedCity: string
-  deceasedProvince: string
   deceasedPostalCode: string
-  birthDateString: DateString | ''
+  deceasedProvince: string
+
+  birthDateString: '' | DateString
   birthPlace: string
-  deathDateString: DateString | ''
+  deathDateString: '' | DateString
   deathPlace: string
+
   deathAge: string
   deathAgePeriod: string
-  intermentContainerTypeId: string | number
+  
+  intermentContainerTypeId: number | string
 }
 
 export default async function updateContractInterment(

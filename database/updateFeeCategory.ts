@@ -17,11 +17,11 @@ export default async function updateFeeCategory(
     .prepare(
       `update FeeCategories
         set feeCategory = ?,
-        isGroupedFee = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          isGroupedFee = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and feeCategoryId = ?`
+          and feeCategoryId = ?`
     )
     .run(
       feeCategoryForm.feeCategory,

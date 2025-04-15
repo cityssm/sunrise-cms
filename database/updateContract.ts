@@ -10,27 +10,31 @@ import deleteContractField from './deleteContractField.js'
 import { acquireConnection } from './pool.js'
 
 export interface UpdateContractForm {
-  contractId: string | number
-  contractTypeId: string | number
-  burialSiteId: string | number
+  contractId: number | string
 
+  burialSiteId: number | string
+  contractTypeId: number | string
+
+  contractEndDateString: '' | DateString
   contractStartDateString: DateString
-  contractEndDateString: DateString | ''
-
-  funeralHomeId?: string | number
+  
+  funeralHomeId?: number | string
+  
+  committalTypeId?: number | string
+  funeralDateString: '' | DateString
   funeralDirectorName: string
-  funeralDateString: DateString | ''
-  funeralTimeString: TimeString | ''
-  committalTypeId?: string | number
+  funeralTimeString: '' | TimeString
 
   purchaserName?: string
+
   purchaserAddress1?: string
   purchaserAddress2?: string
   purchaserCity?: string
-  purchaserProvince?: string
   purchaserPostalCode?: string
-  purchaserPhoneNumber?: string
+  purchaserProvince?: string
+  
   purchaserEmail?: string
+  purchaserPhoneNumber?: string
   purchaserRelationship?: string
 
   contractTypeFieldIds?: string

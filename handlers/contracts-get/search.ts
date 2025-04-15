@@ -17,11 +17,12 @@ export default async function handler(
   const funeralHomes = await getFuneralHomes()
 
   response.render('contract-search', {
-    headTitle: "Contract Search",
-    cemeteries,
+    headTitle: 'Contract Search',
+
     burialSiteTypes,
+    cemeteries,
+    cemeteryId: request.query.cemeteryId,
     contractTypes,
-    funeralHomes,
-    cemeteryId: request.query.cemeteryId
+    funeralHomes
   })
 }

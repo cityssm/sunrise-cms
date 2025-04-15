@@ -16,8 +16,9 @@ export default async function handler(
 
   response.render('admin-tables', {
     headTitle: 'Config Table Management',
-    workOrderTypes,
+
+    burialSiteStatuses,
     workOrderMilestoneTypes,
-    burialSiteStatuses
+    workOrderTypes
   })
 }

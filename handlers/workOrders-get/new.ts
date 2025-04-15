@@ -1,5 +1,6 @@
-import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
+
+import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js'
 import type { WorkOrder } from '../../types/recordTypes.js'
@@ -19,9 +20,10 @@ export default async function handler(
 
   response.render('workOrder-edit', {
     headTitle: 'New Work Order',
+
     workOrder,
+
     isCreate: true,
     workOrderTypes
   })
 }
-

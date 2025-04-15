@@ -5,13 +5,13 @@ export default async function updateWorkOrder(workOrderForm, user) {
     const result = database
         .prepare(`update WorkOrders
         set workOrderNumber = ?,
-        workOrderTypeId = ?,
-        workOrderDescription = ?,
-        workOrderOpenDate = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          workOrderTypeId = ?,
+          workOrderDescription = ?,
+          workOrderOpenDate = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where workOrderId = ?
-        and recordDelete_timeMillis is null`)
+          and recordDelete_timeMillis is null`)
         .run(workOrderForm.workOrderNumber, workOrderForm.workOrderTypeId, workOrderForm.workOrderDescription, dateStringToInteger(workOrderForm.workOrderOpenDateString), user.userName, Date.now(), workOrderForm.workOrderId);
     database.release();
     return result.changes > 0;

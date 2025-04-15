@@ -1,5 +1,6 @@
-import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
+
+import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 
 import getBurialSite from '../../database/getBurialSite.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
@@ -39,11 +40,12 @@ export default async function handler(
 
   response.render('contract-edit', {
     headTitle: 'Create a New Contract',
+
     contract,
 
+    committalTypes,
     contractTypes,
     funeralHomes,
-    committalTypes,
     intermentContainerTypes,
 
     isCreate: true

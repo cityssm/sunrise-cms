@@ -1,9 +1,9 @@
 import { acquireConnection } from './pool.js'
 
 export interface UpdateBurialSiteFeeForm {
-  contractId: string | number
-  feeId: string | number
-  quantity: string | number
+  contractId: number | string
+  feeId: number | string
+  quantity: number | string
 }
 
 export default async function updateContractFeeQuantity(

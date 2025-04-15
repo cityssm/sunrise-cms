@@ -21,11 +21,11 @@ export default async function updateContractType(
     .prepare(
       `update ContractTypes
         set contractType = ?,
-        isPreneed = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          isPreneed = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and contractTypeId = ?`
+          and contractTypeId = ?`
     )
     .run(
       updateForm.contractType,

@@ -24,11 +24,11 @@ export default async function updateWorkOrderMilestone(
     .prepare(
       `update WorkOrderMilestones
         set workOrderMilestoneTypeId = ?,
-        workOrderMilestoneDate = ?,
-        workOrderMilestoneTime = ?,
-        workOrderMilestoneDescription = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          workOrderMilestoneDate = ?,
+          workOrderMilestoneTime = ?,
+          workOrderMilestoneDescription = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where workOrderMilestoneId = ?`
     )
     .run(
@@ -40,7 +40,7 @@ export default async function updateWorkOrderMilestone(
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
       (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
         ? 0
-        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString!),
+        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString ?? ''),
       milestoneForm.workOrderMilestoneDescription,
 
       user.userName,

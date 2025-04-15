@@ -4,7 +4,7 @@ export default async function handler(request, response) {
     const workOrderTypes = await getWorkOrderTypes();
     response.render('workOrder-search', {
         headTitle: 'Work Order Search',
-        workOrderTypes,
-        workOrderOpenDateString
+        workOrderOpenDateString,
+        workOrderTypes
     });
 }

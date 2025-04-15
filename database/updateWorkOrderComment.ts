@@ -25,12 +25,12 @@ export default async function updateWorkOrderComment(
     .prepare(
       `update WorkOrderComments
         set commentDate = ?,
-        commentTime = ?,
-        comment = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          commentTime = ?,
+          comment = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and workOrderCommentId = ?`
+          and workOrderCommentId = ?`
     )
     .run(
       dateStringToInteger(commentForm.commentDateString),

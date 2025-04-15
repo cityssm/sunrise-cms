@@ -4,7 +4,7 @@ export default async function handler(request, response) {
     const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
     response.render('workOrder-outlook', {
         headTitle: 'Work Order Outlook Integration',
-        workOrderTypes,
-        workOrderMilestoneTypes
+        workOrderMilestoneTypes,
+        workOrderTypes
     });
 }

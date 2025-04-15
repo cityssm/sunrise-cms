@@ -28,9 +28,9 @@ export default async function handler(request, response) {
     response.render('contract-edit', {
         headTitle: 'Create a New Contract',
         contract,
+        committalTypes,
         contractTypes,
         funeralHomes,
-        committalTypes,
         intermentContainerTypes,
         isCreate: true
     });

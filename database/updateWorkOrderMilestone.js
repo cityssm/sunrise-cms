@@ -5,11 +5,11 @@ export default async function updateWorkOrderMilestone(milestoneForm, user) {
     const result = database
         .prepare(`update WorkOrderMilestones
         set workOrderMilestoneTypeId = ?,
-        workOrderMilestoneDate = ?,
-        workOrderMilestoneTime = ?,
-        workOrderMilestoneDescription = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          workOrderMilestoneDate = ?,
+          workOrderMilestoneTime = ?,
+          workOrderMilestoneDescription = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where workOrderMilestoneId = ?`)
         .run(milestoneForm.workOrderMilestoneTypeId === ''
         ? undefined
@@ -17,7 +17,7 @@ export default async function updateWorkOrderMilestone(milestoneForm, user) {
         ? 0
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
         ? 0
-        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), milestoneForm.workOrderMilestoneDescription, user.userName, Date.now(), milestoneForm.workOrderMilestoneId);
+        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString ?? ''), milestoneForm.workOrderMilestoneDescription, user.userName, Date.now(), milestoneForm.workOrderMilestoneId);
     database.release();
     return result.changes > 0;
 }

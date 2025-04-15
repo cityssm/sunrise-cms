@@ -27,22 +27,22 @@ export default async function updateFee(
     .prepare(
       `update Fees
         set feeCategoryId = ?,
-        feeName = ?,
-        feeDescription = ?,
-        feeAccount = ?,
-        contractTypeId = ?,
-        burialSiteTypeId = ?,
-        feeAmount = ?,
-        feeFunction = ?,
-        taxAmount = ?,
-        taxPercentage = ?,
-        includeQuantity = ?,
-        quantityUnit = ?,
-        isRequired = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          feeName = ?,
+          feeDescription = ?,
+          feeAccount = ?,
+          contractTypeId = ?,
+          burialSiteTypeId = ?,
+          feeAmount = ?,
+          feeFunction = ?,
+          taxAmount = ?,
+          taxPercentage = ?,
+          includeQuantity = ?,
+          quantityUnit = ?,
+          isRequired = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and feeId = ?`
+          and feeId = ?`
     )
     .run(
       feeForm.feeCategoryId,

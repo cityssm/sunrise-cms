@@ -18,7 +18,7 @@ export default async function handler(
 
   response.render('funeralHome-view', {
     headTitle: funeralHome.funeralHomeName,
-    isCreate: false,
+
     funeralHome
   })
 }

@@ -1,10 +1,10 @@
 import Debug from 'debug';
 import { Router } from 'express';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
+import { authenticate, getSafeRedirectURL } from '../helpers/authentication.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { useTestDatabases } from '../helpers/database.helpers.js';
 import { getApiKey } from '../helpers/functions.api.js';
-import { authenticate, getSafeRedirectURL } from '../helpers/functions.authentication.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:login`);
 export const router = Router();
 function getHandler(request, response) {

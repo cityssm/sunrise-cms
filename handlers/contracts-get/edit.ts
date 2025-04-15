@@ -40,12 +40,13 @@ export default async function handler(
 
   response.render('contract-edit', {
     headTitle: 'Contract Update',
-    contract,
-    contractTypePrints,
 
+    contract,
+    
+    committalTypes,
+    contractTypePrints,
     contractTypes,
     funeralHomes,
-    committalTypes,
     intermentContainerTypes,
     workOrderTypes,
 

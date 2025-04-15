@@ -44,10 +44,12 @@ export default async function handler(
 
   response.render('workOrder-edit', {
     headTitle: `Work Order #${workOrder.workOrderNumber}`,
+
     workOrder,
+    
+    burialSiteStatuses,
     isCreate: false,
-    workOrderTypes,
     workOrderMilestoneTypes,
-    burialSiteStatuses
+    workOrderTypes
   })
 }

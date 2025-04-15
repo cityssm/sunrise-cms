@@ -5,8 +5,8 @@ export default async function handler(_request, response) {
     const burialSiteStatuses = await getBurialSiteStatuses();
     response.render('admin-tables', {
         headTitle: 'Config Table Management',
-        workOrderTypes,
+        burialSiteStatuses,
         workOrderMilestoneTypes,
-        burialSiteStatuses
+        workOrderTypes
     });
 }

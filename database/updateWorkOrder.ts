@@ -21,13 +21,13 @@ export default async function updateWorkOrder(
     .prepare(
       `update WorkOrders
         set workOrderNumber = ?,
-        workOrderTypeId = ?,
-        workOrderDescription = ?,
-        workOrderOpenDate = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          workOrderTypeId = ?,
+          workOrderDescription = ?,
+          workOrderOpenDate = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where workOrderId = ?
-        and recordDelete_timeMillis is null`
+          and recordDelete_timeMillis is null`
     )
     .run(
       workOrderForm.workOrderNumber,

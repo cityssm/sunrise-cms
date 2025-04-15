@@ -21,9 +21,9 @@ export default async function handler(request, response) {
     response.render('workOrder-edit', {
         headTitle: `Work Order #${workOrder.workOrderNumber}`,
         workOrder,
+        burialSiteStatuses,
         isCreate: false,
-        workOrderTypes,
         workOrderMilestoneTypes,
-        burialSiteStatuses
+        workOrderTypes
     });
 }

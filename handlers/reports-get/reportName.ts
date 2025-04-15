@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express'
+
 import papaParse from 'papaparse'
 
 import getReportData, {
@@ -19,6 +20,7 @@ export default async function handler(
   if (rows === undefined) {
     response.status(404).json({
       success: false,
+      
       message: 'Report Not Found'
     })
 
