@@ -22,7 +22,7 @@ const directoryName = path.dirname(fileURLToPath(import.meta.url))
 
 const processCount = Math.min(
   getConfigProperty('application.maximumProcesses'),
-  os.cpus().length
+  os.cpus().length * 2
 )
 
 const applicationName = getConfigProperty('application.applicationName')
