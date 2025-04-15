@@ -62,7 +62,7 @@ if (getConfigProperty('settings.burialSites.refreshImageChanges')) {
   })
 
   burialSitesWatcher.on('add', clearCachedBurialSiteImages)
-  burialSitesWatcher.on('change', clearCachedBurialSiteImages)
+  // burialSitesWatcher.on('change', clearCachedBurialSiteImages)
   burialSitesWatcher.on('unlink', clearCachedBurialSiteImages)
 }
 
@@ -118,6 +118,6 @@ if (getConfigProperty('settings.cemeteries.refreshImageChanges')) {
   })
 
   cemeteryWatcher.on('add', clearCachedCemeterySVGs)
-  cemeteryWatcher.on('change', clearCachedCemeterySVGs)
+  // cemeteryWatcher.on('change', clearCachedCemeterySVGs)
   cemeteryWatcher.on('unlink', clearCachedCemeterySVGs)
 }

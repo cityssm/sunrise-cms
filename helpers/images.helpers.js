@@ -40,7 +40,7 @@ if (getConfigProperty('settings.burialSites.refreshImageChanges')) {
         persistent: true
     });
     burialSitesWatcher.on('add', clearCachedBurialSiteImages);
-    burialSitesWatcher.on('change', clearCachedBurialSiteImages);
+    // burialSitesWatcher.on('change', clearCachedBurialSiteImages)
     burialSitesWatcher.on('unlink', clearCachedBurialSiteImages);
 }
 /*
@@ -78,6 +78,6 @@ if (getConfigProperty('settings.cemeteries.refreshImageChanges')) {
         persistent: true
     });
     cemeteryWatcher.on('add', clearCachedCemeterySVGs);
-    cemeteryWatcher.on('change', clearCachedCemeterySVGs);
+    // cemeteryWatcher.on('change', clearCachedCemeterySVGs)
     cemeteryWatcher.on('unlink', clearCachedCemeterySVGs);
 }
