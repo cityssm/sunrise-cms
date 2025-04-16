@@ -4,7 +4,7 @@
 
 **Thank you for taking the time to read the Sunrise Cemetery Management System (CMS) documentation.**
 
-![Burial Site View](./burialSite-view.png)
+![Burial Site View](./images/burialSite-view.png)
 
 **In development**
 

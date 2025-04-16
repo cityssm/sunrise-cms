@@ -5,13 +5,13 @@
 [![sunrise-cms](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/26a4bi&style=flat&logo=cypress)](https://cloud.cypress.io/projects/26a4bi/runs)
 [![Coverage Testing](https://github.com/cityssm/sunrise-cms/actions/workflows/coverage.yml/badge.svg)](https://github.com/cityssm/sunrise-cms/actions/workflows/coverage.yml)
 
-![Sunrise CMS](./docs/socialPreview.png)
+![Sunrise CMS](./docs/images/socialPreview.png)
 
 🚧 **In development** 🚧
 
 **A web-based application to assist cemetery managers with managing their cemetery records.**
 
-![Burial Site View](./docs/burialSite-view.png)
+![Burial Site View](./docs/images/burialSite-view.png)
 
 This is a major refactoring of the now archived
 [Lot Occupancy System](https://github.com/cityssm/lot-occupancy-system),
