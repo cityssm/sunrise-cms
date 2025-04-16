@@ -219,26 +219,60 @@
                 </div>
             </form>
             <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteTypeId">
-                <div class="has-text-centered my-2 ml-2 mr-3">
-                  <span class="icon has-text-info">
-                    <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                  </span><br />
-                  <span class="tag is-info">CSV</span>
+              <div class="has-text-centered my-2 ml-2 mr-3">
+                <span class="icon has-text-info">
+                  <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                </span><br />
+                <span class="tag is-info">CSV</span>
+              </div>
+              <div>
+                <h2 class="title is-5 mb-0">Burial Sites By Type</h2>
+                <div class="field has-addons mt-2">
+                  <div class="control">
+                    <label class="button is-small is-static" for="burialSites-byBurialSiteTypeId--burialSiteTypeId">
+                      Burial Site Type
+                    </label>
+                  </div>
+                  <div class="control is-expanded">
+                    <div class="select is-small is-fullwidth">
+                      <select id="burialSites-byBurialSiteTypeId--burialSiteTypeId" name="burialSiteTypeId">
+                        <% for (const burialSiteType of burialSiteTypes) { %>
+                          <option value="<%= burialSiteType.burialSiteTypeId %>">
+                            <%= burialSiteType.burialSiteType %>
+                          </option>
+                        <% } %>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="control">
+                    <button class="button is-small is-primary" type="submit">
+                      Export
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <h2 class="title is-5 mb-0">Burial Sites By Type</h2>
+              </div>
+            </form>
+            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteStatusId">
+              <div class="has-text-centered my-2 ml-2 mr-3">
+                <span class="icon has-text-info">
+                  <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                </span><br />
+                <span class="tag is-info">CSV</span>
+              </div>
+              <div>
+                  <h2 class="title is-5 mb-0">Burial Sites By Status</h2>
                   <div class="field has-addons mt-2">
                     <div class="control">
-                      <label class="button is-small is-static" for="burialSites-byBurialSiteTypeId--burialSiteTypeId">
-                        Burial Site Type
+                      <label class="button is-small is-static" for="burialSites-byBurialSiteStatusId--burialSiteStatusId">
+                        Burial Site Status
                       </label>
                     </div>
                     <div class="control is-expanded">
                       <div class="select is-small is-fullwidth">
-                        <select id="burialSites-byBurialSiteTypeId--burialSiteTypeId" name="burialSiteTypeId">
-                          <% for (const burialSiteType of burialSiteTypes) { %>
-                            <option value="<%= burialSiteType.burialSiteTypeId %>">
-                              <%= burialSiteType.burialSiteType %>
+                        <select id="burialSites-byBurialSiteStatusId--burialSiteStatusId" name="burialSiteStatusId">
+                          <% for (const burialSiteStatus of burialSiteStatuses) { %>
+                            <option value="<%= burialSiteStatus.burialSiteStatusId %>">
+                              <%= burialSiteStatus.burialSiteStatus %>
                             </option>
                           <% } %>
                         </select>
@@ -250,61 +284,27 @@
                       </button>
                     </div>
                   </div>
-                </div>
-            </form>
-            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteStatusId">
-                <div class="has-text-centered my-2 ml-2 mr-3">
-                  <span class="icon has-text-info">
-                    <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                  </span><br />
-                  <span class="tag is-info">CSV</span>
-                </div>
-                <div>
-                    <h2 class="title is-5 mb-0">Burial Sites By Status</h2>
-                    <div class="field has-addons mt-2">
-                      <div class="control">
-                        <label class="button is-small is-static" for="burialSites-byBurialSiteStatusId--burialSiteStatusId">
-                          Burial Site Status
-                        </label>
-                      </div>
-                      <div class="control is-expanded">
-                        <div class="select is-small is-fullwidth">
-                          <select id="burialSites-byBurialSiteStatusId--burialSiteStatusId" name="burialSiteStatusId">
-                            <% for (const burialSiteStatus of burialSiteStatuses) { %>
-                              <option value="<%= burialSiteStatus.burialSiteStatusId %>">
-                                <%= burialSiteStatus.burialSiteStatus %>
-                              </option>
-                            <% } %>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="control">
-                        <button class="button is-small is-primary" type="submit">
-                          Export
-                        </button>
-                      </div>
-                    </div>
-                </div>
+              </div>
             </form>
         </div>
       </div>
       <div class="is-hidden" id="tab--cemeteries">
         <h1 class="title is-1">Cemetery Reports</h1>
         <div class="panel">
-            <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/cemeteries-formatted" download>
-              <div class="has-text-centered my-2 ml-2 mr-3">
-                  <span class="icon has-text-info">
-                    <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                  </span><br />
-                  <span class="tag is-info">CSV</span>
-              </div>
-              <div>
-                  <h2 class="title is-5 mb-0">Full Cemetery List</h2>
-                  <p>
-                    All active cemeteries.
-                  </p>
-              </div>
-            </a>
+          <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/cemeteries-formatted" download>
+            <div class="has-text-centered my-2 ml-2 mr-3">
+              <span class="icon has-text-info">
+                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+              </span><br />
+              <span class="tag is-info">CSV</span>
+            </div>
+            <div>
+              <h2 class="title is-5 mb-0">Full Cemetery List</h2>
+              <p>
+                All active cemeteries.
+              </p>
+            </div>
+          </a>
         </div>
       </div>
 
@@ -319,133 +319,133 @@
         <div class="columns">
           <div class="column">
             <div class="panel">
-                <h2 class="panel-heading">Contract Tables</h2>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contracts-all" download>
+              <h2 class="panel-heading">Contract Tables</h2>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contracts-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Contracts</h3>
+                </div>
+              </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractComments-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Contract Comments</h3>
+                </div>
+              </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractFees-all" download>
                   <div class="has-text-centered my-2 ml-2 mr-3">
-                    <span class="icon has-text-info">
-                      <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                    </span><br />
-                    <span class="tag is-info">CSV</span>
+                      <span class="icon has-text-info">
+                          <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                      </span><br />
+                      <span class="tag is-info">CSV</span>
                   </div>
                   <div>
-                    <h3 class="title is-5 is-marginless">Contracts</h3>
+                      <h3 class="title is-5 is-marginless">Contract Fees</h3>
                   </div>
-                </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractComments-all" download>
+              </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractFields-all" download>
                   <div class="has-text-centered my-2 ml-2 mr-3">
-                    <span class="icon has-text-info">
-                      <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                    </span><br />
-                    <span class="tag is-info">CSV</span>
+                      <span class="icon has-text-info">
+                          <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                      </span><br />
+                      <span class="tag is-info">CSV</span>
                   </div>
                   <div>
-                    <h3 class="title is-5 is-marginless">Contract Comments</h3>
+                      <h3 class="title is-5 is-marginless">Contract Fields</h3>
                   </div>
-                </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractFees-all" download>
-                    <div class="has-text-centered my-2 ml-2 mr-3">
-                        <span class="icon has-text-info">
-                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                        </span><br />
-                        <span class="tag is-info">CSV</span>
-                    </div>
-                    <div>
-                        <h3 class="title is-5 is-marginless">Contract Fees</h3>
-                    </div>
-                </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractFields-all" download>
-                    <div class="has-text-centered my-2 ml-2 mr-3">
-                        <span class="icon has-text-info">
-                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                        </span><br />
-                        <span class="tag is-info">CSV</span>
-                    </div>
-                    <div>
-                        <h3 class="title is-5 is-marginless">Contract Fields</h3>
-                    </div>
-                </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractInterments-all" download>
-                  <div class="has-text-centered my-2 ml-2 mr-3">
-                    <span class="icon has-text-info">
-                      <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                    </span><br />
-                    <span class="tag is-info">CSV</span>
-                  </div>
-                  <div>
-                    <h3 class="title is-5 is-marginless">Contract Interments</h3>
-                  </div>
-                </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractTransactions-all" download>
-                  <div class="has-text-centered my-2 ml-2 mr-3">
-                    <span class="icon has-text-info">
-                      <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                    </span><br />
-                    <span class="tag is-info">CSV</span>
-                  </div>
-                  <div>
-                    <h3 class="title is-5 is-marginless">Contract Transactions</h3>
-                  </div>
-                </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/funeralHomes-all" download>
-                  <div class="has-text-centered my-2 ml-2 mr-3">
-                    <span class="icon has-text-info">
-                      <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                    </span><br />
-                    <span class="tag is-info">CSV</span>
-                  </div>
-                  <div>
-                    <h3 class="title is-5 is-marginless">Funeral Homes</h3>
-                  </div>
-                </a>
+              </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractInterments-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Contract Interments</h3>
+                </div>
+              </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractTransactions-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Contract Transactions</h3>
+                </div>
+              </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/funeralHomes-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Funeral Homes</h3>
+                </div>
+              </a>
             </div>
           </div>
           <div class="column">
             <div class="panel">
-                <h2 class="panel-heading">Work Order Tables</h2>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrders-all" download>
-                  <div class="has-text-centered my-2 ml-2 mr-3">
-                    <span class="icon has-text-info">
-                      <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                    </span><br />
-                    <span class="tag is-info">CSV</span>
-                  </div>
-                  <div>
-                    <h3 class="title is-5 is-marginless">Work Orders</h3>
-                  </div>
-                </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderComments-all" download>
-                    <div class="has-text-centered my-2 ml-2 mr-3">
-                        <span class="icon has-text-info">
-                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                        </span><br />
-                        <span class="tag is-info">CSV</span>
-                    </div>
-                    <div>
-                        <h3 class="title is-5 is-marginless">Work Order Comments</h3>
-                    </div>
-                </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderBurialSites-all" download>
-                    <div class="has-text-centered my-2 ml-2 mr-3">
-                        <span class="icon has-text-info">
-                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                        </span><br />
-                        <span class="tag is-info">CSV</span>
-                    </div>
-                    <div>
-                        <h3 class="title is-5 is-marginless">Work Order Burial Sites</h3>
-                    </div>
-                </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderMilestones-all" download>
-                    <div class="has-text-centered my-2 ml-2 mr-3">
-                        <span class="icon has-text-info">
-                            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                        </span><br />
-                        <span class="tag is-info">CSV</span>
-                    </div>
-                    <div>
-                        <h3 class="title is-5 is-marginless">Work Order Milestones</h3>
-                    </div>
-                </a>
+              <h2 class="panel-heading">Work Order Tables</h2>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrders-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Work Orders</h3>
+                </div>
+              </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderComments-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Work Order Comments</h3>
+                </div>
+              </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderBurialSites-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Work Order Burial Sites</h3>
+                </div>
+              </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderMilestones-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Work Order Milestones</h3>
+                </div>
+              </a>
             </div>
             <div class="panel">
               <h2 class="panel-heading">Burial Site Tables</h2>
@@ -533,40 +533,40 @@
               </a>
             </div>
             <div class="panel">
-                <h2 class="panel-heading">Burial Site Tables</h2>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/burialSiteTypes-all" download>
-                  <div class="has-text-centered my-2 ml-2 mr-3">
-                    <span class="icon has-text-info">
-                      <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                    </span><br />
-                    <span class="tag is-info">CSV</span>
-                  </div>
-                  <div>
-                    <h3 class="title is-5 is-marginless">Burial Site Types</h3>
-                  </div>
-                </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/burialSiteTypeFields-all" download>
-                  <div class="has-text-centered my-2 ml-2 mr-3">
-                    <span class="icon has-text-info">
-                      <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                    </span><br />
-                    <span class="tag is-info">CSV</span>
-                  </div>
-                  <div>
-                    <h3 class="title is-5 is-marginless">Burial Site Type Fields</h3>
-                  </div>
-                </a>
-                <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/burialSiteStatuses-all" download>
-                  <div class="has-text-centered my-2 ml-2 mr-3">
-                    <span class="icon has-text-info">
-                      <i class="fas fa-2x fa-table" aria-hidden="true"></i>
-                    </span><br />
-                    <span class="tag is-info">CSV</span>
-                  </div>
-                  <div>
-                    <h3 class="title is-5 is-marginless">Burial Site Statuses</h3>
-                  </div>
-                </a>
+              <h2 class="panel-heading">Burial Site Tables</h2>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/burialSiteTypes-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Burial Site Types</h3>
+                </div>
+              </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/burialSiteTypeFields-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Burial Site Type Fields</h3>
+                </div>
+              </a>
+              <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/burialSiteStatuses-all" download>
+                <div class="has-text-centered my-2 ml-2 mr-3">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
+                </div>
+                <div>
+                  <h3 class="title is-5 is-marginless">Burial Site Statuses</h3>
+                </div>
+              </a>
             </div>
           </div>
           <div class="column">

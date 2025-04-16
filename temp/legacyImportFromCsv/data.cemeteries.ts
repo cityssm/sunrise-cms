@@ -107,14 +107,14 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
   MN: {
     cemeteryName: 'Mausoleum Niche',
 
-    cemeteryDescription: '',
+    cemeteryDescription: 'At Holy Sepulchre Cemetery',
     cemeteryKey: 'MN',
     cemeterySvg: '',
 
     cemeteryLatitude: '',
     cemeteryLongitude: '',
 
-    cemeteryAddress1: '',
+    cemeteryAddress1: 'Fourth Line East',
     cemeteryAddress2: '',
     cemeteryCity: 'Sault Ste. Marie',
     cemeteryPostalCode: '',
@@ -146,14 +146,14 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
   NW: {
     cemeteryName: 'Niche Wall',
 
-    cemeteryDescription: '',
+    cemeteryDescription: 'At New Greenwood Cemetery',
     cemeteryKey: 'NW',
     cemeterySvg: '',
 
     cemeteryLatitude: '',
     cemeteryLongitude: '',
 
-    cemeteryAddress1: '',
+    cemeteryAddress1: 'Fourth Line East',
     cemeteryAddress2: '',
     cemeteryCity: 'Sault Ste. Marie',
     cemeteryPostalCode: '',

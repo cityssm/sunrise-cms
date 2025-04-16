@@ -179,7 +179,7 @@
                           <th>Burial Site</th>
                           <th>Contract Date</th>
                           <th>End Date</th>
-                          <th>Interments</th>
+                          <th>Contacts</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -218,20 +218,26 @@
                                 <% } %>
                             </td>
                             <td>
-                              <% if (contract.contractInterments.length === 0) { %>
-                                <span class="has-text-grey">
-                                  (No Interments)
-                                </span>
-                              <% } else { %>
-                                <ul class="fa-ul ml-5">
-                                  <% for (const interment of contract.contractInterments) { %>
-                                    <li>
-                                      <span class="fa-li"><i class="fas fa-user" aria-hidden="true"></i></span>
-                                      <%= interment.deceasedName %>
-                                    </li>
-                                  <% } %>
-                                </ul>
-                              <% } %>
+                              <ul class="fa-ul ml-5">
+                                <% for (const interment of contract.contractInterments) { %>
+                                  <li class="has-tooltip-left" data-tooltip="<%= contract.isPreneed ? 'Recipient' : 'Deceased' %>">
+                                    <span class="fa-li"><i class="fas fa-user" aria-label="Recipient"></i></span>
+                                    <%= interment.deceasedName %>
+                                  </li>
+                                <% } %>
+                                <% if (contract.purchaserName !== '') { %>
+                                  <li class="has-tooltip-left" data-tooltip="Purchaser">
+                                    <span class="fa-li"><i class="fas fa-hand-holding-dollar" aria-label="Purchase"></i></span>
+                                    <%= contract.purchaserName %>
+                                  </li>
+                                <% } %>
+                                <% if (contract.funeralHomeName) { %>
+                                  <li class="has-tooltip-left" data-tooltip="Funeral Home">
+                                    <span class="fa-li"><i class="fas fa-place-of-worship" aria-label="Funeral Home"></i></span>
+                                    <%= contract.funeralHomeName %>
+                                  </li>
+                                <% } %>
+                              </ul>
                             </td>
                           </tr>
                         <% } %>

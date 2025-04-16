@@ -13,8 +13,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const contractId = clickEvent.currentTarget.closest('.container--contract').dataset.contractId;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderContract`, {
-                workOrderId,
-                contractId
+                contractId,
+                workOrderId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
@@ -65,8 +65,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function addContract(contractId, callbackFunction) {
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderContract`, {
-            workOrderId,
-            contractId
+            contractId,
+            workOrderId
         }, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
@@ -106,7 +106,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         <th>Burial Site</th>
         <th>Contract Date</th>
         <th>End Date</th>
-        <th>Interments</th>
+        <th>Contacts</th>
         <th class="has-width-1"></th>
       </tr></thead>
       <tbody></tbody>
@@ -138,9 +138,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
           ${hasBurialSiteRecord
                     ? ''
                     : ` <button class="button is-small is-light is-success button--addBurialSite"
-                  data-burial-site-id="${contract.burialSiteId.toString()}"
-                  data-tooltip="Add Burial Site"
-                  aria-label="Add Burial Site" type="button">
+                    data-burial-site-id="${contract.burialSiteId.toString()}"
+                    data-tooltip="Add Burial Site"
+                    aria-label="Add Burial Site" type="button">
                   <i class="fas fa-plus" aria-hidden="true"></i>
                   </button>`}
         </td>`);
@@ -148,14 +148,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 rowElement.insertAdjacentHTML('beforeend', '<td><span class="has-text-grey">(No Burial Site)</span></td>');
             }
-            let intermentsHTML = '';
+            let contactsHtml = '';
             for (const interment of contract.contractInterments ?? []) {
-                intermentsHTML += `<li class="has-tooltip-left"
+                contactsHtml += `<li class="has-tooltip-left"
           data-tooltip="${cityssm.escapeHTML(contract.isPreneed ?? false ? 'Recipient' : 'Deceased')}">
           <span class="fa-li">
             <i class="fas fa-fw fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ?? false ? 'Recipient' : 'Deceased')}"></i>
           </span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+          </li>`;
+            }
+            if (contract.purchaserName !== '') {
+                contactsHtml += `<li class="has-tooltip-left"
+          data-tooltip="Purchaser">
+          <span class="fa-li">
+            <i class="fas fa-fw fa-hand-holding-dollar" aria-label="Purchaser"></i>
+          </span>
+          ${cityssm.escapeHTML(contract.purchaserName)}
+          </li>`;
+            }
+            if (contract.funeralHomeName !== null) {
+                contactsHtml += `<li class="has-tooltip-left"
+          data-tooltip="Funeral Home">
+          <span class="fa-li">
+            <i class="fas fa-fw fa-place-of-worship" aria-label="Funeral Home"></i>
+          </span>
+          ${cityssm.escapeHTML(contract.funeralHomeName)}
           </li>`;
             }
             // eslint-disable-next-line no-unsanitized/method
@@ -166,9 +184,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ? contract.contractEndDateString
                 : '<span class="has-text-grey">(No End Date)</span>'}
         </td><td>
-          ${contract.contractInterments.length === 0
-                ? '<span class="has-text-grey">(No Interments)</span>'
-                : `<ul class="fa-ul ml-5">${intermentsHTML}</ul>`}
+          <ul class="fa-ul ml-5">
+          ${contactsHtml}
+          </ul>
         </td><td>
           <button class="button is-small is-light is-danger button--deleteContract" data-tooltip="Delete Relationship" type="button">
             <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
@@ -253,8 +271,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const burialSiteId = clickEvent.currentTarget.closest('.container--burialSite').dataset.burialSiteId;
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderBurialSite`, {
-                workOrderId,
-                burialSiteId
+                burialSiteId,
+                workOrderId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
@@ -317,8 +335,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
           ${burialSite.burialSiteStatusId
                 ? cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
                 : '<span class="has-text-grey">(No Status)</span>'}
-        </td><td class="has-text-right is-nowrap">
-          <button class="button is-small is-light is-info button--editBurialSiteStatus" data-tooltip="Update Status" type="button">
+        </td><td class="has-text-right">
+          <button class="button is-small mb-1 is-light is-info button--editBurialSiteStatus" data-tooltip="Update Status" type="button">
             <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
           </button>
           <button class="button is-small is-light is-danger button--deleteBurialSite" data-tooltip="Delete Relationship" type="button">
@@ -384,7 +402,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     rowElement.dataset.contractId = contract.contractId.toString();
                     rowElement.innerHTML = `<td class="has-text-centered">
                   <button class="button is-small is-success button--addContract" data-tooltip="Add" type="button" aria-label="Add">
-                    <i class="fas fa-plus" aria-hidden="true"></i>
+                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
                   </button>
                 </td>
                 <td class="has-text-weight-bold">
@@ -492,7 +510,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         burialSite.burialSiteId.toString();
                     rowElement.innerHTML = `<td class="has-text-centered">
                   <button class="button is-small is-success button--addBurialSite" data-tooltip="Add" type="button" aria-label="Add">
-                    <i class="fas fa-plus" aria-hidden="true"></i>
+                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
                   </button>
                 </td><td class="has-text-weight-bold">
                   ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
