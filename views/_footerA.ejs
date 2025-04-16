@@ -1,13 +1,11 @@
 </main>
-<footer class="footer has-background-grey-lighter has-text-dark is-hidden-print mt-4">
+<footer class="footer has-background-grey-lighter is-hidden-print mt-4">
   <div class="container">
-    <div class="content has-text-right">
-    <p class="has-text-grey-dark">
+    <div class="content has-text-right has-text-grey-dark">
       <strong>
-      <%= configFunctions.getConfigProperty("application.applicationName") %>
+        <%= configFunctions.getConfigProperty("application.applicationName") %>
       </strong><br />
-      Build <%= buildNumber %>
-    </p>
+      <span class="is-size-7">Build <%= buildNumber %></span>
     </div>
   </div>
 </footer>
