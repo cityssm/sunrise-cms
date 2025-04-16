@@ -78,12 +78,16 @@ declare const exports: Record<string, unknown>
                       </span>`
                   : ''
               }
-            </a><br />
+              ${
+                cemetery.cemeteryKey === ''
+                  ? ''
+                  : `<span class="tag">${cityssm.escapeHTML(cemetery.cemeteryKey)}</span>`
+              }
+            </a>
+            <br />
             <span class="is-size-7">
               ${cityssm.escapeHTML(cemetery.cemeteryDescription)}
             </span>
-          </td><td>
-            ${cityssm.escapeHTML(cemetery.cemeteryKey)}
           </td><td>
             ${
               cemetery.cemeteryAddress1 === ''
@@ -108,23 +112,23 @@ declare const exports: Record<string, unknown>
             ${
               cemetery.parentCemeteryId === null
                 ? ''
-                : `<span data-tooltip="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
+                : `<span class="icon" data-tooltip="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
                     <i class="fas fa-turn-up" role="img" aria-label="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}"></i>
                     </span>`
             }
-          </td><td class="has-text-centered">
             ${
               cemetery.cemeteryLatitude && cemetery.cemeteryLongitude
-                ? `<span data-tooltip="Has Geographic Coordinates">
-                    <i class="fas fa-map-marker-alt" role="img" aria-label="Has Geographic Coordinates"></i>
+                ? `<span class="icon" data-tooltip="Geographic Coordinates">
+                    <i class="fas fa-map-marker-alt" role="img" aria-label="Geographic Coordinates"></i>
                     </span>`
                 : ''
             }
-          </td><td class="has-text-centered">
             ${
               (cemetery.cemeterySvg ?? '') === ''
                 ? ''
-                : '<span data-tooltip="Has Image"><i class="fas fa-image" role="img" aria-label="Has Image"></i></span>'
+                : `<span class="icon" data-tooltip="Image">
+                    <i class="fas fa-image" role="img" aria-label="Image"></i>
+                    </span>`
             }
           </td><td class="has-text-right">
             <a href="${sunrise.urlPrefix}/burialSites?cemeteryId=${cemetery.cemeteryId}">${cemetery.burialSiteCount}</a>
@@ -147,13 +151,10 @@ declare const exports: Record<string, unknown>
 
       searchResultsTableElement.innerHTML = `<thead><tr>
         <th>Cemetery</th>
-        <th>Key</th>
         <th>Address</th>
         <th>Phone Number</th>
-        <th class="has-text-centered">Parent</th>
-        <th class="has-text-centered">Coordinates</th>
-        <th class="has-text-centered">Image</th>
-        <th class="has-text-right">Burial Site Count</th>
+        <th class="has-text-centered">Features</th>
+        <th class="has-text-right">Burial Sites</th>
         </tr></thead>`
 
       searchResultsTableElement.append(searchResultsTbodyElement)

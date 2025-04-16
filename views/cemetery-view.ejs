@@ -209,10 +209,12 @@
             <thead>
               <tr>
                 <th>Type</th>
-                <th class="has-text-right">
-                  Burial Site Count
+                <th class="has-width-1 has-text-right">
+                  Burial Sites
                 </th>
-                <th class="has-text-right">Percentage</th>
+                <th class="has-width-1 has-text-right">
+                  Percentage
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -224,10 +226,10 @@
                     </a>
                   </td>
                   <td class="has-text-right">
-                      <%= burialSiteType.burialSiteCount %>
+                    <%= burialSiteType.burialSiteCount %>
                   </td>
                   <td class="has-text-right">
-                      <%= ((burialSiteType.burialSiteCount / cemetery.burialSiteCount) * 100).toFixed(1) %>%
+                    <%= ((burialSiteType.burialSiteCount / cemetery.burialSiteCount) * 100).toFixed(1) %>%
                   </td>
                 </tr>
               <% } %>
@@ -239,10 +241,10 @@
             <thead>
               <tr>
                 <th>Status</th>
-                <th class="has-text-right">
-                  Burial Site Count
+                <th class="has-width-1 has-text-right">
+                  Burial Sites
                 </th>
-                <th class="has-text-right">Percentage</th>
+                <th class="has-width-1 has-text-right">Percentage</th>
               </tr>
             </thead>
             <tbody>
@@ -250,14 +252,14 @@
                 <tr>
                   <td>
                     <a class="has-text-weight-bold" href="<%= burialSiteSearchUrl %>&burialSiteStatusId=<%= burialSiteStatus.burialSiteStatusId %>">
-                        <%= burialSiteStatus.burialSiteStatus %>
+                      <%= burialSiteStatus.burialSiteStatus %>
                     </a>
                   </td>
                   <td class="has-text-right">
-                      <%= burialSiteStatus.burialSiteCount %>
+                    <%= burialSiteStatus.burialSiteCount %>
                   </td>
                   <td class="has-text-right">
-                      <%= ((burialSiteStatus.burialSiteCount / cemetery.burialSiteCount) * 100).toFixed(1) %>%
+                    <%= ((burialSiteStatus.burialSiteCount / cemetery.burialSiteCount) * 100).toFixed(1) %>%
                   </td>
                 </tr>
               <% } %>

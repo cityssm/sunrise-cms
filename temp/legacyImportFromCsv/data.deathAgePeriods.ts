@@ -1,13 +1,13 @@
 export function getDeathAgePeriod(legacyDeathAgePeriod: string): string {
   switch (legacyDeathAgePeriod.toLowerCase()) {
-    case 'yrs': {
-      return 'Years'
+    case 'dys': {
+      return 'Days'
     }
     case 'mts': {
       return 'Months'
     }
-    case 'dys': {
-      return 'Days'
+    case 'yrs': {
+      return 'Years'
     }
 
     default: {

@@ -2,6 +2,10 @@
   min-height: 100vh;
 }
 
+.has-width-1 {
+  width: 1px;
+}
+
 /* to fix page titles inside level components, set on .level-left */
 
 .has-flex-shrink-1 {

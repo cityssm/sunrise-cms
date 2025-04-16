@@ -12,6 +12,7 @@ import { initializeDatabase } from '../database/initializeDatabase.js'
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import type { WorkerMessage } from '../types/applicationTypes.js'
+import version from '../version.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:www:${process.pid}`)
 
@@ -31,6 +32,7 @@ process.title = `${applicationName} (Primary)`
 
 debug(`Primary pid:   ${process.pid}`)
 debug(`Primary title: ${process.title}`)
+debug(`Version:       ${version}`)
 debug(`Launching ${processCount} processes`)
 
 const clusterSettings = {
