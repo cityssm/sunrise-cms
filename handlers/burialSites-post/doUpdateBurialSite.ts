@@ -22,6 +22,7 @@ export default async function handler(
 
     response.json({
       success,
+      
       burialSiteId
     })
 
@@ -31,6 +32,7 @@ export default async function handler(
   } catch (error) {
     response.json({
       success: false,
+
       errorMessage: (error as Error).message
     })
   }

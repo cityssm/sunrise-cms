@@ -10,6 +10,7 @@ export default async function handler(
 
   response.render('cemetery-search', {
     headTitle: "Cemetery Search",
+    
     cemeteries
   })
 }

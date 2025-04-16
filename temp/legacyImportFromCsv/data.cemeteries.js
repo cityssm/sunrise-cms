@@ -79,7 +79,7 @@ const cemeteryKeyToCemetery = {
         parentCemeteryId: ''
     },
     MN: {
-        cemeteryName: 'Mausoleum Niche',
+        cemeteryName: 'Holy Sepulchre - Mausoleum Niche',
         cemeteryDescription: 'At Holy Sepulchre Cemetery',
         cemeteryKey: 'MN',
         cemeterySvg: '',
@@ -109,7 +109,7 @@ const cemeteryKeyToCemetery = {
         parentCemeteryId: ''
     },
     NW: {
-        cemeteryName: 'Niche Wall',
+        cemeteryName: 'New Greenwood - Niche Wall',
         cemeteryDescription: 'At New Greenwood Cemetery',
         cemeteryKey: 'NW',
         cemeterySvg: '',

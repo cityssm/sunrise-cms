@@ -204,17 +204,17 @@ async function importFromMasterCSV() {
                 if (masterRow.CM_REMARK2 !== '') {
                     await addContractComment({
                         contractId: preneedContractId,
+                        comment: masterRow.CM_REMARK2,
                         commentDateString: preneedContractStartDateString,
-                        commentTimeString: '00:00',
-                        comment: masterRow.CM_REMARK2
+                        commentTimeString: '00:00'
                     }, user);
                 }
                 if (masterRow.CM_WORK_ORDER.trim() !== '') {
                     await addContractComment({
                         contractId: preneedContractId,
+                        comment: `Imported Contract #${masterRow.CM_WORK_ORDER}`,
                         commentDateString: preneedContractStartDateString,
-                        commentTimeString: '00:00',
-                        comment: `Imported Contract #${masterRow.CM_WORK_ORDER}`
+                        commentTimeString: '00:00'
                     }, user);
                 }
                 if (contractEndDateString === '') {
@@ -628,7 +628,7 @@ async function importFromWorkOrderCSV() {
                     }, user);
                     burialSite = await getBurialSite(burialSiteId);
                 }
-                const workOrderContainsLot = workOrder?.workOrderBurialSites?.find((possibleLot) => (possibleLot.burialSiteId === burialSite?.burialSiteId));
+                const workOrderContainsLot = workOrder?.workOrderBurialSites?.find((possibleLot) => possibleLot.burialSiteId === burialSite?.burialSiteId);
                 if (!workOrderContainsLot) {
                     await addWorkOrderBurialSite({
                         workOrderId: workOrder.workOrderId,

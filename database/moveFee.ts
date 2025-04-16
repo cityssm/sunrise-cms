@@ -14,8 +14,8 @@ export async function moveFeeDown(feeId: number | string): Promise<boolean> {
       `update Fees
         set orderNumber = orderNumber - 1
         where recordDelete_timeMillis is null
-        and feeCategoryId = ?
-        and orderNumber = ? + 1`
+          and feeCategoryId = ?
+          and orderNumber = ? + 1`
     )
     .run(currentFee.feeCategoryId, currentFee.orderNumber)
 
@@ -42,9 +42,9 @@ export async function moveFeeDownToBottom(
     database
       .prepare(
         `select max(orderNumber) as maxOrderNumber
-        from Fees
-        where recordDelete_timeMillis is null
-        and feeCategoryId = ?`
+          from Fees
+          where recordDelete_timeMillis is null
+          and feeCategoryId = ?`
       )
       .get(currentFee.feeCategoryId) as { maxOrderNumber: number }
   ).maxOrderNumber
@@ -57,7 +57,7 @@ export async function moveFeeDownToBottom(
         `update Fees
           set orderNumber = orderNumber - 1
           where recordDelete_timeMillis is null
-          and feeCategoryId = ? and orderNumber > ?`
+            and feeCategoryId = ? and orderNumber > ?`
       )
       .run(currentFee.feeCategoryId, currentFee.orderNumber)
   }
@@ -82,8 +82,8 @@ export async function moveFeeUp(feeId: number | string): Promise<boolean> {
       `update Fees
         set orderNumber = orderNumber + 1
         where recordDelete_timeMillis is null
-        and feeCategoryId = ?
-        and orderNumber = ? - 1`
+          and feeCategoryId = ?
+          and orderNumber = ? - 1`
     )
     .run(currentFee.feeCategoryId, currentFee.orderNumber)
 
@@ -112,8 +112,8 @@ export async function moveFeeUpToTop(feeId: number | string): Promise<boolean> {
         `update Fees
           set orderNumber = orderNumber + 1
           where recordDelete_timeMillis is null
-          and feeCategoryId = ?
-          and orderNumber < ?`
+            and feeCategoryId = ?
+            and orderNumber < ?`
       )
       .run(currentFee.feeCategoryId, currentFee.orderNumber)
   }

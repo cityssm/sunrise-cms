@@ -452,9 +452,10 @@ async function importFromMasterCSV(): Promise<void> {
           await addContractComment(
             {
               contractId: preneedContractId,
+
+              comment: masterRow.CM_REMARK2,
               commentDateString: preneedContractStartDateString,
-              commentTimeString: '00:00',
-              comment: masterRow.CM_REMARK2
+              commentTimeString: '00:00'
             },
             user
           )
@@ -464,9 +465,10 @@ async function importFromMasterCSV(): Promise<void> {
           await addContractComment(
             {
               contractId: preneedContractId,
+
+              comment: `Imported Contract #${masterRow.CM_WORK_ORDER}`,
               commentDateString: preneedContractStartDateString,
-              commentTimeString: '00:00',
-              comment: `Imported Contract #${masterRow.CM_WORK_ORDER}`
+              commentTimeString: '00:00'
             },
             user
           )
@@ -1089,7 +1091,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
               burialSiteNameSegment2,
               burialSiteNameSegment3,
               burialSiteNameSegment4,
-              
+
               cemeteryId,
               cemeterySvgId: burialSiteName.includes(',')
                 ? burialSiteName.split(',')[0]
@@ -1109,7 +1111,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         }
 
         const workOrderContainsLot = workOrder?.workOrderBurialSites?.find(
-          (possibleLot) => (possibleLot.burialSiteId === burialSite?.burialSiteId)
+          (possibleLot) => possibleLot.burialSiteId === burialSite?.burialSiteId
         )
 
         if (!workOrderContainsLot) {

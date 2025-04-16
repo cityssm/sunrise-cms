@@ -1,9 +1,10 @@
+import type { NextFunction, Request, Response } from 'express'
+
 import path from 'node:path'
 
 import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer'
 import camelcase from 'camelcase'
 import { renderFile as renderEjsFile } from 'ejs'
-import type { NextFunction, Request, Response } from 'express'
 
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import {

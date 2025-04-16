@@ -7,7 +7,7 @@ export default async function handler(
   request: Request<
     unknown,
     unknown,
-    { burialSiteId: string; burialSiteCommentId: string }
+    { burialSiteCommentId: string; burialSiteId: string; }
   >,
   response: Response
 ): Promise<void> {
@@ -23,6 +23,7 @@ export default async function handler(
 
   response.json({
     success,
+    
     burialSiteComments
   })
 }

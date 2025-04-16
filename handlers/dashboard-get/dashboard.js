@@ -6,8 +6,8 @@ export default async function handler(_request, response) {
         workOrderMilestoneDateFilter: 'date',
         workOrderMilestoneDateString: currentDateString
     }, {
-        orderBy: 'completion',
-        includeWorkOrders: true
+        includeWorkOrders: true,
+        orderBy: 'completion'
     });
     response.render('dashboard', {
         headTitle: 'Dashboard',

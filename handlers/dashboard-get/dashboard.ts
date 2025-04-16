@@ -16,8 +16,8 @@ export default async function handler(
       workOrderMilestoneDateString: currentDateString
     },
     {
-      orderBy: 'completion',
-      includeWorkOrders: true
+      includeWorkOrders: true,
+      orderBy: 'completion'
     }
   )
 

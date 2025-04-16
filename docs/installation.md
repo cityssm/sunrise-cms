@@ -18,6 +18,7 @@ the application peaked at the following:
 
 - 512 MB of RAM
 - 1 GB of storage for application, dependencies, and data.
+- Active Directory for authentication.
 
 ## Step 1: Install Node.js 18 or better and npm
 

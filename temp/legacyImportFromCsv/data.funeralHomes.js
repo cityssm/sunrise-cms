@@ -1,4 +1,4 @@
-import addFuneralHome from "../../database/addFuneralHome.js";
+import addFuneralHome from '../../database/addFuneralHome.js';
 const funeralHomes = [
     {
         funeralHomeKey: 'AR',
@@ -72,7 +72,7 @@ const funeralHomes = [
     },
     {
         funeralHomeKey: 'ME',
-        funeralHomeName: "Menard Funeral Home",
+        funeralHomeName: 'Menard Funeral Home',
         funeralHomeAddress1: '72 Lakeside Avenue',
         funeralHomeAddress2: '',
         funeralHomeCity: 'Blind River',
@@ -82,28 +82,13 @@ const funeralHomes = [
     }
 ];
 const funeralHomeKeyToId = new Map();
-export async function initializeFuneralHomes(user) {
-    for (const funeralHome of funeralHomes) {
-        const funeralHomeId = await addFuneralHome({
-            funeralHomeName: funeralHome.funeralHomeName ?? '',
-            funeralHomeKey: funeralHome.funeralHomeKey ?? '',
-            funeralHomeAddress1: funeralHome.funeralHomeAddress1 ?? '',
-            funeralHomeAddress2: funeralHome.funeralHomeAddress2 ?? '',
-            funeralHomeCity: funeralHome.funeralHomeCity ?? '',
-            funeralHomeProvince: funeralHome.funeralHomeProvince ?? '',
-            funeralHomePostalCode: funeralHome.funeralHomePostalCode ?? '',
-            funeralHomePhoneNumber: funeralHome.funeralHomePhoneNumber ?? ''
-        }, user);
-        funeralHomeKeyToId.set(funeralHome.funeralHomeKey ?? '', funeralHomeId);
-    }
-}
 export async function getFuneralHomeIdByKey(funeralHomeKey, user) {
     if (funeralHomeKeyToId.has(funeralHomeKey)) {
         return funeralHomeKeyToId.get(funeralHomeKey);
     }
     const funeralHomeId = await addFuneralHome({
-        funeralHomeName: funeralHomeKey,
         funeralHomeKey,
+        funeralHomeName: funeralHomeKey,
         funeralHomeAddress1: '',
         funeralHomeAddress2: '',
         funeralHomeCity: '',
@@ -113,4 +98,19 @@ export async function getFuneralHomeIdByKey(funeralHomeKey, user) {
     }, user);
     funeralHomeKeyToId.set(funeralHomeKey, funeralHomeId);
     return funeralHomeId;
+}
+export async function initializeFuneralHomes(user) {
+    for (const funeralHome of funeralHomes) {
+        const funeralHomeId = await addFuneralHome({
+            funeralHomeKey: funeralHome.funeralHomeKey ?? '',
+            funeralHomeName: funeralHome.funeralHomeName ?? '',
+            funeralHomeAddress1: funeralHome.funeralHomeAddress1 ?? '',
+            funeralHomeAddress2: funeralHome.funeralHomeAddress2 ?? '',
+            funeralHomeCity: funeralHome.funeralHomeCity ?? '',
+            funeralHomeProvince: funeralHome.funeralHomeProvince ?? '',
+            funeralHomePostalCode: funeralHome.funeralHomePostalCode ?? '',
+            funeralHomePhoneNumber: funeralHome.funeralHomePhoneNumber ?? ''
+        }, user);
+        funeralHomeKeyToId.set(funeralHome.funeralHomeKey ?? '', funeralHomeId);
+    }
 }

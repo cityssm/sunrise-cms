@@ -15,10 +15,11 @@ export default async function handler(
   )
 
   response.json({
+    success,
+
     errorMessage: success
       ? ''
-      : 'Note that burial sites with active contracts cannot be deleted.',
-    success
+      : 'Note that burial sites with active contracts cannot be deleted.'
   })
 
   if (success) {

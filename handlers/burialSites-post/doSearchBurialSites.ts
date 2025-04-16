@@ -16,6 +16,7 @@ export default async function handler(
   const result = await getBurialSites(request.body, {
     limit: request.body.limit,
     offset: request.body.offset,
+
     includeContractCount: true
   })
 
@@ -25,6 +26,7 @@ export default async function handler(
       typeof request.body.offset === 'string'
         ? Number.parseInt(request.body.offset, 10)
         : request.body.offset,
+
     burialSites: result.burialSites
   })
 }

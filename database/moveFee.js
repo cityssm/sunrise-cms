@@ -8,8 +8,8 @@ export async function moveFeeDown(feeId) {
         .prepare(`update Fees
         set orderNumber = orderNumber - 1
         where recordDelete_timeMillis is null
-        and feeCategoryId = ?
-        and orderNumber = ? + 1`)
+          and feeCategoryId = ?
+          and orderNumber = ? + 1`)
         .run(currentFee.feeCategoryId, currentFee.orderNumber);
     const success = updateRecordOrderNumber('Fees', feeId, currentFee.orderNumber + 1, database);
     database.release();
@@ -20,9 +20,9 @@ export async function moveFeeDownToBottom(feeId) {
     const currentFee = (await getFee(feeId, database));
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
-        from Fees
-        where recordDelete_timeMillis is null
-        and feeCategoryId = ?`)
+          from Fees
+          where recordDelete_timeMillis is null
+          and feeCategoryId = ?`)
         .get(currentFee.feeCategoryId).maxOrderNumber;
     if (currentFee.orderNumber !== maxOrderNumber) {
         updateRecordOrderNumber('Fees', feeId, maxOrderNumber + 1, database);
@@ -30,7 +30,7 @@ export async function moveFeeDownToBottom(feeId) {
             .prepare(`update Fees
           set orderNumber = orderNumber - 1
           where recordDelete_timeMillis is null
-          and feeCategoryId = ? and orderNumber > ?`)
+            and feeCategoryId = ? and orderNumber > ?`)
             .run(currentFee.feeCategoryId, currentFee.orderNumber);
     }
     database.release();
@@ -47,8 +47,8 @@ export async function moveFeeUp(feeId) {
         .prepare(`update Fees
         set orderNumber = orderNumber + 1
         where recordDelete_timeMillis is null
-        and feeCategoryId = ?
-        and orderNumber = ? - 1`)
+          and feeCategoryId = ?
+          and orderNumber = ? - 1`)
         .run(currentFee.feeCategoryId, currentFee.orderNumber);
     const success = updateRecordOrderNumber('Fees', feeId, currentFee.orderNumber - 1, database);
     database.release();
@@ -63,8 +63,8 @@ export async function moveFeeUpToTop(feeId) {
             .prepare(`update Fees
           set orderNumber = orderNumber + 1
           where recordDelete_timeMillis is null
-          and feeCategoryId = ?
-          and orderNumber < ?`)
+            and feeCategoryId = ?
+            and orderNumber < ?`)
             .run(currentFee.feeCategoryId, currentFee.orderNumber);
     }
     database.release();

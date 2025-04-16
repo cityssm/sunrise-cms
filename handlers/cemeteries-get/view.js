@@ -17,7 +17,7 @@ export default async function handler(request, response) {
     response.render('cemetery-view', {
         headTitle: cemetery.cemeteryName,
         cemetery,
-        burialSiteTypeSummary,
-        burialSiteStatusSummary
+        burialSiteStatusSummary,
+        burialSiteTypeSummary
     });
 }

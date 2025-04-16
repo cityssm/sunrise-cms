@@ -4,10 +4,10 @@ export default async function handler(request, response) {
     const burialSiteId = Number.parseInt(request.body.burialSiteId, 10);
     const success = await deleteBurialSite(burialSiteId, request.session.user);
     response.json({
+        success,
         errorMessage: success
             ? ''
-            : 'Note that burial sites with active contracts cannot be deleted.',
-        success
+            : 'Note that burial sites with active contracts cannot be deleted.'
     });
     if (success) {
         response.on('finish', () => {

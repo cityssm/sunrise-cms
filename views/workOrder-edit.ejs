@@ -193,14 +193,16 @@
                 <div class="control is-expanded">
                   <input class="input" id="workOrderEdit--workOrderCloseDateString" name="workOrderCloseDateString" type="date" value="<%= workOrder.workOrderCloseDateString %>" disabled readonly />
                 </div>
-                <div class="control">
-                  <button class="button is-light is-success" id="button--closeWorkOrder" type="button">
-                    <span class="icon is-small"><i class="fas fa-stop-circle" aria-hidden="true"></i></span>
-                    <span>
-                      Close
-                    </span>
-                  </button>
-                </div>
+                <% if (!isCreate) { %>
+                  <div class="control">
+                    <button class="button is-light is-success" id="button--closeWorkOrder" type="button">
+                      <span class="icon is-small"><i class="fas fa-stop-circle" aria-hidden="true"></i></span>
+                      <span>
+                        Close
+                      </span>
+                    </button>
+                  </div>
+                <% } %>
               </div>
             </div>
           </div>
