@@ -11,7 +11,8 @@ export default async function handler(_request, response) {
         cemeteryKey: '',
         cemeteryName: '',
         cemeteryPhoneNumber: '',
-        cemeteryPostalCode: ''
+        cemeteryPostalCode: '',
+        childCemeteries: []
     };
     const cemeteries = await getCemeteries();
     const cemeterySVGs = await getCemeterySVGs();

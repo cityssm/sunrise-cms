@@ -131,7 +131,7 @@
             <label class="label" for="cemetery--parentCemeteryId">Parent Cemetery</label>
             <div class="control">
               <div class="select is-fullwidth">
-                <select id="cemetery--parentCemeteryId" name="parentCemeteryId">
+                <select id="cemetery--parentCemeteryId" name="parentCemeteryId" <%= (cemetery.childCemeteries.length > 0 ? 'disabled' : '') %>>
                   <option value="">(No Parent Cemetery)</option>
                   <% for (const parentCemetery of cemeteries) { %>
                     <%

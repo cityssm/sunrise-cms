@@ -19,7 +19,9 @@ export default async function handler(
     cemeteryKey: '',
     cemeteryName: '',
     cemeteryPhoneNumber: '',
-    cemeteryPostalCode: ''
+    cemeteryPostalCode: '',
+
+    childCemeteries: []
   }
 
   const cemeteries = await getCemeteries()
