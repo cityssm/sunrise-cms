@@ -2,6 +2,7 @@ import type { PoolConnection } from 'better-sqlite-pool'
 
 import type { Cemetery } from '../types/recordTypes.js'
 
+import getCemeteries from './getCemeteries.js'
 import { acquireConnection } from './pool.js'
 
 export default async function getCemetery(
@@ -55,6 +56,13 @@ async function _getCemetery(
           m.recordDelete_userName, m.recordDelete_timeMillis`
     )
     .get(cemeteryIdOrKey) as Cemetery | undefined
+
+  if (cemetery !== undefined) {
+    cemetery.childCemeteries =
+      cemetery.parentCemeteryId === null
+        ? await getCemeteries({ parentCemeteryId: cemetery.cemeteryId })
+        : []
+  }
 
   if (connectedDatabase === undefined) {
     database.release()

@@ -2,8 +2,17 @@ import type { Cemetery } from '../types/recordTypes.js'
 
 import { acquireConnection } from './pool.js'
 
-export default async function getCemeteries(): Promise<Cemetery[]> {
+export default async function getCemeteries(filters?: {
+  parentCemeteryId?: number | string
+}
+): Promise<Cemetery[]> {
   const database = await acquireConnection()
+
+  const sqlParameters: Array<number | string> = []
+
+  if (filters?.parentCemeteryId !== undefined) {
+    sqlParameters.push(filters.parentCemeteryId)
+  }
 
   const cemeteries = database
     .prepare(
@@ -17,6 +26,7 @@ export default async function getCemeteries(): Promise<Cemetery[]> {
         left join Cemeteries p on m.parentCemeteryId = p.cemeteryId and p.recordDelete_timeMillis is null
         left join BurialSites b on m.cemeteryId = b.cemeteryId and b.recordDelete_timeMillis is null
         where m.recordDelete_timeMillis is null
+        ${filters?.parentCemeteryId === undefined ? '' : 'and m.parentCemeteryId = ?'}
         group by m.cemeteryId, m.cemeteryName, m.cemeteryDescription,
           m.cemeteryLatitude, m.cemeteryLongitude, m.cemeterySvg,
           m.cemeteryAddress1, m.cemeteryAddress2, m.cemeteryCity, m.cemeteryProvince, m.cemeteryPostalCode,
@@ -24,7 +34,7 @@ export default async function getCemeteries(): Promise<Cemetery[]> {
           p.cemeteryId, p.cemeteryName
         order by m.cemeteryName, m.cemeteryId`
     )
-    .all() as Cemetery[]
+    .all(sqlParameters) as Cemetery[]
 
   database.release()
 

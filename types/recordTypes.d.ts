@@ -84,6 +84,7 @@ export interface Cemetery extends Record {
     cemeteryProvince: string;
     cemeteryPhoneNumber: string;
     burialSiteCount?: number;
+    childCemeteries?: Cemetery[];
 }
 export interface CommittalType extends Record {
     committalTypeId: number;

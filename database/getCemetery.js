@@ -1,3 +1,4 @@
+import getCemeteries from './getCemeteries.js';
 import { acquireConnection } from './pool.js';
 export default async function getCemetery(cemeteryId, connectedDatabase) {
     return await _getCemetery('cemeteryId', cemeteryId, connectedDatabase);
@@ -35,6 +36,12 @@ async function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
           m.recordUpdate_userName, m.recordUpdate_timeMillis,
           m.recordDelete_userName, m.recordDelete_timeMillis`)
         .get(cemeteryIdOrKey);
+    if (cemetery !== undefined) {
+        cemetery.childCemeteries =
+            cemetery.parentCemeteryId === null
+                ? await getCemeteries({ parentCemeteryId: cemetery.cemeteryId })
+                : [];
+    }
     if (connectedDatabase === undefined) {
         database.release();
     }

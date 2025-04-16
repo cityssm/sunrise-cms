@@ -96,6 +96,19 @@
             <%= (cemetery.parentCemeteryName ?? '') === '' ? "(No Name)" : cemetery.parentCemeteryName %>
           </a>
         </div>
+      <% } else if (cemetery.childCemeteries.length > 0) { %>
+        <div class="column">
+          <strong>Child Cemeteries</strong><br />
+          <ul>
+            <% for (const childCemetery of cemetery.childCemeteries) { %>
+              <li>
+                <a href="<%= urlPrefix %>/cemeteries/<%= childCemetery.cemeteryId %>">
+                  <%= (childCemetery.cemeteryName ?? '') === '' ? "(No Name)" : childCemetery.cemeteryName %>
+                </a>
+              </li>
+            <% } %>
+          </ul>
+        </div>
       <% } %>
     </div>
   </div>

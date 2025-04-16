@@ -117,6 +117,7 @@ export interface Cemetery extends Record {
   cemeteryPhoneNumber: string
 
   burialSiteCount?: number
+  childCemeteries?: Cemetery[]
 }
 
 export interface CommittalType extends Record {
@@ -358,6 +359,7 @@ export interface FuneralHome extends Record {
 
 export interface IntermentContainerType extends Record {
   intermentContainerTypeId: number
+
   intermentContainerType: string
   intermentContainerTypeKey: string
   isCremationType: boolean
@@ -452,12 +454,14 @@ export interface WorkOrderMilestone extends Record, WorkOrder {
 export interface WorkOrderMilestoneType extends Record {
   workOrderMilestoneTypeId: number
   workOrderMilestoneType: string
+
   orderNumber?: number
 }
 
 export interface WorkOrderType extends Record {
   workOrderTypeId: number
   workOrderType?: string
+  
   orderNumber?: number
 }
 
