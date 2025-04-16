@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express'
 
+import getCemeteries from '../../database/getCemeteries.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getCemeterySVGs } from '../../helpers/images.helpers.js'
 import type { Cemetery } from '../../types/recordTypes.js'
@@ -21,6 +22,8 @@ export default async function handler(
     cemeteryPostalCode: ''
   }
 
+  const cemeteries = await getCemeteries()
+
   const cemeterySVGs = await getCemeterySVGs()
 
   response.render('cemetery-edit', {
@@ -28,6 +31,8 @@ export default async function handler(
 
     cemetery,
     cemeterySVGs,
-    isCreate: true
+    isCreate: true,
+
+    cemeteries
   })
 }

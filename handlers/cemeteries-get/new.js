@@ -1,3 +1,4 @@
+import getCemeteries from '../../database/getCemeteries.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getCemeterySVGs } from '../../helpers/images.helpers.js';
 export default async function handler(_request, response) {
@@ -12,11 +13,13 @@ export default async function handler(_request, response) {
         cemeteryPhoneNumber: '',
         cemeteryPostalCode: ''
     };
+    const cemeteries = await getCemeteries();
     const cemeterySVGs = await getCemeterySVGs();
     response.render('cemetery-edit', {
         headTitle: 'Create a Cemetery',
         cemetery,
         cemeterySVGs,
-        isCreate: true
+        isCreate: true,
+        cemeteries
     });
 }
