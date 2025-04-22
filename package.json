@@ -1,6 +1,6 @@
 {
   "name": "sunrise-cms",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "type": "module",
   "description": "Sunrise Cemetery Management System, a web-based application that allows cemetery managers to manage their cemetery records.",
   "exports": "./app.js",
