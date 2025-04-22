@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             latitudeElement: document.querySelector('#cemetery--cemeteryLatitude'),
             longitudeElement: document.querySelector('#cemetery--cemeteryLongitude'),
             callbackFunction: () => {
-                sunrise.setUnsavedChanges();
+                setUnsavedChanges();
             }
         });
     });

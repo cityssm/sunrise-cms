@@ -195,56 +195,9 @@ const user: User = {
   userProperties: {
     canUpdate: true,
     isAdmin: false,
+
     apiKey: ''
   }
-}
-
-function purgeTables(): void {
-  console.time('purgeTables')
-
-  const tablesToPurge = [
-    'WorkOrderMilestones',
-    'WorkOrderComments',
-    'WorkOrderBurialSites',
-    'WorkOrderContracts',
-    'WorkOrders',
-    'ContractTransactions',
-    'ContractFees',
-    'ContractFields',
-    'ContractComments',
-    'ContractInterments',
-    'Contracts',
-    'FuneralHomes',
-    'BurialSiteFields',
-    'BurialSiteComments',
-    'BurialSites'
-  ]
-
-  const database = sqlite(databasePath)
-
-  for (const tableName of tablesToPurge) {
-    database.prepare(`delete from ${tableName}`).run()
-    database
-      .prepare('delete from sqlite_sequence where name = ?')
-      .run(tableName)
-  }
-
-  database.close()
-
-  console.timeEnd('purgeTables')
-}
-
-function purgeConfigTables(): void {
-  console.time('purgeConfigTables')
-
-  const database = sqlite(databasePath)
-  database.prepare('delete from Cemeteries').run()
-  database
-    .prepare("delete from sqlite_sequence where name in ('Cemeteries')")
-    .run()
-  database.close()
-
-  console.timeEnd('purgeConfigTables')
 }
 
 function formatDateString(
@@ -301,9 +254,14 @@ async function importFromMasterCSV(): Promise<void> {
         const burialSiteNameSegment3 =
           (masterRow.CM_LOT1 === '0' ? '' : masterRow.CM_LOT1) +
           (masterRow.CM_LOT2 === '0' ? '' : masterRow.CM_LOT2)
-        const burialSiteNameSegment4 =
+
+        let burialSiteNameSegment4 =
           (masterRow.CM_GRAVE1 === '0' ? '' : masterRow.CM_GRAVE1) +
           (masterRow.CM_GRAVE2 === '0' ? '' : masterRow.CM_GRAVE2)
+
+        if (burialSiteNameSegment4 === '') {
+          burialSiteNameSegment4 = '1'
+        }
 
         const burialSiteName = buildBurialSiteName(masterRow.CM_CEMETERY, {
           burialSiteNameSegment1,
@@ -413,11 +371,12 @@ async function importFromMasterCSV(): Promise<void> {
             contractTypeFieldIds: '',
 
             purchaserName: masterRow.CM_PRENEED_OWNER,
+
             purchaserAddress1: masterRow.CM_ADDRESS,
             purchaserAddress2: '',
             purchaserCity: masterRow.CM_CITY,
-            purchaserProvince: masterRow.CM_PROV,
             purchaserPostalCode,
+            purchaserProvince: masterRow.CM_PROV,
 
             purchaserEmail: '',
             purchaserPhoneNumber: '',
@@ -430,8 +389,8 @@ async function importFromMasterCSV(): Promise<void> {
             deceasedAddress1: masterRow.CM_ADDRESS,
             deceasedAddress2: '',
             deceasedCity: masterRow.CM_CITY,
-            deceasedProvince: masterRow.CM_PROV,
-            deceasedPostalCode: purchaserPostalCode
+            deceasedPostalCode: purchaserPostalCode,
+            deceasedProvince: masterRow.CM_PROV
           },
           user
         )
@@ -592,17 +551,19 @@ async function importFromMasterCSV(): Promise<void> {
             purchaserAddress1: masterRow.CM_ADDRESS,
             purchaserAddress2: '',
             purchaserCity: masterRow.CM_CITY,
-            purchaserProvince: masterRow.CM_PROV,
             purchaserPostalCode: deceasedPostalCode,
-            purchaserPhoneNumber: '',
+            purchaserProvince: masterRow.CM_PROV,
+
             purchaserEmail: '',
+            purchaserPhoneNumber: '',
 
             deceasedName: masterRow.CM_DECEASED_NAME,
+
             deceasedAddress1: masterRow.CM_ADDRESS,
             deceasedAddress2: '',
             deceasedCity: masterRow.CM_CITY,
-            deceasedProvince: masterRow.CM_PROV,
             deceasedPostalCode,
+            deceasedProvince: masterRow.CM_PROV,
 
             birthDateString: '',
             birthPlace: '',
@@ -712,9 +673,13 @@ async function importFromPrepaidCSV(): Promise<void> {
           (prepaidRow.CMPP_LOT1 === '0' ? '' : prepaidRow.CMPP_LOT1) +
           (prepaidRow.CMPP_LOT2 === '0' ? '' : prepaidRow.CMPP_LOT2)
 
-        const burialSiteNameSegment4 =
+        let burialSiteNameSegment4 =
           (prepaidRow.CMPP_GRAVE1 === '0' ? '' : prepaidRow.CMPP_GRAVE1) +
           (prepaidRow.CMPP_GRAVE2 === '0' ? '' : prepaidRow.CMPP_GRAVE2)
+
+        if (burialSiteNameSegment4 === '') {
+          burialSiteNameSegment4 = '1'
+        }
 
         const burialSiteName = buildBurialSiteName(cemeteryKey, {
           burialSiteNameSegment1,
@@ -1058,9 +1023,13 @@ async function importFromWorkOrderCSV(): Promise<void> {
         const burialSiteNameSegment3 =
           (workOrderRow.WO_LOT1 === '0' ? '' : workOrderRow.WO_LOT1) +
           (workOrderRow.WO_LOT2 === '0' ? '' : workOrderRow.WO_LOT2)
-        const burialSiteNameSegment4 =
+        let burialSiteNameSegment4 =
           (workOrderRow.WO_GRAVE1 === '0' ? '' : workOrderRow.WO_GRAVE1) +
           (workOrderRow.WO_GRAVE2 === '0' ? '' : workOrderRow.WO_GRAVE2)
+
+        if (burialSiteNameSegment4 === '') {
+          burialSiteNameSegment4 = '1'
+        }
 
         const burialSiteName = buildBurialSiteName(workOrderRow.WO_CEMETERY, {
           burialSiteNameSegment1,
@@ -1405,6 +1374,54 @@ async function importFromWorkOrderCSV(): Promise<void> {
   }
 
   console.timeEnd('importFromWorkOrderCSV')
+}
+
+function purgeConfigTables(): void {
+  console.time('purgeConfigTables')
+
+  const database = sqlite(databasePath)
+  database.prepare('delete from Cemeteries').run()
+  database
+    .prepare("delete from sqlite_sequence where name in ('Cemeteries')")
+    .run()
+  database.close()
+
+  console.timeEnd('purgeConfigTables')
+}
+
+function purgeTables(): void {
+  console.time('purgeTables')
+
+  const tablesToPurge = [
+    'WorkOrderMilestones',
+    'WorkOrderComments',
+    'WorkOrderBurialSites',
+    'WorkOrderContracts',
+    'WorkOrders',
+    'ContractTransactions',
+    'ContractFees',
+    'ContractFields',
+    'ContractComments',
+    'ContractInterments',
+    'Contracts',
+    'FuneralHomes',
+    'BurialSiteFields',
+    'BurialSiteComments',
+    'BurialSites'
+  ]
+
+  const database = sqlite(databasePath)
+
+  for (const tableName of tablesToPurge) {
+    database.prepare(`delete from ${tableName}`).run()
+    database
+      .prepare('delete from sqlite_sequence where name = ?')
+      .run(tableName)
+  }
+
+  database.close()
+
+  console.timeEnd('purgeTables')
 }
 
 console.log(`Started ${new Date().toLocaleString()}`)

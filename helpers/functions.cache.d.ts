@@ -16,11 +16,11 @@ export declare function getCommittalTypeById(committalTypeId: number): Promise<C
 export declare function getCommittalTypes(): Promise<CommittalType[]>;
 export declare function getWorkOrderTypeById(workOrderTypeId: number): Promise<WorkOrderType | undefined>;
 export declare function getWorkOrderTypes(): Promise<WorkOrderType[]>;
-type CacheTableNames = 'BurialSiteStatuses' | 'BurialSiteTypeFields' | 'BurialSiteTypes' | 'CommittalTypes' | 'ContractTypeFields' | 'ContractTypePrints' | 'ContractTypes' | 'FeeCategories' | 'Fees' | 'IntermentContainerTypes' | 'WorkOrderMilestoneTypes' | 'WorkOrderTypes';
-export declare function clearCacheByTableName(tableName: CacheTableNames, relayMessage?: boolean): void;
-export declare function clearCaches(): void;
 export declare function getWorkOrderMilestoneTypeById(workOrderMilestoneTypeId: number): Promise<WorkOrderMilestoneType | undefined>;
 export declare function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString: string): Promise<WorkOrderMilestoneType | undefined>;
 export declare function getWorkOrderMilestoneTypes(): Promise<WorkOrderMilestoneType[]>;
 export declare function preloadCaches(): Promise<void>;
+type CacheTableNames = 'BurialSiteStatuses' | 'BurialSiteTypeFields' | 'BurialSiteTypes' | 'CommittalTypes' | 'ContractTypeFields' | 'ContractTypePrints' | 'ContractTypes' | 'FeeCategories' | 'Fees' | 'IntermentContainerTypes' | 'WorkOrderMilestoneTypes' | 'WorkOrderTypes';
+export declare function clearCacheByTableName(tableName: CacheTableNames, relayMessage?: boolean): void;
+export declare function clearCaches(): void;
 export {};

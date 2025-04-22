@@ -298,7 +298,7 @@ declare const exports: Record<string, unknown>
         ) as HTMLInputElement,
 
         callbackFunction: () => {
-          sunrise.setUnsavedChanges()
+          setUnsavedChanges()
         }
       })
     })

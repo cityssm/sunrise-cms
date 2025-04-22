@@ -192,7 +192,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             latitudeElement: document.querySelector('#burialSite--burialSiteLatitude'),
             longitudeElement: document.querySelector('#burialSite--burialSiteLongitude'),
             callbackFunction: () => {
-                sunrise.setUnsavedChanges();
+                setUnsavedChanges();
             }
         });
     });

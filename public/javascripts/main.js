@@ -44,6 +44,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     /*
      * Leaflet Mapping
      */
+    const coordinatePrecision = 8;
     const leafletConstants = {
         tileLayerURL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         defaultZoom: 15,
@@ -98,8 +99,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     clickEvent.preventDefault();
                     if (currentMarker !== undefined) {
                         const mapCoordinates = currentMarker.getLatLng();
-                        options.latitudeElement.value = mapCoordinates.lat.toFixed(8);
-                        options.longitudeElement.value = mapCoordinates.lng.toFixed(8);
+                        options.latitudeElement.value = mapCoordinates.lat.toFixed(coordinatePrecision);
+                        options.longitudeElement.value = mapCoordinates.lng.toFixed(coordinatePrecision);
                         options.callbackFunction(mapCoordinates.lat, mapCoordinates.lng);
                     }
                     closeModalFunction();

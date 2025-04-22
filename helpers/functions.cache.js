@@ -1,3 +1,5 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable perfectionist/sort-modules */
 import cluster from 'node:cluster';
 import Debug from 'debug';
 import getBurialSiteStatusesFromDatabase from '../database/getBurialSiteStatuses.js';
@@ -137,6 +139,37 @@ function clearWorkOrderTypesCache() {
  * Work Order Milestone Types
  */
 let workOrderMilestoneTypes;
+export async function getWorkOrderMilestoneTypeById(workOrderMilestoneTypeId) {
+    const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
+    return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => currentWorkOrderMilestoneType.workOrderMilestoneTypeId ===
+        workOrderMilestoneTypeId);
+}
+export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString) {
+    const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
+    const workOrderMilestoneTypeLowerCase = workOrderMilestoneTypeString.toLowerCase();
+    return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => currentWorkOrderMilestoneType.workOrderMilestoneType.toLowerCase() ===
+        workOrderMilestoneTypeLowerCase);
+}
+export async function getWorkOrderMilestoneTypes() {
+    workOrderMilestoneTypes ??= await getWorkOrderMilestoneTypesFromDatabase();
+    return workOrderMilestoneTypes;
+}
+function clearWorkOrderMilestoneTypesCache() {
+    workOrderMilestoneTypes = undefined;
+}
+/*
+ * Cache Management
+ */
+export async function preloadCaches() {
+    debug('Preloading caches');
+    await getBurialSiteStatuses();
+    await getBurialSiteTypes();
+    await getContractTypes();
+    await getCommittalTypes();
+    await getIntermentContainerTypes();
+    await getWorkOrderTypes();
+    await getWorkOrderMilestoneTypes();
+}
 export function clearCacheByTableName(tableName, relayMessage = true) {
     switch (tableName) {
         case 'BurialSiteStatuses': {
@@ -200,34 +233,6 @@ export function clearCaches() {
     clearIntermentContainerTypesCache();
     clearWorkOrderTypesCache();
     clearWorkOrderMilestoneTypesCache();
-}
-export async function getWorkOrderMilestoneTypeById(workOrderMilestoneTypeId) {
-    const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
-    return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => currentWorkOrderMilestoneType.workOrderMilestoneTypeId ===
-        workOrderMilestoneTypeId);
-}
-export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString) {
-    const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
-    const workOrderMilestoneTypeLowerCase = workOrderMilestoneTypeString.toLowerCase();
-    return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => currentWorkOrderMilestoneType.workOrderMilestoneType.toLowerCase() ===
-        workOrderMilestoneTypeLowerCase);
-}
-export async function getWorkOrderMilestoneTypes() {
-    workOrderMilestoneTypes ??= await getWorkOrderMilestoneTypesFromDatabase();
-    return workOrderMilestoneTypes;
-}
-export async function preloadCaches() {
-    debug('Preloading caches');
-    await getBurialSiteStatuses();
-    await getBurialSiteTypes();
-    await getContractTypes();
-    await getCommittalTypes();
-    await getIntermentContainerTypes();
-    await getWorkOrderTypes();
-    await getWorkOrderMilestoneTypes();
-}
-function clearWorkOrderMilestoneTypesCache() {
-    workOrderMilestoneTypes = undefined;
 }
 process.on('message', (message) => {
     if (message.messageType === 'clearCache' && message.pid !== process.pid) {

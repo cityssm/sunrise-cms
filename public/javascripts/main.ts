@@ -92,6 +92,8 @@ declare const exports: Record<string, unknown> & {
    * Leaflet Mapping
    */
 
+  const coordinatePrecision = 8
+
   const leafletConstants = {
     tileLayerURL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 
@@ -171,8 +173,8 @@ declare const exports: Record<string, unknown> & {
             if (currentMarker !== undefined) {
               const mapCoordinates = currentMarker.getLatLng() as Leaflet.LatLng
 
-              options.latitudeElement.value = mapCoordinates.lat.toFixed(8)
-              options.longitudeElement.value = mapCoordinates.lng.toFixed(8)
+              options.latitudeElement.value = mapCoordinates.lat.toFixed(coordinatePrecision)
+              options.longitudeElement.value = mapCoordinates.lng.toFixed(coordinatePrecision)
 
               options.callbackFunction(mapCoordinates.lat, mapCoordinates.lng)
             }

@@ -24,6 +24,9 @@ declare const exports: Record<string, unknown>
     '#container--feeCategories'
   ) as HTMLElement
 
+  const feeCategoryContainerClassName = 'container--feeCategory'
+  const feeCategoryContainerSelector = `.${feeCategoryContainerClassName}`
+
   let feeCategories = exports.feeCategories as FeeCategory[]
   delete exports.feeCategories
 
@@ -66,7 +69,7 @@ declare const exports: Record<string, unknown>
     for (const feeCategory of feeCategories) {
       const feeCategoryContainerElement = document.createElement('section')
 
-      feeCategoryContainerElement.className = 'panel container--feeCategory'
+      feeCategoryContainerElement.className = `panel ${feeCategoryContainerClassName}`
 
       feeCategoryContainerElement.dataset.feeCategoryId =
         feeCategory.feeCategoryId.toString()
@@ -343,7 +346,7 @@ declare const exports: Record<string, unknown>
     const feeCategoryId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--feeCategory'
+          feeCategoryContainerSelector
         ) as HTMLElement
       ).dataset.feeCategoryId ?? '',
       10
@@ -423,7 +426,7 @@ declare const exports: Record<string, unknown>
     const feeCategoryId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--feeCategory'
+          feeCategoryContainerSelector
         ) as HTMLElement
       ).dataset.feeCategoryId ?? '',
       10
@@ -467,8 +470,8 @@ declare const exports: Record<string, unknown>
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
     const feeCategoryId =
-      (buttonElement.closest('.container--feeCategory') as HTMLElement).dataset
-        .feeCategoryId ?? ''
+      (buttonElement.closest(feeCategoryContainerSelector) as HTMLElement)
+        .dataset.feeCategoryId ?? ''
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/${
@@ -505,7 +508,7 @@ declare const exports: Record<string, unknown>
     const feeCategoryId = Number.parseInt(
       (
         (clickEvent.currentTarget as HTMLElement).closest(
-          '.container--feeCategory'
+          feeCategoryContainerSelector
         ) as HTMLElement
       ).dataset.feeCategoryId ?? '',
       10
@@ -675,7 +678,7 @@ declare const exports: Record<string, unknown>
 
     const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10)
     const feeCategoryId = Number.parseInt(
-      (feeContainerElement.closest('.container--feeCategory') as HTMLElement)
+      (feeContainerElement.closest(feeCategoryContainerSelector) as HTMLElement)
         .dataset.feeCategoryId ?? ''
     )
 
@@ -754,7 +757,7 @@ declare const exports: Record<string, unknown>
 
     const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10)
     const feeCategoryId = Number.parseInt(
-      (feeContainerElement.closest('.container--feeCategory') as HTMLElement)
+      (feeContainerElement.closest(feeCategoryContainerSelector) as HTMLElement)
         .dataset.feeCategoryId ?? ''
     )
 

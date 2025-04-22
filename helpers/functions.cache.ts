@@ -1,3 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable perfectionist/sort-modules */
+
 import cluster from 'node:cluster'
 
 import Debug from 'debug'
@@ -254,6 +257,60 @@ function clearWorkOrderTypesCache(): void {
 
 let workOrderMilestoneTypes: WorkOrderMilestoneType[] | undefined
 
+export async function getWorkOrderMilestoneTypeById(
+  workOrderMilestoneTypeId: number
+): Promise<WorkOrderMilestoneType | undefined> {
+  const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
+
+  return cachedWorkOrderMilestoneTypes.find(
+    (currentWorkOrderMilestoneType) =>
+      currentWorkOrderMilestoneType.workOrderMilestoneTypeId ===
+      workOrderMilestoneTypeId
+  )
+}
+
+export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+  workOrderMilestoneTypeString: string
+): Promise<WorkOrderMilestoneType | undefined> {
+  const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
+
+  const workOrderMilestoneTypeLowerCase =
+    workOrderMilestoneTypeString.toLowerCase()
+
+  return cachedWorkOrderMilestoneTypes.find(
+    (currentWorkOrderMilestoneType) =>
+      currentWorkOrderMilestoneType.workOrderMilestoneType.toLowerCase() ===
+      workOrderMilestoneTypeLowerCase
+  )
+}
+
+export async function getWorkOrderMilestoneTypes(): Promise<
+  WorkOrderMilestoneType[]
+> {
+  workOrderMilestoneTypes ??= await getWorkOrderMilestoneTypesFromDatabase()
+  return workOrderMilestoneTypes
+}
+
+
+function clearWorkOrderMilestoneTypesCache(): void {
+  workOrderMilestoneTypes = undefined
+}
+
+/*
+ * Cache Management
+ */
+
+export async function preloadCaches(): Promise<void> {
+  debug('Preloading caches')
+  await getBurialSiteStatuses()
+  await getBurialSiteTypes()
+  await getContractTypes()
+  await getCommittalTypes()
+  await getIntermentContainerTypes()
+  await getWorkOrderTypes()
+  await getWorkOrderMilestoneTypes()
+}
+
 type CacheTableNames =
   | 'BurialSiteStatuses'
   | 'BurialSiteTypeFields'
@@ -344,55 +401,6 @@ export function clearCaches(): void {
   clearIntermentContainerTypesCache()
   clearWorkOrderTypesCache()
   clearWorkOrderMilestoneTypesCache()
-}
-
-export async function getWorkOrderMilestoneTypeById(
-  workOrderMilestoneTypeId: number
-): Promise<WorkOrderMilestoneType | undefined> {
-  const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
-
-  return cachedWorkOrderMilestoneTypes.find(
-    (currentWorkOrderMilestoneType) =>
-      currentWorkOrderMilestoneType.workOrderMilestoneTypeId ===
-      workOrderMilestoneTypeId
-  )
-}
-
-export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
-  workOrderMilestoneTypeString: string
-): Promise<WorkOrderMilestoneType | undefined> {
-  const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
-
-  const workOrderMilestoneTypeLowerCase =
-    workOrderMilestoneTypeString.toLowerCase()
-
-  return cachedWorkOrderMilestoneTypes.find(
-    (currentWorkOrderMilestoneType) =>
-      currentWorkOrderMilestoneType.workOrderMilestoneType.toLowerCase() ===
-      workOrderMilestoneTypeLowerCase
-  )
-}
-
-export async function getWorkOrderMilestoneTypes(): Promise<
-  WorkOrderMilestoneType[]
-> {
-  workOrderMilestoneTypes ??= await getWorkOrderMilestoneTypesFromDatabase()
-  return workOrderMilestoneTypes
-}
-
-export async function preloadCaches(): Promise<void> {
-  debug('Preloading caches')
-  await getBurialSiteStatuses()
-  await getBurialSiteTypes()
-  await getContractTypes()
-  await getCommittalTypes()
-  await getIntermentContainerTypes()
-  await getWorkOrderTypes()
-  await getWorkOrderMilestoneTypes()
-}
-
-function clearWorkOrderMilestoneTypesCache(): void {
-  workOrderMilestoneTypes = undefined
 }
 
 process.on('message', (message: WorkerMessage) => {

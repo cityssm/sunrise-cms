@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const feeCategoriesContainerElement = document.querySelector('#container--feeCategories');
+    const feeCategoryContainerClassName = 'container--feeCategory';
+    const feeCategoryContainerSelector = `.${feeCategoryContainerClassName}`;
     let feeCategories = exports.feeCategories;
     delete exports.feeCategories;
     function getFeeCategory(feeCategoryId) {
@@ -24,7 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         feeCategoriesContainerElement.innerHTML = '';
         for (const feeCategory of feeCategories) {
             const feeCategoryContainerElement = document.createElement('section');
-            feeCategoryContainerElement.className = 'panel container--feeCategory';
+            feeCategoryContainerElement.className = `panel ${feeCategoryContainerClassName}`;
             feeCategoryContainerElement.dataset.feeCategoryId =
                 feeCategory.feeCategoryId.toString();
             // eslint-disable-next-line no-unsanitized/property
@@ -221,7 +223,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     });
     function openEditFeeCategory(clickEvent) {
-        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest('.container--feeCategory').dataset.feeCategoryId ?? '', 10);
+        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(feeCategoryContainerSelector).dataset.feeCategoryId ?? '', 10);
         const feeCategory = getFeeCategory(feeCategoryId);
         let editCloseModalFunction;
         function doUpdateFeeCategory(submitEvent) {
@@ -266,7 +268,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     function confirmDeleteFeeCategory(clickEvent) {
-        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest('.container--feeCategory').dataset.feeCategoryId ?? '', 10);
+        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(feeCategoryContainerSelector).dataset.feeCategoryId ?? '', 10);
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteFeeCategory`, {
                 feeCategoryId
@@ -297,8 +299,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function moveFeeCategory(clickEvent) {
         const buttonElement = clickEvent.currentTarget;
-        const feeCategoryId = buttonElement.closest('.container--feeCategory').dataset
-            .feeCategoryId ?? '';
+        const feeCategoryId = buttonElement.closest(feeCategoryContainerSelector)
+            .dataset.feeCategoryId ?? '';
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveFeeCategoryUp'
             : 'doMoveFeeCategoryDown'}`, {
@@ -323,7 +325,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
      * Fees
      */
     function openAddFee(clickEvent) {
-        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest('.container--feeCategory').dataset.feeCategoryId ?? '', 10);
+        const feeCategoryId = Number.parseInt(clickEvent.currentTarget.closest(feeCategoryContainerSelector).dataset.feeCategoryId ?? '', 10);
         let addCloseModalFunction;
         function doAddFee(submitEvent) {
             submitEvent.preventDefault();
@@ -427,7 +429,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         const feeContainerElement = clickEvent.currentTarget.closest('.container--fee');
         const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10);
-        const feeCategoryId = Number.parseInt(feeContainerElement.closest('.container--feeCategory')
+        const feeCategoryId = Number.parseInt(feeContainerElement.closest(feeCategoryContainerSelector)
             .dataset.feeCategoryId ?? '');
         const feeCategory = getFeeCategory(feeCategoryId);
         const fee = getFee(feeCategory, feeId);
@@ -472,7 +474,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         const feeContainerElement = clickEvent.currentTarget.closest('.container--fee');
         const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10);
-        const feeCategoryId = Number.parseInt(feeContainerElement.closest('.container--feeCategory')
+        const feeCategoryId = Number.parseInt(feeContainerElement.closest(feeCategoryContainerSelector)
             .dataset.feeCategoryId ?? '');
         const feeCategory = getFeeCategory(feeCategoryId);
         const fee = getFee(feeCategory, feeId);

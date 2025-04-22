@@ -79,9 +79,10 @@ export interface Config {
     dynamicsGP?: {
       integrationIsEnabled: boolean
       mssqlConfig?: MSSQLConfig
-      lookupOrder?: DynamicsGPLookup[]
+
       accountCodes?: string[]
       itemNumbers?: string[]
+      lookupOrder?: DynamicsGPLookup[]
       trialBalanceCodes?: string[]
     }
   }
