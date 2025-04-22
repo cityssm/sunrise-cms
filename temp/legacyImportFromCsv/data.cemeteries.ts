@@ -53,8 +53,8 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryKey: 'HC',
     cemeterySvg: '',
 
-    cemeteryLatitude: '',
-    cemeteryLongitude: '',
+    cemeteryLatitude: '46.56861214',
+    cemeteryLongitude: '-84.34559226',
 
     cemeteryAddress1: 'Fourth Line East',
     cemeteryAddress2: '',
