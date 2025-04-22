@@ -1,174 +1,182 @@
 <%- include('_header'); -%>
 
-<nav class="breadcrumb">
-  <ul>
-    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-    <li class="is-active">
-      <a href="#" aria-current="page">
-        <span class="icon is-small">
-          <i class="fas fa-file-contract" aria-hidden="true"></i>
-        </span>
-        <span>Contracts</span>
-      </a>
-    </li>
-  </ul>
-</nav>
 
-<h1 class="title is-1">
-  Find a Contract
-</h1>
-
-<% if (user.userProperties.canUpdate) { %>
-  <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-    <a class="button is-circle is-primary has-tooltip-left"
-      data-tooltip="Create a New Contract"
-      href="<%= urlPrefix %>/contracts/new"
-      accesskey="n">
-      <i class="fas fa-plus" aria-hidden="true"></i>
-      <span class="sr-only">Create a New Contract</span>
-    </a>
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('_menu-contracts'); -%>
   </div>
-<% } %>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            <span class="icon is-small">
+              <i class="fas fa-file-contract" aria-hidden="true"></i>
+            </span>
+            <span>Contracts</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
 
-<div class="box">
-  <form id="form--searchFilters">
-    <input id="searchFilter--limit" name="limit" type="hidden" value="100" />
-    <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
-    <div class="columns">
-      <div class="column">
-        <div class="field">
-          <label class="label" for="searchFilter--contractTypeId">Contract Type</label>
-          <div class="control has-icons-left">
-            <div class="select is-fullwidth">
-              <select id="searchFilter--contractTypeId" name="contractTypeId">
-                <option value="">(All Contract Types)</option>
-                <% for (const contractType of contractTypes) { %>
-                  <option value="<%= contractType.contractTypeId %>"><%= contractType.contractType %></option>
-                <% } %>
-              </select>
+    <h1 class="title is-1">
+      Find a Contract
+    </h1>
+
+    <% if (user.userProperties.canUpdate) { %>
+      <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+        <a class="button is-circle is-primary has-tooltip-left"
+          data-tooltip="Create a New Contract"
+          href="<%= urlPrefix %>/contracts/new"
+          accesskey="n">
+          <i class="fas fa-plus" aria-hidden="true"></i>
+          <span class="sr-only">Create a New Contract</span>
+        </a>
+      </div>
+    <% } %>
+
+    <div class="box">
+      <form id="form--searchFilters">
+        <input id="searchFilter--limit" name="limit" type="hidden" value="100" />
+        <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="searchFilter--contractTypeId">Contract Type</label>
+              <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                  <select id="searchFilter--contractTypeId" name="contractTypeId">
+                    <option value="">(All Contract Types)</option>
+                    <% for (const contractType of contractTypes) { %>
+                      <option value="<%= contractType.contractTypeId %>"><%= contractType.contractType %></option>
+                    <% } %>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+              </div>
             </div>
-            <span class="icon is-small is-left">
-              <i class="fas fa-search" aria-hidden="true"></i>
-            </span>
           </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="field">
-          <label class="label" for="searchFilter--deceasedName">Recipient / Deceased Name</label>
-          <div class="control has-icons-left">
-            <input class="input" id="searchFilter--deceasedName" name="deceasedName" accesskey="f" />
-            <span class="icon is-small is-left">
-              <i class="fas fa-search" aria-hidden="true"></i>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="field">
-          <label class="label" for="searchFilter--contractTime">Contract Time</label>
-          <div class="control has-icons-left">
-            <div class="select is-fullwidth">
-              <select id="searchFilter--contractTime" name="contractTime">
-                <option value="">(All Times)</option>
-                <option value="current" selected>Current</option>
-                <option value="past">Past</option>
-                <option value="future">Future</option>
-              </select>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="searchFilter--deceasedName">Recipient / Deceased Name</label>
+              <div class="control has-icons-left">
+                <input class="input" id="searchFilter--deceasedName" name="deceasedName" accesskey="f" />
+                <span class="icon is-small is-left">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+              </div>
             </div>
-            <span class="icon is-small is-left">
-              <i class="fas fa-search" aria-hidden="true"></i>
-            </span>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="column">
-        <div class="field">
-          <label class="label" for="searchFilter--cemeteryId">Cemetery</label>
-          <div class="control has-icons-left">
-            <div class="select is-fullwidth">
-              <select id="searchFilter--cemeteryId" name="cemeteryId">
-                <option value="">(All Cemeteries)</option>
-                <% for (const cemetery of cemeteries) { %>
-                  <option value="<%= cemetery.cemeteryId %>" <%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>>
-                    <%= cemetery.cemeteryName || "(No Name)" %>
-                  </option>
-                <% } %>
-              </select>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="searchFilter--contractTime">Contract Time</label>
+              <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                  <select id="searchFilter--contractTime" name="contractTime">
+                    <option value="">(All Times)</option>
+                    <option value="current" selected>Current</option>
+                    <option value="past">Past</option>
+                    <option value="future">Future</option>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+              </div>
             </div>
-            <span class="icon is-small is-left">
-              <i class="fas fa-search" aria-hidden="true"></i>
-            </span>
           </div>
         </div>
-      </div>
-      <div class="column">
-        <label class="label" for="searchFilter--burialSiteName">Burial Site</label>
-        <div class="field has-addons">
-          <div class="control has-icons-left">
-            <div class="select">
-              <select id="selectFilter--burialSiteNameSearchType" name="burialSiteNameSearchType" aria-label="Burial Site Filter Type">
-                <option value="">contains</option>
-                <option value="startsWith">starts with</option>
-                <option value="endsWith">ends with</option>
-              </select>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="searchFilter--cemeteryId">Cemetery</label>
+              <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                  <select id="searchFilter--cemeteryId" name="cemeteryId">
+                    <option value="">(All Cemeteries)</option>
+                    <% for (const cemetery of cemeteries) { %>
+                      <option value="<%= cemetery.cemeteryId %>" <%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>>
+                        <%= cemetery.cemeteryName || "(No Name)" %>
+                      </option>
+                    <% } %>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+              </div>
             </div>
-            <span class="icon is-small is-left">
-              <i class="fas fa-search" aria-hidden="true"></i>
-            </span>
           </div>
-          <div class="control is-expanded">
-            <input class="input" id="searchFilter--burialSiteName" name="burialSiteName" />
+          <div class="column">
+            <label class="label" for="searchFilter--burialSiteName">Burial Site</label>
+            <div class="field has-addons">
+              <div class="control has-icons-left">
+                <div class="select">
+                  <select id="selectFilter--burialSiteNameSearchType" name="burialSiteNameSearchType" aria-label="Burial Site Filter Type">
+                    <option value="">contains</option>
+                    <option value="startsWith">starts with</option>
+                    <option value="endsWith">ends with</option>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+              </div>
+              <div class="control is-expanded">
+                <input class="input" id="searchFilter--burialSiteName" name="burialSiteName" />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="searchFilter--funeralHomeId">Funeral Home</label>
+              <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                  <select id="searchFilter--funeralHomeId" name="funeralHomeId">
+                    <option value="">(All Funeral Homes)</option>
+                    <% for (const funeralHome of funeralHomes) { %>
+                      <option value="<%= funeralHome.funeralHomeId %>"><%= funeralHome.funeralHomeName %></option>
+                    <% } %>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="searchFilter--burialSiteTypeId">Burial Site Type</label>
+              <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                  <select id="searchFilter--burialSiteTypeId" name="burialSiteTypeId">
+                    <option value="">(All Burial Site Types)</option>
+                    <% for (const burialSiteType of burialSiteTypes) { %>
+                      <option value="<%= burialSiteType.burialSiteTypeId %>"><%= burialSiteType.burialSiteType %></option>
+                    <% } %>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      </form>
     </div>
 
-    <div class="columns">
-      <div class="column">
-        <div class="field">
-          <label class="label" for="searchFilter--funeralHomeId">Funeral Home</label>
-          <div class="control has-icons-left">
-            <div class="select is-fullwidth">
-              <select id="searchFilter--funeralHomeId" name="funeralHomeId">
-                <option value="">(All Funeral Homes)</option>
-                <% for (const funeralHome of funeralHomes) { %>
-                  <option value="<%= funeralHome.funeralHomeId %>"><%= funeralHome.funeralHomeName %></option>
-                <% } %>
-              </select>
-            </div>
-            <span class="icon is-small is-left">
-              <i class="fas fa-search" aria-hidden="true"></i>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="field">
-          <label class="label" for="searchFilter--burialSiteTypeId">Burial Site Type</label>
-          <div class="control has-icons-left">
-            <div class="select is-fullwidth">
-              <select id="searchFilter--burialSiteTypeId" name="burialSiteTypeId">
-                <option value="">(All Burial Site Types)</option>
-                <% for (const burialSiteType of burialSiteTypes) { %>
-                  <option value="<%= burialSiteType.burialSiteTypeId %>"><%= burialSiteType.burialSiteType %></option>
-                <% } %>
-              </select>
-            </div>
-            <span class="icon is-small is-left">
-              <i class="fas fa-search" aria-hidden="true"></i>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  
-  </form>
+    <div id="container--searchResults"></div>
+  </div>
 </div>
-
-<div id="container--searchResults"></div>
 
 <%- include('_footerA'); -%>
 

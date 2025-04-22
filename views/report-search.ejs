@@ -8,29 +8,33 @@
       </h2>
       <ul class="menu-list">
         <li>
-          <a class="is-active" href="#tab--workOrders" aria-label="Work Orders">
-            <span class="icon"><i class="fas fa-fw fa-hard-hat" aria-hidden="true"></i></span>
-            <span class="is-hidden-touch">Work Orders</span>
+          <a class="<%= reportTab === 'workOrders' ? 'is-active' : '' %>" href="#tab--workOrders" aria-label="Work Orders">
+            <div class="columns is-mobile is-1">
+              <div class="column is-narrow">
+                <span class="icon"><i class="fas fa-fw fa-hard-hat" aria-hidden="true"></i></span>
+              </div>
+              <div class="column is-hidden-touch">Work Orders</div>
+            </div>
           </a>
         </li> 
         <li>
-          <a href="#tab--contracts" aria-label="Contracts">
-            <span class="icon">
-              <i class="fas fa-file-contract" aria-hidden="true"></i>
-            </span>
-            <span class="is-hidden-touch">Contracts</span>
+          <a class="<%= reportTab === 'contracts' ? 'is-active' : '' %>" href="#tab--contracts" aria-label="Contracts">
+            <div class="columns is-mobile is-1">
+              <div class="column is-narrow">
+                <span class="icon"><i class="fas fa-fw fa-file-contract" aria-hidden="true"></i></span>
+              </div>
+              <div class="column is-hidden-touch">Contracts</div>
+            </div>
           </a>
         </li> 
         <li>
-          <a href="#tab--burialSites" aria-label="Burial Sites">
-            <span class="icon"><i class="fas fa-fw fa-vector-square" aria-hidden="true"></i></span>
-            <span class="is-hidden-touch">Burial Sites</span>
-          </a>
-        </li>
-        <li>
-          <a href="#tab--cemeteries" aria-label="Cemeteries">
-            <span class="icon"><i class="far fa-fw fa-map" aria-hidden="true"></i></span>
-            <span class="is-hidden-touch">Cemeteries</span>
+          <a class="<%= reportTab === 'cemeteries' ? 'is-active' : '' %>" href="#tab--cemeteries" aria-label="Cemeteries and Burial Sites">
+            <div class="columns is-mobile is-1">
+              <div class="column is-narrow">
+                <span class="icon"><i class="far fa-fw fa-map" aria-hidden="true"></i></span>
+              </div>
+              <div class="column is-hidden-touch">Cemeteries and Burial Sites</div>
+            </div>
           </a>
         </li>
       </ul>
@@ -39,15 +43,23 @@
       </h2>
       <ul class="menu-list">
         <li>
-          <a href="#tab--dataTableExports" aria-label="Data Tables">
-            <span class="icon"><i class="fas fa-fw fa-table" aria-hidden="true"></i></span>
-            <span class="is-hidden-touch">Data Tables</span>
+          <a class="<%= reportTab === 'dataTableExports' ? 'is-active' : '' %>" href="#tab--dataTableExports" aria-label="Data Tables">
+            <div class="columns is-mobile is-1">
+              <div class="column is-narrow">
+                <span class="icon"><i class="fas fa-fw fa-table" aria-hidden="true"></i></span>
+              </div>
+              <div class="column is-hidden-touch">Data Tables</div>
+            </div>
           </a>
         </li>
         <li>
-          <a href="#tab--configTableExports" aria-label="Config Tables">
-            <span class="icon"><i class="fas fa-fw fa-table" aria-hidden="true"></i></span>
-            <span class="is-hidden-touch">Config Tables</span>
+          <a class="<%= reportTab === 'configTableExports' ? 'is-active' : '' %>" href="#tab--configTableExports" aria-label="Config Tables">
+            <div class="columns is-mobile is-1">
+              <div class="column is-narrow">
+                <span class="icon"><i class="fas fa-fw fa-table" aria-hidden="true"></i></span>
+              </div>
+              <div class="column is-hidden-touch">Config Tables</div>
+            </div>
           </a>
         </li>
       </ul>
@@ -67,7 +79,7 @@
     </nav>
 
     <div class="tabs-container">
-      <div id="tab--workOrders">
+      <div class="<%= reportTab === 'workOrders' ? '' : 'is-hidden' %>" id="tab--workOrders">
         <h1 class="title is-1">Work Order Reports</h1>
         <div class="columns">
           <div class="column">
@@ -110,37 +122,63 @@
         </div>
       </div>
           
-      <div class="is-hidden" id="tab--contracts">
+      <div class="<%= reportTab === 'contracts' ? '' : 'is-hidden' %>" id="tab--contracts">
         <h1 class="title is-1">Contract Reports</h1>
 
         <div class="panel">
-            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/contracts-current-byCemeteryId">
+          <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/contracts-current-byCemeteryId">
+            <div class="has-text-centered my-2 ml-2 mr-3">
+              <span class="icon has-text-info">
+                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+              </span><br />
+              <span class="tag is-info">CSV</span>
+            </div>
+            <div>
+              <h2 class="title is-5 mb-0">
+                Current Contract By Cemetery
+              </h2>
+              <div class="field has-addons mt-2">
+                <div class="control">
+                  <label class="button is-small is-static" for="contracts-current-byCemeteryId--cemeteryId">
+                    Cemetery
+                  </label>
+                </div>
+                <div class="control is-expanded">
+                  <div class="select is-small is-fullwidth">
+                    <select id="contracts-current-byCemeteryId--cemeteryId" name="cemeteryId">
+                      <% for (const cemetery of cemeteries) { %>
+                        <option value="<%= cemetery.cemeteryId %>">
+                          <%= cemetery.cemeteryName || "(No Name)" %>
+                        </option>
+                      <% } %>
+                    </select>
+                  </div>
+                </div>
+                <div class="control">
+                  <button class="button is-small is-primary" type="submit">
+                    Export
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/contractTransactions-byTransactionDateString">
               <div class="has-text-centered my-2 ml-2 mr-3">
-                <span class="icon has-text-info">
-                  <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                </span><br />
-                <span class="tag is-info">CSV</span>
+                  <span class="icon has-text-info">
+                      <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+                  </span><br />
+                  <span class="tag is-info">CSV</span>
               </div>
               <div>
-                <h2 class="title is-5 mb-0">
-                  Current Contract By Cemetery
-                </h2>
+                <h2 class="title is-5 mb-0">Transactions by Date</h2>
                 <div class="field has-addons mt-2">
                   <div class="control">
-                    <label class="button is-small is-static" for="contracts-current-byCemeteryId--cemeteryId">
-                      Cemetery
+                    <label class="button is-small is-static" for="contractTransactions-byTransactionDateString--transactionDateString">
+                      Transaction Date
                     </label>
                   </div>
                   <div class="control is-expanded">
-                    <div class="select is-small is-fullwidth">
-                      <select id="contracts-current-byCemeteryId--cemeteryId" name="cemeteryId">
-                        <% for (const cemetery of cemeteries) { %>
-                          <option value="<%= cemetery.cemeteryId %>">
-                            <%= cemetery.cemeteryName || "(No Name)" %>
-                          </option>
-                        <% } %>
-                      </select>
-                    </div>
+                    <input class="input is-small" id="contractTransactions-byTransactionDateString--transactionDateString" name="transactionDateString" type="date" value="<%= dateTimeFunctions.dateToString(new Date()) %>" required />
                   </div>
                   <div class="control">
                     <button class="button is-small is-primary" type="submit">
@@ -149,146 +187,11 @@
                   </div>
                 </div>
               </div>
-            </form>
-            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/contractTransactions-byTransactionDateString">
-                <div class="has-text-centered my-2 ml-2 mr-3">
-                    <span class="icon has-text-info">
-                        <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                    </span><br />
-                    <span class="tag is-info">CSV</span>
-                </div>
-                <div>
-                  <h2 class="title is-5 mb-0">Transactions by Date</h2>
-                  <div class="field has-addons mt-2">
-                    <div class="control">
-                      <label class="button is-small is-static" for="contractTransactions-byTransactionDateString--transactionDateString">
-                        Transaction Date
-                      </label>
-                    </div>
-                    <div class="control is-expanded">
-                      <input class="input is-small" id="contractTransactions-byTransactionDateString--transactionDateString" name="transactionDateString" type="date" value="<%= dateTimeFunctions.dateToString(new Date()) %>" required />
-                    </div>
-                    <div class="control">
-                      <button class="button is-small is-primary" type="submit">
-                        Export
-                      </button>
-                    </div>
-                  </div>
-                </div>
-            </form>
+          </form>
         </div>
       </div>
-      <div class="is-hidden" id="tab--burialSites">
-        <h1 class="title is-1">Burial Site Reports</h1>
 
-        <div class="panel">
-            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byCemeteryId">
-                <div class="has-text-centered my-2 ml-2 mr-3">
-                    <span class="icon has-text-info">
-                        <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                    </span><br />
-                    <span class="tag is-info">CSV</span>
-                </div>
-                <div>
-                  <h2 class="title is-5 mb-0">
-                    Burial Sites By Cemetery
-                  </h2>
-                  <div class="field has-addons mt-2">
-                    <div class="control">
-                      <label class="button is-small is-static" for="burialSites-byCemeteryId--cemeteryId">
-                        Cemetery
-                      </label>
-                    </div>
-                    <div class="control is-expanded">
-                      <div class="select is-small is-fullwidth">
-                        <select id="burialSites-byCemeteryId--cemeteryId" name="cemeteryId">
-                          <% for (const cemetery of cemeteries) { %>
-                            <option value="<%= cemetery.cemeteryId %>">
-                              <%= cemetery.cemeteryName || "(No Name)" %>
-                            </option>
-                          <% } %>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="control">
-                      <button class="button is-small is-primary" type="submit">
-                        Export
-                      </button>
-                    </div>
-                  </div>
-                </div>
-            </form>
-            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteTypeId">
-              <div class="has-text-centered my-2 ml-2 mr-3">
-                <span class="icon has-text-info">
-                  <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                </span><br />
-                <span class="tag is-info">CSV</span>
-              </div>
-              <div>
-                <h2 class="title is-5 mb-0">Burial Sites By Type</h2>
-                <div class="field has-addons mt-2">
-                  <div class="control">
-                    <label class="button is-small is-static" for="burialSites-byBurialSiteTypeId--burialSiteTypeId">
-                      Burial Site Type
-                    </label>
-                  </div>
-                  <div class="control is-expanded">
-                    <div class="select is-small is-fullwidth">
-                      <select id="burialSites-byBurialSiteTypeId--burialSiteTypeId" name="burialSiteTypeId">
-                        <% for (const burialSiteType of burialSiteTypes) { %>
-                          <option value="<%= burialSiteType.burialSiteTypeId %>">
-                            <%= burialSiteType.burialSiteType %>
-                          </option>
-                        <% } %>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="control">
-                    <button class="button is-small is-primary" type="submit">
-                      Export
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form>
-            <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteStatusId">
-              <div class="has-text-centered my-2 ml-2 mr-3">
-                <span class="icon has-text-info">
-                  <i class="fas fa-2x fa-file" aria-hidden="true"></i>
-                </span><br />
-                <span class="tag is-info">CSV</span>
-              </div>
-              <div>
-                  <h2 class="title is-5 mb-0">Burial Sites By Status</h2>
-                  <div class="field has-addons mt-2">
-                    <div class="control">
-                      <label class="button is-small is-static" for="burialSites-byBurialSiteStatusId--burialSiteStatusId">
-                        Burial Site Status
-                      </label>
-                    </div>
-                    <div class="control is-expanded">
-                      <div class="select is-small is-fullwidth">
-                        <select id="burialSites-byBurialSiteStatusId--burialSiteStatusId" name="burialSiteStatusId">
-                          <% for (const burialSiteStatus of burialSiteStatuses) { %>
-                            <option value="<%= burialSiteStatus.burialSiteStatusId %>">
-                              <%= burialSiteStatus.burialSiteStatus %>
-                            </option>
-                          <% } %>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="control">
-                      <button class="button is-small is-primary" type="submit">
-                        Export
-                      </button>
-                    </div>
-                  </div>
-              </div>
-            </form>
-        </div>
-      </div>
-      <div class="is-hidden" id="tab--cemeteries">
+      <div class="<%= reportTab === 'cemeteries' ? '' : 'is-hidden' %>" id="tab--cemeteries">
         <h1 class="title is-1">Cemetery Reports</h1>
         <div class="panel">
           <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/cemeteries-formatted" download>
@@ -306,9 +209,118 @@
             </div>
           </a>
         </div>
+
+        <h2 class="title is-3">Burial Site Reports</h2>
+
+        <div class="panel">
+          <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byCemeteryId">
+            <div class="has-text-centered my-2 ml-2 mr-3">
+              <span class="icon has-text-info">
+                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+              </span><br />
+              <span class="tag is-info">CSV</span>
+            </div>
+            <div>
+              <h2 class="title is-5 mb-0">
+                Burial Sites By Cemetery
+              </h2>
+              <div class="field has-addons mt-2">
+                <div class="control">
+                  <label class="button is-small is-static" for="burialSites-byCemeteryId--cemeteryId">
+                    Cemetery
+                  </label>
+                </div>
+                <div class="control is-expanded">
+                  <div class="select is-small is-fullwidth">
+                    <select id="burialSites-byCemeteryId--cemeteryId" name="cemeteryId">
+                      <% for (const cemetery of cemeteries) { %>
+                        <option value="<%= cemetery.cemeteryId %>">
+                          <%= cemetery.cemeteryName || "(No Name)" %>
+                        </option>
+                      <% } %>
+                    </select>
+                  </div>
+                </div>
+                <div class="control">
+                  <button class="button is-small is-primary" type="submit">
+                    Export
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteTypeId">
+            <div class="has-text-centered my-2 ml-2 mr-3">
+              <span class="icon has-text-info">
+                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+              </span><br />
+              <span class="tag is-info">CSV</span>
+            </div>
+            <div>
+              <h2 class="title is-5 mb-0">Burial Sites By Type</h2>
+              <div class="field has-addons mt-2">
+                <div class="control">
+                  <label class="button is-small is-static" for="burialSites-byBurialSiteTypeId--burialSiteTypeId">
+                    Burial Site Type
+                  </label>
+                </div>
+                <div class="control is-expanded">
+                  <div class="select is-small is-fullwidth">
+                    <select id="burialSites-byBurialSiteTypeId--burialSiteTypeId" name="burialSiteTypeId">
+                      <% for (const burialSiteType of burialSiteTypes) { %>
+                        <option value="<%= burialSiteType.burialSiteTypeId %>">
+                          <%= burialSiteType.burialSiteType %>
+                        </option>
+                      <% } %>
+                    </select>
+                  </div>
+                </div>
+                <div class="control">
+                  <button class="button is-small is-primary" type="submit">
+                    Export
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteStatusId">
+            <div class="has-text-centered my-2 ml-2 mr-3">
+              <span class="icon has-text-info">
+                <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+              </span><br />
+              <span class="tag is-info">CSV</span>
+            </div>
+            <div>
+              <h2 class="title is-5 mb-0">Burial Sites By Status</h2>
+              <div class="field has-addons mt-2">
+                <div class="control">
+                  <label class="button is-small is-static" for="burialSites-byBurialSiteStatusId--burialSiteStatusId">
+                    Burial Site Status
+                  </label>
+                </div>
+                <div class="control is-expanded">
+                  <div class="select is-small is-fullwidth">
+                    <select id="burialSites-byBurialSiteStatusId--burialSiteStatusId" name="burialSiteStatusId">
+                      <% for (const burialSiteStatus of burialSiteStatuses) { %>
+                        <option value="<%= burialSiteStatus.burialSiteStatusId %>">
+                          <%= burialSiteStatus.burialSiteStatus %>
+                        </option>
+                      <% } %>
+                    </select>
+                  </div>
+                </div>
+                <div class="control">
+                  <button class="button is-small is-primary" type="submit">
+                    Export
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
 
-      <div class="is-hidden" id="tab--dataTableExports">
+      <div class="<%= reportTab === 'dataTableExports' ? '' : 'is-hidden' %>" id="tab--dataTableExports">
         <h1 class="title is-1">Data Table Exports</h1>
         <div class="message is-info">
           <p class="message-body">
@@ -497,7 +509,7 @@
           </div>
         </div>
       </div>
-      <div class="is-hidden" id="tab--configTableExports">
+      <div class="<%= reportTab === 'configTableExports' ? '' : 'is-hidden' %>" id="tab--configTableExports">
         <h1 class="title is-1">Config Table Exports</h1>
         <div class="message is-info">
           <p class="message-body">

@@ -1,0 +1,56 @@
+<aside class="menu">
+  <h2 class="menu-label is-hidden-touch">
+    Contracts
+  </h2>
+  <ul class="menu-list">
+    <li>
+      <a class="<%= (headTitle === "Contract Search" ? "is-active" : "") %>"
+        href="<%= urlPrefix %>/contracts"
+        aria-label="Contract Search">
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fas fa-fw fa-file-contract" aria-hidden="true"></i></span>
+          </div>
+          <div class="column is-hidden-touch">Contract Search</div>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a class="<%= (headTitle === "Funeral Home Search" ? "is-active" : "") %>"
+        href="<%= urlPrefix %>/funeralHomes"
+        aria-label="Contract Search">
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fas fa-fw fa-place-of-worship" aria-hidden="true"></i></span>
+          </div>
+          <div class="column is-hidden-touch">Funeral Home Search</div>
+        </div>
+      </a>
+    </li>
+  </ul>
+  <h2 class="menu-label is-hidden-touch">
+    Reports
+  </h2>
+  <ul class="menu-list">
+    <li>
+      <a href="<%= urlPrefix %>/reports/?tab=contracts" aria-label="Contract Reports">
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fas fa-fw fa-file" aria-hidden="true"></i></span>
+          </div>
+          <div class="column is-hidden-touch">Contract Reports</div>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="https://cityssm.github.io/sunrise-cms/docs/contracts.html" aria-label="Help Documentation" rel="noopener noreferrer" target="_blank">
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fas fa-fw fa-circle-question" aria-hidden="true"></i></span>
+          </div>
+          <div class="column is-hidden-touch">Help</div>
+        </div>
+      </a>
+    </li>
+  </ul>
+</aside>

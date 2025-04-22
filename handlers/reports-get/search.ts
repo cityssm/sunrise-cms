@@ -9,10 +9,12 @@ import {
 } from '../../helpers/functions.cache.js'
 
 export default async function handler(
-  _request: Request,
+  request: Request<unknown, unknown, unknown, { tab?: string }>,
   response: Response
 ): Promise<void> {
   const rightNow = new Date()
+
+  const reportTab = request.query.tab ?? 'workOrders'
 
   const cemeteries = await getCemeteries()
   const burialSiteTypes = await getBurialSiteTypes()
@@ -20,6 +22,7 @@ export default async function handler(
 
   response.render('report-search', {
     headTitle: 'Reports',
+    reportTab,
 
     burialSiteStatuses,
     burialSiteTypes,
