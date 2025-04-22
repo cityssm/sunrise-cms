@@ -34,7 +34,9 @@
 
               <div class="field has-addons">
                 <div class="control">
-                  <span class="button is-static"><%= configFunctions.getConfigProperty("application.userDomain") %>\</span>
+                  <span class="button is-static has-text-grey-dark">
+                    <%= configFunctions.getConfigProperty("application.userDomain") %>\
+                  </span>
                 </div>
                 <div class="control is-expanded">
                   <input class="input" id="login--userName" name="userName" type="text" placeholder="User Name" value="<%= userName %>" aria-label="User Name" autofocus required />
