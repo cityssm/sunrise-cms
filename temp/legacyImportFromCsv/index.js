@@ -819,7 +819,7 @@ console.log(`Started ${new Date().toLocaleString()}`);
 console.time('importFromCsv');
 // Purge Tables
 purgeTables();
-purgeConfigTables();
+// purgeConfigTables()
 // Initialize SSM Data
 await initializeFuneralHomes(user);
 // Do Imports

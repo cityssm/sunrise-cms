@@ -1,5 +1,5 @@
 import * as cacheFunctions from '../../helpers/functions.cache.js';
-const casketBurialSiteTypeId = (await cacheFunctions.getBurialSiteTypesByBurialSiteType('Casket Grave'))
+const inGroundBurialSiteTypeId = (await cacheFunctions.getBurialSiteTypesByBurialSiteType('In-Ground Grave'))
     .burialSiteTypeId;
 const columbariumBurialSiteTypeId = (await cacheFunctions.getBurialSiteTypesByBurialSiteType('Columbarium'))
     .burialSiteTypeId;
@@ -31,5 +31,5 @@ export function getBurialSiteTypeId(cemeteryKey) {
             return urnGardenBurialSiteTypeId;
         }
     }
-    return casketBurialSiteTypeId;
+    return inGroundBurialSiteTypeId;
 }

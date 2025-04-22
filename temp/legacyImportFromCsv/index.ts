@@ -1429,7 +1429,7 @@ console.time('importFromCsv')
 
 // Purge Tables
 purgeTables()
-purgeConfigTables()
+// purgeConfigTables()
 
 // Initialize SSM Data
 await initializeFuneralHomes(user)
