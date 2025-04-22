@@ -6,7 +6,7 @@
     <li>
       <a class="<%= (headTitle === "Work Order Search" ? "is-active" : "") %>"
         href="<%= urlPrefix %>/workOrders"
-        aria-label="Work Order Search">
+        title="Work Order Search">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fas fa-fw fa-hard-hat" aria-hidden="true"></i></span>
@@ -23,7 +23,7 @@
     <li>
       <a class="<%= (headTitle.endsWith("Milestone Calendar") ? "is-active" : "") %>"
         href="<%= urlPrefix %>/workOrders/milestoneCalendar"
-        aria-label="Milestone Calendar">
+        title="Milestone Calendar">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fas fa-fw fa-calendar" aria-hidden="true"></i></span>
@@ -35,7 +35,7 @@
     <li>
       <a class="<%= (headTitle.endsWith("Outlook Integration") ? "is-active" : "") %>"
         href="<%= urlPrefix %>/workOrders/outlook"
-        aria-label="Outlook Integration">
+        title="Outlook Integration">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fas fa-fw fa-envelope-open-text" aria-hidden="true"></i></span>
@@ -50,7 +50,7 @@
   </h2>
   <ul class="menu-list">
     <li>
-      <a href="<%= urlPrefix %>/reports/?tab=workOrders" aria-label="Work Order Reports">
+      <a href="<%= urlPrefix %>/reports/?tab=workOrders" title="Work Order Reports">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fas fa-fw fa-file" aria-hidden="true"></i></span>
@@ -60,7 +60,7 @@
       </a>
     </li>
     <li>
-      <a href="https://cityssm.github.io/sunrise-cms/docs/workOrders.html" aria-label="Help Documentation" rel="noopener noreferrer" target="_blank">
+      <a href="https://cityssm.github.io/sunrise-cms/docs/workOrders.html" title="Help Documentation" rel="noopener noreferrer" target="_blank">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fas fa-fw fa-circle-question" aria-hidden="true"></i></span>
