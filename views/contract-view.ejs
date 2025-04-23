@@ -192,7 +192,9 @@
           <% if (contract.funeralHomeName === null) { %>
             <span class="has-text-grey">(No Funeral Home)</span>
           <% } else { %>
-            <%= contract.funeralHomeName %>
+            <a href="<%= urlPrefix %>/funeralHomes/<%= contract.funeralHomeId %>">
+              <%= contract.funeralHomeName %>
+            </a>
           <% } %><br />
           <span class="is-size-7">
             <% if (contract.funeralHomeAddress1) { %>
