@@ -10,10 +10,11 @@ import {
 import { acquireConnection } from './pool.js'
 
 export interface AddContractCommentForm {
+  contractId: number | string
+  
   comment: string
   commentDateString?: DateString
   commentTimeString?: TimeString
-  contractId: number | string
 }
 
 export default async function addContractComment(

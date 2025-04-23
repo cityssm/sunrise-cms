@@ -1,9 +1,9 @@
 export interface AddTransactionForm {
-    contractId: string | number;
+    contractId: number | string;
     transactionDateString?: string;
     transactionTimeString?: string;
-    transactionAmount: string | number;
     externalReceiptNumber: string;
+    transactionAmount: number | string;
     transactionNote: string;
 }
 export default function addContractTransaction(contractTransactionForm: AddTransactionForm, user: User): Promise<number>;
