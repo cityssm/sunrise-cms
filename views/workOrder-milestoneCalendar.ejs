@@ -27,40 +27,40 @@
     </h1>
 
     <div class="box">
-        <form id="form--searchFilters">
-            <div class="columns">
-                <div class="column">
-                  <div class="field">
-                    <label class="label" for="searchFilter--workOrderMilestoneDateFilter">Miestone Date Filter Type</label>
-                    <div class="control has-icons-left">
-                        <div class="select is-fullwidth">
-                            <select id="searchFilter--workOrderMilestoneDateFilter" name="workOrderMilestoneDateFilter" accesskey="f">
-                                <option value="upcomingMissed" selected>Upcoming and Missed</option>
-                                <option value="recent">Recent</option>
-                                <option value="date">Specific Date</option>
-                            </select>
-                        </div>
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-filter" aria-hidden="true"></i>
-                        </span>
-                    </div>
-                  </div>
+      <form id="form--searchFilters">
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="searchFilter--workOrderMilestoneDateFilter">Miestone Date Filter Type</label>
+              <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                  <select id="searchFilter--workOrderMilestoneDateFilter" name="workOrderMilestoneDateFilter" accesskey="f">
+                    <option value="upcomingMissed" selected>Upcoming and Missed</option>
+                    <option value="recent">Recent</option>
+                    <option value="date">Specific Date</option>
+                  </select>
                 </div>
-                <div class="column">
-                  <fieldset disabled>
-                    <div class="field">
-                      <label class="label" for="searchFilter--workOrderMilestoneDateString">Milestone Date</label>
-                      <div class="control has-icons-left">
-                        <input class="input" id="searchFilter--workOrderMilestoneDateString" name="workOrderMilestoneDateString" type="date" value="<%= dateTimeFunctions.dateToString(new Date()) %>" required />
-                        <span class="icon is-small is-left">
-                          <i class="fas fa-calendar" aria-hidden="true"></i>
-                        </span>
-                      </div>
-                    </div>
-                  </fieldset>
-                </div>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-filter" aria-hidden="true"></i>
+                </span>
+              </div>
             </div>
-        </form>
+          </div>
+          <div class="column">
+            <fieldset disabled>
+              <div class="field">
+                <label class="label" for="searchFilter--workOrderMilestoneDateString">Milestone Date</label>
+                <div class="control has-icons-left">
+                  <input class="input" id="searchFilter--workOrderMilestoneDateString" name="workOrderMilestoneDateString" type="date" value="<%= dateTimeFunctions.dateToString(new Date()) %>" required />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-calendar" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </form>
     </div>
 
     <div id="container--milestoneCalendar"></div>
