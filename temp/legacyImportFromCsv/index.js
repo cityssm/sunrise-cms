@@ -1,5 +1,5 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @cspell/spellchecker, @typescript-eslint/no-non-null-assertion, no-console, max-lines, perfectionist/sort-interfaces */
+/* eslint-disable @cspell/spellchecker, @typescript-eslint/no-non-null-assertion, no-console, max-lines */
 import fs from 'node:fs';
 import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
@@ -598,8 +598,8 @@ async function importFromWorkOrderCSV() {
                     }, user);
                     burialSite = await getBurialSite(burialSiteId);
                 }
-                const workOrderContainsLot = workOrder?.workOrderBurialSites?.find((possibleLot) => possibleLot.burialSiteId === burialSite?.burialSiteId);
-                if (!workOrderContainsLot) {
+                const workOrderContainsBurialSite = workOrder?.workOrderBurialSites?.find((possibleLot) => possibleLot.burialSiteId === burialSite?.burialSiteId);
+                if (!workOrderContainsBurialSite) {
                     await addWorkOrderBurialSite({
                         workOrderId: workOrder.workOrderId,
                         burialSiteId: burialSite.burialSiteId
