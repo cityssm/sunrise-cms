@@ -306,7 +306,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 burialSiteNameFilterElement.focus();
                 burialSiteNameFilterElement.addEventListener('change', searchBurialSites);
-                const contractStatusFilterElement = modalElement.querySelector('#burialSiteSelect--occupancyStatus');
+                const contractStatusFilterElement = modalElement.querySelector('#burialSiteSelect--contractStatus');
                 contractStatusFilterElement.addEventListener('change', searchBurialSites);
                 if (currentBurialSiteName !== '') {
                     contractStatusFilterElement.value = '';

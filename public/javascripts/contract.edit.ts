@@ -488,7 +488,7 @@ declare const exports: Record<string, unknown>
         )
 
         const contractStatusFilterElement = modalElement.querySelector(
-          '#burialSiteSelect--occupancyStatus'
+          '#burialSiteSelect--contractStatus'
         ) as HTMLSelectElement
         contractStatusFilterElement.addEventListener(
           'change',
