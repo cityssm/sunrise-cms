@@ -1,21 +1,21 @@
 import type { Request, Response } from 'express'
 
-import getNextCemeteryId from '../../database/getNextCemeteryId.js'
+import getNextContractId from '../../database/getNextContractId.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 
 export default async function handler(
-  request: Request<{ cemeteryId: string }>,
+  request: Request<{ contractId: string }>,
   response: Response
 ): Promise<void> {
-  const cemeteryId = Number.parseInt(request.params.cemeteryId, 10)
+  const contractId = Number.parseInt(request.params.contractId, 10)
 
-  const nextCemeteryId = await getNextCemeteryId(cemeteryId)
+  const nextContractId = await getNextContractId(contractId)
 
-  if (nextCemeteryId === undefined) {
+  if (nextContractId === undefined) {
     response.redirect(
       `${getConfigProperty(
         'reverseProxy.urlPrefix'
-      )}/cemeteries/?error=noNextCemeteryIdFound`
+      )}/contracts/?error=noNextContractIdFound`
     )
     return
   }
@@ -23,6 +23,6 @@ export default async function handler(
   response.redirect(
     `${getConfigProperty(
       'reverseProxy.urlPrefix'
-    )}/cemeteries/${nextCemeteryId.toString()}`
+    )}/contracts/${nextContractId.toString()}`
   )
 }

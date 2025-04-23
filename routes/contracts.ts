@@ -2,6 +2,8 @@ import { Router } from 'express'
 
 import handler_edit from '../handlers/contracts-get/edit.js'
 import handler_new from '../handlers/contracts-get/new.js'
+import handler_next from '../handlers/contracts-get/next.js'
+import handler_previous from '../handlers/contracts-get/previous.js'
 import handler_search from '../handlers/contracts-get/search.js'
 import handler_view from '../handlers/contracts-get/view.js'
 import handler_doAddContractComment from '../handlers/contracts-post/doAddContractComment.js'
@@ -51,6 +53,10 @@ router.post('/doCreateContract', updatePostHandler, handler_doCreateContract)
 // View
 
 router.get('/:contractId', handler_view)
+
+router.get('/:contractId/next', handler_next)
+
+router.get('/:contractId/previous', handler_previous)
 
 // Edit
 
