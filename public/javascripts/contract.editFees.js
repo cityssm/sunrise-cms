@@ -96,7 +96,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function renderContractFees() {
         if (contractFees.length === 0) {
             contractFeesContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no fees associated with this record.</p>
+        <p class="message-body">There are no fees associated with this contract.</p>
         </div>`;
             renderContractTransactions();
             return;
@@ -468,7 +468,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         if (contractTransactions.length === 0) {
             // eslint-disable-next-line no-unsanitized/property
             contractTransactionsContainerElement.innerHTML = `<div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
-          <p class="message-body">There are no transactions associated with this record.</p>
+          <p class="message-body">There are no transactions associated with this contract.</p>
           </div>`;
             return;
         }

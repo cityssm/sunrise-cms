@@ -7,7 +7,7 @@ export default async function handler(
   request: Request<
     unknown,
     unknown,
-    { workOrderId: string; contractId: string }
+    { contractId: string; workOrderId: string }
   >,
   response: Response
 ): Promise<void> {
@@ -24,8 +24,9 @@ export default async function handler(
     {
       limit: -1,
       offset: 0,
-      includeInterments: true,
+
       includeFees: false,
+      includeInterments: true,
       includeTransactions: false
     }
   )

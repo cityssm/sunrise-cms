@@ -2,7 +2,10 @@ import type { Request, Response } from 'express'
 
 import reopenWorkOrder from '../../database/reopenWorkOrder.js'
 
-export default function handler(request: Request, response: Response): void {
+export default function handler(
+  request: Request<unknown, unknown, { workOrderId: string }>,
+  response: Response
+): void {
   const success = reopenWorkOrder(
     request.body.workOrderId as string,
     request.session.user as User
@@ -10,6 +13,6 @@ export default function handler(request: Request, response: Response): void {
 
   response.json({
     success,
-    workOrderId: request.body.workOrderId as string
+    workOrderId: request.body.workOrderId
   })
 }

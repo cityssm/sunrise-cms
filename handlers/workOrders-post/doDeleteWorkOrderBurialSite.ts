@@ -7,7 +7,7 @@ export default function handler(
   request: Request<
     unknown,
     unknown,
-    { workOrderId: string; burialSiteId: string }
+    { burialSiteId: string; workOrderId: string }
   >,
   response: Response
 ): void {
@@ -24,6 +24,7 @@ export default function handler(
     {
       limit: -1,
       offset: 0,
+
       includeContractCount: false
     }
   )

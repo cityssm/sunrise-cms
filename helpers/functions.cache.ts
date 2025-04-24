@@ -372,6 +372,7 @@ export function clearCacheByTableName(
         messageType: 'clearCache',
         tableName,
         timeMillis: Date.now(),
+
         pid: process.pid
       }
 
