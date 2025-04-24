@@ -420,6 +420,10 @@ declare const exports: Record<string, unknown>
     })
   }
 
+  const workOrderOpenDateStringElement = document.querySelector(
+    '#workOrderEdit--workOrderOpenDateString'
+  ) as HTMLInputElement
+
   function editMilestone(clickEvent: Event): void {
     clickEvent.preventDefault()
 
@@ -522,6 +526,9 @@ declare const exports: Record<string, unknown>
         workOrderMilestoneDateStringElement.value =
           workOrderMilestone.workOrderMilestoneDateString ?? ''
 
+        workOrderMilestoneDateStringElement.min =
+          workOrderOpenDateStringElement.value
+
         if (workOrderMilestone.workOrderMilestoneTime) {
           ;(
             modalElement.querySelector(
@@ -559,7 +566,7 @@ declare const exports: Record<string, unknown>
           conflictingMilestonePanelElement
         )
       },
-      
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
@@ -770,6 +777,9 @@ declare const exports: Record<string, unknown>
           ) as HTMLInputElement
 
           workOrderMilestoneDateStringElement.valueAsDate = new Date()
+
+          workOrderMilestoneDateStringElement.min =
+            workOrderOpenDateStringElement.value
         },
         onshown(modalElement, closeModalFunction) {
           addCloseModalFunction = closeModalFunction
@@ -800,7 +810,7 @@ declare const exports: Record<string, unknown>
             conflictingMilestonePanelElement
           )
         },
-        
+
         onremoved() {
           bulmaJS.toggleHtmlClipped()
           ;(

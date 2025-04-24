@@ -20,6 +20,7 @@ export default async function handler(
 
   const contract: Partial<Contract> = {
     isPreneed: false,
+    
     contractStartDate: dateToInteger(startDate),
     contractStartDateString: dateToString(startDate),
     purchaserCity: getConfigProperty('settings.cityDefault'),

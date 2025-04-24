@@ -34,14 +34,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        message: "Contract Updated Successfully",
+                        message: 'Contract Updated Successfully',
                         contextualColorName: 'success'
                     });
                 }
             }
             else {
                 bulmaJS.alert({
-                    title: "Error Saving Contract",
+                    title: 'Error Saving Contract',
                     message: responseJSON.errorMessage ?? '',
                     contextualColorName: 'danger'
                 });
@@ -83,7 +83,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         else {
             bulmaJS.confirm({
-                title: "Copy Contract Record as New",
+                title: 'Copy Contract Record as New',
                 message: 'Are you sure you want to copy this record to a new record?',
                 contextualColorName: 'info',
                 okButton: {
@@ -116,7 +116,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         bulmaJS.confirm({
-            title: "Delete Contract Record",
+            title: 'Delete Contract Record',
             message: 'Are you sure you want to delete this record?',
             contextualColorName: 'warning',
             okButton: {
@@ -329,7 +329,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const burialSiteId = document.querySelector('#contract--burialSiteId').value;
         if (burialSiteId === '') {
             bulmaJS.alert({
-                message: "No burial site selected.",
+                message: 'No burial site selected.',
                 contextualColorName: 'info'
             });
         }
@@ -347,7 +347,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         else {
-            burialSiteNameElement.value = "(No Burial Site)";
+            burialSiteNameElement.value = '(No Burial Site)';
             document.querySelector('#contract--burialSiteId').value = '';
             setUnsavedChanges();
         }
@@ -359,6 +359,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const endDateElement = document.querySelector('#contract--contractEndDateString');
         endDateElement.min = document.querySelector('#contract--contractStartDateString').value;
     });
+    sunrise.initializeMinDateUpdate(document.querySelector('#contract--contractStartDateString'), document.querySelector('#contract--contractEndDateString'));
     sunrise.initializeUnlockFieldButtons(formElement);
     if (isCreate) {
         /*
@@ -382,5 +383,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             setUnsavedChanges();
         });
+        sunrise.initializeMinDateUpdate(document.querySelector('#contract--birthDateString'), document.querySelector('#contract--deathDateString'));
+        sunrise.initializeMinDateUpdate(document.querySelector('#contract--deathDateString'), document.querySelector('#contract--funeralDateString'));
     }
 })();

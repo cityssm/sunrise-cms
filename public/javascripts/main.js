@@ -99,8 +99,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     clickEvent.preventDefault();
                     if (currentMarker !== undefined) {
                         const mapCoordinates = currentMarker.getLatLng();
-                        options.latitudeElement.value = mapCoordinates.lat.toFixed(coordinatePrecision);
-                        options.longitudeElement.value = mapCoordinates.lng.toFixed(coordinatePrecision);
+                        options.latitudeElement.value =
+                            mapCoordinates.lat.toFixed(coordinatePrecision);
+                        options.longitudeElement.value =
+                            mapCoordinates.lng.toFixed(coordinatePrecision);
                         options.callbackFunction(mapCoordinates.lat, mapCoordinates.lng);
                     }
                     closeModalFunction();
@@ -268,6 +270,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
         return getRecordURL('workOrders', workOrderId, edit, time);
     }
     /*
+     * Date Fields
+     */
+    function initializeMinDateUpdate(minDateElement, valueDateElement) {
+        valueDateElement.min = minDateElement.value;
+        minDateElement.addEventListener('change', () => {
+            valueDateElement.min = minDateElement.value;
+        });
+    }
+    /*
      * Settings
      */
     const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled;
@@ -295,7 +306,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         getCemeteryURL,
         getContractURL,
         getFuneralHomeURL,
-        getWorkOrderURL
+        getWorkOrderURL,
+        initializeMinDateUpdate
     };
     exports.sunrise = sunrise;
 })();

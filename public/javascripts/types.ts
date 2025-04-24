@@ -82,4 +82,9 @@ export interface Sunrise {
     edit?: boolean,
     time?: boolean
   ) => string
+
+  initializeMinDateUpdate: (
+    minDateElement: HTMLInputElement,
+    valueDateElement: HTMLInputElement
+  ) => void
 }

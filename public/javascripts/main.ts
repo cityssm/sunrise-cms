@@ -173,8 +173,10 @@ declare const exports: Record<string, unknown> & {
             if (currentMarker !== undefined) {
               const mapCoordinates = currentMarker.getLatLng() as Leaflet.LatLng
 
-              options.latitudeElement.value = mapCoordinates.lat.toFixed(coordinatePrecision)
-              options.longitudeElement.value = mapCoordinates.lng.toFixed(coordinatePrecision)
+              options.latitudeElement.value =
+                mapCoordinates.lat.toFixed(coordinatePrecision)
+              options.longitudeElement.value =
+                mapCoordinates.lng.toFixed(coordinatePrecision)
 
               options.callbackFunction(mapCoordinates.lat, mapCoordinates.lng)
             }
@@ -441,6 +443,21 @@ declare const exports: Record<string, unknown> & {
   }
 
   /*
+   * Date Fields
+   */
+
+  function initializeMinDateUpdate(
+    minDateElement: HTMLInputElement,
+    valueDateElement: HTMLInputElement
+  ): void {
+    valueDateElement.min = minDateElement.value
+
+    minDateElement.addEventListener('change', () => {
+      valueDateElement.min = minDateElement.value
+    })
+  }
+
+  /*
    * Settings
    */
 
@@ -479,7 +496,9 @@ declare const exports: Record<string, unknown> & {
     getCemeteryURL,
     getContractURL,
     getFuneralHomeURL,
-    getWorkOrderURL
+    getWorkOrderURL,
+
+    initializeMinDateUpdate
   }
 
   exports.sunrise = sunrise

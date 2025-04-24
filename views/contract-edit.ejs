@@ -382,10 +382,11 @@
               <div class="field">
                 <label class="label" for="contract--funeralTimeString">Time</label>
                 <div class="control has-icons-left">
-                  <input class="input" id="contract--funeralTimeString" name="funeralTimeString" type="time" value="<%= contract.funeralTimeString %>" />
+                  <input class="input" id="contract--funeralTimeString" name="funeralTimeString" type="time" value="<%= contract.funeralTimeString %>" step="900" />
                   <span class="icon is-left">
                     <i class="fas fa-clock" aria-hidden="true"></i>
                   </span>
+                  <p class="help">15 minute intervals</p>
                 </div>
               </div>
             </div>
@@ -623,6 +624,9 @@
                 </div>
               </div>
             </div>
+            <%
+              const todayDateString = dateTimeFunctions.dateToString(new Date());
+            %>
             <div class="columns">
               <div class="column">
                 <div class="field">
@@ -631,7 +635,8 @@
                   </label>
                   <div class="control has-icons-left">
                     <input class="input" id="contract--birthDateString" name="birthDateString" type="date"
-                      value="<%= contract.birthDateString %>" />
+                      value="<%= contract.birthDateString %>"
+                      max="<%= todayDateString %>" />
                     <span class="icon is-left">
                       <i class="fas fa-calendar" aria-hidden="true"></i>
                     </span>
@@ -659,7 +664,8 @@
                   </label>
                   <div class="control has-icons-left">
                     <input class="input" id="contract--deathDateString" name="deathDateString" type="date"
-                      value="<%= contract.deathDateString %>" />
+                      value="<%= contract.deathDateString %>"
+                      max="<%= todayDateString %>" />
                     <span class="icon is-left">
                       <i class="fas fa-calendar" aria-hidden="true"></i>
                     </span>

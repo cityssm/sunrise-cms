@@ -4,10 +4,7 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type {
-  BurialSite,
-  ContractTypeField
-} from '../../types/record.types.js'
+import type { BurialSite, ContractTypeField } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
@@ -71,13 +68,13 @@ declare const exports: Record<string, unknown>
             )
           } else {
             bulmaJS.alert({
-              message: "Contract Updated Successfully",
+              message: 'Contract Updated Successfully',
               contextualColorName: 'success'
             })
           }
         } else {
           bulmaJS.alert({
-            title: "Error Saving Contract",
+            title: 'Error Saving Contract',
             message: responseJSON.errorMessage ?? '',
             contextualColorName: 'danger'
           })
@@ -136,7 +133,7 @@ declare const exports: Record<string, unknown>
         })
       } else {
         bulmaJS.confirm({
-          title: "Copy Contract Record as New",
+          title: 'Copy Contract Record as New',
           message: 'Are you sure you want to copy this record to a new record?',
           contextualColorName: 'info',
           okButton: {
@@ -179,7 +176,7 @@ declare const exports: Record<string, unknown>
       }
 
       bulmaJS.confirm({
-        title: "Delete Contract Record",
+        title: 'Delete Contract Record',
         message: 'Are you sure you want to delete this record?',
         contextualColorName: 'warning',
         okButton: {
@@ -384,7 +381,8 @@ declare const exports: Record<string, unknown>
     function selectExistingBurialSite(selectClickEvent: Event): void {
       selectClickEvent.preventDefault()
 
-      const selectedBurialSiteElement = selectClickEvent.currentTarget as HTMLElement
+      const selectedBurialSiteElement =
+        selectClickEvent.currentTarget as HTMLElement
 
       renderSelectedBurialSiteAndClose(
         selectedBurialSiteElement.dataset.burialSiteId ?? '',
@@ -530,7 +528,7 @@ declare const exports: Record<string, unknown>
 
       if (burialSiteId === '') {
         bulmaJS.alert({
-          message: "No burial site selected.",
+          message: 'No burial site selected.',
           contextualColorName: 'info'
         })
       } else {
@@ -547,7 +545,7 @@ declare const exports: Record<string, unknown>
           contextualColorName: 'info'
         })
       } else {
-        burialSiteNameElement.value = "(No Burial Site)"
+        burialSiteNameElement.value = '(No Burial Site)'
         ;(
           document.querySelector('#contract--burialSiteId') as HTMLInputElement
         ).value = ''
@@ -571,6 +569,15 @@ declare const exports: Record<string, unknown>
         ) as HTMLInputElement
       ).value
     })
+
+  sunrise.initializeMinDateUpdate(
+    document.querySelector(
+      '#contract--contractStartDateString'
+    ) as HTMLInputElement,
+    document.querySelector(
+      '#contract--contractEndDateString'
+    ) as HTMLInputElement
+  )
 
   sunrise.initializeUnlockFieldButtons(formElement)
 
@@ -605,5 +612,15 @@ declare const exports: Record<string, unknown>
 
         setUnsavedChanges()
       })
+
+    sunrise.initializeMinDateUpdate(
+      document.querySelector('#contract--birthDateString') as HTMLInputElement,
+      document.querySelector('#contract--deathDateString') as HTMLInputElement
+    )
+
+    sunrise.initializeMinDateUpdate(
+      document.querySelector('#contract--deathDateString') as HTMLInputElement,
+      document.querySelector('#contract--funeralDateString') as HTMLInputElement
+    )
   }
 })()

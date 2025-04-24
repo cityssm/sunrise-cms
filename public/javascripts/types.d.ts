@@ -36,4 +36,5 @@ export interface Sunrise {
     getContractURL: (contractId?: number | string, edit?: boolean, time?: boolean) => string;
     getFuneralHomeURL: (funeralHomeId?: number | string, edit?: boolean, time?: boolean) => string;
     getWorkOrderURL: (workOrderId?: number | string, edit?: boolean, time?: boolean) => string;
+    initializeMinDateUpdate: (minDateElement: HTMLInputElement, valueDateElement: HTMLInputElement) => void;
 }

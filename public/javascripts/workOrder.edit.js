@@ -271,6 +271,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
+    const workOrderOpenDateStringElement = document.querySelector('#workOrderEdit--workOrderOpenDateString');
     function editMilestone(clickEvent) {
         clickEvent.preventDefault();
         const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId ?? '', 10);
@@ -319,6 +320,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 workOrderMilestoneDateStringElement = modalElement.querySelector('#milestoneEdit--workOrderMilestoneDateString');
                 workOrderMilestoneDateStringElement.value =
                     workOrderMilestone.workOrderMilestoneDateString ?? '';
+                workOrderMilestoneDateStringElement.min =
+                    workOrderOpenDateStringElement.value;
                 if (workOrderMilestone.workOrderMilestoneTime) {
                     ;
                     modalElement.querySelector('#milestoneEdit--workOrderMilestoneTimeString').value = workOrderMilestone.workOrderMilestoneTimeString ?? '';
@@ -484,6 +487,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 workOrderMilestoneDateStringElement = modalElement.querySelector('#milestoneAdd--workOrderMilestoneDateString');
                 workOrderMilestoneDateStringElement.valueAsDate = new Date();
+                workOrderMilestoneDateStringElement.min =
+                    workOrderOpenDateStringElement.value;
             },
             onshown(modalElement, closeModalFunction) {
                 addCloseModalFunction = closeModalFunction;
