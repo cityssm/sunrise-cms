@@ -4,8 +4,8 @@ export default async function handler(request, response) {
     const contractId = request.body.contractId;
     const contract = (await getContract(contractId));
     const feeCategories = getFeeCategories({
-        contractTypeId: contract.contractTypeId,
-        burialSiteTypeId: contract.burialSiteTypeId
+        burialSiteTypeId: contract.burialSiteTypeId,
+        contractTypeId: contract.contractTypeId
     }, {
         includeFees: true
     });

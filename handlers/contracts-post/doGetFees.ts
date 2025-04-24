@@ -14,8 +14,8 @@ export default async function handler(
 
   const feeCategories = getFeeCategories(
     {
-      contractTypeId: contract.contractTypeId,
-      burialSiteTypeId: contract.burialSiteTypeId
+      burialSiteTypeId: contract.burialSiteTypeId,
+      contractTypeId: contract.contractTypeId
     },
     {
       includeFees: true
