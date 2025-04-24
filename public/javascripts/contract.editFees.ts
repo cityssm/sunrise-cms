@@ -577,7 +577,7 @@ declare const exports: Record<string, unknown>
       onshown() {
         bulmaJS.toggleHtmlClipped()
       },
-      
+
       onhidden() {
         renderContractFees()
       },
@@ -864,17 +864,23 @@ declare const exports: Record<string, unknown>
     const feeGrandTotal = getFeeGrandTotal()
 
     if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
+      const difference = feeGrandTotal - transactionGrandTotal
+      const differenceClassName = difference < 0 ? 'is-danger' : 'is-warning'
+
+      // eslint-disable-next-line no-unsanitized/method
       contractTransactionsContainerElement.insertAdjacentHTML(
         'afterbegin',
-        `<div class="message is-warning">
+        `<div class="message ${differenceClassName}">
             <div class="message-body">
             <div class="level">
               <div class="level-left">
-                <div class="level-item">Outstanding Balance</div>
+                <div class="level-item">
+                  ${difference < 0 ? 'Overpayment' : 'Outstanding Balance'}
+                </div>
               </div>
               <div class="level-right">
                 <div class="level-item">
-                  $${cityssm.escapeHTML((feeGrandTotal - transactionGrandTotal).toFixed(2))}
+                  $${cityssm.escapeHTML(Math.abs(difference).toFixed(2))}
                 </div>
               </div>
             </div>
