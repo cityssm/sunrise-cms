@@ -86,6 +86,10 @@ async function postHandler(
         (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
       )
 
+      const canUpdateWorkOrders = getConfigProperty('users.canUpdateWorkOrders').some(
+        (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
+      )
+
       const isAdmin = getConfigProperty('users.isAdmin').some(
         (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
       )
@@ -96,7 +100,9 @@ async function postHandler(
         userName: userNameLowerCase,
         userProperties: {
           canUpdate,
+          canUpdateWorkOrders,
           isAdmin,
+          
           apiKey
         }
       }

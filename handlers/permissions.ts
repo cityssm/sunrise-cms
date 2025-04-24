@@ -4,6 +4,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js'
 import {
   apiKeyIsValid,
   userCanUpdate,
+  userCanUpdateWorkOrders,
   userIsAdmin
 } from '../helpers/functions.user.js'
 
@@ -75,6 +76,32 @@ export function updatePostHandler(
   next: NextFunction
 ): void {
   if (userCanUpdate(request)) {
+    next()
+    return
+  }
+
+  response.status(forbiddenStatus).json(forbiddenJSON)
+}
+
+export function updateWorkOrdersGetHandler(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): void {
+  if (userCanUpdateWorkOrders(request)) {
+    next()
+    return
+  }
+
+  response.redirect(forbiddenRedirectURL)
+}
+
+export function updateWorkOrdersPostHandler(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): void {
+  if (userCanUpdateWorkOrders(request)) {
     next()
     return
   }

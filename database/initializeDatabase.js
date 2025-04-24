@@ -383,6 +383,7 @@ const initializingUser = {
     userProperties: {
         apiKey: '',
         canUpdate: true,
+        canUpdateWorkOrders: true,
         isAdmin: true
     }
 };

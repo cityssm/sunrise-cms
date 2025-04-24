@@ -35,6 +35,10 @@ export function userCanUpdate(request: UserRequest): boolean {
   return request.session?.user?.userProperties?.canUpdate ?? false
 }
 
+export function userCanUpdateWorkOrders(request: UserRequest): boolean {
+  return request.session?.user?.userProperties?.canUpdateWorkOrders ?? false
+}
+
 export function userIsAdmin(request: UserRequest): boolean {
   return request.session?.user?.userProperties?.isAdmin ?? false
 }

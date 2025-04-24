@@ -7,6 +7,7 @@ declare global {
 export interface UserProperties {
     apiKey: string;
     canUpdate: boolean;
+    canUpdateWorkOrders: boolean;
     isAdmin: boolean;
 }
 declare module 'express-session' {

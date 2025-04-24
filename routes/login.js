@@ -46,12 +46,14 @@ async function postHandler(request, response) {
         const canLogin = getConfigProperty('users.canLogin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
         if (canLogin) {
             const canUpdate = getConfigProperty('users.canUpdate').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+            const canUpdateWorkOrders = getConfigProperty('users.canUpdateWorkOrders').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
             const isAdmin = getConfigProperty('users.isAdmin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
             const apiKey = await getApiKey(userNameLowerCase);
             userObject = {
                 userName: userNameLowerCase,
                 userProperties: {
                     canUpdate,
+                    canUpdateWorkOrders,
                     isAdmin,
                     apiKey
                 }

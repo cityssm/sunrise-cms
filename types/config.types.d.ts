@@ -12,6 +12,7 @@ export interface Config {
         testing?: Array<`*${string}`>;
         canLogin?: string[];
         canUpdate?: string[];
+        canUpdateWorkOrders?: string[];
         isAdmin?: string[];
     };
     aliases: {

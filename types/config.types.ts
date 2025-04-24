@@ -18,6 +18,7 @@ export interface Config {
     
     canLogin?: string[]
     canUpdate?: string[]
+    canUpdateWorkOrders?: string[]
     isAdmin?: string[]
   }
 

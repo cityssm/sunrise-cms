@@ -19,6 +19,7 @@ export declare const configDefaultValues: {
     'session.secret': string;
     'users.canLogin': string[];
     'users.canUpdate': string[];
+    'users.canUpdateWorkOrders': string[];
     'users.isAdmin': string[];
     'users.testing': string[];
     'aliases.externalReceiptNumber': string;

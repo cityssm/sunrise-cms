@@ -99,7 +99,7 @@ export interface Cemetery extends Record {
 
   parentCemeteryId?: number | null
   parentCemeteryName?: string | null
-  
+
   parentCemeteryLatitude?: number | null
   parentCemeteryLongitude?: number | null
   parentCemeterySvg?: string | null
@@ -461,6 +461,6 @@ export interface WorkOrderMilestoneType extends Record {
 export interface WorkOrderType extends Record {
   workOrderTypeId: number
   workOrderType?: string
-  
+
   orderNumber?: number
 }

@@ -18,6 +18,7 @@ export const configDefaultValues = {
     'session.secret': 'cityssm/sunrise',
     'users.canLogin': ['administrator'],
     'users.canUpdate': [],
+    'users.canUpdateWorkOrders': [],
     'users.isAdmin': ['administrator'],
     'users.testing': [],
     'aliases.externalReceiptNumber': 'External Receipt Number',

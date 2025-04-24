@@ -14,6 +14,9 @@ export async function apiKeyIsValid(request) {
 export function userCanUpdate(request) {
     return request.session?.user?.userProperties?.canUpdate ?? false;
 }
+export function userCanUpdateWorkOrders(request) {
+    return request.session?.user?.userProperties?.canUpdateWorkOrders ?? false;
+}
 export function userIsAdmin(request) {
     return request.session?.user?.userProperties?.isAdmin ?? false;
 }

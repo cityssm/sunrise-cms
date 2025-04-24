@@ -80,7 +80,7 @@
           </div>
         <% } %>
       <% } %>
-      <% if (user.userProperties.canUpdate) { %>
+      <% if (user.userProperties.canUpdateWorkOrders) { %>
         <% if (workOrder.workOrderCloseDate) { %>
           <button class="button is-warning" id="button--reopenWorkOrder" data-work-order-id="<%= workOrder.workOrderId %>" type="button">
             <span class="icon"><i class="fas fa-undo" aria-hidden="true"></i></span>

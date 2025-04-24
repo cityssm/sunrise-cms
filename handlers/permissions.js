@@ -1,5 +1,5 @@
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { apiKeyIsValid, userCanUpdate, userIsAdmin } from '../helpers/functions.user.js';
+import { apiKeyIsValid, userCanUpdate, userCanUpdateWorkOrders, userIsAdmin } from '../helpers/functions.user.js';
 const urlPrefix = getConfigProperty('reverseProxy.urlPrefix');
 const forbiddenStatus = 403;
 const forbiddenJSON = {
@@ -38,6 +38,20 @@ export function updateGetHandler(request, response, next) {
 }
 export function updatePostHandler(request, response, next) {
     if (userCanUpdate(request)) {
+        next();
+        return;
+    }
+    response.status(forbiddenStatus).json(forbiddenJSON);
+}
+export function updateWorkOrdersGetHandler(request, response, next) {
+    if (userCanUpdateWorkOrders(request)) {
+        next();
+        return;
+    }
+    response.redirect(forbiddenRedirectURL);
+}
+export function updateWorkOrdersPostHandler(request, response, next) {
+    if (userCanUpdateWorkOrders(request)) {
         next();
         return;
     }

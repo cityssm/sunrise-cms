@@ -32,6 +32,7 @@ export const configDefaultValues = {
 
   'users.canLogin': ['administrator'],
   'users.canUpdate': [] as string[],
+  'users.canUpdateWorkOrders': [] as string[],
   'users.isAdmin': ['administrator'],
   'users.testing': [] as string[],
 

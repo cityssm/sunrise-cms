@@ -1,6 +1,9 @@
 import { Router } from 'express'
 
-import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js'
+import {
+  updateWorkOrdersGetHandler,
+  updateWorkOrdersPostHandler
+} from '../handlers/permissions.js'
 import handler_edit from '../handlers/workOrders-get/edit.js'
 import handler_milestoneCalendar from '../handlers/workOrders-get/milestoneCalendar.js'
 import handler_new from '../handlers/workOrders-get/new.js'
@@ -48,47 +51,75 @@ router.get('/outlook', handler_outlook)
 
 // New
 
-router.get('/new', updateGetHandler, handler_new)
+router.get('/new', updateWorkOrdersGetHandler, handler_new)
 
-router.post('/doCreateWorkOrder', updatePostHandler, handler_doCreateWorkOrder)
+router.post(
+  '/doCreateWorkOrder',
+  updateWorkOrdersPostHandler,
+  handler_doCreateWorkOrder
+)
 
 // View
 
 router.get('/:workOrderId', handler_view)
 
-router.post('/doReopenWorkOrder', updatePostHandler, handler_doReopenWorkOrder)
+router.post(
+  '/doReopenWorkOrder',
+  updateWorkOrdersPostHandler,
+  handler_doReopenWorkOrder
+)
 
 // Edit
 
-router.get('/:workOrderId/edit', updateGetHandler, handler_edit)
+router.get('/:workOrderId/edit', updateWorkOrdersGetHandler, handler_edit)
 
-router.post('/doUpdateWorkOrder', updatePostHandler, handler_doUpdateWorkOrder)
+router.post(
+  '/doUpdateWorkOrder',
+  updateWorkOrdersPostHandler,
+  handler_doUpdateWorkOrder
+)
 
-router.post('/doCloseWorkOrder', updatePostHandler, handler_doCloseWorkOrder)
+router.post(
+  '/doCloseWorkOrder',
+  updateWorkOrdersPostHandler,
+  handler_doCloseWorkOrder
+)
 
-router.post('/doDeleteWorkOrder', updatePostHandler, handler_doDeleteWorkOrder)
+router.post(
+  '/doDeleteWorkOrder',
+  updateWorkOrdersPostHandler,
+  handler_doDeleteWorkOrder
+)
 
 // Burial Site Contract
 
 router.post(
   '/doAddWorkOrderContract',
-  updatePostHandler,
+  updateWorkOrdersPostHandler,
   handler_doAddWorkOrderContract
 )
 
 router.post(
   '/doDeleteWorkOrderContract',
-  updatePostHandler,
+  updateWorkOrdersPostHandler,
   handler_doDeleteWorkOrderContract
 )
 
-router.post('/doAddWorkOrderBurialSite', updatePostHandler, handler_doAddWorkOrderBurialSite)
+router.post(
+  '/doAddWorkOrderBurialSite',
+  updateWorkOrdersPostHandler,
+  handler_doAddWorkOrderBurialSite
+)
 
-router.post('/doUpdateBurialSiteStatus', updatePostHandler, handler_doUpdateBurialSiteStatus)
+router.post(
+  '/doUpdateBurialSiteStatus',
+  updateWorkOrdersPostHandler,
+  handler_doUpdateBurialSiteStatus
+)
 
 router.post(
   '/doDeleteWorkOrderBurialSite',
-  updatePostHandler,
+  updateWorkOrdersPostHandler,
   handler_doDeleteWorkOrderBurialSite
 )
 
@@ -96,19 +127,19 @@ router.post(
 
 router.post(
   '/doAddWorkOrderComment',
-  updatePostHandler,
+  updateWorkOrdersPostHandler,
   handler_doAddWorkOrderComment
 )
 
 router.post(
   '/doUpdateWorkOrderComment',
-  updatePostHandler,
+  updateWorkOrdersPostHandler,
   handler_doUpdateWorkOrderComment
 )
 
 router.post(
   '/doDeleteWorkOrderComment',
-  updatePostHandler,
+  updateWorkOrdersPostHandler,
   handler_doDeleteWorkOrderComment
 )
 
@@ -116,31 +147,31 @@ router.post(
 
 router.post(
   '/doAddWorkOrderMilestone',
-  updatePostHandler,
+  updateWorkOrdersPostHandler,
   handler_doAddWorkOrderMilestone
 )
 
 router.post(
   '/doUpdateWorkOrderMilestone',
-  updatePostHandler,
+  updateWorkOrdersPostHandler,
   handler_doUpdateWorkOrderMilestone
 )
 
 router.post(
   '/doCompleteWorkOrderMilestone',
-  updatePostHandler,
+  updateWorkOrdersPostHandler,
   handler_doCompleteWorkOrderMilestone
 )
 
 router.post(
   '/doReopenWorkOrderMilestone',
-  updatePostHandler,
+  updateWorkOrdersPostHandler,
   handler_doReopenWorkOrderMilestone
 )
 
 router.post(
   '/doDeleteWorkOrderMilestone',
-  updatePostHandler,
+  updateWorkOrdersPostHandler,
   handler_doDeleteWorkOrderMilestone
 )
 

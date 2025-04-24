@@ -33,6 +33,7 @@ const user = {
     userName: 'import.unix',
     userProperties: {
         canUpdate: true,
+        canUpdateWorkOrders: true,
         isAdmin: false,
         apiKey: ''
     }

@@ -361,7 +361,9 @@ await describe('functions.user', async () => {
           userName: '*test',
           userProperties: {
             canUpdate: false,
+            canUpdateWorkOrders: false,
             isAdmin: false,
+
             apiKey: ''
           }
         }
@@ -384,7 +386,9 @@ await describe('functions.user', async () => {
           userName: '*test',
           userProperties: {
             canUpdate: true,
+            canUpdateWorkOrders: true,
             isAdmin: false,
+
             apiKey: ''
           }
         }
@@ -407,7 +411,9 @@ await describe('functions.user', async () => {
           userName: '*test',
           userProperties: {
             canUpdate: false,
+            canUpdateWorkOrders: false,
             isAdmin: true,
+
             apiKey: ''
           }
         }
@@ -430,7 +436,9 @@ await describe('functions.user', async () => {
           userName: '*test',
           userProperties: {
             canUpdate: true,
+            canUpdateWorkOrders: true,
             isAdmin: true,
+            
             apiKey: ''
           }
         }
