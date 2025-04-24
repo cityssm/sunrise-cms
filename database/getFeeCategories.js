@@ -16,6 +16,10 @@ export default async function getFeeCategories(filters, options, connectedDataba
         select feeCategoryId from Fees where recordDelete_timeMillis is null and (burialSiteTypeId is null or burialSiteTypeId = ?))`;
         sqlParameters.push(filters.burialSiteTypeId);
     }
+    if ((filters.feeCategoryId ?? '') !== '') {
+        sqlWhereClause += ` and feeCategoryId = ?`;
+        sqlParameters.push(filters.feeCategoryId);
+    }
     const feeCategories = database
         .prepare(`select feeCategoryId, feeCategory, isGroupedFee, orderNumber
         from FeeCategories

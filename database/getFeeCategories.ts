@@ -44,6 +44,11 @@ export default async function getFeeCategories(
     sqlParameters.push(filters.burialSiteTypeId)
   }
 
+  if ((filters.feeCategoryId ?? '') !== '') {
+    sqlWhereClause += ` and feeCategoryId = ?`
+    sqlParameters.push(filters.feeCategoryId)
+  }
+
   const feeCategories = database
     .prepare(
       `select feeCategoryId, feeCategory, isGroupedFee, orderNumber
