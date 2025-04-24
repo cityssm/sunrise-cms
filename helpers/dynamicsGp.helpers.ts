@@ -4,11 +4,15 @@ import {
   type GPInvoice,
   DynamicsGP
 } from '@cityssm/dynamics-gp'
+import Debug from 'debug'
 
+import { DEBUG_NAMESPACE } from '../debug.config.js'
 import type { DynamicsGPLookup } from '../types/config.types.js'
 import type { DynamicsGPDocument } from '../types/record.types.js'
 
 import { getConfigProperty } from './config.helpers.js'
+
+const debug = Debug(`${DEBUG_NAMESPACE}:dynamicsGP.helpers:${process.pid}`)
 
 let gp: DynamicsGP
 
@@ -28,7 +32,12 @@ export async function getDynamicsGPDocument(
   for (const lookupType of getConfigProperty(
     'settings.dynamicsGP.lookupOrder'
   )) {
-    document = await _getDynamicsGPDocument(documentNumber, lookupType)
+    try {
+      document = await _getDynamicsGPDocument(documentNumber, lookupType)
+    } catch (error) {
+      debug(`Error fetching Dynamics GP document for ${lookupType}:`)
+      debug(error)
+    }
 
     if (document !== undefined) {
       break

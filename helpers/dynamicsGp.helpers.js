@@ -1,5 +1,8 @@
 import { DynamicsGP } from '@cityssm/dynamics-gp';
+import Debug from 'debug';
+import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from './config.helpers.js';
+const debug = Debug(`${DEBUG_NAMESPACE}:dynamicsGP.helpers:${process.pid}`);
 let gp;
 if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
     gp = new DynamicsGP(getConfigProperty('settings.dynamicsGP.mssqlConfig'));
@@ -10,7 +13,13 @@ export async function getDynamicsGPDocument(documentNumber) {
     }
     let document;
     for (const lookupType of getConfigProperty('settings.dynamicsGP.lookupOrder')) {
-        document = await _getDynamicsGPDocument(documentNumber, lookupType);
+        try {
+            document = await _getDynamicsGPDocument(documentNumber, lookupType);
+        }
+        catch (error) {
+            debug(`Error fetching Dynamics GP document for ${lookupType}:`);
+            debug(error);
+        }
         if (document !== undefined) {
             break;
         }
