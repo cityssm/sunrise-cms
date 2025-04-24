@@ -1,8 +1,8 @@
 import addBurialSite from '../../database/addBurialSite.js';
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js';
-export default async function handler(request, response) {
+export default function handler(request, response) {
     try {
-        const burialSiteId = await addBurialSite(request.body, request.session.user);
+        const burialSiteId = addBurialSite(request.body, request.session.user);
         response.json({
             success: true,
             burialSiteId

@@ -1,9 +1,11 @@
+import sqlite from 'better-sqlite3'
+
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js'
 import deleteBurialSiteField from './deleteBurialSiteField.js'
 import getCemetery from './getCemetery.js'
-import { acquireConnection } from './pool.js'
 
 export interface UpdateBurialSiteForm {
   burialSiteId: number | string
@@ -35,16 +37,16 @@ export interface UpdateBurialSiteForm {
  * @returns True if the burial site was updated.
  * @throws If an active burial site with the same name already exists.
  */
-export default async function updateBurialSite(
+export default function updateBurialSite(
   updateForm: UpdateBurialSiteForm,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const cemetery =
     updateForm.cemeteryId === ''
       ? undefined
-      : await getCemetery(updateForm.cemeteryId, database)
+      : getCemetery(updateForm.cemeteryId, database)
 
   const burialSiteName = buildBurialSiteName(cemetery?.cemeteryKey, updateForm)
 
@@ -62,7 +64,7 @@ export default async function updateBurialSite(
     .get(burialSiteName, updateForm.burialSiteId) as number | undefined
 
   if (existingBurialSite !== undefined) {
-    database.release()
+    database.close()
     throw new Error('An active burial site with that name already exists.')
   }
 
@@ -122,7 +124,7 @@ export default async function updateBurialSite(
         | string
         | undefined
 
-      await ((fieldValue ?? '') === ''
+      ;(fieldValue ?? '') === ''
         ? deleteBurialSiteField(
             updateForm.burialSiteId,
             burialSiteTypeFieldId,
@@ -137,21 +139,21 @@ export default async function updateBurialSite(
             },
             user,
             database
-          ))
+          )
     }
   }
 
-  database.release()
+  database.close()
 
   return result.changes > 0
 }
 
-export async function updateBurialSiteStatus(
+export function updateBurialSiteStatus(
   burialSiteId: number | string,
   burialSiteStatusId: number | string,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -171,7 +173,7 @@ export async function updateBurialSiteStatus(
       burialSiteId
     )
 
-  database.release()
+  database.close()
 
   return result.changes > 0
 }

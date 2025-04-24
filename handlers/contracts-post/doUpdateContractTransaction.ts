@@ -9,18 +9,18 @@ export default async function handler(
   request: Request<unknown, unknown, ContractTransactionUpdateForm>,
   response: Response
 ): Promise<void> {
-  await updateContractTransaction(
-    request.body,
-    request.session.user as User
-  )
+  updateContractTransaction(request.body, request.session.user as User)
 
-  const contractTransactions =
-    await getContractTransactions(request.body.contractId, {
+  const contractTransactions = await getContractTransactions(
+    request.body.contractId,
+    {
       includeIntegrations: true
-    })
+    }
+  )
 
   response.json({
     success: true,
+
     contractTransactions
   })
 }

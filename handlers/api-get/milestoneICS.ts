@@ -1,6 +1,7 @@
 /* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 
 import type { Request, Response } from 'express'
+
 import ical, { type ICalEventData, ICalEventStatus } from 'ical-generator'
 
 import getWorkOrderMilestones, {

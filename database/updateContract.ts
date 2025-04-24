@@ -4,10 +4,12 @@ import {
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addOrUpdateContractField from './addOrUpdateContractField.js'
 import deleteContractField from './deleteContractField.js'
-import { acquireConnection } from './pool.js'
 
 export interface UpdateContractForm {
   contractId: number | string
@@ -17,9 +19,9 @@ export interface UpdateContractForm {
 
   contractEndDateString: '' | DateString
   contractStartDateString: DateString
-  
+
   funeralHomeId?: number | string
-  
+
   committalTypeId?: number | string
   funeralDateString: '' | DateString
   funeralDirectorName: string
@@ -32,21 +34,21 @@ export interface UpdateContractForm {
   purchaserCity?: string
   purchaserPostalCode?: string
   purchaserProvince?: string
-  
+
   purchaserEmail?: string
   purchaserPhoneNumber?: string
   purchaserRelationship?: string
 
-  contractTypeFieldIds?: string
   [fieldValue_contractTypeFieldId: `fieldValue_${string}`]: unknown
+  contractTypeFieldIds?: string
 }
 
 // eslint-disable-next-line complexity
-export default async function updateContract(
+export default function updateContract(
   updateForm: UpdateContractForm,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -117,7 +119,7 @@ export default async function updateContract(
       ] as string
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      await ((fieldValue ?? '') === ''
+      ;(fieldValue ?? '') === ''
         ? deleteContractField(
             updateForm.contractId,
             contractTypeFieldId,
@@ -132,11 +134,11 @@ export default async function updateContract(
             },
             user,
             database
-          ))
+          )
     }
   }
 
-  database.release()
+  database.close()
 
   return result.changes > 0
 }

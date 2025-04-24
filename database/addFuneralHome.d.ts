@@ -4,8 +4,8 @@ export interface AddForm {
     funeralHomeAddress1: string;
     funeralHomeAddress2: string;
     funeralHomeCity: string;
-    funeralHomeProvince: string;
     funeralHomePostalCode: string;
+    funeralHomeProvince: string;
     funeralHomePhoneNumber: string;
 }
-export default function addFuneralHome(addForm: AddForm, user: User): Promise<number>;
+export default function addFuneralHome(addForm: AddForm, user: User): number;

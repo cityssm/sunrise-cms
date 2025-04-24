@@ -11,19 +11,22 @@ export default async function handler(
   >,
   response: Response
 ): Promise<void> {
-  const success = await deleteContractTransaction(
+  const success = deleteContractTransaction(
     request.body.contractId,
     request.body.transactionIndex,
     request.session.user as User
   )
 
-  const contractTransactions =
-    await getContractTransactions(request.body.contractId, {
+  const contractTransactions = await getContractTransactions(
+    request.body.contractId,
+    {
       includeIntegrations: true
-    })
+    }
+  )
 
   response.json({
     success,
+
     contractTransactions
   })
 }

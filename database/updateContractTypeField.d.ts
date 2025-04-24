@@ -8,4 +8,4 @@ export interface UpdateContractTypeFieldForm {
     minLength?: string;
     pattern?: string;
 }
-export default function updateContractTypeField(updateForm: UpdateContractTypeFieldForm, user: User): Promise<boolean>;
+export default function updateContractTypeField(updateForm: UpdateContractTypeFieldForm, user: User): boolean;

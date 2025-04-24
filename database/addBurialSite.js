@@ -1,7 +1,8 @@
+import sqlite from 'better-sqlite3';
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js';
 import getCemetery from './getCemetery.js';
-import { acquireConnection } from './pool.js';
 /**
  * Creates a new burial site.
  * @param burialSiteForm - The new burial site's information
@@ -9,12 +10,12 @@ import { acquireConnection } from './pool.js';
  * @returns The new burial site's id.
  * @throws If an active burial site with the same name already exists.
  */
-export default async function addBurialSite(burialSiteForm, user) {
-    const database = await acquireConnection();
+export default function addBurialSite(burialSiteForm, user) {
+    const database = sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const cemetery = burialSiteForm.cemeteryId === ''
         ? undefined
-        : await getCemetery(burialSiteForm.cemeteryId, database);
+        : getCemetery(burialSiteForm.cemeteryId, database);
     const burialSiteName = buildBurialSiteName(cemetery?.cemeteryKey, burialSiteForm);
     // Ensure no active burial sites share the same name
     const existingBurialSite = database
@@ -25,7 +26,7 @@ export default async function addBurialSite(burialSiteForm, user) {
         .pluck()
         .get(burialSiteName);
     if (existingBurialSite !== undefined) {
-        database.release();
+        database.close();
         throw new Error('An active burial site with that name already exists.');
     }
     const result = database
@@ -57,13 +58,13 @@ export default async function addBurialSite(burialSiteForm, user) {
     for (const burialSiteTypeFieldId of burialSiteTypeFieldIds) {
         const fieldValue = burialSiteForm[`burialSiteFieldValue_${burialSiteTypeFieldId}`];
         if ((fieldValue ?? '') !== '') {
-            await addOrUpdateBurialSiteField({
+            addOrUpdateBurialSiteField({
                 burialSiteId,
                 burialSiteTypeFieldId,
                 fieldValue: fieldValue ?? ''
             }, user, database);
         }
     }
-    database.release();
+    database.close();
     return burialSiteId;
 }

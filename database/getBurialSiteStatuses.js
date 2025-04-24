@@ -1,7 +1,8 @@
-import { acquireConnection } from './pool.js';
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default async function getBurialSiteStatuses() {
-    const database = await acquireConnection();
+export default function getBurialSiteStatuses() {
+    const database = sqlite(sunriseDB);
     const statuses = database
         .prepare(`select burialSiteStatusId, burialSiteStatus, orderNumber
         from BurialSiteStatuses
@@ -16,6 +17,6 @@ export default async function getBurialSiteStatuses() {
         }
         expectedOrderNumber += 1;
     }
-    database.release();
+    database.close();
     return statuses;
 }

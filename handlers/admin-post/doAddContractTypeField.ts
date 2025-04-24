@@ -8,22 +8,23 @@ import {
   getContractTypes
 } from '../../helpers/functions.cache.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, AddContractTypeFieldForm>,
   response: Response
-): Promise<void> {
-  const contractTypeFieldId = await addContractTypeField(
+): void {
+  const contractTypeFieldId = addContractTypeField(
     request.body,
     request.session.user as User
   )
 
-  const contractTypes = await getContractTypes()
-  const allContractTypeFields = await getAllContractTypeFields()
+  const contractTypes = getContractTypes()
+  const allContractTypeFields = getAllContractTypeFields()
 
   response.json({
     success: true,
+
+    allContractTypeFields,
     contractTypeFieldId,
-    contractTypes,
-    allContractTypeFields
+    contractTypes
   })
 }

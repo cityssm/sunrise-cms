@@ -1,12 +1,14 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { ContractType } from '../types/record.types.js'
 
 import getContractTypeFields from './getContractTypeFields.js'
 import getContractTypePrints from './getContractTypePrints.js'
-import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export default async function getContractTypes(): Promise<ContractType[]> {
-  const database = await acquireConnection()
+export default function getContractTypes(): ContractType[] {
+  const database = sqlite(sunriseDB)
 
   const contractTypes = database
     .prepare(
@@ -33,19 +35,18 @@ export default async function getContractTypes(): Promise<ContractType[]> {
       contractType.orderNumber = expectedOrderNumber
     }
 
-    contractType.contractTypeFields = await getContractTypeFields(
+    contractType.contractTypeFields = getContractTypeFields(
       contractType.contractTypeId,
       database
     )
 
-    contractType.contractTypePrints = await getContractTypePrints(
+    contractType.contractTypePrints = getContractTypePrints(
       contractType.contractTypeId,
       database
     )
   }
 
-  database.release()
+  database.close()
 
   return contractTypes
 }
-

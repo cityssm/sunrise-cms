@@ -1,4 +1,6 @@
-import { acquireConnection } from './pool.js'
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddFeeCategoryForm {
   feeCategory: string
@@ -6,11 +8,11 @@ export interface AddFeeCategoryForm {
   orderNumber?: number
 }
 
-export default async function addFeeCategory(
+export default function addFeeCategory(
   feeCategoryForm: AddFeeCategoryForm,
   user: User
-): Promise<number> {
-  const database = await acquireConnection()
+): number {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -33,7 +35,7 @@ export default async function addFeeCategory(
       rightNowMillis
     )
 
-  database.release()
+  database.close()
 
   return result.lastInsertRowid as number
 }

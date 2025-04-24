@@ -1,9 +1,10 @@
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import getFees from './getFees.js';
-import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default async function getFeeCategories(filters, options, connectedDatabase) {
+export default function getFeeCategories(filters, options, connectedDatabase) {
     const updateOrderNumbers = !(filters.burialSiteTypeId || filters.contractTypeId) && options.includeFees;
-    const database = await acquireConnection();
+    const database = sqlite(sunriseDB);
     let sqlWhereClause = ' where recordDelete_timeMillis is null';
     const sqlParameters = [];
     if ((filters.contractTypeId ?? '') !== '') {
@@ -35,16 +36,16 @@ export default async function getFeeCategories(filters, options, connectedDataba
                 feeCategory.orderNumber = expectedOrderNumber;
             }
             expectedOrderNumber += 1;
-            feeCategory.fees = await getFees(feeCategory.feeCategoryId, filters, database);
+            feeCategory.fees = getFees(feeCategory.feeCategoryId, filters, database);
         }
     }
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return feeCategories;
 }
-export async function getFeeCategory(feeCategoryId, connectedDatabase) {
-    const feeCategories = await getFeeCategories({
+export function getFeeCategory(feeCategoryId, connectedDatabase) {
+    const feeCategories = getFeeCategories({
         feeCategoryId
     }, {
         includeFees: true

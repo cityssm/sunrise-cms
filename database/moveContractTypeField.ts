@@ -1,14 +1,14 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
-import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export async function moveContractTypeFieldDown(
+export function moveContractTypeFieldDown(
   contractTypeFieldId: number | string
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
@@ -33,17 +33,17 @@ export async function moveContractTypeFieldDown(
     database
   )
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('ContractTypeFields')
 
   return success
 }
 
-export async function moveContractTypeFieldDownToBottom(
+export function moveContractTypeFieldDownToBottom(
   contractTypeFieldId: number | string
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
@@ -92,22 +92,22 @@ export async function moveContractTypeFieldDownToBottom(
       .run(contractTypeParameters)
   }
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('ContractTypeFields')
 
   return true
 }
 
-export async function moveContractTypeFieldUp(
+export function moveContractTypeFieldUp(
   contractTypeFieldId: number | string
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
   if (currentField.orderNumber <= 0) {
-    database.release()
+    database.close()
     return true
   }
 
@@ -132,17 +132,17 @@ export async function moveContractTypeFieldUp(
     database
   )
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('ContractTypeFields')
 
   return success
 }
 
-export async function moveContractTypeFieldUpToTop(
+export function moveContractTypeFieldUpToTop(
   contractTypeFieldId: number | string
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
@@ -176,7 +176,7 @@ export async function moveContractTypeFieldUpToTop(
       .run(contractTypeParameters)
   }
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('ContractTypeFields')
 
@@ -185,7 +185,7 @@ export async function moveContractTypeFieldUpToTop(
 
 function getCurrentField(
   contractTypeFieldId: number | string,
-  connectedDatabase: PoolConnection
+  connectedDatabase: sqlite.Database
 ): { contractTypeId?: number; orderNumber: number } {
   return connectedDatabase
     .prepare(

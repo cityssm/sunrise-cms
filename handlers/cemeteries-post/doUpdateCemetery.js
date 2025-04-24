@@ -1,15 +1,15 @@
 import rebuildBurialSiteNames from '../../database/rebuildBurialSiteNames.js';
 import updateCemetery from '../../database/updateCemetery.js';
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js';
-export default async function handler(request, response) {
-    const success = await updateCemetery(request.body, request.session.user);
+export default function handler(request, response) {
+    const success = updateCemetery(request.body, request.session.user);
     response.json({
         success,
         cemeteryId: request.body.cemeteryId
     });
     if (success) {
         response.on('finish', () => {
-            void rebuildBurialSiteNames(request.body.cemeteryId, request.session.user);
+            rebuildBurialSiteNames(request.body.cemeteryId, request.session.user);
             clearNextPreviousBurialSiteIdCache();
         });
     }

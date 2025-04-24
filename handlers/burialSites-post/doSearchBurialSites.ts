@@ -5,15 +5,15 @@ import getBurialSites, {
   type GetBurialSitesOptions
 } from '../../database/getBurialSites.js'
 
-export default async function handler(
+export default function handler(
   request: Request<
     unknown,
     unknown,
     GetBurialSitesFilters & GetBurialSitesOptions
   >,
   response: Response
-): Promise<void> {
-  const result = await getBurialSites(request.body, {
+): void {
+  const result = getBurialSites(request.body, {
     limit: request.body.limit,
     offset: request.body.offset,
 

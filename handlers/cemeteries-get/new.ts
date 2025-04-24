@@ -24,7 +24,7 @@ export default async function handler(
     childCemeteries: []
   }
 
-  const cemeteries = await getCemeteries()
+  const cemeteries = getCemeteries()
 
   const cemeterySVGs = await getCemeterySVGs()
 

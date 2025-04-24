@@ -8,4 +8,4 @@ export interface ContractTransactionUpdateForm {
     transactionAmount: number | string;
     transactionNote: string;
 }
-export default function updateContractTransaction(updateForm: ContractTransactionUpdateForm, user: User): Promise<boolean>;
+export default function updateContractTransaction(updateForm: ContractTransactionUpdateForm, user: User): boolean;

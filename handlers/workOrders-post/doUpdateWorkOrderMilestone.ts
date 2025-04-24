@@ -6,17 +6,21 @@ import updateWorkOrderMilestone, {
 } from '../../database/updateWorkOrderMilestone.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<
+    unknown,
+    unknown,
+    UpdateWorkOrderMilestoneForm & { workOrderId: string }
+  >,
   response: Response
 ): Promise<void> {
-  const success = await updateWorkOrderMilestone(
+  const success = updateWorkOrderMilestone(
     request.body as UpdateWorkOrderMilestoneForm,
     request.session.user as User
   )
 
   const workOrderMilestones = await getWorkOrderMilestones(
     {
-      workOrderId: request.body.workOrderId as string
+      workOrderId: request.body.workOrderId
     },
     {
       orderBy: 'completion'

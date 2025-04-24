@@ -17,17 +17,17 @@ const debug = Debug(`${DEBUG_NAMESPACE}:functions.cache:${process.pid}`);
  * Burial Site Statuses
  */
 let burialSiteStatuses;
-export async function getBurialSiteStatusByBurialSiteStatus(burialSiteStatus) {
-    const cachedStatuses = await getBurialSiteStatuses();
+export function getBurialSiteStatusByBurialSiteStatus(burialSiteStatus) {
+    const cachedStatuses = getBurialSiteStatuses();
     const statusLowerCase = burialSiteStatus.toLowerCase();
     return cachedStatuses.find((currentStatus) => currentStatus.burialSiteStatus.toLowerCase() === statusLowerCase);
 }
-export async function getBurialSiteStatusById(burialSiteStatusId) {
-    const cachedStatuses = await getBurialSiteStatuses();
+export function getBurialSiteStatusById(burialSiteStatusId) {
+    const cachedStatuses = getBurialSiteStatuses();
     return cachedStatuses.find((currentStatus) => currentStatus.burialSiteStatusId === burialSiteStatusId);
 }
-export async function getBurialSiteStatuses() {
-    burialSiteStatuses ??= await getBurialSiteStatusesFromDatabase();
+export function getBurialSiteStatuses() {
+    burialSiteStatuses ??= getBurialSiteStatusesFromDatabase();
     return burialSiteStatuses;
 }
 function clearBurialSiteStatusesCache() {
@@ -37,16 +37,16 @@ function clearBurialSiteStatusesCache() {
  * Burial Site Types
  */
 let burialSiteTypes;
-export async function getBurialSiteTypeById(burialSiteTypeId) {
-    const cachedTypes = await getBurialSiteTypes();
+export function getBurialSiteTypeById(burialSiteTypeId) {
+    const cachedTypes = getBurialSiteTypes();
     return cachedTypes.find((currentType) => currentType.burialSiteTypeId === burialSiteTypeId);
 }
-export async function getBurialSiteTypes() {
-    burialSiteTypes ??= await getBurialSiteTypesFromDatabase();
+export function getBurialSiteTypes() {
+    burialSiteTypes ??= getBurialSiteTypesFromDatabase();
     return burialSiteTypes;
 }
-export async function getBurialSiteTypesByBurialSiteType(burialSiteType) {
-    const cachedTypes = await getBurialSiteTypes();
+export function getBurialSiteTypesByBurialSiteType(burialSiteType) {
+    const cachedTypes = getBurialSiteTypes();
     const typeLowerCase = burialSiteType.toLowerCase();
     return cachedTypes.find((currentType) => currentType.burialSiteType.toLowerCase() === typeLowerCase);
 }
@@ -58,21 +58,21 @@ function clearBurialSiteTypesCache() {
  */
 let contractTypes;
 let allContractTypeFields;
-export async function getAllContractTypeFields() {
-    allContractTypeFields ??= await getContractTypeFieldsFromDatabase();
+export function getAllContractTypeFields() {
+    allContractTypeFields ??= getContractTypeFieldsFromDatabase();
     return allContractTypeFields;
 }
-export async function getContractTypeByContractType(contractTypeString) {
-    const cachedTypes = await getContractTypes();
+export function getContractTypeByContractType(contractTypeString) {
+    const cachedTypes = getContractTypes();
     const typeLowerCase = contractTypeString.toLowerCase();
     return cachedTypes.find((currentType) => currentType.contractType.toLowerCase() === typeLowerCase);
 }
-export async function getContractTypeById(contractTypeId) {
-    const cachedTypes = await getContractTypes();
+export function getContractTypeById(contractTypeId) {
+    const cachedTypes = getContractTypes();
     return cachedTypes.find((currentType) => currentType.contractTypeId === contractTypeId);
 }
-export async function getContractTypePrintsById(contractTypeId) {
-    const contractType = await getContractTypeById(contractTypeId);
+export function getContractTypePrintsById(contractTypeId) {
+    const contractType = getContractTypeById(contractTypeId);
     if (contractType?.contractTypePrints === undefined ||
         contractType.contractTypePrints.length === 0) {
         return [];
@@ -82,8 +82,8 @@ export async function getContractTypePrintsById(contractTypeId) {
     }
     return contractType.contractTypePrints ?? [];
 }
-export async function getContractTypes() {
-    contractTypes ??= await getContractTypesFromDatabase();
+export function getContractTypes() {
+    contractTypes ??= getContractTypesFromDatabase();
     return contractTypes;
 }
 function clearContractTypesCache() {
@@ -94,12 +94,12 @@ function clearContractTypesCache() {
  * Interment Container Types
  */
 let intermentContainerTypes;
-export async function getIntermentContainerTypeById(intermentContainerTypeId) {
-    const cachedContainerTypes = await getIntermentContainerTypes();
+export function getIntermentContainerTypeById(intermentContainerTypeId) {
+    const cachedContainerTypes = getIntermentContainerTypes();
     return cachedContainerTypes.find((currentContainerType) => currentContainerType.intermentContainerTypeId === intermentContainerTypeId);
 }
-export async function getIntermentContainerTypes() {
-    intermentContainerTypes ??= await getIntermentContainerTypesFromDatabase();
+export function getIntermentContainerTypes() {
+    intermentContainerTypes ??= getIntermentContainerTypesFromDatabase();
     return intermentContainerTypes;
 }
 function clearIntermentContainerTypesCache() {
@@ -109,12 +109,12 @@ function clearIntermentContainerTypesCache() {
  * Committal Types
  */
 let committalTypes;
-export async function getCommittalTypeById(committalTypeId) {
-    const cachedCommittalTypes = await getCommittalTypes();
+export function getCommittalTypeById(committalTypeId) {
+    const cachedCommittalTypes = getCommittalTypes();
     return cachedCommittalTypes.find((currentCommittalType) => currentCommittalType.committalTypeId === committalTypeId);
 }
-export async function getCommittalTypes() {
-    committalTypes ??= await getCommittalTypesFromDatabase();
+export function getCommittalTypes() {
+    committalTypes ??= getCommittalTypesFromDatabase();
     return committalTypes;
 }
 function clearCommittalTypesCache() {
@@ -124,12 +124,12 @@ function clearCommittalTypesCache() {
  * Work Order Types
  */
 let workOrderTypes;
-export async function getWorkOrderTypeById(workOrderTypeId) {
-    const cachedWorkOrderTypes = await getWorkOrderTypes();
+export function getWorkOrderTypeById(workOrderTypeId) {
+    const cachedWorkOrderTypes = getWorkOrderTypes();
     return cachedWorkOrderTypes.find((currentWorkOrderType) => currentWorkOrderType.workOrderTypeId === workOrderTypeId);
 }
-export async function getWorkOrderTypes() {
-    workOrderTypes ??= await getWorkOrderTypesFromDatabase();
+export function getWorkOrderTypes() {
+    workOrderTypes ??= getWorkOrderTypesFromDatabase();
     return workOrderTypes;
 }
 function clearWorkOrderTypesCache() {
@@ -139,19 +139,19 @@ function clearWorkOrderTypesCache() {
  * Work Order Milestone Types
  */
 let workOrderMilestoneTypes;
-export async function getWorkOrderMilestoneTypeById(workOrderMilestoneTypeId) {
-    const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
+export function getWorkOrderMilestoneTypeById(workOrderMilestoneTypeId) {
+    const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes();
     return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => currentWorkOrderMilestoneType.workOrderMilestoneTypeId ===
         workOrderMilestoneTypeId);
 }
-export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString) {
-    const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
+export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString) {
+    const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes();
     const workOrderMilestoneTypeLowerCase = workOrderMilestoneTypeString.toLowerCase();
     return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => currentWorkOrderMilestoneType.workOrderMilestoneType.toLowerCase() ===
         workOrderMilestoneTypeLowerCase);
 }
-export async function getWorkOrderMilestoneTypes() {
-    workOrderMilestoneTypes ??= await getWorkOrderMilestoneTypesFromDatabase();
+export function getWorkOrderMilestoneTypes() {
+    workOrderMilestoneTypes ??= getWorkOrderMilestoneTypesFromDatabase();
     return workOrderMilestoneTypes;
 }
 function clearWorkOrderMilestoneTypesCache() {
@@ -160,15 +160,15 @@ function clearWorkOrderMilestoneTypesCache() {
 /*
  * Cache Management
  */
-export async function preloadCaches() {
+export function preloadCaches() {
     debug('Preloading caches');
-    await getBurialSiteStatuses();
-    await getBurialSiteTypes();
-    await getContractTypes();
-    await getCommittalTypes();
-    await getIntermentContainerTypes();
-    await getWorkOrderTypes();
-    await getWorkOrderMilestoneTypes();
+    getBurialSiteStatuses();
+    getBurialSiteTypes();
+    getContractTypes();
+    getCommittalTypes();
+    getIntermentContainerTypes();
+    getWorkOrderTypes();
+    getWorkOrderMilestoneTypes();
 }
 export function clearCacheByTableName(tableName, relayMessage = true) {
     switch (tableName) {

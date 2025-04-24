@@ -22,12 +22,12 @@ export default async function handler(
 
   response.render('burialSite-view', {
     headTitle: burialSite.burialSiteName,
-    
+
     burialSite
   })
 
   response.on('finish', () => {
-    void getNextBurialSiteId(burialSite.burialSiteId)
-    void getPreviousBurialSiteId(burialSite.burialSiteId)
+    getNextBurialSiteId(burialSite.burialSiteId)
+    getPreviousBurialSiteId(burialSite.burialSiteId)
   })
 }

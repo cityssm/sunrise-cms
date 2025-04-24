@@ -1,9 +1,10 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Cemetery, FuneralHome } from '../types/record.types.js'
 
-import { acquireConnection } from './pool.js'
-
-export default async function getFuneralHomes(): Promise<FuneralHome[]> {
-  const database = await acquireConnection()
+export default function getFuneralHomes(): FuneralHome[] {
+  const database = sqlite(sunriseDB, { readonly: true })
 
   const funeralHomes = database
     .prepare(
@@ -16,7 +17,7 @@ export default async function getFuneralHomes(): Promise<FuneralHome[]> {
     )
     .all() as Cemetery[]
 
-  database.release()
+  database.close()
 
   return funeralHomes
 }

@@ -1,5 +1,6 @@
+import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { acquireConnection } from './pool.js';
+import { sunriseDB } from '../helpers/database.helpers.js';
 const availablePrints = getConfigProperty('settings.contracts.prints');
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const userFunction_configContainsPrintEJS = (printEJS) => {
@@ -8,8 +9,8 @@ const userFunction_configContainsPrintEJS = (printEJS) => {
     }
     return 0;
 };
-export default async function getContractTypePrints(contractTypeId, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+export default function getContractTypePrints(contractTypeId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function(
     // eslint-disable-next-line no-secrets/no-secrets
     'userFn_configContainsPrintEJS', userFunction_configContainsPrintEJS);
@@ -36,7 +37,7 @@ export default async function getContractTypePrints(contractTypeId, connectedDat
         prints.push(result.printEJS);
     }
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return prints;
 }

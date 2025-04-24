@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function getCemeteries(filters) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function getCemeteries(filters, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const sqlParameters = [];
     if (filters?.parentCemeteryId !== undefined) {
         sqlParameters.push(filters.parentCemeteryId);
@@ -24,6 +25,8 @@ export default async function getCemeteries(filters) {
           p.cemeteryId, p.cemeteryName
         order by m.cemeteryName, m.cemeteryId`)
         .all(sqlParameters);
-    database.release();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return cemeteries;
 }

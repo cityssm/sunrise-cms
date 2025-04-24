@@ -5,12 +5,9 @@ import {
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
 
-export default async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
-  const workOrderTypes = await getWorkOrderTypes()
-  const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
+export default function handler(request: Request, response: Response): void {
+  const workOrderTypes = getWorkOrderTypes()
+  const workOrderMilestoneTypes = getWorkOrderMilestoneTypes()
 
   response.render('workOrder-outlook', {
     headTitle: 'Work Order Outlook Integration',

@@ -1,3 +1,3 @@
-import type { PoolConnection } from 'better-sqlite-pool';
+import sqlite from 'better-sqlite3';
 import type { ContractComment } from '../types/record.types.js';
-export default function getContractComments(contractId: number | string, connectedDatabase?: PoolConnection): Promise<ContractComment[]>;
+export default function getContractComments(contractId: number | string, connectedDatabase?: sqlite.Database): ContractComment[];

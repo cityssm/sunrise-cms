@@ -11,7 +11,7 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const cemetery = await getCemetery(request.params.cemeteryId)
+  const cemetery = getCemetery(request.params.cemeteryId)
 
   if (cemetery === undefined) {
     response.redirect(
@@ -20,15 +20,15 @@ export default async function handler(
     return
   }
 
-  const cemeteries = await getCemeteries()
+  const cemeteries = getCemeteries()
 
   const cemeterySVGs = await getCemeterySVGs()
 
-  const burialSiteTypeSummary = await getBurialSiteTypeSummary({
+  const burialSiteTypeSummary = getBurialSiteTypeSummary({
     cemeteryId: cemetery.cemeteryId
   })
 
-  const burialSiteStatusSummary = await getBurialSiteStatusSummary({
+  const burialSiteStatusSummary = getBurialSiteStatusSummary({
     cemeteryId: cemetery.cemeteryId
   })
 

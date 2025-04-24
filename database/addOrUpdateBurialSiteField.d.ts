@@ -1,7 +1,7 @@
-import type { PoolConnection } from 'better-sqlite-pool';
+import sqlite from 'better-sqlite3';
 export interface BurialSiteFieldForm {
-    burialSiteId: string | number;
-    burialSiteTypeFieldId: string | number;
+    burialSiteId: number | string;
+    burialSiteTypeFieldId: number | string;
     fieldValue: string;
 }
-export default function addOrUpdateBurialSiteField(fieldForm: BurialSiteFieldForm, user: User, connectedDatabase?: PoolConnection): Promise<boolean>;
+export default function addOrUpdateBurialSiteField(fieldForm: BurialSiteFieldForm, user: User, connectedDatabase?: sqlite.Database): boolean;

@@ -10,11 +10,9 @@ export default async function handler(
 ): Promise<void> {
   const contractId = request.body.contractId
 
-  const contract = (await getContract(
-    contractId
-  )) as Contract
+  const contract = (await getContract(contractId)) as Contract
 
-  const feeCategories = await getFeeCategories(
+  const feeCategories = getFeeCategories(
     {
       contractTypeId: contract.contractTypeId,
       burialSiteTypeId: contract.burialSiteTypeId

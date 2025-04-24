@@ -1,8 +1,8 @@
 import papaParse from 'papaparse';
 import getReportData from '../../database/getReportData.js';
-export default async function handler(request, response) {
+export default function handler(request, response) {
     const reportName = request.params.reportName;
-    const rows = await getReportData(reportName, request.query);
+    const rows = getReportData(reportName, request.query);
     if (rows === undefined) {
         response.status(404).json({
             success: false,

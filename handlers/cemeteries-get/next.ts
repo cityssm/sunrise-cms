@@ -3,13 +3,13 @@ import type { Request, Response } from 'express'
 import getNextCemeteryId from '../../database/getNextCemeteryId.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 
-export default async function handler(
+export default function handler(
   request: Request<{ cemeteryId: string }>,
   response: Response
-): Promise<void> {
+): void {
   const cemeteryId = Number.parseInt(request.params.cemeteryId, 10)
 
-  const nextCemeteryId = await getNextCemeteryId(cemeteryId)
+  const nextCemeteryId = getNextCemeteryId(cemeteryId)
 
   if (nextCemeteryId === undefined) {
     response.redirect(

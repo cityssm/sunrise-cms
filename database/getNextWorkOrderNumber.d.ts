@@ -1,2 +1,2 @@
-import type { PoolConnection } from 'better-sqlite-pool';
-export default function getNextWorkOrderNumber(connectedDatabase?: PoolConnection): Promise<string>;
+import sqlite from 'better-sqlite3';
+export default function getNextWorkOrderNumber(connectedDatabase?: sqlite.Database): string;

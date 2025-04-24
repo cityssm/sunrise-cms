@@ -1,6 +1,7 @@
-import { clearCacheByTableName } from '../helpers/functions.cache.js'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
+import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 type RecordTable =
   | 'BurialSiteComments'
@@ -54,12 +55,12 @@ const relatedTables = new Map<RecordTable, string[]>([
   ]
 ])
 
-export async function deleteRecord(
+export function deleteRecord(
   recordTable: RecordTable,
   recordId: number | string,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -85,7 +86,7 @@ export async function deleteRecord(
       .run(user.userName, rightNowMillis, recordId)
   }
 
-  database.release()
+  database.close()
 
   clearCacheByTableName(recordTable)
 

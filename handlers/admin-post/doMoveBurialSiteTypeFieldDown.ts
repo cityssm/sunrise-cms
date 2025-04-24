@@ -6,23 +6,24 @@ import {
 } from '../../database/moveBurialSiteTypeField.js'
 import { getBurialSiteTypes } from '../../helpers/functions.cache.js'
 
-export default async function handler(
+export default function handler(
   request: Request<
     unknown,
     unknown,
     { burialSiteTypeFieldId: string; moveToEnd: '0' | '1' }
   >,
   response: Response
-): Promise<void> {
+): void {
   const success =
     request.body.moveToEnd === '1'
-      ? await moveBurialSiteTypeFieldDownToBottom(request.body.burialSiteTypeFieldId)
-      : await moveBurialSiteTypeFieldDown(request.body.burialSiteTypeFieldId)
+      ? moveBurialSiteTypeFieldDownToBottom(request.body.burialSiteTypeFieldId)
+      : moveBurialSiteTypeFieldDown(request.body.burialSiteTypeFieldId)
 
-  const burialSiteTypes = await getBurialSiteTypes()
+  const burialSiteTypes = getBurialSiteTypes()
 
   response.json({
     success,
+    
     burialSiteTypes
   })
 }

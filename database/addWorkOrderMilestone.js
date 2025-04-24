@@ -1,8 +1,9 @@
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
-import { acquireConnection } from './pool.js';
-export default async function addWorkOrderMilestone(milestoneForm, user) {
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function addWorkOrderMilestone(milestoneForm, user) {
     const rightNowMillis = Date.now();
-    const database = await acquireConnection();
+    const database = sqlite(sunriseDB);
     const result = database
         .prepare(`insert into WorkOrderMilestones (
         workOrderId, workOrderMilestoneTypeId,
@@ -23,6 +24,6 @@ export default async function addWorkOrderMilestone(milestoneForm, user) {
         : dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString), (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
         ? undefined
         : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString), user.userName, rightNowMillis, user.userName, rightNowMillis);
-    database.release();
+    database.close();
     return result.lastInsertRowid;
 }

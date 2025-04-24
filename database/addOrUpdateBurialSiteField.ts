@@ -1,19 +1,19 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface BurialSiteFieldForm {
-  burialSiteId: string | number
-  burialSiteTypeFieldId: string | number
+  burialSiteId: number | string
+  burialSiteTypeFieldId: number | string
   fieldValue: string
 }
 
-export default async function addOrUpdateBurialSiteField(
+export default function addOrUpdateBurialSiteField(
   fieldForm: BurialSiteFieldForm,
   user: User,
-  connectedDatabase?: PoolConnection
-): Promise<boolean> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -57,7 +57,7 @@ export default async function addOrUpdateBurialSiteField(
   }
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return result.changes > 0

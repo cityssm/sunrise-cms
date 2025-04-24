@@ -6,21 +6,18 @@ import getReportData, {
   type ReportParameters
 } from '../../database/getReportData.js'
 
-export default async function handler(
+export default function handler(
   request: Request<{ reportName: string }, unknown, unknown, ReportParameters>,
   response: Response
-): Promise<void> {
+): void {
   const reportName = request.params.reportName
 
-  const rows = await getReportData(
-    reportName,
-    request.query
-  )
+  const rows = getReportData(reportName, request.query)
 
   if (rows === undefined) {
     response.status(404).json({
       success: false,
-      
+
       message: 'Report Not Found'
     })
 

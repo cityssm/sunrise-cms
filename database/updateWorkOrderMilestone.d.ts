@@ -5,4 +5,4 @@ export interface UpdateWorkOrderMilestoneForm {
     workOrderMilestoneTimeString?: string;
     workOrderMilestoneTypeId: number | string;
 }
-export default function updateWorkOrderMilestone(milestoneForm: UpdateWorkOrderMilestoneForm, user: User): Promise<boolean>;
+export default function updateWorkOrderMilestone(milestoneForm: UpdateWorkOrderMilestoneForm, user: User): boolean;

@@ -1,14 +1,14 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
-export default async function deleteBurialSiteField(
+export default function deleteBurialSiteField(
   burialSiteId: number | string,
   burialSiteTypeFieldId: number | string,
   user: User,
-  connectedDatabase?: PoolConnection
-): Promise<boolean> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -21,7 +21,7 @@ export default async function deleteBurialSiteField(
     .run(user.userName, Date.now(), burialSiteId, burialSiteTypeFieldId)
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return result.changes > 0

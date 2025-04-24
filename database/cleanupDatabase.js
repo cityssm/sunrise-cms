@@ -1,8 +1,9 @@
 import { daysToMillis } from '@cityssm/to-millis';
+import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { acquireConnection } from './pool.js';
-export default async function cleanupDatabase(user) {
-    const database = await acquireConnection();
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function cleanupDatabase(user) {
+    const database = sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const recordDeleteTimeMillisMin = rightNowMillis -
         daysToMillis(getConfigProperty('settings.adminCleanup.recordDeleteAgeDays'));
@@ -279,7 +280,7 @@ export default async function cleanupDatabase(user) {
         where recordDelete_timeMillis <= ?
         and burialSiteTypeId not in (select burialSiteTypeId from BurialSites)`)
         .run(recordDeleteTimeMillisMin).changes;
-    database.release();
+    database.close();
     return {
         inactivatedRecordCount,
         purgedRecordCount

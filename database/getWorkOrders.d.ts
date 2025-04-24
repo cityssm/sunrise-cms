@@ -1,4 +1,4 @@
-import type { PoolConnection } from 'better-sqlite-pool';
+import sqlite from 'better-sqlite3';
 import type { WorkOrder } from '../types/record.types.js';
 export interface GetWorkOrdersFilters {
     workOrderTypeId?: number | string;
@@ -8,14 +8,14 @@ export interface GetWorkOrdersFilters {
     contractId?: number | string;
     deceasedName?: string;
 }
-interface GetWorkOrdersOptions {
+export interface GetWorkOrdersOptions {
     limit: number;
-    offset: number;
+    offset: number | string;
     includeBurialSites?: boolean;
     includeComments?: boolean;
     includeMilestones?: boolean;
 }
-export declare function getWorkOrders(filters: GetWorkOrdersFilters, options: GetWorkOrdersOptions, connectedDatabase?: PoolConnection): Promise<{
+export declare function getWorkOrders(filters: GetWorkOrdersFilters, options: GetWorkOrdersOptions, connectedDatabase?: sqlite.Database): Promise<{
     count: number;
     workOrders: WorkOrder[];
 }>;

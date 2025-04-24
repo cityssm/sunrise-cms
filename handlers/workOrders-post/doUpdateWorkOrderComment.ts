@@ -5,18 +5,20 @@ import updateWorkOrderComment, {
   type UpdateWorkOrderCommentForm
 } from '../../database/updateWorkOrderComment.js'
 
-export default async function handler(
-  request: Request,
+export default function handler(
+  request: Request<
+    unknown,
+    unknown,
+    UpdateWorkOrderCommentForm & { workOrderId: string }
+  >,
   response: Response
-): Promise<void> {
-  const success = await updateWorkOrderComment(
+): void {
+  const success = updateWorkOrderComment(
     request.body as UpdateWorkOrderCommentForm,
     request.session.user as User
   )
 
-  const workOrderComments = await getWorkOrderComments(
-    request.body.workOrderId as string
-  )
+  const workOrderComments = getWorkOrderComments(request.body.workOrderId)
 
   response.json({
     success,

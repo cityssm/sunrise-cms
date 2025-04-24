@@ -5,4 +5,4 @@ export interface UpdateWorkOrderCommentForm {
     commentDateString: DateString;
     commentTimeString: TimeString;
 }
-export default function updateWorkOrderComment(commentForm: UpdateWorkOrderCommentForm, user: User): Promise<boolean>;
+export default function updateWorkOrderComment(commentForm: UpdateWorkOrderCommentForm, user: User): boolean;

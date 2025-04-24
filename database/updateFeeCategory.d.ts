@@ -3,4 +3,4 @@ export interface UpdateFeeCategoryForm {
     feeCategory: string;
     isGroupedFee?: '1';
 }
-export default function updateFeeCategory(feeCategoryForm: UpdateFeeCategoryForm, user: User): Promise<boolean>;
+export default function updateFeeCategory(feeCategoryForm: UpdateFeeCategoryForm, user: User): boolean;

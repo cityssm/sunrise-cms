@@ -1,24 +1,25 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Cemetery, FuneralHome } from '../types/record.types.js'
 
-import { acquireConnection } from './pool.js'
-
-export default async function getFuneralHome(
+export default function getFuneralHome(
   funeralHomeId: number | string
-): Promise<FuneralHome | undefined> {
-  return await _getFuneralHome('funeralHomeId', funeralHomeId)
+): FuneralHome | undefined {
+  return _getFuneralHome('funeralHomeId', funeralHomeId)
 }
 
-export async function getFuneralHomeByKey(
+export function getFuneralHomeByKey(
   funeralHomeKey: string
-): Promise<FuneralHome | undefined> {
-  return await _getFuneralHome('funeralHomeKey', funeralHomeKey)
+): FuneralHome | undefined {
+  return _getFuneralHome('funeralHomeKey', funeralHomeKey)
 }
 
-async function _getFuneralHome(
+function _getFuneralHome(
   keyColumn: 'funeralHomeId' | 'funeralHomeKey',
   funeralHomeIdOrKey: number | string
-): Promise<FuneralHome | undefined> {
-  const database = await acquireConnection()
+): FuneralHome | undefined {
+  const database = sqlite(sunriseDB)
 
   const funeralHome = database
     .prepare(
@@ -32,7 +33,7 @@ async function _getFuneralHome(
     )
     .get(funeralHomeIdOrKey) as Cemetery | undefined
 
-  database.release()
+  database.close()
 
   return funeralHome
 }

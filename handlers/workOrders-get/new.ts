@@ -5,10 +5,7 @@ import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js'
 import type { WorkOrder } from '../../types/record.types.js'
 
-export default async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
+export default function handler(request: Request, response: Response): void {
   const currentDate = new Date()
 
   const workOrder: Partial<WorkOrder> = {
@@ -16,7 +13,7 @@ export default async function handler(
     workOrderOpenDateString: dateToString(currentDate)
   }
 
-  const workOrderTypes = await getWorkOrderTypes()
+  const workOrderTypes = getWorkOrderTypes()
 
   response.render('workOrder-edit', {
     headTitle: 'New Work Order',

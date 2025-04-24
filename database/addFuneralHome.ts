@@ -1,21 +1,22 @@
-import { acquireConnection } from './pool.js'
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddForm {
   funeralHomeName: string
   funeralHomeKey: string
+
   funeralHomeAddress1: string
   funeralHomeAddress2: string
   funeralHomeCity: string
-  funeralHomeProvince: string
   funeralHomePostalCode: string
+  funeralHomeProvince: string
+
   funeralHomePhoneNumber: string
 }
 
-export default async function addFuneralHome(
-  addForm: AddForm,
-  user: User
-): Promise<number> {
-  const database = await acquireConnection()
+export default function addFuneralHome(addForm: AddForm, user: User): number {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -43,7 +44,7 @@ export default async function addFuneralHome(
       rightNowMillis
     )
 
-  database.release()
+  database.close()
 
   return result.lastInsertRowid as number
 }

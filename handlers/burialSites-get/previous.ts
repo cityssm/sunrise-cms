@@ -3,13 +3,10 @@ import type { Request, Response } from 'express'
 import { getPreviousBurialSiteId } from '../../helpers/burialSites.helpers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 
-export default async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
+export default function handler(request: Request, response: Response): void {
   const burialSiteId = Number.parseInt(request.params.burialSiteId, 10)
 
-  const previousBurialSiteId = await getPreviousBurialSiteId(burialSiteId)
+  const previousBurialSiteId = getPreviousBurialSiteId(burialSiteId)
 
   if (previousBurialSiteId === undefined) {
     response.redirect(

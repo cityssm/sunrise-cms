@@ -1,12 +1,10 @@
 import { dateToInteger } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
-export async function deleteBurialSite(
-  burialSiteId: number,
-  user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+export function deleteBurialSite(burialSiteId: number, user: User): boolean {
+  const database = sqlite(sunriseDB)
 
   /*
    * Ensure no active contracts reference the burial site
@@ -26,7 +24,7 @@ export async function deleteBurialSite(
     .get(burialSiteId, currentDateInteger) as number | undefined
 
   if (activeContract !== undefined) {
-    database.release()
+    database.close()
     return false
   }
 
@@ -70,7 +68,7 @@ export async function deleteBurialSite(
     )
     .run(user.userName, rightNowMillis, burialSiteId)
 
-  database.release()
+  database.close()
 
   return true
 }

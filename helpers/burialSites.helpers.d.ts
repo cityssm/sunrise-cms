@@ -1,6 +1,6 @@
 export declare function clearNextPreviousBurialSiteIdCache(burialSiteId?: number, relayMessage?: boolean): void;
-export declare function getNextBurialSiteId(burialSiteId: number): Promise<number | undefined>;
-export declare function getPreviousBurialSiteId(burialSiteId: number): Promise<number | undefined>;
+export declare function getNextBurialSiteId(burialSiteId: number): number | undefined;
+export declare function getPreviousBurialSiteId(burialSiteId: number): number | undefined;
 export declare function buildBurialSiteName(cemeteryKey: string | undefined, segments: {
     burialSiteNameSegment1?: string;
     burialSiteNameSegment2?: string;

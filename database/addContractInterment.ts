@@ -1,8 +1,7 @@
-import type { PoolConnection } from 'better-sqlite-pool'
-
 import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddForm {
   contractId: number | string
@@ -22,22 +21,22 @@ export interface AddForm {
 
   deathAge: number | string
   deathAgePeriod: string
-  
+
   intermentContainerTypeId: number | string
 }
 
-export default async function addContractInterment(
+export default function addContractInterment(
   contractForm: AddForm,
   user: User,
-  connectedDatabase?: PoolConnection
-): Promise<number> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): number {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const maxIntermentNumber = (database
     .prepare(
       `select max(intermentNumber) as maxIntermentNumber
-      from ContractInterments
-      where contractId = ?`
+        from ContractInterments
+        where contractId = ?`
     )
     .pluck()
     .get(contractForm.contractId) ?? 0) as number
@@ -82,7 +81,7 @@ export default async function addContractInterment(
     )
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return newIntermentNumber

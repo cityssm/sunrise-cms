@@ -1,4 +1,5 @@
-import { acquireConnection } from './pool.js';
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 /**
  * Updates a cemetery in the database.
  * Be sure to rebuild burial site names after updating a cemetery.
@@ -6,8 +7,8 @@ import { acquireConnection } from './pool.js';
  * @param user - The user who is updating the cemetery.
  * @returns `true` if the cemetery was updated successfully, `false` otherwise.
  */
-export default async function updateCemetery(updateForm, user) {
-    const database = await acquireConnection();
+export default function updateCemetery(updateForm, user) {
+    const database = sqlite(sunriseDB);
     const result = database
         .prepare(`update Cemeteries
         set cemeteryName = ?,
@@ -34,6 +35,6 @@ export default async function updateCemetery(updateForm, user) {
         : updateForm.cemeteryLongitude, updateForm.cemeteryAddress1, updateForm.cemeteryAddress2, updateForm.cemeteryCity, updateForm.cemeteryProvince, updateForm.cemeteryPostalCode, updateForm.cemeteryPhoneNumber, updateForm.parentCemeteryId === ''
         ? undefined
         : updateForm.parentCemeteryId, user.userName, Date.now(), updateForm.cemeteryId);
-    database.release();
+    database.close();
     return result.changes > 0;
 }

@@ -1,17 +1,19 @@
 import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface CloseWorkOrderForm {
   workOrderId: number | string
+
   workOrderCloseDateString?: string
 }
 
-export default async function closeWorkOrder(
+export default function closeWorkOrder(
   workOrderForm: CloseWorkOrderForm,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const rightNow = new Date()
 
@@ -32,7 +34,7 @@ export default async function closeWorkOrder(
       workOrderForm.workOrderId
     )
 
-  database.release()
+  database.close()
 
   return result.changes > 0
 }

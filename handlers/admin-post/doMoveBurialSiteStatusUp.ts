@@ -3,29 +3,24 @@ import type { Request, Response } from 'express'
 import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js'
 import { getBurialSiteStatuses } from '../../helpers/functions.cache.js'
 
-export default async function handler(
+export default function handler(
   request: Request<
     unknown,
     unknown,
     { burialSiteStatusId: string; moveToEnd: '0' | '1' }
   >,
   response: Response
-): Promise<void> {
+): void {
   const success =
     request.body.moveToEnd === '1'
-      ? await moveRecordUpToTop(
-          'BurialSiteStatuses',
-          request.body.burialSiteStatusId
-        )
-      : await moveRecordUp(
-          'BurialSiteStatuses',
-          request.body.burialSiteStatusId
-        )
+      ? moveRecordUpToTop('BurialSiteStatuses', request.body.burialSiteStatusId)
+      : moveRecordUp('BurialSiteStatuses', request.body.burialSiteStatusId)
 
-  const burialSiteStatuses = await getBurialSiteStatuses()
+  const burialSiteStatuses = getBurialSiteStatuses()
 
   response.json({
     success,
+
     burialSiteStatuses
   })
 }

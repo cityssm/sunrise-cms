@@ -6,23 +6,20 @@ import {
 } from '../../database/moveRecord.js'
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js'
 
-export default async function handler(
+export default function handler(
   request: Request<
     unknown,
     unknown,
     { workOrderTypeId: string; moveToEnd: '0' | '1' }
   >,
   response: Response
-): Promise<void> {
+): void {
   const success =
     request.body.moveToEnd === '1'
-      ? await moveRecordDownToBottom(
-          'WorkOrderTypes',
-          request.body.workOrderTypeId
-        )
-      : await moveRecordDown('WorkOrderTypes', request.body.workOrderTypeId)
+      ? moveRecordDownToBottom('WorkOrderTypes', request.body.workOrderTypeId)
+      : moveRecordDown('WorkOrderTypes', request.body.workOrderTypeId)
 
-  const workOrderTypes = await getWorkOrderTypes()
+  const workOrderTypes = getWorkOrderTypes()
 
   response.json({
     success,

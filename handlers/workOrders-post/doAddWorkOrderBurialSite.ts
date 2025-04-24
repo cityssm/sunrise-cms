@@ -3,15 +3,15 @@ import type { Request, Response } from 'express'
 import addWorkOrderBurialSite from '../../database/addWorkOrderBurialSite.js'
 import getBurialSites from '../../database/getBurialSites.js'
 
-export default async function handler(
+export default function handler(
   request: Request<
     unknown,
     unknown,
-    { burialSiteId: string; workOrderId: string; }
+    { burialSiteId: string; workOrderId: string }
   >,
   response: Response
-): Promise<void> {
-  const success = await addWorkOrderBurialSite(
+): void {
+  const success = addWorkOrderBurialSite(
     {
       burialSiteId: request.body.burialSiteId,
       workOrderId: request.body.workOrderId
@@ -19,7 +19,7 @@ export default async function handler(
     request.session.user as User
   )
 
-  const results = await getBurialSites(
+  const results = getBurialSites(
     {
       workOrderId: request.body.workOrderId
     },

@@ -1,14 +1,14 @@
-import type { PoolConnection } from 'better-sqlite-pool'
-
 import {
   type DateString,
   type TimeString,
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addOrUpdateContractField from './addOrUpdateContractField.js'
-import { acquireConnection } from './pool.js'
 
 export interface AddContractForm {
   burialSiteId: number | string
@@ -51,12 +51,12 @@ export interface AddContractForm {
 }
 
 // eslint-disable-next-line complexity
-export default async function addContract(
+export default function addContract(
   addForm: AddContractForm,
   user: User,
-  connectedDatabase?: PoolConnection
-): Promise<number> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): number {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -124,7 +124,7 @@ export default async function addContract(
       | undefined
 
     if ((fieldValue ?? '') !== '') {
-      await addOrUpdateContractField(
+      addOrUpdateContractField(
         {
           contractId,
           contractTypeFieldId,
@@ -186,7 +186,7 @@ export default async function addContract(
   }
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return contractId

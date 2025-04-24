@@ -7,7 +7,7 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const success = await deleteRecord(
+  const success = deleteRecord(
     'WorkOrderMilestones',
     request.body.workOrderMilestoneId as string,
     request.session.user as User

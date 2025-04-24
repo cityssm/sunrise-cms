@@ -4,14 +4,11 @@ import closeWorkOrder, {
   type CloseWorkOrderForm
 } from '../../database/closeWorkOrder.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, CloseWorkOrderForm>,
   response: Response
-): Promise<void> {
-  const success = await closeWorkOrder(
-    request.body,
-    request.session.user as User
-  )
+): void {
+  const success = closeWorkOrder(request.body, request.session.user as User)
 
   response.json({
     success

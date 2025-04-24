@@ -1,10 +1,12 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { WorkOrderType } from '../types/record.types.js'
 
-import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export default async function getWorkOrderTypes(): Promise<WorkOrderType[]> {
-  const database = await acquireConnection()
+export default function getWorkOrderTypes(): WorkOrderType[] {
+  const database = sqlite(sunriseDB)
 
   const workOrderTypes = database
     .prepare(
@@ -32,7 +34,7 @@ export default async function getWorkOrderTypes(): Promise<WorkOrderType[]> {
     expectedOrderNumber += 1
   }
 
-  database.release()
+  database.close()
 
   return workOrderTypes
 }

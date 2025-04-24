@@ -1,7 +1,8 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
-import { acquireConnection } from './pool.js';
-export async function deleteBurialSite(burialSiteId, user) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export function deleteBurialSite(burialSiteId, user) {
+    const database = sqlite(sunriseDB);
     /*
      * Ensure no active contracts reference the burial site
      */
@@ -15,7 +16,7 @@ export async function deleteBurialSite(burialSiteId, user) {
         .pluck()
         .get(burialSiteId, currentDateInteger);
     if (activeContract !== undefined) {
-        database.release();
+        database.close();
         return false;
     }
     /*
@@ -46,6 +47,6 @@ export async function deleteBurialSite(burialSiteId, user) {
         where burialSiteId = ?
         and recordDelete_timeMillis is null`)
         .run(user.userName, rightNowMillis, burialSiteId);
-    database.release();
+    database.close();
     return true;
 }

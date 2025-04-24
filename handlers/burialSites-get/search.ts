@@ -6,21 +6,20 @@ import {
   getBurialSiteTypes
 } from '../../helpers/functions.cache.js'
 
-export default async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
-  const cemeteries = await getCemeteries()
-  const burialSiteTypes = await getBurialSiteTypes()
-  const burialSiteStatuses = await getBurialSiteStatuses()
+export default function handler(request: Request, response: Response): void {
+  const cemeteries = getCemeteries()
+  const burialSiteTypes = getBurialSiteTypes()
+  const burialSiteStatuses = getBurialSiteStatuses()
 
   response.render('burialSite-search', {
-    headTitle: "Burial Site Search",
-    cemeteries,
-    burialSiteTypes,
+    headTitle: 'Burial Site Search',
+
     burialSiteStatuses,
-    cemeteryId: request.query.cemeteryId,
+    burialSiteTypes,
+    cemeteries,
+
+    burialSiteStatusId: request.query.burialSiteStatusId,
     burialSiteTypeId: request.query.burialSiteTypeId,
-    burialSiteStatusId: request.query.burialSiteStatusId
+    cemeteryId: request.query.cemeteryId
   })
 }

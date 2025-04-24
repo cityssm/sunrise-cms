@@ -2,26 +2,30 @@ import {
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddWorkOrderMilestoneForm {
-  workOrderId: string | number
+  workOrderId: number | string
   workOrderMilestoneTypeId: number | string
+
   workOrderMilestoneDateString: string
   workOrderMilestoneTimeString?: string
+
   workOrderMilestoneDescription: string
+
   workOrderMilestoneCompletionDateString?: string
   workOrderMilestoneCompletionTimeString?: string
 }
 
-export default async function addWorkOrderMilestone(
+export default function addWorkOrderMilestone(
   milestoneForm: AddWorkOrderMilestoneForm,
   user: User
-): Promise<number> {
+): number {
   const rightNowMillis = Date.now()
 
-  const database = await acquireConnection()
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -62,7 +66,7 @@ export default async function addWorkOrderMilestone(
       rightNowMillis
     )
 
-  database.release()
+  database.close()
 
   return result.lastInsertRowid as number
 }

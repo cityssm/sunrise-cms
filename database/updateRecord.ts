@@ -1,6 +1,7 @@
-import { clearCacheByTableName } from '../helpers/functions.cache.js'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
+import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 type RecordTable =
   | 'BurialSiteStatuses'
@@ -18,13 +19,13 @@ const recordNameIdColumns = new Map<RecordTable, string[]>([
   ['WorkOrderTypes', ['workOrderType', 'workOrderTypeId']]
 ])
 
-export async function updateRecord(
+export function updateRecord(
   recordTable: RecordTable,
   recordId: number | string,
   recordName: string,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -37,7 +38,7 @@ export async function updateRecord(
     )
     .run(recordName, user.userName, Date.now(), recordId)
 
-  database.release()
+  database.close()
 
   clearCacheByTableName(recordTable)
 

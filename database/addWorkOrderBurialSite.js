@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function addWorkOrderBurialSite(workOrderLotForm, user) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function addWorkOrderBurialSite(workOrderLotForm, user) {
+    const database = sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const row = database
         .prepare(`select recordDelete_timeMillis
@@ -32,6 +33,6 @@ export default async function addWorkOrderBurialSite(workOrderLotForm, user) {
                 .run(user.userName, rightNowMillis, user.userName, rightNowMillis, workOrderLotForm.workOrderId, workOrderLotForm.burialSiteId);
         }
     }
-    database.release();
+    database.close();
     return true;
 }

@@ -1,11 +1,13 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { BurialSiteType } from '../types/record.types.js'
 
 import getBurialSiteTypeFields from './getBurialSiteTypeFields.js'
-import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export default async function getBurialSiteTypes(): Promise<BurialSiteType[]> {
-  const database = await acquireConnection()
+export default function getBurialSiteTypes(): BurialSiteType[] {
+  const database = sqlite(sunriseDB)
 
   const burialSiteTypes = database
     .prepare(
@@ -32,13 +34,13 @@ export default async function getBurialSiteTypes(): Promise<BurialSiteType[]> {
       burialSiteType.orderNumber = expectedOrderNumber
     }
 
-    burialSiteType.burialSiteTypeFields = await getBurialSiteTypeFields(
+    burialSiteType.burialSiteTypeFields = getBurialSiteTypeFields(
       burialSiteType.burialSiteTypeId,
       database
     )
   }
 
-  database.release()
+  database.close()
 
   return burialSiteTypes
 }

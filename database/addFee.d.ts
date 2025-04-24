@@ -1,10 +1,10 @@
 export interface AddFeeForm {
-    feeCategoryId: string | number;
+    feeCategoryId: number | string;
     feeName: string;
     feeDescription: string;
     feeAccount: string;
-    contractTypeId: string | number;
-    burialSiteTypeId: string | number;
+    contractTypeId: number | string;
+    burialSiteTypeId: number | string;
     feeAmount?: string;
     feeFunction?: string;
     taxAmount?: string;
@@ -14,4 +14,4 @@ export interface AddFeeForm {
     isRequired?: '' | '1';
     orderNumber?: number;
 }
-export default function addFee(feeForm: AddFeeForm, user: User): Promise<number>;
+export default function addFee(feeForm: AddFeeForm, user: User): number;

@@ -11,7 +11,7 @@ export default async function handler(
   >,
   response: Response
 ): Promise<void> {
-  const success = await completeWorkOrderMilestone(
+  const success = completeWorkOrderMilestone(
     {
       workOrderMilestoneId: request.body.workOrderMilestoneId
     },

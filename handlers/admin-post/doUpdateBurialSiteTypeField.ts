@@ -5,19 +5,17 @@ import updateBurialSiteTypeField, {
 } from '../../database/updateBurialSiteTypeField.js'
 import { getBurialSiteTypes } from '../../helpers/functions.cache.js'
 
-export default async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
-  const success = await updateBurialSiteTypeField(
+export default function handler(request: Request, response: Response): void {
+  const success = updateBurialSiteTypeField(
     request.body as UpdateBurialSiteTypeFieldForm,
     request.session.user as User
   )
 
-  const burialSiteTypes = await getBurialSiteTypes()
+  const burialSiteTypes = getBurialSiteTypes()
 
   response.json({
     success,
+
     burialSiteTypes
   })
 }

@@ -1,8 +1,7 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
-
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 const availablePrints = getConfigProperty('settings.contracts.prints')
 
@@ -15,11 +14,11 @@ const userFunction_configContainsPrintEJS = (printEJS: string): number => {
   return 0
 }
 
-export default async function getContractTypePrints(
+export default function getContractTypePrints(
   contractTypeId: number,
-  connectedDatabase?: PoolConnection
-): Promise<string[]> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): string[] {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   database.function(
     // eslint-disable-next-line no-secrets/no-secrets
@@ -60,7 +59,7 @@ export default async function getContractTypePrints(
   }
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return prints

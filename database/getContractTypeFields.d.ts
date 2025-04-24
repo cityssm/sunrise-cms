@@ -1,3 +1,3 @@
-import type { PoolConnection } from 'better-sqlite-pool';
+import sqlite from 'better-sqlite3';
 import type { ContractTypeField } from '../types/record.types.js';
-export default function getContractTypeFields(contractTypeId?: number, connectedDatabase?: PoolConnection): Promise<ContractTypeField[]>;
+export default function getContractTypeFields(contractTypeId?: number, connectedDatabase?: sqlite.Database): ContractTypeField[];

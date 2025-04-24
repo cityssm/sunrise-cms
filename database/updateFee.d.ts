@@ -14,9 +14,9 @@ export interface UpdateFeeForm {
     quantityUnit?: string;
     isRequired: '' | '1';
 }
-export default function updateFee(feeForm: UpdateFeeForm, user: User): Promise<boolean>;
+export default function updateFee(feeForm: UpdateFeeForm, user: User): boolean;
 export interface UpdateFeeAmountForm {
     feeId: string;
     feeAmount: string;
 }
-export declare function updateFeeAmount(feeAmountForm: UpdateFeeAmountForm, user: User): Promise<boolean>;
+export declare function updateFeeAmount(feeAmountForm: UpdateFeeAmountForm, user: User): boolean;

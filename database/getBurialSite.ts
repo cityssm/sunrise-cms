@@ -1,9 +1,11 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { BurialSite } from '../types/record.types.js'
 
 import getBurialSiteComments from './getBurialSiteComments.js'
 import getBurialSiteFields from './getBurialSiteFields.js'
 import getContracts from './getContracts.js'
-import { acquireConnection } from './pool.js'
 
 const baseSQL = `select l.burialSiteId,
   l.burialSiteTypeId, t.burialSiteType,
@@ -45,7 +47,7 @@ async function _getBurialSite(
   sql: string,
   burialSiteIdOrLotName: number | string
 ): Promise<BurialSite | undefined> {
-  const database = await acquireConnection()
+  const database = sqlite(sunriseDB)
 
   const burialSite = database.prepare(sql).get(burialSiteIdOrLotName) as
     | BurialSite
@@ -69,18 +71,18 @@ async function _getBurialSite(
 
     burialSite.contracts = contracts.contracts
 
-    burialSite.burialSiteFields = await getBurialSiteFields(
+    burialSite.burialSiteFields = getBurialSiteFields(
       burialSite.burialSiteId,
       database
     )
 
-    burialSite.burialSiteComments = await getBurialSiteComments(
+    burialSite.burialSiteComments = getBurialSiteComments(
       burialSite.burialSiteId,
       database
     )
   }
 
-  database.release()
+  database.close()
 
   return burialSite
 }

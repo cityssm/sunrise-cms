@@ -75,14 +75,14 @@ export function clearNextPreviousBurialSiteIdCache(
   }
 }
 
-export async function getNextBurialSiteId(
+export function getNextBurialSiteId(
   burialSiteId: number
-): Promise<number | undefined> {
+): number | undefined {
   let nextBurialSiteId: number | undefined =
     nextBurialSiteIdCache.get(burialSiteId)
 
   if (nextBurialSiteId === undefined) {
-    nextBurialSiteId = await getNextBurialSiteIdFromDatabase(burialSiteId)
+    nextBurialSiteId = getNextBurialSiteIdFromDatabase(burialSiteId)
 
     if (nextBurialSiteId !== undefined) {
       cacheBurialSiteIds(burialSiteId, nextBurialSiteId)
@@ -92,14 +92,14 @@ export async function getNextBurialSiteId(
   return nextBurialSiteId
 }
 
-export async function getPreviousBurialSiteId(
+export function getPreviousBurialSiteId(
   burialSiteId: number
-): Promise<number | undefined> {
+): number | undefined {
   let previousBurialSiteId: number | undefined =
     previousBurialSiteIdCache.get(burialSiteId)
 
   if (previousBurialSiteId === undefined) {
-    previousBurialSiteId = await getPreviousBurialSiteIdFromDatabase(burialSiteId)
+    previousBurialSiteId = getPreviousBurialSiteIdFromDatabase(burialSiteId)
 
     if (previousBurialSiteId !== undefined) {
       cacheBurialSiteIds(previousBurialSiteId, burialSiteId)

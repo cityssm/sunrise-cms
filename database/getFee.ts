@@ -1,14 +1,13 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Fee } from '../types/record.types.js'
 
-import { acquireConnection } from './pool.js'
-
-export default async function getFee(
+export default function getFee(
   feeId: number | string,
-  connectedDatabase?: PoolConnection
-): Promise<Fee | undefined> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): Fee | undefined {
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const fee = database
     .prepare(
@@ -31,7 +30,7 @@ export default async function getFee(
     .get(feeId) as Fee | undefined
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return fee

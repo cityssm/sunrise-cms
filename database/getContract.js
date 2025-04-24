@@ -1,13 +1,14 @@
 import { dateIntegerToString, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import getContractComments from './getContractComments.js';
 import getContractFees from './getContractFees.js';
 import getContractFields from './getContractFields.js';
 import getContractInterments from './getContractInterments.js';
 import getContractTransactions from './getContractTransactions.js';
 import { getWorkOrders } from './getWorkOrders.js';
-import { acquireConnection } from './pool.js';
 export default async function getContract(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
@@ -40,10 +41,10 @@ export default async function getContract(contractId, connectedDatabase) {
         and o.contractId = ?`)
         .get(contractId);
     if (contract !== undefined) {
-        contract.contractFields = await getContractFields(contractId, database);
-        contract.contractInterments = await getContractInterments(contractId, database);
-        contract.contractComments = await getContractComments(contractId, database);
-        contract.contractFees = await getContractFees(contractId, database);
+        contract.contractFields = getContractFields(contractId, database);
+        contract.contractInterments = getContractInterments(contractId, database);
+        contract.contractComments = getContractComments(contractId, database);
+        contract.contractFees = getContractFees(contractId, database);
         contract.contractTransactions = await getContractTransactions(contractId, { includeIntegrations: true }, database);
         const workOrdersResults = await getWorkOrders({
             contractId
@@ -54,7 +55,7 @@ export default async function getContract(contractId, connectedDatabase) {
         contract.workOrders = workOrdersResults.workOrders;
     }
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return contract;
 }

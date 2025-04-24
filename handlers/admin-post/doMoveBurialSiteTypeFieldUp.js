@@ -1,10 +1,10 @@
 import { moveBurialSiteTypeFieldUp, moveBurialSiteTypeFieldUpToTop } from '../../database/moveBurialSiteTypeField.js';
 import { getBurialSiteTypes } from '../../helpers/functions.cache.js';
-export default async function handler(request, response) {
+export default function handler(request, response) {
     const success = request.body.moveToEnd === '1'
-        ? await moveBurialSiteTypeFieldUpToTop(request.body.burialSiteTypeFieldId)
-        : await moveBurialSiteTypeFieldUp(request.body.burialSiteTypeFieldId);
-    const burialSiteTypes = await getBurialSiteTypes();
+        ? moveBurialSiteTypeFieldUpToTop(request.body.burialSiteTypeFieldId)
+        : moveBurialSiteTypeFieldUp(request.body.burialSiteTypeFieldId);
+    const burialSiteTypes = getBurialSiteTypes();
     response.json({
         success,
         burialSiteTypes

@@ -1,6 +1,6 @@
-import type { PoolConnection } from 'better-sqlite-pool';
+import sqlite from 'better-sqlite3';
 export interface AddForm {
-    workOrderId: number | string;
     contractId: number | string;
+    workOrderId: number | string;
 }
-export default function addWorkOrderContract(addForm: AddForm, user: User, connectedDatabase?: PoolConnection): Promise<boolean>;
+export default function addWorkOrderContract(addForm: AddForm, user: User, connectedDatabase?: sqlite.Database): boolean;

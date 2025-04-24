@@ -6,14 +6,11 @@ import updateCemetery, {
 } from '../../database/updateCemetery.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, UpdateCemeteryForm>,
   response: Response
-): Promise<void> {
-  const success = await updateCemetery(
-    request.body,
-    request.session.user as User
-  )
+): void {
+  const success = updateCemetery(request.body, request.session.user as User)
 
   response.json({
     success,
@@ -23,7 +20,7 @@ export default async function handler(
 
   if (success) {
     response.on('finish', () => {
-      void rebuildBurialSiteNames(
+      rebuildBurialSiteNames(
         request.body.cemeteryId,
         request.session.user as User
       )

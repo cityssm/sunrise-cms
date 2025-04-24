@@ -1,9 +1,9 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { FeeCategory } from '../types/record.types.js'
 
 import getFees from './getFees.js'
-import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 interface GetFeeCategoriesFilters {
@@ -16,15 +16,15 @@ interface GetFeeCategoriesOptions {
   includeFees?: boolean
 }
 
-export default async function getFeeCategories(
+export default function getFeeCategories(
   filters: GetFeeCategoriesFilters,
   options: GetFeeCategoriesOptions,
-  connectedDatabase?: PoolConnection
-): Promise<FeeCategory[]> {
+  connectedDatabase?: sqlite.Database
+): FeeCategory[] {
   const updateOrderNumbers =
     !(filters.burialSiteTypeId || filters.contractTypeId) && options.includeFees
 
-  const database = await acquireConnection()
+  const database = sqlite(sunriseDB)
 
   let sqlWhereClause = ' where recordDelete_timeMillis is null'
 
@@ -78,26 +78,22 @@ export default async function getFeeCategories(
 
       expectedOrderNumber += 1
 
-      feeCategory.fees = await getFees(
-        feeCategory.feeCategoryId,
-        filters,
-        database
-      )
+      feeCategory.fees = getFees(feeCategory.feeCategoryId, filters, database)
     }
   }
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return feeCategories
 }
 
-export async function getFeeCategory(
+export function getFeeCategory(
   feeCategoryId: number | string,
-  connectedDatabase?: PoolConnection
-): Promise<FeeCategory | undefined> {
-  const feeCategories = await getFeeCategories(
+  connectedDatabase?: sqlite.Database
+): FeeCategory | undefined {
+  const feeCategories = getFeeCategories(
     {
       feeCategoryId
     },

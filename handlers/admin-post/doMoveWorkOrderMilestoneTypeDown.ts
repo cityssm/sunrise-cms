@@ -6,26 +6,26 @@ import {
 } from '../../database/moveRecord.js'
 import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
 
-export default async function handler(
+export default function handler(
   request: Request<
     unknown,
     unknown,
     { workOrderMilestoneTypeId: string; moveToEnd: '0' | '1' }
   >,
   response: Response
-): Promise<void> {
+): void {
   const success =
     request.body.moveToEnd === '1'
-      ? await moveRecordDownToBottom(
+      ? moveRecordDownToBottom(
           'WorkOrderMilestoneTypes',
           request.body.workOrderMilestoneTypeId
         )
-      : await moveRecordDown(
+      : moveRecordDown(
           'WorkOrderMilestoneTypes',
           request.body.workOrderMilestoneTypeId
         )
 
-  const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
+  const workOrderMilestoneTypes = getWorkOrderMilestoneTypes()
 
   response.json({
     success,

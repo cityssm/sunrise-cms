@@ -5,11 +5,8 @@ import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js
 import getCemetery from '../../database/getCemetery.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 
-export default async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
-  const cemetery = await getCemetery(request.params.cemeteryId)
+export default function handler(request: Request, response: Response): void {
+  const cemetery = getCemetery(request.params.cemeteryId)
 
   if (cemetery === undefined) {
     response.redirect(
@@ -18,11 +15,11 @@ export default async function handler(
     return
   }
 
-  const burialSiteTypeSummary = await getBurialSiteTypeSummary({
+  const burialSiteTypeSummary = getBurialSiteTypeSummary({
     cemeteryId: cemetery.cemeteryId
   })
 
-  const burialSiteStatusSummary = await getBurialSiteStatusSummary({
+  const burialSiteStatusSummary = getBurialSiteStatusSummary({
     cemeteryId: cemetery.cemeteryId
   })
 

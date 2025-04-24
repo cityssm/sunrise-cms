@@ -1,7 +1,8 @@
-import { acquireConnection } from './pool.js';
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default async function getContractTypeFields(contractTypeId, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+export default function getContractTypeFields(contractTypeId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const sqlParameters = [];
     if ((contractTypeId ?? -1) !== -1) {
         sqlParameters.push(contractTypeId);
@@ -25,7 +26,7 @@ export default async function getContractTypeFields(contractTypeId, connectedDat
         expectedOrderNumber += 1;
     }
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return contractTypeFields;
 }

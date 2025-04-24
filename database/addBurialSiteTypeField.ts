@@ -1,24 +1,29 @@
-import { clearCacheByTableName } from '../helpers/functions.cache.js'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
+import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 export interface AddBurialSiteTypeFieldForm {
   burialSiteTypeId: number | string
+  
   burialSiteTypeField: string
+
   fieldType?: string
   fieldValues?: string
+
   isRequired?: string
-  pattern?: string
-  minLength?: number | string
   maxLength?: number | string
+  minLength?: number | string
+  pattern?: string
+
   orderNumber?: number
 }
 
-export default async function addBurialSiteTypeField(
+export default function addBurialSiteTypeField(
   addForm: AddBurialSiteTypeFieldForm,
   user: User
-): Promise<number> {
-  const database = await acquireConnection()
+): number {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -50,7 +55,7 @@ export default async function addBurialSiteTypeField(
       rightNowMillis
     )
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('BurialSiteTypeFields')
 

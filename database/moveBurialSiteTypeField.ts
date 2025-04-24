@@ -1,14 +1,14 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
-import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export async function moveBurialSiteTypeFieldDown(
+export function moveBurialSiteTypeFieldDown(
   burialSiteTypeFieldId: number | string
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const currentField = getCurrentField(burialSiteTypeFieldId, database)
 
@@ -28,17 +28,17 @@ export async function moveBurialSiteTypeFieldDown(
     database
   )
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('BurialSiteTypeFields')
 
   return success
 }
 
-export async function moveBurialSiteTypeFieldDownToBottom(
+export function moveBurialSiteTypeFieldDownToBottom(
   burialSiteTypeFieldId: number | string
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const currentField = getCurrentField(burialSiteTypeFieldId, database)
 
@@ -72,22 +72,22 @@ export async function moveBurialSiteTypeFieldDownToBottom(
       .run(currentField.burialSiteTypeId, currentField.orderNumber)
   }
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('BurialSiteTypeFields')
 
   return true
 }
 
-export async function moveBurialSiteTypeFieldUp(
+export function moveBurialSiteTypeFieldUp(
   burialSiteTypeFieldId: number | string
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const currentField = getCurrentField(burialSiteTypeFieldId, database)
 
   if (currentField.orderNumber <= 0) {
-    database.release()
+    database.close()
     return true
   }
 
@@ -108,17 +108,17 @@ export async function moveBurialSiteTypeFieldUp(
     database
   )
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('BurialSiteTypeFields')
 
   return success
 }
 
-export async function moveBurialSiteTypeFieldUpToTop(
+export function moveBurialSiteTypeFieldUpToTop(
   burialSiteTypeFieldId: number | string
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const currentField = getCurrentField(burialSiteTypeFieldId, database)
 
@@ -141,7 +141,7 @@ export async function moveBurialSiteTypeFieldUpToTop(
       .run(currentField.burialSiteTypeId, currentField.orderNumber)
   }
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('BurialSiteTypeFields')
 
@@ -150,7 +150,7 @@ export async function moveBurialSiteTypeFieldUpToTop(
 
 function getCurrentField(
   burialSiteTypeFieldId: number | string,
-  connectedDatabase: PoolConnection
+  connectedDatabase: sqlite.Database
 ): { burialSiteTypeId?: number; orderNumber: number } {
   return connectedDatabase
     .prepare(

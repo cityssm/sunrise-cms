@@ -4,11 +4,8 @@ import addWorkOrder, {
   type AddWorkOrderForm
 } from '../../database/addWorkOrder.js'
 
-export default async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
-  const workOrderId = await addWorkOrder(
+export default function handler(request: Request, response: Response): void {
+  const workOrderId = addWorkOrder(
     request.body as AddWorkOrderForm,
     request.session.user as User
   )
@@ -18,4 +15,3 @@ export default async function handler(
     workOrderId
   })
 }
-

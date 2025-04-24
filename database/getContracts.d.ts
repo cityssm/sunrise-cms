@@ -1,5 +1,5 @@
-import type { PoolConnection } from 'better-sqlite-pool';
 import { type DateString } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
 import type { Contract } from '../types/record.types.js';
 export interface GetContractsFilters {
     burialSiteId?: number | string;
@@ -20,11 +20,11 @@ export interface GetContractsOptions {
     /** -1 for no limit */
     limit: number | string;
     offset: number | string;
-    includeInterments: boolean;
     includeFees: boolean;
+    includeInterments: boolean;
     includeTransactions: boolean;
 }
-export default function getContracts(filters: GetContractsFilters, options: GetContractsOptions, connectedDatabase?: PoolConnection): Promise<{
+export default function getContracts(filters: GetContractsFilters, options: GetContractsOptions, connectedDatabase?: sqlite.Database): Promise<{
     count: number;
     contracts: Contract[];
 }>;

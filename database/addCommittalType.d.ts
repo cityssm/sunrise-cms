@@ -3,4 +3,4 @@ export interface AddForm {
     committalTypeKey?: string;
     orderNumber?: number;
 }
-export default function addCommittalType(addForm: AddForm, user: User): Promise<number>;
+export default function addCommittalType(addForm: AddForm, user: User): number;

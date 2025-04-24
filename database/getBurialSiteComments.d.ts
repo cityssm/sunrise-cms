@@ -1,3 +1,3 @@
-import type { PoolConnection } from 'better-sqlite-pool';
+import sqlite from 'better-sqlite3';
 import type { BurialSiteComment } from '../types/record.types.js';
-export default function getBurialSiteComments(burialSiteId: number | string, connectedDatabase?: PoolConnection): Promise<BurialSiteComment[]>;
+export default function getBurialSiteComments(burialSiteId: number | string, connectedDatabase?: sqlite.Database): BurialSiteComment[];

@@ -8,17 +8,17 @@ import {
   getBurialSiteTypes
 } from '../../helpers/functions.cache.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, unknown, { tab?: string }>,
   response: Response
-): Promise<void> {
+): void {
   const rightNow = new Date()
 
   const reportTab = request.query.tab ?? 'workOrders'
 
-  const cemeteries = await getCemeteries()
-  const burialSiteTypes = await getBurialSiteTypes()
-  const burialSiteStatuses = await getBurialSiteStatuses()
+  const cemeteries = getCemeteries()
+  const burialSiteTypes = getBurialSiteTypes()
+  const burialSiteStatuses = getBurialSiteStatuses()
 
   response.render('report-search', {
     headTitle: 'Reports',

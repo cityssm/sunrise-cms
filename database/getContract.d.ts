@@ -1,3 +1,3 @@
-import type { PoolConnection } from 'better-sqlite-pool';
+import sqlite from 'better-sqlite3';
 import type { Contract } from '../types/record.types.js';
-export default function getContract(contractId: number | string, connectedDatabase?: PoolConnection): Promise<Contract | undefined>;
+export default function getContract(contractId: number | string, connectedDatabase?: sqlite.Database): Promise<Contract | undefined>;

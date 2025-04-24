@@ -1,9 +1,10 @@
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
-import { acquireConnection } from './pool.js';
 // eslint-disable-next-line complexity
-export default async function addContract(addForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+export default function addContract(addForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const contractStartDate = dateStringToInteger(addForm.contractStartDateString);
     const result = database
@@ -34,7 +35,7 @@ export default async function addContract(addForm, user, connectedDatabase) {
     for (const contractTypeFieldId of contractTypeFieldIds) {
         const fieldValue = addForm[`fieldValue_${contractTypeFieldId}`];
         if ((fieldValue ?? '') !== '') {
-            await addOrUpdateContractField({
+            addOrUpdateContractField({
                 contractId,
                 contractTypeFieldId,
                 fieldValue: fieldValue ?? ''
@@ -66,7 +67,7 @@ export default async function addContract(addForm, user, connectedDatabase) {
             : addForm.intermentContainerTypeId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return contractId;
 }

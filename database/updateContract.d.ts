@@ -19,7 +19,7 @@ export interface UpdateContractForm {
     purchaserEmail?: string;
     purchaserPhoneNumber?: string;
     purchaserRelationship?: string;
-    contractTypeFieldIds?: string;
     [fieldValue_contractTypeFieldId: `fieldValue_${string}`]: unknown;
+    contractTypeFieldIds?: string;
 }
-export default function updateContract(updateForm: UpdateContractForm, user: User): Promise<boolean>;
+export default function updateContract(updateForm: UpdateContractForm, user: User): boolean;

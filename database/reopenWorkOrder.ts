@@ -1,10 +1,12 @@
-import { acquireConnection } from './pool.js'
+import sqlite from 'better-sqlite3'
 
-export default async function reopenWorkOrder(
+import { sunriseDB } from '../helpers/database.helpers.js'
+
+export default function reopenWorkOrder(
   workOrderId: number | string,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -17,7 +19,7 @@ export default async function reopenWorkOrder(
     )
     .run(user.userName, Date.now(), workOrderId)
 
-  database.release()
+  database.close()
 
   return result.changes > 0
 }

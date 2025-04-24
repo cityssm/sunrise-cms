@@ -1,6 +1,7 @@
-import { clearCacheByTableName } from '../helpers/functions.cache.js'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
+import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 export interface UpdateForm {
   contractTypeId: number | string
@@ -9,11 +10,11 @@ export interface UpdateForm {
   isPreneed?: string
 }
 
-export default async function updateContractType(
+export default function updateContractType(
   updateForm: UpdateForm,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -35,7 +36,7 @@ export default async function updateContractType(
       updateForm.contractTypeId
     )
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('ContractTypes')
 

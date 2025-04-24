@@ -5,19 +5,19 @@ import addBurialSite, {
 } from '../../database/addBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, AddBurialSiteForm>,
   response: Response
-): Promise<void> {
+): void {
   try {
-    const burialSiteId = await addBurialSite(
+    const burialSiteId = addBurialSite(
       request.body,
       request.session.user as User
     )
 
     response.json({
       success: true,
-      
+
       burialSiteId
     })
 

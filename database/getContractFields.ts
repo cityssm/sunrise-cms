@@ -1,14 +1,13 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { ContractField } from '../types/record.types.js'
 
-import { acquireConnection } from './pool.js'
-
-export default async function getContractField(
+export default function getContractField(
   contractId: number | string,
-  connectedDatabase?: PoolConnection
-): Promise<ContractField[]> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): ContractField[] {
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const fields = database
     .prepare(
@@ -36,15 +35,10 @@ export default async function getContractField(
         and f.contractTypeFieldId not in (select contractTypeFieldId from ContractFields where contractId = ? and recordDelete_timeMillis is null)
         order by contractTypeOrderNumber, f.orderNumber, f.contractTypeField`
     )
-    .all(
-      contractId,
-      contractId,
-      contractId,
-      contractId
-    ) as ContractField[]
+    .all(contractId, contractId, contractId, contractId) as ContractField[]
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return fields

@@ -1,17 +1,18 @@
 import { dateToInteger, dateToTimeInteger } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddBurialSiteCommentForm {
   burialSiteId: string
   comment: string
 }
 
-export default async function addBurialSiteComment(
+export default function addBurialSiteComment(
   commentForm: AddBurialSiteCommentForm,
   user: User
-): Promise<number> {
-  const database = await acquireConnection()
+): number {
+  const database = sqlite(sunriseDB)
 
   const rightNow = new Date()
 
@@ -35,7 +36,7 @@ export default async function addBurialSiteComment(
       rightNow.getTime()
     )
 
-  database.release()
+  database.close()
 
   return result.lastInsertRowid as number
 }

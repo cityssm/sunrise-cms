@@ -1,4 +1,6 @@
-import { acquireConnection } from './pool.js'
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface UpdateFeeForm {
   feeId: string
@@ -17,11 +19,8 @@ export interface UpdateFeeForm {
   isRequired: '' | '1'
 }
 
-export default async function updateFee(
-  feeForm: UpdateFeeForm,
-  user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+export default function updateFee(feeForm: UpdateFeeForm, user: User): boolean {
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -65,7 +64,7 @@ export default async function updateFee(
       feeForm.feeId
     )
 
-  database.release()
+  database.close()
 
   return result.changes > 0
 }
@@ -75,11 +74,11 @@ export interface UpdateFeeAmountForm {
   feeAmount: string
 }
 
-export async function updateFeeAmount(
+export function updateFeeAmount(
   feeAmountForm: UpdateFeeAmountForm,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -97,7 +96,7 @@ export async function updateFeeAmount(
       feeAmountForm.feeId
     )
 
-  database.release()
+  database.close()
 
   return result.changes > 0
 }

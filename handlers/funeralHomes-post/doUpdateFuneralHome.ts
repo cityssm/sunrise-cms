@@ -4,18 +4,15 @@ import updateFuneralHome, {
   type UpdateForm
 } from '../../database/updateFuneralHome.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, UpdateForm>,
   response: Response
-): Promise<void> {
-  const success = await updateFuneralHome(
-    request.body,
-    request.session.user as User
-  )
+): void {
+  const success = updateFuneralHome(request.body, request.session.user as User)
 
   response.json({
     success,
-    
+
     funeralHomeId: request.body.funeralHomeId
   })
 }

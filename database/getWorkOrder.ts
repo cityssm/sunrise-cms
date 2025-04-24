@@ -1,14 +1,15 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+
 
 import { dateIntegerToString } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { WorkOrder } from '../types/record.types.js'
 
 import getBurialSites from './getBurialSites.js'
 import getContracts from './getContracts.js'
 import getWorkOrderComments from './getWorkOrderComments.js'
 import getWorkOrderMilestones from './getWorkOrderMilestones.js'
-import { acquireConnection } from './pool.js'
 
 interface WorkOrderOptions {
   includeBurialSites: boolean
@@ -29,7 +30,7 @@ const baseSQL = `select w.workOrderId,
 export default async function getWorkOrder(
   workOrderId: number | string,
   options: WorkOrderOptions,
-  connectedDatabase?: PoolConnection
+  connectedDatabase?: sqlite.Database
 ): Promise<WorkOrder | undefined> {
   return await _getWorkOrder(
     `${baseSQL} and w.workOrderId = ?`,
@@ -57,9 +58,9 @@ async function _getWorkOrder(
   sql: string,
   workOrderIdOrWorkOrderNumber: number | string,
   options: WorkOrderOptions,
-  connectedDatabase?: PoolConnection
+  connectedDatabase?: sqlite.Database
 ): Promise<WorkOrder | undefined> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  const database = connectedDatabase ?? (sqlite(sunriseDB))
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 
@@ -69,7 +70,7 @@ async function _getWorkOrder(
 
   if (workOrder !== undefined) {
     if (options.includeBurialSites) {
-      const burialSiteResults = await getBurialSites(
+      const burialSiteResults = getBurialSites(
         {
           workOrderId: workOrder.workOrderId
         },
@@ -122,7 +123,7 @@ async function _getWorkOrder(
   }
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return workOrder

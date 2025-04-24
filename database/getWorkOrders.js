@@ -1,12 +1,13 @@
 import { dateIntegerToString, dateStringToInteger } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import { getBurialSiteNameWhereClause, getDeceasedNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import getBurialSites from './getBurialSites.js';
 import getContracts from './getContracts.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
-import { acquireConnection } from './pool.js';
 export async function getWorkOrders(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     const count = database
@@ -55,7 +56,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
         }
     }
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return {
         count,
@@ -64,14 +65,14 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
 }
 async function addInclusions(workOrder, options, database) {
     if (options.includeComments ?? false) {
-        workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);
+        workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId, database);
     }
     if (options.includeBurialSites ?? false) {
         if (workOrder.workOrderBurialSiteCount === 0) {
             workOrder.workOrderBurialSites = [];
         }
         else {
-            const workOrderBurialSitesResults = await getBurialSites({
+            const workOrderBurialSitesResults = getBurialSites({
                 workOrderId: workOrder.workOrderId
             }, {
                 limit: -1,

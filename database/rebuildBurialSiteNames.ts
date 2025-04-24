@@ -1,26 +1,26 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 import getCemetery from './getCemetery.js'
-import { acquireConnection } from './pool.js'
 
-export default async function rebuildBurialSiteNames(
+export default function rebuildBurialSiteNames(
   cemeteryId: number | string,
   user: User,
-  connectedDatabase?: PoolConnection
-): Promise<number> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): number {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   /*
    * Get the cemetery key
    */
 
-  const cemetery = await getCemetery(cemeteryId, database)
+  const cemetery = getCemetery(cemeteryId, database)
 
   if (cemetery === undefined) {
     if (connectedDatabase === undefined) {
-      database.release()
+      database.close()
     }
 
     return 0
@@ -39,7 +39,7 @@ export default async function rebuildBurialSiteNames(
     .run(cemetery.cemeteryKey, user.userName, Date.now(), cemeteryId)
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return result.changes

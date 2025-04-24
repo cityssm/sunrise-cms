@@ -1,23 +1,24 @@
 import { dateToString } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Contract } from '../types/record.types.js'
 
 import addContract from './addContract.js'
 import addContractComment from './addContractComment.js'
 import addContractInterment from './addContractInterment.js'
 import getContract from './getContract.js'
-import { acquireConnection } from './pool.js'
 
 // eslint-disable-next-line complexity
 export default async function copyContract(
   oldContractId: number | string,
   user: User
 ): Promise<number> {
-  const database = await acquireConnection()
+  const database = sqlite(sunriseDB)
 
   const oldContract = (await getContract(oldContractId, database)) as Contract
 
-  const newContractId = await addContract(
+  const newContractId = addContract(
     {
       burialSiteId: oldContract.burialSiteId ?? '',
       contractEndDateString: '',
@@ -74,7 +75,7 @@ export default async function copyContract(
    */
 
   for (const interment of oldContract.contractInterments ?? []) {
-    await addContractInterment(
+    addContractInterment(
       {
         birthDateString: interment.birthDateString ?? '',
         birthPlace: interment.birthPlace ?? '',
@@ -102,7 +103,7 @@ export default async function copyContract(
    * Add Comment
    */
 
-  await addContractComment(
+  addContractComment(
     {
       comment: `New record copied from #${oldContractId}.`,
       contractId: newContractId
@@ -110,7 +111,7 @@ export default async function copyContract(
     user
   )
 
-  database.release()
+  database.close()
 
   return newContractId
 }

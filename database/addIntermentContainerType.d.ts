@@ -4,4 +4,4 @@ export interface AddForm {
     isCremationType?: string;
     orderNumber?: number;
 }
-export default function addIntermentContainerType(addForm: AddForm, user: User): Promise<number>;
+export default function addIntermentContainerType(addForm: AddForm, user: User): number;

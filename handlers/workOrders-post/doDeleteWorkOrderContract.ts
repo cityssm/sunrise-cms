@@ -11,7 +11,7 @@ export default async function handler(
   >,
   response: Response
 ): Promise<void> {
-  const success = await deleteWorkOrderContract(
+  const success = deleteWorkOrderContract(
     request.body.workOrderId,
     request.body.contractId,
     request.session.user as User
@@ -32,7 +32,6 @@ export default async function handler(
 
   response.json({
     success,
-    workOrderContracts:
-      workOrderContracts.contracts
+    workOrderContracts: workOrderContracts.contracts
   })
 }

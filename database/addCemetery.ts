@@ -1,4 +1,6 @@
-import { acquireConnection } from './pool.js'
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddCemeteryForm {
   cemeteryDescription: string
@@ -19,11 +21,11 @@ export interface AddCemeteryForm {
   cemeteryPhoneNumber: string
 }
 
-export default async function addCemetery(
+export default function addCemetery(
   addForm: AddCemeteryForm,
   user: User
-): Promise<number> {
-  const database = await acquireConnection()
+): number {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -60,7 +62,7 @@ export default async function addCemetery(
       rightNowMillis
     )
 
-  database.release()
+  database.close()
 
   return result.lastInsertRowid as number
 }

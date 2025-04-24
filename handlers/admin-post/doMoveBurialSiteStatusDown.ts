@@ -6,30 +6,27 @@ import {
 } from '../../database/moveRecord.js'
 import { getBurialSiteStatuses } from '../../helpers/functions.cache.js'
 
-export default async function handler(
+export default function handler(
   request: Request<
     unknown,
     unknown,
     { burialSiteStatusId: string; moveToEnd: '0' | '1' }
   >,
   response: Response
-): Promise<void> {
+): void {
   const success =
     request.body.moveToEnd === '1'
-      ? await moveRecordDownToBottom(
+      ? moveRecordDownToBottom(
           'BurialSiteStatuses',
           request.body.burialSiteStatusId
         )
-      : await moveRecordDown(
-          'BurialSiteStatuses',
-          request.body.burialSiteStatusId
-        )
+      : moveRecordDown('BurialSiteStatuses', request.body.burialSiteStatusId)
 
-  const burialSiteStatuses = await getBurialSiteStatuses()
+  const burialSiteStatuses = getBurialSiteStatuses()
 
   response.json({
     success,
-    
+
     burialSiteStatuses
   })
 }

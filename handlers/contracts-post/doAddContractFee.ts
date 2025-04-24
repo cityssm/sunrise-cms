@@ -11,12 +11,11 @@ export default async function handler(
 ): Promise<void> {
   await addContractFee(request.body, request.session.user as User)
 
-  const contractFees = await getContractFees(
-    request.body.contractId as string
-  )
+  const contractFees = getContractFees(request.body.contractId as string)
 
   response.json({
     success: true,
+
     contractFees
   })
 }

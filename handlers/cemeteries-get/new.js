@@ -14,7 +14,7 @@ export default async function handler(_request, response) {
         cemeteryPostalCode: '',
         childCemeteries: []
     };
-    const cemeteries = await getCemeteries();
+    const cemeteries = getCemeteries();
     const cemeterySVGs = await getCemeterySVGs();
     response.render('cemetery-edit', {
         headTitle: 'Create a Cemetery',

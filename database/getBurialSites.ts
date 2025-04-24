@@ -1,11 +1,9 @@
-import type { PoolConnection } from 'better-sqlite-pool'
-
 import { dateToInteger } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import { getBurialSiteNameWhereClause } from '../helpers/functions.sqlFilters.js'
 import type { BurialSite } from '../types/record.types.js'
-
-import { acquireConnection } from './pool.js'
 
 export interface GetBurialSitesFilters {
   burialSiteNameSearchType?: '' | 'endsWith' | 'startsWith'
@@ -21,66 +19,16 @@ export interface GetBurialSitesOptions {
   /** -1 for no limit */
   limit: number
   offset: number | string
+
   includeContractCount?: boolean
 }
 
-function buildWhereClause(filters: GetBurialSitesFilters): {
-  sqlWhereClause: string
-  sqlParameters: unknown[]
-} {
-  let sqlWhereClause = ' where l.recordDelete_timeMillis is null'
-  const sqlParameters: unknown[] = []
-
-  const burialSiteNameFilters = getBurialSiteNameWhereClause(
-    filters.burialSiteName,
-    filters.burialSiteNameSearchType ?? '',
-    'l'
-  )
-  sqlWhereClause += burialSiteNameFilters.sqlWhereClause
-  sqlParameters.push(...burialSiteNameFilters.sqlParameters)
-
-  if ((filters.cemeteryId ?? '') !== '') {
-    sqlWhereClause += ' and (m.cemeteryId = ? or m.parentCemeteryId = ?)'
-    sqlParameters.push(filters.cemeteryId, filters.cemeteryId)
-  }
-
-  if ((filters.burialSiteTypeId ?? '') !== '') {
-    sqlWhereClause += ' and l.burialSiteTypeId = ?'
-    sqlParameters.push(filters.burialSiteTypeId)
-  }
-
-  if ((filters.burialSiteStatusId ?? '') !== '') {
-    sqlWhereClause += ' and l.burialSiteStatusId = ?'
-    sqlParameters.push(filters.burialSiteStatusId)
-  }
-
-  if ((filters.contractStatus ?? '') !== '') {
-    if (filters.contractStatus === 'occupied') {
-      sqlWhereClause += ' and contractCount > 0'
-    } else if (filters.contractStatus === 'unoccupied') {
-      sqlWhereClause +=
-        ' and (contractCount is null or contractCount = 0)'
-    }
-  }
-
-  if ((filters.workOrderId ?? '') !== '') {
-    sqlWhereClause +=
-      ' and l.burialSiteId in (select burialSiteId from WorkOrderBurialSites where recordDelete_timeMillis is null and workOrderId = ?)'
-    sqlParameters.push(filters.workOrderId)
-  }
-
-  return {
-    sqlWhereClause,
-    sqlParameters
-  }
-}
-
-export default async function getBurialSites(
+export default function getBurialSites(
   filters: GetBurialSitesFilters,
   options: GetBurialSitesOptions,
-  connectedDatabase?: PoolConnection
-): Promise<{ count: number; burialSites: BurialSite[] }> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): { count: number; burialSites: BurialSite[] } {
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const { sqlWhereClause, sqlParameters } = buildWhereClause(filters)
 
@@ -166,11 +114,61 @@ export default async function getBurialSites(
   }
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return {
     count,
     burialSites
+  }
+}
+
+function buildWhereClause(filters: GetBurialSitesFilters): {
+  sqlParameters: unknown[]
+  sqlWhereClause: string
+} {
+  let sqlWhereClause = ' where l.recordDelete_timeMillis is null'
+  const sqlParameters: unknown[] = []
+
+  const burialSiteNameFilters = getBurialSiteNameWhereClause(
+    filters.burialSiteName,
+    filters.burialSiteNameSearchType ?? '',
+    'l'
+  )
+  sqlWhereClause += burialSiteNameFilters.sqlWhereClause
+  sqlParameters.push(...burialSiteNameFilters.sqlParameters)
+
+  if ((filters.cemeteryId ?? '') !== '') {
+    sqlWhereClause += ' and (m.cemeteryId = ? or m.parentCemeteryId = ?)'
+    sqlParameters.push(filters.cemeteryId, filters.cemeteryId)
+  }
+
+  if ((filters.burialSiteTypeId ?? '') !== '') {
+    sqlWhereClause += ' and l.burialSiteTypeId = ?'
+    sqlParameters.push(filters.burialSiteTypeId)
+  }
+
+  if ((filters.burialSiteStatusId ?? '') !== '') {
+    sqlWhereClause += ' and l.burialSiteStatusId = ?'
+    sqlParameters.push(filters.burialSiteStatusId)
+  }
+
+  if ((filters.contractStatus ?? '') !== '') {
+    if (filters.contractStatus === 'occupied') {
+      sqlWhereClause += ' and contractCount > 0'
+    } else if (filters.contractStatus === 'unoccupied') {
+      sqlWhereClause += ' and (contractCount is null or contractCount = 0)'
+    }
+  }
+
+  if ((filters.workOrderId ?? '') !== '') {
+    sqlWhereClause +=
+      ' and l.burialSiteId in (select burialSiteId from WorkOrderBurialSites where recordDelete_timeMillis is null and workOrderId = ?)'
+    sqlParameters.push(filters.workOrderId)
+  }
+
+  return {
+    sqlParameters,
+    sqlWhereClause
   }
 }

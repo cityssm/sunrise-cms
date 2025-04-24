@@ -9,17 +9,13 @@ export default async function handler(
   request: Request<unknown, unknown, AddContractCategoryForm>,
   response: Response
 ): Promise<void> {
-  await addContractFeeCategory(
-    request.body,
-    request.session.user as User
-  )
+  await addContractFeeCategory(request.body, request.session.user as User)
 
-  const contractFees = await getContractFees(
-    request.body.contractId as string
-  )
+  const contractFees = getContractFees(request.body.contractId as string)
 
   response.json({
     success: true,
+
     contractFees
   })
 }

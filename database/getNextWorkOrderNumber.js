@@ -1,7 +1,8 @@
+import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { acquireConnection } from './pool.js';
-export default async function getNextWorkOrderNumber(connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function getNextWorkOrderNumber(connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const paddingLength = getConfigProperty('settings.workOrders.workOrderNumberLength');
     const currentYearString = new Date().getFullYear().toString();
     const regex = new RegExp(`^${currentYearString}-\\d+$`);
@@ -16,7 +17,7 @@ export default async function getNextWorkOrderNumber(connectedDatabase) {
         order by cast(substr(workOrderNumber, instr(workOrderNumber, '-') + 1) as integer) desc`)
         .get();
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     let workOrderNumberIndex = 0;
     if (workOrderNumberRecord !== undefined) {

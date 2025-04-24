@@ -6,21 +6,22 @@ import {
   dateToTimeInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddContractCommentForm {
   contractId: number | string
-  
+
   comment: string
   commentDateString?: DateString
   commentTimeString?: TimeString
 }
 
-export default async function addContractComment(
+export default function addContractComment(
   commentForm: AddContractCommentForm,
   user: User
-): Promise<number> {
+): number {
   const rightNow = new Date()
 
   let commentDate = 0
@@ -38,7 +39,7 @@ export default async function addContractComment(
     )
   }
 
-  const database = await acquireConnection()
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -61,7 +62,7 @@ export default async function addContractComment(
       rightNow.getTime()
     )
 
-  database.release()
+  database.close()
 
   return result.lastInsertRowid as number
 }

@@ -5,5 +5,5 @@ interface BurialSiteTypeSummary extends BurialSiteType {
 interface GetFilters {
     cemeteryId?: number | string;
 }
-export default function getBurialSiteTypeSummary(filters: GetFilters): Promise<BurialSiteTypeSummary[]>;
+export default function getBurialSiteTypeSummary(filters: GetFilters): BurialSiteTypeSummary[];
 export {};

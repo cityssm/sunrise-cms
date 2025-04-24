@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function reopenWorkOrderMilestone(workOrderMilestoneId, user) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function reopenWorkOrderMilestone(workOrderMilestoneId, user) {
+    const database = sqlite(sunriseDB);
     const result = database
         .prepare(`update WorkOrderMilestones
         set workOrderMilestoneCompletionDate = null,
@@ -10,6 +11,6 @@ export default async function reopenWorkOrderMilestone(workOrderMilestoneId, use
         where workOrderMilestoneId = ?
         and workOrderMilestoneCompletionDate is not null`)
         .run(user.userName, Date.now(), workOrderMilestoneId);
-    database.release();
+    database.close();
     return result.changes > 0;
 }

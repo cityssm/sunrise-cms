@@ -3,4 +3,4 @@ export interface UpdateForm {
     contractType: string;
     isPreneed?: string;
 }
-export default function updateContractType(updateForm: UpdateForm, user: User): Promise<boolean>;
+export default function updateContractType(updateForm: UpdateForm, user: User): boolean;

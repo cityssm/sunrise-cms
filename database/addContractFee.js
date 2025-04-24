@@ -1,16 +1,17 @@
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import { calculateFeeAmount, calculateTaxAmount } from '../helpers/functions.fee.js';
 import getContract from './getContract.js';
 import getFee from './getFee.js';
-import { acquireConnection } from './pool.js';
 export default async function addContractFee(addFeeForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     // Calculate fee and tax (if not set)
     let feeAmount;
     let taxAmount;
     if ((addFeeForm.feeAmount ?? '') === '') {
         const contract = (await getContract(addFeeForm.contractId));
-        const fee = (await getFee(addFeeForm.feeId));
+        const fee = getFee(addFeeForm.feeId);
         feeAmount = calculateFeeAmount(fee, contract);
         taxAmount = calculateTaxAmount(fee, feeAmount);
     }
@@ -83,7 +84,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
     }
     finally {
         if (connectedDatabase === undefined) {
-            database.release();
+            database.close();
         }
     }
 }

@@ -1,20 +1,18 @@
-import type { PoolConnection } from 'better-sqlite-pool'
-
 import {
   dateIntegerToString,
   timeIntegerToPeriodString,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { BurialSiteComment } from '../types/record.types.js'
 
-import { acquireConnection } from './pool.js'
-
-export default async function getBurialSiteComments(
+export default function getBurialSiteComments(
   burialSiteId: number | string,
-  connectedDatabase?: PoolConnection
-): Promise<BurialSiteComment[]> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): BurialSiteComment[] {
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
@@ -40,7 +38,7 @@ export default async function getBurialSiteComments(
     .all(burialSiteId) as BurialSiteComment[]
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return comments

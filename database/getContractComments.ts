@@ -1,20 +1,18 @@
-import type { PoolConnection } from 'better-sqlite-pool'
-
 import {
   dateIntegerToString,
   timeIntegerToPeriodString,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { ContractComment } from '../types/record.types.js'
 
-import { acquireConnection } from './pool.js'
-
-export default async function getContractComments(
+export default function getContractComments(
   contractId: number | string,
-  connectedDatabase?: PoolConnection
-): Promise<ContractComment[]> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): ContractComment[] {
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
@@ -40,7 +38,7 @@ export default async function getContractComments(
     .all(contractId) as ContractComment[]
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return comments

@@ -2,22 +2,31 @@ import type { Request, Response } from 'express'
 
 import {
   type GetWorkOrdersFilters,
+  type GetWorkOrdersOptions,
   getWorkOrders
 } from '../../database/getWorkOrders.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<
+    unknown,
+    unknown,
+    GetWorkOrdersFilters & GetWorkOrdersOptions
+  >,
   response: Response
 ): Promise<void> {
   const result = await getWorkOrders(request.body as GetWorkOrdersFilters, {
     limit: request.body.limit,
     offset: request.body.offset,
+
     includeBurialSites: true
   })
 
   response.json({
     count: result.count,
-    offset: Number.parseInt(request.body.offset, 10),
+    offset:
+      typeof request.body.offset === 'string'
+        ? Number.parseInt(request.body.offset, 10)
+        : request.body.offset,
     workOrders: result.workOrders
   })
 }

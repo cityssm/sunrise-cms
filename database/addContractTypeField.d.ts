@@ -1,12 +1,12 @@
 export interface AddContractTypeFieldForm {
-    contractTypeId?: string | number;
+    contractTypeId?: number | string;
     contractTypeField: string;
     fieldValues?: string;
     fieldType?: string;
     isRequired?: string;
+    maxLength?: number | string;
+    minLength?: number | string;
     pattern?: string;
-    minLength?: string | number;
-    maxLength?: string | number;
     orderNumber?: number;
 }
-export default function addContractTypeField(addForm: AddContractTypeFieldForm, user: User): Promise<number>;
+export default function addContractTypeField(addForm: AddContractTypeFieldForm, user: User): number;

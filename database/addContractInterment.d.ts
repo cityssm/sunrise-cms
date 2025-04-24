@@ -1,5 +1,5 @@
-import type { PoolConnection } from 'better-sqlite-pool';
 import { type DateString } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
 export interface AddForm {
     contractId: number | string;
     deceasedName: string;
@@ -16,4 +16,4 @@ export interface AddForm {
     deathAgePeriod: string;
     intermentContainerTypeId: number | string;
 }
-export default function addContractInterment(contractForm: AddForm, user: User, connectedDatabase?: PoolConnection): Promise<number>;
+export default function addContractInterment(contractForm: AddForm, user: User, connectedDatabase?: sqlite.Database): number;

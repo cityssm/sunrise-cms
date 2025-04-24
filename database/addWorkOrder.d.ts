@@ -6,4 +6,4 @@ export interface AddWorkOrderForm {
     workOrderCloseDateString?: string;
     contractId?: string;
 }
-export default function addWorkOrder(workOrderForm: AddWorkOrderForm, user: User): Promise<number>;
+export default function addWorkOrder(workOrderForm: AddWorkOrderForm, user: User): number;

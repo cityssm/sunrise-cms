@@ -1,12 +1,12 @@
 import { dateToString } from '@cityssm/utils-datetime';
 import getCemeteries from '../../database/getCemeteries.js';
 import { getBurialSiteStatuses, getBurialSiteTypes } from '../../helpers/functions.cache.js';
-export default async function handler(request, response) {
+export default function handler(request, response) {
     const rightNow = new Date();
     const reportTab = request.query.tab ?? 'workOrders';
-    const cemeteries = await getCemeteries();
-    const burialSiteTypes = await getBurialSiteTypes();
-    const burialSiteStatuses = await getBurialSiteStatuses();
+    const cemeteries = getCemeteries();
+    const burialSiteTypes = getBurialSiteTypes();
+    const burialSiteStatuses = getBurialSiteStatuses();
     response.render('report-search', {
         headTitle: 'Reports',
         reportTab,

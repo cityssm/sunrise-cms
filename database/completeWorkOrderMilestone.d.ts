@@ -1,6 +1,6 @@
 export interface CompleteWorkOrderMilestoneForm {
-    workOrderMilestoneId: string | number;
+    workOrderMilestoneId: number | string;
     workOrderMilestoneCompletionDateString?: string;
     workOrderMilestoneCompletionTimeString?: string;
 }
-export default function completeWorkOrderMilestone(milestoneForm: CompleteWorkOrderMilestoneForm, user: User): Promise<boolean>;
+export default function completeWorkOrderMilestone(milestoneForm: CompleteWorkOrderMilestoneForm, user: User): boolean;

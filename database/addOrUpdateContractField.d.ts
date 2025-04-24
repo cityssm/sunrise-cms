@@ -1,7 +1,7 @@
-import type { PoolConnection } from 'better-sqlite-pool';
+import sqlite from 'better-sqlite3';
 export interface ContractFieldForm {
-    contractId: string | number;
-    contractTypeFieldId: string | number;
+    contractId: number | string;
+    contractTypeFieldId: number | string;
     fieldValue: string;
 }
-export default function addOrUpdateContractField(fieldForm: ContractFieldForm, user: User, connectedDatabase?: PoolConnection): Promise<boolean>;
+export default function addOrUpdateContractField(fieldForm: ContractFieldForm, user: User, connectedDatabase?: sqlite.Database): boolean;

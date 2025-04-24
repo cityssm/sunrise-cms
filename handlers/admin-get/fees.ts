@@ -6,19 +6,19 @@ import {
   getContractTypes
 } from '../../helpers/functions.cache.js'
 
-export default async function handler(
+export default function handler(
   _request: Request,
   response: Response
-): Promise<void> {
-  const feeCategories = await getFeeCategories(
+): void {
+  const feeCategories = getFeeCategories(
     {},
     {
       includeFees: true
     }
   )
 
-  const contractTypes = await getContractTypes()
-  const burialSiteTypes = await getBurialSiteTypes()
+  const contractTypes = getContractTypes()
+  const burialSiteTypes = getBurialSiteTypes()
 
   response.render('admin-fees', {
     headTitle: 'Fee Management',

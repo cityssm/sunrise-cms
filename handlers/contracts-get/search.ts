@@ -7,14 +7,11 @@ import {
   getContractTypes
 } from '../../helpers/functions.cache.js'
 
-export default async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
-  const cemeteries = await getCemeteries()
-  const burialSiteTypes = await getBurialSiteTypes()
-  const contractTypes = await getContractTypes()
-  const funeralHomes = await getFuneralHomes()
+export default function handler(request: Request, response: Response): void {
+  const cemeteries = getCemeteries()
+  const burialSiteTypes = getBurialSiteTypes()
+  const contractTypes = getContractTypes()
+  const funeralHomes = getFuneralHomes()
 
   response.render('contract-search', {
     headTitle: 'Contract Search',

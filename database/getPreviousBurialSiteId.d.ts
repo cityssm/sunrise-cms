@@ -1,1 +1,1 @@
-export default function getPreviousBurialSiteId(burialSiteId: number | string): Promise<number | undefined>;
+export default function getPreviousBurialSiteId(burialSiteId: number | string): number | undefined;

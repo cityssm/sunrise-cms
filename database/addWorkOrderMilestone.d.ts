@@ -1,5 +1,5 @@
 export interface AddWorkOrderMilestoneForm {
-    workOrderId: string | number;
+    workOrderId: number | string;
     workOrderMilestoneTypeId: number | string;
     workOrderMilestoneDateString: string;
     workOrderMilestoneTimeString?: string;
@@ -7,4 +7,4 @@ export interface AddWorkOrderMilestoneForm {
     workOrderMilestoneCompletionDateString?: string;
     workOrderMilestoneCompletionTimeString?: string;
 }
-export default function addWorkOrderMilestone(milestoneForm: AddWorkOrderMilestoneForm, user: User): Promise<number>;
+export default function addWorkOrderMilestone(milestoneForm: AddWorkOrderMilestoneForm, user: User): number;

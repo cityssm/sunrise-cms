@@ -1,6 +1,7 @@
 import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface UpdateForm {
   contractId: number | string
@@ -25,11 +26,11 @@ export interface UpdateForm {
   intermentContainerTypeId: number | string
 }
 
-export default async function updateContractInterment(
+export default function updateContractInterment(
   contractForm: UpdateForm,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const results = database
     .prepare(
@@ -79,7 +80,7 @@ export default async function updateContractInterment(
       contractForm.intermentNumber
     )
 
-  database.release()
+  database.close()
 
   return results.changes > 0
 }

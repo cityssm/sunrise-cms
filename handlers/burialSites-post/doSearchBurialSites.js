@@ -1,6 +1,6 @@
 import getBurialSites from '../../database/getBurialSites.js';
-export default async function handler(request, response) {
-    const result = await getBurialSites(request.body, {
+export default function handler(request, response) {
+    const result = getBurialSites(request.body, {
         limit: request.body.limit,
         offset: request.body.offset,
         includeContractCount: true

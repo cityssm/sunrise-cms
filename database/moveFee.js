@@ -1,9 +1,10 @@
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import getFee from './getFee.js';
-import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export async function moveFeeDown(feeId) {
-    const database = await acquireConnection();
-    const currentFee = (await getFee(feeId, database));
+export function moveFeeDown(feeId) {
+    const database = sqlite(sunriseDB);
+    const currentFee = getFee(feeId, database);
     database
         .prepare(`update Fees
         set orderNumber = orderNumber - 1
@@ -12,12 +13,12 @@ export async function moveFeeDown(feeId) {
           and orderNumber = ? + 1`)
         .run(currentFee.feeCategoryId, currentFee.orderNumber);
     const success = updateRecordOrderNumber('Fees', feeId, currentFee.orderNumber + 1, database);
-    database.release();
+    database.close();
     return success;
 }
-export async function moveFeeDownToBottom(feeId) {
-    const database = await acquireConnection();
-    const currentFee = (await getFee(feeId, database));
+export function moveFeeDownToBottom(feeId) {
+    const database = sqlite(sunriseDB);
+    const currentFee = getFee(feeId, database);
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
           from Fees
@@ -33,14 +34,14 @@ export async function moveFeeDownToBottom(feeId) {
             and feeCategoryId = ? and orderNumber > ?`)
             .run(currentFee.feeCategoryId, currentFee.orderNumber);
     }
-    database.release();
+    database.close();
     return true;
 }
-export async function moveFeeUp(feeId) {
-    const database = await acquireConnection();
-    const currentFee = (await getFee(feeId, database));
+export function moveFeeUp(feeId) {
+    const database = sqlite(sunriseDB);
+    const currentFee = getFee(feeId, database);
     if (currentFee.orderNumber <= 0) {
-        database.release();
+        database.close();
         return true;
     }
     database
@@ -51,12 +52,12 @@ export async function moveFeeUp(feeId) {
           and orderNumber = ? - 1`)
         .run(currentFee.feeCategoryId, currentFee.orderNumber);
     const success = updateRecordOrderNumber('Fees', feeId, currentFee.orderNumber - 1, database);
-    database.release();
+    database.close();
     return success;
 }
-export async function moveFeeUpToTop(feeId) {
-    const database = await acquireConnection();
-    const currentFee = (await getFee(feeId, database));
+export function moveFeeUpToTop(feeId) {
+    const database = sqlite(sunriseDB);
+    const currentFee = getFee(feeId, database);
     if (currentFee.orderNumber > 0) {
         updateRecordOrderNumber('Fees', feeId, -1, database);
         database
@@ -67,7 +68,7 @@ export async function moveFeeUpToTop(feeId) {
             and orderNumber < ?`)
             .run(currentFee.feeCategoryId, currentFee.orderNumber);
     }
-    database.release();
+    database.close();
     return true;
 }
 export default moveFeeUp;

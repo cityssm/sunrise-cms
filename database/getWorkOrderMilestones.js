@@ -1,12 +1,13 @@
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import getBurialSites from './getBurialSites.js';
 import getContracts from './getContracts.js';
-import { acquireConnection } from './pool.js';
 // eslint-disable-next-line security/detect-unsafe-regex
 const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/;
 export default async function getWorkOrderMilestones(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
@@ -64,7 +65,7 @@ export default async function getWorkOrderMilestones(filters, options, connected
         .all(sqlParameters);
     if (options.includeWorkOrders ?? false) {
         for (const workOrderMilestone of workOrderMilestones) {
-            const burialSites = await getBurialSites({
+            const burialSites = getBurialSites({
                 workOrderId: workOrderMilestone.workOrderId
             }, {
                 limit: -1,
@@ -85,7 +86,7 @@ export default async function getWorkOrderMilestones(filters, options, connected
         }
     }
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return workOrderMilestones;
 }

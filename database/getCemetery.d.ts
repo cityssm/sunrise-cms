@@ -1,4 +1,4 @@
-import type { PoolConnection } from 'better-sqlite-pool';
+import sqlite from 'better-sqlite3';
 import type { Cemetery } from '../types/record.types.js';
-export default function getCemetery(cemeteryId: number | string, connectedDatabase?: PoolConnection): Promise<Cemetery | undefined>;
-export declare function getCemeteryByKey(cemeteryKey: string, connectedDatabase?: PoolConnection): Promise<Cemetery | undefined>;
+export default function getCemetery(cemeteryId: number | string, connectedDatabase?: sqlite.Database): Cemetery | undefined;
+export declare function getCemeteryByKey(cemeteryKey: string, connectedDatabase?: sqlite.Database): Cemetery | undefined;

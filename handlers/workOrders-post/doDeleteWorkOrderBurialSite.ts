@@ -3,17 +3,21 @@ import type { Request, Response } from 'express'
 import deleteWorkOrderBurialSite from '../../database/deleteWorkOrderBurialSite.js'
 import getBurialSites from '../../database/getBurialSites.js'
 
-export default async function handler(
-  request: Request<unknown, unknown, { workOrderId: string; burialSiteId: string }>,
+export default function handler(
+  request: Request<
+    unknown,
+    unknown,
+    { workOrderId: string; burialSiteId: string }
+  >,
   response: Response
-): Promise<void> {
-  const success = await deleteWorkOrderBurialSite(
+): void {
+  const success = deleteWorkOrderBurialSite(
     request.body.workOrderId,
     request.body.burialSiteId,
     request.session.user as User
   )
 
-  const results = await getBurialSites(
+  const results = getBurialSites(
     {
       workOrderId: request.body.workOrderId
     },

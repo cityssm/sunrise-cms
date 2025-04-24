@@ -1,1 +1,1 @@
-export default function getPreviousCemeteryId(cemeteryId: number | string): Promise<number | undefined>;
+export default function getPreviousCemeteryId(cemeteryId: number | string): number | undefined;

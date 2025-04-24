@@ -1,4 +1,4 @@
-import type { PoolConnection } from 'better-sqlite-pool';
+import sqlite from 'better-sqlite3';
 import type { FeeCategory } from '../types/record.types.js';
 interface GetFeeCategoriesFilters {
     burialSiteTypeId?: number | string;
@@ -8,6 +8,6 @@ interface GetFeeCategoriesFilters {
 interface GetFeeCategoriesOptions {
     includeFees?: boolean;
 }
-export default function getFeeCategories(filters: GetFeeCategoriesFilters, options: GetFeeCategoriesOptions, connectedDatabase?: PoolConnection): Promise<FeeCategory[]>;
-export declare function getFeeCategory(feeCategoryId: number | string, connectedDatabase?: PoolConnection): Promise<FeeCategory | undefined>;
+export default function getFeeCategories(filters: GetFeeCategoriesFilters, options: GetFeeCategoriesOptions, connectedDatabase?: sqlite.Database): FeeCategory[];
+export declare function getFeeCategory(feeCategoryId: number | string, connectedDatabase?: sqlite.Database): FeeCategory | undefined;
 export {};

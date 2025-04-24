@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function getBurialSiteTypeSummary(filters) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function getBurialSiteTypeSummary(filters) {
+    const database = sqlite(sunriseDB, { readonly: true });
     let sqlWhereClause = ' where l.recordDelete_timeMillis is null';
     const sqlParameters = [];
     if ((filters.cemeteryId ?? '') !== '') {
@@ -16,6 +17,6 @@ export default async function getBurialSiteTypeSummary(filters) {
         group by t.burialSiteTypeId, t.burialSiteType, t.orderNumber
         order by t.orderNumber`)
         .all(sqlParameters);
-    database.release();
+    database.close();
     return burialSiteTypes;
 }

@@ -1,5 +1,3 @@
-import type { PoolConnection } from 'better-sqlite-pool'
-
 import {
   type DateString,
   dateIntegerToString,
@@ -8,13 +6,14 @@ import {
   timeIntegerToPeriodString,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { WorkOrderMilestone } from '../types/record.types.js'
 
 import getBurialSites from './getBurialSites.js'
 import getContracts from './getContracts.js'
-import { acquireConnection } from './pool.js'
 
 export interface WorkOrderMilestoneFilters {
   workOrderId?: number | string
@@ -41,9 +40,9 @@ const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/
 export default async function getWorkOrderMilestones(
   filters: WorkOrderMilestoneFilters,
   options: WorkOrderMilestoneOptions,
-  connectedDatabase?: PoolConnection
+  connectedDatabase?: sqlite.Database
 ): Promise<WorkOrderMilestone[]> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
@@ -114,7 +113,7 @@ export default async function getWorkOrderMilestones(
 
   if (options.includeWorkOrders ?? false) {
     for (const workOrderMilestone of workOrderMilestones) {
-      const burialSites = await getBurialSites(
+      const burialSites = getBurialSites(
         {
           workOrderId: workOrderMilestone.workOrderId
         },
@@ -149,7 +148,7 @@ export default async function getWorkOrderMilestones(
   }
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return workOrderMilestones

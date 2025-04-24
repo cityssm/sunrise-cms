@@ -1,7 +1,8 @@
 import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/utils-datetime';
-import { acquireConnection } from './pool.js';
-export default async function addContractTransaction(contractTransactionForm, user) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function addContractTransaction(contractTransactionForm, user) {
+    const database = sqlite(sunriseDB);
     let transactionIndex = 0;
     const maxIndexResult = database
         .prepare(`select transactionIndex
@@ -29,6 +30,6 @@ export default async function addContractTransaction(contractTransactionForm, us
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(contractTransactionForm.contractId, transactionIndex, transactionDate, transactionTime, contractTransactionForm.transactionAmount, contractTransactionForm.externalReceiptNumber, contractTransactionForm.transactionNote, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
-    database.release();
+    database.close();
     return transactionIndex;
 }

@@ -1,10 +1,11 @@
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
 import deleteContractField from './deleteContractField.js';
-import { acquireConnection } from './pool.js';
 // eslint-disable-next-line complexity
-export default async function updateContract(updateForm, user) {
-    const database = await acquireConnection();
+export default function updateContract(updateForm, user) {
+    const database = sqlite(sunriseDB);
     const result = database
         .prepare(`update Contracts
         set contractTypeId = ?,
@@ -42,16 +43,15 @@ export default async function updateContract(updateForm, user) {
         const contractTypeFieldIds = (updateForm.contractTypeFieldIds ?? '').split(',');
         for (const contractTypeFieldId of contractTypeFieldIds) {
             const fieldValue = updateForm[`fieldValue_${contractTypeFieldId}`];
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            await ((fieldValue ?? '') === ''
+            (fieldValue ?? '') === ''
                 ? deleteContractField(updateForm.contractId, contractTypeFieldId, user, database)
                 : addOrUpdateContractField({
                     contractId: updateForm.contractId,
                     contractTypeFieldId,
                     fieldValue
-                }, user, database));
+                }, user, database);
         }
     }
-    database.release();
+    database.close();
     return result.changes > 0;
 }

@@ -4,18 +4,15 @@ import addContract, {
   type AddContractForm
 } from '../../database/addContract.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, AddContractForm>,
   response: Response
-): Promise<void> {
-  const contractId = await addContract(
-    request.body,
-    request.session.user as User
-  )
+): void {
+  const contractId = addContract(request.body, request.session.user as User)
 
   response.json({
     success: true,
+
     contractId
   })
 }
-

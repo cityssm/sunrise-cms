@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function getPreviousContractId(contractId) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function getPreviousContractId(contractId) {
+    const database = sqlite(sunriseDB, { readonly: true });
     const result = database
         .prepare(`select contractId
         from Contracts
@@ -10,6 +11,6 @@ export default async function getPreviousContractId(contractId) {
         limit 1`)
         .pluck()
         .get(contractId);
-    database.release();
+    database.close();
     return result;
 }

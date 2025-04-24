@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function addCemetery(addForm, user) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function addCemetery(addForm, user) {
+    const database = sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`insert into Cemeteries (
@@ -14,6 +15,6 @@ export default async function addCemetery(addForm, user) {
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(addForm.cemeteryName, addForm.cemeteryKey, addForm.cemeteryDescription, addForm.cemeterySvg, addForm.cemeteryLatitude === '' ? undefined : addForm.cemeteryLatitude, addForm.cemeteryLongitude === '' ? undefined : addForm.cemeteryLongitude, addForm.cemeteryAddress1, addForm.cemeteryAddress2, addForm.cemeteryCity, addForm.cemeteryProvince, addForm.cemeteryPostalCode, addForm.cemeteryPhoneNumber, addForm.parentCemeteryId === '' ? undefined : addForm.parentCemeteryId, user.userName, rightNowMillis, user.userName, rightNowMillis);
-    database.release();
+    database.close();
     return result.lastInsertRowid;
 }

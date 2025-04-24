@@ -5,4 +5,4 @@ export interface AddContractCommentForm {
     commentDateString?: DateString;
     commentTimeString?: TimeString;
 }
-export default function addContractComment(commentForm: AddContractCommentForm, user: User): Promise<number>;
+export default function addContractComment(commentForm: AddContractCommentForm, user: User): number;

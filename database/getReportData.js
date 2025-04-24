@@ -1,5 +1,6 @@
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToString } from '@cityssm/utils-datetime';
-import { acquireConnection } from './pool.js';
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 const simpleReports = {
     'burialSiteComments-all': 'select * from BurialSiteComments',
     'burialSiteFields-all': 'select * from BurialSiteFields',
@@ -45,7 +46,7 @@ const simpleReports = {
     'workOrders-all': 'select * from WorkOrders',
     'workOrderTypes-all': 'select * from WorkOrderTypes'
 };
-export default async function getReportData(reportName, reportParameters = {}) {
+export default function getReportData(reportName, reportParameters = {}) {
     let sql = '';
     const sqlParameters = [];
     // eslint-disable-next-line security/detect-object-injection
@@ -179,10 +180,10 @@ export default async function getReportData(reportName, reportParameters = {}) {
     else {
         sql = simpleReports[reportName];
     }
-    const database = await acquireConnection();
+    const database = sqlite(sunriseDB);
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     const rows = database.prepare(sql).all(sqlParameters);
-    database.release();
+    database.close();
     return rows;
 }

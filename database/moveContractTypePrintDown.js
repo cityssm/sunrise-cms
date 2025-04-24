@@ -1,7 +1,8 @@
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
-import { acquireConnection } from './pool.js';
-export async function moveContractTypePrintDown(contractTypeId, printEJS) {
-    const database = await acquireConnection();
+export function moveContractTypePrintDown(contractTypeId, printEJS) {
+    const database = sqlite(sunriseDB);
     const currentOrderNumber = database
         .prepare('select orderNumber from ContractTypePrints where contractTypeId = ? and printEJS = ?')
         .get(contractTypeId, printEJS).orderNumber;
@@ -15,12 +16,12 @@ export async function moveContractTypePrintDown(contractTypeId, printEJS) {
     const result = database
         .prepare('update ContractTypePrints set orderNumber = ? + 1 where contractTypeId = ? and printEJS = ?')
         .run(currentOrderNumber, contractTypeId, printEJS);
-    database.release();
+    database.close();
     clearCacheByTableName('ContractTypePrints');
     return result.changes > 0;
 }
-export async function moveContractTypePrintDownToBottom(contractTypeId, printEJS) {
-    const database = await acquireConnection();
+export function moveContractTypePrintDownToBottom(contractTypeId, printEJS) {
+    const database = sqlite(sunriseDB);
     const currentOrderNumber = database
         .prepare('select orderNumber from ContractTypePrints where contractTypeId = ? and printEJS = ?')
         .get(contractTypeId, printEJS).orderNumber;
@@ -45,7 +46,7 @@ export async function moveContractTypePrintDownToBottom(contractTypeId, printEJS
           and orderNumber > ?`)
             .run(contractTypeId, currentOrderNumber);
     }
-    database.release();
+    database.close();
     clearCacheByTableName('ContractTypePrints');
     return true;
 }

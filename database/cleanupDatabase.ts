@@ -1,13 +1,14 @@
 import { daysToMillis } from '@cityssm/to-millis'
+import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
-import { acquireConnection } from './pool.js'
-
-export default async function cleanupDatabase(
-  user: User
-): Promise<{ inactivatedRecordCount: number; purgedRecordCount: number }> {
-  const database = await acquireConnection()
+export default function cleanupDatabase(user: User): {
+  inactivatedRecordCount: number
+  purgedRecordCount: number
+} {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
   const recordDeleteTimeMillisMin =
@@ -155,9 +156,7 @@ export default async function cleanupDatabase(
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare(
-      'delete from ContractComments where recordDelete_timeMillis <= ?'
-    )
+    .prepare('delete from ContractComments where recordDelete_timeMillis <= ?')
     .run(recordDeleteTimeMillisMin).changes
 
   /*
@@ -175,9 +174,7 @@ export default async function cleanupDatabase(
     .run(user.userName, rightNowMillis).changes
 
   purgedRecordCount += database
-    .prepare(
-      'delete from ContractFields where recordDelete_timeMillis <= ?'
-    )
+    .prepare('delete from ContractFields where recordDelete_timeMillis <= ?')
     .run(recordDeleteTimeMillisMin).changes
 
   /*
@@ -186,9 +183,7 @@ export default async function cleanupDatabase(
    */
 
   purgedRecordCount += database
-    .prepare(
-      'delete from ContractFees where recordDelete_timeMillis <= ?'
-    )
+    .prepare('delete from ContractFees where recordDelete_timeMillis <= ?')
     .run(recordDeleteTimeMillisMin).changes
 
   purgedRecordCount += database
@@ -414,7 +409,7 @@ export default async function cleanupDatabase(
     )
     .run(recordDeleteTimeMillisMin).changes
 
-  database.release()
+  database.close()
 
   return {
     inactivatedRecordCount,

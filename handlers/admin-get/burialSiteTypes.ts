@@ -2,11 +2,11 @@ import type { Request, Response } from 'express'
 
 import { getBurialSiteTypes } from '../../helpers/functions.cache.js'
 
-export default async function handler(
+export default function handler(
   _request: Request,
   response: Response
-): Promise<void> {
-  const burialSiteTypes = await getBurialSiteTypes()
+): void {
+  const burialSiteTypes = getBurialSiteTypes()
 
   response.render('admin-burialSiteTypes', {
     headTitle: "Burial Site Type Management",

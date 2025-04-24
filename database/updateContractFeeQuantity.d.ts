@@ -3,4 +3,4 @@ export interface UpdateBurialSiteFeeForm {
     feeId: number | string;
     quantity: number | string;
 }
-export default function updateContractFeeQuantity(feeQuantityForm: UpdateBurialSiteFeeForm, user: User): Promise<boolean>;
+export default function updateContractFeeQuantity(feeQuantityForm: UpdateBurialSiteFeeForm, user: User): boolean;

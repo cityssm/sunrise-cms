@@ -15,9 +15,9 @@ export default async function handler(request, response) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/workOrders/${workOrder.workOrderId.toString()}/?error=workOrderIsClosed`);
         return;
     }
-    const workOrderTypes = await getWorkOrderTypes();
-    const workOrderMilestoneTypes = await getWorkOrderMilestoneTypes();
-    const burialSiteStatuses = await getBurialSiteStatuses();
+    const workOrderTypes = getWorkOrderTypes();
+    const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
+    const burialSiteStatuses = getBurialSiteStatuses();
     response.render('workOrder-edit', {
         headTitle: `Work Order #${workOrder.workOrderNumber}`,
         workOrder,

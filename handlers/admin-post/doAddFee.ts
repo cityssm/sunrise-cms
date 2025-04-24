@@ -3,16 +3,10 @@ import type { Request, Response } from 'express'
 import addFee, { type AddFeeForm } from '../../database/addFee.js'
 import getFeeCategories from '../../database/getFeeCategories.js'
 
-export default async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
-  const feeId = await addFee(
-    request.body as AddFeeForm,
-    request.session.user as User
-  )
+export default function handler(request: Request, response: Response): void {
+  const feeId = addFee(request.body as AddFeeForm, request.session.user as User)
 
-  const feeCategories = await getFeeCategories(
+  const feeCategories = getFeeCategories(
     {},
     {
       includeFees: true
@@ -21,7 +15,8 @@ export default async function handler(
 
   response.json({
     success: true,
-    feeId,
-    feeCategories
+
+    feeCategories,
+    feeId
   })
 }

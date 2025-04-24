@@ -5,22 +5,20 @@ import updateBurialSiteComment, {
   type UpdateBurialSiteCommentForm
 } from '../../database/updateBurialSiteComment.js'
 
-export default async function handler(
+export default function handler(
   request: Request<
     unknown,
     unknown,
     UpdateBurialSiteCommentForm & { burialSiteId: string }
   >,
   response: Response
-): Promise<void> {
-  const success = await updateBurialSiteComment(
+): void {
+  const success = updateBurialSiteComment(
     request.body,
     request.session.user as User
   )
 
-  const burialSiteComments = await getBurialSiteComments(
-    request.body.burialSiteId
-  )
+  const burialSiteComments = getBurialSiteComments(request.body.burialSiteId)
 
   response.json({
     success,

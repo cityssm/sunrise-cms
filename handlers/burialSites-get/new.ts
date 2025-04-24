@@ -17,7 +17,7 @@ export default async function handler(
     contracts: []
   }
 
-  const cemeteries = await getCemeteries()
+  const cemeteries = getCemeteries()
 
   if (request.query.cemeteryId !== undefined) {
     const cemeteryId = Number.parseInt(request.query.cemeteryId as string, 10)
@@ -33,8 +33,8 @@ export default async function handler(
   }
 
   const burialSiteImages = await getBurialSiteImages()
-  const burialSiteTypes = await getBurialSiteTypes()
-  const burialSiteStatuses = await getBurialSiteStatuses()
+  const burialSiteTypes = getBurialSiteTypes()
+  const burialSiteStatuses = getBurialSiteStatuses()
 
   response.render('burialSite-edit', {
     headTitle: 'Create a New Burial Site',
@@ -45,6 +45,6 @@ export default async function handler(
     burialSiteImages,
     burialSiteStatuses,
     burialSiteTypes,
-    cemeteries,
+    cemeteries
   })
 }

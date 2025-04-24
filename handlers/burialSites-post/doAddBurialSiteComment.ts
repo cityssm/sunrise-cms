@@ -5,15 +5,13 @@ import addBurialSiteComment, {
 } from '../../database/addBurialSiteComment.js'
 import getBurialSiteComments from '../../database/getBurialSiteComments.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, AddBurialSiteCommentForm>,
   response: Response
-): Promise<void> {
-  await addBurialSiteComment(request.body, request.session.user as User)
+): void {
+  addBurialSiteComment(request.body, request.session.user as User)
 
-  const burialSiteComments = await getBurialSiteComments(
-    request.body.burialSiteId
-  )
+  const burialSiteComments = getBurialSiteComments(request.body.burialSiteId)
 
   response.json({
     success: true,

@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function getContractFees(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function getContractFees(contractId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const fees = database
         .prepare(`select o.contractId, o.feeId,
         c.feeCategory, f.feeName,
@@ -13,7 +14,7 @@ export default async function getContractFees(contractId, connectedDatabase) {
         order by o.recordCreate_timeMillis`)
         .all(contractId);
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return fees;
 }

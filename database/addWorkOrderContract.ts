@@ -1,18 +1,18 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddForm {
-  workOrderId: number | string
   contractId: number | string
+  workOrderId: number | string
 }
 
-export default async function addWorkOrderContract(
+export default function addWorkOrderContract(
   addForm: AddForm,
   user: User,
-  connectedDatabase?: PoolConnection
-): Promise<boolean> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -24,10 +24,7 @@ export default async function addWorkOrderContract(
         and contractId = ?`
     )
     .pluck()
-    .get(
-      addForm.workOrderId,
-      addForm.contractId
-    ) as number | null | undefined
+    .get(addForm.workOrderId, addForm.contractId) as number | null | undefined
 
   if (recordDeleteTimeMillis === undefined) {
     database
@@ -72,7 +69,7 @@ export default async function addWorkOrderContract(
   }
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return true

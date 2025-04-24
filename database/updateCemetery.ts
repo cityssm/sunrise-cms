@@ -1,4 +1,6 @@
-import { acquireConnection } from './pool.js'
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface UpdateCemeteryForm {
   cemeteryId: string
@@ -28,11 +30,11 @@ export interface UpdateCemeteryForm {
  * @param user - The user who is updating the cemetery.
  * @returns `true` if the cemetery was updated successfully, `false` otherwise.
  */
-export default async function updateCemetery(
+export default function updateCemetery(
   updateForm: UpdateCemeteryForm,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -80,7 +82,7 @@ export default async function updateCemetery(
       updateForm.cemeteryId
     )
 
-  database.release()
+  database.close()
 
   return result.changes > 0
 }

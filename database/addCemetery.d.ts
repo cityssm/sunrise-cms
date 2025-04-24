@@ -13,4 +13,4 @@ export interface AddCemeteryForm {
     cemeteryProvince: string;
     cemeteryPhoneNumber: string;
 }
-export default function addCemetery(addForm: AddCemeteryForm, user: User): Promise<number>;
+export default function addCemetery(addForm: AddCemeteryForm, user: User): number;

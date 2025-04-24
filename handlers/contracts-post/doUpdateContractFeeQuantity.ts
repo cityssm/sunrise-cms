@@ -5,21 +5,20 @@ import updateContractFeeQuantity, {
   type UpdateBurialSiteFeeForm
 } from '../../database/updateContractFeeQuantity.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, UpdateBurialSiteFeeForm>,
   response: Response
-): Promise<void> {
-  const success = await updateContractFeeQuantity(
+): void {
+  const success = updateContractFeeQuantity(
     request.body,
     request.session.user as User
   )
 
-  const contractFees = await getContractFees(
-    request.body.contractId
-  )
+  const contractFees = getContractFees(request.body.contractId)
 
   response.json({
     success,
+
     contractFees
   })
 }

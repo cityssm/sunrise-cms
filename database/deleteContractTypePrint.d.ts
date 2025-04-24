@@ -1,1 +1,1 @@
-export default function deleteContractTypePrint(contractTypeId: number | string, printEJS: string, user: User): Promise<boolean>;
+export default function deleteContractTypePrint(contractTypeId: number | string, printEJS: string, user: User): boolean;

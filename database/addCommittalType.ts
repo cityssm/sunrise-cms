@@ -1,6 +1,7 @@
-import { clearCacheByTableName } from '../helpers/functions.cache.js'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
+import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 export interface AddForm {
   committalType: string
@@ -8,11 +9,8 @@ export interface AddForm {
   orderNumber?: number
 }
 
-export default async function addCommittalType(
-  addForm: AddForm,
-  user: User
-): Promise<number> {
-  const database = await acquireConnection()
+export default function addCommittalType(addForm: AddForm, user: User): number {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -34,7 +32,7 @@ export default async function addCommittalType(
       rightNowMillis
     )
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('CommittalTypes')
 

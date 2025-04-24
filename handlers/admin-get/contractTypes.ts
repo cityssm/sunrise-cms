@@ -7,12 +7,12 @@ import {
 } from '../../helpers/functions.cache.js'
 import { getPrintConfig } from '../../helpers/functions.print.js'
 
-export default async function handler(
+export default function handler(
   _request: Request,
   response: Response
-): Promise<void> {
-  const contractTypes = await getContractTypes()
-  const allContractTypeFields = await getAllContractTypeFields()
+): void {
+  const contractTypes = getContractTypes()
+  const allContractTypeFields = getAllContractTypeFields()
 
   const contractTypePrints = getConfigProperty('settings.contracts.prints')
 

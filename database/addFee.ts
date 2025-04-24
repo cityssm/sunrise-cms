@@ -1,12 +1,14 @@
-import { acquireConnection } from './pool.js'
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddFeeForm {
-  feeCategoryId: string | number
+  feeCategoryId: number | string
   feeName: string
   feeDescription: string
   feeAccount: string
-  contractTypeId: string | number
-  burialSiteTypeId: string | number
+  contractTypeId: number | string
+  burialSiteTypeId: number | string
   feeAmount?: string
   feeFunction?: string
   taxAmount?: string
@@ -17,11 +19,8 @@ export interface AddFeeForm {
   orderNumber?: number
 }
 
-export default async function addFee(
-  feeForm: AddFeeForm,
-  user: User
-): Promise<number> {
-  const database = await acquireConnection()
+export default function addFee(feeForm: AddFeeForm, user: User): number {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -60,7 +59,7 @@ export default async function addFee(
       rightNowMillis
     )
 
-  database.release()
+  database.close()
 
   return result.lastInsertRowid as number
 }

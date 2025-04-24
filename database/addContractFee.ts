@@ -1,5 +1,6 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import {
   calculateFeeAmount,
   calculateTaxAmount
@@ -8,7 +9,6 @@ import type { Contract, Fee } from '../types/record.types.js'
 
 import getContract from './getContract.js'
 import getFee from './getFee.js'
-import { acquireConnection } from './pool.js'
 
 export interface AddContractFeeForm {
   contractId: number | string
@@ -22,9 +22,9 @@ export interface AddContractFeeForm {
 export default async function addContractFee(
   addFeeForm: AddContractFeeForm,
   user: User,
-  connectedDatabase?: PoolConnection
+  connectedDatabase?: sqlite.Database
 ): Promise<boolean> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -33,11 +33,9 @@ export default async function addContractFee(
   let taxAmount: number
 
   if ((addFeeForm.feeAmount ?? '') === '') {
-    const contract = (await getContract(
-      addFeeForm.contractId
-    )) as Contract
+    const contract = (await getContract(addFeeForm.contractId)) as Contract
 
-    const fee = (await getFee(addFeeForm.feeId)) as Fee
+    const fee = getFee(addFeeForm.feeId) as Fee
 
     feeAmount = calculateFeeAmount(fee, contract)
     taxAmount = calculateTaxAmount(fee, feeAmount)
@@ -65,6 +63,7 @@ export default async function addContractFee(
       | {
           feeAmount: number | null
           taxAmount: number | null
+
           recordDelete_timeMillis: number | null
         }
       | undefined
@@ -156,7 +155,7 @@ export default async function addContractFee(
     return result.changes > 0
   } finally {
     if (connectedDatabase === undefined) {
-      database.release()
+      database.close()
     }
   }
 }

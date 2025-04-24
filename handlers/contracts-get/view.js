@@ -7,7 +7,7 @@ export default async function handler(request, response) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/contracts/?error=contractIdNotFound`);
         return;
     }
-    const contractTypePrints = await getContractTypePrintsById(contract.contractTypeId);
+    const contractTypePrints = getContractTypePrintsById(contract.contractTypeId);
     response.render('contract-view', {
         headTitle: `Contract #${contract.contractId.toString()}`,
         contract,

@@ -1,8 +1,9 @@
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
-import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export async function moveContractTypeFieldDown(contractTypeFieldId) {
-    const database = await acquireConnection();
+export function moveContractTypeFieldDown(contractTypeFieldId) {
+    const database = sqlite(sunriseDB);
     const currentField = getCurrentField(contractTypeFieldId, database);
     database
         .prepare(`update ContractTypeFields
@@ -14,12 +15,12 @@ export async function moveContractTypeFieldDown(contractTypeFieldId) {
         and orderNumber = ? + 1`)
         .run(currentField.orderNumber);
     const success = updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, currentField.orderNumber + 1, database);
-    database.release();
+    database.close();
     clearCacheByTableName('ContractTypeFields');
     return success;
 }
-export async function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
-    const database = await acquireConnection();
+export function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
+    const database = sqlite(sunriseDB);
     const currentField = getCurrentField(contractTypeFieldId, database);
     const contractTypeParameters = [];
     if (currentField.contractTypeId) {
@@ -45,15 +46,15 @@ export async function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
           and orderNumber > ?`)
             .run(contractTypeParameters);
     }
-    database.release();
+    database.close();
     clearCacheByTableName('ContractTypeFields');
     return true;
 }
-export async function moveContractTypeFieldUp(contractTypeFieldId) {
-    const database = await acquireConnection();
+export function moveContractTypeFieldUp(contractTypeFieldId) {
+    const database = sqlite(sunriseDB);
     const currentField = getCurrentField(contractTypeFieldId, database);
     if (currentField.orderNumber <= 0) {
-        database.release();
+        database.close();
         return true;
     }
     database
@@ -66,12 +67,12 @@ export async function moveContractTypeFieldUp(contractTypeFieldId) {
         and orderNumber = ? - 1`)
         .run(currentField.orderNumber);
     const success = updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, currentField.orderNumber - 1, database);
-    database.release();
+    database.close();
     clearCacheByTableName('ContractTypeFields');
     return success;
 }
-export async function moveContractTypeFieldUpToTop(contractTypeFieldId) {
-    const database = await acquireConnection();
+export function moveContractTypeFieldUpToTop(contractTypeFieldId) {
+    const database = sqlite(sunriseDB);
     const currentField = getCurrentField(contractTypeFieldId, database);
     if (currentField.orderNumber > 0) {
         updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, -1, database);
@@ -89,7 +90,7 @@ export async function moveContractTypeFieldUpToTop(contractTypeFieldId) {
             : ' and contractTypeId is null'} and orderNumber < ?`)
             .run(contractTypeParameters);
     }
-    database.release();
+    database.close();
     clearCacheByTableName('ContractTypeFields');
     return true;
 }

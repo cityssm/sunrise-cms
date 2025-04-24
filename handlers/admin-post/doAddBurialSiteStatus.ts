@@ -3,22 +3,22 @@ import type { Request, Response } from 'express'
 import addRecord from '../../database/addRecord.js'
 import { getBurialSiteStatuses } from '../../helpers/functions.cache.js'
 
-export default async function handler(
+export default function handler(
   request: Request<
     unknown,
     unknown,
     { burialSiteStatus: string; orderNumber?: number | string }
   >,
   response: Response
-): Promise<void> {
-  const burialSiteStatusId = await addRecord(
+): void {
+  const burialSiteStatusId = addRecord(
     'BurialSiteStatuses',
     request.body.burialSiteStatus,
     request.body.orderNumber ?? -1,
     request.session.user as User
   )
 
-  const burialSiteStatuses = await getBurialSiteStatuses()
+  const burialSiteStatuses = getBurialSiteStatuses()
 
   response.json({
     success: true,

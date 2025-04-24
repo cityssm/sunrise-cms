@@ -1,6 +1,9 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
+
 import addContractFee from './addContractFee.js'
 import { getFeeCategory } from './getFeeCategories.js'
-import { acquireConnection } from './pool.js'
 
 export interface AddContractCategoryForm {
   contractId: number | string
@@ -11,12 +14,9 @@ export default async function addContractFeeCategory(
   addFeeCategoryForm: AddContractCategoryForm,
   user: User
 ): Promise<number> {
-  const database = await acquireConnection()
+  const database = sqlite(sunriseDB)
 
-  const feeCategory = await getFeeCategory(
-    addFeeCategoryForm.feeCategoryId,
-    database
-  )
+  const feeCategory = getFeeCategory(addFeeCategoryForm.feeCategoryId, database)
 
   let addedFeeCount = 0
 
@@ -36,7 +36,7 @@ export default async function addContractFeeCategory(
     }
   }
 
-  database.release()
+  database.close()
 
   return addedFeeCount
 }

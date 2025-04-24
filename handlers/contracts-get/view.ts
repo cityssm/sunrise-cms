@@ -8,9 +8,7 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const contract = await getContract(
-    request.params.contractId
-  )
+  const contract = await getContract(request.params.contractId)
 
   if (contract === undefined) {
     response.redirect(
@@ -21,13 +19,11 @@ export default async function handler(
     return
   }
 
-  const contractTypePrints = await getContractTypePrintsById(
-    contract.contractTypeId
-  )
+  const contractTypePrints = getContractTypePrintsById(contract.contractTypeId)
 
   response.render('contract-view', {
     headTitle: `Contract #${contract.contractId.toString()}`,
-    
+
     contract,
     contractTypePrints
   })

@@ -1,18 +1,19 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
-import { acquireConnection } from './pool.js'
-
 export interface AddContractTypePrintForm {
-  contractTypeId: string | number
+  contractTypeId: number | string
   printEJS: string
   orderNumber?: number
 }
 
-export default async function addContractTypePrint(
+export default function addContractTypePrint(
   addForm: AddContractTypePrintForm,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -53,7 +54,7 @@ export default async function addContractTypePrint(
       )
   }
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('ContractTypePrints')
 

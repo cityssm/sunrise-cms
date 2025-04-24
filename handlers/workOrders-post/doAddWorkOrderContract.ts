@@ -11,7 +11,7 @@ export default async function handler(
   >,
   response: Response
 ): Promise<void> {
-  const success = await addWorkOrderContract(
+  const success = addWorkOrderContract(
     {
       contractId: request.body.contractId,
       workOrderId: request.body.workOrderId

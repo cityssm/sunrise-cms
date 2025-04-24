@@ -3,17 +3,17 @@ import type { Request, Response } from 'express'
 import { deleteRecord } from '../../database/deleteRecord.js'
 import getFeeCategories from '../../database/getFeeCategories.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, { feeCategoryId: string }>,
   response: Response
-): Promise<void> {
-  const success = await deleteRecord(
+): void {
+  const success = deleteRecord(
     'FeeCategories',
     request.body.feeCategoryId,
     request.session.user as User
   )
 
-  const feeCategories = await getFeeCategories(
+  const feeCategories = getFeeCategories(
     {},
     {
       includeFees: true

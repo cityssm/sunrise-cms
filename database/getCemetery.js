@@ -1,13 +1,14 @@
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import getCemeteries from './getCemeteries.js';
-import { acquireConnection } from './pool.js';
-export default async function getCemetery(cemeteryId, connectedDatabase) {
-    return await _getCemetery('cemeteryId', cemeteryId, connectedDatabase);
+export default function getCemetery(cemeteryId, connectedDatabase) {
+    return _getCemetery('cemeteryId', cemeteryId, connectedDatabase);
 }
-export async function getCemeteryByKey(cemeteryKey, connectedDatabase) {
-    return await _getCemetery('cemeteryKey', cemeteryKey, connectedDatabase);
+export function getCemeteryByKey(cemeteryKey, connectedDatabase) {
+    return _getCemetery('cemeteryKey', cemeteryKey, connectedDatabase);
 }
-async function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const cemetery = database
         .prepare(`select m.cemeteryId, m.cemeteryName, m.cemeteryKey, m.cemeteryDescription,
         m.cemeteryLatitude, m.cemeteryLongitude, m.cemeterySvg,
@@ -39,11 +40,11 @@ async function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
     if (cemetery !== undefined) {
         cemetery.childCemeteries =
             cemetery.parentCemeteryId === null
-                ? await getCemeteries({ parentCemeteryId: cemetery.cemeteryId })
+                ? getCemeteries({ parentCemeteryId: cemetery.cemeteryId }, connectedDatabase)
                 : [];
     }
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return cemetery;
 }

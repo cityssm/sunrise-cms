@@ -4,17 +4,18 @@ import updateContract, {
   type UpdateContractForm
 } from '../../database/updateContract.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, UpdateContractForm>,
   response: Response
-): Promise<void> {
-  const success = await updateContract(
+): void {
+  const success = updateContract(
     request.body,
     request.session.user as User
   )
 
   response.json({
     success,
+    
     contractId: request.body.contractId
   })
 }

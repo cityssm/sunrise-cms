@@ -6,25 +6,26 @@ import {
   getContractTypes
 } from '../../helpers/functions.cache.js'
 
-export default async function handler(
+export default function handler(
   request: Request<
     unknown,
     unknown,
     { contractTypeId: string; moveToEnd: '0' | '1' }
   >,
   response: Response
-): Promise<void> {
+): void {
   const success =
     request.body.moveToEnd === '1'
-      ? await moveRecordUpToTop('ContractTypes', request.body.contractTypeId)
-      : await moveRecordUp('ContractTypes', request.body.contractTypeId)
+      ? moveRecordUpToTop('ContractTypes', request.body.contractTypeId)
+      : moveRecordUp('ContractTypes', request.body.contractTypeId)
 
-  const contractTypes = await getContractTypes()
-  const allContractTypeFields = await getAllContractTypeFields()
+  const contractTypes = getContractTypes()
+  const allContractTypeFields = getAllContractTypeFields()
 
   response.json({
     success,
-    contractTypes,
-    allContractTypeFields
+
+    allContractTypeFields,
+    contractTypes
   })
 }

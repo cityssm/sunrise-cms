@@ -5,16 +5,13 @@ import updateFeeCategory, {
   type UpdateFeeCategoryForm
 } from '../../database/updateFeeCategory.js'
 
-export default async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
-  const success = await updateFeeCategory(
+export default function handler(request: Request, response: Response): void {
+  const success = updateFeeCategory(
     request.body as UpdateFeeCategoryForm,
     request.session.user as User
   )
 
-  const feeCategories = await getFeeCategories(
+  const feeCategories = getFeeCategories(
     {},
     {
       includeFees: true
@@ -23,6 +20,7 @@ export default async function handler(
 
   response.json({
     success,
+
     feeCategories
   })
 }

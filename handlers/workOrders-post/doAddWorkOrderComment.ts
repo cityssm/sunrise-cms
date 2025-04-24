@@ -5,15 +5,13 @@ import addWorkOrderComment, {
 } from '../../database/addWorkOrderComment.js'
 import getWorkOrderComments from '../../database/getWorkOrderComments.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, AddWorkOrderCommentForm>,
   response: Response
-): Promise<void> {
-  await addWorkOrderComment(request.body, request.session.user as User)
+): void {
+  addWorkOrderComment(request.body, request.session.user as User)
 
-  const workOrderComments = await getWorkOrderComments(
-    request.body.workOrderId as string
-  )
+  const workOrderComments = getWorkOrderComments(request.body.workOrderId)
 
   response.json({
     success: true,

@@ -1,11 +1,11 @@
 import getFeeCategories from '../../database/getFeeCategories.js';
 import { getBurialSiteTypes, getContractTypes } from '../../helpers/functions.cache.js';
-export default async function handler(_request, response) {
-    const feeCategories = await getFeeCategories({}, {
+export default function handler(_request, response) {
+    const feeCategories = getFeeCategories({}, {
         includeFees: true
     });
-    const contractTypes = await getContractTypes();
-    const burialSiteTypes = await getBurialSiteTypes();
+    const contractTypes = getContractTypes();
+    const burialSiteTypes = getBurialSiteTypes();
     response.render('admin-fees', {
         headTitle: 'Fee Management',
         burialSiteTypes,

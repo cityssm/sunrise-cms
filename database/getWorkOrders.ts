@@ -1,11 +1,11 @@
-import type { PoolConnection } from 'better-sqlite-pool'
-
 import {
   type DateString,
   dateIntegerToString,
   dateStringToInteger
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import {
   getBurialSiteNameWhereClause,
   getDeceasedNameWhereClause
@@ -16,7 +16,6 @@ import getBurialSites from './getBurialSites.js'
 import getContracts from './getContracts.js'
 import getWorkOrderComments from './getWorkOrderComments.js'
 import getWorkOrderMilestones from './getWorkOrderMilestones.js'
-import { acquireConnection } from './pool.js'
 
 export interface GetWorkOrdersFilters {
   workOrderTypeId?: number | string
@@ -29,9 +28,9 @@ export interface GetWorkOrdersFilters {
   deceasedName?: string
 }
 
-interface GetWorkOrdersOptions {
+export interface GetWorkOrdersOptions {
   limit: number
-  offset: number
+  offset: number | string
 
   includeBurialSites?: boolean
   includeComments?: boolean
@@ -41,9 +40,9 @@ interface GetWorkOrdersOptions {
 export async function getWorkOrders(
   filters: GetWorkOrdersFilters,
   options: GetWorkOrdersOptions,
-  connectedDatabase?: PoolConnection
+  connectedDatabase?: sqlite.Database
 ): Promise<{ count: number; workOrders: WorkOrder[] }> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 
@@ -109,7 +108,7 @@ export async function getWorkOrders(
   }
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return {
@@ -121,10 +120,10 @@ export async function getWorkOrders(
 async function addInclusions(
   workOrder: WorkOrder,
   options: GetWorkOrdersOptions,
-  database: PoolConnection
+  database: sqlite.Database
 ): Promise<WorkOrder> {
   if (options.includeComments ?? false) {
-    workOrder.workOrderComments = await getWorkOrderComments(
+    workOrder.workOrderComments = getWorkOrderComments(
       workOrder.workOrderId,
       database
     )
@@ -134,7 +133,7 @@ async function addInclusions(
     if (workOrder.workOrderBurialSiteCount === 0) {
       workOrder.workOrderBurialSites = []
     } else {
-      const workOrderBurialSitesResults = await getBurialSites(
+      const workOrderBurialSitesResults = getBurialSites(
         {
           workOrderId: workOrder.workOrderId
         },

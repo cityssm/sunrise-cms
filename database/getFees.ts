@@ -1,8 +1,8 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Fee } from '../types/record.types.js'
 
-import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 interface GetFeesFilters {
@@ -10,16 +10,16 @@ interface GetFeesFilters {
   contractTypeId?: number | string
 }
 
-export default async function getFees(
+export default function getFees(
   feeCategoryId: number,
   additionalFilters: GetFeesFilters,
-  connectedDatabase?: PoolConnection
-): Promise<Fee[]> {
+  connectedDatabase?: sqlite.Database
+): Fee[] {
   const updateOrderNumbers = !(
     additionalFilters.burialSiteTypeId || additionalFilters.contractTypeId
   )
 
-  const database = connectedDatabase ?? (await acquireConnection())
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   let sqlWhereClause =
     ' where f.recordDelete_timeMillis is null and f.feeCategoryId = ?'
@@ -27,14 +27,14 @@ export default async function getFees(
   const sqlParameters: unknown[] = [feeCategoryId]
 
   if (additionalFilters.contractTypeId) {
-    sqlWhereClause +=
-      ' and (f.contractTypeId is null or f.contractTypeId = ?)'
+    sqlWhereClause += ' and (f.contractTypeId is null or f.contractTypeId = ?)'
 
     sqlParameters.push(additionalFilters.contractTypeId)
   }
 
   if (additionalFilters.burialSiteTypeId) {
-    sqlWhereClause += ' and (f.burialSiteTypeId is null or f.burialSiteTypeId = ?)'
+    sqlWhereClause +=
+      ' and (f.burialSiteTypeId is null or f.burialSiteTypeId = ?)'
 
     sqlParameters.push(additionalFilters.burialSiteTypeId)
   }
@@ -84,7 +84,7 @@ export default async function getFees(
   }
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return fees

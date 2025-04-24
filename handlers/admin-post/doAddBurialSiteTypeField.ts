@@ -5,16 +5,16 @@ import addBurialSiteTypeField, {
 } from '../../database/addBurialSiteTypeField.js'
 import { getBurialSiteTypes } from '../../helpers/functions.cache.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, AddBurialSiteTypeFieldForm>,
   response: Response
-): Promise<void> {
-  const burialSiteTypeFieldId = await addBurialSiteTypeField(
+): void {
+  const burialSiteTypeFieldId = addBurialSiteTypeField(
     request.body,
     request.session.user as User
   )
 
-  const burialSiteTypes = await getBurialSiteTypes()
+  const burialSiteTypes = getBurialSiteTypes()
 
   response.json({
     success: true,

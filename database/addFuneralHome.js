@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function addFuneralHome(addForm, user) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function addFuneralHome(addForm, user) {
+    const database = sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`insert into FuneralHomes (
@@ -10,6 +11,6 @@ export default async function addFuneralHome(addForm, user) {
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(addForm.funeralHomeName, addForm.funeralHomeKey, addForm.funeralHomeAddress1, addForm.funeralHomeAddress2, addForm.funeralHomeCity, addForm.funeralHomeProvince, addForm.funeralHomePostalCode, addForm.funeralHomePhoneNumber, user.userName, rightNowMillis, user.userName, rightNowMillis);
-    database.release();
+    database.close();
     return result.lastInsertRowid;
 }

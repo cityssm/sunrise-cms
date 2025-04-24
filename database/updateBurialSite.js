@@ -1,8 +1,9 @@
+import sqlite from 'better-sqlite3';
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js';
 import deleteBurialSiteField from './deleteBurialSiteField.js';
 import getCemetery from './getCemetery.js';
-import { acquireConnection } from './pool.js';
 /**
  * Updates a burial site.
  * @param updateForm - The burial site's updated information
@@ -10,11 +11,11 @@ import { acquireConnection } from './pool.js';
  * @returns True if the burial site was updated.
  * @throws If an active burial site with the same name already exists.
  */
-export default async function updateBurialSite(updateForm, user) {
-    const database = await acquireConnection();
+export default function updateBurialSite(updateForm, user) {
+    const database = sqlite(sunriseDB);
     const cemetery = updateForm.cemeteryId === ''
         ? undefined
-        : await getCemetery(updateForm.cemeteryId, database);
+        : getCemetery(updateForm.cemeteryId, database);
     const burialSiteName = buildBurialSiteName(cemetery?.cemeteryKey, updateForm);
     // Ensure no active burial sites share the same name
     const existingBurialSite = database
@@ -26,7 +27,7 @@ export default async function updateBurialSite(updateForm, user) {
         .pluck()
         .get(burialSiteName, updateForm.burialSiteId);
     if (existingBurialSite !== undefined) {
-        database.release();
+        database.close();
         throw new Error('An active burial site with that name already exists.');
     }
     const result = database
@@ -59,20 +60,20 @@ export default async function updateBurialSite(updateForm, user) {
         const burialSiteTypeFieldIds = (updateForm.burialSiteTypeFieldIds ?? '').split(',');
         for (const burialSiteTypeFieldId of burialSiteTypeFieldIds) {
             const fieldValue = updateForm[`fieldValue_${burialSiteTypeFieldId}`];
-            await ((fieldValue ?? '') === ''
+            (fieldValue ?? '') === ''
                 ? deleteBurialSiteField(updateForm.burialSiteId, burialSiteTypeFieldId, user, database)
                 : addOrUpdateBurialSiteField({
                     burialSiteId: updateForm.burialSiteId,
                     burialSiteTypeFieldId,
                     fieldValue: fieldValue ?? ''
-                }, user, database));
+                }, user, database);
         }
     }
-    database.release();
+    database.close();
     return result.changes > 0;
 }
-export async function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user) {
-    const database = await acquireConnection();
+export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user) {
+    const database = sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update BurialSites
@@ -82,6 +83,6 @@ export async function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, u
         where burialSiteId = ?
         and recordDelete_timeMillis is null`)
         .run(burialSiteStatusId === '' ? undefined : burialSiteStatusId, user.userName, rightNowMillis, burialSiteId);
-    database.release();
+    database.close();
     return result.changes > 0;
 }

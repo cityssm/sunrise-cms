@@ -4,18 +4,15 @@ import addCemetery, {
   type AddCemeteryForm
 } from '../../database/addCemetery.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, AddCemeteryForm>,
   response: Response
-): Promise<void> {
-  const cemeteryId = await addCemetery(
-    request.body,
-    request.session.user as User
-  )
+): void {
+  const cemeteryId = addCemetery(request.body, request.session.user as User)
 
   response.json({
     success: true,
-    
+
     cemeteryId
   })
 }

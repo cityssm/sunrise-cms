@@ -1,6 +1,7 @@
-import { clearCacheByTableName } from '../helpers/functions.cache.js'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
+import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 export interface UpdateContractTypeFieldForm {
   contractTypeFieldId: number | string
@@ -14,11 +15,11 @@ export interface UpdateContractTypeFieldForm {
   pattern?: string
 }
 
-export default async function updateContractTypeField(
+export default function updateContractTypeField(
   updateForm: UpdateContractTypeFieldForm,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -48,7 +49,7 @@ export default async function updateContractTypeField(
       updateForm.contractTypeFieldId
     )
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('ContractTypeFields')
 

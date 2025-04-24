@@ -21,4 +21,4 @@ export interface UpdateCemeteryForm {
  * @param user - The user who is updating the cemetery.
  * @returns `true` if the cemetery was updated successfully, `false` otherwise.
  */
-export default function updateCemetery(updateForm: UpdateCemeteryForm, user: User): Promise<boolean>;
+export default function updateCemetery(updateForm: UpdateCemeteryForm, user: User): boolean;

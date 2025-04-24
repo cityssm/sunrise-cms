@@ -1,12 +1,13 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
-import { acquireConnection } from './pool.js'
-
-export async function moveContractTypePrintDown(
+export function moveContractTypePrintDown(
   contractTypeId: number | string,
   printEJS: string
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const currentOrderNumber = (
     database
@@ -32,18 +33,18 @@ export async function moveContractTypePrintDown(
     )
     .run(currentOrderNumber, contractTypeId, printEJS)
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('ContractTypePrints')
 
   return result.changes > 0
 }
 
-export async function moveContractTypePrintDownToBottom(
+export function moveContractTypePrintDownToBottom(
   contractTypeId: number | string,
   printEJS: string
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const currentOrderNumber = (
     database
@@ -85,7 +86,7 @@ export async function moveContractTypePrintDownToBottom(
       .run(contractTypeId, currentOrderNumber)
   }
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('ContractTypePrints')
 

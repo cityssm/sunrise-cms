@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function getContractField(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function getContractField(contractId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const fields = database
         .prepare(`select o.contractId, o.contractTypeFieldId,
         o.fieldValue, f.contractTypeField, f.fieldType, f.fieldValues,
@@ -27,7 +28,7 @@ export default async function getContractField(contractId, connectedDatabase) {
         order by contractTypeOrderNumber, f.orderNumber, f.contractTypeField`)
         .all(contractId, contractId, contractId, contractId);
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return fields;
 }

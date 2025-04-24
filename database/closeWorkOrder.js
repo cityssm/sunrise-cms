@@ -1,7 +1,8 @@
 import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
-import { acquireConnection } from './pool.js';
-export default async function closeWorkOrder(workOrderForm, user) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function closeWorkOrder(workOrderForm, user) {
+    const database = sqlite(sunriseDB);
     const rightNow = new Date();
     const result = database
         .prepare(`update WorkOrders
@@ -12,6 +13,6 @@ export default async function closeWorkOrder(workOrderForm, user) {
         .run(workOrderForm.workOrderCloseDateString
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
         : dateToInteger(new Date()), user.userName, rightNow.getTime(), workOrderForm.workOrderId);
-    database.release();
+    database.close();
     return result.changes > 0;
 }

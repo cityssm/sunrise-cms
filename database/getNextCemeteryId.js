@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function getNextCemeteryId(cemeteryId) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function getNextCemeteryId(cemeteryId) {
+    const database = sqlite(sunriseDB, { readonly: true });
     const result = database
         .prepare(`select cemeteryId
         from Cemeteries
@@ -10,6 +11,6 @@ export default async function getNextCemeteryId(cemeteryId) {
         limit 1`)
         .pluck()
         .get(cemeteryId);
-    database.release();
+    database.close();
     return result;
 }

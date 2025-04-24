@@ -5,16 +5,13 @@ import addFeeCategory, {
 } from '../../database/addFeeCategory.js'
 import getFeeCategories from '../../database/getFeeCategories.js'
 
-export default async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
-  const feeCategoryId = await addFeeCategory(
+export default function handler(request: Request, response: Response): void {
+  const feeCategoryId = addFeeCategory(
     request.body as AddFeeCategoryForm,
     request.session.user as User
   )
 
-  const feeCategories = await getFeeCategories(
+  const feeCategories = getFeeCategories(
     {},
     {
       includeFees: true
@@ -23,7 +20,8 @@ export default async function handler(
 
   response.json({
     success: true,
-    feeCategoryId,
-    feeCategories
+
+    feeCategories,
+    feeCategoryId
   })
 }

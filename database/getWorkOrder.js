@@ -1,9 +1,10 @@
 import { dateIntegerToString } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import getBurialSites from './getBurialSites.js';
 import getContracts from './getContracts.js';
 import getWorkOrderComments from './getWorkOrderComments.js';
 import getWorkOrderMilestones from './getWorkOrderMilestones.js';
-import { acquireConnection } from './pool.js';
 const baseSQL = `select w.workOrderId,
     w.workOrderTypeId, t.workOrderType,
     w.workOrderNumber, w.workOrderDescription,
@@ -24,12 +25,12 @@ export async function getWorkOrderByWorkOrderNumber(workOrderNumber) {
     });
 }
 async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+    const database = connectedDatabase ?? (sqlite(sunriseDB));
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const workOrder = database.prepare(sql).get(workOrderIdOrWorkOrderNumber);
     if (workOrder !== undefined) {
         if (options.includeBurialSites) {
-            const burialSiteResults = await getBurialSites({
+            const burialSiteResults = getBurialSites({
                 workOrderId: workOrder.workOrderId
             }, {
                 includeContractCount: false,
@@ -61,7 +62,7 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
         }
     }
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return workOrder;
 }

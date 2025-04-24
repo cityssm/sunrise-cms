@@ -1,24 +1,26 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
-import { acquireConnection } from './pool.js'
-
 export interface AddContractTypeFieldForm {
-  contractTypeId?: string | number
+  contractTypeId?: number | string
   contractTypeField: string
   fieldValues?: string
   fieldType?: string
   isRequired?: string
+  maxLength?: number | string
+  minLength?: number | string
   pattern?: string
-  minLength?: string | number
-  maxLength?: string | number
+
   orderNumber?: number
 }
 
-export default async function addContractTypeField(
+export default function addContractTypeField(
   addForm: AddContractTypeFieldForm,
   user: User
-): Promise<number> {
-  const database = await acquireConnection()
+): number {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -49,7 +51,7 @@ export default async function addContractTypeField(
       rightNowMillis
     )
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('ContractTypeFields')
 

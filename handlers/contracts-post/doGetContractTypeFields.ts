@@ -6,15 +6,15 @@ import {
 } from '../../helpers/functions.cache.js'
 import type { ContractType } from '../../types/record.types.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, { contractTypeId: string }>,
   response: Response
-): Promise<void> {
-  const allContractTypeFields = await getAllContractTypeFields()
+): void {
+  const allContractTypeFields = getAllContractTypeFields()
 
-  const result = (await getContractTypeById(
+  const result = getContractTypeById(
     Number.parseInt(request.body.contractTypeId, 10)
-  )) as ContractType
+  ) as ContractType
 
   const contractTypeFields = [...allContractTypeFields]
 

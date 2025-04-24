@@ -3,9 +3,9 @@ export interface UpdateBurialSiteTypeFieldForm {
     burialSiteTypeField: string;
     isRequired: '0' | '1';
     fieldType?: string;
+    fieldValues: string;
     maxLength?: string;
     minLength?: string;
     pattern?: string;
-    fieldValues: string;
 }
-export default function updateBurialSiteTypeField(updateForm: UpdateBurialSiteTypeFieldForm, user: User): Promise<boolean>;
+export default function updateBurialSiteTypeField(updateForm: UpdateBurialSiteTypeFieldForm, user: User): boolean;

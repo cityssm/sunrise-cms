@@ -1,8 +1,9 @@
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
-import { acquireConnection } from './pool.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export async function moveBurialSiteTypeFieldDown(burialSiteTypeFieldId) {
-    const database = await acquireConnection();
+export function moveBurialSiteTypeFieldDown(burialSiteTypeFieldId) {
+    const database = sqlite(sunriseDB);
     const currentField = getCurrentField(burialSiteTypeFieldId, database);
     database
         .prepare(`update BurialSiteTypeFields
@@ -11,12 +12,12 @@ export async function moveBurialSiteTypeFieldDown(burialSiteTypeFieldId) {
         and burialSiteTypeId = ? and orderNumber = ? + 1`)
         .run(currentField.burialSiteTypeId, currentField.orderNumber);
     const success = updateRecordOrderNumber('BurialSiteTypeFields', burialSiteTypeFieldId, currentField.orderNumber + 1, database);
-    database.release();
+    database.close();
     clearCacheByTableName('BurialSiteTypeFields');
     return success;
 }
-export async function moveBurialSiteTypeFieldDownToBottom(burialSiteTypeFieldId) {
-    const database = await acquireConnection();
+export function moveBurialSiteTypeFieldDownToBottom(burialSiteTypeFieldId) {
+    const database = sqlite(sunriseDB);
     const currentField = getCurrentField(burialSiteTypeFieldId, database);
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
@@ -34,15 +35,15 @@ export async function moveBurialSiteTypeFieldDownToBottom(burialSiteTypeFieldId)
           and orderNumber > ?`)
             .run(currentField.burialSiteTypeId, currentField.orderNumber);
     }
-    database.release();
+    database.close();
     clearCacheByTableName('BurialSiteTypeFields');
     return true;
 }
-export async function moveBurialSiteTypeFieldUp(burialSiteTypeFieldId) {
-    const database = await acquireConnection();
+export function moveBurialSiteTypeFieldUp(burialSiteTypeFieldId) {
+    const database = sqlite(sunriseDB);
     const currentField = getCurrentField(burialSiteTypeFieldId, database);
     if (currentField.orderNumber <= 0) {
-        database.release();
+        database.close();
         return true;
     }
     database
@@ -53,12 +54,12 @@ export async function moveBurialSiteTypeFieldUp(burialSiteTypeFieldId) {
         and orderNumber = ? - 1`)
         .run(currentField.burialSiteTypeId, currentField.orderNumber);
     const success = updateRecordOrderNumber('BurialSiteTypeFields', burialSiteTypeFieldId, currentField.orderNumber - 1, database);
-    database.release();
+    database.close();
     clearCacheByTableName('BurialSiteTypeFields');
     return success;
 }
-export async function moveBurialSiteTypeFieldUpToTop(burialSiteTypeFieldId) {
-    const database = await acquireConnection();
+export function moveBurialSiteTypeFieldUpToTop(burialSiteTypeFieldId) {
+    const database = sqlite(sunriseDB);
     const currentField = getCurrentField(burialSiteTypeFieldId, database);
     if (currentField.orderNumber > 0) {
         updateRecordOrderNumber('BurialSiteTypeFields', burialSiteTypeFieldId, -1, database);
@@ -70,7 +71,7 @@ export async function moveBurialSiteTypeFieldUpToTop(burialSiteTypeFieldId) {
           and orderNumber < ?`)
             .run(currentField.burialSiteTypeId, currentField.orderNumber);
     }
-    database.release();
+    database.close();
     clearCacheByTableName('BurialSiteTypeFields');
     return true;
 }

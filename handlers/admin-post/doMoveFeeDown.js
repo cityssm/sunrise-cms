@@ -1,10 +1,10 @@
 import getFeeCategories from '../../database/getFeeCategories.js';
 import { moveFeeDown, moveFeeDownToBottom } from '../../database/moveFee.js';
-export default async function handler(request, response) {
+export default function handler(request, response) {
     const success = request.body.moveToEnd === '1'
-        ? await moveFeeDownToBottom(request.body.feeId)
-        : await moveFeeDown(request.body.feeId);
-    const feeCategories = await getFeeCategories({}, {
+        ? moveFeeDownToBottom(request.body.feeId)
+        : moveFeeDown(request.body.feeId);
+    const feeCategories = getFeeCategories({}, {
         includeFees: true
     });
     response.json({

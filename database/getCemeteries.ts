@@ -1,12 +1,15 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Cemetery } from '../types/record.types.js'
 
-import { acquireConnection } from './pool.js'
-
-export default async function getCemeteries(filters?: {
-  parentCemeteryId?: number | string
-}
-): Promise<Cemetery[]> {
-  const database = await acquireConnection()
+export default function getCemeteries(
+  filters?: {
+    parentCemeteryId?: number | string
+  },
+  connectedDatabase?: sqlite.Database
+): Cemetery[] {
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const sqlParameters: Array<number | string> = []
 
@@ -36,7 +39,9 @@ export default async function getCemeteries(filters?: {
     )
     .all(sqlParameters) as Cemetery[]
 
-  database.release()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return cemeteries
 }

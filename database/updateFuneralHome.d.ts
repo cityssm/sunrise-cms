@@ -8,4 +8,4 @@ export interface UpdateForm {
     funeralHomeProvince: string;
     funeralHomePhoneNumber: string;
 }
-export default function updateFuneralHome(updateForm: UpdateForm, user: User): Promise<boolean>;
+export default function updateFuneralHome(updateForm: UpdateForm, user: User): boolean;

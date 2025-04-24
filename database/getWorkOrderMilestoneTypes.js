@@ -1,7 +1,8 @@
-import { acquireConnection } from './pool.js';
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default async function getWorkOrderMilestoneTypes() {
-    const database = await acquireConnection();
+export default function getWorkOrderMilestoneTypes() {
+    const database = sqlite(sunriseDB);
     const workOrderMilestoneTypes = database
         .prepare(`select workOrderMilestoneTypeId, workOrderMilestoneType, orderNumber
         from WorkOrderMilestoneTypes
@@ -16,6 +17,6 @@ export default async function getWorkOrderMilestoneTypes() {
         }
         expectedOrderNumber += 1;
     }
-    database.release();
+    database.close();
     return workOrderMilestoneTypes;
 }

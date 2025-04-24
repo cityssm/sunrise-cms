@@ -5,8 +5,9 @@ import {
   dateToInteger,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export type ReportParameters = Record<string, number | string>
 
@@ -62,10 +63,10 @@ const simpleReports: Record<`${string}-all` | `${string}-formatted`, string> = {
   'workOrderTypes-all': 'select * from WorkOrderTypes'
 }
 
-export default async function getReportData(
+export default function getReportData(
   reportName: string,
   reportParameters: ReportParameters = {}
-): Promise<unknown[] | undefined> {
+): unknown[] | undefined {
   let sql = ''
   const sqlParameters: unknown[] = []
 
@@ -228,14 +229,14 @@ export default async function getReportData(
     sql = simpleReports[reportName]
   }
 
-  const database = await acquireConnection()
+  const database = sqlite(sunriseDB)
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
 
   const rows = database.prepare(sql).all(sqlParameters)
 
-  database.release()
+  database.close()
 
   return rows
 }

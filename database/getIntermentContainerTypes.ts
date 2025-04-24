@@ -1,16 +1,17 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { IntermentContainerType } from '../types/record.types.js'
 
-import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export default async function getIntermentContainerTypes(): Promise<
-  IntermentContainerType[]
-> {
-  const database = await acquireConnection()
+export default function getIntermentContainerTypes(): IntermentContainerType[] {
+  const database = sqlite(sunriseDB)
 
   const containerTypes = database
     .prepare(
-      `select intermentContainerTypeId, intermentContainerType, intermentContainerTypeKey, isCremationType, orderNumber
+      `select intermentContainerTypeId, intermentContainerType, intermentContainerTypeKey,
+        isCremationType, orderNumber
         from IntermentContainerTypes
         where recordDelete_timeMillis is null
         order by isCremationType, orderNumber, intermentContainerType, intermentContainerTypeId`
@@ -34,7 +35,7 @@ export default async function getIntermentContainerTypes(): Promise<
     }
   }
 
-  database.release()
+  database.close()
 
   return containerTypes
 }

@@ -1,11 +1,13 @@
-import { acquireConnection } from './pool.js'
+import sqlite from 'better-sqlite3'
 
-export default async function deleteContractInterment(
+import { sunriseDB } from '../helpers/database.helpers.js'
+
+export default function deleteContractInterment(
   contractId: number | string,
   intermentNumber: number | string,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -17,7 +19,7 @@ export default async function deleteContractInterment(
     )
     .run(user.userName, Date.now(), contractId, intermentNumber)
 
-  database.release()
+  database.close()
 
   return result.changes > 0
 }

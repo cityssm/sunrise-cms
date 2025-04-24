@@ -1,12 +1,12 @@
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime';
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js';
-export default async function handler(request, response) {
+export default function handler(request, response) {
     const currentDate = new Date();
     const workOrder = {
         workOrderOpenDate: dateToInteger(currentDate),
         workOrderOpenDateString: dateToString(currentDate)
     };
-    const workOrderTypes = await getWorkOrderTypes();
+    const workOrderTypes = getWorkOrderTypes();
     response.render('workOrder-edit', {
         headTitle: 'New Work Order',
         workOrder,

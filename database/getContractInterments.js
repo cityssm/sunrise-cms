@@ -1,7 +1,8 @@
 import { dateIntegerToString } from '@cityssm/utils-datetime';
-import { acquireConnection } from './pool.js';
-export default async function getContractInterments(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function getContractInterments(contractId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const interments = database
         .prepare(`select o.contractId, o.intermentNumber,
@@ -24,7 +25,7 @@ export default async function getContractInterments(contractId, connectedDatabas
         order by t.orderNumber, o.deceasedName, o.intermentNumber`)
         .all(contractId);
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return interments;
 }

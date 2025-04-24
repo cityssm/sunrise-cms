@@ -1,13 +1,15 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Fee } from '../types/record.types.js'
 
 import getFee from './getFee.js'
-import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export async function moveFeeDown(feeId: number | string): Promise<boolean> {
-  const database = await acquireConnection()
+export function moveFeeDown(feeId: number | string): boolean {
+  const database = sqlite(sunriseDB)
 
-  const currentFee = (await getFee(feeId, database)) as Fee
+  const currentFee = getFee(feeId, database) as Fee
 
   database
     .prepare(
@@ -26,17 +28,15 @@ export async function moveFeeDown(feeId: number | string): Promise<boolean> {
     database
   )
 
-  database.release()
+  database.close()
 
   return success
 }
 
-export async function moveFeeDownToBottom(
-  feeId: number | string
-): Promise<boolean> {
-  const database = await acquireConnection()
+export function moveFeeDownToBottom(feeId: number | string): boolean {
+  const database = sqlite(sunriseDB)
 
-  const currentFee = (await getFee(feeId, database)) as Fee
+  const currentFee = getFee(feeId, database) as Fee
 
   const maxOrderNumber = (
     database
@@ -62,18 +62,18 @@ export async function moveFeeDownToBottom(
       .run(currentFee.feeCategoryId, currentFee.orderNumber)
   }
 
-  database.release()
+  database.close()
 
   return true
 }
 
-export async function moveFeeUp(feeId: number | string): Promise<boolean> {
-  const database = await acquireConnection()
+export function moveFeeUp(feeId: number | string): boolean {
+  const database = sqlite(sunriseDB)
 
-  const currentFee = (await getFee(feeId, database)) as Fee
+  const currentFee = getFee(feeId, database) as Fee
 
   if (currentFee.orderNumber <= 0) {
-    database.release()
+    database.close()
     return true
   }
 
@@ -94,15 +94,15 @@ export async function moveFeeUp(feeId: number | string): Promise<boolean> {
     database
   )
 
-  database.release()
+  database.close()
 
   return success
 }
 
-export async function moveFeeUpToTop(feeId: number | string): Promise<boolean> {
-  const database = await acquireConnection()
+export function moveFeeUpToTop(feeId: number | string): boolean {
+  const database = sqlite(sunriseDB)
 
-  const currentFee = (await getFee(feeId, database)) as Fee
+  const currentFee = getFee(feeId, database) as Fee
 
   if (currentFee.orderNumber > 0) {
     updateRecordOrderNumber('Fees', feeId, -1, database)
@@ -118,7 +118,7 @@ export async function moveFeeUpToTop(feeId: number | string): Promise<boolean> {
       .run(currentFee.feeCategoryId, currentFee.orderNumber)
   }
 
-  database.release()
+  database.close()
 
   return true
 }

@@ -1,4 +1,4 @@
-import type { PoolConnection } from 'better-sqlite-pool';
+import sqlite from 'better-sqlite3';
 import type { BurialSite } from '../types/record.types.js';
 export interface GetBurialSitesFilters {
     burialSiteNameSearchType?: '' | 'endsWith' | 'startsWith';
@@ -15,7 +15,7 @@ export interface GetBurialSitesOptions {
     offset: number | string;
     includeContractCount?: boolean;
 }
-export default function getBurialSites(filters: GetBurialSitesFilters, options: GetBurialSitesOptions, connectedDatabase?: PoolConnection): Promise<{
+export default function getBurialSites(filters: GetBurialSitesFilters, options: GetBurialSitesOptions, connectedDatabase?: sqlite.Database): {
     count: number;
     burialSites: BurialSite[];
-}>;
+};

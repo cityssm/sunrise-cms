@@ -1,7 +1,8 @@
 import { dateIntegerToString, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
-import { acquireConnection } from './pool.js';
-export default async function getContractComments(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function getContractComments(contractId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
@@ -19,7 +20,7 @@ export default async function getContractComments(contractId, connectedDatabase)
         order by commentDate desc, commentTime desc, contractCommentId desc`)
         .all(contractId);
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return comments;
 }

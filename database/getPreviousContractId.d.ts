@@ -1,1 +1,1 @@
-export default function getPreviousContractId(contractId: number | string): Promise<number | undefined>;
+export default function getPreviousContractId(contractId: number | string): number | undefined;

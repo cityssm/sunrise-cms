@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function updateContractFeeQuantity(feeQuantityForm, user) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function updateContractFeeQuantity(feeQuantityForm, user) {
+    const database = sqlite(sunriseDB);
     const result = database
         .prepare(`update ContractFees
         set quantity = ?,
@@ -10,6 +11,6 @@ export default async function updateContractFeeQuantity(feeQuantityForm, user) {
         and contractId = ?
         and feeId = ?`)
         .run(feeQuantityForm.quantity, user.userName, Date.now(), feeQuantityForm.contractId, feeQuantityForm.feeId);
-    database.release();
+    database.close();
     return result.changes > 0;
 }

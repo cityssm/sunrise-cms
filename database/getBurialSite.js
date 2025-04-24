@@ -1,7 +1,8 @@
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import getBurialSiteComments from './getBurialSiteComments.js';
 import getBurialSiteFields from './getBurialSiteFields.js';
 import getContracts from './getContracts.js';
-import { acquireConnection } from './pool.js';
 const baseSQL = `select l.burialSiteId,
   l.burialSiteTypeId, t.burialSiteType,
   l.burialSiteNameSegment1,
@@ -29,7 +30,7 @@ export async function getBurialSiteByBurialSiteName(burialSiteName) {
     return await _getBurialSite(`${baseSQL} and l.burialSiteName = ?`, burialSiteName);
 }
 async function _getBurialSite(sql, burialSiteIdOrLotName) {
-    const database = await acquireConnection();
+    const database = sqlite(sunriseDB);
     const burialSite = database.prepare(sql).get(burialSiteIdOrLotName);
     if (burialSite !== undefined) {
         const contracts = await getContracts({
@@ -42,9 +43,9 @@ async function _getBurialSite(sql, burialSiteIdOrLotName) {
             includeTransactions: false
         }, database);
         burialSite.contracts = contracts.contracts;
-        burialSite.burialSiteFields = await getBurialSiteFields(burialSite.burialSiteId, database);
-        burialSite.burialSiteComments = await getBurialSiteComments(burialSite.burialSiteId, database);
+        burialSite.burialSiteFields = getBurialSiteFields(burialSite.burialSiteId, database);
+        burialSite.burialSiteComments = getBurialSiteComments(burialSite.burialSiteId, database);
     }
-    database.release();
+    database.close();
     return burialSite;
 }

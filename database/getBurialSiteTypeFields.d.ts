@@ -1,3 +1,3 @@
-import type { PoolConnection } from 'better-sqlite-pool';
+import sqlite from 'better-sqlite3';
 import type { BurialSiteTypeField } from '../types/record.types.js';
-export default function getBurialSiteTypeFields(burialSiteTypeId: number, connectedDatabase?: PoolConnection): Promise<BurialSiteTypeField[]>;
+export default function getBurialSiteTypeFields(burialSiteTypeId: number, connectedDatabase?: sqlite.Database): BurialSiteTypeField[];

@@ -7,7 +7,7 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const success = await reopenWorkOrderMilestone(
+  const success = reopenWorkOrderMilestone(
     request.body.workOrderMilestoneId as string,
     request.session.user as User
   )

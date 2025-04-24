@@ -1,2 +1,2 @@
-import type { PoolConnection } from 'better-sqlite-pool';
-export default function getContractTypePrints(contractTypeId: number, connectedDatabase?: PoolConnection): Promise<string[]>;
+import sqlite from 'better-sqlite3';
+export default function getContractTypePrints(contractTypeId: number, connectedDatabase?: sqlite.Database): string[];

@@ -1,19 +1,19 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface ContractFieldForm {
-  contractId: string | number
-  contractTypeFieldId: string | number
+  contractId: number | string
+  contractTypeFieldId: number | string
   fieldValue: string
 }
 
-export default async function addOrUpdateContractField(
+export default function addOrUpdateContractField(
   fieldForm: ContractFieldForm,
   user: User,
-  connectedDatabase?: PoolConnection
-): Promise<boolean> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -57,7 +57,7 @@ export default async function addOrUpdateContractField(
   }
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return result.changes > 0

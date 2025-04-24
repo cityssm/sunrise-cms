@@ -1,19 +1,20 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { BurialSiteStatus } from '../types/record.types.js'
-
-import { acquireConnection } from './pool.js'
-
-interface GetFilters {
-  cemeteryId?: number | string
-}
 
 interface BurialSiteStatusSummary extends BurialSiteStatus {
   burialSiteCount: number
 }
 
-export default async function getBurialSiteStatusSummary(
+interface GetFilters {
+  cemeteryId?: number | string
+}
+
+export default function getBurialSiteStatusSummary(
   filters: GetFilters
-): Promise<BurialSiteStatusSummary[]> {
-  const database = await acquireConnection()
+): BurialSiteStatusSummary[] {
+  const database = sqlite(sunriseDB)
 
   let sqlWhereClause = ' where l.recordDelete_timeMillis is null'
   const sqlParameters: unknown[] = []
@@ -35,7 +36,7 @@ export default async function getBurialSiteStatusSummary(
     )
     .all(sqlParameters) as BurialSiteStatusSummary[]
 
-  database.release()
+  database.close()
 
   return statuses
 }

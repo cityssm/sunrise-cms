@@ -4,8 +4,9 @@ import {
   dateToTimeInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddTransactionForm {
   contractId: number | string
@@ -18,11 +19,11 @@ export interface AddTransactionForm {
   transactionNote: string
 }
 
-export default async function addContractTransaction(
+export default function addContractTransaction(
   contractTransactionForm: AddTransactionForm,
   user: User
-): Promise<number> {
-  const database = await acquireConnection()
+): number {
+  const database = sqlite(sunriseDB)
 
   let transactionIndex = 0
 
@@ -76,7 +77,7 @@ export default async function addContractTransaction(
       rightNow.getTime()
     )
 
-  database.release()
+  database.close()
 
   return transactionIndex
 }

@@ -21,10 +21,10 @@ export default async function handler(request, response) {
             contract.cemeteryName = burialSite.cemeteryName;
         }
     }
-    const contractTypes = await getContractTypes();
-    const funeralHomes = await getFuneralHomes();
-    const committalTypes = await getCommittalTypes();
-    const intermentContainerTypes = await getIntermentContainerTypes();
+    const contractTypes = getContractTypes();
+    const funeralHomes = getFuneralHomes();
+    const committalTypes = getCommittalTypes();
+    const intermentContainerTypes = getIntermentContainerTypes();
     response.render('contract-edit', {
         headTitle: 'Create a New Contract',
         contract,

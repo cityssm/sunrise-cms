@@ -1,15 +1,17 @@
-import { acquireConnection } from './pool.js'
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddForm {
   workOrderId: number | string
   burialSiteId: number | string
 }
 
-export default async function addWorkOrderBurialSite(
+export default function addWorkOrderBurialSite(
   workOrderLotForm: AddForm,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -68,7 +70,7 @@ export default async function addWorkOrderBurialSite(
     }
   }
 
-  database.release()
+  database.close()
 
   return true
 }

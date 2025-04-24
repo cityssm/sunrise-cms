@@ -39,10 +39,10 @@ const debug = Debug(`${DEBUG_NAMESPACE}:functions.cache:${process.pid}`)
 
 let burialSiteStatuses: BurialSiteStatus[] | undefined
 
-export async function getBurialSiteStatusByBurialSiteStatus(
+export function getBurialSiteStatusByBurialSiteStatus(
   burialSiteStatus: string
-): Promise<BurialSiteStatus | undefined> {
-  const cachedStatuses = await getBurialSiteStatuses()
+): BurialSiteStatus | undefined {
+  const cachedStatuses = getBurialSiteStatuses()
 
   const statusLowerCase = burialSiteStatus.toLowerCase()
 
@@ -52,18 +52,18 @@ export async function getBurialSiteStatusByBurialSiteStatus(
   )
 }
 
-export async function getBurialSiteStatusById(
+export function getBurialSiteStatusById(
   burialSiteStatusId: number
-): Promise<BurialSiteStatus | undefined> {
-  const cachedStatuses = await getBurialSiteStatuses()
+): BurialSiteStatus | undefined {
+  const cachedStatuses = getBurialSiteStatuses()
 
   return cachedStatuses.find(
     (currentStatus) => currentStatus.burialSiteStatusId === burialSiteStatusId
   )
 }
 
-export async function getBurialSiteStatuses(): Promise<BurialSiteStatus[]> {
-  burialSiteStatuses ??= await getBurialSiteStatusesFromDatabase()
+export function getBurialSiteStatuses(): BurialSiteStatus[] {
+  burialSiteStatuses ??= getBurialSiteStatusesFromDatabase()
   return burialSiteStatuses
 }
 
@@ -77,25 +77,25 @@ function clearBurialSiteStatusesCache(): void {
 
 let burialSiteTypes: BurialSiteType[] | undefined
 
-export async function getBurialSiteTypeById(
+export function getBurialSiteTypeById(
   burialSiteTypeId: number
-): Promise<BurialSiteType | undefined> {
-  const cachedTypes = await getBurialSiteTypes()
+): BurialSiteType | undefined {
+  const cachedTypes = getBurialSiteTypes()
 
   return cachedTypes.find(
     (currentType) => currentType.burialSiteTypeId === burialSiteTypeId
   )
 }
 
-export async function getBurialSiteTypes(): Promise<BurialSiteType[]> {
-  burialSiteTypes ??= await getBurialSiteTypesFromDatabase()
+export function getBurialSiteTypes(): BurialSiteType[] {
+  burialSiteTypes ??= getBurialSiteTypesFromDatabase()
   return burialSiteTypes
 }
 
-export async function getBurialSiteTypesByBurialSiteType(
+export function getBurialSiteTypesByBurialSiteType(
   burialSiteType: string
-): Promise<BurialSiteType | undefined> {
-  const cachedTypes = await getBurialSiteTypes()
+): BurialSiteType | undefined {
+  const cachedTypes = getBurialSiteTypes()
 
   const typeLowerCase = burialSiteType.toLowerCase()
 
@@ -115,15 +115,15 @@ function clearBurialSiteTypesCache(): void {
 let contractTypes: ContractType[] | undefined
 let allContractTypeFields: ContractTypeField[] | undefined
 
-export async function getAllContractTypeFields(): Promise<ContractTypeField[]> {
-  allContractTypeFields ??= await getContractTypeFieldsFromDatabase()
+export function getAllContractTypeFields(): ContractTypeField[] {
+  allContractTypeFields ??= getContractTypeFieldsFromDatabase()
   return allContractTypeFields
 }
 
-export async function getContractTypeByContractType(
+export function getContractTypeByContractType(
   contractTypeString: string
-): Promise<ContractType | undefined> {
-  const cachedTypes = await getContractTypes()
+): ContractType | undefined {
+  const cachedTypes = getContractTypes()
 
   const typeLowerCase = contractTypeString.toLowerCase()
 
@@ -132,20 +132,18 @@ export async function getContractTypeByContractType(
   )
 }
 
-export async function getContractTypeById(
+export function getContractTypeById(
   contractTypeId: number
-): Promise<ContractType | undefined> {
-  const cachedTypes = await getContractTypes()
+): ContractType | undefined {
+  const cachedTypes = getContractTypes()
 
   return cachedTypes.find(
     (currentType) => currentType.contractTypeId === contractTypeId
   )
 }
 
-export async function getContractTypePrintsById(
-  contractTypeId: number
-): Promise<string[]> {
-  const contractType = await getContractTypeById(contractTypeId)
+export function getContractTypePrintsById(contractTypeId: number): string[] {
+  const contractType = getContractTypeById(contractTypeId)
 
   if (
     contractType?.contractTypePrints === undefined ||
@@ -161,8 +159,8 @@ export async function getContractTypePrintsById(
   return contractType.contractTypePrints ?? []
 }
 
-export async function getContractTypes(): Promise<ContractType[]> {
-  contractTypes ??= await getContractTypesFromDatabase()
+export function getContractTypes(): ContractType[] {
+  contractTypes ??= getContractTypesFromDatabase()
   return contractTypes
 }
 
@@ -177,10 +175,10 @@ function clearContractTypesCache(): void {
 
 let intermentContainerTypes: IntermentContainerType[] | undefined
 
-export async function getIntermentContainerTypeById(
+export function getIntermentContainerTypeById(
   intermentContainerTypeId: number
-): Promise<IntermentContainerType | undefined> {
-  const cachedContainerTypes = await getIntermentContainerTypes()
+): IntermentContainerType | undefined {
+  const cachedContainerTypes = getIntermentContainerTypes()
 
   return cachedContainerTypes.find(
     (currentContainerType) =>
@@ -188,10 +186,8 @@ export async function getIntermentContainerTypeById(
   )
 }
 
-export async function getIntermentContainerTypes(): Promise<
-  IntermentContainerType[]
-> {
-  intermentContainerTypes ??= await getIntermentContainerTypesFromDatabase()
+export function getIntermentContainerTypes(): IntermentContainerType[] {
+  intermentContainerTypes ??= getIntermentContainerTypesFromDatabase()
   return intermentContainerTypes
 }
 
@@ -205,10 +201,10 @@ function clearIntermentContainerTypesCache(): void {
 
 let committalTypes: CommittalType[] | undefined
 
-export async function getCommittalTypeById(
+export function getCommittalTypeById(
   committalTypeId: number
-): Promise<CommittalType | undefined> {
-  const cachedCommittalTypes = await getCommittalTypes()
+): CommittalType | undefined {
+  const cachedCommittalTypes = getCommittalTypes()
 
   return cachedCommittalTypes.find(
     (currentCommittalType) =>
@@ -216,8 +212,8 @@ export async function getCommittalTypeById(
   )
 }
 
-export async function getCommittalTypes(): Promise<CommittalType[]> {
-  committalTypes ??= await getCommittalTypesFromDatabase()
+export function getCommittalTypes(): CommittalType[] {
+  committalTypes ??= getCommittalTypesFromDatabase()
   return committalTypes
 }
 
@@ -231,10 +227,10 @@ function clearCommittalTypesCache(): void {
 
 let workOrderTypes: WorkOrderType[] | undefined
 
-export async function getWorkOrderTypeById(
+export function getWorkOrderTypeById(
   workOrderTypeId: number
-): Promise<WorkOrderType | undefined> {
-  const cachedWorkOrderTypes = await getWorkOrderTypes()
+): WorkOrderType | undefined {
+  const cachedWorkOrderTypes = getWorkOrderTypes()
 
   return cachedWorkOrderTypes.find(
     (currentWorkOrderType) =>
@@ -242,8 +238,8 @@ export async function getWorkOrderTypeById(
   )
 }
 
-export async function getWorkOrderTypes(): Promise<WorkOrderType[]> {
-  workOrderTypes ??= await getWorkOrderTypesFromDatabase()
+export function getWorkOrderTypes(): WorkOrderType[] {
+  workOrderTypes ??= getWorkOrderTypesFromDatabase()
   return workOrderTypes
 }
 
@@ -257,10 +253,10 @@ function clearWorkOrderTypesCache(): void {
 
 let workOrderMilestoneTypes: WorkOrderMilestoneType[] | undefined
 
-export async function getWorkOrderMilestoneTypeById(
+export function getWorkOrderMilestoneTypeById(
   workOrderMilestoneTypeId: number
-): Promise<WorkOrderMilestoneType | undefined> {
-  const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
+): WorkOrderMilestoneType | undefined {
+  const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes()
 
   return cachedWorkOrderMilestoneTypes.find(
     (currentWorkOrderMilestoneType) =>
@@ -269,10 +265,10 @@ export async function getWorkOrderMilestoneTypeById(
   )
 }
 
-export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
   workOrderMilestoneTypeString: string
-): Promise<WorkOrderMilestoneType | undefined> {
-  const cachedWorkOrderMilestoneTypes = await getWorkOrderMilestoneTypes()
+): WorkOrderMilestoneType | undefined {
+  const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes()
 
   const workOrderMilestoneTypeLowerCase =
     workOrderMilestoneTypeString.toLowerCase()
@@ -284,13 +280,10 @@ export async function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
   )
 }
 
-export async function getWorkOrderMilestoneTypes(): Promise<
-  WorkOrderMilestoneType[]
-> {
-  workOrderMilestoneTypes ??= await getWorkOrderMilestoneTypesFromDatabase()
+export function getWorkOrderMilestoneTypes(): WorkOrderMilestoneType[] {
+  workOrderMilestoneTypes ??= getWorkOrderMilestoneTypesFromDatabase()
   return workOrderMilestoneTypes
 }
-
 
 function clearWorkOrderMilestoneTypesCache(): void {
   workOrderMilestoneTypes = undefined
@@ -300,15 +293,15 @@ function clearWorkOrderMilestoneTypesCache(): void {
  * Cache Management
  */
 
-export async function preloadCaches(): Promise<void> {
+export function preloadCaches(): void {
   debug('Preloading caches')
-  await getBurialSiteStatuses()
-  await getBurialSiteTypes()
-  await getContractTypes()
-  await getCommittalTypes()
-  await getIntermentContainerTypes()
-  await getWorkOrderTypes()
-  await getWorkOrderMilestoneTypes()
+  getBurialSiteStatuses()
+  getBurialSiteTypes()
+  getContractTypes()
+  getCommittalTypes()
+  getIntermentContainerTypes()
+  getWorkOrderTypes()
+  getWorkOrderMilestoneTypes()
 }
 
 type CacheTableNames =

@@ -6,23 +6,20 @@ import {
   moveRecordDownToBottom
 } from '../../database/moveRecord.js'
 
-export default async function handler(
+export default function handler(
   request: Request<
     unknown,
     unknown,
     { feeCategoryId: string; moveToEnd: '0' | '1' }
   >,
   response: Response
-): Promise<void> {
+): void {
   const success =
     request.body.moveToEnd === '1'
-      ? await moveRecordDownToBottom(
-          'FeeCategories',
-          request.body.feeCategoryId
-        )
-      : await moveRecordDown('FeeCategories', request.body.feeCategoryId)
+      ? moveRecordDownToBottom('FeeCategories', request.body.feeCategoryId)
+      : moveRecordDown('FeeCategories', request.body.feeCategoryId)
 
-  const feeCategories = await getFeeCategories(
+  const feeCategories = getFeeCategories(
     {},
     {
       includeFees: true
@@ -31,6 +28,7 @@ export default async function handler(
 
   response.json({
     success,
+
     feeCategories
   })
 }

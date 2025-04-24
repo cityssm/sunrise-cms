@@ -4,14 +4,11 @@ import updateWorkOrder, {
   type UpdateWorkOrderForm
 } from '../../database/updateWorkOrder.js'
 
-export default async function handler(
-  request: Request,
+export default function handler(
+  request: Request<unknown, unknown, UpdateWorkOrderForm>,
   response: Response
-): Promise<void> {
-  const success = await updateWorkOrder(
-    request.body as UpdateWorkOrderForm,
-    request.session.user as User
-  )
+): void {
+  const success = updateWorkOrder(request.body, request.session.user as User)
 
   response.json({
     success,

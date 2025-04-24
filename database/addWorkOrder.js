@@ -1,13 +1,14 @@
 import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import addWorkOrderContract from './addWorkOrderContract.js';
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js';
-import { acquireConnection } from './pool.js';
-export default async function addWorkOrder(workOrderForm, user) {
-    const database = await acquireConnection();
+export default function addWorkOrder(workOrderForm, user) {
+    const database = sqlite(sunriseDB);
     const rightNow = new Date();
     let workOrderNumber = workOrderForm.workOrderNumber;
     if ((workOrderNumber ?? '') === '') {
-        workOrderNumber = await getNextWorkOrderNumber(database);
+        workOrderNumber = getNextWorkOrderNumber(database);
     }
     const result = database
         .prepare(`insert into WorkOrders (
@@ -23,11 +24,11 @@ export default async function addWorkOrder(workOrderForm, user) {
         : dateStringToInteger(workOrderForm.workOrderCloseDateString), user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     const workOrderId = result.lastInsertRowid;
     if ((workOrderForm.contractId ?? '') !== '') {
-        await addWorkOrderContract({
+        addWorkOrderContract({
             workOrderId,
             contractId: workOrderForm.contractId
         }, user, database);
     }
-    database.release();
+    database.close();
     return workOrderId;
 }

@@ -3,4 +3,4 @@ export interface AddForm {
     isPreneed?: string;
     orderNumber?: number;
 }
-export default function addContractType(addForm: AddForm, user: User): Promise<number>;
+export default function addContractType(addForm: AddForm, user: User): number;

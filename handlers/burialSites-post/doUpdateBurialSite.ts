@@ -5,15 +5,12 @@ import updateBurialSite, {
 } from '../../database/updateBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, UpdateBurialSiteForm>,
   response: Response
-): Promise<void> {
+): void {
   try {
-    const success = await updateBurialSite(
-      request.body,
-      request.session.user as User
-    )
+    const success = updateBurialSite(request.body, request.session.user as User)
 
     const burialSiteId =
       typeof request.body.burialSiteId === 'string'
@@ -22,7 +19,7 @@ export default async function handler(
 
     response.json({
       success,
-      
+
       burialSiteId
     })
 

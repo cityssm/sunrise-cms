@@ -9,7 +9,7 @@ export default async function handler(
   request: Request<unknown, unknown, AddWorkOrderMilestoneForm>,
   response: Response
 ): Promise<void> {
-  const success = await addWorkOrderMilestone(
+  const success = addWorkOrderMilestone(
     request.body,
     request.session.user as User
   )

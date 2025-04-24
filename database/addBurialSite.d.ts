@@ -21,4 +21,4 @@ export interface AddBurialSiteForm {
  * @returns The new burial site's id.
  * @throws If an active burial site with the same name already exists.
  */
-export default function addBurialSite(burialSiteForm: AddBurialSiteForm, user: User): Promise<number>;
+export default function addBurialSite(burialSiteForm: AddBurialSiteForm, user: User): number;

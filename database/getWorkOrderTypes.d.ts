@@ -1,2 +1,2 @@
 import type { WorkOrderType } from '../types/record.types.js';
-export default function getWorkOrderTypes(): Promise<WorkOrderType[]>;
+export default function getWorkOrderTypes(): WorkOrderType[];

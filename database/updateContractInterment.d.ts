@@ -16,4 +16,4 @@ export interface UpdateForm {
     deathAgePeriod: string;
     intermentContainerTypeId: number | string;
 }
-export default function updateContractInterment(contractForm: UpdateForm, user: User): Promise<boolean>;
+export default function updateContractInterment(contractForm: UpdateForm, user: User): boolean;

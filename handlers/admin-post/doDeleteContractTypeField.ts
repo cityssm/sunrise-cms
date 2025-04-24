@@ -6,18 +6,18 @@ import {
   getContractTypes
 } from '../../helpers/functions.cache.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, { contractTypeFieldId: string }>,
   response: Response
-): Promise<void> {
-  const success = await deleteRecord(
+): void {
+  const success = deleteRecord(
     'ContractTypeFields',
     request.body.contractTypeFieldId,
     request.session.user as User
   )
 
-  const contractTypes = await getContractTypes()
-  const allContractTypeFields = await getAllContractTypeFields()
+  const contractTypes = getContractTypes()
+  const allContractTypeFields = getAllContractTypeFields()
 
   response.json({
     success,

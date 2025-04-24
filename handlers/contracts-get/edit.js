@@ -8,12 +8,12 @@ export default async function handler(request, response) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/contracts/?error=contractIdNotFound`);
         return;
     }
-    const contractTypePrints = await getContractTypePrintsById(contract.contractTypeId);
-    const contractTypes = await getContractTypes();
-    const funeralHomes = await getFuneralHomes();
-    const committalTypes = await getCommittalTypes();
-    const intermentContainerTypes = await getIntermentContainerTypes();
-    const workOrderTypes = await getWorkOrderTypes();
+    const contractTypePrints = getContractTypePrintsById(contract.contractTypeId);
+    const contractTypes = getContractTypes();
+    const funeralHomes = getFuneralHomes();
+    const committalTypes = getCommittalTypes();
+    const intermentContainerTypes = getIntermentContainerTypes();
+    const workOrderTypes = getWorkOrderTypes();
     response.render('contract-edit', {
         headTitle: 'Contract Update',
         contract,

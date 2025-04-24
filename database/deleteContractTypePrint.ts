@@ -1,13 +1,14 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
-import { acquireConnection } from './pool.js'
-
-export default async function deleteContractTypePrint(
+export default function deleteContractTypePrint(
   contractTypeId: number | string,
   printEJS: string,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -19,7 +20,7 @@ export default async function deleteContractTypePrint(
     )
     .run(user.userName, Date.now(), contractTypeId, printEJS)
 
-  database.release()
+  database.close()
 
   clearCacheByTableName('ContractTypePrints')
 

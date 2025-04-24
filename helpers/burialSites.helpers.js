@@ -48,20 +48,20 @@ export function clearNextPreviousBurialSiteIdCache(burialSiteId = -1, relayMessa
         // Ignore
     }
 }
-export async function getNextBurialSiteId(burialSiteId) {
+export function getNextBurialSiteId(burialSiteId) {
     let nextBurialSiteId = nextBurialSiteIdCache.get(burialSiteId);
     if (nextBurialSiteId === undefined) {
-        nextBurialSiteId = await getNextBurialSiteIdFromDatabase(burialSiteId);
+        nextBurialSiteId = getNextBurialSiteIdFromDatabase(burialSiteId);
         if (nextBurialSiteId !== undefined) {
             cacheBurialSiteIds(burialSiteId, nextBurialSiteId);
         }
     }
     return nextBurialSiteId;
 }
-export async function getPreviousBurialSiteId(burialSiteId) {
+export function getPreviousBurialSiteId(burialSiteId) {
     let previousBurialSiteId = previousBurialSiteIdCache.get(burialSiteId);
     if (previousBurialSiteId === undefined) {
-        previousBurialSiteId = await getPreviousBurialSiteIdFromDatabase(burialSiteId);
+        previousBurialSiteId = getPreviousBurialSiteIdFromDatabase(burialSiteId);
         if (previousBurialSiteId !== undefined) {
             cacheBurialSiteIds(previousBurialSiteId, burialSiteId);
         }

@@ -1,18 +1,14 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import { dateIntegerToString } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
-import {
-  dateIntegerToString
-} from '@cityssm/utils-datetime'
-
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { ContractInterment } from '../types/record.types.js'
 
-import { acquireConnection } from './pool.js'
-
-export default async function getContractInterments(
+export default function getContractInterments(
   contractId: number | string,
-  connectedDatabase?: PoolConnection
-): Promise<ContractInterment[]> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): ContractInterment[] {
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 
@@ -40,7 +36,7 @@ export default async function getContractInterments(
     .all(contractId) as ContractInterment[]
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return interments

@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function addOrUpdateContractField(fieldForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function addOrUpdateContractField(fieldForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     let result = database
         .prepare(`update ContractFields
@@ -22,7 +23,7 @@ export default async function addOrUpdateContractField(fieldForm, user, connecte
             .run(fieldForm.contractId, fieldForm.contractTypeFieldId, fieldForm.fieldValue, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return result.changes > 0;
 }

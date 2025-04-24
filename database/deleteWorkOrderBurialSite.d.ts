@@ -1,1 +1,1 @@
-export default function deleteWorkOrderBurialSite(workOrderId: number | string, burialSiteId: number | string, user: User): Promise<boolean>;
+export default function deleteWorkOrderBurialSite(workOrderId: number | string, burialSiteId: number | string, user: User): boolean;

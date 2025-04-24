@@ -2,11 +2,11 @@ import type { Request, Response } from 'express'
 
 import { deleteRecord } from '../../database/deleteRecord.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, { contractId: string }>,
   response: Response
-): Promise<void> {
-  const success = await deleteRecord(
+): void {
+  const success = deleteRecord(
     'Contracts',
     request.body.contractId,
     request.session.user as User

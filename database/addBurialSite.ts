@@ -1,8 +1,10 @@
+import sqlite from 'better-sqlite3'
+
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js'
 import getCemetery from './getCemetery.js'
-import { acquireConnection } from './pool.js'
 
 export interface AddBurialSiteForm {
   burialSiteNameSegment1?: string
@@ -22,7 +24,7 @@ export interface AddBurialSiteForm {
   burialSiteLongitude: string
 
   burialSiteTypeFieldIds?: string
-  
+
   [fieldValue_burialSiteTypeFieldId: string]: unknown
 }
 
@@ -33,18 +35,18 @@ export interface AddBurialSiteForm {
  * @returns The new burial site's id.
  * @throws If an active burial site with the same name already exists.
  */
-export default async function addBurialSite(
+export default function addBurialSite(
   burialSiteForm: AddBurialSiteForm,
   user: User
-): Promise<number> {
-  const database = await acquireConnection()
+): number {
+  const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
   const cemetery =
     burialSiteForm.cemeteryId === ''
       ? undefined
-      : await getCemetery(burialSiteForm.cemeteryId, database)
+      : getCemetery(burialSiteForm.cemeteryId, database)
 
   const burialSiteName = buildBurialSiteName(
     cemetery?.cemeteryKey,
@@ -64,7 +66,7 @@ export default async function addBurialSite(
     .get(burialSiteName) as number | undefined
 
   if (existingBurialSite !== undefined) {
-    database.release()
+    database.close()
     throw new Error('An active burial site with that name already exists.')
   }
 
@@ -125,7 +127,7 @@ export default async function addBurialSite(
     ] as string | undefined
 
     if ((fieldValue ?? '') !== '') {
-      await addOrUpdateBurialSiteField(
+      addOrUpdateBurialSiteField(
         {
           burialSiteId,
           burialSiteTypeFieldId,
@@ -137,7 +139,7 @@ export default async function addBurialSite(
     }
   }
 
-  database.release()
+  database.close()
 
   return burialSiteId
 }

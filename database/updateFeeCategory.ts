@@ -1,17 +1,19 @@
-import { acquireConnection } from './pool.js'
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface UpdateFeeCategoryForm {
   feeCategoryId: number | string
-  
+
   feeCategory: string
   isGroupedFee?: '1'
 }
 
-export default async function updateFeeCategory(
+export default function updateFeeCategory(
   feeCategoryForm: UpdateFeeCategoryForm,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -31,7 +33,7 @@ export default async function updateFeeCategory(
       feeCategoryForm.feeCategoryId
     )
 
-  database.release()
+  database.close()
 
   return result.changes > 0
 }

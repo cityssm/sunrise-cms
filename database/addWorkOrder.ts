@@ -3,10 +3,12 @@ import {
   dateStringToInteger,
   dateToInteger
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addWorkOrderContract from './addWorkOrderContract.js'
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js'
-import { acquireConnection } from './pool.js'
 
 export interface AddWorkOrderForm {
   workOrderTypeId: number | string
@@ -17,18 +19,18 @@ export interface AddWorkOrderForm {
   contractId?: string
 }
 
-export default async function addWorkOrder(
+export default function addWorkOrder(
   workOrderForm: AddWorkOrderForm,
   user: User
-): Promise<number> {
-  const database = await acquireConnection()
+): number {
+  const database = sqlite(sunriseDB)
 
   const rightNow = new Date()
 
   let workOrderNumber = workOrderForm.workOrderNumber
 
   if ((workOrderNumber ?? '') === '') {
-    workOrderNumber = await getNextWorkOrderNumber(database)
+    workOrderNumber = getNextWorkOrderNumber(database)
   }
 
   const result = database
@@ -63,7 +65,7 @@ export default async function addWorkOrder(
   const workOrderId = result.lastInsertRowid as number
 
   if ((workOrderForm.contractId ?? '') !== '') {
-    await addWorkOrderContract(
+    addWorkOrderContract(
       {
         workOrderId,
         contractId: workOrderForm.contractId as string
@@ -73,7 +75,7 @@ export default async function addWorkOrder(
     )
   }
 
-  database.release()
+  database.close()
 
   return workOrderId
 }

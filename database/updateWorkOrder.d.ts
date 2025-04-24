@@ -6,4 +6,4 @@ export interface UpdateWorkOrderForm {
     workOrderOpenDateString: DateString;
     workOrderTypeId: string;
 }
-export default function updateWorkOrder(workOrderForm: UpdateWorkOrderForm, user: User): Promise<boolean>;
+export default function updateWorkOrder(workOrderForm: UpdateWorkOrderForm, user: User): boolean;

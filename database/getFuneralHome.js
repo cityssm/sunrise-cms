@@ -1,12 +1,13 @@
-import { acquireConnection } from './pool.js';
-export default async function getFuneralHome(funeralHomeId) {
-    return await _getFuneralHome('funeralHomeId', funeralHomeId);
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function getFuneralHome(funeralHomeId) {
+    return _getFuneralHome('funeralHomeId', funeralHomeId);
 }
-export async function getFuneralHomeByKey(funeralHomeKey) {
-    return await _getFuneralHome('funeralHomeKey', funeralHomeKey);
+export function getFuneralHomeByKey(funeralHomeKey) {
+    return _getFuneralHome('funeralHomeKey', funeralHomeKey);
 }
-async function _getFuneralHome(keyColumn, funeralHomeIdOrKey) {
-    const database = await acquireConnection();
+function _getFuneralHome(keyColumn, funeralHomeIdOrKey) {
+    const database = sqlite(sunriseDB);
     const funeralHome = database
         .prepare(`select funeralHomeId, funeralHomeKey, funeralHomeName,
         funeralHomeAddress1, funeralHomeAddress2,
@@ -16,6 +17,6 @@ async function _getFuneralHome(keyColumn, funeralHomeIdOrKey) {
         and f.${keyColumn} = ?
         order by f.funeralHomeName, f.funeralHomeId`)
         .get(funeralHomeIdOrKey);
-    database.release();
+    database.close();
     return funeralHome;
 }

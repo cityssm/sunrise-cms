@@ -1,5 +1,6 @@
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
-import { acquireConnection } from './pool.js';
 const recordNameIdColumns = new Map([
     ['BurialSiteStatuses', ['burialSiteStatus', 'burialSiteStatusId']],
     ['BurialSiteTypes', ['burialSiteType', 'burialSiteTypeId']],
@@ -9,8 +10,8 @@ const recordNameIdColumns = new Map([
     ],
     ['WorkOrderTypes', ['workOrderType', 'workOrderTypeId']]
 ]);
-export async function updateRecord(recordTable, recordId, recordName, user) {
-    const database = await acquireConnection();
+export function updateRecord(recordTable, recordId, recordName, user) {
+    const database = sqlite(sunriseDB);
     const result = database
         .prepare(`update ${recordTable}
         set ${recordNameIdColumns.get(recordTable)[0]} = ?,
@@ -19,7 +20,7 @@ export async function updateRecord(recordTable, recordId, recordName, user) {
         where recordDelete_timeMillis is null
         and ${recordNameIdColumns.get(recordTable)[1]} = ?`)
         .run(recordName, user.userName, Date.now(), recordId);
-    database.release();
+    database.close();
     clearCacheByTableName(recordTable);
     return result.changes > 0;
 }

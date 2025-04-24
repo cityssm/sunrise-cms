@@ -1,11 +1,12 @@
 import { dateStringToInteger } from '@cityssm/utils-datetime';
-import { acquireConnection } from './pool.js';
-export default async function addContractInterment(contractForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function addContractInterment(contractForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const maxIntermentNumber = (database
         .prepare(`select max(intermentNumber) as maxIntermentNumber
-      from ContractInterments
-      where contractId = ?`)
+        from ContractInterments
+        where contractId = ?`)
         .pluck()
         .get(contractForm.contractId) ?? 0);
     const newIntermentNumber = maxIntermentNumber + 1;
@@ -26,7 +27,7 @@ export default async function addContractInterment(contractForm, user, connected
         ? undefined
         : contractForm.intermentContainerTypeId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return newIntermentNumber;
 }

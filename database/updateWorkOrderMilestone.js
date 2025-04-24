@@ -1,7 +1,8 @@
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
-import { acquireConnection } from './pool.js';
-export default async function updateWorkOrderMilestone(milestoneForm, user) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function updateWorkOrderMilestone(milestoneForm, user) {
+    const database = sqlite(sunriseDB);
     const result = database
         .prepare(`update WorkOrderMilestones
         set workOrderMilestoneTypeId = ?,
@@ -18,6 +19,6 @@ export default async function updateWorkOrderMilestone(milestoneForm, user) {
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
         ? 0
         : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString ?? ''), milestoneForm.workOrderMilestoneDescription, user.userName, Date.now(), milestoneForm.workOrderMilestoneId);
-    database.release();
+    database.close();
     return result.changes > 0;
 }

@@ -1,30 +1,30 @@
-import type { PoolConnection } from 'better-sqlite-pool'
+import sqlite from 'better-sqlite3'
 
+import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Cemetery } from '../types/record.types.js'
 
 import getCemeteries from './getCemeteries.js'
-import { acquireConnection } from './pool.js'
 
-export default async function getCemetery(
+export default function getCemetery(
   cemeteryId: number | string,
-  connectedDatabase?: PoolConnection
-): Promise<Cemetery | undefined> {
-  return await _getCemetery('cemeteryId', cemeteryId, connectedDatabase)
+  connectedDatabase?: sqlite.Database
+): Cemetery | undefined {
+  return _getCemetery('cemeteryId', cemeteryId, connectedDatabase)
 }
 
-export async function getCemeteryByKey(
+export function getCemeteryByKey(
   cemeteryKey: string,
-  connectedDatabase?: PoolConnection
-): Promise<Cemetery | undefined> {
-  return await _getCemetery('cemeteryKey', cemeteryKey, connectedDatabase)
+  connectedDatabase?: sqlite.Database
+): Cemetery | undefined {
+  return _getCemetery('cemeteryKey', cemeteryKey, connectedDatabase)
 }
 
-async function _getCemetery(
+function _getCemetery(
   keyColumn: 'cemeteryId' | 'cemeteryKey',
   cemeteryIdOrKey: number | string,
-  connectedDatabase?: PoolConnection
-): Promise<Cemetery | undefined> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  connectedDatabase?: sqlite.Database
+): Cemetery | undefined {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const cemetery = database
     .prepare(
@@ -60,12 +60,15 @@ async function _getCemetery(
   if (cemetery !== undefined) {
     cemetery.childCemeteries =
       cemetery.parentCemeteryId === null
-        ? await getCemeteries({ parentCemeteryId: cemetery.cemeteryId })
+        ? getCemeteries(
+            { parentCemeteryId: cemetery.cemeteryId },
+            connectedDatabase
+          )
         : []
   }
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return cemetery

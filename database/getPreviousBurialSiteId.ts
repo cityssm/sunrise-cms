@@ -1,9 +1,11 @@
-import { acquireConnection } from './pool.js'
+import sqlite from 'better-sqlite3'
 
-export default async function getPreviousBurialSiteId(
+import { sunriseDB } from '../helpers/database.helpers.js'
+
+export default function getPreviousBurialSiteId(
   burialSiteId: number | string
-): Promise<number | undefined> {
-  const database = await acquireConnection()
+): number | undefined {
+  const database = sqlite(sunriseDB, { readonly: true })
 
   const result = database
     .prepare(
@@ -16,7 +18,7 @@ export default async function getPreviousBurialSiteId(
     .pluck()
     .get(burialSiteId) as number | undefined
 
-  database.release()
+  database.close()
 
   return result
 }

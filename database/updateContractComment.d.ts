@@ -1,8 +1,8 @@
 import { type DateString, type TimeString } from '@cityssm/utils-datetime';
 export interface UpdateForm {
-    contractCommentId: number | string;
+    comment: string;
     commentDateString: DateString;
     commentTimeString: TimeString;
-    comment: string;
+    contractCommentId: number | string;
 }
-export default function updateContractComment(commentForm: UpdateForm, user: User): Promise<boolean>;
+export default function updateContractComment(commentForm: UpdateForm, user: User): boolean;

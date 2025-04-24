@@ -12,7 +12,7 @@ export default async function handler(request, response) {
         burialSite
     });
     response.on('finish', () => {
-        void getNextBurialSiteId(burialSite.burialSiteId);
-        void getPreviousBurialSiteId(burialSite.burialSiteId);
+        getNextBurialSiteId(burialSite.burialSiteId);
+        getPreviousBurialSiteId(burialSite.burialSiteId);
     });
 }

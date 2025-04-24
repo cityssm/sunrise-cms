@@ -6,4 +6,4 @@ export interface AddTransactionForm {
     transactionAmount: number | string;
     transactionNote: string;
 }
-export default function addContractTransaction(contractTransactionForm: AddTransactionForm, user: User): Promise<number>;
+export default function addContractTransaction(contractTransactionForm: AddTransactionForm, user: User): number;

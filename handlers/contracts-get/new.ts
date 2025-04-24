@@ -5,7 +5,11 @@ import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 import getBurialSite from '../../database/getBurialSite.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import { getCommittalTypes, getContractTypes, getIntermentContainerTypes } from '../../helpers/functions.cache.js'
+import {
+  getCommittalTypes,
+  getContractTypes,
+  getIntermentContainerTypes
+} from '../../helpers/functions.cache.js'
 import type { Contract } from '../../types/record.types.js'
 
 export default async function handler(
@@ -33,10 +37,10 @@ export default async function handler(
     }
   }
 
-  const contractTypes = await getContractTypes()
-  const funeralHomes = await getFuneralHomes()
-  const committalTypes = await getCommittalTypes()
-  const intermentContainerTypes = await getIntermentContainerTypes()
+  const contractTypes = getContractTypes()
+  const funeralHomes = getFuneralHomes()
+  const committalTypes = getCommittalTypes()
+  const intermentContainerTypes = getIntermentContainerTypes()
 
   response.render('contract-edit', {
     headTitle: 'Create a New Contract',

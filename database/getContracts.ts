@@ -1,13 +1,13 @@
-import type { PoolConnection } from 'better-sqlite-pool'
-
 import {
   type DateString,
   dateIntegerToString,
   dateStringToInteger,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 import { getContractTypeById } from '../helpers/functions.cache.js'
 import {
   getBurialSiteNameWhereClause,
@@ -19,7 +19,6 @@ import type { Contract } from '../types/record.types.js'
 import getContractFees from './getContractFees.js'
 import getContractInterments from './getContractInterments.js'
 import getContractTransactions from './getContractTransactions.js'
-import { acquireConnection } from './pool.js'
 
 export interface GetContractsFilters {
   burialSiteId?: number | string
@@ -46,17 +45,18 @@ export interface GetContractsOptions {
   /** -1 for no limit */
   limit: number | string
   offset: number | string
-  includeInterments: boolean
+
   includeFees: boolean
+  includeInterments: boolean
   includeTransactions: boolean
 }
 
 export default async function getContracts(
   filters: GetContractsFilters,
   options: GetContractsOptions,
-  connectedDatabase?: PoolConnection
+  connectedDatabase?: sqlite.Database
 ): Promise<{ count: number; contracts: Contract[] }> {
-  const database = connectedDatabase ?? (await acquireConnection())
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
@@ -129,7 +129,7 @@ export default async function getContracts(
     }
 
     for (const contract of contracts) {
-      const contractType = await getContractTypeById(contract.contractTypeId)
+      const contractType = getContractTypeById(contract.contractTypeId)
 
       if (contractType !== undefined) {
         contract.printEJS = (contractType.contractTypePrints ?? []).includes(
@@ -144,7 +144,7 @@ export default async function getContracts(
   }
 
   if (connectedDatabase === undefined) {
-    database.release()
+    database.close()
   }
 
   return {
@@ -156,10 +156,10 @@ export default async function getContracts(
 async function addInclusions(
   contract: Contract,
   options: GetContractsOptions,
-  database: PoolConnection
+  database: sqlite.Database
 ): Promise<Contract> {
   if (options.includeFees) {
-    contract.contractFees = await getContractFees(contract.contractId, database)
+    contract.contractFees = getContractFees(contract.contractId, database)
   }
 
   if (options.includeTransactions) {
@@ -171,7 +171,7 @@ async function addInclusions(
   }
 
   if (options.includeInterments) {
-    contract.contractInterments = await getContractInterments(
+    contract.contractInterments = getContractInterments(
       contract.contractId,
       database
     )
@@ -182,8 +182,8 @@ async function addInclusions(
 
 // eslint-disable-next-line complexity
 function buildWhereClause(filters: GetContractsFilters): {
-  sqlWhereClause: string
   sqlParameters: unknown[]
+  sqlWhereClause: string
 } {
   let sqlWhereClause = ' where o.recordDelete_timeMillis is null'
   const sqlParameters: unknown[] = []
@@ -271,7 +271,7 @@ function buildWhereClause(filters: GetContractsFilters): {
   }
 
   return {
-    sqlWhereClause,
-    sqlParameters
+    sqlParameters,
+    sqlWhereClause
   }
 }

@@ -3,16 +3,13 @@ import type { Request, Response } from 'express'
 import { deleteBurialSite } from '../../database/deleteBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, { burialSiteId: string }>,
   response: Response
-): Promise<void> {
+): void {
   const burialSiteId = Number.parseInt(request.body.burialSiteId, 10)
 
-  const success = await deleteBurialSite(
-    burialSiteId,
-    request.session.user as User
-  )
+  const success = deleteBurialSite(burialSiteId, request.session.user as User)
 
   response.json({
     success,

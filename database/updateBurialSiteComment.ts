@@ -4,8 +4,9 @@ import {
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface UpdateBurialSiteCommentForm {
   burialSiteCommentId: number | string
@@ -14,11 +15,11 @@ export interface UpdateBurialSiteCommentForm {
   commentTimeString: TimeString
 }
 
-export default async function updateBurialSiteComment(
+export default function updateBurialSiteComment(
   commentForm: UpdateBurialSiteCommentForm,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -40,7 +41,7 @@ export default async function updateBurialSiteComment(
       commentForm.burialSiteCommentId
     )
 
-  database.release()
+  database.close()
 
   return result.changes > 0
 }

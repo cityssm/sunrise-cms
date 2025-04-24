@@ -1,13 +1,14 @@
 import { dateIntegerToString, dateStringToInteger, timeIntegerToString } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import { getContractTypeById } from '../helpers/functions.cache.js';
 import { getBurialSiteNameWhereClause, getContractTimeWhereClause, getDeceasedNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import getContractFees from './getContractFees.js';
 import getContractInterments from './getContractInterments.js';
 import getContractTransactions from './getContractTransactions.js';
-import { acquireConnection } from './pool.js';
 export default async function getContracts(filters, options, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
@@ -62,7 +63,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
             count = contracts.length;
         }
         for (const contract of contracts) {
-            const contractType = await getContractTypeById(contract.contractTypeId);
+            const contractType = getContractTypeById(contract.contractTypeId);
             if (contractType !== undefined) {
                 contract.printEJS = (contractType.contractTypePrints ?? []).includes('*')
                     ? getConfigProperty('settings.contracts.prints')[0]
@@ -72,7 +73,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
         }
     }
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return {
         count,
@@ -81,13 +82,13 @@ export default async function getContracts(filters, options, connectedDatabase) 
 }
 async function addInclusions(contract, options, database) {
     if (options.includeFees) {
-        contract.contractFees = await getContractFees(contract.contractId, database);
+        contract.contractFees = getContractFees(contract.contractId, database);
     }
     if (options.includeTransactions) {
         contract.contractTransactions = await getContractTransactions(contract.contractId, { includeIntegrations: false }, database);
     }
     if (options.includeInterments) {
-        contract.contractInterments = await getContractInterments(contract.contractId, database);
+        contract.contractInterments = getContractInterments(contract.contractId, database);
     }
     return contract;
 }
@@ -151,7 +152,7 @@ function buildWhereClause(filters) {
         sqlParameters.push(filters.notWorkOrderId);
     }
     return {
-        sqlWhereClause,
-        sqlParameters
+        sqlParameters,
+        sqlWhereClause
     };
 }

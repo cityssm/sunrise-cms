@@ -1,11 +1,11 @@
-/* eslint-disable unicorn/filename-case */
+/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair, unicorn/filename-case */
 
 import type { Request, Response } from 'express'
 
 import { getDynamicsGPDocument } from '../../helpers/functions.dynamicsGP.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<unknown, unknown, { externalReceiptNumber: string }>,
   response: Response
 ): Promise<void> {
   const externalReceiptNumber = request.body.externalReceiptNumber
@@ -19,8 +19,8 @@ export default async function handler(
   } else {
     response.json({
       success: true,
+
       dynamicsGPDocument
     })
   }
 }
-

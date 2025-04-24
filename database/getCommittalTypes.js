@@ -1,7 +1,8 @@
-import { acquireConnection } from './pool.js';
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default async function getCommittalTypes() {
-    const database = await acquireConnection();
+export default function getCommittalTypes() {
+    const database = sqlite(sunriseDB);
     const committalTypes = database
         .prepare(`select committalTypeId, committalTypeKey, committalType, orderNumber
         from CommittalTypes
@@ -16,6 +17,6 @@ export default async function getCommittalTypes() {
             committalType.orderNumber = expectedOrderNumber;
         }
     }
-    database.release();
+    database.close();
     return committalTypes;
 }

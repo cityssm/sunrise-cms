@@ -4,22 +4,24 @@ import {
   dateToTimeInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface CompleteWorkOrderMilestoneForm {
-  workOrderMilestoneId: string | number
+  workOrderMilestoneId: number | string
+  
   workOrderMilestoneCompletionDateString?: string
   workOrderMilestoneCompletionTimeString?: string
 }
 
-export default async function completeWorkOrderMilestone(
+export default function completeWorkOrderMilestone(
   milestoneForm: CompleteWorkOrderMilestoneForm,
   user: User
-): Promise<boolean> {
+): boolean {
   const rightNow = new Date()
 
-  const database = await acquireConnection()
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -46,7 +48,7 @@ export default async function completeWorkOrderMilestone(
       milestoneForm.workOrderMilestoneId
     )
 
-  database.release()
+  database.close()
 
   return result.changes > 0
 }

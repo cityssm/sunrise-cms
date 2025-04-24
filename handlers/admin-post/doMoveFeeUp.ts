@@ -3,16 +3,16 @@ import type { Request, Response } from 'express'
 import getFeeCategories from '../../database/getFeeCategories.js'
 import { moveFeeUp, moveFeeUpToTop } from '../../database/moveFee.js'
 
-export default async function handler(
+export default function handler(
   request: Request<unknown, unknown, { feeId: string; moveToEnd: '0' | '1' }>,
   response: Response
-): Promise<void> {
+): void {
   const success =
     request.body.moveToEnd === '1'
-      ? await moveFeeUpToTop(request.body.feeId)
-      : await moveFeeUp(request.body.feeId)
+      ? moveFeeUpToTop(request.body.feeId)
+      : moveFeeUp(request.body.feeId)
 
-  const feeCategories = await getFeeCategories(
+  const feeCategories = getFeeCategories(
     {},
     {
       includeFees: true
@@ -21,6 +21,7 @@ export default async function handler(
 
   response.json({
     success,
+
     feeCategories
   })
 }

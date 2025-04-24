@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function reopenWorkOrder(workOrderId, user) {
-    const database = await acquireConnection();
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function reopenWorkOrder(workOrderId, user) {
+    const database = sqlite(sunriseDB);
     const result = database
         .prepare(`update WorkOrders
         set workOrderCloseDate = null,
@@ -9,6 +10,6 @@ export default async function reopenWorkOrder(workOrderId, user) {
         where workOrderId = ?
         and workOrderCloseDate is not null`)
         .run(user.userName, Date.now(), workOrderId);
-    database.release();
+    database.close();
     return result.changes > 0;
 }

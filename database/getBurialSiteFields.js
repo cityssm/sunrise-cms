@@ -1,6 +1,7 @@
-import { acquireConnection } from './pool.js';
-export default async function getBurialSiteFields(burialSiteId, connectedDatabase) {
-    const database = connectedDatabase ?? (await acquireConnection());
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
+export default function getBurialSiteFields(burialSiteId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const burialSiteFields = database
         .prepare(`select l.burialSiteId, l.burialSiteTypeFieldId,
         l.fieldValue,
@@ -30,7 +31,7 @@ export default async function getBurialSiteFields(burialSiteId, connectedDatabas
         order by burialSiteTypeOrderNumber, f.orderNumber, f.burialSiteTypeField`)
         .all(burialSiteId, burialSiteId, burialSiteId, burialSiteId);
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return burialSiteFields;
 }

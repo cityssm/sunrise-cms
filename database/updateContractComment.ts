@@ -4,21 +4,22 @@ import {
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface UpdateForm {
-  contractCommentId: number | string
+  comment: string
   commentDateString: DateString
   commentTimeString: TimeString
-  comment: string
+  contractCommentId: number | string
 }
 
-export default async function updateContractComment(
+export default function updateContractComment(
   commentForm: UpdateForm,
   user: User
-): Promise<boolean> {
-  const database = await acquireConnection()
+): boolean {
+  const database = sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -40,7 +41,7 @@ export default async function updateContractComment(
       commentForm.contractCommentId
     )
 
-  database.release()
+  database.close()
 
   return result.changes > 0
 }

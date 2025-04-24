@@ -1,6 +1,7 @@
-import type { BurialSiteType } from '../types/record.types.js'
+import sqlite from 'better-sqlite3'
 
-import { acquireConnection } from './pool.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
+import type { BurialSiteType } from '../types/record.types.js'
 
 interface BurialSiteTypeSummary extends BurialSiteType {
   lotCount: number
@@ -10,10 +11,10 @@ interface GetFilters {
   cemeteryId?: number | string
 }
 
-export default async function getBurialSiteTypeSummary(
+export default function getBurialSiteTypeSummary(
   filters: GetFilters
-): Promise<BurialSiteTypeSummary[]> {
-  const database = await acquireConnection()
+): BurialSiteTypeSummary[] {
+  const database = sqlite(sunriseDB, { readonly: true })
 
   let sqlWhereClause = ' where l.recordDelete_timeMillis is null'
   const sqlParameters: unknown[] = []
@@ -35,7 +36,7 @@ export default async function getBurialSiteTypeSummary(
     )
     .all(sqlParameters) as BurialSiteTypeSummary[]
 
-  database.release()
+  database.close()
 
   return burialSiteTypes
 }

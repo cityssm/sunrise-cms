@@ -1,17 +1,18 @@
-import { acquireConnection } from './pool.js';
+import sqlite from 'better-sqlite3';
+import { sunriseDB } from '../helpers/database.helpers.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default async function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
+export default function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
     const updateOrderNumbers = !(additionalFilters.burialSiteTypeId || additionalFilters.contractTypeId);
-    const database = connectedDatabase ?? (await acquireConnection());
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     let sqlWhereClause = ' where f.recordDelete_timeMillis is null and f.feeCategoryId = ?';
     const sqlParameters = [feeCategoryId];
     if (additionalFilters.contractTypeId) {
-        sqlWhereClause +=
-            ' and (f.contractTypeId is null or f.contractTypeId = ?)';
+        sqlWhereClause += ' and (f.contractTypeId is null or f.contractTypeId = ?)';
         sqlParameters.push(additionalFilters.contractTypeId);
     }
     if (additionalFilters.burialSiteTypeId) {
-        sqlWhereClause += ' and (f.burialSiteTypeId is null or f.burialSiteTypeId = ?)';
+        sqlWhereClause +=
+            ' and (f.burialSiteTypeId is null or f.burialSiteTypeId = ?)';
         sqlParameters.push(additionalFilters.burialSiteTypeId);
     }
     const fees = database
@@ -48,7 +49,7 @@ export default async function getFees(feeCategoryId, additionalFilters, connecte
         }
     }
     if (connectedDatabase === undefined) {
-        database.release();
+        database.close();
     }
     return fees;
 }
