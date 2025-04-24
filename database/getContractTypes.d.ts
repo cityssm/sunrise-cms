@@ -1,2 +1,2 @@
-import type { ContractType } from '../types/recordTypes.js';
+import type { ContractType } from '../types/record.types.js';
 export default function getContractTypes(): Promise<ContractType[]>;

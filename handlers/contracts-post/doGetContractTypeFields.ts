@@ -4,7 +4,7 @@ import {
   getAllContractTypeFields,
   getContractTypeById
 } from '../../helpers/functions.cache.js'
-import type { ContractType } from '../../types/recordTypes.js'
+import type { ContractType } from '../../types/record.types.js'
 
 export default async function handler(
   request: Request<unknown, unknown, { contractTypeId: string }>,

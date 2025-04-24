@@ -3,7 +3,7 @@ import type { PoolConnection } from 'better-sqlite-pool'
 import { dateToInteger } from '@cityssm/utils-datetime'
 
 import { getBurialSiteNameWhereClause } from '../helpers/functions.sqlFilters.js'
-import type { BurialSite } from '../types/recordTypes.js'
+import type { BurialSite } from '../types/record.types.js'
 
 import { acquireConnection } from './pool.js'
 

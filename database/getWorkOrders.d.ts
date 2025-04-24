@@ -1,5 +1,5 @@
 import type { PoolConnection } from 'better-sqlite-pool';
-import type { WorkOrder } from '../types/recordTypes.js';
+import type { WorkOrder } from '../types/record.types.js';
 export interface GetWorkOrdersFilters {
     workOrderTypeId?: number | string;
     workOrderOpenDateString?: string;

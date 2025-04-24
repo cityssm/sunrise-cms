@@ -5,8 +5,8 @@ import {
   DynamicsGP
 } from '@cityssm/dynamics-gp'
 
-import type { DynamicsGPLookup } from '../types/configTypes.js'
-import type { DynamicsGPDocument } from '../types/recordTypes.js'
+import type { DynamicsGPLookup } from '../types/config.types.js'
+import type { DynamicsGPDocument } from '../types/record.types.js'
 
 import { getConfigProperty } from './config.helpers.js'
 

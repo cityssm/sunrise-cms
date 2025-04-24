@@ -1,7 +1,7 @@
 import type {
   Contract,
   ContractFee
-} from '../types/recordTypes.js'
+} from '../types/record.types.js'
 
 export function getFeesByFeeCategory(
   contract: Contract,

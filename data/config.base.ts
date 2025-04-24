@@ -1,4 +1,4 @@
-import type { Config } from '../types/configTypes.js'
+import type { Config } from '../types/config.types.js'
 
 export const config: Config = {
   aliases: {},

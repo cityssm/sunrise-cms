@@ -1,6 +1,6 @@
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import type { FeeCategory } from '../types/recordTypes.js'
+import type { FeeCategory } from '../types/record.types.js'
 
 import getFees from './getFees.js'
 import { acquireConnection } from './pool.js'

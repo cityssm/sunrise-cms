@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 
 import { getWorkOrderTypes } from '../../helpers/functions.cache.js'
-import type { WorkOrder } from '../../types/recordTypes.js'
+import type { WorkOrder } from '../../types/record.types.js'
 
 export default async function handler(
   request: Request,

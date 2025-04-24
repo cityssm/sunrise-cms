@@ -1,4 +1,4 @@
-import type { Cemetery, FuneralHome } from '../types/recordTypes.js'
+import type { Cemetery, FuneralHome } from '../types/record.types.js'
 
 import { acquireConnection } from './pool.js'
 

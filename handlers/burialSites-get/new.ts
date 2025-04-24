@@ -6,7 +6,7 @@ import {
   getBurialSiteTypes
 } from '../../helpers/functions.cache.js'
 import { getBurialSiteImages } from '../../helpers/images.helpers.js'
-import type { BurialSite } from '../../types/recordTypes.js'
+import type { BurialSite } from '../../types/record.types.js'
 
 export default async function handler(
   request: Request,

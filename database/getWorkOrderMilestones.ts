@@ -10,7 +10,7 @@ import {
 } from '@cityssm/utils-datetime'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import type { WorkOrderMilestone } from '../types/recordTypes.js'
+import type { WorkOrderMilestone } from '../types/record.types.js'
 
 import getBurialSites from './getBurialSites.js'
 import getContracts from './getContracts.js'

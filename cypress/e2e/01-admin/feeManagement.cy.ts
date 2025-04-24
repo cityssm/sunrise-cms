@@ -1,6 +1,6 @@
 import { getConfigProperty } from '../../../helpers/config.helpers.js'
 import { testAdmin } from '../../../test/_globals.js'
-import type { Fee } from '../../../types/recordTypes.js'
+import type { Fee } from '../../../types/record.types.js'
 import { ajaxDelayMillis, login, logout } from '../../support/index.js'
 
 describe('Admin - Fee Management', () => {

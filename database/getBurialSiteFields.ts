@@ -1,6 +1,6 @@
 import type { PoolConnection } from 'better-sqlite-pool'
 
-import type { BurialSiteField } from '../types/recordTypes.js'
+import type { BurialSiteField } from '../types/record.types.js'
 
 import { acquireConnection } from './pool.js'
 

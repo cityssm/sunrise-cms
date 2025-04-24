@@ -1,4 +1,4 @@
-import type { BurialSiteStatus, BurialSiteType, CommittalType, ContractType, ContractTypeField, IntermentContainerType, WorkOrderMilestoneType, WorkOrderType } from '../types/recordTypes.js';
+import type { BurialSiteStatus, BurialSiteType, CommittalType, ContractType, ContractTypeField, IntermentContainerType, WorkOrderMilestoneType, WorkOrderType } from '../types/record.types.js';
 export declare function getBurialSiteStatusByBurialSiteStatus(burialSiteStatus: string): Promise<BurialSiteStatus | undefined>;
 export declare function getBurialSiteStatusById(burialSiteStatusId: number): Promise<BurialSiteStatus | undefined>;
 export declare function getBurialSiteStatuses(): Promise<BurialSiteStatus[]>;

@@ -1,6 +1,6 @@
 import { getConfigProperty } from '../../../helpers/config.helpers.js'
 import { testUpdate } from '../../../test/_globals.js'
-import type { Cemetery } from '../../../types/recordTypes.js'
+import type { Cemetery } from '../../../types/record.types.js'
 import { login, logout } from '../../support/index.js'
 
 describe('Update - Cemeteries', () => {

@@ -1,6 +1,6 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { WorkOrder } from '../../types/recordTypes.js'
+import type { WorkOrder } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 

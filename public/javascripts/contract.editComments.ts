@@ -1,7 +1,7 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { ContractComment } from '../../types/recordTypes.js'
+import type { ContractComment } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 

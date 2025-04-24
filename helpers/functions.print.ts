@@ -6,7 +6,7 @@ import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import getBurialSite from '../database/getBurialSite.js'
 import getContract from '../database/getContract.js'
 import getWorkOrder from '../database/getWorkOrder.js'
-import type { BurialSite, Contract, WorkOrder } from '../types/recordTypes.js'
+import type { BurialSite, Contract, WorkOrder } from '../types/record.types.js'
 
 import * as configFunctions from './config.helpers.js'
 import * as contractFunctions from './contracts.helpers.js'

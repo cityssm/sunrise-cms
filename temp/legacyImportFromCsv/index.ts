@@ -33,7 +33,7 @@ import reopenWorkOrder from '../../database/reopenWorkOrder.js'
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js'
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js'
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
-import type * as recordTypes from '../../types/recordTypes.js'
+import type * as recordTypes from '../../types/record.types.js'
 
 import { getBurialSiteTypeId } from './data.burialSiteTypes.js'
 import { getCemeteryIdByKey } from './data.cemeteries.js'

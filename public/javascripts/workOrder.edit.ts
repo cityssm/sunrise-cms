@@ -7,7 +7,7 @@ import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 import type {
   WorkOrderMilestone,
   WorkOrderMilestoneType
-} from '../../types/recordTypes.js'
+} from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 

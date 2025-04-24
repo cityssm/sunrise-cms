@@ -1,4 +1,4 @@
-import type { BurialSiteStatus } from '../types/recordTypes.js';
+import type { BurialSiteStatus } from '../types/record.types.js';
 interface GetFilters {
     cemeteryId?: number | string;
 }

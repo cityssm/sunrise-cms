@@ -4,7 +4,7 @@ import {
   calculateFeeAmount,
   calculateTaxAmount
 } from '../helpers/functions.fee.js'
-import type { Contract, Fee } from '../types/recordTypes.js'
+import type { Contract, Fee } from '../types/record.types.js'
 
 import getContract from './getContract.js'
 import getFee from './getFee.js'

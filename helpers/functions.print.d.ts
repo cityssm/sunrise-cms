@@ -1,4 +1,4 @@
-import type { BurialSite, Contract, WorkOrder } from '../types/recordTypes.js';
+import type { BurialSite, Contract, WorkOrder } from '../types/record.types.js';
 interface PrintConfig {
     params: string[];
     title: string;

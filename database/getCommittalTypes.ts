@@ -1,4 +1,4 @@
-import type { CommittalType } from '../types/recordTypes.js'
+import type { CommittalType } from '../types/record.types.js'
 
 import { acquireConnection } from './pool.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'

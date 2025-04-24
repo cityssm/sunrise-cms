@@ -1,5 +1,5 @@
 import type { config as MSSQLConfig } from 'mssql';
-import type { ConfigActiveDirectory, ConfigBurialSiteNameSegments, ConfigNtfyStartup, DynamicsGPLookup } from '../types/configTypes.js';
+import type { ConfigActiveDirectory, ConfigBurialSiteNameSegments, ConfigNtfyStartup, DynamicsGPLookup } from '../types/config.types.js';
 export declare const configDefaultValues: {
     activeDirectory: ConfigActiveDirectory;
     'application.applicationName': string;

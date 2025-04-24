@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import type { FuneralHome } from '../../types/recordTypes.js'
+import type { FuneralHome } from '../../types/record.types.js'
 
 export default function handler(_request: Request, response: Response): void {
   const funeralHome: FuneralHome = {

@@ -9,7 +9,7 @@ import type {
   ContractType,
   Fee,
   FeeCategory
-} from '../../types/recordTypes.js'
+} from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 

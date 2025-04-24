@@ -1,6 +1,6 @@
 import { dateToString } from '@cityssm/utils-datetime'
 
-import type { Contract } from '../types/recordTypes.js'
+import type { Contract } from '../types/record.types.js'
 
 import addContract from './addContract.js'
 import addContractComment from './addContractComment.js'

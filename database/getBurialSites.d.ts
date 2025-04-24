@@ -1,5 +1,5 @@
 import type { PoolConnection } from 'better-sqlite-pool';
-import type { BurialSite } from '../types/recordTypes.js';
+import type { BurialSite } from '../types/record.types.js';
 export interface GetBurialSitesFilters {
     burialSiteNameSearchType?: '' | 'endsWith' | 'startsWith';
     burialSiteName?: string;

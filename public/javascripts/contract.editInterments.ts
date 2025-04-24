@@ -4,7 +4,7 @@ import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 import type {
   ContractInterment,
   IntermentContainerType
-} from '../../types/recordTypes.js'
+} from '../../types/record.types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS

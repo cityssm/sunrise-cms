@@ -1,4 +1,4 @@
-import type { BurialSite } from '../types/recordTypes.js'
+import type { BurialSite } from '../types/record.types.js'
 
 import getBurialSiteComments from './getBurialSiteComments.js'
 import getBurialSiteFields from './getBurialSiteFields.js'

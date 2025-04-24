@@ -13,7 +13,7 @@ import { DEBUG_NAMESPACE } from '../debug.config.js'
 import type {
   CacheBurialSiteIdsWorkerMessage,
   ClearNextPreviousBurialSiteIdsCacheWorkerMessage
-} from '../types/applicationTypes.js'
+} from '../types/application.types.js'
 
 import { getConfigProperty } from './config.helpers.js'
 

@@ -1,4 +1,4 @@
-import type { Fee } from '../types/recordTypes.js'
+import type { Fee } from '../types/record.types.js'
 
 import getFee from './getFee.js'
 import { acquireConnection } from './pool.js'

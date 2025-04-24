@@ -1,2 +1,2 @@
-import type { WorkOrderMilestoneType } from '../types/recordTypes.js';
+import type { WorkOrderMilestoneType } from '../types/record.types.js';
 export default function getWorkOrderMilestoneTypes(): Promise<WorkOrderMilestoneType[]>;

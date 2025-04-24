@@ -1,4 +1,4 @@
-import type { BurialSiteType } from '../types/recordTypes.js'
+import type { BurialSiteType } from '../types/record.types.js'
 
 import { acquireConnection } from './pool.js'
 

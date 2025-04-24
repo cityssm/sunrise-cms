@@ -6,7 +6,7 @@ import getBurialSite from '../../database/getBurialSite.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getCommittalTypes, getContractTypes, getIntermentContainerTypes } from '../../helpers/functions.cache.js'
-import type { Contract } from '../../types/recordTypes.js'
+import type { Contract } from '../../types/record.types.js'
 
 export default async function handler(
   request: Request,

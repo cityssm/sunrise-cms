@@ -1,6 +1,6 @@
 import type { PoolConnection } from 'better-sqlite-pool';
 import { type DateString } from '@cityssm/utils-datetime';
-import type { Contract } from '../types/recordTypes.js';
+import type { Contract } from '../types/record.types.js';
 export interface GetContractsFilters {
     burialSiteId?: number | string;
     contractEffectiveDateString?: string;

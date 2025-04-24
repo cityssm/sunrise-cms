@@ -1,6 +1,6 @@
 import type { PoolConnection } from 'better-sqlite-pool';
 import { type DateString } from '@cityssm/utils-datetime';
-import type { WorkOrderMilestone } from '../types/recordTypes.js';
+import type { WorkOrderMilestone } from '../types/record.types.js';
 export interface WorkOrderMilestoneFilters {
     workOrderId?: number | string;
     workOrderMilestoneTypeIds?: string;

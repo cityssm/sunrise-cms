@@ -2,7 +2,7 @@ import type { PoolConnection } from 'better-sqlite-pool'
 
 import { dateIntegerToString, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime'
 
-import type { Contract } from '../types/recordTypes.js'
+import type { Contract } from '../types/record.types.js'
 
 import getContractComments from './getContractComments.js'
 import getContractFees from './getContractFees.js'

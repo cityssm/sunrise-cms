@@ -1,4 +1,4 @@
-import type { ContractType } from '../types/recordTypes.js'
+import type { ContractType } from '../types/record.types.js'
 
 import getContractTypeFields from './getContractTypeFields.js'
 import getContractTypePrints from './getContractTypePrints.js'

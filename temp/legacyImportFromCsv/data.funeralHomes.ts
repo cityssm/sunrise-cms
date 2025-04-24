@@ -1,5 +1,5 @@
 import addFuneralHome from '../../database/addFuneralHome.js'
-import type { FuneralHome } from '../../types/recordTypes.js'
+import type { FuneralHome } from '../../types/record.types.js'
 
 const funeralHomes: FuneralHome[] = [
   {

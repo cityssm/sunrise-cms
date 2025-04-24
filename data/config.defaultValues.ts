@@ -7,7 +7,7 @@ import type {
   ConfigBurialSiteNameSegments,
   ConfigNtfyStartup,
   DynamicsGPLookup
-} from '../types/configTypes.js'
+} from '../types/config.types.js'
 
 export const configDefaultValues = {
   activeDirectory: undefined as unknown as ConfigActiveDirectory,

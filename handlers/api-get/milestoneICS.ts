@@ -8,7 +8,7 @@ import getWorkOrderMilestones, {
 } from '../../database/getWorkOrderMilestones.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getPrintConfig } from '../../helpers/functions.print.js'
-import type { WorkOrderMilestone } from '../../types/recordTypes.js'
+import type { WorkOrderMilestone } from '../../types/record.types.js'
 
 const calendarCompany = 'cityssm.github.io'
 const calendarProduct = getConfigProperty('application.applicationName')

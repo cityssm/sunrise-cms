@@ -17,7 +17,7 @@ import { DEBUG_NAMESPACE } from '../debug.config.js'
 import type {
   ClearCacheWorkerMessage,
   WorkerMessage
-} from '../types/applicationTypes.js'
+} from '../types/application.types.js'
 import type {
   BurialSiteStatus,
   BurialSiteType,
@@ -27,7 +27,7 @@ import type {
   IntermentContainerType,
   WorkOrderMilestoneType,
   WorkOrderType
-} from '../types/recordTypes.js'
+} from '../types/record.types.js'
 
 import { getConfigProperty } from './config.helpers.js'
 

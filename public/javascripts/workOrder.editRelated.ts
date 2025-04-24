@@ -8,7 +8,7 @@ import type {
   BurialSite,
   BurialSiteStatus,
   Contract
-} from '../../types/recordTypes.js'
+} from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 

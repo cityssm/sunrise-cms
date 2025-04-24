@@ -1,4 +1,4 @@
-import type { Contract, Fee } from '../types/recordTypes.js'
+import type { Contract, Fee } from '../types/record.types.js'
 
 export function calculateFeeAmount(
   fee: Fee,

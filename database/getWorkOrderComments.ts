@@ -6,7 +6,7 @@ import {
   timeIntegerToString
 } from '@cityssm/utils-datetime'
 
-import type { WorkOrderComment } from '../types/recordTypes.js'
+import type { WorkOrderComment } from '../types/record.types.js'
 
 import { acquireConnection } from './pool.js'
 

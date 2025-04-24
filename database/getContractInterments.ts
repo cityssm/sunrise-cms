@@ -4,7 +4,7 @@ import {
   dateIntegerToString
 } from '@cityssm/utils-datetime'
 
-import type { ContractInterment } from '../types/recordTypes.js'
+import type { ContractInterment } from '../types/record.types.js'
 
 import { acquireConnection } from './pool.js'
 

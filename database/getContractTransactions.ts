@@ -7,7 +7,7 @@ import {
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { getDynamicsGPDocument } from '../helpers/functions.dynamicsGP.js'
-import type { ContractTransaction } from '../types/recordTypes.js'
+import type { ContractTransaction } from '../types/record.types.js'
 
 import { acquireConnection } from './pool.js'
 

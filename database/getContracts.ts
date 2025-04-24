@@ -14,7 +14,7 @@ import {
   getContractTimeWhereClause,
   getDeceasedNameWhereClause
 } from '../helpers/functions.sqlFilters.js'
-import type { Contract } from '../types/recordTypes.js'
+import type { Contract } from '../types/record.types.js'
 
 import getContractFees from './getContractFees.js'
 import getContractInterments from './getContractInterments.js'
