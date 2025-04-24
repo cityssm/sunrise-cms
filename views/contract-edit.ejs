@@ -824,9 +824,10 @@
   <div class="panel">
     <div class="panel-heading">
       <div class="level is-mobile">
-          <div class="level-left">
-              <h2 class="has-text-weight-bold is-size-5">Work Orders</h2>
-          </div>
+        <div class="level-left">
+          <h2 class="has-text-weight-bold is-size-5">Work Orders</h2>
+        </div>
+        <% if (user.userProperties.canUpdateWorkOrders) { %>
           <div class="level-right">
             <div class="level-item">
               <button class="button is-small is-success is-hidden-print" id="button--createWorkOrder" type="button">
@@ -835,6 +836,7 @@
               </button>
             </div>
           </div>
+        <% } %>
       </div>
     </div>
     <div class="panel-block is-block">
