@@ -10,6 +10,7 @@ import rateLimit from 'express-rate-limit';
 import session from 'express-session';
 import createError from 'http-errors';
 import FileStore from 'session-file-store';
+import dataLists from './data/dataLists.js';
 import { DEBUG_NAMESPACE } from './debug.config.js';
 import * as permissionHandlers from './handlers/permissions.js';
 import { getSafeRedirectURL } from './helpers/authentication.helpers.js';
@@ -141,6 +142,7 @@ app.use((request, response, next) => {
     response.locals.configFunctions = configFunctions;
     response.locals.printFunctions = printFunctions;
     response.locals.dateTimeFunctions = dateTimeFunctions;
+    response.locals.dataLists = dataLists;
     response.locals.urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
     next();
 });

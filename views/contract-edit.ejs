@@ -535,7 +535,7 @@
             </div>
           </div>
           <datalist id="datalist--purchaserRelationships">
-            <% for (const relationship of configFunctions.getConfigProperty('settings.contracts.purchaserRelationships')) { %>
+            <% for (const relationship of dataLists.purchaserRelationships) { %>
               <option value="<%= relationship %>">
             <% } %>
           </datalist>
@@ -695,7 +695,7 @@
               <div class="control is-expanded">
                 <div class="select is-fullwidth">
                   <select id="contract--deathAgePeriod" name="deathAgePeriod" aria-label="Death Age Period">
-                    <% for (const period of configFunctions.getConfigProperty('settings.contracts.deathAgePeriods')) { %>
+                    <% for (const period of dataLists.deathAgePeriods) { %>
                       <option value="<%= period %>"
                         <%= (contract.deathAgePeriod === period ? " selected" : "") %>>
                         <%= period %>
@@ -979,7 +979,7 @@
 
     exports.contractInterments = <%- JSON.stringify(contract.contractInterments) %>;
     exports.intermentContainerTypes = <%- JSON.stringify(intermentContainerTypes) %>;
-    exports.deathAgePeriods = <%- JSON.stringify(configFunctions.getConfigProperty('settings.contracts.deathAgePeriods')) %>;
+    exports.deathAgePeriods = <%- JSON.stringify(dataLists.deathAgePeriods) %>;
     exports.contractComments = <%- JSON.stringify(contract.contractComments) %>;
     exports.contractFees = <%- JSON.stringify(contract.contractFees) %>;
     exports.contractTransactions = <%- JSON.stringify(contract.contractTransactions) %>;

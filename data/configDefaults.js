@@ -49,21 +49,7 @@ export const configDefaultValues = {
     'settings.burialSites.refreshImageChanges': false,
     'settings.contracts.burialSiteIdIsRequired': true,
     'settings.contracts.contractEndDateIsRequired': false,
-    'settings.contracts.deathAgePeriods': [
-        'Years',
-        'Months',
-        'Days',
-        'Stillborn'
-    ],
     'settings.contracts.prints': ['screen/contract'],
-    'settings.contracts.purchaserRelationships': [
-        'Spouse',
-        'Child',
-        'Parent',
-        'Sibling',
-        'Friend',
-        'Self'
-    ],
     'settings.fees.taxPercentageDefault': 0,
     'settings.workOrders.workOrderNumberLength': 6,
     'settings.workOrders.calendarEmailAddress': 'no-reply@127.0.0.1',

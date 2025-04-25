@@ -38,9 +38,7 @@ export declare const configDefaultValues: {
     'settings.burialSites.refreshImageChanges': boolean;
     'settings.contracts.burialSiteIdIsRequired': boolean;
     'settings.contracts.contractEndDateIsRequired': boolean;
-    'settings.contracts.deathAgePeriods': string[];
     'settings.contracts.prints': string[];
-    'settings.contracts.purchaserRelationships': string[];
     'settings.fees.taxPercentageDefault': number;
     'settings.workOrders.workOrderNumberLength': number;
     'settings.workOrders.calendarEmailAddress': string;
