@@ -6,7 +6,7 @@ import { DEBUG_NAMESPACE } from '../debug.config.js'
 
 import { getConfigProperty } from './config.helpers.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:database.helpers:${process.pid}`)
+const debug = Debug(`${DEBUG_NAMESPACE}:database.helpers:${process.pid.toString().padEnd(5)}`)
 
 export const useTestDatabases =
   getConfigProperty('application.useTestDatabases') ||

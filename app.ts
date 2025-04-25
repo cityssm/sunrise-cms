@@ -31,7 +31,7 @@ import routerReports from './routes/reports.js'
 import routerWorkOrders from './routes/workOrders.js'
 import { version } from './version.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid}`)
+const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(5)}`)
 
 /*
  * INITIALIZE APP
@@ -107,7 +107,7 @@ app.use(
     },
     secret: configFunctions.getConfigProperty('session.secret'),
     store: new FileStoreSession({
-      logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid}`),
+      logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid.toString().padEnd(5)}`),
       path: './data/sessions',
       retries: 20
     }),

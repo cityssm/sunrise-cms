@@ -7,7 +7,7 @@ import { app } from '../app.js';
 import { initializeDatabase } from '../database/initializeDatabase.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:wwwProcess:${process.pid}`);
+const debug = Debug(`${DEBUG_NAMESPACE}:wwwProcess:${process.pid.toString().padEnd(5)}`);
 if (process.send === undefined) {
     // INITIALIZE THE DATABASE
     await initializeDatabase();

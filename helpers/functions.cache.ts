@@ -31,7 +31,7 @@ import type {
 
 import { getConfigProperty } from './config.helpers.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:functions.cache:${process.pid}`)
+const debug = Debug(`${DEBUG_NAMESPACE}:functions.cache:${process.pid.toString().padEnd(5)}`)
 
 /*
  * Burial Site Statuses
