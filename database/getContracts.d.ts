@@ -25,6 +25,6 @@ export interface GetContractsOptions {
     includeTransactions: boolean;
 }
 export default function getContracts(filters: GetContractsFilters, options: GetContractsOptions, connectedDatabase?: sqlite.Database): Promise<{
-    count: number;
     contracts: Contract[];
+    count: number;
 }>;

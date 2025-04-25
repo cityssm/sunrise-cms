@@ -11,7 +11,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
     const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
-    const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
+    const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     let count = typeof options.limit === 'string'
         ? Number.parseInt(options.limit, 10)
         : options.limit;
@@ -76,8 +76,8 @@ export default async function getContracts(filters, options, connectedDatabase) 
         database.close();
     }
     return {
-        count,
-        contracts
+        contracts,
+        count
     };
 }
 async function addInclusions(contract, options, database) {
