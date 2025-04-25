@@ -437,7 +437,20 @@
 <div class="columns">
   <div class="column">
     <div class="panel">
-      <h2 class="panel-heading">Fees</h2>
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="has-text-weight-bold">Fees</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="panel-block is-block">
         <% if (contract.contractFees.length === 0) { %>
           <div class="message is-info">
@@ -503,7 +516,20 @@
   </div>
   <div class="column">
     <div class="panel">
-      <h2 class="panel-heading">Transactions</h2>
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="has-text-weight-bold">Transactions</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <i class="fas fa-money-bill-alt" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="panel-block is-block">
           <% if (contract.contractTransactions.length === 0) { %>
             <div class="message is-info">
