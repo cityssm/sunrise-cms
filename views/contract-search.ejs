@@ -20,25 +20,45 @@
       </ul>
     </nav>
 
-    <h1 class="title is-1">
-      Find a Contract
-    </h1>
-
-    <% if (user.userProperties.canUpdate) { %>
-      <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-        <a class="button is-circle is-primary has-tooltip-left"
-          data-tooltip="Create a New Contract"
-          href="<%= urlPrefix %>/contracts/new"
-          accesskey="n">
-          <i class="fas fa-plus" aria-hidden="true"></i>
-          <span class="sr-only">Create a New Contract</span>
-        </a>
+    <form id="form--searchFilters">
+      <div class="columns is-vcentered is-mobile">
+        <div class="column">
+          <h1 class="title is-1">
+            Find a Contract
+          </h1>
+        </div>
+        <div class="column has-text-right is-narrow">
+          <div class="field has-addons">
+            <div class="control">
+              <label class="button is-small is-static" for="searchFilter--limit">Results</label>
+            </div>
+            <div class="control">
+              <div class="select is-small is-fullwidth">
+                <select id="searchFilter--limit" name="limit" aria-label="Results per page">
+                  <option value="50" selected>50</option>
+                  <option value="100">100</option>
+                  <option value="250">250</option>
+                  <option value="500">500</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    <% } %>
 
-    <div class="box">
-      <form id="form--searchFilters">
-        <input id="searchFilter--limit" name="limit" type="hidden" value="100" />
+      <% if (user.userProperties.canUpdate) { %>
+        <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+          <a class="button is-circle is-primary has-tooltip-left"
+            data-tooltip="Create a New Contract"
+            href="<%= urlPrefix %>/contracts/new"
+            accesskey="n">
+            <i class="fas fa-plus" aria-hidden="true"></i>
+            <span class="sr-only">Create a New Contract</span>
+          </a>
+        </div>
+      <% } %>
+
+      <div class="box">
         <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
         <div class="columns">
           <div class="column">
@@ -131,7 +151,6 @@
             </div>
           </div>
         </div>
-
         <div class="columns">
           <div class="column">
             <div class="field">
@@ -170,11 +189,10 @@
             </div>
           </div>
         </div>
-      
-      </form>
-    </div>
+      </div>
+    </form>
 
-    <div id="container--searchResults"></div>
+    <div class="mt-5" id="container--searchResults"></div>
   </div>
 </div>
 

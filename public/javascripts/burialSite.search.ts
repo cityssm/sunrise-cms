@@ -18,10 +18,10 @@ declare const exports: Record<string, unknown>
     '#container--searchResults'
   ) as HTMLElement
 
-  const limit = Number.parseInt(
-    (document.querySelector('#searchFilter--limit') as HTMLInputElement).value,
-    10
-  )
+  const limitElement = document.querySelector(
+    '#searchFilter--limit'
+  ) as HTMLSelectElement
+
   const offsetElement = document.querySelector(
     '#searchFilter--offset'
   ) as HTMLInputElement
@@ -95,7 +95,7 @@ declare const exports: Record<string, unknown>
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
       sunrise.getSearchResultsPagerHTML(
-        limit,
+        Number.parseInt(limitElement.value, 10),
         responseJSON.offset,
         responseJSON.count
       )
@@ -134,7 +134,8 @@ declare const exports: Record<string, unknown>
 
   function previousAndGetBurialSites(): void {
     offsetElement.value = Math.max(
-      Number.parseInt(offsetElement.value, 10) - limit,
+      Number.parseInt(offsetElement.value, 10) -
+        Number.parseInt(limitElement.value, 10),
       0
     ).toString()
     getBurialSites()
@@ -142,7 +143,8 @@ declare const exports: Record<string, unknown>
 
   function nextAndGetBurialSites(): void {
     offsetElement.value = (
-      Number.parseInt(offsetElement.value, 10) + limit
+      Number.parseInt(offsetElement.value, 10) +
+      Number.parseInt(limitElement.value, 10)
     ).toString()
     getBurialSites()
   }

@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const sunrise = exports.sunrise;
     const searchFilterFormElement = document.querySelector('#form--searchFilters');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
-    const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
+    const limitElement = document.querySelector('#searchFilter--limit');
     const offsetElement = document.querySelector('#searchFilter--offset');
     // eslint-disable-next-line complexity
     function renderContracts(rawResponseJSON) {
@@ -129,7 +129,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .querySelector('table')
             ?.append(resultsTbodyElement);
         // eslint-disable-next-line no-unsanitized/method
-        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Number.parseInt(limitElement.value, 10), responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector("button[data-page='previous']")
             ?.addEventListener('click', previousAndGetContracts);
@@ -147,11 +147,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
         getContracts();
     }
     function previousAndGetContracts() {
-        offsetElement.value = Math.max(Number.parseInt(offsetElement.value, 10) - limit, 0).toString();
+        offsetElement.value = Math.max(Number.parseInt(offsetElement.value, 10) -
+            Number.parseInt(limitElement.value, 10), 0).toString();
         getContracts();
     }
     function nextAndGetContracts() {
-        offsetElement.value = (Number.parseInt(offsetElement.value, 10) + limit).toString();
+        offsetElement.value = (Number.parseInt(offsetElement.value, 10) +
+            Number.parseInt(limitElement.value, 10)).toString();
         getContracts();
     }
     const filterElements = searchFilterFormElement.querySelectorAll('input, select');
