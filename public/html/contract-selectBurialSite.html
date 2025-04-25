@@ -12,45 +12,113 @@
       ></button>
     </header>
     <section class="modal-card-body">
-      <div class="box">
-        <form id="form--burialSiteSelect">
-          <input name="limit" type="hidden" value="100" />
-          <input name="offset" type="hidden" value="0" />
-          <div class="field">
-            <div class="control has-icons-left">
-              <input
-                class="input"
-                id="burialSiteSelect--burialSiteName"
-                name="burialSiteName"
-                type="text"
-              />
-              <span class="icon is-small is-left">
-                <i class="fas fa-search" aria-hidden="true"></i>
-              </span>
-            </div>
-          </div>
-          <div class="field">
-            <div class="control has-icons-left">
-              <div class="select is-fullwidth">
-                <select
-                  id="burialSiteSelect--contractStatus"
-                  name="contractStatus"
-                >
-                  <option value="">(All Statuses)</option>
-                  <option value="unoccupied" selected>
-                    Currently Unoccupied
-                  </option>
-                  <option value="occupied">Currently Occupied</option>
-                </select>
-              </div>
-              <span class="icon is-small is-left">
-                <i class="fas fa-filter" aria-hidden="true"></i>
-              </span>
-            </div>
-          </div>
-        </form>
+      <div class="tabs is-boxed">
+        <ul>
+          <li class="is-active">
+            <a href="#tab--burialSiteSelect">Select Existing</a>
+          </li>
+          <li>
+            <a href="#tab--burialSiteCreate">Create New</a>
+          </li>
+        </ul>
       </div>
-      <div id="resultsContainer--burialSiteSelect"></div>
+      <div class="tab-containers">
+        <div id="tab--burialSiteSelect">
+          <div class="box">
+            <form id="form--burialSiteSelect">
+              <input name="limit" type="hidden" value="100" />
+              <input name="offset" type="hidden" value="0" />
+              <div class="field">
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    id="burialSiteSelect--burialSiteName"
+                    name="burialSiteName"
+                    type="text"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select
+                      id="burialSiteSelect--contractStatus"
+                      name="contractStatus"
+                    >
+                      <option value="">(All Statuses)</option>
+                      <option value="unoccupied" selected>
+                        Currently Unoccupied
+                      </option>
+                      <option value="occupied">Currently Occupied</option>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-filter" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div id="resultsContainer--burialSiteSelect"></div>
+        </div>
+        <div id="tab--burialSiteCreate" class="is-hidden">
+          <form id="form--burialSiteCreate">
+            <label class="label" for="burialSiteCreate--burialSiteNameSegment1">
+              New Burial Site Name
+            </label>
+
+            <div class="field">
+              <label class="label" for="burialSiteCreate--cemeteryId">Cemetery</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="burialSiteCreate--cemeteryId" name="cemeteryId">
+                    <option value="">(No Cemetery Selected)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="columns">
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="burialSiteCreate--burialSiteTypeId">Burial Site Type</label>
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select id="burialSiteCreate--burialSiteTypeId" name="burialSiteTypeId" required>
+                        <option value="">(Select a Type)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="burialSiteCreate--burialSiteStatusId">Burial Site Status</label>
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select id="burialSiteCreate--burialSiteStatusId" name="burialSiteStatusId">
+                        <option value="">(No Status)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p class="has-text-right">
+              <button class="button is-primary" type="submit">
+                <span class="icon is-small">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                </span>
+                <span>Create Burial Site and Select</span>
+              </button>
+            </p>
+          </form>
+        </div>
+      </div>
     </section>
     <footer class="modal-card-foot is-justify-content-right">
       <button class="button is-close-modal-button" type="button">Cancel</button>

@@ -16,12 +16,12 @@ export interface AddBurialSiteForm {
   burialSiteStatusId: number | string
   burialSiteTypeId: number | string
 
-  burialSiteImage: string
+  burialSiteImage?: string
   cemeteryId: number | string
-  cemeterySvgId: string
+  cemeterySvgId?: string
 
-  burialSiteLatitude: string
-  burialSiteLongitude: string
+  burialSiteLatitude?: string
+  burialSiteLongitude?: string
 
   burialSiteTypeFieldIds?: string
 
@@ -38,7 +38,7 @@ export interface AddBurialSiteForm {
 export default function addBurialSite(
   burialSiteForm: AddBurialSiteForm,
   user: User
-): number {
+): { burialSiteId: number; burialSiteName: string } {
   const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
@@ -102,7 +102,7 @@ export default function addBurialSite(
         : burialSiteForm.burialSiteStatusId,
       burialSiteForm.cemeteryId === '' ? undefined : burialSiteForm.cemeteryId,
       burialSiteForm.cemeterySvgId,
-      burialSiteForm.burialSiteImage,
+      burialSiteForm.burialSiteImage ?? '',
       burialSiteForm.burialSiteLatitude === ''
         ? undefined
         : burialSiteForm.burialSiteLatitude,
@@ -141,5 +141,8 @@ export default function addBurialSite(
 
   database.close()
 
-  return burialSiteId
+  return {
+    burialSiteId,
+    burialSiteName
+  }
 }

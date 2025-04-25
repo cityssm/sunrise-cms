@@ -10,7 +10,7 @@ export default function handler(
   response: Response
 ): void {
   try {
-    const burialSiteId = addBurialSite(
+    const burialSite = addBurialSite(
       request.body,
       request.session.user as User
     )
@@ -18,7 +18,8 @@ export default function handler(
     response.json({
       success: true,
 
-      burialSiteId
+      burialSiteId: burialSite.burialSiteId,
+      burialSiteName: burialSite.burialSiteName,
     })
 
     response.on('finish', () => {

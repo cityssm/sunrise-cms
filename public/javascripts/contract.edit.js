@@ -238,6 +238,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let burialSiteSelectCloseModalFunction;
         let burialSiteSelectFormElement;
         let burialSiteSelectResultsElement;
+        let burialSiteCreateFormElement;
         function renderSelectedBurialSiteAndClose(burialSiteId, burialSiteName) {
             ;
             document.querySelector('#contract--burialSiteId').value = burialSiteId.toString();
@@ -291,6 +292,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 burialSiteSelectResultsElement.append(panelElement);
             });
         }
+        function createBurialSite(createEvent) {
+            createEvent.preventDefault();
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doCreateBurialSite`, burialSiteCreateFormElement, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
+                if (responseJSON.success) {
+                    setUnsavedChanges();
+                    renderSelectedBurialSiteAndClose(responseJSON.burialSiteId ?? 0, responseJSON.burialSiteName ?? '');
+                }
+                else {
+                    bulmaJS.alert({
+                        title: 'Error Creating Burial Site',
+                        message: responseJSON.errorMessage ?? '',
+                        contextualColorName: 'danger'
+                    });
+                }
+            });
+        }
         cityssm.openHtmlModal('contract-selectBurialSite', {
             onshow(modalElement) {
                 sunrise.populateAliases(modalElement);
@@ -317,6 +335,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     submitEvent.preventDefault();
                 });
                 searchBurialSites();
+                /*
+                 * New Burial Site Tab
+                 */
+                const burialSiteNameSegmentsFieldElement = document.querySelector('#template--burialSiteNameSegments > div.field').cloneNode(true);
+                burialSiteNameSegmentsFieldElement
+                    .querySelector('input[name="burialSiteNameSegment1"]')
+                    ?.setAttribute('id', 'burialSiteCreate--burialSiteNameSegment1');
+                modalElement
+                    .querySelector('label[for="burialSiteCreate--burialSiteNameSegment1"]')
+                    ?.insertAdjacentElement('afterend', burialSiteNameSegmentsFieldElement);
+                const cemeterySelectElement = modalElement.querySelector('#burialSiteCreate--cemeteryId');
+                for (const cemetery of exports.cemeteries) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = cemetery.cemeteryId?.toString() ?? '';
+                    optionElement.textContent =
+                        cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName;
+                    cemeterySelectElement.append(optionElement);
+                }
+                const burialSiteTypeSelectElement = modalElement.querySelector('#burialSiteCreate--burialSiteTypeId');
+                for (const burialSiteType of exports.burialSiteTypes) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = burialSiteType.burialSiteTypeId.toString();
+                    optionElement.textContent = burialSiteType.burialSiteType;
+                    burialSiteTypeSelectElement.append(optionElement);
+                }
+                const burialSiteStatusSelectElement = modalElement.querySelector('#burialSiteCreate--burialSiteStatusId');
+                for (const burialSiteStatus of exports.burialSiteStatuses) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = burialSiteStatus.burialSiteStatusId.toString();
+                    optionElement.textContent = burialSiteStatus.burialSiteStatus;
+                    burialSiteStatusSelectElement.append(optionElement);
+                }
+                burialSiteCreateFormElement = modalElement.querySelector('#form--burialSiteCreate');
+                burialSiteCreateFormElement.addEventListener('submit', createBurialSite);
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();

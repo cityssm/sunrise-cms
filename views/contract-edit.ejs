@@ -920,6 +920,55 @@
 <datalist id="datalist--cityDefault">
   <option value="<%= configFunctions.getConfigProperty('settings.cityDefault') %>">
 </datalist>
+
+<%
+  const burialSiteNameSegments = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments')
+%>
+<div class="is-hidden" id="template--burialSiteNameSegments">
+  <div class="field has-addons">
+    <% for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) { %>
+      <%
+        const segmentIndexString = segmentIndex.toString();
+        const segment = burialSiteNameSegments.segments[segmentIndexString];
+      %>
+      <% if (segment?.isAvailable ?? false) { %>
+        <% if (segmentIndex !== 1 && (burialSiteNameSegments.separator ?? '') !== '') { %>
+          <p class="control">
+            <span class="button is-static">
+              <%= burialSiteNameSegments.separator %>
+            </span>
+          </p>
+        <% } %>
+        <% if ((segment.prefix ?? '') !== '') { %>
+          <p class="control">
+            <span class="button is-static">
+              <%= segment.prefix %>
+            </span>
+          </p>
+        <% } %>
+        <div class="control"
+          data-tooltip="<%= segment.label ?? '' %>">
+
+          <input class="input"
+            name="burialSiteNameSegment<%= segmentIndexString %>"
+            type="text"
+            minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>" 
+            maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
+            placeholder="<%= segment.label ?? '' %>"
+            aria-label="<%= segment.label ?? '' %>"
+            <%= (segment.isRequired ?? false) ? ' required' : '' %> />
+        </div>
+        <% if ((segment.suffix ?? '') !== '') { %>
+          <p class="control">
+            <span class="button is-static">
+              <%= segment.suffix %>
+            </span>
+          </p>
+        <% } %>
+      <% } %>
+    <% } %>
+  </div>
+</div>
     
 <%- include('_footerA'); -%>
 
@@ -938,6 +987,12 @@
     exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
   </script>
 <% } %>
+
+<script>
+  exports.burialSiteStatuses = <%- JSON.stringify(burialSiteStatuses) %>;
+  exports.burialSiteTypes = <%- JSON.stringify(burialSiteTypes) %>;
+  exports.cemeteries = <%- JSON.stringify(cemeteries) %>;
+</script>
 
 <script src="<%= urlPrefix %>/javascripts/contract.edit.js"></script>
 <% if (!isCreate) { %>

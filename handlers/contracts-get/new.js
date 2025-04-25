@@ -1,8 +1,9 @@
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime';
 import getBurialSite from '../../database/getBurialSite.js';
+import getCemeteries from '../../database/getCemeteries.js';
 import getFuneralHomes from '../../database/getFuneralHomes.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { getCommittalTypes, getContractTypes, getIntermentContainerTypes } from '../../helpers/functions.cache.js';
+import { getBurialSiteStatuses, getBurialSiteTypes, getCommittalTypes, getContractTypes, getIntermentContainerTypes } from '../../helpers/functions.cache.js';
 export default async function handler(request, response) {
     const startDate = new Date();
     const contract = {
@@ -21,10 +22,19 @@ export default async function handler(request, response) {
             contract.cemeteryName = burialSite.cemeteryName;
         }
     }
+    /*
+     * Contract Drop Lists
+     */
     const contractTypes = getContractTypes();
     const funeralHomes = getFuneralHomes();
     const committalTypes = getCommittalTypes();
     const intermentContainerTypes = getIntermentContainerTypes();
+    /*
+     * Burial Site Drop Lists
+     */
+    const burialSiteStatuses = getBurialSiteStatuses();
+    const burialSiteTypes = getBurialSiteTypes();
+    const cemeteries = getCemeteries();
     response.render('contract-edit', {
         headTitle: 'Create a New Contract',
         contract,
@@ -32,6 +42,9 @@ export default async function handler(request, response) {
         contractTypes,
         funeralHomes,
         intermentContainerTypes,
+        burialSiteStatuses,
+        burialSiteTypes,
+        cemeteries,
         isCreate: true
     });
 }

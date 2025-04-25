@@ -4,15 +4,27 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { BurialSite, ContractTypeField } from '../../types/record.types.js'
+import type {
+  BurialSite,
+  BurialSiteStatus,
+  BurialSiteType,
+  Cemetery,
+  ContractTypeField
+} from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+
+  burialSiteStatuses: BurialSiteStatus[]
+  burialSiteTypes: BurialSiteType[]
+  cemeteries: Cemetery[]
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
@@ -363,6 +375,8 @@ declare const exports: Record<string, unknown>
     let burialSiteSelectFormElement: HTMLFormElement
     let burialSiteSelectResultsElement: HTMLElement
 
+    let burialSiteCreateFormElement: HTMLFormElement
+
     function renderSelectedBurialSiteAndClose(
       burialSiteId: number | string,
       burialSiteName: string
@@ -452,6 +466,39 @@ declare const exports: Record<string, unknown>
       )
     }
 
+    function createBurialSite(createEvent: Event): void {
+      createEvent.preventDefault()
+
+      cityssm.postJSON(
+        `${sunrise.urlPrefix}/burialSites/doCreateBurialSite`,
+        burialSiteCreateFormElement,
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            errorMessage?: string
+
+            burialSiteId?: number
+            burialSiteName?: string
+          }
+
+          if (responseJSON.success) {
+            setUnsavedChanges()
+
+            renderSelectedBurialSiteAndClose(
+              responseJSON.burialSiteId ?? 0,
+              responseJSON.burialSiteName ?? ''
+            )
+          } else {
+            bulmaJS.alert({
+              title: 'Error Creating Burial Site',
+              message: responseJSON.errorMessage ?? '',
+              contextualColorName: 'danger'
+            })
+          }
+        }
+      )
+    }
+
     cityssm.openHtmlModal('contract-selectBurialSite', {
       onshow(modalElement) {
         sunrise.populateAliases(modalElement)
@@ -512,7 +559,71 @@ declare const exports: Record<string, unknown>
         )
 
         searchBurialSites()
+
+        /*
+         * New Burial Site Tab
+         */
+
+        const burialSiteNameSegmentsFieldElement = (
+          document.querySelector(
+            '#template--burialSiteNameSegments > div.field'
+          ) as HTMLElement
+        ).cloneNode(true) as HTMLElement
+
+        burialSiteNameSegmentsFieldElement
+          .querySelector('input[name="burialSiteNameSegment1"]')
+          ?.setAttribute('id', 'burialSiteCreate--burialSiteNameSegment1')
+
+        modalElement
+          .querySelector(
+            'label[for="burialSiteCreate--burialSiteNameSegment1"]'
+          )
+          ?.insertAdjacentElement(
+            'afterend',
+            burialSiteNameSegmentsFieldElement
+          )
+
+        const cemeterySelectElement = modalElement.querySelector(
+          '#burialSiteCreate--cemeteryId'
+        ) as HTMLSelectElement
+
+        for (const cemetery of exports.cemeteries) {
+          const optionElement = document.createElement('option')
+          optionElement.value = cemetery.cemeteryId?.toString() ?? ''
+          optionElement.textContent =
+            cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName
+          cemeterySelectElement.append(optionElement)
+        }
+
+        const burialSiteTypeSelectElement = modalElement.querySelector(
+          '#burialSiteCreate--burialSiteTypeId'
+        ) as HTMLSelectElement
+
+        for (const burialSiteType of exports.burialSiteTypes) {
+          const optionElement = document.createElement('option')
+          optionElement.value = burialSiteType.burialSiteTypeId.toString()
+          optionElement.textContent = burialSiteType.burialSiteType
+          burialSiteTypeSelectElement.append(optionElement)
+        }
+
+        const burialSiteStatusSelectElement = modalElement.querySelector(
+          '#burialSiteCreate--burialSiteStatusId'
+        ) as HTMLSelectElement
+
+        for (const burialSiteStatus of exports.burialSiteStatuses) {
+          const optionElement = document.createElement('option')
+          optionElement.value = burialSiteStatus.burialSiteStatusId.toString()
+          optionElement.textContent = burialSiteStatus.burialSiteStatus
+          burialSiteStatusSelectElement.append(optionElement)
+        }
+
+        burialSiteCreateFormElement = modalElement.querySelector(
+          '#form--burialSiteCreate'
+        ) as HTMLFormElement
+
+        burialSiteCreateFormElement.addEventListener('submit', createBurialSite)
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }

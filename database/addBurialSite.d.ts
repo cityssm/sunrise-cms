@@ -6,11 +6,11 @@ export interface AddBurialSiteForm {
     burialSiteNameSegment5?: string;
     burialSiteStatusId: number | string;
     burialSiteTypeId: number | string;
-    burialSiteImage: string;
+    burialSiteImage?: string;
     cemeteryId: number | string;
-    cemeterySvgId: string;
-    burialSiteLatitude: string;
-    burialSiteLongitude: string;
+    cemeterySvgId?: string;
+    burialSiteLatitude?: string;
+    burialSiteLongitude?: string;
     burialSiteTypeFieldIds?: string;
     [fieldValue_burialSiteTypeFieldId: string]: unknown;
 }
@@ -21,4 +21,7 @@ export interface AddBurialSiteForm {
  * @returns The new burial site's id.
  * @throws If an active burial site with the same name already exists.
  */
-export default function addBurialSite(burialSiteForm: AddBurialSiteForm, user: User): number;
+export default function addBurialSite(burialSiteForm: AddBurialSiteForm, user: User): {
+    burialSiteId: number;
+    burialSiteName: string;
+};
