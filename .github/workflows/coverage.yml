@@ -25,6 +25,7 @@ jobs:
 
       - name: Install Application
         run: |
+          npm uninstall puppeteer
           npm ci
           npm install -g mocha c8 cypress@14
 
