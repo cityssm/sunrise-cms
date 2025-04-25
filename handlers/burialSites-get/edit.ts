@@ -22,10 +22,10 @@ export default async function handler(
     return
   }
 
-  const cemeteries =  getCemeteries()
-  const burialSiteImages =  getBurialSiteImages()
-  const burialSiteTypes =  getBurialSiteTypes()
-  const burialSiteStatuses =  getBurialSiteStatuses()
+  const cemeteries = getCemeteries()
+  const burialSiteImages = await getBurialSiteImages()
+  const burialSiteTypes = getBurialSiteTypes()
+  const burialSiteStatuses = getBurialSiteStatuses()
 
   response.render('burialSite-edit', {
     headTitle: burialSite.burialSiteName,

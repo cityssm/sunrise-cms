@@ -10,7 +10,7 @@ export default async function handler(request, response) {
         return;
     }
     const cemeteries = getCemeteries();
-    const burialSiteImages = getBurialSiteImages();
+    const burialSiteImages = await getBurialSiteImages();
     const burialSiteTypes = getBurialSiteTypes();
     const burialSiteStatuses = getBurialSiteStatuses();
     response.render('burialSite-edit', {
