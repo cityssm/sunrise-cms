@@ -24,6 +24,83 @@ declare const exports: Record<string, unknown>
     exports.intermentContainerTypes as IntermentContainerType[]
   delete exports.intermentContainerTypes
 
+  function initializeDeathAgeCalculator(
+    fieldPrefix: 'contractIntermentAdd' | 'contractIntermentEdit'
+  ): void {
+    const birthDateStringElement = document.querySelector(
+      `#${fieldPrefix}--birthDateString`
+    ) as HTMLInputElement
+
+    const deathDateStringElement = document.querySelector(
+      `#${fieldPrefix}--deathDateString`
+    ) as HTMLInputElement
+
+    const calculateDeathAgeButtonElement = document.querySelector(
+      '#button--calculateDeathAge'
+    ) as HTMLButtonElement
+
+    function toggleDeathAgeCalculatorButton(): void {
+      if (
+        birthDateStringElement.value === '' ||
+        deathDateStringElement.value === ''
+      ) {
+        calculateDeathAgeButtonElement.setAttribute('disabled', 'disabled')
+      } else {
+        calculateDeathAgeButtonElement.removeAttribute('disabled')
+      }
+    }
+
+    toggleDeathAgeCalculatorButton()
+
+    birthDateStringElement.addEventListener(
+      'change',
+      toggleDeathAgeCalculatorButton
+    )
+    deathDateStringElement.addEventListener(
+      'change',
+      toggleDeathAgeCalculatorButton
+    )
+
+    const deathAgeElement = document.querySelector(
+      `#${fieldPrefix}--deathAge`
+    ) as HTMLInputElement
+
+    const deathAgePeriodElement = document.querySelector(
+      `#${fieldPrefix}--deathAgePeriod`
+    ) as HTMLSelectElement
+
+    function calculateDeathAge(): void {
+      if (
+        birthDateStringElement.value === '' ||
+        deathDateStringElement.value === ''
+      ) {
+        return
+      }
+
+      const birthDate = new Date(birthDateStringElement.value)
+      const deathDate = new Date(deathDateStringElement.value)
+
+      const ageInDays = Math.floor(
+        (deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)
+      )
+
+      const ageInYears = Math.floor(ageInDays / 365.25)
+
+      if (ageInYears > 0) {
+        deathAgeElement.value = ageInYears.toString()
+        deathAgePeriodElement.value = 'Years'
+      } else if (ageInDays > 0) {
+        deathAgeElement.value = ageInDays.toString()
+        deathAgePeriodElement.value = 'Days'
+      } else {
+        deathAgeElement.value = '0'
+        deathAgePeriodElement.value = 'Stillborn'
+      }
+    }
+
+    calculateDeathAgeButtonElement.addEventListener('click', calculateDeathAge)
+  }
+
   function openEditContractInterment(clickEvent: Event): void {
     const intermentNumber = (clickEvent.currentTarget as HTMLElement).closest(
       'tr'
@@ -198,7 +275,10 @@ declare const exports: Record<string, unknown>
         modalElement
           .querySelector('form')
           ?.addEventListener('submit', submitForm)
+
+        initializeDeathAgeCalculator('contractIntermentEdit')
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
@@ -424,7 +504,10 @@ declare const exports: Record<string, unknown>
           modalElement
             .querySelector('form')
             ?.addEventListener('submit', submitForm)
+
+          initializeDeathAgeCalculator('contractIntermentAdd')
         },
+
         onremoved() {
           bulmaJS.toggleHtmlClipped()
         }

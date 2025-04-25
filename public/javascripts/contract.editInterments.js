@@ -8,6 +8,48 @@ Object.defineProperty(exports, "__esModule", { value: true });
     delete exports.deathAgePeriods;
     const intermentContainerTypes = exports.intermentContainerTypes;
     delete exports.intermentContainerTypes;
+    function initializeDeathAgeCalculator(fieldPrefix) {
+        const birthDateStringElement = document.querySelector(`#${fieldPrefix}--birthDateString`);
+        const deathDateStringElement = document.querySelector(`#${fieldPrefix}--deathDateString`);
+        const calculateDeathAgeButtonElement = document.querySelector('#button--calculateDeathAge');
+        function toggleDeathAgeCalculatorButton() {
+            if (birthDateStringElement.value === '' ||
+                deathDateStringElement.value === '') {
+                calculateDeathAgeButtonElement.setAttribute('disabled', 'disabled');
+            }
+            else {
+                calculateDeathAgeButtonElement.removeAttribute('disabled');
+            }
+        }
+        toggleDeathAgeCalculatorButton();
+        birthDateStringElement.addEventListener('change', toggleDeathAgeCalculatorButton);
+        deathDateStringElement.addEventListener('change', toggleDeathAgeCalculatorButton);
+        const deathAgeElement = document.querySelector(`#${fieldPrefix}--deathAge`);
+        const deathAgePeriodElement = document.querySelector(`#${fieldPrefix}--deathAgePeriod`);
+        function calculateDeathAge() {
+            if (birthDateStringElement.value === '' ||
+                deathDateStringElement.value === '') {
+                return;
+            }
+            const birthDate = new Date(birthDateStringElement.value);
+            const deathDate = new Date(deathDateStringElement.value);
+            const ageInDays = Math.floor((deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
+            const ageInYears = Math.floor(ageInDays / 365.25);
+            if (ageInYears > 0) {
+                deathAgeElement.value = ageInYears.toString();
+                deathAgePeriodElement.value = 'Years';
+            }
+            else if (ageInDays > 0) {
+                deathAgeElement.value = ageInDays.toString();
+                deathAgePeriodElement.value = 'Days';
+            }
+            else {
+                deathAgeElement.value = '0';
+                deathAgePeriodElement.value = 'Stillborn';
+            }
+        }
+        calculateDeathAgeButtonElement.addEventListener('click', calculateDeathAge);
+    }
     function openEditContractInterment(clickEvent) {
         const intermentNumber = clickEvent.currentTarget.closest('tr')?.dataset.intermentNumber;
         if (intermentNumber === undefined) {
@@ -123,6 +165,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement
                     .querySelector('form')
                     ?.addEventListener('submit', submitForm);
+                initializeDeathAgeCalculator('contractIntermentEdit');
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();
@@ -290,6 +333,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement
                     .querySelector('form')
                     ?.addEventListener('submit', submitForm);
+                initializeDeathAgeCalculator('contractIntermentAdd');
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();
