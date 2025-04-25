@@ -6,6 +6,10 @@
   width: 1px;
 }
 
+.is-nowrap {
+  white-space: nowrap;
+}
+
 /* to fix page titles inside level components, set on .level-left */
 
 .has-flex-shrink-1 {
