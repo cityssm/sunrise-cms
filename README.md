@@ -25,7 +25,8 @@ to focus exculsively on cemetery management.
 ### ✔️ Cemetery Maps are NOT Required
 
 Many cemetery applications rely on maps to drill down into burial sites.
-In Sunrise CMS, maps are completely optional, greatly reducing the effort needed to get started.
+In Sunrise CMS, maps are completely optional, greatly reducing the effort needed to get started,
+and reducing the maintenance work when new blocks of burial sites are introduced.
 
 ### ✔️ The System Requirements are Very Low
 
@@ -33,14 +34,14 @@ Sunrise CMS does not need an expensive server to run.
 No separate database server is required either.
 The whole application could run on a current, modest workstation.
 
-### ✔️ Track Unlimited Cemeteries and Burial Sites
+### ✔️ Track Unlimited Cemeteries, Unlimited Burial Sites, Unlimited Contracts...
 
 There are no limits to the number of records that can be tracked in Sunrise CMS.
 
-### ✔️ Includes a Built-In Work Order System
+### ✔️ Includes a Simple Built-In Work Order System
 
 In addition to tracking data related to cemetery plots,
-Sunrise CMS can also track work order activities, like grave maintenance.
+Sunrise CMS can also track work order activities, like interments and grave maintenance.
 
 ### ✔️ Sunrise CMS is Free and Open Source
 
