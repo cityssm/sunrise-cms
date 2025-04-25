@@ -10,7 +10,7 @@ export interface BurialSite extends Record {
     burialSiteType?: string;
     burialSiteTypeId?: number;
     cemetery?: Cemetery;
-    cemeteryId?: number;
+    cemeteryId?: number | null;
     cemeteryName?: string;
     cemeterySvg?: string;
     cemeterySvgId?: string;

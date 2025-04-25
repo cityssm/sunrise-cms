@@ -62,9 +62,13 @@
       <div class="column">
         <p class="mb-2">
           <strong>Cemetery</strong><br />
-          <a href="<%= urlPrefix %>/cemeteries/<%= burialSite.cemeteryId %>">
-            <%= burialSite.cemeteryName || "(No Name)" %>
-          </a>
+          <% if (burialSite.cemeteryId === null) { %>
+            <span class="has-text-grey">(No Cemetery)</span>
+          <% } else { %>
+            <a href="<%= urlPrefix %>/cemeteries/<%= burialSite.cemeteryId %>">
+              <%= burialSite.cemeteryName || "(No Name)" %>
+            </a>
+          <% } %>
         </p>
         <p class="mb-2">
           <strong>Burial Site Type</strong><br />

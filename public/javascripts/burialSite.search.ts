@@ -53,13 +53,17 @@ declare const exports: Record<string, unknown>
               ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
             </a>
           </td><td>
-            <a href="${sunrise.getCemeteryURL(burialSite.cemeteryId)}">
+          ${
+            burialSite.cemeteryId === null
+              ? '<span class="has-text-grey">(No Cemetery)</span>'
+              : `<a href="${sunrise.getCemeteryURL(burialSite.cemeteryId)}">
               ${
-                burialSite.cemeteryName
-                  ? cityssm.escapeHTML(burialSite.cemeteryName)
-                  : '<span class="has-text-grey">(No Name)</span>'
+                burialSite.cemeteryName === ''
+                  ? '<span class="has-text-grey">(No Name)</span>'
+                  : cityssm.escapeHTML(burialSite.cemeteryName)
               }
-            </a>
+            </a>`
+          }
           </td><td>
             ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
           </td><td>

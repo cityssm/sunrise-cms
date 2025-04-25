@@ -23,11 +23,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
               ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
             </a>
           </td><td>
-            <a href="${sunrise.getCemeteryURL(burialSite.cemeteryId)}">
-              ${burialSite.cemeteryName
-                ? cityssm.escapeHTML(burialSite.cemeteryName)
-                : '<span class="has-text-grey">(No Name)</span>'}
-            </a>
+          ${burialSite.cemeteryId === null
+                ? '<span class="has-text-grey">(No Cemetery)</span>'
+                : `<a href="${sunrise.getCemeteryURL(burialSite.cemeteryId)}">
+              ${burialSite.cemeteryName === ''
+                    ? '<span class="has-text-grey">(No Name)</span>'
+                    : cityssm.escapeHTML(burialSite.cemeteryName)}
+            </a>`}
           </td><td>
             ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
           </td><td>
