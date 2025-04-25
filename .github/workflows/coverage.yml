@@ -30,7 +30,7 @@ jobs:
           npm install -g mocha c8 cypress@14
 
       - name: Copy Test Config
-        run: cp ./data/config.testing.js ./data/config.js
+        run: cp ./data/testing.config.js ./data/config.js
         
       - name: Test Application Startup
         run: npm run test:startup

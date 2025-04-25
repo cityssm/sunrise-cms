@@ -115,3 +115,5 @@ export const configDefaultValues = {
   'settings.dynamicsGP.itemNumbers': [] as string[],
   'settings.dynamicsGP.trialBalanceCodes': [] as string[]
 }
+
+export default configDefaultValues

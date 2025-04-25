@@ -57,3 +57,4 @@ export declare const configDefaultValues: {
     'settings.dynamicsGP.itemNumbers': string[];
     'settings.dynamicsGP.trialBalanceCodes': string[];
 };
+export default configDefaultValues;

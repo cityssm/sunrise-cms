@@ -1,4 +1,4 @@
-import { config as cemeteryConfig } from './config.baseSsm.js';
+import { config as cemeteryConfig } from './ssm.ontario.config.js';
 export const config = { ...cemeteryConfig };
 config.application.useTestDatabases = true;
 config.session.doKeepAlive = true;

@@ -1,4 +1,4 @@
-import { config as cemeteryConfig } from './config.baseOntario.js';
+import { config as cemeteryConfig } from './ontario.config.js';
 export const config = { ...cemeteryConfig };
 config.aliases.externalReceiptNumber = 'GP Receipt Number';
 config.settings.publicInternalPath =
