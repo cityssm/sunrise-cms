@@ -36,7 +36,7 @@ export default async function handler(
     if (burialSite !== undefined) {
       contract.burialSiteId = burialSite.burialSiteId
       contract.burialSiteName = burialSite.burialSiteName
-      contract.cemeteryId = burialSite.cemeteryId
+      contract.cemeteryId = burialSite.cemeteryId ?? undefined
       contract.cemeteryName = burialSite.cemeteryName
     }
   }
