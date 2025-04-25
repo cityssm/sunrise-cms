@@ -2,9 +2,7 @@
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <h3 class="modal-card-title">
-        Update Interment
-      </h3>
+      <h3 class="modal-card-title">Update Interment</h3>
       <button
         class="delete is-close-modal-button"
         aria-label="close"
@@ -32,7 +30,7 @@
               <label class="label" for="contractIntermentEdit--deceasedName"
                 >Name</label
               >
-              <div class="control">
+              <div class="control has-icons-right">
                 <input
                   class="input"
                   id="contractIntermentEdit--deceasedName"
@@ -42,6 +40,9 @@
                   autocomplete="off"
                   required
                 />
+                <span class="icon is-right">
+                  <i class="fas fa-asterisk" aria-hidden="true"></i>
+                </span>
               </div>
             </div>
           </div>
@@ -96,9 +97,7 @@
           </div>
           <div class="column">
             <div class="field">
-              <label
-                class="label"
-                for="contractIntermentEdit--deceasedProvince"
+              <label class="label" for="contractIntermentEdit--deceasedProvince"
                 >Province</label
               >
               <div class="control">
@@ -139,7 +138,12 @@
                 Date of Birth
               </label>
               <div class="control has-icons-left">
-                <input class="input" id="contractIntermentEdit--birthDateString" name="birthDateString" type="date" />
+                <input
+                  class="input"
+                  id="contractIntermentEdit--birthDateString"
+                  name="birthDateString"
+                  type="date"
+                />
                 <span class="icon is-left">
                   <i class="fas fa-calendar" aria-hidden="true"></i>
                 </span>
@@ -152,7 +156,14 @@
                 Place of Birth
               </label>
               <div class="control">
-                <input class="input" id="contractIntermentEdit--birthPlace" name="birthPlace" type="text" maxlength="100" autocomplete="off" />
+                <input
+                  class="input"
+                  id="contractIntermentEdit--birthPlace"
+                  name="birthPlace"
+                  type="text"
+                  maxlength="100"
+                  autocomplete="off"
+                />
               </div>
             </div>
           </div>
@@ -164,7 +175,12 @@
                 Date of Death
               </label>
               <div class="control has-icons-left">
-                <input class="input" id="contractIntermentEdit--deathDateString" name="deathDateString" type="date" />
+                <input
+                  class="input"
+                  id="contractIntermentEdit--deathDateString"
+                  name="deathDateString"
+                  type="date"
+                />
                 <span class="icon is-left">
                   <i class="fas fa-calendar" aria-hidden="true"></i>
                 </span>
@@ -177,36 +193,76 @@
                 Place of Death
               </label>
               <div class="control">
-                <input class="input" id="contractIntermentEdit--deathPlace" name="deathPlace" type="text" maxlength="100" autocomplete="off" />
+                <input
+                  class="input"
+                  id="contractIntermentEdit--deathPlace"
+                  name="deathPlace"
+                  type="text"
+                  maxlength="100"
+                  autocomplete="off"
+                />
               </div>
             </div>
           </div>
         </div>
-        <label class="label" for="contractIntermentEdit--deathAge">Death Age</label>
+        <label class="label" for="contractIntermentEdit--deathAge"
+          >Death Age</label
+        >
         <div class="field has-addons">
           <div class="control">
-            <button class="button" type="button" id="button--calculateDeathAge" aria-label="Calculate Age" disabled>
-              <span class="icon is-small"><i class="fas fa-calculator" aria-hidden="true"></i></span>
+            <button
+              class="button"
+              type="button"
+              id="button--calculateDeathAge"
+              aria-label="Calculate Age"
+              disabled
+            >
+              <span class="icon is-small"
+                ><i class="fas fa-calculator" aria-hidden="true"></i
+              ></span>
             </button>
           </div>
           <div class="control is-expanded">
-            <input class="input has-text-right" id="contractIntermentEdit--deathAge" name="deathAge" type="number" min="0" max="150" />
+            <input
+              class="input has-text-right"
+              id="contractIntermentEdit--deathAge"
+              name="deathAge"
+              type="number"
+              min="0"
+              max="150"
+            />
           </div>
           <div class="control is-expanded">
             <div class="select is-fullwidth">
-              <select id="contractIntermentEdit--deathAgePeriod" name="deathAgePeriod" aria-label="Death Age Period">
-              </select>
+              <select
+                id="contractIntermentEdit--deathAgePeriod"
+                name="deathAgePeriod"
+                aria-label="Death Age Period"
+              ></select>
             </div>
           </div>
         </div>
         <div class="field">
-          <label class="label" for="contractIntermentEdit--intermentContainerTypeId">Container</label>
+          <label
+            class="label"
+            for="contractIntermentEdit--intermentContainerTypeId"
+            >Container</label
+          >
           <div class="control">
             <div class="select is-fullwidth">
-              <select id="contractIntermentEdit--intermentContainerTypeId" name="intermentContainerTypeId">
+              <select
+                id="contractIntermentEdit--intermentContainerTypeId"
+                name="intermentContainerTypeId"
+              >
                 <option value="">(No Container)</option>
-                <optgroup label="Non-Cremated" data-is-cremation-type="0"></optgroup>
-                <optgroup label="Cremated" data-is-cremation-type="1"></optgroup>
+                <optgroup
+                  label="Non-Cremated"
+                  data-is-cremation-type="0"
+                ></optgroup>
+                <optgroup
+                  label="Cremated"
+                  data-is-cremation-type="1"
+                ></optgroup>
               </select>
             </div>
           </div>
@@ -220,10 +276,14 @@
           type="submit"
           form="form--contractIntermentEdit"
         >
-          <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
+          <span class="icon"
+            ><i class="fas fa-save" aria-hidden="true"></i
+          ></span>
           <span>Update Interment</span>
         </button>
-        <button class="button is-close-modal-button" type="button">Cancel</button>
+        <button class="button is-close-modal-button" type="button">
+          Cancel
+        </button>
       </div>
     </footer>
   </div>
