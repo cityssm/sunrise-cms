@@ -200,7 +200,7 @@ const cemeteryKeyToCemetery = {
     }
 };
 const cemeteryCache = new Map();
-export async function getCemeteryIdByKey(cemeteryKeyToSearch, user) {
+export function getCemeteryIdByKey(cemeteryKeyToSearch, user) {
     /*
       if (masterRow.CM_CEMETERY === "HS" &&
           (masterRow.CM_BLOCK === "F" || masterRow.CM_BLOCK === "G" || masterRow.CM_BLOCK === "H" || masterRow.CM_BLOCK === "J")) {
@@ -211,7 +211,7 @@ export async function getCemeteryIdByKey(cemeteryKeyToSearch, user) {
     if (cemeteryCache.has(cemeteryKey)) {
         return cemeteryCache.get(cemeteryKey);
     }
-    const cemetery = await getCemeteryByKey(cemeteryKey);
+    const cemetery = getCemeteryByKey(cemeteryKey);
     if (cemetery === undefined) {
         console.log(`Creating cemetery: ${cemeteryKey}`);
         let addForm = cemeteryKeyToCemetery[cemeteryKey];
@@ -231,7 +231,7 @@ export async function getCemeteryIdByKey(cemeteryKeyToSearch, user) {
             cemeteryPhoneNumber: '',
             parentCemeteryId: ''
         };
-        const cemeteryId = await addCemetery(addForm, user);
+        const cemeteryId = addCemetery(addForm, user);
         cemeteryCache.set(cemeteryKey, cemeteryId);
     }
     return cemeteryCache.get(cemeteryKey);

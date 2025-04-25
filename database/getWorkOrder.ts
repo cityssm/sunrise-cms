@@ -102,7 +102,7 @@ async function _getWorkOrder(
     }
 
     if (options.includeComments) {
-      workOrder.workOrderComments = await getWorkOrderComments(
+      workOrder.workOrderComments = getWorkOrderComments(
         workOrder.workOrderId,
         database
       )

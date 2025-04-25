@@ -9,8 +9,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomeAddress1: '492 Wellington Street East',
     funeralHomeAddress2: '',
     funeralHomeCity: 'Sault Ste. Marie',
-    funeralHomeProvince: 'ON',
     funeralHomePostalCode: 'P6A 2L9',
+    funeralHomeProvince: 'ON',
 
     funeralHomePhoneNumber: '705-759-2522'
   },
@@ -21,8 +21,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomeAddress1: '175 Main Street',
     funeralHomeAddress2: 'P.O. Box 280',
     funeralHomeCity: 'Thessalon',
-    funeralHomeProvince: 'ON',
     funeralHomePostalCode: 'P0R 1L0',
+    funeralHomeProvince: 'ON',
 
     funeralHomePhoneNumber: '705-842-2520'
   },
@@ -33,8 +33,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomeAddress1: '',
     funeralHomeAddress2: '',
     funeralHomeCity: 'Sault Ste. Marie',
-    funeralHomeProvince: 'ON',
     funeralHomePostalCode: '',
+    funeralHomeProvince: 'ON',
 
     funeralHomePhoneNumber: ''
   },
@@ -45,8 +45,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomeAddress1: '215 St. James Street',
     funeralHomeAddress2: '',
     funeralHomeCity: 'Sault Ste. Marie',
-    funeralHomeProvince: 'ON',
     funeralHomePostalCode: 'P6A 1P7',
+    funeralHomeProvince: 'ON',
 
     funeralHomePhoneNumber: '705-759-8456'
   },
@@ -57,8 +57,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomeAddress1: '140 Churchill Avenue',
     funeralHomeAddress2: '',
     funeralHomeCity: 'Wawa',
-    funeralHomeProvince: 'ON',
     funeralHomePostalCode: 'P0S 1K0',
+    funeralHomeProvince: 'ON',
 
     funeralHomePhoneNumber: '705-856-7340'
   },
@@ -69,8 +69,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomeAddress1: '942 Great Northern Road',
     funeralHomeAddress2: '',
     funeralHomeCity: 'Sault Ste. Marie',
-    funeralHomeProvince: 'ON',
     funeralHomePostalCode: 'P6B 0B6',
+    funeralHomeProvince: 'ON',
 
     funeralHomePhoneNumber: '705-945-7758'
   },
@@ -81,8 +81,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomeAddress1: '215 St. James Street',
     funeralHomeAddress2: '',
     funeralHomeCity: 'Sault Ste. Marie',
-    funeralHomeProvince: 'ON',
     funeralHomePostalCode: 'P6A 1P7',
+    funeralHomeProvince: 'ON',
 
     funeralHomePhoneNumber: '705-759-8456'
   },
@@ -93,8 +93,8 @@ const funeralHomes: FuneralHome[] = [
     funeralHomeAddress1: '72 Lakeside Avenue',
     funeralHomeAddress2: '',
     funeralHomeCity: 'Blind River',
-    funeralHomeProvince: 'ON',
     funeralHomePostalCode: 'P0R 1B0',
+    funeralHomeProvince: 'ON',
 
     funeralHomePhoneNumber: '705-356-7151'
   }
@@ -102,15 +102,15 @@ const funeralHomes: FuneralHome[] = [
 
 const funeralHomeKeyToId = new Map<string, number>()
 
-export async function getFuneralHomeIdByKey(
+export function getFuneralHomeIdByKey(
   funeralHomeKey: string,
   user: User
-): Promise<number> {
+): number {
   if (funeralHomeKeyToId.has(funeralHomeKey)) {
     return funeralHomeKeyToId.get(funeralHomeKey) as number
   }
 
-  const funeralHomeId = await addFuneralHome(
+  const funeralHomeId = addFuneralHome(
     {
       funeralHomeKey,
       funeralHomeName: funeralHomeKey,
@@ -118,8 +118,9 @@ export async function getFuneralHomeIdByKey(
       funeralHomeAddress1: '',
       funeralHomeAddress2: '',
       funeralHomeCity: '',
-      funeralHomeProvince: '',
       funeralHomePostalCode: '',
+      funeralHomeProvince: '',
+
       funeralHomePhoneNumber: ''
     },
     user
@@ -130,9 +131,9 @@ export async function getFuneralHomeIdByKey(
   return funeralHomeId
 }
 
-export async function initializeFuneralHomes(user: User): Promise<void> {
+export function initializeFuneralHomes(user: User): void {
   for (const funeralHome of funeralHomes) {
-    const funeralHomeId = await addFuneralHome(
+    const funeralHomeId = addFuneralHome(
       {
         funeralHomeKey: funeralHome.funeralHomeKey ?? '',
         funeralHomeName: funeralHome.funeralHomeName ?? '',
@@ -140,8 +141,8 @@ export async function initializeFuneralHomes(user: User): Promise<void> {
         funeralHomeAddress1: funeralHome.funeralHomeAddress1 ?? '',
         funeralHomeAddress2: funeralHome.funeralHomeAddress2 ?? '',
         funeralHomeCity: funeralHome.funeralHomeCity ?? '',
-        funeralHomeProvince: funeralHome.funeralHomeProvince ?? '',
         funeralHomePostalCode: funeralHome.funeralHomePostalCode ?? '',
+        funeralHomeProvince: funeralHome.funeralHomeProvince ?? '',
 
         funeralHomePhoneNumber: funeralHome.funeralHomePhoneNumber ?? ''
       },

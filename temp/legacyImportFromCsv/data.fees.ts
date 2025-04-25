@@ -7,10 +7,10 @@ let feeCategoryId = 0
 
 const feeCache = new Map<string, number>()
 
-export async function getFeeIdByFeeDescription(
+export function getFeeIdByFeeDescription(
   feeDescription: string,
   user: User
-): Promise<number> {
+): number {
   if (feeCache.keys.length === 0) {
     const database = sqlite(databasePath, {
       readonly: true
@@ -42,7 +42,7 @@ export async function getFeeIdByFeeDescription(
   let feeId = feeCache.get(feeDescription)
 
   if (feeId === undefined) {
-    feeId = await addFee(
+    feeId = addFee(
       {
         feeName: feeDescription.slice(9),
         feeDescription,

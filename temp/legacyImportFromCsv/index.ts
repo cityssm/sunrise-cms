@@ -102,7 +102,7 @@ async function importFromMasterCSV(): Promise<void> {
 
   try {
     for (masterRow of cmmaster.data) {
-      const cemeteryId = await getCemeteryIdByKey(masterRow.CM_CEMETERY, user)
+      const cemeteryId = getCemeteryIdByKey(masterRow.CM_CEMETERY, user)
 
       const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY)
 
@@ -137,7 +137,7 @@ async function importFromMasterCSV(): Promise<void> {
 
         burialSiteId =
           burialSite === undefined
-            ? await addBurialSite(
+            ? addBurialSite(
                 {
                   burialSiteNameSegment1,
                   burialSiteNameSegment2,
@@ -155,7 +155,7 @@ async function importFromMasterCSV(): Promise<void> {
                   burialSiteLongitude: ''
                 },
                 user
-              )
+              ).burialSiteId
             : burialSite.burialSiteId
       }
 
@@ -225,7 +225,7 @@ async function importFromMasterCSV(): Promise<void> {
         const purchaserPostalCode =
           `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim()
 
-        preneedContractId = await addContract(
+        preneedContractId = addContract(
           {
             contractTypeId: importIds.preneedContractType.contractTypeId,
             burialSiteId: burialSiteId ?? '',
@@ -259,7 +259,7 @@ async function importFromMasterCSV(): Promise<void> {
         )
 
         if (masterRow.CM_REMARK1 !== '') {
-          await addContractComment(
+          addContractComment(
             {
               contractId: preneedContractId,
               commentDateString: preneedContractStartDateString,
@@ -271,7 +271,7 @@ async function importFromMasterCSV(): Promise<void> {
         }
 
         if (masterRow.CM_REMARK2 !== '') {
-          await addContractComment(
+          addContractComment(
             {
               contractId: preneedContractId,
 
@@ -284,7 +284,7 @@ async function importFromMasterCSV(): Promise<void> {
         }
 
         if (masterRow.CM_WORK_ORDER.trim() !== '') {
-          await addContractComment(
+          addContractComment(
             {
               contractId: preneedContractId,
 
@@ -297,7 +297,7 @@ async function importFromMasterCSV(): Promise<void> {
         }
 
         if (contractEndDateString === '') {
-          await updateBurialSiteStatus(
+          updateBurialSiteStatus(
             burialSiteId ?? '',
             importIds.reservedBurialSiteStatusId,
             user
@@ -353,7 +353,7 @@ async function importFromMasterCSV(): Promise<void> {
         const funeralHomeId =
           masterRow.CM_FUNERAL_HOME === ''
             ? ''
-            : await getFuneralHomeIdByKey(masterRow.CM_FUNERAL_HOME, user)
+            : getFuneralHomeIdByKey(masterRow.CM_FUNERAL_HOME, user)
 
         const funeralDateString =
           masterRow.CM_FUNERAL_YR === ''
@@ -368,7 +368,7 @@ async function importFromMasterCSV(): Promise<void> {
           contractType.contractType === 'Cremation' ||
           masterRow.CM_COMMITTAL_TYPE === ''
             ? ''
-            : await getCommittalTypeIdByKey(masterRow.CM_COMMITTAL_TYPE, user)
+            : getCommittalTypeIdByKey(masterRow.CM_COMMITTAL_TYPE, user)
 
         const deathDateString =
           masterRow.CM_DEATH_YR === ''
@@ -388,12 +388,12 @@ async function importFromMasterCSV(): Promise<void> {
         const intermentContainerTypeId =
           intermentContainerTypeKey === ''
             ? ''
-            : await getIntermentContainerTypeIdByKey(
+            : getIntermentContainerTypeIdByKey(
                 intermentContainerTypeKey,
                 user
               )
 
-        deceasedContractId = await addContract(
+        deceasedContractId = addContract(
           {
             contractTypeId: contractType.contractTypeId,
             burialSiteId: burialSiteId ?? '',
@@ -440,7 +440,7 @@ async function importFromMasterCSV(): Promise<void> {
         )
 
         if (masterRow.CM_REMARK1 !== '') {
-          await addContractComment(
+          addContractComment(
             {
               contractId: deceasedContractId,
               commentDateString: deceasedContractStartDateString,
@@ -452,7 +452,7 @@ async function importFromMasterCSV(): Promise<void> {
         }
 
         if (masterRow.CM_REMARK2 !== '') {
-          await addContractComment(
+          addContractComment(
             {
               contractId: deceasedContractId,
               commentDateString: deceasedContractStartDateString,
@@ -464,7 +464,7 @@ async function importFromMasterCSV(): Promise<void> {
         }
 
         if (masterRow.CM_WORK_ORDER.trim() !== '') {
-          await addContractComment(
+          addContractComment(
             {
               contractId: deceasedContractId,
               commentDateString: deceasedContractStartDateString,
@@ -475,7 +475,7 @@ async function importFromMasterCSV(): Promise<void> {
           )
         }
 
-        await updateBurialSiteStatus(
+        updateBurialSiteStatus(
           burialSiteId ?? '',
           importIds.takenBurialSiteStatusId,
           user
@@ -523,7 +523,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       let burialSite: recordTypes.BurialSite | undefined
 
       if (cemeteryKey !== '') {
-        const cemeteryId = await getCemeteryIdByKey(cemeteryKey, user)
+        const cemeteryId = getCemeteryIdByKey(cemeteryKey, user)
 
         const burialSiteNameSegment1 =
           prepaidRow.CMPP_BLOCK === '0' ? '' : prepaidRow.CMPP_BLOCK
@@ -556,7 +556,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         if (!burialSite) {
           const burialSiteTypeId = getBurialSiteTypeId(cemeteryKey)
 
-          const burialSiteId = await addBurialSite(
+          const burialSiteKeys = addBurialSite(
             {
               burialSiteNameSegment1,
               burialSiteNameSegment2,
@@ -579,7 +579,7 @@ async function importFromPrepaidCSV(): Promise<void> {
             user
           )
 
-          burialSite = await getBurialSite(burialSiteId)
+          burialSite = await getBurialSite(burialSiteKeys.burialSiteId)
         }
       }
 
@@ -587,7 +587,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         burialSite &&
         burialSite.burialSiteStatusId === importIds.availableBurialSiteStatusId
       ) {
-        await updateBurialSiteStatus(
+        updateBurialSiteStatus(
           burialSite.burialSiteId,
           importIds.reservedBurialSiteStatusId,
           user
@@ -624,7 +624,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         }
       }
 
-      contractId ||= await addContract(
+      contractId ||= addContract(
         {
           burialSiteId: burialSite ? burialSite.burialSiteId : '',
           contractTypeId: importIds.preneedContractType.contractTypeId,
@@ -647,7 +647,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         await addContractFee(
           {
             contractId,
-            feeId: await getFeeIdByFeeDescription('CMPP_FEE_GRAV_SD', user),
+            feeId: getFeeIdByFeeDescription('CMPP_FEE_GRAV_SD', user),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_GRAV_SD,
             taxAmount: prepaidRow.CMPP_GST_GRAV_SD
@@ -660,7 +660,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         await addContractFee(
           {
             contractId,
-            feeId: await getFeeIdByFeeDescription('CMPP_FEE_GRAV_DD', user),
+            feeId: getFeeIdByFeeDescription('CMPP_FEE_GRAV_DD', user),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_GRAV_DD,
             taxAmount: prepaidRow.CMPP_GST_GRAV_DD
@@ -673,7 +673,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         await addContractFee(
           {
             contractId,
-            feeId: await getFeeIdByFeeDescription('CMPP_FEE_CHAP_SD', user),
+            feeId: getFeeIdByFeeDescription('CMPP_FEE_CHAP_SD', user),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_CHAP_SD,
             taxAmount: prepaidRow.CMPP_GST_CHAP_SD
@@ -686,7 +686,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         await addContractFee(
           {
             contractId,
-            feeId: await getFeeIdByFeeDescription('CMPP_FEE_CHAP_DD', user),
+            feeId: getFeeIdByFeeDescription('CMPP_FEE_CHAP_DD', user),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_CHAP_DD,
             taxAmount: prepaidRow.CMPP_GST_CHAP_DD
@@ -699,7 +699,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         await addContractFee(
           {
             contractId,
-            feeId: await getFeeIdByFeeDescription('CMPP_FEE_ENTOMBMENT', user),
+            feeId: getFeeIdByFeeDescription('CMPP_FEE_ENTOMBMENT', user),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_ENTOMBMENT,
             taxAmount: prepaidRow.CMPP_GST_ENTOMBMENT
@@ -712,7 +712,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         await addContractFee(
           {
             contractId,
-            feeId: await getFeeIdByFeeDescription('CMPP_FEE_CREM', user),
+            feeId: getFeeIdByFeeDescription('CMPP_FEE_CREM', user),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_CREM,
             taxAmount: prepaidRow.CMPP_GST_CREM
@@ -725,7 +725,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         await addContractFee(
           {
             contractId,
-            feeId: await getFeeIdByFeeDescription('CMPP_FEE_NICHE', user),
+            feeId: getFeeIdByFeeDescription('CMPP_FEE_NICHE', user),
             quantity: 1,
             feeAmount: prepaidRow.CMPP_FEE_NICHE,
             taxAmount: prepaidRow.CMPP_GST_NICHE
@@ -741,7 +741,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         await addContractFee(
           {
             contractId,
-            feeId: await getFeeIdByFeeDescription(
+            feeId: getFeeIdByFeeDescription(
               'CMPP_FEE_DISINTERMENT',
               user
             ),
@@ -779,7 +779,7 @@ async function importFromPrepaidCSV(): Promise<void> {
             : prepaidRow.CMPP_GST_DISINTERMENT
         )
 
-      await addContractTransaction(
+      addContractTransaction(
         {
           contractId,
           externalReceiptNumber: '',
@@ -791,7 +791,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       )
 
       if (prepaidRow.CMPP_REMARK1 !== '') {
-        await addContractComment(
+        addContractComment(
           {
             contractId,
             commentDateString: contractStartDateString,
@@ -802,7 +802,7 @@ async function importFromPrepaidCSV(): Promise<void> {
       }
 
       if (prepaidRow.CMPP_REMARK2 !== '') {
-        await addContractComment(
+        addContractComment(
           {
             contractId,
             commentDateString: contractStartDateString,
@@ -852,12 +852,12 @@ async function importFromWorkOrderCSV(): Promise<void> {
 
       if (workOrder) {
         if (workOrder.workOrderCloseDate) {
-          await reopenWorkOrder(workOrder.workOrderId!, user)
+          reopenWorkOrder(workOrder.workOrderId!, user)
           delete workOrder.workOrderCloseDate
           delete workOrder.workOrderCloseDateString
         }
       } else {
-        const workOrderId = await addWorkOrder(
+        const workOrderId = addWorkOrder(
           {
             workOrderNumber,
             workOrderTypeId: importIds.workOrderTypeId,
@@ -904,20 +904,17 @@ async function importFromWorkOrderCSV(): Promise<void> {
         burialSite = await getBurialSiteByBurialSiteName(burialSiteName)
 
         if (burialSite) {
-          await updateBurialSiteStatus(
+          updateBurialSiteStatus(
             burialSite.burialSiteId,
             importIds.takenBurialSiteStatusId,
             user
           )
         } else {
-          const cemeteryId = await getCemeteryIdByKey(
-            workOrderRow.WO_CEMETERY,
-            user
-          )
+          const cemeteryId = getCemeteryIdByKey(workOrderRow.WO_CEMETERY, user)
 
           const burialSiteTypeId = getBurialSiteTypeId(workOrderRow.WO_CEMETERY)
 
-          const burialSiteId = await addBurialSite(
+          const burialSiteKeys = addBurialSite(
             {
               burialSiteNameSegment1,
               burialSiteNameSegment2,
@@ -939,15 +936,17 @@ async function importFromWorkOrderCSV(): Promise<void> {
             user
           )
 
-          burialSite = await getBurialSite(burialSiteId)
+          burialSite = await getBurialSite(burialSiteKeys.burialSiteId)
         }
 
-        const workOrderContainsBurialSite = workOrder?.workOrderBurialSites?.find(
-          (possibleLot) => possibleLot.burialSiteId === burialSite?.burialSiteId
-        )
+        const workOrderContainsBurialSite =
+          workOrder?.workOrderBurialSites?.find(
+            (possibleLot) =>
+              possibleLot.burialSiteId === burialSite?.burialSiteId
+          )
 
         if (!workOrderContainsBurialSite) {
-          await addWorkOrderBurialSite(
+          addWorkOrderBurialSite(
             {
               workOrderId: workOrder.workOrderId!,
               burialSiteId: burialSite.burialSiteId
@@ -976,13 +975,13 @@ async function importFromWorkOrderCSV(): Promise<void> {
       const funeralHomeId =
         workOrderRow.WO_FUNERAL_HOME === ''
           ? ''
-          : await getFuneralHomeIdByKey(workOrderRow.WO_FUNERAL_HOME, user)
+          : getFuneralHomeIdByKey(workOrderRow.WO_FUNERAL_HOME, user)
 
       const committalTypeId =
         contractType.contractType === 'Cremation' ||
         workOrderRow.WO_COMMITTAL_TYPE === ''
           ? ''
-          : await getCommittalTypeIdByKey(workOrderRow.WO_COMMITTAL_TYPE, user)
+          : getCommittalTypeIdByKey(workOrderRow.WO_COMMITTAL_TYPE, user)
 
       const intermentContainerTypeKey =
         contractType.contractType === 'Cremation' &&
@@ -993,12 +992,12 @@ async function importFromWorkOrderCSV(): Promise<void> {
       const intermentContainerTypeId =
         intermentContainerTypeKey === ''
           ? ''
-          : await getIntermentContainerTypeIdByKey(
+          : getIntermentContainerTypeIdByKey(
               intermentContainerTypeKey,
               user
             )
 
-      const contractId = await addContract(
+      const contractId = addContract(
         {
           burialSiteId: burialSite ? burialSite.burialSiteId : '',
           contractTypeId: contractType.contractTypeId,
@@ -1041,7 +1040,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         user
       )
 
-      await addWorkOrderContract(
+      addWorkOrderContract(
         {
           workOrderId: workOrder.workOrderId!,
           contractId
@@ -1055,7 +1054,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
       let maxMilestoneCompletionDateString = workOrderOpenDateString
 
       if (importIds.acknowledgedWorkOrderMilestoneTypeId) {
-        await addWorkOrderMilestone(
+        addWorkOrderMilestone(
           {
             workOrderId: workOrder.workOrderId!,
             workOrderMilestoneTypeId:
@@ -1081,7 +1080,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         )
 
         if (importIds.deathWorkOrderMilestoneTypeId) {
-          await addWorkOrderMilestone(
+          addWorkOrderMilestone(
             {
               workOrderId: workOrder.workOrderId!,
               workOrderMilestoneTypeId: importIds.deathWorkOrderMilestoneTypeId,
@@ -1130,7 +1129,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         )
 
         if (importIds.funeralWorkOrderMilestoneTypeId) {
-          await addWorkOrderMilestone(
+          addWorkOrderMilestone(
             {
               workOrderId: workOrder.workOrderId!,
               workOrderMilestoneTypeId:
@@ -1164,7 +1163,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         workOrderRow.WO_CREMATION === 'Y' &&
         importIds.cremationWorkOrderMilestoneTypeId
       ) {
-        await addWorkOrderMilestone(
+        addWorkOrderMilestone(
           {
             workOrderId: workOrder.workOrderId!,
             workOrderMilestoneTypeId:
@@ -1192,7 +1191,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         )
 
         if (importIds.intermentWorkOrderMilestoneTypeId) {
-          await addWorkOrderMilestone(
+          addWorkOrderMilestone(
             {
               workOrderId: workOrder.workOrderId!,
               workOrderMilestoneTypeId:
@@ -1222,7 +1221,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
       }
 
       if (!hasIncompleteMilestones) {
-        await closeWorkOrder(
+        closeWorkOrder(
           {
             workOrderId: workOrder.workOrderId!,
             workOrderCloseDateString: maxMilestoneCompletionDateString
@@ -1295,7 +1294,7 @@ purgeTables()
 // purgeConfigTables()
 
 // Initialize SSM Data
-await initializeFuneralHomes(user)
+initializeFuneralHomes(user)
 
 // Do Imports
 await importFromMasterCSV()

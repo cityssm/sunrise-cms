@@ -264,10 +264,10 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
 
 const cemeteryCache = new Map<string, number>()
 
-export async function getCemeteryIdByKey(
+export function getCemeteryIdByKey(
   cemeteryKeyToSearch: string | undefined,
   user: User
-): Promise<number> {
+): number {
   /*
     if (masterRow.CM_CEMETERY === "HS" &&
         (masterRow.CM_BLOCK === "F" || masterRow.CM_BLOCK === "G" || masterRow.CM_BLOCK === "H" || masterRow.CM_BLOCK === "J")) {
@@ -281,7 +281,7 @@ export async function getCemeteryIdByKey(
     return cemeteryCache.get(cemeteryKey) as number
   }
 
-  const cemetery = await getCemeteryByKey(cemeteryKey)
+  const cemetery = getCemeteryByKey(cemeteryKey)
 
   if (cemetery === undefined) {
     console.log(`Creating cemetery: ${cemeteryKey}`)
@@ -309,7 +309,7 @@ export async function getCemeteryIdByKey(
       parentCemeteryId: ''
     }
 
-    const cemeteryId = await addCemetery(addForm, user)
+    const cemeteryId = addCemetery(addForm, user)
 
     cemeteryCache.set(cemeteryKey, cemeteryId)
   }

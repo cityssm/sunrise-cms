@@ -1,12 +1,12 @@
 import addIntermentContainerType from '../../database/addIntermentContainerType.js'
 import getIntermentContainerTypes from '../../database/getIntermentContainerTypes.js'
 
-let intermentContainerTypes = await getIntermentContainerTypes()
+let intermentContainerTypes = getIntermentContainerTypes()
 
-export async function getIntermentContainerTypeIdByKey(
+export function getIntermentContainerTypeIdByKey(
   intermentContainerTypeKey: string,
   user: User
-): Promise<number> {
+): number {
   const intermentContainerType = intermentContainerTypes.find(
     (intermentContainerType) =>
       intermentContainerType.intermentContainerTypeKey ===
@@ -14,7 +14,7 @@ export async function getIntermentContainerTypeIdByKey(
   )
 
   if (intermentContainerType === undefined) {
-    const intermentContainerTypeId = await addIntermentContainerType(
+    const intermentContainerTypeId = addIntermentContainerType(
       {
         intermentContainerTypeKey,
         intermentContainerType: intermentContainerTypeKey
@@ -22,7 +22,7 @@ export async function getIntermentContainerTypeIdByKey(
       user
     )
 
-    intermentContainerTypes = await getIntermentContainerTypes()
+    intermentContainerTypes = getIntermentContainerTypes()
 
     return intermentContainerTypeId
   }

@@ -50,7 +50,7 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
             workOrder.workOrderContracts = workOrderContractsResults.contracts;
         }
         if (options.includeComments) {
-            workOrder.workOrderComments = await getWorkOrderComments(workOrder.workOrderId, database);
+            workOrder.workOrderComments = getWorkOrderComments(workOrder.workOrderId, database);
         }
         if (options.includeMilestones) {
             workOrder.workOrderMilestones = await getWorkOrderMilestones({

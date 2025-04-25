@@ -3,7 +3,7 @@ import addFee from '../../database/addFee.js';
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js';
 let feeCategoryId = 0;
 const feeCache = new Map();
-export async function getFeeIdByFeeDescription(feeDescription, user) {
+export function getFeeIdByFeeDescription(feeDescription, user) {
     if (feeCache.keys.length === 0) {
         const database = sqlite(databasePath, {
             readonly: true
@@ -23,7 +23,7 @@ export async function getFeeIdByFeeDescription(feeDescription, user) {
     }
     let feeId = feeCache.get(feeDescription);
     if (feeId === undefined) {
-        feeId = await addFee({
+        feeId = addFee({
             feeName: feeDescription.slice(9),
             feeDescription,
             feeCategoryId,

@@ -445,7 +445,7 @@ const initializingUser: User = {
   }
 }
 
-export async function initializeDatabase(): Promise<boolean> {
+export function initializeDatabase(): boolean {
   const sunriseDB = sqlite(databasePath)
 
   const row = sunriseDB
@@ -466,28 +466,28 @@ export async function initializeDatabase(): Promise<boolean> {
 
   sunriseDB.close()
 
-  await initializeData()
+  initializeData()
 
   return true
 }
 
-async function initializeData(): Promise<void> {
+function initializeData(): void {
   debug('Initializing data...')
 
-  await addRecord('BurialSiteTypes', 'Casket Grave', 1, initializingUser)
-  await addRecord('BurialSiteTypes', 'Columbarium', 2, initializingUser)
-  await addRecord('BurialSiteTypes', 'Mausoleum', 2, initializingUser)
-  await addRecord('BurialSiteTypes', 'Niche Wall', 2, initializingUser)
-  await addRecord('BurialSiteTypes', 'Urn Garden', 2, initializingUser)
-  await addRecord('BurialSiteTypes', 'Crematorium', 2, initializingUser)
+  addRecord('BurialSiteTypes', 'Casket Grave', 1, initializingUser)
+  addRecord('BurialSiteTypes', 'Columbarium', 2, initializingUser)
+  addRecord('BurialSiteTypes', 'Mausoleum', 2, initializingUser)
+  addRecord('BurialSiteTypes', 'Niche Wall', 2, initializingUser)
+  addRecord('BurialSiteTypes', 'Urn Garden', 2, initializingUser)
+  addRecord('BurialSiteTypes', 'Crematorium', 2, initializingUser)
 
-  await addRecord('BurialSiteStatuses', 'Available', 1, initializingUser)
-  await addRecord('BurialSiteStatuses', 'Reserved', 2, initializingUser)
-  await addRecord('BurialSiteStatuses', 'Taken', 3, initializingUser)
+  addRecord('BurialSiteStatuses', 'Available', 1, initializingUser)
+  addRecord('BurialSiteStatuses', 'Reserved', 2, initializingUser)
+  addRecord('BurialSiteStatuses', 'Taken', 3, initializingUser)
 
   // Contract Types
 
-  await addContractType(
+  addContractType(
     {
       contractType: 'Preneed',
       isPreneed: '1',
@@ -496,7 +496,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addContractType(
+  addContractType(
     {
       contractType: 'Interment',
       orderNumber: 2
@@ -504,7 +504,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addContractType(
+  addContractType(
     {
       contractType: 'Cremation',
       orderNumber: 3
@@ -514,7 +514,7 @@ async function initializeData(): Promise<void> {
 
   // Interment Container Types
 
-  await addIntermentContainerType(
+  addIntermentContainerType(
     {
       intermentContainerType: 'No Shell',
       intermentContainerTypeKey: 'NS',
@@ -523,7 +523,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addIntermentContainerType(
+  addIntermentContainerType(
     {
       intermentContainerType: 'Concrete Liner',
       intermentContainerTypeKey: 'CL',
@@ -532,7 +532,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addIntermentContainerType(
+  addIntermentContainerType(
     {
       intermentContainerType: 'Unpainted Vault',
       intermentContainerTypeKey: 'UV',
@@ -541,7 +541,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addIntermentContainerType(
+  addIntermentContainerType(
     {
       intermentContainerType: 'Concrete Vault',
       intermentContainerTypeKey: 'CV',
@@ -550,7 +550,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addIntermentContainerType(
+  addIntermentContainerType(
     {
       intermentContainerType: 'Wooden Shell',
       intermentContainerTypeKey: 'WS',
@@ -559,7 +559,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addIntermentContainerType(
+  addIntermentContainerType(
     {
       intermentContainerType: 'Steel Vault',
       intermentContainerTypeKey: 'SV',
@@ -568,7 +568,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addIntermentContainerType(
+  addIntermentContainerType(
     {
       intermentContainerType: 'Urn',
       intermentContainerTypeKey: 'U',
@@ -580,7 +580,7 @@ async function initializeData(): Promise<void> {
 
   // Committal Types
 
-  await addCommittalType(
+  addCommittalType(
     {
       committalType: 'Graveside',
       committalTypeKey: 'GS',
@@ -589,7 +589,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addCommittalType(
+  addCommittalType(
     {
       committalType: 'Chapel',
       committalTypeKey: 'CS',
@@ -598,7 +598,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addCommittalType(
+  addCommittalType(
     {
       committalType: 'Church',
       committalTypeKey: 'CH',
@@ -611,7 +611,7 @@ async function initializeData(): Promise<void> {
    * Fee Categories
    */
 
-  await addFeeCategory(
+  addFeeCategory(
     {
       feeCategory: 'Interment Rights',
       orderNumber: 1
@@ -619,7 +619,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addFeeCategory(
+  addFeeCategory(
     {
       feeCategory: 'Cremation Services',
       orderNumber: 2
@@ -627,7 +627,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addFeeCategory(
+  addFeeCategory(
     {
       feeCategory: 'Burial Charges',
       orderNumber: 3
@@ -635,7 +635,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addFeeCategory(
+  addFeeCategory(
     {
       feeCategory: 'Disinterment of Human Remains',
       orderNumber: 4
@@ -643,7 +643,7 @@ async function initializeData(): Promise<void> {
     initializingUser
   )
 
-  await addFeeCategory(
+  addFeeCategory(
     {
       feeCategory: 'Additional Services',
       orderNumber: 5
@@ -655,10 +655,10 @@ async function initializeData(): Promise<void> {
    * Work Orders
    */
 
-  await addRecord('WorkOrderTypes', 'Cemetery Work Order', 1, initializingUser)
+  addRecord('WorkOrderTypes', 'Cemetery Work Order', 1, initializingUser)
 
-  await addRecord('WorkOrderMilestoneTypes', 'Funeral', 1, initializingUser)
-  await addRecord('WorkOrderMilestoneTypes', 'Arrival', 2, initializingUser)
-  await addRecord('WorkOrderMilestoneTypes', 'Cremation', 3, initializingUser)
-  await addRecord('WorkOrderMilestoneTypes', 'Interment', 4, initializingUser)
+  addRecord('WorkOrderMilestoneTypes', 'Funeral', 1, initializingUser)
+  addRecord('WorkOrderMilestoneTypes', 'Arrival', 2, initializingUser)
+  addRecord('WorkOrderMilestoneTypes', 'Cremation', 3, initializingUser)
+  addRecord('WorkOrderMilestoneTypes', 'Interment', 4, initializingUser)
 }
