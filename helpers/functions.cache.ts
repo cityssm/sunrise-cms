@@ -87,15 +87,16 @@ export function getBurialSiteTypeById(
   )
 }
 
-export function getBurialSiteTypes(): BurialSiteType[] {
-  burialSiteTypes ??= getBurialSiteTypesFromDatabase()
+export function getBurialSiteTypes(includeDeleted = false): BurialSiteType[] {
+  burialSiteTypes ??= getBurialSiteTypesFromDatabase(includeDeleted)
   return burialSiteTypes
 }
 
 export function getBurialSiteTypesByBurialSiteType(
-  burialSiteType: string
+  burialSiteType: string,
+  includeDeleted = false
 ): BurialSiteType | undefined {
-  const cachedTypes = getBurialSiteTypes()
+  const cachedTypes = getBurialSiteTypes(includeDeleted)
 
   const typeLowerCase = burialSiteType.toLowerCase()
 

@@ -3,8 +3,8 @@ export declare function getBurialSiteStatusByBurialSiteStatus(burialSiteStatus: 
 export declare function getBurialSiteStatusById(burialSiteStatusId: number): BurialSiteStatus | undefined;
 export declare function getBurialSiteStatuses(): BurialSiteStatus[];
 export declare function getBurialSiteTypeById(burialSiteTypeId: number): BurialSiteType | undefined;
-export declare function getBurialSiteTypes(): BurialSiteType[];
-export declare function getBurialSiteTypesByBurialSiteType(burialSiteType: string): BurialSiteType | undefined;
+export declare function getBurialSiteTypes(includeDeleted?: boolean): BurialSiteType[];
+export declare function getBurialSiteTypesByBurialSiteType(burialSiteType: string, includeDeleted?: boolean): BurialSiteType | undefined;
 export declare function getAllContractTypeFields(): ContractTypeField[];
 export declare function getContractTypeByContractType(contractTypeString: string): ContractType | undefined;
 export declare function getContractTypeById(contractTypeId: number): ContractType | undefined;

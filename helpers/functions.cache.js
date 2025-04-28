@@ -41,12 +41,12 @@ export function getBurialSiteTypeById(burialSiteTypeId) {
     const cachedTypes = getBurialSiteTypes();
     return cachedTypes.find((currentType) => currentType.burialSiteTypeId === burialSiteTypeId);
 }
-export function getBurialSiteTypes() {
-    burialSiteTypes ??= getBurialSiteTypesFromDatabase();
+export function getBurialSiteTypes(includeDeleted = false) {
+    burialSiteTypes ??= getBurialSiteTypesFromDatabase(includeDeleted);
     return burialSiteTypes;
 }
-export function getBurialSiteTypesByBurialSiteType(burialSiteType) {
-    const cachedTypes = getBurialSiteTypes();
+export function getBurialSiteTypesByBurialSiteType(burialSiteType, includeDeleted = false) {
+    const cachedTypes = getBurialSiteTypes(includeDeleted);
     const typeLowerCase = burialSiteType.toLowerCase();
     return cachedTypes.find((currentType) => currentType.burialSiteType.toLowerCase() === typeLowerCase);
 }
