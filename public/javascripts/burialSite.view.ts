@@ -27,8 +27,10 @@ declare const exports: {
 
     const mapCoordinates: Leaflet.LatLngTuple = [mapLatitude, mapLongitude]
 
-    // eslint-disable-next-line unicorn/no-array-callback-reference
-    const map: Leaflet.Map = L.map(mapContainerElement)
+    // eslint-disable-next-line unicorn/no-array-callback-reference, unicorn/no-array-method-this-argument
+    const map: Leaflet.Map = L.map(mapContainerElement, {
+      scrollWheelZoom: false
+    })
     map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom)
 
     L.tileLayer(sunrise.leafletConstants.tileLayerURL, {
