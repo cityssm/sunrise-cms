@@ -26,6 +26,7 @@ const urnGardenBurialSiteTypeId =
 
 export function getBurialSiteTypeId(cemeteryKey: string): number {
   switch (cemeteryKey) {
+    case '':
     case '00': {
       return cremationBurialSiteTypeId
     }

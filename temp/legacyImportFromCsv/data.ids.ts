@@ -1,71 +1,64 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/no-non-null-assertion, unicorn/no-await-expression-member */
-
 import * as cacheFunctions from '../../helpers/functions.cache.js'
+import type { ContractType } from '../../types/record.types.js'
 
 /*
  * Burial Site Status IDs
  */
 
 export const availableBurialSiteStatusId =
-  (await cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Available'))!
-    .burialSiteStatusId
+  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Available')
+    ?.burialSiteStatusId as number
 
 export const reservedBurialSiteStatusId =
-  (await cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Reserved'))!
-    .burialSiteStatusId
+  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Reserved')
+    ?.burialSiteStatusId as number
 
 export const takenBurialSiteStatusId =
-  (await cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Taken'))!
-    .burialSiteStatusId
-
+  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Taken')
+    ?.burialSiteStatusId as number
 
 /*
  * Contract Type IDs
  */
 
-export const preneedContractType =
-  (await cacheFunctions.getContractTypeByContractType('Preneed'))!
+export const preneedContractType = cacheFunctions.getContractTypeByContractType(
+  'Preneed'
+) as ContractType
 
 export const deceasedContractType =
-  (await cacheFunctions.getContractTypeByContractType('Interment'))!
+  cacheFunctions.getContractTypeByContractType('Interment') as ContractType
 
 export const cremationContractType =
-  (await cacheFunctions.getContractTypeByContractType('Cremation'))!
+  cacheFunctions.getContractTypeByContractType('Cremation') as ContractType
 
 /*
  * Work Order Milestone Type IDs
  */
 
-export const acknowledgedWorkOrderMilestoneTypeId = (
-  await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+export const acknowledgedWorkOrderMilestoneTypeId =
+  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Acknowledged'
-  )
-)?.workOrderMilestoneTypeId
+  )?.workOrderMilestoneTypeId
 
-export const deathWorkOrderMilestoneTypeId = (
-  await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+export const deathWorkOrderMilestoneTypeId =
+  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Death'
-  )
-)?.workOrderMilestoneTypeId
+  )?.workOrderMilestoneTypeId
 
-export const funeralWorkOrderMilestoneTypeId = (
-  await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+export const funeralWorkOrderMilestoneTypeId =
+  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Funeral'
-  )
-)?.workOrderMilestoneTypeId
+  )?.workOrderMilestoneTypeId
 
-export const cremationWorkOrderMilestoneTypeId = (
-  await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+export const cremationWorkOrderMilestoneTypeId =
+  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Cremation'
-  )
-)?.workOrderMilestoneTypeId
+  )?.workOrderMilestoneTypeId
 
-export const intermentWorkOrderMilestoneTypeId = (
-  await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+export const intermentWorkOrderMilestoneTypeId =
+  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Interment'
-  )
-)?.workOrderMilestoneTypeId
+  )?.workOrderMilestoneTypeId
 
 /*
  * Work Order Type IDs

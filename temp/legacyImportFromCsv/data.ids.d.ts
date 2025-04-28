@@ -1,9 +1,10 @@
+import type { ContractType } from '../../types/record.types.js';
 export declare const availableBurialSiteStatusId: number;
 export declare const reservedBurialSiteStatusId: number;
 export declare const takenBurialSiteStatusId: number;
-export declare const preneedContractType: import("../../types/record.types.js").ContractType;
-export declare const deceasedContractType: import("../../types/record.types.js").ContractType;
-export declare const cremationContractType: import("../../types/record.types.js").ContractType;
+export declare const preneedContractType: ContractType;
+export declare const deceasedContractType: ContractType;
+export declare const cremationContractType: ContractType;
 export declare const acknowledgedWorkOrderMilestoneTypeId: number | undefined;
 export declare const deathWorkOrderMilestoneTypeId: number | undefined;
 export declare const funeralWorkOrderMilestoneTypeId: number | undefined;

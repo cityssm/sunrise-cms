@@ -13,6 +13,7 @@ const urnGardenBurialSiteTypeId = cacheFunctions.getBurialSiteTypesByBurialSiteT
     ?.burialSiteTypeId;
 export function getBurialSiteTypeId(cemeteryKey) {
     switch (cemeteryKey) {
+        case '':
         case '00': {
             return cremationBurialSiteTypeId;
         }

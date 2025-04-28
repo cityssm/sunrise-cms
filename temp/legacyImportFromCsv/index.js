@@ -65,9 +65,9 @@ async function importFromMasterCSV() {
     try {
         for (masterRow of cmmaster.data) {
             const cemeteryId = getCemeteryIdByKey(masterRow.CM_CEMETERY, user);
-            const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY);
             let burialSiteId;
-            if (masterRow.CM_CEMETERY !== '00') {
+            if (masterRow.CM_CEMETERY !== '' && masterRow.CM_CEMETERY !== '00') {
+                const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY);
                 const burialSiteNameSegment1 = masterRow.CM_BLOCK === '0' ? '' : masterRow.CM_BLOCK;
                 const burialSiteNameSegment2 = (masterRow.CM_RANGE1 === '0' ? '' : masterRow.CM_RANGE1) +
                     (masterRow.CM_RANGE2 === '0' ? '' : masterRow.CM_RANGE2);
@@ -161,9 +161,9 @@ async function importFromMasterCSV() {
                 if (masterRow.CM_REMARK1 !== '') {
                     addContractComment({
                         contractId: preneedContractId,
+                        comment: masterRow.CM_REMARK1,
                         commentDateString: preneedContractStartDateString,
-                        commentTimeString: '00:00',
-                        comment: masterRow.CM_REMARK1
+                        commentTimeString: '00:00'
                     }, user);
                 }
                 if (masterRow.CM_REMARK2 !== '') {
@@ -236,10 +236,10 @@ async function importFromMasterCSV() {
                     contractStartDateString: deceasedContractStartDateString,
                     contractEndDateString: deceasedContractEndDateString,
                     contractTypeFieldIds: '',
+                    committalTypeId,
                     funeralHomeId,
                     funeralDirectorName: masterRow.CM_FUNERAL_HOME,
                     funeralDateString,
-                    committalTypeId,
                     purchaserName: masterRow.CM_PRENEED_OWNER === ''
                         ? masterRow.CM_DECEASED_NAME
                         : masterRow.CM_PRENEED_OWNER,
@@ -267,25 +267,25 @@ async function importFromMasterCSV() {
                 if (masterRow.CM_REMARK1 !== '') {
                     addContractComment({
                         contractId: deceasedContractId,
+                        comment: masterRow.CM_REMARK1,
                         commentDateString: deceasedContractStartDateString,
-                        commentTimeString: '00:00',
-                        comment: masterRow.CM_REMARK1
+                        commentTimeString: '00:00'
                     }, user);
                 }
                 if (masterRow.CM_REMARK2 !== '') {
                     addContractComment({
                         contractId: deceasedContractId,
+                        comment: masterRow.CM_REMARK2,
                         commentDateString: deceasedContractStartDateString,
-                        commentTimeString: '00:00',
-                        comment: masterRow.CM_REMARK2
+                        commentTimeString: '00:00'
                     }, user);
                 }
                 if (masterRow.CM_WORK_ORDER.trim() !== '') {
                     addContractComment({
                         contractId: deceasedContractId,
+                        comment: `Imported Contract #${masterRow.CM_WORK_ORDER}`,
                         commentDateString: deceasedContractStartDateString,
-                        commentTimeString: '00:00',
-                        comment: `Imported Contract #${masterRow.CM_WORK_ORDER}`
+                        commentTimeString: '00:00'
                     }, user);
                 }
                 updateBurialSiteStatus(burialSiteId ?? '', importIds.takenBurialSiteStatusId, user);
