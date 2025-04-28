@@ -63,6 +63,13 @@ const funeralHomes: FuneralHome[] = [
     funeralHomePhoneNumber: '705-856-7340'
   },
   {
+    funeralHomeKey: 'HO',
+    funeralHomeName: 'Hovie Funeral Home',
+
+    funeralHomeCity: 'Sault Ste. Marie',
+    funeralHomeProvince: 'MI'
+  },
+  {
     funeralHomeKey: 'NO',
     funeralHomeName: 'Northwood Funeral Home',
 
