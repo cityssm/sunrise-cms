@@ -5,8 +5,8 @@ export function getCommittalTypeIdByKey(committalTypeKey, user) {
     const committalType = committalTypes.find((committalType) => committalType.committalTypeKey === committalTypeKey);
     if (committalType === undefined) {
         const committalTypeId = addCommittalType({
-            committalTypeKey,
-            committalType: committalTypeKey
+            committalType: committalTypeKey,
+            committalTypeKey
         }, user);
         committalTypes = getCommittalTypes();
         return committalTypeId;

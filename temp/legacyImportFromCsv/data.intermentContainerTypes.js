@@ -6,8 +6,8 @@ export function getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user
         intermentContainerTypeKey);
     if (intermentContainerType === undefined) {
         const intermentContainerTypeId = addIntermentContainerType({
-            intermentContainerTypeKey,
-            intermentContainerType: intermentContainerTypeKey
+            intermentContainerType: intermentContainerTypeKey,
+            intermentContainerTypeKey
         }, user);
         intermentContainerTypes = getIntermentContainerTypes(true);
         return intermentContainerTypeId;
