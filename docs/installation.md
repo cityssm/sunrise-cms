@@ -61,9 +61,9 @@ Open a command line, and navigate to the folder where the application will resid
 
 ## Step 5: Create a `config.js` file
 
-It is recommended to copy the `config.testing.js` file to get started.
+It is recommended to copy the `testing.config.js` file to get started.
 
-    > cp data/config.testing.js data/config.js
+    > cp data/testing.config.js data/config.js
 
 See the [config.js documentation](configJs.md) for help customizing
 your configuration.

@@ -211,7 +211,9 @@ export function getCemeteryIdByKey(cemeteryKeyToSearch, user) {
     if (cemeteryCache.has(cemeteryKey)) {
         return cemeteryCache.get(cemeteryKey);
     }
+    console.log(`Cemetery cache miss: ${cemeteryKey}`);
     const cemetery = getCemeteryByKey(cemeteryKey);
+    console.log(`Cemetery found: ${cemeteryKey}`);
     if (cemetery === undefined) {
         console.log(`Creating cemetery: ${cemeteryKey}`);
         let addForm = cemeteryKeyToCemetery[cemeteryKey];
@@ -233,6 +235,9 @@ export function getCemeteryIdByKey(cemeteryKeyToSearch, user) {
         };
         const cemeteryId = addCemetery(addForm, user);
         cemeteryCache.set(cemeteryKey, cemeteryId);
+    }
+    else {
+        cemeteryCache.set(cemeteryKey, cemetery.cemeteryId);
     }
     return cemeteryCache.get(cemeteryKey);
 }

@@ -281,7 +281,11 @@ export function getCemeteryIdByKey(
     return cemeteryCache.get(cemeteryKey) as number
   }
 
+  console.log(`Cemetery cache miss: ${cemeteryKey}`)
+  
   const cemetery = getCemeteryByKey(cemeteryKey)
+
+  console.log(`Cemetery found: ${cemeteryKey}`)
 
   if (cemetery === undefined) {
     console.log(`Creating cemetery: ${cemeteryKey}`)
@@ -312,6 +316,8 @@ export function getCemeteryIdByKey(
     const cemeteryId = addCemetery(addForm, user)
 
     cemeteryCache.set(cemeteryKey, cemeteryId)
+  } else {
+    cemeteryCache.set(cemeteryKey, cemetery.cemeteryId as number)
   }
 
   return cemeteryCache.get(cemeteryKey) as number

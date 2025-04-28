@@ -1,5 +1,8 @@
 import type { Request, Response } from 'express'
 
+import getBurialSiteDirectionsOfArrival, {
+  defaultDirectionsOfArrival
+} from '../../database/getBurialSiteDirectionsOfArrival.js'
 import getCemeteries from '../../database/getCemeteries.js'
 import getContract from '../../database/getContract.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
@@ -13,9 +16,6 @@ import {
   getIntermentContainerTypes,
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
-import getBurialSiteDirectionsOfArrival, {
-  defaultDirectionsOfArrival
-} from '../../database/getBurialSiteDirectionsOfArrival.js'
 
 export default async function handler(
   request: Request,
