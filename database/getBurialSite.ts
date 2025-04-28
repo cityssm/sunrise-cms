@@ -47,7 +47,7 @@ async function _getBurialSite(
   sql: string,
   burialSiteIdOrLotName: number | string
 ): Promise<BurialSite | undefined> {
-  const database = sqlite(sunriseDB)
+  const database = sqlite(sunriseDB, { readonly: true })
 
   const burialSite = database.prepare(sql).get(burialSiteIdOrLotName) as
     | BurialSite

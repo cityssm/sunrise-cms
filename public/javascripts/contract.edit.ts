@@ -14,7 +14,6 @@ import type {
 } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
-import { ref } from 'process'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS

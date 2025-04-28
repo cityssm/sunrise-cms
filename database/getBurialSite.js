@@ -30,7 +30,7 @@ export async function getBurialSiteByBurialSiteName(burialSiteName) {
     return await _getBurialSite(`${baseSQL} and l.burialSiteName = ?`, burialSiteName);
 }
 async function _getBurialSite(sql, burialSiteIdOrLotName) {
-    const database = sqlite(sunriseDB);
+    const database = sqlite(sunriseDB, { readonly: true });
     const burialSite = database.prepare(sql).get(burialSiteIdOrLotName);
     if (burialSite !== undefined) {
         const contracts = await getContracts({
