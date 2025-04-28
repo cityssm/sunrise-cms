@@ -3,6 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export default function getContractTypeFields(contractTypeId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
+    const updateOrderNumbers = !database.readonly && contractTypeId !== undefined;
     const sqlParameters = [];
     if ((contractTypeId ?? -1) !== -1) {
         sqlParameters.push(contractTypeId);
@@ -17,13 +18,15 @@ export default function getContractTypeFields(contractTypeId, connectedDatabase)
         : ' and contractTypeId = ?'}
         order by orderNumber, contractTypeField`)
         .all(sqlParameters);
-    let expectedOrderNumber = 0;
-    for (const contractTypeField of contractTypeFields) {
-        if (contractTypeField.orderNumber !== expectedOrderNumber) {
-            updateRecordOrderNumber('ContractTypeFields', contractTypeField.contractTypeFieldId, expectedOrderNumber, database);
-            contractTypeField.orderNumber = expectedOrderNumber;
+    if (updateOrderNumbers) {
+        let expectedOrderNumber = 0;
+        for (const contractTypeField of contractTypeFields) {
+            if (contractTypeField.orderNumber !== expectedOrderNumber) {
+                updateRecordOrderNumber('ContractTypeFields', contractTypeField.contractTypeFieldId, expectedOrderNumber, database);
+                contractTypeField.orderNumber = expectedOrderNumber;
+            }
+            expectedOrderNumber += 1;
         }
-        expectedOrderNumber += 1;
     }
     if (connectedDatabase === undefined) {
         database.close();

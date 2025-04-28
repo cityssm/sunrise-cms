@@ -3,8 +3,10 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import getFees from './getFees.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export default function getFeeCategories(filters, options, connectedDatabase) {
-    const updateOrderNumbers = !(filters.burialSiteTypeId || filters.contractTypeId) && options.includeFees;
-    const database = sqlite(sunriseDB);
+    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const updateOrderNumbers = !database.readonly &&
+        !(filters.burialSiteTypeId || filters.contractTypeId) &&
+        options.includeFees;
     let sqlWhereClause = ' where recordDelete_timeMillis is null';
     const sqlParameters = [];
     if ((filters.contractTypeId ?? '') !== '') {
@@ -18,7 +20,7 @@ export default function getFeeCategories(filters, options, connectedDatabase) {
         sqlParameters.push(filters.burialSiteTypeId);
     }
     if ((filters.feeCategoryId ?? '') !== '') {
-        sqlWhereClause += ` and feeCategoryId = ?`;
+        sqlWhereClause += ' and feeCategoryId = ?';
         sqlParameters.push(filters.feeCategoryId);
     }
     const feeCategories = database

@@ -10,6 +10,8 @@ export default function getIntermentContainerTypes(
 ): IntermentContainerType[] {
   const database = sqlite(sunriseDB)
 
+  const updateOrderNumbers = !database.readonly && !includeDeleted
+
   const containerTypes = database
     .prepare(
       `select intermentContainerTypeId, intermentContainerType, intermentContainerTypeKey,
@@ -20,20 +22,22 @@ export default function getIntermentContainerTypes(
     )
     .all() as IntermentContainerType[]
 
-  let expectedOrderNumber = -1
+  if (updateOrderNumbers) {
+    let expectedOrderNumber = -1
 
-  for (const containerType of containerTypes) {
-    expectedOrderNumber += 1
+    for (const containerType of containerTypes) {
+      expectedOrderNumber += 1
 
-    if (containerType.orderNumber !== expectedOrderNumber) {
-      updateRecordOrderNumber(
-        'IntermentContainerTypes',
-        containerType.intermentContainerTypeId,
-        expectedOrderNumber,
-        database
-      )
+      if (containerType.orderNumber !== expectedOrderNumber) {
+        updateRecordOrderNumber(
+          'IntermentContainerTypes',
+          containerType.intermentContainerTypeId,
+          expectedOrderNumber,
+          database
+        )
 
-      containerType.orderNumber = expectedOrderNumber
+        containerType.orderNumber = expectedOrderNumber
+      }
     }
   }
 

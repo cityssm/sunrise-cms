@@ -11,6 +11,8 @@ export default function getContractTypeFields(
 ): ContractTypeField[] {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
+  const updateOrderNumbers = !database.readonly && contractTypeId !== undefined
+
   const sqlParameters: unknown[] = []
 
   if ((contractTypeId ?? -1) !== -1) {
@@ -32,21 +34,23 @@ export default function getContractTypeFields(
     )
     .all(sqlParameters) as ContractTypeField[]
 
-  let expectedOrderNumber = 0
+  if (updateOrderNumbers) {
+    let expectedOrderNumber = 0
 
-  for (const contractTypeField of contractTypeFields) {
-    if (contractTypeField.orderNumber !== expectedOrderNumber) {
-      updateRecordOrderNumber(
-        'ContractTypeFields',
-        contractTypeField.contractTypeFieldId,
-        expectedOrderNumber,
-        database
-      )
+    for (const contractTypeField of contractTypeFields) {
+      if (contractTypeField.orderNumber !== expectedOrderNumber) {
+        updateRecordOrderNumber(
+          'ContractTypeFields',
+          contractTypeField.contractTypeFieldId,
+          expectedOrderNumber,
+          database
+        )
 
-      contractTypeField.orderNumber = expectedOrderNumber
+        contractTypeField.orderNumber = expectedOrderNumber
+      }
+
+      expectedOrderNumber += 1
     }
-
-    expectedOrderNumber += 1
   }
 
   if (connectedDatabase === undefined) {

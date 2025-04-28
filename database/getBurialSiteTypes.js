@@ -4,6 +4,7 @@ import getBurialSiteTypeFields from './getBurialSiteTypeFields.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export default function getBurialSiteTypes(includeDeleted = false) {
     const database = sqlite(sunriseDB);
+    const updateOrderNumbers = !database.readonly && !includeDeleted;
     const burialSiteTypes = database
         .prepare(`select burialSiteTypeId, burialSiteType, orderNumber
         from BurialSiteTypes
@@ -13,7 +14,7 @@ export default function getBurialSiteTypes(includeDeleted = false) {
     let expectedOrderNumber = -1;
     for (const burialSiteType of burialSiteTypes) {
         expectedOrderNumber += 1;
-        if (burialSiteType.orderNumber !== expectedOrderNumber) {
+        if (updateOrderNumbers && burialSiteType.orderNumber !== expectedOrderNumber) {
             updateRecordOrderNumber('BurialSiteTypes', burialSiteType.burialSiteTypeId, expectedOrderNumber, database);
             burialSiteType.orderNumber = expectedOrderNumber;
         }

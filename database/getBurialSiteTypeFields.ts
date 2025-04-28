@@ -11,6 +11,8 @@ export default function getBurialSiteTypeFields(
 ): BurialSiteTypeField[] {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
+  const updateOrderNumbers = !database.readonly
+
   const typeFields = database
     .prepare(
       `select burialSiteTypeFieldId,
@@ -23,21 +25,23 @@ export default function getBurialSiteTypeFields(
     )
     .all(burialSiteTypeId) as BurialSiteTypeField[]
 
-  let expectedOrderNumber = 0
+  if (updateOrderNumbers) {
+    let expectedOrderNumber = 0
 
-  for (const typeField of typeFields) {
-    if (typeField.orderNumber !== expectedOrderNumber) {
-      updateRecordOrderNumber(
-        'BurialSiteTypeFields',
-        typeField.burialSiteTypeFieldId,
-        expectedOrderNumber,
-        database
-      )
+    for (const typeField of typeFields) {
+      if (typeField.orderNumber !== expectedOrderNumber) {
+        updateRecordOrderNumber(
+          'BurialSiteTypeFields',
+          typeField.burialSiteTypeFieldId,
+          expectedOrderNumber,
+          database
+        )
 
-      typeField.orderNumber = expectedOrderNumber
+        typeField.orderNumber = expectedOrderNumber
+      }
+
+      expectedOrderNumber += 1
     }
-
-    expectedOrderNumber += 1
   }
 
   if (connectedDatabase === undefined) {

@@ -10,6 +10,8 @@ export default function getCommittalTypes(
 ): CommittalType[] {
   const database = sqlite(sunriseDB)
 
+  const updateOrderNumbers = !database.readonly && !includeDeleted
+
   const committalTypes = database
     .prepare(
       `select committalTypeId, committalTypeKey, committalType, orderNumber
@@ -19,20 +21,22 @@ export default function getCommittalTypes(
     )
     .all() as CommittalType[]
 
-  let expectedOrderNumber = -1
+  if (updateOrderNumbers) {
+    let expectedOrderNumber = -1
 
-  for (const committalType of committalTypes) {
-    expectedOrderNumber += 1
+    for (const committalType of committalTypes) {
+      expectedOrderNumber += 1
 
-    if (committalType.orderNumber !== expectedOrderNumber) {
-      updateRecordOrderNumber(
-        'CommittalTypes',
-        committalType.committalTypeId,
-        expectedOrderNumber,
-        database
-      )
+      if (committalType.orderNumber !== expectedOrderNumber) {
+        updateRecordOrderNumber(
+          'CommittalTypes',
+          committalType.committalTypeId,
+          expectedOrderNumber,
+          database
+        )
 
-      committalType.orderNumber = expectedOrderNumber
+        committalType.orderNumber = expectedOrderNumber
+      }
     }
   }
 

@@ -3,6 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export default function getBurialSiteTypeFields(burialSiteTypeId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
+    const updateOrderNumbers = !database.readonly;
     const typeFields = database
         .prepare(`select burialSiteTypeFieldId,
         burialSiteTypeField, fieldType, fieldValues,
@@ -12,13 +13,15 @@ export default function getBurialSiteTypeFields(burialSiteTypeId, connectedDatab
         and burialSiteTypeId = ?
         order by orderNumber, burialSiteTypeField`)
         .all(burialSiteTypeId);
-    let expectedOrderNumber = 0;
-    for (const typeField of typeFields) {
-        if (typeField.orderNumber !== expectedOrderNumber) {
-            updateRecordOrderNumber('BurialSiteTypeFields', typeField.burialSiteTypeFieldId, expectedOrderNumber, database);
-            typeField.orderNumber = expectedOrderNumber;
+    if (updateOrderNumbers) {
+        let expectedOrderNumber = 0;
+        for (const typeField of typeFields) {
+            if (typeField.orderNumber !== expectedOrderNumber) {
+                updateRecordOrderNumber('BurialSiteTypeFields', typeField.burialSiteTypeFieldId, expectedOrderNumber, database);
+                typeField.orderNumber = expectedOrderNumber;
+            }
+            expectedOrderNumber += 1;
         }
-        expectedOrderNumber += 1;
     }
     if (connectedDatabase === undefined) {
         database.close();

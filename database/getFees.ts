@@ -15,11 +15,11 @@ export default function getFees(
   additionalFilters: GetFeesFilters,
   connectedDatabase?: sqlite.Database
 ): Fee[] {
-  const updateOrderNumbers = !(
-    additionalFilters.burialSiteTypeId || additionalFilters.contractTypeId
-  )
-
   const database = connectedDatabase ?? sqlite(sunriseDB)
+
+  const updateOrderNumbers =
+    !database.readonly &&
+    !(additionalFilters.burialSiteTypeId || additionalFilters.contractTypeId)
 
   let sqlWhereClause =
     ' where f.recordDelete_timeMillis is null and f.feeCategoryId = ?'

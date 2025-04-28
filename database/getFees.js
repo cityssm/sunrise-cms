@@ -2,8 +2,9 @@ import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export default function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
-    const updateOrderNumbers = !(additionalFilters.burialSiteTypeId || additionalFilters.contractTypeId);
     const database = connectedDatabase ?? sqlite(sunriseDB);
+    const updateOrderNumbers = !database.readonly &&
+        !(additionalFilters.burialSiteTypeId || additionalFilters.contractTypeId);
     let sqlWhereClause = ' where f.recordDelete_timeMillis is null and f.feeCategoryId = ?';
     const sqlParameters = [feeCategoryId];
     if (additionalFilters.contractTypeId) {

@@ -21,10 +21,12 @@ export default function getFeeCategories(
   options: GetFeeCategoriesOptions,
   connectedDatabase?: sqlite.Database
 ): FeeCategory[] {
-  const updateOrderNumbers =
-    !(filters.burialSiteTypeId || filters.contractTypeId) && options.includeFees
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const database = sqlite(sunriseDB)
+  const updateOrderNumbers =
+    !database.readonly &&
+    !(filters.burialSiteTypeId || filters.contractTypeId) &&
+    options.includeFees
 
   let sqlWhereClause = ' where recordDelete_timeMillis is null'
 
@@ -45,7 +47,7 @@ export default function getFeeCategories(
   }
 
   if ((filters.feeCategoryId ?? '') !== '') {
-    sqlWhereClause += ` and feeCategoryId = ?`
+    sqlWhereClause += ' and feeCategoryId = ?'
     sqlParameters.push(filters.feeCategoryId)
   }
 
