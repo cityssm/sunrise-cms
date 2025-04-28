@@ -96,4 +96,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
+    /*
+     * Directions of Arrival
+     */
+    function toggleDirectionOfArrivalDescription(clickEvent) {
+        const checkboxElement = clickEvent.currentTarget;
+        const descriptionElement = document.querySelector(`#cemetery--directionOfArrivalDescription_${checkboxElement.value}`);
+        if (checkboxElement.checked) {
+            descriptionElement.removeAttribute('disabled');
+            descriptionElement.focus();
+        }
+        else {
+            descriptionElement.setAttribute('disabled', 'disabled');
+            // descriptionElement.value = ''
+        }
+        setUnsavedChanges();
+    }
+    const directionOfArrivalCheckboxElements = 
+    // eslint-disable-next-line no-secrets/no-secrets
+    document.querySelectorAll('input[name^="directionOfArrival_"]');
+    for (const checkboxElement of directionOfArrivalCheckboxElements) {
+        checkboxElement.addEventListener('change', toggleDirectionOfArrivalDescription);
+    }
 })();

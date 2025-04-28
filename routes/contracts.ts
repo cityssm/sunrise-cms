@@ -18,6 +18,7 @@ import handler_doDeleteContractComment from '../handlers/contracts-post/doDelete
 import handler_doDeleteContractFee from '../handlers/contracts-post/doDeleteContractFee.js'
 import handler_doDeleteContractInterment from '../handlers/contracts-post/doDeleteContractInterment.js'
 import handler_doDeleteContractTransaction from '../handlers/contracts-post/doDeleteContractTransaction.js'
+import handler_doGetBurialSiteDirectionsOfArrival from '../handlers/contracts-post/doGetBurialSiteDirectionsOfArrival.js'
 import handler_doGetContractTypeFields from '../handlers/contracts-post/doGetContractTypeFields.js'
 import handler_doGetDynamicsGPDocument from '../handlers/contracts-post/doGetDynamicsGPDocument.js'
 import handler_doGetFees from '../handlers/contracts-post/doGetFees.js'
@@ -67,6 +68,12 @@ router.post('/doUpdateContract', updatePostHandler, handler_doUpdateContract)
 router.post('/doCopyContract', updatePostHandler, handler_doCopyContract)
 
 router.post('/doDeleteContract', updatePostHandler, handler_doDeleteContract)
+
+router.post(
+  '/doGetBurialSiteDirectionsOfArrival',
+  updatePostHandler,
+  handler_doGetBurialSiteDirectionsOfArrival
+)
 
 // Interments
 

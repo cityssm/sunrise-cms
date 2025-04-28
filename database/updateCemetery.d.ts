@@ -1,4 +1,5 @@
-export interface UpdateCemeteryForm {
+import { directionsOfArrival } from '../data/dataLists.js';
+export type UpdateCemeteryForm = Partial<Record<`directionOfArrival_${(typeof directionsOfArrival)[number]}`, (typeof directionsOfArrival)[number]>> & Partial<Record<`directionOfArrivalDescription_${(typeof directionsOfArrival)[number]}`, string>> & {
     cemeteryId: string;
     cemeteryDescription: string;
     cemeteryKey: string;
@@ -13,7 +14,7 @@ export interface UpdateCemeteryForm {
     cemeteryLatitude: string;
     cemeteryLongitude: string;
     cemeterySvg: string;
-}
+};
 /**
  * Updates a cemetery in the database.
  * Be sure to rebuild burial site names after updating a cemetery.

@@ -231,7 +231,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     // Burial Site Selector
+    const burialSiteIdElement = document.querySelector('#contract--burialSiteId');
     const burialSiteNameElement = document.querySelector('#contract--burialSiteName');
+    const directionOfArrivalElement = document.querySelector('#contract--directionOfArrival');
+    function refreshDirectionsOfArrival() {
+        const burialSiteId = burialSiteIdElement.value;
+        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetBurialSiteDirectionsOfArrival`, {
+            burialSiteId
+        }, (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON;
+            const currentDirectionOfArrival = directionOfArrivalElement.value;
+            directionOfArrivalElement.value = '';
+            directionOfArrivalElement.innerHTML =
+                '<option value="">(No Direction)</option>';
+            for (const direction of exports.directionsOfArrival) {
+                // eslint-disable-next-line security/detect-object-injection
+                if (responseJSON.directionsOfArrival[direction] !== undefined) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = direction;
+                    optionElement.textContent =
+                        direction +
+                            (responseJSON.directionsOfArrival[direction] === ''
+                                ? ''
+                                : ` - ${responseJSON.directionsOfArrival[direction]}`);
+                    if (currentDirectionOfArrival === direction) {
+                        optionElement.selected = true;
+                    }
+                    directionOfArrivalElement.append(optionElement);
+                }
+            }
+        });
+    }
     burialSiteNameElement.addEventListener('click', (clickEvent) => {
         const currentBurialSiteName = clickEvent.currentTarget
             .value;
@@ -240,11 +270,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let burialSiteSelectResultsElement;
         let burialSiteCreateFormElement;
         function renderSelectedBurialSiteAndClose(burialSiteId, burialSiteName) {
-            ;
-            document.querySelector('#contract--burialSiteId').value = burialSiteId.toString();
-            document.querySelector('#contract--burialSiteName').value = burialSiteName;
+            burialSiteIdElement.value = burialSiteId.toString();
+            burialSiteNameElement.value = burialSiteName;
             setUnsavedChanges();
             burialSiteSelectCloseModalFunction();
+            refreshDirectionsOfArrival();
         }
         function selectExistingBurialSite(selectClickEvent) {
             selectClickEvent.preventDefault();
@@ -401,6 +431,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         else {
             burialSiteNameElement.value = '(No Burial Site)';
             document.querySelector('#contract--burialSiteId').value = '';
+            refreshDirectionsOfArrival();
             setUnsavedChanges();
         }
     });

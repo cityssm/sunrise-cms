@@ -8,6 +8,7 @@ export interface AddContractForm {
     [fieldValue_contractTypeFieldId: `fieldValue_${string}`]: unknown;
     contractTypeFieldIds?: string;
     committalTypeId?: number | string;
+    directionOfArrival?: string;
     funeralDateString?: '' | DateString;
     funeralDirectorName?: string;
     funeralHomeId?: number | string;

@@ -1,6 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getCemeteries from './getCemeteries.js';
+import getCemeteryDirectionsOfArrival from './getCemeteryDirectionsOfArrival.js';
 export default function getCemetery(cemeteryId, connectedDatabase) {
     return _getCemetery('cemeteryId', cemeteryId, connectedDatabase);
 }
@@ -42,6 +43,7 @@ function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
             cemetery.parentCemeteryId === null
                 ? getCemeteries({ parentCemeteryId: cemetery.cemeteryId }, connectedDatabase)
                 : [];
+        cemetery.directionsOfArrival = getCemeteryDirectionsOfArrival(cemetery.cemeteryId, connectedDatabase);
     }
     if (connectedDatabase === undefined) {
         database.close();

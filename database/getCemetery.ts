@@ -4,6 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Cemetery } from '../types/record.types.js'
 
 import getCemeteries from './getCemeteries.js'
+import getCemeteryDirectionsOfArrival from './getCemeteryDirectionsOfArrival.js'
 
 export default function getCemetery(
   cemeteryId: number | string,
@@ -65,6 +66,11 @@ function _getCemetery(
             connectedDatabase
           )
         : []
+
+    cemetery.directionsOfArrival = getCemeteryDirectionsOfArrival(
+      cemetery.cemeteryId as number,
+      connectedDatabase
+    )
   }
 
   if (connectedDatabase === undefined) {

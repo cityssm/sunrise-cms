@@ -149,4 +149,37 @@ declare const exports: Record<string, unknown>
         }
       })
     })
+
+  /*
+   * Directions of Arrival
+   */
+
+  function toggleDirectionOfArrivalDescription(clickEvent: Event): void {
+    const checkboxElement = clickEvent.currentTarget as HTMLInputElement
+
+    const descriptionElement = document.querySelector(
+      `#cemetery--directionOfArrivalDescription_${checkboxElement.value}`
+    ) as HTMLInputElement
+
+    if (checkboxElement.checked) {
+      descriptionElement.removeAttribute('disabled')
+      descriptionElement.focus()
+    } else {
+      descriptionElement.setAttribute('disabled', 'disabled')
+      // descriptionElement.value = ''
+    }
+
+    setUnsavedChanges()
+  }
+
+  const directionOfArrivalCheckboxElements: NodeListOf<HTMLInputElement> =
+    // eslint-disable-next-line no-secrets/no-secrets
+    document.querySelectorAll('input[name^="directionOfArrival_"]')
+
+  for (const checkboxElement of directionOfArrivalCheckboxElements) {
+    checkboxElement.addEventListener(
+      'change',
+      toggleDirectionOfArrivalDescription
+    )
+  }
 })()

@@ -20,6 +20,7 @@ export interface AddContractForm {
   contractTypeFieldIds?: string
 
   committalTypeId?: number | string
+  directionOfArrival?: string
   funeralDateString?: '' | DateString
   funeralDirectorName?: string
   funeralHomeId?: number | string
@@ -74,10 +75,10 @@ export default function addContract(
         purchaserPhoneNumber, purchaserEmail, purchaserRelationship,
         funeralHomeId, funeralDirectorName,
         funeralDate, funeralTime,
-        committalTypeId,
+        directionOfArrival, committalTypeId,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       addForm.contractTypeId,
@@ -103,6 +104,7 @@ export default function addContract(
       addForm.funeralTimeString === ''
         ? undefined
         : timeStringToInteger(addForm.funeralTimeString as TimeString),
+      addForm.directionOfArrival ?? '',
       addForm.committalTypeId === '' ? undefined : addForm.committalTypeId,
       user.userName,
       rightNowMillis,

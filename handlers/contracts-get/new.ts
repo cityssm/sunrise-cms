@@ -3,6 +3,7 @@ import type { Request, Response } from 'express'
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 
 import getBurialSite from '../../database/getBurialSite.js'
+import getBurialSiteDirectionsOfArrival, { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js'
 import getCemeteries from '../../database/getCemeteries.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
@@ -58,6 +59,11 @@ export default async function handler(
   const burialSiteTypes = getBurialSiteTypes()
   const cemeteries = getCemeteries()
 
+  const burialSiteDirectionsOfArrival =
+    contract.burialSiteId === undefined
+      ? defaultDirectionsOfArrival
+      : getBurialSiteDirectionsOfArrival(contract.burialSiteId)
+
   response.render('contract-edit', {
     headTitle: 'Create a New Contract',
 
@@ -71,6 +77,8 @@ export default async function handler(
     burialSiteStatuses,
     burialSiteTypes,
     cemeteries,
+
+    burialSiteDirectionsOfArrival,
 
     isCreate: true
   })

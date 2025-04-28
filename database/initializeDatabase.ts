@@ -90,6 +90,13 @@ const createStatements = [
     ${recordColumns},
     foreign key (parentCemeteryId) references Cemeteries (cemeteryId))`,
 
+  `create table if not exists CemeteryDirectionsOfArrival (
+    cemeteryId integer not null,
+    directionOfArrival varchar(2) not null,
+    directionOfArrivalDescription varchar(100) not null,
+    primary key (cemeteryId, directionOfArrival),
+    foreign key (cemeteryId) references Cemeteries (cemeteryId)) without rowid`,
+
   /*
    * Burial Sites
    */
@@ -231,6 +238,7 @@ const createStatements = [
     funeralDate integer check (funeralDate > 0),
     funeralTime integer check (funeralTime >= 0),
     committalTypeId integer,
+    directionOfArrival varchar(2),
 
     ${recordColumns},
     foreign key (burialSiteId) references BurialSites (burialSiteId),

@@ -14,23 +14,24 @@ export default async function getContract(contractId, connectedDatabase) {
     database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
     const contract = database
         .prepare(`select o.contractId,
-        o.contractTypeId, t.contractType, t.isPreneed,
-        o.burialSiteId, l.burialSiteName, l.burialSiteTypeId,
-        l.cemeteryId, m.cemeteryName,
-        o.contractStartDate, userFn_dateIntegerToString(o.contractStartDate) as contractStartDateString,
-        o.contractEndDate, userFn_dateIntegerToString(o.contractEndDate) as contractEndDateString,
-        o.purchaserName, o.purchaserAddress1, o.purchaserAddress2,
-        o.purchaserCity, o.purchaserProvince, o.purchaserPostalCode,
-        o.purchaserPhoneNumber, o.purchaserEmail, o.purchaserRelationship,
-        o.funeralHomeId, o.funeralDirectorName, f.funeralHomeKey,
-        f.funeralHomeName, f.funeralHomeAddress1, f.funeralHomeAddress2,
-        f.funeralHomeCity, f.funeralHomeProvince, f.funeralHomePostalCode,
-        o.funeralDate, userFn_dateIntegerToString(o.funeralDate) as funeralDateString,
-        o.funeralTime,
-        userFn_timeIntegerToString(o.funeralTime) as funeralTimeString,
-        userFn_timeIntegerToPeriodString(o.funeralTime) as funeralTimePeriodString,
-        o.committalTypeId, c.committalType,
-        o.recordUpdate_timeMillis
+          o.contractTypeId, t.contractType, t.isPreneed,
+          o.burialSiteId, l.burialSiteName, l.burialSiteTypeId,
+          l.cemeteryId, m.cemeteryName,
+          o.contractStartDate, userFn_dateIntegerToString(o.contractStartDate) as contractStartDateString,
+          o.contractEndDate, userFn_dateIntegerToString(o.contractEndDate) as contractEndDateString,
+          o.purchaserName, o.purchaserAddress1, o.purchaserAddress2,
+          o.purchaserCity, o.purchaserProvince, o.purchaserPostalCode,
+          o.purchaserPhoneNumber, o.purchaserEmail, o.purchaserRelationship,
+          o.funeralHomeId, o.funeralDirectorName, f.funeralHomeKey,
+          f.funeralHomeName, f.funeralHomeAddress1, f.funeralHomeAddress2,
+          f.funeralHomeCity, f.funeralHomeProvince, f.funeralHomePostalCode,
+          o.funeralDate, userFn_dateIntegerToString(o.funeralDate) as funeralDateString,
+          o.funeralTime,
+          userFn_timeIntegerToString(o.funeralTime) as funeralTimeString,
+          userFn_timeIntegerToPeriodString(o.funeralTime) as funeralTimePeriodString,
+          o.directionOfArrival,
+          o.committalTypeId, c.committalType,
+          o.recordUpdate_timeMillis
         from Contracts o
         left join ContractTypes t on o.contractTypeId = t.contractTypeId
         left join FuneralHomes f on o.funeralHomeId = f.funeralHomeId
@@ -38,7 +39,7 @@ export default async function getContract(contractId, connectedDatabase) {
         left join BurialSites l on o.burialSiteId = l.burialSiteId
         left join Cemeteries m on l.cemeteryId = m.cemeteryId
         where o.recordDelete_timeMillis is null
-        and o.contractId = ?`)
+          and o.contractId = ?`)
         .get(contractId);
     if (contract !== undefined) {
         contract.contractFields = getContractFields(contractId, database);

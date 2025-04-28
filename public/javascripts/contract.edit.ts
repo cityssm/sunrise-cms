@@ -4,6 +4,7 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
+import type { directionsOfArrival } from '../../data/dataLists.js'
 import type {
   BurialSite,
   BurialSiteStatus,
@@ -13,6 +14,7 @@ import type {
 } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
+import { ref } from 'process'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -22,6 +24,8 @@ declare const exports: {
   burialSiteStatuses: BurialSiteStatus[]
   burialSiteTypes: BurialSiteType[]
   cemeteries: Cemetery[]
+
+  directionsOfArrival: typeof directionsOfArrival
 }
 ;(() => {
   const sunrise = exports.sunrise
@@ -362,9 +366,59 @@ declare const exports: {
 
   // Burial Site Selector
 
+  const burialSiteIdElement = document.querySelector(
+    '#contract--burialSiteId'
+  ) as HTMLInputElement
+
   const burialSiteNameElement = document.querySelector(
     '#contract--burialSiteName'
   ) as HTMLInputElement
+
+  const directionOfArrivalElement = document.querySelector(
+    '#contract--directionOfArrival'
+  ) as HTMLSelectElement
+
+  function refreshDirectionsOfArrival(): void {
+    const burialSiteId = burialSiteIdElement.value
+
+    cityssm.postJSON(
+      `${sunrise.urlPrefix}/contracts/doGetBurialSiteDirectionsOfArrival`,
+      {
+        burialSiteId
+      },
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          directionsOfArrival: Partial<Record<string, string>>
+        }
+
+        const currentDirectionOfArrival = directionOfArrivalElement.value
+
+        directionOfArrivalElement.value = ''
+        directionOfArrivalElement.innerHTML =
+          '<option value="">(No Direction)</option>'
+
+        for (const direction of exports.directionsOfArrival) {
+          // eslint-disable-next-line security/detect-object-injection
+          if (responseJSON.directionsOfArrival[direction] !== undefined) {
+            const optionElement = document.createElement('option')
+
+            optionElement.value = direction
+            optionElement.textContent =
+              direction +
+              (responseJSON.directionsOfArrival[direction] === ''
+                ? ''
+                : ` - ${responseJSON.directionsOfArrival[direction]}`)
+
+            if (currentDirectionOfArrival === direction) {
+              optionElement.selected = true
+            }
+
+            directionOfArrivalElement.append(optionElement)
+          }
+        }
+      }
+    )
+  }
 
   burialSiteNameElement.addEventListener('click', (clickEvent) => {
     const currentBurialSiteName = (clickEvent.currentTarget as HTMLInputElement)
@@ -381,15 +435,13 @@ declare const exports: {
       burialSiteId: number | string,
       burialSiteName: string
     ): void {
-      ;(
-        document.querySelector('#contract--burialSiteId') as HTMLInputElement
-      ).value = burialSiteId.toString()
-      ;(
-        document.querySelector('#contract--burialSiteName') as HTMLInputElement
-      ).value = burialSiteName
+      burialSiteIdElement.value = burialSiteId.toString()
+      burialSiteNameElement.value = burialSiteName
 
       setUnsavedChanges()
       burialSiteSelectCloseModalFunction()
+
+      refreshDirectionsOfArrival()
     }
 
     function selectExistingBurialSite(selectClickEvent: Event): void {
@@ -661,6 +713,7 @@ declare const exports: {
           document.querySelector('#contract--burialSiteId') as HTMLInputElement
         ).value = ''
 
+        refreshDirectionsOfArrival()
         setUnsavedChanges()
       }
     })

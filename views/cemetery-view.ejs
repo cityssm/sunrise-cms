@@ -66,29 +66,31 @@
 <div class="panel">
   <div class="panel-block is-block">
     <div class="columns">
-      <% if (cemetery.cemeteryDescription && cemetery.cemeteryDescription !== "") { %>
-        <div class="column">
-          <strong>Description</strong><br />
-          <%= cemetery.cemeteryDescription %>
-        </div>
-      <% } %>
       <div class="column">
-        <strong>Address</strong><br />
-        <% if (cemetery.cemeteryAddress1 !== "") { %>
-          <%= cemetery.cemeteryAddress1 %><br />
+        <% if (cemetery.cemeteryDescription && cemetery.cemeteryDescription !== "") { %>
+          <p class="mb-2">
+            <strong>Description</strong><br />
+            <%= cemetery.cemeteryDescription %>
+          </p>
         <% } %>
-        <% if (cemetery.cemeteryAddress2 !== "") { %>
-          <%= cemetery.cemeteryAddress2 %><br />
+        <p class="mb-2">
+          <strong>Address</strong><br />
+          <% if (cemetery.cemeteryAddress1 !== "") { %>
+            <%= cemetery.cemeteryAddress1 %><br />
+          <% } %>
+          <% if (cemetery.cemeteryAddress2 !== "") { %>
+            <%= cemetery.cemeteryAddress2 %><br />
+          <% } %>
+          <%= cemetery.cemeteryCity %>, <%= cemetery.cemeteryProvince %><br />
+          <%= cemetery.cemeteryPostalCode %>
+        </p>
+        <% if (cemetery.cemeteryPhoneNumber !== "") { %>
+          <p>
+            <strong>Phone Number</strong><br />
+            <%= cemetery.cemeteryPhoneNumber %>
+          </p>
         <% } %>
-        <%= cemetery.cemeteryCity %>, <%= cemetery.cemeteryProvince %><br />
-        <%= cemetery.cemeteryPostalCode %>
       </div>
-      <% if (cemetery.cemeteryPhoneNumber !== "") { %>
-        <div class="column">
-          <strong>Phone Number</strong><br />
-          <%= cemetery.cemeteryPhoneNumber %>
-        </div>
-      <% } %>
       <% if (cemetery.parentCemeteryId !== null) { %>
         <div class="column">
           <strong>Parent Cemetery</strong><br />

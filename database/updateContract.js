@@ -16,6 +16,7 @@ export default function updateContract(updateForm, user) {
         funeralDirectorName = ?,
         funeralDate = ?,
         funeralTime = ?,
+        directionOfArrival = ?,
         committalTypeId = ?,
         purchaserName = ?,
         purchaserAddress1 = ?,
@@ -36,7 +37,7 @@ export default function updateContract(updateForm, user) {
         ? undefined
         : dateStringToInteger(updateForm.funeralDateString), updateForm.funeralTimeString === ''
         ? undefined
-        : timeStringToInteger(updateForm.funeralTimeString), updateForm.committalTypeId === ''
+        : timeStringToInteger(updateForm.funeralTimeString), updateForm.directionOfArrival ?? '', updateForm.committalTypeId === ''
         ? undefined
         : updateForm.committalTypeId, updateForm.purchaserName ?? '', updateForm.purchaserAddress1 ?? '', updateForm.purchaserAddress2 ?? '', updateForm.purchaserCity ?? '', updateForm.purchaserProvince ?? '', updateForm.purchaserPostalCode ?? '', updateForm.purchaserPhoneNumber ?? '', updateForm.purchaserEmail ?? '', updateForm.purchaserRelationship ?? '', user.userName, Date.now(), updateForm.contractId);
     if (result.changes > 0) {

@@ -260,8 +260,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="column">
       <div class="panel">
         <div class="panel-heading">
           <div class="level is-mobile">
@@ -293,6 +291,64 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="title is-5 has-text-weight-bold has-text-white">Directions of Arrival</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <table class="table is-fullwidth is-striped is-hoverable">
+            <thead>
+              <tr>
+                <th class="has-width-1">
+                  <span class="is-sr-only">Selected</span>
+                </th>
+                <th>Direction</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (const direction of dataLists.directionsOfArrival) { %>
+                <%
+                  const directionIsSelected = cemetery.directionsOfArrival[direction] || false;
+                %>
+                <tr>
+                  <td class="is-vcentered">
+                    <div class="control">
+                      <input id="cemetery--directionOfArrival_<%= direction %>" name="directionOfArrival_<%= direction %>"
+                        type="checkbox" value="<%= direction %>"
+                        <%= directionIsSelected ? " checked" : "" %> />
+                    </div>
+                  </td>
+                  <td class="is-vcentered">
+                    <label for="cemetery--directionOfArrival_<%= direction %>">
+                      <span><%= direction %></span>
+                    </label>
+                  </td>
+                  <td>
+                    <div class="control">
+                      <input class="input" id="cemetery--directionOfArrivalDescription_<%= direction %>"
+                        name="directionOfArrivalDescription_<%= direction %>"
+                        type="text"
+                        value="<%= cemetery.directionsOfArrival[direction] || "" %>"
+                        maxlength="100"
+                        placeholder="Description"
+                        <%= directionIsSelected ? "" : "disabled" %>
+                        />
+                    </div>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

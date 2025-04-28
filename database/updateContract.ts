@@ -23,6 +23,7 @@ export interface UpdateContractForm {
   funeralHomeId?: number | string
 
   committalTypeId?: number | string
+  directionOfArrival?: string
   funeralDateString: '' | DateString
   funeralDirectorName: string
   funeralTimeString: '' | TimeString
@@ -61,6 +62,7 @@ export default function updateContract(
         funeralDirectorName = ?,
         funeralDate = ?,
         funeralTime = ?,
+        directionOfArrival = ?,
         committalTypeId = ?,
         purchaserName = ?,
         purchaserAddress1 = ?,
@@ -91,6 +93,7 @@ export default function updateContract(
       updateForm.funeralTimeString === ''
         ? undefined
         : timeStringToInteger(updateForm.funeralTimeString),
+      updateForm.directionOfArrival ?? '',
       updateForm.committalTypeId === ''
         ? undefined
         : updateForm.committalTypeId,

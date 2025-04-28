@@ -1,4 +1,5 @@
 import sqlite from 'better-sqlite3';
+import { directionsOfArrival } from '../data/dataLists.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 /**
  * Updates a cemetery in the database.
@@ -35,6 +36,20 @@ export default function updateCemetery(updateForm, user) {
         : updateForm.cemeteryLongitude, updateForm.cemeteryAddress1, updateForm.cemeteryAddress2, updateForm.cemeteryCity, updateForm.cemeteryProvince, updateForm.cemeteryPostalCode, updateForm.cemeteryPhoneNumber, updateForm.parentCemeteryId === ''
         ? undefined
         : updateForm.parentCemeteryId, user.userName, Date.now(), updateForm.cemeteryId);
+    database
+        .prepare(`delete from CemeteryDirectionsOfArrival
+      where cemeteryId = ?`)
+        .run(updateForm.cemeteryId);
+    for (const direction of directionsOfArrival) {
+        const directionDescriptionName = `directionOfArrivalDescription_${direction}`;
+        if (directionDescriptionName in updateForm) {
+            database
+                .prepare(`insert into CemeteryDirectionsOfArrival (
+            cemeteryId, directionOfArrival, directionOfArrivalDescription)
+            values (?, ?, ?)`)
+                .run(updateForm.cemeteryId, direction, updateForm[directionDescriptionName] ?? '');
+        }
+    }
     database.close();
     return result.changes > 0;
 }

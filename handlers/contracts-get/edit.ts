@@ -13,6 +13,9 @@ import {
   getIntermentContainerTypes,
   getWorkOrderTypes
 } from '../../helpers/functions.cache.js'
+import getBurialSiteDirectionsOfArrival, {
+  defaultDirectionsOfArrival
+} from '../../database/getBurialSiteDirectionsOfArrival.js'
 
 export default async function handler(
   request: Request,
@@ -48,6 +51,11 @@ export default async function handler(
   const burialSiteTypes = getBurialSiteTypes()
   const cemeteries = getCemeteries()
 
+  const burialSiteDirectionsOfArrival =
+    contract.burialSiteId === undefined
+      ? defaultDirectionsOfArrival
+      : getBurialSiteDirectionsOfArrival(contract.burialSiteId)
+
   /*
    * Work Order Drop Lists
    */
@@ -68,6 +76,8 @@ export default async function handler(
     burialSiteStatuses,
     burialSiteTypes,
     cemeteries,
+
+    burialSiteDirectionsOfArrival,
 
     workOrderTypes,
 

@@ -392,6 +392,30 @@
             </div>
           </div>
           <div class="field">
+            <label class="label" for="contract--directionOfArrival">Direction of Arrival</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="contract--directionOfArrival" name="directionOfArrival">
+                  <option value="">(No Direction)</option>
+                  <% for (const direction of dataLists.directionsOfArrival) { %>
+                    <%
+                      if (burialSiteDirectionsOfArrival[direction] === undefined) {
+                        continue
+                      }
+                    %>
+                    <option value="<%= direction %>"
+                      <%= (contract.directionOfArrival === direction ? " selected" : "") %>>
+                      <%= direction %>
+                      <% if (burialSiteDirectionsOfArrival[direction] !== '') { %>
+                        - <%= burialSiteDirectionsOfArrival[direction] %>
+                      <% } %>
+                    </option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="field">
             <label class="label" for="contract--committalTypeId">Committal Type</label>
             <div class="control">
               <div class="select is-fullwidth">
@@ -997,6 +1021,7 @@
   exports.burialSiteStatuses = <%- JSON.stringify(burialSiteStatuses) %>;
   exports.burialSiteTypes = <%- JSON.stringify(burialSiteTypes) %>;
   exports.cemeteries = <%- JSON.stringify(cemeteries) %>;
+  exports.directionsOfArrival = <%- JSON.stringify(dataLists.directionsOfArrival) %>;
 </script>
 
 <script src="<%= urlPrefix %>/javascripts/contract.edit.js"></script>

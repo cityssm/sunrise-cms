@@ -1,4 +1,5 @@
 import type { DateString, TimeString } from '@cityssm/utils-datetime';
+import type { directionsOfArrival } from '../data/dataLists.js';
 export interface BurialSite extends Record {
     burialSiteId: number;
     burialSiteName?: string;
@@ -85,6 +86,7 @@ export interface Cemetery extends Record {
     cemeteryPhoneNumber: string;
     burialSiteCount?: number;
     childCemeteries?: Cemetery[];
+    directionsOfArrival?: Partial<globalThis.Record<(typeof directionsOfArrival)[number], string>>;
 }
 export interface CommittalType extends Record {
     committalTypeId: number;
@@ -133,6 +135,7 @@ export interface Contract extends Record {
     funeralTimeString?: TimeString;
     committalType?: string;
     committalTypeId?: number;
+    directionOfArrival?: string;
     contractComments?: ContractComment[];
     contractFees?: ContractFee[];
     contractFields?: ContractField[];

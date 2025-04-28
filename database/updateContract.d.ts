@@ -7,6 +7,7 @@ export interface UpdateContractForm {
     contractStartDateString: DateString;
     funeralHomeId?: number | string;
     committalTypeId?: number | string;
+    directionOfArrival?: string;
     funeralDateString: '' | DateString;
     funeralDirectorName: string;
     funeralTimeString: '' | TimeString;
