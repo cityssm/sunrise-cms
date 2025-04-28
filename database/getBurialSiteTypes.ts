@@ -6,14 +6,16 @@ import type { BurialSiteType } from '../types/record.types.js'
 import getBurialSiteTypeFields from './getBurialSiteTypeFields.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export default function getBurialSiteTypes(): BurialSiteType[] {
+export default function getBurialSiteTypes(
+  includeDeleted = false
+): BurialSiteType[] {
   const database = sqlite(sunriseDB)
 
   const burialSiteTypes = database
     .prepare(
       `select burialSiteTypeId, burialSiteType, orderNumber
         from BurialSiteTypes
-        where recordDelete_timeMillis is null
+        ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '}
         order by orderNumber, burialSiteType`
     )
     .all() as BurialSiteType[]

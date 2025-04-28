@@ -9,7 +9,7 @@ export function getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user
             intermentContainerTypeKey,
             intermentContainerType: intermentContainerTypeKey
         }, user);
-        intermentContainerTypes = getIntermentContainerTypes();
+        intermentContainerTypes = getIntermentContainerTypes(true);
         return intermentContainerTypeId;
     }
     return intermentContainerType.intermentContainerTypeId;

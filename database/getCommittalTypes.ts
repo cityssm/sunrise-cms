@@ -5,14 +5,16 @@ import type { CommittalType } from '../types/record.types.js'
 
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export default function getCommittalTypes(): CommittalType[] {
+export default function getCommittalTypes(
+  includeDeleted = false
+): CommittalType[] {
   const database = sqlite(sunriseDB)
 
   const committalTypes = database
     .prepare(
       `select committalTypeId, committalTypeKey, committalType, orderNumber
         from CommittalTypes
-        where recordDelete_timeMillis is null
+        ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '}
         order by orderNumber, committalType, committalTypeId`
     )
     .all() as CommittalType[]

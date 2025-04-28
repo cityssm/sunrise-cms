@@ -1,12 +1,12 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default function getCommittalTypes() {
+export default function getCommittalTypes(includeDeleted = false) {
     const database = sqlite(sunriseDB);
     const committalTypes = database
         .prepare(`select committalTypeId, committalTypeKey, committalType, orderNumber
         from CommittalTypes
-        where recordDelete_timeMillis is null
+        ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '}
         order by orderNumber, committalType, committalTypeId`)
         .all();
     let expectedOrderNumber = -1;

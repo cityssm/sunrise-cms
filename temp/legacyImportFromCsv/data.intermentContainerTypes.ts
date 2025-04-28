@@ -22,7 +22,7 @@ export function getIntermentContainerTypeIdByKey(
       user
     )
 
-    intermentContainerTypes = getIntermentContainerTypes()
+    intermentContainerTypes = getIntermentContainerTypes(true)
 
     return intermentContainerTypeId
   }

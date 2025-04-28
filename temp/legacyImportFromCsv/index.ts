@@ -388,10 +388,7 @@ async function importFromMasterCSV(): Promise<void> {
         const intermentContainerTypeId =
           intermentContainerTypeKey === ''
             ? ''
-            : getIntermentContainerTypeIdByKey(
-                intermentContainerTypeKey,
-                user
-              )
+            : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user)
 
         deceasedContractId = addContract(
           {
@@ -649,6 +646,7 @@ async function importFromPrepaidCSV(): Promise<void> {
             contractId,
             feeId: getFeeIdByFeeDescription('CMPP_FEE_GRAV_SD', user),
             quantity: 1,
+
             feeAmount: prepaidRow.CMPP_FEE_GRAV_SD,
             taxAmount: prepaidRow.CMPP_GST_GRAV_SD
           },
@@ -662,6 +660,7 @@ async function importFromPrepaidCSV(): Promise<void> {
             contractId,
             feeId: getFeeIdByFeeDescription('CMPP_FEE_GRAV_DD', user),
             quantity: 1,
+
             feeAmount: prepaidRow.CMPP_FEE_GRAV_DD,
             taxAmount: prepaidRow.CMPP_GST_GRAV_DD
           },
@@ -675,6 +674,7 @@ async function importFromPrepaidCSV(): Promise<void> {
             contractId,
             feeId: getFeeIdByFeeDescription('CMPP_FEE_CHAP_SD', user),
             quantity: 1,
+
             feeAmount: prepaidRow.CMPP_FEE_CHAP_SD,
             taxAmount: prepaidRow.CMPP_GST_CHAP_SD
           },
@@ -688,6 +688,7 @@ async function importFromPrepaidCSV(): Promise<void> {
             contractId,
             feeId: getFeeIdByFeeDescription('CMPP_FEE_CHAP_DD', user),
             quantity: 1,
+
             feeAmount: prepaidRow.CMPP_FEE_CHAP_DD,
             taxAmount: prepaidRow.CMPP_GST_CHAP_DD
           },
@@ -701,6 +702,7 @@ async function importFromPrepaidCSV(): Promise<void> {
             contractId,
             feeId: getFeeIdByFeeDescription('CMPP_FEE_ENTOMBMENT', user),
             quantity: 1,
+
             feeAmount: prepaidRow.CMPP_FEE_ENTOMBMENT,
             taxAmount: prepaidRow.CMPP_GST_ENTOMBMENT
           },
@@ -714,6 +716,7 @@ async function importFromPrepaidCSV(): Promise<void> {
             contractId,
             feeId: getFeeIdByFeeDescription('CMPP_FEE_CREM', user),
             quantity: 1,
+
             feeAmount: prepaidRow.CMPP_FEE_CREM,
             taxAmount: prepaidRow.CMPP_GST_CREM
           },
@@ -727,6 +730,7 @@ async function importFromPrepaidCSV(): Promise<void> {
             contractId,
             feeId: getFeeIdByFeeDescription('CMPP_FEE_NICHE', user),
             quantity: 1,
+
             feeAmount: prepaidRow.CMPP_FEE_NICHE,
             taxAmount: prepaidRow.CMPP_GST_NICHE
           },
@@ -741,11 +745,9 @@ async function importFromPrepaidCSV(): Promise<void> {
         await addContractFee(
           {
             contractId,
-            feeId: getFeeIdByFeeDescription(
-              'CMPP_FEE_DISINTERMENT',
-              user
-            ),
+            feeId: getFeeIdByFeeDescription('CMPP_FEE_DISINTERMENT', user),
             quantity: 1,
+
             feeAmount: prepaidRow.CMPP_FEE_DISINTERMENT,
             taxAmount: prepaidRow.CMPP_GST_DISINTERMENT
           },
@@ -794,6 +796,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         addContractComment(
           {
             contractId,
+
             commentDateString: contractStartDateString,
             comment: prepaidRow.CMPP_REMARK1
           },
@@ -805,6 +808,7 @@ async function importFromPrepaidCSV(): Promise<void> {
         addContractComment(
           {
             contractId,
+
             commentDateString: contractStartDateString,
             comment: prepaidRow.CMPP_REMARK2
           },
@@ -992,10 +996,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
       const intermentContainerTypeId =
         intermentContainerTypeKey === ''
           ? ''
-          : getIntermentContainerTypeIdByKey(
-              intermentContainerTypeKey,
-              user
-            )
+          : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user)
 
       const contractId = addContract(
         {

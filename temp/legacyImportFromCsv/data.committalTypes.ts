@@ -1,7 +1,7 @@
 import addCommittalType from '../../database/addCommittalType.js'
 import getCommittalTypes from '../../database/getCommittalTypes.js'
 
-let committalTypes = getCommittalTypes()
+let committalTypes = getCommittalTypes(true)
 
 export function getCommittalTypeIdByKey(
   committalTypeKey: string,

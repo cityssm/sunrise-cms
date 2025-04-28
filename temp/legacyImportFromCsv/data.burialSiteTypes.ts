@@ -1,24 +1,30 @@
 import * as cacheFunctions from '../../helpers/functions.cache.js'
 
 const inGroundBurialSiteTypeId =
-  (await cacheFunctions.getBurialSiteTypesByBurialSiteType('In-Ground Grave'))!
-    .burialSiteTypeId
+  cacheFunctions.getBurialSiteTypesByBurialSiteType(
+    'In-Ground Grave'
+  )!.burialSiteTypeId
 
 const columbariumBurialSiteTypeId =
-  (await cacheFunctions.getBurialSiteTypesByBurialSiteType('Columbarium'))!
-    .burialSiteTypeId
+  cacheFunctions.getBurialSiteTypesByBurialSiteType(
+    'Columbarium'
+  )!.burialSiteTypeId
 const cremationBurialSiteTypeId =
-  (await cacheFunctions.getBurialSiteTypesByBurialSiteType('Crematorium'))!
-    .burialSiteTypeId
+  cacheFunctions.getBurialSiteTypesByBurialSiteType(
+    'Crematorium'
+  )!.burialSiteTypeId
 const mausoleumBurialSiteTypeId =
-  (await cacheFunctions.getBurialSiteTypesByBurialSiteType('Mausoleum'))!
-    .burialSiteTypeId
+  cacheFunctions.getBurialSiteTypesByBurialSiteType(
+    'Mausoleum'
+  )!.burialSiteTypeId
 const nicheWallBurialSiteTypeId =
-  (await cacheFunctions.getBurialSiteTypesByBurialSiteType('Niche Wall'))!
-    .burialSiteTypeId
+  cacheFunctions.getBurialSiteTypesByBurialSiteType(
+    'Niche Wall'
+  )!.burialSiteTypeId
 const urnGardenBurialSiteTypeId =
-  (await cacheFunctions.getBurialSiteTypesByBurialSiteType('Urn Garden'))!
-    .burialSiteTypeId
+  cacheFunctions.getBurialSiteTypesByBurialSiteType(
+    'Urn Garden'
+  )!.burialSiteTypeId
 
 export function getBurialSiteTypeId(cemeteryKey: string): number {
   switch (cemeteryKey) {

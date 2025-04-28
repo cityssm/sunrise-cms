@@ -5,7 +5,9 @@ import type { IntermentContainerType } from '../types/record.types.js'
 
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export default function getIntermentContainerTypes(): IntermentContainerType[] {
+export default function getIntermentContainerTypes(
+  includeDeleted = false
+): IntermentContainerType[] {
   const database = sqlite(sunriseDB)
 
   const containerTypes = database
@@ -13,7 +15,7 @@ export default function getIntermentContainerTypes(): IntermentContainerType[] {
       `select intermentContainerTypeId, intermentContainerType, intermentContainerTypeKey,
         isCremationType, orderNumber
         from IntermentContainerTypes
-        where recordDelete_timeMillis is null
+        ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '}
         order by isCremationType, orderNumber, intermentContainerType, intermentContainerTypeId`
     )
     .all() as IntermentContainerType[]
