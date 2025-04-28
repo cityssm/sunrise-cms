@@ -140,7 +140,7 @@
     </div>
 
     <div class="panel">
-      <h2 class="panel-heading">Related Burial Sites</h2>
+      <h2 class="panel-heading">Related Contracts</h2>
       <div class="panel-block is-block">
         <%
           const tabToSelect = (workOrder.workOrderContracts.length > 0 || workOrder.workOrderBurialSites.length === 0 ? "contracts" : "burialSites");
@@ -312,76 +312,99 @@
       </div>
     <% } %>
   </div>
-  <% if (workOrder.workOrderMilestones.length > 0) { %>
-    <div class="column is-4-desktop">
+
+  <div class="column is-4-desktop">
+    <% if (workOrder.workOrderContracts.length > 0) { %>
       <div class="panel">
-        <div class="panel-heading">
-          <div class="level is-mobile">
-            <div class="level-left">
-              <div class="level-item">
-                <h2 class="title is-5 has-text-white has-text-weight-bold">Milestones</h2>
-              </div>
+        <h2 class="panel-heading">Contract Milestones</h2>
+        <% let hasContractMilestones = false; %>
+        <% for (const contract of workOrder.workOrderContracts) { %>
+          <% if (contract.funeralDate !== null && contract.funeralDate >= workOrder.workOrderOpenDate && (workOrder.workOrderCloseDate === null || workOrderCloseDate >= contract.funeralDate)) { %>
+            <% hasContractMilestones = true; %>
+            <div class="panel-block is-block">
+              <strong>Funeral</strong><br />
+              <%= contract.funeralDateString %>
+              <% if (contract.funeralTime !== null && contract.funeralTime !== 0) { %>
+                <%= contract.funeralTimePeriodString %>
+              <% } %><br />
+              <%= contract.funeralHomeName %><br />
             </div>
-            <div class="level-right">
-              <div class="level-item">
-                <div class="dropdown is-right has-text-weight-normal">
-                  <div class="dropdown-trigger">
-                    <button class="button is-small has-tooltip-left" type="button" data-tooltip="Milestone Options" aria-label="Options">
-                      <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                  <div class="dropdown-menu">
-                    <div class="dropdown-content">
-                      <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
-                        <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
-                        <span>Download iCalendar</span>
-                      </a>
-                      <a class="dropdown-item" href="<%= urlPrefix %>/reports/workOrderMilestones-byWorkOrderId/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" download>
-                        <span class="icon is-small"><i class="fas fa-download" aria-hidden="true"></i></span>
-                        <span>Export as CSV</span>
-                      </a>
-                    </div>
+          <% } %>
+        <% } %>
+        <% if (!hasContractMilestones) { %>
+          <div class="panel-block is-block">
+            <p class="has-text-grey">No relevant contract milestones available.</p>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="title is-5 has-text-white has-text-weight-bold">Milestones</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <div class="dropdown is-right has-text-weight-normal">
+                <div class="dropdown-trigger">
+                  <button class="button is-small has-tooltip-left" type="button" data-tooltip="Milestone Options" aria-label="Options">
+                    <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="dropdown-menu">
+                  <div class="dropdown-content">
+                    <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
+                      <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
+                      <span>Download iCalendar</span>
+                    </a>
+                    <a class="dropdown-item" href="<%= urlPrefix %>/reports/workOrderMilestones-byWorkOrderId/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" download>
+                      <span class="icon is-small"><i class="fas fa-download" aria-hidden="true"></i></span>
+                      <span>Export as CSV</span>
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <% for (const milestone of workOrder.workOrderMilestones) { %>
-          <div class="panel-block is-block">
-            <div class="columns is-mobile">
-              <div class="column is-narrow">
-                <% if (milestone.workOrderMilestoneCompletionDate) { %>
-                  <span class="icon is-small" data-tooltip="Completed <%= milestone.workOrderMilestoneCompletionDateString %>">
-                    <i class="fas fa-check" aria-label="Completed <%= milestone.workOrderMilestoneCompletionDateString %>"></i>
-                  </span>
-                <% } else { %>
-                  <span class="icon is-small">
-                    <i class="far fa-square has-text-grey" aria-label="Incomplete"></i>
-                  </span>
-                <% } %>
-              </div>
-              <div class="column">
-                <% if (milestone.workOrderMilestoneTypeId) { %>
-                  <strong><%= milestone.workOrderMilestoneType %></strong><br />
-                <% } %>
-                <% if (milestone.workOrderMilestoneDate === 0) { %>
-                  <span class="has-text-grey">(No Set Date)</span>
-                <% } else { %>
-                  <%= milestone.workOrderMilestoneDateString %>
-                <% } %>
-                <% if (milestone.workOrderMilestoneTime !== 0) { %>
-                  <%= milestone.workOrderMilestoneTimePeriodString %>
-                <% } %>
-                <br />
-                <span class="is-size-7"><%= milestone.workOrderMilestoneDescription %></span>
-              </div>
+      </div>
+      <% for (const milestone of workOrder.workOrderMilestones) { %>
+        <div class="panel-block is-block">
+          <div class="columns is-mobile">
+            <div class="column is-narrow">
+              <% if (milestone.workOrderMilestoneCompletionDate) { %>
+                <span class="icon is-small" data-tooltip="Completed <%= milestone.workOrderMilestoneCompletionDateString %>">
+                  <i class="fas fa-check" aria-label="Completed <%= milestone.workOrderMilestoneCompletionDateString %>"></i>
+                </span>
+              <% } else { %>
+                <span class="icon is-small">
+                  <i class="far fa-square has-text-grey" aria-label="Incomplete"></i>
+                </span>
+              <% } %>
+            </div>
+            <div class="column">
+              <% if (milestone.workOrderMilestoneTypeId) { %>
+                <strong><%= milestone.workOrderMilestoneType %></strong><br />
+              <% } %>
+              <% if (milestone.workOrderMilestoneDate === 0) { %>
+                <span class="has-text-grey">(No Set Date)</span>
+              <% } else { %>
+                <%= milestone.workOrderMilestoneDateString %>
+              <% } %>
+              <% if (milestone.workOrderMilestoneTime !== 0) { %>
+                <%= milestone.workOrderMilestoneTimePeriodString %>
+              <% } %>
+              <br />
+              <span class="is-size-7"><%= milestone.workOrderMilestoneDescription %></span>
             </div>
           </div>
-        <% } %>
-      </div>
+        </div>
+      <% } %>
     </div>
-  <% } %>
+  </div>
 </div>
 
 <%- include('_footerA'); -%>
