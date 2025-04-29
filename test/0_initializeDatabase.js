@@ -11,7 +11,7 @@ await describe('Initialize Database', async () => {
         }
         // eslint-disable-next-line security/detect-non-literal-fs-filename
         await fs.unlink(databasePath);
-        const success = await initializeDatabase();
+        const success = initializeDatabase();
         assert.ok(success);
     });
 });

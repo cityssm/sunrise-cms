@@ -10,7 +10,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:wwwProcess:${process.pid.toString().padEnd(5)}`);
 if (process.send === undefined) {
     // INITIALIZE THE DATABASE
-    await initializeDatabase();
+    initializeDatabase();
 }
 function onError(error) {
     if (error.syscall !== 'listen') {

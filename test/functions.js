@@ -6,107 +6,107 @@ import * as sqlFilterFunctions from '../helpers/functions.sqlFilters.js';
 import * as userFunctions from '../helpers/functions.user.js';
 await describe('functions.cache', async () => {
     const badId = -3;
-    // eslint-disable-next-line no-secrets/no-secrets
+    // eslint-disable-next-line no-secrets/no-secrets, @cspell/spellchecker
     const badName = 'qwertyuiopasdfghjklzxcvbnm';
     before(() => {
         cacheFunctions.clearCaches();
     });
     await describe('Burial Site Statuses', async () => {
-        await it('returns Burial Site Statuses', async () => {
+        await it('returns Burial Site Statuses', () => {
             cacheFunctions.clearCacheByTableName('BurialSiteStatuses');
-            const burialSiteStatuses = await cacheFunctions.getBurialSiteStatuses();
+            const burialSiteStatuses = cacheFunctions.getBurialSiteStatuses();
             assert.ok(burialSiteStatuses.length > 0);
             for (const burialSiteStatus of burialSiteStatuses) {
-                const byId = await cacheFunctions.getBurialSiteStatusById(burialSiteStatus.burialSiteStatusId);
+                const byId = cacheFunctions.getBurialSiteStatusById(burialSiteStatus.burialSiteStatusId);
                 assert.strictEqual(burialSiteStatus.burialSiteStatusId, byId?.burialSiteStatusId);
-                const byName = await cacheFunctions.getBurialSiteStatusByBurialSiteStatus(burialSiteStatus.burialSiteStatus);
+                const byName = cacheFunctions.getBurialSiteStatusByBurialSiteStatus(burialSiteStatus.burialSiteStatus);
                 assert.strictEqual(burialSiteStatus.burialSiteStatus, byName?.burialSiteStatus);
             }
         });
-        await it('returns undefined with a bad burialSiteStatusId', async () => {
-            const byBadId = await cacheFunctions.getBurialSiteStatusById(badId);
+        await it('returns undefined with a bad burialSiteStatusId', () => {
+            const byBadId = cacheFunctions.getBurialSiteStatusById(badId);
             assert.ok(byBadId === undefined);
         });
-        await it('returns undefined with a bad lotStatus', async () => {
-            const byBadName = await cacheFunctions.getBurialSiteStatusByBurialSiteStatus(badName);
+        await it('returns undefined with a bad lotStatus', () => {
+            const byBadName = cacheFunctions.getBurialSiteStatusByBurialSiteStatus(badName);
             assert.ok(byBadName === undefined);
         });
     });
     await describe('Burial Site Types', async () => {
-        await it('returns Burial Site Types', async () => {
+        await it('returns Burial Site Types', () => {
             cacheFunctions.clearCacheByTableName('BurialSiteTypes');
-            const burialSiteTypes = await cacheFunctions.getBurialSiteTypes();
+            const burialSiteTypes = cacheFunctions.getBurialSiteTypes();
             assert.ok(burialSiteTypes.length > 0);
             for (const burialSiteType of burialSiteTypes) {
-                const byId = await cacheFunctions.getBurialSiteTypeById(burialSiteType.burialSiteTypeId);
+                const byId = cacheFunctions.getBurialSiteTypeById(burialSiteType.burialSiteTypeId);
                 assert.strictEqual(burialSiteType.burialSiteTypeId, byId?.burialSiteTypeId);
-                const byName = await cacheFunctions.getBurialSiteTypesByBurialSiteType(burialSiteType.burialSiteType);
+                const byName = cacheFunctions.getBurialSiteTypesByBurialSiteType(burialSiteType.burialSiteType);
                 assert.strictEqual(burialSiteType.burialSiteType, byName?.burialSiteType);
             }
         });
-        await it('returns undefined with a bad burialSiteTypeId', async () => {
-            const byBadId = await cacheFunctions.getBurialSiteTypeById(badId);
+        await it('returns undefined with a bad burialSiteTypeId', () => {
+            const byBadId = cacheFunctions.getBurialSiteTypeById(badId);
             assert.ok(byBadId === undefined);
         });
-        await it('returns undefined with a bad lotType', async () => {
-            const byBadName = await cacheFunctions.getBurialSiteTypesByBurialSiteType(badName);
+        await it('returns undefined with a bad lotType', () => {
+            const byBadName = cacheFunctions.getBurialSiteTypesByBurialSiteType(badName);
             assert.ok(byBadName === undefined);
         });
     });
     await describe('Contract Types', async () => {
-        await it('returns Contract Types', async () => {
+        await it('returns Contract Types', () => {
             cacheFunctions.clearCacheByTableName('ContractTypes');
-            const contractTypes = await cacheFunctions.getContractTypes();
+            const contractTypes = cacheFunctions.getContractTypes();
             assert.ok(contractTypes.length > 0);
             for (const contractType of contractTypes) {
-                const byId = await cacheFunctions.getContractTypeById(contractType.contractTypeId);
+                const byId = cacheFunctions.getContractTypeById(contractType.contractTypeId);
                 assert.strictEqual(contractType.contractTypeId, byId?.contractTypeId);
-                const byName = await cacheFunctions.getContractTypeByContractType(contractType.contractType);
+                const byName = cacheFunctions.getContractTypeByContractType(contractType.contractType);
                 assert.strictEqual(contractType.contractType, byName?.contractType);
             }
         });
-        await it('returns undefined with a bad contractTypeId', async () => {
-            const byBadId = await cacheFunctions.getContractTypeById(badId);
+        await it('returns undefined with a bad contractTypeId', () => {
+            const byBadId = cacheFunctions.getContractTypeById(badId);
             assert.ok(byBadId === undefined);
         });
-        await it('returns undefined with a bad contractType', async () => {
-            const byBadName = await cacheFunctions.getContractTypeByContractType(badName);
+        await it('returns undefined with a bad contractType', () => {
+            const byBadName = cacheFunctions.getContractTypeByContractType(badName);
             assert.ok(byBadName === undefined);
         });
     });
     await describe('Work Order Types', async () => {
-        await it('returns Work Order Types', async () => {
+        await it('returns Work Order Types', () => {
             cacheFunctions.clearCacheByTableName('WorkOrderTypes');
-            const workOrderTypes = await cacheFunctions.getWorkOrderTypes();
+            const workOrderTypes = cacheFunctions.getWorkOrderTypes();
             assert.ok(workOrderTypes.length > 0);
             for (const workOrderType of workOrderTypes) {
-                const byId = await cacheFunctions.getWorkOrderTypeById(workOrderType.workOrderTypeId);
+                const byId = cacheFunctions.getWorkOrderTypeById(workOrderType.workOrderTypeId);
                 assert.strictEqual(workOrderType.workOrderTypeId, byId?.workOrderTypeId);
             }
         });
-        await it('returns undefined with a bad workOrderTypeId', async () => {
-            const byBadId = await cacheFunctions.getWorkOrderTypeById(badId);
+        await it('returns undefined with a bad workOrderTypeId', () => {
+            const byBadId = cacheFunctions.getWorkOrderTypeById(badId);
             assert.ok(byBadId === undefined);
         });
     });
     await describe('Work Order Milestone Types', async () => {
-        await it('returns Work Order Milestone Types', async () => {
+        await it('returns Work Order Milestone Types', () => {
             cacheFunctions.clearCacheByTableName('WorkOrderMilestoneTypes');
-            const workOrderMilestoneTypes = await cacheFunctions.getWorkOrderMilestoneTypes();
+            const workOrderMilestoneTypes = cacheFunctions.getWorkOrderMilestoneTypes();
             assert.ok(workOrderMilestoneTypes.length > 0);
             for (const workOrderMilestoneType of workOrderMilestoneTypes) {
-                const byId = await cacheFunctions.getWorkOrderMilestoneTypeById(workOrderMilestoneType.workOrderMilestoneTypeId);
+                const byId = cacheFunctions.getWorkOrderMilestoneTypeById(workOrderMilestoneType.workOrderMilestoneTypeId);
                 assert.strictEqual(workOrderMilestoneType.workOrderMilestoneTypeId, byId?.workOrderMilestoneTypeId);
-                const byName = await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneType.workOrderMilestoneType);
+                const byName = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneType.workOrderMilestoneType);
                 assert.strictEqual(workOrderMilestoneType.workOrderMilestoneType, byName?.workOrderMilestoneType);
             }
         });
-        await it('returns undefined with a bad workOrderMilestoneTypeId', async () => {
-            const byBadId = await cacheFunctions.getWorkOrderMilestoneTypeById(badId);
+        await it('returns undefined with a bad workOrderMilestoneTypeId', () => {
+            const byBadId = cacheFunctions.getWorkOrderMilestoneTypeById(badId);
             assert.ok(byBadId === undefined);
         });
-        await it('returns undefined with a bad workOrderMilestoneType', async () => {
-            const byBadName = await cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(badName);
+        await it('returns undefined with a bad workOrderMilestoneType', () => {
+            const byBadName = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(badName);
             assert.ok(byBadName === undefined);
         });
     });

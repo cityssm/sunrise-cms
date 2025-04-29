@@ -15,7 +15,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:wwwProcess:${process.pid.toString().padE
 
 if (process.send === undefined) {
   // INITIALIZE THE DATABASE
-  await initializeDatabase()
+  initializeDatabase()
 }
 
 interface ServerError extends Error {

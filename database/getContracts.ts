@@ -28,9 +28,9 @@ export interface GetContractsFilters {
   contractStartDateString?: DateString
   contractTime?: '' | 'current' | 'future' | 'past'
 
-  deceasedName?: string
-  contractTypeId?: number | string
   cemeteryId?: number | string
+  contractTypeId?: number | string
+  deceasedName?: string
 
   burialSiteName?: string
   burialSiteNameSearchType?: '' | 'endsWith' | 'startsWith'

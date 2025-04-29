@@ -12,7 +12,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 import version from '../version.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:www:${process.pid}`);
 // INITIALIZE THE DATABASE
-await initializeDatabase();
+initializeDatabase();
 const directoryName = path.dirname(fileURLToPath(import.meta.url));
 const processCount = Math.min(getConfigProperty('application.maximumProcesses'), os.cpus().length * 2);
 const applicationName = getConfigProperty('application.applicationName');

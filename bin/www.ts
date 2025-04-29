@@ -17,7 +17,7 @@ import version from '../version.js'
 const debug = Debug(`${DEBUG_NAMESPACE}:www:${process.pid}`)
 
 // INITIALIZE THE DATABASE
-await initializeDatabase()
+initializeDatabase()
 
 const directoryName = path.dirname(fileURLToPath(import.meta.url))
 
