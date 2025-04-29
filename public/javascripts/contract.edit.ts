@@ -4,7 +4,6 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { directionsOfArrival } from '../../data/dataLists.js'
 import type {
   BurialSite,
   BurialSiteStatus,
@@ -24,7 +23,7 @@ declare const exports: {
   burialSiteTypes: BurialSiteType[]
   cemeteries: Cemetery[]
 
-  directionsOfArrival: typeof directionsOfArrival
+  directionsOfArrival: string[]
 }
 ;(() => {
   const sunrise = exports.sunrise

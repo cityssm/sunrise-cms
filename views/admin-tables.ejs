@@ -33,31 +33,24 @@
       </div>
     </div>
     
-    <div class="tabs is-boxed">
-      <ul role="presentation">
-        <li class="is-active">
-          <a href="#tab--workOrderTypes">
-            <span class="icon is-small"><i class="fas fa-table" aria-hidden="true"></i></span>
-            <span>Work Order Types</span>
-          </a>
-        </li>
-        <li>
-          <a href="#tab--workOrderMilestoneTypes">
-            <span class="icon is-small"><i class="fas fa-table" aria-hidden="true"></i></span>
-            <span>Work Order Milestone Types</span>
-          </a>
-        </li>
-        <li>
-          <a href="#tab--burialSiteStatuses">
-            <span class="icon is-small"><i class="fas fa-table" aria-hidden="true"></i></span>
-            <span>Burial Site Statuses</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="tabs-container">
-      <div id="tab--workOrderTypes">
-        <h2 class="title is-4">Work Order Types</h2>
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <button class="button is-small is-toggle-button" data-tooltip="Toggle Work Order Types" type="button" aria-label="Toggle Work Order Types">
+                <span class="icon">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                </span>
+              </button>
+            </div>
+            <div class="level-item">
+              <h2 class="title is-5 has-text-white">Work Order Types</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-hidden">
         <table class="table is-striped is-hoverable has-sticky-header">
           <thead>
             <tr>
@@ -86,8 +79,26 @@
           <tbody id="container--workOrderTypes"></tbody>
         </table>
       </div>
-      <div class="is-hidden" id="tab--workOrderMilestoneTypes">
-        <h2 class="title is-4">Work Order Milestone Types</h2>
+    </div>
+
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <button class="button is-small is-toggle-button" data-tooltip="Toggle Work Order Milestone Types" type="button" aria-label="Toggle Work Order Milestone Types">
+                <span class="icon">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                </span>
+              </button>
+            </div>
+            <div class="level-item">
+              <h2 class="title is-5 has-text-white">Work Order Milestone Types</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-block is-hidden">
         <table class="table is-striped is-hoverable has-sticky-header">
           <thead>
             <tr>
@@ -116,8 +127,26 @@
           <tbody id="container--workOrderMilestoneTypes"></tbody>
         </table>
       </div>
-      <div class="is-hidden" id="tab--burialSiteStatuses">
-        <h2 class="title is-4">Burial Site Statuses</h2>
+    </div>
+
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <button class="button is-small is-toggle-button" data-tooltip="Toggle Burial Site Statuses" type="button" aria-label="Toggle Burial Site Statuses">
+                <span class="icon">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                </span>
+              </button>
+            </div>
+            <div class="level-item">
+              <h2 class="title is-5 has-text-white">Burial Site Statuses</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-block is-hidden">
         <table class="table is-striped is-hoverable has-sticky-header">
           <thead>
             <tr>
@@ -159,5 +188,9 @@
 </script>
 
 <script src="<%= urlPrefix %>/javascripts/tables.admin.js"></script>
+
+<script src="<%= urlPrefix %>/javascripts/burialSiteStatuses.admin.js"></script>
+<script src="<%= urlPrefix %>/javascripts/workOrderMilestoneTypes.admin.js"></script>
+<script src="<%= urlPrefix %>/javascripts/workOrderTypes.admin.js"></script>
 
 <%- include('_footerB'); -%>
