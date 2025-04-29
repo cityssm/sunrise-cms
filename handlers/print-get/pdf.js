@@ -20,7 +20,13 @@ export async function handler(request, response, next) {
     const reportData = await getReportData(printConfig, request.query);
     const reportPath = path.join('views', 'print', 'pdf', `${printName}.ejs`);
     function pdfCallbackFunction(pdf) {
-        response.setHeader('Content-Disposition', `${attachmentOrInline}; filename=${camelcase(printConfig?.title ?? 'export')}.pdf`);
+        let exportFileNameId = '';
+        if ((printConfig?.params.length ?? 0) > 0) {
+            // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
+            exportFileNameId = `-${request.query[printConfig?.params[0] ?? '']}`;
+        }
+        const exportFileName = `${camelcase(printConfig?.title ?? 'export')}${exportFileNameId}.pdf`;
+        response.setHeader('Content-Disposition', `${attachmentOrInline}; filename=${exportFileName}`);
         response.setHeader('Content-Type', 'application/pdf');
         response.send(pdf);
     }
@@ -32,8 +38,8 @@ export async function handler(request, response, next) {
         }
         const pdf = await convertHTMLToPDF(ejsData, {
             format: 'letter',
-            printBackground: true,
-            preferCSSPageSize: true
+            preferCSSPageSize: true,
+            printBackground: true
         }, {
             usePackagePuppeteer: true
         });

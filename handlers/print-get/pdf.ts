@@ -53,9 +53,18 @@ export async function handler(
   const reportPath = path.join('views', 'print', 'pdf', `${printName}.ejs`)
 
   function pdfCallbackFunction(pdf: Buffer): void {
+    let exportFileNameId = ''
+
+    if ((printConfig?.params.length ?? 0) > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
+      exportFileNameId = `-${request.query[printConfig?.params[0] ?? '']}`
+    }
+
+    const exportFileName = `${camelcase(printConfig?.title ?? 'export')}${exportFileNameId}.pdf`
+
     response.setHeader(
       'Content-Disposition',
-      `${attachmentOrInline}; filename=${camelcase(printConfig?.title ?? 'export')}.pdf`
+      `${attachmentOrInline}; filename=${exportFileName}`
     )
 
     response.setHeader('Content-Type', 'application/pdf')
@@ -73,13 +82,17 @@ export async function handler(
       return
     }
 
-    const pdf = await convertHTMLToPDF(ejsData, {
-      format: 'letter',
-      printBackground: true,
-      preferCSSPageSize: true
-    }, {
-      usePackagePuppeteer: true
-    })
+    const pdf = await convertHTMLToPDF(
+      ejsData,
+      {
+        format: 'letter',
+        preferCSSPageSize: true,
+        printBackground: true
+      },
+      {
+        usePackagePuppeteer: true
+      }
+    )
 
     pdfCallbackFunction(Buffer.from(pdf))
   }
