@@ -111,7 +111,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           <input name="workOrderMilestoneTypeId" type="hidden"
             value="${workOrderMilestoneType.workOrderMilestoneTypeId.toString()}" />
           <div class="field has-addons">
-            <div class="control">
+            <div class="control is-expanded">
               <input class="input"
                 name="workOrderMilestoneType" type="text"
                 value="${cityssm.escapeHTML(workOrderMilestoneType.workOrderMilestoneType)}"

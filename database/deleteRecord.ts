@@ -16,6 +16,7 @@ type RecordTable =
   | 'FeeCategories'
   | 'Fees'
   | 'FuneralHomes'
+  | 'IntermentContainerTypes'
   | 'WorkOrderComments'
   | 'WorkOrderMilestones'
   | 'WorkOrderMilestoneTypes'
@@ -35,6 +36,7 @@ const recordIdColumns = new Map<RecordTable, string>([
   ['FeeCategories', 'feeCategoryId'],
   ['Fees', 'feeId'],
   ['FuneralHomes', 'funeralHomeId'],
+  ['IntermentContainerTypes', 'intermentContainerTypeId'],
   ['WorkOrderComments', 'workOrderCommentId'],
   ['WorkOrderMilestones', 'workOrderMilestoneId'],
   ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],

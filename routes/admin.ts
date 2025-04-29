@@ -15,6 +15,7 @@ import handler_doAddContractTypeField from '../handlers/admin-post/doAddContract
 import handler_doAddContractTypePrint from '../handlers/admin-post/doAddContractTypePrint.js'
 import handler_doAddFee from '../handlers/admin-post/doAddFee.js'
 import handler_doAddFeeCategory from '../handlers/admin-post/doAddFeeCategory.js'
+import handler_doAddIntermentContainerType from '../handlers/admin-post/doAddIntermentContainerType.js'
 import handler_doAddWorkOrderMilestoneType from '../handlers/admin-post/doAddWorkOrderMilestoneType.js'
 import handler_doAddWorkOrderType from '../handlers/admin-post/doAddWorkOrderType.js'
 import handler_doBackupDatabase from '../handlers/admin-post/doBackupDatabase.js'
@@ -28,6 +29,7 @@ import handler_doDeleteContractTypeField from '../handlers/admin-post/doDeleteCo
 import handler_doDeleteContractTypePrint from '../handlers/admin-post/doDeleteContractTypePrint.js'
 import handler_doDeleteFee from '../handlers/admin-post/doDeleteFee.js'
 import handler_doDeleteFeeCategory from '../handlers/admin-post/doDeleteFeeCategory.js'
+import handler_doDeleteIntermentContainerType from '../handlers/admin-post/doDeleteIntermentContainerType.js'
 import handler_doDeleteWorkOrderMilestoneType from '../handlers/admin-post/doDeleteWorkOrderMilestoneType.js'
 import handler_doDeleteWorkOrderType from '../handlers/admin-post/doDeleteWorkOrderType.js'
 import handler_doMoveBurialSiteStatusDown from '../handlers/admin-post/doMoveBurialSiteStatusDown.js'
@@ -48,6 +50,8 @@ import handler_doMoveFeeCategoryDown from '../handlers/admin-post/doMoveFeeCateg
 import handler_doMoveFeeCategoryUp from '../handlers/admin-post/doMoveFeeCategoryUp.js'
 import handler_doMoveFeeDown from '../handlers/admin-post/doMoveFeeDown.js'
 import handler_doMoveFeeUp from '../handlers/admin-post/doMoveFeeUp.js'
+import handler_doMoveIntermentContainerTypeDown from '../handlers/admin-post/doMoveIntermentContainerTypeDown.js'
+import handler_doMoveIntermentContainerTypeUp from '../handlers/admin-post/doMoveIntermentContainerTypeUp.js'
 import handler_doMoveWorkOrderMilestoneTypeDown from '../handlers/admin-post/doMoveWorkOrderMilestoneTypeDown.js'
 import handler_doMoveWorkOrderMilestoneTypeUp from '../handlers/admin-post/doMoveWorkOrderMilestoneTypeUp.js'
 import handler_doMoveWorkOrderTypeDown from '../handlers/admin-post/doMoveWorkOrderTypeDown.js'
@@ -61,6 +65,7 @@ import handler_doUpdateContractTypeField from '../handlers/admin-post/doUpdateCo
 import handler_doUpdateFee from '../handlers/admin-post/doUpdateFee.js'
 import handler_doUpdateFeeAmount from '../handlers/admin-post/doUpdateFeeAmount.js'
 import handler_doUpdateFeeCategory from '../handlers/admin-post/doUpdateFeeCategory.js'
+import handler_doUpdateIntermentContainerType from '../handlers/admin-post/doUpdateIntermentContainerType.js'
 import handler_doUpdateWorkOrderMilestoneType from '../handlers/admin-post/doUpdateWorkOrderMilestoneType.js'
 import handler_doUpdateWorkOrderType from '../handlers/admin-post/doUpdateWorkOrderType.js'
 
@@ -186,10 +191,7 @@ router.post('/doDeleteWorkOrderType', handler_doDeleteWorkOrderType)
 
 // Config Tables - Work Order Milestone Types
 
-router.post(
-  '/doAddWorkOrderMilestoneType',
-  handler_doAddWorkOrderMilestoneType
-)
+router.post('/doAddWorkOrderMilestoneType', handler_doAddWorkOrderMilestoneType)
 
 router.post(
   '/doUpdateWorkOrderMilestoneType',
@@ -234,6 +236,30 @@ router.post('/doMoveCommittalTypeUp', handler_doMoveCommittalTypeUp)
 router.post('/doMoveCommittalTypeDown', handler_doMoveCommittalTypeDown)
 
 router.post('/doDeleteCommittalType', handler_doDeleteCommittalType)
+
+// Config Tables - Interment Container Types
+
+router.post('/doAddIntermentContainerType', handler_doAddIntermentContainerType)
+
+router.post(
+  '/doUpdateIntermentContainerType',
+  handler_doUpdateIntermentContainerType
+)
+
+router.post(
+  '/doMoveIntermentContainerTypeUp',
+  handler_doMoveIntermentContainerTypeUp
+)
+
+router.post(
+  '/doMoveIntermentContainerTypeDown',
+  handler_doMoveIntermentContainerTypeDown
+)
+
+router.post(
+  '/doDeleteIntermentContainerType',
+  handler_doDeleteIntermentContainerType
+)
 
 /*
  * Database Maintenance

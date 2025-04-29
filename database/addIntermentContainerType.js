@@ -10,7 +10,7 @@ export default function addIntermentContainerType(addForm, user) {
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(addForm.intermentContainerType, addForm.intermentContainerTypeKey ?? '', addForm.isCremationType === undefined ? 0 : 1, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run(addForm.intermentContainerType, addForm.intermentContainerTypeKey ?? '', addForm.isCremationType, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     database.close();
     clearCacheByTableName('IntermentContainerTypes');
     return result.lastInsertRowid;

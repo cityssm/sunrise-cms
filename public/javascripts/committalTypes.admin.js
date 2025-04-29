@@ -110,7 +110,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         <form>
           <input name="committalTypeId" type="hidden" value="${committalType.committalTypeId.toString()}" />
           <div class="field has-addons">
-            <div class="control">
+            <div class="control is-expanded">
               <input class="input" name="committalType" type="text"
                 value="${cityssm.escapeHTML(committalType.committalType)}"
                 aria-label="Committal Type" maxlength="100" required />

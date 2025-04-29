@@ -7,7 +7,7 @@ export default function handler(
   request: Request<
     unknown,
     unknown,
-    { committalTypeId: string; committalType: string }
+    { committalType: string; committalTypeId: string; }
   >,
   response: Response
 ): void {

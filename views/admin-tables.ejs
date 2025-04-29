@@ -48,10 +48,15 @@
               <h2 class="title is-5 has-text-white">Work Order Types</h2>
             </div>
           </div>
+          <div class="level-right">
+            <div class="level-item">
+              <i class="fas fa-hard-hat" aria-hidden="true"></i>
+            </div>
+          </div>
         </div>
       </div>
       <div class="panel-block is-hidden">
-        <table class="table is-striped is-hoverable has-sticky-header">
+        <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
           <thead>
             <tr>
               <th>Work Order Type</th>
@@ -96,10 +101,15 @@
               <h2 class="title is-5 has-text-white">Work Order Milestone Types</h2>
             </div>
           </div>
+          <div class="level-right">
+            <div class="level-item">
+              <i class="fas fa-hard-hat" aria-hidden="true"></i>
+            </div>
+          </div>
         </div>
       </div>
       <div class="panel-block is-block is-hidden">
-        <table class="table is-striped is-hoverable has-sticky-header">
+        <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
           <thead>
             <tr>
               <th>Work Order Milestone Type</th>
@@ -144,10 +154,15 @@
               <h2 class="title is-5 has-text-white">Committal Types</h2>
             </div>
           </div>
+          <div class="level-right">
+            <div class="level-item">
+              <i class="fas fa-file-contract" aria-hidden="true"></i>
+            </div>
+          </div>
         </div>
       </div>
       <div class="panel-block is-block is-hidden">
-        <table class="table is-striped is-hoverable has-sticky-header">
+        <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
           <thead>
             <tr>
               <th>Committal Type</th>
@@ -182,6 +197,68 @@
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
+              <button class="button is-small is-toggle-button" data-tooltip="Toggle Interment Container Types" type="button" aria-label="Toggle Interment Container Types">
+                <span class="icon">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                </span>
+              </button>
+            </div>
+            <div class="level-item">
+              <h2 class="title is-5 has-text-white">Interment Container Types</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <i class="fas fa-file-contract" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-block is-hidden">
+        <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+          <thead>
+            <tr>
+              <th>Interment Container Type</th>
+              <th>Is Cremated</th>
+              <th class="has-text-centered has-width-1">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <form id="form--addIntermentContainerType">
+                  <div class="field">
+                    <div class="control">
+                      <input class="input" name="intermentContainerType" type="text" maxlength="100" placeholder="New Interment Container Type" required />
+                    </div>
+                  </div>
+                </form>
+              </td>
+              <td>
+                <div class="select is-fullwidth">
+                  <select name="isCremationType" form="form--addIntermentContainerType">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                  </select>
+                </div>
+              </td>
+              <td>
+                <button class="button is-success has-tooltip-bottom" data-tooltip="Add Type" type="submit" form="form--addIntermentContainerType" aria-label="Add Type">
+                  <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody id="container--intermentContainerTypes"></tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
               <button class="button is-small is-toggle-button" data-tooltip="Toggle Burial Site Statuses" type="button" aria-label="Toggle Burial Site Statuses">
                 <span class="icon">
                   <i class="fas fa-plus" aria-hidden="true"></i>
@@ -192,10 +269,15 @@
               <h2 class="title is-5 has-text-white">Burial Site Statuses</h2>
             </div>
           </div>
+          <div class="level-right">
+            <div class="level-item">
+              <i class="fas fa-vector-square" aria-hidden="true"></i>
+            </div>
+          </div>
         </div>
       </div>
       <div class="panel-block is-block is-hidden">
-        <table class="table is-striped is-hoverable has-sticky-header">
+        <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
           <thead>
             <tr>
               <th>Burial Site Status</th>
@@ -241,6 +323,7 @@
 
 <script src="<%= urlPrefix %>/javascripts/burialSiteStatuses.admin.js"></script>
 <script src="<%= urlPrefix %>/javascripts/committalTypes.admin.js"></script>
+<script src="<%= urlPrefix %>/javascripts/intermentContainerTypes.admin.js"></script>
 <script src="<%= urlPrefix %>/javascripts/workOrderMilestoneTypes.admin.js"></script>
 <script src="<%= urlPrefix %>/javascripts/workOrderTypes.admin.js"></script>
 

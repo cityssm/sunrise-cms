@@ -110,7 +110,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         <form>
           <input name="burialSiteStatusId" type="hidden" value="${burialSiteStatus.burialSiteStatusId.toString()}" />
           <div class="field has-addons">
-            <div class="control">
+            <div class="control is-expanded">
               <input class="input" name="burialSiteStatus" type="text"
                 value="${cityssm.escapeHTML(burialSiteStatus.burialSiteStatus)}"
                 aria-label="Burial Site Status" maxlength="100" required />

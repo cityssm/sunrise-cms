@@ -6,8 +6,8 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 export interface AddForm {
   intermentContainerType: string
   intermentContainerTypeKey?: string
-  isCremationType?: string
-  orderNumber?: number
+  isCremationType: '0' | '1'
+  orderNumber?: number | string
 }
 
 export default function addIntermentContainerType(
@@ -29,7 +29,7 @@ export default function addIntermentContainerType(
     .run(
       addForm.intermentContainerType,
       addForm.intermentContainerTypeKey ?? '',
-      addForm.isCremationType === undefined ? 0 : 1,
+      addForm.isCremationType,
       addForm.orderNumber ?? -1,
       user.userName,
       rightNowMillis,

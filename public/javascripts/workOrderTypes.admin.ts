@@ -169,7 +169,7 @@ declare const bulmaJS: BulmaJS
         <form>
           <input name="workOrderTypeId" type="hidden" value="${workOrderType.workOrderTypeId.toString()}" />
           <div class="field has-addons">
-            <div class="control">
+            <div class="control is-expanded">
               <input class="input" name="workOrderType" type="text"
                 value="${cityssm.escapeHTML(workOrderType.workOrderType ?? '')}" maxlength="100" aria-label="Work Order Type" required />
             </div>
