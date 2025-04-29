@@ -3,15 +3,15 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
-export interface AddForm {
+export interface AddIntermentContainerTypeForm {
   intermentContainerType: string
   intermentContainerTypeKey?: string
-  isCremationType: '0' | '1'
+  isCremationType?: '0' | '1'
   orderNumber?: number | string
 }
 
 export default function addIntermentContainerType(
-  addForm: AddForm,
+  addForm: AddIntermentContainerTypeForm,
   user: User
 ): number {
   const database = sqlite(sunriseDB)
@@ -29,7 +29,7 @@ export default function addIntermentContainerType(
     .run(
       addForm.intermentContainerType,
       addForm.intermentContainerTypeKey ?? '',
-      addForm.isCremationType,
+      addForm.isCremationType ?? '0',
       addForm.orderNumber ?? -1,
       user.userName,
       rightNowMillis,

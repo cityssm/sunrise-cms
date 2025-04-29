@@ -1,7 +1,7 @@
-export interface AddForm {
+export interface AddIntermentContainerTypeForm {
     intermentContainerType: string;
     intermentContainerTypeKey?: string;
-    isCremationType: '0' | '1';
+    isCremationType?: '0' | '1';
     orderNumber?: number | string;
 }
-export default function addIntermentContainerType(addForm: AddForm, user: User): number;
+export default function addIntermentContainerType(addForm: AddIntermentContainerTypeForm, user: User): number;
