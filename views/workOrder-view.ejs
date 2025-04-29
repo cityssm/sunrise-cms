@@ -319,7 +319,7 @@
         <h2 class="panel-heading">Contract Milestones</h2>
         <% let hasContractMilestones = false; %>
         <% for (const contract of workOrder.workOrderContracts) { %>
-          <% if (contract.funeralDate !== null && contract.funeralDate >= workOrder.workOrderOpenDate && (workOrder.workOrderCloseDate === null || workOrderCloseDate >= contract.funeralDate)) { %>
+          <% if (contract.funeralDate !== null && contract.funeralDate >= workOrder.workOrderOpenDate && (workOrder.workOrderCloseDate === null || workOrder.workOrderCloseDate >= contract.funeralDate)) { %>
             <% hasContractMilestones = true; %>
             <div class="panel-block is-block">
               <strong>Funeral</strong><br />
