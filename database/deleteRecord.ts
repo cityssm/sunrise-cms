@@ -8,6 +8,7 @@ type RecordTable =
   | 'BurialSiteStatuses'
   | 'BurialSiteTypeFields'
   | 'BurialSiteTypes'
+  | 'CommittalTypes'
   | 'ContractComments'
   | 'Contracts'
   | 'ContractTypeFields'
@@ -26,6 +27,7 @@ const recordIdColumns = new Map<RecordTable, string>([
   ['BurialSiteStatuses', 'burialSiteStatusId'],
   ['BurialSiteTypeFields', 'burialSiteTypeFieldId'],
   ['BurialSiteTypes', 'burialSiteTypeId'],
+  ['CommittalTypes', 'committalTypeId'],
   ['ContractComments', 'contractCommentId'],
   ['Contracts', 'contractId'],
   ['ContractTypeFields', 'contractTypeFieldId'],

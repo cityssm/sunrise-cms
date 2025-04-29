@@ -9,6 +9,7 @@ import handler_tables from '../handlers/admin-get/tables.js'
 import handler_doAddBurialSiteStatus from '../handlers/admin-post/doAddBurialSiteStatus.js'
 import handler_doAddBurialSiteType from '../handlers/admin-post/doAddBurialSiteType.js'
 import handler_doAddBurialSiteTypeField from '../handlers/admin-post/doAddBurialSiteTypeField.js'
+import handler_doAddCommittalType from '../handlers/admin-post/doAddCommittalType.js'
 import handler_doAddContractType from '../handlers/admin-post/doAddContractType.js'
 import handler_doAddContractTypeField from '../handlers/admin-post/doAddContractTypeField.js'
 import handler_doAddContractTypePrint from '../handlers/admin-post/doAddContractTypePrint.js'
@@ -21,6 +22,7 @@ import handler_doCleanupDatabase from '../handlers/admin-post/doCleanupDatabase.
 import handler_doDeleteBurialSiteStatus from '../handlers/admin-post/doDeleteBurialSiteStatus.js'
 import handler_doDeleteBurialSiteType from '../handlers/admin-post/doDeleteBurialSiteType.js'
 import handler_doDeleteBurialSiteTypeField from '../handlers/admin-post/doDeleteBurialSiteTypeField.js'
+import handler_doDeleteCommittalType from '../handlers/admin-post/doDeleteCommittalType.js'
 import handler_doDeleteContractType from '../handlers/admin-post/doDeleteContractType.js'
 import handler_doDeleteContractTypeField from '../handlers/admin-post/doDeleteContractTypeField.js'
 import handler_doDeleteContractTypePrint from '../handlers/admin-post/doDeleteContractTypePrint.js'
@@ -34,6 +36,8 @@ import handler_doMoveBurialSiteTypeDown from '../handlers/admin-post/doMoveBuria
 import handler_doMoveBurialSiteTypeFieldDown from '../handlers/admin-post/doMoveBurialSiteTypeFieldDown.js'
 import handler_doMoveBurialSiteTypeFieldUp from '../handlers/admin-post/doMoveBurialSiteTypeFieldUp.js'
 import handler_doMoveBurialSiteTypeUp from '../handlers/admin-post/doMoveBurialSiteTypeUp.js'
+import handler_doMoveCommittalTypeDown from '../handlers/admin-post/doMoveCommittalTypeDown.js'
+import handler_doMoveCommittalTypeUp from '../handlers/admin-post/doMoveCommittalTypeUp.js'
 import handler_doMoveContractTypeDown from '../handlers/admin-post/doMoveContractTypeDown.js'
 import handler_doMoveContractTypeFieldDown from '../handlers/admin-post/doMoveContractTypeFieldDown.js'
 import handler_doMoveContractTypeFieldUp from '../handlers/admin-post/doMoveContractTypeFieldUp.js'
@@ -49,8 +53,9 @@ import handler_doMoveWorkOrderMilestoneTypeUp from '../handlers/admin-post/doMov
 import handler_doMoveWorkOrderTypeDown from '../handlers/admin-post/doMoveWorkOrderTypeDown.js'
 import handler_doMoveWorkOrderTypeUp from '../handlers/admin-post/doMoveWorkOrderTypeUp.js'
 import handler_doUpdateBurialSiteStatus from '../handlers/admin-post/doUpdateBurialSiteStatus.js'
-import handler_updateBurialSiteType from '../handlers/admin-post/doUpdateBurialSiteType.js'
+import handler_doUpdateBurialSiteType from '../handlers/admin-post/doUpdateBurialSiteType.js'
 import handler_doUpdateBurialSiteTypeField from '../handlers/admin-post/doUpdateBurialSiteTypeField.js'
+import handler_doUpdateCommittalType from '../handlers/admin-post/doUpdateCommittalType.js'
 import handler_doUpdateContractType from '../handlers/admin-post/doUpdateContractType.js'
 import handler_doUpdateContractTypeField from '../handlers/admin-post/doUpdateContractTypeField.js'
 import handler_doUpdateFee from '../handlers/admin-post/doUpdateFee.js'
@@ -137,7 +142,7 @@ router.get('/burialSiteTypes', handler_burialSiteTypes)
 
 router.post('/doAddBurialSiteType', handler_doAddBurialSiteType)
 
-router.post('/doUpdateBurialSiteType', handler_updateBurialSiteType)
+router.post('/doUpdateBurialSiteType', handler_doUpdateBurialSiteType)
 
 router.post('/doMoveBurialSiteTypeUp', handler_doMoveBurialSiteTypeUp)
 
@@ -183,7 +188,6 @@ router.post('/doDeleteWorkOrderType', handler_doDeleteWorkOrderType)
 
 router.post(
   '/doAddWorkOrderMilestoneType',
-
   handler_doAddWorkOrderMilestoneType
 )
 
@@ -218,6 +222,18 @@ router.post('/doMoveBurialSiteStatusUp', handler_doMoveBurialSiteStatusUp)
 router.post('/doMoveBurialSiteStatusDown', handler_doMoveBurialSiteStatusDown)
 
 router.post('/doDeleteBurialSiteStatus', handler_doDeleteBurialSiteStatus)
+
+// Config Tables - Committal Types
+
+router.post('/doAddCommittalType', handler_doAddCommittalType)
+
+router.post('/doUpdateCommittalType', handler_doUpdateCommittalType)
+
+router.post('/doMoveCommittalTypeUp', handler_doMoveCommittalTypeUp)
+
+router.post('/doMoveCommittalTypeDown', handler_doMoveCommittalTypeDown)
+
+router.post('/doDeleteCommittalType', handler_doDeleteCommittalType)
 
 /*
  * Database Maintenance

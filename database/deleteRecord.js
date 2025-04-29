@@ -6,6 +6,7 @@ const recordIdColumns = new Map([
     ['BurialSiteStatuses', 'burialSiteStatusId'],
     ['BurialSiteTypeFields', 'burialSiteTypeFieldId'],
     ['BurialSiteTypes', 'burialSiteTypeId'],
+    ['CommittalTypes', 'committalTypeId'],
     ['ContractComments', 'contractCommentId'],
     ['Contracts', 'contractId'],
     ['ContractTypeFields', 'contractTypeFieldId'],

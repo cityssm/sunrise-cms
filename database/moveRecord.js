@@ -5,6 +5,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 const recordIdColumns = new Map([
     ['BurialSiteStatuses', 'burialSiteStatusId'],
     ['BurialSiteTypes', 'burialSiteTypeId'],
+    ['CommittalTypes', 'committalTypeId'],
     ['ContractTypes', 'contractTypeId'],
     ['FeeCategories', 'feeCategoryId'],
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],

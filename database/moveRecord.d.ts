@@ -1,4 +1,4 @@
-type RecordTable = 'BurialSiteStatuses' | 'BurialSiteTypes' | 'ContractTypes' | 'FeeCategories' | 'WorkOrderMilestoneTypes' | 'WorkOrderTypes';
+type RecordTable = 'BurialSiteStatuses' | 'BurialSiteTypes' | 'CommittalTypes' | 'ContractTypes' | 'FeeCategories' | 'WorkOrderMilestoneTypes' | 'WorkOrderTypes';
 export declare function moveRecordDown(recordTable: RecordTable, recordId: number | string): boolean;
 export declare function moveRecordDownToBottom(recordTable: RecordTable, recordId: number | string): boolean;
 export declare function moveRecordUp(recordTable: RecordTable, recordId: number | string): boolean;

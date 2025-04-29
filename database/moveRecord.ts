@@ -8,6 +8,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 type RecordTable =
   | 'BurialSiteStatuses'
   | 'BurialSiteTypes'
+  | 'CommittalTypes'
   | 'ContractTypes'
   | 'FeeCategories'
   | 'WorkOrderMilestoneTypes'
@@ -16,6 +17,7 @@ type RecordTable =
 const recordIdColumns = new Map<RecordTable, string>([
   ['BurialSiteStatuses', 'burialSiteStatusId'],
   ['BurialSiteTypes', 'burialSiteTypeId'],
+  ['CommittalTypes', 'committalTypeId'],
   ['ContractTypes', 'contractTypeId'],
   ['FeeCategories', 'feeCategoryId'],
   ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],

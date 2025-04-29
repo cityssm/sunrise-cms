@@ -134,6 +134,54 @@
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
+              <button class="button is-small is-toggle-button" data-tooltip="Toggle Committal Types" type="button" aria-label="Toggle Committal Types">
+                <span class="icon">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                </span>
+              </button>
+            </div>
+            <div class="level-item">
+              <h2 class="title is-5 has-text-white">Committal Types</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-block is-hidden">
+        <table class="table is-striped is-hoverable has-sticky-header">
+          <thead>
+            <tr>
+              <th>Committal Type</th>
+              <th class="has-text-centered has-width-1">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2">
+                <form id="form--addCommittalType">
+                  <div class="field has-addons">
+                    <div class="control is-expanded">
+                      <input class="input" name="committalType" type="text" maxlength="100" placeholder="New Committal Type" required />
+                    </div>
+                    <div class="control">
+                      <button class="button is-success has-tooltip-bottom" data-tooltip="Add Type" type="submit" aria-label="Add Type">
+                        <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+          <tbody id="container--committalTypes"></tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
               <button class="button is-small is-toggle-button" data-tooltip="Toggle Burial Site Statuses" type="button" aria-label="Toggle Burial Site Statuses">
                 <span class="icon">
                   <i class="fas fa-plus" aria-hidden="true"></i>
@@ -182,14 +230,17 @@
 <%- include('_footerA'); -%>
 
 <script>
-  exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
-  exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
   exports.burialSiteStatuses = <%- JSON.stringify(burialSiteStatuses) %>;
+  exports.committalTypes = <%- JSON.stringify(committalTypes) %>;
+  exports.intermentContainerTypes = <%- JSON.stringify(intermentContainerTypes) %>;
+  exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
+  exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
 </script>
 
 <script src="<%= urlPrefix %>/javascripts/tables.admin.js"></script>
 
 <script src="<%= urlPrefix %>/javascripts/burialSiteStatuses.admin.js"></script>
+<script src="<%= urlPrefix %>/javascripts/committalTypes.admin.js"></script>
 <script src="<%= urlPrefix %>/javascripts/workOrderMilestoneTypes.admin.js"></script>
 <script src="<%= urlPrefix %>/javascripts/workOrderTypes.admin.js"></script>
 
