@@ -152,6 +152,10 @@ span.button.is-static {
   margin-left: 0.5em;
 }
 
+.is-block.is-hidden {
+  display: none !important;
+}
+
 /*
  * Form elements
  */
