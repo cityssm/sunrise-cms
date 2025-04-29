@@ -4,6 +4,7 @@ import getCemeteries from '../../database/getCemeteries.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getCemeterySVGs } from '../../helpers/images.helpers.js'
 import type { Cemetery } from '../../types/record.types.js'
+import { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js'
 
 export default async function handler(
   _request: Request,
@@ -21,7 +22,8 @@ export default async function handler(
     cemeteryPhoneNumber: '',
     cemeteryPostalCode: '',
 
-    childCemeteries: []
+    childCemeteries: [],
+    directionsOfArrival: defaultDirectionsOfArrival
   }
 
   const cemeteries = getCemeteries()

@@ -2,7 +2,11 @@ import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-export interface AddCemeteryForm {
+import updateCemeteryDirectionsOfArrival, {
+  type UpdateCemeteryDirectionsOfArrivalForm
+} from './updateCemeteryDirectionsOfArrival.js'
+
+export type AddCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
   cemeteryDescription: string
   cemeteryKey: string
   cemeteryName: string
@@ -62,7 +66,11 @@ export default function addCemetery(
       rightNowMillis
     )
 
+  const cemeteryId = result.lastInsertRowid as number
+
+  updateCemeteryDirectionsOfArrival(cemeteryId, addForm, database)
+
   database.close()
 
-  return result.lastInsertRowid as number
+  return cemeteryId
 }

@@ -1,39 +1,31 @@
 import sqlite from 'better-sqlite3'
 
-import { directionsOfArrival } from '../data/dataLists.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-export type UpdateCemeteryForm = Partial<
-  Record<
-    `directionOfArrival_${(typeof directionsOfArrival)[number]}`,
-    (typeof directionsOfArrival)[number]
-  >
-> &
-  Partial<
-    Record<
-      `directionOfArrivalDescription_${(typeof directionsOfArrival)[number]}`,
-      string
-    >
-  > & {
-    cemeteryId: string
+import updateCemeteryDirectionsOfArrival, {
+  type UpdateCemeteryDirectionsOfArrivalForm
+} from './updateCemeteryDirectionsOfArrival.js'
 
-    cemeteryDescription: string
-    cemeteryKey: string
-    cemeteryName: string
-    parentCemeteryId: string
+export type UpdateCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
+  cemeteryId: string
 
-    cemeteryAddress1: string
-    cemeteryAddress2: string
-    cemeteryCity: string
-    cemeteryPostalCode: string
-    cemeteryProvince: string
+  cemeteryDescription: string
+  cemeteryKey: string
+  cemeteryName: string
+  parentCemeteryId: string
 
-    cemeteryPhoneNumber: string
+  cemeteryAddress1: string
+  cemeteryAddress2: string
+  cemeteryCity: string
+  cemeteryPostalCode: string
+  cemeteryProvince: string
 
-    cemeteryLatitude: string
-    cemeteryLongitude: string
-    cemeterySvg: string
-  }
+  cemeteryPhoneNumber: string
+
+  cemeteryLatitude: string
+  cemeteryLongitude: string
+  cemeterySvg: string
+}
 
 /**
  * Updates a cemetery in the database.
@@ -94,30 +86,7 @@ export default function updateCemetery(
       updateForm.cemeteryId
     )
 
-  database
-    .prepare(
-      `delete from CemeteryDirectionsOfArrival
-      where cemeteryId = ?`
-    )
-    .run(updateForm.cemeteryId)
-
-  for (const direction of directionsOfArrival) {
-    const directionDescriptionName = `directionOfArrivalDescription_${direction}`
-
-    if (directionDescriptionName in updateForm) {
-      database
-        .prepare(
-          `insert into CemeteryDirectionsOfArrival (
-            cemeteryId, directionOfArrival, directionOfArrivalDescription)
-            values (?, ?, ?)`
-        )
-        .run(
-          updateForm.cemeteryId,
-          direction,
-          updateForm[directionDescriptionName] ?? ''
-        )
-    }
-  }
+  updateCemeteryDirectionsOfArrival(updateForm.cemeteryId, updateForm, database)
 
   database.close()
 

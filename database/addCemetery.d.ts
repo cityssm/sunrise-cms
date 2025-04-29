@@ -1,4 +1,5 @@
-export interface AddCemeteryForm {
+import { type UpdateCemeteryDirectionsOfArrivalForm } from './updateCemeteryDirectionsOfArrival.js';
+export type AddCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
     cemeteryDescription: string;
     cemeteryKey: string;
     cemeteryName: string;
@@ -12,5 +13,5 @@ export interface AddCemeteryForm {
     cemeteryPostalCode: string;
     cemeteryProvince: string;
     cemeteryPhoneNumber: string;
-}
+};
 export default function addCemetery(addForm: AddCemeteryForm, user: User): number;

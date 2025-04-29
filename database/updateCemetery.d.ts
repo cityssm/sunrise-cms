@@ -1,5 +1,5 @@
-import { directionsOfArrival } from '../data/dataLists.js';
-export type UpdateCemeteryForm = Partial<Record<`directionOfArrival_${(typeof directionsOfArrival)[number]}`, (typeof directionsOfArrival)[number]>> & Partial<Record<`directionOfArrivalDescription_${(typeof directionsOfArrival)[number]}`, string>> & {
+import { type UpdateCemeteryDirectionsOfArrivalForm } from './updateCemeteryDirectionsOfArrival.js';
+export type UpdateCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
     cemeteryId: string;
     cemeteryDescription: string;
     cemeteryKey: string;

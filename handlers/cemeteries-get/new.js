@@ -1,6 +1,7 @@
 import getCemeteries from '../../database/getCemeteries.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getCemeterySVGs } from '../../helpers/images.helpers.js';
+import { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js';
 export default async function handler(_request, response) {
     const cemetery = {
         cemeteryCity: getConfigProperty('settings.cityDefault'),
@@ -12,7 +13,8 @@ export default async function handler(_request, response) {
         cemeteryName: '',
         cemeteryPhoneNumber: '',
         cemeteryPostalCode: '',
-        childCemeteries: []
+        childCemeteries: [],
+        directionsOfArrival: defaultDirectionsOfArrival
     };
     const cemeteries = getCemeteries();
     const cemeterySVGs = await getCemeterySVGs();
