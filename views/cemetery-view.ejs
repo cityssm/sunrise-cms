@@ -53,8 +53,10 @@
             href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>/edit"
             accesskey="e">
             <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-            <span class="is-hidden-mobile">Switch to Edit Mode</span>
-            <span class="is-hidden-tablet">Edit</span>
+            <span>
+              Edit
+              <span class="is-hidden-mobile">Cemetery</span>
+            </span>
           </a>
         </div>
       <% } %>
@@ -139,7 +141,7 @@
         <% } else if (cemetery.parentCemeteryLatitude && cemetery.parentCemeteryLongitude) { %>
           <div class="message is-info">
             <p class="message-body">
-              <strong>Coordinates not available for this child cemtery.</strong><br />
+              <strong>Coordinates not available for this child cemetery.</strong><br />
               Coordinates for the parent cemetery are shown instead.
             </p>
           </div>

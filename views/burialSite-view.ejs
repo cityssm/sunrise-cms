@@ -48,8 +48,10 @@
           href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/edit"
           accesskey="e">
           <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-          <span class="is-hidden-mobile">Switch to Edit Mode</span>
-          <span class="is-hidden-tablet">Edit</span>
+          <span>
+            Edit
+            <span class="is-hidden-mobile">Burial Site</span>
+          </span>
         </a>
       <% } %>
     </div>
@@ -76,7 +78,11 @@
         </p>
         <p>
           <strong>Status</strong><br />
-          <%= burialSite.burialSiteStatus %>
+          <% if (burialSite.burialSiteStatusId === null) { %>
+            <span class="has-text-grey">(No Status)</span>
+          <% } else { %>
+            <%= burialSite.burialSiteStatus %>
+          <% } %>
         </p>
       </div>
       <% if (burialSite.burialSiteFields.length > 0) { %>
