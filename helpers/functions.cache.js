@@ -1,5 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable perfectionist/sort-modules */
 import cluster from 'node:cluster';
 import Debug from 'debug';
 import getBurialSiteStatusesFromDatabase from '../database/getBurialSiteStatuses.js';

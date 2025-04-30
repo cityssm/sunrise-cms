@@ -1,6 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable perfectionist/sort-modules */
-
 import cluster from 'node:cluster'
 
 import Debug from 'debug'
@@ -31,7 +28,9 @@ import type {
 
 import { getConfigProperty } from './config.helpers.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:functions.cache:${process.pid.toString().padEnd(5)}`)
+const debug = Debug(
+  `${DEBUG_NAMESPACE}:functions.cache:${process.pid.toString().padEnd(5)}`
+)
 
 /*
  * Burial Site Statuses
@@ -306,21 +305,21 @@ export function preloadCaches(): void {
 }
 
 export const cacheTableNames = [
-  'BurialSiteStatuses'
-  , 'BurialSiteTypeFields'
-  , 'BurialSiteTypes'
-  , 'CommittalTypes'
-  , 'ContractTypeFields'
-  , 'ContractTypePrints'
-  , 'ContractTypes'
-  , 'FeeCategories'
-  , 'Fees'
-  , 'IntermentContainerTypes'
-  , 'WorkOrderMilestoneTypes'
-  , 'WorkOrderTypes'
+  'BurialSiteStatuses',
+  'BurialSiteTypeFields',
+  'BurialSiteTypes',
+  'CommittalTypes',
+  'ContractTypeFields',
+  'ContractTypePrints',
+  'ContractTypes',
+  'FeeCategories',
+  'Fees',
+  'IntermentContainerTypes',
+  'WorkOrderMilestoneTypes',
+  'WorkOrderTypes'
 ] as const
 
-export type CacheTableNames = typeof cacheTableNames[number]
+export type CacheTableNames = (typeof cacheTableNames)[number]
 
 export function clearCacheByTableName(
   tableName: CacheTableNames,
