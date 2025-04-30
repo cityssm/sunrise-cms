@@ -94,7 +94,7 @@
     "axe-core": "^4.10.3",
     "cypress": "^14.3.2",
     "cypress-axe": "^1.6.0",
-    "eslint-config-cityssm": "^22.2.2",
+    "eslint-config-cityssm": "^23.0.1",
     "nodemon": "^3.1.10",
     "prettier-config-cityssm": "^1.0.0"
   },
