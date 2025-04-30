@@ -13,13 +13,17 @@ const recordNameIdColumns = new Map([
 ]);
 export function updateRecord(recordTable, recordId, recordName, user) {
     const database = sqlite(sunriseDB);
+    const columnNames = recordNameIdColumns.get(recordTable);
+    if (columnNames === undefined) {
+        throw new Error(`Invalid record table: ${recordTable}`);
+    }
     const result = database
         .prepare(`update ${recordTable}
-        set ${recordNameIdColumns.get(recordTable)[0]} = ?,
+        set ${columnNames[0]} = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and ${recordNameIdColumns.get(recordTable)[1]} = ?`)
+        and ${columnNames[1]} = ?`)
         .run(recordName, user.userName, Date.now(), recordId);
     database.close();
     clearCacheByTableName(recordTable);

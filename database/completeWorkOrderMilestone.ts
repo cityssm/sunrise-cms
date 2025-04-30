@@ -1,4 +1,6 @@
 import {
+  type DateString,
+  type TimeString,
   dateStringToInteger,
   dateToInteger,
   dateToTimeInteger,
@@ -10,9 +12,9 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface CompleteWorkOrderMilestoneForm {
   workOrderMilestoneId: number | string
-  
-  workOrderMilestoneCompletionDateString?: string
-  workOrderMilestoneCompletionTimeString?: string
+
+  workOrderMilestoneCompletionDateString?: '' | DateString
+  workOrderMilestoneCompletionTimeString?: '' | TimeString
 }
 
 export default function completeWorkOrderMilestone(
@@ -22,6 +24,20 @@ export default function completeWorkOrderMilestone(
   const rightNow = new Date()
 
   const database = sqlite(sunriseDB)
+
+  const completionDate =
+    (milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''
+      ? dateToInteger(rightNow)
+      : dateStringToInteger(
+          milestoneForm.workOrderMilestoneCompletionDateString as DateString
+        )
+
+  const completionTime =
+    (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
+      ? dateToTimeInteger(rightNow)
+      : timeStringToInteger(
+          milestoneForm.workOrderMilestoneCompletionTimeString as TimeString
+        )
 
   const result = database
     .prepare(
@@ -33,16 +49,8 @@ export default function completeWorkOrderMilestone(
         where workOrderMilestoneId = ?`
     )
     .run(
-      (milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''
-        ? dateToInteger(rightNow)
-        : dateStringToInteger(
-            milestoneForm.workOrderMilestoneCompletionDateString!
-          ),
-      (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
-        ? dateToTimeInteger(rightNow)
-        : timeStringToInteger(
-            milestoneForm.workOrderMilestoneCompletionTimeString!
-          ),
+      completionDate,
+      completionTime,
       user.userName,
       rightNow.getTime(),
       milestoneForm.workOrderMilestoneId

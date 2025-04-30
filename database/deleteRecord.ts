@@ -1,7 +1,11 @@
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
-import { clearCacheByTableName } from '../helpers/functions.cache.js'
+import {
+  CacheTableNames,
+  cacheTableNames,
+  clearCacheByTableName
+} from '../helpers/functions.cache.js'
 
 type RecordTable =
   | 'BurialSiteComments'
@@ -73,7 +77,7 @@ export function deleteRecord(
       `update ${recordTable}
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
-        where ${recordIdColumns.get(recordTable)!} = ?
+        where ${recordIdColumns.get(recordTable)} = ?
         and recordDelete_timeMillis is null`
     )
     .run(user.userName, rightNowMillis, recordId)
@@ -84,7 +88,7 @@ export function deleteRecord(
         `update ${relatedTable}
           set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
-          where ${recordIdColumns.get(recordTable)!} = ?
+          where ${recordIdColumns.get(recordTable)} = ?
           and recordDelete_timeMillis is null`
       )
       .run(user.userName, rightNowMillis, recordId)
@@ -92,7 +96,10 @@ export function deleteRecord(
 
   database.close()
 
-  clearCacheByTableName(recordTable)
+  // Clear cache for tables that are cached
+  if (cacheTableNames.includes(recordTable as CacheTableNames)) {
+    clearCacheByTableName(recordTable as CacheTableNames)
+  }
 
   return result.changes > 0
 }

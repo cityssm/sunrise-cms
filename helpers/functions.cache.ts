@@ -305,19 +305,22 @@ export function preloadCaches(): void {
   getWorkOrderMilestoneTypes()
 }
 
-type CacheTableNames =
-  | 'BurialSiteStatuses'
-  | 'BurialSiteTypeFields'
-  | 'BurialSiteTypes'
-  | 'CommittalTypes'
-  | 'ContractTypeFields'
-  | 'ContractTypePrints'
-  | 'ContractTypes'
-  | 'FeeCategories'
-  | 'Fees'
-  | 'IntermentContainerTypes'
-  | 'WorkOrderMilestoneTypes'
-  | 'WorkOrderTypes'
+export const cacheTableNames = [
+  'BurialSiteStatuses'
+  , 'BurialSiteTypeFields'
+  , 'BurialSiteTypes'
+  , 'CommittalTypes'
+  , 'ContractTypeFields'
+  , 'ContractTypePrints'
+  , 'ContractTypes'
+  , 'FeeCategories'
+  , 'Fees'
+  , 'IntermentContainerTypes'
+  , 'WorkOrderMilestoneTypes'
+  , 'WorkOrderTypes'
+] as const
+
+export type CacheTableNames = typeof cacheTableNames[number]
 
 export function clearCacheByTableName(
   tableName: CacheTableNames,

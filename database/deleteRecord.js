@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import { clearCacheByTableName } from '../helpers/functions.cache.js';
+import { cacheTableNames, clearCacheByTableName } from '../helpers/functions.cache.js';
 const recordIdColumns = new Map([
     ['BurialSiteComments', 'burialSiteCommentId'],
     ['BurialSiteStatuses', 'burialSiteStatusId'],
@@ -55,6 +55,9 @@ export function deleteRecord(recordTable, recordId, user) {
             .run(user.userName, rightNowMillis, recordId);
     }
     database.close();
-    clearCacheByTableName(recordTable);
+    // Clear cache for tables that are cached
+    if (cacheTableNames.includes(recordTable)) {
+        clearCacheByTableName(recordTable);
+    }
     return result.changes > 0;
 }

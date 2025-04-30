@@ -4,6 +4,12 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function completeWorkOrderMilestone(milestoneForm, user) {
     const rightNow = new Date();
     const database = sqlite(sunriseDB);
+    const completionDate = (milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''
+        ? dateToInteger(rightNow)
+        : dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString);
+    const completionTime = (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
+        ? dateToTimeInteger(rightNow)
+        : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString);
     const result = database
         .prepare(`update WorkOrderMilestones
         set workOrderMilestoneCompletionDate = ?,
@@ -11,11 +17,7 @@ export default function completeWorkOrderMilestone(milestoneForm, user) {
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where workOrderMilestoneId = ?`)
-        .run((milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''
-        ? dateToInteger(rightNow)
-        : dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString), (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
-        ? dateToTimeInteger(rightNow)
-        : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString), user.userName, rightNow.getTime(), milestoneForm.workOrderMilestoneId);
+        .run(completionDate, completionTime, user.userName, rightNow.getTime(), milestoneForm.workOrderMilestoneId);
     database.close();
     return result.changes > 0;
 }

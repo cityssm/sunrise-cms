@@ -170,6 +170,20 @@ export function preloadCaches() {
     getWorkOrderTypes();
     getWorkOrderMilestoneTypes();
 }
+export const cacheTableNames = [
+    'BurialSiteStatuses',
+    'BurialSiteTypeFields',
+    'BurialSiteTypes',
+    'CommittalTypes',
+    'ContractTypeFields',
+    'ContractTypePrints',
+    'ContractTypes',
+    'FeeCategories',
+    'Fees',
+    'IntermentContainerTypes',
+    'WorkOrderMilestoneTypes',
+    'WorkOrderTypes'
+];
 export function clearCacheByTableName(tableName, relayMessage = true) {
     switch (tableName) {
         case 'BurialSiteStatuses': {

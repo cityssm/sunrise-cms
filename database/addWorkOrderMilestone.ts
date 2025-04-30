@@ -1,4 +1,6 @@
 import {
+  type DateString,
+  type TimeString,
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
@@ -10,13 +12,13 @@ export interface AddWorkOrderMilestoneForm {
   workOrderId: number | string
   workOrderMilestoneTypeId: number | string
 
-  workOrderMilestoneDateString: string
-  workOrderMilestoneTimeString?: string
+  workOrderMilestoneDateString: '' | DateString
+  workOrderMilestoneTimeString?: '' | TimeString
 
   workOrderMilestoneDescription: string
 
-  workOrderMilestoneCompletionDateString?: string
-  workOrderMilestoneCompletionTimeString?: string
+  workOrderMilestoneCompletionDateString?: '' | DateString
+  workOrderMilestoneCompletionTimeString?: '' | TimeString
 }
 
 export default function addWorkOrderMilestone(
@@ -48,17 +50,19 @@ export default function addWorkOrderMilestone(
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
       (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
         ? 0
-        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString!),
+        : timeStringToInteger(
+            milestoneForm.workOrderMilestoneTimeString as TimeString
+          ),
       milestoneForm.workOrderMilestoneDescription,
       (milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''
         ? undefined
         : dateStringToInteger(
-            milestoneForm.workOrderMilestoneCompletionDateString!
+            milestoneForm.workOrderMilestoneCompletionDateString as DateString
           ),
       (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
         ? undefined
         : timeStringToInteger(
-            milestoneForm.workOrderMilestoneCompletionTimeString!
+            milestoneForm.workOrderMilestoneCompletionTimeString as TimeString
           ),
       user.userName,
       rightNowMillis,
