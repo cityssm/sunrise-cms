@@ -21,12 +21,12 @@ export default function addOrUpdateBurialSiteField(
     .prepare(
       `update BurialSiteFields
         set fieldValue = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?,
-        recordDelete_userName = null,
-        recordDelete_timeMillis = null
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?,
+          recordDelete_userName = null,
+          recordDelete_timeMillis = null
         where burialSiteId = ?
-        and burialSiteTypeFieldId = ?`
+          and burialSiteTypeFieldId = ?`
     )
     .run(
       fieldForm.fieldValue,

@@ -1,8 +1,8 @@
 export interface AddContractTypeFieldForm {
     contractTypeId?: number | string;
     contractTypeField: string;
-    fieldValues?: string;
     fieldType?: string;
+    fieldValues?: string;
     isRequired?: string;
     maxLength?: number | string;
     minLength?: number | string;

@@ -6,12 +6,12 @@ export default function addOrUpdateContractField(fieldForm, user, connectedDatab
     let result = database
         .prepare(`update ContractFields
         set fieldValue = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?,
-        recordDelete_userName = null,
-        recordDelete_timeMillis = null
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?,
+          recordDelete_userName = null,
+          recordDelete_timeMillis = null
         where contractId = ?
-        and contractTypeFieldId = ?`)
+          and contractTypeFieldId = ?`)
         .run(fieldForm.fieldValue, user.userName, rightNowMillis, fieldForm.contractId, fieldForm.contractTypeFieldId);
     if (result.changes === 0) {
         result = database

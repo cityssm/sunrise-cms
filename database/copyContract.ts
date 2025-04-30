@@ -29,6 +29,7 @@ export default async function copyContract(
       funeralDirectorName: oldContract.funeralDirectorName,
       funeralHomeId: oldContract.funeralHomeId ?? '',
       funeralTimeString: oldContract.funeralTimeString ?? '',
+
       purchaserAddress1: oldContract.purchaserAddress1,
       purchaserAddress2: oldContract.purchaserAddress2,
       purchaserCity: oldContract.purchaserCity,

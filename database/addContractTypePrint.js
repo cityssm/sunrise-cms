@@ -7,11 +7,11 @@ export default function addContractTypePrint(addForm, user) {
     let result = database
         .prepare(`update ContractTypePrints
         set recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?,
-        recordDelete_userName = null,
-        recordDelete_timeMillis = null
+          recordUpdate_timeMillis = ?,
+          recordDelete_userName = null,
+          recordDelete_timeMillis = null
         where contractTypeId = ?
-        and printEJS = ?`)
+          and printEJS = ?`)
         .run(user.userName, rightNowMillis, addForm.contractTypeId, addForm.printEJS);
     if (result.changes === 0) {
         result = database

@@ -1,4 +1,8 @@
-import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime'
+import {
+  type DateString,
+  dateStringToInteger,
+  dateToInteger
+} from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
@@ -6,7 +10,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 export interface CloseWorkOrderForm {
   workOrderId: number | string
 
-  workOrderCloseDateString?: string
+  workOrderCloseDateString?: '' | DateString
 }
 
 export default function closeWorkOrder(

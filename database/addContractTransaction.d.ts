@@ -1,7 +1,8 @@
+import { type DateString, type TimeString } from '@cityssm/utils-datetime';
 export interface AddTransactionForm {
     contractId: number | string;
-    transactionDateString?: string;
-    transactionTimeString?: string;
+    transactionDateString?: '' | DateString;
+    transactionTimeString?: '' | TimeString;
     externalReceiptNumber: string;
     transactionAmount: number | string;
     transactionNote: string;

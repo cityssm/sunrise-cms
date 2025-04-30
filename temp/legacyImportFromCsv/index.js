@@ -603,8 +603,8 @@ async function importFromWorkOrderCSV() {
                 const workOrderContainsBurialSite = workOrder?.workOrderBurialSites?.find((possibleLot) => possibleLot.burialSiteId === burialSite?.burialSiteId);
                 if (!workOrderContainsBurialSite) {
                     addWorkOrderBurialSite({
-                        workOrderId: workOrder?.workOrderId,
-                        burialSiteId: burialSite?.burialSiteId
+                        burialSiteId: burialSite?.burialSiteId,
+                        workOrderId: workOrder?.workOrderId
                     }, user);
                     workOrder?.workOrderBurialSites?.push(burialSite);
                 }
@@ -633,8 +633,8 @@ async function importFromWorkOrderCSV() {
             const contractId = addContract({
                 burialSiteId: burialSite ? burialSite.burialSiteId : '',
                 contractTypeId: contractType.contractTypeId,
-                contractStartDateString,
                 contractEndDateString: '',
+                contractStartDateString,
                 funeralHomeId,
                 funeralDirectorName: workOrderRow.WO_FUNERAL_HOME,
                 funeralDateString: workOrderRow.WO_FUNERAL_YR === ''
@@ -656,8 +656,8 @@ async function importFromWorkOrderCSV() {
                 intermentContainerTypeId
             }, user);
             addWorkOrderContract({
-                workOrderId: workOrder?.workOrderId,
-                contractId
+                contractId,
+                workOrderId: workOrder?.workOrderId
             }, user);
             // Milestones
             let hasIncompleteMilestones = !workOrderRow.WO_CONFIRMATION_IN;

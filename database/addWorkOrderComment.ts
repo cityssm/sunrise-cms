@@ -4,8 +4,8 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddWorkOrderCommentForm {
-  workOrderId: string
   comment: string
+  workOrderId: string
 }
 
 export default function addWorkOrderComment(

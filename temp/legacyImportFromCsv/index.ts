@@ -959,8 +959,8 @@ async function importFromWorkOrderCSV(): Promise<void> {
         if (!workOrderContainsBurialSite) {
           addWorkOrderBurialSite(
             {
-              workOrderId: workOrder?.workOrderId as number,
-              burialSiteId: burialSite?.burialSiteId as number
+              burialSiteId: burialSite?.burialSiteId as number,
+              workOrderId: workOrder?.workOrderId as number
             },
             user
           )
@@ -1011,8 +1011,9 @@ async function importFromWorkOrderCSV(): Promise<void> {
         {
           burialSiteId: burialSite ? burialSite.burialSiteId : '',
           contractTypeId: contractType.contractTypeId,
-          contractStartDateString,
+          
           contractEndDateString: '',
+          contractStartDateString,
 
           funeralHomeId,
           funeralDirectorName: workOrderRow.WO_FUNERAL_HOME,
@@ -1052,8 +1053,8 @@ async function importFromWorkOrderCSV(): Promise<void> {
 
       addWorkOrderContract(
         {
-          workOrderId: workOrder?.workOrderId as number,
-          contractId
+          contractId,
+          workOrderId: workOrder?.workOrderId as number
         },
         user
       )

@@ -6,12 +6,12 @@ export default function addOrUpdateBurialSiteField(fieldForm, user, connectedDat
     let result = database
         .prepare(`update BurialSiteFields
         set fieldValue = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?,
-        recordDelete_userName = null,
-        recordDelete_timeMillis = null
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?,
+          recordDelete_userName = null,
+          recordDelete_timeMillis = null
         where burialSiteId = ?
-        and burialSiteTypeFieldId = ?`)
+          and burialSiteTypeFieldId = ?`)
         .run(fieldForm.fieldValue, user.userName, rightNowMillis, fieldForm.burialSiteId, fieldForm.burialSiteTypeFieldId);
     if (result.changes === 0) {
         result = database

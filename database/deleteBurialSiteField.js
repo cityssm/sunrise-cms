@@ -5,9 +5,9 @@ export default function deleteBurialSiteField(burialSiteId, burialSiteTypeFieldI
     const result = database
         .prepare(`update BurialSiteFields
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where burialSiteId = ?
-        and burialSiteTypeFieldId = ?`)
+          and burialSiteTypeFieldId = ?`)
         .run(user.userName, Date.now(), burialSiteId, burialSiteTypeFieldId);
     if (connectedDatabase === undefined) {
         database.close();

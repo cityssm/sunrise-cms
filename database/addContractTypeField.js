@@ -13,7 +13,9 @@ export default function addContractTypeField(addForm, user) {
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(addForm.contractTypeId ?? undefined, addForm.contractTypeField, addForm.fieldType ?? 'text', addForm.fieldValues ?? '', addForm.isRequired === '' ? 0 : 1, addForm.pattern ?? '', addForm.minLength ?? 0, addForm.maxLength ?? 100, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run(addForm.contractTypeId ?? undefined, addForm.contractTypeField, addForm.fieldType ?? 'text', addForm.fieldValues ?? '', addForm.isRequired === '' ? 0 : 1, addForm.pattern ?? '', addForm.minLength ?? 0, 
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    addForm.maxLength ?? 100, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     database.close();
     clearCacheByTableName('ContractTypeFields');
     return result.lastInsertRowid;

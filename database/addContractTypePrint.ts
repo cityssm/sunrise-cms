@@ -6,6 +6,7 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 export interface AddContractTypePrintForm {
   contractTypeId: number | string
   printEJS: string
+
   orderNumber?: number
 }
 
@@ -21,11 +22,11 @@ export default function addContractTypePrint(
     .prepare(
       `update ContractTypePrints
         set recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?,
-        recordDelete_userName = null,
-        recordDelete_timeMillis = null
+          recordUpdate_timeMillis = ?,
+          recordDelete_userName = null,
+          recordDelete_timeMillis = null
         where contractTypeId = ?
-        and printEJS = ?`
+          and printEJS = ?`
     )
     .run(
       user.userName,

@@ -26,10 +26,10 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `update WorkOrderComments
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and workOrderId in (
-          select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`
+          and workOrderId in (
+            select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
@@ -45,10 +45,10 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `update WorkOrderContracts
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and workOrderId in (
-          select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`
+          and workOrderId in (
+            select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
@@ -66,10 +66,10 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `update WorkOrderBurialSites
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and workOrderId in (
-          select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`
+          and workOrderId in (
+            select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
@@ -87,10 +87,10 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `update WorkOrderMilestones
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and workOrderId in (
-          select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`
+          and workOrderId in (
+            select workOrderId from WorkOrders where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
@@ -108,10 +108,10 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `delete from WorkOrders
         where recordDelete_timeMillis <= ?
-        and workOrderId not in (select workOrderId from WorkOrderComments)
-        and workOrderId not in (select workOrderId from WorkOrderContracts)
-        and workOrderId not in (select workOrderId from WorkOrderBurialSites)
-        and workOrderId not in (select workOrderId from WorkOrderMilestones)`
+          and workOrderId not in (select workOrderId from WorkOrderComments)
+          and workOrderId not in (select workOrderId from WorkOrderContracts)
+          and workOrderId not in (select workOrderId from WorkOrderBurialSites)
+          and workOrderId not in (select workOrderId from WorkOrderMilestones)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -123,8 +123,8 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `delete from WorkOrderMilestoneTypes
         where recordDelete_timeMillis <= ?
-        and workOrderMilestoneTypeId not in (
-          select workOrderMilestoneTypeId from WorkOrderMilestones)`
+          and workOrderMilestoneTypeId not in (
+            select workOrderMilestoneTypeId from WorkOrderMilestones)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -136,7 +136,7 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `delete from WorkOrderTypes
         where recordDelete_timeMillis <= ?
-        and workOrderTypeId not in (select workOrderTypeId from WorkOrders)`
+          and workOrderTypeId not in (select workOrderTypeId from WorkOrders)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -148,10 +148,10 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `update ContractComments
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and contractId in (
-          select contractId from Contracts where recordDelete_timeMillis is not null)`
+          and contractId in (
+            select contractId from Contracts where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
@@ -167,9 +167,9 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `update ContractFields
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and contractId in (select contractId from Contracts where recordDelete_timeMillis is not null)`
+          and contractId in (select contractId from Contracts where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
@@ -179,7 +179,7 @@ export default function cleanupDatabase(user: User): {
 
   /*
    * Burial Site Contract Fees/Transactions
-   * - Maintain financials, do not delete related.
+   * - Maintain financial data, do not delete related.
    */
 
   purgedRecordCount += database
@@ -200,12 +200,12 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `delete from Contracts
         where recordDelete_timeMillis <= ?
-        and contractId not in (select contractId from ContractComments)
-        and contractId not in (select contractId from ContractFees)
-        and contractId not in (select contractId from ContractFields)
-        and contractId not in (select contractId from ContractInterments)
-        and contractId not in (select contractId from ContractTransactions)
-        and contractId not in (select contractId from WorkOrderContracts)`
+          and contractId not in (select contractId from ContractComments)
+          and contractId not in (select contractId from ContractFees)
+          and contractId not in (select contractId from ContractFields)
+          and contractId not in (select contractId from ContractInterments)
+          and contractId not in (select contractId from ContractTransactions)
+          and contractId not in (select contractId from WorkOrderContracts)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -217,9 +217,9 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `update Fees
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and feeCategoryId in (select feeCategoryId from FeeCategories where recordDelete_timeMillis is not null)`
+          and feeCategoryId in (select feeCategoryId from FeeCategories where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
@@ -227,7 +227,7 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `delete from Fees
         where recordDelete_timeMillis <= ?
-        and feeId not in (select feeId from ContractFees)`
+          and feeId not in (select feeId from ContractFees)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -239,7 +239,7 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `delete from FeeCategories
         where recordDelete_timeMillis <= ?
-        and feeCategoryId not in (select feeCategoryId from Fees)`
+          and feeCategoryId not in (select feeCategoryId from Fees)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -251,9 +251,9 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `update ContractTypeFields
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and contractTypeId in (select contractTypeId from ContractTypes where recordDelete_timeMillis is not null)`
+          and contractTypeId in (select contractTypeId from ContractTypes where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
@@ -261,7 +261,7 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `delete from ContractTypeFields
         where recordDelete_timeMillis <= ?
-        and contractTypeFieldId not in (select contractTypeFieldId from ContractFields)`
+          and contractTypeFieldId not in (select contractTypeFieldId from ContractFields)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -273,9 +273,9 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `update ContractTypePrints
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and contractTypeId in (select contractTypeId from ContractTypes where recordDelete_timeMillis is not null)`
+          and contractTypeId in (select contractTypeId from ContractTypes where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
@@ -293,10 +293,10 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `delete from ContractTypes
         where recordDelete_timeMillis <= ?
-        and contractTypeId not in (select contractTypeId from ContractTypeFields)
-        and contractTypeId not in (select contractTypeId from ContractTypePrints)
-        and contractTypeId not in (select contractTypeId from Contracts)
-        and contractTypeId not in (select contractTypeId from Fees)`
+          and contractTypeId not in (select contractTypeId from ContractTypeFields)
+          and contractTypeId not in (select contractTypeId from ContractTypePrints)
+          and contractTypeId not in (select contractTypeId from Contracts)
+          and contractTypeId not in (select contractTypeId from Fees)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -308,9 +308,9 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `update BurialSiteComments
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and burialSiteId in (select burialSiteId from BurialSites where recordDelete_timeMillis is not null)`
+          and burialSiteId in (select burialSiteId from BurialSites where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
@@ -328,9 +328,9 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `update BurialSiteFields
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and burialSiteId in (select burialSiteId from BurialSites where recordDelete_timeMillis is not null)`
+          and burialSiteId in (select burialSiteId from BurialSites where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
@@ -346,9 +346,9 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `update BurialSites
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and cemeteryId in (select cemeteryId from Cemeteries where recordDelete_timeMillis is not null)`
+          and cemeteryId in (select cemeteryId from Cemeteries where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
@@ -356,10 +356,10 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `delete from BurialSites
         where recordDelete_timeMillis <= ?
-        and burialSiteId not in (select burialSiteId from BurialSiteComments)
-        and burialSiteId not in (select burialSiteId from BurialSiteFields)
-        and burialSiteId not in (select burialSiteId from Contracts)
-        and burialSiteId not in (select burialSiteId from WorkOrderBurialSites)`
+          and burialSiteId not in (select burialSiteId from BurialSiteComments)
+          and burialSiteId not in (select burialSiteId from BurialSiteFields)
+          and burialSiteId not in (select burialSiteId from Contracts)
+          and burialSiteId not in (select burialSiteId from WorkOrderBurialSites)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -371,7 +371,7 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `delete from BurialSiteStatuses
         where recordDelete_timeMillis <= ?
-        and burialSiteStatusId not in (select burialSiteStatusId from BurialSites)`
+          and burialSiteStatusId not in (select burialSiteStatusId from BurialSites)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -383,9 +383,9 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `update BurialSiteTypeFields
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
-        and burialSiteTypeId in (select burialSiteTypeId from BurialSiteTypes where recordDelete_timeMillis is not null)`
+          and burialSiteTypeId in (select burialSiteTypeId from BurialSiteTypes where recordDelete_timeMillis is not null)`
     )
     .run(user.userName, rightNowMillis).changes
 
@@ -393,7 +393,7 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `delete from BurialSiteTypeFields
         where recordDelete_timeMillis <= ?
-        and burialSiteTypeFieldId not in (select burialSiteTypeFieldId from BurialSiteFields)`
+          and burialSiteTypeFieldId not in (select burialSiteTypeFieldId from BurialSiteFields)`
     )
     .run(recordDeleteTimeMillisMin).changes
 
@@ -405,7 +405,7 @@ export default function cleanupDatabase(user: User): {
     .prepare(
       `delete from BurialSiteTypes
         where recordDelete_timeMillis <= ?
-        and burialSiteTypeId not in (select burialSiteTypeId from BurialSites)`
+          and burialSiteTypeId not in (select burialSiteTypeId from BurialSites)`
     )
     .run(recordDeleteTimeMillisMin).changes
 

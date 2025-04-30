@@ -28,10 +28,10 @@ export default function getBurialSites(
   filters: GetBurialSitesFilters,
   options: GetBurialSitesOptions,
   connectedDatabase?: sqlite.Database
-): { count: number; burialSites: BurialSite[] } {
+): { burialSites: BurialSite[]; count: number } {
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
-  const { sqlWhereClause, sqlParameters } = buildWhereClause(filters)
+  const { sqlParameters, sqlWhereClause } = buildWhereClause(filters)
 
   const currentDate = dateToInteger(new Date())
 
@@ -120,8 +120,8 @@ export default function getBurialSites(
   }
 
   return {
-    count,
-    burialSites
+    burialSites,
+    count
   }
 }
 

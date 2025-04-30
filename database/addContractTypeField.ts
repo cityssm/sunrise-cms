@@ -5,9 +5,11 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 export interface AddContractTypeFieldForm {
   contractTypeId?: number | string
+
   contractTypeField: string
-  fieldValues?: string
+
   fieldType?: string
+  fieldValues?: string
   isRequired?: string
   maxLength?: number | string
   minLength?: number | string
@@ -43,6 +45,7 @@ export default function addContractTypeField(
       addForm.isRequired === '' ? 0 : 1,
       addForm.pattern ?? '',
       addForm.minLength ?? 0,
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       addForm.maxLength ?? 100,
       addForm.orderNumber ?? -1,
       user.userName,

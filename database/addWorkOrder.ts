@@ -11,11 +11,14 @@ import addWorkOrderContract from './addWorkOrderContract.js'
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js'
 
 export interface AddWorkOrderForm {
-  workOrderTypeId: number | string
-  workOrderNumber?: string
   workOrderDescription: string
-  workOrderOpenDateString?: string
+  workOrderNumber?: string
+
+  workOrderTypeId: number | string
+
   workOrderCloseDateString?: string
+  workOrderOpenDateString?: string
+  
   contractId?: string
 }
 
@@ -67,8 +70,8 @@ export default function addWorkOrder(
   if ((workOrderForm.contractId ?? '') !== '') {
     addWorkOrderContract(
       {
+        contractId: workOrderForm.contractId as string,
         workOrderId,
-        contractId: workOrderForm.contractId as string
       },
       user,
       database

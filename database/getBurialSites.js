@@ -4,7 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import { getBurialSiteNameWhereClause } from '../helpers/functions.sqlFilters.js';
 export default function getBurialSites(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
-    const { sqlWhereClause, sqlParameters } = buildWhereClause(filters);
+    const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     const currentDate = dateToInteger(new Date());
     let count = 0;
     if (options.limit !== -1) {
@@ -71,8 +71,8 @@ export default function getBurialSites(filters, options, connectedDatabase) {
         database.close();
     }
     return {
-        count,
-        burialSites
+        burialSites,
+        count
     };
 }
 function buildWhereClause(filters) {

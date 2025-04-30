@@ -3,8 +3,8 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddForm {
-  workOrderId: number | string
   burialSiteId: number | string
+  workOrderId: number | string
 }
 
 export default function addWorkOrderBurialSite(

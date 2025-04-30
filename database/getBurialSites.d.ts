@@ -16,6 +16,6 @@ export interface GetBurialSitesOptions {
     includeContractCount?: boolean;
 }
 export default function getBurialSites(filters: GetBurialSitesFilters, options: GetBurialSitesOptions, connectedDatabase?: sqlite.Database): {
-    count: number;
     burialSites: BurialSite[];
+    count: number;
 };

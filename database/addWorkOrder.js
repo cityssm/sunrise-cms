@@ -25,8 +25,8 @@ export default function addWorkOrder(workOrderForm, user) {
     const workOrderId = result.lastInsertRowid;
     if ((workOrderForm.contractId ?? '') !== '') {
         addWorkOrderContract({
+            contractId: workOrderForm.contractId,
             workOrderId,
-            contractId: workOrderForm.contractId
         }, user, database);
     }
     database.close();

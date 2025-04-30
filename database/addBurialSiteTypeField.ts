@@ -5,7 +5,7 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 export interface AddBurialSiteTypeFieldForm {
   burialSiteTypeId: number | string
-  
+
   burialSiteTypeField: string
 
   fieldType?: string
@@ -47,6 +47,7 @@ export default function addBurialSiteTypeField(
       addForm.isRequired === '' ? 0 : 1,
       addForm.pattern ?? '',
       addForm.minLength ?? 0,
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       addForm.maxLength ?? 100,
       addForm.orderNumber ?? -1,
       user.userName,

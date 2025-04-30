@@ -17,8 +17,8 @@ export function deleteBurialSite(burialSiteId: number, user: User): boolean {
       `select contractId
         from Contracts
         where burialSiteId = ?
-        and recordDelete_timeMillis is null
-        and (contractEndDate is null or contractEndDate >= ?)`
+          and recordDelete_timeMillis is null
+          and (contractEndDate is null or contractEndDate >= ?)`
     )
     .pluck()
     .get(burialSiteId, currentDateInteger) as number | undefined
@@ -38,9 +38,9 @@ export function deleteBurialSite(burialSiteId: number, user: User): boolean {
     .prepare(
       `update BurialSites
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where burialSiteId = ?
-        and recordDelete_timeMillis is null`
+          and recordDelete_timeMillis is null`
     )
     .run(user.userName, rightNowMillis, burialSiteId)
 
@@ -52,9 +52,9 @@ export function deleteBurialSite(burialSiteId: number, user: User): boolean {
     .prepare(
       `update BurialSiteFields
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where burialSiteId = ?
-        and recordDelete_timeMillis is null`
+          and recordDelete_timeMillis is null`
     )
     .run(user.userName, rightNowMillis, burialSiteId)
 
@@ -62,9 +62,9 @@ export function deleteBurialSite(burialSiteId: number, user: User): boolean {
     .prepare(
       `update BurialSiteComments
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where burialSiteId = ?
-        and recordDelete_timeMillis is null`
+          and recordDelete_timeMillis is null`
     )
     .run(user.userName, rightNowMillis, burialSiteId)
 

@@ -3,8 +3,8 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddForm {
-  funeralHomeName: string
   funeralHomeKey: string
+  funeralHomeName: string
 
   funeralHomeAddress1: string
   funeralHomeAddress2: string

@@ -21,12 +21,12 @@ export default function addOrUpdateContractField(
     .prepare(
       `update ContractFields
         set fieldValue = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?,
-        recordDelete_userName = null,
-        recordDelete_timeMillis = null
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?,
+          recordDelete_userName = null,
+          recordDelete_timeMillis = null
         where contractId = ?
-        and contractTypeFieldId = ?`
+          and contractTypeFieldId = ?`
     )
     .run(
       fieldForm.fieldValue,

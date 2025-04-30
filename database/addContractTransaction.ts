@@ -1,4 +1,6 @@
 import {
+  type DateString,
+  type TimeString,
   dateStringToInteger,
   dateToInteger,
   dateToTimeInteger,
@@ -11,8 +13,8 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 export interface AddTransactionForm {
   contractId: number | string
 
-  transactionDateString?: string
-  transactionTimeString?: string
+  transactionDateString?: '' | DateString
+  transactionTimeString?: '' | TimeString
 
   externalReceiptNumber: string
   transactionAmount: number | string
@@ -45,13 +47,19 @@ export default function addContractTransaction(
 
   const rightNow = new Date()
 
-  const transactionDate = contractTransactionForm.transactionDateString
-    ? dateStringToInteger(contractTransactionForm.transactionDateString)
-    : dateToInteger(rightNow)
+  const transactionDate =
+    contractTransactionForm.transactionDateString === ''
+      ? dateToInteger(rightNow)
+      : dateStringToInteger(
+          contractTransactionForm.transactionDateString as DateString
+        )
 
-  const transactionTime = contractTransactionForm.transactionTimeString
-    ? timeStringToInteger(contractTransactionForm.transactionTimeString)
-    : dateToTimeInteger(rightNow)
+  const transactionTime =
+    contractTransactionForm.transactionTimeString === ''
+      ? dateToTimeInteger(rightNow)
+      : timeStringToInteger(
+          contractTransactionForm.transactionTimeString as TimeString
+        )
 
   database
     .prepare(

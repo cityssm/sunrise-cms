@@ -11,8 +11,8 @@ export function deleteBurialSite(burialSiteId, user) {
         .prepare(`select contractId
         from Contracts
         where burialSiteId = ?
-        and recordDelete_timeMillis is null
-        and (contractEndDate is null or contractEndDate >= ?)`)
+          and recordDelete_timeMillis is null
+          and (contractEndDate is null or contractEndDate >= ?)`)
         .pluck()
         .get(burialSiteId, currentDateInteger);
     if (activeContract !== undefined) {
@@ -26,9 +26,9 @@ export function deleteBurialSite(burialSiteId, user) {
     database
         .prepare(`update BurialSites
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where burialSiteId = ?
-        and recordDelete_timeMillis is null`)
+          and recordDelete_timeMillis is null`)
         .run(user.userName, rightNowMillis, burialSiteId);
     /*
      * Delete fields and comments
@@ -36,16 +36,16 @@ export function deleteBurialSite(burialSiteId, user) {
     database
         .prepare(`update BurialSiteFields
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where burialSiteId = ?
-        and recordDelete_timeMillis is null`)
+          and recordDelete_timeMillis is null`)
         .run(user.userName, rightNowMillis, burialSiteId);
     database
         .prepare(`update BurialSiteComments
         set recordDelete_userName = ?,
-        recordDelete_timeMillis = ?
+          recordDelete_timeMillis = ?
         where burialSiteId = ?
-        and recordDelete_timeMillis is null`)
+          and recordDelete_timeMillis is null`)
         .run(user.userName, rightNowMillis, burialSiteId);
     database.close();
     return true;
