@@ -243,7 +243,7 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
   },
   WS: {
     cemeteryName: 'West Section',
-    
+
     cemeteryDescription: 'At Old Greenwood Cemetery',
     cemeteryKey: 'WS',
     cemeterySvg: '',
@@ -282,7 +282,7 @@ export function getCemeteryIdByKey(
   }
 
   console.log(`Cemetery cache miss: ${cemeteryKey}`)
-  
+
   const cemetery = getCemeteryByKey(cemeteryKey)
 
   console.log(`Cemetery found: ${cemeteryKey}`)
@@ -295,6 +295,7 @@ export function getCemeteryIdByKey(
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     addForm ??= {
       cemeteryName: cemeteryKey,
+      
       cemeteryDescription: '',
       cemeteryKey,
 

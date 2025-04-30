@@ -612,8 +612,8 @@ async function importFromPrepaidCSV(): Promise<void> {
             contractStartDateString
           },
           {
-            includeInterments: false,
             includeFees: false,
+            includeInterments: false,
             includeTransactions: false,
             limit: -1,
             offset: 0
@@ -629,17 +629,19 @@ async function importFromPrepaidCSV(): Promise<void> {
         {
           burialSiteId: burialSite ? burialSite.burialSiteId : '',
           contractTypeId: importIds.preneedContractType.contractTypeId,
-          contractStartDateString,
+
           contractEndDateString: '',
+          contractStartDateString,
 
           purchaserName: prepaidRow.CMPP_ARRANGED_BY_NAME,
 
           deceasedName: prepaidRow.CMPP_PREPAID_FOR_NAME,
+
           deceasedAddress1: prepaidRow.CMPP_ADDRESS,
           deceasedAddress2: '',
           deceasedCity: prepaidRow.CMPP_CITY,
-          deceasedProvince: prepaidRow.CMPP_PROV.slice(0, 2),
-          deceasedPostalCode: `${prepaidRow.CMPP_POSTAL1} ${prepaidRow.CMPP_POSTAL2}`
+          deceasedPostalCode: `${prepaidRow.CMPP_POSTAL1} ${prepaidRow.CMPP_POSTAL2}`,
+          deceasedProvince: prepaidRow.CMPP_PROV.slice(0, 2)
         },
         user
       )
@@ -801,8 +803,8 @@ async function importFromPrepaidCSV(): Promise<void> {
           {
             contractId,
 
-            commentDateString: contractStartDateString,
-            comment: prepaidRow.CMPP_REMARK1
+            comment: prepaidRow.CMPP_REMARK1,
+            commentDateString: contractStartDateString
           },
           user
         )
@@ -813,8 +815,8 @@ async function importFromPrepaidCSV(): Promise<void> {
           {
             contractId,
 
-            commentDateString: contractStartDateString,
-            comment: prepaidRow.CMPP_REMARK2
+            comment: prepaidRow.CMPP_REMARK2,
+            commentDateString: contractStartDateString
           },
           user
         )
@@ -956,13 +958,15 @@ async function importFromWorkOrderCSV(): Promise<void> {
         if (!workOrderContainsBurialSite) {
           addWorkOrderBurialSite(
             {
-              workOrderId: workOrder.workOrderId!,
-              burialSiteId: burialSite.burialSiteId
+              workOrderId: workOrder?.workOrderId as number,
+              burialSiteId: burialSite?.burialSiteId as number
             },
             user
           )
 
-          workOrder.workOrderBurialSites!.push(burialSite)
+          workOrder?.workOrderBurialSites?.push(
+            burialSite as recordTypes.BurialSite
+          )
         }
       }
 
@@ -1047,7 +1051,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
 
       addWorkOrderContract(
         {
-          workOrderId: workOrder.workOrderId!,
+          workOrderId: workOrder?.workOrderId as number,
           contractId
         },
         user
@@ -1061,7 +1065,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
       if (importIds.acknowledgedWorkOrderMilestoneTypeId) {
         addWorkOrderMilestone(
           {
-            workOrderId: workOrder.workOrderId!,
+            workOrderId: workOrder?.workOrderId as number,
             workOrderMilestoneTypeId:
               importIds.acknowledgedWorkOrderMilestoneTypeId,
             workOrderMilestoneDateString: workOrderOpenDateString,
@@ -1087,7 +1091,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         if (importIds.deathWorkOrderMilestoneTypeId) {
           addWorkOrderMilestone(
             {
-              workOrderId: workOrder.workOrderId!,
+              workOrderId: workOrder?.workOrderId as number,
               workOrderMilestoneTypeId: importIds.deathWorkOrderMilestoneTypeId,
               workOrderMilestoneDateString,
               workOrderMilestoneDescription: `Death Place: ${workOrderRow.WO_DEATH_PLACE}`,
@@ -1136,7 +1140,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         if (importIds.funeralWorkOrderMilestoneTypeId) {
           addWorkOrderMilestone(
             {
-              workOrderId: workOrder.workOrderId!,
+              workOrderId: workOrder?.workOrderId as number,
               workOrderMilestoneTypeId:
                 importIds.funeralWorkOrderMilestoneTypeId,
               workOrderMilestoneDateString,
@@ -1170,7 +1174,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
       ) {
         addWorkOrderMilestone(
           {
-            workOrderId: workOrder.workOrderId!,
+            workOrderId: workOrder?.workOrderId as number,
             workOrderMilestoneTypeId:
               importIds.cremationWorkOrderMilestoneTypeId,
             workOrderMilestoneDateString: maxMilestoneCompletionDateString,
@@ -1198,7 +1202,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         if (importIds.intermentWorkOrderMilestoneTypeId) {
           addWorkOrderMilestone(
             {
-              workOrderId: workOrder.workOrderId!,
+              workOrderId: workOrder?.workOrderId as number,
               workOrderMilestoneTypeId:
                 importIds.intermentWorkOrderMilestoneTypeId,
               workOrderMilestoneDateString,
@@ -1228,7 +1232,8 @@ async function importFromWorkOrderCSV(): Promise<void> {
       if (!hasIncompleteMilestones) {
         closeWorkOrder(
           {
-            workOrderId: workOrder.workOrderId!,
+            workOrderId: workOrder?.workOrderId as number,
+
             workOrderCloseDateString: maxMilestoneCompletionDateString
           },
           user

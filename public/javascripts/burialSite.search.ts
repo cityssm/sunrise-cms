@@ -44,6 +44,11 @@ declare const exports: Record<string, unknown>
     const resultsTbodyElement = document.createElement('tbody')
 
     for (const burialSite of responseJSON.burialSites) {
+      const cemeteryNameHtml =
+        burialSite.cemeteryName === ''
+          ? '<span class="has-text-grey">(No Name)</span>'
+          : cityssm.escapeHTML(burialSite.cemeteryName ?? '')
+
       // eslint-disable-next-line no-unsanitized/method
       resultsTbodyElement.insertAdjacentHTML(
         'beforeend',
@@ -57,20 +62,17 @@ declare const exports: Record<string, unknown>
             burialSite.cemeteryId === null
               ? '<span class="has-text-grey">(No Cemetery)</span>'
               : `<a href="${sunrise.getCemeteryURL(burialSite.cemeteryId)}">
-              ${
-                burialSite.cemeteryName === ''
-                  ? '<span class="has-text-grey">(No Name)</span>'
-                  : cityssm.escapeHTML(burialSite.cemeteryName)
-              }
-            </a>`
+                  ${cemeteryNameHtml}
+                  </a>`
           }
           </td><td>
             ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
           </td><td>
             ${
-              burialSite.burialSiteStatusId
-                ? cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
-                : '<span class="has-text-grey">(No Status)</span>'
+              burialSite.burialSiteStatusId === null ||
+              burialSite.burialSiteStatusId === undefined
+                ? '<span class="has-text-grey">(No Status)</span>'
+                : cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
             }<br />
             ${
               (burialSite.contractCount ?? 0) > 0

@@ -30,7 +30,7 @@ export interface BurialSite extends Record {
   burialSiteLongitude?: number
 
   burialSiteStatus?: string
-  burialSiteStatusId?: number
+  burialSiteStatusId?: number | null
 
   burialSiteFields?: BurialSiteField[]
 
@@ -427,8 +427,8 @@ export interface WorkOrderComment extends Record {
   commentDateString?: string
 
   commentTime?: number
-  commentTimeString?: string
   commentTimePeriodString?: string
+  commentTimeString?: string
 
   comment?: string
 }
@@ -443,8 +443,8 @@ export interface WorkOrderMilestone extends Record, WorkOrder {
   workOrderMilestoneDateString?: string
 
   workOrderMilestoneTime?: number
-  workOrderMilestoneTimeString?: string
   workOrderMilestoneTimePeriodString?: string
+  workOrderMilestoneTimeString?: string
 
   workOrderMilestoneDescription?: string
 
@@ -452,22 +452,22 @@ export interface WorkOrderMilestone extends Record, WorkOrder {
   workOrderMilestoneCompletionDateString?: string
 
   workOrderMilestoneCompletionTime?: number
-  workOrderMilestoneCompletionTimeString?: string
   workOrderMilestoneCompletionTimePeriodString?: string
+  workOrderMilestoneCompletionTimeString?: string
 
   workOrderRecordUpdate_timeMillis?: number
 }
 
 export interface WorkOrderMilestoneType extends Record {
-  workOrderMilestoneTypeId: number
   workOrderMilestoneType: string
+  workOrderMilestoneTypeId: number
 
   orderNumber?: number
 }
 
 export interface WorkOrderType extends Record {
-  workOrderTypeId: number
   workOrderType?: string
+  workOrderTypeId: number
 
   orderNumber?: number
 }

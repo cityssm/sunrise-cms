@@ -373,8 +373,8 @@ async function importFromPrepaidCSV() {
                     deceasedName: prepaidRow.CMPP_PREPAID_FOR_NAME,
                     contractStartDateString
                 }, {
-                    includeInterments: false,
                     includeFees: false,
+                    includeInterments: false,
                     includeTransactions: false,
                     limit: -1,
                     offset: 0
@@ -386,15 +386,15 @@ async function importFromPrepaidCSV() {
             contractId ||= addContract({
                 burialSiteId: burialSite ? burialSite.burialSiteId : '',
                 contractTypeId: importIds.preneedContractType.contractTypeId,
-                contractStartDateString,
                 contractEndDateString: '',
+                contractStartDateString,
                 purchaserName: prepaidRow.CMPP_ARRANGED_BY_NAME,
                 deceasedName: prepaidRow.CMPP_PREPAID_FOR_NAME,
                 deceasedAddress1: prepaidRow.CMPP_ADDRESS,
                 deceasedAddress2: '',
                 deceasedCity: prepaidRow.CMPP_CITY,
-                deceasedProvince: prepaidRow.CMPP_PROV.slice(0, 2),
-                deceasedPostalCode: `${prepaidRow.CMPP_POSTAL1} ${prepaidRow.CMPP_POSTAL2}`
+                deceasedPostalCode: `${prepaidRow.CMPP_POSTAL1} ${prepaidRow.CMPP_POSTAL2}`,
+                deceasedProvince: prepaidRow.CMPP_PROV.slice(0, 2)
             }, user);
             if (prepaidRow.CMPP_FEE_GRAV_SD !== '0.0') {
                 await addContractFee({
@@ -499,15 +499,15 @@ async function importFromPrepaidCSV() {
             if (prepaidRow.CMPP_REMARK1 !== '') {
                 addContractComment({
                     contractId,
-                    commentDateString: contractStartDateString,
-                    comment: prepaidRow.CMPP_REMARK1
+                    comment: prepaidRow.CMPP_REMARK1,
+                    commentDateString: contractStartDateString
                 }, user);
             }
             if (prepaidRow.CMPP_REMARK2 !== '') {
                 addContractComment({
                     contractId,
-                    commentDateString: contractStartDateString,
-                    comment: prepaidRow.CMPP_REMARK2
+                    comment: prepaidRow.CMPP_REMARK2,
+                    commentDateString: contractStartDateString
                 }, user);
             }
         }
@@ -602,10 +602,10 @@ async function importFromWorkOrderCSV() {
                 const workOrderContainsBurialSite = workOrder?.workOrderBurialSites?.find((possibleLot) => possibleLot.burialSiteId === burialSite?.burialSiteId);
                 if (!workOrderContainsBurialSite) {
                     addWorkOrderBurialSite({
-                        workOrderId: workOrder.workOrderId,
-                        burialSiteId: burialSite.burialSiteId
+                        workOrderId: workOrder?.workOrderId,
+                        burialSiteId: burialSite?.burialSiteId
                     }, user);
-                    workOrder.workOrderBurialSites.push(burialSite);
+                    workOrder?.workOrderBurialSites?.push(burialSite);
                 }
             }
             let contractStartDateString = workOrderOpenDateString;
@@ -655,7 +655,7 @@ async function importFromWorkOrderCSV() {
                 intermentContainerTypeId
             }, user);
             addWorkOrderContract({
-                workOrderId: workOrder.workOrderId,
+                workOrderId: workOrder?.workOrderId,
                 contractId
             }, user);
             // Milestones
@@ -663,7 +663,7 @@ async function importFromWorkOrderCSV() {
             let maxMilestoneCompletionDateString = workOrderOpenDateString;
             if (importIds.acknowledgedWorkOrderMilestoneTypeId) {
                 addWorkOrderMilestone({
-                    workOrderId: workOrder.workOrderId,
+                    workOrderId: workOrder?.workOrderId,
                     workOrderMilestoneTypeId: importIds.acknowledgedWorkOrderMilestoneTypeId,
                     workOrderMilestoneDateString: workOrderOpenDateString,
                     workOrderMilestoneDescription: '',
@@ -677,7 +677,7 @@ async function importFromWorkOrderCSV() {
                 const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_DEATH_YR, workOrderRow.WO_DEATH_MON, workOrderRow.WO_DEATH_DAY);
                 if (importIds.deathWorkOrderMilestoneTypeId) {
                     addWorkOrderMilestone({
-                        workOrderId: workOrder.workOrderId,
+                        workOrderId: workOrder?.workOrderId,
                         workOrderMilestoneTypeId: importIds.deathWorkOrderMilestoneTypeId,
                         workOrderMilestoneDateString,
                         workOrderMilestoneDescription: `Death Place: ${workOrderRow.WO_DEATH_PLACE}`,
@@ -705,7 +705,7 @@ async function importFromWorkOrderCSV() {
                 const workOrderMilestoneTimeString = formatTimeString(funeralHour.toString(), workOrderRow.WO_FUNERAL_MIN === '' ? '0' : workOrderRow.WO_FUNERAL_MIN);
                 if (importIds.funeralWorkOrderMilestoneTypeId) {
                     addWorkOrderMilestone({
-                        workOrderId: workOrder.workOrderId,
+                        workOrderId: workOrder?.workOrderId,
                         workOrderMilestoneTypeId: importIds.funeralWorkOrderMilestoneTypeId,
                         workOrderMilestoneDateString,
                         workOrderMilestoneTimeString,
@@ -728,7 +728,7 @@ async function importFromWorkOrderCSV() {
             if (workOrderRow.WO_CREMATION === 'Y' &&
                 importIds.cremationWorkOrderMilestoneTypeId) {
                 addWorkOrderMilestone({
-                    workOrderId: workOrder.workOrderId,
+                    workOrderId: workOrder?.workOrderId,
                     workOrderMilestoneTypeId: importIds.cremationWorkOrderMilestoneTypeId,
                     workOrderMilestoneDateString: maxMilestoneCompletionDateString,
                     workOrderMilestoneDescription: '',
@@ -744,7 +744,7 @@ async function importFromWorkOrderCSV() {
                 const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_INTERMENT_YR, workOrderRow.WO_INTERMENT_MON, workOrderRow.WO_INTERMENT_DAY);
                 if (importIds.intermentWorkOrderMilestoneTypeId) {
                     addWorkOrderMilestone({
-                        workOrderId: workOrder.workOrderId,
+                        workOrderId: workOrder?.workOrderId,
                         workOrderMilestoneTypeId: importIds.intermentWorkOrderMilestoneTypeId,
                         workOrderMilestoneDateString,
                         workOrderMilestoneDescription: `Depth: ${workOrderRow.WO_DEPTH}`,
@@ -765,7 +765,7 @@ async function importFromWorkOrderCSV() {
             }
             if (!hasIncompleteMilestones) {
                 closeWorkOrder({
-                    workOrderId: workOrder.workOrderId,
+                    workOrderId: workOrder?.workOrderId,
                     workOrderCloseDateString: maxMilestoneCompletionDateString
                 }, user);
             }
