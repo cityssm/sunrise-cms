@@ -7,6 +7,7 @@ import Debug from 'debug'
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 import { sunriseDB as databasePath } from '../helpers/database.helpers.js'
 
+import addBurialSiteType from './addBurialSiteType.js'
 import addCommittalType from './addCommittalType.js'
 import addContractType from './addContractType.js'
 import addFeeCategory from './addFeeCategory.js'
@@ -30,6 +31,8 @@ const createStatements = [
   `create table if not exists BurialSiteTypes (
     burialSiteTypeId integer not null primary key autoincrement,
     burialSiteType varchar(100) not null,
+    bodyCapacityMax smallint,
+    crematedCapacityMax smallint,
     orderNumber smallint not null default 0,
     ${recordColumns})`,
 
@@ -111,6 +114,9 @@ const createStatements = [
     burialSiteNameSegment4 varchar(20) not null,
     burialSiteNameSegment5 varchar(20) not null,
     burialSiteName varchar(200) not null,
+
+    bodyCapacity smallint,
+    crematedCapacity smallint,
 
     cemeteryId integer,
     cemeterySvgId varchar(100),
@@ -482,12 +488,71 @@ export function initializeDatabase(): boolean {
 function initializeData(): void {
   debug('Initializing data...')
 
-  addRecord('BurialSiteTypes', 'Casket Grave', 1, initializingUser)
-  addRecord('BurialSiteTypes', 'Columbarium', 2, initializingUser)
-  addRecord('BurialSiteTypes', 'Mausoleum', 2, initializingUser)
-  addRecord('BurialSiteTypes', 'Niche Wall', 2, initializingUser)
-  addRecord('BurialSiteTypes', 'Urn Garden', 2, initializingUser)
-  addRecord('BurialSiteTypes', 'Crematorium', 2, initializingUser)
+  addBurialSiteType(
+    {
+      burialSiteType: 'In-Ground Grave',
+
+      bodyCapacityMax: 2,
+      crematedCapacityMax: 6,
+      orderNumber: 1
+    },
+    initializingUser
+  )
+
+  addBurialSiteType(
+    {
+      burialSiteType: 'Columbarium',
+
+      bodyCapacityMax: 0,
+      crematedCapacityMax: '',
+      orderNumber: 2
+    },
+    initializingUser
+  )
+
+  addBurialSiteType(
+    {
+      burialSiteType: 'Mausoleum',
+
+      bodyCapacityMax: 2,
+      crematedCapacityMax: 0,
+      orderNumber: 2
+    },
+    initializingUser
+  )
+
+  addBurialSiteType(
+    {
+      burialSiteType: 'Niche Wall',
+
+      bodyCapacityMax: 0,
+      crematedCapacityMax: 1,
+      orderNumber: 2
+    },
+    initializingUser
+  )
+
+  addBurialSiteType(
+    {
+      burialSiteType: 'Urn Garden',
+
+      bodyCapacityMax: 0,
+      crematedCapacityMax: 1,
+      orderNumber: 2
+    },
+    initializingUser
+  )
+
+  addBurialSiteType(
+    {
+      burialSiteType: 'Crematorium',
+
+      bodyCapacityMax: 0,
+      crematedCapacityMax: 1,
+      orderNumber: 2
+    },
+    initializingUser
+  )
 
   addRecord('BurialSiteStatuses', 'Available', 1, initializingUser)
   addRecord('BurialSiteStatuses', 'Reserved', 2, initializingUser)

@@ -11,6 +11,7 @@ import getCemetery from './getCemetery.js';
  * @returns True if the burial site was updated.
  * @throws If an active burial site with the same name already exists.
  */
+// eslint-disable-next-line complexity
 export default function updateBurialSite(updateForm, user) {
     const database = sqlite(sunriseDB);
     const cemetery = updateForm.cemeteryId === ''
@@ -40,6 +41,8 @@ export default function updateBurialSite(updateForm, user) {
         burialSiteName = ?,
         burialSiteTypeId = ?,
         burialSiteStatusId = ?,
+        bodyCapacity = ?,
+        crematedCapacity = ?,
         cemeteryId = ?,
         cemeterySvgId = ?,
         burialSiteImage = ?,
@@ -51,7 +54,9 @@ export default function updateBurialSite(updateForm, user) {
         and recordDelete_timeMillis is null`)
         .run(updateForm.burialSiteNameSegment1 ?? '', updateForm.burialSiteNameSegment2 ?? '', updateForm.burialSiteNameSegment3 ?? '', updateForm.burialSiteNameSegment4 ?? '', updateForm.burialSiteNameSegment5 ?? '', burialSiteName, updateForm.burialSiteTypeId, updateForm.burialSiteStatusId === ''
         ? undefined
-        : updateForm.burialSiteStatusId, updateForm.cemeteryId === '' ? undefined : updateForm.cemeteryId, updateForm.cemeterySvgId, updateForm.burialSiteImage, updateForm.burialSiteLatitude === ''
+        : updateForm.burialSiteStatusId, updateForm.bodyCapacity === '' ? undefined : updateForm.bodyCapacity, updateForm.crematedCapacity === ''
+        ? undefined
+        : updateForm.crematedCapacity, updateForm.cemeteryId === '' ? undefined : updateForm.cemeteryId, updateForm.cemeterySvgId, updateForm.burialSiteImage, updateForm.burialSiteLatitude === ''
         ? undefined
         : updateForm.burialSiteLatitude, updateForm.burialSiteLongitude === ''
         ? undefined

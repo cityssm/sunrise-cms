@@ -223,8 +223,9 @@ async function importFromMasterCSV() {
                 const deathDateString = masterRow.CM_DEATH_YR === ''
                     ? ''
                     : formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
-                const intermentContainerTypeKey = contractType.contractType === 'Cremation' &&
-                    masterRow.CM_CONTAINER_TYPE !== ''
+                const intermentContainerTypeKey = masterRow.CM_CONTAINER_TYPE === '' &&
+                    (contractType.contractType === 'Cremation' ||
+                        masterRow.CM_CREMATION === 'Y')
                     ? 'U'
                     : masterRow.CM_CONTAINER_TYPE;
                 const intermentContainerTypeId = intermentContainerTypeKey === ''
@@ -623,7 +624,7 @@ async function importFromWorkOrderCSV() {
                 ? ''
                 : getCommittalTypeIdByKey(workOrderRow.WO_COMMITTAL_TYPE, user);
             const intermentContainerTypeKey = contractType.contractType === 'Cremation' &&
-                workOrderRow.WO_CONTAINER_TYPE !== ''
+                workOrderRow.WO_CONTAINER_TYPE === ''
                 ? 'U'
                 : workOrderRow.WO_CONTAINER_TYPE;
             const intermentContainerTypeId = intermentContainerTypeKey === ''

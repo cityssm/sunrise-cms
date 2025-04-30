@@ -35,7 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         else {
             bulmaJS.alert({
-                title: "Error Updating Burial Site Type",
+                title: 'Error Updating Burial Site Type',
                 message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
             });
@@ -49,11 +49,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, burialSiteTypeResponseHandler);
         }
         bulmaJS.confirm({
-            title: "Delete Burial Site Type",
-            message: "Are you sure you want to delete this burial site type?",
+            title: 'Delete Burial Site Type',
+            message: 'Are you sure you want to delete this burial site type?',
             contextualColorName: 'warning',
             okButton: {
-                text: "Yes, Delete Burial Site Type",
+                text: 'Yes, Delete Burial Site Type',
                 callbackFunction: doDelete
             }
         });
@@ -77,6 +77,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#burialSiteTypeEdit--burialSiteTypeId').value = burialSiteTypeId.toString();
                 modalElement.querySelector('#burialSiteTypeEdit--burialSiteType').value = burialSiteType.burialSiteType;
+                modalElement.querySelector('#burialSiteTypeEdit--bodyCapacityMax').value = burialSiteType.bodyCapacityMax?.toString() ?? '';
+                modalElement.querySelector('#burialSiteTypeEdit--crematedCapacityMax').value = burialSiteType.crematedCapacityMax?.toString() ?? '';
             },
             onshown(modalElement, closeModalFunction) {
                 editCloseModalFunction = closeModalFunction;
@@ -331,6 +333,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <div class="level-item">
               <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(burialSiteType.burialSiteType)}</h2>
             </div>
+            <div class="level-item">
+              <div class="tags">
+                ${burialSiteType.bodyCapacityMax === null
+                ? ''
+                : `<span class="tag is-info">
+                        Bodies: ${cityssm.escapeHTML(burialSiteType.bodyCapacityMax.toString())}
+                        </span>`}
+                ${burialSiteType.crematedCapacityMax === null
+                ? ''
+                : `<span class="tag is-info">
+                        Cremains: ${cityssm.escapeHTML(burialSiteType.crematedCapacityMax.toString())}
+                        </span>`}
+              </div>
+            </div>
           </div>
           <div class="level-right is-hidden-print">
             <div class="level-item">
@@ -390,7 +406,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        title: "Error Adding Burial Site Type",
+                        title: 'Error Adding Burial Site Type',
                         message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });
@@ -400,6 +416,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.openHtmlModal('adminBurialSiteTypes-add', {
             onshow(modalElement) {
                 sunrise.populateAliases(modalElement);
+                modalElement.querySelector('#burialSiteTypeAdd--bodyCapacityMax').value = exports.bodyCapacityMaxDefault.toString();
+                modalElement.querySelector('#burialSiteTypeAdd--crematedCapacityMax').value = exports.crematedCapacityMaxDefault.toString();
             },
             onshown(modalElement, closeModalFunction) {
                 addCloseModalFunction = closeModalFunction;

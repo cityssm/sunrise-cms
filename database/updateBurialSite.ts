@@ -19,6 +19,9 @@ export interface UpdateBurialSiteForm {
   burialSiteStatusId: number | string
   burialSiteTypeId: number | string
 
+  bodyCapacity?: number | string
+  crematedCapacity?: number | string
+
   burialSiteImage: string
   cemeteryId: number | string
   cemeterySvgId: string
@@ -37,6 +40,7 @@ export interface UpdateBurialSiteForm {
  * @returns True if the burial site was updated.
  * @throws If an active burial site with the same name already exists.
  */
+// eslint-disable-next-line complexity
 export default function updateBurialSite(
   updateForm: UpdateBurialSiteForm,
   user: User
@@ -79,6 +83,8 @@ export default function updateBurialSite(
         burialSiteName = ?,
         burialSiteTypeId = ?,
         burialSiteStatusId = ?,
+        bodyCapacity = ?,
+        crematedCapacity = ?,
         cemeteryId = ?,
         cemeterySvgId = ?,
         burialSiteImage = ?,
@@ -100,6 +106,13 @@ export default function updateBurialSite(
       updateForm.burialSiteStatusId === ''
         ? undefined
         : updateForm.burialSiteStatusId,
+
+      updateForm.bodyCapacity === '' ? undefined : updateForm.bodyCapacity,
+
+      updateForm.crematedCapacity === ''
+        ? undefined
+        : updateForm.crematedCapacity,
+
       updateForm.cemeteryId === '' ? undefined : updateForm.cemeteryId,
       updateForm.cemeterySvgId,
       updateForm.burialSiteImage,

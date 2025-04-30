@@ -37,6 +37,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           l.burialSiteNameSegment5,
           l.burialSiteName,
           t.burialSiteType,
+          l.bodyCapacity, l.crematedCapacity,
           l.cemeteryId, m.cemeteryName, l.cemeterySvgId,
           l.burialSiteStatusId, s.burialSiteStatus
           ${includeContractCount

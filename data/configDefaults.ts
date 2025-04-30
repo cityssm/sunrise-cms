@@ -1,6 +1,5 @@
-import type { config as MSSQLConfig } from 'mssql'
-
 import { hoursToMillis } from '@cityssm/to-millis'
+import type { config as MSSQLConfig } from 'mssql'
 
 import type {
   ConfigActiveDirectory,
@@ -51,6 +50,12 @@ export const configDefaultValues = {
   'settings.longitudeMin': -180,
 
   'settings.cemeteries.refreshImageChanges': false,
+
+  // eslint-disable-next-line no-secrets/no-secrets
+  'settings.burialSiteTypes.bodyCapacityMaxDefault': 2,
+  
+  // eslint-disable-next-line no-secrets/no-secrets
+  'settings.burialSiteTypes.crematedCapacityMaxDefault': 6,
 
   'settings.burialSites.burialSiteNameSegments': {
     includeCemeteryKey: false,

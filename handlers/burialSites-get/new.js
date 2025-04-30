@@ -4,7 +4,11 @@ import { getBurialSiteImages } from '../../helpers/images.helpers.js';
 export default async function handler(request, response) {
     const burialSite = {
         burialSiteId: -1,
-        contracts: []
+        contracts: [],
+        // eslint-disable-next-line unicorn/no-null
+        bodyCapacity: null,
+        // eslint-disable-next-line unicorn/no-null
+        crematedCapacity: null
     };
     const cemeteries = getCemeteries();
     if (request.query.cemeteryId !== undefined) {

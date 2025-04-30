@@ -1,5 +1,3 @@
 import type { Request, Response } from 'express';
-export default function handler(request: Request<unknown, unknown, {
-    burialSiteType: string;
-    orderNumber?: number | string;
-}>, response: Response): void;
+import { type AddBurialSiteTypeForm } from '../../database/addBurialSiteType.js';
+export default function handler(request: Request<unknown, unknown, AddBurialSiteTypeForm>, response: Response): void;

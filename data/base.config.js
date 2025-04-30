@@ -6,6 +6,7 @@ export const config = {
     settings: {
         adminCleanup: {},
         burialSites: {},
+        burialSiteTypes: {},
         cemeteries: {},
         contracts: {},
         dynamicsGP: {

@@ -14,7 +14,14 @@ import type { Sunrise } from './types.js'
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+
+  burialSiteTypes?: BurialSiteType[]
+
+  bodyCapacityMaxDefault: number
+  crematedCapacityMaxDefault: number
+}
 
 type ResponseJSON =
   | {
@@ -81,7 +88,7 @@ type ResponseJSON =
       renderBurialSiteTypes()
     } else {
       bulmaJS.alert({
-        title: "Error Updating Burial Site Type",
+        title: 'Error Updating Burial Site Type',
         message: responseJSON.errorMessage ?? '',
         contextualColorName: 'danger'
       })
@@ -109,11 +116,11 @@ type ResponseJSON =
     }
 
     bulmaJS.confirm({
-      title: "Delete Burial Site Type",
-      message: "Are you sure you want to delete this burial site type?",
+      title: 'Delete Burial Site Type',
+      message: 'Are you sure you want to delete this burial site type?',
       contextualColorName: 'warning',
       okButton: {
-        text: "Yes, Delete Burial Site Type",
+        text: 'Yes, Delete Burial Site Type',
         callbackFunction: doDelete
       }
     })
@@ -165,6 +172,16 @@ type ResponseJSON =
             '#burialSiteTypeEdit--burialSiteType'
           ) as HTMLInputElement
         ).value = burialSiteType.burialSiteType
+        ;(
+          modalElement.querySelector(
+            '#burialSiteTypeEdit--bodyCapacityMax'
+          ) as HTMLInputElement
+        ).value = burialSiteType.bodyCapacityMax?.toString() ?? ''
+        ;(
+          modalElement.querySelector(
+            '#burialSiteTypeEdit--crematedCapacityMax'
+          ) as HTMLInputElement
+        ).value = burialSiteType.crematedCapacityMax?.toString() ?? ''
       },
       onshown(modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
@@ -244,7 +261,7 @@ type ResponseJSON =
 
         bulmaJS.toggleHtmlClipped()
       },
-      
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
@@ -363,8 +380,7 @@ type ResponseJSON =
     function confirmDoDelete(): void {
       bulmaJS.confirm({
         title: 'Delete Field',
-        message:
-          `Are you sure you want to delete this field? 
+        message: `Are you sure you want to delete this field? 
             Note that historical records that make use of this field will not be affected.`,
         contextualColorName: 'warning',
         okButton: {
@@ -603,6 +619,28 @@ type ResponseJSON =
             <div class="level-item">
               <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(burialSiteType.burialSiteType)}</h2>
             </div>
+            <div class="level-item">
+              <div class="tags">
+                ${
+                  burialSiteType.bodyCapacityMax === null
+                    ? ''
+                    : `<span class="tag is-info">
+                        Bodies: ${cityssm.escapeHTML(
+                          burialSiteType.bodyCapacityMax.toString()
+                        )}
+                        </span>`
+                }
+                ${
+                  burialSiteType.crematedCapacityMax === null
+                    ? ''
+                    : `<span class="tag is-info">
+                        Cremains: ${cityssm.escapeHTML(
+                          burialSiteType.crematedCapacityMax.toString()
+                        )}
+                        </span>`
+                }
+              </div>
+            </div>
           </div>
           <div class="level-right is-hidden-print">
             <div class="level-item">
@@ -689,7 +727,7 @@ type ResponseJSON =
               renderBurialSiteTypes()
             } else {
               bulmaJS.alert({
-                title: "Error Adding Burial Site Type",
+                title: 'Error Adding Burial Site Type',
                 message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })
@@ -701,6 +739,16 @@ type ResponseJSON =
       cityssm.openHtmlModal('adminBurialSiteTypes-add', {
         onshow(modalElement) {
           sunrise.populateAliases(modalElement)
+          ;(
+            modalElement.querySelector(
+              '#burialSiteTypeAdd--bodyCapacityMax'
+            ) as HTMLInputElement
+          ).value = exports.bodyCapacityMaxDefault.toString()
+          ;(
+            modalElement.querySelector(
+              '#burialSiteTypeAdd--crematedCapacityMax'
+            ) as HTMLInputElement
+          ).value = exports.crematedCapacityMaxDefault.toString()
         },
         onshown(modalElement, closeModalFunction) {
           addCloseModalFunction = closeModalFunction
@@ -714,7 +762,7 @@ type ResponseJSON =
 
           bulmaJS.toggleHtmlClipped()
         },
-        
+
         onremoved() {
           bulmaJS.toggleHtmlClipped()
         }

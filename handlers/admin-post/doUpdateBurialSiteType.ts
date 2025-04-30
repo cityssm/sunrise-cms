@@ -1,20 +1,16 @@
 import type { Request, Response } from 'express'
 
-import { updateRecord } from '../../database/updateRecord.js'
+import updateBurialSiteType, {
+  type UpdateBurialSiteTypeForm
+} from '../../database/updateBurialSiteType.js'
 import { getBurialSiteTypes } from '../../helpers/functions.cache.js'
 
 export default function handler(
-  request: Request<
-    unknown,
-    unknown,
-    { burialSiteTypeId: string; burialSiteType: string }
-  >,
+  request: Request<unknown, unknown, UpdateBurialSiteTypeForm>,
   response: Response
 ): void {
-  const success = updateRecord(
-    'BurialSiteTypes',
-    request.body.burialSiteTypeId,
-    request.body.burialSiteType,
+  const success = updateBurialSiteType(
+    request.body,
     request.session.user as User
   )
 

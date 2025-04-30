@@ -14,7 +14,13 @@ export default async function handler(
 ): Promise<void> {
   const burialSite: BurialSite = {
     burialSiteId: -1,
-    contracts: []
+    contracts: [],
+
+    // eslint-disable-next-line unicorn/no-null
+    bodyCapacity: null,
+
+    // eslint-disable-next-line unicorn/no-null
+    crematedCapacity: null
   }
 
   const cemeteries = getCemeteries()

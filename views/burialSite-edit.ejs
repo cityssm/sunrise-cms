@@ -195,7 +195,11 @@
                   <% } %>
                   id="burialSite--burialSiteTypeId" name="burialSiteTypeId" required>
                   <% if (isCreate) { %>
-                    <option value="">(Select a Type)</option>
+                    <option value=""
+                      data-body-capacity-max="<%= configFunctions.getConfigProperty('settings.burialSiteTypes.bodyCapacityMaxDefault') %>"
+                      data-cremated-capacity-max="<%= configFunctions.getConfigProperty('settings.burialSiteTypes.crematedCapacityMaxDefault') %>">
+                      (Select a Type)
+                    </option>
                   <% } %>
                   <% let typeIsFound = false; %>
                   <% for (const burialSiteType of burialSiteTypes) { %>
@@ -205,13 +209,18 @@
                       }
                     %>
                     <option value="<%= burialSiteType.burialSiteTypeId %>"
+                      data-body-capacity-max="<%= burialSiteType.bodyCapacityMax %>"
+                      data-cremated-capacity-max="<%= burialSiteType.crematedCapacityMax %>"
                       <%= (burialSite.burialSiteTypeId === burialSiteType.burialSiteTypeId ? " selected" : "") %>
                       <%= (!isCreate && burialSite.burialSiteTypeId !== burialSiteType.burialSiteTypeId ? " disabled" : "") %>>
                       <%= burialSiteType.burialSiteType %>
                     </option>
                   <% } %>
                   <% if (burialSite.burialSiteTypeId && !typeIsFound) { %>
-                    <option value="<%= burialSite.burialSiteTypeId %>" selected>
+                    <option value="<%= burialSite.burialSiteTypeId %>"
+                      data-body-capacity-max="<%= burialSite.bodyCapacityMax %>"
+                      data-cremated-capacity-max="<%= burialSite.crematedCapacityMax %>"
+                      selected>
                       <%= burialSite.burialSiteType %>
                     </option>
                   <% } %>
@@ -222,6 +231,38 @@
               <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
                 <span class="icon"><i class="fas fa-unlock" aria-hidden="true"></i></span>
               </button>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="burialSite--bodyCapacity">Body Capacity</label>
+                <div class="control">
+                  <input class="input has-text-right"
+                    id="burialSite--bodyCapacity" name="bodyCapacity" type="number"
+                    min="0"
+                    max="<%= burialSite.bodyCapacityMax ?? configFunctions.getConfigProperty('settings.burialSiteTypes.bodyCapacityMaxDefault') %>"
+                    step="1"
+                    placeholder="<%= burialSite.bodyCapacityMax ?? configFunctions.getConfigProperty('settings.burialSiteTypes.bodyCapacityMaxDefault') %>"
+                    value="<%= burialSite.bodyCapacity %>"
+                    onwheel="return false" />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="burialSite--crematedCapacity">Cremated Capacity</label>
+                <div class="control">
+                  <input class="input has-text-right"
+                    id="burialSite--crematedCapacity" name="crematedCapacity" type="number"
+                    min="0"
+                    max="<%= burialSite.crematedCapacityMax ?? configFunctions.getConfigProperty('settings.burialSiteTypes.crematedCapacityMaxDefault') %>"
+                    step="1"
+                    placeholder="<%= burialSite.crematedCapacityMax ?? configFunctions.getConfigProperty('settings.burialSiteTypes.crematedCapacityMaxDefault') %>"
+                    value="<%= burialSite.crematedCapacity %>"
+                    onwheel="return false" />
+                </div>
+              </div>
             </div>
           </div>
           <label class="label" for="burialSite--burialSiteStatusId">
@@ -581,10 +622,14 @@
 
 <%- include('_footerA'); -%>
 
-<% if (!isCreate) { %>
 <script>
-  exports.burialSiteComments = <%- JSON.stringify(burialSite.burialSiteComments) %>;
+  exports.bodyCapacityMaxDefault = <%- JSON.stringify(configFunctions.getConfigProperty('settings.burialSiteTypes.bodyCapacityMaxDefault')) %>;
+  exports.crematedCapacityMaxDefault = <%- JSON.stringify(configFunctions.getConfigProperty('settings.burialSiteTypes.crematedCapacityMaxDefault')) %>;
 </script>
+<% if (!isCreate) { %>
+  <script>
+    exports.burialSiteComments = <%- JSON.stringify(burialSite.burialSiteComments) %>;
+  </script>
 <% } %>
 <script src="<%= urlPrefix %>/javascripts/burialSite.edit.js"></script>
 

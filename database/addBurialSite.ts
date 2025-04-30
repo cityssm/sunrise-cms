@@ -16,6 +16,9 @@ export interface AddBurialSiteForm {
   burialSiteStatusId: number | string
   burialSiteTypeId: number | string
 
+  bodyCapacity?: number | string
+  crematedCapacity?: number | string
+
   burialSiteImage?: string
   cemeteryId: number | string
   cemeterySvgId?: string
@@ -35,6 +38,7 @@ export interface AddBurialSiteForm {
  * @returns The new burial site's id.
  * @throws If an active burial site with the same name already exists.
  */
+// eslint-disable-next-line complexity
 export default function addBurialSite(
   burialSiteForm: AddBurialSiteForm,
   user: User
@@ -80,12 +84,13 @@ export default function addBurialSite(
         burialSiteNameSegment5,
         burialSiteName,
         burialSiteTypeId, burialSiteStatusId,
+        bodyCapacity, crematedCapacity,
         cemeteryId, cemeterySvgId, burialSiteImage,
         burialSiteLatitude, burialSiteLongitude,
 
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis) 
-        values (?, ?, ?,
+        values (?, ?, ?, ?, ?,
           ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
           ?, ?, ?, ?)`
     )
@@ -100,6 +105,15 @@ export default function addBurialSite(
       burialSiteForm.burialSiteStatusId === ''
         ? undefined
         : burialSiteForm.burialSiteStatusId,
+
+      burialSiteForm.bodyCapacity === ''
+        ? undefined
+        : burialSiteForm.bodyCapacity,
+
+      burialSiteForm.crematedCapacity === ''
+        ? undefined
+        : burialSiteForm.crematedCapacity,
+
       burialSiteForm.cemeteryId === '' ? undefined : burialSiteForm.cemeteryId,
       burialSiteForm.cemeterySvgId,
       burialSiteForm.burialSiteImage ?? '',

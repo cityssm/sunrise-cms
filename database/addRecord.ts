@@ -5,13 +5,11 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 type RecordTable =
   | 'BurialSiteStatuses'
-  | 'BurialSiteTypes'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
 
 const recordNameColumns = new Map<RecordTable, string>([
   ['BurialSiteStatuses', 'burialSiteStatus'],
-  ['BurialSiteTypes', 'burialSiteType'],
   ['WorkOrderMilestoneTypes', 'workOrderMilestoneType'],
   ['WorkOrderTypes', 'workOrderType']
 ])

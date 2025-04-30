@@ -15,6 +15,11 @@ export interface BurialSite extends Record {
   burialSiteType?: string
   burialSiteTypeId?: number
 
+  bodyCapacity: number | null
+  bodyCapacityMax?: number | null
+  crematedCapacity: number | null
+  crematedCapacityMax?: number | null
+
   cemetery?: Cemetery
   cemeteryId?: number | null
   cemeteryName?: string
@@ -70,6 +75,10 @@ export interface BurialSiteType extends Record {
   burialSiteTypeId: number
 
   burialSiteType: string
+
+  bodyCapacityMax: number | null
+  crematedCapacityMax: number | null
+
   burialSiteTypeFields?: BurialSiteTypeField[]
   orderNumber?: number
 }

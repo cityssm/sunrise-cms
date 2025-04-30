@@ -33,6 +33,8 @@ export declare const configDefaultValues: {
     'settings.longitudeMax': number;
     'settings.longitudeMin': number;
     'settings.cemeteries.refreshImageChanges': boolean;
+    'settings.burialSiteTypes.bodyCapacityMaxDefault': number;
+    'settings.burialSiteTypes.crematedCapacityMaxDefault': number;
     'settings.burialSites.burialSiteNameSegments': ConfigBurialSiteNameSegments;
     'settings.burialSites.burialSiteNameSegments.includeCemeteryKey': boolean;
     'settings.burialSites.refreshImageChanges': boolean;

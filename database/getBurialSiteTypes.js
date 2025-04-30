@@ -4,9 +4,11 @@ import getBurialSiteTypeFields from './getBurialSiteTypeFields.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export default function getBurialSiteTypes(includeDeleted = false) {
     const database = sqlite(sunriseDB);
-    const updateOrderNumbers = !database.readonly && !includeDeleted;
+    const updateOrderNumbers = !includeDeleted;
     const burialSiteTypes = database
-        .prepare(`select burialSiteTypeId, burialSiteType, orderNumber
+        .prepare(`select burialSiteTypeId, burialSiteType,
+        bodyCapacityMax, crematedCapacityMax,
+        orderNumber
         from BurialSiteTypes
         ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '}
         order by orderNumber, burialSiteType`)

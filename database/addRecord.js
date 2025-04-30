@@ -3,7 +3,6 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import { clearCacheByTableName } from '../helpers/functions.cache.js';
 const recordNameColumns = new Map([
     ['BurialSiteStatuses', 'burialSiteStatus'],
-    ['BurialSiteTypes', 'burialSiteType'],
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneType'],
     ['WorkOrderTypes', 'workOrderType']
 ]);

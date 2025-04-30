@@ -10,6 +10,7 @@ import getCemetery from './getCemetery.js';
  * @returns The new burial site's id.
  * @throws If an active burial site with the same name already exists.
  */
+// eslint-disable-next-line complexity
 export default function addBurialSite(burialSiteForm, user) {
     const database = sqlite(sunriseDB);
     const rightNowMillis = Date.now();
@@ -38,17 +39,22 @@ export default function addBurialSite(burialSiteForm, user) {
         burialSiteNameSegment5,
         burialSiteName,
         burialSiteTypeId, burialSiteStatusId,
+        bodyCapacity, crematedCapacity,
         cemeteryId, cemeterySvgId, burialSiteImage,
         burialSiteLatitude, burialSiteLongitude,
 
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis) 
-        values (?, ?, ?,
+        values (?, ?, ?, ?, ?,
           ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
           ?, ?, ?, ?)`)
         .run(burialSiteForm.burialSiteNameSegment1 ?? '', burialSiteForm.burialSiteNameSegment2 ?? '', burialSiteForm.burialSiteNameSegment3 ?? '', burialSiteForm.burialSiteNameSegment4 ?? '', burialSiteForm.burialSiteNameSegment5 ?? '', burialSiteName, burialSiteForm.burialSiteTypeId, burialSiteForm.burialSiteStatusId === ''
         ? undefined
-        : burialSiteForm.burialSiteStatusId, burialSiteForm.cemeteryId === '' ? undefined : burialSiteForm.cemeteryId, burialSiteForm.cemeterySvgId, burialSiteForm.burialSiteImage ?? '', burialSiteForm.burialSiteLatitude === ''
+        : burialSiteForm.burialSiteStatusId, burialSiteForm.bodyCapacity === ''
+        ? undefined
+        : burialSiteForm.bodyCapacity, burialSiteForm.crematedCapacity === ''
+        ? undefined
+        : burialSiteForm.crematedCapacity, burialSiteForm.cemeteryId === '' ? undefined : burialSiteForm.cemeteryId, burialSiteForm.cemeterySvgId, burialSiteForm.burialSiteImage ?? '', burialSiteForm.burialSiteLatitude === ''
         ? undefined
         : burialSiteForm.burialSiteLatitude, burialSiteForm.burialSiteLongitude === ''
         ? undefined

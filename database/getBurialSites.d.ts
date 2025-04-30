@@ -4,8 +4,8 @@ export interface GetBurialSitesFilters {
     burialSiteNameSearchType?: '' | 'endsWith' | 'startsWith';
     burialSiteName?: string;
     cemeteryId?: number | string;
-    burialSiteTypeId?: number | string;
     burialSiteStatusId?: number | string;
+    burialSiteTypeId?: number | string;
     contractStatus?: '' | 'occupied' | 'unoccupied';
     workOrderId?: number | string;
 }

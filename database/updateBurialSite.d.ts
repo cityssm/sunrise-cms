@@ -7,6 +7,8 @@ export interface UpdateBurialSiteForm {
     burialSiteNameSegment5?: string;
     burialSiteStatusId: number | string;
     burialSiteTypeId: number | string;
+    bodyCapacity?: number | string;
+    crematedCapacity?: number | string;
     burialSiteImage: string;
     cemeteryId: number | string;
     cemeterySvgId: string;

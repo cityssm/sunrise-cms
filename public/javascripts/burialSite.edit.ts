@@ -14,7 +14,14 @@ import type { Sunrise } from './types.js'
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+
+  burialSiteComments?: BurialSiteComment[]
+
+  bodyCapacityMaxDefault: string
+  crematedCapacityMaxDefault: string
+}
 ;(() => {
   const sunrise = exports.sunrise as Sunrise
 
@@ -142,6 +149,42 @@ declare const exports: Record<string, unknown>
     '#burialSite--burialSiteTypeId'
   ) as HTMLSelectElement
 
+  function updateCapacities(): void {
+    const bodyCapacityMax =
+      burialSiteTypeIdElement.selectedOptions[0].dataset.bodyCapacityMax
+
+    const bodyCapacityElement = document.querySelector(
+      '#burialSite--bodyCapacity'
+    ) as HTMLInputElement
+
+    bodyCapacityElement.max =
+      bodyCapacityMax === ''
+        ? exports.bodyCapacityMaxDefault
+        : bodyCapacityMax ?? ''
+
+    bodyCapacityElement.placeholder =
+      bodyCapacityMax === ''
+        ? exports.bodyCapacityMaxDefault
+        : bodyCapacityMax ?? ''
+
+    const crematedCapacityMax =
+      burialSiteTypeIdElement.selectedOptions[0].dataset.crematedCapacityMax
+
+    const crematedCapacityElement = document.querySelector(
+      '#burialSite--crematedCapacity'
+    ) as HTMLInputElement
+
+    crematedCapacityElement.max =
+      crematedCapacityMax === ''
+        ? exports.crematedCapacityMaxDefault
+        : crematedCapacityMax ?? ''
+
+    crematedCapacityElement.placeholder =
+      crematedCapacityMax === ''
+        ? exports.crematedCapacityMaxDefault
+        : crematedCapacityMax ?? ''
+  }
+
   if (isCreate) {
     const burialSiteFieldsContainerElement = document.querySelector(
       '#container--burialSiteFields'
@@ -265,22 +308,27 @@ declare const exports: Record<string, unknown>
           message: `Are you sure you want to change the burial site type?\n
             This change affects the additional fields associated with this record.`,
           contextualColorName: 'warning',
+
           okButton: {
             text: 'Yes, Keep the Change',
             callbackFunction() {
               refreshAfterSave = true
             }
           },
+
           cancelButton: {
             text: 'Revert the Change',
             callbackFunction() {
               burialSiteTypeIdElement.value = originalBurialSiteTypeId
+              updateCapacities()
             }
           }
         })
       }
     })
   }
+
+  burialSiteTypeIdElement.addEventListener('change', updateCapacities)
 
   // Leaflet Map
 
@@ -564,7 +612,7 @@ declare const exports: Record<string, unknown>
           ) as HTMLTextAreaElement
         ).focus()
       },
-      
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
         ;(

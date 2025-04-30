@@ -86,6 +86,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
     });
     // Burial Site Type
     const burialSiteTypeIdElement = document.querySelector('#burialSite--burialSiteTypeId');
+    function updateCapacities() {
+        const bodyCapacityMax = burialSiteTypeIdElement.selectedOptions[0].dataset.bodyCapacityMax;
+        const bodyCapacityElement = document.querySelector('#burialSite--bodyCapacity');
+        bodyCapacityElement.max =
+            bodyCapacityMax === ''
+                ? exports.bodyCapacityMaxDefault
+                : bodyCapacityMax ?? '';
+        bodyCapacityElement.placeholder =
+            bodyCapacityMax === ''
+                ? exports.bodyCapacityMaxDefault
+                : bodyCapacityMax ?? '';
+        const crematedCapacityMax = burialSiteTypeIdElement.selectedOptions[0].dataset.crematedCapacityMax;
+        const crematedCapacityElement = document.querySelector('#burialSite--crematedCapacity');
+        crematedCapacityElement.max =
+            crematedCapacityMax === ''
+                ? exports.crematedCapacityMaxDefault
+                : crematedCapacityMax ?? '';
+        crematedCapacityElement.placeholder =
+            crematedCapacityMax === ''
+                ? exports.crematedCapacityMaxDefault
+                : crematedCapacityMax ?? '';
+    }
     if (isCreate) {
         const burialSiteFieldsContainerElement = document.querySelector('#container--burialSiteFields');
         burialSiteTypeIdElement.addEventListener('change', () => {
@@ -177,12 +199,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         text: 'Revert the Change',
                         callbackFunction() {
                             burialSiteTypeIdElement.value = originalBurialSiteTypeId;
+                            updateCapacities();
                         }
                     }
                 });
             }
         });
     }
+    burialSiteTypeIdElement.addEventListener('change', updateCapacities);
     // Leaflet Map
     document
         .querySelector('#button--selectCoordinate')

@@ -9,8 +9,9 @@ export interface GetBurialSitesFilters {
   burialSiteNameSearchType?: '' | 'endsWith' | 'startsWith'
   burialSiteName?: string
   cemeteryId?: number | string
-  burialSiteTypeId?: number | string
+
   burialSiteStatusId?: number | string
+  burialSiteTypeId?: number | string
   contractStatus?: '' | 'occupied' | 'unoccupied'
   workOrderId?: number | string
 }
@@ -75,6 +76,7 @@ export default function getBurialSites(
           l.burialSiteNameSegment5,
           l.burialSiteName,
           t.burialSiteType,
+          l.bodyCapacity, l.crematedCapacity,
           l.cemeteryId, m.cemeteryName, l.cemeterySvgId,
           l.burialSiteStatusId, s.burialSiteStatus
           ${

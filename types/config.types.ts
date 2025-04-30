@@ -47,6 +47,11 @@ export interface Config {
       refreshImageChanges?: boolean
     }
 
+    burialSiteTypes: {
+      bodyCapacityMaxDefault?: number
+      crematedCapacityMaxDefault?: number
+    }
+
     burialSites: {
       burialSiteNameSegments?: ConfigBurialSiteNameSegments
       refreshImageChanges?: boolean

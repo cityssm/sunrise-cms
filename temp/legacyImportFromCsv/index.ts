@@ -381,8 +381,9 @@ async function importFromMasterCSV(): Promise<void> {
               )
 
         const intermentContainerTypeKey =
-          contractType.contractType === 'Cremation' &&
-          masterRow.CM_CONTAINER_TYPE !== ''
+          masterRow.CM_CONTAINER_TYPE === '' &&
+          (contractType.contractType === 'Cremation' ||
+            masterRow.CM_CREMATION === 'Y')
             ? 'U'
             : masterRow.CM_CONTAINER_TYPE
 
@@ -997,7 +998,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
 
       const intermentContainerTypeKey =
         contractType.contractType === 'Cremation' &&
-        workOrderRow.WO_CONTAINER_TYPE !== ''
+        workOrderRow.WO_CONTAINER_TYPE === ''
           ? 'U'
           : workOrderRow.WO_CONTAINER_TYPE
 
