@@ -107,6 +107,7 @@ export interface Contract extends Record {
     isPreneed: boolean;
     printEJS?: string;
     burialSiteId?: number;
+    burialSiteIsActive?: 0 | 1;
     burialSiteName?: string;
     burialSiteType?: string;
     burialSiteTypeId?: number;
@@ -285,8 +286,8 @@ export interface Record {
     recordUpdate_timeString?: string;
     recordUpdate_userName?: string;
     recordDelete_dateString?: string;
-    recordDelete_timeMillis?: number;
-    recordDelete_userName?: string;
+    recordDelete_timeMillis?: number | null;
+    recordDelete_userName?: string | null;
 }
 export interface WorkOrder extends Record {
     workOrderId: number;

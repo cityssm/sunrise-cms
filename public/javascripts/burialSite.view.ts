@@ -1,6 +1,11 @@
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 import type * as Leaflet from 'leaflet'
 
 import type { Sunrise } from './types.js'
+
+declare const cityssm: cityssmGlobal
+declare const bulmaJS: BulmaJS
 
 declare const L: typeof Leaflet
 declare const exports: {
@@ -71,5 +76,59 @@ declare const exports: {
       for (const tableRowElement of tableRowElements) {
         tableRowElement.classList.toggle('is-hidden')
       }
+    })
+
+  /*
+   * Restore Deleted
+   */
+
+  document
+    .querySelector('button.is-restore-burial-site-button')
+    ?.addEventListener('click', (clickEvent) => {
+      clickEvent.preventDefault()
+
+      const buttonElement = clickEvent.currentTarget as HTMLButtonElement
+
+      const burialSiteId = buttonElement.dataset.burialSiteId ?? ''
+
+      if (burialSiteId === '') {
+        return
+      }
+
+      function doRestore(): void {
+        cityssm.postJSON(
+          `${sunrise.urlPrefix}/burialSites/doRestoreBurialSite`,
+          { burialSiteId },
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+            }
+
+            if (responseJSON.success) {
+              globalThis.location.reload()
+            } else {
+              bulmaJS.alert({
+                title: 'Error Restoring Burial Site',
+                message: responseJSON.errorMessage ?? '',
+                contextualColorName: 'danger'
+              })
+            }
+          }
+        )
+      }
+
+      bulmaJS.confirm({
+        contextualColorName: 'warning',
+        title: 'Restore Burial Site',
+
+        message:
+          'Are you sure you want to restore this burial site? It will be visible again.',
+
+        okButton: {
+          text: 'Yes, Restore Burial Site',
+          callbackFunction: doRestore
+        }
+      })
     })
 })()

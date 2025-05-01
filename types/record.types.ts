@@ -153,6 +153,7 @@ export interface Contract extends Record {
   printEJS?: string
 
   burialSiteId?: number
+  burialSiteIsActive?: 0 | 1
   burialSiteName?: string
   burialSiteType?: string
   burialSiteTypeId?: number
@@ -393,8 +394,8 @@ export interface Record {
   recordUpdate_userName?: string
 
   recordDelete_dateString?: string
-  recordDelete_timeMillis?: number
-  recordDelete_userName?: string
+  recordDelete_timeMillis?: number | null
+  recordDelete_userName?: string | null
 }
 
 /*

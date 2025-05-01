@@ -125,7 +125,9 @@
         <p class="mb-2">
           <strong>Burial Site</strong><br />
           <% if (contract.burialSiteId) { %>
-            <a href="<%= urlPrefix %>/burialSites/<%= contract.burialSiteId %>"><%= contract.burialSiteName %></a>
+            <a class="<%= contract.burialSiteIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/burialSites/<%= contract.burialSiteId %>">
+              <%= contract.burialSiteName %>
+            </a>
           <% } else { %>
             <span class="has-text-grey">(No Burial Site)</span>
           <% } %>

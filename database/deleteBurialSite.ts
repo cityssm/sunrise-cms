@@ -44,30 +44,6 @@ export function deleteBurialSite(burialSiteId: number, user: User): boolean {
     )
     .run(user.userName, rightNowMillis, burialSiteId)
 
-  /*
-   * Delete fields and comments
-   */
-
-  database
-    .prepare(
-      `update BurialSiteFields
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where burialSiteId = ?
-          and recordDelete_timeMillis is null`
-    )
-    .run(user.userName, rightNowMillis, burialSiteId)
-
-  database
-    .prepare(
-      `update BurialSiteComments
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where burialSiteId = ?
-          and recordDelete_timeMillis is null`
-    )
-    .run(user.userName, rightNowMillis, burialSiteId)
-
   database.close()
 
   return true

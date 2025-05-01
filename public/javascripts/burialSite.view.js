@@ -39,4 +39,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
             tableRowElement.classList.toggle('is-hidden');
         }
     });
+    /*
+     * Restore Deleted
+     */
+    document
+        .querySelector('button.is-restore-burial-site-button')
+        ?.addEventListener('click', (clickEvent) => {
+        clickEvent.preventDefault();
+        const buttonElement = clickEvent.currentTarget;
+        const burialSiteId = buttonElement.dataset.burialSiteId ?? '';
+        if (burialSiteId === '') {
+            return;
+        }
+        function doRestore() {
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doRestoreBurialSite`, { burialSiteId }, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
+                if (responseJSON.success) {
+                    globalThis.location.reload();
+                }
+                else {
+                    bulmaJS.alert({
+                        title: 'Error Restoring Burial Site',
+                        message: responseJSON.errorMessage ?? '',
+                        contextualColorName: 'danger'
+                    });
+                }
+            });
+        }
+        bulmaJS.confirm({
+            contextualColorName: 'warning',
+            title: 'Restore Burial Site',
+            message: 'Are you sure you want to restore this burial site? It will be visible again.',
+            okButton: {
+                text: 'Yes, Restore Burial Site',
+                callbackFunction: doRestore
+            }
+        });
+    });
 })();

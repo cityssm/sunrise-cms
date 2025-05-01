@@ -19,22 +19,25 @@ const baseSQL = `select l.burialSiteId,
   l.cemeteryId, m.cemeteryName,
   m.cemeteryLatitude, m.cemeteryLongitude,
   m.cemeterySvg, l.cemeterySvgId, l.burialSiteImage,
-  l.burialSiteLatitude, l.burialSiteLongitude
+  l.burialSiteLatitude, l.burialSiteLongitude,
+
+  l.recordDelete_userName, l.recordDelete_timeMillis
 
   from BurialSites l
   left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
   left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
-  left join Cemeteries m on l.cemeteryId = m.cemeteryId
-  where l.recordDelete_timeMillis is null`;
-export default async function getBurialSite(burialSiteId) {
-    return await _getBurialSite(`${baseSQL} and l.burialSiteId = ?`, burialSiteId);
+  left join Cemeteries m on l.cemeteryId = m.cemeteryId`;
+export default async function getBurialSite(burialSiteId, includeDeleted = false) {
+    return await _getBurialSite(`l.burialSiteId = ?`, burialSiteId, includeDeleted);
 }
-export async function getBurialSiteByBurialSiteName(burialSiteName) {
-    return await _getBurialSite(`${baseSQL} and l.burialSiteName = ?`, burialSiteName);
+export async function getBurialSiteByBurialSiteName(burialSiteName, includeDeleted = false) {
+    return await _getBurialSite(`l.burialSiteName = ?`, burialSiteName, includeDeleted);
 }
-async function _getBurialSite(sql, burialSiteIdOrLotName) {
+async function _getBurialSite(whereClausePiece, burialSiteIdOrLotName, includeDeleted = false) {
     const database = sqlite(sunriseDB, { readonly: true });
-    const burialSite = database.prepare(sql).get(burialSiteIdOrLotName);
+    const burialSite = database
+        .prepare(`${baseSQL} ${includeDeleted ? 'where' : 'where l.recordDelete_timeMillis is null and'} ${whereClausePiece}`)
+        .get(burialSiteIdOrLotName);
     if (burialSite !== undefined) {
         const contracts = await getContracts({
             burialSiteId: burialSite.burialSiteId

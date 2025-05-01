@@ -130,6 +130,9 @@ declare const exports: Record<string, unknown>
         </span>`
       }
 
+      const burialSiteLinkClass =
+        contract.burialSiteIsActive === 0 ? 'has-text-danger-dark' : ''
+
       // eslint-disable-next-line no-unsanitized/method
       resultsTbodyElement.insertAdjacentHTML(
         'beforeend',
@@ -146,9 +149,10 @@ declare const exports: Record<string, unknown>
             ${
               (contract.burialSiteId ?? -1) === -1
                 ? '<span class="has-text-grey">(No Burial Site)</span>'
-                : `<a class="has-tooltip-right" data-tooltip="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
+                : `<a class="has-tooltip-right ${burialSiteLinkClass}"
+                    data-tooltip="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
                     href="${sunrise.getBurialSiteURL(contract.burialSiteId)}">
-                    ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
+                      ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
                     </a>`
             }<br />
             <span class="is-size-7">${cityssm.escapeHTML(contract.cemeteryName ?? '')}</span>

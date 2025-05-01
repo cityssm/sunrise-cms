@@ -11,7 +11,10 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const burialSite = await getBurialSite(request.params.burialSiteId)
+  const burialSite = await getBurialSite(
+    request.params.burialSiteId,
+    request.session.user?.userProperties?.canUpdate
+  )
 
   if (burialSite === undefined) {
     response.redirect(
@@ -20,14 +23,18 @@ export default async function handler(
     return
   }
 
+  const burialSiteIsDeleted = burialSite.recordDelete_timeMillis !== null
+
   response.render('burialSite-view', {
     headTitle: burialSite.burialSiteName,
 
     burialSite
   })
 
-  response.on('finish', () => {
-    getNextBurialSiteId(burialSite.burialSiteId)
-    getPreviousBurialSiteId(burialSite.burialSiteId)
-  })
+  if (!burialSiteIsDeleted) {
+    response.on('finish', () => {
+      getNextBurialSiteId(burialSite.burialSiteId)
+      getPreviousBurialSiteId(burialSite.burialSiteId)
+    })
+  }
 }

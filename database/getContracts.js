@@ -32,6 +32,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
             .prepare(`select o.contractId,
           o.contractTypeId, t.contractType, t.isPreneed,
           o.burialSiteId, lt.burialSiteType, l.burialSiteName,
+          case when l.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
           l.cemeteryId, m.cemeteryName,
           o.contractStartDate, userFn_dateIntegerToString(o.contractStartDate) as contractStartDateString,
           o.contractEndDate, userFn_dateIntegerToString(o.contractEndDate) as contractEndDateString,

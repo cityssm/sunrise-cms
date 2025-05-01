@@ -10,18 +10,19 @@ import handler_doCreateBurialSite from '../handlers/burialSites-post/doCreateBur
 import handler_doDeleteBurialSite from '../handlers/burialSites-post/doDeleteBurialSite.js';
 import handler_doDeleteBurialSiteComment from '../handlers/burialSites-post/doDeleteBurialSiteComment.js';
 import handler_doGetBurialSiteTypeFields from '../handlers/burialSites-post/doGetBurialSiteTypeFields.js';
+import handler_doRestoreBurialSite from '../handlers/burialSites-post/doRestoreBurialSite.js';
 import handler_doSearchBurialSites from '../handlers/burialSites-post/doSearchBurialSites.js';
 import handler_doUpdateBurialSite from '../handlers/burialSites-post/doUpdateBurialSite.js';
 import handler_doUpdateBurialSiteComment from '../handlers/burialSites-post/doUpdateBurialSiteComment.js';
-import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js';
+import { adminPostHandler, updateGetHandler, updatePostHandler } from '../handlers/permissions.js';
 export const router = Router();
 /*
- * Lot Search
+ * Burial Site Search
  */
 router.get('/', handler_search);
 router.post('/doSearchBurialSites', handler_doSearchBurialSites);
 /*
- * Lot View / Edit
+ * Burial Site View / Edit
  */
 router.get('/new', updateGetHandler, handler_new);
 router.get('/:burialSiteId', handler_view);
@@ -32,6 +33,10 @@ router.post('/doGetBurialSiteTypeFields', updatePostHandler, handler_doGetBurial
 router.post('/doCreateBurialSite', updatePostHandler, handler_doCreateBurialSite);
 router.post('/doUpdateBurialSite', updatePostHandler, handler_doUpdateBurialSite);
 router.post('/doDeleteBurialSite', updatePostHandler, handler_doDeleteBurialSite);
+router.post('/doRestoreBurialSite', adminPostHandler, handler_doRestoreBurialSite);
+/*
+ * Burial Site Comments
+ */
 router.post('/doAddBurialSiteComment', updatePostHandler, handler_doAddBurialSiteComment);
 router.post('/doUpdateBurialSiteComment', updatePostHandler, handler_doUpdateBurialSiteComment);
 router.post('/doDeleteBurialSiteComment', updatePostHandler, handler_doDeleteBurialSiteComment);
