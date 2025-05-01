@@ -22,7 +22,7 @@ import { updateBurialSiteStatus } from '../../database/updateBurialSite.js';
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js';
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js';
 import { getBurialSiteTypeId } from './data.burialSiteTypes.js';
-import { getCemeteryIdByKey } from './data.cemeteries.js';
+import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js';
 import { getCommittalTypeIdByKey } from './data.committalTypes.js';
 import { getDeathAgePeriod } from './data.deathAgePeriods.js';
 import { getFeeIdByFeeDescription } from './data.fees.js';
@@ -66,7 +66,7 @@ async function importFromMasterCSV() {
         for (masterRow of cmmaster.data) {
             const cemeteryId = getCemeteryIdByKey(masterRow.CM_CEMETERY, user);
             let burialSiteId;
-            if (masterRow.CM_CEMETERY !== '' && masterRow.CM_CEMETERY !== '00') {
+            if (!cremationCemeteryKeys.has(masterRow.CM_CEMETERY)) {
                 const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY);
                 const burialSiteNameSegment1 = masterRow.CM_BLOCK === '0' ? '' : masterRow.CM_BLOCK;
                 const burialSiteNameSegment2 = (masterRow.CM_RANGE1 === '0' ? '' : masterRow.CM_RANGE1) +
@@ -322,7 +322,7 @@ async function importFromPrepaidCSV() {
                 cemeteryKey = 'HC';
             }
             let burialSite;
-            if (cemeteryKey !== '') {
+            if (!cremationCemeteryKeys.has(cemeteryKey)) {
                 const cemeteryId = getCemeteryIdByKey(cemeteryKey, user);
                 const burialSiteNameSegment1 = prepaidRow.CMPP_BLOCK === '0' ? '' : prepaidRow.CMPP_BLOCK;
                 const burialSiteNameSegment2 = (prepaidRow.CMPP_RANGE1 === '0' ? '' : prepaidRow.CMPP_RANGE1) +

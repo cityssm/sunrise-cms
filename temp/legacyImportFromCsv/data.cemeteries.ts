@@ -6,6 +6,8 @@ import addCemetery, {
 } from '../../database/addCemetery.js'
 import { getCemeteryByKey } from '../../database/getCemetery.js'
 
+export const cremationCemeteryKeys = new Set(['', '00', '`', 'N', 'R'])
+
 const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
   '00': {
     cemeteryName: 'Crematorium',
@@ -295,7 +297,7 @@ export function getCemeteryIdByKey(
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     addForm ??= {
       cemeteryName: cemeteryKey,
-      
+
       cemeteryDescription: '',
       cemeteryKey,
 

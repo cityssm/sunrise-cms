@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 import addCemetery from '../../database/addCemetery.js';
 import { getCemeteryByKey } from '../../database/getCemetery.js';
+export const cremationCemeteryKeys = new Set(['', '00', '`', 'N', 'R']);
 const cemeteryKeyToCemetery = {
     '00': {
         cemeteryName: 'Crematorium',

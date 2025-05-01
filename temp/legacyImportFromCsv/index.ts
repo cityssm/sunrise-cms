@@ -36,7 +36,7 @@ import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
 import type * as recordTypes from '../../types/record.types.js'
 
 import { getBurialSiteTypeId } from './data.burialSiteTypes.js'
-import { getCemeteryIdByKey } from './data.cemeteries.js'
+import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js'
 import { getCommittalTypeIdByKey } from './data.committalTypes.js'
 import { getDeathAgePeriod } from './data.deathAgePeriods.js'
 import { getFeeIdByFeeDescription } from './data.fees.js'
@@ -106,7 +106,7 @@ async function importFromMasterCSV(): Promise<void> {
 
       let burialSiteId: number | undefined
 
-      if (masterRow.CM_CEMETERY !== '' && masterRow.CM_CEMETERY !== '00') {
+      if (!cremationCemeteryKeys.has(masterRow.CM_CEMETERY)) {
         const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY)
 
         const burialSiteNameSegment1 =
@@ -524,7 +524,7 @@ async function importFromPrepaidCSV(): Promise<void> {
 
       let burialSite: recordTypes.BurialSite | undefined
 
-      if (cemeteryKey !== '') {
+      if (!cremationCemeteryKeys.has(cemeteryKey)) {
         const cemeteryId = getCemeteryIdByKey(cemeteryKey, user)
 
         const burialSiteNameSegment1 =
@@ -1011,7 +1011,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         {
           burialSiteId: burialSite ? burialSite.burialSiteId : '',
           contractTypeId: contractType.contractTypeId,
-          
+
           contractEndDateString: '',
           contractStartDateString,
 
