@@ -8,7 +8,7 @@ export function getCommittalTypeIdByKey(committalTypeKey, user) {
             committalType: committalTypeKey,
             committalTypeKey
         }, user);
-        committalTypes = getCommittalTypes();
+        committalTypes = getCommittalTypes(true);
         return committalTypeId;
     }
     return committalType.committalTypeId;

@@ -1,7 +1,7 @@
 import addIntermentContainerType from '../../database/addIntermentContainerType.js'
 import getIntermentContainerTypes from '../../database/getIntermentContainerTypes.js'
 
-let intermentContainerTypes = getIntermentContainerTypes()
+let intermentContainerTypes = getIntermentContainerTypes(true)
 
 export function getIntermentContainerTypeIdByKey(
   intermentContainerTypeKey: string,

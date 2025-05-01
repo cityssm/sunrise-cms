@@ -20,7 +20,7 @@ export function getCommittalTypeIdByKey(
       user
     )
 
-    committalTypes = getCommittalTypes()
+    committalTypes = getCommittalTypes(true)
 
     return committalTypeId
   }

@@ -24,6 +24,7 @@ export function getFeeIdByFeeDescription(
       )
       .all() as Array<{
       feeId: number
+
       feeCategoryId: number
       feeDescription: string
     }>
@@ -45,11 +46,13 @@ export function getFeeIdByFeeDescription(
     feeId = addFee(
       {
         feeName: feeDescription.slice(9),
-        feeDescription,
-        feeCategoryId,
+
         feeAccount: '',
+        feeCategoryId,
+        feeDescription,
+
+        burialSiteTypeId: '',
         contractTypeId: '',
-        burialSiteTypeId: ''
       },
       user
     )

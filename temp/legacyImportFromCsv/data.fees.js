@@ -25,11 +25,11 @@ export function getFeeIdByFeeDescription(feeDescription, user) {
     if (feeId === undefined) {
         feeId = addFee({
             feeName: feeDescription.slice(9),
-            feeDescription,
-            feeCategoryId,
             feeAccount: '',
+            feeCategoryId,
+            feeDescription,
+            burialSiteTypeId: '',
             contractTypeId: '',
-            burialSiteTypeId: ''
         }, user);
         feeCache.set(feeDescription, feeId);
     }
