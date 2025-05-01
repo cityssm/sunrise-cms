@@ -66,6 +66,73 @@
   </div>
 </div>
 
+<div class="panel">
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <h2 class="has-text-weight-bold">Contracts with Upcoming Funerals</h2>
+      </div>
+      <div class="level-right">
+        <i class="fas fa-file-contract" aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+  <div class="panel-block is-block">
+    <% if (contracts.length === 0) { %>
+      <div class="message is-info">
+        <div class="message-body">
+          <p>No contracts with upcoming funerals.</p>
+        </div>
+      </div>
+    <% } else { %>
+      <table class="table is-striped is-fullwidth">
+        <thead>
+          <tr>
+            <th>Contract Type</th>
+            <th>Funeral Date</th>
+            <th>Interments</th>
+            <th>Funeral Director</th>
+          </tr>
+        </thead>
+        <tbody id="burialSite--contractsTbody">
+          <% for (const contract of contracts) { %>
+            <tr>
+              <td>
+                <a class="has-text-weight-bold"
+                  href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
+                  <%= contract.contractType %>
+                </a><br />
+                <span class="is-size-7">#<%= contract.contractId %></span>
+              </td>
+              <td>
+                <%= contract.funeralDateString %>
+                <%= contract.funeralTime === null || contract.funeralTime === 0 ? '' : contract.funeralTimeString %>
+              </td>
+              <td>
+                <% if (contract.contractInterments.length === 0) { %>
+                  <span class="has-text-grey">(No Interments)</span>
+                <% } else { %>
+                  <ul class="fa-ul ml-5">
+                    <% for (const interment of contract.contractInterments) { %>
+                      <li>
+                        <span class="fa-li"><i class="fas fa-user"></i></span>
+                        <%= interment.deceasedName %>
+                      </li>
+                    <% } %>
+                  </ul>
+                <% } %>
+              </td>
+              <td>
+                <%= contract.funeralDirectorName %><br />
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+</div>
+
 <%- include('_footerA'); -%>
 
 <%- include('_footerB'); -%>

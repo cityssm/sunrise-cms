@@ -13,6 +13,7 @@ export interface GetContractsFilters {
     burialSiteNameSearchType?: '' | 'endsWith' | 'startsWith';
     burialSiteTypeId?: number | string;
     funeralHomeId?: number | string;
+    funeralTime?: '' | 'upcoming';
     notWorkOrderId?: number | string;
     workOrderId?: number | string;
 }
@@ -20,6 +21,7 @@ export interface GetContractsOptions {
     /** -1 for no limit */
     limit: number | string;
     offset: number | string;
+    orderBy?: string;
     includeFees: boolean;
     includeInterments: boolean;
     includeTransactions: boolean;
