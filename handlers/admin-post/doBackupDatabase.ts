@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { backupDatabase } from '../../helpers/database.helpers.js'
+import { backupDatabase } from '../../database/backupDatabase.js'
 
 export default async function handler(
   _request: Request,
