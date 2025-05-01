@@ -5,33 +5,39 @@ import type { WorkOrderMilestoneType } from '../types/record.types.js'
 
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export default function getWorkOrderMilestoneTypes(): WorkOrderMilestoneType[] {
+export default function getWorkOrderMilestoneTypes(
+  includeDeleted = false
+): WorkOrderMilestoneType[] {
   const database = sqlite(sunriseDB)
+
+  const updateOrderNumbers = !includeDeleted
 
   const workOrderMilestoneTypes = database
     .prepare(
       `select workOrderMilestoneTypeId, workOrderMilestoneType, orderNumber
         from WorkOrderMilestoneTypes
-        where recordDelete_timeMillis is null
+        ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '}
         order by orderNumber, workOrderMilestoneType`
     )
     .all() as WorkOrderMilestoneType[]
 
-  let expectedOrderNumber = 0
+  if (updateOrderNumbers) {
+    let expectedOrderNumber = 0
 
-  for (const workOrderMilestoneType of workOrderMilestoneTypes) {
-    if (workOrderMilestoneType.orderNumber !== expectedOrderNumber) {
-      updateRecordOrderNumber(
-        'WorkOrderMilestoneTypes',
-        workOrderMilestoneType.workOrderMilestoneTypeId,
-        expectedOrderNumber,
-        database
-      )
+    for (const workOrderMilestoneType of workOrderMilestoneTypes) {
+      if (workOrderMilestoneType.orderNumber !== expectedOrderNumber) {
+        updateRecordOrderNumber(
+          'WorkOrderMilestoneTypes',
+          workOrderMilestoneType.workOrderMilestoneTypeId,
+          expectedOrderNumber,
+          database
+        )
 
-      workOrderMilestoneType.orderNumber = expectedOrderNumber
+        workOrderMilestoneType.orderNumber = expectedOrderNumber
+      }
+
+      expectedOrderNumber += 1
     }
-
-    expectedOrderNumber += 1
   }
 
   database.close()

@@ -15,8 +15,8 @@ const debug = Debug(`${DEBUG_NAMESPACE}:functions.cache:${process.pid.toString()
  * Burial Site Statuses
  */
 let burialSiteStatuses;
-export function getBurialSiteStatusByBurialSiteStatus(burialSiteStatus) {
-    const cachedStatuses = getBurialSiteStatuses();
+export function getBurialSiteStatusByBurialSiteStatus(burialSiteStatus, includeDeleted = false) {
+    const cachedStatuses = getBurialSiteStatuses(includeDeleted);
     const statusLowerCase = burialSiteStatus.toLowerCase();
     return cachedStatuses.find((currentStatus) => currentStatus.burialSiteStatus.toLowerCase() === statusLowerCase);
 }
@@ -24,8 +24,8 @@ export function getBurialSiteStatusById(burialSiteStatusId) {
     const cachedStatuses = getBurialSiteStatuses();
     return cachedStatuses.find((currentStatus) => currentStatus.burialSiteStatusId === burialSiteStatusId);
 }
-export function getBurialSiteStatuses() {
-    burialSiteStatuses ??= getBurialSiteStatusesFromDatabase();
+export function getBurialSiteStatuses(includeDeleted = false) {
+    burialSiteStatuses ??= getBurialSiteStatusesFromDatabase(includeDeleted);
     return burialSiteStatuses;
 }
 function clearBurialSiteStatusesCache() {
@@ -60,8 +60,8 @@ export function getAllContractTypeFields() {
     allContractTypeFields ??= getContractTypeFieldsFromDatabase();
     return allContractTypeFields;
 }
-export function getContractTypeByContractType(contractTypeString) {
-    const cachedTypes = getContractTypes();
+export function getContractTypeByContractType(contractTypeString, includeDeleted = false) {
+    const cachedTypes = getContractTypes(includeDeleted);
     const typeLowerCase = contractTypeString.toLowerCase();
     return cachedTypes.find((currentType) => currentType.contractType.toLowerCase() === typeLowerCase);
 }
@@ -80,8 +80,8 @@ export function getContractTypePrintsById(contractTypeId) {
     }
     return contractType.contractTypePrints ?? [];
 }
-export function getContractTypes() {
-    contractTypes ??= getContractTypesFromDatabase();
+export function getContractTypes(includeDeleted = false) {
+    contractTypes ??= getContractTypesFromDatabase(includeDeleted);
     return contractTypes;
 }
 function clearContractTypesCache() {
@@ -142,14 +142,15 @@ export function getWorkOrderMilestoneTypeById(workOrderMilestoneTypeId) {
     return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => currentWorkOrderMilestoneType.workOrderMilestoneTypeId ===
         workOrderMilestoneTypeId);
 }
-export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString) {
-    const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes();
+export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneTypeString, includeDeleted = false) {
+    const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes(includeDeleted);
     const workOrderMilestoneTypeLowerCase = workOrderMilestoneTypeString.toLowerCase();
     return cachedWorkOrderMilestoneTypes.find((currentWorkOrderMilestoneType) => currentWorkOrderMilestoneType.workOrderMilestoneType.toLowerCase() ===
         workOrderMilestoneTypeLowerCase);
 }
-export function getWorkOrderMilestoneTypes() {
-    workOrderMilestoneTypes ??= getWorkOrderMilestoneTypesFromDatabase();
+export function getWorkOrderMilestoneTypes(includeDeleted = false) {
+    workOrderMilestoneTypes ??=
+        getWorkOrderMilestoneTypesFromDatabase(includeDeleted);
     return workOrderMilestoneTypes;
 }
 function clearWorkOrderMilestoneTypesCache() {

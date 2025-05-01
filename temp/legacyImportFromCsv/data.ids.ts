@@ -6,15 +6,15 @@ import type { ContractType } from '../../types/record.types.js'
  */
 
 export const availableBurialSiteStatusId =
-  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Available')
+  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Available', true)
     ?.burialSiteStatusId as number
 
 export const reservedBurialSiteStatusId =
-  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Reserved')
+  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Reserved', true)
     ?.burialSiteStatusId as number
 
 export const takenBurialSiteStatusId =
-  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Taken')
+  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Taken', true)
     ?.burialSiteStatusId as number
 
 /*
@@ -22,14 +22,21 @@ export const takenBurialSiteStatusId =
  */
 
 export const preneedContractType = cacheFunctions.getContractTypeByContractType(
-  'Preneed'
+  'Preneed',
+  true
 ) as ContractType
 
 export const deceasedContractType =
-  cacheFunctions.getContractTypeByContractType('Interment') as ContractType
+  cacheFunctions.getContractTypeByContractType(
+    'Interment',
+    true
+  ) as ContractType
 
 export const cremationContractType =
-  cacheFunctions.getContractTypeByContractType('Cremation') as ContractType
+  cacheFunctions.getContractTypeByContractType(
+    'Cremation',
+    true
+  ) as ContractType
 
 /*
  * Work Order Milestone Type IDs
@@ -37,27 +44,32 @@ export const cremationContractType =
 
 export const acknowledgedWorkOrderMilestoneTypeId =
   cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
-    'Acknowledged'
+    'Acknowledged',
+    true
   )?.workOrderMilestoneTypeId
 
 export const deathWorkOrderMilestoneTypeId =
   cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
-    'Death'
+    'Death',
+    true
   )?.workOrderMilestoneTypeId
 
 export const funeralWorkOrderMilestoneTypeId =
   cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
-    'Funeral'
+    'Funeral',
+    true
   )?.workOrderMilestoneTypeId
 
 export const cremationWorkOrderMilestoneTypeId =
   cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
-    'Cremation'
+    'Cremation',
+    true
   )?.workOrderMilestoneTypeId
 
 export const intermentWorkOrderMilestoneTypeId =
   cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
-    'Interment'
+    'Interment',
+    true
   )?.workOrderMilestoneTypeId
 
 /*

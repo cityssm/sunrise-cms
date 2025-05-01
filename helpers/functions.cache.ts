@@ -39,9 +39,10 @@ const debug = Debug(
 let burialSiteStatuses: BurialSiteStatus[] | undefined
 
 export function getBurialSiteStatusByBurialSiteStatus(
-  burialSiteStatus: string
+  burialSiteStatus: string,
+  includeDeleted = false
 ): BurialSiteStatus | undefined {
-  const cachedStatuses = getBurialSiteStatuses()
+  const cachedStatuses = getBurialSiteStatuses(includeDeleted)
 
   const statusLowerCase = burialSiteStatus.toLowerCase()
 
@@ -61,8 +62,10 @@ export function getBurialSiteStatusById(
   )
 }
 
-export function getBurialSiteStatuses(): BurialSiteStatus[] {
-  burialSiteStatuses ??= getBurialSiteStatusesFromDatabase()
+export function getBurialSiteStatuses(
+  includeDeleted = false
+): BurialSiteStatus[] {
+  burialSiteStatuses ??= getBurialSiteStatusesFromDatabase(includeDeleted)
   return burialSiteStatuses
 }
 
@@ -121,9 +124,10 @@ export function getAllContractTypeFields(): ContractTypeField[] {
 }
 
 export function getContractTypeByContractType(
-  contractTypeString: string
+  contractTypeString: string,
+  includeDeleted = false
 ): ContractType | undefined {
-  const cachedTypes = getContractTypes()
+  const cachedTypes = getContractTypes(includeDeleted)
 
   const typeLowerCase = contractTypeString.toLowerCase()
 
@@ -159,8 +163,8 @@ export function getContractTypePrintsById(contractTypeId: number): string[] {
   return contractType.contractTypePrints ?? []
 }
 
-export function getContractTypes(): ContractType[] {
-  contractTypes ??= getContractTypesFromDatabase()
+export function getContractTypes(includeDeleted = false): ContractType[] {
+  contractTypes ??= getContractTypesFromDatabase(includeDeleted)
   return contractTypes
 }
 
@@ -266,9 +270,11 @@ export function getWorkOrderMilestoneTypeById(
 }
 
 export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
-  workOrderMilestoneTypeString: string
+  workOrderMilestoneTypeString: string,
+  includeDeleted = false
 ): WorkOrderMilestoneType | undefined {
-  const cachedWorkOrderMilestoneTypes = getWorkOrderMilestoneTypes()
+  const cachedWorkOrderMilestoneTypes =
+    getWorkOrderMilestoneTypes(includeDeleted)
 
   const workOrderMilestoneTypeLowerCase =
     workOrderMilestoneTypeString.toLowerCase()
@@ -280,8 +286,11 @@ export function getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
   )
 }
 
-export function getWorkOrderMilestoneTypes(): WorkOrderMilestoneType[] {
-  workOrderMilestoneTypes ??= getWorkOrderMilestoneTypesFromDatabase()
+export function getWorkOrderMilestoneTypes(
+  includeDeleted = false
+): WorkOrderMilestoneType[] {
+  workOrderMilestoneTypes ??=
+    getWorkOrderMilestoneTypesFromDatabase(includeDeleted)
   return workOrderMilestoneTypes
 }
 

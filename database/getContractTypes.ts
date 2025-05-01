@@ -7,14 +7,18 @@ import getContractTypeFields from './getContractTypeFields.js'
 import getContractTypePrints from './getContractTypePrints.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export default function getContractTypes(): ContractType[] {
+export default function getContractTypes(
+  includeDeleted = false
+): ContractType[] {
   const database = sqlite(sunriseDB)
+
+  const updateOrderNumbers = !includeDeleted
 
   const contractTypes = database
     .prepare(
       `select contractTypeId, contractType, isPreneed, orderNumber
         from ContractTypes
-        where recordDelete_timeMillis is null
+        ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '} 
         order by orderNumber, contractType, contractTypeId`
     )
     .all() as ContractType[]
@@ -24,7 +28,10 @@ export default function getContractTypes(): ContractType[] {
   for (const contractType of contractTypes) {
     expectedOrderNumber += 1
 
-    if (contractType.orderNumber !== expectedOrderNumber) {
+    if (
+      updateOrderNumbers &&
+      contractType.orderNumber !== expectedOrderNumber
+    ) {
       updateRecordOrderNumber(
         'ContractTypes',
         contractType.contractTypeId,
