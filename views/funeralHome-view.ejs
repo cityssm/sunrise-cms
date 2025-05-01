@@ -85,11 +85,12 @@
         </div>
       </div>
     <% } else { %>
-      <table class="table is-striped is-fullwidth">
+      <% const todayDateString = dateTimeFunctions.dateToString(new Date()); %>
+      <table class="table is-striped is-fullwidth is-hoverable has-sticky-header">
         <thead>
           <tr>
-            <th>Contract Type</th>
             <th>Funeral Date</th>
+            <th>Contract Type</th>
             <th>Interments</th>
             <th>Funeral Director</th>
           </tr>
@@ -97,16 +98,16 @@
         <tbody id="burialSite--contractsTbody">
           <% for (const contract of contracts) { %>
             <tr>
+              <td class="<%= contract.funeralDateString === todayDateString ? 'has-background-warning-light' : '' %>">
+                <%= contract.funeralDateString %>
+                <%= contract.funeralTime === null || contract.funeralTime === 0 ? '' : contract.funeralTimePeriodString %>
+              </td>
               <td>
                 <a class="has-text-weight-bold"
                   href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
                   <%= contract.contractType %>
                 </a><br />
                 <span class="is-size-7">#<%= contract.contractId %></span>
-              </td>
-              <td>
-                <%= contract.funeralDateString %>
-                <%= contract.funeralTime === null || contract.funeralTime === 0 ? '' : contract.funeralTimeString %>
               </td>
               <td>
                 <% if (contract.contractInterments.length === 0) { %>
