@@ -1,2 +1,4 @@
 import type { Request, Response } from 'express';
-export default function handler(request: Request, response: Response): void;
+export default function handler(request: Request<{
+    cemeteryId: string;
+}>, response: Response): void;

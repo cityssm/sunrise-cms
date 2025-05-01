@@ -1,6 +1,5 @@
-import type { Request, Response } from 'express'
-
 import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
+import type { Request, Response } from 'express'
 
 import getBurialSite from '../../database/getBurialSite.js'
 import getBurialSiteDirectionsOfArrival, { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js'

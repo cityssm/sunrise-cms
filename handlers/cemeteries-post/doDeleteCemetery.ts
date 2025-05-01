@@ -21,7 +21,7 @@ export default function handler(
 
   if (success) {
     response.on('finish', () => {
-      clearNextPreviousBurialSiteIdCache(-1)
+      clearNextPreviousBurialSiteIdCache()
     })
   }
 }

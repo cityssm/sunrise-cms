@@ -12,9 +12,10 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     const count = database
         .prepare(`select count(*) as recordCount
-          from WorkOrders w
-          ${sqlWhereClause}`)
-        .get(sqlParameters).recordCount;
+        from WorkOrders w
+        ${sqlWhereClause}`)
+        .pluck()
+        .get(sqlParameters);
     let workOrders = [];
     if (count > 0) {
         workOrders = database

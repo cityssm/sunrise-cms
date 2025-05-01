@@ -89,9 +89,10 @@ type ResponseJSON =
       renderContractTypes()
     } else {
       bulmaJS.alert({
-        title: "Error Updating Contract Type",
-        message: responseJSON.errorMessage ?? '',
-        contextualColorName: 'danger'
+        contextualColorName: 'danger',
+        title: 'Error Updating Contract Type',
+
+        message: responseJSON.errorMessage ?? ''
       })
     }
   }
@@ -117,12 +118,13 @@ type ResponseJSON =
     }
 
     bulmaJS.confirm({
-      title: "Delete Contract Type",
-      message: "Are you sure you want to delete this contract type?",
       contextualColorName: 'warning',
+      title: 'Delete Contract Type',
+
+      message: 'Are you sure you want to delete this contract type?',
       okButton: {
-        text: "Yes, Delete Contract Type",
-        callbackFunction: doDelete
+        callbackFunction: doDelete,
+        text: 'Yes, Delete Contract Type'
       }
     })
   }
@@ -195,6 +197,7 @@ type ResponseJSON =
 
         bulmaJS.toggleHtmlClipped()
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
@@ -260,6 +263,7 @@ type ResponseJSON =
 
         bulmaJS.toggleHtmlClipped()
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
@@ -385,13 +389,14 @@ type ResponseJSON =
 
     function confirmDoDelete(): void {
       bulmaJS.confirm({
-        title: 'Delete Field',
-        message:
-          'Are you sure you want to delete this field?  Note that historical records that make use of this field will not be affected.',
         contextualColorName: 'warning',
+        title: 'Delete Field',
+
+        message: `Are you sure you want to delete this field?
+            Note that historical records that make use of this field will not be affected.`,
         okButton: {
-          text: 'Yes, Delete Field',
-          callbackFunction: doDelete
+          callbackFunction: doDelete,
+          text: 'Yes, Delete Field'
         }
       })
     }
@@ -467,6 +472,7 @@ type ResponseJSON =
           .querySelector('#button--deleteContractTypeField')
           ?.addEventListener('click', confirmDoDelete)
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
         cityssm.disableNavBlocker()
@@ -706,12 +712,13 @@ type ResponseJSON =
     }
 
     bulmaJS.confirm({
-      title: 'Delete Print',
-      message: 'Are you sure you want to remove this print option?',
       contextualColorName: 'warning',
+      title: 'Delete Print',
+
+      message: 'Are you sure you want to remove this print option?',
       okButton: {
-        text: 'Yes, Remove Print',
-        callbackFunction: doDelete
+        callbackFunction: doDelete,
+        text: 'Yes, Remove Print'
       }
     })
   }
@@ -1017,7 +1024,7 @@ type ResponseJSON =
               renderContractTypes()
             } else {
               bulmaJS.alert({
-                title: "Error Adding Contract Type",
+                title: 'Error Adding Contract Type',
                 message: responseJSON.errorMessage ?? '',
                 contextualColorName: 'danger'
               })

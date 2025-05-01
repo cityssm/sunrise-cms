@@ -13,6 +13,7 @@ export default function getNextWorkOrderNumber(
   )
   const currentYearString = new Date().getFullYear().toString()
 
+  // eslint-disable-next-line security/detect-non-literal-regexp
   const regex = new RegExp(`^${currentYearString}-\\d+$`)
 
   database.function(

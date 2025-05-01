@@ -12,10 +12,10 @@ export default function reopenWorkOrder(
     .prepare(
       `update WorkOrders
         set workOrderCloseDate = null,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where workOrderId = ?
-        and workOrderCloseDate is not null`
+          and workOrderCloseDate is not null`
     )
     .run(user.userName, Date.now(), workOrderId)
 

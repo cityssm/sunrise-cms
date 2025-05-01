@@ -5,6 +5,7 @@ import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 export interface UpdateBurialSiteTypeFieldForm {
   burialSiteTypeFieldId: number | string
+  
   burialSiteTypeField: string
   isRequired: '0' | '1'
   
@@ -26,16 +27,16 @@ export default function updateBurialSiteTypeField(
     .prepare(
       `update BurialSiteTypeFields
         set burialSiteTypeField = ?,
-        isRequired = ?,
-        fieldType = ?,
-        minLength = ?,
-        maxLength = ?,
-        pattern = ?,
-        fieldValues = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          isRequired = ?,
+          fieldType = ?,
+          minLength = ?,
+          maxLength = ?,
+          pattern = ?,
+          fieldValues = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where burialSiteTypeFieldId = ?
-        and recordDelete_timeMillis is null`
+          and recordDelete_timeMillis is null`
     )
     .run(
       updateForm.burialSiteTypeField,

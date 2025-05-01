@@ -38,23 +38,22 @@ export default function getBurialSites(
   let count = 0
 
   if (options.limit !== -1) {
-    count = (
-      database
-        .prepare(
-          `select count(*) as recordCount
-            from BurialSites l
-            left join Cemeteries m on l.cemeteryId = m.cemeteryId
-            left join (
-              select burialSiteId, count(contractId) as contractCount from Contracts
-              where recordDelete_timeMillis is null
-              and contractStartDate <= ${currentDate.toString()}
-              and (contractEndDate is null or contractEndDate >= ${currentDate.toString()})
-              group by burialSiteId
-            ) o on l.burialSiteId = o.burialSiteId
-            ${sqlWhereClause}`
-        )
-        .get(sqlParameters) as { recordCount: number }
-    ).recordCount
+    count = database
+      .prepare(
+        `select count(*) as recordCount
+          from BurialSites l
+          left join Cemeteries m on l.cemeteryId = m.cemeteryId
+          left join (
+            select burialSiteId, count(contractId) as contractCount from Contracts
+            where recordDelete_timeMillis is null
+            and contractStartDate <= ${currentDate.toString()}
+            and (contractEndDate is null or contractEndDate >= ${currentDate.toString()})
+            group by burialSiteId
+          ) o on l.burialSiteId = o.burialSiteId
+          ${sqlWhereClause}`
+      )
+      .pluck()
+      .get(sqlParameters) as number
   }
 
   let burialSites: BurialSite[] = []

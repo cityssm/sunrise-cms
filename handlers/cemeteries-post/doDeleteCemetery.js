@@ -10,7 +10,7 @@ export default function handler(request, response) {
     });
     if (success) {
         response.on('finish', () => {
-            clearNextPreviousBurialSiteIdCache(-1);
+            clearNextPreviousBurialSiteIdCache();
         });
     }
 }

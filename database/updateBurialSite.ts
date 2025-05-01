@@ -76,24 +76,24 @@ export default function updateBurialSite(
     .prepare(
       `update BurialSites
         set burialSiteNameSegment1 = ?,
-        burialSiteNameSegment2 = ?,
-        burialSiteNameSegment3 = ?,
-        burialSiteNameSegment4 = ?,
-        burialSiteNameSegment5 = ?,
-        burialSiteName = ?,
-        burialSiteTypeId = ?,
-        burialSiteStatusId = ?,
-        bodyCapacity = ?,
-        crematedCapacity = ?,
-        cemeteryId = ?,
-        cemeterySvgId = ?,
-        burialSiteImage = ?,
-        burialSiteLatitude = ?,
-        burialSiteLongitude = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          burialSiteNameSegment2 = ?,
+          burialSiteNameSegment3 = ?,
+          burialSiteNameSegment4 = ?,
+          burialSiteNameSegment5 = ?,
+          burialSiteName = ?,
+          burialSiteTypeId = ?,
+          burialSiteStatusId = ?,
+          bodyCapacity = ?,
+          crematedCapacity = ?,
+          cemeteryId = ?,
+          cemeterySvgId = ?,
+          burialSiteImage = ?,
+          burialSiteLatitude = ?,
+          burialSiteLongitude = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where burialSiteId = ?
-        and recordDelete_timeMillis is null`
+          and recordDelete_timeMillis is null`
     )
     .run(
       updateForm.burialSiteNameSegment1 ?? '',
@@ -174,10 +174,10 @@ export function updateBurialSiteStatus(
     .prepare(
       `update BurialSites
         set burialSiteStatusId = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where burialSiteId = ?
-        and recordDelete_timeMillis is null`
+          and recordDelete_timeMillis is null`
     )
     .run(
       burialSiteStatusId === '' ? undefined : burialSiteStatusId,

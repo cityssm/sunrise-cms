@@ -24,12 +24,12 @@ export default async function GetContractTransactions(
   const contractTransactions = database
     .prepare(
       `select contractId, transactionIndex,
-        transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString,
-        transactionTime, userFn_timeIntegerToString(transactionTime) as transactionTimeString,
-        transactionAmount, externalReceiptNumber, transactionNote
+          transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString,
+          transactionTime, userFn_timeIntegerToString(transactionTime) as transactionTimeString,
+          transactionAmount, externalReceiptNumber, transactionNote
         from ContractTransactions
         where recordDelete_timeMillis is null
-        and contractId = ?
+          and contractId = ?
         order by transactionDate, transactionTime, transactionIndex`
     )
     .all(contractId) as ContractTransaction[]

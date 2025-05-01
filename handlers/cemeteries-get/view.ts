@@ -5,7 +5,10 @@ import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js
 import getCemetery from '../../database/getCemetery.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 
-export default function handler(request: Request, response: Response): void {
+export default function handler(
+  request: Request<{ cemeteryId: string }>,
+  response: Response
+): void {
   const cemetery = getCemetery(request.params.cemeteryId)
 
   if (cemetery === undefined) {

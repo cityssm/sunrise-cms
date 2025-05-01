@@ -34,6 +34,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const birthDate = new Date(birthDateStringElement.value);
             const deathDate = new Date(deathDateStringElement.value);
             const ageInDays = Math.floor((deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             const ageInYears = Math.floor(ageInDays / 365.25);
             if (ageInYears > 0) {
                 deathAgeElement.value = ageInYears.toString();
@@ -189,9 +190,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Interment?',
             message: 'Are you sure you want to remove this interment from the contract?',
-            contextualColorName: 'warning',
             okButton: {
                 text: 'Yes, Remove Interment',
                 callbackFunction: doDelete

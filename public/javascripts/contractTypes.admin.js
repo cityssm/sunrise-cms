@@ -39,9 +39,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         else {
             bulmaJS.alert({
-                title: "Error Updating Contract Type",
-                message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
+                contextualColorName: 'danger',
+                title: 'Error Updating Contract Type',
+                message: responseJSON.errorMessage ?? ''
             });
         }
     }
@@ -53,12 +53,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, contractTypeResponseHandler);
         }
         bulmaJS.confirm({
-            title: "Delete Contract Type",
-            message: "Are you sure you want to delete this contract type?",
             contextualColorName: 'warning',
+            title: 'Delete Contract Type',
+            message: 'Are you sure you want to delete this contract type?',
             okButton: {
-                text: "Yes, Delete Contract Type",
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete Contract Type'
             }
         });
     }
@@ -206,12 +206,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         function confirmDoDelete() {
             bulmaJS.confirm({
-                title: 'Delete Field',
-                message: 'Are you sure you want to delete this field?  Note that historical records that make use of this field will not be affected.',
                 contextualColorName: 'warning',
+                title: 'Delete Field',
+                message: `Are you sure you want to delete this field?
+            Note that historical records that make use of this field will not be affected.`,
                 okButton: {
-                    text: 'Yes, Delete Field',
-                    callbackFunction: doDelete
+                    callbackFunction: doDelete,
+                    text: 'Yes, Delete Field'
                 }
             });
         }
@@ -372,12 +373,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, contractTypeResponseHandler);
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Print',
             message: 'Are you sure you want to remove this print option?',
-            contextualColorName: 'warning',
             okButton: {
-                text: 'Yes, Remove Print',
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Remove Print'
             }
         });
     }
@@ -588,7 +589,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        title: "Error Adding Contract Type",
+                        title: 'Error Adding Contract Type',
                         message: responseJSON.errorMessage ?? '',
                         contextualColorName: 'danger'
                     });

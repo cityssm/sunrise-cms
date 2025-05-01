@@ -5,10 +5,10 @@ export default function reopenWorkOrder(workOrderId, user) {
     const result = database
         .prepare(`update WorkOrders
         set workOrderCloseDate = null,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where workOrderId = ?
-        and workOrderCloseDate is not null`)
+          and workOrderCloseDate is not null`)
         .run(user.userName, Date.now(), workOrderId);
     database.close();
     return result.changes > 0;

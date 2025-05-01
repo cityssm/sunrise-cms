@@ -84,6 +84,7 @@ declare const exports: Record<string, unknown>
         (deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)
       )
 
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       const ageInYears = Math.floor(ageInDays / 365.25)
 
       if (ageInYears > 0) {
@@ -314,12 +315,15 @@ declare const exports: Record<string, unknown>
     }
 
     bulmaJS.confirm({
+      contextualColorName: 'warning',
       title: 'Delete Interment?',
+
       message:
         'Are you sure you want to remove this interment from the contract?',
-      contextualColorName: 'warning',
+
       okButton: {
         text: 'Yes, Remove Interment',
+
         callbackFunction: doDelete
       }
     })

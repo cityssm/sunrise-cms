@@ -26,54 +26,60 @@
       Database Maintenance
     </h1>
 
-    <h2 class="title is-3">
-      Database Backup
-    </h2>
-
-    <div class="message is-info">
-      <div class="message-body">
-        <p>
-          Before making significant changes to the records in the database,
-          it is a good idea to back up first!
-        </p>
+    <div class="columns">
+      <div class="column">
+        <div class="panel is-primary">
+          <h2 class="panel-heading">
+            Database Backup
+          </h2>
+          <div class="panel-block is-block">
+            <div class="message is-primary">
+              <div class="message-body">
+                <p>
+                  Before making significant changes to the records in the database,
+                  it is a good idea to back up first!
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="panel-block is-block has-text-right">
+            <button class="button is-primary" id="button--backupDatabase" data-cy="backup" type="button">
+              <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
+              <span>Backup Database</span>
+            </button>
+          </div>
+        </div>    
+      </div>
+      <div class="column">
+        <div class="panel is-warning">
+          <h2 class="panel-heading">
+            Database Cleanup
+          </h2>
+          <div class="panel-block is-block">
+            <div class="message is-warning">
+              <div class="message-body">
+                <p>
+                  When records are deleted in this application, they are not removed entirely.
+                  This gives systems administrators the ability to recover deleted records.
+                  This also can leave a small amount of garbage behind in the database.
+                </p>
+                <p class="mt-2">
+                  This process permanently deletes records that have already been deleted over
+                  <%= configFunctions.getConfigProperty("settings.adminCleanup.recordDeleteAgeDays") %> days ago.
+                  Note that no active records will be affected by the cleanup process.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="panel-block is-block has-text-right">
+            <button class="button is-warning" id="button--cleanupDatabase" data-cy="cleanup" type="button">
+              <span class="icon"><i class="fas fa-broom" aria-hidden="true"></i></span>
+              <span>Cleanup Database</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-
-    <p class="has-text-right">
-      <button class="button is-success" id="button--backupDatabase" data-cy="backup" type="button">
-        <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
-        <span>Backup Database</span>
-      </button>
-    </p>
-    
-    <h2 class="title is-3">
-      Database Cleanup
-    </h2>
-
-    <div class="message is-warning">
-      <div class="message-header">
-        Important Note about Cleanup
-      </div>
-      <div class="message-body">
-        <p>
-          When records are deleted in this application, they are not removed entirely.
-          This gives systems administrators the ability to recover deleted records.
-          This also can leave a small amount of garbage behind in the database.
-        </p>
-        <p class="mt-2">
-          This process permanently deletes records that have already been deleted over
-          <%= configFunctions.getConfigProperty("settings.adminCleanup.recordDeleteAgeDays") %> days ago.
-          Note that no active records will be affected by the cleanup process.
-        </p>
-      </div>
-    </div>
-
-    <p class="has-text-right">
-      <button class="button is-success" id="button--cleanupDatabase" data-cy="cleanup" type="button">
-        <span class="icon"><i class="fas fa-broom" aria-hidden="true"></i></span>
-        <span>Cleanup Database</span>
-      </button>
-    </p>
   </div>
 </div>
 

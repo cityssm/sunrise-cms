@@ -15,11 +15,13 @@ export default async function handler(
 
     response.json({
       success: true,
+
       fileName
     })
   } else {
     response.json({
       success: false,
+
       errorMessage: 'Unable to write backup file.'
     })
   }

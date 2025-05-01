@@ -5,6 +5,7 @@ export default function getNextWorkOrderNumber(connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const paddingLength = getConfigProperty('settings.workOrders.workOrderNumberLength');
     const currentYearString = new Date().getFullYear().toString();
+    // eslint-disable-next-line security/detect-non-literal-regexp
     const regex = new RegExp(`^${currentYearString}-\\d+$`);
     database.function(
     // eslint-disable-next-line no-secrets/no-secrets

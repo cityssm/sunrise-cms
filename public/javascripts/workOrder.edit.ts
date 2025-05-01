@@ -67,15 +67,16 @@ declare const exports: Record<string, unknown>
             )
           } else {
             bulmaJS.alert({
-              message: 'Work Order Updated Successfully',
-              contextualColorName: 'success'
+              contextualColorName: 'success',
+              message: 'Work Order Updated Successfully'
             })
           }
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Updating Work Order',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -137,9 +138,10 @@ declare const exports: Record<string, unknown>
           globalThis.location.href = `${sunrise.urlPrefix}/workOrders`
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Deleting Work Order',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -157,10 +159,11 @@ declare const exports: Record<string, unknown>
 
       if (hasOpenMilestones) {
         bulmaJS.alert({
+          contextualColorName: 'warning',
           title: 'Outstanding Milestones',
+
           message: `You cannot close a work order with outstanding milestones.
-            Either complete the outstanding milestones, or remove them from the work order.`,
-          contextualColorName: 'warning'
+            Either complete the outstanding milestones, or remove them from the work order.`
         })
 
         /*
@@ -178,14 +181,16 @@ declare const exports: Record<string, unknown>
       */
       } else {
         bulmaJS.confirm({
+          contextualColorName: sunrise.hasUnsavedChanges() ? 'warning' : 'info',
           title: 'Close Work Order',
+
           message: sunrise.hasUnsavedChanges()
             ? 'Are you sure you want to close this work order with unsaved changes?'
             : 'Are you sure you want to close this work order?',
-          contextualColorName: sunrise.hasUnsavedChanges() ? 'warning' : 'info',
+
           okButton: {
-            text: 'Yes, Close Work Order',
-            callbackFunction: doClose
+            callbackFunction: doClose,
+            text: 'Yes, Close Work Order'
           }
         })
       }
@@ -197,9 +202,9 @@ declare const exports: Record<string, unknown>
       clickEvent.preventDefault()
 
       bulmaJS.confirm({
+        contextualColorName: 'warning',
         title: 'Delete Work Order',
         message: 'Are you sure you want to delete this work order?',
-        contextualColorName: 'warning',
         okButton: {
           text: 'Yes, Delete Work Order',
           callbackFunction: doDelete
@@ -378,13 +383,15 @@ declare const exports: Record<string, unknown>
     }
 
     bulmaJS.confirm({
+      contextualColorName: 'warning',
       title: 'Reopen Milestone',
+
       message:
         'Are you sure you want to remove the completion status from this milestone, and reopen it?',
-      contextualColorName: 'warning',
+
       okButton: {
+        callbackFunction: doReopen,
         text: 'Yes, Reopen Milestone',
-        callbackFunction: doReopen
       }
     })
   }
@@ -410,9 +417,9 @@ declare const exports: Record<string, unknown>
     }
 
     bulmaJS.confirm({
+      contextualColorName: 'warning',
       title: 'Delete Milestone',
       message: 'Are you sure you want to delete this milestone?',
-      contextualColorName: 'warning',
       okButton: {
         text: 'Yes, Delete Milestone',
         callbackFunction: doDeleteMilestone
@@ -659,6 +666,7 @@ declare const exports: Record<string, unknown>
       panelBlockElement
         .querySelector('.button--reopenMilestone')
         ?.addEventListener('click', reopenMilestone)
+
       panelBlockElement
         .querySelector('.button--editMilestone')
         ?.addEventListener('click', editMilestone)
@@ -702,32 +710,32 @@ declare const exports: Record<string, unknown>
       let workOrderMilestoneDateStringElement: HTMLInputElement
       let addCloseModalFunction: () => void
 
-      function doAdd(submitEvent?: SubmitEvent): void {
+      function _doAdd(): void {
+        cityssm.postJSON(
+          `${sunrise.urlPrefix}/workOrders/doAddWorkOrderMilestone`,
+          addFormElement,
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              errorMessage?: string
+              workOrderMilestones?: WorkOrderMilestone[]
+            }
+
+            processMilestoneResponse(responseJSON)
+
+            if (responseJSON.success) {
+              addCloseModalFunction()
+            }
+          }
+        )
+      }
+
+      function doAddFormSubmit(submitEvent?: SubmitEvent): void {
         if (submitEvent) {
           submitEvent.preventDefault()
         }
 
         const currentDateString = cityssm.dateToString(new Date())
-
-        function _doAdd(): void {
-          cityssm.postJSON(
-            `${sunrise.urlPrefix}/workOrders/doAddWorkOrderMilestone`,
-            addFormElement,
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                success: boolean
-                errorMessage?: string
-                workOrderMilestones?: WorkOrderMilestone[]
-              }
-
-              processMilestoneResponse(responseJSON)
-
-              if (responseJSON.success) {
-                addCloseModalFunction()
-              }
-            }
-          )
-        }
 
         const milestoneDateString = workOrderMilestoneDateStringElement.value
 
@@ -736,10 +744,12 @@ declare const exports: Record<string, unknown>
           milestoneDateString < currentDateString
         ) {
           bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Milestone Date in the Past',
+
             message:
               'Are you sure you want to create a milestone with a date in the past?',
-            contextualColorName: 'warning',
+
             okButton: {
               text: 'Yes, Create a Past Milestone',
               callbackFunction: _doAdd
@@ -792,7 +802,7 @@ declare const exports: Record<string, unknown>
           ).focus()
 
           addFormElement = modalElement.querySelector('form') as HTMLFormElement
-          addFormElement.addEventListener('submit', doAdd)
+          addFormElement.addEventListener('submit', doAddFormSubmit)
 
           const conflictingMilestonePanelElement = document.querySelector(
             '#milestoneAdd--conflictingMilestonesPanel'

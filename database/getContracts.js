@@ -24,47 +24,51 @@ export default async function getContracts(filters, options, connectedDatabase) 
           left join BurialSites l on c.burialSiteId = l.burialSiteId
           left join Cemeteries m on l.cemeteryId = m.cemeteryId
           ${sqlWhereClause}`)
-            .get(sqlParameters).recordCount;
+            .pluck()
+            .get(sqlParameters);
     }
     let contracts = [];
     if (count !== 0) {
+        const sqlLimitClause = isLimited
+            ? ` limit ${options.limit} offset ${options.offset}`
+            : '';
         contracts = database
             .prepare(`select c.contractId,
-        c.contractTypeId, t.contractType, t.isPreneed,
-        c.burialSiteId, lt.burialSiteType, l.burialSiteName,
-        case when l.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
-        l.cemeteryId, m.cemeteryName,
-        c.contractStartDate, userFn_dateIntegerToString(c.contractStartDate) as contractStartDateString,
-        c.contractEndDate, userFn_dateIntegerToString(c.contractEndDate) as contractEndDateString,
-        c.purchaserName, c.purchaserAddress1, c.purchaserAddress2,
-        c.purchaserCity, c.purchaserProvince, c.purchaserPostalCode,
-        c.purchaserPhoneNumber, c.purchaserEmail, c.purchaserRelationship,
-        c.funeralHomeId, c.funeralDirectorName, f.funeralHomeName,
+            c.contractTypeId, t.contractType, t.isPreneed,
+            c.burialSiteId, lt.burialSiteType, l.burialSiteName,
+            case when l.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
+            l.cemeteryId, m.cemeteryName,
+            c.contractStartDate, userFn_dateIntegerToString(c.contractStartDate) as contractStartDateString,
+            c.contractEndDate, userFn_dateIntegerToString(c.contractEndDate) as contractEndDateString,
+            c.purchaserName, c.purchaserAddress1, c.purchaserAddress2,
+            c.purchaserCity, c.purchaserProvince, c.purchaserPostalCode,
+            c.purchaserPhoneNumber, c.purchaserEmail, c.purchaserRelationship,
+            c.funeralHomeId, c.funeralDirectorName, f.funeralHomeName,
 
-        c.funeralDate, userFn_dateIntegerToString(c.funeralDate) as funeralDateString,
-        c.funeralTime,
-        userFn_timeIntegerToString(c.funeralTime) as funeralTimeString,
-        userFn_timeIntegerToPeriodString(c.funeralTime) as funeralTimePeriodString,
-        c.directionOfArrival,
-        c.committalTypeId, cm.committalType
-        from Contracts c
-        left join ContractTypes t on c.contractTypeId = t.contractTypeId
-        left join CommittalTypes cm on c.committalTypeId = cm.committalTypeId
-        left join BurialSites l on c.burialSiteId = l.burialSiteId
-        left join BurialSiteTypes lt on l.burialSiteTypeId = lt.burialSiteTypeId
-        left join Cemeteries m on l.cemeteryId = m.cemeteryId
-        left join FuneralHomes f on c.funeralHomeId = f.funeralHomeId
-        ${sqlWhereClause}
-        ${options.orderBy !== undefined && options.orderBy !== ''
+            c.funeralDate, userFn_dateIntegerToString(c.funeralDate) as funeralDateString,
+            c.funeralTime,
+            userFn_timeIntegerToString(c.funeralTime) as funeralTimeString,
+            userFn_timeIntegerToPeriodString(c.funeralTime) as funeralTimePeriodString,
+            c.directionOfArrival,
+            c.committalTypeId, cm.committalType
+          from Contracts c
+          left join ContractTypes t on c.contractTypeId = t.contractTypeId
+          left join CommittalTypes cm on c.committalTypeId = cm.committalTypeId
+          left join BurialSites l on c.burialSiteId = l.burialSiteId
+          left join BurialSiteTypes lt on l.burialSiteTypeId = lt.burialSiteTypeId
+          left join Cemeteries m on l.cemeteryId = m.cemeteryId
+          left join FuneralHomes f on c.funeralHomeId = f.funeralHomeId
+          ${sqlWhereClause}
+          ${options.orderBy !== undefined && options.orderBy !== ''
             ? ` order by ${options.orderBy}`
-            : `order by c.contractStartDate desc, ifnull(c.contractEndDate, 99999999) desc,
-                l.burialSiteNameSegment1,
-                l.burialSiteNameSegment2,
-                l.burialSiteNameSegment3,
-                l.burialSiteNameSegment4,
-                l.burialSiteNameSegment5,
-                c.burialSiteId, c.contractId desc`}
-        ${isLimited ? ` limit ${options.limit} offset ${options.offset}` : ''}`)
+            : ` order by c.contractStartDate desc, ifnull(c.contractEndDate, 99999999) desc,
+                  l.burialSiteNameSegment1,
+                  l.burialSiteNameSegment2,
+                  l.burialSiteNameSegment3,
+                  l.burialSiteNameSegment4,
+                  l.burialSiteNameSegment5,
+                  c.burialSiteId, c.contractId desc`}
+          ${sqlLimitClause}`)
             .all(sqlParameters);
         if (!isLimited) {
             count = contracts.length;

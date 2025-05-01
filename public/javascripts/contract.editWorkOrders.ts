@@ -54,9 +54,10 @@ declare const exports: Record<string, unknown>
               })
             } else {
               bulmaJS.alert({
+                contextualColorName: 'danger',
                 title: 'Error Creating Work Order',
+                
                 message: responseJSON.errorMessage as string,
-                contextualColorName: 'danger'
               })
             }
           }

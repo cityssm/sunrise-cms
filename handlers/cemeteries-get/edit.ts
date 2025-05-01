@@ -8,7 +8,7 @@ import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getCemeterySVGs } from '../../helpers/images.helpers.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<{ cemeteryId: string }>,
   response: Response
 ): Promise<void> {
   const cemetery = getCemetery(request.params.cemeteryId)

@@ -1,6 +1,5 @@
-import type { Request, Response } from 'express'
-
 import { dateToString } from '@cityssm/utils-datetime'
+import type { Request, Response } from 'express'
 
 import getCemeteries from '../../database/getCemeteries.js'
 import {

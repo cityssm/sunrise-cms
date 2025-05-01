@@ -36,23 +36,23 @@ export default function updateContractInterment(
     .prepare(
       `update ContractInterments
         set deceasedName = ?,
-        deceasedAddress1 = ?,
-        deceasedAddress2 = ?,
-        deceasedCity = ?,
-        deceasedProvince = ?,
-        deceasedPostalCode = ?,
-        birthDate = ?,
-        birthPlace = ?,
-        deathDate = ?,
-        deathPlace = ?,
-        deathAge = ?,
-        deathAgePeriod = ?,
-        intermentContainerTypeId = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          deceasedAddress1 = ?,
+          deceasedAddress2 = ?,
+          deceasedCity = ?,
+          deceasedProvince = ?,
+          deceasedPostalCode = ?,
+          birthDate = ?,
+          birthPlace = ?,
+          deathDate = ?,
+          deathPlace = ?,
+          deathAge = ?,
+          deathAgePeriod = ?,
+          intermentContainerTypeId = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and contractId = ?
-        and intermentNumber = ?`
+          and contractId = ?
+          and intermentNumber = ?`
     )
     .run(
       contractForm.deceasedName,

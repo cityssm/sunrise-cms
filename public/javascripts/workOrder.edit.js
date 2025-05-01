@@ -31,16 +31,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        message: 'Work Order Updated Successfully',
-                        contextualColorName: 'success'
+                        contextualColorName: 'success',
+                        message: 'Work Order Updated Successfully'
                     });
                 }
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Updating Work Order',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -81,9 +81,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Deleting Work Order',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -95,10 +95,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const hasOpenMilestones = workOrderMilestones.some((milestone) => !milestone.workOrderMilestoneCompletionDate);
         if (hasOpenMilestones) {
             bulmaJS.alert({
+                contextualColorName: 'warning',
                 title: 'Outstanding Milestones',
                 message: `You cannot close a work order with outstanding milestones.
-            Either complete the outstanding milestones, or remove them from the work order.`,
-                contextualColorName: 'warning'
+            Either complete the outstanding milestones, or remove them from the work order.`
             });
             /*
               // Disable closing work orders with open milestones
@@ -116,14 +116,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         else {
             bulmaJS.confirm({
+                contextualColorName: sunrise.hasUnsavedChanges() ? 'warning' : 'info',
                 title: 'Close Work Order',
                 message: sunrise.hasUnsavedChanges()
                     ? 'Are you sure you want to close this work order with unsaved changes?'
                     : 'Are you sure you want to close this work order?',
-                contextualColorName: sunrise.hasUnsavedChanges() ? 'warning' : 'info',
                 okButton: {
-                    text: 'Yes, Close Work Order',
-                    callbackFunction: doClose
+                    callbackFunction: doClose,
+                    text: 'Yes, Close Work Order'
                 }
             });
         }
@@ -133,9 +133,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Work Order',
             message: 'Are you sure you want to delete this work order?',
-            contextualColorName: 'warning',
             okButton: {
                 text: 'Yes, Delete Work Order',
                 callbackFunction: doDelete
@@ -243,12 +243,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, processMilestoneResponse);
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Reopen Milestone',
             message: 'Are you sure you want to remove the completion status from this milestone, and reopen it?',
-            contextualColorName: 'warning',
             okButton: {
+                callbackFunction: doReopen,
                 text: 'Yes, Reopen Milestone',
-                callbackFunction: doReopen
             }
         });
     }
@@ -262,9 +262,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, processMilestoneResponse);
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Milestone',
             message: 'Are you sure you want to delete this milestone?',
-            contextualColorName: 'warning',
             okButton: {
                 text: 'Yes, Delete Milestone',
                 callbackFunction: doDeleteMilestone
@@ -442,27 +442,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let addFormElement;
         let workOrderMilestoneDateStringElement;
         let addCloseModalFunction;
-        function doAdd(submitEvent) {
+        function _doAdd() {
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderMilestone`, addFormElement, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
+                processMilestoneResponse(responseJSON);
+                if (responseJSON.success) {
+                    addCloseModalFunction();
+                }
+            });
+        }
+        function doAddFormSubmit(submitEvent) {
             if (submitEvent) {
                 submitEvent.preventDefault();
             }
             const currentDateString = cityssm.dateToString(new Date());
-            function _doAdd() {
-                cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderMilestone`, addFormElement, (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
-                    processMilestoneResponse(responseJSON);
-                    if (responseJSON.success) {
-                        addCloseModalFunction();
-                    }
-                });
-            }
             const milestoneDateString = workOrderMilestoneDateStringElement.value;
             if (milestoneDateString !== '' &&
                 milestoneDateString < currentDateString) {
                 bulmaJS.confirm({
+                    contextualColorName: 'warning',
                     title: 'Milestone Date in the Past',
                     message: 'Are you sure you want to create a milestone with a date in the past?',
-                    contextualColorName: 'warning',
                     okButton: {
                         text: 'Yes, Create a Past Milestone',
                         callbackFunction: _doAdd
@@ -495,7 +495,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
                 modalElement.querySelector('#milestoneAdd--workOrderMilestoneTypeId').focus();
                 addFormElement = modalElement.querySelector('form');
-                addFormElement.addEventListener('submit', doAdd);
+                addFormElement.addEventListener('submit', doAddFormSubmit);
                 const conflictingMilestonePanelElement = document.querySelector('#milestoneAdd--conflictingMilestonesPanel');
                 workOrderMilestoneDateStringElement.addEventListener('change', () => {
                     refreshConflictingMilestones(workOrderMilestoneDateStringElement.value, conflictingMilestonePanelElement);

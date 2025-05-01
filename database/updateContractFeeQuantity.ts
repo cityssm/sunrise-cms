@@ -18,11 +18,11 @@ export default function updateContractFeeQuantity(
     .prepare(
       `update ContractFees
         set quantity = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and contractId = ?
-        and feeId = ?`
+          and contractId = ?
+          and feeId = ?`
     )
     .run(
       feeQuantityForm.quantity,

@@ -48,15 +48,14 @@ export async function getWorkOrders(
 
   const { sqlParameters, sqlWhereClause } = buildWhereClause(filters)
 
-  const count: number = (
-    database
-      .prepare(
-        `select count(*) as recordCount
-          from WorkOrders w
-          ${sqlWhereClause}`
-      )
-      .get(sqlParameters) as { recordCount: number }
-  ).recordCount
+  const count: number = database
+    .prepare(
+      `select count(*) as recordCount
+        from WorkOrders w
+        ${sqlWhereClause}`
+    )
+    .pluck()
+    .get(sqlParameters) as number
 
   let workOrders: WorkOrder[] = []
 

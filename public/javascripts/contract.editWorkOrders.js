@@ -28,9 +28,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Creating Work Order',
                         message: responseJSON.errorMessage,
-                        contextualColorName: 'danger'
                     });
                 }
             });
