@@ -70,6 +70,13 @@ const funeralHomes: FuneralHome[] = [
     funeralHomeProvince: 'MI'
   },
   {
+    funeralHomeKey: 'LY',
+    funeralHomeName: 'Lynett Funeral Home',
+
+    funeralHomeCity: 'Wawa',
+    funeralHomeProvince: 'ON'
+  },
+  {
     funeralHomeKey: 'NO',
     funeralHomeName: 'Northwood Funeral Home',
 

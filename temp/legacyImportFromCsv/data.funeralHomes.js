@@ -57,6 +57,12 @@ const funeralHomes = [
         funeralHomeProvince: 'MI'
     },
     {
+        funeralHomeKey: 'LY',
+        funeralHomeName: 'Lynett Funeral Home',
+        funeralHomeCity: 'Wawa',
+        funeralHomeProvince: 'ON'
+    },
+    {
         funeralHomeKey: 'NO',
         funeralHomeName: 'Northwood Funeral Home',
         funeralHomeAddress1: '942 Great Northern Road',
