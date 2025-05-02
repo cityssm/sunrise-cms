@@ -23,7 +23,7 @@ declare const exports: {
   crematedCapacityMaxDefault: string
 }
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const burialSiteId = (
     document.querySelector('#burialSite--burialSiteId') as HTMLInputElement

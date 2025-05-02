@@ -36,7 +36,7 @@ type ResponseJSON =
       burialSiteTypes: BurialSiteType[]
     }
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const containerElement = document.querySelector(
     '#container--burialSiteTypes'
