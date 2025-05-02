@@ -380,13 +380,23 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="contract--funeralTimeString">Time</label>
+                <div class="level is-mobile mb-2">
+                  <div class="level-left">
+                    <div class="level-item">
+                      <label class="label" for="contract--funeralTimeString">Time</label>
+                    </div>
+                  </div>
+                  <div class="level-right">
+                    <div class="level-item">
+                      <p class="help">15 minute intervals</p>
+                    </div>
+                  </div>
+                </div>
                 <div class="control has-icons-left">
                   <input class="input" id="contract--funeralTimeString" name="funeralTimeString" type="time" value="<%= contract.funeralTimeString %>" step="900" />
                   <span class="icon is-left">
                     <i class="fas fa-clock" aria-hidden="true"></i>
                   </span>
-                  <p class="help">15 minute intervals</p>
                 </div>
               </div>
             </div>
