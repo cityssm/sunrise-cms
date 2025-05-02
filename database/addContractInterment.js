@@ -1,6 +1,7 @@
 import { dateStringToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
+// eslint-disable-next-line complexity
 export default function addContractInterment(contractForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const maxIntermentNumber = (database
@@ -15,15 +16,17 @@ export default function addContractInterment(contractForm, user, connectedDataba
         .prepare(`insert into ContractInterments
         (contractId, intermentNumber,
           deceasedName, deceasedAddress1, deceasedAddress2, deceasedCity, deceasedProvince, deceasedPostalCode,
-          birthDate, birthPlace, deathDate, deathPlace, intermentContainerTypeId,
+          birthDate, birthPlace, deathDate, deathPlace,
+          deathAge, deathAgePeriod,
+          intermentContainerTypeId,
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(contractForm.contractId, newIntermentNumber, contractForm.deceasedName, contractForm.deceasedAddress1, contractForm.deceasedAddress2, contractForm.deceasedCity, contractForm.deceasedProvince, contractForm.deceasedPostalCode, contractForm.birthDateString === ''
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+        .run(contractForm.contractId, newIntermentNumber, contractForm.deceasedName ?? '', contractForm.deceasedAddress1 ?? '', contractForm.deceasedAddress2 ?? '', contractForm.deceasedCity ?? '', contractForm.deceasedProvince ?? '', contractForm.deceasedPostalCode ?? '', (contractForm.birthDateString ?? '') === ''
         ? undefined
-        : dateStringToInteger(contractForm.birthDateString), contractForm.birthPlace, contractForm.deathDateString === ''
+        : dateStringToInteger(contractForm.birthDateString), contractForm.birthPlace ?? '', (contractForm.deathDateString ?? '') === ''
         ? undefined
-        : dateStringToInteger(contractForm.deathDateString), contractForm.deathPlace, contractForm.intermentContainerTypeId === ''
+        : dateStringToInteger(contractForm.deathDateString), contractForm.deathPlace ?? '', (contractForm.deathAge ?? '') === '' ? undefined : contractForm.deathAge, contractForm.deathAgePeriod ?? '', (contractForm.intermentContainerTypeId ?? '') === ''
         ? undefined
         : contractForm.intermentContainerTypeId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (connectedDatabase === undefined) {

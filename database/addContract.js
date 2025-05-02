@@ -1,6 +1,7 @@
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import addContractInterment from './addContractInterment.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
 // eslint-disable-next-line complexity
 export default function addContract(addForm, user, connectedDatabase) {
@@ -46,25 +47,7 @@ export default function addContract(addForm, user, connectedDatabase) {
      * Add deceased information
      */
     if ((addForm.deceasedName ?? '') !== '') {
-        database
-            .prepare(`insert into ContractInterments (
-          contractId, intermentNumber,
-          deceasedName, deceasedAddress1, deceasedAddress2,
-          deceasedCity, deceasedProvince, deceasedPostalCode,
-          birthDate, deathDate,
-          birthPlace, deathPlace,
-          deathAge, deathAgePeriod,
-          intermentContainerTypeId,
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis)
-          values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-            .run(contractId, 1, addForm.deceasedName ?? '', addForm.deceasedAddress1 ?? '', addForm.deceasedAddress2 ?? '', addForm.deceasedCity ?? '', addForm.deceasedProvince ?? '', addForm.deceasedPostalCode ?? '', addForm.birthDateString === ''
-            ? undefined
-            : dateStringToInteger(addForm.birthDateString), addForm.deathDateString === ''
-            ? undefined
-            : dateStringToInteger(addForm.deathDateString), addForm.birthPlace ?? '', addForm.deathPlace ?? '', addForm.deathAge ?? undefined, addForm.deathAgePeriod ?? '', addForm.intermentContainerTypeId === ''
-            ? undefined
-            : addForm.intermentContainerTypeId, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        addContractInterment({ contractId, ...addForm }, user, database);
     }
     if (connectedDatabase === undefined) {
         database.close();

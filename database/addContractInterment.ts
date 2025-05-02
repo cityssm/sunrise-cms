@@ -6,25 +6,26 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 export interface AddForm {
   contractId: number | string
 
-  deceasedName: string
+  deceasedName?: string
 
-  deceasedAddress1: string
-  deceasedAddress2: string
-  deceasedCity: string
-  deceasedPostalCode: string
-  deceasedProvince: string
+  deceasedAddress1?: string
+  deceasedAddress2?: string
+  deceasedCity?: string
+  deceasedPostalCode?: string
+  deceasedProvince?: string
 
-  birthDateString: '' | DateString
-  birthPlace: string
-  deathDateString: '' | DateString
-  deathPlace: string
+  birthDateString?: '' | DateString
+  birthPlace?: string
+  deathDateString?: '' | DateString
+  deathPlace?: string
 
-  deathAge: number | string
-  deathAgePeriod: string
+  deathAge?: number | string
+  deathAgePeriod?: string
 
-  intermentContainerTypeId: number | string
+  intermentContainerTypeId?: number | string
 }
 
+// eslint-disable-next-line complexity
 export default function addContractInterment(
   contractForm: AddForm,
   user: User,
@@ -49,29 +50,33 @@ export default function addContractInterment(
       `insert into ContractInterments
         (contractId, intermentNumber,
           deceasedName, deceasedAddress1, deceasedAddress2, deceasedCity, deceasedProvince, deceasedPostalCode,
-          birthDate, birthPlace, deathDate, deathPlace, intermentContainerTypeId,
+          birthDate, birthPlace, deathDate, deathPlace,
+          deathAge, deathAgePeriod,
+          intermentContainerTypeId,
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       contractForm.contractId,
       newIntermentNumber,
-      contractForm.deceasedName,
-      contractForm.deceasedAddress1,
-      contractForm.deceasedAddress2,
-      contractForm.deceasedCity,
-      contractForm.deceasedProvince,
-      contractForm.deceasedPostalCode,
-      contractForm.birthDateString === ''
+      contractForm.deceasedName ?? '',
+      contractForm.deceasedAddress1 ?? '',
+      contractForm.deceasedAddress2 ?? '',
+      contractForm.deceasedCity ?? '',
+      contractForm.deceasedProvince ?? '',
+      contractForm.deceasedPostalCode ?? '',
+      (contractForm.birthDateString ?? '') === ''
         ? undefined
-        : dateStringToInteger(contractForm.birthDateString),
-      contractForm.birthPlace,
-      contractForm.deathDateString === ''
+        : dateStringToInteger(contractForm.birthDateString as DateString),
+      contractForm.birthPlace ?? '',
+      (contractForm.deathDateString ?? '') === ''
         ? undefined
-        : dateStringToInteger(contractForm.deathDateString),
-      contractForm.deathPlace,
-      contractForm.intermentContainerTypeId === ''
+        : dateStringToInteger(contractForm.deathDateString as DateString),
+      contractForm.deathPlace ?? '',
+      (contractForm.deathAge ?? '') === '' ? undefined : contractForm.deathAge,
+      contractForm.deathAgePeriod ?? '',
+      (contractForm.intermentContainerTypeId ?? '') === ''
         ? undefined
         : contractForm.intermentContainerTypeId,
       user.userName,
