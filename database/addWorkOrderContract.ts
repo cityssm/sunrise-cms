@@ -43,29 +43,27 @@ export default function addWorkOrderContract(
         user.userName,
         rightNowMillis
       )
-  } else {
-    if (recordDeleteTimeMillis !== null) {
-      database
-        .prepare(
-          `update WorkOrderContracts
-            set recordCreate_userName = ?,
+  } else if (recordDeleteTimeMillis !== null) {
+    database
+      .prepare(
+        `update WorkOrderContracts
+          set recordCreate_userName = ?,
             recordCreate_timeMillis = ?,
             recordUpdate_userName = ?,
             recordUpdate_timeMillis = ?,
             recordDelete_userName = null,
             recordDelete_timeMillis = null
-            where workOrderId = ?
+          where workOrderId = ?
             and contractId = ?`
-        )
-        .run(
-          user.userName,
-          rightNowMillis,
-          user.userName,
-          rightNowMillis,
-          addForm.workOrderId,
-          addForm.contractId
-        )
-    }
+      )
+      .run(
+        user.userName,
+        rightNowMillis,
+        user.userName,
+        rightNowMillis,
+        addForm.workOrderId,
+        addForm.contractId
+      )
   }
 
   if (connectedDatabase === undefined) {

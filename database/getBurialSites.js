@@ -29,6 +29,10 @@ export default function getBurialSites(filters, options, connectedDatabase) {
         if (includeContractCount) {
             sqlParameters.unshift(currentDate, currentDate);
         }
+        let sanitizedOffset = Number(options.offset);
+        if (Number.isNaN(sanitizedOffset)) {
+            sanitizedOffset = 0;
+        }
         burialSites = database
             .prepare(`select l.burialSiteId,
           l.burialSiteNameSegment1,
@@ -62,7 +66,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
             l.burialSiteId
           ${options.limit === -1
             ? ''
-            : ` limit ${options.limit.toString()} offset ${options.offset.toString()}`}`)
+            : ` limit ${options.limit.toString()} offset ${sanitizedOffset.toString()}`}`)
             .all(sqlParameters);
         if (options.limit === -1) {
             count = burialSites.length;

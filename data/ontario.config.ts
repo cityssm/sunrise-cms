@@ -1,6 +1,8 @@
+import type { Config } from '../types/config.types.js'
+
 import { config as baseConfig } from './base.config.js'
 
-export const config = Object.assign({}, baseConfig)
+export const config: Config = { ...baseConfig }
 
 config.settings.provinceDefault = 'ON'
 

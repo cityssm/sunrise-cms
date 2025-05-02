@@ -4,7 +4,7 @@
 
 ## Supported Versions
 
-Due to limited resources, only the latest version is supported only for security updates.
+Due to limited resources, only the latest version is supported for security updates.
 
 ## Reporting a Vulnerability
 

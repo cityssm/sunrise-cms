@@ -96,8 +96,14 @@ export default async function getContracts(
   let contracts: Contract[] = []
 
   if (count !== 0) {
+
+    const sanitizedOffset = Number(options.offset)
+    if (Number.isNaN(sanitizedOffset)) {
+      options.offset = 0
+    }
+
     const sqlLimitClause = isLimited
-      ? ` limit ${options.limit} offset ${options.offset}`
+      ? ` limit ${options.limit} offset ${sanitizedOffset}`
       : ''
 
     contracts = database

@@ -4,6 +4,7 @@
 [![codecov](https://codecov.io/gh/cityssm/sunrise-cms/graph/badge.svg?token=OY7SWY1PLC)](https://codecov.io/gh/cityssm/sunrise-cms)
 [![sunrise-cms](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/26a4bi&style=flat&logo=cypress)](https://cloud.cypress.io/projects/26a4bi/runs)
 [![Coverage Testing](https://github.com/cityssm/sunrise-cms/actions/workflows/coverage.yml/badge.svg)](https://github.com/cityssm/sunrise-cms/actions/workflows/coverage.yml)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=cityssm_sunrise-cms&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=cityssm_sunrise-cms)
 
 ![Sunrise CMS](./docs/images/socialPreview.png)
 

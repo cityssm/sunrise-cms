@@ -1,5 +1,5 @@
 import { config as baseConfig } from './base.config.js';
-export const config = Object.assign({}, baseConfig);
+export const config = { ...baseConfig };
 config.settings.provinceDefault = 'ON';
 config.settings.latitudeMax = 56.85;
 config.settings.latitudeMin = 41.68;
