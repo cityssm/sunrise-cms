@@ -157,6 +157,14 @@ span.button.is-static {
 }
 
 /*
+ * Panel with hidden block
+ */
+
+.panel-heading:has(+ .panel-block.is-hidden) {
+  border-radius: var(--bulma-panel-radius);
+}
+
+/*
  * Form elements
  */
 
