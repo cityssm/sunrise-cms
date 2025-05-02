@@ -1,5 +1,5 @@
 export interface AddForm {
-    funeralHomeKey: string;
+    funeralHomeKey?: string;
     funeralHomeName: string;
     funeralHomeAddress1: string;
     funeralHomeAddress2: string;

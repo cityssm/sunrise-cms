@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddForm {
-  funeralHomeKey: string
+  funeralHomeKey?: string
   funeralHomeName: string
 
   funeralHomeAddress1: string
@@ -31,7 +31,7 @@ export default function addFuneralHome(addForm: AddForm, user: User): number {
     )
     .run(
       addForm.funeralHomeName,
-      addForm.funeralHomeKey,
+      addForm.funeralHomeKey ?? '',
       addForm.funeralHomeAddress1,
       addForm.funeralHomeAddress2,
       addForm.funeralHomeCity,
