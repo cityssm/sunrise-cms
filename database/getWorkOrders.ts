@@ -64,6 +64,11 @@ export async function getWorkOrders(
   let workOrders: WorkOrder[] = []
 
   if (count > 0) {
+    const sqlLimitClause =
+      options.limit === -1
+        ? ''
+        : ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`
+
     workOrders = database
       .prepare(
         `select w.workOrderId,
@@ -92,11 +97,7 @@ export async function getWorkOrders(
             
           ${sqlWhereClause}
           order by w.workOrderOpenDate desc, w.workOrderNumber desc
-          ${
-            options.limit === -1
-              ? ''
-              : ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`
-          }`
+          ${sqlLimitClause}`
       )
       .all(sqlParameters) as WorkOrder[]
   }

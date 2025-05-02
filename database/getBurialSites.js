@@ -7,7 +7,8 @@ export default function getBurialSites(filters, options, connectedDatabase) {
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     const currentDate = dateToInteger(new Date());
     let count = 0;
-    if (options.limit !== -1) {
+    const isLimited = options.limit !== -1;
+    if (isLimited) {
         count = database
             .prepare(`select count(*) as recordCount
           from BurialSites l
@@ -24,11 +25,15 @@ export default function getBurialSites(filters, options, connectedDatabase) {
             .get(sqlParameters);
     }
     let burialSites = [];
-    if (options.limit === -1 || count > 0) {
+    if (!isLimited || count > 0) {
         const includeContractCount = options.includeContractCount ?? true;
         if (includeContractCount) {
             sqlParameters.unshift(currentDate, currentDate);
         }
+        const sqlLimitClause = isLimited
+            ? ` limit ${sanitizeLimit(options.limit)}
+          offset ${sanitizeOffset(options.offset)}`
+            : '';
         burialSites = database
             .prepare(`select l.burialSiteId,
           l.burialSiteNameSegment1,
@@ -60,10 +65,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           ${sqlWhereClause}
           order by l.burialSiteName,
             l.burialSiteId
-          ${options.limit === -1
-            ? ''
-            : ` limit ${sanitizeLimit(options.limit)}
-                  offset ${sanitizeOffset(options.offset)}`}`)
+          ${sqlLimitClause}`)
             .all(sqlParameters);
         if (options.limit === -1) {
             count = burialSites.length;

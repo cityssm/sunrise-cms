@@ -18,6 +18,9 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
         .get(sqlParameters);
     let workOrders = [];
     if (count > 0) {
+        const sqlLimitClause = options.limit === -1
+            ? ''
+            : ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`;
         workOrders = database
             .prepare(`select w.workOrderId,
           w.workOrderTypeId, t.workOrderType,
@@ -45,9 +48,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
             
           ${sqlWhereClause}
           order by w.workOrderOpenDate desc, w.workOrderNumber desc
-          ${options.limit === -1
-            ? ''
-            : ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`}`)
+          ${sqlLimitClause}`)
             .all(sqlParameters);
     }
     const hasInclusions = (options.includeComments ?? false) ||

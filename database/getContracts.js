@@ -30,7 +30,8 @@ export default async function getContracts(filters, options, connectedDatabase) 
     let contracts = [];
     if (count !== 0) {
         const sqlLimitClause = isLimited
-            ? ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`
+            ? ` limit ${sanitizeLimit(options.limit)}
+          offset ${sanitizeOffset(options.offset)}`
             : '';
         contracts = database
             .prepare(`select c.contractId,

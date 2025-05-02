@@ -41,7 +41,9 @@ export default function getBurialSites(
 
   let count = 0
 
-  if (options.limit !== -1) {
+  const isLimited = options.limit !== -1
+
+  if (isLimited) {
     count = database
       .prepare(
         `select count(*) as recordCount
@@ -62,12 +64,17 @@ export default function getBurialSites(
 
   let burialSites: BurialSite[] = []
 
-  if (options.limit === -1 || count > 0) {
+  if (!isLimited || count > 0) {
     const includeContractCount = options.includeContractCount ?? true
 
     if (includeContractCount) {
       sqlParameters.unshift(currentDate, currentDate)
     }
+
+    const sqlLimitClause = isLimited
+      ? ` limit ${sanitizeLimit(options.limit)}
+          offset ${sanitizeOffset(options.offset)}`
+      : ''
 
     burialSites = database
       .prepare(
@@ -105,12 +112,7 @@ export default function getBurialSites(
           ${sqlWhereClause}
           order by l.burialSiteName,
             l.burialSiteId
-          ${
-            options.limit === -1
-              ? ''
-              : ` limit ${sanitizeLimit(options.limit)}
-                  offset ${sanitizeOffset(options.offset)}`
-          }`
+          ${sqlLimitClause}`
       )
       .all(sqlParameters) as BurialSite[]
 
