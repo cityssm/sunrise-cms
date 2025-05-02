@@ -5,8 +5,9 @@ import handler_search from '../handlers/funeralHomes-get/search.js';
 import handler_view from '../handlers/funeralHomes-get/view.js';
 import handler_doCreateFuneralHome from '../handlers/funeralHomes-post/doCreateFuneralHome.js';
 import handler_doDeleteFuneralHome from '../handlers/funeralHomes-post/doDeleteFuneralHome.js';
+import handler_doRestoreFuneralHome from '../handlers/funeralHomes-post/doRestoreFuneralHome.js';
 import handler_doUpdateFuneralHome from '../handlers/funeralHomes-post/doUpdateFuneralHome.js';
-import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js';
+import { adminPostHandler, updateGetHandler, updatePostHandler } from '../handlers/permissions.js';
 export const router = Router();
 router.get('/', handler_search);
 router.get('/new', updateGetHandler, handler_new);
@@ -15,4 +16,5 @@ router.post('/doCreateFuneralHome', updatePostHandler, handler_doCreateFuneralHo
 router.get('/:funeralHomeId/edit', updateGetHandler, handler_edit);
 router.post('/doUpdateFuneralHome', updatePostHandler, handler_doUpdateFuneralHome);
 router.post('/doDeleteFuneralHome', updatePostHandler, handler_doDeleteFuneralHome);
+router.post('/doRestoreFuneralHome', adminPostHandler, handler_doRestoreFuneralHome);
 export default router;

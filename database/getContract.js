@@ -15,19 +15,27 @@ export default async function getContract(contractId, connectedDatabase) {
     const contract = database
         .prepare(`select o.contractId,
           o.contractTypeId, t.contractType, t.isPreneed,
+
           o.burialSiteId, l.burialSiteName, l.burialSiteTypeId,
           case when l.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
+          
           l.cemeteryId, m.cemeteryName,
+          
           o.contractStartDate, userFn_dateIntegerToString(o.contractStartDate) as contractStartDateString,
           o.contractEndDate, userFn_dateIntegerToString(o.contractEndDate) as contractEndDateString,
+          
           o.purchaserName, o.purchaserAddress1, o.purchaserAddress2,
           o.purchaserCity, o.purchaserProvince, o.purchaserPostalCode,
           o.purchaserPhoneNumber, o.purchaserEmail, o.purchaserRelationship,
+
           o.funeralHomeId, o.funeralDirectorName, f.funeralHomeKey,
           f.funeralHomeName, f.funeralHomeAddress1, f.funeralHomeAddress2,
           f.funeralHomeCity, f.funeralHomeProvince, f.funeralHomePostalCode,
+          case when f.recordDelete_timeMillis is null then 1 else 0 end as funeralHomeIsActive,
+
           o.funeralDate, userFn_dateIntegerToString(o.funeralDate) as funeralDateString,
           o.funeralTime,
+
           userFn_timeIntegerToString(o.funeralTime) as funeralTimeString,
           userFn_timeIntegerToPeriodString(o.funeralTime) as funeralTimePeriodString,
           o.directionOfArrival,

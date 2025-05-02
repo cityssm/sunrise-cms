@@ -4,8 +4,14 @@ import getContracts from '../../database/getContracts.js'
 import getFuneralHome from '../../database/getFuneralHome.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 
-export default async function handler(request: Request, response: Response): Promise<void> {
-  const funeralHome = getFuneralHome(request.params.funeralHomeId)
+export default async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const funeralHome = getFuneralHome(
+    request.params.funeralHomeId,
+    request.session.user?.userProperties?.canUpdate
+  )
 
   if (funeralHome === undefined) {
     response.redirect(
@@ -36,6 +42,6 @@ export default async function handler(request: Request, response: Response): Pro
 
     funeralHome,
 
-    contracts: contracts.contracts,
+    contracts: contracts.contracts
   })
 }

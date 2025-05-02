@@ -4,20 +4,23 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Cemetery, FuneralHome } from '../types/record.types.js'
 
 export default function getFuneralHome(
-  funeralHomeId: number | string
+  funeralHomeId: number | string,
+  includeDeleted = false
 ): FuneralHome | undefined {
-  return _getFuneralHome('funeralHomeId', funeralHomeId)
+  return _getFuneralHome('funeralHomeId', funeralHomeId, includeDeleted)
 }
 
 export function getFuneralHomeByKey(
-  funeralHomeKey: string
+  funeralHomeKey: string,
+  includeDeleted = false
 ): FuneralHome | undefined {
-  return _getFuneralHome('funeralHomeKey', funeralHomeKey)
+  return _getFuneralHome('funeralHomeKey', funeralHomeKey, includeDeleted)
 }
 
 function _getFuneralHome(
   keyColumn: 'funeralHomeId' | 'funeralHomeKey',
-  funeralHomeIdOrKey: number | string
+  funeralHomeIdOrKey: number | string,
+  includeDeleted = false
 ): FuneralHome | undefined {
   const database = sqlite(sunriseDB)
 
@@ -25,10 +28,11 @@ function _getFuneralHome(
     .prepare(
       `select funeralHomeId, funeralHomeKey, funeralHomeName,
         funeralHomeAddress1, funeralHomeAddress2,
-        funeralHomeCity, funeralHomeProvince, funeralHomePostalCode, funeralHomePhoneNumber
+        funeralHomeCity, funeralHomeProvince, funeralHomePostalCode, funeralHomePhoneNumber,
+        recordDelete_userName, recordDelete_timeMillis
         from FuneralHomes f
-        where f.recordDelete_timeMillis is null
-        and f.${keyColumn} = ?
+        where f.${keyColumn} = ?
+        ${includeDeleted ? '' : ' and f.recordDelete_timeMillis is null '}
         order by f.funeralHomeName, f.funeralHomeId`
     )
     .get(funeralHomeIdOrKey) as Cemetery | undefined

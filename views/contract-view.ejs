@@ -196,7 +196,7 @@
           <% if (contract.funeralHomeName === null) { %>
             <span class="has-text-grey">(No Funeral Home)</span>
           <% } else { %>
-            <a href="<%= urlPrefix %>/funeralHomes/<%= contract.funeralHomeId %>">
+            <a class="<%= contract.funeralHomeIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/funeralHomes/<%= contract.funeralHomeId %>">
               <%= contract.funeralHomeName %>
             </a>
           <% } %><br />

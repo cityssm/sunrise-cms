@@ -1,0 +1,39 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+(() => {
+    const sunrise = exports.sunrise;
+    document
+        .querySelector('button.is-restore-funeral-home-button')
+        ?.addEventListener('click', (clickEvent) => {
+        clickEvent.preventDefault();
+        const buttonElement = clickEvent.currentTarget;
+        const funeralHomeId = buttonElement.dataset.funeralHomeId ?? '';
+        if (funeralHomeId === '') {
+            return;
+        }
+        function doRestore() {
+            cityssm.postJSON(`${sunrise.urlPrefix}/funeralHomes/doRestoreFuneralHome`, { funeralHomeId }, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
+                if (responseJSON.success) {
+                    globalThis.location.reload();
+                }
+                else {
+                    bulmaJS.alert({
+                        title: 'Error Restoring Funeral Home',
+                        message: responseJSON.errorMessage ?? '',
+                        contextualColorName: 'danger'
+                    });
+                }
+            });
+        }
+        bulmaJS.confirm({
+            contextualColorName: 'warning',
+            title: 'Restore Funeral Home',
+            message: 'Are you sure you want to restore this funeral home? It will be visible again.',
+            okButton: {
+                text: 'Yes, Restore Funeral Home',
+                callbackFunction: doRestore
+            }
+        });
+    });
+})();

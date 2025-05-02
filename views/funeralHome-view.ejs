@@ -21,6 +21,21 @@
   <%= funeralHome.funeralHomeName || "(No Name)" %>
 </h1>
 
+<% const funeralHomeIsDeleted = funeralHome.recordDelete_timeMillis !== null; %>
+<% if (funeralHomeIsDeleted) { %>
+  <div class="message is-danger">
+    <div class="message-header">
+      <p>Funeral Home Deleted</p>
+    </div>
+    <div class="message-body">
+      <p>This funeral home has been deleted. It is no longer available for use.</p>
+      <% if (!user.userProperties.isAdmin) { %>
+        <p>To restore this funeral home, please contact your system administrator.</p>
+      <% } %>
+    </div>
+  </div>
+<% } %>
+
 <div class="columns is-vcentered p-0 is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column">
     <span class="has-text-weight-bold">
@@ -28,7 +43,14 @@
     </span>
   </div>
   <div class="column is-narrow has-text-right">
-    <% if (user.userProperties.canUpdate) { %>
+    <% if (funeralHomeIsDeleted && user.userProperties.isAdmin) { %>
+      <button class="button is-danger is-restore-funeral-home-button"
+        data-funeral-home-id="<%= funeralHome.funeralHomeId %>"
+        type="button">
+        <span class="icon"><i class="fas fa-undo" aria-hidden="true"></i></span>
+        <span>Restore Funeral Home</span>
+      </button>
+    <% } else if (!funeralHomeIsDeleted && user.userProperties.canUpdate) { %>
       <a class="button is-primary"
         href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/edit"
         accesskey="e">
@@ -135,5 +157,7 @@
 </div>
 
 <%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/funeralHome.view.js"></script>
 
 <%- include('_footerB'); -%>

@@ -2,7 +2,7 @@ import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 import {
-  CacheTableNames,
+  type CacheTableNames,
   cacheTableNames,
   clearCacheByTableName
 } from '../helpers/functions.cache.js'
@@ -19,7 +19,6 @@ type RecordTable =
   | 'ContractTypes'
   | 'FeeCategories'
   | 'Fees'
-  | 'FuneralHomes'
   | 'IntermentContainerTypes'
   | 'WorkOrderComments'
   | 'WorkOrderMilestones'
@@ -39,7 +38,6 @@ const recordIdColumns = new Map<RecordTable, string>([
   ['ContractTypes', 'contractTypeId'],
   ['FeeCategories', 'feeCategoryId'],
   ['Fees', 'feeId'],
-  ['FuneralHomes', 'funeralHomeId'],
   ['IntermentContainerTypes', 'intermentContainerTypeId'],
   ['WorkOrderComments', 'workOrderCommentId'],
   ['WorkOrderMilestones', 'workOrderMilestoneId'],

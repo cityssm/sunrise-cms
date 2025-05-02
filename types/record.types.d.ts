@@ -128,6 +128,7 @@ export interface Contract extends Record {
     purchaserRelationship: string;
     funeralDirectorName: string;
     funeralHomeId: number | null;
+    funeralHomeIsActive?: 0 | 1;
     funeralHomeName: string | null;
     funeralHomeKey?: string;
     funeralHomeAddress1?: string;

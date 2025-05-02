@@ -13,7 +13,6 @@ const recordIdColumns = new Map([
     ['ContractTypes', 'contractTypeId'],
     ['FeeCategories', 'feeCategoryId'],
     ['Fees', 'feeId'],
-    ['FuneralHomes', 'funeralHomeId'],
     ['IntermentContainerTypes', 'intermentContainerTypeId'],
     ['WorkOrderComments', 'workOrderCommentId'],
     ['WorkOrderMilestones', 'workOrderMilestoneId'],
