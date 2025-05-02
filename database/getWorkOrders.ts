@@ -5,7 +5,11 @@ import {
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import {
+  sanitizeLimit,
+  sanitizeOffset,
+  sunriseDB
+} from '../helpers/database.helpers.js'
 import {
   getBurialSiteNameWhereClause,
   getDeceasedNameWhereClause
@@ -70,6 +74,7 @@ export async function getWorkOrders(
           ifnull(m.workOrderMilestoneCount, 0) as workOrderMilestoneCount,
           ifnull(m.workOrderMilestoneCompletionCount, 0) as workOrderMilestoneCompletionCount,
           ifnull(l.workOrderBurialSiteCount, 0) as workOrderBurialSiteCount
+
           from WorkOrders w
           left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
           left join (
@@ -84,12 +89,13 @@ export async function getWorkOrders(
             from WorkOrderBurialSites
             where recordDelete_timeMillis is null
             group by workOrderId) l on w.workOrderId = l.workOrderId
+            
           ${sqlWhereClause}
           order by w.workOrderOpenDate desc, w.workOrderNumber desc
           ${
             options.limit === -1
               ? ''
-              : ` limit ${options.limit} offset ${options.offset}`
+              : ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`
           }`
       )
       .all(sqlParameters) as WorkOrder[]

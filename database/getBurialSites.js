@@ -1,6 +1,6 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { sanitizeLimit, sanitizeOffset, sunriseDB } from '../helpers/database.helpers.js';
 import { getBurialSiteNameWhereClause } from '../helpers/functions.sqlFilters.js';
 export default function getBurialSites(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
@@ -28,10 +28,6 @@ export default function getBurialSites(filters, options, connectedDatabase) {
         const includeContractCount = options.includeContractCount ?? true;
         if (includeContractCount) {
             sqlParameters.unshift(currentDate, currentDate);
-        }
-        let sanitizedOffset = Number(options.offset);
-        if (Number.isNaN(sanitizedOffset)) {
-            sanitizedOffset = 0;
         }
         burialSites = database
             .prepare(`select l.burialSiteId,
@@ -66,7 +62,8 @@ export default function getBurialSites(filters, options, connectedDatabase) {
             l.burialSiteId
           ${options.limit === -1
             ? ''
-            : ` limit ${options.limit.toString()} offset ${sanitizedOffset.toString()}`}`)
+            : ` limit ${sanitizeLimit(options.limit)}
+                  offset ${sanitizeOffset(options.offset)}`}`)
             .all(sqlParameters);
         if (options.limit === -1) {
             count = burialSites.length;

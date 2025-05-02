@@ -1,7 +1,11 @@
 import { dateToInteger } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
+import {
+  sanitizeLimit,
+  sanitizeOffset,
+  sunriseDB
+} from '../helpers/database.helpers.js'
 import { getBurialSiteNameWhereClause } from '../helpers/functions.sqlFilters.js'
 import type { BurialSite } from '../types/record.types.js'
 
@@ -65,11 +69,6 @@ export default function getBurialSites(
       sqlParameters.unshift(currentDate, currentDate)
     }
 
-    let sanitizedOffset = Number(options.offset)
-    if (Number.isNaN(sanitizedOffset)) {
-      sanitizedOffset = 0
-    }
-
     burialSites = database
       .prepare(
         `select l.burialSiteId,
@@ -109,7 +108,8 @@ export default function getBurialSites(
           ${
             options.limit === -1
               ? ''
-              : ` limit ${options.limit.toString()} offset ${sanitizedOffset.toString()}`
+              : ` limit ${sanitizeLimit(options.limit)}
+                  offset ${sanitizeOffset(options.offset)}`
           }`
       )
       .all(sqlParameters) as BurialSite[]

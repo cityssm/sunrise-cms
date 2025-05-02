@@ -100,10 +100,12 @@ export default async function getWorkOrderMilestones(
     }
     m.recordCreate_userName, m.recordCreate_timeMillis,
     m.recordUpdate_userName, m.recordUpdate_timeMillis
+
     from WorkOrderMilestones m
     left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId
     left join WorkOrders w on m.workOrderId = w.workOrderId
     left join WorkOrderTypes wt on w.workOrderTypeId = wt.workOrderTypeId
+    
     ${sqlWhereClause}
     ${orderByClause}`
 

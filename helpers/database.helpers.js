@@ -10,3 +10,17 @@ if (useTestDatabases) {
 export const sunriseDBLive = 'data/sunrise.db';
 export const sunriseDBTesting = 'data/sunrise-testing.db';
 export const sunriseDB = useTestDatabases ? sunriseDBTesting : sunriseDBLive;
+export function sanitizeLimit(limit) {
+    const limitNumber = Number(limit);
+    if (Number.isNaN(limitNumber) || limitNumber < 0) {
+        return 50;
+    }
+    return Math.floor(limitNumber);
+}
+export function sanitizeOffset(offset) {
+    const offsetNumber = Number(offset);
+    if (Number.isNaN(offsetNumber) || offsetNumber < 0) {
+        return 0;
+    }
+    return Math.floor(offsetNumber);
+}

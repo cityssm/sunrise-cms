@@ -9,7 +9,11 @@ import {
 import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import { sunriseDB } from '../helpers/database.helpers.js'
+import {
+  sanitizeLimit,
+  sanitizeOffset,
+  sunriseDB
+} from '../helpers/database.helpers.js'
 import { getContractTypeById } from '../helpers/functions.cache.js'
 import {
   getBurialSiteNameWhereClause,
@@ -96,14 +100,8 @@ export default async function getContracts(
   let contracts: Contract[] = []
 
   if (count !== 0) {
-
-    const sanitizedOffset = Number(options.offset)
-    if (Number.isNaN(sanitizedOffset)) {
-      options.offset = 0
-    }
-
     const sqlLimitClause = isLimited
-      ? ` limit ${options.limit} offset ${sanitizedOffset}`
+      ? ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`
       : ''
 
     contracts = database
