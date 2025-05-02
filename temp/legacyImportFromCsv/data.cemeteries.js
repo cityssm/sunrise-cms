@@ -3,6 +3,14 @@
 import addCemetery from '../../database/addCemetery.js';
 import { getCemeteryByKey } from '../../database/getCemetery.js';
 export const cremationCemeteryKeys = new Set(['', '00', '`', 'N', 'R']);
+const fourthLineCemeteryArrivalDirections = {
+    directionOfArrival_E: 'E',
+    directionOfArrivalDescription_E: 'Fourth Line East from Great Northern Road',
+    directionOfArrival_S: 'S',
+    directionOfArrivalDescription_S: 'Peoples Road from downtown',
+    directionOfArrival_W: 'W',
+    directionOfArrivalDescription_W: 'Fourth Line West'
+};
 const cemeteryKeyToCemetery = {
     '00': {
         cemeteryName: 'Crematorium',
@@ -17,7 +25,8 @@ const cemeteryKeyToCemetery = {
         cemeteryPostalCode: 'P6A 5K8',
         cemeteryProvince: 'ON',
         cemeteryPhoneNumber: '705-759-5336',
-        parentCemeteryId: ''
+        parentCemeteryId: '',
+        ...fourthLineCemeteryArrivalDirections
     },
     GC: {
         cemeteryName: 'New Greenwood - Columbarium',
@@ -32,7 +41,8 @@ const cemeteryKeyToCemetery = {
         cemeteryPostalCode: '',
         cemeteryProvince: 'ON',
         cemeteryPhoneNumber: '',
-        parentCemeteryId: ''
+        parentCemeteryId: '',
+        ...fourthLineCemeteryArrivalDirections
     },
     HC: {
         cemeteryName: 'Holy Sepulchre - Columbarium',
@@ -47,7 +57,8 @@ const cemeteryKeyToCemetery = {
         cemeteryPostalCode: '',
         cemeteryProvince: 'ON',
         cemeteryPhoneNumber: '',
-        parentCemeteryId: ''
+        parentCemeteryId: '',
+        ...fourthLineCemeteryArrivalDirections
     },
     HS: {
         cemeteryName: 'Holy Sepulchre',
@@ -62,7 +73,8 @@ const cemeteryKeyToCemetery = {
         cemeteryPostalCode: '',
         cemeteryProvince: 'ON',
         cemeteryPhoneNumber: '',
-        parentCemeteryId: ''
+        parentCemeteryId: '',
+        ...fourthLineCemeteryArrivalDirections
     },
     MA: {
         cemeteryName: 'Holy Sepulchre - Mausoleum',
@@ -77,7 +89,8 @@ const cemeteryKeyToCemetery = {
         cemeteryPostalCode: '',
         cemeteryProvince: 'ON',
         cemeteryPhoneNumber: '',
-        parentCemeteryId: ''
+        parentCemeteryId: '',
+        ...fourthLineCemeteryArrivalDirections
     },
     MN: {
         cemeteryName: 'Holy Sepulchre - Mausoleum Niche',
@@ -92,7 +105,8 @@ const cemeteryKeyToCemetery = {
         cemeteryPostalCode: '',
         cemeteryProvince: 'ON',
         cemeteryPhoneNumber: '',
-        parentCemeteryId: ''
+        parentCemeteryId: '',
+        ...fourthLineCemeteryArrivalDirections
     },
     NG: {
         cemeteryName: 'New Greenwood',
@@ -107,7 +121,8 @@ const cemeteryKeyToCemetery = {
         cemeteryPostalCode: 'P6A 5K8',
         cemeteryProvince: 'ON',
         cemeteryPhoneNumber: '',
-        parentCemeteryId: ''
+        parentCemeteryId: '',
+        ...fourthLineCemeteryArrivalDirections
     },
     NW: {
         cemeteryName: 'New Greenwood - Niche Wall',
@@ -122,7 +137,8 @@ const cemeteryKeyToCemetery = {
         cemeteryPostalCode: '',
         cemeteryProvince: 'ON',
         cemeteryPhoneNumber: '',
-        parentCemeteryId: ''
+        parentCemeteryId: '',
+        ...fourthLineCemeteryArrivalDirections
     },
     OG: {
         cemeteryName: 'Old Greenwood',
@@ -137,7 +153,8 @@ const cemeteryKeyToCemetery = {
         cemeteryPostalCode: '',
         cemeteryProvince: 'ON',
         cemeteryPhoneNumber: '',
-        parentCemeteryId: ''
+        parentCemeteryId: '',
+        ...fourthLineCemeteryArrivalDirections
     },
     PG: {
         cemeteryName: 'Pine Grove',
@@ -152,7 +169,11 @@ const cemeteryKeyToCemetery = {
         cemeteryPostalCode: '',
         cemeteryProvince: 'ON',
         cemeteryPhoneNumber: '',
-        parentCemeteryId: ''
+        parentCemeteryId: '',
+        directionOfArrival_S: 'S',
+        directionOfArrivalDescription_S: 'Landslide Road from city',
+        directionOfArrival_N: 'N',
+        directionOfArrivalDescription_N: 'Landslide Road from Sixth Line East'
     },
     UG: {
         cemeteryName: 'New Greenwood - Urn Garden',
@@ -167,7 +188,8 @@ const cemeteryKeyToCemetery = {
         cemeteryPostalCode: '',
         cemeteryProvince: 'ON',
         cemeteryPhoneNumber: '',
-        parentCemeteryId: ''
+        parentCemeteryId: '',
+        ...fourthLineCemeteryArrivalDirections
     },
     WK: {
         cemeteryName: 'West Korah',
@@ -182,7 +204,11 @@ const cemeteryKeyToCemetery = {
         cemeteryPostalCode: '',
         cemeteryProvince: 'ON',
         cemeteryPhoneNumber: '',
-        parentCemeteryId: ''
+        parentCemeteryId: '',
+        directionOfArrival_E: 'E',
+        directionOfArrivalDescription_E: 'Allens Side Road',
+        directionOfArrival_S: 'S',
+        directionOfArrivalDescription_S: 'Avery Road'
     },
     WS: {
         cemeteryName: 'West Section',
@@ -197,7 +223,8 @@ const cemeteryKeyToCemetery = {
         cemeteryPostalCode: '',
         cemeteryProvince: 'ON',
         cemeteryPhoneNumber: '',
-        parentCemeteryId: ''
+        parentCemeteryId: '',
+        ...fourthLineCemeteryArrivalDirections
     }
 };
 const cemeteryCache = new Map();

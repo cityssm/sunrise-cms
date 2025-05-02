@@ -784,12 +784,14 @@ async function importFromWorkOrderCSV() {
 }
 function purgeConfigTables() {
     console.time('purgeConfigTables');
+    const configTablesToPurge = ['CemeteryDirectionsOfArrival', 'Cemeteries'];
     const database = sqlite(databasePath);
-    database.prepare('delete from Cemeteries').run();
-    database
-        .prepare("delete from sqlite_sequence where name in ('Cemeteries')")
-        .run();
-    database.close();
+    for (const tableName of configTablesToPurge) {
+        database.prepare(`delete from ${tableName}`).run();
+        database
+            .prepare('delete from sqlite_sequence where name = ?')
+            .run(tableName);
+    }
     console.timeEnd('purgeConfigTables');
 }
 function purgeTables() {
@@ -825,7 +827,7 @@ console.log(`Started ${new Date().toLocaleString()}`);
 console.time('importFromCsv');
 // Purge Tables
 purgeTables();
-// purgeConfigTables()
+purgeConfigTables();
 // Initialize SSM Data
 initializeFuneralHomes(user);
 // Do Imports

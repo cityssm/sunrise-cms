@@ -5,8 +5,22 @@ import addCemetery, {
   type AddCemeteryForm
 } from '../../database/addCemetery.js'
 import { getCemeteryByKey } from '../../database/getCemetery.js'
+import type { UpdateCemeteryDirectionsOfArrivalForm } from '../../database/updateCemeteryDirectionsOfArrival.js'
 
 export const cremationCemeteryKeys = new Set(['', '00', '`', 'N', 'R'])
+
+const fourthLineCemeteryArrivalDirections: UpdateCemeteryDirectionsOfArrivalForm =
+  {
+    directionOfArrival_E: 'E',
+    directionOfArrivalDescription_E:
+      'Fourth Line East from Great Northern Road',
+
+    directionOfArrival_S: 'S',
+    directionOfArrivalDescription_S: 'Peoples Road from downtown',
+
+    directionOfArrival_W: 'W',
+    directionOfArrivalDescription_W: 'Fourth Line West'
+  }
 
 const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
   '00': {
@@ -26,7 +40,9 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryProvince: 'ON',
 
     cemeteryPhoneNumber: '705-759-5336',
-    parentCemeteryId: ''
+    parentCemeteryId: '',
+
+    ...fourthLineCemeteryArrivalDirections
   },
 
   GC: {
@@ -46,7 +62,9 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryProvince: 'ON',
 
     cemeteryPhoneNumber: '',
-    parentCemeteryId: ''
+    parentCemeteryId: '',
+
+    ...fourthLineCemeteryArrivalDirections
   },
   HC: {
     cemeteryName: 'Holy Sepulchre - Columbarium',
@@ -65,7 +83,9 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryProvince: 'ON',
 
     cemeteryPhoneNumber: '',
-    parentCemeteryId: ''
+    parentCemeteryId: '',
+
+    ...fourthLineCemeteryArrivalDirections
   },
   HS: {
     cemeteryName: 'Holy Sepulchre',
@@ -85,7 +105,9 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryProvince: 'ON',
 
     cemeteryPhoneNumber: '',
-    parentCemeteryId: ''
+    parentCemeteryId: '',
+
+    ...fourthLineCemeteryArrivalDirections
   },
   MA: {
     cemeteryName: 'Holy Sepulchre - Mausoleum',
@@ -104,7 +126,9 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryProvince: 'ON',
 
     cemeteryPhoneNumber: '',
-    parentCemeteryId: ''
+    parentCemeteryId: '',
+
+    ...fourthLineCemeteryArrivalDirections
   },
   MN: {
     cemeteryName: 'Holy Sepulchre - Mausoleum Niche',
@@ -123,7 +147,9 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryProvince: 'ON',
 
     cemeteryPhoneNumber: '',
-    parentCemeteryId: ''
+    parentCemeteryId: '',
+
+    ...fourthLineCemeteryArrivalDirections
   },
   NG: {
     cemeteryName: 'New Greenwood',
@@ -143,7 +169,9 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryProvince: 'ON',
 
     cemeteryPhoneNumber: '',
-    parentCemeteryId: ''
+    parentCemeteryId: '',
+
+    ...fourthLineCemeteryArrivalDirections
   },
   NW: {
     cemeteryName: 'New Greenwood - Niche Wall',
@@ -162,7 +190,9 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryProvince: 'ON',
 
     cemeteryPhoneNumber: '',
-    parentCemeteryId: ''
+    parentCemeteryId: '',
+
+    ...fourthLineCemeteryArrivalDirections
   },
   OG: {
     cemeteryName: 'Old Greenwood',
@@ -182,7 +212,9 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryProvince: 'ON',
 
     cemeteryPhoneNumber: '',
-    parentCemeteryId: ''
+    parentCemeteryId: '',
+
+    ...fourthLineCemeteryArrivalDirections
   },
   PG: {
     cemeteryName: 'Pine Grove',
@@ -201,7 +233,13 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryProvince: 'ON',
 
     cemeteryPhoneNumber: '',
-    parentCemeteryId: ''
+    parentCemeteryId: '',
+
+    directionOfArrival_S: 'S',
+    directionOfArrivalDescription_S: 'Landslide Road from city',
+
+    directionOfArrival_N: 'N',
+    directionOfArrivalDescription_N: 'Landslide Road from Sixth Line East'
   },
   UG: {
     cemeteryName: 'New Greenwood - Urn Garden',
@@ -220,7 +258,9 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryProvince: 'ON',
 
     cemeteryPhoneNumber: '',
-    parentCemeteryId: ''
+    parentCemeteryId: '',
+
+    ...fourthLineCemeteryArrivalDirections
   },
 
   WK: {
@@ -241,7 +281,13 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryProvince: 'ON',
 
     cemeteryPhoneNumber: '',
-    parentCemeteryId: ''
+    parentCemeteryId: '',
+
+    directionOfArrival_E: 'E',
+    directionOfArrivalDescription_E: 'Allens Side Road',
+
+    directionOfArrival_S: 'S',
+    directionOfArrivalDescription_S: 'Avery Road'
   },
   WS: {
     cemeteryName: 'West Section',
@@ -260,7 +306,9 @@ const cemeteryKeyToCemetery: Record<string, AddCemeteryForm> = {
     cemeteryProvince: 'ON',
 
     cemeteryPhoneNumber: '',
-    parentCemeteryId: ''
+    parentCemeteryId: '',
+
+    ...fourthLineCemeteryArrivalDirections
   }
 }
 
