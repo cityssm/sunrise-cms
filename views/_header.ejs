@@ -116,9 +116,10 @@
     </div>
   </nav>
 
-  <main class="container pt-2 px-3 mr-auto has-min-page-height"
+  <main class="container pt-2 px-3 mr-auto"
     data-session-keep-alive-millis="<%= configFunctions.keepAliveMillis %>"
     data-url-prefix="<%= urlPrefix %>"
     data-can-update="<%= user.userProperties.canUpdate ? "true" : "false" %>"
     data-is-admin="<%= user.userProperties.isAdmin ? "true" : "false" %>"
-    data-api-key="<%= user.userProperties.apiKey %>">
+    data-api-key="<%= user.userProperties.apiKey %>"
+    style="min-height: calc(100vh - var(--bulma-navbar-height));">
