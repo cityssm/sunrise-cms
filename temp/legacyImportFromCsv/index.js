@@ -370,9 +370,9 @@ async function importFromPrepaidCSV() {
             if (burialSite) {
                 const possibleContracts = await getContracts({
                     burialSiteId: burialSite.burialSiteId,
+                    contractStartDateString,
                     contractTypeId: importIds.preneedContractType.contractTypeId,
-                    deceasedName: prepaidRow.CMPP_PREPAID_FOR_NAME,
-                    contractStartDateString
+                    deceasedName: prepaidRow.CMPP_PREPAID_FOR_NAME
                 }, {
                     includeFees: false,
                     includeInterments: false,
@@ -385,7 +385,7 @@ async function importFromPrepaidCSV() {
                 }
             }
             contractId ||= addContract({
-                burialSiteId: burialSite ? burialSite.burialSiteId : '',
+                burialSiteId: burialSite === undefined ? '' : burialSite.burialSiteId,
                 contractTypeId: importIds.preneedContractType.contractTypeId,
                 contractEndDateString: '',
                 contractStartDateString,
@@ -560,7 +560,7 @@ async function importFromWorkOrderCSV() {
                 });
             }
             let burialSite;
-            if (workOrderRow.WO_CEMETERY !== '00') {
+            if (!cremationCemeteryKeys.has(workOrderRow.WO_CEMETERY)) {
                 const burialSiteNameSegment1 = workOrderRow.WO_BLOCK === '0' ? '' : workOrderRow.WO_BLOCK;
                 const burialSiteNameSegment2 = (workOrderRow.WO_RANGE1 === '0' ? '' : workOrderRow.WO_RANGE1) +
                     (workOrderRow.WO_RANGE2 === '0' ? '' : workOrderRow.WO_RANGE2);
@@ -641,6 +641,9 @@ async function importFromWorkOrderCSV() {
                 funeralDateString: workOrderRow.WO_FUNERAL_YR === ''
                     ? ''
                     : formatDateString(workOrderRow.WO_FUNERAL_YR, workOrderRow.WO_FUNERAL_MON, workOrderRow.WO_FUNERAL_DAY),
+                funeralTimeString: workOrderRow.WO_FUNERAL_HR === ''
+                    ? ''
+                    : formatTimeString(workOrderRow.WO_FUNERAL_HR, workOrderRow.WO_FUNERAL_MIN),
                 committalTypeId,
                 deceasedName: workOrderRow.WO_DECEASED_NAME,
                 deceasedAddress1: workOrderRow.WO_ADDRESS,

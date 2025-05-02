@@ -39,25 +39,27 @@ declare const exports: Record<string, unknown>
               createCloseModalFunction()
 
               bulmaJS.confirm({
-                title: 'Work Order Created Successfully',
-                message: 'Would you like to open the work order now?',
                 contextualColorName: 'success',
+                title: 'Work Order Created Successfully',
+
+                message: 'Would you like to open the work order now?',
+
                 okButton: {
-                  text: 'Yes, Open the Work Order',
                   callbackFunction() {
                     globalThis.location.href = sunrise.getWorkOrderURL(
                       responseJSON.workOrderId,
                       true
                     )
-                  }
+                  },
+                  text: 'Yes, Open the Work Order'
                 }
               })
             } else {
               bulmaJS.alert({
                 contextualColorName: 'danger',
                 title: 'Error Creating Work Order',
-                
-                message: responseJSON.errorMessage as string,
+
+                message: responseJSON.errorMessage as string
               })
             }
           }
@@ -108,7 +110,7 @@ declare const exports: Record<string, unknown>
             .querySelector('form')
             ?.addEventListener('submit', doCreate)
         },
-        
+
         onremoved() {
           bulmaJS.toggleHtmlClipped()
           ;(

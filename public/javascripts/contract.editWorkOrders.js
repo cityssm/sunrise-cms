@@ -15,14 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 if (responseJSON.success) {
                     createCloseModalFunction();
                     bulmaJS.confirm({
+                        contextualColorName: 'success',
                         title: 'Work Order Created Successfully',
                         message: 'Would you like to open the work order now?',
-                        contextualColorName: 'success',
                         okButton: {
-                            text: 'Yes, Open the Work Order',
                             callbackFunction() {
                                 globalThis.location.href = sunrise.getWorkOrderURL(responseJSON.workOrderId, true);
-                            }
+                            },
+                            text: 'Yes, Open the Work Order'
                         }
                     });
                 }
@@ -30,7 +30,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Creating Work Order',
-                        message: responseJSON.errorMessage,
+                        message: responseJSON.errorMessage
                     });
                 }
             });

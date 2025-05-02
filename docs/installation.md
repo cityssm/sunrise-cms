@@ -20,7 +20,7 @@ the application peaked at the following:
 - 1 GB of storage for application, dependencies, and data.
 - Active Directory for authentication.
 
-## Step 1: Install Node.js 18 or better and npm
+## Step 1: Install Node.js 20 or better and npm
 
 [Node.js](https://nodejs.org) is a JavaScript runtime environment.
 Sunrise CMS is built to run on Node.js, and is regularly tested on the currently supported LTS versions.
