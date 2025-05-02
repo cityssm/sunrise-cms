@@ -794,6 +794,8 @@ async function importFromPrepaidCSV(): Promise<void> {
           externalReceiptNumber: '',
           transactionAmount,
           transactionDateString: contractStartDateString,
+          transactionTimeString: '00:00',
+          
           transactionNote: `Order Number: ${prepaidRow.CMPP_ORDER_NO}`
         },
         user

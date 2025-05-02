@@ -15,10 +15,10 @@ export default function addContractTransaction(contractTransactionForm, user) {
         transactionIndex = maxIndexResult.transactionIndex + 1;
     }
     const rightNow = new Date();
-    const transactionDate = contractTransactionForm.transactionDateString === ''
+    const transactionDate = (contractTransactionForm.transactionDateString ?? '') === ''
         ? dateToInteger(rightNow)
         : dateStringToInteger(contractTransactionForm.transactionDateString);
-    const transactionTime = contractTransactionForm.transactionTimeString === ''
+    const transactionTime = (contractTransactionForm.transactionTimeString ?? '') === ''
         ? dateToTimeInteger(rightNow)
         : timeStringToInteger(contractTransactionForm.transactionTimeString);
     database

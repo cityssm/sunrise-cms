@@ -48,14 +48,14 @@ export default function addContractTransaction(
   const rightNow = new Date()
 
   const transactionDate =
-    contractTransactionForm.transactionDateString === ''
+    (contractTransactionForm.transactionDateString ?? '') === ''
       ? dateToInteger(rightNow)
       : dateStringToInteger(
           contractTransactionForm.transactionDateString as DateString
         )
 
   const transactionTime =
-    contractTransactionForm.transactionTimeString === ''
+    (contractTransactionForm.transactionTimeString ?? '') === ''
       ? dateToTimeInteger(rightNow)
       : timeStringToInteger(
           contractTransactionForm.transactionTimeString as TimeString
