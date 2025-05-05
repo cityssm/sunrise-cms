@@ -213,14 +213,14 @@ async function importFromMasterCSV() {
                 const funeralHomeId = masterRow.CM_FUNERAL_HOME === ''
                     ? ''
                     : getFuneralHomeIdByKey(masterRow.CM_FUNERAL_HOME, user);
-                const funeralDateString = masterRow.CM_FUNERAL_YR === ''
+                const funeralDateString = masterRow.CM_FUNERAL_YR === '' || masterRow.CM_FUNERAL_YR === '0'
                     ? ''
                     : formatDateString(masterRow.CM_FUNERAL_YR, masterRow.CM_FUNERAL_MON, masterRow.CM_FUNERAL_DAY);
                 const committalTypeId = contractType.contractType === 'Cremation' ||
                     masterRow.CM_COMMITTAL_TYPE === ''
                     ? ''
                     : getCommittalTypeIdByKey(masterRow.CM_COMMITTAL_TYPE, user);
-                const deathDateString = masterRow.CM_DEATH_YR === ''
+                const deathDateString = masterRow.CM_DEATH_YR === '' || masterRow.CM_DEATH_YR === '0'
                     ? ''
                     : formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
                 const intermentContainerTypeKey = masterRow.CM_CONTAINER_TYPE === '' &&
@@ -631,6 +631,10 @@ async function importFromWorkOrderCSV() {
             const intermentContainerTypeId = intermentContainerTypeKey === ''
                 ? ''
                 : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user);
+            let funeralHour = Number.parseInt(workOrderRow.WO_FUNERAL_HR === '' ? '0' : workOrderRow.WO_FUNERAL_HR, 10);
+            if (funeralHour <= 6) {
+                funeralHour += 12;
+            }
             const contractId = addContract({
                 burialSiteId: burialSite ? burialSite.burialSiteId : '',
                 contractTypeId: contractType.contractTypeId,
@@ -641,9 +645,9 @@ async function importFromWorkOrderCSV() {
                 funeralDateString: workOrderRow.WO_FUNERAL_YR === ''
                     ? ''
                     : formatDateString(workOrderRow.WO_FUNERAL_YR, workOrderRow.WO_FUNERAL_MON, workOrderRow.WO_FUNERAL_DAY),
-                funeralTimeString: workOrderRow.WO_FUNERAL_HR === ''
+                funeralTimeString: workOrderRow.WO_FUNERAL_YR === ''
                     ? ''
-                    : formatTimeString(workOrderRow.WO_FUNERAL_HR, workOrderRow.WO_FUNERAL_MIN),
+                    : formatTimeString(funeralHour.toString(), workOrderRow.WO_FUNERAL_MIN),
                 committalTypeId,
                 deceasedName: workOrderRow.WO_DECEASED_NAME,
                 deceasedAddress1: workOrderRow.WO_ADDRESS,

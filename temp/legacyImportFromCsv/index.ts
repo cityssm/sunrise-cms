@@ -357,7 +357,7 @@ async function importFromMasterCSV(): Promise<void> {
             : getFuneralHomeIdByKey(masterRow.CM_FUNERAL_HOME, user)
 
         const funeralDateString =
-          masterRow.CM_FUNERAL_YR === ''
+          masterRow.CM_FUNERAL_YR === '' || masterRow.CM_FUNERAL_YR === '0'
             ? ''
             : formatDateString(
                 masterRow.CM_FUNERAL_YR,
@@ -372,7 +372,7 @@ async function importFromMasterCSV(): Promise<void> {
             : getCommittalTypeIdByKey(masterRow.CM_COMMITTAL_TYPE, user)
 
         const deathDateString =
-          masterRow.CM_DEATH_YR === ''
+          masterRow.CM_DEATH_YR === '' || masterRow.CM_DEATH_YR === '0'
             ? ''
             : formatDateString(
                 masterRow.CM_DEATH_YR,
@@ -1009,6 +1009,14 @@ async function importFromWorkOrderCSV(): Promise<void> {
           ? ''
           : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user)
 
+      let funeralHour = Number.parseInt(
+        workOrderRow.WO_FUNERAL_HR === '' ? '0' : workOrderRow.WO_FUNERAL_HR,
+        10
+      )
+      if (funeralHour <= 6) {
+        funeralHour += 12
+      }
+
       const contractId = addContract(
         {
           burialSiteId: burialSite ? burialSite.burialSiteId : '',
@@ -1030,10 +1038,10 @@ async function importFromWorkOrderCSV(): Promise<void> {
                 ),
 
           funeralTimeString:
-            workOrderRow.WO_FUNERAL_HR === ''
+            workOrderRow.WO_FUNERAL_YR === ''
               ? ''
               : formatTimeString(
-                  workOrderRow.WO_FUNERAL_HR,
+                  funeralHour.toString(),
                   workOrderRow.WO_FUNERAL_MIN
                 ),
 
