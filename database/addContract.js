@@ -47,7 +47,7 @@ export default function addContract(addForm, user, connectedDatabase) {
      * Add deceased information
      */
     if ((addForm.deceasedName ?? '') !== '') {
-        addContractInterment({ contractId, ...addForm }, user, database);
+        addContractInterment({ ...addForm, contractId }, user, database);
     }
     if (connectedDatabase === undefined) {
         database.close();
