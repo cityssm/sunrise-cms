@@ -144,6 +144,7 @@ export interface Contract extends Record {
     committalType?: string;
     committalTypeId?: number;
     directionOfArrival?: string;
+    directionOfArrivalDescription?: string;
     contractComments?: ContractComment[];
     contractFees?: ContractFee[];
     contractFields?: ContractField[];

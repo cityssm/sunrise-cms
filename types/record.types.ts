@@ -203,6 +203,7 @@ export interface Contract extends Record {
   committalTypeId?: number
 
   directionOfArrival?: string
+  directionOfArrivalDescription?: string
 
   contractComments?: ContractComment[]
   contractFees?: ContractFee[]

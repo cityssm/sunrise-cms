@@ -38,7 +38,7 @@ export default async function getContract(contractId, connectedDatabase) {
 
           userFn_timeIntegerToString(o.funeralTime) as funeralTimeString,
           userFn_timeIntegerToPeriodString(o.funeralTime) as funeralTimePeriodString,
-          o.directionOfArrival,
+          o.directionOfArrival, d.directionOfArrivalDescription,
           o.committalTypeId, c.committalType,
           o.recordUpdate_timeMillis
         from Contracts o
@@ -47,6 +47,10 @@ export default async function getContract(contractId, connectedDatabase) {
         left join CommittalTypes c on o.committalTypeId = c.committalTypeId
         left join BurialSites l on o.burialSiteId = l.burialSiteId
         left join Cemeteries m on l.cemeteryId = m.cemeteryId
+        left join CemeteryDirectionsOfArrival d
+          on l.cemeteryId = d.cemeteryId
+          and o.directionOfArrival = d.directionOfArrival
+
         where o.recordDelete_timeMillis is null
           and o.contractId = ?`)
         .get(contractId);

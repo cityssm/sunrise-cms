@@ -249,6 +249,15 @@
           </div>
         </div>
         <p>
+          <strong>Direction of Arrival</strong><br />
+          <% if (contract.directionOfArrival === null) { %>
+            <span class="has-text-grey">(No Direction of Arrival)</span>
+          <% } else { %>
+            <%= contract.directionOfArrivalDescription %>
+            <span class="tag"><%= contract.directionOfArrival %></span>
+          <% } %>
+        </p>
+        <p class="mt-2">
           <strong>Committal Type</strong><br />
           <% if (contract.committalType === null) { %>
             <span class="has-text-grey">(No Committal Type)</span>
