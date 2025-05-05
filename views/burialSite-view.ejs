@@ -338,7 +338,16 @@
                   <span class="has-text-grey">(No Interments)</span>
                 <% } else { %>
                   <% for (const interment of contract.contractInterments) { %>
-                    <%= interment.deceasedName %><br />
+                    <div class="columns">
+                      <div class="column">
+                        <%= interment.deceasedName %>
+                      </div>
+                      <% if (interment.intermentContainerType) { %>
+                        <div class="column">
+                          <span class="tag"><%= interment.intermentContainerType %></span>
+                        </div>
+                      <% } %>
+                    </div>
                   <% } %>
                 <% } %>
               </td>
