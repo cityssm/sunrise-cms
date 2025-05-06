@@ -9,6 +9,7 @@ import addContract from '../../database/addContract.js';
 import addContractComment from '../../database/addContractComment.js';
 import addContractFee from '../../database/addContractFee.js';
 import addContractTransaction from '../../database/addContractTransaction.js';
+import addRelatedContract from '../../database/addRelatedContract.js';
 import addWorkOrder from '../../database/addWorkOrder.js';
 import addWorkOrderBurialSite from '../../database/addWorkOrderBurialSite.js';
 import addWorkOrderContract from '../../database/addWorkOrderContract.js';
@@ -265,6 +266,12 @@ async function importFromMasterCSV() {
                     deathAgePeriod: getDeathAgePeriod(masterRow.CM_PERIOD),
                     intermentContainerTypeId
                 }, user);
+                if (preneedContractId !== undefined) {
+                    addRelatedContract({
+                        contractId: preneedContractId,
+                        relatedContractId: deceasedContractId
+                    });
+                }
                 if (masterRow.CM_REMARK1 !== '') {
                     addContractComment({
                         contractId: deceasedContractId,
@@ -284,7 +291,7 @@ async function importFromMasterCSV() {
                 if (masterRow.CM_WORK_ORDER.trim() !== '') {
                     addContractComment({
                         contractId: deceasedContractId,
-                        comment: `Imported Contract #${masterRow.CM_WORK_ORDER}`,
+                        comment: `Imported Work Order #${masterRow.CM_WORK_ORDER}`,
                         commentDateString: deceasedContractStartDateString,
                         commentTimeString: '00:00'
                     }, user);

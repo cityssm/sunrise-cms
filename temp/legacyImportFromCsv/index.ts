@@ -17,6 +17,7 @@ import addContract from '../../database/addContract.js'
 import addContractComment from '../../database/addContractComment.js'
 import addContractFee from '../../database/addContractFee.js'
 import addContractTransaction from '../../database/addContractTransaction.js'
+import addRelatedContract from '../../database/addRelatedContract.js'
 import addWorkOrder from '../../database/addWorkOrder.js'
 import addWorkOrderBurialSite from '../../database/addWorkOrderBurialSite.js'
 import addWorkOrderContract from '../../database/addWorkOrderContract.js'
@@ -164,7 +165,7 @@ async function importFromMasterCSV(): Promise<void> {
        */
 
       let preneedContractStartDateString: '' | DateString
-      let preneedContractId: number
+      let preneedContractId: number | undefined
 
       if (masterRow.CM_PRENEED_OWNER !== '' || masterRow.CM_STATUS === 'P') {
         preneedContractStartDateString = formatDateString(
@@ -438,6 +439,13 @@ async function importFromMasterCSV(): Promise<void> {
           user
         )
 
+        if (preneedContractId !== undefined) {
+          addRelatedContract({
+            contractId: preneedContractId,
+            relatedContractId: deceasedContractId
+          })
+        }
+
         if (masterRow.CM_REMARK1 !== '') {
           addContractComment(
             {
@@ -469,7 +477,7 @@ async function importFromMasterCSV(): Promise<void> {
             {
               contractId: deceasedContractId,
 
-              comment: `Imported Contract #${masterRow.CM_WORK_ORDER}`,
+              comment: `Imported Work Order #${masterRow.CM_WORK_ORDER}`,
               commentDateString: deceasedContractStartDateString,
               commentTimeString: '00:00'
             },
