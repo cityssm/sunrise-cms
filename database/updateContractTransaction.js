@@ -6,16 +6,16 @@ export default function updateContractTransaction(updateForm, user) {
     const result = database
         .prepare(`update ContractTransactions
         set transactionAmount = ?,
-        isInvoiced = ?,
-        externalReceiptNumber = ?,
-        transactionNote = ?,
-        transactionDate = ?,
-        transactionTime = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          isInvoiced = ?,
+          externalReceiptNumber = ?,
+          transactionNote = ?,
+          transactionDate = ?,
+          transactionTime = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and contractId = ?
-        and transactionIndex = ?`)
+          and contractId = ?
+          and transactionIndex = ?`)
         .run(updateForm.transactionAmount, updateForm.isInvoiced ?? 0, updateForm.externalReceiptNumber, updateForm.transactionNote, dateStringToInteger(updateForm.transactionDateString), timeStringToInteger(updateForm.transactionTimeString), user.userName, Date.now(), updateForm.contractId, updateForm.transactionIndex);
     database.close();
     return result.changes > 0;

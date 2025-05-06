@@ -185,7 +185,7 @@
       <div class="panel-block is-block">
         <% if (burialSite.burialSiteImage) { %>
           <div class="image">
-            <img src="<%= urlPrefix %>/internal/images/burialSites/<%= burialSite.burialSiteImage %>" alt="Burial Site Image" />
+            <img src="<%= urlPrefix %>/internal/images/burialSites/<%= burialSite.burialSiteImage %>" alt="Burial Site" />
           </div>
         <% } else if (burialSite.cemeterySvg) { %>
           <% const imageURL = urlPrefix + "/internal/images/cemeteries/" + burialSite.cemeterySvg %>

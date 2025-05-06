@@ -64,8 +64,8 @@ declare const exports: Record<string, unknown>
         formEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
             contractFees: ContractFee[]
+            success: boolean
           }
 
           if (responseJSON.success) {
@@ -76,8 +76,8 @@ declare const exports: Record<string, unknown>
             bulmaJS.alert({
               contextualColorName: 'danger',
               title: 'Error Updating Quantity',
-              
-              message: 'Please try again.',
+
+              message: 'Please try again.'
             })
           }
         }
@@ -144,9 +144,9 @@ declare const exports: Record<string, unknown>
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
-            errorMessage?: string
             contractFees: ContractFee[]
+            errorMessage?: string
+            success: boolean
           }
 
           if (responseJSON.success) {
@@ -154,9 +154,10 @@ declare const exports: Record<string, unknown>
             renderContractFees()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Deleting Fee',
+
               message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
             })
           }
         }
@@ -164,12 +165,14 @@ declare const exports: Record<string, unknown>
     }
 
     bulmaJS.confirm({
-      title: 'Delete Fee',
-      message: 'Are you sure you want to delete this fee?',
       contextualColorName: 'warning',
+      title: 'Delete Fee',
+
+      message: 'Are you sure you want to delete this fee?',
+
       okButton: {
-        text: 'Yes, Delete Fee',
-        callbackFunction: doDelete
+        callbackFunction: doDelete,
+        text: 'Yes, Delete Fee'
       }
     })
   }
@@ -300,8 +303,8 @@ declare const exports: Record<string, unknown>
   addFeeButtonElement.addEventListener('click', () => {
     if (sunrise.hasUnsavedChanges()) {
       bulmaJS.alert({
+        contextualColorName: 'warning',
         message: 'Please save all unsaved changes before adding fees.',
-        contextualColorName: 'warning'
       })
       return
     }
@@ -327,9 +330,9 @@ declare const exports: Record<string, unknown>
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
-            errorMessage?: string
             contractFees: ContractFee[]
+            errorMessage?: string
+            success: boolean
           }
 
           if (responseJSON.success) {
@@ -337,14 +340,15 @@ declare const exports: Record<string, unknown>
             renderContractFees()
 
             bulmaJS.alert({
+              contextualColorName: 'success',
               message: 'Fee Group Added Successfully',
-              contextualColorName: 'success'
             })
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Adding Fee',
+
               message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
             })
           }
         }
@@ -361,9 +365,9 @@ declare const exports: Record<string, unknown>
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
-            errorMessage?: string
             contractFees: ContractFee[]
+            errorMessage?: string
+            success: boolean
           }
 
           if (responseJSON.success) {
@@ -372,9 +376,10 @@ declare const exports: Record<string, unknown>
             filterFees()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Adding Fee',
+
               message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
             })
           }
         }
@@ -630,8 +635,8 @@ declare const exports: Record<string, unknown>
         formEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
             contractTransactions: ContractTransaction[]
+            success: boolean
           }
 
           if (responseJSON.success) {
@@ -640,9 +645,10 @@ declare const exports: Record<string, unknown>
             editCloseModalFunction()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Updating Transaction',
+
               message: 'Please try again.',
-              contextualColorName: 'danger'
             })
           }
         }
@@ -732,9 +738,9 @@ declare const exports: Record<string, unknown>
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
-            errorMessage?: string
             contractTransactions: ContractTransaction[]
+            errorMessage?: string
+            success: boolean
           }
 
           if (responseJSON.success) {
@@ -742,9 +748,10 @@ declare const exports: Record<string, unknown>
             renderContractTransactions()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Deleting Transaction',
+
               message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
             })
           }
         }
@@ -752,12 +759,13 @@ declare const exports: Record<string, unknown>
     }
 
     bulmaJS.confirm({
-      title: 'Delete Transaction',
-      message: 'Are you sure you want to delete this transaction?',
       contextualColorName: 'warning',
+      title: 'Delete Transaction',
+
+      message: 'Are you sure you want to delete this transaction?',
       okButton: {
+        callbackFunction: doDelete,
         text: 'Yes, Delete Transaction',
-        callbackFunction: doDelete
       }
     })
   }
@@ -835,7 +843,7 @@ declare const exports: Record<string, unknown>
       tableRowElement.innerHTML = `<td>
         ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
         ${
-          ((contractTransaction.isInvoiced ?? 0) === 0)
+          (contractTransaction.isInvoiced ?? 0) === 0
             ? ''
             : `<br /><span class="tag is-info">Invoiced</span>`
         }
@@ -923,9 +931,9 @@ declare const exports: Record<string, unknown>
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
-            errorMessage?: string
             contractTransactions: ContractTransaction[]
+            errorMessage?: string
+            success: boolean
           }
 
           if (responseJSON.success) {
@@ -934,9 +942,9 @@ declare const exports: Record<string, unknown>
             renderContractTransactions()
           } else {
             bulmaJS.confirm({
-              title: 'Error Adding Transaction',
+              contextualColorName: 'danger',
               message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+              title: 'Error Adding Transaction'
             })
           }
         }

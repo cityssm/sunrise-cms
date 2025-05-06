@@ -32,16 +32,16 @@ export default function updateContractTransaction(
     .prepare(
       `update ContractTransactions
         set transactionAmount = ?,
-        isInvoiced = ?,
-        externalReceiptNumber = ?,
-        transactionNote = ?,
-        transactionDate = ?,
-        transactionTime = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          isInvoiced = ?,
+          externalReceiptNumber = ?,
+          transactionNote = ?,
+          transactionDate = ?,
+          transactionTime = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and contractId = ?
-        and transactionIndex = ?`
+          and contractId = ?
+          and transactionIndex = ?`
     )
     .run(
       updateForm.transactionAmount,

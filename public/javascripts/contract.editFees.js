@@ -35,7 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Quantity',
-                        message: 'Please try again.',
+                        message: 'Please try again.'
                     });
                 }
             });
@@ -75,20 +75,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Deleting Fee',
                         message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
                     });
                 }
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Fee',
             message: 'Are you sure you want to delete this fee?',
-            contextualColorName: 'warning',
             okButton: {
-                text: 'Yes, Delete Fee',
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete Fee'
             }
         });
     }
@@ -186,8 +186,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     addFeeButtonElement.addEventListener('click', () => {
         if (sunrise.hasUnsavedChanges()) {
             bulmaJS.alert({
+                contextualColorName: 'warning',
                 message: 'Please save all unsaved changes before adding fees.',
-                contextualColorName: 'warning'
             });
             return;
         }
@@ -206,15 +206,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     contractFees = responseJSON.contractFees;
                     renderContractFees();
                     bulmaJS.alert({
+                        contextualColorName: 'success',
                         message: 'Fee Group Added Successfully',
-                        contextualColorName: 'success'
                     });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Adding Fee',
                         message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
                     });
                 }
             });
@@ -233,9 +233,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Adding Fee',
                         message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
                     });
                 }
             });
@@ -404,9 +404,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Updating Transaction',
                         message: 'Please try again.',
-                        contextualColorName: 'danger'
                     });
                 }
             });
@@ -452,20 +452,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Deleting Transaction',
                         message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
                     });
                 }
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Transaction',
             message: 'Are you sure you want to delete this transaction?',
-            contextualColorName: 'warning',
             okButton: {
+                callbackFunction: doDelete,
                 text: 'Yes, Delete Transaction',
-                callbackFunction: doDelete
             }
         });
     }
@@ -525,7 +525,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // eslint-disable-next-line no-unsanitized/property
             tableRowElement.innerHTML = `<td>
         ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
-        ${((contractTransaction.isInvoiced ?? 0) === 0)
+        ${(contractTransaction.isInvoiced ?? 0) === 0
                 ? ''
                 : `<br /><span class="tag is-info">Invoiced</span>`}
         </td>
@@ -596,9 +596,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.confirm({
-                        title: 'Error Adding Transaction',
+                        contextualColorName: 'danger',
                         message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        title: 'Error Adding Transaction'
                     });
                 }
             });
