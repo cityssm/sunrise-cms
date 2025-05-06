@@ -203,6 +203,7 @@ export interface ContractTransaction extends Record {
     transactionTime?: number;
     transactionTimeString?: string;
     dynamicsGPDocument?: DynamicsGPDocument;
+    isInvoiced?: 0 | 1;
     externalReceiptNumber?: string;
     transactionAmount: number;
     transactionNote?: string;

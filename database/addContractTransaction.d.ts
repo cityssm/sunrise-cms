@@ -3,6 +3,7 @@ export interface AddTransactionForm {
     contractId: number | string;
     transactionDateString?: '' | DateString;
     transactionTimeString?: '' | TimeString;
+    isInvoiced?: '0' | '1' | 0 | 1;
     externalReceiptNumber: string;
     transactionAmount: number | string;
     transactionNote: string;

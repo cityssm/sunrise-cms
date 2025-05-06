@@ -74,9 +74,10 @@ declare const exports: Record<string, unknown>
             updateCloseModalFunction()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Updating Quantity',
+              
               message: 'Please try again.',
-              contextualColorName: 'danger'
             })
           }
         }
@@ -666,6 +667,15 @@ declare const exports: Record<string, unknown>
             '#contractTransactionEdit--transactionAmount'
           ) as HTMLInputElement
         ).value = transaction.transactionAmount.toFixed(2)
+
+        if ((transaction.isInvoiced ?? 0) !== 0) {
+          ;(
+            modalElement.querySelector(
+              '#contractTransactionEdit--isInvoiced'
+            ) as HTMLSelectElement
+          ).value = '1'
+        }
+
         ;(
           modalElement.querySelector(
             '#contractTransactionEdit--externalReceiptNumber'
@@ -699,6 +709,7 @@ declare const exports: Record<string, unknown>
 
         editCloseModalFunction = closeModalFunction
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
@@ -822,26 +833,30 @@ declare const exports: Record<string, unknown>
 
       // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = `<td>
-          ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
-          </td>
-          <td>
-            ${externalReceiptNumberHTML}
-            <small>${cityssm.escapeHTML(contractTransaction.transactionNote ?? '')}</small>
-          </td>
-          <td class="has-text-right">
-            $${cityssm.escapeHTML(contractTransaction.transactionAmount.toFixed(2))}
-          </td>
-          <td class="is-hidden-print">
-            <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-              <button class="button is-primary button--edit" type="button">
-                <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-                <span>Edit</span>
-              </button>
-              <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
-                <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
-              </button>
-            </div>
-          </td>`
+        ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
+        ${
+          ((contractTransaction.isInvoiced ?? 0) === 0)
+            ? ''
+            : `<br /><span class="tag is-info">Invoiced</span>`
+        }
+        </td>
+        <td>
+          ${externalReceiptNumberHTML}
+          <small>${cityssm.escapeHTML(contractTransaction.transactionNote ?? '')}</small>
+        </td>
+        <td class="has-text-right">
+          $${cityssm.escapeHTML(contractTransaction.transactionAmount.toFixed(2))}
+        </td>
+        <td class="is-hidden-print">
+          <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
+            <button class="button is-primary button--edit" data-tooltip="Edit Transaction" type="button">
+              <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+            </button>
+            <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
+              <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
+            </button>
+          </div>
+        </td>`
 
       tableRowElement
         .querySelector('.button--edit')

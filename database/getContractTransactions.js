@@ -11,7 +11,7 @@ export default async function GetContractTransactions(contractId, options, conne
         .prepare(`select contractId, transactionIndex,
           transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString,
           transactionTime, userFn_timeIntegerToString(transactionTime) as transactionTimeString,
-          transactionAmount, externalReceiptNumber, transactionNote
+          transactionAmount, externalReceiptNumber, isInvoiced, transactionNote
         from ContractTransactions
         where recordDelete_timeMillis is null
           and contractId = ?

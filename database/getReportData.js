@@ -132,6 +132,7 @@ export default function getReportData(reportName, reportParameters = {}) {
                 sql = `select t.contractId, t.transactionIndex,
           t.transactionDate, t.transactionTime,
           t.transactionAmount,
+          t.isInvoiced,
           t.externalReceiptNumber, t.transactionNote
           from ContractTransactions t
           where t.recordDelete_timeMillis is null

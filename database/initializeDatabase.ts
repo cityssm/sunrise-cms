@@ -247,6 +247,7 @@ const createStatements = [
     directionOfArrival varchar(2),
 
     ${recordColumns},
+
     foreign key (burialSiteId) references BurialSites (burialSiteId),
     foreign key (contractTypeId) references ContractTypes (contractTypeId),
     foreign key (funeralHomeId) references FuneralHomes (funeralHomeId),
@@ -376,6 +377,7 @@ const createStatements = [
     transactionDate integer not null check (transactionDate > 0),
     transactionTime integer not null check (transactionTime >= 0),
     transactionAmount decimal(8, 2) not null,
+    isInvoiced bit not null default 0,
     externalReceiptNumber varchar(100),
     transactionNote text,
     ${recordColumns},

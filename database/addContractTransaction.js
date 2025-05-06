@@ -25,11 +25,12 @@ export default function addContractTransaction(contractTransactionForm, user) {
         .prepare(`insert into ContractTransactions (
         contractId, transactionIndex,
         transactionDate, transactionTime,
-        transactionAmount, externalReceiptNumber, transactionNote,
+        transactionAmount, isInvoiced,
+        externalReceiptNumber, transactionNote,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(contractTransactionForm.contractId, transactionIndex, transactionDate, transactionTime, contractTransactionForm.transactionAmount, contractTransactionForm.externalReceiptNumber, contractTransactionForm.transactionNote, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+        .run(contractTransactionForm.contractId, transactionIndex, transactionDate, transactionTime, contractTransactionForm.transactionAmount, contractTransactionForm.isInvoiced ?? 0, contractTransactionForm.externalReceiptNumber, contractTransactionForm.transactionNote, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     database.close();
     return transactionIndex;
 }

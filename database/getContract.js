@@ -41,6 +41,7 @@ export default async function getContract(contractId, connectedDatabase) {
           userFn_timeIntegerToPeriodString(o.funeralTime) as funeralTimePeriodString,
           o.directionOfArrival, d.directionOfArrivalDescription,
           o.committalTypeId, c.committalType,
+
           o.recordUpdate_timeMillis
         from Contracts o
         left join ContractTypes t on o.contractTypeId = t.contractTypeId

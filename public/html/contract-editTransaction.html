@@ -24,26 +24,46 @@
           value=""
         />
 
-        <div class="field">
-          <label
-            class="label"
-            for="contractTransactionEdit--transactionAmount"
-            >Transaction Amount</label
-          >
-          <div class="control has-icons-left">
-            <input
-              class="input has-text-right"
-              id="contractTransactionEdit--transactionAmount"
-              name="transactionAmount"
-              type="number"
-              step="0.01"
-              required
-            />
-            <span class="icon is-small is-left">
-              <i class="fas fa-dollar-sign" aria-hidden="true"></i>
-            </span>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label
+                class="label"
+                for="contractTransactionEdit--transactionAmount"
+                >Transaction Amount</label
+              >
+              <div class="control has-icons-left">
+                <input
+                  class="input has-text-right"
+                  id="contractTransactionEdit--transactionAmount"
+                  name="transactionAmount"
+                  type="number"
+                  step="0.01"
+                  required
+                />
+                <span class="icon is-small is-left">
+                  <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="contractTransactionEdit--isInvoiced"
+                >Payment Type</label
+              >
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="contractTransactionEdit--isInvoiced" name="isInvoiced">
+                    <option value="0">Payment Taken</option>
+                    <option value="1">Invoiced</option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
         <div class="field">
           <label
             class="label"

@@ -15,6 +15,8 @@ export interface ContractTransactionUpdateForm {
   transactionDateString: DateString
   transactionTimeString: TimeString
 
+  isInvoiced?: '0' | '1' | 0 | 1
+
   externalReceiptNumber: string
   transactionAmount: number | string
   transactionNote: string
@@ -30,6 +32,7 @@ export default function updateContractTransaction(
     .prepare(
       `update ContractTransactions
         set transactionAmount = ?,
+        isInvoiced = ?,
         externalReceiptNumber = ?,
         transactionNote = ?,
         transactionDate = ?,
@@ -42,6 +45,7 @@ export default function updateContractTransaction(
     )
     .run(
       updateForm.transactionAmount,
+      updateForm.isInvoiced ?? 0,
       updateForm.externalReceiptNumber,
       updateForm.transactionNote,
       dateStringToInteger(updateForm.transactionDateString),

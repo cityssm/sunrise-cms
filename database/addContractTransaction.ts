@@ -16,6 +16,8 @@ export interface AddTransactionForm {
   transactionDateString?: '' | DateString
   transactionTimeString?: '' | TimeString
 
+  isInvoiced?: '0' | '1' | 0 | 1
+
   externalReceiptNumber: string
   transactionAmount: number | string
   transactionNote: string
@@ -66,10 +68,11 @@ export default function addContractTransaction(
       `insert into ContractTransactions (
         contractId, transactionIndex,
         transactionDate, transactionTime,
-        transactionAmount, externalReceiptNumber, transactionNote,
+        transactionAmount, isInvoiced,
+        externalReceiptNumber, transactionNote,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       contractTransactionForm.contractId,
@@ -77,6 +80,7 @@ export default function addContractTransaction(
       transactionDate,
       transactionTime,
       contractTransactionForm.transactionAmount,
+      contractTransactionForm.isInvoiced ?? 0,
       contractTransactionForm.externalReceiptNumber,
       contractTransactionForm.transactionNote,
       user.userName,

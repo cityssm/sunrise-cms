@@ -33,9 +33,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Updating Quantity',
                         message: 'Please try again.',
-                        contextualColorName: 'danger'
                     });
                 }
             });
@@ -417,6 +417,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector('#contractTransactionEdit--contractId').value = contractId;
                 modalElement.querySelector('#contractTransactionEdit--transactionIndex').value = transaction.transactionIndex?.toString() ?? '';
                 modalElement.querySelector('#contractTransactionEdit--transactionAmount').value = transaction.transactionAmount.toFixed(2);
+                if ((transaction.isInvoiced ?? 0) !== 0) {
+                    ;
+                    modalElement.querySelector('#contractTransactionEdit--isInvoiced').value = '1';
+                }
+                ;
                 modalElement.querySelector('#contractTransactionEdit--externalReceiptNumber').value = transaction.externalReceiptNumber ?? '';
                 modalElement.querySelector('#contractTransactionEdit--transactionNote').value = transaction.transactionNote ?? '';
                 modalElement.querySelector('#contractTransactionEdit--transactionDateString').value = transaction.transactionDateString ?? '';
@@ -519,26 +524,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             // eslint-disable-next-line no-unsanitized/property
             tableRowElement.innerHTML = `<td>
-          ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
-          </td>
-          <td>
-            ${externalReceiptNumberHTML}
-            <small>${cityssm.escapeHTML(contractTransaction.transactionNote ?? '')}</small>
-          </td>
-          <td class="has-text-right">
-            $${cityssm.escapeHTML(contractTransaction.transactionAmount.toFixed(2))}
-          </td>
-          <td class="is-hidden-print">
-            <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-              <button class="button is-primary button--edit" type="button">
-                <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-                <span>Edit</span>
-              </button>
-              <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
-                <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
-              </button>
-            </div>
-          </td>`;
+        ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
+        ${((contractTransaction.isInvoiced ?? 0) === 0)
+                ? ''
+                : `<br /><span class="tag is-info">Invoiced</span>`}
+        </td>
+        <td>
+          ${externalReceiptNumberHTML}
+          <small>${cityssm.escapeHTML(contractTransaction.transactionNote ?? '')}</small>
+        </td>
+        <td class="has-text-right">
+          $${cityssm.escapeHTML(contractTransaction.transactionAmount.toFixed(2))}
+        </td>
+        <td class="is-hidden-print">
+          <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
+            <button class="button is-primary button--edit" data-tooltip="Edit Transaction" type="button">
+              <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+            </button>
+            <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
+              <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
+            </button>
+          </div>
+        </td>`;
             tableRowElement
                 .querySelector('.button--edit')
                 ?.addEventListener('click', editContractTransaction);

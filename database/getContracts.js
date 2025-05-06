@@ -50,6 +50,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
             c.funeralTime,
             userFn_timeIntegerToString(c.funeralTime) as funeralTimeString,
             userFn_timeIntegerToPeriodString(c.funeralTime) as funeralTimePeriodString,
+
             c.directionOfArrival,
             c.committalTypeId, cm.committalType
             

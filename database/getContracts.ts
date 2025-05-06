@@ -128,6 +128,7 @@ export default async function getContracts(
             c.funeralTime,
             userFn_timeIntegerToString(c.funeralTime) as funeralTimeString,
             userFn_timeIntegerToPeriodString(c.funeralTime) as funeralTimePeriodString,
+
             c.directionOfArrival,
             c.committalTypeId, cm.committalType
             
