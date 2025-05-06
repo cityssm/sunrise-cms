@@ -173,102 +173,113 @@
   </div>
 </div>
 
-<div class="panel">
-  <div class="panel-heading">
-    <div class="level is-mobile">
-      <div class="level-left">
-        <div class="level-item">
-          <h2 class="has-text-weight-bold">Funeral</h2>
+<%
+  const displayFuneralPanel = 
+    (contract.funeralHomeName !== null) ||
+    (contract.funeralDirectorName !== '') ||
+    (contract.funeralDateString !== '') ||
+    (contract.directionOfArrival !== '') ||
+    (contract.committalType !== null);
+%>
+
+<% if (displayFuneralPanel) { %>
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="has-text-weight-bold">Funeral</h2>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <i class="fas fa-place-of-worship" aria-hidden="true"></i>
+          </div>
         </div>
       </div>
-      <div class="level-right">
-        <div class="level-item">
-          <i class="fas fa-place-of-worship" aria-hidden="true"></i>
+    </div>
+    <div class="panel-block is-block">
+      <div class="columns">
+        <div class="column">
+          <p>
+            <strong>Funeral Home</strong><br />
+            <% if (contract.funeralHomeName === null) { %>
+              <span class="has-text-grey">(No Funeral Home)</span>
+            <% } else { %>
+              <a class="<%= contract.funeralHomeIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/funeralHomes/<%= contract.funeralHomeId %>">
+                <%= contract.funeralHomeName %>
+              </a>
+            <% } %><br />
+            <span class="is-size-7">
+              <% if (contract.funeralHomeAddress1) { %>
+                <%= contract.funeralHomeAddress1 %><br />
+              <% } %>
+              <% if (contract.funeralHomeAddress2) { %>
+                <%= contract.funeralHomeAddress2 %><br />
+              <% } %>
+              <% if (contract.funeralHomeCity) { %>
+                <%= contract.funeralHomeCity %>, 
+              <% } %>
+              <%= contract.funeralHomeProvince %><br />
+              <%= contract.funeralHomePostalCode %>
+            </span>
+          </p>
+        </div>
+        <div class="column">
+          <% if ((contract.funeralHomePhoneNumber ?? '') !== '') { %>
+            <p class="mb-2">
+              <strong>Phone</strong><br />
+              <%= contract.funeralHomePhoneNumber %>
+            </p>
+          <% } %>
+          <% if ((contract.funeralHomeEmail ?? '') !== '') { %>
+            <p class="mb-2">
+              <strong>Email</strong><br />
+              <%= contract.funeralHomeEmail %>
+            </p>
+          <% } %>
+          <p>
+            <strong>Funeral Director's Name</strong><br />
+            <%= contract.funeralDirectorName %>
+          </p>
+        </div>
+        <div class="column">
+          <div class="columns">
+            <div class="column">
+              <p>
+                <strong>Service Date</strong><br />
+                <%= contract.funeralDateString %>
+              </p>
+            </div>
+            <div class="column">
+              <p>
+                <strong>Service Time</strong><br />
+                <%= contract.funeralTimePeriodString %>
+              </p>
+            </div>
+          </div>
+          <p>
+            <strong>Direction of Arrival</strong><br />
+            <% if ((contract.directionOfArrival ?? '') === '') { %>
+              <span class="has-text-grey">(No Direction of Arrival)</span>
+            <% } else { %>
+              <%= contract.directionOfArrivalDescription %>
+              <span class="tag"><%= contract.directionOfArrival %></span>
+            <% } %>
+          </p>
+          <p class="mt-2">
+            <strong>Committal Type</strong><br />
+            <% if (contract.committalType === null) { %>
+              <span class="has-text-grey">(No Committal Type)</span>
+            <% } else { %>
+              <%= contract.committalType %>
+            <% } %>
+          </p>
         </div>
       </div>
     </div>
   </div>
-  <div class="panel-block is-block">
-    <div class="columns">
-      <div class="column">
-        <p>
-          <strong>Funeral Home</strong><br />
-          <% if (contract.funeralHomeName === null) { %>
-            <span class="has-text-grey">(No Funeral Home)</span>
-          <% } else { %>
-            <a class="<%= contract.funeralHomeIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/funeralHomes/<%= contract.funeralHomeId %>">
-              <%= contract.funeralHomeName %>
-            </a>
-          <% } %><br />
-          <span class="is-size-7">
-            <% if (contract.funeralHomeAddress1) { %>
-              <%= contract.funeralHomeAddress1 %><br />
-            <% } %>
-            <% if (contract.funeralHomeAddress2) { %>
-              <%= contract.funeralHomeAddress2 %><br />
-            <% } %>
-            <% if (contract.funeralHomeCity) { %>
-              <%= contract.funeralHomeCity %>, 
-            <% } %>
-            <%= contract.funeralHomeProvince %><br />
-            <%= contract.funeralHomePostalCode %>
-          </span>
-        </p>
-      </div>
-      <div class="column">
-        <% if ((contract.funeralHomePhoneNumber ?? '') !== '') { %>
-          <p class="mb-2">
-            <strong>Phone</strong><br />
-            <%= contract.funeralHomePhoneNumber %>
-          </p>
-        <% } %>
-        <% if ((contract.funeralHomeEmail ?? '') !== '') { %>
-          <p class="mb-2">
-            <strong>Email</strong><br />
-            <%= contract.funeralHomeEmail %>
-          </p>
-        <% } %>
-        <p>
-          <strong>Funeral Director's Name</strong><br />
-          <%= contract.funeralDirectorName %>
-        </p>
-      </div>
-      <div class="column">
-        <div class="columns">
-          <div class="column">
-            <p>
-              <strong>Service Date</strong><br />
-              <%= contract.funeralDateString %>
-            </p>
-          </div>
-          <div class="column">
-            <p>
-              <strong>Service Time</strong><br />
-              <%= contract.funeralTimePeriodString %>
-            </p>
-          </div>
-        </div>
-        <p>
-          <strong>Direction of Arrival</strong><br />
-          <% if (contract.directionOfArrival === null) { %>
-            <span class="has-text-grey">(No Direction of Arrival)</span>
-          <% } else { %>
-            <%= contract.directionOfArrivalDescription %>
-            <span class="tag"><%= contract.directionOfArrival %></span>
-          <% } %>
-        </p>
-        <p class="mt-2">
-          <strong>Committal Type</strong><br />
-          <% if (contract.committalType === null) { %>
-            <span class="has-text-grey">(No Committal Type)</span>
-          <% } else { %>
-            <%= contract.committalType %>
-          <% } %>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
+<% } %>
 
 <div class="columns">
   <div class="column">
