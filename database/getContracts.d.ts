@@ -16,6 +16,9 @@ export interface GetContractsFilters {
     funeralTime?: '' | 'upcoming';
     notWorkOrderId?: number | string;
     workOrderId?: number | string;
+    notContractId?: number | string;
+    notRelatedContractId?: number | string;
+    relatedContractId?: number | string;
 }
 export interface GetContractsOptions {
     /** -1 for no limit */

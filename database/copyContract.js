@@ -4,6 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import addContract from './addContract.js';
 import addContractComment from './addContractComment.js';
 import addContractInterment from './addContractInterment.js';
+import addRelatedContract from './addRelatedContract.js';
 import getContract from './getContract.js';
 // eslint-disable-next-line complexity
 export default async function copyContract(oldContractId, user) {
@@ -62,6 +63,13 @@ export default async function copyContract(oldContractId, user) {
             intermentContainerTypeId: interment.intermentContainerTypeId ?? ''
         }, user, database);
     }
+    /*
+     * Add Related Contract
+     */
+    addRelatedContract({
+        contractId: newContractId,
+        relatedContractId: oldContractId
+    });
     /*
      * Add Comment
      */

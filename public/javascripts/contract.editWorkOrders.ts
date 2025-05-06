@@ -7,9 +7,12 @@ import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+  workOrderTypes: WorkOrderType[]
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
@@ -83,8 +86,7 @@ declare const exports: Record<string, unknown>
             '#workOrderCreate--workOrderTypeId'
           ) as HTMLSelectElement
 
-          const workOrderTypes = (exports as Record<string, unknown>)
-            .workOrderTypes as WorkOrderType[]
+          const workOrderTypes = exports.workOrderTypes
 
           if (workOrderTypes.length === 1) {
             workOrderTypeSelectElement.innerHTML = ''

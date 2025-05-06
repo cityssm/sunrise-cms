@@ -7,6 +7,7 @@ import type { Contract } from '../types/record.types.js'
 import addContract from './addContract.js'
 import addContractComment from './addContractComment.js'
 import addContractInterment from './addContractInterment.js'
+import addRelatedContract from './addRelatedContract.js'
 import getContract from './getContract.js'
 
 // eslint-disable-next-line complexity
@@ -99,6 +100,15 @@ export default async function copyContract(
       database
     )
   }
+
+  /*
+   * Add Related Contract
+   */
+
+  addRelatedContract({
+    contractId: newContractId,
+    relatedContractId: oldContractId
+  })
 
   /*
    * Add Comment

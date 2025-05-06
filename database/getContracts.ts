@@ -47,6 +47,11 @@ export interface GetContractsFilters {
 
   notWorkOrderId?: number | string
   workOrderId?: number | string
+
+  notContractId?: number | string
+
+  notRelatedContractId?: number | string
+  relatedContractId?: number | string
 }
 
 export interface GetContractsOptions {
@@ -298,6 +303,29 @@ function buildWhereClause(filters: GetContractsFilters): {
     sqlWhereClause +=
       ' and c.contractId not in (select contractId from WorkOrderContracts where recordDelete_timeMillis is null and workOrderId = ?)'
     sqlParameters.push(filters.notWorkOrderId)
+  }
+
+  if ((filters.notContractId ?? '') !== '') {
+    sqlWhereClause += ' and c.contractId <> ?'
+    sqlParameters.push(filters.notContractId)
+  }
+
+  if ((filters.relatedContractId ?? '') !== '') {
+    sqlWhereClause += ` and (
+        c.contractId in (select contractIdA from RelatedContracts where contractIdB = ?)
+        or c.contractId in (select contractIdB from RelatedContracts where contractIdA = ?)
+      )`
+    sqlParameters.push(filters.relatedContractId, filters.relatedContractId)
+  }
+
+  if ((filters.notRelatedContractId ?? '') !== '') {
+    sqlWhereClause += ` and c.contractId not in (select contractIdA from RelatedContracts where contractIdB = ?)
+      and c.contractId not in (select contractIdB from RelatedContracts where contractIdA = ?)`
+
+    sqlParameters.push(
+      filters.notRelatedContractId,
+      filters.notRelatedContractId
+    )
   }
 
   return {

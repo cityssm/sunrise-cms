@@ -5,6 +5,7 @@ import getContractComments from './getContractComments.js';
 import getContractFees from './getContractFees.js';
 import getContractFields from './getContractFields.js';
 import getContractInterments from './getContractInterments.js';
+import getContracts from './getContracts.js';
 import getContractTransactions from './getContractTransactions.js';
 import { getWorkOrders } from './getWorkOrders.js';
 export default async function getContract(contractId, connectedDatabase) {
@@ -67,6 +68,16 @@ export default async function getContract(contractId, connectedDatabase) {
             offset: 0
         }, database);
         contract.workOrders = workOrdersResults.workOrders;
+        const relatedContractsResults = await getContracts({
+            relatedContractId: contractId
+        }, {
+            limit: -1,
+            offset: 0,
+            includeFees: false,
+            includeInterments: true,
+            includeTransactions: false
+        }, database);
+        contract.relatedContracts = relatedContractsResults.contracts;
     }
     if (connectedDatabase === undefined) {
         database.close();

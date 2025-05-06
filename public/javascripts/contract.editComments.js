@@ -69,8 +69,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .contractCommentId ?? '', 10);
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractComment`, {
+                contractCommentId,
                 contractId,
-                contractCommentId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
@@ -120,9 +120,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
           <td>
             ${cityssm.escapeHTML(contractComment.commentDateString)}
-            ${cityssm.escapeHTML(contractComment.commentTime === 0
+            <span class="is-nowrap">
+              ${cityssm.escapeHTML(contractComment.commentTime === 0
                 ? ''
                 : contractComment.commentTimePeriodString)}
+            </span>
           </td>
           <td>${cityssm.escapeHTML(contractComment.comment)}</td>
           <td class="is-hidden-print">

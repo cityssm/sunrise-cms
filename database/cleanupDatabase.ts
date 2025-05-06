@@ -141,7 +141,7 @@ export default function cleanupDatabase(user: User): {
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Burial Site Contract Comments
+   * Contract Comments
    */
 
   inactivatedRecordCount += database
@@ -160,7 +160,7 @@ export default function cleanupDatabase(user: User): {
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Burial Site Contract Fields
+   * Contract Fields
    */
 
   inactivatedRecordCount += database
@@ -178,7 +178,7 @@ export default function cleanupDatabase(user: User): {
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Burial Site Contract Fees/Transactions
+   * Contract Fees/Transactions
    * - Maintain financial data, do not delete related.
    */
 
@@ -193,7 +193,19 @@ export default function cleanupDatabase(user: User): {
     .run(recordDeleteTimeMillisMin).changes
 
   /*
-   * Burial Site Contracts
+   * Related Contracts
+   */
+
+  purgedRecordCount += database
+    .prepare(
+      `delete from RelatedContracts
+        where contractIdA in (select contractId from Contracts where recordDelete_timeMillis <= ?)
+          or contractIdB in (select contractId from Contracts where recordDelete_timeMillis <= ?)`
+    )
+    .run(recordDeleteTimeMillisMin, recordDeleteTimeMillisMin).changes
+
+  /*
+   * Contracts
    */
 
   purgedRecordCount += database
@@ -205,6 +217,8 @@ export default function cleanupDatabase(user: User): {
           and contractId not in (select contractId from ContractFields)
           and contractId not in (select contractId from ContractInterments)
           and contractId not in (select contractId from ContractTransactions)
+          and contractId not in (select contractIdA from RelatedContracts)
+          and contractId not in (select contractIdB from RelatedContracts)
           and contractId not in (select contractId from WorkOrderContracts)`
     )
     .run(recordDeleteTimeMillisMin).changes

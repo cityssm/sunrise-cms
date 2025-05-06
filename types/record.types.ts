@@ -210,6 +210,7 @@ export interface Contract extends Record {
   contractFields?: ContractField[]
   contractInterments?: ContractInterment[]
   contractTransactions?: ContractTransaction[]
+  relatedContracts?: Contract[]
   workOrders?: WorkOrder[]
 }
 

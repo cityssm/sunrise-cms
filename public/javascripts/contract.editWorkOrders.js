@@ -41,8 +41,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector('#workOrderCreate--contractId').value = contractId;
                 modalElement.querySelector('#workOrderCreate--workOrderOpenDateString').value = cityssm.dateToString(new Date());
                 const workOrderTypeSelectElement = modalElement.querySelector('#workOrderCreate--workOrderTypeId');
-                const workOrderTypes = exports
-                    .workOrderTypes;
+                const workOrderTypes = exports.workOrderTypes;
                 if (workOrderTypes.length === 1) {
                     workOrderTypeSelectElement.innerHTML = '';
                 }

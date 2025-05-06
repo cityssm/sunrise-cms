@@ -10,6 +10,7 @@ import handler_doAddContractFee from '../handlers/contracts-post/doAddContractFe
 import handler_doAddContractFeeCategory from '../handlers/contracts-post/doAddContractFeeCategory.js';
 import handler_doAddContractInterment from '../handlers/contracts-post/doAddContractInterment.js';
 import handler_doAddContractTransaction from '../handlers/contracts-post/doAddContractTransaction.js';
+import handler_doAddRelatedContract from '../handlers/contracts-post/doAddRelatedContract.js';
 import handler_doCopyContract from '../handlers/contracts-post/doCopyContract.js';
 import handler_doCreateContract from '../handlers/contracts-post/doCreateContract.js';
 import handler_doDeleteContract from '../handlers/contracts-post/doDeleteContract.js';
@@ -17,10 +18,12 @@ import handler_doDeleteContractComment from '../handlers/contracts-post/doDelete
 import handler_doDeleteContractFee from '../handlers/contracts-post/doDeleteContractFee.js';
 import handler_doDeleteContractInterment from '../handlers/contracts-post/doDeleteContractInterment.js';
 import handler_doDeleteContractTransaction from '../handlers/contracts-post/doDeleteContractTransaction.js';
+import handler_doDeleteRelatedContract from '../handlers/contracts-post/doDeleteRelatedContract.js';
 import handler_doGetBurialSiteDirectionsOfArrival from '../handlers/contracts-post/doGetBurialSiteDirectionsOfArrival.js';
 import handler_doGetContractTypeFields from '../handlers/contracts-post/doGetContractTypeFields.js';
 import handler_doGetDynamicsGPDocument from '../handlers/contracts-post/doGetDynamicsGPDocument.js';
 import handler_doGetFees from '../handlers/contracts-post/doGetFees.js';
+import handler_doGetPossibleRelatedContracts from '../handlers/contracts-post/doGetPossibleRelatedContracts.js';
 import handler_doSearchContracts from '../handlers/contracts-post/doSearchContracts.js';
 import handler_doUpdateContract from '../handlers/contracts-post/doUpdateContract.js';
 import handler_doUpdateContractComment from '../handlers/contracts-post/doUpdateContractComment.js';
@@ -68,4 +71,8 @@ if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
 router.post('/doAddContractTransaction', updatePostHandler, handler_doAddContractTransaction);
 router.post('/doUpdateContractTransaction', updatePostHandler, handler_doUpdateContractTransaction);
 router.post('/doDeleteContractTransaction', updatePostHandler, handler_doDeleteContractTransaction);
+// Related Contracts
+router.post('/doGetPossibleRelatedContracts', updatePostHandler, handler_doGetPossibleRelatedContracts);
+router.post('/doAddRelatedContract', updatePostHandler, handler_doAddRelatedContract);
+router.post('/doDeleteRelatedContract', updatePostHandler, handler_doDeleteRelatedContract);
 export default router;

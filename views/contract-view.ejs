@@ -608,68 +608,144 @@
   </div>
 </div>
 
-<% if (contract.workOrders.length > 0) { %>
-  <%
+<div class="columns">
+  <% if (contract.workOrders.length > 0) { %>
+    <%
     const workOrderOpenDateAlias = configFunctions.getConfigProperty("aliases.workOrderOpenDate");
     const workOrderCloseDateAlias = configFunctions.getConfigProperty("aliases.workOrderCloseDate");
-  %>
-  <div class="panel">
-    <div class="panel-heading">
-      <div class="level is-mobile">
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="has-text-weight-bold">Work Orders</h2>
+    %>
+    <div class="column">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="has-text-weight-bold">Work Orders</h2>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <i class="fas fa-hard-hat" aria-hidden="true"></i>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="level-right">
-          <div class="level-item">
-            <i class="fas fa-hard-hat" aria-hidden="true"></i>
-          </div>
+        <div class="panel-block is-block">
+          <table class="table is-fullwidth is-striped is-hoverable">
+            <thead>
+              <tr>
+                <th>Work Order Number</th>
+                <th>Description</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (const workOrder of contract.workOrders) { %>
+                <tr>
+                  <td>
+                    <a class="has-text-weight-bold" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
+                      <%= workOrder.workOrderNumber %>
+                    </a>
+                  </td>
+                  <td>
+                      <%= workOrder.workOrderType %><br />
+                      <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
+                  </td>
+                  <td class="is-nowrap">
+                    <span class="has-tooltip-left" data-tooltip="<%= workOrderOpenDateAlias %>">
+                      <i class="fas fa-fw fa-play" aria-label="<%= workOrderOpenDateAlias %>"></i>
+                      <%= workOrder.workOrderOpenDateString %>
+                    </span><br />
+                    <span class="has-tooltip-left" data-tooltip="<%= workOrderCloseDateAlias %>">
+                      <i class="fas fa-fw fa-stop" aria-label="<%= workOrderCloseDateAlias %>"></i>
+                      <% if (workOrder.workOrderCloseDate) { %>
+                        <%= workOrder.workOrderCloseDateString %>
+                      <% } else { %>
+                        <span class="has-text-grey">(No <%= workOrderCloseDateAlias %>)</span>
+                      <% } %>
+                    </span>
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-    <div class="panel-block is-block">
-      <table class="table is-fullwidth is-striped is-hoverable">
-        <thead>
-          <tr>
-            <th>Work Order Number</th>
-            <th>Description</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (const workOrder of contract.workOrders) { %>
-            <tr>
-              <td>
-                <a class="has-text-weight-bold" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
-                  <%= workOrder.workOrderNumber %>
-                </a>
-              </td>
-              <td>
-                  <%= workOrder.workOrderType %><br />
-                  <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
-              </td>
-              <td class="is-nowrap">
-                <span class="has-tooltip-left" data-tooltip="<%= workOrderOpenDateAlias %>">
-                  <i class="fas fa-fw fa-play" aria-label="<%= workOrderOpenDateAlias %>"></i>
-                  <%= workOrder.workOrderOpenDateString %>
-                </span><br />
-                <span class="has-tooltip-left" data-tooltip="<%= workOrderCloseDateAlias %>">
-                  <i class="fas fa-fw fa-stop" aria-label="<%= workOrderCloseDateAlias %>"></i>
-                  <% if (workOrder.workOrderCloseDate) { %>
-                    <%= workOrder.workOrderCloseDateString %>
-                  <% } else { %>
-                    <span class="has-text-grey">(No <%= workOrderCloseDateAlias %>)</span>
-                  <% } %>
-                </span>
-              </td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
+  <% } %>
+  <% if (contract.relatedContracts.length > 0) { %>
+    <div class="column">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="has-text-weight-bold">Related Contracts</h2>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <i class="fas fa-file-contract" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+            <thead>
+              <tr>
+                <th class="has-width-1">&nbsp;</th>
+                <th>Contract Type</th>
+                <th>Contract Date</th>
+                <th>End Date</th>
+                <th>Interments</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
+              <% for (const relatedContract of contract.relatedContracts) { %>
+                <% const isActive = !(relatedContract.contractEndDate && relatedContract.contractEndDate < currentDate); %>
+                <tr data-is-active="<%= isActive %>" class="<%= isActive ? "" : "is-hidden" %>">
+                  <td class="has-text-centered">
+                    <% if (isActive) { %>
+                      <i class="fas fa-play" title="Current Contract"></i>
+                    <% } else { %>
+                      <i class="fas fa-stop" title="Previous Contract"></i>
+                    <% } %>
+                  </td>
+                  <td>
+                    <a class="has-text-weight-bold"
+                      href="<%= urlPrefix %>/contracts/<%= relatedContract.contractId %>">
+                      <%= relatedContract.contractType %>
+                    </a><br />
+                    <span class="is-size-7">#<%= relatedContract.contractId %></span>
+                  </td>
+                  <td><%= relatedContract.contractStartDateString %></td>
+                  <td>
+                    <% if (relatedContract.contractEndDate) { %>
+                      <%= relatedContract.contractEndDateString %>
+                    <% } else { %>
+                      <span class="has-text-grey">(No End Date)</span>
+                    <% } %>
+                  </td>
+                  <td>
+                    <% if (relatedContract.contractInterments.length === 0) { %>
+                      <span class="has-text-grey">(No Interments)</span>
+                    <% } else { %>
+                      <% for (const interment of contract.contractInterments) { %>
+                        <%= interment.deceasedName %><br />
+                      <% } %>
+                    <% } %>
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  </div>
-<% } %>
+  <% } %>
+</div>
 
 <% if (contract.contractComments.length > 0) { %>
   <div class="panel">

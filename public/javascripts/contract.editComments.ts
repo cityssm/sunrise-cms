@@ -115,6 +115,7 @@ declare const exports: Record<string, unknown>
 
         editCloseModalFunction = closeModalFunction
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
@@ -132,8 +133,8 @@ declare const exports: Record<string, unknown>
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doDeleteContractComment`,
         {
+          contractCommentId,
           contractId,
-          contractCommentId
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
@@ -197,11 +198,13 @@ declare const exports: Record<string, unknown>
       tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
           <td>
             ${cityssm.escapeHTML(contractComment.commentDateString)}
-            ${cityssm.escapeHTML(
-              contractComment.commentTime === 0
-                ? ''
-                : contractComment.commentTimePeriodString
-            )}
+            <span class="is-nowrap">
+              ${cityssm.escapeHTML(
+                contractComment.commentTime === 0
+                  ? ''
+                  : contractComment.commentTimePeriodString
+              )}
+            </span>
           </td>
           <td>${cityssm.escapeHTML(contractComment.comment)}</td>
           <td class="is-hidden-print">

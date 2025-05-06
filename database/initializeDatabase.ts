@@ -273,6 +273,13 @@ const createStatements = [
   `create index if not exists idx_ContractComments_datetime
     on ContractComments (contractId, commentDate, commentTime)`,
 
+  `create table if not exists RelatedContracts (
+    contractIdA integer not null,
+    contractIdB integer not null check (contractIdA < contractIdB),
+    primary key (contractIdA, contractIdB),
+    foreign key (contractIdA) references Contracts (contractId),
+    foreign key (contractIdB) references Contracts (contractId)) without rowid`,
+
   /*
    * Interments
    */
