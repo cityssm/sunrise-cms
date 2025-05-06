@@ -818,6 +818,7 @@ function purgeTables() {
         'ContractFields',
         'ContractComments',
         'ContractInterments',
+        'RelatedContracts',
         'Contracts',
         'FuneralHomes',
         'BurialSiteFields',

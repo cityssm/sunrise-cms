@@ -1309,6 +1309,7 @@ function purgeTables(): void {
     'ContractFields',
     'ContractComments',
     'ContractInterments',
+    'RelatedContracts',
     'Contracts',
     'FuneralHomes',
     'BurialSiteFields',
