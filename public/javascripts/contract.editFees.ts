@@ -845,7 +845,7 @@ declare const exports: Record<string, unknown>
         ${
           (contractTransaction.isInvoiced ?? 0) === 0
             ? ''
-            : `<br /><span class="tag is-info">Invoiced</span>`
+            : '<br /><span class="tag is-info">Invoiced</span>'
         }
         </td>
         <td>

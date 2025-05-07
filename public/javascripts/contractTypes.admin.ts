@@ -647,7 +647,7 @@ type ResponseJSON =
         )) {
           const optionElement = document.createElement('option')
           optionElement.value = printEJS
-          optionElement.textContent = printTitle as string
+          optionElement.textContent = printTitle
           printSelectElement.append(optionElement)
         }
       },

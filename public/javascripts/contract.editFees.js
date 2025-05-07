@@ -527,7 +527,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
         ${(contractTransaction.isInvoiced ?? 0) === 0
                 ? ''
-                : `<br /><span class="tag is-info">Invoiced</span>`}
+                : '<br /><span class="tag is-info">Invoiced</span>'}
         </td>
         <td>
           ${externalReceiptNumberHTML}

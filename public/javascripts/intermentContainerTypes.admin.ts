@@ -14,7 +14,7 @@ declare const exports: {
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   let intermentContainerTypes =
     exports.intermentContainerTypes as IntermentContainerType[]

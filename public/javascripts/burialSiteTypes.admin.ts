@@ -72,9 +72,8 @@ type ResponseJSON =
       ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
       : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
 
-    const panelBlockElements = burialSiteTypeElement.querySelectorAll(
-      '.panel-block'
-    ) as NodeListOf<HTMLElement>
+    const panelBlockElements =
+      burialSiteTypeElement.querySelectorAll('.panel-block')
 
     for (const panelBlockElement of panelBlockElements) {
       panelBlockElement.classList.toggle('is-hidden')
