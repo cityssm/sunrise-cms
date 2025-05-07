@@ -9,10 +9,10 @@ describe('Admin - Config Table Management', () => {
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
-        cy.get('.tabs a').each(($tab) => {
-            cy.wrap($tab).click({ force: true });
-            cy.injectAxe();
-            cy.checkA11y();
+        cy.get('button.is-toggle-button').each(($expandButton) => {
+            cy.wrap($expandButton).click({ force: true });
         });
+        cy.injectAxe();
+        cy.checkA11y();
     });
 });

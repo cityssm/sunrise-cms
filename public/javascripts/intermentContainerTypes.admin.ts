@@ -189,7 +189,7 @@ declare const bulmaJS: BulmaJS
       </td>
       <td>
         <div class="select is-fullwidth">
-          <select name="isCremationType" form="${formId}">
+          <select name="isCremationType" form="${formId}" aria-label="Is Cremated">
             <option value="0" ${intermentContainerType.isCremationType ? '' : 'selected'}>No</option>
             <option value="1" ${intermentContainerType.isCremationType ? 'selected' : ''}>Yes</option>
           </select>
