@@ -526,7 +526,9 @@
                 <label class="label" for="contract--purchaserPostalCode">Postal Code</label>
                 <div class="control">
                   <input class="input" id="contract--purchaserPostalCode" name="purchaserPostalCode" type="text"
-                    maxlength="7" autocomplete="off"
+                    minlength="5"
+                    maxlength="7"
+                    autocomplete="off"
                     value="<%= contract.purchaserPostalCode %>"  />
                 </div>
               </div>

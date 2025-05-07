@@ -131,7 +131,10 @@
               <div class="field">
                 <label class="label" for="funeralHome--funeralHomePostalCode">Postal Code</label>
                 <div class="control">
-                  <input class="input" id="funeralHome--funeralHomePostalCode" name="funeralHomePostalCode" value="<%= funeralHome.funeralHomePostalCode %>" maxlength="7" />
+                  <input class="input" id="funeralHome--funeralHomePostalCode" name="funeralHomePostalCode"
+                    value="<%= funeralHome.funeralHomePostalCode %>"
+                    minlength="5"
+                    maxlength="7" />
                 </div>
               </div>
             </div>
