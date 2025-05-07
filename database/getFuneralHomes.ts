@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
-import type { Cemetery, FuneralHome } from '../types/record.types.js'
+import type { FuneralHome } from '../types/record.types.js'
 
 export default function getFuneralHomes(): FuneralHome[] {
   const database = sqlite(sunriseDB, { readonly: true })
@@ -15,7 +15,7 @@ export default function getFuneralHomes(): FuneralHome[] {
         where f.recordDelete_timeMillis is null
         order by f.funeralHomeName, f.funeralHomeId`
     )
-    .all() as Cemetery[]
+    .all() as FuneralHome[]
 
   database.close()
 

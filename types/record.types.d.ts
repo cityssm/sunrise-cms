@@ -266,13 +266,13 @@ export interface FeeCategory extends Record {
 export interface FuneralHome extends Record {
     funeralHomeId?: number;
     funeralHomeKey?: string;
-    funeralHomeName?: string;
-    funeralHomeAddress1?: string;
-    funeralHomeAddress2?: string;
-    funeralHomeCity?: string;
-    funeralHomePostalCode?: string;
-    funeralHomeProvince?: string;
-    funeralHomePhoneNumber?: string;
+    funeralHomeName: string;
+    funeralHomeAddress1: string;
+    funeralHomeAddress2: string;
+    funeralHomeCity: string;
+    funeralHomePostalCode: string;
+    funeralHomeProvince: string;
+    funeralHomePhoneNumber: string;
 }
 export interface IntermentContainerType extends Record {
     intermentContainerTypeId: number;

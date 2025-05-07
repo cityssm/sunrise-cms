@@ -21,22 +21,22 @@ describe('Update - Cemeteries', () => {
         cy.fixture('cemetery.json').then((cemeteryData) => {
             cy.get("input[name='cemeteryName']")
                 .clear()
-                .type(cemeteryData.cemeteryName ?? '');
+                .type(cemeteryData.cemeteryName);
             cy.get("textarea[name='cemeteryDescription']")
                 .clear()
-                .type(cemeteryData.cemeteryDescription ?? '');
+                .type(cemeteryData.cemeteryDescription);
             cy.get("input[name='cemeteryAddress1']")
                 .clear()
-                .type(cemeteryData.cemeteryAddress1 ?? '');
+                .type(cemeteryData.cemeteryAddress1);
             cy.get("input[name='cemeteryAddress2']")
                 .clear()
-                .type(cemeteryData.cemeteryAddress2 ?? '');
+                .type(cemeteryData.cemeteryAddress2);
             cy.get("input[name='cemeteryPostalCode']")
                 .clear()
-                .type(cemeteryData.cemeteryPostalCode ?? '');
+                .type(cemeteryData.cemeteryPostalCode);
             cy.get("input[name='cemeteryPhoneNumber']")
                 .clear()
-                .type(cemeteryData.cemeteryPhoneNumber ?? '');
+                .type(cemeteryData.cemeteryPhoneNumber);
             cy.get("input[name='cemeteryLatitude']")
                 .clear()
                 .type(cemeteryData.cemeteryLatitude?.toString() ?? '');

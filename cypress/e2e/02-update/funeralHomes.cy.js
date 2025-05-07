@@ -1,3 +1,4 @@
+import { getConfigProperty } from '../../../helpers/config.helpers.js';
 import { testUpdate } from '../../../test/_globals.js';
 import { login, logout } from '../../support/index.js';
 describe('Update - Funeral Homes', () => {
@@ -11,11 +12,46 @@ describe('Update - Funeral Homes', () => {
         cy.location('pathname').should('equal', '/funeralHomes');
         cy.get("a[href$='/funeralHomes/new']").should('exist');
     });
-    describe('Creates a New Funeral Home', () => {
-        it('Has no detectable accessibility issues', () => {
-            cy.visit('/funeralHomes/new');
-            cy.injectAxe();
-            cy.checkA11y();
+    it('Creates a new funeral home', () => {
+        cy.visit('/funeralHomes/new');
+        cy.log('Check the accessibility');
+        cy.injectAxe();
+        cy.checkA11y();
+        cy.log('Populate the fields');
+        cy.fixture('funeralHome.json').then((funeralHomeData) => {
+            cy.get("input[name='funeralHomeName']")
+                .clear()
+                .type(funeralHomeData.funeralHomeName);
+            cy.get("input[name='funeralHomeAddress1']")
+                .clear()
+                .type(funeralHomeData.funeralHomeAddress1);
+            cy.get("input[name='funeralHomeAddress2']")
+                .clear()
+                .type(funeralHomeData.funeralHomeAddress2);
+            cy.get("input[name='funeralHomePostalCode']")
+                .clear()
+                .type(funeralHomeData.funeralHomePostalCode);
+            cy.get("input[name='funeralHomePhoneNumber']")
+                .clear()
+                .type(funeralHomeData.funeralHomePhoneNumber);
+        });
+        cy.log('Ensure the default city and province are used');
+        cy.get("input[name='funeralHomeCity']").should('have.value', getConfigProperty('settings.cityDefault'));
+        cy.get("input[name='funeralHomeProvince']").should('have.value', getConfigProperty('settings.provinceDefault'));
+        cy.log('Submit the form');
+        cy.get('#form--funeralHome').submit();
+        cy.wait(1000);
+        cy.location('pathname')
+            .should('not.contain', '/new')
+            .should('contain', '/edit');
+        cy.fixture('funeralHome.json').then((funeralHomeData) => {
+            cy.get("input[name='funeralHomeName']").should('have.value', funeralHomeData.funeralHomeName);
+            cy.get("input[name='funeralHomeAddress1']").should('have.value', funeralHomeData.funeralHomeAddress1);
+            cy.get("input[name='funeralHomeAddress2']").should('have.value', funeralHomeData.funeralHomeAddress2);
+            cy.get("input[name='funeralHomeCity']").should('have.value', getConfigProperty('settings.cityDefault'));
+            cy.get("input[name='funeralHomeProvince']").should('have.value', getConfigProperty('settings.provinceDefault'));
+            cy.get("input[name='funeralHomePostalCode']").should('have.value', funeralHomeData.funeralHomePostalCode);
+            cy.get("input[name='funeralHomePhoneNumber']").should('have.value', funeralHomeData.funeralHomePhoneNumber);
         });
     });
 });
