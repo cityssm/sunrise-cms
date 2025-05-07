@@ -2,6 +2,8 @@ import { Router } from 'express'
 
 import handler_edit from '../handlers/funeralHomes-get/edit.js'
 import handler_new from '../handlers/funeralHomes-get/new.js'
+import handler_next from '../handlers/funeralHomes-get/next.js'
+import handler_previous from '../handlers/funeralHomes-get/previous.js'
 import handler_search from '../handlers/funeralHomes-get/search.js'
 import handler_view from '../handlers/funeralHomes-get/view.js'
 import handler_doCreateFuneralHome from '../handlers/funeralHomes-post/doCreateFuneralHome.js'
@@ -21,6 +23,10 @@ router.get('/', handler_search)
 router.get('/new', updateGetHandler, handler_new)
 
 router.get('/:funeralHomeId', handler_view)
+
+router.get('/:funeralHomeId/next', handler_next)
+
+router.get('/:funeralHomeId/previous', handler_previous)
 
 router.post(
   '/doCreateFuneralHome',
