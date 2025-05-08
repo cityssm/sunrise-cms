@@ -528,6 +528,7 @@
                   <input class="input" id="contract--purchaserPostalCode" name="purchaserPostalCode" type="text"
                     minlength="5"
                     maxlength="7"
+                    pattern="^[A-Z\d \-]+$"
                     autocomplete="off"
                     value="<%= contract.purchaserPostalCode %>"  />
                 </div>
@@ -654,7 +655,10 @@
                   <label class="label" for="contract--deceasedPostalCode">Postal Code</label>
                   <div class="control">
                     <input class="input" id="contract--deceasedPostalCode" name="deceasedPostalCode" type="text"
-                      maxlength="7" autocomplete="off"
+                      minlength="5"  
+                      maxlength="7"
+                      pattern="^[A-Z\d \-]+$"
+                      autocomplete="off"
                       value="<%= contract.deceasedPostalCode %>" />
                   </div>
                 </div>
@@ -663,7 +667,7 @@
             <%
               const todayDateString = dateTimeFunctions.dateToString(new Date());
             %>
-            <div class="columns">
+            <div class="columns is-desktop">
               <div class="column">
                 <div class="field">
                   <label class="label" for="contract--birthDateString">
@@ -692,7 +696,7 @@
                 </div>
               </div>
             </div>
-            <div class="columns">
+            <div class="columns is-desktop">
               <div class="column">
                 <div class="field">
                   <label class="label" for="contract--deathDateString">

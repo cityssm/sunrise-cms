@@ -91,8 +91,12 @@
           <div class="field">
             <label class="label" for="funeralHome--funeralHomeName">Funeral Home Name</label>
             <div class="control">
-              <input class="input" id="funeralHome--funeralHomeName" name="funeralHomeName" type="text"
-                value="<%= funeralHome.funeralHomeName %>" maxlength="200" required
+              <input class="input" id="funeralHome--funeralHomeName" name="funeralHomeName"
+                type="text"
+                value="<%= funeralHome.funeralHomeName %>"
+                maxlength="200"
+                autocomplete="off"
+                required
                 accesskey="f"
                 <%= (isCreate ? " autofocus" : "") %> />
             </div>
@@ -100,12 +104,23 @@
           <div class="field">
             <label class="label" for="funeralHome--funeralHomeAddress1">Address</label>
             <div class="control">
-              <input class="input" id="funeralHome--funeralHomeAddress1" name="funeralHomeAddress1" type="text" value="<%= funeralHome.funeralHomeAddress1 %>" maxlength="50" placeholder="Line 1" />
+              <input class="input" id="funeralHome--funeralHomeAddress1" name="funeralHomeAddress1"
+                type="text"
+                value="<%= funeralHome.funeralHomeAddress1 %>"
+                maxlength="50"
+                autocomplete="off"
+                placeholder="Line 1" />
             </div>
           </div>
           <div class="field">
             <div class="control">
-              <input class="input" id="funeralHome--funeralHomeAddress2" name="funeralHomeAddress2" type="text" value="<%= funeralHome.funeralHomeAddress2 %>" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
+              <input class="input" id="funeralHome--funeralHomeAddress2" name="funeralHomeAddress2"
+                type="text"
+                value="<%= funeralHome.funeralHomeAddress2 %>"
+                maxlength="50"
+                autocomplete="off"
+                placeholder="Line 2"
+                aria-label="Address Line 2" />
             </div>
           </div>
           <div class="columns">
@@ -113,7 +128,10 @@
               <div class="field">
                 <label class="label" for="funeralHome--funeralHomeCity">City</label>
                 <div class="control">
-                  <input class="input" id="funeralHome--funeralHomeCity" name="funeralHomeCity" value="<%= funeralHome.funeralHomeCity %>" maxlength="20" />
+                  <input class="input" id="funeralHome--funeralHomeCity" name="funeralHomeCity"
+                    type="text"
+                    value="<%= funeralHome.funeralHomeCity %>"
+                    maxlength="20" />
                 </div>
               </div>
             </div>
@@ -121,7 +139,10 @@
               <div class="field">
                 <label class="label" for="funeralHome--funeralHomeProvince">Province</label>
                 <div class="control">
-                  <input class="input" id="funeralHome--funeralHomeProvince" name="funeralHomeProvince" value="<%= funeralHome.funeralHomeProvince %>" maxlength="2" />
+                  <input class="input" id="funeralHome--funeralHomeProvince" name="funeralHomeProvince"
+                    type="text"
+                    value="<%= funeralHome.funeralHomeProvince %>"
+                    maxlength="2" />
                 </div>
               </div>
             </div>
@@ -132,9 +153,12 @@
                 <label class="label" for="funeralHome--funeralHomePostalCode">Postal Code</label>
                 <div class="control">
                   <input class="input" id="funeralHome--funeralHomePostalCode" name="funeralHomePostalCode"
+                    type="text"
                     value="<%= funeralHome.funeralHomePostalCode %>"
                     minlength="5"
-                    maxlength="7" />
+                    maxlength="7"
+                    pattern="^[A-Z\d \-]+$"
+                    autocomplete="off" />
                 </div>
               </div>
             </div>
@@ -142,7 +166,11 @@
               <div class="field">
                 <label class="label" for="funeralHome--funeralHomePhoneNumber">Phone Number</label>
                 <div class="control">
-                  <input class="input" id="funeralHome--funeralHomePhoneNumber" name="funeralHomePhoneNumber" value="<%= funeralHome.funeralHomePhoneNumber %>" maxlength="30" />
+                  <input class="input" id="funeralHome--funeralHomePhoneNumber" name="funeralHomePhoneNumber"
+                    type="text"
+                    value="<%= funeralHome.funeralHomePhoneNumber %>"
+                    maxlength="30"
+                    autocomplete="off" />
                 </div>
               </div>
             </div>

@@ -436,7 +436,12 @@
               Cemetery SVG ID
             </label>
             <div class="control">
-              <input class="input" id="burialSite--cemeterySvgId" name="cemeterySvgId" value="<%= burialSite.cemeterySvgId %>" maxlength="100" pattern="^[\d\w-]*$" />
+              <input class="input" id="burialSite--cemeterySvgId" name="cemeterySvgId"
+                type="text"
+                value="<%= burialSite.cemeterySvgId %>"
+                maxlength="100"
+                autocomplete="off"
+                pattern="^[\d\w-]*$" />
             </div>
           </div>
           <div class="field">

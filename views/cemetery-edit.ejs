@@ -92,7 +92,10 @@
             <label class="label" for="cemetery--cemeteryName">Cemetery Name</label>
             <div class="control has-icons-right">
               <input class="input" id="cemetery--cemeteryName" name="cemeteryName" type="text"
-                value="<%= cemetery.cemeteryName %>" maxlength="200" required
+                value="<%= cemetery.cemeteryName %>"
+                maxlength="200"
+                autocomplete="off"
+                required
                 accesskey="f"
                 <%= (isCreate ? " autofocus" : "") %> />
               <span class="icon is-small is-right">
@@ -107,7 +110,9 @@
             <label class="label" for="cemetery--cemeteryKey">Cemetery Key</label>
             <div class="control has-icons-right">
               <input class="input" id="cemetery--cemeteryKey" name="cemeteryKey" type="text"
-                value="<%= cemetery.cemeteryKey %>" maxlength="20"
+                value="<%= cemetery.cemeteryKey %>"
+                maxlength="20"
+                autocomplete="off"
                 <%= cemeteryKeyIsRequired ? ' required' : '' %> />
               <% if (cemeteryKeyIsRequired) { %>
                 <span class="icon is-small is-right">
@@ -171,12 +176,20 @@
           <div class="field">
             <label class="label" for="cemetery--cemeteryAddress1">Address</label>
             <div class="control">
-              <input class="input" id="cemetery--cemeteryAddress1" name="cemeteryAddress1" type="text" value="<%= cemetery.cemeteryAddress1 %>" maxlength="50" placeholder="Line 1" />
+              <input class="input" id="cemetery--cemeteryAddress1" name="cemeteryAddress1" type="text"
+                value="<%= cemetery.cemeteryAddress1 %>"
+                maxlength="50"
+                autocomplete="off"
+                placeholder="Line 1" />
             </div>
           </div>
           <div class="field">
             <div class="control">
-              <input class="input" id="cemetery--cemeteryAddress2" name="cemeteryAddress2" type="text" value="<%= cemetery.cemeteryAddress2 %>" maxlength="50" placeholder="Line 2" aria-label="Address Line 2" />
+              <input class="input" id="cemetery--cemeteryAddress2" name="cemeteryAddress2" type="text"
+                value="<%= cemetery.cemeteryAddress2 %>"
+                maxlength="50"
+                autocomplete="off"
+                placeholder="Line 2" aria-label="Address Line 2" />
             </div>
           </div>
           <div class="columns">
@@ -192,7 +205,10 @@
               <div class="field">
                 <label class="label" for="cemetery--cemeteryProvince">Province</label>
                 <div class="control">
-                  <input class="input" id="cemetery--cemeteryProvince" name="cemeteryProvince" value="<%= cemetery.cemeteryProvince %>" maxlength="2" />
+                  <input class="input" id="cemetery--cemeteryProvince" name="cemeteryProvince"
+                    type="text"
+                    value="<%= cemetery.cemeteryProvince %>"
+                    maxlength="2" />
                 </div>
               </div>
             </div>
@@ -202,7 +218,13 @@
               <div class="field">
                 <label class="label" for="cemetery--cemeteryPostalCode">Postal Code</label>
                 <div class="control">
-                  <input class="input" id="cemetery--cemeteryPostalCode" name="cemeteryPostalCode" value="<%= cemetery.cemeteryPostalCode %>" maxlength="7" />
+                  <input class="input" id="cemetery--cemeteryPostalCode" name="cemeteryPostalCode"
+                    type="text"
+                    value="<%= cemetery.cemeteryPostalCode %>"
+                    minlength="5"
+                    maxlength="7"
+                    pattern="^[A-Z\d \-]+$"
+                    autocomplete="off" />
                 </div>
               </div>
             </div>
@@ -210,7 +232,10 @@
               <div class="field">
                 <label class="label" for="cemetery--cemeteryPhoneNumber">Phone Number</label>
                 <div class="control">
-                  <input class="input" id="cemetery--cemeteryPhoneNumber" name="cemeteryPhoneNumber" value="<%= cemetery.cemeteryPhoneNumber %>" maxlength="30" />
+                  <input class="input" id="cemetery--cemeteryPhoneNumber" name="cemeteryPhoneNumber"
+                    value="<%= cemetery.cemeteryPhoneNumber %>"
+                    maxlength="30"
+                    autocomplete="off" />
                 </div>
               </div>
             </div>
