@@ -719,12 +719,12 @@
               </tr>
             </thead>
             <tbody>
-              <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
               <% for (const relatedContract of contract.relatedContracts) { %>
-                <% const isActive = !(relatedContract.contractEndDate && relatedContract.contractEndDate < currentDate); %>
                 <tr>
                   <td class="has-text-centered">
-                    <% if (isActive) { %>
+                    <% if (relatedContract.contractIsFuture) { %>
+                      <i class="fas fa-fast-forward" title="Future Contract"></i>
+                    <% } else if (relatedContract.contractIsActive) { %>
                       <i class="fas fa-play" title="Current Contract"></i>
                     <% } else { %>
                       <i class="fas fa-stop" title="Previous Contract"></i>

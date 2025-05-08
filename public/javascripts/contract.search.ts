@@ -46,22 +46,16 @@ declare const exports: Record<string, unknown>
 
     const resultsTbodyElement = document.createElement('tbody')
 
-    const nowDateString = cityssm.dateToString(new Date())
-
     for (const contract of responseJSON.contracts) {
       let contractTimeHTML = ''
 
-      if (
-        contract.contractStartDateString <= nowDateString &&
-        (contract.contractEndDateString === '' ||
-          contract.contractEndDateString! >= nowDateString)
-      ) {
-        contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Current Contract">
-          <i class="fas fa-play" aria-label="Current Contract"></i>
-          </span>`
-      } else if (contract.contractStartDateString > nowDateString) {
+      if (contract.contractIsFuture === 1) {
         contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Future Contract">
           <i class="fas fa-fast-forward" aria-label="Future Contract"></i>
+          </span>`
+      } else if (contract.contractIsActive === 1) {
+        contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Current Contract">
+          <i class="fas fa-play" aria-label="Current Contract"></i>
           </span>`
       } else {
         contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Past Contract">

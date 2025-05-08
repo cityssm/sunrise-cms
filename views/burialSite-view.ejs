@@ -307,12 +307,12 @@
           </tr>
         </thead>
         <tbody id="burialSite--contractsTbody">
-          <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
           <% for (const contract of burialSite.contracts) { %>
-            <% const isActive = !(contract.contractEndDate && contract.contractEndDate < currentDate); %>
-            <tr data-is-active="<%= isActive %>" class="<%= isActive ? "" : "is-hidden" %>">
+            <tr data-is-active="<%= contract.contractIsActive === 1 %>" class="<%= contract.contractIsActive ? "" : "is-hidden" %>">
               <td class="has-text-centered">
-                <% if (isActive) { %>
+                <% if (contract.contractIsFuture) { %>
+                  <i class="fas fa-fast-forward" title="Future Contract"></i>
+                <% } else if (contract.contractIsActive) { %>
                   <i class="fas fa-play" title="Current Contract"></i>
                 <% } else { %>
                   <i class="fas fa-stop" title="Previous Contract"></i>

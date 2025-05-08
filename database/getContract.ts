@@ -41,6 +41,9 @@ export default async function getContract(
           
           o.contractStartDate, userFn_dateIntegerToString(o.contractStartDate) as contractStartDateString,
           o.contractEndDate, userFn_dateIntegerToString(o.contractEndDate) as contractEndDateString,
+
+          (o.contractEndDate is null or o.contractEndDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsActive,
+          (o.contractStartDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsFuture,
           
           o.purchaserName, o.purchaserAddress1, o.purchaserAddress2,
           o.purchaserCity, o.purchaserProvince, o.purchaserPostalCode,

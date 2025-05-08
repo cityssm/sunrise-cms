@@ -172,7 +172,6 @@
                 </p>
               </div>
             <% } else { %>
-              <% const currentDate = dateTimeFunctions.dateToInteger(new Date()); %>
               <table class="table is-fullwidth is-striped is-hoverable">
                 <thead>
                   <tr>
@@ -186,10 +185,11 @@
                 </thead>
                 <tbody>
                   <% for (const contract of workOrder.workOrderContracts) { %>
-                    <% const isActive = !(contract.contractEndDate && contract.contractEndDate < currentDate); %>
                     <tr>
                       <td class="has-text-centered">
-                        <% if (isActive) { %>
+                        <% if (contract.contractIsFuture) { %>
+                          <i class="fas fa-fast-forward" title="Future Contract"></i>
+                        <% } else if (contract.contractIsCurrent) { %>
                           <i class="fas fa-play" title="Current Contract"></i>
                         <% } else { %>
                           <i class="fas fa-stop" title="Previous Contract"></i>

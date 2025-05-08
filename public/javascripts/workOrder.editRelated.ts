@@ -192,30 +192,30 @@ declare const exports: Record<string, unknown>
       rowElement.className = 'container--contract'
       rowElement.dataset.contractId = contract.contractId.toString()
 
-      const isActive = !(
-        contract.contractEndDate &&
-        contract.contractEndDateString! < currentDateString
-      )
-
       const hasBurialSiteRecord =
         contract.burialSiteId &&
         workOrderBurialSites.some(
           (burialSite) => contract.burialSiteId === burialSite.burialSiteId
         )
 
+      let contractIcon = '<i class="fas fa-stop" title="Previous Contract"></i>'
+
+      if (contract.contractIsFuture === 1) {
+        contractIcon =
+          '<i class="fas fa-fast-forward" title="Future Contract"></i>'
+      } else if (contract.contractIsActive === 1) {
+        contractIcon = '<i class="fas fa-play" title="Current Contract"></i>'
+      }
+
       // eslint-disable-next-line no-unsanitized/property
       rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
-      ${
-        isActive
-          ? '<i class="fas fa-play" title="Current Contract"></i>'
-          : '<i class="fas fa-stop" title="Previous Contract"></i>'
-      }
-      </td><td>
-        <a class="has-text-weight-bold" href="${sunrise.getContractURL(contract.contractId)}">
-          ${cityssm.escapeHTML(contract.contractType)}
-        </a><br />
-        <span class="is-size-7">#${contract.contractId}</span>
-      </td>`
+        ${contractIcon}
+        </td><td>
+          <a class="has-text-weight-bold" href="${sunrise.getContractURL(contract.contractId)}">
+            ${cityssm.escapeHTML(contract.contractType)}
+          </a><br />
+          <span class="is-size-7">#${contract.contractId}</span>
+        </td>`
 
       if (contract.burialSiteId) {
         // eslint-disable-next-line no-unsanitized/method

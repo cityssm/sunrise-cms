@@ -117,8 +117,13 @@ export default async function getContracts(
             c.burialSiteId, lt.burialSiteType, l.burialSiteName,
             case when l.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
             l.cemeteryId, m.cemeteryName,
+
             c.contractStartDate, userFn_dateIntegerToString(c.contractStartDate) as contractStartDateString,
             c.contractEndDate, userFn_dateIntegerToString(c.contractEndDate) as contractEndDateString,
+
+            (c.contractEndDate is null or c.contractEndDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsActive,
+            (c.contractStartDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsFuture,
+
             c.purchaserName, c.purchaserAddress1, c.purchaserAddress2,
             c.purchaserCity, c.purchaserProvince, c.purchaserPostalCode,
             c.purchaserPhoneNumber, c.purchaserEmail, c.purchaserRelationship,

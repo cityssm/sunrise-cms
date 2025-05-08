@@ -117,6 +117,8 @@ export interface Contract extends Record {
     contractStartDateString: string;
     contractEndDate?: number;
     contractEndDateString?: string;
+    contractIsActive: 0 | 1;
+    contractIsFuture: 0 | 1;
     purchaserName: string;
     purchaserAddress1: string;
     purchaserAddress2: string;
