@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
-import type { Cemetery, FuneralHome } from '../types/record.types.js'
+import type { FuneralHome } from '../types/record.types.js'
 
 export default function getFuneralHome(
   funeralHomeId: number | string,
@@ -35,7 +35,7 @@ function _getFuneralHome(
         ${includeDeleted ? '' : ' and f.recordDelete_timeMillis is null '}
         order by f.funeralHomeName, f.funeralHomeId`
     )
-    .get(funeralHomeIdOrKey) as Cemetery | undefined
+    .get(funeralHomeIdOrKey) as FuneralHome | undefined
 
   database.close()
 
