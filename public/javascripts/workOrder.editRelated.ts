@@ -185,8 +185,6 @@ declare const exports: Record<string, unknown>
       <tbody></tbody>
       </table>`
 
-    const currentDateString = cityssm.dateToString(new Date())
-
     for (const contract of workOrderContracts) {
       const rowElement = document.createElement('tr')
       rowElement.className = 'container--contract'

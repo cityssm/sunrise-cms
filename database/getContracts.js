@@ -52,6 +52,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
             c.funeralHomeId, c.funeralDirectorName, f.funeralHomeName,
 
             c.funeralDate, userFn_dateIntegerToString(c.funeralDate) as funeralDateString,
+            
             c.funeralTime,
             userFn_timeIntegerToString(c.funeralTime) as funeralTimeString,
             userFn_timeIntegerToPeriodString(c.funeralTime) as funeralTimePeriodString,

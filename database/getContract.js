@@ -38,14 +38,16 @@ export default async function getContract(contractId, connectedDatabase) {
           case when f.recordDelete_timeMillis is null then 1 else 0 end as funeralHomeIsActive,
 
           o.funeralDate, userFn_dateIntegerToString(o.funeralDate) as funeralDateString,
-          o.funeralTime,
 
+          o.funeralTime,
           userFn_timeIntegerToString(o.funeralTime) as funeralTimeString,
           userFn_timeIntegerToPeriodString(o.funeralTime) as funeralTimePeriodString,
+          
           o.directionOfArrival, d.directionOfArrivalDescription,
           o.committalTypeId, c.committalType,
 
           o.recordUpdate_timeMillis
+          
         from Contracts o
         left join ContractTypes t on o.contractTypeId = t.contractTypeId
         left join FuneralHomes f on o.funeralHomeId = f.funeralHomeId
