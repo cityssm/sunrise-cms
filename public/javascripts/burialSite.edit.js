@@ -322,7 +322,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
         tableElement.innerHTML = `<thead><tr>
-      <th>Commentor</th>
+      <th>Author</th>
       <th>Comment Date</th>
       <th>Comment</th>
       <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
