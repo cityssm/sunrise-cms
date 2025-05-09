@@ -12,11 +12,20 @@ export const config = tseslint.config(...configWebApp, {
       'warn',
       {
         cspell: {
-          words: [...cspellWords, 'autoincrement', 'fontawesome', 'ical', 'latlng', 'preneed', 'ntfy']
+          words: [
+            ...cspellWords,
+            'autoincrement',
+            'fontawesome',
+            'ical',
+            'latlng',
+            'ntfy',
+            'preneed',
+            'randomcolor'
+          ]
         }
       }
     ],
-    '@typescript-eslint/no-unsafe-type-assertion': 'off',
+    '@typescript-eslint/no-unsafe-type-assertion': 'off'
   }
 })
 

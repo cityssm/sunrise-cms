@@ -161,7 +161,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         workOrderCloseDate: cityssm.escapeHTML(exports.aliases.workOrderCloseDate.toLowerCase())
     });
     /*
-     * Colours
+     * Colors
      */
     const hues = [
         'red',

@@ -7,18 +7,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 bulmaJS.alert({
+                    contextualColorName: 'success',
                     title: 'Database Backed Up Successfully',
                     message: `Backed up to <strong>${responseJSON.fileName}</strong><br />
               To request a copy of the backup, contact your application administrator.`,
-                    messageIsHtml: true,
-                    contextualColorName: 'success'
+                    messageIsHtml: true
                 });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Backing Up Database',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -28,17 +28,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 bulmaJS.alert({
+                    contextualColorName: 'success',
                     title: 'Database Cleaned Up Successfully',
                     message: `${responseJSON.inactivatedRecordCount} records inactivated,
-              ${responseJSON.purgedRecordCount} permanently deleted.`,
-                    contextualColorName: 'success'
+              ${responseJSON.purgedRecordCount} permanently deleted.`
                 });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Cleaning Database',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -50,8 +50,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             title: 'Cleanup Database',
             message: 'Are you sure you want to cleanup up the database?',
             okButton: {
-                text: 'Yes, Cleanup Database',
-                callbackFunction: doCleanup
+                callbackFunction: doCleanup,
+                text: 'Yes, Cleanup Database'
             }
         });
     });
@@ -62,8 +62,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             title: 'Backup Database',
             message: 'Are you sure you want to backup up the database?',
             okButton: {
-                text: 'Yes, Backup Database',
-                callbackFunction: doBackup
+                callbackFunction: doBackup,
+                text: 'Yes, Backup Database'
             }
         });
     });

@@ -158,7 +158,7 @@ declare const exports: Record<string, unknown> & {
         }
 
         map.on('click', (clickEvent: Leaflet.LeafletMouseEvent) => {
-          const mapCoordinates = clickEvent.latlng as Leaflet.LatLng
+          const mapCoordinates = clickEvent.latlng
 
           if (currentMarker !== undefined) {
             currentMarker.remove()
@@ -173,7 +173,7 @@ declare const exports: Record<string, unknown> & {
             clickEvent.preventDefault()
 
             if (currentMarker !== undefined) {
-              const mapCoordinates = currentMarker.getLatLng() as Leaflet.LatLng
+              const mapCoordinates = currentMarker.getLatLng()
 
               options.latitudeElement.value =
                 mapCoordinates.lat.toFixed(coordinatePrecision)
@@ -267,7 +267,7 @@ declare const exports: Record<string, unknown> & {
   })
 
   /*
-   * Colours
+   * Colors
    */
 
   const hues = [

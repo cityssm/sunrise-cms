@@ -15,9 +15,16 @@ import type { Sunrise } from './types.js'
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+
+  workOrderBurialSites?: BurialSite[]
+  workOrderContracts?: Contract[]
+
+  burialSiteStatuses: BurialSiteStatus[]
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const workOrderId = (
     document.querySelector('#workOrderEdit--workOrderId') as HTMLInputElement
@@ -45,8 +52,8 @@ declare const exports: Record<string, unknown>
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
             errorMessage?: string
+            success: boolean
             workOrderContracts: Contract[]
           }
 
@@ -55,9 +62,10 @@ declare const exports: Record<string, unknown>
             renderRelatedBurialSitesAndContracts()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Deleting Relationship',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -65,13 +73,15 @@ declare const exports: Record<string, unknown>
     }
 
     bulmaJS.confirm({
+      contextualColorName: 'warning',
       title: 'Delete Contract Relationship',
+
       message: `Are you sure you want to remove the relationship to this contract record from this work order?
         Note that the contract will remain.`,
-      contextualColorName: 'warning',
+
       okButton: {
-        text: 'Yes, Delete Relationship',
-        callbackFunction: doDelete
+        callbackFunction: doDelete,
+        text: 'Yes, Delete Relationship'
       }
     })
   }
@@ -83,13 +93,13 @@ declare const exports: Record<string, unknown>
     cityssm.postJSON(
       `${sunrise.urlPrefix}/workOrders/doAddWorkOrderBurialSite`,
       {
-        workOrderId,
-        burialSiteId
+        burialSiteId,
+        workOrderId
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
-          success: boolean
           errorMessage?: string
+          success: boolean
           workOrderBurialSites: BurialSite[]
         }
 
@@ -98,9 +108,10 @@ declare const exports: Record<string, unknown>
           renderRelatedBurialSitesAndContracts()
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Adding Burial Site',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
 
@@ -123,8 +134,8 @@ declare const exports: Record<string, unknown>
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
-          success: boolean
           errorMessage?: string
+          success: boolean
           workOrderContracts: Contract[]
         }
 
@@ -133,9 +144,10 @@ declare const exports: Record<string, unknown>
           renderRelatedBurialSitesAndContracts()
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Adding Contract',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
 
@@ -152,7 +164,6 @@ declare const exports: Record<string, unknown>
     addBurialSite(burialSiteId)
   }
 
-  // eslint-disable-next-line complexity
   function renderRelatedContracts(): void {
     const contractsContainerElement = document.querySelector(
       '#container--contracts'
@@ -244,9 +255,9 @@ declare const exports: Record<string, unknown>
 
       for (const interment of contract.contractInterments ?? []) {
         contactsHtml += `<li class="has-tooltip-left"
-          data-tooltip="${cityssm.escapeHTML(contract.isPreneed ?? false ? 'Recipient' : 'Deceased')}">
+          data-tooltip="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
           <span class="fa-li">
-            <i class="fas fa-fw fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ?? false ? 'Recipient' : 'Deceased')}"></i>
+            <i class="fas fa-fw fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
           </span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
           </li>`
@@ -330,8 +341,8 @@ declare const exports: Record<string, unknown>
         submitEvent.currentTarget,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
             errorMessage?: string
+            success: boolean
             workOrderBurialSites: BurialSite[]
           }
 
@@ -341,9 +352,10 @@ declare const exports: Record<string, unknown>
             editCloseModalFunction()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Deleting Relationship',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -370,7 +382,7 @@ declare const exports: Record<string, unknown>
 
         let statusFound = false
 
-        for (const burialSiteStatus of exports.burialSiteStatuses as BurialSiteStatus[]) {
+        for (const burialSiteStatus of exports.burialSiteStatuses) {
           const optionElement = document.createElement('option')
           optionElement.value = burialSiteStatus.burialSiteStatusId.toString()
           optionElement.textContent = burialSiteStatus.burialSiteStatus
@@ -437,8 +449,8 @@ declare const exports: Record<string, unknown>
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
             errorMessage?: string
+            success: boolean
             workOrderBurialSites: BurialSite[]
           }
 
@@ -447,9 +459,10 @@ declare const exports: Record<string, unknown>
             renderRelatedBurialSitesAndContracts()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Deleting Relationship',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -617,7 +630,7 @@ declare const exports: Record<string, unknown>
                   </button>
                 </td>
                 <td class="has-text-weight-bold">
-                  ${cityssm.escapeHTML(contract.contractType ?? '')}
+                  ${cityssm.escapeHTML(contract.contractType)}
                 </td>`
 
               if (contract.burialSiteId) {
@@ -648,9 +661,7 @@ declare const exports: Record<string, unknown>
                     (contract.contractInterments ?? []).length === 0
                       ? `<span class="has-text-grey">
                           (No ${cityssm.escapeHTML(
-                            contract.isPreneed ?? false
-                              ? 'Recipients'
-                              : 'Deceased'
+                            contract.isPreneed ? 'Recipients' : 'Deceased'
                           )})
                           </span>`
                       : cityssm.escapeHTML(
@@ -841,7 +852,7 @@ declare const exports: Record<string, unknown>
             '#burialSiteSearch--burialSiteStatusId'
           ) as HTMLSelectElement
 
-          for (const burialSiteStatus of exports.burialSiteStatuses as BurialSiteStatus[]) {
+          for (const burialSiteStatus of exports.burialSiteStatuses) {
             const optionElement = document.createElement('option')
             optionElement.value = burialSiteStatus.burialSiteStatusId.toString()
             optionElement.textContent = burialSiteStatus.burialSiteStatus

@@ -23,28 +23,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Deleting Relationship',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Contract Relationship',
             message: `Are you sure you want to remove the relationship to this contract record from this work order?
         Note that the contract will remain.`,
-            contextualColorName: 'warning',
             okButton: {
-                text: 'Yes, Delete Relationship',
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete Relationship'
             }
         });
     }
     function addBurialSite(burialSiteId, callbackFunction) {
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderBurialSite`, {
-            workOrderId,
-            burialSiteId
+            burialSiteId,
+            workOrderId
         }, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
@@ -53,9 +53,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Adding Burial Site',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
             if (callbackFunction !== undefined) {
@@ -75,9 +75,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Adding Contract',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
             if (callbackFunction !== undefined) {
@@ -89,7 +89,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const burialSiteId = clickEvent.currentTarget.dataset.burialSiteId ?? '';
         addBurialSite(burialSiteId);
     }
-    // eslint-disable-next-line complexity
     function renderRelatedContracts() {
         const contractsContainerElement = document.querySelector('#container--contracts');
         document.querySelector(".tabs a[href='#relatedTab--contracts'] .tag").textContent = workOrderContracts.length.toString();
@@ -154,9 +153,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             let contactsHtml = '';
             for (const interment of contract.contractInterments ?? []) {
                 contactsHtml += `<li class="has-tooltip-left"
-          data-tooltip="${cityssm.escapeHTML(contract.isPreneed ?? false ? 'Recipient' : 'Deceased')}">
+          data-tooltip="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
           <span class="fa-li">
-            <i class="fas fa-fw fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ?? false ? 'Recipient' : 'Deceased')}"></i>
+            <i class="fas fa-fw fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
           </span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
           </li>`;
@@ -219,9 +218,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Deleting Relationship',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -284,9 +283,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Deleting Relationship',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -409,7 +408,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                   </button>
                 </td>
                 <td class="has-text-weight-bold">
-                  ${cityssm.escapeHTML(contract.contractType ?? '')}
+                  ${cityssm.escapeHTML(contract.contractType)}
                 </td>`;
                     if (contract.burialSiteId) {
                         rowElement.insertAdjacentHTML('beforeend', `<td>${cityssm.escapeHTML(contract.burialSiteName ?? '')}</td>`);
@@ -427,9 +426,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 </td><td>
                   ${(contract.contractInterments ?? []).length === 0
                         ? `<span class="has-text-grey">
-                          (No ${cityssm.escapeHTML(contract.isPreneed ?? false
-                            ? 'Recipients'
-                            : 'Deceased')})
+                          (No ${cityssm.escapeHTML(contract.isPreneed ? 'Recipients' : 'Deceased')})
                           </span>`
                         : cityssm.escapeHTML(contract.contractInterments[0].deceasedName ?? '') +
                             (contract.contractInterments.length > 1

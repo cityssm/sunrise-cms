@@ -5,7 +5,6 @@
   "ignore": [
     "cypress/*",
     "data/sessions/*",
-    "public/javascripts/*",
-    "public-typescript/*"
+    "public/javascripts/*"
   ]
 }
