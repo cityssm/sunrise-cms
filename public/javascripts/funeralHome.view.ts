@@ -9,7 +9,6 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 }
-
 ;(() => {
   const sunrise = exports.sunrise
 
@@ -32,17 +31,18 @@ declare const exports: {
           { funeralHomeId },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
-              success: boolean
               errorMessage?: string
+              success: boolean
             }
 
             if (responseJSON.success) {
               globalThis.location.reload()
             } else {
               bulmaJS.alert({
+                contextualColorName: 'danger',
                 title: 'Error Restoring Funeral Home',
-                message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
+
+                message: responseJSON.errorMessage ?? ''
               })
             }
           }
@@ -57,8 +57,8 @@ declare const exports: {
           'Are you sure you want to restore this funeral home? It will be visible again.',
 
         okButton: {
-          text: 'Yes, Restore Funeral Home',
-          callbackFunction: doRestore
+          callbackFunction: doRestore,
+          text: 'Yes, Restore Funeral Home'
         }
       })
     })

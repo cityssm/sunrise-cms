@@ -5,10 +5,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const funeralHomes = exports.funeralHomes;
     const searchFilterElement = document.querySelector('#searchFilter--funeralHome');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
-    // eslint-disable-next-line complexity
     function renderResults() {
         // eslint-disable-next-line no-unsanitized/property
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML("Loading Funeral Homes...");
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Funeral Homes...');
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement('tbody');
         const filterStringSplit = searchFilterElement.value
@@ -16,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .toLowerCase()
             .split(' ');
         for (const funeralHome of funeralHomes) {
-            const searchString = `${funeralHome.funeralHomeName ?? ''} ${funeralHome.funeralHomeAddress1 ?? ''} ${funeralHome.funeralHomeAddress2 ?? ''}`.toLowerCase();
+            const searchString = `${funeralHome.funeralHomeName} ${funeralHome.funeralHomeAddress1} ${funeralHome.funeralHomeAddress2}`.toLowerCase();
             let showRecord = true;
             for (const filterStringPiece of filterStringSplit) {
                 if (!searchString.includes(filterStringPiece)) {
@@ -32,24 +31,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
             searchResultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
           <td>
             <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeURL(funeralHome.funeralHomeId)}">
-              ${cityssm.escapeHTML((funeralHome.funeralHomeName ?? '') === '' ? '(No Name)' : funeralHome.funeralHomeName ?? '')}
+              ${cityssm.escapeHTML(funeralHome.funeralHomeName === ''
+                ? '(No Name)'
+                : funeralHome.funeralHomeName)}
             </a>
           </td><td>
-            ${(funeralHome.funeralHomeAddress1 ?? '') === ''
+            ${funeralHome.funeralHomeAddress1 === ''
                 ? ''
-                : `${cityssm.escapeHTML(funeralHome.funeralHomeAddress1 ?? '')}<br />`}
-            ${(funeralHome.funeralHomeAddress2 ?? '') === ''
+                : `${cityssm.escapeHTML(funeralHome.funeralHomeAddress1)}<br />`}
+            ${funeralHome.funeralHomeAddress2 === ''
                 ? ''
-                : `${cityssm.escapeHTML(funeralHome.funeralHomeAddress2 ?? '')}<br />`}
-            ${funeralHome.funeralHomeCity || funeralHome.funeralHomeProvince
-                ? `${cityssm.escapeHTML(funeralHome.funeralHomeCity ?? '')},
-                    ${cityssm.escapeHTML(funeralHome.funeralHomeProvince ?? '')}<br />`
+                : `${cityssm.escapeHTML(funeralHome.funeralHomeAddress2)}<br />`}
+            ${funeralHome.funeralHomeCity !== '' ||
+                funeralHome.funeralHomeProvince !== ''
+                ? `${cityssm.escapeHTML(funeralHome.funeralHomeCity)},
+                    ${cityssm.escapeHTML(funeralHome.funeralHomeProvince)}<br />`
                 : ''}
-            ${(funeralHome.funeralHomePostalCode ?? '') === ''
+            ${funeralHome.funeralHomePostalCode === ''
                 ? ''
-                : cityssm.escapeHTML(funeralHome.funeralHomePostalCode ?? '')}
+                : cityssm.escapeHTML(funeralHome.funeralHomePostalCode)}
           </td><td>
-            ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber ?? '')}
+            ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
           </td>
           </tr>`);
         }

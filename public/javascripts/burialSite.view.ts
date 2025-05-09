@@ -101,17 +101,18 @@ declare const exports: {
           { burialSiteId },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
-              success: boolean
               errorMessage?: string
+              success: boolean
             }
 
             if (responseJSON.success) {
               globalThis.location.reload()
             } else {
               bulmaJS.alert({
+                contextualColorName: 'danger',
                 title: 'Error Restoring Burial Site',
-                message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
+
+                message: responseJSON.errorMessage ?? ''
               })
             }
           }
@@ -126,8 +127,8 @@ declare const exports: {
           'Are you sure you want to restore this burial site? It will be visible again.',
 
         okButton: {
-          text: 'Yes, Restore Burial Site',
-          callbackFunction: doRestore
+          callbackFunction: doRestore,
+          text: 'Yes, Restore Burial Site'
         }
       })
     })

@@ -20,11 +20,10 @@ declare const exports: Record<string, unknown>
     '#container--searchResults'
   ) as HTMLElement
 
-  // eslint-disable-next-line complexity
   function renderResults(): void {
     // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
-      "Loading Funeral Homes..."
+      'Loading Funeral Homes...'
     )
 
     let searchResultCount = 0
@@ -36,7 +35,8 @@ declare const exports: Record<string, unknown>
       .split(' ')
 
     for (const funeralHome of funeralHomes) {
-      const searchString = `${funeralHome.funeralHomeName ?? ''} ${funeralHome.funeralHomeAddress1 ?? ''} ${funeralHome.funeralHomeAddress2 ?? ''}`.toLowerCase()
+      const searchString =
+        `${funeralHome.funeralHomeName} ${funeralHome.funeralHomeAddress1} ${funeralHome.funeralHomeAddress2}`.toLowerCase()
 
       let showRecord = true
 
@@ -60,33 +60,36 @@ declare const exports: Record<string, unknown>
           <td>
             <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeURL(funeralHome.funeralHomeId)}">
               ${cityssm.escapeHTML(
-                (funeralHome.funeralHomeName ?? '') === '' ? '(No Name)' : funeralHome.funeralHomeName ?? ''
+                funeralHome.funeralHomeName === ''
+                  ? '(No Name)'
+                  : funeralHome.funeralHomeName
               )}
             </a>
           </td><td>
             ${
-              (funeralHome.funeralHomeAddress1 ?? '') === ''
+              funeralHome.funeralHomeAddress1 === ''
                 ? ''
-                : `${cityssm.escapeHTML(funeralHome.funeralHomeAddress1 ?? '')}<br />`
+                : `${cityssm.escapeHTML(funeralHome.funeralHomeAddress1)}<br />`
             }
             ${
-              (funeralHome.funeralHomeAddress2 ?? '') === ''
+              funeralHome.funeralHomeAddress2 === ''
                 ? ''
-                : `${cityssm.escapeHTML(funeralHome.funeralHomeAddress2 ?? '')}<br />`
+                : `${cityssm.escapeHTML(funeralHome.funeralHomeAddress2)}<br />`
             }
             ${
-              funeralHome.funeralHomeCity || funeralHome.funeralHomeProvince
-                ? `${cityssm.escapeHTML(funeralHome.funeralHomeCity ?? '')},
-                    ${cityssm.escapeHTML(funeralHome.funeralHomeProvince ?? '')}<br />`
+              funeralHome.funeralHomeCity !== '' ||
+              funeralHome.funeralHomeProvince !== ''
+                ? `${cityssm.escapeHTML(funeralHome.funeralHomeCity)},
+                    ${cityssm.escapeHTML(funeralHome.funeralHomeProvince)}<br />`
                 : ''
             }
             ${
-              (funeralHome.funeralHomePostalCode ?? '') === ''
+              funeralHome.funeralHomePostalCode === ''
                 ? ''
-                : cityssm.escapeHTML(funeralHome.funeralHomePostalCode ?? '')
+                : cityssm.escapeHTML(funeralHome.funeralHomePostalCode)
             }
           </td><td>
-            ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber ?? '')}
+            ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
           </td>
           </tr>`
       )

@@ -17,20 +17,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Reopening Work Order',
                         message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
                     });
                 }
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Reopen Work Order',
             message: 'Are you sure you want to remove the close date from this work order and reopen it?',
-            contextualColorName: 'warning',
             okButton: {
-                text: 'Yes, Reopen Work Order',
-                callbackFunction: doReopen
+                callbackFunction: doReopen,
+                text: 'Yes, Reopen Work Order'
             }
         });
     });

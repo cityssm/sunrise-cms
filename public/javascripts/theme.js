@@ -11,12 +11,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Log Out?',
             message: 'Are you sure you want to log out?',
-            contextualColorName: 'warning',
             okButton: {
-                text: 'Log Out',
-                callbackFunction: doLogout
+                callbackFunction: doLogout,
+                text: 'Log Out'
             }
         });
     });

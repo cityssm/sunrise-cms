@@ -11,15 +11,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 bulmaJS.alert({
-                    message: 'Work Order Type Updated Successfully',
-                    contextualColorName: 'success'
+                    contextualColorName: 'success',
+                    message: 'Work Order Type Updated Successfully'
                 });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Updating Work Order Type',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -41,28 +41,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         tableRowElement.remove();
                     }
                     bulmaJS.alert({
-                        message: 'Work Order Type Deleted Successfully',
-                        contextualColorName: 'success'
+                        contextualColorName: 'success',
+                        message: 'Work Order Type Deleted Successfully'
                     });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Deleting Work Order Type',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Work Order Type',
             message: `Are you sure you want to delete this work order type?<br />
           Note that no work orders will be removed.`,
             messageIsHtml: true,
-            contextualColorName: 'warning',
             okButton: {
-                text: 'Yes, Delete Work Order Type',
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete Work Order Type'
             }
         });
     }
@@ -83,9 +83,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Moving Work Order Type',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -110,7 +110,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
           <div class="field has-addons">
             <div class="control is-expanded">
               <input class="input" name="workOrderType" type="text"
-                value="${cityssm.escapeHTML(workOrderType.workOrderType ?? '')}" maxlength="100" aria-label="Work Order Type" required />
+                value="${cityssm.escapeHTML(workOrderType.workOrderType ?? '')}"
+                maxlength="100" aria-label="Work Order Type" required />
             </div>
             <div class="control">
               <button class="button is-success" type="submit" aria-label="Save">
@@ -125,7 +126,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${sunrise.getMoveUpDownButtonFieldHTML('button--moveWorkOrderTypeUp', 'button--moveWorkOrderTypeDown', false)}
           </div>
           <div class="control">
-            <button class="button is-danger is-light button--deleteWorkOrderType" data-tooltip="Delete Work Order Type" type="button" aria-label="Delete Work Order Type">
+            <button class="button is-danger is-light button--deleteWorkOrderType"
+              data-tooltip="Delete Work Order Type" type="button" aria-label="Delete Work Order Type">
               <span class="icon"><i class="fas fa-trash" aria-hidden="true"></i></span>
             </button>
           </div>
@@ -156,9 +158,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Adding Work Order Type',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });

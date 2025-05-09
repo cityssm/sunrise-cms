@@ -64,6 +64,8 @@ declare const exports: Record<string, unknown> & {
   ): void {
     // Search for ID
     let svgId = mapKey
+
+    // eslint-disable-next-line unicorn/no-null
     let svgElementToHighlight: SVGElement | null = null
 
     while (svgId !== '') {

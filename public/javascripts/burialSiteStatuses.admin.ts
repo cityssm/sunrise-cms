@@ -21,11 +21,12 @@ declare const bulmaJS: BulmaJS
 
   type BurialSiteStatusResponseJSON =
     | {
-        success: false
         errorMessage?: string
+        success: false
       }
     | {
         success: true
+
         burialSiteStatuses: BurialSiteStatus[]
       }
 
@@ -42,14 +43,15 @@ declare const bulmaJS: BulmaJS
           burialSiteStatuses = responseJSON.burialSiteStatuses
 
           bulmaJS.alert({
-            message: 'Burial Site Status Updated Successfully',
-            contextualColorName: 'success'
+            contextualColorName: 'success',
+            message: 'Burial Site Status Updated Successfully'
           })
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Updating Burial Site Status',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -82,14 +84,15 @@ declare const bulmaJS: BulmaJS
             }
 
             bulmaJS.alert({
-              message: 'Burial Site Status Deleted Successfully',
-              contextualColorName: 'success'
+              contextualColorName: 'success',
+              message: 'Burial Site Status Deleted Successfully'
             })
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Deleting Burial Site Status',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -97,14 +100,16 @@ declare const bulmaJS: BulmaJS
     }
 
     bulmaJS.confirm({
+      contextualColorName: 'warning',
       title: 'Delete Burial Site Status',
+
       message: `Are you sure you want to delete this status?<br />
           Note that no burial sites will be removed.`,
       messageIsHtml: true,
-      contextualColorName: 'warning',
+
       okButton: {
-        text: 'Yes, Delete Status',
-        callbackFunction: doDelete
+        callbackFunction: doDelete,
+        text: 'Yes, Delete Status'
       }
     })
   }
@@ -134,9 +139,10 @@ declare const bulmaJS: BulmaJS
           renderBurialSiteStatuses()
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Moving Burial Site Status',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -241,9 +247,10 @@ declare const bulmaJS: BulmaJS
           formElement.querySelector('input')?.focus()
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Adding Burial Site Status',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }

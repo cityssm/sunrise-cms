@@ -292,13 +292,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Burial Site Relationship',
             message: `Are you sure you want to remove the relationship to this burial site from this work order?
         Note that the record will remain.`,
-            contextualColorName: 'warning',
             okButton: {
-                text: 'Yes, Delete Relationship',
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete Relationship'
             }
         });
     }

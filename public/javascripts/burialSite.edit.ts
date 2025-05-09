@@ -76,15 +76,16 @@ declare const exports: {
             )
           } else {
             bulmaJS.alert({
-              message: 'Burial Site Updated Successfully',
-              contextualColorName: 'success'
+              contextualColorName: 'success',
+              message: 'Burial Site Updated Successfully'
             })
           }
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Updating Burial Site',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -123,9 +124,10 @@ declare const exports: {
               globalThis.location.href = sunrise.getBurialSiteURL()
             } else {
               bulmaJS.alert({
+                contextualColorName: 'danger',
                 title: 'Error Deleting Burial Site',
-                message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
+
+                message: responseJSON.errorMessage ?? ''
               })
             }
           }
@@ -133,12 +135,14 @@ declare const exports: {
       }
 
       bulmaJS.confirm({
-        title: 'Delete Burial Site',
-        message: 'Are you sure you want to delete this burial site?',
         contextualColorName: 'warning',
+        title: 'Delete Burial Site',
+
+        message: 'Are you sure you want to delete this burial site?',
+
         okButton: {
-          text: 'Yes, Delete Burial Site',
-          callbackFunction: doDelete
+          callbackFunction: doDelete,
+          text: 'Yes, Delete Burial Site'
         }
       })
     })
@@ -304,24 +308,25 @@ declare const exports: {
     burialSiteTypeIdElement.addEventListener('change', () => {
       if (burialSiteTypeIdElement.value !== originalBurialSiteTypeId) {
         bulmaJS.confirm({
+          contextualColorName: 'warning',
           title: 'Confirm Change',
+
           message: `Are you sure you want to change the burial site type?\n
             This change affects the additional fields associated with this record.`,
-          contextualColorName: 'warning',
 
           okButton: {
-            text: 'Yes, Keep the Change',
             callbackFunction() {
               refreshAfterSave = true
-            }
+            },
+            text: 'Yes, Keep the Change'
           },
 
           cancelButton: {
-            text: 'Revert the Change',
             callbackFunction() {
               burialSiteTypeIdElement.value = originalBurialSiteTypeId
               updateCapacities()
-            }
+            },
+            text: 'Revert the Change'
           }
         })
       }
@@ -390,9 +395,10 @@ declare const exports: {
             renderBurialSiteComments()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Updating Comment',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -466,8 +472,8 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/burialSites/doDeleteBurialSiteComment`,
         {
-          burialSiteId,
-          burialSiteCommentId
+          burialSiteCommentId,
+          burialSiteId
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
@@ -481,9 +487,10 @@ declare const exports: {
             renderBurialSiteComments()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Removing Comment',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -491,13 +498,15 @@ declare const exports: {
     }
 
     bulmaJS.confirm({
+      contextualColorName: 'warning',
       title: 'Remove Comment?',
+
       message: 'Are you sure you want to remove this comment?',
+
       okButton: {
-        text: 'Yes, Remove Comment',
-        callbackFunction: doDelete
-      },
-      contextualColorName: 'warning'
+        callbackFunction: doDelete,
+        text: 'Yes, Remove Comment'
+      }
     })
   }
 

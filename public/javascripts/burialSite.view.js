@@ -59,9 +59,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Restoring Burial Site',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -71,8 +71,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             title: 'Restore Burial Site',
             message: 'Are you sure you want to restore this burial site? It will be visible again.',
             okButton: {
-                text: 'Yes, Restore Burial Site',
-                callbackFunction: doRestore
+                callbackFunction: doRestore,
+                text: 'Yes, Restore Burial Site'
             }
         });
     });

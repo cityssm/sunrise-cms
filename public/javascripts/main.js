@@ -24,6 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function highlightMap(mapContainerElement, mapKey, contextualClass) {
         // Search for ID
         let svgId = mapKey;
+        // eslint-disable-next-line unicorn/no-null
         let svgElementToHighlight = null;
         while (svgId !== '') {
             svgElementToHighlight = mapContainerElement.querySelector(`#${svgId}`);

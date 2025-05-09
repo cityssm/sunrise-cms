@@ -11,7 +11,7 @@ export const config = tseslint.config(...configWebApp, {
             'warn',
             {
                 cspell: {
-                    words: [...cspellWords, 'autoincrement', 'fontawesome', 'ical', 'preneed', 'ntfy']
+                    words: [...cspellWords, 'autoincrement', 'fontawesome', 'ical', 'latlng', 'preneed', 'ntfy']
                 }
             }
         ],

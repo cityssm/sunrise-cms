@@ -22,12 +22,14 @@ declare const bulmaJS: BulmaJS
       clickEvent.preventDefault()
 
       bulmaJS.confirm({
-        title: 'Log Out?',
-        message: 'Are you sure you want to log out?',
         contextualColorName: 'warning',
+        title: 'Log Out?',
+
+        message: 'Are you sure you want to log out?',
+
         okButton: {
-          text: 'Log Out',
-          callbackFunction: doLogout
+          callbackFunction: doLogout,
+          text: 'Log Out'
         }
       })
     })

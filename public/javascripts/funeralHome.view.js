@@ -19,9 +19,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Restoring Funeral Home',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -31,8 +31,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             title: 'Restore Funeral Home',
             message: 'Are you sure you want to restore this funeral home? It will be visible again.',
             okButton: {
-                text: 'Yes, Restore Funeral Home',
-                callbackFunction: doRestore
+                callbackFunction: doRestore,
+                text: 'Yes, Restore Funeral Home'
             }
         });
     });

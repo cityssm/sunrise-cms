@@ -25,8 +25,8 @@ declare const exports: Record<string, unknown>
           },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
-              success: boolean
               errorMessage?: string
+              success: boolean
             }
 
             if (responseJSON.success) {
@@ -37,9 +37,10 @@ declare const exports: Record<string, unknown>
               )
             } else {
               bulmaJS.alert({
+                contextualColorName: 'danger',
                 title: 'Error Reopening Work Order',
+
                 message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
               })
             }
           }
@@ -47,13 +48,15 @@ declare const exports: Record<string, unknown>
       }
 
       bulmaJS.confirm({
+        contextualColorName: 'warning',
         title: 'Reopen Work Order',
+
         message:
           'Are you sure you want to remove the close date from this work order and reopen it?',
-        contextualColorName: 'warning',
+
         okButton: {
-          text: 'Yes, Reopen Work Order',
-          callbackFunction: doReopen
+          callbackFunction: doReopen,
+          text: 'Yes, Reopen Work Order'
         }
       })
     })
