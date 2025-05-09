@@ -1,4 +1,5 @@
-/* eslint-disable no-console, unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable no-console */
 
 import assert from 'node:assert'
 import { exec } from 'node:child_process'
