@@ -53,14 +53,22 @@ const funeralHomes = [
     {
         funeralHomeKey: 'HO',
         funeralHomeName: 'Hovie Funeral Home',
+        funeralHomeAddress1: '',
+        funeralHomeAddress2: '',
         funeralHomeCity: 'Sault Ste. Marie',
-        funeralHomeProvince: 'MI'
+        funeralHomePostalCode: '',
+        funeralHomeProvince: 'MI',
+        funeralHomePhoneNumber: ''
     },
     {
         funeralHomeKey: 'LY',
         funeralHomeName: 'Lynett Funeral Home',
         funeralHomeCity: 'Wawa',
-        funeralHomeProvince: 'ON'
+        funeralHomeProvince: 'ON',
+        funeralHomeAddress1: '',
+        funeralHomeAddress2: '',
+        funeralHomePostalCode: '',
+        funeralHomePhoneNumber: ''
     },
     {
         funeralHomeKey: 'NO',
@@ -115,13 +123,13 @@ export function initializeFuneralHomes(user) {
     for (const funeralHome of funeralHomes) {
         const funeralHomeId = addFuneralHome({
             funeralHomeKey: funeralHome.funeralHomeKey ?? '',
-            funeralHomeName: funeralHome.funeralHomeName ?? '',
-            funeralHomeAddress1: funeralHome.funeralHomeAddress1 ?? '',
-            funeralHomeAddress2: funeralHome.funeralHomeAddress2 ?? '',
-            funeralHomeCity: funeralHome.funeralHomeCity ?? '',
-            funeralHomePostalCode: funeralHome.funeralHomePostalCode ?? '',
-            funeralHomeProvince: funeralHome.funeralHomeProvince ?? '',
-            funeralHomePhoneNumber: funeralHome.funeralHomePhoneNumber ?? ''
+            funeralHomeName: funeralHome.funeralHomeName,
+            funeralHomeAddress1: funeralHome.funeralHomeAddress1,
+            funeralHomeAddress2: funeralHome.funeralHomeAddress2,
+            funeralHomeCity: funeralHome.funeralHomeCity,
+            funeralHomePostalCode: funeralHome.funeralHomePostalCode,
+            funeralHomeProvince: funeralHome.funeralHomeProvince,
+            funeralHomePhoneNumber: funeralHome.funeralHomePhoneNumber
         }, user);
         funeralHomeKeyToId.set(funeralHome.funeralHomeKey ?? '', funeralHomeId);
     }

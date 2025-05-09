@@ -351,7 +351,7 @@ declare const exports: Record<string, unknown> & {
           ${count.toString()}
         </div>
       </div>
-      <div class="level-right">
+      <div class="level-right is-hidden-print">
         ${
           offset > 0
             ? `<div class="level-item">

@@ -36,7 +36,7 @@ export default function addFuneralHome(addForm: AddForm, user: User): number {
       addForm.funeralHomeAddress2,
       addForm.funeralHomeCity,
       addForm.funeralHomeProvince,
-      addForm.funeralHomePostalCode,
+      addForm.funeralHomePostalCode.toUpperCase(),
       addForm.funeralHomePhoneNumber,
       user.userName,
       rightNowMillis,

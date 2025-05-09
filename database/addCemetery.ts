@@ -57,7 +57,7 @@ export default function addCemetery(
       addForm.cemeteryAddress2,
       addForm.cemeteryCity,
       addForm.cemeteryProvince,
-      addForm.cemeteryPostalCode,
+      addForm.cemeteryPostalCode.toUpperCase(),
       addForm.cemeteryPhoneNumber,
       addForm.parentCemeteryId === '' ? undefined : addForm.parentCemeteryId,
       user.userName,

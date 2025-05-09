@@ -40,7 +40,7 @@ export default function updateFuneralHome(
       updateForm.funeralHomeAddress2,
       updateForm.funeralHomeCity,
       updateForm.funeralHomeProvince,
-      updateForm.funeralHomePostalCode,
+      updateForm.funeralHomePostalCode.toUpperCase(),
       updateForm.funeralHomePhoneNumber,
       user.userName,
       rightNowMillis,

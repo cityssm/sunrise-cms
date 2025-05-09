@@ -76,7 +76,7 @@ export default function updateCemetery(
       updateForm.cemeteryAddress2,
       updateForm.cemeteryCity,
       updateForm.cemeteryProvince,
-      updateForm.cemeteryPostalCode,
+      updateForm.cemeteryPostalCode.toUpperCase(),
       updateForm.cemeteryPhoneNumber,
       updateForm.parentCemeteryId === ''
         ? undefined

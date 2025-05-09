@@ -223,7 +223,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           ${count.toString()}
         </div>
       </div>
-      <div class="level-right">
+      <div class="level-right is-hidden-print">
         ${offset > 0
             ? `<div class="level-item">
                 <button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">

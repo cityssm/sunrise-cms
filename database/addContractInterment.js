@@ -22,7 +22,7 @@ export default function addContractInterment(contractForm, user, connectedDataba
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(contractForm.contractId, newIntermentNumber, contractForm.deceasedName ?? '', contractForm.deceasedAddress1 ?? '', contractForm.deceasedAddress2 ?? '', contractForm.deceasedCity ?? '', contractForm.deceasedProvince ?? '', contractForm.deceasedPostalCode ?? '', (contractForm.birthDateString ?? '') === ''
+        .run(contractForm.contractId, newIntermentNumber, contractForm.deceasedName ?? '', contractForm.deceasedAddress1 ?? '', contractForm.deceasedAddress2 ?? '', contractForm.deceasedCity ?? '', contractForm.deceasedProvince ?? '', (contractForm.deceasedPostalCode ?? '').toUpperCase(), (contractForm.birthDateString ?? '') === ''
         ? undefined
         : dateStringToInteger(contractForm.birthDateString), contractForm.birthPlace ?? '', (contractForm.deathDateString ?? '') === ''
         ? undefined

@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             searchResultCount += 1;
             // eslint-disable-next-line no-unsanitized/method
-            searchResultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
+            searchResultsTbodyElement.insertAdjacentHTML('beforeend', `<tr style="page-break-inside: avoid;">
           <td>
             <a class="has-text-weight-bold" href="${sunrise.getCemeteryURL(cemetery.cemeteryId)}">
               ${cityssm.escapeHTML(cemetery.cemeteryName === ''

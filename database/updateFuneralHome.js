@@ -12,7 +12,7 @@ export default function updateFuneralHome(updateForm, user) {
           recordUpdate_userName = ?, recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
           and funeralHomeId = ?`)
-        .run(updateForm.funeralHomeName, updateForm.funeralHomeAddress1, updateForm.funeralHomeAddress2, updateForm.funeralHomeCity, updateForm.funeralHomeProvince, updateForm.funeralHomePostalCode, updateForm.funeralHomePhoneNumber, user.userName, rightNowMillis, updateForm.funeralHomeId);
+        .run(updateForm.funeralHomeName, updateForm.funeralHomeAddress1, updateForm.funeralHomeAddress2, updateForm.funeralHomeCity, updateForm.funeralHomeProvince, updateForm.funeralHomePostalCode.toUpperCase(), updateForm.funeralHomePhoneNumber, user.userName, rightNowMillis, updateForm.funeralHomeId);
     database.close();
     return result.changes > 0;
 }

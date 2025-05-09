@@ -35,7 +35,7 @@ export default function getContractTypePrints(
         and userFn_configContainsPrintEJS(printEJS) = 1
         order by orderNumber, printEJS`
     )
-    .all(contractTypeId) as Array<{ printEJS: string; orderNumber: number }>
+    .all(contractTypeId) as Array<{ orderNumber: number; printEJS: string }>
 
   let expectedOrderNumber = -1
 

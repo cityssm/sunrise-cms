@@ -65,7 +65,7 @@ export default function addContractInterment(
       contractForm.deceasedAddress2 ?? '',
       contractForm.deceasedCity ?? '',
       contractForm.deceasedProvince ?? '',
-      contractForm.deceasedPostalCode ?? '',
+      (contractForm.deceasedPostalCode ?? '').toUpperCase(),
       (contractForm.birthDateString ?? '') === ''
         ? undefined
         : dateStringToInteger(contractForm.birthDateString as DateString),

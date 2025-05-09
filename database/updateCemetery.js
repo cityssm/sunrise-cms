@@ -33,7 +33,7 @@ export default function updateCemetery(updateForm, user) {
         ? undefined
         : updateForm.cemeteryLatitude, updateForm.cemeteryLongitude === ''
         ? undefined
-        : updateForm.cemeteryLongitude, updateForm.cemeteryAddress1, updateForm.cemeteryAddress2, updateForm.cemeteryCity, updateForm.cemeteryProvince, updateForm.cemeteryPostalCode, updateForm.cemeteryPhoneNumber, updateForm.parentCemeteryId === ''
+        : updateForm.cemeteryLongitude, updateForm.cemeteryAddress1, updateForm.cemeteryAddress2, updateForm.cemeteryCity, updateForm.cemeteryProvince, updateForm.cemeteryPostalCode.toUpperCase(), updateForm.cemeteryPhoneNumber, updateForm.parentCemeteryId === ''
         ? undefined
         : updateForm.parentCemeteryId, user.userName, Date.now(), updateForm.cemeteryId);
     updateCemeteryDirectionsOfArrival(updateForm.cemeteryId, updateForm, database);

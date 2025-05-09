@@ -10,7 +10,7 @@ export default function addFuneralHome(addForm, user) {
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(addForm.funeralHomeName, addForm.funeralHomeKey ?? '', addForm.funeralHomeAddress1, addForm.funeralHomeAddress2, addForm.funeralHomeCity, addForm.funeralHomeProvince, addForm.funeralHomePostalCode, addForm.funeralHomePhoneNumber, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run(addForm.funeralHomeName, addForm.funeralHomeKey ?? '', addForm.funeralHomeAddress1, addForm.funeralHomeAddress2, addForm.funeralHomeCity, addForm.funeralHomeProvince, addForm.funeralHomePostalCode.toUpperCase(), addForm.funeralHomePhoneNumber, user.userName, rightNowMillis, user.userName, rightNowMillis);
     database.close();
     return result.lastInsertRowid;
 }
