@@ -78,8 +78,7 @@ describe('Update - Cemeteries', () => {
     cy.get('#form--cemetery').submit()
 
     cy.wait(1000)
-
-    cy.location('pathname')
+      .location('pathname')
       .should('not.contain', '/new')
       .should('contain', '/edit')
 

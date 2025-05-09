@@ -49,8 +49,8 @@ describe('Update - Cemeteries', () => {
         cy.get("input[name='cemeteryProvince']").should('have.value', getConfigProperty('settings.provinceDefault'));
         cy.log('Submit the form');
         cy.get('#form--cemetery').submit();
-        cy.wait(1000);
-        cy.location('pathname')
+        cy.wait(1000)
+            .location('pathname')
             .should('not.contain', '/new')
             .should('contain', '/edit');
         cy.fixture('cemetery.json').then((cemeteryData) => {
