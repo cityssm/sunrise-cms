@@ -55,9 +55,9 @@ declare const exports: {
             },
             (rawResponseJSON) => {
               const responseJSON = rawResponseJSON as {
-                success: boolean
                 errorMessage?: string
                 relatedContracts: Contract[]
+                success: boolean
               }
 
               if (responseJSON.success) {
@@ -68,6 +68,7 @@ declare const exports: {
                 bulmaJS.alert({
                   contextualColorName: 'danger',
                   title: 'Error Removing Related Contract',
+
                   message: responseJSON.errorMessage ?? 'Please Try Again'
                 })
               }
@@ -188,9 +189,9 @@ declare const exports: {
           },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
-              success: boolean
               errorMessage?: string
               relatedContracts: Contract[]
+              success: boolean
             }
 
             if (responseJSON.success) {

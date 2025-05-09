@@ -1,3 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @cspell/spellchecker */
+
 import addFuneralHome from '../../database/addFuneralHome.js'
 import type { FuneralHome } from '../../types/record.types.js'
 
@@ -78,11 +81,12 @@ const funeralHomes: FuneralHome[] = [
     funeralHomeKey: 'LY',
     funeralHomeName: 'Lynett Funeral Home',
 
-    funeralHomeCity: 'Wawa',
-    funeralHomeProvince: 'ON',
     funeralHomeAddress1: '',
     funeralHomeAddress2: '',
+    funeralHomeCity: 'Wawa',
     funeralHomePostalCode: '',
+    funeralHomeProvince: 'ON',
+
     funeralHomePhoneNumber: ''
   },
   {

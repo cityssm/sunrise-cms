@@ -6,11 +6,11 @@ import getContracts from './getContracts.js';
 export default async function getBurialSite(burialSiteId, includeDeleted = false) {
     return await _getBurialSite('burialSiteId', burialSiteId, includeDeleted);
 }
-export async function getBurialSiteByBurialSiteName(burialSiteName, includeDeleted = false) {
-    return await _getBurialSite('burialSiteName', burialSiteName, includeDeleted);
+export async function getBurialSiteByBurialSiteName(burialSiteName, includeDeleted = false, connectedDatabase) {
+    return await _getBurialSite('burialSiteName', burialSiteName, includeDeleted, connectedDatabase);
 }
-async function _getBurialSite(keyColumn, burialSiteIdOrLotName, includeDeleted = false) {
-    const database = sqlite(sunriseDB, { readonly: true });
+async function _getBurialSite(keyColumn, burialSiteIdOrLotName, includeDeleted = false, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const burialSite = database
         .prepare(`select l.burialSiteId,
         l.burialSiteTypeId, t.burialSiteType,
@@ -56,6 +56,8 @@ async function _getBurialSite(keyColumn, burialSiteIdOrLotName, includeDeleted =
         burialSite.burialSiteFields = getBurialSiteFields(burialSite.burialSiteId, database);
         burialSite.burialSiteComments = getBurialSiteComments(burialSite.burialSiteId, database);
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return burialSite;
 }

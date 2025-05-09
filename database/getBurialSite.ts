@@ -16,17 +16,24 @@ export default async function getBurialSite(
 
 export async function getBurialSiteByBurialSiteName(
   burialSiteName: string,
-  includeDeleted = false
+  includeDeleted = false,
+  connectedDatabase?: sqlite.Database
 ): Promise<BurialSite | undefined> {
-  return await _getBurialSite('burialSiteName', burialSiteName, includeDeleted)
+  return await _getBurialSite(
+    'burialSiteName',
+    burialSiteName,
+    includeDeleted,
+    connectedDatabase
+  )
 }
 
 async function _getBurialSite(
   keyColumn: 'burialSiteId' | 'burialSiteName',
   burialSiteIdOrLotName: number | string,
-  includeDeleted = false
+  includeDeleted = false,
+  connectedDatabase?: sqlite.Database
 ): Promise<BurialSite | undefined> {
-  const database = sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const burialSite = database
     .prepare(
@@ -91,7 +98,9 @@ async function _getBurialSite(
     )
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return burialSite
 }

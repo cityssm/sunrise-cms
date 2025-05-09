@@ -41,6 +41,7 @@
     "@cityssm/date-diff": "^2.2.3",
     "@cityssm/dynamics-gp": "^1.1.0",
     "@cityssm/fa-glow": "^0.1.0",
+    "@cityssm/fill-block-range": "^0.1.1",
     "@cityssm/ntfy-publish": "^1.1.0",
     "@cityssm/pdf-puppeteer": "^5.0.0",
     "@cityssm/utils-datetime": "^1.3.0",
