@@ -51,14 +51,14 @@ const pdfPrintConfigs: Record<string, PrintConfig> = {
     title: 'Work Order Field Sheet - Comment Log'
   },
 
-  // Occupancy
-  'ssm.cemetery.burialPermit': {
-    params: ['contractId'],
-    title: 'Burial Permit'
-  },
-  'ssm.cemetery.contract': {
+  'ssm.contract': {
     params: ['contractId'],
     title: 'Contract for Purchase of Interment Rights'
+  },
+  // Contract Prints
+  'ssm.contract.burialPermit': {
+    params: ['contractId'],
+    title: 'Burial Permit'
   }
 }
 

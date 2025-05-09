@@ -43,8 +43,8 @@ config.settings.latitudeMin = 46.4;
 config.settings.longitudeMax = -84.2;
 config.settings.longitudeMin = -84.5;
 config.settings.contracts.prints = [
-    'pdf/ssm.cemetery.burialPermit',
-    'pdf/ssm.cemetery.contract'
+    'pdf/ssm.contract.burialPermit',
+    'pdf/ssm.contract'
 ];
 config.settings.printPdf.browser = 'firefox';
 config.settings.workOrders.workOrderNumberLength = 6;
