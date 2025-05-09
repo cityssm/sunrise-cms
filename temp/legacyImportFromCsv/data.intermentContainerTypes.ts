@@ -8,8 +8,8 @@ export function getIntermentContainerTypeIdByKey(
   user: User
 ): number {
   const intermentContainerType = intermentContainerTypes.find(
-    (intermentContainerType) =>
-      intermentContainerType.intermentContainerTypeKey ===
+    (possibleIntermentContainerType) =>
+      possibleIntermentContainerType.intermentContainerTypeKey ===
       intermentContainerTypeKey
   )
 

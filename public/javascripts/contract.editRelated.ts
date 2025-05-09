@@ -167,7 +167,7 @@ declare const exports: {
 
   document
     .querySelector('#button--addRelatedContract')
-    ?.addEventListener('click', (event) => {
+    ?.addEventListener('click', () => {
       let modalElement: HTMLElement | undefined
       let formElement: HTMLFormElement | undefined
 

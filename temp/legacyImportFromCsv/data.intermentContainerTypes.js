@@ -2,7 +2,7 @@ import addIntermentContainerType from '../../database/addIntermentContainerType.
 import getIntermentContainerTypes from '../../database/getIntermentContainerTypes.js';
 let intermentContainerTypes = getIntermentContainerTypes(true);
 export function getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user) {
-    const intermentContainerType = intermentContainerTypes.find((intermentContainerType) => intermentContainerType.intermentContainerTypeKey ===
+    const intermentContainerType = intermentContainerTypes.find((possibleIntermentContainerType) => possibleIntermentContainerType.intermentContainerTypeKey ===
         intermentContainerTypeKey);
     if (intermentContainerType === undefined) {
         const intermentContainerTypeId = addIntermentContainerType({

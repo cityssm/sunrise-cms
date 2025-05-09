@@ -8,7 +8,8 @@ export function getCommittalTypeIdByKey(
   user: User
 ): number {
   const committalType = committalTypes.find(
-    (committalType) => committalType.committalTypeKey === committalTypeKey
+    (possibleCommittalType) =>
+      possibleCommittalType.committalTypeKey === committalTypeKey
   )
 
   if (committalType === undefined) {

@@ -113,7 +113,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     renderRelatedContracts();
     document
         .querySelector('#button--addRelatedContract')
-        ?.addEventListener('click', (event) => {
+        ?.addEventListener('click', () => {
         let modalElement;
         let formElement;
         let closeModalFunction;
