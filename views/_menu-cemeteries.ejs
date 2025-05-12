@@ -28,6 +28,25 @@
       </a>
     </li>
   </ul>
+  <% if (user.userProperties.canUpdate) { %>
+    <h2 class="menu-label is-hidden-touch">
+      Tools
+    </h2>
+    <ul class="menu-list">
+      <li>
+        <a class="<%= (headTitle === "Burial Site Range Creator" ? "is-active" : "") %>"
+          href="<%= urlPrefix %>/burialSites/creator"
+          title="Burial Site Range Creator">
+          <div class="columns is-mobile is-1">
+            <div class="column is-narrow">
+              <span class="icon"><i class="fas fa-fw fa-folder-plus" aria-hidden="true"></i></span>
+            </div>
+            <div class="column is-hidden-touch">Burial Site Range Creator</div>
+          </div>
+        </a>
+      </li>
+    </ul>
+  <% } %>
   <h2 class="menu-label is-hidden-touch">
     Reports
   </h2>

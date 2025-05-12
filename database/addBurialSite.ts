@@ -5,6 +5,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js'
 import getCemetery from './getCemetery.js'
+import { purgeBurialSite } from './purgeBurialSite.js'
 
 export interface AddBurialSiteForm {
   burialSiteNameSegment1?: string
@@ -43,120 +44,141 @@ export default function addBurialSite(
   burialSiteForm: AddBurialSiteForm,
   user: User
 ): { burialSiteId: number; burialSiteName: string } {
-  const database = sqlite(sunriseDB)
+  let database: sqlite.Database | undefined
 
-  const rightNowMillis = Date.now()
+  try {
+    database = sqlite(sunriseDB)
 
-  const cemetery =
-    burialSiteForm.cemeteryId === ''
-      ? undefined
-      : getCemetery(burialSiteForm.cemeteryId, database)
+    const rightNowMillis = Date.now()
 
-  const burialSiteName = buildBurialSiteName(
-    cemetery?.cemeteryKey,
-    burialSiteForm
-  )
-
-  // Ensure no active burial sites share the same name
-
-  const existingBurialSite = database
-    .prepare(
-      `select burialSiteId
-        from BurialSites
-        where burialSiteName = ?
-        and recordDelete_timeMillis is null`
-    )
-    .pluck()
-    .get(burialSiteName) as number | undefined
-
-  if (existingBurialSite !== undefined) {
-    database.close()
-    throw new Error('An active burial site with that name already exists.')
-  }
-
-  const result = database
-    .prepare(
-      `insert into BurialSites (
-        burialSiteNameSegment1,
-        burialSiteNameSegment2,
-        burialSiteNameSegment3,
-        burialSiteNameSegment4,
-        burialSiteNameSegment5,
-        burialSiteName,
-        burialSiteTypeId, burialSiteStatusId,
-        bodyCapacity, crematedCapacity,
-        cemeteryId, cemeterySvgId, burialSiteImage,
-        burialSiteLatitude, burialSiteLongitude,
-
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis) 
-        values (?, ?, ?, ?, ?,
-          ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-          ?, ?, ?, ?)`
-    )
-    .run(
-      burialSiteForm.burialSiteNameSegment1 ?? '',
-      burialSiteForm.burialSiteNameSegment2 ?? '',
-      burialSiteForm.burialSiteNameSegment3 ?? '',
-      burialSiteForm.burialSiteNameSegment4 ?? '',
-      burialSiteForm.burialSiteNameSegment5 ?? '',
-      burialSiteName,
-      burialSiteForm.burialSiteTypeId,
-      burialSiteForm.burialSiteStatusId === ''
+    const cemetery =
+      burialSiteForm.cemeteryId === ''
         ? undefined
-        : burialSiteForm.burialSiteStatusId,
+        : getCemetery(burialSiteForm.cemeteryId, database)
 
-      burialSiteForm.bodyCapacity === ''
-        ? undefined
-        : burialSiteForm.bodyCapacity,
-
-      burialSiteForm.crematedCapacity === ''
-        ? undefined
-        : burialSiteForm.crematedCapacity,
-
-      burialSiteForm.cemeteryId === '' ? undefined : burialSiteForm.cemeteryId,
-      burialSiteForm.cemeterySvgId,
-      burialSiteForm.burialSiteImage ?? '',
-      burialSiteForm.burialSiteLatitude === ''
-        ? undefined
-        : burialSiteForm.burialSiteLatitude,
-      burialSiteForm.burialSiteLongitude === ''
-        ? undefined
-        : burialSiteForm.burialSiteLongitude,
-      user.userName,
-      rightNowMillis,
-      user.userName,
-      rightNowMillis
+    const burialSiteName = buildBurialSiteName(
+      cemetery?.cemeteryKey,
+      burialSiteForm
     )
 
-  const burialSiteId = result.lastInsertRowid as number
+    // Ensure no active burial sites share the same name
 
-  const burialSiteTypeFieldIds = (
-    burialSiteForm.burialSiteTypeFieldIds ?? ''
-  ).split(',')
-
-  for (const burialSiteTypeFieldId of burialSiteTypeFieldIds) {
-    const fieldValue = burialSiteForm[
-      `burialSiteFieldValue_${burialSiteTypeFieldId}`
-    ] as string | undefined
-
-    if ((fieldValue ?? '') !== '') {
-      addOrUpdateBurialSiteField(
-        {
-          burialSiteId,
-          burialSiteTypeFieldId,
-          fieldValue: fieldValue ?? ''
-        },
-        user,
-        database
+    const existingBurialSite = database
+      .prepare(
+        `select burialSiteId, recordDelete_timeMillis
+          from BurialSites
+          where burialSiteName = ?`
       )
+      .get(burialSiteName) as
+      | {
+          burialSiteId: number
+          recordDelete_timeMillis: number | null
+        }
+      | undefined
+
+    if (existingBurialSite !== undefined) {
+      if (existingBurialSite.recordDelete_timeMillis === null) {
+        throw new Error(
+          `An active burial site with the name "${burialSiteName}" already exists.`
+        )
+      } else {
+        const success = purgeBurialSite(existingBurialSite.burialSiteId, database)
+
+        if (!success) {
+          throw new Error(
+            `An deleted burial site with the name "${burialSiteName}" previously existed,
+              however the burial site is associated with past records and cannot be recreated.`
+          )
+        }
+      }
     }
-  }
 
-  database.close()
+    const result = database
+      .prepare(
+        `insert into BurialSites (
+          burialSiteNameSegment1,
+          burialSiteNameSegment2,
+          burialSiteNameSegment3,
+          burialSiteNameSegment4,
+          burialSiteNameSegment5,
+          burialSiteName,
+          burialSiteTypeId, burialSiteStatusId,
+          bodyCapacity, crematedCapacity,
+          cemeteryId, cemeterySvgId, burialSiteImage,
+          burialSiteLatitude, burialSiteLongitude,
+  
+          recordCreate_userName, recordCreate_timeMillis,
+          recordUpdate_userName, recordUpdate_timeMillis) 
+          values (?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+            ?, ?, ?, ?)`
+      )
+      .run(
+        burialSiteForm.burialSiteNameSegment1 ?? '',
+        burialSiteForm.burialSiteNameSegment2 ?? '',
+        burialSiteForm.burialSiteNameSegment3 ?? '',
+        burialSiteForm.burialSiteNameSegment4 ?? '',
+        burialSiteForm.burialSiteNameSegment5 ?? '',
+        burialSiteName,
+        burialSiteForm.burialSiteTypeId,
+        burialSiteForm.burialSiteStatusId === ''
+          ? undefined
+          : burialSiteForm.burialSiteStatusId,
 
-  return {
-    burialSiteId,
-    burialSiteName
+        burialSiteForm.bodyCapacity === ''
+          ? undefined
+          : burialSiteForm.bodyCapacity,
+
+        burialSiteForm.crematedCapacity === ''
+          ? undefined
+          : burialSiteForm.crematedCapacity,
+
+        burialSiteForm.cemeteryId === ''
+          ? undefined
+          : burialSiteForm.cemeteryId,
+        burialSiteForm.cemeterySvgId,
+        burialSiteForm.burialSiteImage ?? '',
+        burialSiteForm.burialSiteLatitude === ''
+          ? undefined
+          : burialSiteForm.burialSiteLatitude,
+        burialSiteForm.burialSiteLongitude === ''
+          ? undefined
+          : burialSiteForm.burialSiteLongitude,
+        user.userName,
+        rightNowMillis,
+        user.userName,
+        rightNowMillis
+      )
+
+    const burialSiteId = result.lastInsertRowid as number
+
+    const burialSiteTypeFieldIds = (
+      burialSiteForm.burialSiteTypeFieldIds ?? ''
+    ).split(',')
+
+    for (const burialSiteTypeFieldId of burialSiteTypeFieldIds) {
+      const fieldValue = burialSiteForm[
+        `burialSiteFieldValue_${burialSiteTypeFieldId}`
+      ] as string | undefined
+
+      if ((fieldValue ?? '') !== '') {
+        addOrUpdateBurialSiteField(
+          {
+            burialSiteId,
+            burialSiteTypeFieldId,
+            fieldValue: fieldValue ?? ''
+          },
+          user,
+          database
+        )
+      }
+    }
+
+    return {
+      burialSiteId,
+      burialSiteName
+    }
+  } finally {
+    database?.close()
   }
 }

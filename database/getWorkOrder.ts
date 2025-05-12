@@ -76,6 +76,7 @@ async function _getWorkOrder(
         },
         {
           includeContractCount: false,
+          includeDeleted: true,
           limit: -1,
           offset: 0
         },

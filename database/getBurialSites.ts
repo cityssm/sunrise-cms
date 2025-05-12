@@ -26,6 +26,7 @@ export interface GetBurialSitesOptions {
   offset: number | string
 
   includeContractCount?: boolean
+  includeDeleted?: boolean
 }
 
 export default function getBurialSites(
@@ -35,7 +36,10 @@ export default function getBurialSites(
 ): { burialSites: BurialSite[]; count: number } {
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
-  const { sqlParameters, sqlWhereClause } = buildWhereClause(filters)
+  const { sqlParameters, sqlWhereClause } = buildWhereClause(
+    filters,
+    options.includeDeleted ?? false
+  )
 
   const currentDate = dateToInteger(new Date())
 
@@ -131,11 +135,14 @@ export default function getBurialSites(
   }
 }
 
-function buildWhereClause(filters: GetBurialSitesFilters): {
+function buildWhereClause(
+  filters: GetBurialSitesFilters,
+  includeDeleted: boolean
+): {
   sqlParameters: unknown[]
   sqlWhereClause: string
 } {
-  let sqlWhereClause = ' where l.recordDelete_timeMillis is null'
+  let sqlWhereClause = ` where ${includeDeleted ? ' 1 = 1' : ' l.recordDelete_timeMillis is null'}`
   const sqlParameters: unknown[] = []
 
   const burialSiteNameFilters = getBurialSiteNameWhereClause(

@@ -5,7 +5,7 @@ export default function handler(request, response) {
     const burialSiteTypes = getBurialSiteTypes();
     const burialSiteStatuses = getBurialSiteStatuses();
     response.render('burialSite-creator', {
-        headTitle: 'Burial Site Creator',
+        headTitle: 'Burial Site Range Creator',
         burialSiteStatuses,
         burialSiteTypes,
         cemeteries

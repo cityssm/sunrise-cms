@@ -16,14 +16,14 @@
         </li>
         <li class="is-active">
           <a href="#" aria-current="page">
-            Burial Site Creator
+            Burial Site Range Creator
           </a>
         </li>
       </ul>
     </nav>
 
     <h1 class="title is-1">
-      Burial Site Creator
+      Burial Site Range Creator
     </h1>
 
     <div class="tabs is-boxed">
@@ -48,7 +48,7 @@
         <div class="message is-info">
           <div class="message-body">
             <p>
-              The Burial Site Creator allows you to create a range of burial sites based on the name segments and cemetery selected.
+              The Burial Site Range Creator allows you to create a range of burial sites based on the name segments and cemetery selected.
             </p>
             <p>
               The burial site names will be generated based on the segments defined in the settings.
@@ -221,7 +221,7 @@
             </div>
           </div>
           <div class="column">
-            <div class="panel">
+            <div class="panel" id="panel--burialSitePreview_existing">
               <div class="panel-heading">
                 <div class="level is-mobile">
                   <div class="level-left">
@@ -238,7 +238,7 @@
                   </div>
                   <div class="level-right">
                     <div class="level-item">
-                      <span class="tag is-info" id="burialSitePreview--existingCount">0</span>
+                      <span class="tag is-info">0</span>
                     </div>
                   </div>
                 </div>
@@ -249,10 +249,9 @@
                     The burial sites listed below already exist.
                   </p>
                 </div>
-                <div id="container--burialSitePreview_existing"></div>
               </div>
             </div>
-            <div class="panel">
+            <div class="panel" id="panel--burialSitePreview_new">
               <div class="panel-heading">
                 <div class="level is-mobile">
                   <div class="level-left">
@@ -269,7 +268,7 @@
                   </div>
                   <div class="level-right">
                     <div class="level-item">
-                      <span class="tag is-info" id="burialSitePreview--newCount">0</span>
+                      <span class="tag is-info">0</span>
                     </div>
                   </div>
                 </div>
@@ -280,7 +279,6 @@
                     The burial sites listed below do not exist and can be created.
                   </p>
                 </div>
-                <div id="container--burialSitePreview_new"></div>
               </div>
             </div>
           </div>

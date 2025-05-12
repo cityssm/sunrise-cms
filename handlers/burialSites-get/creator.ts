@@ -12,7 +12,7 @@ export default function handler(request: Request, response: Response): void {
   const burialSiteStatuses = getBurialSiteStatuses()
 
   response.render('burialSite-creator', {
-    headTitle: 'Burial Site Creator',
+    headTitle: 'Burial Site Range Creator',
 
     burialSiteStatuses,
     burialSiteTypes,

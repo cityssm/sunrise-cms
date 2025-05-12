@@ -34,6 +34,7 @@ async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connect
                 workOrderId: workOrder.workOrderId
             }, {
                 includeContractCount: false,
+                includeDeleted: true,
                 limit: -1,
                 offset: 0
             }, database);
