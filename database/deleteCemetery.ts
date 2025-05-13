@@ -52,7 +52,7 @@ export default function deleteCemetery(
    * Delete burial sites, fields, and comments
    */
 
-  database
+  const deletedBurialSites = database
     .prepare(
       `update BurialSites
         set recordDelete_userName = ?,
@@ -60,7 +60,7 @@ export default function deleteCemetery(
         where cemeteryId = ?
         and recordDelete_timeMillis is null`
     )
-    .run(user.userName, rightNowMillis, cemeteryId)
+    .run(user.userName, rightNowMillis, cemeteryId).changes
 
   database
     .prepare(
@@ -83,6 +83,20 @@ export default function deleteCemetery(
         and recordDelete_timeMillis is null`
     )
     .run(user.userName, rightNowMillis, cemeteryId)
+
+  if (deletedBurialSites === 0) {
+    const purgeTables = ['CemeteryDirectionsOfArrival', 'Cemeteries']
+
+    for (const tableName of purgeTables) {
+      database
+        .prepare(
+          `delete from ${tableName}
+            where cemeteryId = ?
+            and cemeteryId not in (select cemeteryId from BurialSites)`
+        )
+        .run(cemeteryId)
+    }
+  }
 
   database.close()
 

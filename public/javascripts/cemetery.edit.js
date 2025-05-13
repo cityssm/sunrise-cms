@@ -79,20 +79,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Deleting Cemetery',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
         }
         bulmaJS.confirm({
-            title: 'Delete Cemetery',
-            message: 'Are you sure you want to delete this cemetery and all related burial sites?',
             contextualColorName: 'warning',
+            title: 'Delete Cemetery',
+            message: `Are you sure you want to delete this cemetery <strong>and all related burial sites</string>?`,
+            messageIsHtml: true,
             okButton: {
-                text: 'Yes, Delete Cemetery',
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete Cemetery and Burial Sites'
             }
         });
     });

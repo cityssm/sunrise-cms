@@ -11,6 +11,7 @@ export default function cleanupDatabase(user: User): {
   const database = sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
+
   const recordDeleteTimeMillisMin =
     rightNowMillis -
     daysToMillis(getConfigProperty('settings.adminCleanup.recordDeleteAgeDays'))
@@ -420,6 +421,26 @@ export default function cleanupDatabase(user: User): {
       `delete from BurialSiteTypes
         where recordDelete_timeMillis <= ?
           and burialSiteTypeId not in (select burialSiteTypeId from BurialSites)`
+    )
+    .run(recordDeleteTimeMillisMin).changes
+
+  /*
+   * Cemeteries
+   */
+
+  purgedRecordCount += database
+    .prepare(
+      `delete from CemeteryDirectionsOfArrival
+        where cemeteryId in (select cemeteryId from Cemeteries where recordDelete_timeMillis <= ?)`
+    )
+    .run(recordDeleteTimeMillisMin).changes
+
+  purgedRecordCount += database
+    .prepare(
+      `delete from Cemeteries
+        where recordDelete_timeMillis <= ?
+          and cemeteryId not in (select cemeteryId from CemeteryDirectionsOfArrival)
+          and cemeteryId not in (select cemeteryId from BurialSites where cemeteryId is not null)`
     )
     .run(recordDeleteTimeMillisMin).changes
 

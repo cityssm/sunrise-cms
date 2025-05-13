@@ -34,13 +34,13 @@ export default function deleteCemetery(cemeteryId, user) {
     /*
      * Delete burial sites, fields, and comments
      */
-    database
+    const deletedBurialSites = database
         .prepare(`update BurialSites
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where cemeteryId = ?
         and recordDelete_timeMillis is null`)
-        .run(user.userName, rightNowMillis, cemeteryId);
+        .run(user.userName, rightNowMillis, cemeteryId).changes;
     database
         .prepare(`update BurialSiteFields
         set recordDelete_userName = ?,
@@ -57,6 +57,16 @@ export default function deleteCemetery(cemeteryId, user) {
           select burialSiteId from BurialSites where cemeteryId = ?)
         and recordDelete_timeMillis is null`)
         .run(user.userName, rightNowMillis, cemeteryId);
+    if (deletedBurialSites === 0) {
+        const purgeTables = ['CemeteryDirectionsOfArrival', 'Cemeteries'];
+        for (const tableName of purgeTables) {
+            database
+                .prepare(`delete from ${tableName}
+            where cemeteryId = ?
+            and cemeteryId not in (select cemeteryId from BurialSites)`)
+                .run(cemeteryId);
+        }
+    }
     database.close();
     return true;
 }
