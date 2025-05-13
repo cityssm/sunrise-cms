@@ -288,8 +288,10 @@ app.use(
 )
 
 if (configFunctions.getConfigProperty('session.doKeepAlive')) {
-  app.all(`${urlPrefix}/keepAlive`, (_request, response) => {
-    response.json(true)
+  app.all(`${urlPrefix}/keepAlive`, (request, response) => {
+    response.json({
+      activeSession: request.session.user !== undefined
+    })
   })
 }
 

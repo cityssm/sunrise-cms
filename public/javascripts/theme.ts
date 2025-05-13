@@ -42,9 +42,10 @@ declare const bulmaJS: BulmaJS
   const urlPrefix =
     document.querySelector('main')?.getAttribute('data-url-prefix') ?? ''
 
-  const keepAliveMillis = document
-    .querySelector('main')
-    ?.getAttribute('data-session-keep-alive-millis')
+  const keepAliveMillis =
+    document.querySelector('main')?.dataset.sessionKeepAliveMillis
+
+  let keepAliveInterval: NodeJS.Timeout | undefined
 
   function doKeepAlive(): void {
     cityssm.postJSON(
@@ -52,17 +53,36 @@ declare const bulmaJS: BulmaJS
       {
         t: Date.now()
       },
-      () => {
-        // Do nothing
+      (rawResponseJson: unknown) => {
+        const responseJson = rawResponseJson as {
+          activeSession: boolean
+        }
+
+        if (!responseJson.activeSession) {
+          bulmaJS.alert({
+            contextualColorName: 'danger',
+            title: 'Session Expired',
+
+            message: 'Your session has expired. Please log in again.',
+
+            okButton: {
+              text: 'Refresh Page',
+              callbackFunction: () => {
+                globalThis.location.reload()
+              }
+            }
+          })
+
+          globalThis.clearInterval(keepAliveInterval)
+        }
       }
     )
   }
 
-  if (
-    keepAliveMillis !== null &&
-    keepAliveMillis !== undefined &&
-    keepAliveMillis !== '0'
-  ) {
-    globalThis.setInterval(doKeepAlive, Number.parseInt(keepAliveMillis, 10))
+  if (keepAliveMillis !== undefined && keepAliveMillis !== '0') {
+    keepAliveInterval = globalThis.setInterval(
+      doKeepAlive,
+      Number.parseInt(keepAliveMillis, 10)
+    )
   }
 })()

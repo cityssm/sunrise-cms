@@ -161,8 +161,10 @@ app.use(`${urlPrefix}/workOrders`, sessionChecker, routerWorkOrders);
 app.use(`${urlPrefix}/reports`, sessionChecker, routerReports);
 app.use(`${urlPrefix}/admin`, sessionChecker, permissionHandlers.adminGetHandler, routerAdmin);
 if (configFunctions.getConfigProperty('session.doKeepAlive')) {
-    app.all(`${urlPrefix}/keepAlive`, (_request, response) => {
-        response.json(true);
+    app.all(`${urlPrefix}/keepAlive`, (request, response) => {
+        response.json({
+            activeSession: request.session.user !== undefined
+        });
     });
 }
 app.use(`${urlPrefix}/login`, routerLogin);
