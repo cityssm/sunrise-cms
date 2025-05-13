@@ -87,7 +87,7 @@ function formatTimeString(hour: string, minute: string): TimeString {
 async function importFromMasterCSV(): Promise<void> {
   console.time('importFromMasterCSV')
 
-  let masterRow: MasterRecord
+  let masterRow: MasterRecord | undefined
 
   const rawData = fs.readFileSync('./temp/CMMASTER.csv').toString()
 
@@ -504,7 +504,7 @@ async function importFromMasterCSV(): Promise<void> {
 async function importFromPrepaidCSV(): Promise<void> {
   console.time('importFromPrepaidCSV')
 
-  let prepaidRow: PrepaidRecord
+  let prepaidRow: PrepaidRecord | undefined
 
   const rawData = fs.readFileSync('./temp/CMPRPAID.csv').toString()
 
@@ -845,7 +845,7 @@ async function importFromPrepaidCSV(): Promise<void> {
 async function importFromWorkOrderCSV(): Promise<void> {
   console.time('importFromWorkOrderCSV')
 
-  let workOrderRow: WorkOrderRecord
+  let workOrderRow: WorkOrderRecord | undefined
 
   const rawData = fs.readFileSync('./temp/CMWKORDR.csv').toString()
 

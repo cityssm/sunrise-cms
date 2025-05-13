@@ -82,6 +82,7 @@ export default function getBurialSiteNamesByRange(
     return []
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   if (calculateCartesianProductLength(segmentRanges) > burialSiteNameRangeLimit) {
     return []
   }
