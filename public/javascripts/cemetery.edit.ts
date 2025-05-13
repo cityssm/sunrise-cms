@@ -84,15 +84,16 @@ declare const exports: Record<string, unknown>
             )
           } else {
             bulmaJS.alert({
+              contextualColorName: 'success',
               message: 'Cemetery Updated Successfully',
-              contextualColorName: 'success'
             })
           }
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Updating Cemetery',
+
             message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
           })
         }
       }
@@ -143,7 +144,7 @@ declare const exports: Record<string, unknown>
         contextualColorName: 'warning',
         title: 'Delete Cemetery',
 
-        message: `Are you sure you want to delete this cemetery <strong>and all related burial sites</string>?`,
+        message: 'Are you sure you want to delete this cemetery <strong>and all related burial sites</strong>?',
         messageIsHtml: true,
 
         okButton: {

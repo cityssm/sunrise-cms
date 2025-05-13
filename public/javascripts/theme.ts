@@ -9,8 +9,7 @@ declare const bulmaJS: BulmaJS
    */
 ;(() => {
   function doLogout(): void {
-    const urlPrefix =
-      document.querySelector('main')?.getAttribute('data-url-prefix') ?? ''
+    const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
 
     globalThis.localStorage.clear()
     globalThis.location.href = `${urlPrefix}/logout`
@@ -66,10 +65,10 @@ declare const bulmaJS: BulmaJS
             message: 'Your session has expired. Please log in again.',
 
             okButton: {
-              text: 'Refresh Page',
               callbackFunction: () => {
                 globalThis.location.reload()
-              }
+              },
+              text: 'Refresh Page'
             }
           })
 

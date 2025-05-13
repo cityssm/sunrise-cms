@@ -55,9 +55,10 @@ declare const exports: Record<string, unknown>
             renderContractComments()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Updating Comment',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -134,7 +135,7 @@ declare const exports: Record<string, unknown>
         `${sunrise.urlPrefix}/contracts/doDeleteContractComment`,
         {
           contractCommentId,
-          contractId,
+          contractId
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
@@ -148,9 +149,10 @@ declare const exports: Record<string, unknown>
             renderContractComments()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Removing Comment',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -158,13 +160,14 @@ declare const exports: Record<string, unknown>
     }
 
     bulmaJS.confirm({
+      contextualColorName: 'warning',
       title: 'Remove Comment?',
+
       message: 'Are you sure you want to remove this comment?',
       okButton: {
-        text: 'Yes, Remove Comment',
-        callbackFunction: doDelete
-      },
-      contextualColorName: 'warning'
+        callbackFunction: doDelete,
+        text: 'Yes, Remove Comment'
+      }
     })
   }
 
@@ -263,9 +266,10 @@ declare const exports: Record<string, unknown>
               renderContractComments()
             } else {
               bulmaJS.alert({
+                contextualColorName: 'danger',
                 title: 'Error Adding Comment',
+
                 message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
               })
             }
           }
@@ -295,6 +299,7 @@ declare const exports: Record<string, unknown>
 
           addCloseModalFunction = closeModalFunction
         },
+        
         onremoved() {
           bulmaJS.toggleHtmlClipped()
           ;(

@@ -24,9 +24,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Updating Comment',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -70,7 +70,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractComment`, {
                 contractCommentId,
-                contractId,
+                contractId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
@@ -79,21 +79,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Removing Comment',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Remove Comment?',
             message: 'Are you sure you want to remove this comment?',
             okButton: {
-                text: 'Yes, Remove Comment',
-                callbackFunction: doDelete
-            },
-            contextualColorName: 'warning'
+                callbackFunction: doDelete,
+                text: 'Yes, Remove Comment'
+            }
         });
     }
     function renderContractComments() {
@@ -167,9 +167,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Adding Comment',
                         message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
                     });
                 }
             });

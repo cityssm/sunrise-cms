@@ -11,15 +11,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 committalTypes = responseJSON.committalTypes;
                 bulmaJS.alert({
-                    message: 'Committal Type Updated Successfully',
-                    contextualColorName: 'success'
+                    contextualColorName: 'success',
+                    message: 'Committal Type Updated Successfully'
                 });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Updating Committal Type',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -41,28 +41,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         tableRowElement.remove();
                     }
                     bulmaJS.alert({
-                        message: 'Committal Type Deleted Successfully',
-                        contextualColorName: 'success'
+                        contextualColorName: 'success',
+                        message: 'Committal Type Deleted Successfully'
                     });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Deleting Committal Type',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Committal Type',
             message: `Are you sure you want to delete this type?<br />
           Note that no contracts will be removed.`,
             messageIsHtml: true,
-            contextualColorName: 'warning',
             okButton: {
-                text: 'Yes, Delete Type',
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete Type'
             }
         });
     }
@@ -83,9 +83,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Moving Committal Type',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -159,9 +159,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Adding Committal Type',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
