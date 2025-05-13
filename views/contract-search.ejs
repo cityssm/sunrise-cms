@@ -1,6 +1,5 @@
 <%- include('_header'); -%>
 
-
 <div class="columns is-mobile">
   <div class="column is-2-desktop is-narrow-touch is-hidden-print">
     <%- include('_menu-contracts'); -%>
@@ -51,7 +50,7 @@
           <a class="button is-circle is-primary has-tooltip-left"
             data-tooltip="Create a New Contract"
             href="<%= urlPrefix %>/contracts/new"
-            accesskey="n">
+            <%- enableKeyboardShortcuts ? ' accesskey="n" ' : '' %>>
             <i class="fas fa-plus" aria-hidden="true"></i>
             <span class="sr-only">Create a New Contract</span>
           </a>
@@ -83,7 +82,8 @@
             <div class="field">
               <label class="label" for="searchFilter--deceasedName">Recipient / Deceased Name</label>
               <div class="control has-icons-left">
-                <input class="input" id="searchFilter--deceasedName" name="deceasedName" accesskey="f" />
+                <input class="input" id="searchFilter--deceasedName" name="deceasedName"
+                  <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %> />
                 <span class="icon is-small is-left">
                   <i class="fas fa-search" aria-hidden="true"></i>
                 </span>

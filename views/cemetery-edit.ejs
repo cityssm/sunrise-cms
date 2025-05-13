@@ -11,7 +11,8 @@
     </li>
     <% if (!isCreate) { %>
       <li>
-        <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>" accesskey="v">
+        <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>"
+          <%- enableKeyboardShortcuts ? ' accesskey="v" ' : '' %>>
           <%= cemetery.cemeteryName || "(No Name)" %>
         </a>
       </li>

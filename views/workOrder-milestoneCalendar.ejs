@@ -34,7 +34,8 @@
               <label class="label" for="searchFilter--workOrderMilestoneDateFilter">Miestone Date Filter Type</label>
               <div class="control has-icons-left">
                 <div class="select is-fullwidth">
-                  <select id="searchFilter--workOrderMilestoneDateFilter" name="workOrderMilestoneDateFilter" accesskey="f">
+                  <select id="searchFilter--workOrderMilestoneDateFilter" name="workOrderMilestoneDateFilter"
+                    <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %>>
                     <option value="upcomingMissed" selected>Upcoming and Missed</option>
                     <option value="recent">Recent</option>
                     <option value="date">Specific Date</option>

@@ -48,7 +48,7 @@
           <a class="button is-circle is-primary has-tooltip-left"
             data-tooltip="Create a New Burial Site"
             href="<%= urlPrefix %>/burialSites/new"
-            accesskey="n">
+            <%- enableKeyboardShortcuts ? ' accesskey="n" ' : '' %>>
             <i class="fas fa-plus" aria-hidden="true"></i>
             <span class="sr-only">Create a New Burial Site</span>
           </a>

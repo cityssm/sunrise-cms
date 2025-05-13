@@ -42,6 +42,7 @@ export const configDefaultValues = {
   'settings.cityDefault': '',
   'settings.provinceDefault': '',
 
+  'settings.enableKeyboardShortcuts': true,
   'settings.publicInternalPath': 'public-internal',
 
   'settings.latitudeMax': 90,

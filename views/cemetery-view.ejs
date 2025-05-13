@@ -36,14 +36,14 @@
       <a class="button is-link is-outlined has-tooltip-left"
         data-tooltip="Previous Cemetery"
         href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>/previous"
-        accesskey=",">
+        <%- enableKeyboardShortcuts ? ' accesskey="," ' : '' %>>
         <span class="icon m-0"><i class="fas fa-arrow-left" aria-hidden="true"></i></span>
         <span class="sr-only">Previous Cemetery</span>
       </a>
       <a class="button is-link has-tooltip-left"
         data-tooltip="Next Cemetery"
         href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>/next"
-        accesskey=".">
+        <%- enableKeyboardShortcuts ? ' accesskey="." ' : '' %>>
         <span>Next</span>
         <span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
       </a>
@@ -51,7 +51,7 @@
         <div class="level-item">
           <a class="button is-primary"
             href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>/edit"
-            accesskey="e">
+            <%- enableKeyboardShortcuts ? ' accesskey="e" ' : '' %>>
             <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
             <span>
               Edit

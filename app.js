@@ -144,6 +144,7 @@ app.use((request, response, next) => {
     response.locals.dateTimeFunctions = dateTimeFunctions;
     response.locals.dataLists = dataLists;
     response.locals.urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
+    response.locals.enableKeyboardShortcuts = configFunctions.getConfigProperty('settings.enableKeyboardShortcuts');
     next();
 });
 app.get(`${urlPrefix}/`, sessionChecker, (_request, response) => {

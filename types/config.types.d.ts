@@ -23,6 +23,7 @@ export interface Config {
     settings: {
         cityDefault?: string;
         provinceDefault?: string;
+        enableKeyboardShortcuts?: boolean;
         latitudeMax?: number;
         latitudeMin?: number;
         longitudeMax?: number;

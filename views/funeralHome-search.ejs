@@ -36,7 +36,7 @@
         <a class="button is-circle is-primary has-tooltip-left"
           data-tooltip="Create a New Funeral Home"
           href="<%= urlPrefix %>/funeralHomes/new"
-          accesskey="n">
+          <%- enableKeyboardShortcuts ? ' accesskey="n" ' : '' %>>
           <i class="fas fa-plus" aria-hidden="true"></i>
           <span class="sr-only">Create a New Funeral Home</span>
         </a>
@@ -49,7 +49,7 @@
           <div class="control has-icons-left">
             <input class="input" id="searchFilter--funeralHome" type="text"
               placeholder="Search funeral home name and address"
-              accesskey="f" />
+              <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %> />
             <span class="icon is-small is-left">
               <i class="fas fa-search" aria-hidden="true"></i>
             </span>

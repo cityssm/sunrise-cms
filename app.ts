@@ -32,7 +32,9 @@ import routerReports from './routes/reports.js'
 import routerWorkOrders from './routes/workOrders.js'
 import { version } from './version.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(5)}`)
+const debug = Debug(
+  `${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(5)}`
+)
 
 /*
  * INITIALIZE APP
@@ -108,7 +110,9 @@ app.use(
     },
     secret: configFunctions.getConfigProperty('session.secret'),
     store: new FileStoreSession({
-      logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid.toString().padEnd(5)}`),
+      logFn: Debug(
+        `${DEBUG_NAMESPACE}:session:${process.pid.toString().padEnd(5)}`
+      ),
       path: './data/sessions',
       retries: 20
     }),
@@ -154,7 +158,9 @@ app.use(
 
     response.sendStatus(403)
   },
-  express.static(configFunctions.getConfigProperty('settings.publicInternalPath'))
+  express.static(
+    configFunctions.getConfigProperty('settings.publicInternalPath')
+  )
 )
 
 app.use(urlPrefix, express.static(path.join('public')))
@@ -249,6 +255,10 @@ app.use((request, response, next) => {
 
   response.locals.urlPrefix = configFunctions.getConfigProperty(
     'reverseProxy.urlPrefix'
+  )
+
+  response.locals.enableKeyboardShortcuts = configFunctions.getConfigProperty(
+    'settings.enableKeyboardShortcuts'
   )
 
   next()

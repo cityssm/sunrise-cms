@@ -89,7 +89,7 @@
         <% } else { %>
           <a class="button is-primary"
             href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>/edit"
-            accesskey="e">
+            <%- enableKeyboardShortcuts ? ' accesskey="e" ' : '' %>>
             <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
             <span>
               Edit

@@ -11,7 +11,8 @@
     </li>
     <% if (!isCreate) { %>
       <li>
-        <a href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>" accesskey="v">
+        <a href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>"
+          <%- enableKeyboardShortcuts ? ' accesskey="v" ' : '' %>>
           <%= funeralHome.funeralHomeName || "(No Name)" %>
         </a>
       </li>
@@ -97,7 +98,7 @@
                 maxlength="200"
                 autocomplete="off"
                 required
-                accesskey="f"
+                <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %>
                 <%= (isCreate ? " autofocus" : "") %> />
             </div>
           </div>

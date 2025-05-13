@@ -26,6 +26,7 @@ export const configDefaultValues = {
     'aliases.workOrderOpenDate': 'Order Date',
     'settings.cityDefault': '',
     'settings.provinceDefault': '',
+    'settings.enableKeyboardShortcuts': true,
     'settings.publicInternalPath': 'public-internal',
     'settings.latitudeMax': 90,
     'settings.latitudeMin': -90,

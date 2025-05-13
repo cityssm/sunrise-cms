@@ -11,7 +11,8 @@
     </li>
     <% if (!isCreate) { %>
       <li>
-        <a href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>" accesskey="v">
+        <a href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>"
+          <%- enableKeyboardShortcuts ? ' accesskey="v" ' : '' %>>
           <%= burialSite.burialSiteName %>
         </a>
       </li>
@@ -128,7 +129,7 @@
                     placeholder="<%= segment.label ?? '' %>"
                     aria-label="<%= segment.label ?? '' %>"
                     <%= (segment.isRequired ?? false) ? ' required' : '' %>
-                    <%= segmentIndex === 1 ? ' accesskey="f"' : '' %>
+                    <%= segmentIndex === 1 && enableKeyboardShortcuts ? ' accesskey="f"' : '' %>
                     <%= (isCreate && segmentIndex === 1 ? " autofocus" : "") %> />
                 </div>
                 <% if ((segment.suffix ?? '') !== '') { %>

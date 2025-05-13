@@ -16,7 +16,11 @@ The most popular combinations are below.
 | Microsoft Edge | <kbd>Alt</kbd> + <kbd>key</kbd>                    |
 
 Combinations for other operating systems and browsers can be found in the
-[mdn documentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/accesskey,)
+[mdn documentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/accesskey).
+
+Note that shortcuts can be disabled in `config.js` by setting
+`"settings.enableKeyboardShortcuts" = false`
+
 
 ## Main Section Shortcuts
 
@@ -24,18 +28,21 @@ From any page in the application, you can use a section shortcut to jump to anot
 
 | Section      | Shortcut Key |
 | ------------ | ------------ |
+| Dashboard    | <kbd>0</kbd> |
 | Work Orders  | <kbd>1</kbd> |
 | Contracts    | <kbd>2</kbd> |
 | Burial Sites | <kbd>3</kbd> |
 | Cemeteries   | <kbd>4</kbd> |
+| Help         | <kbd>h</kbd> |
 
 ## Search Page Shortcuts
 
-From any search page in the application, you can quickly open the corresponding "new record" form.
+From any search page in the application, you can quickly jump to the search filters or open the corresponding "new record" form.
 
-| Description | Shortcut Key |
-| ----------- | ------------ |
-| New Record  | <kbd>n</kbd> |
+| Description                      | Shortcut Key |
+| -------------------------------- | ------------ |
+| Select First Search Filter Field | <kbd>f</kbd> |
+| New Record                       | <kbd>n</kbd> |
 
 ## Record View Page Shortcuts
 
@@ -46,3 +53,11 @@ From any view page with a toolbar at the bottom of the screen, you can use many 
 | Previous Record | <kbd>,</kbd> |
 | Next Record     | <kbd>.</kbd> |
 | Edit Record     | <kbd>e</kbd> |
+
+## Recrod Edit Page Shortcuts
+
+From any edit page in the application, you can return to the view page.
+
+| Description | Shortcut Key |
+| ----------- | ------------ |
+| View Record | <kbd>v</kbd> |

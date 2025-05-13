@@ -26,7 +26,7 @@
         <a class="button is-circle is-primary has-tooltip-left"
           data-tooltip="Create a New Work Order"
           href="<%= urlPrefix %>/workOrders/new"
-          accesskey="n">
+          <%- enableKeyboardShortcuts ? ' accesskey="n" ' : '' %>>
           <i class="fas fa-plus" aria-hidden="true"></i>
           <span class="is-sr-only">Create a New Work Order</span>
         </a>
@@ -44,7 +44,8 @@
               <label class="label" for="searchFilter--workOrderTypeId">Work Order Type</label>
               <div class="control has-icons-left">
                 <div class="select is-fullwidth">
-                  <select id="searchFilter--workOrderTypeId" name="workOrderTypeId" accesskey="f">
+                  <select id="searchFilter--workOrderTypeId" name="workOrderTypeId"
+                    <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %>>
                     <option value="">(All Work Order Types)</option>
                     <% for (const workOrderType of workOrderTypes) { %>
                       <option value="<%= workOrderType.workOrderTypeId %>"><%= workOrderType.workOrderType || "(No Name)" %></option>

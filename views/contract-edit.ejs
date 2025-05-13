@@ -13,7 +13,8 @@
     </li>
     <% if (!isCreate) { %>
     <li>
-      <a href="<%= urlPrefix %>/contracts/<%= contract.contractId %>" accesskey="v">
+      <a href="<%= urlPrefix %>/contracts/<%= contract.contractId %>"
+        <%- enableKeyboardShortcuts ? ' accesskey="v" ' : '' %>>
         Contract #<%= contract.contractId %>: <%= contract.burialSiteName || ("(No Burial Site)") %>
       </a>
     </li>
