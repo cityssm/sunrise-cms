@@ -144,6 +144,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 existingResultsPanelElement.append(buildExistingBurialSitePanelBlockElement(burialSiteName.burialSiteName, burialSiteName.burialSiteId));
             }
         }
+        if (responseJSON.burialSiteNames.length === 0) {
+            bulmaJS.alert({
+                contextualColorName: 'info',
+                title: 'No Burial Site Names Generated',
+                message: `No burial site names were generated for the selected range.
+          Note that ranges may not generate more than ${responseJSON.burialSiteNameRangeLimit} names.`
+            });
+        }
         updateCountElements();
     }
     document

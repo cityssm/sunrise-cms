@@ -1,7 +1,9 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
-import fillBlockRange from '@cityssm/fill-block-range'
+import fillBlockRange, {
+  calculateCartesianProductLength
+} from '@cityssm/fill-block-range'
 import sqlite from 'better-sqlite3'
 import cartesianProduct from 'just-cartesian-product'
 
@@ -41,6 +43,8 @@ export type GetBurialSiteNamesByRangeResult = Array<{
 
 const segmentCount = 5
 
+export const burialSiteNameRangeLimit = 1000
+
 export default function getBurialSiteNamesByRange(
   rangeForm: GetBurialSiteNamesByRangeForm
 ): GetBurialSiteNamesByRangeResult {
@@ -66,13 +70,19 @@ export default function getBurialSiteNamesByRange(
         segmentTo = segmentFrom
       }
 
-      const blockRange = fillBlockRange(segmentFrom, segmentTo)
+      const blockRange = fillBlockRange(segmentFrom, segmentTo, {
+        limit: burialSiteNameRangeLimit
+      })
 
       if (blockRange.length > 0) {
         segmentRanges[segmentIndex - 1] = blockRange
       }
     }
   } catch {
+    return []
+  }
+
+  if (calculateCartesianProductLength(segmentRanges) > burialSiteNameRangeLimit) {
     return []
   }
 

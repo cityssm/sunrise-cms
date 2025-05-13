@@ -20,4 +20,5 @@ export type GetBurialSiteNamesByRangeResult = Array<{
     burialSiteNameSegment4: string;
     burialSiteNameSegment5: string;
 }>;
+export declare const burialSiteNameRangeLimit = 1000;
 export default function getBurialSiteNamesByRange(rangeForm: GetBurialSiteNamesByRangeForm): GetBurialSiteNamesByRangeResult;

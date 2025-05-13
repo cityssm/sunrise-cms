@@ -1,7 +1,8 @@
 import type { Request, Response } from 'express'
 
 import getBurialSiteNamesByRange, {
-  type GetBurialSiteNamesByRangeForm
+  type GetBurialSiteNamesByRangeForm,
+  burialSiteNameRangeLimit
 } from '../../database/getBurialSiteNamesByRange.js'
 
 export default function handler(
@@ -12,6 +13,8 @@ export default function handler(
 
   response.json({
     burialSiteNames,
-    cemeteryId: request.body.cemeteryId
+    cemeteryId: request.body.cemeteryId,
+
+    burialSiteNameRangeLimit
   })
 }
