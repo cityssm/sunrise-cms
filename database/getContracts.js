@@ -7,6 +7,9 @@ import { getBurialSiteNameWhereClause, getContractTimeWhereClause, getDeceasedNa
 import getContractFees from './getContractFees.js';
 import getContractInterments from './getContractInterments.js';
 import getContractTransactions from './getContractTransactions.js';
+const validOrderByStrings = [
+    'c.funeralDate, c.funeralTime, c.contractId'
+];
 export default async function getContracts(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_dateIntegerToString', dateIntegerToString);
@@ -68,7 +71,8 @@ export default async function getContracts(filters, options, connectedDatabase) 
           left join Cemeteries m on l.cemeteryId = m.cemeteryId
           left join FuneralHomes f on c.funeralHomeId = f.funeralHomeId
           ${sqlWhereClause}
-          ${options.orderBy !== undefined && options.orderBy !== ''
+          ${options.orderBy !== undefined &&
+            validOrderByStrings.includes(options.orderBy)
             ? ` order by ${options.orderBy}`
             : ` order by c.contractStartDate desc, ifnull(c.contractEndDate, 99999999) desc,
                   l.burialSiteNameSegment1,

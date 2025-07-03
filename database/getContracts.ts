@@ -54,12 +54,16 @@ export interface GetContractsFilters {
   relatedContractId?: number | string
 }
 
+const validOrderByStrings = [
+  'c.funeralDate, c.funeralTime, c.contractId'
+] as const
+
 export interface GetContractsOptions {
   /** -1 for no limit */
   limit: number | string
   offset: number | string
 
-  orderBy?: string
+  orderBy?: (typeof validOrderByStrings)[number]
 
   includeFees: boolean
   includeInterments: boolean
@@ -147,7 +151,8 @@ export default async function getContracts(
           left join FuneralHomes f on c.funeralHomeId = f.funeralHomeId
           ${sqlWhereClause}
           ${
-            options.orderBy !== undefined && options.orderBy !== ''
+            options.orderBy !== undefined &&
+            validOrderByStrings.includes(options.orderBy)
               ? ` order by ${options.orderBy}`
               : ` order by c.contractStartDate desc, ifnull(c.contractEndDate, 99999999) desc,
                   l.burialSiteNameSegment1,

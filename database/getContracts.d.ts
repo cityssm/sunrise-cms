@@ -20,11 +20,12 @@ export interface GetContractsFilters {
     notRelatedContractId?: number | string;
     relatedContractId?: number | string;
 }
+declare const validOrderByStrings: readonly ["c.funeralDate, c.funeralTime, c.contractId"];
 export interface GetContractsOptions {
     /** -1 for no limit */
     limit: number | string;
     offset: number | string;
-    orderBy?: string;
+    orderBy?: (typeof validOrderByStrings)[number];
     includeFees: boolean;
     includeInterments: boolean;
     includeTransactions: boolean;
@@ -33,3 +34,4 @@ export default function getContracts(filters: GetContractsFilters, options: GetC
     contracts: Contract[];
     count: number;
 }>;
+export {};
