@@ -18,7 +18,7 @@ export default function updateWorkOrderMilestone(milestoneForm, user) {
         ? 0
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
         ? 0
-        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString ?? ''), milestoneForm.workOrderMilestoneDescription, user.userName, Date.now(), milestoneForm.workOrderMilestoneId);
+        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), milestoneForm.workOrderMilestoneDescription, user.userName, Date.now(), milestoneForm.workOrderMilestoneId);
     database.close();
     return result.changes > 0;
 }

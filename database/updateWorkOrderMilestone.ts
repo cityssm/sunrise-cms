@@ -1,4 +1,6 @@
 import {
+  type DateString,
+  type TimeString,
   dateStringToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
@@ -9,9 +11,9 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 export interface UpdateWorkOrderMilestoneForm {
   workOrderMilestoneId: number | string
 
-  workOrderMilestoneDateString: string
+  workOrderMilestoneDateString: '' | DateString
   workOrderMilestoneDescription: string
-  workOrderMilestoneTimeString?: string
+  workOrderMilestoneTimeString?: '' | TimeString
   workOrderMilestoneTypeId: number | string
 }
 
@@ -41,7 +43,9 @@ export default function updateWorkOrderMilestone(
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
       (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
         ? 0
-        : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString ?? ''),
+        : timeStringToInteger(
+            milestoneForm.workOrderMilestoneTimeString as TimeString
+          ),
       milestoneForm.workOrderMilestoneDescription,
 
       user.userName,

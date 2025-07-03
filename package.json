@@ -1,39 +1,36 @@
 {
   "name": "sunrise-cms",
   "version": "1.0.0-alpha.13",
-  "type": "module",
+  "private": true,
   "description": "Sunrise Cemetery Management System, a web-based application that allows cemetery managers to manage their cemetery records.",
-  "exports": "./app.js",
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "scripts": {
-    "start": "cross-env NODE_ENV=production node ./bin/www.js",
-    "dev:test": "cross-env NODE_ENV=dev DEBUG=sunrise:*,dynamics-gp:* TEST_DATABASES=true nodemon ./bin/www.js",
-    "dev:test:inspect": "cross-env NODE_ENV=dev DEBUG=sunrise:*,dynamics-gp:* TEST_DATABASES=true nodemon --inspect ./bin/www.js",
-    "dev:test:process": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true nodemon ./bin/wwwProcess.js",
-    "dev:test:process:inspect": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true nodemon --inspect ./bin/wwwProcess.js",
-    "dev:live": "cross-env NODE_ENV=dev DEBUG=sunrise:* nodemon ./bin/www.js",
-    "dev:live:inspect": "cross-env NODE_ENV=dev DEBUG=sunrise:* nodemon --inspect ./bin/www.js",
-    "cy:open": "cypress open --config-file cypress.config.js",
-    "cy:run": "cypress run --config-file cypress.config.js",
-    "cy:run:firefox": "cypress run --config-file cypress.config.js --browser firefox",
-    "test": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node --test",
-    "test:startup": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true STARTUP_TEST=true node ./bin/www.js",
-    "coverage": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary node --test",
-    "temp:legacyImportFromCsv": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node ./temp/legacyImportFromCsv/index.js"
+  "homepage": "https://github.com/cityssm/sunrise-cms#readme",
+  "bugs": {
+    "url": "https://github.com/cityssm/sunrise-cms/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cityssm/sunrise-cms.git"
   },
-  "author": "The Corporation of the City of Sault Ste. Marie",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/cityssm/sunrise-cms/issues"
+  "author": "The Corporation of the City of Sault Ste. Marie",
+  "type": "module",
+  "exports": "./app.js",
+  "scripts": {
+    "coverage": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary node --test",
+    "cy:open": "cypress open --config-file cypress.config.js",
+    "cy:run": "cypress run --config-file cypress.config.js",
+    "cy:run:firefox": "cypress run --config-file cypress.config.js --browser firefox",
+    "dev:live": "cross-env NODE_ENV=dev DEBUG=sunrise:* nodemon ./bin/www.js",
+    "dev:live:inspect": "cross-env NODE_ENV=dev DEBUG=sunrise:* nodemon --inspect ./bin/www.js",
+    "dev:test": "cross-env NODE_ENV=dev DEBUG=sunrise:*,dynamics-gp:* TEST_DATABASES=true nodemon ./bin/www.js",
+    "dev:test:inspect": "cross-env NODE_ENV=dev DEBUG=sunrise:*,dynamics-gp:* TEST_DATABASES=true nodemon --inspect ./bin/www.js",
+    "dev:test:process": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true nodemon ./bin/wwwProcess.js",
+    "dev:test:process:inspect": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true nodemon --inspect ./bin/wwwProcess.js",
+    "start": "cross-env NODE_ENV=production node ./bin/www.js",
+    "temp:legacyImportFromCsv": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node ./temp/legacyImportFromCsv/index.js",
+    "test": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node --test",
+    "test:startup": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true STARTUP_TEST=true node ./bin/www.js"
   },
-  "homepage": "https://github.com/cityssm/sunrise-cms#readme",
-  "private": true,
   "dependencies": {
     "@cityssm/bulma-js": "^0.5.0",
     "@cityssm/bulma-webapp-js": "^1.5.0",
@@ -101,5 +98,8 @@
   },
   "optionalDependencies": {
     "node-windows": "^1.0.0-beta.8"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
