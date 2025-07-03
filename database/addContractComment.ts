@@ -32,7 +32,7 @@ export default function addContractComment(
     commentTime = dateToTimeInteger(rightNow)
   } else {
     commentDate = dateStringToInteger(
-      commentForm.commentDateString as DateString
+      commentForm.commentDateString
     )
     commentTime = timeStringToInteger(
       commentForm.commentTimeString as TimeString
