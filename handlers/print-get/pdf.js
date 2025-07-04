@@ -1,10 +1,15 @@
 import path from 'node:path';
-import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer';
+import PdfPuppeteer from '@cityssm/pdf-puppeteer';
 import camelcase from 'camelcase';
 import { renderFile as renderEjsFile } from 'ejs';
+import exitHook from 'exit-hook';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getPdfPrintConfig, getReportData } from '../../helpers/functions.print.js';
 const attachmentOrInline = getConfigProperty('settings.printPdf.contentDisposition');
+const pdfPuppeteer = new PdfPuppeteer();
+exitHook(() => {
+    void pdfPuppeteer.closeBrowser();
+});
 export async function handler(request, response, next) {
     const printName = request.params.printName;
     if (!getConfigProperty('settings.contracts.prints').includes(`pdf/${printName}`) &&
@@ -36,13 +41,7 @@ export async function handler(request, response, next) {
             next(ejsError);
             return;
         }
-        const pdf = await convertHTMLToPDF(ejsData, {
-            format: 'letter',
-            preferCSSPageSize: true,
-            printBackground: true
-        }, {
-            usePackagePuppeteer: true
-        });
+        const pdf = await pdfPuppeteer.fromHtml(ejsData);
         pdfCallbackFunction(Buffer.from(pdf));
     }
     await renderEjsFile(reportPath, reportData, {}, ejsCallbackFunction);

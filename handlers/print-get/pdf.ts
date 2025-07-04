@@ -1,8 +1,9 @@
 import path from 'node:path'
 
-import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer'
+import PdfPuppeteer from '@cityssm/pdf-puppeteer'
 import camelcase from 'camelcase'
 import { renderFile as renderEjsFile } from 'ejs'
+import exitHook from 'exit-hook'
 import type { NextFunction, Request, Response } from 'express'
 
 import { getConfigProperty } from '../../helpers/config.helpers.js'
@@ -14,6 +15,12 @@ import {
 const attachmentOrInline = getConfigProperty(
   'settings.printPdf.contentDisposition'
 )
+
+const pdfPuppeteer = new PdfPuppeteer()
+
+exitHook(() => {
+  void pdfPuppeteer.closeBrowser()
+})
 
 export async function handler(
   request: Request,
@@ -81,18 +88,8 @@ export async function handler(
       return
     }
 
-    const pdf = await convertHTMLToPDF(
-      ejsData,
-      {
-        format: 'letter',
-        preferCSSPageSize: true,
-        printBackground: true
-      },
-      {
-        usePackagePuppeteer: true
-      }
-    )
-
+    const pdf = await pdfPuppeteer.fromHtml(ejsData)
+    
     pdfCallbackFunction(Buffer.from(pdf))
   }
 

@@ -143,6 +143,10 @@ const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix')
 
 if (urlPrefix !== '') {
   debug(`urlPrefix = ${urlPrefix}`)
+
+  app.all('', (_request, response) => {
+    response.redirect(urlPrefix)
+  })
 }
 
 app.use(
