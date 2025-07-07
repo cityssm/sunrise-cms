@@ -6,6 +6,25 @@ export const config: Config = { ...cemeteryConfig }
 
 config.application.useTestDatabases = true
 
+config.login = {
+  authentication: {
+    config: {
+      authenticate: (userName: string, password: string) => {
+        if (userName === '' || password === '') {
+          return false
+        }
+
+        return (
+          (config.application.useTestDatabases ?? false) &&
+          `${config.login?.domain}\\${userName}` === password
+        )
+      }
+    },
+    type: 'function'
+  },
+  domain: ''
+}
+
 config.session.doKeepAlive = true
 
 config.users = {

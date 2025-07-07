@@ -1,3 +1,8 @@
+import type {
+  ActiveDirectoryAuthenticatorConfiguration,
+  ADWebAuthAuthenticatorConfiguration,
+  PlainTextAuthenticatorConfiguration
+} from '@cityssm/authentication-helper'
 import { hoursToMillis } from '@cityssm/to-millis'
 import type { config as MSSQLConfig } from 'mssql'
 
@@ -17,8 +22,29 @@ export const configDefaultValues = {
   'application.logoURL': '/images/sunrise-cms.svg',
   'application.maximumProcesses': 4,
   'application.ntfyStartup': undefined as ConfigNtfyStartup | undefined,
-  'application.userDomain': '',
   'application.useTestDatabases': false,
+
+  'login.authentication': undefined as
+    | {
+        config: {
+          authenticate: (userName: string, password: string) => boolean | Promise<boolean>
+        }
+        type: 'function'
+      }
+    | {
+        config: ActiveDirectoryAuthenticatorConfiguration
+        type: 'activeDirectory'
+      }
+    | {
+        config: ADWebAuthAuthenticatorConfiguration
+        type: 'adWebAuth'
+      }
+    | {
+        config: PlainTextAuthenticatorConfiguration
+        type: 'plainText'
+      }
+    | undefined,
+  'login.domain': '',
 
   'reverseProxy.disableCompression': false,
   'reverseProxy.disableEtag': false,
@@ -54,7 +80,7 @@ export const configDefaultValues = {
 
   // eslint-disable-next-line no-secrets/no-secrets
   'settings.burialSiteTypes.bodyCapacityMaxDefault': 2,
-  
+
   // eslint-disable-next-line no-secrets/no-secrets
   'settings.burialSiteTypes.crematedCapacityMaxDefault': 6,
 

@@ -1,29 +1,51 @@
-import ActiveDirectory from 'activedirectory2';
+import { ActiveDirectoryAuthenticator, ADWebAuthAuthenticator, PlainTextAuthenticator } from '@cityssm/authentication-helper';
+import Debug from 'debug';
+import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from './config.helpers.js';
-const userDomain = getConfigProperty('application.userDomain');
-const activeDirectoryConfig = getConfigProperty('activeDirectory');
+const debug = Debug(`${DEBUG_NAMESPACE}:helpers:authentication`);
+let authenticator;
+const authenticationConfig = getConfigProperty('login.authentication');
+const domain = getConfigProperty('login.domain');
+if (authenticationConfig === undefined) {
+    debug('`login.authentication` not defined.');
+}
+else {
+    switch (authenticationConfig.type) {
+        case 'activeDirectory': {
+            authenticator = new ActiveDirectoryAuthenticator(authenticationConfig.config);
+            break;
+        }
+        case 'adWebAuth': {
+            authenticator = new ADWebAuthAuthenticator(authenticationConfig.config);
+            break;
+        }
+        case 'function': {
+            authenticator = {
+                authenticate: async (userName, password) => {
+                    const result = authenticationConfig.config.authenticate(userName, password);
+                    return result instanceof Promise ? await result : result;
+                }
+            };
+            break;
+        }
+        case 'plainText': {
+            debug('WARNING: Using plain text authentication.');
+            authenticator = new PlainTextAuthenticator(authenticationConfig.config);
+            break;
+        }
+        // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
+        default: {
+            debug('Unknown `login.authentication`.');
+        }
+    }
+}
 export async function authenticate(userName, password) {
-    if ((userName ?? '') === '' || (password ?? '') === '') {
+    if (authenticator === undefined ||
+        (userName ?? '') === '' ||
+        (password ?? '') === '') {
         return false;
     }
-    return await authenticateViaActiveDirectory(userName ?? '', password ?? '');
-}
-async function authenticateViaActiveDirectory(userName, password) {
-    return await new Promise((resolve) => {
-        try {
-            const ad = new ActiveDirectory(activeDirectoryConfig);
-            ad.authenticate(`${userDomain}\\${userName}`, password, (error, auth) => {
-                let authenticated = false;
-                if ((error ?? '') === '') {
-                    authenticated = auth;
-                }
-                resolve(authenticated);
-            });
-        }
-        catch {
-            resolve(false);
-        }
-    });
+    return await authenticator.authenticate(`${domain}\\${userName}`, password ?? '');
 }
 /* eslint-disable @cspell/spellchecker */
 const safeRedirects = new Set([

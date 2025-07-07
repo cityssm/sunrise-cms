@@ -1,3 +1,8 @@
+import type {
+  ActiveDirectoryAuthenticatorConfiguration,
+  ADWebAuthAuthenticatorConfiguration,
+  PlainTextAuthenticatorConfiguration
+} from '@cityssm/authentication-helper'
 import type { config as MSSQLConfig } from 'mssql'
 
 export interface Config {
@@ -11,11 +16,37 @@ export interface Config {
     urlPrefix?: string
   }
 
+  login?: {
+    authentication:
+      | {
+          config: {
+            authenticate: (
+              userName: string,
+              password: string
+            ) => boolean | Promise<boolean>
+          }
+          type: 'function'
+        }
+      | {
+          config: ActiveDirectoryAuthenticatorConfiguration
+          type: 'activeDirectory'
+        }
+      | {
+          config: ADWebAuthAuthenticatorConfiguration
+          type: 'adWebAuth'
+        }
+      | {
+          config: PlainTextAuthenticatorConfiguration
+          type: 'plainText'
+        }
+    domain: string
+  }
+
   activeDirectory?: ConfigActiveDirectory
 
   users: {
     testing?: Array<`*${string}`>
-    
+
     canLogin?: string[]
     canUpdate?: string[]
     canUpdateWorkOrders?: string[]
@@ -78,7 +109,7 @@ export interface Config {
     }
 
     printPdf: {
-      browser?: 'chrome' | 'firefox',
+      browser?: 'chrome' | 'firefox'
       contentDisposition?: 'attachment' | 'inline'
     }
 
@@ -104,7 +135,6 @@ interface ConfigApplication {
   backgroundURL?: string
   logoURL?: string
   httpPort?: number
-  userDomain?: string
   useTestDatabases?: boolean
   ntfyStartup?: ConfigNtfyStartup
   maximumProcesses?: number
