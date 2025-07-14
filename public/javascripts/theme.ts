@@ -85,3 +85,39 @@ declare const bulmaJS: BulmaJS
     )
   }
 })()
+
+/*
+ * QUICK SEARCH
+ */
+;(() => {
+  const urlPrefix =
+    document.querySelector('main')?.getAttribute('data-url-prefix') ?? ''
+
+  function doContractQuickSearch(formEvent: Event): void {
+    formEvent.preventDefault()
+
+    const contractIdElement = document.querySelector('#quickSearchContract--contractId') as HTMLInputElement
+
+    globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(contractIdElement.value)}`
+  }
+
+  document
+    .querySelector('#navbar--quickSearch')
+    ?.addEventListener('click', (clickEvent) => {
+      clickEvent.preventDefault()
+
+      cityssm.openHtmlModal('quickSearch', {
+        onshown(modalElement) {
+          bulmaJS.toggleHtmlClipped()
+
+          modalElement.querySelector('input')?.focus()
+
+          modalElement.querySelector('#form--quickSearchContract')?.addEventListener('submit', doContractQuickSearch)
+        },
+
+        onremoved() {
+          bulmaJS.toggleHtmlClipped()
+        },
+      })
+    })
+})()

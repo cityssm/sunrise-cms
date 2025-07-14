@@ -50,3 +50,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
         keepAliveInterval = globalThis.setInterval(doKeepAlive, Number.parseInt(keepAliveMillis, 10));
     }
 })();
+(() => {
+    const urlPrefix = document.querySelector('main')?.getAttribute('data-url-prefix') ?? '';
+    function doContractQuickSearch(formEvent) {
+        formEvent.preventDefault();
+        const contractIdElement = document.querySelector('#quickSearchContract--contractId');
+        globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(contractIdElement.value)}`;
+    }
+    document
+        .querySelector('#navbar--quickSearch')
+        ?.addEventListener('click', (clickEvent) => {
+        clickEvent.preventDefault();
+        cityssm.openHtmlModal('quickSearch', {
+            onshown(modalElement) {
+                bulmaJS.toggleHtmlClipped();
+                modalElement.querySelector('input')?.focus();
+                modalElement.querySelector('#form--quickSearchContract')?.addEventListener('submit', doContractQuickSearch);
+            },
+            onremoved() {
+                bulmaJS.toggleHtmlClipped();
+            },
+        });
+    });
+})();
