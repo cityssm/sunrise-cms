@@ -21,7 +21,6 @@ Combinations for other operating systems and browsers can be found in the
 Note that shortcuts can be disabled in `config.js` by setting
 `"settings.enableKeyboardShortcuts" = false`
 
-
 ## Main Section Shortcuts
 
 From any page in the application, you can use a section shortcut to jump to another section's search page.
@@ -33,7 +32,9 @@ From any page in the application, you can use a section shortcut to jump to anot
 | Contracts    | <kbd>2</kbd> |
 | Burial Sites | <kbd>3</kbd> |
 | Cemeteries   | <kbd>4</kbd> |
+| Quick Search | <kbd>s</kbd> |
 | Help         | <kbd>h</kbd> |
+| Log Out      | <kbd>x</kbd> |
 
 ## Search Page Shortcuts
 
@@ -54,7 +55,7 @@ From any view page with a toolbar at the bottom of the screen, you can use many 
 | Next Record     | <kbd>.</kbd> |
 | Edit Record     | <kbd>e</kbd> |
 
-## Recrod Edit Page Shortcuts
+## Record Edit Page Shortcuts
 
 From any edit page in the application, you can return to the view page.
 
