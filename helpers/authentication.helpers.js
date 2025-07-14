@@ -1,4 +1,4 @@
-import { ActiveDirectoryAuthenticator, ADWebAuthAuthenticator, PlainTextAuthenticator } from '@cityssm/authentication-helper';
+import { ActiveDirectoryAuthenticator, ADWebAuthAuthenticator, FunctionAuthenticator, PlainTextAuthenticator } from '@cityssm/authentication-helper';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from './config.helpers.js';
@@ -20,12 +20,7 @@ else {
             break;
         }
         case 'function': {
-            authenticator = {
-                authenticate: async (userName, password) => {
-                    const result = authenticationConfig.config.authenticate(userName, password);
-                    return result instanceof Promise ? await result : result;
-                }
-            };
+            authenticator = new FunctionAuthenticator(authenticationConfig.config);
             break;
         }
         case 'plainText': {

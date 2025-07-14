@@ -1,6 +1,5 @@
 import { hoursToMillis } from '@cityssm/to-millis';
 export const configDefaultValues = {
-    activeDirectory: undefined,
     'application.applicationName': 'Sunrise CMS',
     'application.backgroundURL': '/images/cemetery-background.jpg',
     'application.httpPort': 9000,

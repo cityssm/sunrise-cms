@@ -1,4 +1,4 @@
-import type { ActiveDirectoryAuthenticatorConfiguration, ADWebAuthAuthenticatorConfiguration, PlainTextAuthenticatorConfiguration } from '@cityssm/authentication-helper';
+import type { ActiveDirectoryAuthenticatorConfiguration, ADWebAuthAuthenticatorConfiguration, FunctionAuthenticatorConfiguration, PlainTextAuthenticatorConfiguration } from '@cityssm/authentication-helper';
 import type { config as MSSQLConfig } from 'mssql';
 export interface Config {
     application: ConfigApplication;
@@ -10,23 +10,20 @@ export interface Config {
     };
     login?: {
         authentication: {
-            config: {
-                authenticate: (userName: string, password: string) => boolean | Promise<boolean>;
-            };
-            type: 'function';
-        } | {
             config: ActiveDirectoryAuthenticatorConfiguration;
             type: 'activeDirectory';
         } | {
             config: ADWebAuthAuthenticatorConfiguration;
             type: 'adWebAuth';
         } | {
+            config: FunctionAuthenticatorConfiguration;
+            type: 'function';
+        } | {
             config: PlainTextAuthenticatorConfiguration;
             type: 'plainText';
         };
         domain: string;
     };
-    activeDirectory?: ConfigActiveDirectory;
     users: {
         testing?: Array<`*${string}`>;
         canLogin?: string[];
@@ -94,12 +91,12 @@ export interface Config {
 export type DynamicsGPLookup = 'diamond/cashReceipt' | 'diamond/extendedInvoice' | 'invoice';
 interface ConfigApplication {
     applicationName?: string;
+    httpPort?: number;
     backgroundURL?: string;
     logoURL?: string;
-    httpPort?: number;
-    useTestDatabases?: boolean;
-    ntfyStartup?: ConfigNtfyStartup;
     maximumProcesses?: number;
+    ntfyStartup?: ConfigNtfyStartup;
+    useTestDatabases?: boolean;
 }
 export interface ConfigNtfyStartup {
     server?: string;
@@ -110,12 +107,6 @@ interface ConfigSession {
     doKeepAlive?: boolean;
     maxAgeMillis?: number;
     secret?: string;
-}
-export interface ConfigActiveDirectory {
-    url: string;
-    baseDN: string;
-    username: string;
-    password: string;
 }
 export interface ConfigBurialSiteNameSegments {
     includeCemeteryKey?: boolean;

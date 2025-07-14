@@ -2,6 +2,7 @@ import {
   type BaseAuthenticator,
   ActiveDirectoryAuthenticator,
   ADWebAuthAuthenticator,
+  FunctionAuthenticator,
   PlainTextAuthenticator
 } from '@cityssm/authentication-helper'
 import Debug from 'debug'
@@ -33,18 +34,7 @@ if (authenticationConfig === undefined) {
       break
     }
     case 'function': {
-      authenticator = {
-        authenticate: async (
-          userName: string,
-          password: string
-        ): Promise<boolean> => {
-          const result = authenticationConfig.config.authenticate(
-            userName,
-            password
-          )
-          return result instanceof Promise ? await result : result
-        }
-      }
+      authenticator = new FunctionAuthenticator(authenticationConfig.config)
       break
     }
     case 'plainText': {

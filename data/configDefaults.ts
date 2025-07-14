@@ -1,21 +1,19 @@
 import type {
   ActiveDirectoryAuthenticatorConfiguration,
   ADWebAuthAuthenticatorConfiguration,
+  FunctionAuthenticatorConfiguration,
   PlainTextAuthenticatorConfiguration
 } from '@cityssm/authentication-helper'
 import { hoursToMillis } from '@cityssm/to-millis'
 import type { config as MSSQLConfig } from 'mssql'
 
 import type {
-  ConfigActiveDirectory,
   ConfigBurialSiteNameSegments,
   ConfigNtfyStartup,
   DynamicsGPLookup
 } from '../types/config.types.js'
 
 export const configDefaultValues = {
-  activeDirectory: undefined as unknown as ConfigActiveDirectory,
-
   'application.applicationName': 'Sunrise CMS',
   'application.backgroundURL': '/images/cemetery-background.jpg',
   'application.httpPort': 9000,
@@ -26,18 +24,16 @@ export const configDefaultValues = {
 
   'login.authentication': undefined as
     | {
-        config: {
-          authenticate: (userName: string, password: string) => boolean | Promise<boolean>
-        }
-        type: 'function'
-      }
-    | {
         config: ActiveDirectoryAuthenticatorConfiguration
         type: 'activeDirectory'
       }
     | {
         config: ADWebAuthAuthenticatorConfiguration
         type: 'adWebAuth'
+      }
+    | {
+        config: FunctionAuthenticatorConfiguration
+        type: 'function'
       }
     | {
         config: PlainTextAuthenticatorConfiguration

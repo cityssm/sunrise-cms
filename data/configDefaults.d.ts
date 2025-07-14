@@ -1,8 +1,7 @@
-import type { ActiveDirectoryAuthenticatorConfiguration, ADWebAuthAuthenticatorConfiguration, PlainTextAuthenticatorConfiguration } from '@cityssm/authentication-helper';
+import type { ActiveDirectoryAuthenticatorConfiguration, ADWebAuthAuthenticatorConfiguration, FunctionAuthenticatorConfiguration, PlainTextAuthenticatorConfiguration } from '@cityssm/authentication-helper';
 import type { config as MSSQLConfig } from 'mssql';
-import type { ConfigActiveDirectory, ConfigBurialSiteNameSegments, ConfigNtfyStartup, DynamicsGPLookup } from '../types/config.types.js';
+import type { ConfigBurialSiteNameSegments, ConfigNtfyStartup, DynamicsGPLookup } from '../types/config.types.js';
 export declare const configDefaultValues: {
-    activeDirectory: ConfigActiveDirectory;
     'application.applicationName': string;
     'application.backgroundURL': string;
     'application.httpPort': number;
@@ -11,16 +10,14 @@ export declare const configDefaultValues: {
     'application.ntfyStartup': ConfigNtfyStartup | undefined;
     'application.useTestDatabases': boolean;
     'login.authentication': {
-        config: {
-            authenticate: (userName: string, password: string) => boolean | Promise<boolean>;
-        };
-        type: "function";
-    } | {
         config: ActiveDirectoryAuthenticatorConfiguration;
         type: "activeDirectory";
     } | {
         config: ADWebAuthAuthenticatorConfiguration;
         type: "adWebAuth";
+    } | {
+        config: FunctionAuthenticatorConfiguration;
+        type: "function";
     } | {
         config: PlainTextAuthenticatorConfiguration;
         type: "plainText";
