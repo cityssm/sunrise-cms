@@ -309,12 +309,30 @@
     </div>
   </div>
 
+  <%
+    const showFuneralSection = isCreate || 
+      (contract.funeralHomeId !== null && contract.funeralHomeId !== "") ||
+      (contract.funeralDirectorName !== null && contract.funeralDirectorName !== "") ||
+      (contract.funeralDateString !== null && contract.funeralDateString !== "") ||
+      (contract.directionOfArrival !== null && contract.directionOfArrival !== "") ||
+      (contract.committalTypeId !== null && contract.committalTypeId !== "");
+  %>
+
   <div class="panel">
     <div class="panel-heading">
       <div class="level is-mobile">
         <div class="level-left">
           <div class="level-item">
-            <h2 class="has-text-weight-bold">Funeral</h2>
+            <h2 class="has-text-weight-bold">
+              <% if (showFuneralSection) { %>
+                Funeral
+              <% } else { %>
+                <a class="has-text-white" id="panelToggle--funeral" href="#">
+                  <span class="icon is-small"><i class="fas fa-caret-down" aria-hidden="true"></i></span>
+                  Funeral
+                </a>
+              <% } %>
+            </h2>
           </div>
         </div>
         <div class="level-right">
@@ -324,7 +342,7 @@
         </div>
       </div>
     </div>
-    <div class="panel-block is-block">
+    <div class="panel-block is-block <%= (showFuneralSection ? "" : " is-hidden") %>">
       <div class="columns">
         <div class="column">
           <div class="field">

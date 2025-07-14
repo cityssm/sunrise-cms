@@ -743,6 +743,16 @@ declare const exports: {
 
   sunrise.initializeUnlockFieldButtons(formElement)
 
+  document
+    .querySelector('#panelToggle--funeral')
+    ?.addEventListener('click', (clickEvent) => {
+      clickEvent.preventDefault()
+      ;(clickEvent.currentTarget as HTMLElement)
+        .closest('.panel')
+        ?.querySelector('.panel-block.is-hidden')
+        ?.classList.remove('is-hidden')
+    })
+
   if (isCreate) {
     /*
      * Deceased

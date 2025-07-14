@@ -444,6 +444,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
     });
     sunrise.initializeMinDateUpdate(document.querySelector('#contract--contractStartDateString'), document.querySelector('#contract--contractEndDateString'));
     sunrise.initializeUnlockFieldButtons(formElement);
+    document
+        .querySelector('#panelToggle--funeral')
+        ?.addEventListener('click', (clickEvent) => {
+        clickEvent.preventDefault();
+        clickEvent.currentTarget
+            .closest('.panel')
+            ?.querySelector('.panel-block.is-hidden')
+            ?.classList.remove('is-hidden');
+    });
     if (isCreate) {
         /*
          * Deceased
