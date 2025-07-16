@@ -85,7 +85,7 @@ app.use(
 
 app.use(
   rateLimit({
-    max: useTestDatabases ? 1_000_000 : 200,
+    limit: useTestDatabases ? 1_000_000 : 200,
     windowMs: secondsToMillis(10)
   })
 )
