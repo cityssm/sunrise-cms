@@ -367,10 +367,10 @@
     exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
 </script>
 <% } %>
-<script src="<% urlPrefix %>/javascripts/workOrder.edit.js"></script>
+<script src="<%= urlPrefix %>/javascripts/workOrder.edit.js"></script>
 <% if (!isCreate) { %>
-  <script src="<% urlPrefix %>/javascripts/workOrder.editRelated.js"></script>
-  <script src="<% urlPrefix %>/javascripts/workOrder.editComments.js"></script>
+  <script src="<%= urlPrefix %>/javascripts/workOrder.editRelated.js"></script>
+  <script src="<%= urlPrefix %>/javascripts/workOrder.editComments.js"></script>
 <% } %>
 
 <%- include('_footerB'); -%>
