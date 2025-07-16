@@ -1,9 +1,9 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/strict-boolean-expressions, security/detect-object-injection */
 import cluster from 'node:cluster';
+import { NodeCache } from '@cacheable/node-cache';
 import { minutesToSeconds } from '@cityssm/to-millis';
 import Debug from 'debug';
-import NodeCache from 'node-cache';
 import getNextBurialSiteIdFromDatabase from '../database/getNextBurialSiteId.js';
 import getPreviousBurialSiteIdFromDatabase from '../database/getPreviousBurialSiteId.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
@@ -98,7 +98,7 @@ export function buildBurialSiteName(cemeteryKey, segments) {
     for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex++) {
         const segmentIndexString = segmentIndex.toString();
         if ((segmentConfig.segments[segmentIndexString]?.isAvailable ?? false) &&
-            ((segmentConfig.segments[segmentIndexString]?.isRequired ?? false) ||
+            (segmentConfig.segments[segmentIndexString]?.isRequired ??
                 (segments[`burialSiteNameSegment${segmentIndexString}`] ?? '') !== '')) {
             segmentPieces.push((segmentConfig.segments[segmentIndexString]?.prefix ?? '') +
                 (segments[`burialSiteNameSegment${segmentIndexString}`] ?? '') +

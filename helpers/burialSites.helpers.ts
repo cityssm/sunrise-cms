@@ -3,9 +3,9 @@
 
 import cluster from 'node:cluster'
 
+import { type NodeCacheOptions, NodeCache } from '@cacheable/node-cache'
 import { minutesToSeconds } from '@cityssm/to-millis'
 import Debug from 'debug'
-import NodeCache from 'node-cache'
 
 import getNextBurialSiteIdFromDatabase from '../database/getNextBurialSiteId.js'
 import getPreviousBurialSiteIdFromDatabase from '../database/getPreviousBurialSiteId.js'
@@ -19,7 +19,7 @@ import { getConfigProperty } from './config.helpers.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:burialSites.helpers:${process.pid}`)
 
-const cacheOptions: NodeCache.Options = {
+const cacheOptions: NodeCacheOptions = {
   stdTTL: minutesToSeconds(2),
   useClones: false
 }
@@ -75,9 +75,7 @@ export function clearNextPreviousBurialSiteIdCache(
   }
 }
 
-export function getNextBurialSiteId(
-  burialSiteId: number
-): number | undefined {
+export function getNextBurialSiteId(burialSiteId: number): number | undefined {
   let nextBurialSiteId: number | undefined =
     nextBurialSiteIdCache.get(burialSiteId)
 
@@ -142,13 +140,16 @@ const segmentConfig = getConfigProperty(
   'settings.burialSites.burialSiteNameSegments'
 )
 
-export function buildBurialSiteName(cemeteryKey: string | undefined, segments: {
-  burialSiteNameSegment1?: string
-  burialSiteNameSegment2?: string
-  burialSiteNameSegment3?: string
-  burialSiteNameSegment4?: string
-  burialSiteNameSegment5?: string
-}): string {
+export function buildBurialSiteName(
+  cemeteryKey: string | undefined,
+  segments: {
+    burialSiteNameSegment1?: string
+    burialSiteNameSegment2?: string
+    burialSiteNameSegment3?: string
+    burialSiteNameSegment4?: string
+    burialSiteNameSegment5?: string
+  }
+): string {
   const segmentPieces: string[] = []
 
   if (segmentConfig.includeCemeteryKey && cemeteryKey !== undefined) {
@@ -161,7 +162,7 @@ export function buildBurialSiteName(cemeteryKey: string | undefined, segments: {
 
     if (
       (segmentConfig.segments[segmentIndexString]?.isAvailable ?? false) &&
-      ((segmentConfig.segments[segmentIndexString]?.isRequired ?? false) ||
+      (segmentConfig.segments[segmentIndexString]?.isRequired ??
         (segments[`burialSiteNameSegment${segmentIndexString}`] ?? '') !== '')
     ) {
       segmentPieces.push(
