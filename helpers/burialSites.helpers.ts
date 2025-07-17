@@ -162,6 +162,7 @@ export function buildBurialSiteName(
 
     if (
       (segmentConfig.segments[segmentIndexString]?.isAvailable ?? false) &&
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       ((segmentConfig.segments[segmentIndexString]?.isRequired ?? false) ||
         (segments[`burialSiteNameSegment${segmentIndexString}`] ?? '') !== '')
     ) {

@@ -98,6 +98,7 @@ export function buildBurialSiteName(cemeteryKey, segments) {
     for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex++) {
         const segmentIndexString = segmentIndex.toString();
         if ((segmentConfig.segments[segmentIndexString]?.isAvailable ?? false) &&
+            // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
             ((segmentConfig.segments[segmentIndexString]?.isRequired ?? false) ||
                 (segments[`burialSiteNameSegment${segmentIndexString}`] ?? '') !== '')) {
             segmentPieces.push((segmentConfig.segments[segmentIndexString]?.prefix ?? '') +
