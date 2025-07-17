@@ -162,7 +162,7 @@ export function buildBurialSiteName(
 
     if (
       (segmentConfig.segments[segmentIndexString]?.isAvailable ?? false) &&
-      (segmentConfig.segments[segmentIndexString]?.isRequired ??
+      ((segmentConfig.segments[segmentIndexString]?.isRequired ?? false) ||
         (segments[`burialSiteNameSegment${segmentIndexString}`] ?? '') !== '')
     ) {
       segmentPieces.push(

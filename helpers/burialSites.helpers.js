@@ -98,7 +98,7 @@ export function buildBurialSiteName(cemeteryKey, segments) {
     for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex++) {
         const segmentIndexString = segmentIndex.toString();
         if ((segmentConfig.segments[segmentIndexString]?.isAvailable ?? false) &&
-            (segmentConfig.segments[segmentIndexString]?.isRequired ??
+            ((segmentConfig.segments[segmentIndexString]?.isRequired ?? false) ||
                 (segments[`burialSiteNameSegment${segmentIndexString}`] ?? '') !== '')) {
             segmentPieces.push((segmentConfig.segments[segmentIndexString]?.prefix ?? '') +
                 (segments[`burialSiteNameSegment${segmentIndexString}`] ?? '') +
