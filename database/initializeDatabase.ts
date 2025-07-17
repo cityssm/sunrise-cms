@@ -455,7 +455,17 @@ const createStatements = [
     workOrderMilestoneCompletionTime integer check (workOrderMilestoneCompletionTime >= 0),
     ${recordColumns},
     foreign key (workOrderId) references WorkOrders (workOrderId),
-    foreign key (workOrderMilestoneTypeId) references WorkOrderMilestoneTypes (workOrderMilestoneTypeId))`
+    foreign key (workOrderMilestoneTypeId) references WorkOrderMilestoneTypes (workOrderMilestoneTypeId))`,
+
+  /*
+   * Settings
+   */
+
+  `CREATE TABLE SunriseSettings (
+    settingName varchar(100) not null primary key,
+    settingValue varchar(500),
+    previousSettingValue varchar(500),
+    recordUpdate_timeMillis integer not null)`
 ]
 
 const initializingUser: User = {
@@ -473,7 +483,7 @@ export function initializeDatabase(): boolean {
 
   const row = sunriseDB
     .prepare(
-      "select name from sqlite_master where type = 'table' and name = 'WorkOrderMilestones'"
+      "select name from sqlite_master where type = 'table' and name = 'SunriseSettings'"
     )
     .get()
 
