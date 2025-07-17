@@ -511,6 +511,11 @@ function initializeData() {
         orderNumber: 6
     }, initializingUser);
     addIntermentContainerType({
+        intermentContainerType: 'Shroud',
+        intermentContainerTypeKey: 'SH',
+        orderNumber: 7
+    }, initializingUser);
+    addIntermentContainerType({
         intermentContainerType: 'Urn',
         intermentContainerTypeKey: 'U',
         isCremationType: '1',

@@ -652,6 +652,15 @@ function initializeData(): void {
 
   addIntermentContainerType(
     {
+      intermentContainerType: 'Shroud',
+      intermentContainerTypeKey: 'SH',
+      orderNumber: 7
+    },
+    initializingUser
+  )
+
+  addIntermentContainerType(
+    {
       intermentContainerType: 'Urn',
       intermentContainerTypeKey: 'U',
       isCremationType: '1',
