@@ -1,7 +1,7 @@
 import type { ContractType } from '../../types/record.types.js';
 export declare const availableBurialSiteStatusId: number;
 export declare const reservedBurialSiteStatusId: number;
-export declare const takenBurialSiteStatusId: number;
+export declare const occupiedBurialSiteStatusId: number;
 export declare const preneedContractType: ContractType;
 export declare const deceasedContractType: ContractType;
 export declare const cremationContractType: ContractType;

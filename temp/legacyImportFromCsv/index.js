@@ -18,6 +18,7 @@ import closeWorkOrder from '../../database/closeWorkOrder.js';
 import getBurialSite, { getBurialSiteByBurialSiteName } from '../../database/getBurialSite.js';
 import getContracts from '../../database/getContracts.js';
 import getWorkOrder, { getWorkOrderByWorkOrderNumber } from '../../database/getWorkOrder.js';
+import { initializeData } from '../../database/initializeDatabase.js';
 import reopenWorkOrder from '../../database/reopenWorkOrder.js';
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js';
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js';
@@ -296,7 +297,7 @@ async function importFromMasterCSV() {
                         commentTimeString: '00:00'
                     }, user);
                 }
-                updateBurialSiteStatus(burialSiteId ?? '', importIds.takenBurialSiteStatusId, user);
+                updateBurialSiteStatus(burialSiteId ?? '', importIds.occupiedBurialSiteStatusId, user);
             }
         }
     }
@@ -586,7 +587,7 @@ async function importFromWorkOrderCSV() {
                 });
                 burialSite = await getBurialSiteByBurialSiteName(burialSiteName);
                 if (burialSite) {
-                    updateBurialSiteStatus(burialSite.burialSiteId, importIds.takenBurialSiteStatusId, user);
+                    updateBurialSiteStatus(burialSite.burialSiteId, importIds.occupiedBurialSiteStatusId, user);
                 }
                 else {
                     const cemeteryId = getCemeteryIdByKey(workOrderRow.WO_CEMETERY, user);
@@ -600,7 +601,7 @@ async function importFromWorkOrderCSV() {
                         cemeterySvgId: burialSiteName.includes(',')
                             ? burialSiteName.split(',')[0]
                             : burialSiteName,
-                        burialSiteStatusId: importIds.takenBurialSiteStatusId,
+                        burialSiteStatusId: importIds.occupiedBurialSiteStatusId,
                         burialSiteTypeId,
                         burialSiteImage: '',
                         burialSiteLatitude: '',
@@ -795,14 +796,28 @@ async function importFromWorkOrderCSV() {
 }
 function purgeConfigTables() {
     console.time('purgeConfigTables');
-    const configTablesToPurge = ['CemeteryDirectionsOfArrival', 'Cemeteries'];
+    const configTablesToPurge = [
+        'CemeteryDirectionsOfArrival',
+        'Cemeteries',
+        'BurialSiteStatuses',
+        'CommittalTypes',
+        'ContractTypeFields',
+        'ContractTypePrints',
+        'ContractTypes',
+        'IntermentContainerTypes',
+        'WorkOrderMilestoneTypes',
+        'WorkOrderTypes'
+    ];
     const database = sqlite(databasePath);
     for (const tableName of configTablesToPurge) {
+        console.log(`Purging table: ${tableName}`);
         database.prepare(`delete from ${tableName}`).run();
         database
             .prepare('delete from sqlite_sequence where name = ?')
             .run(tableName);
     }
+    database.close();
+    initializeData(['BurialSiteTypes', 'FeeCategories']);
     console.timeEnd('purgeConfigTables');
 }
 function purgeTables() {

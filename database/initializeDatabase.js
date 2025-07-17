@@ -432,47 +432,49 @@ export function initializeDatabase() {
     initializeData();
     return true;
 }
-function initializeData() {
+export function initializeData(tablesToSkip = []) {
     debug('Initializing data...');
-    addBurialSiteType({
-        burialSiteType: 'In-Ground Grave',
-        bodyCapacityMax: 2,
-        crematedCapacityMax: 6,
-        orderNumber: 1
-    }, initializingUser);
-    addBurialSiteType({
-        burialSiteType: 'Columbarium',
-        bodyCapacityMax: 0,
-        crematedCapacityMax: '',
-        orderNumber: 2
-    }, initializingUser);
-    addBurialSiteType({
-        burialSiteType: 'Mausoleum',
-        bodyCapacityMax: 2,
-        crematedCapacityMax: 0,
-        orderNumber: 2
-    }, initializingUser);
-    addBurialSiteType({
-        burialSiteType: 'Niche Wall',
-        bodyCapacityMax: 0,
-        crematedCapacityMax: 1,
-        orderNumber: 2
-    }, initializingUser);
-    addBurialSiteType({
-        burialSiteType: 'Urn Garden',
-        bodyCapacityMax: 0,
-        crematedCapacityMax: 1,
-        orderNumber: 2
-    }, initializingUser);
-    addBurialSiteType({
-        burialSiteType: 'Crematorium',
-        bodyCapacityMax: 0,
-        crematedCapacityMax: 1,
-        orderNumber: 2
-    }, initializingUser);
+    if (!tablesToSkip.includes('BurialSiteTypes')) {
+        addBurialSiteType({
+            burialSiteType: 'In-Ground Grave',
+            bodyCapacityMax: 2,
+            crematedCapacityMax: 6,
+            orderNumber: 1
+        }, initializingUser);
+        addBurialSiteType({
+            burialSiteType: 'Columbarium',
+            bodyCapacityMax: 0,
+            crematedCapacityMax: '',
+            orderNumber: 2
+        }, initializingUser);
+        addBurialSiteType({
+            burialSiteType: 'Mausoleum',
+            bodyCapacityMax: 2,
+            crematedCapacityMax: 0,
+            orderNumber: 2
+        }, initializingUser);
+        addBurialSiteType({
+            burialSiteType: 'Niche Wall',
+            bodyCapacityMax: 0,
+            crematedCapacityMax: 1,
+            orderNumber: 2
+        }, initializingUser);
+        addBurialSiteType({
+            burialSiteType: 'Urn Garden',
+            bodyCapacityMax: 0,
+            crematedCapacityMax: 1,
+            orderNumber: 2
+        }, initializingUser);
+        addBurialSiteType({
+            burialSiteType: 'Crematorium',
+            bodyCapacityMax: 0,
+            crematedCapacityMax: 1,
+            orderNumber: 2
+        }, initializingUser);
+    }
     addRecord('BurialSiteStatuses', 'Available', 1, initializingUser);
     addRecord('BurialSiteStatuses', 'Reserved', 2, initializingUser);
-    addRecord('BurialSiteStatuses', 'Taken', 3, initializingUser);
+    addRecord('BurialSiteStatuses', 'Occupied', 3, initializingUser);
     // Contract Types
     addContractType({
         contractType: 'Preneed',
@@ -548,26 +550,28 @@ function initializeData() {
     /*
      * Fee Categories
      */
-    addFeeCategory({
-        feeCategory: 'Interment Rights',
-        orderNumber: 1
-    }, initializingUser);
-    addFeeCategory({
-        feeCategory: 'Cremation Services',
-        orderNumber: 2
-    }, initializingUser);
-    addFeeCategory({
-        feeCategory: 'Burial Charges',
-        orderNumber: 3
-    }, initializingUser);
-    addFeeCategory({
-        feeCategory: 'Disinterment of Human Remains',
-        orderNumber: 4
-    }, initializingUser);
-    addFeeCategory({
-        feeCategory: 'Additional Services',
-        orderNumber: 5
-    }, initializingUser);
+    if (!tablesToSkip.includes('FeeCategories')) {
+        addFeeCategory({
+            feeCategory: 'Interment Rights',
+            orderNumber: 1
+        }, initializingUser);
+        addFeeCategory({
+            feeCategory: 'Cremation Services',
+            orderNumber: 2
+        }, initializingUser);
+        addFeeCategory({
+            feeCategory: 'Burial Charges',
+            orderNumber: 3
+        }, initializingUser);
+        addFeeCategory({
+            feeCategory: 'Disinterment of Human Remains',
+            orderNumber: 4
+        }, initializingUser);
+        addFeeCategory({
+            feeCategory: 'Additional Services',
+            orderNumber: 5
+        }, initializingUser);
+    }
     /*
      * Work Orders
      */

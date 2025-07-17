@@ -30,6 +30,7 @@ import getContracts from '../../database/getContracts.js'
 import getWorkOrder, {
   getWorkOrderByWorkOrderNumber
 } from '../../database/getWorkOrder.js'
+import { initializeData } from '../../database/initializeDatabase.js'
 import reopenWorkOrder from '../../database/reopenWorkOrder.js'
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js'
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js'
@@ -487,7 +488,7 @@ async function importFromMasterCSV(): Promise<void> {
 
         updateBurialSiteStatus(
           burialSiteId ?? '',
-          importIds.takenBurialSiteStatusId,
+          importIds.occupiedBurialSiteStatusId,
           user
         )
       }
@@ -927,7 +928,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         if (burialSite) {
           updateBurialSiteStatus(
             burialSite.burialSiteId,
-            importIds.takenBurialSiteStatusId,
+            importIds.occupiedBurialSiteStatusId,
             user
           )
         } else {
@@ -947,7 +948,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
                 ? burialSiteName.split(',')[0]
                 : burialSiteName,
 
-              burialSiteStatusId: importIds.takenBurialSiteStatusId,
+              burialSiteStatusId: importIds.occupiedBurialSiteStatusId,
               burialSiteTypeId,
 
               burialSiteImage: '',
@@ -1281,16 +1282,32 @@ async function importFromWorkOrderCSV(): Promise<void> {
 function purgeConfigTables(): void {
   console.time('purgeConfigTables')
 
-  const configTablesToPurge = ['CemeteryDirectionsOfArrival', 'Cemeteries']
+  const configTablesToPurge = [
+    'CemeteryDirectionsOfArrival',
+    'Cemeteries',
+    'BurialSiteStatuses',
+    'CommittalTypes',
+    'ContractTypeFields',
+    'ContractTypePrints',
+    'ContractTypes',
+    'IntermentContainerTypes',
+    'WorkOrderMilestoneTypes',
+    'WorkOrderTypes'
+  ]
 
   const database = sqlite(databasePath)
 
   for (const tableName of configTablesToPurge) {
+    console.log(`Purging table: ${tableName}`)
     database.prepare(`delete from ${tableName}`).run()
     database
       .prepare('delete from sqlite_sequence where name = ?')
       .run(tableName)
   }
+
+  database.close()
+
+  initializeData(['BurialSiteTypes', 'FeeCategories'])
 
   console.timeEnd('purgeConfigTables')
 }

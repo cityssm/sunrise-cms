@@ -6,7 +6,7 @@ export const availableBurialSiteStatusId = cacheFunctions.getBurialSiteStatusByB
     ?.burialSiteStatusId;
 export const reservedBurialSiteStatusId = cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Reserved', true)
     ?.burialSiteStatusId;
-export const takenBurialSiteStatusId = cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Taken', true)
+export const occupiedBurialSiteStatusId = cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Occupied', true)
     ?.burialSiteStatusId;
 /*
  * Contract Type IDs

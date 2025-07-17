@@ -13,8 +13,8 @@ export const reservedBurialSiteStatusId =
   cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Reserved', true)
     ?.burialSiteStatusId as number
 
-export const takenBurialSiteStatusId =
-  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Taken', true)
+export const occupiedBurialSiteStatusId =
+  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Occupied', true)
     ?.burialSiteStatusId as number
 
 /*
