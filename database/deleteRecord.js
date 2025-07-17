@@ -8,7 +8,6 @@ const recordIdColumns = new Map([
     ['BurialSiteTypes', 'burialSiteTypeId'],
     ['CommittalTypes', 'committalTypeId'],
     ['ContractComments', 'contractCommentId'],
-    ['Contracts', 'contractId'],
     ['ContractTypeFields', 'contractTypeFieldId'],
     ['ContractTypes', 'contractTypeId'],
     ['FeeCategories', 'feeCategoryId'],
@@ -22,7 +21,6 @@ const recordIdColumns = new Map([
 ]);
 const relatedTables = new Map([
     ['BurialSiteTypes', ['BurialSiteTypeFields']],
-    ['Contracts', ['ContractFields', 'ContractComments']],
     ['ContractTypes', ['ContractTypePrints', 'ContractTypeFields']],
     [
         'WorkOrders',

@@ -1,7 +1,10 @@
-import { deleteRecord } from '../../database/deleteRecord.js';
+import { deleteContract } from '../../database/deleteContract.js';
 export default function handler(request, response) {
-    const success = deleteRecord('Contracts', request.body.contractId, request.session.user);
+    const success = deleteContract(request.body.contractId, request.session.user);
     response.json({
-        success
+        success,
+        errorMessage: success
+            ? ''
+            : 'Note that contracts with active work orders cannot be deleted.'
     });
 }
