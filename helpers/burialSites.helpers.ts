@@ -38,16 +38,14 @@ export function clearNextPreviousBurialSiteIdCache(
     return
   }
 
-  const previousBurialSiteId: number | undefined =
-    previousBurialSiteIdCache.get(burialSiteId)
+  const previousBurialSiteId = previousBurialSiteIdCache.get(burialSiteId)
 
   if (previousBurialSiteId !== undefined) {
     nextBurialSiteIdCache.del(previousBurialSiteId)
     previousBurialSiteIdCache.del(burialSiteId)
   }
 
-  const nextBurialSiteId: number | undefined =
-    nextBurialSiteIdCache.get(burialSiteId)
+  const nextBurialSiteId = nextBurialSiteIdCache.get(burialSiteId)
 
   if (nextBurialSiteId !== undefined) {
     previousBurialSiteIdCache.del(nextBurialSiteId)
