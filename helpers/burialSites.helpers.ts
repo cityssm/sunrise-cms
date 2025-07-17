@@ -24,9 +24,9 @@ const cacheOptions: NodeCacheOptions = {
   useClones: false
 }
 
-const previousBurialSiteIdCache = new NodeCache(cacheOptions)
+const previousBurialSiteIdCache = new NodeCache<number>(cacheOptions)
 
-const nextBurialSiteIdCache = new NodeCache(cacheOptions)
+const nextBurialSiteIdCache = new NodeCache<number>(cacheOptions)
 
 export function clearNextPreviousBurialSiteIdCache(
   burialSiteId = -1,
