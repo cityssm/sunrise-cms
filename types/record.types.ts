@@ -426,7 +426,7 @@ export interface WorkOrder extends Record {
 
   workOrderMilestones?: WorkOrderMilestone[]
   workOrderMilestoneCount?: number
-  
+
   workOrderMilestoneCompletionCount?: number
 
   workOrderComments?: WorkOrderComment[]
