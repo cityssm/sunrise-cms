@@ -410,7 +410,7 @@ const createStatements = [
      * Settings
      */
     `CREATE TABLE SunriseSettings (
-    settingName varchar(100) not null primary key,
+    settingKey varchar(100) not null primary key,
     settingValue varchar(500),
     previousSettingValue varchar(500),
     recordUpdate_timeMillis integer not null)`
