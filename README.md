@@ -10,7 +10,7 @@
 
 🚧 **In development** 🚧
 
-**A web-based application to assist cemetery managers with managing their cemetery records.**
+**A completely free, open source, web-based application to assist cemetery managers with managing their cemetery records.**
 
 ![Burial Site View](./docs/images/burialSite-view.png)
 
