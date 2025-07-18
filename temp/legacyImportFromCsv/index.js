@@ -817,7 +817,7 @@ function purgeConfigTables() {
             .run(tableName);
     }
     database.close();
-    initializeData(['BurialSiteTypes', 'FeeCategories']);
+    initializeData();
     console.timeEnd('purgeConfigTables');
 }
 function purgeTables() {

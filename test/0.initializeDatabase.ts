@@ -2,6 +2,7 @@ import assert from 'node:assert'
 import fs from 'node:fs/promises'
 import { describe, it } from 'node:test'
 
+import getBurialSiteTypes from '../database/getBurialSiteTypes.js'
 import { initializeDatabase } from '../database/initializeDatabase.js'
 import {
   sunriseDB as databasePath,
@@ -20,5 +21,7 @@ await describe('Initialize Database', async () => {
     const success = initializeDatabase()
 
     assert.ok(success)
+
+    assert.ok(getBurialSiteTypes().length > 0)
   })
 })

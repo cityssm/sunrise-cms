@@ -1307,7 +1307,7 @@ function purgeConfigTables(): void {
 
   database.close()
 
-  initializeData(['BurialSiteTypes', 'FeeCategories'])
+  initializeData()
 
   console.timeEnd('purgeConfigTables')
 }

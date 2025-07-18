@@ -10,6 +10,14 @@ import addContractType from './addContractType.js';
 import addFeeCategory from './addFeeCategory.js';
 import addIntermentContainerType from './addIntermentContainerType.js';
 import addRecord from './addRecord.js';
+import getBurialSiteStatuses from './getBurialSiteStatuses.js';
+import getBurialSiteTypes from './getBurialSiteTypes.js';
+import getCommittalTypes from './getCommittalTypes.js';
+import getContractTypes from './getContractTypes.js';
+import getFeeCategories from './getFeeCategories.js';
+import getIntermentContainerTypes from './getIntermentContainerTypes.js';
+import getWorkOrderMilestoneTypes from './getWorkOrderMilestoneTypes.js';
+import getWorkOrderTypes from './getWorkOrderTypes.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:database/initializeDatabase`);
 const recordColumns = `recordCreate_userName varchar(30) not null,
   recordCreate_timeMillis integer not null,
@@ -432,9 +440,11 @@ export function initializeDatabase() {
     initializeData();
     return true;
 }
-export function initializeData(tablesToSkip = []) {
+export function initializeData() {
     debug('Initializing data...');
-    if (!tablesToSkip.includes('BurialSiteTypes')) {
+    // Burial Site Types
+    const burialSiteTypes = getBurialSiteTypes();
+    if (burialSiteTypes.length <= 0) {
         addBurialSiteType({
             burialSiteType: 'In-Ground Grave',
             bodyCapacityMax: 2,
@@ -472,85 +482,99 @@ export function initializeData(tablesToSkip = []) {
             orderNumber: 2
         }, initializingUser);
     }
-    addRecord('BurialSiteStatuses', 'Available', 1, initializingUser);
-    addRecord('BurialSiteStatuses', 'Reserved', 2, initializingUser);
-    addRecord('BurialSiteStatuses', 'Occupied', 3, initializingUser);
+    // Burial Site Statuses
+    const burialSiteStatuses = getBurialSiteStatuses();
+    if (burialSiteStatuses.length <= 0) {
+        addRecord('BurialSiteStatuses', 'Available', 1, initializingUser);
+        addRecord('BurialSiteStatuses', 'Reserved', 2, initializingUser);
+        addRecord('BurialSiteStatuses', 'Occupied', 3, initializingUser);
+    }
     // Contract Types
-    addContractType({
-        contractType: 'Preneed',
-        isPreneed: '1',
-        orderNumber: 1
-    }, initializingUser);
-    addContractType({
-        contractType: 'Interment',
-        orderNumber: 2
-    }, initializingUser);
-    addContractType({
-        contractType: 'Cremation',
-        orderNumber: 3
-    }, initializingUser);
+    const contractTypes = getContractTypes();
+    if (contractTypes.length <= 0) {
+        addContractType({
+            contractType: 'Preneed',
+            isPreneed: '1',
+            orderNumber: 1
+        }, initializingUser);
+        addContractType({
+            contractType: 'Interment',
+            orderNumber: 2
+        }, initializingUser);
+        addContractType({
+            contractType: 'Cremation',
+            orderNumber: 3
+        }, initializingUser);
+    }
     // Interment Container Types
-    addIntermentContainerType({
-        intermentContainerType: 'No Shell',
-        intermentContainerTypeKey: 'NS',
-        orderNumber: 1
-    }, initializingUser);
-    addIntermentContainerType({
-        intermentContainerType: 'Concrete Liner',
-        intermentContainerTypeKey: 'CL',
-        orderNumber: 2
-    }, initializingUser);
-    addIntermentContainerType({
-        intermentContainerType: 'Unpainted Vault',
-        intermentContainerTypeKey: 'UV',
-        orderNumber: 3
-    }, initializingUser);
-    addIntermentContainerType({
-        intermentContainerType: 'Concrete Vault',
-        intermentContainerTypeKey: 'CV',
-        orderNumber: 4
-    }, initializingUser);
-    addIntermentContainerType({
-        intermentContainerType: 'Wooden Shell',
-        intermentContainerTypeKey: 'WS',
-        orderNumber: 5
-    }, initializingUser);
-    addIntermentContainerType({
-        intermentContainerType: 'Steel Vault',
-        intermentContainerTypeKey: 'SV',
-        orderNumber: 6
-    }, initializingUser);
-    addIntermentContainerType({
-        intermentContainerType: 'Shroud',
-        intermentContainerTypeKey: 'SH',
-        orderNumber: 7
-    }, initializingUser);
-    addIntermentContainerType({
-        intermentContainerType: 'Urn',
-        intermentContainerTypeKey: 'U',
-        isCremationType: '1',
-        orderNumber: 7
-    }, initializingUser);
+    const intermentContainerTypes = getIntermentContainerTypes();
+    if (intermentContainerTypes.length <= 0) {
+        addIntermentContainerType({
+            intermentContainerType: 'No Shell',
+            intermentContainerTypeKey: 'NS',
+            orderNumber: 1
+        }, initializingUser);
+        addIntermentContainerType({
+            intermentContainerType: 'Concrete Liner',
+            intermentContainerTypeKey: 'CL',
+            orderNumber: 2
+        }, initializingUser);
+        addIntermentContainerType({
+            intermentContainerType: 'Unpainted Vault',
+            intermentContainerTypeKey: 'UV',
+            orderNumber: 3
+        }, initializingUser);
+        addIntermentContainerType({
+            intermentContainerType: 'Concrete Vault',
+            intermentContainerTypeKey: 'CV',
+            orderNumber: 4
+        }, initializingUser);
+        addIntermentContainerType({
+            intermentContainerType: 'Wooden Shell',
+            intermentContainerTypeKey: 'WS',
+            orderNumber: 5
+        }, initializingUser);
+        addIntermentContainerType({
+            intermentContainerType: 'Steel Vault',
+            intermentContainerTypeKey: 'SV',
+            orderNumber: 6
+        }, initializingUser);
+        addIntermentContainerType({
+            intermentContainerType: 'Shroud',
+            intermentContainerTypeKey: 'SH',
+            orderNumber: 7
+        }, initializingUser);
+        addIntermentContainerType({
+            intermentContainerType: 'Urn',
+            intermentContainerTypeKey: 'U',
+            isCremationType: '1',
+            orderNumber: 7
+        }, initializingUser);
+    }
     // Committal Types
-    addCommittalType({
-        committalType: 'Graveside',
-        committalTypeKey: 'GS',
-        orderNumber: 1
-    }, initializingUser);
-    addCommittalType({
-        committalType: 'Chapel',
-        committalTypeKey: 'CS',
-        orderNumber: 2
-    }, initializingUser);
-    addCommittalType({
-        committalType: 'Church',
-        committalTypeKey: 'CH',
-        orderNumber: 3
-    }, initializingUser);
+    const committalTypes = getCommittalTypes();
+    if (committalTypes.length <= 0) {
+        addCommittalType({
+            committalType: 'Graveside',
+            committalTypeKey: 'GS',
+            orderNumber: 1
+        }, initializingUser);
+        addCommittalType({
+            committalType: 'Chapel',
+            committalTypeKey: 'CS',
+            orderNumber: 2
+        }, initializingUser);
+        addCommittalType({
+            committalType: 'Church',
+            committalTypeKey: 'CH',
+            orderNumber: 3
+        }, initializingUser);
+    }
     /*
      * Fee Categories
      */
-    if (!tablesToSkip.includes('FeeCategories')) {
+    const feeCategories = getFeeCategories({}, {});
+    if (feeCategories.length <= 0) {
         addFeeCategory({
             feeCategory: 'Interment Rights',
             orderNumber: 1
@@ -572,12 +596,17 @@ export function initializeData(tablesToSkip = []) {
             orderNumber: 5
         }, initializingUser);
     }
-    /*
-     * Work Orders
-     */
-    addRecord('WorkOrderTypes', 'Cemetery Work Order', 1, initializingUser);
-    addRecord('WorkOrderMilestoneTypes', 'Funeral', 1, initializingUser);
-    addRecord('WorkOrderMilestoneTypes', 'Arrival', 2, initializingUser);
-    addRecord('WorkOrderMilestoneTypes', 'Cremation', 3, initializingUser);
-    addRecord('WorkOrderMilestoneTypes', 'Interment', 4, initializingUser);
+    // Work Order Types
+    const workOrderTypes = getWorkOrderTypes();
+    if (workOrderTypes.length <= 0) {
+        addRecord('WorkOrderTypes', 'Cemetery Work Order', 1, initializingUser);
+    }
+    // Work Order Milestone Types
+    const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
+    if (workOrderMilestoneTypes.length <= 0) {
+        addRecord('WorkOrderMilestoneTypes', 'Funeral', 1, initializingUser);
+        addRecord('WorkOrderMilestoneTypes', 'Arrival', 2, initializingUser);
+        addRecord('WorkOrderMilestoneTypes', 'Cremation', 3, initializingUser);
+        addRecord('WorkOrderMilestoneTypes', 'Interment', 4, initializingUser);
+    }
 }
