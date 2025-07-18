@@ -17,7 +17,7 @@
 This is a major refactoring of the now archived
 [Lot Occupancy System](https://github.com/cityssm/lot-occupancy-system),
 originally built with multiple focuses in mind. This fork completely reworks the project
-to focus exculsively on cemetery management.
+to focus exclusively on cemetery management.
 
 [**User Documentation (In the Works)**](./docs/README.md)
 
