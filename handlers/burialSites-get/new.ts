@@ -4,7 +4,7 @@ import getCemeteries from '../../database/getCemeteries.js'
 import {
   getBurialSiteStatuses,
   getBurialSiteTypes
-} from '../../helpers/functions.cache.js'
+} from '../../helpers/cache.helpers.js'
 import { getBurialSiteImages } from '../../helpers/images.helpers.js'
 import type { BurialSite } from '../../types/record.types.js'
 

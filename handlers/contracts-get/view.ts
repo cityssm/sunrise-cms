@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 
 import getContract from '../../database/getContract.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import { getContractTypePrintsById } from '../../helpers/functions.cache.js'
+import { getContractTypePrintsById } from '../../helpers/cache.helpers.js'
 
 export default async function handler(
   request: Request,

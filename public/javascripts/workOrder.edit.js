@@ -137,8 +137,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             title: 'Delete Work Order',
             message: 'Are you sure you want to delete this work order?',
             okButton: {
-                text: 'Yes, Delete Work Order',
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete Work Order'
             }
         });
     });
@@ -248,7 +248,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             message: 'Are you sure you want to remove the completion status from this milestone, and reopen it?',
             okButton: {
                 callbackFunction: doReopen,
-                text: 'Yes, Reopen Milestone',
+                text: 'Yes, Reopen Milestone'
             }
         });
     }
@@ -272,6 +272,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     const workOrderOpenDateStringElement = document.querySelector('#workOrderEdit--workOrderOpenDateString');
+    function refreshWorkOrderMilestoneDateTimeMessage(elementIdPrefix) {
+        const workOrderMilestoneDateStringElement = document.querySelector(`#${elementIdPrefix}--workOrderMilestoneDateString`);
+        const workOrderMilestoneTimeStringElement = document.querySelector(`#${elementIdPrefix}--workOrderMilestoneTimeString`);
+        const workOrderMilestoneDateTimeMessageElement = document.querySelector(`#${elementIdPrefix}--workOrderMilestoneDateTimeMessage`);
+        const dateValueString = workOrderMilestoneDateStringElement.value;
+        if (dateValueString === '') {
+            workOrderMilestoneDateTimeMessageElement.textContent = '';
+            return;
+        }
+        const dateValue = new Date(dateValueString + 'T00:00:00');
+        const timeRange = exports.workOrderWorkDayRanges?.[dateValue.getDay()] === undefined
+            ? {
+                startHour: 0,
+                endHour: 24
+            }
+            : exports.workOrderWorkDayRanges[dateValue.getDay()];
+        const setHourString = workOrderMilestoneTimeStringElement.value;
+        const setHour = setHourString === ''
+            ? -1
+            : Number.parseInt(setHourString.split(':')[0], 10);
+        if (timeRange.startHour === -1 ||
+            (setHour !== -1 && setHour < timeRange.startHour) ||
+            timeRange.endHour === -1 ||
+            (setHour !== -1 && setHour >= timeRange.endHour)) {
+            workOrderMilestoneDateTimeMessageElement.textContent =
+                'Milestone time is outside of regular work hours.';
+            return;
+        }
+        workOrderMilestoneDateTimeMessageElement.textContent = '';
+    }
     function editMilestone(clickEvent) {
         clickEvent.preventDefault();
         const workOrderMilestoneId = Number.parseInt(clickEvent.currentTarget.closest('.container--milestone').dataset.workOrderMilestoneId ?? '', 10);
@@ -322,11 +352,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     workOrderMilestone.workOrderMilestoneDateString ?? '';
                 workOrderMilestoneDateStringElement.min =
                     workOrderOpenDateStringElement.value;
+                workOrderMilestoneDateStringElement.addEventListener('change', () => {
+                    refreshWorkOrderMilestoneDateTimeMessage('milestoneEdit');
+                });
+                const workOrderMilestoneTimeStringElement = modalElement.querySelector('#milestoneEdit--workOrderMilestoneTimeString');
                 if (workOrderMilestone.workOrderMilestoneTime) {
-                    ;
-                    modalElement.querySelector('#milestoneEdit--workOrderMilestoneTimeString').value = workOrderMilestone.workOrderMilestoneTimeString ?? '';
+                    workOrderMilestoneTimeStringElement.value =
+                        workOrderMilestone.workOrderMilestoneTimeString ?? '';
                 }
-                ;
+                workOrderMilestoneTimeStringElement.addEventListener('change', () => {
+                    refreshWorkOrderMilestoneDateTimeMessage('milestoneEdit');
+                });
+                refreshWorkOrderMilestoneDateTimeMessage('milestoneEdit');
                 modalElement.querySelector('#milestoneEdit--workOrderMilestoneDescription').value = workOrderMilestone.workOrderMilestoneDescription ?? '';
             },
             onshown(modalElement, closeModalFunction) {
@@ -464,8 +501,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     title: 'Milestone Date in the Past',
                     message: 'Are you sure you want to create a milestone with a date in the past?',
                     okButton: {
+                        callbackFunction: _doAdd,
                         text: 'Yes, Create a Past Milestone',
-                        callbackFunction: _doAdd
                     }
                 });
             }
@@ -489,6 +526,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 workOrderMilestoneDateStringElement.valueAsDate = new Date();
                 workOrderMilestoneDateStringElement.min =
                     workOrderOpenDateStringElement.value;
+                workOrderMilestoneDateStringElement.addEventListener('change', () => {
+                    refreshWorkOrderMilestoneDateTimeMessage('milestoneAdd');
+                });
+                modalElement
+                    .querySelector('#milestoneAdd--workOrderMilestoneTimeString')
+                    ?.addEventListener('change', () => {
+                    refreshWorkOrderMilestoneDateTimeMessage('milestoneAdd');
+                });
             },
             onshown(modalElement, closeModalFunction) {
                 addCloseModalFunction = closeModalFunction;

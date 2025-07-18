@@ -4,7 +4,7 @@ import {
   moveBurialSiteTypeFieldDown,
   moveBurialSiteTypeFieldDownToBottom
 } from '../../database/moveBurialSiteTypeField.js'
-import { getBurialSiteTypes } from '../../helpers/functions.cache.js'
+import { getBurialSiteTypes } from '../../helpers/cache.helpers.js'
 
 export default function handler(
   request: Request<

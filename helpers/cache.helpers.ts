@@ -8,6 +8,7 @@ import getCommittalTypesFromDatabase from '../database/getCommittalTypes.js'
 import getContractTypeFieldsFromDatabase from '../database/getContractTypeFields.js'
 import getContractTypesFromDatabase from '../database/getContractTypes.js'
 import getIntermentContainerTypesFromDatabase from '../database/getIntermentContainerTypes.js'
+import getSettingsFromDatabase from '../database/getSettings.js'
 import getWorkOrderMilestoneTypesFromDatabase from '../database/getWorkOrderMilestoneTypes.js'
 import getWorkOrderTypesFromDatabase from '../database/getWorkOrderTypes.js'
 import { DEBUG_NAMESPACE } from '../debug.config.js'
@@ -22,14 +23,16 @@ import type {
   ContractType,
   ContractTypeField,
   IntermentContainerType,
+  Setting,
   WorkOrderMilestoneType,
   WorkOrderType
 } from '../types/record.types.js'
+import type { SettingKey, SettingProperties } from '../types/setting.types.js'
 
 import { getConfigProperty } from './config.helpers.js'
 
 const debug = Debug(
-  `${DEBUG_NAMESPACE}:functions.cache:${process.pid.toString().padEnd(5)}`
+  `${DEBUG_NAMESPACE}:helpers.cache:${process.pid.toString().padEnd(5)}`
 )
 
 /*
@@ -299,6 +302,42 @@ function clearWorkOrderMilestoneTypesCache(): void {
 }
 
 /*
+ * Settings
+ */
+
+let settings: Array<Partial<Setting> & SettingProperties> | undefined
+
+export function getSettings(): Array<Partial<Setting> & SettingProperties> {
+  settings ??= getSettingsFromDatabase()
+  return settings
+}
+
+export function getSetting(
+  settingKey: SettingKey
+): Partial<Setting> & SettingProperties {
+  const cachedSettings = getSettings()
+  return cachedSettings.find(
+    (setting) => setting.settingKey === settingKey
+  ) as Partial<Setting> & SettingProperties
+}
+
+export function getSettingValue(settingKey: SettingKey): string {
+  const setting = getSetting(settingKey)
+
+  let settingValue = setting.settingValue ?? ''
+
+  if (settingValue === '') {
+    settingValue = setting.defaultValue
+  }
+
+  return settingValue
+}
+
+export function clearSettingsCache(): void {
+  settings = undefined
+}
+
+/*
  * Cache Management
  */
 
@@ -311,6 +350,9 @@ export function preloadCaches(): void {
   getIntermentContainerTypes()
   getWorkOrderTypes()
   getWorkOrderMilestoneTypes()
+  getSettings()
+  getAllContractTypeFields()
+  debug('Caches preloaded')
 }
 
 export const cacheTableNames = [
@@ -324,6 +366,7 @@ export const cacheTableNames = [
   'FeeCategories',
   'Fees',
   'IntermentContainerTypes',
+  'SunriseSettings',
   'WorkOrderMilestoneTypes',
   'WorkOrderTypes'
 ] as const
@@ -360,6 +403,11 @@ export function clearCacheByTableName(
 
     case 'IntermentContainerTypes': {
       clearIntermentContainerTypesCache()
+      break
+    }
+
+    case 'SunriseSettings': {
+      clearSettingsCache()
       break
     }
 
@@ -407,6 +455,8 @@ export function clearCaches(): void {
   clearIntermentContainerTypesCache()
   clearWorkOrderTypesCache()
   clearWorkOrderMilestoneTypesCache()
+  clearSettingsCache()
+  debug('Caches cleared')
 }
 
 process.on('message', (message: WorkerMessage) => {

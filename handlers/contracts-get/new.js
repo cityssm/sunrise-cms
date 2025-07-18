@@ -4,7 +4,7 @@ import getBurialSiteDirectionsOfArrival, { defaultDirectionsOfArrival } from '..
 import getCemeteries from '../../database/getCemeteries.js';
 import getFuneralHomes from '../../database/getFuneralHomes.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { getBurialSiteStatuses, getBurialSiteTypes, getCommittalTypes, getContractTypes, getIntermentContainerTypes } from '../../helpers/functions.cache.js';
+import { getBurialSiteStatuses, getBurialSiteTypes, getCommittalTypes, getContractTypes, getIntermentContainerTypes } from '../../helpers/cache.helpers.js';
 export default async function handler(request, response) {
     const startDate = new Date();
     const contract = {

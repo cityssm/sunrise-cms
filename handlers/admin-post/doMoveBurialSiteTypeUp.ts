@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js'
-import { getBurialSiteTypes } from '../../helpers/functions.cache.js'
+import { getBurialSiteTypes } from '../../helpers/cache.helpers.js'
 
 export default function handler(
   request: Request<

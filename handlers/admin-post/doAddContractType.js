@@ -1,5 +1,5 @@
 import addContractType from '../../database/addContractType.js';
-import { getAllContractTypeFields, getContractTypes } from '../../helpers/functions.cache.js';
+import { getAllContractTypeFields, getContractTypes } from '../../helpers/cache.helpers.js';
 export default function handler(request, response) {
     const contractTypeId = addContractType(request.body, request.session.user);
     const contractTypes = getContractTypes();

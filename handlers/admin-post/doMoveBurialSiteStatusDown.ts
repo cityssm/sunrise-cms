@@ -4,7 +4,7 @@ import {
   moveRecordDown,
   moveRecordDownToBottom
 } from '../../database/moveRecord.js'
-import { getBurialSiteStatuses } from '../../helpers/functions.cache.js'
+import { getBurialSiteStatuses } from '../../helpers/cache.helpers.js'
 
 export default function handler(
   request: Request<

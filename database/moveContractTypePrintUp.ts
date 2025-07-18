@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3'
 
+import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
-import { clearCacheByTableName } from '../helpers/functions.cache.js'
 
 export function moveContractTypePrintUp(
   contractTypeId: number | string,
@@ -27,8 +27,8 @@ export function moveContractTypePrintUp(
       `update ContractTypePrints
         set orderNumber = orderNumber + 1
         where recordDelete_timeMillis is null
-        and contractTypeId = ?
-        and orderNumber = ? - 1`
+          and contractTypeId = ?
+          and orderNumber = ? - 1`
     )
     .run(contractTypeId, currentOrderNumber)
 

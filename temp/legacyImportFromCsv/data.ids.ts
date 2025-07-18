@@ -1,4 +1,4 @@
-import * as cacheFunctions from '../../helpers/functions.cache.js'
+import * as cacheFunctions from '../../helpers/cache.helpers.js'
 import type { ContractType } from '../../types/record.types.js'
 
 /*

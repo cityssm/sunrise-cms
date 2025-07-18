@@ -12,7 +12,7 @@ import {
   getCommittalTypes,
   getContractTypes,
   getIntermentContainerTypes
-} from '../../helpers/functions.cache.js'
+} from '../../helpers/cache.helpers.js'
 import type { Contract } from '../../types/record.types.js'
 
 export default async function handler(

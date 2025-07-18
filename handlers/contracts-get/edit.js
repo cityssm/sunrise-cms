@@ -3,7 +3,7 @@ import getCemeteries from '../../database/getCemeteries.js';
 import getContract from '../../database/getContract.js';
 import getFuneralHomes from '../../database/getFuneralHomes.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { getBurialSiteStatuses, getBurialSiteTypes, getCommittalTypes, getContractTypePrintsById, getContractTypes, getIntermentContainerTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
+import { getBurialSiteStatuses, getBurialSiteTypes, getCommittalTypes, getContractTypePrintsById, getContractTypes, getIntermentContainerTypes, getWorkOrderTypes } from '../../helpers/cache.helpers.js';
 export default async function handler(request, response) {
     const contract = await getContract(request.params.contractId);
     if (contract === undefined) {

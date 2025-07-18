@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { deleteRecord } from '../../database/deleteRecord.js'
-import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
+import { getWorkOrderMilestoneTypes } from '../../helpers/cache.helpers.js'
 
 export default function handler(
   request: Request<unknown, unknown, { workOrderMilestoneTypeId: string }>,

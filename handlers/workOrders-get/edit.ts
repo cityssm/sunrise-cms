@@ -1,12 +1,13 @@
 import type { Request, Response } from 'express'
 
 import getWorkOrder from '../../database/getWorkOrder.js'
-import { getConfigProperty } from '../../helpers/config.helpers.js'
 import {
   getBurialSiteStatuses,
   getWorkOrderMilestoneTypes,
   getWorkOrderTypes
-} from '../../helpers/functions.cache.js'
+} from '../../helpers/cache.helpers.js'
+import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { getWorkOrderWorkDayRanges } from '../../helpers/settings.helpers.js'
 
 export default async function handler(
   request: Request,
@@ -42,6 +43,8 @@ export default async function handler(
 
   const burialSiteStatuses = getBurialSiteStatuses()
 
+  const workOrderWorkDayRanges = getWorkOrderWorkDayRanges()
+
   response.render('workOrder-edit', {
     headTitle: `Work Order #${workOrder.workOrderNumber}`,
 
@@ -50,6 +53,7 @@ export default async function handler(
     burialSiteStatuses,
     isCreate: false,
     workOrderMilestoneTypes,
-    workOrderTypes
+    workOrderTypes,
+    workOrderWorkDayRanges
   })
 }

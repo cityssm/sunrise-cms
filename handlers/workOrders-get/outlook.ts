@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import {
   getWorkOrderMilestoneTypes,
   getWorkOrderTypes
-} from '../../helpers/functions.cache.js'
+} from '../../helpers/cache.helpers.js'
 
 export default function handler(request: Request, response: Response): void {
   const workOrderTypes = getWorkOrderTypes()

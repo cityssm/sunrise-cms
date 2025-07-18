@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3';
+import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import { clearCacheByTableName } from '../helpers/functions.cache.js';
 export function moveContractTypePrintDown(contractTypeId, printEJS) {
     const database = sqlite(sunriseDB);
     const currentOrderNumber = database

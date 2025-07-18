@@ -1,16 +1,13 @@
 import type { Request, Response } from 'express'
 
-import { getConfigProperty } from '../../helpers/config.helpers.js'
 import {
   getAllContractTypeFields,
   getContractTypes
-} from '../../helpers/functions.cache.js'
+} from '../../helpers/cache.helpers.js'
+import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getPrintConfig } from '../../helpers/functions.print.js'
 
-export default function handler(
-  _request: Request,
-  response: Response
-): void {
+export default function handler(_request: Request, response: Response): void {
   const contractTypes = getContractTypes()
   const allContractTypeFields = getAllContractTypeFields()
 

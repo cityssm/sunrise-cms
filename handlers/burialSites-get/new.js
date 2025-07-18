@@ -1,5 +1,5 @@
 import getCemeteries from '../../database/getCemeteries.js';
-import { getBurialSiteStatuses, getBurialSiteTypes } from '../../helpers/functions.cache.js';
+import { getBurialSiteStatuses, getBurialSiteTypes } from '../../helpers/cache.helpers.js';
 import { getBurialSiteImages } from '../../helpers/images.helpers.js';
 export default async function handler(request, response) {
     const burialSite = {

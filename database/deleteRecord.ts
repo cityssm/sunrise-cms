@@ -1,11 +1,11 @@
 import sqlite from 'better-sqlite3'
 
-import { sunriseDB } from '../helpers/database.helpers.js'
 import {
   type CacheTableNames,
   cacheTableNames,
   clearCacheByTableName
-} from '../helpers/functions.cache.js'
+} from '../helpers/cache.helpers.js'
+import { sunriseDB } from '../helpers/database.helpers.js'
 
 type RecordTable =
   | 'BurialSiteComments'

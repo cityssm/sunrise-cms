@@ -1,6 +1,6 @@
 import { before, describe, it } from 'node:test';
-import * as cacheFunctions from '../helpers/functions.cache.js';
-await describe('functions.cache', async () => {
+import * as cacheFunctions from '../helpers/cache.helpers.js';
+await describe('helpers.cache', async () => {
     const badId = -3;
     // eslint-disable-next-line no-secrets/no-secrets, @cspell/spellchecker
     const badName = 'qwertyuiopasdfghjklzxcvbnm';

@@ -4,6 +4,7 @@ import handler_contractTypes from '../handlers/admin-get/contractTypes.js';
 import handler_database from '../handlers/admin-get/database.js';
 import handler_fees from '../handlers/admin-get/fees.js';
 import handler_ntfyStartup from '../handlers/admin-get/ntfyStartup.js';
+import handler_settings from '../handlers/admin-get/settings.js';
 import handler_tables from '../handlers/admin-get/tables.js';
 import handler_doAddBurialSiteStatus from '../handlers/admin-post/doAddBurialSiteStatus.js';
 import handler_doAddBurialSiteType from '../handlers/admin-post/doAddBurialSiteType.js';
@@ -65,6 +66,7 @@ import handler_doUpdateFee from '../handlers/admin-post/doUpdateFee.js';
 import handler_doUpdateFeeAmount from '../handlers/admin-post/doUpdateFeeAmount.js';
 import handler_doUpdateFeeCategory from '../handlers/admin-post/doUpdateFeeCategory.js';
 import handler_doUpdateIntermentContainerType from '../handlers/admin-post/doUpdateIntermentContainerType.js';
+import handler_doUpdateSetting from '../handlers/admin-post/doUpdateSetting.js';
 import handler_doUpdateWorkOrderMilestoneType from '../handlers/admin-post/doUpdateWorkOrderMilestoneType.js';
 import handler_doUpdateWorkOrderType from '../handlers/admin-post/doUpdateWorkOrderType.js';
 // Ntfy Startup
@@ -155,6 +157,11 @@ router.post('/doUpdateIntermentContainerType', handler_doUpdateIntermentContaine
 router.post('/doMoveIntermentContainerTypeUp', handler_doMoveIntermentContainerTypeUp);
 router.post('/doMoveIntermentContainerTypeDown', handler_doMoveIntermentContainerTypeDown);
 router.post('/doDeleteIntermentContainerType', handler_doDeleteIntermentContainerType);
+/*
+ * Settings Management
+ */
+router.get('/settings', handler_settings);
+router.post('/doUpdateSetting', handler_doUpdateSetting);
 /*
  * Database Maintenance
  */

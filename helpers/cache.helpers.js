@@ -6,11 +6,12 @@ import getCommittalTypesFromDatabase from '../database/getCommittalTypes.js';
 import getContractTypeFieldsFromDatabase from '../database/getContractTypeFields.js';
 import getContractTypesFromDatabase from '../database/getContractTypes.js';
 import getIntermentContainerTypesFromDatabase from '../database/getIntermentContainerTypes.js';
+import getSettingsFromDatabase from '../database/getSettings.js';
 import getWorkOrderMilestoneTypesFromDatabase from '../database/getWorkOrderMilestoneTypes.js';
 import getWorkOrderTypesFromDatabase from '../database/getWorkOrderTypes.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from './config.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:functions.cache:${process.pid.toString().padEnd(5)}`);
+const debug = Debug(`${DEBUG_NAMESPACE}:helpers.cache:${process.pid.toString().padEnd(5)}`);
 /*
  * Burial Site Statuses
  */
@@ -157,6 +158,29 @@ function clearWorkOrderMilestoneTypesCache() {
     workOrderMilestoneTypes = undefined;
 }
 /*
+ * Settings
+ */
+let settings;
+export function getSettings() {
+    settings ??= getSettingsFromDatabase();
+    return settings;
+}
+export function getSetting(settingKey) {
+    const cachedSettings = getSettings();
+    return cachedSettings.find((setting) => setting.settingKey === settingKey);
+}
+export function getSettingValue(settingKey) {
+    const setting = getSetting(settingKey);
+    let settingValue = setting.settingValue ?? '';
+    if (settingValue === '') {
+        settingValue = setting.defaultValue;
+    }
+    return settingValue;
+}
+export function clearSettingsCache() {
+    settings = undefined;
+}
+/*
  * Cache Management
  */
 export function preloadCaches() {
@@ -168,6 +192,9 @@ export function preloadCaches() {
     getIntermentContainerTypes();
     getWorkOrderTypes();
     getWorkOrderMilestoneTypes();
+    getSettings();
+    getAllContractTypeFields();
+    debug('Caches preloaded');
 }
 export const cacheTableNames = [
     'BurialSiteStatuses',
@@ -180,6 +207,7 @@ export const cacheTableNames = [
     'FeeCategories',
     'Fees',
     'IntermentContainerTypes',
+    'SunriseSettings',
     'WorkOrderMilestoneTypes',
     'WorkOrderTypes'
 ];
@@ -206,6 +234,10 @@ export function clearCacheByTableName(tableName, relayMessage = true) {
         }
         case 'IntermentContainerTypes': {
             clearIntermentContainerTypesCache();
+            break;
+        }
+        case 'SunriseSettings': {
+            clearSettingsCache();
             break;
         }
         case 'WorkOrderMilestoneTypes': {
@@ -246,6 +278,8 @@ export function clearCaches() {
     clearIntermentContainerTypesCache();
     clearWorkOrderTypesCache();
     clearWorkOrderMilestoneTypesCache();
+    clearSettingsCache();
+    debug('Caches cleared');
 }
 process.on('message', (message) => {
     if (message.messageType === 'clearCache' && message.pid !== process.pid) {

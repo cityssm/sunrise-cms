@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import {
   getAllContractTypeFields,
   getContractTypeById
-} from '../../helpers/functions.cache.js'
+} from '../../helpers/cache.helpers.js'
 import type { ContractType } from '../../types/record.types.js'
 
 export default function handler(

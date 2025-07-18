@@ -1,5 +1,5 @@
 import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js';
-import { getAllContractTypeFields, getContractTypes } from '../../helpers/functions.cache.js';
+import { getAllContractTypeFields, getContractTypes } from '../../helpers/cache.helpers.js';
 export default function handler(request, response) {
     const success = request.body.moveToEnd === '1'
         ? moveRecordUpToTop('ContractTypes', request.body.contractTypeId)

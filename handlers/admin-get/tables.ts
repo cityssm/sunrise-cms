@@ -6,7 +6,7 @@ import {
   getIntermentContainerTypes,
   getWorkOrderMilestoneTypes,
   getWorkOrderTypes
-} from '../../helpers/functions.cache.js'
+} from '../../helpers/cache.helpers.js'
 
 export default function handler(_request: Request, response: Response): void {
   const burialSiteStatuses = getBurialSiteStatuses()

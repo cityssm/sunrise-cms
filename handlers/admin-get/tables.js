@@ -1,4 +1,4 @@
-import { getBurialSiteStatuses, getCommittalTypes, getIntermentContainerTypes, getWorkOrderMilestoneTypes, getWorkOrderTypes } from '../../helpers/functions.cache.js';
+import { getBurialSiteStatuses, getCommittalTypes, getIntermentContainerTypes, getWorkOrderMilestoneTypes, getWorkOrderTypes } from '../../helpers/cache.helpers.js';
 export default function handler(_request, response) {
     const burialSiteStatuses = getBurialSiteStatuses();
     const committalTypes = getCommittalTypes();

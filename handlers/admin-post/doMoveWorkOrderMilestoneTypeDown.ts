@@ -4,7 +4,7 @@ import {
   moveRecordDown,
   moveRecordDownToBottom
 } from '../../database/moveRecord.js'
-import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js'
+import { getWorkOrderMilestoneTypes } from '../../helpers/cache.helpers.js'
 
 export default function handler(
   request: Request<

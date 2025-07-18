@@ -1,5 +1,5 @@
 import { moveContractTypeFieldUp, moveContractTypeFieldUpToTop } from '../../database/moveContractTypeField.js';
-import { getAllContractTypeFields, getContractTypes } from '../../helpers/functions.cache.js';
+import { getAllContractTypeFields, getContractTypes } from '../../helpers/cache.helpers.js';
 export default function handler(request, response) {
     const success = request.body.moveToEnd === '1'
         ? moveContractTypeFieldUpToTop(request.body.contractTypeFieldId)

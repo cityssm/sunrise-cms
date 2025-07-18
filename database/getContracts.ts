@@ -8,13 +8,13 @@ import {
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
+import { getContractTypeById } from '../helpers/cache.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import {
   sanitizeLimit,
   sanitizeOffset,
   sunriseDB
 } from '../helpers/database.helpers.js'
-import { getContractTypeById } from '../helpers/functions.cache.js'
 import {
   getBurialSiteNameWhereClause,
   getContractTimeWhereClause,

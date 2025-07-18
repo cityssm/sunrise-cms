@@ -4,7 +4,7 @@ import getFeeCategories from '../../database/getFeeCategories.js'
 import {
   getBurialSiteTypes,
   getContractTypes
-} from '../../helpers/functions.cache.js'
+} from '../../helpers/cache.helpers.js'
 
 export default function handler(
   _request: Request,

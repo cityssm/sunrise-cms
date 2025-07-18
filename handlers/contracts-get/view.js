@@ -1,6 +1,6 @@
 import getContract from '../../database/getContract.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { getContractTypePrintsById } from '../../helpers/functions.cache.js';
+import { getContractTypePrintsById } from '../../helpers/cache.helpers.js';
 export default async function handler(request, response) {
     const contract = await getContract(request.params.contractId);
     if (contract === undefined) {

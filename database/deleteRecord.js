@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3';
+import { cacheTableNames, clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import { cacheTableNames, clearCacheByTableName } from '../helpers/functions.cache.js';
 const recordIdColumns = new Map([
     ['BurialSiteComments', 'burialSiteCommentId'],
     ['BurialSiteStatuses', 'burialSiteStatusId'],

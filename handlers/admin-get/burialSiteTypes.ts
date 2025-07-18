@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { getBurialSiteTypes } from '../../helpers/functions.cache.js'
+import { getBurialSiteTypes } from '../../helpers/cache.helpers.js'
 
 export default function handler(
   _request: Request,

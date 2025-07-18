@@ -4,7 +4,7 @@ import getCemeteries from '../../database/getCemeteries.js'
 import {
   getBurialSiteStatuses,
   getBurialSiteTypes
-} from '../../helpers/functions.cache.js'
+} from '../../helpers/cache.helpers.js'
 
 export default function handler(request: Request, response: Response): void {
   const cemeteries = getCemeteries()

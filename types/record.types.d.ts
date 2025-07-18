@@ -1,5 +1,6 @@
 import type { DateString, TimeString } from '@cityssm/utils-datetime';
 import type { directionsOfArrival } from '../data/dataLists.js';
+import type { SettingKey } from './setting.types.js';
 export interface BurialSite extends Record {
     burialSiteId: number;
     burialSiteName?: string;
@@ -349,4 +350,10 @@ export interface WorkOrderType extends Record {
     workOrderType?: string;
     workOrderTypeId: number;
     orderNumber?: number;
+}
+export interface Setting {
+    settingKey: SettingKey;
+    settingValue: string | null;
+    previousSettingValue: string | null;
+    recordUpdate_timeMillis: number;
 }

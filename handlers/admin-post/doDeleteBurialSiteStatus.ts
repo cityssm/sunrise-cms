@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { deleteRecord } from '../../database/deleteRecord.js'
-import { getBurialSiteStatuses } from '../../helpers/functions.cache.js'
+import { getBurialSiteStatuses } from '../../helpers/cache.helpers.js'
 
 export default function handler(
   request: Request<unknown, unknown, { burialSiteStatusId: string }>,

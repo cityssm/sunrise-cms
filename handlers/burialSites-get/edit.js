@@ -1,7 +1,7 @@
 import getBurialSite from '../../database/getBurialSite.js';
 import getCemeteries from '../../database/getCemeteries.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { getBurialSiteStatuses, getBurialSiteTypes } from '../../helpers/functions.cache.js';
+import { getBurialSiteStatuses, getBurialSiteTypes } from '../../helpers/cache.helpers.js';
 import { getBurialSiteImages } from '../../helpers/images.helpers.js';
 export default async function handler(request, response) {
     const burialSite = await getBurialSite(request.params.burialSiteId);

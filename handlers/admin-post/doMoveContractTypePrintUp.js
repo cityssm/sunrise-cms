@@ -1,5 +1,5 @@
 import { moveContractTypePrintUp, moveContractTypePrintUpToTop } from '../../database/moveContractTypePrintUp.js';
-import { getAllContractTypeFields, getContractTypes } from '../../helpers/functions.cache.js';
+import { getAllContractTypeFields, getContractTypes } from '../../helpers/cache.helpers.js';
 export default function handler(request, response) {
     const success = request.body.moveToEnd === '1'
         ? moveContractTypePrintUpToTop(request.body.contractTypeId, request.body.printEJS)

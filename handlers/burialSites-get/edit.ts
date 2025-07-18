@@ -6,7 +6,7 @@ import { getConfigProperty } from '../../helpers/config.helpers.js'
 import {
   getBurialSiteStatuses,
   getBurialSiteTypes
-} from '../../helpers/functions.cache.js'
+} from '../../helpers/cache.helpers.js'
 import { getBurialSiteImages } from '../../helpers/images.helpers.js'
 
 export default async function handler(

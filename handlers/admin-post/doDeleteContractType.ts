@@ -4,7 +4,7 @@ import { deleteRecord } from '../../database/deleteRecord.js'
 import {
   getAllContractTypeFields,
   getContractTypes
-} from '../../helpers/functions.cache.js'
+} from '../../helpers/cache.helpers.js'
 
 export default function handler(
   request: Request<unknown, unknown, { contractTypeId: string }>,

@@ -14,9 +14,17 @@ import type { Sunrise } from './types.js'
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+  workOrderMilestones?: WorkOrderMilestone[]
+  workOrderMilestoneTypes?: WorkOrderMilestoneType[]
+  workOrderWorkDayRanges?: Record<
+    number,
+    { endHour: number; startHour: number }
+  >
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const workOrderId = (
     document.querySelector('#workOrderEdit--workOrderId') as HTMLInputElement
@@ -53,8 +61,9 @@ declare const exports: Record<string, unknown>
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          workOrderId?: number
+
           errorMessage?: string
+          workOrderId?: number
         }
 
         if (responseJSON.success) {
@@ -104,6 +113,7 @@ declare const exports: Record<string, unknown>
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
+
           errorMessage?: string
         }
 
@@ -204,10 +214,12 @@ declare const exports: Record<string, unknown>
       bulmaJS.confirm({
         contextualColorName: 'warning',
         title: 'Delete Work Order',
+
         message: 'Are you sure you want to delete this work order?',
+
         okButton: {
-          text: 'Yes, Delete Work Order',
-          callbackFunction: doDelete
+          callbackFunction: doDelete,
+          text: 'Yes, Delete Work Order'
         }
       })
     })
@@ -391,7 +403,7 @@ declare const exports: Record<string, unknown>
 
       okButton: {
         callbackFunction: doReopen,
-        text: 'Yes, Reopen Milestone',
+        text: 'Yes, Reopen Milestone'
       }
     })
   }
@@ -431,6 +443,59 @@ declare const exports: Record<string, unknown>
     '#workOrderEdit--workOrderOpenDateString'
   ) as HTMLInputElement
 
+  function refreshWorkOrderMilestoneDateTimeMessage(
+    elementIdPrefix: 'milestoneAdd' | 'milestoneEdit'
+  ): void {
+    const workOrderMilestoneDateStringElement = document.querySelector(
+      `#${elementIdPrefix}--workOrderMilestoneDateString`
+    ) as HTMLInputElement
+
+    const workOrderMilestoneTimeStringElement = document.querySelector(
+      `#${elementIdPrefix}--workOrderMilestoneTimeString`
+    ) as HTMLInputElement
+
+    const workOrderMilestoneDateTimeMessageElement = document.querySelector(
+      `#${elementIdPrefix}--workOrderMilestoneDateTimeMessage`
+    ) as HTMLParagraphElement
+
+    const dateValueString = workOrderMilestoneDateStringElement.value
+
+    if (dateValueString === '') {
+      workOrderMilestoneDateTimeMessageElement.textContent = ''
+      return
+    }
+
+    const dateValue = new Date(dateValueString + 'T00:00:00')
+
+    const timeRange =
+      exports.workOrderWorkDayRanges?.[dateValue.getDay()] === undefined
+        ? {
+            startHour: 0,
+            endHour: 24
+          }
+        : exports.workOrderWorkDayRanges[dateValue.getDay()]
+
+    const setHourString = workOrderMilestoneTimeStringElement.value
+
+    const setHour =
+      setHourString === ''
+        ? -1
+        : Number.parseInt(setHourString.split(':')[0], 10)
+
+    if (
+      timeRange.startHour === -1 ||
+      (setHour !== -1 && setHour < timeRange.startHour) ||
+      timeRange.endHour === -1 ||
+      (setHour !== -1 && setHour >= timeRange.endHour)
+    ) {
+      workOrderMilestoneDateTimeMessageElement.textContent =
+        'Milestone time is outside of regular work hours.'
+      return
+    }
+
+    workOrderMilestoneDateTimeMessageElement.textContent = ''
+  }
+
   function editMilestone(clickEvent: Event): void {
     clickEvent.preventDefault()
 
@@ -460,6 +525,7 @@ declare const exports: Record<string, unknown>
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
+
             errorMessage?: string
             workOrderMilestones?: WorkOrderMilestone[]
           }
@@ -536,14 +602,24 @@ declare const exports: Record<string, unknown>
         workOrderMilestoneDateStringElement.min =
           workOrderOpenDateStringElement.value
 
+        workOrderMilestoneDateStringElement.addEventListener('change', () => {
+          refreshWorkOrderMilestoneDateTimeMessage('milestoneEdit')
+        })
+
+        const workOrderMilestoneTimeStringElement = modalElement.querySelector(
+          '#milestoneEdit--workOrderMilestoneTimeString'
+        ) as HTMLInputElement
+
         if (workOrderMilestone.workOrderMilestoneTime) {
-          ;(
-            modalElement.querySelector(
-              '#milestoneEdit--workOrderMilestoneTimeString'
-            ) as HTMLInputElement
-          ).value = workOrderMilestone.workOrderMilestoneTimeString ?? ''
+          workOrderMilestoneTimeStringElement.value =
+            workOrderMilestone.workOrderMilestoneTimeString ?? ''
         }
 
+        workOrderMilestoneTimeStringElement.addEventListener('change', () => {
+          refreshWorkOrderMilestoneDateTimeMessage('milestoneEdit')
+        })
+
+        refreshWorkOrderMilestoneDateTimeMessage('milestoneEdit')
         ;(
           modalElement.querySelector(
             '#milestoneEdit--workOrderMilestoneDescription'
@@ -717,6 +793,7 @@ declare const exports: Record<string, unknown>
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
               success: boolean
+
               errorMessage?: string
               workOrderMilestones?: WorkOrderMilestone[]
             }
@@ -751,8 +828,8 @@ declare const exports: Record<string, unknown>
               'Are you sure you want to create a milestone with a date in the past?',
 
             okButton: {
+              callbackFunction: _doAdd,
               text: 'Yes, Create a Past Milestone',
-              callbackFunction: _doAdd
             }
           })
         } else {
@@ -790,6 +867,16 @@ declare const exports: Record<string, unknown>
 
           workOrderMilestoneDateStringElement.min =
             workOrderOpenDateStringElement.value
+
+          workOrderMilestoneDateStringElement.addEventListener('change', () => {
+            refreshWorkOrderMilestoneDateTimeMessage('milestoneAdd')
+          })
+
+          modalElement
+            .querySelector('#milestoneAdd--workOrderMilestoneTimeString')
+            ?.addEventListener('change', () => {
+              refreshWorkOrderMilestoneDateTimeMessage('milestoneAdd')
+            })
         },
         onshown(modalElement, closeModalFunction) {
           addCloseModalFunction = closeModalFunction

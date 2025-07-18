@@ -1,0 +1,92 @@
+<%- include('_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('_menu-admin'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li>
+          <a href="#">
+            <span class="icon is-small"><i class="fas fa-cog" aria-hidden="true"></i></span>
+            <span>Administrator Tools</span>
+          </a>
+        </li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            Settings
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <h1 class="title is-1">
+      Settings
+    </h1>
+
+    <table class="table is-striped is-hoverable is-fullwidth">
+      <thead>
+        <tr>
+          <th>Setting</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const [index, setting] of Object.entries(settings)) { %>
+          <tr>
+            <td>
+              <label class="has-text-weight-bold" for="settingValue-<%= index %>">
+                <%= setting.settingName %>
+              </label><br />
+              <span class="has-text-grey">
+                <%= setting.description || 'No description available' %>
+              </span>
+              <br />
+              <small class="has-text-grey">
+                <%= setting.settingKey %>
+              </small>
+            </td>
+            <td>
+              <form class="settingForm">
+                <input type="hidden" name="settingKey" value="<%= setting.settingKey %>" />
+                <div class="field has-addons">
+                  <div class="control is-expanded">
+                    <% if (setting.type === 'boolean') { %>
+                      <div class="select is-fullwidth">
+                        <select id="settingValue-<%= index %>" name="settingValue">
+                          <option value="">Default: <%= setting.defaultValue %></option>
+                          <option value="true" <%= setting.settingValue === 'true' ? 'selected' : '' %>>True</option>
+                          <option value="false" <%= setting.settingValue === 'false' ? 'selected' : '' %>>False</option>
+                        </select>
+                      </div>
+                    <% } else { %>
+                      <input class="input" id="settingValue-<%= index %>" name="settingValue"
+                        type="text"
+                        value="<%= setting.settingValue %>"
+                        placeholder="Default: <%= setting.defaultValue %>"
+                        />
+                      <% } %>
+                  </div>
+                  <div class="control">
+                    <button class="button is-primary" type="submit">
+                      <span class="icon is-small"><i class="fas fa-save"></i></span>
+                      <span>Save</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/settings.admin.js"></script>
+
+<%- include('_footerB'); -%>

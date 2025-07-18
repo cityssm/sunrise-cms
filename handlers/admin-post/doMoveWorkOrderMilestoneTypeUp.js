@@ -1,5 +1,5 @@
 import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js';
-import { getWorkOrderMilestoneTypes } from '../../helpers/functions.cache.js';
+import { getWorkOrderMilestoneTypes } from '../../helpers/cache.helpers.js';
 export default function handler(request, response) {
     const success = request.body.moveToEnd === '1'
         ? moveRecordUpToTop('WorkOrderMilestoneTypes', request.body.workOrderMilestoneTypeId)

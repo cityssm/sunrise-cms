@@ -1,6 +1,6 @@
 import getCemeteries from '../../database/getCemeteries.js';
 import getFuneralHomes from '../../database/getFuneralHomes.js';
-import { getBurialSiteTypes, getContractTypes } from '../../helpers/functions.cache.js';
+import { getBurialSiteTypes, getContractTypes } from '../../helpers/cache.helpers.js';
 export default function handler(request, response) {
     const cemeteries = getCemeteries();
     const burialSiteTypes = getBurialSiteTypes();

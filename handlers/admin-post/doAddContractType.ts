@@ -6,7 +6,7 @@ import addContractType, {
 import {
   getAllContractTypeFields,
   getContractTypes
-} from '../../helpers/functions.cache.js'
+} from '../../helpers/cache.helpers.js'
 
 export default function handler(
   request: Request<unknown, unknown, AddForm>,
