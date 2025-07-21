@@ -10,6 +10,37 @@ declare const exports: Record<string, unknown>
 ;(() => {
   const sunrise = exports.sunrise as Sunrise
 
+  /*
+   * Filter Settings
+   */
+
+  const settingsFilterElement = document.querySelector(
+    '#settingsFilter'
+  ) as HTMLInputElement
+
+  const settingsTableBodyElement = document.querySelector(
+    '#settingsTableBody'
+  ) as HTMLTableSectionElement
+
+  function applySettingsFilter(): void {
+    const filterValue = settingsFilterElement.value.toLowerCase()
+    for (const rowElement of settingsTableBodyElement.querySelectorAll('tr')) {
+      const searchString = rowElement.dataset.searchString ?? ''
+      rowElement.classList.toggle(
+        'is-hidden',
+        !searchString.includes(filterValue)
+      )
+    }
+  }
+
+  settingsFilterElement.addEventListener('input', applySettingsFilter)
+
+  applySettingsFilter()
+
+  /*
+   * Update Settings
+   */
+
   function highlightChangedSettings(changeEvent: Event): void {
     const inputElement = changeEvent.currentTarget as
       | HTMLInputElement
@@ -36,6 +67,7 @@ declare const exports: Record<string, unknown>
           bulmaJS.alert({
             contextualColorName: 'success',
             title: 'Setting Updated',
+
             message: 'The setting has been successfully updated.'
           })
 
@@ -46,6 +78,7 @@ declare const exports: Record<string, unknown>
           bulmaJS.alert({
             contextualColorName: 'danger',
             title: 'Update Failed',
+
             message:
               responseJSON.errorMessage ??
               'There was an error updating the setting.'

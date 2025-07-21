@@ -2,6 +2,23 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
+    /*
+     * Filter Settings
+     */
+    const settingsFilterElement = document.querySelector('#settingsFilter');
+    const settingsTableBodyElement = document.querySelector('#settingsTableBody');
+    function applySettingsFilter() {
+        const filterValue = settingsFilterElement.value.toLowerCase();
+        for (const rowElement of settingsTableBodyElement.querySelectorAll('tr')) {
+            const searchString = rowElement.dataset.searchString ?? '';
+            rowElement.classList.toggle('is-hidden', !searchString.includes(filterValue));
+        }
+    }
+    settingsFilterElement.addEventListener('input', applySettingsFilter);
+    applySettingsFilter();
+    /*
+     * Update Settings
+     */
     function highlightChangedSettings(changeEvent) {
         const inputElement = changeEvent.currentTarget;
         inputElement.classList.add('has-background-warning-light');

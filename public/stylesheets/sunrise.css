@@ -17,6 +17,14 @@
 }
 
 /*
+ * Tables
+ */
+
+.table.is-fixed {
+  table-layout: fixed;
+}
+
+/*
  * Tabs
  */
 
