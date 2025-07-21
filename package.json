@@ -82,7 +82,7 @@
     "@types/http-errors": "^2.0.5",
     "@types/leaflet": "^1.9.20",
     "@types/mssql": "^9.1.7",
-    "@types/node": "^24.0.14",
+    "@types/node": "^24.0.15",
     "@types/node-windows": "^0.1.6",
     "@types/papaparse": "^5.3.16",
     "@types/randomcolor": "^0.5.9",
