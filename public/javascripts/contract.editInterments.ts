@@ -177,17 +177,25 @@ declare const exports: Record<string, unknown>
           .querySelector('#contractIntermentEdit--deceasedPostalCode')
           ?.setAttribute('value', contractInterment.deceasedPostalCode ?? '')
 
-        modalElement
-          .querySelector('#contractIntermentEdit--birthDateString')
-          ?.setAttribute('value', contractInterment.birthDateString ?? '')
+        const todayDateString = cityssm.dateToString(new Date())
+
+        const birthDateStringElement = modalElement.querySelector(
+          '#contractIntermentEdit--birthDateString'
+        ) as HTMLInputElement
+
+        birthDateStringElement.value = contractInterment.birthDateString ?? ''
+        birthDateStringElement.max = todayDateString
 
         modalElement
           .querySelector('#contractIntermentEdit--birthPlace')
           ?.setAttribute('value', contractInterment.birthPlace ?? '')
 
-        modalElement
-          .querySelector('#contractIntermentEdit--deathDateString')
-          ?.setAttribute('value', contractInterment.deathDateString ?? '')
+        const deathDateStringElement = modalElement.querySelector(
+          '#contractIntermentEdit--deathDateString'
+        ) as HTMLInputElement
+
+        deathDateStringElement.value = contractInterment.deathDateString ?? ''
+        deathDateStringElement.max = todayDateString
 
         modalElement
           .querySelector('#contractIntermentEdit--deathPlace')
@@ -466,6 +474,16 @@ declare const exports: Record<string, unknown>
           modalElement
             .querySelector('#contractIntermentAdd--contractId')
             ?.setAttribute('value', contractId)
+
+          const todayDateString = cityssm.dateToString(new Date())
+
+          modalElement
+            .querySelector('#contractIntermentAdd--birthDateString')
+            ?.setAttribute('max', todayDateString)
+
+          modalElement
+            .querySelector('#contractIntermentAdd--deathDateString')
+            ?.setAttribute('max', todayDateString)
 
           const deathAgePeriodElement = modalElement.querySelector(
             '#contractIntermentAdd--deathAgePeriod'

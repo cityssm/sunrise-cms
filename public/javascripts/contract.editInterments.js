@@ -99,15 +99,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedPostalCode')
                     ?.setAttribute('value', contractInterment.deceasedPostalCode ?? '');
-                modalElement
-                    .querySelector('#contractIntermentEdit--birthDateString')
-                    ?.setAttribute('value', contractInterment.birthDateString ?? '');
+                const todayDateString = cityssm.dateToString(new Date());
+                const birthDateStringElement = modalElement.querySelector('#contractIntermentEdit--birthDateString');
+                birthDateStringElement.value = contractInterment.birthDateString ?? '';
+                birthDateStringElement.max = todayDateString;
                 modalElement
                     .querySelector('#contractIntermentEdit--birthPlace')
                     ?.setAttribute('value', contractInterment.birthPlace ?? '');
-                modalElement
-                    .querySelector('#contractIntermentEdit--deathDateString')
-                    ?.setAttribute('value', contractInterment.deathDateString ?? '');
+                const deathDateStringElement = modalElement.querySelector('#contractIntermentEdit--deathDateString');
+                deathDateStringElement.value = contractInterment.deathDateString ?? '';
+                deathDateStringElement.max = todayDateString;
                 modalElement
                     .querySelector('#contractIntermentEdit--deathPlace')
                     ?.setAttribute('value', contractInterment.deathPlace ?? '');
@@ -309,6 +310,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement
                     .querySelector('#contractIntermentAdd--contractId')
                     ?.setAttribute('value', contractId);
+                const todayDateString = cityssm.dateToString(new Date());
+                modalElement
+                    .querySelector('#contractIntermentAdd--birthDateString')
+                    ?.setAttribute('max', todayDateString);
+                modalElement
+                    .querySelector('#contractIntermentAdd--deathDateString')
+                    ?.setAttribute('max', todayDateString);
                 const deathAgePeriodElement = modalElement.querySelector('#contractIntermentAdd--deathAgePeriod');
                 for (const deathAgePeriod of deathAgePeriods) {
                     const optionElement = document.createElement('option');
