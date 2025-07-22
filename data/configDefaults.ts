@@ -44,6 +44,7 @@ export const configDefaultValues = {
 
   'reverseProxy.disableCompression': false,
   'reverseProxy.disableEtag': false,
+  'reverseProxy.disableRateLimit': false,
   'reverseProxy.urlPrefix': '',
 
   'session.cookieName': 'sunrise-user-sid',

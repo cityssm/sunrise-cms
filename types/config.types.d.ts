@@ -6,6 +6,7 @@ export interface Config {
     reverseProxy: {
         disableCompression?: boolean;
         disableEtag?: boolean;
+        disableRateLimit?: boolean;
         urlPrefix?: string;
     };
     login?: {

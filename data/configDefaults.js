@@ -11,6 +11,7 @@ export const configDefaultValues = {
     'login.domain': '',
     'reverseProxy.disableCompression': false,
     'reverseProxy.disableEtag': false,
+    'reverseProxy.disableRateLimit': false,
     'reverseProxy.urlPrefix': '',
     'session.cookieName': 'sunrise-user-sid',
     'session.doKeepAlive': false,

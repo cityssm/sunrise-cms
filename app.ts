@@ -83,14 +83,14 @@ app.use(
  * Rate Limiter
  */
 
-/*
-app.use(
-  rateLimit({
-    limit: useTestDatabases ? 1_000_000 : 1000,
-    windowMs: secondsToMillis(10)
-  })
-)
-  */
+if (configFunctions.getConfigProperty('reverseProxy.disableRateLimit')) {
+  app.use(
+    rateLimit({
+      limit: useTestDatabases ? 1_000_000 : 200,
+      windowMs: secondsToMillis(10)
+    })
+  )
+}
 
 /*
  * SESSION MANAGEMENT
@@ -165,7 +165,10 @@ app.use(
     response.sendStatus(403)
   },
   express.static(
-    path.join(configFunctions.getConfigProperty('settings.customizationsPath'), 'public-internal'),
+    path.join(
+      configFunctions.getConfigProperty('settings.customizationsPath'),
+      'public-internal'
+    )
   )
 )
 
