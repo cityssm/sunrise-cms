@@ -1,3 +1,3 @@
-export const version = '1.0.0-alpha.16'
+export const version = '1.0.0-alpha.17'
 
 export default version
