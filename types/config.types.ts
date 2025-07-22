@@ -64,7 +64,7 @@ export interface Config {
     longitudeMax?: number
     longitudeMin?: number
 
-    publicInternalPath?: string
+    customizationsPath?: string
 
     fees: {
       taxPercentageDefault?: number

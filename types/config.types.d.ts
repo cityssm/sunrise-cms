@@ -44,7 +44,7 @@ export interface Config {
         latitudeMin?: number;
         longitudeMax?: number;
         longitudeMin?: number;
-        publicInternalPath?: string;
+        customizationsPath?: string;
         fees: {
             taxPercentageDefault?: number;
         };

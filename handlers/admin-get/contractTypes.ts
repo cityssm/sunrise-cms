@@ -5,7 +5,7 @@ import {
   getContractTypes
 } from '../../helpers/cache.helpers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import { getPrintConfig } from '../../helpers/functions.print.js'
+import { getPrintConfig } from '../../helpers/print.helpers.js'
 
 export default function handler(_request: Request, response: Response): void {
   const contractTypes = getContractTypes()

@@ -6,10 +6,11 @@ import getContract from '../database/getContract.js';
 import getWorkOrder from '../database/getWorkOrder.js';
 import * as configFunctions from './config.helpers.js';
 import * as contractFunctions from './contracts.helpers.js';
+import { getCustomizationPdfPrintConfigs } from './customizations.helpers.js';
 const screenPrintConfigs = {
     contract: {
         params: ['contractId'],
-        title: "Burial Site Contract Print"
+        title: 'Burial Site Contract Print'
     }
 };
 export function getScreenPrintConfig(printName) {
@@ -18,22 +19,21 @@ export function getScreenPrintConfig(printName) {
 const pdfPrintConfigs = {
     workOrder: {
         params: ['workOrderId'],
-        title: 'Work Order Field Sheet'
+        title: 'Work Order Field Sheet',
+        path: 'views/print/pdf/workOrder.ejs'
     },
     'workOrder-commentLog': {
         params: ['workOrderId'],
-        title: 'Work Order Field Sheet - Comment Log'
-    },
-    'ssm.contract': {
-        params: ['contractId'],
-        title: 'Contract for Purchase of Interment Rights'
-    },
-    // Contract Prints
-    'ssm.contract.burialPermit': {
-        params: ['contractId'],
-        title: 'Burial Permit'
+        title: 'Work Order Field Sheet - Comment Log',
+        path: 'views/print/pdf/workOrder-commentLog.ejs'
     }
 };
+for (const [printName, printConfig] of Object.entries(getCustomizationPdfPrintConfigs())) {
+    pdfPrintConfigs[printName] = {
+        ...printConfig,
+        path: `${configFunctions.getConfigProperty('settings.customizationsPath')}/views/print/pdf/${printName}.ejs`
+    };
+}
 export function getPdfPrintConfig(printName) {
     return pdfPrintConfigs[printName];
 }

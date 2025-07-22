@@ -16,7 +16,7 @@ import * as permissionHandlers from './handlers/permissions.js';
 import { getSafeRedirectURL } from './helpers/authentication.helpers.js';
 import * as configFunctions from './helpers/config.helpers.js';
 import { useTestDatabases } from './helpers/database.helpers.js';
-import * as printFunctions from './helpers/functions.print.js';
+import * as printFunctions from './helpers/print.helpers.js';
 import routerAdmin from './routes/admin.js';
 import routerApi from './routes/api.js';
 import routerBurialSites from './routes/burialSites.js';
@@ -106,14 +106,14 @@ if (urlPrefix !== '') {
         response.redirect(urlPrefix);
     });
 }
-app.use(`${urlPrefix}/internal`, (request, response, next) => {
+app.use(`${urlPrefix}/public-internal`, (request, response, next) => {
     if (Object.hasOwn(request.session, 'user') &&
         Object.hasOwn(request.cookies, sessionCookieName)) {
         next();
         return;
     }
     response.sendStatus(403);
-}, express.static(configFunctions.getConfigProperty('settings.publicInternalPath')));
+}, express.static(path.join(configFunctions.getConfigProperty('settings.customizationsPath'), 'public-internal')));
 app.use(urlPrefix, express.static(path.join('public')));
 app.use(`${urlPrefix}/lib/bulma`, express.static(path.join('node_modules', 'bulma', 'css')));
 app.use(`${urlPrefix}/lib/bulma-tooltip`, express.static(path.join('node_modules', 'bulma-tooltip', 'dist', 'css')));

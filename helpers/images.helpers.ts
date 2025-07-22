@@ -15,7 +15,8 @@ const debug = Debug(`${DEBUG_NAMESPACE}:images.helpers`)
  */
 
 const burialSiteImagesFolder = path.join(
-  getConfigProperty('settings.publicInternalPath'),
+  getConfigProperty('settings.customizationsPath'),
+  'public-internal',
   'images',
   'burialSites'
 )
@@ -71,7 +72,8 @@ if (getConfigProperty('settings.burialSites.refreshImageChanges')) {
  */
 
 const cemeterySVGsFolder = path.join(
-  getConfigProperty('settings.publicInternalPath'),
+  getConfigProperty('settings.customizationsPath'),
+  'public-internal',
   'images',
   'cemeteries'
 )

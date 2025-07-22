@@ -4,7 +4,7 @@ import { getConfigProperty } from '../../helpers/config.helpers.js'
 import {
   getReportData,
   getScreenPrintConfig
-} from '../../helpers/functions.print.js'
+} from '../../helpers/print.helpers.js'
 
 export default async function handler(
   request: Request,

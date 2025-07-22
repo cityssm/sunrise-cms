@@ -2,6 +2,7 @@
 /* eslint-disable security/detect-object-injection */
 
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
+import type { PrintConfig } from 'sunrise-cms-customizations'
 
 import getBurialSite from '../database/getBurialSite.js'
 import getContract from '../database/getContract.js'
@@ -10,11 +11,9 @@ import type { BurialSite, Contract, WorkOrder } from '../types/record.types.js'
 
 import * as configFunctions from './config.helpers.js'
 import * as contractFunctions from './contracts.helpers.js'
-
-interface PrintConfig {
-  params: string[]
-  title: string
-}
+import {
+  getCustomizationPdfPrintConfigs
+} from './customizations.helpers.js'
 
 interface ReportData {
   headTitle: string
@@ -28,10 +27,12 @@ interface ReportData {
   dateTimeFunctions: unknown
 }
 
+type PrintConfigWithPath = PrintConfig & { path: string }
+
 const screenPrintConfigs: Record<string, PrintConfig> = {
   contract: {
     params: ['contractId'],
-    title: "Burial Site Contract Print"
+    title: 'Burial Site Contract Print'
   }
 }
 
@@ -41,28 +42,29 @@ export function getScreenPrintConfig(
   return screenPrintConfigs[printName]
 }
 
-const pdfPrintConfigs: Record<string, PrintConfig> = {
+const pdfPrintConfigs: Record<string, PrintConfigWithPath> = {
   workOrder: {
     params: ['workOrderId'],
-    title: 'Work Order Field Sheet'
+    title: 'Work Order Field Sheet',
+    path: 'views/print/pdf/workOrder.ejs'
   },
   'workOrder-commentLog': {
     params: ['workOrderId'],
-    title: 'Work Order Field Sheet - Comment Log'
-  },
-
-  'ssm.contract': {
-    params: ['contractId'],
-    title: 'Contract for Purchase of Interment Rights'
-  },
-  // Contract Prints
-  'ssm.contract.burialPermit': {
-    params: ['contractId'],
-    title: 'Burial Permit'
+    title: 'Work Order Field Sheet - Comment Log',
+    path: 'views/print/pdf/workOrder-commentLog.ejs'
   }
 }
 
-export function getPdfPrintConfig(printName: string): PrintConfig | undefined {
+for (const [printName, printConfig] of Object.entries(
+  getCustomizationPdfPrintConfigs()
+)) {
+  pdfPrintConfigs[printName] = {
+    ...printConfig,
+    path: `${configFunctions.getConfigProperty('settings.customizationsPath')}/views/print/pdf/${printName}.ejs`
+  }
+}
+
+export function getPdfPrintConfig(printName: string): PrintConfigWithPath | undefined {
   return pdfPrintConfigs[printName]
 }
 

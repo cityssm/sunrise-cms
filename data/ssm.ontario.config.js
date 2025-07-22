@@ -1,8 +1,8 @@
 import { config as cemeteryConfig } from './ontario.config.js';
 export const config = { ...cemeteryConfig };
 config.aliases.externalReceiptNumber = 'GP Receipt Number';
-config.settings.publicInternalPath =
-    '../sunrise-cms-saultstemarie/public-internal';
+config.settings.customizationsPath =
+    '../sunrise-cms-saultstemarie';
 config.settings.burialSites.burialSiteNameSegments = {
     includeCemeteryKey: true,
     separator: '-',

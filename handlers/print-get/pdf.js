@@ -1,10 +1,9 @@
-import path from 'node:path';
 import PdfPuppeteer from '@cityssm/pdf-puppeteer';
 import camelcase from 'camelcase';
 import { renderFile as renderEjsFile } from 'ejs';
 import exitHook from 'exit-hook';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { getPdfPrintConfig, getReportData } from '../../helpers/functions.print.js';
+import { getPdfPrintConfig, getReportData } from '../../helpers/print.helpers.js';
 const attachmentOrInline = getConfigProperty('settings.printPdf.contentDisposition');
 const pdfPuppeteer = new PdfPuppeteer();
 exitHook(() => {
@@ -23,7 +22,6 @@ export async function handler(request, response, next) {
         return;
     }
     const reportData = await getReportData(printConfig, request.query);
-    const reportPath = path.join('views', 'print', 'pdf', `${printName}.ejs`);
     function pdfCallbackFunction(pdf) {
         let exportFileNameId = '';
         if ((printConfig?.params.length ?? 0) > 0) {
@@ -44,6 +42,6 @@ export async function handler(request, response, next) {
         const pdf = await pdfPuppeteer.fromHtml(ejsData);
         pdfCallbackFunction(Buffer.from(pdf));
     }
-    await renderEjsFile(reportPath, reportData, {}, ejsCallbackFunction);
+    await renderEjsFile(printConfig.path, reportData, {}, ejsCallbackFunction);
 }
 export default handler;

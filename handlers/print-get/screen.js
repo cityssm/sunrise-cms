@@ -1,5 +1,5 @@
 import { getConfigProperty } from '../../helpers/config.helpers.js';
-import { getReportData, getScreenPrintConfig } from '../../helpers/functions.print.js';
+import { getReportData, getScreenPrintConfig } from '../../helpers/print.helpers.js';
 export default async function handler(request, response) {
     const printName = request.params.printName;
     if (!getConfigProperty('settings.contracts.prints').includes(`screen/${printName}`) &&

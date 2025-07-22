@@ -8,7 +8,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:images.helpers`);
 /*
  * Burial Site Images
  */
-const burialSiteImagesFolder = path.join(getConfigProperty('settings.publicInternalPath'), 'images', 'burialSites');
+const burialSiteImagesFolder = path.join(getConfigProperty('settings.customizationsPath'), 'public-internal', 'images', 'burialSites');
 const burialSiteImageFileExtensions = ['jpg', 'jpeg', 'png'];
 let burialSiteImages = [];
 export async function getBurialSiteImages() {
@@ -46,7 +46,7 @@ if (getConfigProperty('settings.burialSites.refreshImageChanges')) {
 /*
  * Cemetery SVGs
  */
-const cemeterySVGsFolder = path.join(getConfigProperty('settings.publicInternalPath'), 'images', 'cemeteries');
+const cemeterySVGsFolder = path.join(getConfigProperty('settings.customizationsPath'), 'public-internal', 'images', 'cemeteries');
 const cemeterySVGFileExtensions = ['svg'];
 let cemeterySVGs = [];
 export async function getCemeterySVGs() {

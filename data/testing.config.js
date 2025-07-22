@@ -24,6 +24,5 @@ config.users = {
     isAdmin: ['*testAdmin'],
     testing: ['*testView', '*testUpdate', '*testAdmin']
 };
-config.settings.publicInternalPath = 'public-internal';
 config.settings.dynamicsGP.integrationIsEnabled = false;
 export default config;

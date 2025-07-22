@@ -1,14 +1,13 @@
 /* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 
 import type { Request, Response } from 'express'
-
 import ical, { type ICalEventData, ICalEventStatus } from 'ical-generator'
 
 import getWorkOrderMilestones, {
   type WorkOrderMilestoneFilters
 } from '../../database/getWorkOrderMilestones.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import { getPrintConfig } from '../../helpers/functions.print.js'
+import { getPrintConfig } from '../../helpers/print.helpers.js'
 import type { WorkOrderMilestone } from '../../types/record.types.js'
 
 const calendarCompany = 'cityssm.github.io'

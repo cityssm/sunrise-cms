@@ -185,12 +185,12 @@
       <div class="panel-block is-block">
         <% if (burialSite.burialSiteImage) { %>
           <div class="image">
-            <img src="<%= urlPrefix %>/internal/images/burialSites/<%= burialSite.burialSiteImage %>" alt="Burial Site" />
+            <img src="<%= urlPrefix %>/public-internal/images/burialSites/<%= burialSite.burialSiteImage %>" alt="Burial Site" />
           </div>
         <% } else if (burialSite.cemeterySvg) { %>
-          <% const imageURL = urlPrefix + "/internal/images/cemeteries/" + burialSite.cemeterySvg %>
+          <% const imageURL = urlPrefix + "/public-internal/images/cemeteries/" + burialSite.cemeterySvg %>
           <div class="image" id="burialSite--cemeterySvg" data-cemetery-svg-id="<%= burialSite.cemeterySvgId %>">
-            <%- include('../' + configFunctions.getConfigProperty('settings.publicInternalPath') + '/images/cemeteries/' + burialSite.cemeterySvg); -%>
+            <%- include('../' + configFunctions.getConfigProperty('settings.customizationsPath') + '/public-internal/images/cemeteries/' + burialSite.cemeterySvg); -%>
           </div>
         <% } else { %>
           <div class="message is-info">

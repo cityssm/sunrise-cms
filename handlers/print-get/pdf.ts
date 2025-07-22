@@ -1,5 +1,3 @@
-import path from 'node:path'
-
 import PdfPuppeteer from '@cityssm/pdf-puppeteer'
 import camelcase from 'camelcase'
 import { renderFile as renderEjsFile } from 'ejs'
@@ -10,7 +8,7 @@ import { getConfigProperty } from '../../helpers/config.helpers.js'
 import {
   getPdfPrintConfig,
   getReportData
-} from '../../helpers/functions.print.js'
+} from '../../helpers/print.helpers.js'
 
 const attachmentOrInline = getConfigProperty(
   'settings.printPdf.contentDisposition'
@@ -56,8 +54,6 @@ export async function handler(
 
   const reportData = await getReportData(printConfig, request.query)
 
-  const reportPath = path.join('views', 'print', 'pdf', `${printName}.ejs`)
-
   function pdfCallbackFunction(pdf: Buffer): void {
     let exportFileNameId = ''
 
@@ -93,7 +89,7 @@ export async function handler(
     pdfCallbackFunction(Buffer.from(pdf))
   }
 
-  await renderEjsFile(reportPath, reportData, {}, ejsCallbackFunction)
+  await renderEjsFile(printConfig.path, reportData, {}, ejsCallbackFunction)
 }
 
 export default handler
