@@ -1,12 +1,10 @@
 import path from 'node:path';
-import { secondsToMillis } from '@cityssm/to-millis';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import csurf from 'csurf';
 import Debug from 'debug';
 import express from 'express';
-import rateLimit from 'express-rate-limit';
 import session from 'express-session';
 import createError from 'http-errors';
 import FileStore from 'session-file-store';
@@ -15,7 +13,6 @@ import { DEBUG_NAMESPACE } from './debug.config.js';
 import * as permissionHandlers from './handlers/permissions.js';
 import { getSafeRedirectURL } from './helpers/authentication.helpers.js';
 import * as configFunctions from './helpers/config.helpers.js';
-import { useTestDatabases } from './helpers/database.helpers.js';
 import * as printFunctions from './helpers/print.helpers.js';
 import routerAdmin from './routes/admin.js';
 import routerApi from './routes/api.js';
@@ -62,10 +59,14 @@ csurf({
 /*
  * Rate Limiter
  */
-app.use(rateLimit({
-    limit: useTestDatabases ? 1_000_000 : 200,
+/*
+app.use(
+  rateLimit({
+    limit: useTestDatabases ? 1_000_000 : 1000,
     windowMs: secondsToMillis(10)
-}));
+  })
+)
+  */
 /*
  * SESSION MANAGEMENT
  */

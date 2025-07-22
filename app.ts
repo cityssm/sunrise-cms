@@ -83,12 +83,14 @@ app.use(
  * Rate Limiter
  */
 
+/*
 app.use(
   rateLimit({
-    limit: useTestDatabases ? 1_000_000 : 200,
+    limit: useTestDatabases ? 1_000_000 : 1000,
     windowMs: secondsToMillis(10)
   })
 )
+  */
 
 /*
  * SESSION MANAGEMENT
