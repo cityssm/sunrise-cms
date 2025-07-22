@@ -6,8 +6,7 @@ export const config: Config = { ...cemeteryConfig }
 
 config.aliases.externalReceiptNumber = 'GP Receipt Number'
 
-config.settings.customizationsPath =
-  '../sunrise-cms-saultstemarie'
+config.settings.customizationsPath = '../sunrise-cms-saultstemarie'
 
 config.settings.burialSites.burialSiteNameSegments = {
   includeCemeteryKey: true,
