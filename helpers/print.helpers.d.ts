@@ -9,9 +9,9 @@ interface ReportData {
     contractFunctions: unknown;
     dateTimeFunctions: unknown;
 }
-type PrintConfigWithPath = PrintConfig & {
+interface PrintConfigWithPath extends PrintConfig {
     path: string;
-};
+}
 export declare function getScreenPrintConfig(printName: string): PrintConfig | undefined;
 export declare function getPdfPrintConfig(printName: string): PrintConfigWithPath | undefined;
 export declare function getPrintConfig(screenOrPdfPrintName: string): PrintConfig | undefined;

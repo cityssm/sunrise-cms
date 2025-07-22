@@ -11,9 +11,7 @@ import type { BurialSite, Contract, WorkOrder } from '../types/record.types.js'
 
 import * as configFunctions from './config.helpers.js'
 import * as contractFunctions from './contracts.helpers.js'
-import {
-  getCustomizationPdfPrintConfigs
-} from './customizations.helpers.js'
+import { getCustomizationPdfPrintConfigs } from './customizations.helpers.js'
 
 interface ReportData {
   headTitle: string
@@ -27,7 +25,9 @@ interface ReportData {
   dateTimeFunctions: unknown
 }
 
-type PrintConfigWithPath = PrintConfig & { path: string }
+interface PrintConfigWithPath extends PrintConfig {
+  path: string
+}
 
 const screenPrintConfigs: Record<string, PrintConfig> = {
   contract: {
@@ -44,14 +44,16 @@ export function getScreenPrintConfig(
 
 const pdfPrintConfigs: Record<string, PrintConfigWithPath> = {
   workOrder: {
+    path: 'views/print/pdf/workOrder.ejs',
+
     params: ['workOrderId'],
-    title: 'Work Order Field Sheet',
-    path: 'views/print/pdf/workOrder.ejs'
+    title: 'Work Order Field Sheet'
   },
   'workOrder-commentLog': {
+    path: 'views/print/pdf/workOrder-commentLog.ejs',
+
     params: ['workOrderId'],
-    title: 'Work Order Field Sheet - Comment Log',
-    path: 'views/print/pdf/workOrder-commentLog.ejs'
+    title: 'Work Order Field Sheet - Comment Log'
   }
 }
 
@@ -64,7 +66,9 @@ for (const [printName, printConfig] of Object.entries(
   }
 }
 
-export function getPdfPrintConfig(printName: string): PrintConfigWithPath | undefined {
+export function getPdfPrintConfig(
+  printName: string
+): PrintConfigWithPath | undefined {
   return pdfPrintConfigs[printName]
 }
 

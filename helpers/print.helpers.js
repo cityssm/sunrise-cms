@@ -18,14 +18,14 @@ export function getScreenPrintConfig(printName) {
 }
 const pdfPrintConfigs = {
     workOrder: {
+        path: 'views/print/pdf/workOrder.ejs',
         params: ['workOrderId'],
-        title: 'Work Order Field Sheet',
-        path: 'views/print/pdf/workOrder.ejs'
+        title: 'Work Order Field Sheet'
     },
     'workOrder-commentLog': {
+        path: 'views/print/pdf/workOrder-commentLog.ejs',
         params: ['workOrderId'],
-        title: 'Work Order Field Sheet - Comment Log',
-        path: 'views/print/pdf/workOrder-commentLog.ejs'
+        title: 'Work Order Field Sheet - Comment Log'
     }
 };
 for (const [printName, printConfig] of Object.entries(getCustomizationPdfPrintConfigs())) {
