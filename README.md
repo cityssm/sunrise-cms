@@ -60,6 +60,14 @@ Although the system is quite niche, it's being released in an open source enviro
 
 It is being shared to start the dialog among other municipalities and present an option to those who may be looking to refresh their own cemetery systems.
 
+## Related Sunrise CMS Projects
+
+[**sunrise-cms-customizations**](https://github.com/cityssm/sunrise-cms-customizations/)<br />
+The types and template for Sunrise CMS custom asset packages.
+
+[**sunrise-cms-saultstemarie**](github.com/cityssm/sunrise-cms-saultstemarie/)<br />
+Sault Ste. Marie specific assets for use with Sunrise CMS.
+
 ## More City Management Applications from the City of Sault Ste. Marie
 
 [**General Licence Manager**](https://cityssm.github.io/general-licence-manager/)<br />
