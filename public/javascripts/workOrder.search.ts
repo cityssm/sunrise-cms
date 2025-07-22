@@ -54,7 +54,7 @@ declare const exports: Record<string, unknown>
         relatedHTML += `<li class="has-tooltip-left"
           data-tooltip="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
-            <i class="fas fa-fw fa-map-pin"
+            <i class="fas fa-map-pin"
               aria-label="Burial Site"></i>
           </span>
           ${cityssm.escapeHTML(
@@ -72,7 +72,7 @@ declare const exports: Record<string, unknown>
               contract.isPreneed ? 'Recipient' : 'Deceased'
             )}">
             <span class="fa-li">
-              <i class="fas fa-fw fa-user"></i>
+              <i class="fas fa-user"></i>
             </span>
             ${cityssm.escapeHTML(interment.deceasedName ?? '')}
             </li>`
@@ -82,7 +82,7 @@ declare const exports: Record<string, unknown>
           relatedHTML += `<li class="has-tooltip-left"
             data-tooltip="Funeral Home">
             <span class="fa-li">
-              <i class="fas fa-fw fa-place-of-worship"></i>
+              <i class="fas fa-place-of-worship"></i>
             </span>
             ${cityssm.escapeHTML(contract.funeralHomeName)}
             </li>`
@@ -117,13 +117,13 @@ declare const exports: Record<string, unknown>
               <li class="has-tooltip-left"
                 data-tooltip="${sunrise.escapedAliases.WorkOrderOpenDate}">
                 <span class="fa-li">
-                  <i class="fas fa-fw fa-play" aria-label="${sunrise.escapedAliases.WorkOrderOpenDate}"></i>
+                  <i class="fas fa-play" aria-label="${sunrise.escapedAliases.WorkOrderOpenDate}"></i>
                 </span>
                 ${workOrder.workOrderOpenDateString}
               </li>
               <li class="has-tooltip-left" data-tooltip="${sunrise.escapedAliases.WorkOrderCloseDate}">
                 <span class="fa-li">
-                  <i class="fas fa-fw fa-stop" aria-label="${sunrise.escapedAliases.WorkOrderCloseDate}"></i>
+                  <i class="fas fa-stop" aria-label="${sunrise.escapedAliases.WorkOrderCloseDate}"></i>
                 </span>
                 ${
                   workOrder.workOrderCloseDate

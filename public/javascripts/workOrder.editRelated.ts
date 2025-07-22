@@ -257,7 +257,7 @@ declare const exports: {
         contactsHtml += `<li class="has-tooltip-left"
           data-tooltip="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
           <span class="fa-li">
-            <i class="fas fa-fw fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
+            <i class="fas fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
           </span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
           </li>`
@@ -267,7 +267,7 @@ declare const exports: {
         contactsHtml += `<li class="has-tooltip-left"
           data-tooltip="Purchaser">
           <span class="fa-li">
-            <i class="fas fa-fw fa-hand-holding-dollar" aria-label="Purchaser"></i>
+            <i class="fas fa-hand-holding-dollar" aria-label="Purchaser"></i>
           </span>
           ${cityssm.escapeHTML(contract.purchaserName)}
           </li>`
@@ -277,7 +277,7 @@ declare const exports: {
         contactsHtml += `<li class="has-tooltip-left"
           data-tooltip="Funeral Home">
           <span class="fa-li">
-            <i class="fas fa-fw fa-place-of-worship" aria-label="Funeral Home"></i>
+            <i class="fas fa-place-of-worship" aria-label="Funeral Home"></i>
           </span>
           ${cityssm.escapeHTML(contract.funeralHomeName)}
           </li>`

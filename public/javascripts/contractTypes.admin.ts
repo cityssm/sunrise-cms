@@ -69,8 +69,8 @@ type ResponseJSON =
 
     // eslint-disable-next-line no-unsanitized/property
     toggleButtonElement.innerHTML = expandedContractTypes.has(contractTypeId)
-      ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
-      : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
+      ? '<i class="fas fa-minus" aria-hidden="true"></i>'
+      : '<i class="fas fa-plus" aria-hidden="true"></i>'
 
     const panelBlockElements =
       contractTypeElement.querySelectorAll('.panel-block')
@@ -764,7 +764,7 @@ type ResponseJSON =
         panelBlockElement.innerHTML = `<div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <i class="fas fa-fw ${printIconClass}" aria-hidden="true"></i>
+              <i class="fas ${printIconClass}" aria-hidden="true"></i>
             </div>
             <div class="level-item">
               ${cityssm.escapeHTML(printTitle || printEJS)}
@@ -881,8 +881,8 @@ type ResponseJSON =
               <button class="button is-small button--toggleContractTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
                 ${
                   expandedContractTypes.has(contractType.contractTypeId)
-                    ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
-                    : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
+                    ? '<i class="fas fa-minus" aria-hidden="true"></i>'
+                    : '<i class="fas fa-plus" aria-hidden="true"></i>'
                 }
               </button>
             </div>

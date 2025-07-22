@@ -69,8 +69,8 @@ type ResponseJSON =
     toggleButtonElement.innerHTML = expandedBurialSiteTypes.has(
       burialSiteTypeId
     )
-      ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
-      : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
+      ? '<i class="fas fa-minus" aria-hidden="true"></i>'
+      : '<i class="fas fa-plus" aria-hidden="true"></i>'
 
     const panelBlockElements =
       burialSiteTypeElement.querySelectorAll('.panel-block')
@@ -610,8 +610,8 @@ type ResponseJSON =
               <button class="button is-small button--toggleBurialSiteTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
               ${
                 expandedBurialSiteTypes.has(burialSiteType.burialSiteTypeId)
-                  ? '<i class="fas fa-fw fa-minus" aria-hidden="true"></i>'
-                  : '<i class="fas fa-fw fa-plus" aria-hidden="true"></i>'
+                  ? '<i class="fas fa-minus" aria-hidden="true"></i>'
+                  : '<i class="fas fa-plus" aria-hidden="true"></i>'
               }
               </button>
             </div>
