@@ -687,7 +687,7 @@ declare const exports: {
                   <span class="icon is-small"><i class="fa-solid fa-check" aria-hidden="true"></i></span>
                   </span>`
               : `<button class="button button--completeMilestone" data-tooltip="Incomplete" type="button" aria-label="Incomplete">
-                  <span class="icon is-small"><i class="far fa-square" aria-hidden="true"></i></span>
+                  <span class="icon is-small"><i class="fa-regular fa-square" aria-hidden="true"></i></span>
                   </button>`
           }
         </div><div class="column">

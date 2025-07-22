@@ -109,7 +109,7 @@ declare const exports: Record<string, unknown>
             ${
               milestone.workOrderMilestoneCompletionDate
                 ? '<i class="fa-solid fa-check" aria-label="Completed"></i>'
-                : '<i class="far fa-square has-text-grey" aria-label="Incomplete"></i>'
+                : '<i class="fa-regular fa-square has-text-grey" aria-label="Incomplete"></i>'
             }
           </span>
         </div><div class="column">
