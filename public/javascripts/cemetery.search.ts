@@ -74,7 +74,7 @@ declare const exports: Record<string, unknown>
               ${
                 cemetery.cemeteryName === ''
                   ? `<span class="icon is-small has-text-danger">
-                      <i class="fa-solid fa-exclamation-triangle" aria-hidden="true"></i>
+                      <i class="fa-solid fa-exclamation-triangle"></i>
                       </span>`
                   : ''
               }

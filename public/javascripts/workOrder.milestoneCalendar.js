@@ -81,7 +81,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}
           </span>
         </div><div class="column">
-          <i class="fa-solid fa-circle" style="color:${sunrise.getRandomColor(milestone.workOrderNumber ?? '')}" aria-hidden="true"></i>
+          <i class="fa-solid fa-circle" style="color:${sunrise.getRandomColor(milestone.workOrderNumber ?? '')}"></i>
           <a class="has-text-weight-bold" href="${sunrise.getWorkOrderURL(milestone.workOrderId)}">
             ${cityssm.escapeHTML(milestone.workOrderNumber ?? '')}
           </a><br />

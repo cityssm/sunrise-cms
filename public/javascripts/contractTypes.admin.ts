@@ -69,8 +69,8 @@ type ResponseJSON =
 
     // eslint-disable-next-line no-unsanitized/property
     toggleButtonElement.innerHTML = expandedContractTypes.has(contractTypeId)
-      ? '<i class="fa-solid fa-minus" aria-hidden="true"></i>'
-      : '<i class="fa-solid fa-plus" aria-hidden="true"></i>'
+      ? '<i class="fa-solid fa-minus"></i>'
+      : '<i class="fa-solid fa-plus"></i>'
 
     const panelBlockElements =
       contractTypeElement.querySelectorAll('.panel-block')
@@ -764,7 +764,7 @@ type ResponseJSON =
         panelBlockElement.innerHTML = `<div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <i class="fa-solid ${printIconClass}" aria-hidden="true"></i>
+              <i class="fa-solid ${printIconClass}"></i>
             </div>
             <div class="level-item">
               ${cityssm.escapeHTML(printTitle || printEJS)}
@@ -779,7 +779,7 @@ type ResponseJSON =
             </div>
             <div class="level-item">
               <button class="button is-small is-danger button--deleteContractTypePrint" data-tooltip="Delete" type="button" aria-label="Delete Print">
-                <span class="icon is-small"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
               </button>
             </div>
           </div>
@@ -820,7 +820,7 @@ type ResponseJSON =
           <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-success is-small button--addContractTypeField" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                 <span>Add Field</span>
               </button>
             </div>
@@ -881,8 +881,8 @@ type ResponseJSON =
               <button class="button is-small button--toggleContractTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
                 ${
                   expandedContractTypes.has(contractType.contractTypeId)
-                    ? '<i class="fa-solid fa-minus" aria-hidden="true"></i>'
-                    : '<i class="fa-solid fa-plus" aria-hidden="true"></i>'
+                    ? '<i class="fa-solid fa-minus"></i>'
+                    : '<i class="fa-solid fa-plus"></i>'
                 }
               </button>
             </div>
@@ -900,19 +900,19 @@ type ResponseJSON =
           <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-danger is-small button--deleteContractType" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
                 <span>Delete</span>
               </button>
             </div>
             <div class="level-item">
               <button class="button is-primary is-small button--editContractType" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-pencil-alt" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
                 <span>Edit Contract Type</span>
               </button>
             </div>
             <div class="level-item">
               <button class="button is-success is-small button--addContractTypeField" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                 <span>Add Field</span>
               </button>
             </div>
@@ -982,7 +982,7 @@ type ResponseJSON =
           <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-success is-small button--addContractTypePrint" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                 <span>Add Print</span>
               </button>
             </div>

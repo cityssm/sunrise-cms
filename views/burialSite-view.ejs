@@ -5,7 +5,7 @@
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li>
       <a href="<%= urlPrefix %>/burialSites">
-        <span class="icon is-small"><i class="fa-solid fa-map-pin" aria-hidden="true"></i></span>
+        <span class="icon is-small"><i class="fa-solid fa-map-pin"></i></span>
         <span>Burial Sites</span>
       </a>
     </li>
@@ -47,7 +47,7 @@
       <button class="button is-danger is-restore-burial-site-button"
         data-burial-site-id="<%= burialSite.burialSiteId %>"
         type="button">
-        <span class="icon"><i class="fa-solid fa-undo" aria-hidden="true"></i></span>
+        <span class="icon"><i class="fa-solid fa-undo"></i></span>
         <span>Restore Burial Site</span>
     </button>
     <% } else if (!burialSiteIsDeleted) { %>
@@ -56,7 +56,7 @@
           data-tooltip="Previous Burial Site"
           href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/previous"
           <%- enableKeyboardShortcuts ? ' accesskey="," ' : '' %>>
-          <span class="icon m-0"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></span>
+          <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
           <span class="is-sr-only">Previous Burial Site</span>
         </a>
         <a class="button is-link has-tooltip-left"
@@ -64,13 +64,13 @@
           href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/next"
           <%- enableKeyboardShortcuts ? ' accesskey="." ' : '' %>>
           <span>Next</span>
-          <span class="icon"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+          <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
         </a>
         <% if (user.userProperties.canUpdate) { %>
           <a class="button is-primary"
             href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/edit"
             <%- enableKeyboardShortcuts ? ' accesskey="e" ' : '' %>>
-            <span class="icon"><i class="fa-solid fa-pencil-alt" aria-hidden="true"></i></span>
+            <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
             <span>
               Edit
               <span class="is-hidden-mobile">Burial Site</span>
@@ -139,7 +139,7 @@
           </div>
           <div class="level-right">
             <div class="level-item">
-              <i class="fa-solid fa-map-marker-alt" aria-hidden="true"></i>
+              <i class="fa-solid fa-map-marker-alt"></i>
             </div>
           </div>
         </div>
@@ -177,7 +177,7 @@
           </div>
           <div class="level-right">
             <div class="level-item">
-              <i class="fa-solid fa-image" aria-hidden="true"></i>
+              <i class="fa-solid fa-image"></i>
             </div>
           </div>
         </div>
@@ -256,7 +256,7 @@
             <% if (activeCount > 0) { %>
               <span class="tag is-success">
                 <span class="icon is-small">
-                  <i class="fa-solid fa-play" aria-hidden="true"></i>
+                  <i class="fa-solid fa-play"></i>
                 </span>
                 <span>
                   <%= activeCount %>
@@ -267,7 +267,7 @@
             <% if (pastCount > 0) { %>
               <span class="tag">
                 <span class="icon is-small">
-                  <i class="fa-solid fa-stop" aria-hidden="true"></i>
+                  <i class="fa-solid fa-stop"></i>
                 </span>
                 <span>
                   <%= pastCount %> Past
@@ -281,7 +281,7 @@
         <div class="level-item">
           <button class="button is-info is-small"
             id="burialSite--contractsToggle" type="button">
-            <span class="icon"><i class="fa-solid fa-eye" aria-hidden="true"></i></span>
+            <span class="icon"><i class="fa-solid fa-eye"></i></span>
             <span>Show/Hide Past Contracts</span>
           </button>
         </div>

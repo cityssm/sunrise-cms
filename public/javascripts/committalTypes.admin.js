@@ -117,7 +117,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             </div>
             <div class="control">
               <button class="button is-success" type="submit" aria-label="Save">
-                <span class="icon"><i class="fa-solid fa-save" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-save"></i></span>
               </button>
             </div>
           </div>
@@ -129,7 +129,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </div>
           <div class="control">
             <button class="button is-danger is-light button--deleteCommittalType" data-tooltip="Delete Type" type="button" aria-label="Delete Type">
-              <span class="icon"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
+              <span class="icon"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>
         </div>

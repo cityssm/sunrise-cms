@@ -148,7 +148,7 @@ declare const exports: {
             aria-label="Remove Related Contract"
             type="button">
             <span class="icon is-small">
-              <i class="fa-solid fa-trash" aria-hidden="true"></i>
+              <i class="fa-solid fa-trash"></i>
             </span>
           </button>
         </td>`
@@ -251,7 +251,7 @@ declare const exports: {
               // eslint-disable-next-line no-unsanitized/property
               anchorElement.innerHTML = `<div class="columns">
                 <div class="column is-narrow">
-                  <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                  <i class="fa-solid fa-plus"></i>
                 </div>
                 <div class="column">
                   ${cityssm.escapeHTML(contract.contractType)}<br />

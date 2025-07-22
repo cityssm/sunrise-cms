@@ -120,7 +120,7 @@ declare const exports: Record<string, unknown>
             feeTotal === transactionTotal
               ? 'has-text-success'
               : 'has-text-danger'
-          }" aria-hidden="true"></i>
+          }"></i>
         </span>`
       }
 

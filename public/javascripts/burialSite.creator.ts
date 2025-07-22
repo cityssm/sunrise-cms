@@ -81,7 +81,7 @@ interface GetBurialSiteNamesByRangeResult {
       <div class="column is-narrow">
         <a class="button is-small is-primary" data-tooltip="View Burial Site"
           href="${sunrise.urlPrefix}/burialSites/${burialSiteId}" target="_blank">
-          <span class="icon"><i class="fa-solid fa-eye" aria-hidden="true"></i></span>
+          <span class="icon"><i class="fa-solid fa-eye"></i></span>
         </a>
       </div>
       <div class="column">
@@ -228,7 +228,7 @@ interface GetBurialSiteNamesByRangeResult {
         panelBlockElement.innerHTML = `<div class="columns is-vcentered is-mobile">
           <div class="column is-narrow">
             <button class="button is-small is-success" data-tooltip="Create Burial Site" type="button">
-              <span class="icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+              <span class="icon"><i class="fa-solid fa-plus"></i></span>
             </button>
           </div>
           <div class="column">

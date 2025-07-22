@@ -202,7 +202,7 @@ declare const bulmaJS: BulmaJS
         <div class="field is-grouped">
           <div class="control">
             <button class="button is-success" type="submit" form="${formId}" aria-label="Save">
-              <span class="icon"><i class="fa-solid fa-save" aria-hidden="true"></i></span>
+              <span class="icon"><i class="fa-solid fa-save"></i></span>
             </button>
           </div>
           <div class="control">
@@ -215,7 +215,7 @@ declare const bulmaJS: BulmaJS
           <div class="control">
             <button class="button is-danger is-light button--deleteIntermentContainerType"
               data-tooltip="Delete Type" type="button" aria-label="Delete Type">
-              <span class="icon"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
+              <span class="icon"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>
         </div>

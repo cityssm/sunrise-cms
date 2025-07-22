@@ -69,8 +69,8 @@ type ResponseJSON =
     toggleButtonElement.innerHTML = expandedBurialSiteTypes.has(
       burialSiteTypeId
     )
-      ? '<i class="fa-solid fa-minus" aria-hidden="true"></i>'
-      : '<i class="fa-solid fa-plus" aria-hidden="true"></i>'
+      ? '<i class="fa-solid fa-minus"></i>'
+      : '<i class="fa-solid fa-plus"></i>'
 
     const panelBlockElements =
       burialSiteTypeElement.querySelectorAll('.panel-block')
@@ -610,8 +610,8 @@ type ResponseJSON =
               <button class="button is-small button--toggleBurialSiteTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
               ${
                 expandedBurialSiteTypes.has(burialSiteType.burialSiteTypeId)
-                  ? '<i class="fa-solid fa-minus" aria-hidden="true"></i>'
-                  : '<i class="fa-solid fa-plus" aria-hidden="true"></i>'
+                  ? '<i class="fa-solid fa-minus"></i>'
+                  : '<i class="fa-solid fa-plus"></i>'
               }
               </button>
             </div>
@@ -644,19 +644,19 @@ type ResponseJSON =
           <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-danger is-small button--deleteBurialSiteType" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
                 <span>Delete</span>
               </button>
             </div>
             <div class="level-item">
               <button class="button is-primary is-small button--editBurialSiteType" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-pencil-alt" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
                 <span>Edit Burial Site Type</span>
               </button>
             </div>
             <div class="level-item">
               <button class="button is-success is-small button--addBurialSiteTypeField" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                 <span>Add Field</span>
               </button>
             </div>

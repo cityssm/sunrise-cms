@@ -182,7 +182,7 @@ declare const bulmaJS: BulmaJS
             </div>
             <div class="control">
               <button class="button is-success" type="submit" aria-label="Save">
-                <span class="icon"><i class="fa-solid fa-save" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-save"></i></span>
               </button>
             </div>
           </div>
@@ -199,7 +199,7 @@ declare const bulmaJS: BulmaJS
           <div class="control">
             <button class="button is-danger is-light button--deleteWorkOrderType"
               data-tooltip="Delete Work Order Type" type="button" aria-label="Delete Work Order Type">
-              <span class="icon"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
+              <span class="icon"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>
         </div>

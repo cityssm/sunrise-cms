@@ -11,7 +11,7 @@
           <a class="<%= reportTab === 'workOrders' ? 'is-active' : '' %>" href="#tab--workOrders" title="Work Orders">
             <div class="columns is-mobile is-1">
               <div class="column is-narrow">
-                <span class="icon"><i class="fa-solid fa-hard-hat" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-hard-hat"></i></span>
               </div>
               <div class="column is-hidden-touch">Work Orders</div>
             </div>
@@ -21,7 +21,7 @@
           <a class="<%= reportTab === 'contracts' ? 'is-active' : '' %>" href="#tab--contracts" title="Contracts">
             <div class="columns is-mobile is-1">
               <div class="column is-narrow">
-                <span class="icon"><i class="fa-solid fa-file-contract" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-file-contract"></i></span>
               </div>
               <div class="column is-hidden-touch">Contracts</div>
             </div>
@@ -31,7 +31,7 @@
           <a class="<%= reportTab === 'cemeteries' ? 'is-active' : '' %>" href="#tab--cemeteries" title="Cemeteries and Burial Sites">
             <div class="columns is-mobile is-1">
               <div class="column is-narrow">
-                <span class="icon"><i class="fa-regular fa-map" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-regular fa-map"></i></span>
               </div>
               <div class="column is-hidden-touch">Cemeteries and Burial Sites</div>
             </div>
@@ -46,7 +46,7 @@
           <a class="<%= reportTab === 'dataTableExports' ? 'is-active' : '' %>" href="#tab--dataTableExports" title="Data Tables">
             <div class="columns is-mobile is-1">
               <div class="column is-narrow">
-                <span class="icon"><i class="fa-solid fa-table" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-table"></i></span>
               </div>
               <div class="column is-hidden-touch">Data Tables</div>
             </div>
@@ -56,7 +56,7 @@
           <a class="<%= reportTab === 'configTableExports' ? 'is-active' : '' %>" href="#tab--configTableExports" title="Config Tables">
             <div class="columns is-mobile is-1">
               <div class="column is-narrow">
-                <span class="icon"><i class="fa-solid fa-table" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-table"></i></span>
               </div>
               <div class="column is-hidden-touch">Config Tables</div>
             </div>
@@ -71,7 +71,7 @@
         <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
         <li class="is-active">
           <a href="#" aria-current="page">
-            <span class="icon is-small"><i class="fa-solid fa-file" aria-hidden="true"></i></span>
+            <span class="icon is-small"><i class="fa-solid fa-file"></i></span>
             <span>Reports</span>
           </a>
         </li>
@@ -87,7 +87,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrders-open" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-file" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-file"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -105,7 +105,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/workOrders/outlook">
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-calendar" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-calendar"></i>
                   </span><br />
                   <span class="tag is-info">ICS</span>
                 </div>
@@ -129,7 +129,7 @@
           <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/contracts-current-byCemeteryId">
             <div class="has-text-centered my-2 ml-2 mr-3">
               <span class="icon has-text-info">
-                <i class="fa-solid fa-2x fa-file" aria-hidden="true"></i>
+                <i class="fa-solid fa-2x fa-file"></i>
               </span><br />
               <span class="tag is-info">CSV</span>
             </div>
@@ -165,7 +165,7 @@
           <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/contractTransactions-byTransactionDateString">
               <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                      <i class="fa-solid fa-2x fa-file" aria-hidden="true"></i>
+                      <i class="fa-solid fa-2x fa-file"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
               </div>
@@ -200,7 +200,7 @@
           <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/cemeteries-formatted" download>
             <div class="has-text-centered my-2 ml-2 mr-3">
               <span class="icon has-text-info">
-                <i class="fa-solid fa-2x fa-file" aria-hidden="true"></i>
+                <i class="fa-solid fa-2x fa-file"></i>
               </span><br />
               <span class="tag is-info">CSV</span>
             </div>
@@ -219,7 +219,7 @@
           <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byCemeteryId">
             <div class="has-text-centered my-2 ml-2 mr-3">
               <span class="icon has-text-info">
-                <i class="fa-solid fa-2x fa-file" aria-hidden="true"></i>
+                <i class="fa-solid fa-2x fa-file"></i>
               </span><br />
               <span class="tag is-info">CSV</span>
             </div>
@@ -255,7 +255,7 @@
           <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteTypeId">
             <div class="has-text-centered my-2 ml-2 mr-3">
               <span class="icon has-text-info">
-                <i class="fa-solid fa-2x fa-file" aria-hidden="true"></i>
+                <i class="fa-solid fa-2x fa-file"></i>
               </span><br />
               <span class="tag is-info">CSV</span>
             </div>
@@ -289,7 +289,7 @@
           <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteStatusId">
             <div class="has-text-centered my-2 ml-2 mr-3">
               <span class="icon has-text-info">
-                <i class="fa-solid fa-2x fa-file" aria-hidden="true"></i>
+                <i class="fa-solid fa-2x fa-file"></i>
               </span><br />
               <span class="tag is-info">CSV</span>
             </div>
@@ -338,7 +338,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contracts-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -349,7 +349,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractComments-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -360,7 +360,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractFees-all" download>
                   <div class="has-text-centered my-2 ml-2 mr-3">
                       <span class="icon has-text-info">
-                          <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                          <i class="fa-solid fa-2x fa-table"></i>
                       </span><br />
                       <span class="tag is-info">CSV</span>
                   </div>
@@ -371,7 +371,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractFields-all" download>
                   <div class="has-text-centered my-2 ml-2 mr-3">
                       <span class="icon has-text-info">
-                          <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                          <i class="fa-solid fa-2x fa-table"></i>
                       </span><br />
                       <span class="tag is-info">CSV</span>
                   </div>
@@ -382,7 +382,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractInterments-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -393,7 +393,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractTransactions-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -404,7 +404,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/funeralHomes-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -420,7 +420,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrders-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -431,7 +431,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderComments-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -442,7 +442,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderBurialSites-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -453,7 +453,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderMilestones-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -467,7 +467,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/cemeteries-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -478,7 +478,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/burialSites-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -489,7 +489,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/burialSiteComments-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -500,7 +500,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/burialSiteFields-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -527,7 +527,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/fees-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -538,7 +538,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/feeCategories-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -552,7 +552,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/burialSiteTypes-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -563,7 +563,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/burialSiteTypeFields-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -574,7 +574,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/burialSiteStatuses-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -590,7 +590,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractTypes-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -601,7 +601,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractTypeFields-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -612,7 +612,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/contractTypePrints-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -623,7 +623,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/intermentContainerTypes-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -634,7 +634,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/committalTypes-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -648,7 +648,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderTypes-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>
@@ -659,7 +659,7 @@
               <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/workOrderMilestoneTypes-all" download>
                 <div class="has-text-centered my-2 ml-2 mr-3">
                   <span class="icon has-text-info">
-                    <i class="fa-solid fa-2x fa-table" aria-hidden="true"></i>
+                    <i class="fa-solid fa-2x fa-table"></i>
                   </span><br />
                   <span class="tag is-info">CSV</span>
                 </div>

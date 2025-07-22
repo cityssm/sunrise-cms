@@ -153,12 +153,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
           ${contractFee.includeQuantity ?? false
                 ? `<button class="button is-primary button--editQuantity">
-                  <span class="icon is-small"><i class="fa-solid fa-pencil-alt" aria-hidden="true"></i></span>
+                  <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
                   <span>Edit</span>
                   </button>`
                 : ''}
           <button class="button is-danger is-light button--delete" data-tooltip="Delete Fee" type="button">
-            <span class="icon is-small"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
+            <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
           </button>
           </div>
           </td>`;
@@ -300,7 +300,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         .querySelector('.columns')
                         ?.insertAdjacentHTML('beforeend', `<div class="column is-narrow has-text-right">
                   <button class="button is-small is-success" type="button" data-fee-category-id="${feeCategory.feeCategoryId}">
-                    <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+                    <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                     <span>Add Fee Group</span>
                   </button>
                   </div>`);
@@ -539,10 +539,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
             <button class="button is-primary button--edit" data-tooltip="Edit Transaction" type="button">
-              <span class="icon"><i class="fa-solid fa-pencil-alt" aria-hidden="true"></i></span>
+              <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
             </button>
             <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
-              <span class="icon is-small"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
+              <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>
         </td>`;
@@ -615,7 +615,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (externalReceiptNumber === '') {
                 helpTextElement.innerHTML = '&nbsp;';
                 iconElement.innerHTML =
-                    '<i class="fa-solid fa-minus" aria-hidden="true"></i>';
+                    '<i class="fa-solid fa-minus"></i>';
                 return;
             }
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetDynamicsGPDocument`, {
@@ -626,18 +626,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     responseJSON.dynamicsGPDocument === undefined) {
                     helpTextElement.textContent = 'No Matching Document Found';
                     iconElement.innerHTML =
-                        '<i class="fa-solid fa-times-circle" aria-hidden="true"></i>';
+                        '<i class="fa-solid fa-times-circle"></i>';
                 }
                 else if (transactionAmountElement.valueAsNumber ===
                     responseJSON.dynamicsGPDocument.documentTotal) {
                     helpTextElement.textContent = 'Matching Document Found';
                     iconElement.innerHTML =
-                        '<i class="fa-solid fa-check-circle" aria-hidden="true"></i>';
+                        '<i class="fa-solid fa-check-circle"></i>';
                 }
                 else {
                     helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)}`;
                     iconElement.innerHTML =
-                        '<i class="fa-solid fa-exclamation-triangle" aria-hidden="true"></i>';
+                        '<i class="fa-solid fa-exclamation-triangle"></i>';
                 }
             });
         }

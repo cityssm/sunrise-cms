@@ -194,21 +194,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
       <button
           class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
           data-tooltip="Move Up" data-direction="up" type="button" aria-label="Move Up">
-        <span class="icon"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></span>
+        <span class="icon"><i class="fa-solid fa-arrow-up"></i></span>
       </button>
       </div>
       <div class="control">
       <button
           class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
           data-tooltip="Move Down" data-direction="down" type="button" aria-label="Move Down">
-        <span class="icon"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></span>
+        <span class="icon"><i class="fa-solid fa-arrow-down"></i></span>
       </button>
       </div>
       </div>`;
     }
     function getLoadingParagraphHTML(captionText = 'Loading...') {
         return `<p class="has-text-centered has-text-grey">
-      <i class="fa-solid fa-5x fa-circle-notch fa-spin" aria-hidden="true"></i><br />
+      <i class="fa-solid fa-5x fa-circle-notch fa-spin"></i><br />
       ${cityssm.escapeHTML(captionText)}
       </p>`;
     }
@@ -228,7 +228,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         ${offset > 0
             ? `<div class="level-item">
                 <button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">
-                  <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                  <i class="fa-solid fa-arrow-left"></i>
                 </button>
                 </div>`
             : ''}
@@ -236,7 +236,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ? `<div class="level-item">
                 <button class="button is-rounded is-link" data-page="next" type="button" title="Next">
                   <span>Next</span>
-                  <span class="icon"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+                  <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
                 </button>
                 </div>`
             : ''}

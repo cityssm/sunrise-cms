@@ -14,8 +14,8 @@
 
     // eslint-disable-next-line no-unsanitized/property
     buttonElement.innerHTML = panelBlockElement.classList.contains('is-hidden')
-      ? '<span class="icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>'
-      : '<span class="icon"><i class="fa-solid fa-minus" aria-hidden="true"></i></span>'
+      ? '<span class="icon"><i class="fa-solid fa-plus"></i></span>'
+      : '<span class="icon"><i class="fa-solid fa-minus"></i></span>'
   }
 
   for (const toggleButtonElement of toggleButtonElements) {

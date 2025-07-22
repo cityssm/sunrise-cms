@@ -5,7 +5,7 @@
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li>
       <a href="<%= urlPrefix %>/cemeteries">
-        <span class="icon is-small"><i class="fa-regular fa-map" aria-hidden="true"></i></span>
+        <span class="icon is-small"><i class="fa-regular fa-map"></i></span>
         <span>Cemeteries</span>
       </a>
     </li>
@@ -57,14 +57,14 @@
             <button class="button" type="button">
               <span>More Options</span>
               <span class="icon is-small">
-                <i class="fa-solid fa-angle-up" aria-hidden="true"></i>
+                <i class="fa-solid fa-angle-up"></i>
               </span>
             </button>
           </div>
           <div class="dropdown-menu">
             <div class="dropdown-content">
               <a class="dropdown-item" id="button--deleteCemetery" href="#">
-                <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
                 <span>Delete Cemetery</span>
               </a>
             </div>
@@ -72,7 +72,7 @@
         </div>
       <% } %>
       <button class="button is-primary is-light" type="submit" form="form--cemetery">
-        <span class="icon is-small"><i class="fa-solid fa-save" aria-hidden="true"></i></span>
+        <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
         <span>
           <%= (isCreate ? "Create": "Update") %>
           <span class="is-hidden-mobile">Cemetery</span>
@@ -100,7 +100,7 @@
                 accesskey="f"
                 <%= (isCreate ? " autofocus" : "") %> />
               <span class="icon is-small is-right">
-                <i class="fa-solid fa-asterisk" aria-hidden="true"></i>
+                <i class="fa-solid fa-asterisk"></i>
               </span>
             </div>
           </div>
@@ -117,7 +117,7 @@
                 <%= cemeteryKeyIsRequired ? ' required' : '' %> />
               <% if (cemeteryKeyIsRequired) { %>
                 <span class="icon is-small is-right">
-                  <i class="fa-solid fa-asterisk" aria-hidden="true"></i>
+                  <i class="fa-solid fa-asterisk"></i>
                 </span>
               <% } %>
               <% if (cemeteryKeyIsRequired) { %>
@@ -168,7 +168,7 @@
             </div>
             <div class="level-right">
               <div class="level-item">
-                <i class="fa-solid fa-location-arrow" aria-hidden="true"></i>
+                <i class="fa-solid fa-location-arrow"></i>
               </div>
             </div>
           </div>
@@ -258,7 +258,7 @@
             <div class="level-right">
               <div class="level-item">
                 <button class="button is-small" id="button--selectCoordinate" type="button">
-                  <span class="icon"><i class="fa-solid fa-map-marked-alt" aria-hidden="true"></i></span>
+                  <span class="icon"><i class="fa-solid fa-map-marked-alt"></i></span>
                   <span>Select Coordinate</span>
                 </button>
               </div>
@@ -296,7 +296,7 @@
             </div>
             <div class="level-right">
               <div class="level-item">
-                <i class="fa-solid fa-image" aria-hidden="true"></i>
+                <i class="fa-solid fa-image"></i>
               </div>
             </div>
           </div>
@@ -399,13 +399,13 @@
         <div class="level-right">
           <div class="level-item">
               <a class="button is-small is-success has-text-weight-normal" href="<%=urlPrefix %>/burialSites/new?cemeteryId=<%= cemetery.cemeteryId %>">
-                  <span class="icon"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+                  <span class="icon"><i class="fa-solid fa-plus"></i></span>
                   <span>Create a Burial Site</span>
               </a>
           </div>
           <div class="level-item">
             <a class="button is-small has-text-weight-normal" href="<%=urlPrefix %>/reports/burialSites-byCemeteryId?cemeteryId=<%= cemetery.cemeteryId %>" download>
-              <span class="icon"><i class="fa-solid fa-download" aria-hidden="true"></i></span>
+              <span class="icon"><i class="fa-solid fa-download"></i></span>
               <span>Export All</span>
             </a>
           </div>

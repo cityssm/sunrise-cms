@@ -69,7 +69,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           aria-label="Total Fees: $${feeTotal}">
           <i class="fa-solid fa-dollar-sign ${feeTotal === transactionTotal
                     ? 'has-text-success'
-                    : 'has-text-danger'}" aria-hidden="true"></i>
+                    : 'has-text-danger'}"></i>
         </span>`;
             }
             const burialSiteLinkClass = contract.burialSiteIsActive === 0 ? 'has-text-danger-dark' : '';
