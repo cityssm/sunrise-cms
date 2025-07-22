@@ -345,11 +345,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </td><td class="is-hidden-print">
           <div class="buttons are-small is-justify-content-end">
             <button class="button is-primary button--edit" type="button">
-              <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+              <span class="icon is-small"><i class="fa-solid fa-pencil-alt" aria-hidden="true"></i></span>
               <span>Edit</span>
             </button>
             <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
-              <i class="fas fa-trash" aria-hidden="true"></i>
+              <i class="fa-solid fa-trash" aria-hidden="true"></i>
             </button>
           </div>
         </td>`;

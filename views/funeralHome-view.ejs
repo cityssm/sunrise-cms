@@ -5,7 +5,7 @@
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li>
       <a href="<%= urlPrefix %>/funeralHomes">
-        <span class="icon is-small"><i class="fas fa-place-of-worship" aria-hidden="true"></i></span>
+        <span class="icon is-small"><i class="fa-solid fa-place-of-worship" aria-hidden="true"></i></span>
         <span>Funeral Homes</span>
       </a>
     </li>
@@ -49,7 +49,7 @@
           data-tooltip="Previous Funeral Home"
           href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/previous"
           <%- enableKeyboardShortcuts ? ' accesskey="," ' : '' %>>
-          <span class="icon m-0"><i class="fas fa-arrow-left" aria-hidden="true"></i></span>
+          <span class="icon m-0"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></span>
           <span class="is-sr-only">Previous Funeral Home</span>
         </a>
         <a class="button is-link has-tooltip-left"
@@ -57,21 +57,21 @@
           href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/next"
           <%- enableKeyboardShortcuts ? ' accesskey="." ' : '' %>>
           <span>Next</span>
-          <span class="icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          <span class="icon"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
         </a>
       <% } %>
       <% if (funeralHomeIsDeleted && user.userProperties.isAdmin) { %>
         <button class="button is-danger is-restore-funeral-home-button"
           data-funeral-home-id="<%= funeralHome.funeralHomeId %>"
           type="button">
-          <span class="icon"><i class="fas fa-undo" aria-hidden="true"></i></span>
+          <span class="icon"><i class="fa-solid fa-undo" aria-hidden="true"></i></span>
           <span>Restore Funeral Home</span>
         </button>
       <% } else if (!funeralHomeIsDeleted && user.userProperties.canUpdate) { %>
         <a class="button is-primary"
           href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/edit"
           <%- enableKeyboardShortcuts ? ' accesskey="e" ' : '' %>>
-          <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+          <span class="icon"><i class="fa-solid fa-pencil-alt" aria-hidden="true"></i></span>
           <span>
             Edit
             <span class="is-hidden-mobile">Funeral Home</span>
@@ -113,7 +113,7 @@
         <h2 class="has-text-weight-bold">Contracts with Upcoming Funerals</h2>
       </div>
       <div class="level-right">
-        <i class="fas fa-file-contract" aria-hidden="true"></i>
+        <i class="fa-solid fa-file-contract" aria-hidden="true"></i>
       </div>
     </div>
   </div>
@@ -156,7 +156,7 @@
                   <ul class="fa-ul ml-5">
                     <% for (const interment of contract.contractInterments) { %>
                       <li>
-                        <span class="fa-li"><i class="fas fa-user"></i></span>
+                        <span class="fa-li"><i class="fa-solid fa-user"></i></span>
                         <%= interment.deceasedName %>
                       </li>
                     <% } %>

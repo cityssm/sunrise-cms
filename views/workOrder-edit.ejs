@@ -5,7 +5,7 @@
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li>
       <a href="<%= urlPrefix %>/workOrders">
-        <span class="icon is-small"><i class="fas fa-hard-hat" aria-hidden="true"></i></span>
+        <span class="icon is-small"><i class="fa-solid fa-hard-hat" aria-hidden="true"></i></span>
         <span>Work Orders</span>
       </a>
     </li>
@@ -55,16 +55,16 @@
       <% if (!isCreate && configFunctions.getConfigProperty("settings.workOrders.prints").length > 0) { %>
         <% if (configFunctions.getConfigProperty("settings.workOrders.prints").length === 1) { %>
           <a href="<%= urlPrefix %>/print/<%= configFunctions.getConfigProperty("settings.workOrders.prints")[0] %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
-            <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+            <span class="icon"><i class="fa-solid fa-print" aria-hidden="true"></i></span>
             <span>Print</span>
           </a>
         <% } else { %>
           <div class="dropdown is-right is-up">
             <div class="dropdown-trigger">
               <button class="button" type="button" aria-label="Print">
-                <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-print" aria-hidden="true"></i></span>
                 <span class="is-hidden-touch">Print</span>
-                <span class="icon"><i class="fas fa-angle-up" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-angle-up" aria-hidden="true"></i></span>
               </button>
             </div>
             <div class="dropdown-menu">
@@ -73,7 +73,7 @@
                   <% const printConfig = printFunctions.getPrintConfig(printName); %>
                   <% if (printConfig) { %>
                     <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
-                      <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+                      <span class="icon"><i class="fa-solid fa-print" aria-hidden="true"></i></span>
                       <span><%= printConfig.title %></span>
                     </a>
                   <% } %>
@@ -95,14 +95,14 @@
                 <span class="is-hidden-touch">More</span>
                 Options
               </span>
-              <span class="icon is-small"><i class="fas fa-angle-up" aria-hidden="true"></i></span>
+              <span class="icon is-small"><i class="fa-solid fa-angle-up" aria-hidden="true"></i></span>
             </button>
           </div>
           <div class="dropdown-menu">
             <div class="dropdown-content has-text-left">
               <a class="dropdown-item" id="button--deleteWorkOrder" href="#">
                 <span class="icon is-small">
-                  <i class="fas fa-trash has-text-danger" aria-hidden="true"></i>
+                  <i class="fa-solid fa-trash has-text-danger" aria-hidden="true"></i>
                 </span>
                 <span>Delete Work Order</span>
               </a>
@@ -111,7 +111,7 @@
         </div>
       <% } %>
       <button class="button is-primary is-light" type="submit" form="form--workOrderEdit">
-        <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
+        <span class="icon is-small"><i class="fa-solid fa-save" aria-hidden="true"></i></span>
         <span>
           <%= (isCreate ? "Create" : "Update") %>
           <span class="is-hidden-mobile">Work Order</span>
@@ -139,7 +139,7 @@
                 </div>
                 <div class="control">
                   <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
-                    <span class="icon"><i class="fas fa-unlock" aria-hidden="true"></i></span>
+                    <span class="icon"><i class="fa-solid fa-unlock" aria-hidden="true"></i></span>
                   </button>
                 </div>
               </div>
@@ -186,7 +186,7 @@
                     max="<%= workOrder.workOrderOpenDateString > currentDateString ? workOrder.workOrderOpenDateString : currentDateString %>"
                     required />
                   <span class="icon is-left">
-                    <i class="fas fa-calendar" aria-hidden="true"></i>
+                    <i class="fa-solid fa-calendar" aria-hidden="true"></i>
                   </span>
                 </div>
               </div>
@@ -200,7 +200,7 @@
                 <% if (!isCreate) { %>
                   <div class="control">
                     <button class="button is-light is-success" id="button--closeWorkOrder" type="button">
-                      <span class="icon is-small"><i class="fas fa-stop-circle" aria-hidden="true"></i></span>
+                      <span class="icon is-small"><i class="fa-solid fa-stop-circle" aria-hidden="true"></i></span>
                       <span>
                         Close
                       </span>
@@ -228,19 +228,19 @@
                 <div class="dropdown is-right">
                   <div class="dropdown-trigger">
                     <button class="button is-success is-small" type="button">
-                      <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                      <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                       <span>Add</span>
-                      <span class="icon is-small"><i class="fas fa-angle-down" aria-hidden="true"></i></span>
+                      <span class="icon is-small"><i class="fa-solid fa-angle-down" aria-hidden="true"></i></span>
                     </button>
                   </div>
                   <div class="dropdown-menu">
                     <div class="dropdown-content has-text-weight-normal">
                       <a class="dropdown-item" id="button--addContract" href="#">
-                        <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                        <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                         <span>Add a Related Contract</span>
                       </a>
                       <a class="dropdown-item" id="button--addBurialSite" href="#">
-                        <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                        <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                         <span>Add a Related Burial Site</span>
                       </a>
                     </div>
@@ -296,7 +296,7 @@
             <div class="level-right">
               <div class="level-item">
                 <button class="button is-small is-success" id="button--addMilestone" type="button">
-                  <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                  <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                   <span>Add Milestone</span>
                 </button>
               </div>
@@ -304,17 +304,17 @@
                 <div class="dropdown is-right has-text-weight-normal">
                   <div class="dropdown-trigger">
                     <button class="button is-small has-tooltip-left" data-tooltip="Milestone Options" type="button" aria-label="Options">
-                      <span class="icon is-small"><i class="fas fa-ellipsis-v" aria-hidden="true"></i></span> 
+                      <span class="icon is-small"><i class="fa-solid fa-ellipsis-v" aria-hidden="true"></i></span> 
                     </button>
                   </div>
                   <div class="dropdown-menu">
                     <div class="dropdown-content">
                       <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
-                        <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
+                        <span class="icon is-small"><i class="fa-solid fa-calendar" aria-hidden="true"></i></span>
                         <span>Download iCalendar</span>
                       </a>
                       <a class="dropdown-item" href="<%= urlPrefix %>/reports/workOrderMilestones-byWorkOrderId/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" download>
-                        <span class="icon is-small"><i class="fas fa-download" aria-hidden="true"></i></span>
+                        <span class="icon is-small"><i class="fa-solid fa-download" aria-hidden="true"></i></span>
                         <span>Export as CSV</span>
                       </a>
                     </div>
@@ -343,7 +343,7 @@
         <div class="level-right">
           <div class="level-item">
             <button class="button is-small is-success" id="workOrderComments--add" type="button">
-              <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+              <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
               <span>Add a Comment</span>
             </button>
           </div>

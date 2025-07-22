@@ -74,7 +74,7 @@ declare const exports: Record<string, unknown>
               ${
                 cemetery.cemeteryName === ''
                   ? `<span class="icon is-small has-text-danger">
-                      <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                      <i class="fa-solid fa-exclamation-triangle" aria-hidden="true"></i>
                       </span>`
                   : ''
               }
@@ -113,13 +113,13 @@ declare const exports: Record<string, unknown>
               cemetery.parentCemeteryId === null
                 ? ''
                 : `<span class="icon" data-tooltip="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
-                    <i class="fas fa-turn-up" role="img" aria-label="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}"></i>
+                    <i class="fa-solid fa-turn-up" role="img" aria-label="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}"></i>
                     </span>`
             }
             ${
               cemetery.cemeteryLatitude && cemetery.cemeteryLongitude
                 ? `<span class="icon" data-tooltip="Geographic Coordinates">
-                    <i class="fas fa-map-marker-alt" role="img" aria-label="Geographic Coordinates"></i>
+                    <i class="fa-solid fa-map-marker-alt" role="img" aria-label="Geographic Coordinates"></i>
                     </span>`
                 : ''
             }
@@ -127,7 +127,7 @@ declare const exports: Record<string, unknown>
               (cemetery.cemeterySvg ?? '') === ''
                 ? ''
                 : `<span class="icon" data-tooltip="Image">
-                    <i class="fas fa-image" role="img" aria-label="Image"></i>
+                    <i class="fa-solid fa-image" role="img" aria-label="Image"></i>
                     </span>`
             }
           </td><td class="has-text-right">

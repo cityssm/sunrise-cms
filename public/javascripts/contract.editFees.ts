@@ -247,13 +247,13 @@ declare const exports: Record<string, unknown>
           ${
             contractFee.includeQuantity ?? false
               ? `<button class="button is-primary button--editQuantity">
-                  <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                  <span class="icon is-small"><i class="fa-solid fa-pencil-alt" aria-hidden="true"></i></span>
                   <span>Edit</span>
                   </button>`
               : ''
           }
           <button class="button is-danger is-light button--delete" data-tooltip="Delete Fee" type="button">
-            <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
+            <span class="icon is-small"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
           </button>
           </div>
           </td>`
@@ -479,7 +479,7 @@ declare const exports: Record<string, unknown>
               'beforeend',
               `<div class="column is-narrow has-text-right">
                   <button class="button is-small is-success" type="button" data-fee-category-id="${feeCategory.feeCategoryId}">
-                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                    <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                     <span>Add Fee Group</span>
                   </button>
                   </div>`
@@ -816,20 +816,20 @@ declare const exports: Record<string, unknown>
         if (sunrise.dynamicsGPIntegrationIsEnabled) {
           if (contractTransaction.dynamicsGPDocument === undefined) {
             externalReceiptNumberHTML += ` <span data-tooltip="No Matching Document Found">
-                <i class="fas fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
+                <i class="fa-solid fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
                 </span>`
           } else if (
             contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) ===
             contractTransaction.transactionAmount.toFixed(2)
           ) {
             externalReceiptNumberHTML += ` <span data-tooltip="Matching Document Found">
-                <i class="fas fa-check-circle has-text-success" aria-label="Matching Document Found"></i>
+                <i class="fa-solid fa-check-circle has-text-success" aria-label="Matching Document Found"></i>
                 </span>`
           } else {
             externalReceiptNumberHTML += ` <span data-tooltip="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
               2
             )}">
-            <i class="fas fa-check-circle has-text-warning" aria-label="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
+            <i class="fa-solid fa-check-circle has-text-warning" aria-label="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
               2
             )}"></i>
             </span>`
@@ -858,10 +858,10 @@ declare const exports: Record<string, unknown>
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
             <button class="button is-primary button--edit" data-tooltip="Edit Transaction" type="button">
-              <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+              <span class="icon"><i class="fa-solid fa-pencil-alt" aria-hidden="true"></i></span>
             </button>
             <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
-              <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
+              <span class="icon is-small"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
             </button>
           </div>
         </td>`
@@ -966,7 +966,7 @@ declare const exports: Record<string, unknown>
       if (externalReceiptNumber === '') {
         helpTextElement.innerHTML = '&nbsp;'
         iconElement.innerHTML =
-          '<i class="fas fa-minus" aria-hidden="true"></i>'
+          '<i class="fa-solid fa-minus" aria-hidden="true"></i>'
         return
       }
 
@@ -987,18 +987,18 @@ declare const exports: Record<string, unknown>
           ) {
             helpTextElement.textContent = 'No Matching Document Found'
             iconElement.innerHTML =
-              '<i class="fas fa-times-circle" aria-hidden="true"></i>'
+              '<i class="fa-solid fa-times-circle" aria-hidden="true"></i>'
           } else if (
             transactionAmountElement.valueAsNumber ===
             responseJSON.dynamicsGPDocument.documentTotal
           ) {
             helpTextElement.textContent = 'Matching Document Found'
             iconElement.innerHTML =
-              '<i class="fas fa-check-circle" aria-hidden="true"></i>'
+              '<i class="fa-solid fa-check-circle" aria-hidden="true"></i>'
           } else {
             helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)}`
             iconElement.innerHTML =
-              '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i>'
+              '<i class="fa-solid fa-exclamation-triangle" aria-hidden="true"></i>'
           }
         }
       )

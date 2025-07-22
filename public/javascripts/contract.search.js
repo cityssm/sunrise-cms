@@ -22,31 +22,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
             let contractTimeHTML = '';
             if (contract.contractIsFuture === 1) {
                 contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Future Contract">
-          <i class="fas fa-fast-forward" aria-label="Future Contract"></i>
+          <i class="fa-solid fa-fast-forward" aria-label="Future Contract"></i>
           </span>`;
             }
             else if (contract.contractIsActive === 1) {
                 contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Current Contract">
-          <i class="fas fa-play" aria-label="Current Contract"></i>
+          <i class="fa-solid fa-play" aria-label="Current Contract"></i>
           </span>`;
             }
             else {
                 contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Past Contract">
-          <i class="fas fa-stop" aria-label="Past Contract"></i>
+          <i class="fa-solid fa-stop" aria-label="Past Contract"></i>
           </span>`;
             }
             let contactsHTML = '';
             for (const interment of contract.contractInterments ?? []) {
                 contactsHTML += `<li class="has-tooltip-left"
           data-tooltip="${contract.isPreneed ? 'Recipient' : 'Deceased'}">
-          <span class="fa-li"><i class="fas fa-user"></i></span>
+          <span class="fa-li"><i class="fa-solid fa-user"></i></span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
           </li>`;
             }
             if (contract.purchaserName !== '') {
                 contactsHTML += `<li class="has-tooltip-left has-text-grey"
           data-tooltip="Purchaser">
-          <span class="fa-li"><i class="fas fa-hand-holding-dollar"></i></span>
+          <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar"></i></span>
           ${cityssm.escapeHTML(contract.purchaserName)}
           </li>`;
             }
@@ -54,7 +54,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 contract.funeralHomeName !== '') {
                 contactsHTML += `<li class="has-tooltip-left has-text-grey"
           data-tooltip="Funeral Home">
-          <span class="fa-li"><i class="fas fa-place-of-worship"></i></span>
+          <span class="fa-li"><i class="fa-solid fa-place-of-worship"></i></span>
           ${cityssm.escapeHTML(contract.funeralHomeName)}
           </li>`;
             }
@@ -67,7 +67,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 feeIconHTML = `<span class="icon"
           data-tooltip="Total Fees: $${feeTotal}"
           aria-label="Total Fees: $${feeTotal}">
-          <i class="fas fa-dollar-sign ${feeTotal === transactionTotal
+          <i class="fa-solid fa-dollar-sign ${feeTotal === transactionTotal
                     ? 'has-text-success'
                     : 'has-text-danger'}" aria-hidden="true"></i>
         </span>`;
@@ -108,7 +108,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${contract.printEJS
                 ? `<a class="button is-small" data-tooltip="Print"
                     href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}" target="_blank">
-                    <span class="icon"><i class="fas fa-print" aria-label="Print"></i></span>
+                    <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
                     </a>`
                 : ''}</td></tr>`);
         }

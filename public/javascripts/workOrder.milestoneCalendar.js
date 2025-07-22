@@ -44,7 +44,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 contractHTML += `<li class="has-tooltip-left"
           data-tooltip="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
-          <i class="fas fa-map-pin"
+          <i class="fa-solid fa-map-pin"
             aria-label="Burial Site"></i>
           </span>
           ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
@@ -55,7 +55,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     contractHTML += `<li class="has-tooltip-left"
             data-tooltip="Interment">
             <span class="fa-li">
-            <i class="fas fa-user"
+            <i class="fa-solid fa-user"
               aria-label="Interment"></i>
             </span>
             ${cityssm.escapeHTML(interment.deceasedName ?? '')}
@@ -67,7 +67,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         <div class="column is-narrow">
           <span class="icon is-small">
             ${milestone.workOrderMilestoneCompletionDate
-                ? '<i class="fas fa-check" aria-label="Completed"></i>'
+                ? '<i class="fa-solid fa-check" aria-label="Completed"></i>'
                 : '<i class="far fa-square has-text-grey" aria-label="Incomplete"></i>'}
           </span>
         </div><div class="column">
@@ -81,7 +81,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}
           </span>
         </div><div class="column">
-          <i class="fas fa-circle" style="color:${sunrise.getRandomColor(milestone.workOrderNumber ?? '')}" aria-hidden="true"></i>
+          <i class="fa-solid fa-circle" style="color:${sunrise.getRandomColor(milestone.workOrderNumber ?? '')}" aria-hidden="true"></i>
           <a class="has-text-weight-bold" href="${sunrise.getWorkOrderURL(milestone.workOrderId)}">
             ${cityssm.escapeHTML(milestone.workOrderNumber ?? '')}
           </a><br />

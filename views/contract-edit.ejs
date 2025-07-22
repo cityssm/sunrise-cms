@@ -6,7 +6,7 @@
     <li>
       <a href="<%= urlPrefix %>/contracts">
         <span class="icon is-small">
-          <i class="fas fa-file-contract" aria-hidden="true"></i>
+          <i class="fa-solid fa-file-contract" aria-hidden="true"></i>
         </span>
         <span>Contracts</span>
       </a>
@@ -53,16 +53,16 @@
       <% if (!isCreate && contractTypePrints.length > 0) { %>
         <% if (contractTypePrints.length === 1) { %>
           <a href="<%= urlPrefix %>/print/<%= contractTypePrints[0] %>/?contractId=<%= contract.contractId %>" target="_blank" aria-label="Print">
-            <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+            <span class="icon"><i class="fa-solid fa-print" aria-hidden="true"></i></span>
             <span class="is-hidden-touch">Print</span>
           </a>
         <% } else { %>
           <div class="dropdown is-right is-up">
             <div class="dropdown-trigger">
               <button class="button" type="button" aria-label="Print">
-                <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-print" aria-hidden="true"></i></span>
                 <span class="is-hidden-touch">Print</span>
-                <span class="icon"><i class="fas fa-angle-up" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-angle-up" aria-hidden="true"></i></span>
               </a>
             </div>
             <div class="dropdown-menu">
@@ -71,7 +71,7 @@
                   <% const printConfig = printFunctions.getPrintConfig(printName); %>
                   <% if (printConfig) { %>
                     <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?contractId=<%= contract.contractId %>" target="_blank">
-                      <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+                      <span class="icon"><i class="fa-solid fa-print" aria-hidden="true"></i></span>
                       <span><%= printConfig.title %></span>
                     </a>
                   <% } %>
@@ -94,7 +94,7 @@
                 Options
               </span>
               <span class="icon">
-                <i class="fas fa-angle-up" aria-hidden="true"></i>
+                <i class="fa-solid fa-angle-up" aria-hidden="true"></i>
               </span>
             </button>
           </div>
@@ -105,7 +105,7 @@
                 <span>Copy Contract as New</span>
               </a>
               <a class="dropdown-item" id="button--deleteContract" href="#">
-                <span class="icon"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-trash has-text-danger" aria-hidden="true"></i></span>
                 <span>Delete Contract</span>
               </a>
             </div>
@@ -113,7 +113,7 @@
         </div>
       <% } %>
       <button class="button is-primary is-light" type="submit" form="form--contract">
-        <span class="icon is-small"><i class="fas fa-save" aria-hidden="true"></i></span>
+        <span class="icon is-small"><i class="fa-solid fa-save" aria-hidden="true"></i></span>
         <span>
           <%= (isCreate ? "Create" : "Update") %>
           <span class="is-hidden-mobile">
@@ -174,7 +174,7 @@
             </div>
             <div class="control is-hidden-print">
               <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Contract Type Field">
-                <span class="icon"><i class="fas fa-unlock" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-unlock" aria-hidden="true"></i></span>
               </button>
             </div>
           </div>
@@ -193,17 +193,17 @@
             </div>
             <div class="control is-hidden-print">
               <button class="button is-clear-burial-site-button" data-tooltip="Clear" type="button" aria-label="Clear Burial Site Field">
-                <span class="icon"><i class="fas fa-eraser" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-eraser" aria-hidden="true"></i></span>
               </button>
             </div>
             <div class="control is-hidden-print">
               <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Burial Site Field">
-                <span class="icon"><i class="fas fa-unlock" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-unlock" aria-hidden="true"></i></span>
               </button>
             </div>
             <div class="control is-hidden-print">
               <button class="button is-burial-site-view-button" data-tooltip="Open Burial Site" type="button" aria-label="Open Burial Site">
-                <span class="icon"><i class="fas fa-external-link-alt" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-external-link-alt" aria-hidden="true"></i></span>
               </button>
             </div>
           </div>
@@ -215,7 +215,7 @@
               <input class="input" id="contract--contractStartDateString" name="contractStartDateString" type="date"
                 value="<%= contract.contractStartDateString %>" required />
               <span class="icon is-left">
-                <i class="fas fa-calendar" aria-hidden="true"></i>
+                <i class="fa-solid fa-calendar" aria-hidden="true"></i>
               </span>
             </div>
           </div>
@@ -227,7 +227,7 @@
                 min="<%= contract.contractStartDateString %>"
                 <%= (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsRequired") ? " required" : "") %> />
               <span class="icon is-left">
-                <i class="fas fa-calendar" aria-hidden="true"></i>
+                <i class="fa-solid fa-calendar" aria-hidden="true"></i>
               </span>
             </div>
           </div>
@@ -328,7 +328,7 @@
                 Funeral
               <% } else { %>
                 <a class="has-text-white" id="panelToggle--funeral" href="#">
-                  <span class="icon is-small"><i class="fas fa-caret-down" aria-hidden="true"></i></span>
+                  <span class="icon is-small"><i class="fa-solid fa-caret-down" aria-hidden="true"></i></span>
                   Funeral
                 </a>
               <% } %>
@@ -337,7 +337,7 @@
         </div>
         <div class="level-right">
           <div class="level-item">
-            <i class="fas fa-place-of-worship" aria-hidden="true"></i>
+            <i class="fa-solid fa-place-of-worship" aria-hidden="true"></i>
           </div>
         </div>
       </div>
@@ -392,7 +392,7 @@
                   <input class="input" id="contract--funeralDateString" name="funeralDateString" type="date"
                     value="<%= contract.funeralDateString %>" />
                   <span class="icon is-left">
-                    <i class="fas fa-calendar" aria-hidden="true"></i>
+                    <i class="fa-solid fa-calendar" aria-hidden="true"></i>
                   </span>
                 </div>
               </div>
@@ -414,7 +414,7 @@
                 <div class="control has-icons-left">
                   <input class="input" id="contract--funeralTimeString" name="funeralTimeString" type="time" value="<%= contract.funeralTimeString %>" step="900" />
                   <span class="icon is-left">
-                    <i class="fas fa-clock" aria-hidden="true"></i>
+                    <i class="fa-solid fa-clock" aria-hidden="true"></i>
                   </span>
                 </div>
               </div>
@@ -488,7 +488,7 @@
             </div>
             <div class="level-right">
               <div class="level-item">
-                <i class="fas fa-hand-holding-dollar" aria-hidden="true"></i>
+                <i class="fa-solid fa-hand-holding-dollar" aria-hidden="true"></i>
               </div>
             </div>
           </div>
@@ -503,7 +503,7 @@
                 maxlength="100" autocomplete="off" required
                 value="<%= contract.purchaserName %>" />
               <span class="icon is-right">
-                <i class="fas fa-asterisk" aria-hidden="true"></i>
+                <i class="fa-solid fa-asterisk" aria-hidden="true"></i>
               </span>
             </div>
           </div>
@@ -631,7 +631,7 @@
                   maxlength="100" autocomplete="off" required
                   value="<%= contract.deceasedName %>" />
                 <span class="icon is-right">
-                  <i class="fas fa-asterisk" aria-hidden="true"></i>
+                  <i class="fa-solid fa-asterisk" aria-hidden="true"></i>
                 </span>
               </div>
             </div>
@@ -697,7 +697,7 @@
                       value="<%= contract.birthDateString %>"
                       max="<%= todayDateString %>" />
                     <span class="icon is-left">
-                      <i class="fas fa-calendar" aria-hidden="true"></i>
+                      <i class="fa-solid fa-calendar" aria-hidden="true"></i>
                     </span>
                   </div>
                 </div>
@@ -726,7 +726,7 @@
                       value="<%= contract.deathDateString %>"
                       max="<%= todayDateString %>" />
                     <span class="icon is-left">
-                      <i class="fas fa-calendar" aria-hidden="true"></i>
+                      <i class="fa-solid fa-calendar" aria-hidden="true"></i>
                     </span>
                   </div>
                 </div>
@@ -748,7 +748,7 @@
             <div class="field has-addons">
               <div class="control">
                 <button class="button" type="button" id="button--calculateDeathAge" aria-label="Calculate Age" disabled>
-                  <span class="icon is-small"><i class="fas fa-calculator" aria-hidden="true"></i></span>
+                  <span class="icon is-small"><i class="fa-solid fa-calculator" aria-hidden="true"></i></span>
                 </button>
               </div>
               <div class="control is-expanded">
@@ -825,7 +825,7 @@
               <div class="level-right">
                 <div class="level-item">
                   <button class="button is-small is-success is-hidden-print" id="button--addInterment" type="button">
-                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                    <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                     <span>Add Additional <%= (contract.isPreneed ? "Recipient" : "Deceased") %></span>
                   </button>
                 </div>
@@ -853,7 +853,7 @@
             <div class="level-right">
               <div class="level-item">
                 <button class="button is-small is-success is-hidden-print" id="button--addFee" type="button">
-                  <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                  <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                   <span>Add Fee</span>
                 </button>
               </div>
@@ -875,7 +875,7 @@
             <div class="level-right">
               <div class="level-item">
                 <button class="button is-small is-success is-hidden-print" id="button--addTransaction" type="button">
-                  <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                  <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                   <span>Add Transaction</span>
                 </button>
               </div>
@@ -903,7 +903,7 @@
               <div class="level-right">
                 <div class="level-item">
                   <button class="button is-small is-success is-hidden-print" id="button--createWorkOrder" type="button">
-                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                    <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                     <span>Create a Work Order</span>
                   </button>
                 </div>
@@ -941,11 +941,11 @@
                     </td>
                     <td class="is-nowrap">
                       <span class="has-tooltip-left" data-tooltip="<%= workOrderOpenDateAlias %>">
-                        <i class="fas fa-play" aria-label="<%= workOrderOpenDateAlias %>"></i>
+                        <i class="fa-solid fa-play" aria-label="<%= workOrderOpenDateAlias %>"></i>
                         <%= workOrder.workOrderOpenDateString %>
                       </span><br />
                       <span class="has-tooltip-left" data-tooltip="<%= workOrderCloseDateAlias %>">
-                        <i class="fas fa-stop" aria-label="<%= workOrderCloseDateAlias %>"></i>
+                        <i class="fa-solid fa-stop" aria-label="<%= workOrderCloseDateAlias %>"></i>
                         <% if (workOrder.workOrderCloseDate) { %>
                           <%= workOrder.workOrderCloseDateString %>
                         <% } else { %>
@@ -971,7 +971,7 @@
             <div class="level-right">
               <div class="level-item">
                 <button class="button is-small is-success is-hidden-print" id="button--addRelatedContract" type="button">
-                  <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                  <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                   <span>Add Related Contract</span>
                 </button>
               </div>
@@ -994,7 +994,7 @@
         <div class="level-right">
           <div class="level-item">
             <button class="button is-small is-success is-hidden-print" id="button--addComment" type="button">
-              <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+              <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
               <span>Add Comment</span>
             </button>
           </div>

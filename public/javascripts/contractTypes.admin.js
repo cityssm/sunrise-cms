@@ -23,8 +23,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         // eslint-disable-next-line no-unsanitized/property
         toggleButtonElement.innerHTML = expandedContractTypes.has(contractTypeId)
-            ? '<i class="fas fa-minus" aria-hidden="true"></i>'
-            : '<i class="fas fa-plus" aria-hidden="true"></i>';
+            ? '<i class="fa-solid fa-minus" aria-hidden="true"></i>'
+            : '<i class="fa-solid fa-plus" aria-hidden="true"></i>';
         const panelBlockElements = contractTypeElement.querySelectorAll('.panel-block');
         for (const panelBlockElement of panelBlockElements) {
             panelBlockElement.classList.toggle('is-hidden');
@@ -410,7 +410,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 panelBlockElement.innerHTML = `<div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <i class="fas ${printIconClass}" aria-hidden="true"></i>
+              <i class="fa-solid ${printIconClass}" aria-hidden="true"></i>
             </div>
             <div class="level-item">
               ${cityssm.escapeHTML(printTitle || printEJS)}
@@ -422,7 +422,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             </div>
             <div class="level-item">
               <button class="button is-small is-danger button--deleteContractTypePrint" data-tooltip="Delete" type="button" aria-label="Delete Print">
-                <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
               </button>
             </div>
           </div>
@@ -451,7 +451,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-success is-small button--addContractTypeField" type="button">
-                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                 <span>Add Field</span>
               </button>
             </div>
@@ -488,8 +488,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <div class="level-item">
               <button class="button is-small button--toggleContractTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
                 ${expandedContractTypes.has(contractType.contractTypeId)
-                ? '<i class="fas fa-minus" aria-hidden="true"></i>'
-                : '<i class="fas fa-plus" aria-hidden="true"></i>'}
+                ? '<i class="fa-solid fa-minus" aria-hidden="true"></i>'
+                : '<i class="fa-solid fa-plus" aria-hidden="true"></i>'}
               </button>
             </div>
             <div class="level-item">
@@ -504,19 +504,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
           <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-danger is-small button--deleteContractType" type="button">
-                <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
                 <span>Delete</span>
               </button>
             </div>
             <div class="level-item">
               <button class="button is-primary is-small button--editContractType" type="button">
-                <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-pencil-alt" aria-hidden="true"></i></span>
                 <span>Edit Contract Type</span>
               </button>
             </div>
             <div class="level-item">
               <button class="button is-success is-small button--addContractTypeField" type="button">
-                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                 <span>Add Field</span>
               </button>
             </div>
@@ -560,7 +560,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           <div class="level-right is-hidden-print">
             <div class="level-item">
               <button class="button is-success is-small button--addContractTypePrint" type="button">
-                <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                 <span>Add Print</span>
               </button>
             </div>

@@ -5,7 +5,7 @@
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li>
       <a href="<%= urlPrefix %>/workOrders">
-        <span class="icon is-small"><i class="fas fa-hard-hat" aria-hidden="true"></i></span>
+        <span class="icon is-small"><i class="fa-solid fa-hard-hat" aria-hidden="true"></i></span>
         <span>Work Orders</span>
       </a>
     </li>
@@ -31,7 +31,7 @@
       <div class="level-item">
         <span class="tag is-info is-medium">
           <span class="icon is-small">
-            <i class="fas fa-stop" aria-hidden="true"></i>
+            <i class="fa-solid fa-stop" aria-hidden="true"></i>
           </span>
           <span>Closed</span>
         </span>
@@ -52,16 +52,16 @@
       <% if (configFunctions.getConfigProperty("settings.workOrders.prints").length > 0) { %>
         <% if (configFunctions.getConfigProperty("settings.workOrders.prints").length === 1) { %>
           <a href="<%= urlPrefix %>/print/<%= configFunctions.getConfigProperty("settings.workOrders.prints")[0] %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" aria-label="Print">
-            <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+            <span class="icon"><i class="fa-solid fa-print" aria-hidden="true"></i></span>
             <span class="is-hidden-touch">Print</span>
           </a>
         <% } else { %>
           <div class="dropdown is-right is-up">
             <div class="dropdown-trigger">
               <button class="button" type="button" aria-label="Print">
-                <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-print" aria-hidden="true"></i></span>
                 <span class="is-hidden-touch">Print</span>
-                <span class="icon"><i class="fas fa-angle-up" aria-hidden="true"></i></span>
+                <span class="icon"><i class="fa-solid fa-angle-up" aria-hidden="true"></i></span>
               </button>
             </div>
             <div class="dropdown-menu">
@@ -70,7 +70,7 @@
                   <% const printConfig = printFunctions.getPrintConfig(printName); %>
                   <% if (printConfig) { %>
                     <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
-                      <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+                      <span class="icon"><i class="fa-solid fa-print" aria-hidden="true"></i></span>
                       <span><%= printConfig.title %></span>
                     </a>
                   <% } %>
@@ -83,14 +83,14 @@
       <% if (user.userProperties.canUpdateWorkOrders) { %>
         <% if (workOrder.workOrderCloseDate) { %>
           <button class="button is-warning" id="button--reopenWorkOrder" data-work-order-id="<%= workOrder.workOrderId %>" type="button">
-            <span class="icon"><i class="fas fa-undo" aria-hidden="true"></i></span>
+            <span class="icon"><i class="fa-solid fa-undo" aria-hidden="true"></i></span>
             <span>Reopen Work Order</span>
           </button>
         <% } else { %>
           <a class="button is-primary"
             href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>/edit"
             <%- enableKeyboardShortcuts ? ' accesskey="e" ' : '' %>>
-            <span class="icon"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+            <span class="icon"><i class="fa-solid fa-pencil-alt" aria-hidden="true"></i></span>
             <span>
               Edit
               <span class="is-hidden-mobile">Work Order</span>
@@ -188,11 +188,11 @@
                     <tr>
                       <td class="has-text-centered">
                         <% if (contract.contractIsFuture) { %>
-                          <i class="fas fa-fast-forward" title="Future Contract"></i>
+                          <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
                         <% } else if (contract.contractIsActive) { %>
-                          <i class="fas fa-play" title="Current Contract"></i>
+                          <i class="fa-solid fa-play" title="Current Contract"></i>
                         <% } else { %>
-                          <i class="fas fa-stop" title="Previous Contract"></i>
+                          <i class="fa-solid fa-stop" title="Previous Contract"></i>
                         <% } %>
                       </td>
                       <td>
@@ -223,19 +223,19 @@
                         <ul class="fa-ul ml-5">
                           <% for (const interment of contract.contractInterments) { %>
                             <li class="has-tooltip-left" data-tooltip="<%= contract.isPreneed ? 'Recipient' : 'Deceased' %>">
-                              <span class="fa-li"><i class="fas fa-user" aria-label="Recipient"></i></span>
+                              <span class="fa-li"><i class="fa-solid fa-user" aria-label="Recipient"></i></span>
                               <%= interment.deceasedName %>
                             </li>
                           <% } %>
                           <% if (contract.purchaserName !== '') { %>
                             <li class="has-tooltip-left" data-tooltip="Purchaser">
-                              <span class="fa-li"><i class="fas fa-hand-holding-dollar" aria-label="Purchase"></i></span>
+                              <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar" aria-label="Purchase"></i></span>
                               <%= contract.purchaserName %>
                             </li>
                           <% } %>
                           <% if (contract.funeralHomeName) { %>
                             <li class="has-tooltip-left" data-tooltip="Funeral Home">
-                              <span class="fa-li"><i class="fas fa-place-of-worship" aria-label="Funeral Home"></i></span>
+                              <span class="fa-li"><i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i></span>
                               <%= contract.funeralHomeName %>
                             </li>
                           <% } %>
@@ -353,17 +353,17 @@
               <div class="dropdown is-right has-text-weight-normal">
                 <div class="dropdown-trigger">
                   <button class="button is-small has-tooltip-left" type="button" data-tooltip="Milestone Options" aria-label="Options">
-                    <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                    <i class="fa-solid fa-ellipsis-v" aria-hidden="true"></i>
                   </button>
                 </div>
                 <div class="dropdown-menu">
                   <div class="dropdown-content">
                     <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
-                      <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
+                      <span class="icon is-small"><i class="fa-solid fa-calendar" aria-hidden="true"></i></span>
                       <span>Download iCalendar</span>
                     </a>
                     <a class="dropdown-item" href="<%= urlPrefix %>/reports/workOrderMilestones-byWorkOrderId/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" download>
-                      <span class="icon is-small"><i class="fas fa-download" aria-hidden="true"></i></span>
+                      <span class="icon is-small"><i class="fa-solid fa-download" aria-hidden="true"></i></span>
                       <span>Export as CSV</span>
                     </a>
                   </div>
@@ -379,7 +379,7 @@
             <div class="column is-narrow">
               <% if (milestone.workOrderMilestoneCompletionDate) { %>
                 <span class="icon is-small" data-tooltip="Completed <%= milestone.workOrderMilestoneCompletionDateString %>">
-                  <i class="fas fa-check" aria-label="Completed <%= milestone.workOrderMilestoneCompletionDateString %>"></i>
+                  <i class="fa-solid fa-check" aria-label="Completed <%= milestone.workOrderMilestoneCompletionDateString %>"></i>
                 </span>
               <% } else { %>
                 <span class="icon is-small">

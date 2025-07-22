@@ -207,13 +207,13 @@ declare const exports: {
           (burialSite) => contract.burialSiteId === burialSite.burialSiteId
         )
 
-      let contractIcon = '<i class="fas fa-stop" title="Previous Contract"></i>'
+      let contractIcon = '<i class="fa-solid fa-stop" title="Previous Contract"></i>'
 
       if (contract.contractIsFuture === 1) {
         contractIcon =
-          '<i class="fas fa-fast-forward" title="Future Contract"></i>'
+          '<i class="fa-solid fa-fast-forward" title="Future Contract"></i>'
       } else if (contract.contractIsActive === 1) {
-        contractIcon = '<i class="fas fa-play" title="Current Contract"></i>'
+        contractIcon = '<i class="fa-solid fa-play" title="Current Contract"></i>'
       }
 
       // eslint-disable-next-line no-unsanitized/property
@@ -239,7 +239,7 @@ declare const exports: {
                     data-burial-site-id="${contract.burialSiteId.toString()}"
                     data-tooltip="Add Burial Site"
                     aria-label="Add Burial Site" type="button">
-                  <i class="fas fa-plus" aria-hidden="true"></i>
+                  <i class="fa-solid fa-plus" aria-hidden="true"></i>
                   </button>`
           }
         </td>`
@@ -257,7 +257,7 @@ declare const exports: {
         contactsHtml += `<li class="has-tooltip-left"
           data-tooltip="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
           <span class="fa-li">
-            <i class="fas fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
+            <i class="fa-solid fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
           </span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
           </li>`
@@ -267,7 +267,7 @@ declare const exports: {
         contactsHtml += `<li class="has-tooltip-left"
           data-tooltip="Purchaser">
           <span class="fa-li">
-            <i class="fas fa-hand-holding-dollar" aria-label="Purchaser"></i>
+            <i class="fa-solid fa-hand-holding-dollar" aria-label="Purchaser"></i>
           </span>
           ${cityssm.escapeHTML(contract.purchaserName)}
           </li>`
@@ -277,7 +277,7 @@ declare const exports: {
         contactsHtml += `<li class="has-tooltip-left"
           data-tooltip="Funeral Home">
           <span class="fa-li">
-            <i class="fas fa-place-of-worship" aria-label="Funeral Home"></i>
+            <i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i>
           </span>
           ${cityssm.escapeHTML(contract.funeralHomeName)}
           </li>`
@@ -300,7 +300,7 @@ declare const exports: {
           </ul>
         </td><td>
           <button class="button is-small is-light is-danger button--deleteContract" data-tooltip="Delete Relationship" type="button">
-            <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
+            <span class="icon is-small"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
           </button>
         </td>`
       )
@@ -536,10 +536,10 @@ declare const exports: {
           }
         </td><td class="has-text-right">
           <button class="button is-small mb-1 is-light is-info button--editBurialSiteStatus" data-tooltip="Update Status" type="button">
-            <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
+            <span class="icon is-small"><i class="fa-solid fa-pencil-alt" aria-hidden="true"></i></span>
           </button>
           <button class="button is-small is-light is-danger button--deleteBurialSite" data-tooltip="Delete Relationship" type="button">
-            <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
+            <span class="icon is-small"><i class="fa-solid fa-trash" aria-hidden="true"></i></span>
           </button>
         </td>`
 
@@ -626,7 +626,7 @@ declare const exports: {
 
               rowElement.innerHTML = `<td class="has-text-centered">
                   <button class="button is-small is-success button--addContract" data-tooltip="Add" type="button" aria-label="Add">
-                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                    <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                   </button>
                 </td>
                 <td class="has-text-weight-bold">
@@ -807,7 +807,7 @@ declare const exports: {
 
               rowElement.innerHTML = `<td class="has-text-centered">
                   <button class="button is-small is-success button--addBurialSite" data-tooltip="Add" type="button" aria-label="Add">
-                    <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                    <span class="icon is-small"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
                   </button>
                 </td><td class="has-text-weight-bold">
                   ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}

@@ -23,7 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 relatedHTML += `<li class="has-tooltip-left"
           data-tooltip="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
-            <i class="fas fa-map-pin"
+            <i class="fa-solid fa-map-pin"
               aria-label="Burial Site"></i>
           </span>
           ${cityssm.escapeHTML((burialSite.burialSiteName ?? '') === ''
@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     relatedHTML += `<li class="has-tooltip-left"
             data-tooltip="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
             <span class="fa-li">
-              <i class="fas fa-user"></i>
+              <i class="fa-solid fa-user"></i>
             </span>
             ${cityssm.escapeHTML(interment.deceasedName ?? '')}
             </li>`;
@@ -45,7 +45,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     relatedHTML += `<li class="has-tooltip-left"
             data-tooltip="Funeral Home">
             <span class="fa-li">
-              <i class="fas fa-place-of-worship"></i>
+              <i class="fa-solid fa-place-of-worship"></i>
             </span>
             ${cityssm.escapeHTML(contract.funeralHomeName)}
             </li>`;
@@ -73,13 +73,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
               <li class="has-tooltip-left"
                 data-tooltip="${sunrise.escapedAliases.WorkOrderOpenDate}">
                 <span class="fa-li">
-                  <i class="fas fa-play" aria-label="${sunrise.escapedAliases.WorkOrderOpenDate}"></i>
+                  <i class="fa-solid fa-play" aria-label="${sunrise.escapedAliases.WorkOrderOpenDate}"></i>
                 </span>
                 ${workOrder.workOrderOpenDateString}
               </li>
               <li class="has-tooltip-left" data-tooltip="${sunrise.escapedAliases.WorkOrderCloseDate}">
                 <span class="fa-li">
-                  <i class="fas fa-stop" aria-label="${sunrise.escapedAliases.WorkOrderCloseDate}"></i>
+                  <i class="fa-solid fa-stop" aria-label="${sunrise.escapedAliases.WorkOrderCloseDate}"></i>
                 </span>
                 ${workOrder.workOrderCloseDate
                 ? workOrder.workOrderCloseDateString
@@ -98,7 +98,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                   <a class="button is-small" data-tooltip="Print"
                     href="${sunrise.urlPrefix}/print/${workOrderPrints[0]}/?workOrderId=${workOrder.workOrderId.toString()}"
                     target="_blank">
-                    <span class="icon"><i class="fas fa-print" aria-label="Print"></i></span>
+                    <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
                   </a>
                   </td>`
                 : ''}</tr>`);
