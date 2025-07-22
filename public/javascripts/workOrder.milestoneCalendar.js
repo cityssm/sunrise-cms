@@ -44,7 +44,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 contractHTML += `<li class="has-tooltip-left"
           data-tooltip="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
-          <i class="fas fa-vector-square"
+          <i class="fas fa-map-pin"
             aria-label="Burial Site"></i>
           </span>
           ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
