@@ -9,6 +9,7 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addContractInterment from './addContractInterment.js'
+import addFuneralHome from './addFuneralHome.js'
 import addOrUpdateContractField from './addOrUpdateContractField.js'
 
 export interface AddContractForm {
@@ -24,8 +25,17 @@ export interface AddContractForm {
   directionOfArrival?: string
   funeralDateString?: '' | DateString
   funeralDirectorName?: string
-  funeralHomeId?: number | string
+  funeralHomeId?: '' | 'new' | `${number}` | number
   funeralTimeString?: '' | TimeString
+
+  // Optional on create
+  funeralHomeName?: string
+  funeralHomeAddress1?: string
+  funeralHomeAddress2?: string
+  funeralHomeCity?: string
+  funeralHomeProvince?: string
+  funeralHomePostalCode?: string
+  funeralHomePhoneNumber?: string
 
   purchaserAddress1?: string
   purchaserAddress2?: string
@@ -59,6 +69,26 @@ export default function addContract(
   connectedDatabase?: sqlite.Database
 ): number {
   const database = connectedDatabase ?? sqlite(sunriseDB)
+
+  let funeralHomeId = addForm.funeralHomeId ?? ''
+
+  if (funeralHomeId === 'new') {
+    funeralHomeId = addFuneralHome(
+      {
+        funeralHomeName: addForm.funeralHomeName ?? '',
+
+        funeralHomeAddress1: addForm.funeralHomeAddress1 ?? '',
+        funeralHomeAddress2: addForm.funeralHomeAddress2 ?? '',
+        funeralHomeCity: addForm.funeralHomeCity ?? '',
+        funeralHomePostalCode: addForm.funeralHomePostalCode ?? '',
+        funeralHomeProvince: addForm.funeralHomeProvince ?? '',
+
+        funeralHomePhoneNumber: addForm.funeralHomePhoneNumber ?? ''
+      },
+      user,
+      database
+    )
+  }
 
   const rightNowMillis = Date.now()
 
@@ -97,7 +127,7 @@ export default function addContract(
       addForm.purchaserPhoneNumber ?? '',
       addForm.purchaserEmail ?? '',
       addForm.purchaserRelationship ?? '',
-      addForm.funeralHomeId === '' ? undefined : addForm.funeralHomeId,
+      funeralHomeId === '' ? undefined : funeralHomeId,
       addForm.funeralDirectorName ?? '',
       addForm.funeralDateString === ''
         ? undefined

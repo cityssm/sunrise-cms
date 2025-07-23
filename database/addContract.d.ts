@@ -11,8 +11,15 @@ export interface AddContractForm {
     directionOfArrival?: string;
     funeralDateString?: '' | DateString;
     funeralDirectorName?: string;
-    funeralHomeId?: number | string;
+    funeralHomeId?: '' | 'new' | `${number}` | number;
     funeralTimeString?: '' | TimeString;
+    funeralHomeName?: string;
+    funeralHomeAddress1?: string;
+    funeralHomeAddress2?: string;
+    funeralHomeCity?: string;
+    funeralHomeProvince?: string;
+    funeralHomePostalCode?: string;
+    funeralHomePhoneNumber?: string;
     purchaserAddress1?: string;
     purchaserAddress2?: string;
     purchaserCity?: string;

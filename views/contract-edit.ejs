@@ -370,10 +370,95 @@
                       <%= contract.funeralHomeName %>
                     </option>
                   <% } %>
+                  <% if (isCreate) { %>
+                    <option value="new">(Add New Funeral Home)</option>
+                  <% } %>
                 </select>
               </div>
             </div>
           </div>
+          <% if (isCreate) { %>
+            <div class="mb-4 is-hidden" id="container--newFuneralHome">
+              <div class="field">
+                <label class="label" for="contract--funeralHomeName">Funeral Home Name</label>
+                <div class="control">
+                  <input class="input" id="contract--funeralHomeName" name="funeralHomeName"
+                    type="text"
+                    maxlength="200"
+                    autocomplete="off" />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="contract--funeralHomeAddress1">Address</label>
+                <div class="control">
+                  <input class="input" id="contract--funeralHomeAddress1" name="funeralHomeAddress1"
+                    type="text"
+                    maxlength="50"
+                    autocomplete="off"
+                    placeholder="Line 1" />
+                </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <input class="input" id="contract--funeralHomeAddress2" name="funeralHomeAddress2"
+                    type="text"
+                    maxlength="50"
+                    autocomplete="off"
+                    placeholder="Line 2"
+                    aria-label="Address Line 2" />
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column is-8">
+                  <div class="field">
+                    <label class="label" for="contract--funeralHomeCity">City</label>
+                    <div class="control">
+                      <input class="input" id="contract--funeralHomeCity" name="funeralHomeCity"
+                        type="text"
+                        maxlength="20"
+                        list="datalist--cityDefault" />
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <div class="field">
+                    <label class="label" for="contract--funeralHomeProvince">Province</label>
+                    <div class="control">
+                      <input class="input" id="contract--funeralHomeProvince" name="funeralHomeProvince"
+                        type="text"
+                        maxlength="2" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <div class="field">
+                    <label class="label" for="contract--funeralHomePostalCode">Postal Code</label>
+                    <div class="control">
+                      <input class="input" id="contract--funeralHomePostalCode" name="funeralHomePostalCode"
+                        type="text"
+                        minlength="5"
+                        maxlength="7"
+                        pattern="^[A-Z\d \-]+$"
+                        autocomplete="off" />
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <div class="field">
+                    <label class="label" for="contract--funeralHomePhoneNumber">Phone Number</label>
+                    <div class="control">
+                      <input class="input" id="contract--funeralHomePhoneNumber" name="funeralHomePhoneNumber"
+                        type="text"
+                        maxlength="30"
+                        autocomplete="off" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% } %>
           <div class="field">
             <label class="label" for="contract--funeralDirectorName">
               Funeral Director's Name

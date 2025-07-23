@@ -210,21 +210,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
         contractTypeIdElement.addEventListener('change', () => {
             if (contractTypeIdElement.value !== originalContractTypeId) {
                 bulmaJS.confirm({
+                    contextualColorName: 'warning',
                     title: 'Confirm Change',
                     message: `Are you sure you want to change the contract type?\n
             This change affects the additional fields associated with this record, and may also affect the available fees.`,
-                    contextualColorName: 'warning',
                     okButton: {
-                        text: 'Yes, Keep the Change',
                         callbackFunction: () => {
                             refreshAfterSave = true;
-                        }
+                        },
+                        text: 'Yes, Keep the Change'
                     },
                     cancelButton: {
-                        text: 'Revert the Change',
                         callbackFunction: () => {
                             contractTypeIdElement.value = originalContractTypeId;
-                        }
+                        },
+                        text: 'Revert the Change'
                     }
                 });
             }
@@ -444,6 +444,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     });
     sunrise.initializeMinDateUpdate(document.querySelector('#contract--contractStartDateString'), document.querySelector('#contract--contractEndDateString'));
     sunrise.initializeUnlockFieldButtons(formElement);
+    /*
+     * Funeral
+     */
     document
         .querySelector('#panelToggle--funeral')
         ?.addEventListener('click', (clickEvent) => {
@@ -454,9 +457,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ?.classList.remove('is-hidden');
     });
     if (isCreate) {
-        /*
-         * Deceased
-         */
+        document
+            .querySelector('#contract--funeralHomeId')
+            ?.addEventListener('change', (changeEvent) => {
+            const funeralHomeId = changeEvent.currentTarget
+                .value;
+            document
+                .querySelector('#container--newFuneralHome')
+                ?.classList.toggle('is-hidden', funeralHomeId !== 'new');
+        });
+    }
+    /*
+     * Deceased
+     */
+    if (isCreate) {
         document
             .querySelector('#button--copyFromPurchaser')
             ?.addEventListener('click', () => {

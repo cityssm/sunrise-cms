@@ -2,10 +2,23 @@ import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetim
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import addContractInterment from './addContractInterment.js';
+import addFuneralHome from './addFuneralHome.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
 // eslint-disable-next-line complexity
 export default function addContract(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
+    let funeralHomeId = addForm.funeralHomeId ?? '';
+    if (funeralHomeId === 'new') {
+        funeralHomeId = addFuneralHome({
+            funeralHomeName: addForm.funeralHomeName ?? '',
+            funeralHomeAddress1: addForm.funeralHomeAddress1 ?? '',
+            funeralHomeAddress2: addForm.funeralHomeAddress2 ?? '',
+            funeralHomeCity: addForm.funeralHomeCity ?? '',
+            funeralHomePostalCode: addForm.funeralHomePostalCode ?? '',
+            funeralHomeProvince: addForm.funeralHomeProvince ?? '',
+            funeralHomePhoneNumber: addForm.funeralHomePhoneNumber ?? ''
+        }, user, database);
+    }
     const rightNowMillis = Date.now();
     const contractStartDate = dateStringToInteger(addForm.contractStartDateString);
     const result = database
@@ -23,7 +36,7 @@ export default function addContract(addForm, user, connectedDatabase) {
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(addForm.contractTypeId, addForm.burialSiteId === '' ? undefined : addForm.burialSiteId, contractStartDate, addForm.contractEndDateString === ''
         ? undefined
-        : dateStringToInteger(addForm.contractEndDateString), addForm.purchaserName ?? '', addForm.purchaserAddress1 ?? '', addForm.purchaserAddress2 ?? '', addForm.purchaserCity ?? '', addForm.purchaserProvince ?? '', addForm.purchaserPostalCode ?? '', addForm.purchaserPhoneNumber ?? '', addForm.purchaserEmail ?? '', addForm.purchaserRelationship ?? '', addForm.funeralHomeId === '' ? undefined : addForm.funeralHomeId, addForm.funeralDirectorName ?? '', addForm.funeralDateString === ''
+        : dateStringToInteger(addForm.contractEndDateString), addForm.purchaserName ?? '', addForm.purchaserAddress1 ?? '', addForm.purchaserAddress2 ?? '', addForm.purchaserCity ?? '', addForm.purchaserProvince ?? '', addForm.purchaserPostalCode ?? '', addForm.purchaserPhoneNumber ?? '', addForm.purchaserEmail ?? '', addForm.purchaserRelationship ?? '', funeralHomeId === '' ? undefined : funeralHomeId, addForm.funeralDirectorName ?? '', addForm.funeralDateString === ''
         ? undefined
         : dateStringToInteger(addForm.funeralDateString), addForm.funeralTimeString === ''
         ? undefined

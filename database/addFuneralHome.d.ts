@@ -1,3 +1,4 @@
+import sqlite from 'better-sqlite3';
 export interface AddForm {
     funeralHomeKey?: string;
     funeralHomeName: string;
@@ -8,4 +9,4 @@ export interface AddForm {
     funeralHomeProvince: string;
     funeralHomePhoneNumber: string;
 }
-export default function addFuneralHome(addForm: AddForm, user: User): number;
+export default function addFuneralHome(addForm: AddForm, user: User, connectedDatabase?: sqlite.Database): number;
