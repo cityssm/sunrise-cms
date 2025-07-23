@@ -426,15 +426,15 @@ export interface WorkOrder extends Record {
   workOrderCloseDate?: number
   workOrderCloseDateString?: string
 
-  workOrderMilestones?: WorkOrderMilestone[]
   workOrderMilestoneCount?: number
+  workOrderMilestones?: WorkOrderMilestone[]
 
   workOrderMilestoneCompletionCount?: number
 
   workOrderComments?: WorkOrderComment[]
 
-  workOrderBurialSites?: BurialSite[]
   workOrderBurialSiteCount?: number
+  workOrderBurialSites?: BurialSite[]
 
   workOrderContracts?: Contract[]
 }
@@ -456,8 +456,8 @@ export interface WorkOrderComment extends Record {
 export interface WorkOrderMilestone extends Record, WorkOrder {
   workOrderMilestoneId?: number
 
-  workOrderMilestoneTypeId?: number
   workOrderMilestoneType?: string
+  workOrderMilestoneTypeId?: number
 
   workOrderMilestoneDate?: number
   workOrderMilestoneDateString?: string

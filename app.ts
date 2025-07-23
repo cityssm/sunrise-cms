@@ -16,6 +16,7 @@ import dataLists from './data/dataLists.js'
 import { DEBUG_NAMESPACE } from './debug.config.js'
 import * as permissionHandlers from './handlers/permissions.js'
 import { getSafeRedirectURL } from './helpers/authentication.helpers.js'
+import { getSettingValue } from './helpers/cache.helpers.js'
 import * as configFunctions from './helpers/config.helpers.js'
 import { useTestDatabases } from './helpers/database.helpers.js'
 import * as printFunctions from './helpers/print.helpers.js'
@@ -31,7 +32,6 @@ import routerPrint from './routes/print.js'
 import routerReports from './routes/reports.js'
 import routerWorkOrders from './routes/workOrders.js'
 import { version } from './version.js'
-import { getSettingValue } from './helpers/cache.helpers.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(5)}`
