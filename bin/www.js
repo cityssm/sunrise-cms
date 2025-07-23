@@ -38,7 +38,7 @@ cluster.on('message', (worker, message) => {
             continue;
         }
         debug(`Relaying message to worker: ${pid}`);
-        worker.send(message);
+        activeWorker.send(message);
     }
 });
 cluster.on('exit', (worker) => {
