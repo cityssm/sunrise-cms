@@ -123,16 +123,16 @@
           </div>
           <div class="column">
             <p class="mb-2">
-              <strong><%= configFunctions.getConfigProperty("aliases.workOrderOpenDate") %></strong><br />
+              <strong><%= settingFunctions.getSettingValue("aliases.workOrderOpenDate") %></strong><br />
               <%= workOrder.workOrderOpenDateString %>
             </p>
             <p>
-              <strong><%= configFunctions.getConfigProperty("aliases.workOrderCloseDate") %></strong><br />
+              <strong><%= settingFunctions.getSettingValue("aliases.workOrderCloseDate") %></strong><br />
               <% if (workOrder.workOrderCloseDate) { %>
                 <%= workOrder.workOrderCloseDateString %>
               <% } else { %>
                 <span class="has-text-grey">
-                  (No <%= configFunctions.getConfigProperty("aliases.workOrderCloseDate") %>)
+                  (No <%= settingFunctions.getSettingValue("aliases.workOrderCloseDate") %>)
                 </span>
               <% } %>
             </p>

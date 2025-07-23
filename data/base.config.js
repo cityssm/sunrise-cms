@@ -1,5 +1,4 @@
 export const config = {
-    aliases: {},
     application: {},
     reverseProxy: {},
     session: {},

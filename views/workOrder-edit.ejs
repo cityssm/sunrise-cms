@@ -176,7 +176,7 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label" for="workOrderEdit--workOrderOpenDateString"><%= configFunctions.getConfigProperty("aliases.workOrderOpenDate") %></label>
+                <label class="label" for="workOrderEdit--workOrderOpenDateString"><%= settingFunctions.getSettingValue("aliases.workOrderOpenDate") %></label>
                 <div class="control has-icons-left">
                   <%
                     const currentDateString = dateTimeFunctions.dateToString(new Date());
@@ -192,7 +192,7 @@
               </div>
             </div>
             <div class="column">
-              <label class="label" for="workOrderEdit--workOrderCloseDateString"><%= configFunctions.getConfigProperty("aliases.workOrderCloseDate") %></label>
+              <label class="label" for="workOrderEdit--workOrderCloseDateString"><%= settingFunctions.getSettingValue("aliases.workOrderCloseDate") %></label>
               <div class="field has-addons">
                 <div class="control is-expanded">
                   <input class="input" id="workOrderEdit--workOrderCloseDateString" name="workOrderCloseDateString" type="date" value="<%= workOrder.workOrderCloseDateString %>" disabled readonly />

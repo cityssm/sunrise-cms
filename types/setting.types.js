@@ -2,6 +2,27 @@
 /* eslint-disable perfectionist/sort-objects */
 export const settingProperties = [
     {
+        settingKey: 'aliases.externalReceiptNumber',
+        settingName: 'Alias - External Receipt Number',
+        description: 'The alias for the external receipt number.',
+        type: 'string',
+        defaultValue: 'Receipt Number'
+    },
+    {
+        settingKey: 'aliases.workOrderOpenDate',
+        settingName: 'Alias - Work Order Open Date',
+        description: 'The alias for the work order open date.',
+        type: 'string',
+        defaultValue: 'Order Date'
+    },
+    {
+        settingKey: 'aliases.workOrderCloseDate',
+        settingName: 'Alias - Work Order Close Date',
+        description: 'The alias for the work order close date.',
+        type: 'string',
+        defaultValue: 'Completion Date'
+    },
+    {
         settingKey: 'workOrder.workDay.0.startHour',
         settingName: 'Work Order Work Day - Sunday - Start Hour',
         description: 'The first hour for work day on Sunday.',

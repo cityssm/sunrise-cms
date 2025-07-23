@@ -58,10 +58,6 @@ export const configDefaultValues = {
   'users.isAdmin': ['administrator'],
   'users.testing': [] as string[],
 
-  'aliases.externalReceiptNumber': 'External Receipt Number',
-  'aliases.workOrderCloseDate': 'Completion Date',
-  'aliases.workOrderOpenDate': 'Order Date',
-
   'settings.cityDefault': '',
   'settings.provinceDefault': '',
 

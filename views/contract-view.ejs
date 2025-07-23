@@ -572,7 +572,7 @@
                 <tr>
                   <th scope="col">Date</th>
                   <th class="has-width-1" scope="col"><span class="is-sr-only">Invoiced Status</span></th>
-                  <th scope="col"><%= configFunctions.getConfigProperty("aliases.externalReceiptNumber") %></th>
+                  <th scope="col"><%= settingFunctions.getSettingValue("aliases.externalReceiptNumber") %></th>
                   <th class="has-text-right" scope="col">Amount</th>
                 </tr>
               </thead>
@@ -633,8 +633,8 @@
 <div class="columns">
   <% if (contract.workOrders.length > 0) { %>
     <%
-    const workOrderOpenDateAlias = configFunctions.getConfigProperty("aliases.workOrderOpenDate");
-    const workOrderCloseDateAlias = configFunctions.getConfigProperty("aliases.workOrderCloseDate");
+    const workOrderOpenDateAlias = settingFunctions.getSettingValue("aliases.workOrderOpenDate");
+    const workOrderCloseDateAlias = settingFunctions.getSettingValue("aliases.workOrderCloseDate");
     %>
     <div class="column">
       <div class="panel">

@@ -4,8 +4,6 @@ import { config as cemeteryConfig } from './ontario.config.js'
 
 export const config: Config = { ...cemeteryConfig }
 
-config.aliases.externalReceiptNumber = 'GP Receipt Number'
-
 config.settings.customizationsPath = '../sunrise-cms-saultstemarie'
 
 config.settings.burialSites.burialSiteNameSegments = {

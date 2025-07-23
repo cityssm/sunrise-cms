@@ -12,9 +12,9 @@
 <script>
   window.exports = window.exports || {};
   exports.aliases = {
-    externalReceiptNumber: "<%= configFunctions.getConfigProperty('aliases.externalReceiptNumber') %>",
-    workOrderOpenDate: "<%= configFunctions.getConfigProperty('aliases.workOrderOpenDate') %>",
-    workOrderCloseDate: "<%= configFunctions.getConfigProperty('aliases.workOrderCloseDate') %>"
+    externalReceiptNumber: "<%= settingFunctions.getSettingValue('aliases.externalReceiptNumber') %>",
+    workOrderOpenDate: "<%= settingFunctions.getSettingValue('aliases.workOrderOpenDate') %>",
+    workOrderCloseDate: "<%= settingFunctions.getSettingValue('aliases.workOrderCloseDate') %>"
   };
   exports.dynamicsGPIntegrationIsEnabled = <%= configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled') %>;
 </script>

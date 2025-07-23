@@ -31,6 +31,7 @@ import routerPrint from './routes/print.js'
 import routerReports from './routes/reports.js'
 import routerWorkOrders from './routes/workOrders.js'
 import { version } from './version.js'
+import { getSettingValue } from './helpers/cache.helpers.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(5)}`
@@ -247,6 +248,10 @@ app.use((request, response, next) => {
   response.locals.configFunctions = configFunctions
   response.locals.printFunctions = printFunctions
   response.locals.dateTimeFunctions = dateTimeFunctions
+
+  response.locals.settingFunctions = {
+    getSettingValue
+  }
 
   response.locals.dataLists = dataLists
 

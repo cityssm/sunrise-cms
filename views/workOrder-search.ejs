@@ -77,7 +77,7 @@
           </div>  
           <div class="column">
             <div class="field">
-              <label class="label" for="searchFilter--workOrderOpenDateString"><%= configFunctions.getConfigProperty("aliases.workOrderOpenDate") %></label>
+              <label class="label" for="searchFilter--workOrderOpenDateString"><%= settingFunctions.getSettingValue("aliases.workOrderOpenDate") %></label>
               <div class="control is-expanded has-icons-left">
                 <input class="input" id="searchFilter--workOrderOpenDateString" name="workOrderOpenDateString" type="date" value="<%= workOrderOpenDateString %>" max="<%= dateTimeFunctions.dateToString(new Date()) %>" />
                 <span class="icon is-small is-left">

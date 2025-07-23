@@ -24,12 +24,12 @@
       </td>
       <td class="pl-1 is-width-1 has-text-nowrap">
         <p>
-          <strong><%= configFunctions.getConfigProperty("aliases.workOrderOpenDate") %></strong><br />
+          <strong><%= settingFunctions.getSettingValue("aliases.workOrderOpenDate") %></strong><br />
           <%= workOrder.workOrderOpenDateString %>
         </p>
         <% if (workOrder.workOrderCloseDate) { %>
           <p>
-            <strong><%= configFunctions.getConfigProperty("aliases.workOrderCloseDate") %></strong><br />
+            <strong><%= settingFunctions.getSettingValue("aliases.workOrderCloseDate") %></strong><br />
             <%= workOrder.workOrderCloseDateString %>
           </p>
         <% } %>

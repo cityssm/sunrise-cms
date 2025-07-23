@@ -32,11 +32,6 @@ export interface Config {
         canUpdateWorkOrders?: string[];
         isAdmin?: string[];
     };
-    aliases: {
-        externalReceiptNumber?: string;
-        workOrderCloseDate?: string;
-        workOrderOpenDate?: string;
-    };
     settings: {
         cityDefault?: string;
         provinceDefault?: string;

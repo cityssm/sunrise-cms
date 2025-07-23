@@ -48,12 +48,6 @@ export interface Config {
     isAdmin?: string[]
   }
 
-  aliases: {
-    externalReceiptNumber?: string
-    workOrderCloseDate?: string
-    workOrderOpenDate?: string
-  }
-
   settings: {
     cityDefault?: string
     provinceDefault?: string

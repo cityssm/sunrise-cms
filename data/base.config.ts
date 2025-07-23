@@ -1,7 +1,6 @@
 import type { Config } from '../types/config.types.js'
 
 export const config: Config = {
-  aliases: {},
   application: {},
   reverseProxy: {},
   session: {},

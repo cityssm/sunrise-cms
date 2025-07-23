@@ -36,9 +36,6 @@ export declare const configDefaultValues: {
     'users.canUpdateWorkOrders': string[];
     'users.isAdmin': string[];
     'users.testing': string[];
-    'aliases.externalReceiptNumber': string;
-    'aliases.workOrderCloseDate': string;
-    'aliases.workOrderOpenDate': string;
     'settings.cityDefault': string;
     'settings.provinceDefault': string;
     'settings.customizationsPath': string;
