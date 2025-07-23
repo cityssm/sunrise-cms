@@ -83,6 +83,16 @@
   
 </div>
 
+<% if (isCreate) { %>
+  <div class="message is-info">
+    <p class="message-body">
+      Note that if you are creating a range of burial sites, the
+      <a href="<%= urlPrefix %>/burialSites/creator">Burial Site Range Creator tool</a>
+      can help streamline the process.
+    </p>
+  </div>
+<% } %>
+
 <form class="mb-5" id="form--burialSite">
   <input id="burialSite--burialSiteId" name="burialSiteId" type="hidden" value="<%= isCreate ? "" : burialSite.burialSiteId %>" />
 

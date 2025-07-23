@@ -97,6 +97,7 @@
         <div class="column">
           <strong>Parent Cemetery</strong><br />
           <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.parentCemeteryId %>">
+            <span class="icon"><i class="fa-regular fa-map"></i></span>
             <%= (cemetery.parentCemeteryName ?? '') === '' ? "(No Name)" : cemetery.parentCemeteryName %>
           </a>
         </div>
@@ -107,6 +108,7 @@
             <% for (const childCemetery of cemetery.childCemeteries) { %>
               <li>
                 <a href="<%= urlPrefix %>/cemeteries/<%= childCemetery.cemeteryId %>">
+                  <span class="icon"><i class="fa-regular fa-map"></i></span>
                   <%= (childCemetery.cemeteryName ?? '') === '' ? "(No Name)" : childCemetery.cemeteryName %>
                 </a>
               </li>

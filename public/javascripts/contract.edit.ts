@@ -82,15 +82,16 @@ declare const exports: {
             )
           } else {
             bulmaJS.alert({
-              message: 'Contract Updated Successfully',
-              contextualColorName: 'success'
+              contextualColorName: 'success',
+              message: 'Contract Updated Successfully'
             })
           }
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Saving Contract',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -112,8 +113,9 @@ declare const exports: {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          errorMessage?: string
+
           contractId?: number
+          errorMessage?: string
         }
 
         if (responseJSON.success) {
@@ -125,9 +127,10 @@ declare const exports: {
           )
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Copying Record',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -141,18 +144,21 @@ declare const exports: {
 
       if (sunrise.hasUnsavedChanges()) {
         bulmaJS.alert({
+          contextualColorName: 'warning',
           title: 'Unsaved Changes',
-          message: 'Please save all unsaved changes before continuing.',
-          contextualColorName: 'warning'
+
+          message: 'Please save all unsaved changes before continuing.'
         })
       } else {
         bulmaJS.confirm({
-          title: 'Copy Contract Record as New',
-          message: 'Are you sure you want to copy this record to a new record?',
           contextualColorName: 'info',
+          title: 'Copy Contract Record as New',
+
+          message: 'Are you sure you want to copy this record to a new record?',
+
           okButton: {
-            text: 'Yes, Copy',
-            callbackFunction: doCopy
+            callbackFunction: doCopy,
+            text: 'Yes, Copy'
           }
         })
       }
@@ -172,6 +178,7 @@ declare const exports: {
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
               success: boolean
+
               errorMessage?: string
             }
 
@@ -180,9 +187,10 @@ declare const exports: {
               globalThis.location.href = sunrise.getContractURL()
             } else {
               bulmaJS.alert({
+                contextualColorName: 'danger',
                 title: 'Error Deleting Record',
-                message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
+
+                message: responseJSON.errorMessage ?? ''
               })
             }
           }
@@ -190,12 +198,14 @@ declare const exports: {
       }
 
       bulmaJS.confirm({
-        title: 'Delete Contract Record',
-        message: 'Are you sure you want to delete this record?',
         contextualColorName: 'warning',
+        title: 'Delete Contract Record',
+
+        message: 'Are you sure you want to delete this record?',
+
         okButton: {
-          text: 'Yes, Delete',
-          callbackFunction: doDelete
+          callbackFunction: doDelete,
+          text: 'Yes, Delete'
         }
       })
     })
@@ -467,8 +477,8 @@ declare const exports: {
         burialSiteSelectFormElement,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            count: number
             burialSites: BurialSite[]
+            count: number
           }
 
           if (responseJSON.count === 0) {
@@ -528,10 +538,10 @@ declare const exports: {
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
-            errorMessage?: string
 
             burialSiteId?: number
             burialSiteName?: string
+            errorMessage?: string
           }
 
           if (responseJSON.success) {
@@ -543,9 +553,10 @@ declare const exports: {
             )
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Creating Burial Site',
+
               message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
             })
           }
         }
@@ -692,8 +703,8 @@ declare const exports: {
 
       if (burialSiteId === '') {
         bulmaJS.alert({
+          contextualColorName: 'info',
           message: 'No burial site selected.',
-          contextualColorName: 'info'
         })
       } else {
         window.open(`${sunrise.urlPrefix}/burialSites/${burialSiteId}`)

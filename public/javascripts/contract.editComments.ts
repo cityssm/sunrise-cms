@@ -41,8 +41,9 @@ declare const exports: Record<string, unknown>
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
-            errorMessage?: string
+
             contractComments?: ContractComment[]
+            errorMessage?: string
           }
 
           if (responseJSON.success) {
@@ -140,8 +141,9 @@ declare const exports: Record<string, unknown>
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
-            errorMessage?: string
+
             contractComments: ContractComment[]
+            errorMessage?: string
           }
 
           if (responseJSON.success) {
@@ -252,8 +254,9 @@ declare const exports: Record<string, unknown>
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
               success: boolean
-              errorMessage?: string
+
               contractComments: ContractComment[]
+              errorMessage?: string
             }
 
             if (responseJSON.success) {

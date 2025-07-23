@@ -34,16 +34,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        message: 'Contract Updated Successfully',
-                        contextualColorName: 'success'
+                        contextualColorName: 'success',
+                        message: 'Contract Updated Successfully'
                     });
                 }
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Saving Contract',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -63,9 +63,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Copying Record',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -76,19 +76,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         if (sunrise.hasUnsavedChanges()) {
             bulmaJS.alert({
+                contextualColorName: 'warning',
                 title: 'Unsaved Changes',
-                message: 'Please save all unsaved changes before continuing.',
-                contextualColorName: 'warning'
+                message: 'Please save all unsaved changes before continuing.'
             });
         }
         else {
             bulmaJS.confirm({
+                contextualColorName: 'info',
                 title: 'Copy Contract Record as New',
                 message: 'Are you sure you want to copy this record to a new record?',
-                contextualColorName: 'info',
                 okButton: {
-                    text: 'Yes, Copy',
-                    callbackFunction: doCopy
+                    callbackFunction: doCopy,
+                    text: 'Yes, Copy'
                 }
             });
         }
@@ -108,20 +108,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Deleting Record',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Contract Record',
             message: 'Are you sure you want to delete this record?',
-            contextualColorName: 'warning',
             okButton: {
-                text: 'Yes, Delete',
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete'
             }
         });
     });
@@ -332,9 +332,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Creating Burial Site',
                         message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
                     });
                 }
             });
@@ -411,8 +411,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const burialSiteId = document.querySelector('#contract--burialSiteId').value;
         if (burialSiteId === '') {
             bulmaJS.alert({
+                contextualColorName: 'info',
                 message: 'No burial site selected.',
-                contextualColorName: 'info'
             });
         }
         else {

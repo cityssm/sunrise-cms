@@ -20,6 +20,7 @@ export const config = tseslint.config(configWebApp, {
             'ical',
             'latlng',
             'ntfy',
+            'onhidden',
             'preneed',
             'randomcolor'
           ]

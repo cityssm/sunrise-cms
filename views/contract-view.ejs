@@ -245,7 +245,11 @@
           <% } %>
           <p>
             <strong>Funeral Director's Name</strong><br />
-            <%= contract.funeralDirectorName %>
+            <% if (contract.funeralDirectorName === '') { %>
+              <span class="has-text-grey">(No Funeral Director's Name)</span>
+            <% } else { %>
+              <%= contract.funeralDirectorName %>
+            <% } %>
           </p>
         </div>
         <div class="column">

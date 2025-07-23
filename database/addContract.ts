@@ -117,7 +117,7 @@ export default function addContract(
       contractStartDate,
       addForm.contractEndDateString === ''
         ? undefined
-        : dateStringToInteger(addForm.contractEndDateString as DateString),
+        : dateStringToInteger(addForm.contractEndDateString),
       addForm.purchaserName ?? '',
       addForm.purchaserAddress1 ?? '',
       addForm.purchaserAddress2 ?? '',
