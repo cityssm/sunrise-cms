@@ -40,8 +40,6 @@ const debug = Debug(
  * INITIALIZE APP
  */
 
-const _dirname = '.'
-
 export const app = express()
 
 app.disable('X-Powered-By')
@@ -51,7 +49,7 @@ if (!configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
 }
 
 // View engine setup
-app.set('views', path.join(_dirname, 'views'))
+app.set('views', 'views')
 app.set('view engine', 'ejs')
 
 if (!configFunctions.getConfigProperty('reverseProxy.disableCompression')) {
@@ -172,55 +170,45 @@ app.use(
   )
 )
 
-app.use(urlPrefix, express.static(path.join('public')))
+app.use(urlPrefix, express.static('public'))
 
-app.use(
-  `${urlPrefix}/lib/bulma`,
-  express.static(path.join('node_modules', 'bulma', 'css'))
-)
+app.use(`${urlPrefix}/lib/bulma`, express.static('node_modules/bulma/css'))
 
 app.use(
   `${urlPrefix}/lib/bulma-tooltip`,
-  express.static(path.join('node_modules', 'bulma-tooltip', 'dist', 'css'))
+  express.static('node_modules/bulma-tooltip/dist/css')
 )
 
 app.use(
   `${urlPrefix}/lib/cityssm-bulma-js/bulma-js.js`,
-  express.static(
-    path.join('node_modules', '@cityssm', 'bulma-js', 'dist', 'bulma-js.js')
-  )
+  express.static('node_modules/@cityssm/bulma-js/dist/bulma-js.js')
 )
 
 app.use(
   `${urlPrefix}/lib/cityssm-fa-glow`,
-  express.static(path.join('node_modules', '@cityssm', 'fa-glow'))
+  express.static('node_modules/@cityssm/fa-glow')
 )
 
 app.use(
   `${urlPrefix}/lib/cityssm-bulma-sticky-table`,
-  express.static(path.join('node_modules', '@cityssm', 'bulma-sticky-table'))
+  express.static('node_modules/@cityssm/bulma-sticky-table')
 )
 
 app.use(
   `${urlPrefix}/lib/cityssm-bulma-webapp-js`,
-  express.static(
-    path.join('node_modules', '@cityssm', 'bulma-webapp-js', 'dist')
-  )
+  express.static('node_modules/@cityssm/bulma-webapp-js/dist')
 )
 
 app.use(
   `${urlPrefix}/lib/fa`,
-  express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free'))
+  express.static('node_modules/@fortawesome/fontawesome-free')
 )
 
-app.use(
-  `${urlPrefix}/lib/leaflet`,
-  express.static(path.join('node_modules', 'leaflet', 'dist'))
-)
+app.use(`${urlPrefix}/lib/leaflet`, express.static('node_modules/leaflet/dist'))
 
 app.use(
   `${urlPrefix}/lib/randomcolor/randomColor.js`,
-  express.static(path.join('node_modules', 'randomcolor', 'randomColor.js'))
+  express.static('node_modules/randomcolor/randomColor.js')
 )
 
 /*
