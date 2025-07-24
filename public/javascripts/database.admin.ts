@@ -34,6 +34,8 @@ declare const exports: Record<string, unknown>
               To request a copy of the backup, contact your application administrator.`,
             messageIsHtml: true
           })
+
+          ;(document.querySelector('#database--lastBackup') as HTMLElement).textContent = 'Right now'
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',

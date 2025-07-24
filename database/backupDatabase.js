@@ -1,8 +1,7 @@
 import sqlite from 'better-sqlite3';
 import Debug from 'debug';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { backupFolder, sunriseDB } from '../helpers/database.helpers.js';
 const debug = Debug('sunrise:database:backupDatabase');
-const backupFolder = 'data/backups';
 export async function backupDatabase() {
     const databasePathSplit = sunriseDB.split(/[/\\]/);
     const backupDatabasePath = `${backupFolder}/${databasePathSplit.at(-1)}.${Date.now().toString()}`;

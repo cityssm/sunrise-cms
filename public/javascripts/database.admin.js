@@ -13,6 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               To request a copy of the backup, contact your application administrator.`,
                     messageIsHtml: true
                 });
+                document.querySelector('#database--lastBackup').textContent = 'Right now';
             }
             else {
                 bulmaJS.alert({
