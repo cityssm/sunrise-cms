@@ -409,11 +409,18 @@ const createStatements = [
     /*
      * Settings
      */
-    `CREATE TABLE SunriseSettings (
+    `CREATE TABLE if not exists SunriseSettings (
     settingKey varchar(100) not null primary key,
     settingValue varchar(500),
     previousSettingValue varchar(500),
-    recordUpdate_timeMillis integer not null)`
+    recordUpdate_timeMillis integer not null)`,
+    `CREATE TABLE if not exists UserSettings (
+    userName varchar(30) not null,
+    settingKey varchar(100) not null,
+    settingValue varchar(500),
+    previousSettingValue varchar(500),
+    recordUpdate_timeMillis integer not null,
+    primary key (userName, settingKey)) without rowid`
 ];
 const initializingUser = {
     userName: 'databaseInit',
@@ -427,7 +434,7 @@ const initializingUser = {
 export function initializeDatabase() {
     const sunriseDB = sqlite(databasePath);
     const row = sunriseDB
-        .prepare("select name from sqlite_master where type = 'table' and name = 'SunriseSettings'")
+        .prepare("select name from sqlite_master where type = 'table' and name = 'UserSettings'")
         .get();
     if (row !== undefined) {
         return false;
