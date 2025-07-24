@@ -1,4 +1,4 @@
-import { config as cemeteryConfig } from './ssm.ontario.config.js';
+import { config as cemeteryConfig } from './partialConfigs/ssm.ontario.partialConfig.js';
 export const config = { ...cemeteryConfig };
 config.application.useTestDatabases = true;
 config.login = {

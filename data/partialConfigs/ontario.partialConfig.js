@@ -1,4 +1,4 @@
-import { config as baseConfig } from './base.config.js';
+import { config as baseConfig } from './partialConfig.js';
 export const config = { ...baseConfig };
 config.settings.provinceDefault = 'ON';
 config.settings.latitudeMax = 56.85;

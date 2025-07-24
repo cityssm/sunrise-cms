@@ -100,9 +100,9 @@ export interface ConfigNtfyStartup {
 }
 interface ConfigSession {
     cookieName?: string;
-    doKeepAlive?: boolean;
     maxAgeMillis?: number;
     secret?: string;
+    doKeepAlive?: boolean;
 }
 export interface ConfigBurialSiteNameSegments {
     includeCemeteryKey?: boolean;

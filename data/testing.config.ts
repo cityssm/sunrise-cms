@@ -1,6 +1,6 @@
 import type { Config } from '../types/config.types.js'
 
-import { config as cemeteryConfig } from './ssm.ontario.config.js'
+import { config as cemeteryConfig } from './partialConfigs/ssm.ontario.partialConfig.js'
 
 export const config: Config = { ...cemeteryConfig }
 

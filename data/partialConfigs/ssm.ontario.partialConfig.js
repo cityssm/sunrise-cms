@@ -1,4 +1,4 @@
-import { config as cemeteryConfig } from './ontario.config.js';
+import { config as cemeteryConfig } from './ontario.partialConfig.js';
 export const config = { ...cemeteryConfig };
 config.settings.customizationsPath = '../sunrise-cms-saultstemarie';
 config.settings.burialSites.burialSiteNameSegments = {
