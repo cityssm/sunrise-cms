@@ -44,7 +44,7 @@ if (authenticationConfig === undefined) {
     }
     // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
     default: {
-      debug('Unknown `login.authentication`.')
+      debug("Unknown 'login.authentication' type")
     }
   }
 }
@@ -74,6 +74,7 @@ const safeRedirects = new Set([
   '/admin/cleanup',
   '/admin/contracttypes',
   '/admin/fees',
+  '/admin/settings',
   '/admin/tables',
   '/burialsites',
   '/burialsites/new',
