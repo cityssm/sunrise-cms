@@ -354,21 +354,25 @@
                 <select id="contract--funeralHomeId" name="funeralHomeId">
                   <option value="">(No Funeral Home)</option>
                   <% let funeralHomeIsFound = false; %>
-                  <% for (const funeralHome of funeralHomes) { %>
-                    <%
-                      if (contract.funeralHomeId === funeralHome.funeralHomeId) { 
-                        funeralHomeIsFound = true;
-                      }
-                    %>
-                    <option value="<%= funeralHome.funeralHomeId %>"
-                      <%= (contract.funeralHomeId === funeralHome.funeralHomeId ? " selected" : "") %>>
-                      <%= funeralHome.funeralHomeName %>
-                    </option>
-                  <% } %>
+                  <optgroup label="Available Funeral Homes">
+                    <% for (const funeralHome of funeralHomes) { %>
+                      <%
+                        if (contract.funeralHomeId === funeralHome.funeralHomeId) { 
+                          funeralHomeIsFound = true;
+                        }
+                      %>
+                      <option value="<%= funeralHome.funeralHomeId %>"
+                        <%= (contract.funeralHomeId === funeralHome.funeralHomeId ? " selected" : "") %>>
+                        <%= funeralHome.funeralHomeName %>
+                      </option>
+                    <% } %>
+                  </optgroup>
                   <% if (contract.funeralHomeId && !funeralHomeIsFound) { %>
-                    <option value="<%= contract.funeralHomeId %>" selected>
-                      <%= contract.funeralHomeName %>
-                    </option>
+                    <optgroup label="Inactive Funeral Home">
+                      <option value="<%= contract.funeralHomeId %>" selected>
+                        <%= contract.funeralHomeName %>
+                      </option>
+                    </optgroup>
                   <% } %>
                   <% if (isCreate) { %>
                     <option value="new">(Add New Funeral Home)</option>
