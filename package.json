@@ -32,7 +32,7 @@
     "test:startup": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true STARTUP_TEST=true node ./bin/www.js"
   },
   "dependencies": {
-    "@cacheable/node-cache": "^1.6.0",
+    "@cacheable/node-cache": "^1.6.1",
     "@cityssm/authentication-helper": "^0.6.1",
     "@cityssm/bulma-js": "^0.5.0",
     "@cityssm/bulma-webapp-js": "^1.5.0",
