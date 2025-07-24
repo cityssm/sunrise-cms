@@ -1,6 +1,6 @@
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
-import { getContractTypeById } from '../helpers/cache.helpers.js';
+import { getCachedContractTypeById } from '../helpers/cache/contractTypes.cache.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sanitizeLimit, sanitizeOffset, sunriseDB } from '../helpers/database.helpers.js';
 import { getBurialSiteNameWhereClause, getContractTimeWhereClause, getDeceasedNameWhereClause } from '../helpers/functions.sqlFilters.js';
@@ -87,7 +87,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
             count = contracts.length;
         }
         for (const contract of contracts) {
-            const contractType = getContractTypeById(contract.contractTypeId);
+            const contractType = getCachedContractTypeById(contract.contractTypeId);
             if (contractType !== undefined) {
                 contract.printEJS = (contractType.contractTypePrints ?? []).includes('*')
                     ? getConfigProperty('settings.contracts.prints')[0]

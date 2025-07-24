@@ -1,9 +1,10 @@
 import getCemeteries from '../../database/getCemeteries.js';
-import { getBurialSiteStatuses, getBurialSiteTypes } from '../../helpers/cache.helpers.js';
+import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js';
+import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js';
 export default function handler(request, response) {
     const cemeteries = getCemeteries();
-    const burialSiteTypes = getBurialSiteTypes();
-    const burialSiteStatuses = getBurialSiteStatuses();
+    const burialSiteTypes = getCachedBurialSiteTypes();
+    const burialSiteStatuses = getCachedBurialSiteStatuses();
     response.render('burialSite-search', {
         headTitle: 'Burial Site Search',
         burialSiteStatuses,

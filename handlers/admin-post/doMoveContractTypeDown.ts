@@ -5,9 +5,9 @@ import {
   moveRecordDownToBottom
 } from '../../database/moveRecord.js'
 import {
-  getAllContractTypeFields,
-  getContractTypes
-} from '../../helpers/cache.helpers.js'
+  getAllCachedContractTypeFields,
+  getCachedContractTypes
+} from '../../helpers/cache/contractTypes.cache.js'
 
 export default function handler(
   request: Request<
@@ -22,8 +22,8 @@ export default function handler(
       ? moveRecordDownToBottom('ContractTypes', request.body.contractTypeId)
       : moveRecordDown('ContractTypes', request.body.contractTypeId)
 
-  const contractTypes = getContractTypes()
-  const allContractTypeFields = getAllContractTypeFields()
+  const contractTypes = getCachedContractTypes()
+  const allContractTypeFields = getAllCachedContractTypeFields()
 
   response.json({
     success,

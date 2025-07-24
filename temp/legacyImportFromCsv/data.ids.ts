@@ -1,4 +1,6 @@
-import * as cacheFunctions from '../../helpers/cache.helpers.js'
+import { getCachedBurialSiteStatusByBurialSiteStatus } from '../../helpers/cache/burialSiteStatuses.cache.js'
+import { getCachedContractTypeByContractType } from '../../helpers/cache/contractTypes.cache.js'
+import { getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType } from '../../helpers/cache/workOrderMilestoneTypes.cache.js'
 import type { ContractType } from '../../types/record.types.js'
 
 /*
@@ -6,68 +8,68 @@ import type { ContractType } from '../../types/record.types.js'
  */
 
 export const availableBurialSiteStatusId =
-  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Available', true)
+  getCachedBurialSiteStatusByBurialSiteStatus('Available', true)
     ?.burialSiteStatusId as number
 
-export const reservedBurialSiteStatusId =
-  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Reserved', true)
-    ?.burialSiteStatusId as number
+export const reservedBurialSiteStatusId = getCachedBurialSiteStatusByBurialSiteStatus(
+  'Reserved',
+  true
+)?.burialSiteStatusId as number
 
-export const occupiedBurialSiteStatusId =
-  cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Occupied', true)
-    ?.burialSiteStatusId as number
+export const occupiedBurialSiteStatusId = getCachedBurialSiteStatusByBurialSiteStatus(
+  'Occupied',
+  true
+)?.burialSiteStatusId as number
 
 /*
  * Contract Type IDs
  */
 
-export const preneedContractType = cacheFunctions.getContractTypeByContractType(
+export const preneedContractType = getCachedContractTypeByContractType(
   'Preneed',
   true
 ) as ContractType
 
-export const deceasedContractType =
-  cacheFunctions.getContractTypeByContractType(
-    'Interment',
-    true
-  ) as ContractType
+export const deceasedContractType = getCachedContractTypeByContractType(
+  'Interment',
+  true
+) as ContractType
 
-export const cremationContractType =
-  cacheFunctions.getContractTypeByContractType(
-    'Cremation',
-    true
-  ) as ContractType
+export const cremationContractType = getCachedContractTypeByContractType(
+  'Cremation',
+  true
+) as ContractType
 
 /*
  * Work Order Milestone Type IDs
  */
 
 export const acknowledgedWorkOrderMilestoneTypeId =
-  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+  getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Acknowledged',
     true
   )?.workOrderMilestoneTypeId
 
 export const deathWorkOrderMilestoneTypeId =
-  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+  getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Death',
     true
   )?.workOrderMilestoneTypeId
 
 export const funeralWorkOrderMilestoneTypeId =
-  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+  getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Funeral',
     true
   )?.workOrderMilestoneTypeId
 
 export const cremationWorkOrderMilestoneTypeId =
-  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+  getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Cremation',
     true
   )?.workOrderMilestoneTypeId
 
 export const intermentWorkOrderMilestoneTypeId =
-  cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(
+  getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(
     'Interment',
     true
   )?.workOrderMilestoneTypeId

@@ -1,8 +1,8 @@
 import addRecord from '../../database/addRecord.js';
-import { getBurialSiteStatuses } from '../../helpers/cache.helpers.js';
+import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js';
 export default function handler(request, response) {
     const burialSiteStatusId = addRecord('BurialSiteStatuses', request.body.burialSiteStatus, request.body.orderNumber ?? -1, request.session.user);
-    const burialSiteStatuses = getBurialSiteStatuses();
+    const burialSiteStatuses = getCachedBurialSiteStatuses();
     response.json({
         success: true,
         burialSiteStatuses,

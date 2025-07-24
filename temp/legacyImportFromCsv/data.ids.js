@@ -1,27 +1,27 @@
-import * as cacheFunctions from '../../helpers/cache.helpers.js';
+import { getCachedBurialSiteStatusByBurialSiteStatus } from '../../helpers/cache/burialSiteStatuses.cache.js';
+import { getCachedContractTypeByContractType } from '../../helpers/cache/contractTypes.cache.js';
+import { getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType } from '../../helpers/cache/workOrderMilestoneTypes.cache.js';
 /*
  * Burial Site Status IDs
  */
-export const availableBurialSiteStatusId = cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Available', true)
+export const availableBurialSiteStatusId = getCachedBurialSiteStatusByBurialSiteStatus('Available', true)
     ?.burialSiteStatusId;
-export const reservedBurialSiteStatusId = cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Reserved', true)
-    ?.burialSiteStatusId;
-export const occupiedBurialSiteStatusId = cacheFunctions.getBurialSiteStatusByBurialSiteStatus('Occupied', true)
-    ?.burialSiteStatusId;
+export const reservedBurialSiteStatusId = getCachedBurialSiteStatusByBurialSiteStatus('Reserved', true)?.burialSiteStatusId;
+export const occupiedBurialSiteStatusId = getCachedBurialSiteStatusByBurialSiteStatus('Occupied', true)?.burialSiteStatusId;
 /*
  * Contract Type IDs
  */
-export const preneedContractType = cacheFunctions.getContractTypeByContractType('Preneed', true);
-export const deceasedContractType = cacheFunctions.getContractTypeByContractType('Interment', true);
-export const cremationContractType = cacheFunctions.getContractTypeByContractType('Cremation', true);
+export const preneedContractType = getCachedContractTypeByContractType('Preneed', true);
+export const deceasedContractType = getCachedContractTypeByContractType('Interment', true);
+export const cremationContractType = getCachedContractTypeByContractType('Cremation', true);
 /*
  * Work Order Milestone Type IDs
  */
-export const acknowledgedWorkOrderMilestoneTypeId = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Acknowledged', true)?.workOrderMilestoneTypeId;
-export const deathWorkOrderMilestoneTypeId = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Death', true)?.workOrderMilestoneTypeId;
-export const funeralWorkOrderMilestoneTypeId = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Funeral', true)?.workOrderMilestoneTypeId;
-export const cremationWorkOrderMilestoneTypeId = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Cremation', true)?.workOrderMilestoneTypeId;
-export const intermentWorkOrderMilestoneTypeId = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType('Interment', true)?.workOrderMilestoneTypeId;
+export const acknowledgedWorkOrderMilestoneTypeId = getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType('Acknowledged', true)?.workOrderMilestoneTypeId;
+export const deathWorkOrderMilestoneTypeId = getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType('Death', true)?.workOrderMilestoneTypeId;
+export const funeralWorkOrderMilestoneTypeId = getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType('Funeral', true)?.workOrderMilestoneTypeId;
+export const cremationWorkOrderMilestoneTypeId = getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType('Cremation', true)?.workOrderMilestoneTypeId;
+export const intermentWorkOrderMilestoneTypeId = getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType('Interment', true)?.workOrderMilestoneTypeId;
 /*
  * Work Order Type IDs
  */

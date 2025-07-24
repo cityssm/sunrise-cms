@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express'
 
 import getContract from '../../database/getContract.js'
+import { getCachedContractTypePrintsById } from '../../helpers/cache/contractTypes.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import { getContractTypePrintsById } from '../../helpers/cache.helpers.js'
 
 export default async function handler(
   request: Request,
@@ -19,7 +19,7 @@ export default async function handler(
     return
   }
 
-  const contractTypePrints = getContractTypePrintsById(contract.contractTypeId)
+  const contractTypePrints = getCachedContractTypePrintsById(contract.contractTypeId)
 
   response.render('contract-view', {
     headTitle: `Contract #${contract.contractId.toString()}`,

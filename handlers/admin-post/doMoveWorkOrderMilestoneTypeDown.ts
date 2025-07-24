@@ -4,7 +4,7 @@ import {
   moveRecordDown,
   moveRecordDownToBottom
 } from '../../database/moveRecord.js'
-import { getWorkOrderMilestoneTypes } from '../../helpers/cache.helpers.js'
+import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js'
 
 export default function handler(
   request: Request<
@@ -25,7 +25,7 @@ export default function handler(
           request.body.workOrderMilestoneTypeId
         )
 
-  const workOrderMilestoneTypes = getWorkOrderMilestoneTypes()
+  const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes()
 
   response.json({
     success,

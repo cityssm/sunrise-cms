@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js'
-import { getCommittalTypes } from '../../helpers/cache.helpers.js'
+import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js'
 
 export default function handler(
   request: Request<
@@ -16,7 +16,7 @@ export default function handler(
       ? moveRecordUpToTop('CommittalTypes', request.body.committalTypeId)
       : moveRecordUp('CommittalTypes', request.body.committalTypeId)
 
-  const committalTypes = getCommittalTypes()
+  const committalTypes = getCachedCommittalTypes()
 
   response.json({
     success,

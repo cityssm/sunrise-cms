@@ -1,5 +1,6 @@
 import getCemeteries from '../../database/getCemeteries.js';
-import { getBurialSiteStatuses, getBurialSiteTypes } from '../../helpers/cache.helpers.js';
+import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js';
+import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js';
 import { getBurialSiteImages } from '../../helpers/images.helpers.js';
 export default async function handler(request, response) {
     const burialSite = {
@@ -20,8 +21,8 @@ export default async function handler(request, response) {
         }
     }
     const burialSiteImages = await getBurialSiteImages();
-    const burialSiteTypes = getBurialSiteTypes();
-    const burialSiteStatuses = getBurialSiteStatuses();
+    const burialSiteTypes = getCachedBurialSiteTypes();
+    const burialSiteStatuses = getCachedBurialSiteStatuses();
     response.render('burialSite-edit', {
         headTitle: 'Create a New Burial Site',
         burialSite,

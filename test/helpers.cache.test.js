@@ -1,5 +1,10 @@
 import { before, describe, it } from 'node:test';
 import * as cacheFunctions from '../helpers/cache.helpers.js';
+import { getCachedBurialSiteStatusByBurialSiteStatus, getCachedBurialSiteStatusById, getCachedBurialSiteStatuses } from '../helpers/cache/burialSiteStatuses.cache.js';
+import { getCachedBurialSiteTypeById, getCachedBurialSiteTypes, getCachedBurialSiteTypesByBurialSiteType } from '../helpers/cache/burialSiteTypes.cache.js';
+import { getCachedContractTypeByContractType, getCachedContractTypeById, getCachedContractTypes } from '../helpers/cache/contractTypes.cache.js';
+import { getCachedWorkOrderMilestoneTypeById, getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType, getCachedWorkOrderMilestoneTypes } from '../helpers/cache/workOrderMilestoneTypes.cache.js';
+import { getCachedWorkOrderTypeById, getCachedWorkOrderTypes } from '../helpers/cache/workOrderTypes.cache.js';
 await describe('helpers.cache', async () => {
     const badId = -3;
     // eslint-disable-next-line no-secrets/no-secrets, @cspell/spellchecker
@@ -10,99 +15,99 @@ await describe('helpers.cache', async () => {
     await describe('Burial Site Statuses', async () => {
         await it('returns Burial Site Statuses', () => {
             cacheFunctions.clearCacheByTableName('BurialSiteStatuses');
-            const burialSiteStatuses = cacheFunctions.getBurialSiteStatuses();
+            const burialSiteStatuses = getCachedBurialSiteStatuses();
             assert.ok(burialSiteStatuses.length > 0);
             for (const burialSiteStatus of burialSiteStatuses) {
-                const byId = cacheFunctions.getBurialSiteStatusById(burialSiteStatus.burialSiteStatusId);
+                const byId = getCachedBurialSiteStatusById(burialSiteStatus.burialSiteStatusId);
                 assert.strictEqual(burialSiteStatus.burialSiteStatusId, byId?.burialSiteStatusId);
-                const byName = cacheFunctions.getBurialSiteStatusByBurialSiteStatus(burialSiteStatus.burialSiteStatus);
+                const byName = getCachedBurialSiteStatusByBurialSiteStatus(burialSiteStatus.burialSiteStatus);
                 assert.strictEqual(burialSiteStatus.burialSiteStatus, byName?.burialSiteStatus);
             }
         });
         await it('returns undefined with a bad burialSiteStatusId', () => {
-            const byBadId = cacheFunctions.getBurialSiteStatusById(badId);
+            const byBadId = getCachedBurialSiteStatusById(badId);
             assert.ok(byBadId === undefined);
         });
         await it('returns undefined with a bad lotStatus', () => {
-            const byBadName = cacheFunctions.getBurialSiteStatusByBurialSiteStatus(badName);
+            const byBadName = getCachedBurialSiteStatusByBurialSiteStatus(badName);
             assert.ok(byBadName === undefined);
         });
     });
     await describe('Burial Site Types', async () => {
         await it('returns Burial Site Types', () => {
             cacheFunctions.clearCacheByTableName('BurialSiteTypes');
-            const burialSiteTypes = cacheFunctions.getBurialSiteTypes();
+            const burialSiteTypes = getCachedBurialSiteTypes();
             assert.ok(burialSiteTypes.length > 0);
             for (const burialSiteType of burialSiteTypes) {
-                const byId = cacheFunctions.getBurialSiteTypeById(burialSiteType.burialSiteTypeId);
+                const byId = getCachedBurialSiteTypeById(burialSiteType.burialSiteTypeId);
                 assert.strictEqual(burialSiteType.burialSiteTypeId, byId?.burialSiteTypeId);
-                const byName = cacheFunctions.getBurialSiteTypesByBurialSiteType(burialSiteType.burialSiteType);
+                const byName = getCachedBurialSiteTypesByBurialSiteType(burialSiteType.burialSiteType);
                 assert.strictEqual(burialSiteType.burialSiteType, byName?.burialSiteType);
             }
         });
         await it('returns undefined with a bad burialSiteTypeId', () => {
-            const byBadId = cacheFunctions.getBurialSiteTypeById(badId);
+            const byBadId = getCachedBurialSiteTypeById(badId);
             assert.ok(byBadId === undefined);
         });
         await it('returns undefined with a bad lotType', () => {
-            const byBadName = cacheFunctions.getBurialSiteTypesByBurialSiteType(badName);
+            const byBadName = getCachedBurialSiteTypesByBurialSiteType(badName);
             assert.ok(byBadName === undefined);
         });
     });
     await describe('Contract Types', async () => {
         await it('returns Contract Types', () => {
             cacheFunctions.clearCacheByTableName('ContractTypes');
-            const contractTypes = cacheFunctions.getContractTypes();
+            const contractTypes = getCachedContractTypes();
             assert.ok(contractTypes.length > 0);
             for (const contractType of contractTypes) {
-                const byId = cacheFunctions.getContractTypeById(contractType.contractTypeId);
+                const byId = getCachedContractTypeById(contractType.contractTypeId);
                 assert.strictEqual(contractType.contractTypeId, byId?.contractTypeId);
-                const byName = cacheFunctions.getContractTypeByContractType(contractType.contractType);
+                const byName = getCachedContractTypeByContractType(contractType.contractType);
                 assert.strictEqual(contractType.contractType, byName?.contractType);
             }
         });
         await it('returns undefined with a bad contractTypeId', () => {
-            const byBadId = cacheFunctions.getContractTypeById(badId);
+            const byBadId = getCachedContractTypeById(badId);
             assert.ok(byBadId === undefined);
         });
         await it('returns undefined with a bad contractType', () => {
-            const byBadName = cacheFunctions.getContractTypeByContractType(badName);
+            const byBadName = getCachedContractTypeByContractType(badName);
             assert.ok(byBadName === undefined);
         });
     });
     await describe('Work Order Types', async () => {
         await it('returns Work Order Types', () => {
             cacheFunctions.clearCacheByTableName('WorkOrderTypes');
-            const workOrderTypes = cacheFunctions.getWorkOrderTypes();
+            const workOrderTypes = getCachedWorkOrderTypes();
             assert.ok(workOrderTypes.length > 0);
             for (const workOrderType of workOrderTypes) {
-                const byId = cacheFunctions.getWorkOrderTypeById(workOrderType.workOrderTypeId);
+                const byId = getCachedWorkOrderTypeById(workOrderType.workOrderTypeId);
                 assert.strictEqual(workOrderType.workOrderTypeId, byId?.workOrderTypeId);
             }
         });
         await it('returns undefined with a bad workOrderTypeId', () => {
-            const byBadId = cacheFunctions.getWorkOrderTypeById(badId);
+            const byBadId = getCachedWorkOrderTypeById(badId);
             assert.ok(byBadId === undefined);
         });
     });
     await describe('Work Order Milestone Types', async () => {
         await it('returns Work Order Milestone Types', () => {
             cacheFunctions.clearCacheByTableName('WorkOrderMilestoneTypes');
-            const workOrderMilestoneTypes = cacheFunctions.getWorkOrderMilestoneTypes();
+            const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes();
             assert.ok(workOrderMilestoneTypes.length > 0);
             for (const workOrderMilestoneType of workOrderMilestoneTypes) {
-                const byId = cacheFunctions.getWorkOrderMilestoneTypeById(workOrderMilestoneType.workOrderMilestoneTypeId);
+                const byId = getCachedWorkOrderMilestoneTypeById(workOrderMilestoneType.workOrderMilestoneTypeId);
                 assert.strictEqual(workOrderMilestoneType.workOrderMilestoneTypeId, byId?.workOrderMilestoneTypeId);
-                const byName = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneType.workOrderMilestoneType);
+                const byName = getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(workOrderMilestoneType.workOrderMilestoneType);
                 assert.strictEqual(workOrderMilestoneType.workOrderMilestoneType, byName?.workOrderMilestoneType);
             }
         });
         await it('returns undefined with a bad workOrderMilestoneTypeId', () => {
-            const byBadId = cacheFunctions.getWorkOrderMilestoneTypeById(badId);
+            const byBadId = getCachedWorkOrderMilestoneTypeById(badId);
             assert.ok(byBadId === undefined);
         });
         await it('returns undefined with a bad workOrderMilestoneType', () => {
-            const byBadName = cacheFunctions.getWorkOrderMilestoneTypeByWorkOrderMilestoneType(badName);
+            const byBadName = getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType(badName);
             assert.ok(byBadName === undefined);
         });
     });

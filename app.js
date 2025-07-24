@@ -14,7 +14,7 @@ import dataLists from './data/dataLists.js';
 import { DEBUG_NAMESPACE } from './debug.config.js';
 import * as permissionHandlers from './handlers/permissions.js';
 import { getSafeRedirectURL } from './helpers/authentication.helpers.js';
-import { getSettingValue } from './helpers/cache.helpers.js';
+import { getCachedSettingValue } from './helpers/cache/settings.cache.js';
 import * as configFunctions from './helpers/config.helpers.js';
 import { useTestDatabases } from './helpers/database.helpers.js';
 import * as printFunctions from './helpers/print.helpers.js';
@@ -148,7 +148,7 @@ app.use((request, response, next) => {
     response.locals.printFunctions = printFunctions;
     response.locals.dateTimeFunctions = dateTimeFunctions;
     response.locals.settingFunctions = {
-        getSettingValue
+        getSettingValue: getCachedSettingValue
     };
     response.locals.dataLists = dataLists;
     response.locals.urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');

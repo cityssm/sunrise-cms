@@ -5,14 +5,12 @@ import getBurialSite from '../../database/getBurialSite.js'
 import getBurialSiteDirectionsOfArrival, { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js'
 import getCemeteries from '../../database/getCemeteries.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
+import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
+import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
+import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js'
+import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js'
+import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
-import {
-  getBurialSiteStatuses,
-  getBurialSiteTypes,
-  getCommittalTypes,
-  getContractTypes,
-  getIntermentContainerTypes
-} from '../../helpers/cache.helpers.js'
 import type { Contract } from '../../types/record.types.js'
 
 export default async function handler(
@@ -45,17 +43,17 @@ export default async function handler(
    * Contract Drop Lists
    */
 
-  const contractTypes = getContractTypes()
+  const contractTypes = getCachedContractTypes()
   const funeralHomes = getFuneralHomes()
-  const committalTypes = getCommittalTypes()
-  const intermentContainerTypes = getIntermentContainerTypes()
+  const committalTypes = getCachedCommittalTypes()
+  const intermentContainerTypes = getCachedIntermentContainerTypes()
 
   /*
    * Burial Site Drop Lists
    */
 
-  const burialSiteStatuses = getBurialSiteStatuses()
-  const burialSiteTypes = getBurialSiteTypes()
+  const burialSiteStatuses = getCachedBurialSiteStatuses()
+  const burialSiteTypes = getCachedBurialSiteTypes()
   const cemeteries = getCemeteries()
 
   const burialSiteDirectionsOfArrival =

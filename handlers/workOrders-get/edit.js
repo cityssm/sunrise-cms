@@ -1,5 +1,7 @@
 import getWorkOrder from '../../database/getWorkOrder.js';
-import { getBurialSiteStatuses, getWorkOrderMilestoneTypes, getWorkOrderTypes } from '../../helpers/cache.helpers.js';
+import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js';
+import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js';
+import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getWorkOrderWorkDayRanges } from '../../helpers/settings.helpers.js';
 export default async function handler(request, response) {
@@ -16,9 +18,9 @@ export default async function handler(request, response) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/workOrders/${workOrder.workOrderId.toString()}/?error=workOrderIsClosed`);
         return;
     }
-    const workOrderTypes = getWorkOrderTypes();
-    const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
-    const burialSiteStatuses = getBurialSiteStatuses();
+    const workOrderTypes = getCachedWorkOrderTypes();
+    const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes();
+    const burialSiteStatuses = getCachedBurialSiteStatuses();
     const workOrderWorkDayRanges = getWorkOrderWorkDayRanges();
     response.render('workOrder-edit', {
         headTitle: `Work Order #${workOrder.workOrderNumber}`,

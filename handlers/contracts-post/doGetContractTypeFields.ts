@@ -1,18 +1,18 @@
 import type { Request, Response } from 'express'
 
 import {
-  getAllContractTypeFields,
-  getContractTypeById
-} from '../../helpers/cache.helpers.js'
+  getAllCachedContractTypeFields,
+  getCachedContractTypeById
+} from '../../helpers/cache/contractTypes.cache.js'
 import type { ContractType } from '../../types/record.types.js'
 
 export default function handler(
   request: Request<unknown, unknown, { contractTypeId: string }>,
   response: Response
 ): void {
-  const allContractTypeFields = getAllContractTypeFields()
+  const allContractTypeFields = getAllCachedContractTypeFields()
 
-  const result = getContractTypeById(
+  const result = getCachedContractTypeById(
     Number.parseInt(request.body.contractTypeId, 10)
   ) as ContractType
 

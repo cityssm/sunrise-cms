@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { deleteRecord } from '../../database/deleteRecord.js'
-import { getCommittalTypes } from '../../helpers/cache.helpers.js'
+import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js'
 
 export default function handler(
   request: Request<unknown, unknown, { committalTypeId: string }>,
@@ -13,7 +13,7 @@ export default function handler(
     request.session.user as User
   )
 
-  const committalTypes = getCommittalTypes()
+  const committalTypes = getCachedCommittalTypes()
 
   response.json({
     success,

@@ -1,12 +1,12 @@
 import type { Request, Response } from 'express'
 
-import { getBurialSiteTypeById } from '../../helpers/cache.helpers.js'
+import { getCachedBurialSiteTypeById } from '../../helpers/cache/burialSiteTypes.cache.js'
 
 export default function handler(
   request: Request<unknown, unknown, { burialSiteTypeId: string }>,
   response: Response
 ): void {
-  const burialSiteType = getBurialSiteTypeById(
+  const burialSiteType = getCachedBurialSiteTypeById(
     Number.parseInt(request.body.burialSiteTypeId, 10)
   )
 

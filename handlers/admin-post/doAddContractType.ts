@@ -4,9 +4,9 @@ import addContractType, {
   type AddForm
 } from '../../database/addContractType.js'
 import {
-  getAllContractTypeFields,
-  getContractTypes
-} from '../../helpers/cache.helpers.js'
+  getAllCachedContractTypeFields,
+  getCachedContractTypes
+} from '../../helpers/cache/contractTypes.cache.js'
 
 export default function handler(
   request: Request<unknown, unknown, AddForm>,
@@ -17,8 +17,8 @@ export default function handler(
     request.session.user as User
   )
 
-  const contractTypes = getContractTypes()
-  const allContractTypeFields = getAllContractTypeFields()
+  const contractTypes = getCachedContractTypes()
+  const allContractTypeFields = getAllCachedContractTypeFields()
 
   response.json({
     success: true,

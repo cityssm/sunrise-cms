@@ -6,16 +6,16 @@ import getBurialSiteDirectionsOfArrival, {
 import getCemeteries from '../../database/getCemeteries.js'
 import getContract from '../../database/getContract.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
-import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
+import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
+import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js'
 import {
-  getBurialSiteStatuses,
-  getBurialSiteTypes,
-  getCommittalTypes,
-  getContractTypePrintsById,
-  getContractTypes,
-  getIntermentContainerTypes,
-  getWorkOrderTypes
-} from '../../helpers/cache.helpers.js'
+  getCachedContractTypePrintsById,
+  getCachedContractTypes
+} from '../../helpers/cache/contractTypes.cache.js'
+import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js'
+import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
+import { getConfigProperty } from '../../helpers/config.helpers.js'
 
 export default async function handler(
   request: Request,
@@ -32,23 +32,23 @@ export default async function handler(
     return
   }
 
-  const contractTypePrints = getContractTypePrintsById(contract.contractTypeId)
+  const contractTypePrints = getCachedContractTypePrintsById(contract.contractTypeId)
 
   /*
    * Contract Drop Lists
    */
 
-  const contractTypes = getContractTypes()
+  const contractTypes = getCachedContractTypes()
   const funeralHomes = getFuneralHomes()
-  const committalTypes = getCommittalTypes()
-  const intermentContainerTypes = getIntermentContainerTypes()
+  const committalTypes = getCachedCommittalTypes()
+  const intermentContainerTypes = getCachedIntermentContainerTypes()
 
   /*
    * Burial Site Drop Lists
    */
 
-  const burialSiteStatuses = getBurialSiteStatuses()
-  const burialSiteTypes = getBurialSiteTypes()
+  const burialSiteStatuses = getCachedBurialSiteStatuses()
+  const burialSiteTypes = getCachedBurialSiteTypes()
   const cemeteries = getCemeteries()
 
   const burialSiteDirectionsOfArrival =
@@ -60,7 +60,7 @@ export default async function handler(
    * Work Order Drop Lists
    */
 
-  const workOrderTypes = getWorkOrderTypes()
+  const workOrderTypes = getCachedWorkOrderTypes()
 
   response.render('contract-edit', {
     headTitle: 'Contract Update',
