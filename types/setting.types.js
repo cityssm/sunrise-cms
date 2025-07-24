@@ -3,21 +3,21 @@
 export const settingProperties = [
     {
         settingKey: 'aliases.externalReceiptNumber',
-        settingName: 'Alias - External Receipt Number',
+        settingName: 'Aliases - External Receipt Number',
         description: 'The alias for the external receipt number.',
         type: 'string',
         defaultValue: 'Receipt Number'
     },
     {
         settingKey: 'aliases.workOrderOpenDate',
-        settingName: 'Alias - Work Order Open Date',
+        settingName: 'Aliases - Work Order Open Date',
         description: 'The alias for the work order open date.',
         type: 'string',
         defaultValue: 'Order Date'
     },
     {
         settingKey: 'aliases.workOrderCloseDate',
-        settingName: 'Alias - Work Order Close Date',
+        settingName: 'Aliases - Work Order Close Date',
         description: 'The alias for the work order close date.',
         type: 'string',
         defaultValue: 'Completion Date'
