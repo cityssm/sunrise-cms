@@ -1,5 +1,6 @@
 import Debug from 'debug';
 import { Router } from 'express';
+import getUserSettings from '../database/getUserSettings.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { authenticate, getSafeRedirectURL } from '../helpers/authentication.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
@@ -49,6 +50,7 @@ async function postHandler(request, response) {
             const canUpdateWorkOrders = getConfigProperty('users.canUpdateWorkOrders').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
             const isAdmin = getConfigProperty('users.isAdmin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
             const apiKey = await getApiKey(userNameLowerCase);
+            const userSettings = getUserSettings(userNameLowerCase);
             userObject = {
                 userName: userNameLowerCase,
                 userProperties: {
@@ -56,7 +58,8 @@ async function postHandler(request, response) {
                     canUpdateWorkOrders,
                     isAdmin,
                     apiKey
-                }
+                },
+                userSettings
             };
         }
     }

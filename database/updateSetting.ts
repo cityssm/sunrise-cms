@@ -25,7 +25,7 @@ export default function updateSetting(updateForm: UpdateSettingForm): boolean {
     result = database
       .prepare(
         `insert into SunriseSettings (settingKey, settingValue, recordUpdate_timeMillis)
-         values (?, ?, ?)`
+          values (?, ?, ?)`
       )
       .run(updateForm.settingKey, updateForm.settingValue, Date.now())
   }

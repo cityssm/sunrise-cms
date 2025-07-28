@@ -13,7 +13,7 @@ export default function updateSetting(updateForm) {
     if (result.changes <= 0) {
         result = database
             .prepare(`insert into SunriseSettings (settingKey, settingValue, recordUpdate_timeMillis)
-         values (?, ?, ?)`)
+          values (?, ?, ?)`)
             .run(updateForm.settingKey, updateForm.settingValue, Date.now());
     }
     database.close();

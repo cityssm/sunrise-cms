@@ -1,6 +1,7 @@
 import Debug from 'debug'
 import { type Request, type Response, Router } from 'express'
 
+import getUserSettings from '../database/getUserSettings.js'
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 import {
   authenticate,
@@ -86,7 +87,9 @@ async function postHandler(
         (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
       )
 
-      const canUpdateWorkOrders = getConfigProperty('users.canUpdateWorkOrders').some(
+      const canUpdateWorkOrders = getConfigProperty(
+        'users.canUpdateWorkOrders'
+      ).some(
         (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
       )
 
@@ -96,15 +99,18 @@ async function postHandler(
 
       const apiKey = await getApiKey(userNameLowerCase)
 
+      const userSettings = getUserSettings(userNameLowerCase)
+
       userObject = {
         userName: userNameLowerCase,
         userProperties: {
           canUpdate,
           canUpdateWorkOrders,
           isAdmin,
-          
+
           apiKey
-        }
+        },
+        userSettings
       }
     }
   }

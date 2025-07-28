@@ -61,11 +61,8 @@
           </a>
             
           <div class="navbar-item has-dropdown">
-            <a class="navbar-link is-arrowless" href="#">
+            <a class="navbar-link" href="#">
               <span>More</span>
-              <span class="icon">
-                <i class="fa-solid fa-angle-down"></i>
-              </span>
             </a>
             <div class="navbar-dropdown">
               <a class="navbar-item" href="<%= urlPrefix %>/funeralHomes">
@@ -117,13 +114,31 @@
             </span>
             <span>Quick Search</span>
           </a>
-          <a class="navbar-item" id="cityssm-theme--logout-button" role="button" href="#"
-            <%- enableKeyboardShortcuts ? ' accesskey="x" ' : '' %>>
-            <span class="icon">
-              <i class="fa-solid fa-sign-out-alt"></i>
-            </span>
-            <span>Log Out <%=user.userName %></span>
-          </a>
+          <div class="navbar-item has-dropdown">
+            <a class="navbar-link" href="#">
+              <span class="icon">
+                <i class="fa-solid fa-user"></i>
+              </span>
+              <span><%=user.userName %></span>
+            </a>
+            <div class="navbar-dropdown is-right">
+              <a class="navbar-item" href="<%= urlPrefix %>/dashboard/userSettings"
+                <%- enableKeyboardShortcuts ? ' accesskey="u" ' : '' %>>
+                <span class="icon">
+                  <i class="fa-solid fa-cog"></i>
+                </span>
+                <span>User Settings</span>
+              </a>
+              <a class="navbar-item" id="cityssm-theme--logout-button" role="button" href="#"
+                <%- enableKeyboardShortcuts ? ' accesskey="x" ' : '' %>>
+                <span class="icon">
+                  <i class="fa-solid fa-sign-out-alt"></i>
+                </span>
+                <span>Log Out</span>
+              </a>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

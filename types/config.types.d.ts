@@ -1,4 +1,5 @@
 import type { ActiveDirectoryAuthenticatorConfiguration, ADWebAuthAuthenticatorConfiguration, FunctionAuthenticatorConfiguration, PlainTextAuthenticatorConfiguration } from '@cityssm/authentication-helper';
+import type { ConsignoCloudAPIConfig } from '@cityssm/consigno-cloud-api';
 import type { config as MSSQLConfig } from 'mssql';
 export interface Config {
     application: ConfigApplication;
@@ -82,11 +83,8 @@ export interface Config {
             lookupOrder?: DynamicsGPLookup[];
             trialBalanceCodes?: string[];
         };
-        consignoCloud?: {
+        consignoCloud?: Partial<ConsignoCloudAPIConfig> & {
             integrationIsEnabled: boolean;
-            apiKey?: string;
-            apiSecret?: string;
-            baseUrl?: string;
         };
     };
 }

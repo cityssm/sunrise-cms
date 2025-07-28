@@ -509,7 +509,8 @@ const initializingUser: User = {
     canUpdate: true,
     canUpdateWorkOrders: true,
     isAdmin: true
-  }
+  },
+  userSettings: {}
 }
 
 export function initializeDatabase(): boolean {

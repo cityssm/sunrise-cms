@@ -445,7 +445,8 @@ const initializingUser = {
         canUpdate: true,
         canUpdateWorkOrders: true,
         isAdmin: true
-    }
+    },
+    userSettings: {}
 };
 export function initializeDatabase() {
     const sunriseDB = sqlite(databasePath);

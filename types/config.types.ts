@@ -4,6 +4,7 @@ import type {
   FunctionAuthenticatorConfiguration,
   PlainTextAuthenticatorConfiguration
 } from '@cityssm/authentication-helper'
+import type { ConsignoCloudAPIConfig } from '@cityssm/consigno-cloud-api'
 import type { config as MSSQLConfig } from 'mssql'
 
 export interface Config {
@@ -112,12 +113,8 @@ export interface Config {
       trialBalanceCodes?: string[]
     }
 
-    consignoCloud?: {
+    consignoCloud?: Partial<ConsignoCloudAPIConfig> & {
       integrationIsEnabled: boolean
-
-      apiKey?: string
-      apiSecret?: string
-      baseUrl?: string
     }
   }
 }
@@ -148,7 +145,7 @@ interface ConfigSession {
   cookieName?: string
   maxAgeMillis?: number
   secret?: string
-  
+
   doKeepAlive?: boolean
 }
 
