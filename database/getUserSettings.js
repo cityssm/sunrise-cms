@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
+import { generateApiKey } from '../helpers/api.helpers.js';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import { generateApiKey } from '../helpers/functions.api.js';
 import updateUserSetting from './updateUserSetting.js';
 export default function getUserSettings(userName) {
     const database = sqlite(sunriseDB);
