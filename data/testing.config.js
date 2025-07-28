@@ -24,5 +24,5 @@ config.users = {
     isAdmin: ['*testAdmin'],
     testing: ['*testView', '*testUpdate', '*testAdmin']
 };
-config.settings.dynamicsGP.integrationIsEnabled = false;
+config.integrations.dynamicsGP.integrationIsEnabled = false;
 export default config;

@@ -102,7 +102,9 @@ export interface Config {
       browser?: 'chrome' | 'firefox'
       contentDisposition?: 'attachment' | 'inline'
     }
+  }
 
+  integrations: {
     dynamicsGP?: {
       integrationIsEnabled: boolean
       mssqlConfig?: MSSQLConfig

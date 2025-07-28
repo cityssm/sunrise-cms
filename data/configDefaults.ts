@@ -119,23 +119,23 @@ export const configDefaultValues = {
 
   // Dynamics GP
 
-  'settings.dynamicsGP.integrationIsEnabled': false,
-  'settings.dynamicsGP.mssqlConfig': undefined as unknown as MSSQLConfig,
+  'integrations.dynamicsGP.integrationIsEnabled': false,
+  'integrations.dynamicsGP.mssqlConfig': undefined as unknown as MSSQLConfig,
 
   // eslint-disable-next-line no-secrets/no-secrets
-  'settings.dynamicsGP.lookupOrder': ['invoice'] as DynamicsGPLookup[],
+  'integrations.dynamicsGP.lookupOrder': ['invoice'] as DynamicsGPLookup[],
 
-  'settings.dynamicsGP.accountCodes': [] as string[],
-  'settings.dynamicsGP.itemNumbers': [] as string[],
-  'settings.dynamicsGP.trialBalanceCodes': [] as string[],
+  'integrations.dynamicsGP.accountCodes': [] as string[],
+  'integrations.dynamicsGP.itemNumbers': [] as string[],
+  'integrations.dynamicsGP.trialBalanceCodes': [] as string[],
 
   // Consigno Cloud
 
-  'settings.consignoCloud.integrationIsEnabled': false,
+  'integrations.consignoCloud.integrationIsEnabled': false,
 
-  'settings.consignoCloud.apiKey': '',
-  'settings.consignoCloud.apiSecret': '',
-  'settings.consignoCloud.baseUrl': ''
+  'integrations.consignoCloud.apiKey': '',
+  'integrations.consignoCloud.apiSecret': '',
+  'integrations.consignoCloud.baseUrl': ''
 }
 
 export default configDefaultValues

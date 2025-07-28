@@ -48,7 +48,7 @@ config.settings.printPdf.browser = 'firefox';
 config.settings.workOrders.workOrderNumberLength = 6;
 config.settings.workOrders.workOrderMilestoneDateRecentBeforeDays = 7;
 config.settings.workOrders.workOrderMilestoneDateRecentAfterDays = 30;
-config.settings.dynamicsGP = {
+config.integrations.dynamicsGP = {
     integrationIsEnabled: true,
     lookupOrder: ['diamond/cashReceipt', 'diamond/extendedInvoice']
 };

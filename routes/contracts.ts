@@ -144,7 +144,7 @@ router.post(
 
 // Transactions
 
-if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
+if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
   router.post(
     '/doGetDynamicsGPDocument',
     updatePostHandler,

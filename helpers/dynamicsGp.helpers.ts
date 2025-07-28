@@ -16,21 +16,22 @@ const debug = Debug(`${DEBUG_NAMESPACE}:dynamicsGP.helpers:${process.pid}`)
 
 let gp: DynamicsGP
 
-if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
-  gp = new DynamicsGP(getConfigProperty('settings.dynamicsGP.mssqlConfig'))
+if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
+  gp = new DynamicsGP(getConfigProperty('integrations.dynamicsGP.mssqlConfig'))
 }
 
 export async function getDynamicsGPDocument(
   documentNumber: string
 ): Promise<DynamicsGPDocument | undefined> {
-  if (!getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
+  if (!getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
     return undefined
   }
 
   let document: DynamicsGPDocument | undefined
 
   for (const lookupType of getConfigProperty(
-    'settings.dynamicsGP.lookupOrder'
+    // eslint-disable-next-line no-secrets/no-secrets
+    'integrations.dynamicsGP.lookupOrder'
   )) {
     try {
       document = await _getDynamicsGPDocument(documentNumber, lookupType)
@@ -137,7 +138,7 @@ async function _getDynamicsGPDocument(
 function filterCashReceipt(
   cashReceipt: DiamondCashReceipt
 ): DiamondCashReceipt | undefined {
-  const accountCodes = getConfigProperty('settings.dynamicsGP.accountCodes')
+  const accountCodes = getConfigProperty('integrations.dynamicsGP.accountCodes')
 
   if (accountCodes.length > 0) {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -168,7 +169,7 @@ function filterExtendedInvoice(
   }
 
   const trialBalanceCodes = getConfigProperty(
-    'settings.dynamicsGP.trialBalanceCodes'
+    'integrations.dynamicsGP.trialBalanceCodes'
   )
 
   if (
@@ -182,7 +183,7 @@ function filterExtendedInvoice(
 }
 
 function filterInvoice(invoice: GPInvoice): GPInvoice | undefined {
-  const itemNumbers = getConfigProperty('settings.dynamicsGP.itemNumbers')
+  const itemNumbers = getConfigProperty('integrations.dynamicsGP.itemNumbers')
 
   for (const itemNumber of itemNumbers) {
     const found = invoice.lineItems.some(

@@ -40,7 +40,7 @@ export default async function GetContractTransactions(
 
   if (
     options.includeIntegrations &&
-    getConfigProperty('settings.dynamicsGP.integrationIsEnabled')
+    getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')
   ) {
     for (const transaction of contractTransactions) {
       if ((transaction.externalReceiptNumber ?? '') !== '') {

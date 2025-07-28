@@ -21,7 +21,7 @@ export default async function GetContractTransactions(contractId, options, conne
         database.close();
     }
     if (options.includeIntegrations &&
-        getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
+        getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
         for (const transaction of contractTransactions) {
             if ((transaction.externalReceiptNumber ?? '') !== '') {
                 const gpDocument = await getDynamicsGPDocument(transaction.externalReceiptNumber ?? '');

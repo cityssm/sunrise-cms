@@ -65,7 +65,7 @@ router.post('/doAddContractFeeCategory', updatePostHandler, handler_doAddContrac
 router.post('/doUpdateContractFeeQuantity', updatePostHandler, handler_doUpdateContractFeeQuantity);
 router.post('/doDeleteContractFee', updatePostHandler, handler_doDeleteContractFee);
 // Transactions
-if (getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
+if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
     router.post('/doGetDynamicsGPDocument', updatePostHandler, handler_doGetDynamicsGPDocument);
 }
 router.post('/doAddContractTransaction', updatePostHandler, handler_doAddContractTransaction);

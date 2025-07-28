@@ -8,12 +8,17 @@ export const config = {
         burialSiteTypes: {},
         cemeteries: {},
         contracts: {},
-        dynamicsGP: {
-            integrationIsEnabled: false
-        },
         fees: {},
         printPdf: {},
         workOrders: {}
+    },
+    integrations: {
+        consignoCloud: {
+            integrationIsEnabled: false
+        },
+        dynamicsGP: {
+            integrationIsEnabled: false
+        }
     },
     users: {}
 };

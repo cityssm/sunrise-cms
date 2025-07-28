@@ -63,17 +63,17 @@ export const configDefaultValues = {
     'settings.printPdf.browser': 'chrome',
     'settings.printPdf.contentDisposition': 'attachment',
     // Dynamics GP
-    'settings.dynamicsGP.integrationIsEnabled': false,
-    'settings.dynamicsGP.mssqlConfig': undefined,
+    'integrations.dynamicsGP.integrationIsEnabled': false,
+    'integrations.dynamicsGP.mssqlConfig': undefined,
     // eslint-disable-next-line no-secrets/no-secrets
-    'settings.dynamicsGP.lookupOrder': ['invoice'],
-    'settings.dynamicsGP.accountCodes': [],
-    'settings.dynamicsGP.itemNumbers': [],
-    'settings.dynamicsGP.trialBalanceCodes': [],
+    'integrations.dynamicsGP.lookupOrder': ['invoice'],
+    'integrations.dynamicsGP.accountCodes': [],
+    'integrations.dynamicsGP.itemNumbers': [],
+    'integrations.dynamicsGP.trialBalanceCodes': [],
     // Consigno Cloud
-    'settings.consignoCloud.integrationIsEnabled': false,
-    'settings.consignoCloud.apiKey': '',
-    'settings.consignoCloud.apiSecret': '',
-    'settings.consignoCloud.baseUrl': ''
+    'integrations.consignoCloud.integrationIsEnabled': false,
+    'integrations.consignoCloud.apiKey': '',
+    'integrations.consignoCloud.apiSecret': '',
+    'integrations.consignoCloud.baseUrl': ''
 };
 export default configDefaultValues;
