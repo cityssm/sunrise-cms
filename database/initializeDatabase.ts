@@ -270,6 +270,24 @@ const createStatements = [
     foreign key (contractId) references Contracts (contractId),
     foreign key (contractTypeFieldId) references ContractTypeFields (contractTypeFieldId)) without rowid`,
 
+  `create table if not exists ContractMetadata (
+    contractId integer not null,
+    metadataKey varchar(100) not null,
+    metadataValue text not null,
+    ${recordColumns},
+    primary key (contractId, metadataKey),
+    foreign key (contractId) references Contracts (contractId)) without rowid`,
+
+  `create table if not exists ContractAttachments (
+    contractAttachmentId integer not null primary key autoincrement,
+    contractId integer not null,
+    attachmentTitle varchar(100) not null,
+    attachmentDetails text,
+    fileName varchar(100) not null,
+    filePath varchar(500) not null,
+    ${recordColumns},
+    foreign key (contractId) references Contracts (contractId))`,
+
   `create table if not exists ContractComments (
     contractCommentId integer not null primary key autoincrement,
     contractId integer not null,
@@ -499,7 +517,7 @@ export function initializeDatabase(): boolean {
 
   const row = sunriseDB
     .prepare(
-      "select name from sqlite_master where type = 'table' and name = 'UserSettings'"
+      "select name from sqlite_master where type = 'table' and name = 'ContractAttachments'"
     )
     .get()
 
