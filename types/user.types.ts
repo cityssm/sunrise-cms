@@ -7,11 +7,11 @@ declare global {
 }
 
 export type UserSettingKey =
+  | 'apiKey'
   | 'consignoCloud.thirdPartyApplicationPassword'
   | 'consignoCloud.userName'
 
 export interface UserProperties {
-  apiKey: string
   canUpdate: boolean
   canUpdateWorkOrders: boolean
   isAdmin: boolean

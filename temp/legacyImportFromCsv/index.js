@@ -36,9 +36,9 @@ const user = {
     userProperties: {
         canUpdate: true,
         canUpdateWorkOrders: true,
-        isAdmin: false,
-        apiKey: ''
-    }
+        isAdmin: false
+    },
+    userSettings: {}
 };
 function formatDateString(year, month, day) {
     const formattedYear = `0000${year}`.slice(-4);

@@ -5,9 +5,8 @@ declare global {
         userSettings: Partial<Record<UserSettingKey, string>>;
     }
 }
-export type UserSettingKey = 'consignoCloud.thirdPartyApplicationPassword' | 'consignoCloud.userName';
+export type UserSettingKey = 'apiKey' | 'consignoCloud.thirdPartyApplicationPassword' | 'consignoCloud.userName';
 export interface UserProperties {
-    apiKey: string;
     canUpdate: boolean;
     canUpdateWorkOrders: boolean;
     isAdmin: boolean;

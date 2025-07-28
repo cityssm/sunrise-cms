@@ -1,6 +1,7 @@
 import cluster from 'node:cluster';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
+import { clearApiKeysCache, getCachedApiKeys } from './cache/apiKeys.cache.js';
 import { clearBurialSiteStatusesCache, getCachedBurialSiteStatuses } from './cache/burialSiteStatuses.cache.js';
 import { clearBurialSiteTypesCache, getCachedBurialSiteTypes } from './cache/burialSiteTypes.cache.js';
 import { clearCommittalTypesCache, getCachedCommittalTypes } from './cache/committalTypes.cache.js';
@@ -24,6 +25,7 @@ export function preloadCaches() {
     getCachedWorkOrderMilestoneTypes();
     getCachedSettings();
     getAllCachedContractTypeFields();
+    getCachedApiKeys();
     debug('Caches preloaded');
 }
 export const cacheTableNames = [
@@ -39,7 +41,8 @@ export const cacheTableNames = [
     'IntermentContainerTypes',
     'SunriseSettings',
     'WorkOrderMilestoneTypes',
-    'WorkOrderTypes'
+    'WorkOrderTypes',
+    'UserSettings'
 ];
 export function clearCacheByTableName(tableName, relayMessage = true) {
     switch (tableName) {
@@ -68,6 +71,10 @@ export function clearCacheByTableName(tableName, relayMessage = true) {
         }
         case 'SunriseSettings': {
             clearSettingsCache();
+            break;
+        }
+        case 'UserSettings': {
+            clearApiKeysCache();
             break;
         }
         case 'WorkOrderMilestoneTypes': {
@@ -108,6 +115,7 @@ export function clearCaches() {
     clearContractTypesCache();
     clearIntermentContainerTypesCache();
     clearSettingsCache();
+    clearApiKeysCache();
     clearWorkOrderMilestoneTypesCache();
     clearWorkOrderTypesCache();
     debug('Caches cleared');

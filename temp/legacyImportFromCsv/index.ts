@@ -59,10 +59,9 @@ const user: User = {
   userProperties: {
     canUpdate: true,
     canUpdateWorkOrders: true,
-    isAdmin: false,
-
-    apiKey: ''
-  }
+    isAdmin: false
+  },
+  userSettings: {}
 }
 
 function formatDateString(

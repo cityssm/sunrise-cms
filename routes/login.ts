@@ -9,7 +9,6 @@ import {
 } from '../helpers/authentication.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { useTestDatabases } from '../helpers/database.helpers.js'
-import { getApiKey } from '../helpers/functions.api.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:login`)
 
@@ -97,8 +96,6 @@ async function postHandler(
         (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
       )
 
-      const apiKey = await getApiKey(userNameLowerCase)
-
       const userSettings = getUserSettings(userNameLowerCase)
 
       userObject = {
@@ -106,9 +103,7 @@ async function postHandler(
         userProperties: {
           canUpdate,
           canUpdateWorkOrders,
-          isAdmin,
-
-          apiKey
+          isAdmin
         },
         userSettings
       }

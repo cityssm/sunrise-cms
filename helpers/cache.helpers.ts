@@ -8,6 +8,7 @@ import type {
   WorkerMessage
 } from '../types/application.types.js'
 
+import { clearApiKeysCache, getCachedApiKeys } from './cache/apiKeys.cache.js'
 import {
   clearBurialSiteStatusesCache,
   getCachedBurialSiteStatuses
@@ -29,7 +30,10 @@ import {
   clearIntermentContainerTypesCache,
   getCachedIntermentContainerTypes
 } from './cache/intermentContainerTypes.cache.js'
-import { clearSettingsCache, getCachedSettings } from './cache/settings.cache.js'
+import {
+  clearSettingsCache,
+  getCachedSettings
+} from './cache/settings.cache.js'
 import {
   clearWorkOrderMilestoneTypesCache,
   getCachedWorkOrderMilestoneTypes
@@ -58,6 +62,7 @@ export function preloadCaches(): void {
   getCachedWorkOrderMilestoneTypes()
   getCachedSettings()
   getAllCachedContractTypeFields()
+  getCachedApiKeys()
   debug('Caches preloaded')
 }
 
@@ -74,7 +79,8 @@ export const cacheTableNames = [
   'IntermentContainerTypes',
   'SunriseSettings',
   'WorkOrderMilestoneTypes',
-  'WorkOrderTypes'
+  'WorkOrderTypes',
+  'UserSettings'
 ] as const
 
 export type CacheTableNames = (typeof cacheTableNames)[number]
@@ -114,6 +120,11 @@ export function clearCacheByTableName(
 
     case 'SunriseSettings': {
       clearSettingsCache()
+      break
+    }
+
+    case 'UserSettings': {
+      clearApiKeysCache()
       break
     }
 
@@ -161,6 +172,7 @@ export function clearCaches(): void {
   clearContractTypesCache()
   clearIntermentContainerTypesCache()
   clearSettingsCache()
+  clearApiKeysCache()
   clearWorkOrderMilestoneTypesCache()
   clearWorkOrderTypesCache()
   debug('Caches cleared')

@@ -1,7 +1,10 @@
 import sqlite from 'better-sqlite3';
+import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import { generateApiKey } from '../helpers/functions.api.js';
+import updateUserSetting from './updateUserSetting.js';
 export default function getUserSettings(userName) {
-    const database = sqlite(sunriseDB, { readonly: true });
+    const database = sqlite(sunriseDB);
     const databaseSettings = database
         .prepare(`select s.settingKey, s.settingValue
         from UserSettings s
@@ -13,5 +16,11 @@ export default function getUserSettings(userName) {
         // eslint-disable-next-line security/detect-object-injection
         settings[settingKey] = databaseSetting.settingValue;
     }
+    if ((settings.apiKey ?? '') === '') {
+        settings.apiKey = generateApiKey(userName);
+        updateUserSetting(userName, 'apiKey', settings.apiKey, database);
+        clearCacheByTableName('UserSettings');
+    }
+    database.close();
     return settings;
 }

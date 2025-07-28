@@ -5,7 +5,6 @@ import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { authenticate, getSafeRedirectURL } from '../helpers/authentication.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { useTestDatabases } from '../helpers/database.helpers.js';
-import { getApiKey } from '../helpers/functions.api.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:login`);
 export const router = Router();
 function getHandler(request, response) {
@@ -49,15 +48,13 @@ async function postHandler(request, response) {
             const canUpdate = getConfigProperty('users.canUpdate').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
             const canUpdateWorkOrders = getConfigProperty('users.canUpdateWorkOrders').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
             const isAdmin = getConfigProperty('users.isAdmin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
-            const apiKey = await getApiKey(userNameLowerCase);
             const userSettings = getUserSettings(userNameLowerCase);
             userObject = {
                 userName: userNameLowerCase,
                 userProperties: {
                     canUpdate,
                     canUpdateWorkOrders,
-                    isAdmin,
-                    apiKey
+                    isAdmin
                 },
                 userSettings
             };

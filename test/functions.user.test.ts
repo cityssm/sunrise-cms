@@ -1,7 +1,7 @@
 import assert from 'node:assert'
-import fs from 'node:fs'
 import { describe, it } from 'node:test'
 
+import getApiKeys from '../database/getApiKeys.js'
 import * as userFunctions from '../helpers/functions.user.js'
 
 await describe('functions.user', async () => {
@@ -27,10 +27,9 @@ await describe('functions.user', async () => {
           userProperties: {
             canUpdate: false,
             canUpdateWorkOrders: false,
-            isAdmin: false,
-
-            apiKey: ''
-          }
+            isAdmin: false
+          },
+          userSettings: {}
         }
       }
     }
@@ -52,10 +51,9 @@ await describe('functions.user', async () => {
           userProperties: {
             canUpdate: true,
             canUpdateWorkOrders: true,
-            isAdmin: false,
-
-            apiKey: ''
-          }
+            isAdmin: false
+          },
+          userSettings: {}
         }
       }
     }
@@ -77,10 +75,9 @@ await describe('functions.user', async () => {
           userProperties: {
             canUpdate: false,
             canUpdateWorkOrders: false,
-            isAdmin: true,
-
-            apiKey: ''
-          }
+            isAdmin: true
+          },
+          userSettings: {}
         }
       }
     }
@@ -102,10 +99,9 @@ await describe('functions.user', async () => {
           userProperties: {
             canUpdate: true,
             canUpdateWorkOrders: true,
-            isAdmin: true,
-            
-            apiKey: ''
-          }
+            isAdmin: true
+          },
+          userSettings: {}
         }
       }
     }
@@ -120,12 +116,10 @@ await describe('functions.user', async () => {
   })
 
   await describe('API key check', async () => {
-    await it('authenticates with a valid API key', async () => {
-      const apiKeysJSON: Record<string, string> = JSON.parse(
-        fs.readFileSync('data/apiKeys.json', 'utf8')
-      ) as Record<string, string>
+    await it('authenticates with a valid API key', () => {
+      const apiKeys = getApiKeys()
 
-      const apiKey = Object.values(apiKeysJSON)[0]
+      const apiKey = Object.values(apiKeys)[0] // Get the first API key
 
       const apiRequest: userFunctions.APIRequest = {
         params: {
@@ -133,25 +127,25 @@ await describe('functions.user', async () => {
         }
       }
 
-      assert.strictEqual(await userFunctions.apiKeyIsValid(apiRequest), true)
+      assert.strictEqual(userFunctions.apiKeyIsValid(apiRequest), true)
     })
 
-    await it('fails to authenticate with an invalid API key', async () => {
+    await it('fails to authenticate with an invalid API key', () => {
       const apiRequest: userFunctions.APIRequest = {
         params: {
           apiKey: 'badKey'
         }
       }
 
-      assert.strictEqual(await userFunctions.apiKeyIsValid(apiRequest), false)
+      assert.strictEqual(userFunctions.apiKeyIsValid(apiRequest), false)
     })
 
-    await it('fails to authenticate with no API key', async () => {
+    await it('fails to authenticate with no API key', () => {
       const apiRequest: userFunctions.APIRequest = {
         params: {}
       }
 
-      assert.strictEqual(await userFunctions.apiKeyIsValid(apiRequest), false)
+      assert.strictEqual(userFunctions.apiKeyIsValid(apiRequest), false)
     })
   })
 })

@@ -1,5 +1,5 @@
+import { getUserNameFromApiKey } from './cache/apiKeys.cache.js'
 import { getConfigProperty } from './config.helpers.js'
-import { getUserNameFromApiKey } from './functions.api.js'
 
 export interface APIRequest {
   params?: {
@@ -13,14 +13,15 @@ export interface UserRequest {
   }
 }
 
-export async function apiKeyIsValid(request: APIRequest): Promise<boolean> {
+export function apiKeyIsValid(request: APIRequest): boolean {
   const apiKey = request.params?.apiKey
 
+  // eslint-disable-next-line security/detect-possible-timing-attacks
   if (apiKey === undefined) {
     return false
   }
 
-  const userName = await getUserNameFromApiKey(apiKey)
+  const userName = getUserNameFromApiKey(apiKey)
 
   if (userName === undefined) {
     return false

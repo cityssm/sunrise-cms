@@ -505,7 +505,6 @@ const createStatements = [
 const initializingUser: User = {
   userName: 'databaseInit',
   userProperties: {
-    apiKey: '',
     canUpdate: true,
     canUpdateWorkOrders: true,
     isAdmin: true
