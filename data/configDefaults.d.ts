@@ -68,5 +68,9 @@ export declare const configDefaultValues: {
     'settings.dynamicsGP.accountCodes': string[];
     'settings.dynamicsGP.itemNumbers': string[];
     'settings.dynamicsGP.trialBalanceCodes': string[];
+    'settings.consignoCloud.integrationIsEnabled': boolean;
+    'settings.consignoCloud.apiKey': string;
+    'settings.consignoCloud.apiSecret': string;
+    'settings.consignoCloud.baseUrl': string;
 };
 export default configDefaultValues;

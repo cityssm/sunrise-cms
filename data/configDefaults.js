@@ -62,12 +62,18 @@ export const configDefaultValues = {
     'settings.adminCleanup.recordDeleteAgeDays': 60,
     'settings.printPdf.browser': 'chrome',
     'settings.printPdf.contentDisposition': 'attachment',
+    // Dynamics GP
     'settings.dynamicsGP.integrationIsEnabled': false,
     'settings.dynamicsGP.mssqlConfig': undefined,
     // eslint-disable-next-line no-secrets/no-secrets
     'settings.dynamicsGP.lookupOrder': ['invoice'],
     'settings.dynamicsGP.accountCodes': [],
     'settings.dynamicsGP.itemNumbers': [],
-    'settings.dynamicsGP.trialBalanceCodes': []
+    'settings.dynamicsGP.trialBalanceCodes': [],
+    // Consigno Cloud
+    'settings.consignoCloud.integrationIsEnabled': false,
+    'settings.consignoCloud.apiKey': '',
+    'settings.consignoCloud.apiSecret': '',
+    'settings.consignoCloud.baseUrl': ''
 };
 export default configDefaultValues;

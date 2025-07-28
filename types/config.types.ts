@@ -111,6 +111,14 @@ export interface Config {
       lookupOrder?: DynamicsGPLookup[]
       trialBalanceCodes?: string[]
     }
+
+    consignoCloud?: {
+      integrationIsEnabled: boolean
+
+      apiKey?: string
+      apiSecret?: string
+      baseUrl?: string
+    }
   }
 }
 

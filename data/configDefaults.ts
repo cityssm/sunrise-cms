@@ -117,6 +117,8 @@ export const configDefaultValues = {
     | 'attachment'
     | 'inline',
 
+  // Dynamics GP
+
   'settings.dynamicsGP.integrationIsEnabled': false,
   'settings.dynamicsGP.mssqlConfig': undefined as unknown as MSSQLConfig,
 
@@ -125,7 +127,15 @@ export const configDefaultValues = {
 
   'settings.dynamicsGP.accountCodes': [] as string[],
   'settings.dynamicsGP.itemNumbers': [] as string[],
-  'settings.dynamicsGP.trialBalanceCodes': [] as string[]
+  'settings.dynamicsGP.trialBalanceCodes': [] as string[],
+
+  // Consigno Cloud
+
+  'settings.consignoCloud.integrationIsEnabled': false,
+
+  'settings.consignoCloud.apiKey': '',
+  'settings.consignoCloud.apiSecret': '',
+  'settings.consignoCloud.baseUrl': ''
 }
 
 export default configDefaultValues
