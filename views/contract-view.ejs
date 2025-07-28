@@ -72,35 +72,28 @@
         <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
       </a>
       <% if (contractTypePrints.length > 0) { %>
-        <% if (contractTypePrints.length === 1) { %>
-          <a href="<%= urlPrefix %>/print/<%= contractTypePrints[0] %>/?contractId=<%= contract.contractId %>" target="_blank" aria-label="Print">
-            <span class="icon"><i class="fa-solid fa-print"></i></span>
-            <span class="is-hidden-touch">Print</span>
-          </a>
-        <% } else { %>
-          <div class="dropdown is-right is-up">
-            <div class="dropdown-trigger">
-              <button class="button" type="button" aria-label="Print">
-                <span class="icon"><i class="fa-solid fa-print"></i></span>
-                <span class="is-hidden-touch">Print</span>
-                <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
-              </a>
-            </div>
-            <div class="dropdown-menu">
-              <div class="dropdown-content has-text-left">
-                <% for (const printName of contractTypePrints) { %>
-                  <% const printConfig = printFunctions.getPrintConfig(printName); %>
-                  <% if (printConfig) { %>
-                    <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?contractId=<%= contract.contractId %>" target="_blank">
-                      <span class="icon"><i class="fa-solid fa-print"></i></span>
-                      <span><%= printConfig.title %></span>
-                    </a>
-                  <% } %>
+        <div class="dropdown is-right is-up">
+          <div class="dropdown-trigger">
+            <button class="button" type="button" aria-label="Print">
+              <span class="icon"><i class="fa-solid fa-print"></i></span>
+              <span class="is-hidden-touch">Print</span>
+              <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
+            </a>
+          </div>
+          <div class="dropdown-menu">
+            <div class="dropdown-content has-text-left">
+              <% for (const printName of contractTypePrints) { %>
+                <% const printConfig = printFunctions.getPrintConfig(printName); %>
+                <% if (printConfig) { %>
+                  <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?contractId=<%= contract.contractId %>" target="_blank">
+                    <span class="icon"><i class="fa-solid fa-print"></i></span>
+                    <span><%= printConfig.title %></span>
+                  </a>
                 <% } %>
-              </div>
+              <% } %>
             </div>
           </div>
-        <% } %>
+        </div>
       <% } %>
       <% if (user.userProperties.canUpdate) { %>
         <a class="button <%= (contract.contractEndDate ? "is-warning" : "is-primary") %>"
