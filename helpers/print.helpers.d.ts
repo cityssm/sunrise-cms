@@ -9,7 +9,7 @@ interface ReportData {
     contractFunctions: unknown;
     dateTimeFunctions: unknown;
 }
-interface PrintConfigWithPath extends PrintConfig {
+export interface PrintConfigWithPath extends PrintConfig {
     path: string;
 }
 export declare function getScreenPrintConfig(printName: string): PrintConfig | undefined;

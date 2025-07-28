@@ -25,7 +25,7 @@ interface ReportData {
   dateTimeFunctions: unknown
 }
 
-interface PrintConfigWithPath extends PrintConfig {
+export interface PrintConfigWithPath extends PrintConfig {
   path: string
 }
 

@@ -1,24 +1,15 @@
-import PdfPuppeteer from '@cityssm/pdf-puppeteer'
 import camelcase from 'camelcase'
-import { renderFile as renderEjsFile } from 'ejs'
-import exitHook from 'exit-hook'
 import type { NextFunction, Request, Response } from 'express'
 
 import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { generatePdf } from '../../helpers/pdf.helpers.js'
 import {
-  getPdfPrintConfig,
-  getReportData
+  getPdfPrintConfig
 } from '../../helpers/print.helpers.js'
 
 const attachmentOrInline = getConfigProperty(
   'settings.printPdf.contentDisposition'
 )
-
-const pdfPuppeteer = new PdfPuppeteer()
-
-exitHook(() => {
-  void pdfPuppeteer.closeBrowser()
-})
 
 export async function handler(
   request: Request,
@@ -52,44 +43,25 @@ export async function handler(
     return
   }
 
-  const reportData = await getReportData(printConfig, request.query)
+  const pdfData = await generatePdf(printConfig, request.query)
 
-  function pdfCallbackFunction(pdf: Buffer): void {
-    let exportFileNameId = ''
+  let exportFileNameId = ''
 
-    if ((printConfig?.params.length ?? 0) > 0) {
-      // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
-      exportFileNameId = `-${request.query[printConfig?.params[0] ?? '']}`
-    }
-
-    const exportFileName = `${camelcase(printConfig?.title ?? 'export')}${exportFileNameId}.pdf`
-
-    response.setHeader(
-      'Content-Disposition',
-      `${attachmentOrInline}; filename=${exportFileName}`
-    )
-
-    response.setHeader('Content-Type', 'application/pdf')
-
-    response.send(pdf)
+  if (printConfig.params.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
+    exportFileNameId = `-${request.query[printConfig.params[0] ?? '']}`
   }
 
-  async function ejsCallbackFunction(
-    ejsError: Error | null,
-    ejsData: string
-  ): Promise<void> {
-    // eslint-disable-next-line unicorn/no-null
-    if (ejsError != null) {
-      next(ejsError)
-      return
-    }
+  const exportFileName = `${camelcase(printConfig.title)}${exportFileNameId}.pdf`
 
-    const pdf = await pdfPuppeteer.fromHtml(ejsData)
-    
-    pdfCallbackFunction(Buffer.from(pdf))
-  }
+  response.setHeader(
+    'Content-Disposition',
+    `${attachmentOrInline}; filename=${exportFileName}`
+  )
 
-  await renderEjsFile(printConfig.path, reportData, {}, ejsCallbackFunction)
+  response.setHeader('Content-Type', 'application/pdf')
+
+  response.send(pdfData)
 }
 
 export default handler
