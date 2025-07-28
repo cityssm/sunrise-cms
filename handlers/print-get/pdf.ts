@@ -1,11 +1,9 @@
 import camelcase from 'camelcase'
-import type { NextFunction, Request, Response } from 'express'
+import type { Request, Response } from 'express'
 
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { generatePdf } from '../../helpers/pdf.helpers.js'
-import {
-  getPdfPrintConfig
-} from '../../helpers/print.helpers.js'
+import { getPdfPrintConfig } from '../../helpers/print.helpers.js'
 
 const attachmentOrInline = getConfigProperty(
   'settings.printPdf.contentDisposition'
@@ -13,8 +11,7 @@ const attachmentOrInline = getConfigProperty(
 
 export async function handler(
   request: Request,
-  response: Response,
-  next: NextFunction
+  response: Response
 ): Promise<void> {
   const printName = request.params.printName
 
