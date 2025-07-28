@@ -52,7 +52,7 @@
     "chokidar": "^4.0.3",
     "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.0.0",
     "csurf": "^1.11.0",
     "debug": "^4.4.1",
     "ejs": "^3.1.10",
@@ -67,7 +67,7 @@
     "randomcolor": "^0.6.2",
     "session-file-store": "^1.5.0",
     "set-interval-async": "^3.0.3",
-    "sunrise-cms-customizations": "^0.0.1"
+    "sunrise-cms-customizations": "^0.0.2"
   },
   "devDependencies": {
     "@cityssm/bulma-sticky-table": "^3.0.1",
@@ -89,7 +89,7 @@
     "@types/randomcolor": "^0.5.9",
     "@types/session-file-store": "^1.2.5",
     "axe-core": "^4.10.3",
-    "cypress": "^14.5.2",
+    "cypress": "^14.5.3",
     "cypress-axe": "^1.6.0",
     "eslint-config-cityssm": "^27.0.0",
     "nodemon": "^3.1.10",
