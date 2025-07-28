@@ -16,7 +16,7 @@
     workOrderOpenDate: "<%= settingFunctions.getSettingValue('aliases.workOrderOpenDate') %>",
     workOrderCloseDate: "<%= settingFunctions.getSettingValue('aliases.workOrderCloseDate') %>"
   };
-  exports.dynamicsGPIntegrationIsEnabled = <%= configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled') %>;
+  exports.dynamicsGPIntegrationIsEnabled = <%= configFunctions.getConfigProperty('integrations.dynamicsGP.integrationIsEnabled') %>;
 </script>
 <script src="<%= urlPrefix %>/lib/cityssm-bulma-js/bulma-js.js"></script>
 <script src="<%= urlPrefix %>/lib/cityssm-bulma-webapp-js/cityssm.min.js"></script>

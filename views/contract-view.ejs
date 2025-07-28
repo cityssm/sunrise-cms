@@ -594,7 +594,7 @@
                     <td>
                       <% if (contractTransaction.externalReceiptNumber !== '') { %>
                         <%= contractTransaction.externalReceiptNumber %>
-                        <% if (configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) { %>
+                        <% if (configFunctions.getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) { %>
                           <% if (contractTransaction.dynamicsGPDocument === undefined) { %>
                             <span data-tooltip="No Matching Document Found">
                               <i class="fa-solid fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
