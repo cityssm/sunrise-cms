@@ -9,6 +9,7 @@ import { getCachedContractTypePrintsById, getCachedContractTypes } from '../../h
 import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js';
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
+import { userHasConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js';
 export default async function handler(request, response) {
     const contract = await getContract(request.params.contractId);
     if (contract === undefined) {
@@ -16,6 +17,7 @@ export default async function handler(request, response) {
         return;
     }
     const contractTypePrints = getCachedContractTypePrintsById(contract.contractTypeId);
+    const consignoCloudAccess = userHasConsignoCloudAccess(request.session.user);
     /*
      * Contract Drop Lists
      */
@@ -39,8 +41,9 @@ export default async function handler(request, response) {
     response.render('contract-edit', {
         headTitle: 'Contract Update',
         contract,
-        committalTypes,
         contractTypePrints,
+        userHasConsignoCloudAccess: consignoCloudAccess,
+        committalTypes,
         contractTypes,
         funeralHomes,
         intermentContainerTypes,

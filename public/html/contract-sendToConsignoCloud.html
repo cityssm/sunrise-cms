@@ -1,0 +1,145 @@
+<div class="modal" role="dialog">
+  <div class="modal-background"></div>
+  <div class="modal-card has-width-900">
+    <header class="modal-card-head">
+      <h3 class="modal-card-title">Send to ConsignO Cloud</h3>
+      <button
+        class="delete is-close-modal-button"
+        aria-label="close"
+        type="button"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="message is-info">
+        <p class="message-body">
+          This will start the ConsignO Cloud workflow for this contract.
+          The contract will be sent to the ConsignO Cloud, and you will be
+          able to manage it from there.
+        </p>
+      </div>
+      <div id="consignoCloudTab--loading">
+        <p class="has-text-centered has-text-grey">
+          <i class="fa-solid fa-5x fa-circle-notch fa-spin"></i><br />
+          Loading contract information...
+        </p>
+      </div>
+      <div class="is-hidden" id="consignoCloudTab--form">
+        <form id="form--consignoCloudStart">
+          <input id="consignoCloudStart--contractId" name="contractId" type="hidden" />
+
+          <div class="columns">
+            <div class="column">
+              <h4 class="title is-5">Workflow Details</h4>
+
+              <div class="field">
+                <label class="label" for="consignoCloudStart--workflowTitle">Workflow Title</label>
+                <div class="control">
+                  <input
+                    id="consignoCloudStart--workflowTitle"
+                    name="workflowTitle"
+                    class="input"
+                    type="text"
+                    placeholder="Enter a title for the workflow"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label" for="consignoCloudStart--workflowExpiresOn">Expiry Date</label>
+                <div class="control">
+                  <input
+                    id="consignoCloudStart--workflowExpiresOn"
+                    name="workflowExpiresOn"
+                    class="input"
+                    type="date"
+                    placeholder="Enter a title for the print"
+                    required
+                  />
+                </div>
+              </div>
+
+              <h4 class="title is-5">Select Documents for Signing</h4>
+              <div class="panel" id="consignoCloudStart--printsContainer"></div>
+            </div>
+            <div class="column">
+              <h4 class="title is-5">Set Up Signer</h4>
+              <div class="field">
+                <label class="label" for="consignoCloudStart--signerFirstName">Signer First Name</label>
+                <div class="control">
+                  <input
+                    id="consignoCloudStart--signerFirstName"
+                    name="signerFirstName"
+                    class="input"
+                    type="text"
+                    placeholder="Enter the first name of the signer"
+                    required
+                  />
+                </div>       
+              </div>
+              <div class="field">
+                <label class="label" for="consignoCloudStart--signerLastName">Signer Last Name</label>
+                <div class="control">
+                  <input
+                    id="consignoCloudStart--signerLastName"
+                    name="signerLastName"
+                    class="input"
+                    type="text"
+                    placeholder="Enter the last name of the signer"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="consignoCloudStart--signerEmail">Email</label>
+                <div class="control">
+                  <input
+                    id="consignoCloudStart--signerEmail"
+                    name="signerEmail"
+                    class="input"
+                    type="email"
+                    placeholder="Enter the email address of the signer"
+                    required
+                  />
+                </div>
+              </div>
+              <label class="label" for="consignoCloudStart--signerPhone">Phone Number</label>
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input
+                    id="consignoCloudStart--signerPhone"
+                    name="signerPhone"
+                    class="input"
+                    type="tel"
+                    placeholder="Enter the phone number of the signer"
+                  />
+                </div>
+                <div class="control">
+                  <div class="select">
+                    <select id="consignoCloudStart--signerAmr" name="signerAmr">
+                      <option value="call">Call</option>
+                      <option value="sms">SMS</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <div class="buttons">
+        <button
+          class="button is-success is-hidden"
+          type="submit"
+          form="form--consignoCloudStart"
+        >
+          <span class="icon"><i class="fa-solid fa-plus"></i></span>
+          <span>Initialize ConsignO Cloud Workflow</span>
+        </button>
+        <button class="button is-close-modal-button" type="button">Cancel</button>
+      </div>
+    </footer>
+  </div>
+</div>

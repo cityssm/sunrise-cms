@@ -2,7 +2,7 @@
 
 import type { Request, Response } from 'express'
 
-import { getDynamicsGPDocument } from '../../helpers/dynamicsGp.helpers.js'
+import { getDynamicsGPDocument } from '../../integrations/dynamicsGp/helpers.js'
 
 export default async function handler(
   request: Request<unknown, unknown, { externalReceiptNumber: string }>,

@@ -1,7 +1,7 @@
 import { DynamicsGP } from '@cityssm/dynamics-gp';
 import Debug from 'debug';
-import { DEBUG_NAMESPACE } from '../debug.config.js';
-import { getConfigProperty } from './config.helpers.js';
+import { DEBUG_NAMESPACE } from '../../debug.config.js';
+import { getConfigProperty } from '../../helpers/config.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:dynamicsGP.helpers:${process.pid}`);
 let gp;
 if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {

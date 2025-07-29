@@ -160,6 +160,11 @@ span.button.is-static {
   display: none !important;
 }
 
+.modal-card.has-width-900 {
+  max-width: 100%;
+  width: 900px;
+}
+
 /*
  * Panel with hidden block
  */

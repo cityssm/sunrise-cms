@@ -21,11 +21,13 @@ import handler_doDeleteContractInterment from '../handlers/contracts-post/doDele
 import handler_doDeleteContractTransaction from '../handlers/contracts-post/doDeleteContractTransaction.js'
 import handler_doDeleteRelatedContract from '../handlers/contracts-post/doDeleteRelatedContract.js'
 import handler_doGetBurialSiteDirectionsOfArrival from '../handlers/contracts-post/doGetBurialSiteDirectionsOfArrival.js'
+import handler_doGetContractDetailsForConsignoCloud from '../handlers/contracts-post/doGetContractDetailsForConsignoCloud.js'
 import handler_doGetContractTypeFields from '../handlers/contracts-post/doGetContractTypeFields.js'
 import handler_doGetDynamicsGPDocument from '../handlers/contracts-post/doGetDynamicsGPDocument.js'
 import handler_doGetFees from '../handlers/contracts-post/doGetFees.js'
 import handler_doGetPossibleRelatedContracts from '../handlers/contracts-post/doGetPossibleRelatedContracts.js'
 import handler_doSearchContracts from '../handlers/contracts-post/doSearchContracts.js'
+import handler_doStartConsignoCloudWorkflow from '../handlers/contracts-post/doStartConsignoCloudWorkflow.js'
 import handler_doUpdateContract from '../handlers/contracts-post/doUpdateContract.js'
 import handler_doUpdateContractComment from '../handlers/contracts-post/doUpdateContractComment.js'
 import handler_doUpdateContractFeeQuantity from '../handlers/contracts-post/doUpdateContractFeeQuantity.js'
@@ -169,6 +171,22 @@ router.post(
   updatePostHandler,
   handler_doDeleteContractTransaction
 )
+
+// Consigno Cloud
+
+if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
+  router.post(
+    '/doGetContractDetailsForConsignoCloud',
+    updatePostHandler,
+    handler_doGetContractDetailsForConsignoCloud
+  )
+
+  router.post(
+    '/doStartConsignoCloudWorkflow',
+    updatePostHandler,
+    handler_doStartConsignoCloudWorkflow
+  )
+}
 
 // Related Contracts
 

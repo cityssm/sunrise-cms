@@ -1,7 +1,7 @@
 declare global {
   export interface User {
     userName: string
-    userProperties?: UserProperties
+    userProperties: UserProperties
     userSettings: Partial<Record<UserSettingKey, string>>
   }
 }

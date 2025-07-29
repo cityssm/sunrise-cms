@@ -1,5 +1,6 @@
 import type { DateString, TimeString } from '@cityssm/utils-datetime';
 import type { directionsOfArrival } from '../data/dataLists.js';
+import type { DynamicsGPDocument } from '../integrations/dynamicsGp/types.js';
 import type { SettingKey } from './setting.types.js';
 export interface BurialSite extends Record {
     burialSiteId: number;
@@ -230,13 +231,6 @@ export interface ContractTypeField {
     minLength?: number;
     pattern?: string;
     orderNumber?: number;
-}
-export interface DynamicsGPDocument {
-    documentType: 'Cash Receipt' | 'Invoice';
-    documentDate: Date;
-    documentDescription: string[];
-    documentNumber: string;
-    documentTotal: number;
 }
 export interface Fee extends Record {
     feeId: number;

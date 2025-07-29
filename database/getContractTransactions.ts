@@ -6,7 +6,7 @@ import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
-import { getDynamicsGPDocument } from '../helpers/dynamicsGp.helpers.js'
+import { getDynamicsGPDocument } from '../integrations/dynamicsGp/helpers.js'
 import type { ContractTransaction } from '../types/record.types.js'
 
 export default async function GetContractTransactions(

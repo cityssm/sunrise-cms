@@ -16,6 +16,7 @@ import {
 import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js'
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { userHasConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js'
 
 export default async function handler(
   request: Request,
@@ -33,6 +34,8 @@ export default async function handler(
   }
 
   const contractTypePrints = getCachedContractTypePrintsById(contract.contractTypeId)
+
+  const consignoCloudAccess = userHasConsignoCloudAccess(request.session.user)
 
   /*
    * Contract Drop Lists
@@ -67,8 +70,10 @@ export default async function handler(
 
     contract,
 
-    committalTypes,
     contractTypePrints,
+    userHasConsignoCloudAccess: consignoCloudAccess,
+
+    committalTypes,
     contractTypes,
     funeralHomes,
     intermentContainerTypes,

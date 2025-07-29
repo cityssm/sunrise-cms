@@ -6,11 +6,11 @@ import {
 } from '@cityssm/dynamics-gp'
 import Debug from 'debug'
 
-import { DEBUG_NAMESPACE } from '../debug.config.js'
-import type { DynamicsGPLookup } from '../types/config.types.js'
-import type { DynamicsGPDocument } from '../types/record.types.js'
+import { DEBUG_NAMESPACE } from '../../debug.config.js'
+import { getConfigProperty } from '../../helpers/config.helpers.js'
+import type { DynamicsGPLookup } from '../../types/config.types.js'
 
-import { getConfigProperty } from './config.helpers.js'
+import type { DynamicsGPDocument } from './types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:dynamicsGP.helpers:${process.pid}`)
 

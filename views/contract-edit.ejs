@@ -70,6 +70,13 @@
                   </a>
                 <% } %>
               <% } %>
+              <% if (userHasConsignoCloudAccess) { %>
+                <hr class="dropdown-divider" />
+                <a class="dropdown-item" id="button--sendToConsignoCloud" href="#">
+                  <span class="icon"><i class="fa-solid fa-signature"></i></span>
+                  <span>Send to ConsignO Cloud for Signing</span>
+                </a>
+              <% } %>
             </div>
           </div>
         </div>
@@ -1173,6 +1180,9 @@
   <script src="<%= urlPrefix %>/javascripts/contract.editWorkOrders.js"></script>
   <script src="<%= urlPrefix %>/javascripts/contract.editRelated.js"></script>
   <script src="<%= urlPrefix %>/javascripts/contract.editComments.js"></script>
-<% } %>
 
+  <% if (userHasConsignoCloudAccess) { %>
+    <script src="<%= urlPrefix %>/javascripts/contract.consignoCloud.js"></script>
+  <% } %>
+<% } %>
 <%- include('_footerB'); -%>
