@@ -71,6 +71,16 @@ export default async function handler(
     purchaserLastName = ''
   }
 
+  let phoneNumber = contract.purchaserPhoneNumber
+
+  // remove any non-numeric characters
+  phoneNumber = phoneNumber.replaceAll(/\D/g, '')
+
+  // add a leading plus sign if the phone number is 10 digits
+  if (phoneNumber.length === 10) {
+    phoneNumber = `+1${phoneNumber}`
+  }
+
   /*
    * Validate Available Prints
    */
@@ -134,6 +144,6 @@ export default async function handler(
     signerLastName: purchaserLastName,
 
     signerEmail: contract.purchaserEmail,
-    signerPhone: contract.purchaserPhoneNumber
+    signerPhone: phoneNumber
   })
 }
