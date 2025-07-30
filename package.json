@@ -37,7 +37,7 @@
     "@cityssm/bulma-js": "^0.5.0",
     "@cityssm/bulma-webapp-js": "^1.5.0",
     "@cityssm/configurator": "^0.1.0",
-    "@cityssm/consigno-cloud-api": "^1.1.2",
+    "@cityssm/consigno-cloud-api": "^1.1.4",
     "@cityssm/date-diff": "^2.2.3",
     "@cityssm/dynamics-gp": "^1.4.1",
     "@cityssm/fa-glow": "^0.1.0",

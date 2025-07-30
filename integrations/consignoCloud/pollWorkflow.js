@@ -83,7 +83,7 @@ export default async function pollWorkflow(workflow, user) {
     /*
      * If the workflow has no remaining actions, clear the metadata
      */
-    if (currentWorkflow.response.remainingActions === 0) {
+    if (workflowStatusString === 'Deleted' || currentWorkflow.response.remainingActions === 0) {
         debug('Workflow has no remaining actions, clearing metadata');
         deleteConsignoCloudContractMetadata(workflow.contractId, user);
         return true;
