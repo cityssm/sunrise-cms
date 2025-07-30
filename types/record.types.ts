@@ -212,6 +212,7 @@ export interface Contract extends Record {
   directionOfArrival?: string
   directionOfArrivalDescription?: string
 
+  contractAttachments?: ContractAttachment[]
   contractComments?: ContractComment[]
   contractFees?: ContractFee[]
   contractFields?: ContractField[]
@@ -325,6 +326,18 @@ export interface ContractMetadata extends Record {
   contractId: number
   metadataKey: MetadataKey
   metadataValue: string
+}
+
+export interface ContractAttachment extends Record {
+  contractAttachmentId: number
+
+  contractId?: number
+
+  attachmentDetails: string
+  attachmentTitle: string
+
+  fileName: string
+  filePath?: string
 }
 
 export interface Fee extends Record {

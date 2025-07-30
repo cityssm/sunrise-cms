@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import handler_attachment from '../handlers/contracts-get/attachment.js';
 import handler_edit from '../handlers/contracts-get/edit.js';
 import handler_new from '../handlers/contracts-get/new.js';
 import handler_next from '../handlers/contracts-get/next.js';
@@ -78,6 +79,8 @@ if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
     router.post('/doGetContractDetailsForConsignoCloud', updatePostHandler, handler_doGetContractDetailsForConsignoCloud);
     router.post('/doStartConsignoCloudWorkflow', updatePostHandler, handler_doStartConsignoCloudWorkflow);
 }
+// Attachments
+router.get('/attachment/:attachmentId', handler_attachment);
 // Related Contracts
 router.post('/doGetPossibleRelatedContracts', updatePostHandler, handler_doGetPossibleRelatedContracts);
 router.post('/doAddRelatedContract', updatePostHandler, handler_doAddRelatedContract);

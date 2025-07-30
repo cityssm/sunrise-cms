@@ -1,5 +1,6 @@
 import { Router } from 'express'
 
+import handler_attachment from '../handlers/contracts-get/attachment.js'
 import handler_edit from '../handlers/contracts-get/edit.js'
 import handler_new from '../handlers/contracts-get/new.js'
 import handler_next from '../handlers/contracts-get/next.js'
@@ -187,6 +188,10 @@ if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
     handler_doStartConsignoCloudWorkflow
   )
 }
+
+// Attachments
+
+router.get('/attachment/:attachmentId', handler_attachment)
 
 // Related Contracts
 

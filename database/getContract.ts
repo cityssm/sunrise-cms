@@ -8,6 +8,7 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { Contract } from '../types/record.types.js'
 
+import getContractAttachments from './getContractAttachments.js'
 import getContractComments from './getContractComments.js'
 import getContractFees from './getContractFees.js'
 import getContractFields from './getContractFields.js'
@@ -123,6 +124,8 @@ export default async function getContract(
     )
 
     contract.relatedContracts = relatedContractsResults.contracts
+
+    contract.contractAttachments = getContractAttachments(contractId, database)
   }
 
   if (connectedDatabase === undefined) {

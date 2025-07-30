@@ -1,6 +1,7 @@
 import { dateIntegerToString, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import getContractAttachments from './getContractAttachments.js';
 import getContractComments from './getContractComments.js';
 import getContractFees from './getContractFees.js';
 import getContractFields from './getContractFields.js';
@@ -84,6 +85,7 @@ export default async function getContract(contractId, connectedDatabase) {
             includeTransactions: false
         }, database);
         contract.relatedContracts = relatedContractsResults.contracts;
+        contract.contractAttachments = getContractAttachments(contractId, database);
     }
     if (connectedDatabase === undefined) {
         database.close();

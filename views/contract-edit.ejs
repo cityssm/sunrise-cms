@@ -1092,6 +1092,57 @@
     </div>
     <div class="panel-block is-block" id="container--contractComments"></div>
   </div>
+
+  <% if (contract.contractAttachments.length > 0) { %>
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="has-text-weight-bold">Attachments</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <i class="fa-solid fa-paperclip"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-block">
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Details</th>
+              <th>Uploaded</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (const attachment of contract.contractAttachments) { %>
+              <tr>
+                <td>
+                  <a href="<%= urlPrefix %>/contracts/attachment/<%= attachment.contractAttachmentId %>"
+                    class="has-text-weight-bold"
+                    target="_blank"
+                    download>
+                    <%= attachment.attachmentTitle %>
+                  </a><br />
+                  <small class="has-text-grey"><%= attachment.fileName %></small>
+                </td>
+                <td><%= attachment.attachmentDetails %></td>
+                <td>
+                  <% const attachmentDate = new Date(attachment.recordCreate_timeMillis); %>
+                  <%= dateTimeFunctions.dateToString(attachmentDate) %>
+                  <%= dateTimeFunctions.dateToTimeString(attachmentDate) %>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% } %>
 <% } %>
 
 <datalist id="datalist--cityDefault">
