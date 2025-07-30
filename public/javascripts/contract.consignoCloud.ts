@@ -277,6 +277,26 @@ declare const exports: {
     )
   }
 
+  function swapSignerNames(event: Event): void {
+
+    event.preventDefault()
+
+    if (modalElement === undefined) {
+      return
+    }
+
+    const firstNameInputElement = modalElement.querySelector(
+      '#consignoCloudStart--signerFirstName'
+    ) as HTMLInputElement
+    const lastNameInputElement = modalElement.querySelector(
+      '#consignoCloudStart--signerLastName'
+    ) as HTMLInputElement
+
+    const tempFirstName = firstNameInputElement.value
+    firstNameInputElement.value = lastNameInputElement.value
+    lastNameInputElement.value = tempFirstName
+  }
+
   sendToConsignoCloudButtonElement.addEventListener('click', (clickEvent) => {
     clickEvent.preventDefault()
 
@@ -292,6 +312,7 @@ declare const exports: {
     }
 
     cityssm.openHtmlModal('contract-sendToConsignoCloud', {
+
       onshown(_modalElement, _closeModalFunction) {
         modalElement = _modalElement
         closeModalFunction = _closeModalFunction
@@ -299,6 +320,10 @@ declare const exports: {
         bulmaJS.toggleHtmlClipped()
 
         loadConsignoCloudModal()
+
+        modalElement
+          .querySelector('#consignoCloudStart--swapNames')
+          ?.addEventListener('click', swapSignerNames)
 
         modalElement
           .querySelector('form')

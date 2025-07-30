@@ -143,6 +143,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
+    function swapSignerNames(event) {
+        event.preventDefault();
+        if (modalElement === undefined) {
+            return;
+        }
+        const firstNameInputElement = modalElement.querySelector('#consignoCloudStart--signerFirstName');
+        const lastNameInputElement = modalElement.querySelector('#consignoCloudStart--signerLastName');
+        const tempFirstName = firstNameInputElement.value;
+        firstNameInputElement.value = lastNameInputElement.value;
+        lastNameInputElement.value = tempFirstName;
+    }
     sendToConsignoCloudButtonElement.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         if (sunrise.hasUnsavedChanges()) {
@@ -159,6 +170,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 closeModalFunction = _closeModalFunction;
                 bulmaJS.toggleHtmlClipped();
                 loadConsignoCloudModal();
+                modalElement
+                    .querySelector('#consignoCloudStart--swapNames')
+                    ?.addEventListener('click', swapSignerNames);
                 modalElement
                     .querySelector('form')
                     ?.addEventListener('submit', submitConsignoCloudForm);

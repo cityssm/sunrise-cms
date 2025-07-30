@@ -64,9 +64,9 @@
             </div>
             <div class="column">
               <h4 class="title is-5">Set Up Signer</h4>
-              <div class="field">
-                <label class="label" for="consignoCloudStart--signerFirstName">Signer First Name</label>
-                <div class="control">
+              <label class="label" for="consignoCloudStart--signerFirstName">Signer First Name</label>
+              <div class="field has-addons">
+                <div class="control is-expanded">
                   <input
                     id="consignoCloudStart--signerFirstName"
                     name="signerFirstName"
@@ -75,7 +75,12 @@
                     placeholder="Enter the first name of the signer"
                     required
                   />
-                </div>       
+                </div>
+                <div class="control">
+                  <button class="button" id="consignoCloudStart--swapNames" data-tooltip="Swap Names" type="button">
+                    <span class="icon"><i class="fa-solid fa-up-down"></i></span>
+                  </button>
+                </div>
               </div>
               <div class="field">
                 <label class="label" for="consignoCloudStart--signerLastName">Signer Last Name</label>
@@ -135,7 +140,7 @@
           type="submit"
           form="form--consignoCloudStart"
         >
-          <span class="icon"><i class="fa-solid fa-plus"></i></span>
+          <span class="icon"><i class="fa-solid fa-play"></i></span>
           <span>Initialize ConsignO Cloud Workflow</span>
         </button>
         <button class="button is-close-modal-button" type="button">Cancel</button>
