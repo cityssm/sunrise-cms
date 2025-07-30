@@ -11,6 +11,6 @@ export interface StartConsignoCloudWorkflowForm {
     signerPhone: string;
 }
 export default function startConsignoCloudWorkflow(form: StartConsignoCloudWorkflowForm, user: User): Promise<{
-    workflowId: string;
     workflowEditUrl: string;
+    workflowId: string;
 }>;

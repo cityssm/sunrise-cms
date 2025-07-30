@@ -1,6 +1,6 @@
 import { parseFullName } from 'parse-full-name';
 import getContract from '../../database/getContract.js';
-import getContractMetadata from '../../database/getContractMetadata.js';
+import getContractMetadataByContractId from '../../database/getContractMetadataByContractId.js';
 import { getCachedContractTypePrintsById } from '../../helpers/cache/contractTypes.cache.js';
 import { getPrintConfig } from '../../helpers/print.helpers.js';
 export default async function handler(request, response) {
@@ -54,7 +54,7 @@ export default async function handler(request, response) {
     /*
      * Validate Contract Metadata
      */
-    const contractMetadata = getContractMetadata(request.body.contractId, 'consignoCloud.');
+    const contractMetadata = getContractMetadataByContractId(request.body.contractId, 'consignoCloud.');
     if (Object.keys(contractMetadata).length > 0) {
         response.json({
             success: false,

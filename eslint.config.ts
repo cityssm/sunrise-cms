@@ -22,6 +22,7 @@ export const config = tseslint.config(configWebApp, {
             'latlng',
             'ntfy',
             'onhidden',
+            'pdfa',
             'preneed',
             'randomcolor'
           ]

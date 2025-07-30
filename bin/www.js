@@ -1,3 +1,4 @@
+import { fork } from 'node:child_process';
 import cluster from 'node:cluster';
 import os from 'node:os';
 import path from 'node:path';
@@ -21,6 +22,9 @@ debug(`Primary pid:   ${process.pid}`);
 debug(`Primary title: ${process.title}`);
 debug(`Version:       ${version}`);
 debug(`Launching ${processCount} processes`);
+/*
+ * Set up the cluster
+ */
 const clusterSettings = {
     exec: `${directoryName}/wwwProcess.js`
 };
@@ -50,6 +54,16 @@ cluster.on('exit', (worker) => {
         activeWorkers.set(newWorker.process.pid ?? 0, newWorker);
     }
 });
+/*
+ * Start other tasks
+ */
+const childProcesses = [];
+if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
+    childProcesses.push(fork(path.join('integrations', 'consignoCloud', 'updateWorkflows.task.js')));
+}
+/*
+ * Set up the ntfy notifications
+ */
 const ntfyStartupConfig = getConfigProperty('application.ntfyStartup');
 if (ntfyStartupConfig !== undefined) {
     const topic = ntfyStartupConfig.topic;
@@ -86,11 +100,18 @@ if (process.env.STARTUP_TEST === 'true') {
         process.exit(0);
     }, secondsToMillis(killSeconds));
 }
+/*
+ * Set up the exit hook
+ */
 exitHook(() => {
     doShutdown = true;
     debug('Shutting down...');
     for (const worker of activeWorkers.values()) {
         debug(`Killing worker ${worker.process.pid}`);
         worker.kill();
+    }
+    for (const childProcess of childProcesses) {
+        debug(`Killing child process ${childProcess.pid}`);
+        childProcess.kill();
     }
 });

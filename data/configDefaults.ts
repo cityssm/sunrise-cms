@@ -22,6 +22,8 @@ export const configDefaultValues = {
   'application.ntfyStartup': undefined as ConfigNtfyStartup | undefined,
   'application.useTestDatabases': false,
 
+  'application.attachmentsPath': 'data/attachments',
+
   'login.authentication': undefined as
     | {
         config: ActiveDirectoryAuthenticatorConfiguration

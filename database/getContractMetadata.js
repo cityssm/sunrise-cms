@@ -1,19 +1,20 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function getContractMetadata(contractId, startsWith = '') {
+export default function getContractMetadata(filters) {
     const database = sqlite(sunriseDB, { readonly: true });
-    const result = database
-        .prepare(`select metadataKey, metadataValue
-        from ContractMetadata
-        where recordDelete_timeMillis is null
-        and contractId = ?
-        and metadataKey like ? || '%'
-        order by metadataKey`)
-        .all(contractId, startsWith);
-    database.close();
-    const metadata = {};
-    for (const row of result) {
-        metadata[row.metadataKey] = row.metadataValue;
+    let sql = `select contractId, metadataKey, metadataValue, recordUpdate_timeMillis
+    from ContractMetadata
+    where recordDelete_timeMillis is null`;
+    const sqlParameters = [];
+    if (filters.contractId !== undefined) {
+        sql += ` and contractId = ?`;
+        sqlParameters.push(filters.contractId);
     }
-    return metadata;
+    if (filters.startsWith !== undefined && filters.startsWith !== '') {
+        sql += ` and metadataKey like ? || '%'`;
+        sqlParameters.push(filters.startsWith);
+    }
+    const rows = database.prepare(sql).all(sqlParameters);
+    database.close();
+    return rows;
 }

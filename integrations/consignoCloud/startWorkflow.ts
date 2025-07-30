@@ -11,7 +11,8 @@ import {
 } from '@cityssm/consigno-cloud-api/lookups.js'
 import type { DateString } from '@cityssm/utils-datetime'
 
-import { updateConsignoCloudMetadata } from '../../database/updateConsignoCloudMetadata.js'
+import addContractComment from '../../database/addContractComment.js'
+import updateConsignoCloudMetadata from '../../database/updateConsignoCloudMetadata.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { generatePdf } from '../../helpers/pdf.helpers.js'
 import {
@@ -41,8 +42,8 @@ export default async function startConsignoCloudWorkflow(
   form: StartConsignoCloudWorkflowForm,
   user: User
 ): Promise<{
-  workflowId: string
   workflowEditUrl: string
+  workflowId: string
 }> {
   const userIsAllowed = userHasConsignoCloudAccess(user)
 
@@ -151,6 +152,10 @@ export default async function startConsignoCloudWorkflow(
   const workflowResponse =
     await consignoCloudAPI.createWorkflow(workflowDefinition)
 
+  /*
+   * Update the metadata
+   */
+
   const workflowId = workflowResponse.response.id
 
   const workflowStatus = workflowResponse.response.status
@@ -166,6 +171,24 @@ export default async function startConsignoCloudWorkflow(
     },
     user
   )
+
+  /*
+   * Add a comment to the contract
+   */
+
+  const comment = `ConsignO Cloud workflow created: ${workflowEditUrl}`
+
+  addContractComment(
+    {
+      contractId: form.contractId,
+      comment
+    },
+    user
+  )
+
+  /*
+   * Return the workflow ID and edit URL
+   */
 
   return {
     workflowId,

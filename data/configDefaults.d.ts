@@ -9,6 +9,7 @@ export declare const configDefaultValues: {
     'application.maximumProcesses': number;
     'application.ntfyStartup': ConfigNtfyStartup | undefined;
     'application.useTestDatabases': boolean;
+    'application.attachmentsPath': string;
     'login.authentication': {
         config: ActiveDirectoryAuthenticatorConfiguration;
         type: "activeDirectory";

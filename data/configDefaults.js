@@ -7,6 +7,7 @@ export const configDefaultValues = {
     'application.maximumProcesses': 4,
     'application.ntfyStartup': undefined,
     'application.useTestDatabases': false,
+    'application.attachmentsPath': 'data/attachments',
     'login.authentication': undefined,
     'login.domain': '',
     'reverseProxy.disableCompression': false,

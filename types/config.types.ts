@@ -136,6 +136,8 @@ interface ConfigApplication {
   maximumProcesses?: number
   ntfyStartup?: ConfigNtfyStartup
   useTestDatabases?: boolean
+
+  attachmentsPath?: string
 }
 
 export interface ConfigNtfyStartup {

@@ -5,10 +5,10 @@ export default function updateContractMetadata(contractId, metadata, user, conne
     const database = connectedDatabase ?? sqlite(sunriseDB);
     let result = database
         .prepare(`update ContractMetadata
-       set metadataValue = ?,
-       recordUpdate_userName = ?,
-       recordUpdate_timeMillis = ?
-       where contractId = ? and metadataKey = ?`)
+        set metadataValue = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where contractId = ? and metadataKey = ?`)
         .run(metadata.metadataValue, user.userName, rightNow, contractId, metadata.metadataKey);
     if (result.changes <= 0) {
         result = database

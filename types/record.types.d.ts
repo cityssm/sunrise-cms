@@ -1,6 +1,7 @@
 import type { DateString, TimeString } from '@cityssm/utils-datetime';
 import type { directionsOfArrival } from '../data/dataLists.js';
 import type { DynamicsGPDocument } from '../integrations/dynamicsGp/types.js';
+import type { MetadataKey } from './contractMetadata.types.js';
 import type { SettingKey } from './setting.types.js';
 export interface BurialSite extends Record {
     burialSiteId: number;
@@ -231,6 +232,11 @@ export interface ContractTypeField {
     minLength?: number;
     pattern?: string;
     orderNumber?: number;
+}
+export interface ContractMetadata extends Record {
+    contractId: number;
+    metadataKey: MetadataKey;
+    metadataValue: string;
 }
 export interface Fee extends Record {
     feeId: number;

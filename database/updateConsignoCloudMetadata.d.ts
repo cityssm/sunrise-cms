@@ -1,4 +1,4 @@
-export declare function updateConsignoCloudMetadata(contractId: number | string, metadata: {
+export default function updateConsignoCloudMetadata(contractId: number | string, metadata: {
     workflowId: string;
     workflowStatus: number | string;
     workflowEditUrl: string;

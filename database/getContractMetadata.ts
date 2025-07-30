@@ -1,34 +1,34 @@
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
+import type { MetadataPrefix } from '../types/contractMetadata.types.js'
+import type { ContractMetadata } from '../types/record.types.js'
 
-export default function getContractMetadata(
-  contractId: number | string,
-  startsWith = ''
-): Record<string, string> {
+export default function getContractMetadata(filters: {
+  contractId?: number | string
+  startsWith?: '' | MetadataPrefix
+}): ContractMetadata[] {
   const database = sqlite(sunriseDB, { readonly: true })
 
-  const result = database
-    .prepare(
-      `select metadataKey, metadataValue
-        from ContractMetadata
-        where recordDelete_timeMillis is null
-        and contractId = ?
-        and metadataKey like ? || '%'
-        order by metadataKey`
-    )
-    .all(contractId, startsWith) as Array<{
-    metadataKey: string
-    metadataValue: string
-  }>
+  let sql = `select contractId, metadataKey, metadataValue, recordUpdate_timeMillis
+    from ContractMetadata
+    where recordDelete_timeMillis is null`
+
+  const sqlParameters: Array<number | string> = []
+
+  if (filters.contractId !== undefined) {
+    sql += ` and contractId = ?`
+    sqlParameters.push(filters.contractId)
+  }
+
+  if (filters.startsWith !== undefined && filters.startsWith !== '') {
+    sql += ` and metadataKey like ? || '%'`
+    sqlParameters.push(filters.startsWith)
+  }
+
+  const rows = database.prepare(sql).all(sqlParameters) as ContractMetadata[]
 
   database.close()
 
-  const metadata: Record<string, string> = {}
-
-  for (const row of result) {
-    metadata[row.metadataKey] = row.metadataValue
-  }
-
-  return metadata
+  return rows
 }

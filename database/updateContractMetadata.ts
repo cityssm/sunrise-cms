@@ -1,11 +1,12 @@
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
+import type { MetadataKey } from '../types/contractMetadata.types.js'
 
 export default function updateContractMetadata(
   contractId: number | string,
   metadata: {
-    metadataKey: string
+    metadataKey: MetadataKey
     metadataValue: string
   },
   user: User,
@@ -18,10 +19,10 @@ export default function updateContractMetadata(
   let result = database
     .prepare(
       `update ContractMetadata
-       set metadataValue = ?,
-       recordUpdate_userName = ?,
-       recordUpdate_timeMillis = ?
-       where contractId = ? and metadataKey = ?`
+        set metadataValue = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where contractId = ? and metadataKey = ?`
     )
     .run(
       metadata.metadataValue,

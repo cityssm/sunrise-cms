@@ -6,6 +6,9 @@ cypress/downloads/
 cypress/screenshots/
 cypress/videos/
 
+data/attachments/*
+!data/attachments/README.md
+
 data/backups/*
 !data/backups/README.md
 

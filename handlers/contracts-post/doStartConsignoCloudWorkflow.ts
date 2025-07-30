@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 
 import startConsignoCloudWorkflow, {
   type StartConsignoCloudWorkflowForm
-} from '../../integrations/consignoCloud/startConsignoCloudWorkflow.js'
+} from '../../integrations/consignoCloud/startWorkflow.js'
 
 export default async function handler(
   request: Request<unknown, unknown, StartConsignoCloudWorkflowForm>,

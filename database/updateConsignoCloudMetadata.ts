@@ -4,7 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 import updateContractMetadata from './updateContractMetadata.js'
 
-export function updateConsignoCloudMetadata(
+export default function updateConsignoCloudMetadata(
   contractId: number | string,
   metadata: {
     workflowId: string

@@ -828,6 +828,8 @@ function purgeTables() {
         'WorkOrderBurialSites',
         'WorkOrderContracts',
         'WorkOrders',
+        'ContractAttachments',
+        'ContractMetadata',
         'ContractTransactions',
         'ContractFees',
         'ContractFields',

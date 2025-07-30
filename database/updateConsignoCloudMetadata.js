@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import updateContractMetadata from './updateContractMetadata.js';
-export function updateConsignoCloudMetadata(contractId, metadata, user) {
+export default function updateConsignoCloudMetadata(contractId, metadata, user) {
     const database = sqlite(sunriseDB);
     updateContractMetadata(contractId, {
         metadataKey: 'consignoCloud.workflowId',
