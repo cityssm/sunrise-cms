@@ -21,7 +21,9 @@ export default function updateContractMetadata(
       `update ContractMetadata
         set metadataValue = ?,
         recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+        recordUpdate_timeMillis = ?,
+        recordDelete_userName = null,
+        recordDelete_timeMillis = null
         where contractId = ? and metadataKey = ?`
     )
     .run(

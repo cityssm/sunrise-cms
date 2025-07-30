@@ -7,7 +7,9 @@ export default function updateContractMetadata(contractId, metadata, user, conne
         .prepare(`update ContractMetadata
         set metadataValue = ?,
         recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+        recordUpdate_timeMillis = ?,
+        recordDelete_userName = null,
+        recordDelete_timeMillis = null
         where contractId = ? and metadataKey = ?`)
         .run(metadata.metadataValue, user.userName, rightNow, contractId, metadata.metadataKey);
     if (result.changes <= 0) {
