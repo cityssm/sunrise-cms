@@ -19,10 +19,12 @@ const simpleReports = {
     where recordDelete_timeMillis is null
     order by cemeteryName`,
     'committalTypes-all': 'select * from CommittalTypes',
+    'contractAttachments-all': 'select * from ContractAttachments',
     'contractComments-all': 'select * from ContractComments',
     'contractFees-all': 'select * from ContractFees',
     'contractFields-all': 'select * from ContractFields',
     'contractInterments-all': 'select * from ContractInterments',
+    'contractMetadata-all': 'select * from ContractMetadata',
     'contracts-all': 'select * from Contracts',
     'contractTransactions-all': 'select * from ContractTransactions',
     'contractTypeFields-all': 'select * from ContractTypeFields',
