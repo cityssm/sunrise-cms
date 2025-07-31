@@ -10,9 +10,9 @@ const debug = Debug(`${DEBUG_NAMESPACE}:images.helpers`);
  */
 const burialSiteImagesFolder = path.join(getConfigProperty('settings.customizationsPath'), 'public-internal', 'images', 'burialSites');
 const burialSiteImageFileExtensions = ['jpg', 'jpeg', 'png'];
-let burialSiteImages = [];
+let burialSiteImages;
 export async function getBurialSiteImages() {
-    if (burialSiteImages.length === 0) {
+    if (burialSiteImages === undefined) {
         try {
             // eslint-disable-next-line security/detect-non-literal-fs-filename
             const files = await fs.readdir(burialSiteImagesFolder);
@@ -37,7 +37,7 @@ export async function getBurialSiteImages() {
 }
 function clearCachedBurialSiteImages() {
     debug('Burial site images folder changed.');
-    burialSiteImages = [];
+    burialSiteImages = undefined;
 }
 if (getConfigProperty('settings.burialSites.refreshImageChanges')) {
     debug('Burial site images watcher enabled.');
@@ -54,9 +54,9 @@ if (getConfigProperty('settings.burialSites.refreshImageChanges')) {
  */
 const cemeterySVGsFolder = path.join(getConfigProperty('settings.customizationsPath'), 'public-internal', 'images', 'cemeteries');
 const cemeterySVGFileExtensions = ['svg'];
-let cemeterySVGs = [];
+let cemeterySVGs;
 export async function getCemeterySVGs() {
-    if (cemeterySVGs.length === 0) {
+    if (cemeterySVGs === undefined) {
         try {
             // eslint-disable-next-line security/detect-non-literal-fs-filename
             const files = await fs.readdir(cemeterySVGsFolder);
@@ -81,7 +81,7 @@ export async function getCemeterySVGs() {
 }
 function clearCachedCemeterySVGs() {
     debug('Cemetery SVGs folder changed.');
-    cemeterySVGs = [];
+    cemeterySVGs = undefined;
 }
 if (getConfigProperty('settings.cemeteries.refreshImageChanges')) {
     debug('Cemetery SVGs watcher enabled.');

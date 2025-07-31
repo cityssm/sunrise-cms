@@ -23,10 +23,10 @@ const burialSiteImagesFolder = path.join(
 
 const burialSiteImageFileExtensions = ['jpg', 'jpeg', 'png']
 
-let burialSiteImages: string[] = []
+let burialSiteImages: string[] | undefined
 
 export async function getBurialSiteImages(): Promise<string[]> {
-  if (burialSiteImages.length === 0) {
+  if (burialSiteImages === undefined) {
     try {
       // eslint-disable-next-line security/detect-non-literal-fs-filename
       const files = await fs.readdir(burialSiteImagesFolder)
@@ -56,7 +56,7 @@ export async function getBurialSiteImages(): Promise<string[]> {
 
 function clearCachedBurialSiteImages(): void {
   debug('Burial site images folder changed.')
-  burialSiteImages = []
+  burialSiteImages = undefined
 }
 
 if (getConfigProperty('settings.burialSites.refreshImageChanges')) {
@@ -85,10 +85,10 @@ const cemeterySVGsFolder = path.join(
 
 const cemeterySVGFileExtensions = ['svg']
 
-let cemeterySVGs: string[] = []
+let cemeterySVGs: string[] | undefined
 
 export async function getCemeterySVGs(): Promise<string[]> {
-  if (cemeterySVGs.length === 0) {
+  if (cemeterySVGs === undefined) {
     try {
       // eslint-disable-next-line security/detect-non-literal-fs-filename
       const files = await fs.readdir(cemeterySVGsFolder)
@@ -118,7 +118,7 @@ export async function getCemeterySVGs(): Promise<string[]> {
 
 function clearCachedCemeterySVGs(): void {
   debug('Cemetery SVGs folder changed.')
-  cemeterySVGs = []
+  cemeterySVGs = undefined
 }
 
 if (getConfigProperty('settings.cemeteries.refreshImageChanges')) {
