@@ -20,10 +20,12 @@ describe('Update - Burial Sites', () => {
   })
 
   it('Creates a New Burial Site', () => {
-    cy.visit('/burialSites/new')
+    cy.visit('/burialSites/new', {
+      retryOnStatusCodeFailure: true
+    })
 
     cy.log('Check the accessibility')
-    
+
     cy.injectAxe()
     cy.checkA11y()
   })

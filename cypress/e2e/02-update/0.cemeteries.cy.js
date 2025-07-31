@@ -13,7 +13,9 @@ describe('Update - Cemeteries', () => {
         cy.get("a[href$='/cemeteries/new']").should('exist');
     });
     it('Creates a new cemetery', () => {
-        cy.visit('/cemeteries/new');
+        cy.visit('/cemeteries/new', {
+            retryOnStatusCodeFailure: true
+        });
         cy.log('Check the accessibility');
         cy.injectAxe();
         cy.checkA11y();

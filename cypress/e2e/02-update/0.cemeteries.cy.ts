@@ -18,7 +18,9 @@ describe('Update - Cemeteries', () => {
   })
 
   it('Creates a new cemetery', () => {
-    cy.visit('/cemeteries/new')
+    cy.visit('/cemeteries/new', {
+      retryOnStatusCodeFailure: true
+    })
 
     cy.log('Check the accessibility')
 
