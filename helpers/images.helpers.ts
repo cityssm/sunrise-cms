@@ -27,23 +27,28 @@ let burialSiteImages: string[] = []
 
 export async function getBurialSiteImages(): Promise<string[]> {
   if (burialSiteImages.length === 0) {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
-    const files = await fs.readdir(burialSiteImagesFolder)
+    try {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      const files = await fs.readdir(burialSiteImagesFolder)
 
-    const images: string[] = []
+      const images: string[] = []
 
-    for (const file of files) {
-      const lowerCaseFileName = file.toLowerCase()
+      for (const file of files) {
+        const lowerCaseFileName = file.toLowerCase()
 
-      for (const fileExtension of burialSiteImageFileExtensions) {
-        if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
-          images.push(file)
-          break
+        for (const fileExtension of burialSiteImageFileExtensions) {
+          if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
+            images.push(file)
+            break
+          }
         }
       }
-    }
 
-    burialSiteImages = images
+      burialSiteImages = images
+    } catch (error) {
+      debug('Error reading burial site images folder:', error)
+      burialSiteImages = []
+    }
   }
 
   return burialSiteImages
@@ -84,23 +89,28 @@ let cemeterySVGs: string[] = []
 
 export async function getCemeterySVGs(): Promise<string[]> {
   if (cemeterySVGs.length === 0) {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
-    const files = await fs.readdir(cemeterySVGsFolder)
+    try {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      const files = await fs.readdir(cemeterySVGsFolder)
 
-    const SVGs: string[] = []
+      const SVGs: string[] = []
 
-    for (const file of files) {
-      const lowerCaseFileName = file.toLowerCase()
+      for (const file of files) {
+        const lowerCaseFileName = file.toLowerCase()
 
-      for (const fileExtension of cemeterySVGFileExtensions) {
-        if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
-          SVGs.push(file)
-          break
+        for (const fileExtension of cemeterySVGFileExtensions) {
+          if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
+            SVGs.push(file)
+            break
+          }
         }
       }
-    }
 
-    cemeterySVGs = SVGs
+      cemeterySVGs = SVGs
+    } catch (error) {
+      debug('Error reading cemetery SVGs folder:', error)
+      cemeterySVGs = []
+    }
   }
 
   return cemeterySVGs

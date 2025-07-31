@@ -13,19 +13,25 @@ const burialSiteImageFileExtensions = ['jpg', 'jpeg', 'png'];
 let burialSiteImages = [];
 export async function getBurialSiteImages() {
     if (burialSiteImages.length === 0) {
-        // eslint-disable-next-line security/detect-non-literal-fs-filename
-        const files = await fs.readdir(burialSiteImagesFolder);
-        const images = [];
-        for (const file of files) {
-            const lowerCaseFileName = file.toLowerCase();
-            for (const fileExtension of burialSiteImageFileExtensions) {
-                if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
-                    images.push(file);
-                    break;
+        try {
+            // eslint-disable-next-line security/detect-non-literal-fs-filename
+            const files = await fs.readdir(burialSiteImagesFolder);
+            const images = [];
+            for (const file of files) {
+                const lowerCaseFileName = file.toLowerCase();
+                for (const fileExtension of burialSiteImageFileExtensions) {
+                    if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
+                        images.push(file);
+                        break;
+                    }
                 }
             }
+            burialSiteImages = images;
         }
-        burialSiteImages = images;
+        catch (error) {
+            debug('Error reading burial site images folder:', error);
+            burialSiteImages = [];
+        }
     }
     return burialSiteImages;
 }
@@ -51,19 +57,25 @@ const cemeterySVGFileExtensions = ['svg'];
 let cemeterySVGs = [];
 export async function getCemeterySVGs() {
     if (cemeterySVGs.length === 0) {
-        // eslint-disable-next-line security/detect-non-literal-fs-filename
-        const files = await fs.readdir(cemeterySVGsFolder);
-        const SVGs = [];
-        for (const file of files) {
-            const lowerCaseFileName = file.toLowerCase();
-            for (const fileExtension of cemeterySVGFileExtensions) {
-                if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
-                    SVGs.push(file);
-                    break;
+        try {
+            // eslint-disable-next-line security/detect-non-literal-fs-filename
+            const files = await fs.readdir(cemeterySVGsFolder);
+            const SVGs = [];
+            for (const file of files) {
+                const lowerCaseFileName = file.toLowerCase();
+                for (const fileExtension of cemeterySVGFileExtensions) {
+                    if (lowerCaseFileName.endsWith(`.${fileExtension}`)) {
+                        SVGs.push(file);
+                        break;
+                    }
                 }
             }
+            cemeterySVGs = SVGs;
         }
-        cemeterySVGs = SVGs;
+        catch (error) {
+            debug('Error reading cemetery SVGs folder:', error);
+            cemeterySVGs = [];
+        }
     }
     return cemeterySVGs;
 }
