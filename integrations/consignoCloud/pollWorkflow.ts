@@ -4,7 +4,8 @@ import path from 'node:path'
 import {
   type ConsignoCloudAPIBaseUrl,
   type ConsignoCloudAPIType,
-  ConsignoCloudAPI
+  ConsignoCloudAPI,
+  ConsignoCloudError
 } from '@cityssm/consigno-cloud-api'
 import { WorkflowStatus } from '@cityssm/consigno-cloud-api/lookups.js'
 import Debug from 'debug'
@@ -18,7 +19,9 @@ import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import type { ConsignoCloudMetadataKey } from '../../types/contractMetadata.types.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:integrations:consignoCloud:pollWorkflow`)
+const debug = Debug(
+  `${DEBUG_NAMESPACE}:integrations:consignoCloud:pollWorkflow`
+)
 
 let apiCache: Record<string, ConsignoCloudAPIType | undefined> = {}
 
@@ -36,7 +39,10 @@ export default async function pollWorkflow(
   let consignoCloudAPI = apiCache[workflow.metadata.workflowUser]
 
   if (consignoCloudAPI === undefined) {
-    debug('Creating new ConsignO Cloud API instance for user:', workflow.metadata.workflowUser)
+    debug(
+      'Creating new ConsignO Cloud API instance for user:',
+      workflow.metadata.workflowUser
+    )
 
     const userSettings = getUserSettings(workflow.metadata.workflowUser)
 
@@ -53,7 +59,10 @@ export default async function pollWorkflow(
 
     apiCache[workflow.metadata.workflowUser] = consignoCloudAPI
   } else {
-    debug('Using cached ConsignO Cloud API instance for user:', workflow.metadata.workflowUser)
+    debug(
+      'Using cached ConsignO Cloud API instance for user:',
+      workflow.metadata.workflowUser
+    )
   }
 
   /*
@@ -62,108 +71,128 @@ export default async function pollWorkflow(
 
   debug('Polling workflow', workflow.metadata.workflowId)
 
-  const currentWorkflow = await consignoCloudAPI.getWorkflow(
-    workflow.metadata.workflowId
-  )
+  let purgeMetadata = false
 
-  /*
-   * If the workflow status has changed, update the metadata
-   */
+  try {
+    const currentWorkflow = await consignoCloudAPI.getWorkflow(
+      workflow.metadata.workflowId
+    )
 
-  debug('Current workflow status:', currentWorkflow.response.status)
+    /*
+     * If the workflow status has changed, update the metadata
+     */
 
-  if (
-    workflow.metadata.workflowStatus !==
-    currentWorkflow.response.status.toString()
-  ) {
-    workflow.metadata.workflowStatus =
+    debug('Current workflow status:', currentWorkflow.response.status)
+
+    if (
+      workflow.metadata.workflowStatus !==
       currentWorkflow.response.status.toString()
+    ) {
+      workflow.metadata.workflowStatus =
+        currentWorkflow.response.status.toString()
 
-    updateContractMetadata(
-      workflow.contractId,
-      {
-        metadataKey: 'consignoCloud.workflowStatus',
-        metadataValue: workflow.metadata.workflowStatus
-      },
-      user
-    )
+      updateContractMetadata(
+        workflow.contractId,
+        {
+          metadataKey: 'consignoCloud.workflowStatus',
+          metadataValue: workflow.metadata.workflowStatus
+        },
+        user
+      )
 
-    addContractComment(
-      {
-        comment: `ConsignO Cloud workflow status updated to "${WorkflowStatus[workflow.metadata.workflowStatus]}"`,
-        contractId: workflow.contractId
-      },
-      user
-    )
+      addContractComment(
+        {
+          comment: `ConsignO Cloud workflow status updated to "${WorkflowStatus[workflow.metadata.workflowStatus]}"`,
+          contractId: workflow.contractId
+        },
+        user
+      )
+    }
+
+    /*
+     * If the workflow is completed successfully, download the documents
+     */
+
+    const workflowStatusString = WorkflowStatus[currentWorkflow.response.status]
+
+    if (workflowStatusString === 'Completed') {
+      debug(
+        'Workflow completed successfully, downloading documents and audit trail'
+      )
+
+      // Documents
+
+      const workflowDocuments = await consignoCloudAPI.downloadDocuments(
+        workflow.metadata.workflowId
+      )
+
+      const documentsFileName = `Contract ${workflow.contractId} (Workflow ${workflow.metadata.workflowId}) - Documents.${workflowDocuments.contentType === 'application/pdf' ? 'pdf' : 'zip'}`
+
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      await fs.writeFile(
+        path.join(rootAttachmentsPath, documentsFileName),
+        workflowDocuments.data
+      )
+
+      addContractAttachment(
+        {
+          contractId: workflow.contractId,
+
+          fileName: documentsFileName,
+          filePath: rootAttachmentsPath,
+
+          attachmentTitle: `ConsignO Cloud Workflow Documents (${workflow.metadata.workflowId})`
+        },
+        user
+      )
+
+      // Audit Trail
+
+      const workflowAuditTrail = await consignoCloudAPI.downloadAuditTrail(
+        workflow.metadata.workflowId
+      )
+
+      const auditTrailFileName = `Contract ${workflow.contractId} (Workflow ${workflow.metadata.workflowId}) - Audit Trail.pdf`
+
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      await fs.writeFile(
+        path.join(rootAttachmentsPath, auditTrailFileName),
+        workflowAuditTrail.data
+      )
+
+      addContractAttachment(
+        {
+          contractId: workflow.contractId,
+
+          fileName: auditTrailFileName,
+          filePath: rootAttachmentsPath,
+
+          attachmentTitle: `ConsignO Cloud Workflow Audit Trail (${workflow.metadata.workflowId})`
+        },
+        user
+      )
+    }
+
+    /*
+     * If the workflow has no remaining actions, clear the metadata
+     */
+
+    if (
+      workflowStatusString === 'Deleted' ||
+      currentWorkflow.response.remainingActions === 0
+    ) {
+      purgeMetadata = true
+    }
+  } catch (error) {
+    debug('Error polling workflow:', error)
+
+    // ENTITY_NOT_FOUND indicates the workflow does not exist
+    if (error instanceof ConsignoCloudError && error.errorCode === '5004') {
+      purgeMetadata = true
+    }
   }
 
-  /*
-   * If the workflow is completed successfully, download the documents
-   */
-
-  const workflowStatusString = WorkflowStatus[currentWorkflow.response.status]
-
-  if (workflowStatusString === 'Completed') {
-    debug('Workflow completed successfully, downloading documents and audit trail')
-
-    // Documents
-
-    const workflowDocuments = await consignoCloudAPI.downloadDocuments(
-      workflow.metadata.workflowId
-    )
-
-    const documentsFileName = `Contract ${workflow.contractId} (Workflow ${workflow.metadata.workflowId}) - Documents.${workflowDocuments.contentType === 'application/pdf' ? 'pdf' : 'zip'}`
-
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
-    await fs.writeFile(
-      path.join(rootAttachmentsPath, documentsFileName),
-      workflowDocuments.data
-    )
-
-    addContractAttachment(
-      {
-        contractId: workflow.contractId,
-
-        fileName: documentsFileName,
-        filePath: rootAttachmentsPath,
-
-        attachmentTitle: `ConsignO Cloud Workflow Documents (${workflow.metadata.workflowId})`
-      },
-      user
-    )
-
-    // Audit Trail
-
-    const workflowAuditTrail = await consignoCloudAPI.downloadAuditTrail(
-      workflow.metadata.workflowId
-    )
-
-    const auditTrailFileName = `Contract ${workflow.contractId} (Workflow ${workflow.metadata.workflowId}) - Audit Trail.pdf`
-
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
-    await fs.writeFile(
-      path.join(rootAttachmentsPath, auditTrailFileName),
-      workflowAuditTrail.data
-    )
-
-    addContractAttachment(
-      {
-        contractId: workflow.contractId,
-
-        fileName: auditTrailFileName,
-        filePath: rootAttachmentsPath,
-
-        attachmentTitle: `ConsignO Cloud Workflow Audit Trail (${workflow.metadata.workflowId})`
-      },
-      user
-    )
-  }
-
-  /*
-   * If the workflow has no remaining actions, clear the metadata
-   */
-
-  if (workflowStatusString === 'Deleted' || currentWorkflow.response.remainingActions === 0) {
+  if (purgeMetadata) {
     debug('Workflow has no remaining actions, clearing metadata')
 
     deleteConsignoCloudContractMetadata(workflow.contractId, user)
