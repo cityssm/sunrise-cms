@@ -6,11 +6,12 @@ export default function updateContractMetadata(contractId, metadata, user, conne
     let result = database
         .prepare(`update ContractMetadata
         set metadataValue = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?,
-        recordDelete_userName = null,
-        recordDelete_timeMillis = null
-        where contractId = ? and metadataKey = ?`)
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?,
+          recordDelete_userName = null,
+          recordDelete_timeMillis = null
+        where contractId = ?
+          and metadataKey = ?`)
         .run(metadata.metadataValue, user.userName, rightNow, contractId, metadata.metadataKey);
     if (result.changes <= 0) {
         result = database

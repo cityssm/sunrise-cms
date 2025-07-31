@@ -20,11 +20,12 @@ export default function updateContractMetadata(
     .prepare(
       `update ContractMetadata
         set metadataValue = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?,
-        recordDelete_userName = null,
-        recordDelete_timeMillis = null
-        where contractId = ? and metadataKey = ?`
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?,
+          recordDelete_userName = null,
+          recordDelete_timeMillis = null
+        where contractId = ?
+          and metadataKey = ?`
     )
     .run(
       metadata.metadataValue,
