@@ -27,7 +27,7 @@ jobs:
         run: |
           npm uninstall puppeteer
           npm ci
-          npm install -g mocha c8 cypress@14
+          npm install -g mocha c8 cypress@14.5.2
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
