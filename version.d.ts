@@ -1,2 +1,2 @@
-export declare const version = "1.0.0-alpha.19";
+export declare const version = "1.0.0-alpha.20";
 export default version;
