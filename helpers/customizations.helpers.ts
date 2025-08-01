@@ -29,7 +29,7 @@ if (customizationsPath !== '.') {
 }
 
 export function getCustomizationPdfPrintConfigs(): Record<string, PrintConfig> {
-  if (customizationsConfig?.prints?.pdf) {
+  if (customizationsConfig?.prints?.pdf !== undefined) {
     return customizationsConfig.prints.pdf
   }
 

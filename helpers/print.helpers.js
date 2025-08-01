@@ -17,6 +17,7 @@ const screenPrintConfigs = {
 export function getScreenPrintConfig(printName) {
     return screenPrintConfigs[printName];
 }
+// Included PDF print configs
 const pdfPrintConfigs = {
     workOrder: {
         path: 'views/print/pdf/workOrder.ejs',
@@ -29,6 +30,7 @@ const pdfPrintConfigs = {
         title: 'Work Order Field Sheet - Comment Log'
     }
 };
+// Add customizations PDF print configs
 for (const [printName, printConfig] of Object.entries(getCustomizationPdfPrintConfigs())) {
     pdfPrintConfigs[printName] = {
         ...printConfig,

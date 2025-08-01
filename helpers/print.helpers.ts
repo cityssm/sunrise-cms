@@ -45,6 +45,7 @@ export function getScreenPrintConfig(
   return screenPrintConfigs[printName]
 }
 
+// Included PDF print configs
 const pdfPrintConfigs: Record<string, PrintConfigWithPath> = {
   workOrder: {
     path: 'views/print/pdf/workOrder.ejs',
@@ -60,6 +61,7 @@ const pdfPrintConfigs: Record<string, PrintConfigWithPath> = {
   }
 }
 
+// Add customizations PDF print configs
 for (const [printName, printConfig] of Object.entries(
   getCustomizationPdfPrintConfigs()
 )) {
