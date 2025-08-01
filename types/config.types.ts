@@ -7,6 +7,8 @@ import type {
 import type { ConsignoCloudAPIConfig } from '@cityssm/consigno-cloud-api'
 import type { config as MSSQLConfig } from 'mssql'
 
+import type { NtfyTopic } from '../integrations/ntfy/types.js'
+
 export interface Config {
   application: ConfigApplication
 
@@ -118,6 +120,12 @@ export interface Config {
     consignoCloud?: Partial<ConsignoCloudAPIConfig> & {
       integrationIsEnabled: boolean
     }
+
+    ntfy?: {
+      integrationIsEnabled: boolean
+      server?: string
+      topics?: Partial<Record<NtfyTopic, string>>
+    }
   }
 }
 
@@ -134,15 +142,9 @@ interface ConfigApplication {
   logoURL?: string
 
   maximumProcesses?: number
-  ntfyStartup?: ConfigNtfyStartup
   useTestDatabases?: boolean
 
   attachmentsPath?: string
-}
-
-export interface ConfigNtfyStartup {
-  server?: string
-  topic: string
 }
 
 interface ConfigSession {

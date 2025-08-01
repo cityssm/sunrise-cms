@@ -4,7 +4,6 @@ import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import ntfyPublish, { type NtfyMessageOptions } from '@cityssm/ntfy-publish'
 import { secondsToMillis } from '@cityssm/to-millis'
 import Debug from 'debug'
 import exitHook from 'exit-hook'
@@ -12,6 +11,11 @@ import exitHook from 'exit-hook'
 import { initializeDatabase } from '../database/initializeDatabase.js'
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
+import {
+  ntfyIsEnabled,
+  sendShutdownNotification,
+  sendStartupNotification
+} from '../integrations/ntfy/helpers.js'
 import type { WorkerMessage } from '../types/application.types.js'
 import version from '../version.js'
 
@@ -56,7 +60,7 @@ for (let index = 0; index < processCount; index += 1) {
 
 cluster.on('message', (worker, message: WorkerMessage) => {
   for (const [pid, activeWorker] of activeWorkers.entries()) {
-    // eslint-disable-next-line sonarjs/different-types-comparison, @typescript-eslint/no-unnecessary-condition
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (activeWorker === undefined || pid === message.pid) {
       continue
     }
@@ -86,13 +90,7 @@ const childProcesses: ChildProcess[] = []
 
 if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
   childProcesses.push(
-    fork(
-      path.join(
-        'integrations',
-        'consignoCloud',
-        'updateWorkflows.task.js'
-      )
-    )
+    fork(path.join('integrations', 'consignoCloud', 'updateWorkflows.task.js'))
   )
 }
 
@@ -100,36 +98,11 @@ if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
  * Set up the ntfy notifications
  */
 
-const ntfyStartupConfig = getConfigProperty('application.ntfyStartup')
-
-if (ntfyStartupConfig !== undefined) {
-  const topic = ntfyStartupConfig.topic
-  const server = ntfyStartupConfig.server
-
-  const ntfyStartupMessage: NtfyMessageOptions = {
-    message: 'Application Started',
-    tags: ['arrow_up'],
-    title: applicationName,
-    topic
-  }
-
-  const ntfyShutdownMessage: NtfyMessageOptions = {
-    message: 'Application Shut Down',
-    tags: ['arrow_down'],
-    title: applicationName,
-    topic
-  }
-
-  if (server !== undefined) {
-    ntfyStartupMessage.server = server
-    ntfyShutdownMessage.server = server
-  }
-
-  await ntfyPublish(ntfyStartupMessage)
+if (ntfyIsEnabled) {
+  await sendStartupNotification()
 
   exitHook(() => {
-    debug('Sending ntfy notification')
-    void ntfyPublish(ntfyShutdownMessage)
+    void sendShutdownNotification()
   })
 }
 

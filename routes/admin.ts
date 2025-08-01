@@ -4,7 +4,6 @@ import handler_burialSiteTypes from '../handlers/admin-get/burialSiteTypes.js'
 import handler_contractTypes from '../handlers/admin-get/contractTypes.js'
 import handler_database from '../handlers/admin-get/database.js'
 import handler_fees from '../handlers/admin-get/fees.js'
-import handler_ntfyStartup from '../handlers/admin-get/ntfyStartup.js'
 import handler_settings from '../handlers/admin-get/settings.js'
 import handler_tables from '../handlers/admin-get/tables.js'
 import handler_doAddBurialSiteStatus from '../handlers/admin-post/doAddBurialSiteStatus.js'
@@ -280,9 +279,5 @@ router.get('/database', handler_database)
 router.post('/doBackupDatabase', handler_doBackupDatabase)
 
 router.post('/doCleanupDatabase', handler_doCleanupDatabase)
-
-// Ntfy Startup
-
-router.get('/ntfyStartup', handler_ntfyStartup)
 
 export default router

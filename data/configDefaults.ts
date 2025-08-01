@@ -7,9 +7,9 @@ import type {
 import { hoursToMillis } from '@cityssm/to-millis'
 import type { config as MSSQLConfig } from 'mssql'
 
+import type { NtfyTopic } from '../integrations/ntfy/types.js'
 import type {
   ConfigBurialSiteNameSegments,
-  ConfigNtfyStartup,
   DynamicsGPLookup
 } from '../types/config.types.js'
 
@@ -19,7 +19,6 @@ export const configDefaultValues = {
   'application.httpPort': 9000,
   'application.logoURL': '/images/sunrise-cms.svg',
   'application.maximumProcesses': 4,
-  'application.ntfyStartup': undefined as ConfigNtfyStartup | undefined,
   'application.useTestDatabases': false,
 
   'application.attachmentsPath': 'data/attachments',
@@ -137,7 +136,13 @@ export const configDefaultValues = {
 
   'integrations.consignoCloud.apiKey': '',
   'integrations.consignoCloud.apiSecret': '',
-  'integrations.consignoCloud.baseUrl': ''
+  'integrations.consignoCloud.baseUrl': '',
+
+  // Ntfy
+
+  'integrations.ntfy.integrationIsEnabled': false,
+  'integrations.ntfy.server': '',
+  'integrations.ntfy.topics': {} as unknown as Partial<Record<NtfyTopic, string>>,
 }
 
 export default configDefaultValues

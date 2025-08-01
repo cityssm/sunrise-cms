@@ -1,6 +1,7 @@
 import type { ActiveDirectoryAuthenticatorConfiguration, ADWebAuthAuthenticatorConfiguration, FunctionAuthenticatorConfiguration, PlainTextAuthenticatorConfiguration } from '@cityssm/authentication-helper';
 import type { ConsignoCloudAPIConfig } from '@cityssm/consigno-cloud-api';
 import type { config as MSSQLConfig } from 'mssql';
+import type { NtfyTopic } from '../integrations/ntfy/types.js';
 export interface Config {
     application: ConfigApplication;
     session: ConfigSession;
@@ -88,6 +89,11 @@ export interface Config {
         consignoCloud?: Partial<ConsignoCloudAPIConfig> & {
             integrationIsEnabled: boolean;
         };
+        ntfy?: {
+            integrationIsEnabled: boolean;
+            server?: string;
+            topics?: Partial<Record<NtfyTopic, string>>;
+        };
     };
 }
 export type DynamicsGPLookup = 'diamond/cashReceipt' | 'diamond/extendedInvoice' | 'invoice';
@@ -97,13 +103,8 @@ interface ConfigApplication {
     backgroundURL?: string;
     logoURL?: string;
     maximumProcesses?: number;
-    ntfyStartup?: ConfigNtfyStartup;
     useTestDatabases?: boolean;
     attachmentsPath?: string;
-}
-export interface ConfigNtfyStartup {
-    server?: string;
-    topic: string;
 }
 interface ConfigSession {
     cookieName?: string;

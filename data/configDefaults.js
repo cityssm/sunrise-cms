@@ -5,7 +5,6 @@ export const configDefaultValues = {
     'application.httpPort': 9000,
     'application.logoURL': '/images/sunrise-cms.svg',
     'application.maximumProcesses': 4,
-    'application.ntfyStartup': undefined,
     'application.useTestDatabases': false,
     'application.attachmentsPath': 'data/attachments',
     'login.authentication': undefined,
@@ -75,6 +74,10 @@ export const configDefaultValues = {
     'integrations.consignoCloud.integrationIsEnabled': false,
     'integrations.consignoCloud.apiKey': '',
     'integrations.consignoCloud.apiSecret': '',
-    'integrations.consignoCloud.baseUrl': ''
+    'integrations.consignoCloud.baseUrl': '',
+    // Ntfy
+    'integrations.ntfy.integrationIsEnabled': false,
+    'integrations.ntfy.server': '',
+    'integrations.ntfy.topics': {},
 };
 export default configDefaultValues;

@@ -87,21 +87,5 @@
         </div>
       </a>
     </li>
-    <% if (configFunctions.getConfigProperty("application.ntfyStartup")) { %>
-      <li>
-        <a class="<%= (headTitle === "Ntfy Startup Notification" ? "is-active" : "") %>"
-          href="<%= urlPrefix %>/admin/ntfyStartup"
-          title="Ntfy Startup Notification">
-          <div class="columns is-1 is-mobile">
-            <div class="column is-narrow">
-              <span class="icon"><i class="fa-regular fa-comment-alt"></i></span>
-            </div>
-            <div class="column is-hidden-touch">
-              Ntfy Startup Notification
-            </div>
-          </div>
-        </a>
-      </li>
-    <% } %>
   </ul>
 </aside>

@@ -1,13 +1,13 @@
 import type { ActiveDirectoryAuthenticatorConfiguration, ADWebAuthAuthenticatorConfiguration, FunctionAuthenticatorConfiguration, PlainTextAuthenticatorConfiguration } from '@cityssm/authentication-helper';
 import type { config as MSSQLConfig } from 'mssql';
-import type { ConfigBurialSiteNameSegments, ConfigNtfyStartup, DynamicsGPLookup } from '../types/config.types.js';
+import type { NtfyTopic } from '../integrations/ntfy/types.js';
+import type { ConfigBurialSiteNameSegments, DynamicsGPLookup } from '../types/config.types.js';
 export declare const configDefaultValues: {
     'application.applicationName': string;
     'application.backgroundURL': string;
     'application.httpPort': number;
     'application.logoURL': string;
     'application.maximumProcesses': number;
-    'application.ntfyStartup': ConfigNtfyStartup | undefined;
     'application.useTestDatabases': boolean;
     'application.attachmentsPath': string;
     'login.authentication': {
@@ -73,5 +73,8 @@ export declare const configDefaultValues: {
     'integrations.consignoCloud.apiKey': string;
     'integrations.consignoCloud.apiSecret': string;
     'integrations.consignoCloud.baseUrl': string;
+    'integrations.ntfy.integrationIsEnabled': boolean;
+    'integrations.ntfy.server': string;
+    'integrations.ntfy.topics': Partial<Record<NtfyTopic, string>>;
 };
 export default configDefaultValues;
