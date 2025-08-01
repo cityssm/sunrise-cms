@@ -21,8 +21,8 @@ export function adminPostHandler(request, response, next) {
     }
     response.status(forbiddenStatus).json(forbiddenJSON);
 }
-export async function apiGetHandler(request, response, next) {
-    if (await apiKeyIsValid(request)) {
+export function apiGetHandler(request, response, next) {
+    if (apiKeyIsValid(request)) {
         next();
     }
     else {

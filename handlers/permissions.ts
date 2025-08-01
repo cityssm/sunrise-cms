@@ -45,12 +45,12 @@ export function adminPostHandler(
   response.status(forbiddenStatus).json(forbiddenJSON)
 }
 
-export async function apiGetHandler(
+export function apiGetHandler(
   request: Request,
   response: Response,
   next: NextFunction
-): Promise<void> {
-  if (await apiKeyIsValid(request)) {
+): void {
+  if (apiKeyIsValid(request)) {
     next()
   } else {
     response.redirect(`${urlPrefix}/login`)
