@@ -7,11 +7,11 @@ export default function getContractMetadata(filters) {
     where recordDelete_timeMillis is null`;
     const sqlParameters = [];
     if (filters.contractId !== undefined) {
-        sql += ` and contractId = ?`;
+        sql += ' and contractId = ?';
         sqlParameters.push(filters.contractId);
     }
     if (filters.startsWith !== undefined && filters.startsWith !== '') {
-        sql += ` and metadataKey like ? || '%'`;
+        sql += " and metadataKey like ? || '%'";
         sqlParameters.push(filters.startsWith);
     }
     const rows = database.prepare(sql).all(sqlParameters);

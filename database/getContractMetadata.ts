@@ -17,12 +17,12 @@ export default function getContractMetadata(filters: {
   const sqlParameters: Array<number | string> = []
 
   if (filters.contractId !== undefined) {
-    sql += ` and contractId = ?`
+    sql += ' and contractId = ?'
     sqlParameters.push(filters.contractId)
   }
 
   if (filters.startsWith !== undefined && filters.startsWith !== '') {
-    sql += ` and metadataKey like ? || '%'`
+    sql += " and metadataKey like ? || '%'"
     sqlParameters.push(filters.startsWith)
   }
 
