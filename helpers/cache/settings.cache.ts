@@ -7,7 +7,9 @@ import type {
 
 let settings: Array<Partial<Setting> & SettingProperties> | undefined
 
-export function getCachedSettings(): Array<Partial<Setting> & SettingProperties> {
+export function getCachedSettings(): Array<
+  Partial<Setting> & SettingProperties
+> {
   settings ??= getSettingsFromDatabase()
   return settings
 }
@@ -23,6 +25,11 @@ export function getCachedSetting(
 
 export function getCachedSettingValue(settingKey: SettingKey): string {
   const setting = getCachedSetting(settingKey)
+
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (setting === undefined) {
+    return settingKey
+  }
 
   let settingValue = setting.settingValue ?? ''
 
