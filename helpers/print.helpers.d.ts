@@ -8,6 +8,7 @@ interface ReportData {
     configFunctions: unknown;
     contractFunctions: unknown;
     dateTimeFunctions: unknown;
+    settingFunctions: unknown;
 }
 export interface PrintConfigWithPath extends PrintConfig {
     path: string;

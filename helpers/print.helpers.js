@@ -7,6 +7,7 @@ import getWorkOrder from '../database/getWorkOrder.js';
 import * as configFunctions from './config.helpers.js';
 import * as contractFunctions from './contracts.helpers.js';
 import { getCustomizationPdfPrintConfigs } from './customizations.helpers.js';
+import { getCachedSettingValue } from './cache/settings.cache.js';
 const screenPrintConfigs = {
     contract: {
         params: ['contractId'],
@@ -54,7 +55,10 @@ export async function getReportData(printConfig, requestQuery) {
         headTitle: printConfig.title,
         configFunctions,
         contractFunctions,
-        dateTimeFunctions
+        dateTimeFunctions,
+        settingFunctions: {
+            getSettingValue: getCachedSettingValue
+        }
     };
     if (printConfig.params.includes('contractId') &&
         typeof requestQuery.contractId === 'string') {

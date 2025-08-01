@@ -12,6 +12,7 @@ import type { BurialSite, Contract, WorkOrder } from '../types/record.types.js'
 import * as configFunctions from './config.helpers.js'
 import * as contractFunctions from './contracts.helpers.js'
 import { getCustomizationPdfPrintConfigs } from './customizations.helpers.js'
+import { getCachedSettingValue } from './cache/settings.cache.js'
 
 interface ReportData {
   headTitle: string
@@ -23,6 +24,8 @@ interface ReportData {
   configFunctions: unknown
   contractFunctions: unknown
   dateTimeFunctions: unknown
+  settingFunctions: unknown
+
 }
 
 export interface PrintConfigWithPath extends PrintConfig {
@@ -98,7 +101,10 @@ export async function getReportData(
 
     configFunctions,
     contractFunctions,
-    dateTimeFunctions
+    dateTimeFunctions,
+    settingFunctions: {
+      getSettingValue: getCachedSettingValue
+    }
   }
 
   if (
