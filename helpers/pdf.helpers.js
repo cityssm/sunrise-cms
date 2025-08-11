@@ -1,13 +1,17 @@
 import PdfPuppeteer from '@cityssm/pdf-puppeteer';
+import Debug from 'debug';
 import { renderFile as renderEjsFile } from 'ejs';
 import exitHook from 'exit-hook';
+import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getReportData } from './print.helpers.js';
+const debug = Debug(`${DEBUG_NAMESPACE}:helpers:pdf`);
 const pdfPuppeteer = new PdfPuppeteer();
 exitHook(() => {
     void pdfPuppeteer.closeBrowser();
 });
 export async function generatePdf(printConfig, parameters) {
     const reportData = await getReportData(printConfig, parameters);
+    debug('Rendering', printConfig.path);
     try {
         const renderedHtml = await renderEjsFile(printConfig.path, reportData);
         const pdf = await pdfPuppeteer.fromHtml(renderedHtml);
