@@ -141,14 +141,14 @@
           const tabToSelect = (workOrder.workOrderContracts.length > 0 || workOrder.workOrderBurialSites.length === 0 ? "contracts" : "burialSites");
         %>
         <div class="tabs is-boxed">
-          <ul>
-            <li class="<%= (tabToSelect === "contracts" ? "is-active" : "") %>">
+          <ul role="presentation">
+            <li class="<%= (tabToSelect === 'contracts' ? 'is-active' : '') %>" role="presentation">
               <a href="#relatedTab--contracts">
                 <span>Contracts</span>
                 <span class="ml-2 tag"><%= workOrder.workOrderContracts.length %></span>
               </a>
             </li>
-            <li class="<%= (tabToSelect === "burialSites" ? "is-active" : "") %>">
+            <li class="<%= (tabToSelect === 'burialSites' ? 'is-active' : '') %>" role="presentation">
               <a href="#relatedTab--burialSites">
                 <span>Burial Sites</span>
                 <span class="ml-2 tag"><%= workOrder.workOrderBurialSites.length %></span>
@@ -157,7 +157,7 @@
           </ul>
         </div>
         <div class="tab-container">
-          <div class="<%= (tabToSelect === "contracts" ? "" : "is-hidden") %>" id="relatedTab--contracts">
+          <div class="<%= (tabToSelect === 'contracts' ? '' : 'is-hidden') %>" id="relatedTab--contracts">
             <% if (workOrder.workOrderContracts.length === 0) { %>
               <div class="message is-info">
                 <p class="message-body">
@@ -240,7 +240,7 @@
               </table>
             <% } %>
           </div>
-          <div class="<%= (tabToSelect === "burialSites" ? "" : "is-hidden") %>" id="relatedTab--burialSites">
+          <div class="<%= (tabToSelect === 'burialSites' ? '' : 'is-hidden') %>" id="relatedTab--burialSites">
             <% if (workOrder.workOrderBurialSites.length === 0) { %>
               <div class="message is-info">
                 <p class="message-body">
