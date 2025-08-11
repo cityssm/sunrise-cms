@@ -1,6 +1,6 @@
 import { getConfigProperty } from '../../../helpers/config.helpers.js';
 import { testUpdate } from '../../../test/_globals.js';
-import { login, logout } from '../../support/index.js';
+import { login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Update - Funeral Homes', () => {
     beforeEach('Loads page', () => {
         logout();
@@ -40,8 +40,8 @@ describe('Update - Funeral Homes', () => {
         cy.get("input[name='funeralHomeProvince']").should('have.value', getConfigProperty('settings.provinceDefault'));
         cy.log('Submit the form');
         cy.get('#form--funeralHome').submit();
-        cy.wait(1000);
-        cy.location('pathname')
+        cy.wait(pageLoadDelayMillis)
+            .location('pathname')
             .should('not.contain', '/new')
             .should('contain', '/edit');
         cy.fixture('funeralHome.json').then((funeralHomeData) => {

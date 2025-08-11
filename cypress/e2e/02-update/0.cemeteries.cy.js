@@ -1,6 +1,6 @@
 import { getConfigProperty } from '../../../helpers/config.helpers.js';
 import { testUpdate } from '../../../test/_globals.js';
-import { login, logout } from '../../support/index.js';
+import { login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Update - Cemeteries', () => {
     beforeEach('Loads page', () => {
         logout();
@@ -51,7 +51,7 @@ describe('Update - Cemeteries', () => {
         cy.get("input[name='cemeteryProvince']").should('have.value', getConfigProperty('settings.provinceDefault'));
         cy.log('Submit the form');
         cy.get('#form--cemetery').submit();
-        cy.wait(1000)
+        cy.wait(pageLoadDelayMillis)
             .location('pathname')
             .should('not.contain', '/new')
             .should('contain', '/edit');

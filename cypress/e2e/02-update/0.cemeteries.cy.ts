@@ -1,7 +1,7 @@
 import { getConfigProperty } from '../../../helpers/config.helpers.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { Cemetery } from '../../../types/record.types.js'
-import { login, logout } from '../../support/index.js'
+import { login, logout, pageLoadDelayMillis } from '../../support/index.js'
 
 describe('Update - Cemeteries', () => {
   beforeEach('Loads page', () => {
@@ -79,7 +79,7 @@ describe('Update - Cemeteries', () => {
 
     cy.get('#form--cemetery').submit()
 
-    cy.wait(1000)
+    cy.wait(pageLoadDelayMillis)
       .location('pathname')
       .should('not.contain', '/new')
       .should('contain', '/edit')

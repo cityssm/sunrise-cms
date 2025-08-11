@@ -23,3 +23,5 @@ export const login = (userName: string): void => {
 }
 
 export const ajaxDelayMillis = 800
+
+export const pageLoadDelayMillis = 1200

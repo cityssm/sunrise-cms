@@ -1,5 +1,5 @@
 import { testUpdate } from '../../../test/_globals.js';
-import { ajaxDelayMillis, login, logout } from '../../support/index.js';
+import { login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Update - Work Orders', () => {
     beforeEach(() => {
         logout();
@@ -19,7 +19,7 @@ describe('Update - Work Orders', () => {
             cy.checkA11y();
             cy.log('Submit the form using defaults');
             cy.get('#form--workOrderEdit').submit();
-            cy.wait(ajaxDelayMillis)
+            cy.wait(pageLoadDelayMillis)
                 .location('pathname')
                 .should('not.contain', '/new')
                 .should('contain', '/edit');
@@ -29,7 +29,7 @@ describe('Update - Work Orders', () => {
             cy.log('Print the work order');
             cy.get('button[data-cy="print"]').click();
             cy.get('.dropdown.is-active a').first().should('exist').click();
-            cy.wait(ajaxDelayMillis);
+            cy.wait(pageLoadDelayMillis);
         });
     });
 });

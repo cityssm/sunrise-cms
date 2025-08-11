@@ -15,3 +15,4 @@ export const login = (userName) => {
     cy.get('.navbar').should('have.length', 1);
 };
 export const ajaxDelayMillis = 800;
+export const pageLoadDelayMillis = 1200;

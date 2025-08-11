@@ -1,5 +1,5 @@
 import { testUpdate } from '../../../test/_globals.js'
-import { ajaxDelayMillis, login, logout } from '../../support/index.js'
+import { login, logout, pageLoadDelayMillis } from '../../support/index.js'
 
 describe('Update - Work Orders', () => {
   beforeEach(() => {
@@ -27,7 +27,7 @@ describe('Update - Work Orders', () => {
 
       cy.get('#form--workOrderEdit').submit()
 
-      cy.wait(ajaxDelayMillis)
+      cy.wait(pageLoadDelayMillis)
         .location('pathname')
         .should('not.contain', '/new')
         .should('contain', '/edit')
@@ -43,7 +43,7 @@ describe('Update - Work Orders', () => {
 
       cy.get('.dropdown.is-active a').first().should('exist').click()
 
-      cy.wait(ajaxDelayMillis)
+      cy.wait(pageLoadDelayMillis)
     })
   })
 })
