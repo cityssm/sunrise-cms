@@ -5,6 +5,7 @@ export type SettingKey =
   | 'aliases.externalReceiptNumber'
   | 'aliases.workOrderCloseDate'
   | 'aliases.workOrderOpenDate'
+  | 'pdfPuppeteer.browserInstallAttempted'
   | 'workOrder.workDay.0.endHour'
   | 'workOrder.workDay.0.startHour'
   | 'workOrder.workDay.1.endHour'
@@ -150,5 +151,12 @@ export const settingProperties: SettingProperties[] = [
     description: 'The final hour for work day on Saturday.',
     type: 'number',
     defaultValue: ''
+  },
+  {
+    settingKey: 'pdfPuppeteer.browserInstallAttempted',
+    settingName: 'PDF Puppeteer - Browser Install Has Been Attempted',
+    description: 'Whether the PDF Puppeteer browser installation was attempted.',
+    type: 'boolean',
+    defaultValue: 'false'
   }
 ]

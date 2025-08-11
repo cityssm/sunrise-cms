@@ -119,5 +119,12 @@ export const settingProperties = [
         description: 'The final hour for work day on Saturday.',
         type: 'number',
         defaultValue: ''
+    },
+    {
+        settingKey: 'pdfPuppeteer.browserInstallAttempted',
+        settingName: 'PDF Puppeteer - Browser Install Has Been Attempted',
+        description: 'Whether the PDF Puppeteer browser installation was attempted.',
+        type: 'boolean',
+        defaultValue: 'false'
     }
 ];
