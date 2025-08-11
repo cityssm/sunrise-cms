@@ -1,5 +1,5 @@
 import { testUpdate } from '../../../test/_globals.js';
-import { login, logout, pageLoadDelayMillis } from '../../support/index.js';
+import { login, logout, pageLoadDelayMillis, pdfGenerationDelayMillis } from '../../support/index.js';
 describe('Update - Work Orders', () => {
     beforeEach(() => {
         logout();
@@ -28,8 +28,9 @@ describe('Update - Work Orders', () => {
             cy.checkA11y();
             cy.log('Print the work order');
             cy.get('button[data-cy="print"]').click();
-            cy.get('.dropdown.is-active a').first().should('exist').click();
-            cy.wait(pageLoadDelayMillis);
+            cy.get('.dropdown.is-active a').first().should('exist').click({
+                timeout: pdfGenerationDelayMillis
+            });
         });
     });
 });
