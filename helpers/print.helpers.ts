@@ -21,11 +21,12 @@ interface ReportData {
   contract?: Contract
   workOrder?: WorkOrder
 
-  configFunctions: unknown
-  contractFunctions: unknown
-  dateTimeFunctions: unknown
-  settingFunctions: unknown
-
+  configFunctions: typeof configFunctions
+  contractFunctions: typeof contractFunctions
+  dateTimeFunctions: typeof dateTimeFunctions
+  settingFunctions: {
+    getSettingValue: typeof getCachedSettingValue
+  }
 }
 
 export interface PrintConfigWithPath extends PrintConfig {

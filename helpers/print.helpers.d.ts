@@ -1,14 +1,20 @@
+import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import type { PrintConfig } from 'sunrise-cms-customizations';
 import type { BurialSite, Contract, WorkOrder } from '../types/record.types.js';
+import { getCachedSettingValue } from './cache/settings.cache.js';
+import * as configFunctions from './config.helpers.js';
+import * as contractFunctions from './contracts.helpers.js';
 interface ReportData {
     headTitle: string;
     burialSite?: BurialSite;
     contract?: Contract;
     workOrder?: WorkOrder;
-    configFunctions: unknown;
-    contractFunctions: unknown;
-    dateTimeFunctions: unknown;
-    settingFunctions: unknown;
+    configFunctions: typeof configFunctions;
+    contractFunctions: typeof contractFunctions;
+    dateTimeFunctions: typeof dateTimeFunctions;
+    settingFunctions: {
+        getSettingValue: typeof getCachedSettingValue;
+    };
 }
 export interface PrintConfigWithPath extends PrintConfig {
     path: string;
