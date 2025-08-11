@@ -1,5 +1,5 @@
 import { testUpdate } from '../../../test/_globals.js'
-import { login, logout } from '../../support/index.js'
+import { ajaxDelayMillis, login, logout } from '../../support/index.js'
 
 describe('Update - Work Orders', () => {
   beforeEach(() => {
@@ -19,8 +19,31 @@ describe('Update - Work Orders', () => {
     it('Has no detectable accessibility issues', () => {
       cy.visit('/workOrders/new')
       cy.location('pathname').should('equal', '/workOrders/new')
+
       cy.injectAxe()
       cy.checkA11y()
+
+      cy.log('Submit the form using defaults')
+
+      cy.get('#form--workOrderEdit').submit()
+
+      cy.wait(ajaxDelayMillis)
+        .location('pathname')
+        .should('not.contain', '/new')
+        .should('contain', '/edit')
+
+      cy.log('Check for accessibility issues')
+
+      cy.injectAxe()
+      cy.checkA11y()
+
+      cy.log('Print the work order')
+
+      cy.get('button[data-cy="print"]').click()
+
+      cy.get('.dropdown.is-active a').first().should('exist').click()
+
+      cy.wait(ajaxDelayMillis)
     })
   })
 })

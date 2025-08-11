@@ -50,35 +50,28 @@
   <div class="column is-narrow has-text-right">
     <div class="buttons is-right">
       <% if (configFunctions.getConfigProperty("settings.workOrders.prints").length > 0) { %>
-        <% if (configFunctions.getConfigProperty("settings.workOrders.prints").length === 1) { %>
-          <a href="<%= urlPrefix %>/print/<%= configFunctions.getConfigProperty("settings.workOrders.prints")[0] %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" aria-label="Print">
-            <span class="icon"><i class="fa-solid fa-print"></i></span>
-            <span class="is-hidden-touch">Print</span>
-          </a>
-        <% } else { %>
-          <div class="dropdown is-right is-up">
-            <div class="dropdown-trigger">
-              <button class="button" type="button" aria-label="Print">
-                <span class="icon"><i class="fa-solid fa-print"></i></span>
-                <span class="is-hidden-touch">Print</span>
-                <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
-              </button>
-            </div>
-            <div class="dropdown-menu">
-              <div class="dropdown-content has-text-left">
-                <% for (const printName of configFunctions.getConfigProperty("settings.workOrders.prints")) { %>
-                  <% const printConfig = printFunctions.getPrintConfig(printName); %>
-                  <% if (printConfig) { %>
-                    <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
-                      <span class="icon"><i class="fa-solid fa-print"></i></span>
-                      <span><%= printConfig.title %></span>
-                    </a>
-                  <% } %>
+        <div class="dropdown is-right is-up">
+          <div class="dropdown-trigger">
+            <button class="button" type="button" aria-label="Print">
+              <span class="icon"><i class="fa-solid fa-print"></i></span>
+              <span class="is-hidden-touch">Print</span>
+              <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
+            </button>
+          </div>
+          <div class="dropdown-menu">
+            <div class="dropdown-content has-text-left">
+              <% for (const printName of configFunctions.getConfigProperty("settings.workOrders.prints")) { %>
+                <% const printConfig = printFunctions.getPrintConfig(printName); %>
+                <% if (printConfig) { %>
+                  <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
+                    <span class="icon"><i class="fa-solid fa-print"></i></span>
+                    <span><%= printConfig.title %></span>
+                  </a>
                 <% } %>
-              </div>
+              <% } %>
             </div>
           </div>
-        <% } %>
+        </div>
       <% } %>
       <% if (user.userProperties.canUpdateWorkOrders) { %>
         <% if (workOrder.workOrderCloseDate) { %>

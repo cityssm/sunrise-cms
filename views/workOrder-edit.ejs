@@ -53,35 +53,28 @@
   <div class="column is-narrow has-text-right">
     <div class="buttons is-right">
       <% if (!isCreate && configFunctions.getConfigProperty("settings.workOrders.prints").length > 0) { %>
-        <% if (configFunctions.getConfigProperty("settings.workOrders.prints").length === 1) { %>
-          <a href="<%= urlPrefix %>/print/<%= configFunctions.getConfigProperty("settings.workOrders.prints")[0] %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
-            <span class="icon"><i class="fa-solid fa-print"></i></span>
-            <span>Print</span>
-          </a>
-        <% } else { %>
-          <div class="dropdown is-right is-up">
-            <div class="dropdown-trigger">
-              <button class="button" type="button" aria-label="Print">
-                <span class="icon"><i class="fa-solid fa-print"></i></span>
-                <span class="is-hidden-touch">Print</span>
-                <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
-              </button>
-            </div>
-            <div class="dropdown-menu">
-              <div class="dropdown-content has-text-left">
-                <% for (const printName of configFunctions.getConfigProperty("settings.workOrders.prints")) { %>
-                  <% const printConfig = printFunctions.getPrintConfig(printName); %>
-                  <% if (printConfig) { %>
-                    <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
-                      <span class="icon"><i class="fa-solid fa-print"></i></span>
-                      <span><%= printConfig.title %></span>
-                    </a>
-                  <% } %>
+        <div class="dropdown is-right is-up">
+          <div class="dropdown-trigger">
+            <button class="button" data-cy="print" type="button" aria-label="Print">
+              <span class="icon"><i class="fa-solid fa-print"></i></span>
+              <span class="is-hidden-touch">Print</span>
+              <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
+            </button>
+          </div>
+          <div class="dropdown-menu">
+            <div class="dropdown-content has-text-left">
+              <% for (const printName of configFunctions.getConfigProperty("settings.workOrders.prints")) { %>
+                <% const printConfig = printFunctions.getPrintConfig(printName); %>
+                <% if (printConfig) { %>
+                  <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
+                    <span class="icon"><i class="fa-solid fa-print"></i></span>
+                    <span><%= printConfig.title %></span>
+                  </a>
                 <% } %>
-              </div>
+              <% } %>
             </div>
           </div>
-        <% } %>
+        </div>
       <% } %>
       <% if (isCreate) { %>
         <a class="button is-danger is-light" href="<%= urlPrefix %>/workOrders">
@@ -255,14 +248,14 @@
             const tabToSelect = (workOrder.workOrderContracts.length > 0 || workOrder.workOrderBurialSites.length === 0 ? "contracts" : "burialSites");
           %>
           <div class="tabs is-boxed">
-            <ul>
-              <li class="<%= (tabToSelect === 'contracts' ? 'is-active' : '') %>">
+            <ul role="presentation">
+              <li class="<%= (tabToSelect === 'contracts' ? 'is-active' : '') %>" role="presentation">
                 <a href="#relatedTab--contracts">
                   <span>Contracts</span>
                   <span class="ml-2 tag"></span>
                 </a>
               </li>
-              <li class="<%= (tabToSelect === 'burialSites' ? 'is-active' : '') %>">
+              <li class="<%= (tabToSelect === 'burialSites' ? 'is-active' : '') %>" role="presentation">
                 <a href="#relatedTab--burialSites">
                   <span>Burial Sites</span>
                   <span class="ml-2 tag"></span>
