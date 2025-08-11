@@ -16,3 +16,4 @@ export const login = (userName) => {
 };
 export const ajaxDelayMillis = 800;
 export const pageLoadDelayMillis = 1200;
+export const pdfGenerationDelayMillis = 10_000;
