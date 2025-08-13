@@ -7,7 +7,7 @@ export function apiKeyIsValid(request) {
     if (apiKey === undefined) {
         return false;
     }
-    const userName = getUserNameFromApiKey(apiKey);
+    const userName = getUserNameFromApiKey(apiKey)?.toLowerCase();
     if (userName === undefined) {
         return false;
     }
