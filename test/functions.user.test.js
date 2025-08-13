@@ -102,13 +102,14 @@ await describe('functions.user', async () => {
         await it('authenticates with a valid API key', () => {
             const apiKeys = getApiKeys();
             assert.ok(Object.keys(apiKeys).length > 0, 'Expected API keys to be present');
-            const apiKey = Object.values(apiKeys)[0]; // Get the first API key
-            const apiRequest = {
-                params: {
-                    apiKey
-                }
-            };
-            assert.strictEqual(userFunctions.apiKeyIsValid(apiRequest), true);
+            for (const apiKey of Object.values(apiKeys)) {
+                const apiRequest = {
+                    params: {
+                        apiKey
+                    }
+                };
+                assert.strictEqual(userFunctions.apiKeyIsValid(apiRequest), true);
+            }
         });
         await it('fails to authenticate with an invalid API key', () => {
             const apiRequest = {
