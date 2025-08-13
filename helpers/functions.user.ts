@@ -78,7 +78,7 @@ export function getUser(userName: string): User | undefined {
         isAdmin
       },
       userSettings
-    }
+    } satisfies User
   }
 
   return undefined
