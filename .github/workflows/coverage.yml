@@ -26,7 +26,7 @@ jobs:
       - name: Install Application
         run: |
           npm ci
-          npm install -g mocha c8 cypress@14.5.2
+          npm install -g c8 cypress@14.5.2
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
@@ -40,7 +40,7 @@ jobs:
           CYPRESS_VERIFY_TIMEOUT: 600000
 
       - name: Run Coverage Testing
-        run: c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit
+        run: npm run coverage
 
       - name: Codecov
         if: ${{ github.event_name != 'pull_request' && env.CODECOV_TOKEN != '' && matrix.node == 22 }}
