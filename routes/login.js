@@ -1,10 +1,10 @@
 import Debug from 'debug';
 import { Router } from 'express';
-import getUserSettings from '../database/getUserSettings.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { authenticate, getSafeRedirectURL } from '../helpers/authentication.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { useTestDatabases } from '../helpers/database.helpers.js';
+import { getUser } from '../helpers/functions.user.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:login`);
 export const router = Router();
 function getHandler(request, response) {
@@ -24,8 +24,8 @@ function getHandler(request, response) {
     }
 }
 async function postHandler(request, response) {
-    const userName = (typeof request.body.userName === 'string' ? request.body.userName : '');
-    const passwordPlain = (typeof request.body.password === 'string' ? request.body.password : '');
+    const userName = typeof request.body.userName === 'string' ? request.body.userName : '';
+    const passwordPlain = typeof request.body.password === 'string' ? request.body.password : '';
     const unsafeRedirectURL = request.body.redirect;
     const redirectURL = getSafeRedirectURL(typeof unsafeRedirectURL === 'string' ? unsafeRedirectURL : '');
     let isAuthenticated = false;
@@ -42,23 +42,7 @@ async function postHandler(request, response) {
     }
     let userObject;
     if (isAuthenticated) {
-        const userNameLowerCase = userName.toLowerCase();
-        const canLogin = getConfigProperty('users.canLogin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
-        if (canLogin) {
-            const canUpdate = getConfigProperty('users.canUpdate').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
-            const canUpdateWorkOrders = getConfigProperty('users.canUpdateWorkOrders').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
-            const isAdmin = getConfigProperty('users.isAdmin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
-            const userSettings = getUserSettings(userNameLowerCase);
-            userObject = {
-                userName: userNameLowerCase,
-                userProperties: {
-                    canUpdate,
-                    canUpdateWorkOrders,
-                    isAdmin
-                },
-                userSettings
-            };
-        }
+        userObject = getUser(userName);
     }
     if (isAuthenticated && userObject !== undefined) {
         request.session.user = userObject;

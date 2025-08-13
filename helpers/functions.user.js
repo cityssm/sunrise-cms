@@ -1,3 +1,4 @@
+import getUserSettings from '../database/getUserSettings.js';
 import { getUserNameFromApiKey } from './cache/apiKeys.cache.js';
 import { getConfigProperty } from './config.helpers.js';
 export function apiKeyIsValid(request) {
@@ -20,4 +21,24 @@ export function userCanUpdateWorkOrders(request) {
 }
 export function userIsAdmin(request) {
     return request.session?.user?.userProperties.isAdmin ?? false;
+}
+export function getUser(userName) {
+    const userNameLowerCase = userName.toLowerCase();
+    const canLogin = getConfigProperty('users.canLogin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+    if (canLogin) {
+        const canUpdate = getConfigProperty('users.canUpdate').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+        const canUpdateWorkOrders = getConfigProperty('users.canUpdateWorkOrders').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+        const isAdmin = getConfigProperty('users.isAdmin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+        const userSettings = getUserSettings(userNameLowerCase);
+        return {
+            userName: userNameLowerCase,
+            userProperties: {
+                canUpdate,
+                canUpdateWorkOrders,
+                isAdmin
+            },
+            userSettings
+        };
+    }
+    return undefined;
 }

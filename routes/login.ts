@@ -1,7 +1,6 @@
 import Debug from 'debug'
 import { type Request, type Response, Router } from 'express'
 
-import getUserSettings from '../database/getUserSettings.js'
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 import {
   authenticate,
@@ -9,6 +8,7 @@ import {
 } from '../helpers/authentication.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { useTestDatabases } from '../helpers/database.helpers.js'
+import { getUser } from '../helpers/functions.user.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:login`)
 
@@ -44,13 +44,11 @@ async function postHandler(
   >,
   response: Response
 ): Promise<void> {
-  const userName = (
+  const userName =
     typeof request.body.userName === 'string' ? request.body.userName : ''
-  ) as string
 
-  const passwordPlain = (
+  const passwordPlain =
     typeof request.body.password === 'string' ? request.body.password : ''
-  ) as string
 
   const unsafeRedirectURL = request.body.redirect
 
@@ -75,39 +73,7 @@ async function postHandler(
   let userObject: User | undefined
 
   if (isAuthenticated) {
-    const userNameLowerCase = userName.toLowerCase()
-
-    const canLogin = getConfigProperty('users.canLogin').some(
-      (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
-    )
-
-    if (canLogin) {
-      const canUpdate = getConfigProperty('users.canUpdate').some(
-        (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
-      )
-
-      const canUpdateWorkOrders = getConfigProperty(
-        'users.canUpdateWorkOrders'
-      ).some(
-        (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
-      )
-
-      const isAdmin = getConfigProperty('users.isAdmin').some(
-        (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
-      )
-
-      const userSettings = getUserSettings(userNameLowerCase)
-
-      userObject = {
-        userName: userNameLowerCase,
-        userProperties: {
-          canUpdate,
-          canUpdateWorkOrders,
-          isAdmin
-        },
-        userSettings
-      }
-    }
+    userObject = getUser(userName)
   }
 
   if (isAuthenticated && userObject !== undefined) {

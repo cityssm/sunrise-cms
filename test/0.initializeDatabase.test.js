@@ -16,6 +16,7 @@ await describe('Initialize Database', async () => {
             assert.ok(true, 'Deleted existing database file');
         }
         catch (error) {
+            // eslint-disable-next-line no-console
             console.log('Error deleting existing database file:', error);
         }
         const success = initializeDatabase();

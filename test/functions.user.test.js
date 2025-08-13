@@ -2,6 +2,7 @@ import assert from 'node:assert';
 import { describe, it } from 'node:test';
 import getApiKeys from '../database/getApiKeys.js';
 import * as userFunctions from '../helpers/functions.user.js';
+import { testUpdate } from './_globals.js';
 await describe('functions.user', async () => {
     await describe('unauthenticated, no user in session', async () => {
         const noUserRequest = {
@@ -100,7 +101,11 @@ await describe('functions.user', async () => {
     });
     await describe('API key check', async () => {
         await it('authenticates with a valid API key', () => {
-            const apiKeys = getApiKeys();
+            let apiKeys = getApiKeys();
+            if (Object.keys(apiKeys).length === 0) {
+                userFunctions.getUser(testUpdate);
+                apiKeys = getApiKeys();
+            }
             assert.ok(Object.keys(apiKeys).length > 0, 'Expected API keys to be present');
             for (const apiKey of Object.values(apiKeys)) {
                 const apiRequest = {
