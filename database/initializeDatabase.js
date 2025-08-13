@@ -468,6 +468,7 @@ export function initializeData() {
     // Burial Site Types
     const burialSiteTypes = getBurialSiteTypes();
     if (burialSiteTypes.length <= 0) {
+        debug('No burial site types found, adding default types.');
         addBurialSiteType({
             burialSiteType: 'In-Ground Grave',
             bodyCapacityMax: 2,
@@ -508,6 +509,7 @@ export function initializeData() {
     // Burial Site Statuses
     const burialSiteStatuses = getBurialSiteStatuses();
     if (burialSiteStatuses.length <= 0) {
+        debug('No burial site statuses found, adding default statuses.');
         addRecord('BurialSiteStatuses', 'Available', 1, initializingUser);
         addRecord('BurialSiteStatuses', 'Reserved', 2, initializingUser);
         addRecord('BurialSiteStatuses', 'Occupied', 3, initializingUser);
@@ -515,6 +517,7 @@ export function initializeData() {
     // Contract Types
     const contractTypes = getContractTypes();
     if (contractTypes.length <= 0) {
+        debug('No contract types found, adding default types.');
         addContractType({
             contractType: 'Preneed',
             isPreneed: '1',
@@ -532,6 +535,7 @@ export function initializeData() {
     // Interment Container Types
     const intermentContainerTypes = getIntermentContainerTypes();
     if (intermentContainerTypes.length <= 0) {
+        debug('No interment container types found, adding default types.');
         addIntermentContainerType({
             intermentContainerType: 'No Shell',
             intermentContainerTypeKey: 'NS',
@@ -577,6 +581,7 @@ export function initializeData() {
     // Committal Types
     const committalTypes = getCommittalTypes();
     if (committalTypes.length <= 0) {
+        debug('No committal types found, adding default types.');
         addCommittalType({
             committalType: 'Graveside',
             committalTypeKey: 'GS',
@@ -598,6 +603,7 @@ export function initializeData() {
      */
     const feeCategories = getFeeCategories({}, {});
     if (feeCategories.length <= 0) {
+        debug('No fee categories found, adding default categories.');
         addFeeCategory({
             feeCategory: 'Interment Rights',
             orderNumber: 1
@@ -622,11 +628,13 @@ export function initializeData() {
     // Work Order Types
     const workOrderTypes = getWorkOrderTypes();
     if (workOrderTypes.length <= 0) {
+        debug('No work order types found, adding default types.');
         addRecord('WorkOrderTypes', 'Cemetery Work Order', 1, initializingUser);
     }
     // Work Order Milestone Types
     const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
     if (workOrderMilestoneTypes.length <= 0) {
+        debug('No work order milestone types found, adding default types.');
         addRecord('WorkOrderMilestoneTypes', 'Funeral', 1, initializingUser);
         addRecord('WorkOrderMilestoneTypes', 'Arrival', 2, initializingUser);
         addRecord('WorkOrderMilestoneTypes', 'Cremation', 3, initializingUser);

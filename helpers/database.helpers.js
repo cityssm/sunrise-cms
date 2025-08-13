@@ -3,7 +3,7 @@ import path from 'node:path';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from './config.helpers.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:database.helpers:${process.pid.toString().padEnd(5)}`);
+const debug = Debug(`${DEBUG_NAMESPACE}:helpers:database:${process.pid.toString().padEnd(5)}`);
 export const useTestDatabases = getConfigProperty('application.useTestDatabases') ||
     process.env.TEST_DATABASES === 'true';
 if (useTestDatabases) {

@@ -8,7 +8,7 @@ import { DEBUG_NAMESPACE } from '../debug.config.js'
 
 import { getConfigProperty } from './config.helpers.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:images.helpers`)
+const debug = Debug(`${DEBUG_NAMESPACE}:helpers:images`)
 
 /*
  * Burial Site Images

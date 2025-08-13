@@ -11,7 +11,7 @@ import { DEBUG_NAMESPACE } from '../debug.config.js'
 
 import { getConfigProperty } from './config.helpers.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:customizations`)
+const debug = Debug(`${DEBUG_NAMESPACE}:helpers:customizations`)
 
 const customizationsPath = getConfigProperty('settings.customizationsPath')
 
