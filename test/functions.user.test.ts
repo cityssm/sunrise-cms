@@ -140,7 +140,11 @@ await describe('functions.user', async () => {
           }
         }
 
-        assert.strictEqual(userFunctions.apiKeyIsValid(apiRequest), true)
+        assert.strictEqual(
+          userFunctions.apiKeyIsValid(apiRequest),
+          true,
+          `Expected API key '${apiKey}' to be valid`
+        )
       }
     })
 

@@ -115,7 +115,7 @@ await describe('functions.user', async () => {
                         apiKey
                     }
                 };
-                assert.strictEqual(userFunctions.apiKeyIsValid(apiRequest), true);
+                assert.strictEqual(userFunctions.apiKeyIsValid(apiRequest), true, `Expected API key '${apiKey}' to be valid`);
             }
         });
         await it('fails to authenticate with an invalid API key', () => {
