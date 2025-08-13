@@ -1,4 +1,7 @@
-import PdfPuppeteer, { installChromeBrowser, installFirefoxBrowser } from '@cityssm/pdf-puppeteer'
+import PdfPuppeteer, {
+  installChromeBrowser,
+  installFirefoxBrowser
+} from '@cityssm/pdf-puppeteer'
 import Debug from 'debug'
 import { renderFile as renderEjsFile } from 'ejs'
 import exitHook from 'exit-hook'
@@ -39,8 +42,9 @@ export async function generatePdf(
     const pdf = await pdfPuppeteer.fromHtml(renderedHtml)
     return pdf
   } catch (error) {
-
-    const browserInstallAttempted = getCachedSettingValue('pdfPuppeteer.browserInstallAttempted')
+    const browserInstallAttempted = getCachedSettingValue(
+      'pdfPuppeteer.browserInstallAttempted'
+    )
 
     if (browserInstallAttempted === 'false') {
       try {
@@ -66,4 +70,8 @@ export async function generatePdf(
       `Error generating PDF for ${printConfig.title}: ${error.message}`
     )
   }
+}
+
+export async function closePdfPuppeteer(): Promise<void> {
+  await pdfPuppeteer.closeBrowser()
 }

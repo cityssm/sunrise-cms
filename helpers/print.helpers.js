@@ -71,7 +71,7 @@ export async function getReportData(printConfig, requestQuery) {
         reportData.contract = contract;
     }
     if (printConfig.params.includes('workOrderId') &&
-        typeof requestQuery.workOrderId === 'string') {
+        (typeof requestQuery.workOrderId === 'number' || typeof requestQuery.workOrderId === 'string')) {
         reportData.workOrder = await getWorkOrder(requestQuery.workOrderId, {
             includeBurialSites: true,
             includeComments: true,

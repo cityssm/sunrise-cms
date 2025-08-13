@@ -46,3 +46,6 @@ export async function generatePdf(printConfig, parameters) {
         throw new Error(`Error generating PDF for ${printConfig.title}: ${error.message}`);
     }
 }
+export async function closePdfPuppeteer() {
+    await pdfPuppeteer.closeBrowser();
+}

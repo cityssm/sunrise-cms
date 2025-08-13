@@ -80,7 +80,7 @@ export function getPdfPrintConfig(
 
 export function getPrintConfig(
   screenOrPdfPrintName: string
-): PrintConfig | undefined {
+): PrintConfig | PrintConfigWithPath | undefined {
   const printNameSplit = screenOrPdfPrintName.split('/')
 
   switch (printNameSplit[0]) {
@@ -125,7 +125,7 @@ export async function getReportData(
 
   if (
     printConfig.params.includes('workOrderId') &&
-    typeof requestQuery.workOrderId === 'string'
+    (typeof requestQuery.workOrderId === 'number' || typeof requestQuery.workOrderId === 'string')
   ) {
     reportData.workOrder = await getWorkOrder(requestQuery.workOrderId, {
       includeBurialSites: true,

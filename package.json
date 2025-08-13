@@ -30,6 +30,7 @@
     "start": "cross-env NODE_ENV=production node ./bin/www.js",
     "temp:legacyImportFromCsv": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node ./temp/legacyImportFromCsv/index.js",
     "test": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node --test",
+    "test:pdf": "cross-env NODE_ENV=dev DEBUG=sunrise:*,pdf-puppeteer:*,puppeteer-launch:* TEST_DATABASES=true node --test ./test/helpers.pdf.test.js",
     "test:startup": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true STARTUP_TEST=true node ./bin/www.js"
   },
   "dependencies": {
@@ -75,6 +76,7 @@
   },
   "devDependencies": {
     "@cityssm/bulma-sticky-table": "^3.0.1",
+    "@cityssm/is-pdf": "^2.0.0",
     "@cityssm/mssql-multi-pool": "^5.1.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/compression": "^1.8.1",
