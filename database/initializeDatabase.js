@@ -459,6 +459,7 @@ export function initializeDatabase() {
     for (const sql of createStatements) {
         sunriseDB.prepare(sql).run();
     }
+    debug(`Finished creating tables in ${databasePath}`);
     sunriseDB.close();
     initializeData();
     return true;

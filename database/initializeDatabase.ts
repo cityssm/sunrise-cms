@@ -531,6 +531,8 @@ export function initializeDatabase(): boolean {
     sunriseDB.prepare(sql).run()
   }
 
+  debug(`Finished creating tables in ${databasePath}`)
+
   sunriseDB.close()
 
   initializeData()
