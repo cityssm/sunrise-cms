@@ -1,3 +1,4 @@
+import assert from 'node:assert';
 import { describe, it } from 'node:test';
 import * as sqlFilterFunctions from '../helpers/functions.sqlFilters.js';
 await describe('functions.sqlFilters', async () => {
