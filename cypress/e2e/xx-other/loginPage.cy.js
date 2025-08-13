@@ -1,9 +1,9 @@
-import { logout } from '../../support/index.js';
+import { checkA11yLog, logout } from '../../support/index.js';
 describe('Login Page', () => {
     beforeEach(logout);
     it('Has no detectable accessibility issues', () => {
         cy.injectAxe();
-        cy.checkA11y();
+        cy.checkA11y(undefined, undefined, checkA11yLog);
     });
     it('Contains a login form', () => {
         cy.get('form').should('have.length', 1);

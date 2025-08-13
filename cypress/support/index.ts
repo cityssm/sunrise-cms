@@ -1,3 +1,4 @@
+import axe from 'axe-core'
 import 'cypress-axe'
 
 export const logout = (): void => {
@@ -27,3 +28,13 @@ export const ajaxDelayMillis = 800
 export const pageLoadDelayMillis = 1200
 
 export const pdfGenerationDelayMillis = 10_000
+
+export function checkA11yLog (violations: axe.Result[]): void {
+  if (violations.length > 0) {
+    cy.log('Accessibility violations found:')
+    for (const violation of violations) {
+      cy.log(`- ${violation.id}: ${violation.description}`)
+      cy.log(`  Context: ${JSON.stringify(violation.nodes)}`)
+    }
+  }
+}
