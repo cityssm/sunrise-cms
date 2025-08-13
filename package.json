@@ -16,7 +16,7 @@
   "type": "module",
   "exports": "./app.js",
   "scripts": {
-    "coverage": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary node --test",
+    "coverage": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary node --test --test-concurrency 1",
     "cy:open": "cypress open --config-file cypress.config.js",
     "cy:run": "cypress run --config-file cypress.config.js",
     "cy:run:firefox": "cypress run --config-file cypress.config.js --browser firefox",
@@ -29,7 +29,7 @@
     "postinstall": "npm explore @cityssm/pdf-puppeteer -- npm run postinstall",
     "start": "cross-env NODE_ENV=production node ./bin/www.js",
     "temp:legacyImportFromCsv": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node ./temp/legacyImportFromCsv/index.js",
-    "test": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node --test",
+    "test": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node --test --test-concurrency 1",
     "test:pdf": "cross-env NODE_ENV=dev DEBUG=sunrise:*,pdf-puppeteer:*,puppeteer-launch:* TEST_DATABASES=true node --test ./test/helpers.pdf.test.js",
     "test:startup": "cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true STARTUP_TEST=true node ./bin/www.js"
   },
