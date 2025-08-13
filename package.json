@@ -36,7 +36,7 @@
   "dependencies": {
     "@cacheable/node-cache": "^1.6.1",
     "@cityssm/authentication-helper": "^0.6.1",
-    "@cityssm/bulma-js": "^0.5.0",
+    "@cityssm/bulma-js": "^1.0.0-rc.2",
     "@cityssm/bulma-webapp-js": "^1.5.0",
     "@cityssm/configurator": "^0.1.0",
     "@cityssm/consigno-cloud-api": "^1.1.4",
