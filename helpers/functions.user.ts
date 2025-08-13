@@ -68,7 +68,7 @@ export function getUser(userName: string): User | undefined {
       (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
     )
 
-    const userSettings = getUserSettings(userNameLowerCase)
+    const userSettings = getUserSettings(userName)
 
     return {
       userName: userNameLowerCase,

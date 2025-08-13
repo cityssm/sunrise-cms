@@ -29,7 +29,7 @@ export function getUser(userName) {
         const canUpdate = getConfigProperty('users.canUpdate').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
         const canUpdateWorkOrders = getConfigProperty('users.canUpdateWorkOrders').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
         const isAdmin = getConfigProperty('users.isAdmin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
-        const userSettings = getUserSettings(userNameLowerCase);
+        const userSettings = getUserSettings(userName);
         return {
             userName: userNameLowerCase,
             userProperties: {

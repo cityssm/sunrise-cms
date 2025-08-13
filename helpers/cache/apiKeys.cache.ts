@@ -18,6 +18,7 @@ export function getApiKeyByUserName(userName: string): string | undefined {
 
 export function getUserNameFromApiKey(apiKey: string): string | undefined {
   const cachedKeys = getCachedApiKeys()
+  
   return Object.keys(cachedKeys).find(
     // eslint-disable-next-line security/detect-object-injection
     (userName) => cachedKeys[userName] === apiKey
