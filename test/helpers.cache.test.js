@@ -1,3 +1,4 @@
+import assert from 'node:assert';
 import { before, describe, it } from 'node:test';
 import * as cacheFunctions from '../helpers/cache.helpers.js';
 import { getCachedBurialSiteStatusByBurialSiteStatus, getCachedBurialSiteStatusById, getCachedBurialSiteStatuses } from '../helpers/cache/burialSiteStatuses.cache.js';
@@ -37,12 +38,12 @@ await describe('helpers.cache', async () => {
         await it('returns Burial Site Types', () => {
             cacheFunctions.clearCacheByTableName('BurialSiteTypes');
             const burialSiteTypes = getCachedBurialSiteTypes();
-            assert.ok(burialSiteTypes.length > 0);
+            assert.ok(burialSiteTypes.length > 0, 'Expected burial site types to be cached');
             for (const burialSiteType of burialSiteTypes) {
                 const byId = getCachedBurialSiteTypeById(burialSiteType.burialSiteTypeId);
-                assert.strictEqual(burialSiteType.burialSiteTypeId, byId?.burialSiteTypeId);
+                assert.strictEqual(burialSiteType.burialSiteTypeId, byId?.burialSiteTypeId, 'Expected burial site type ID to match');
                 const byName = getCachedBurialSiteTypesByBurialSiteType(burialSiteType.burialSiteType);
-                assert.strictEqual(burialSiteType.burialSiteType, byName?.burialSiteType);
+                assert.strictEqual(burialSiteType.burialSiteType, byName?.burialSiteType, 'Expected burial site type to match');
             }
         });
         await it('returns undefined with a bad burialSiteTypeId', () => {

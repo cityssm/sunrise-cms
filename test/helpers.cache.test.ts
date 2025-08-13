@@ -1,3 +1,4 @@
+import assert from 'node:assert'
 import { before, describe, it } from 'node:test'
 
 import * as cacheFunctions from '../helpers/cache.helpers.js'
@@ -79,13 +80,15 @@ await describe('helpers.cache', async () => {
 
       const burialSiteTypes = getCachedBurialSiteTypes()
 
-      assert.ok(burialSiteTypes.length > 0)
+      assert.ok(burialSiteTypes.length > 0, 'Expected burial site types to be cached')
 
       for (const burialSiteType of burialSiteTypes) {
         const byId = getCachedBurialSiteTypeById(burialSiteType.burialSiteTypeId)
+
         assert.strictEqual(
           burialSiteType.burialSiteTypeId,
-          byId?.burialSiteTypeId
+          byId?.burialSiteTypeId,
+          'Expected burial site type ID to match'
         )
 
         const byName = getCachedBurialSiteTypesByBurialSiteType(
@@ -93,7 +96,8 @@ await describe('helpers.cache', async () => {
         )
         assert.strictEqual(
           burialSiteType.burialSiteType,
-          byName?.burialSiteType
+          byName?.burialSiteType,
+          'Expected burial site type to match'
         )
       }
     })
