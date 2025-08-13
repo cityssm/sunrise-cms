@@ -1,4 +1,4 @@
-import axe from 'axe-core'
+import type axe from 'axe-core'
 import 'cypress-axe'
 
 export const logout = (): void => {
