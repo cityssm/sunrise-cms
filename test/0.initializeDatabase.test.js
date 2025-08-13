@@ -12,7 +12,7 @@ await describe('Initialize Database', async () => {
         // eslint-disable-next-line security/detect-non-literal-fs-filename
         await fs.unlink(databasePath);
         const success = initializeDatabase();
-        assert.ok(success);
-        assert.ok(getBurialSiteTypes().length > 0);
+        assert.ok(success, 'Database initialization failed');
+        assert.ok(getBurialSiteTypes().length > 0, 'No burial site types found');
     });
 });
