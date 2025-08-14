@@ -97,7 +97,7 @@
     "@types/randomcolor": "^0.5.9",
     "@types/session-file-store": "^1.2.5",
     "axe-core": "^4.10.3",
-    "cypress": "^14.5.4",
+    "cypress": "^14.5.2",
     "cypress-axe": "^1.6.0",
     "eslint-config-cityssm": "^27.1.0",
     "nodemon": "^3.1.10",
