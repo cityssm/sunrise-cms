@@ -71,6 +71,8 @@ application: {
   maximumProcesses?: number
 
   useTestDatabases?: boolean
+
+  attachmentsPath?: string    // The folder to save files to
 }
 ```
 
