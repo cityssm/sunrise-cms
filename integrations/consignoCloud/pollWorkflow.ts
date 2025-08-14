@@ -1,6 +1,3 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-
 import {
   type ConsignoCloudAPIBaseUrl,
   type ConsignoCloudAPIType,
@@ -16,6 +13,7 @@ import deleteConsignoCloudContractMetadata from '../../database/deleteConsingoCl
 import getUserSettings from '../../database/getUserSettings.js'
 import updateContractMetadata from '../../database/updateContractMetadata.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
+import { writeAttachment } from '../../helpers/attachments.helpers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import type { ConsignoCloudMetadataKey } from '../../types/contractMetadata.types.js'
 
@@ -24,8 +22,6 @@ const debug = Debug(
 )
 
 let apiCache: Record<string, ConsignoCloudAPIType | undefined> = {}
-
-const rootAttachmentsPath = getConfigProperty('application.attachmentsPath')
 
 export default async function pollWorkflow(
   workflow: {
@@ -128,9 +124,8 @@ export default async function pollWorkflow(
 
       const documentsFileName = `Contract ${workflow.contractId} (Workflow ${workflow.metadata.workflowId}) - Documents.${workflowDocuments.contentType === 'application/pdf' ? 'pdf' : 'zip'}`
 
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
-      await fs.writeFile(
-        path.join(rootAttachmentsPath, documentsFileName),
+      const documentsAttachment = await writeAttachment(
+        documentsFileName,
         workflowDocuments.data
       )
 
@@ -138,8 +133,8 @@ export default async function pollWorkflow(
         {
           contractId: workflow.contractId,
 
-          fileName: documentsFileName,
-          filePath: rootAttachmentsPath,
+          fileName: documentsAttachment.fileName,
+          filePath: documentsAttachment.filePath,
 
           attachmentTitle: `ConsignO Cloud Workflow Documents (${workflow.metadata.workflowId})`
         },
@@ -154,9 +149,8 @@ export default async function pollWorkflow(
 
       const auditTrailFileName = `Contract ${workflow.contractId} (Workflow ${workflow.metadata.workflowId}) - Audit Trail.pdf`
 
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
-      await fs.writeFile(
-        path.join(rootAttachmentsPath, auditTrailFileName),
+      const auditTrailAttachment = await writeAttachment(
+        auditTrailFileName,
         workflowAuditTrail.data
       )
 
@@ -164,8 +158,8 @@ export default async function pollWorkflow(
         {
           contractId: workflow.contractId,
 
-          fileName: auditTrailFileName,
-          filePath: rootAttachmentsPath,
+          fileName: auditTrailAttachment.fileName,
+          filePath: auditTrailAttachment.filePath,
 
           attachmentTitle: `ConsignO Cloud Workflow Audit Trail (${workflow.metadata.workflowId})`
         },

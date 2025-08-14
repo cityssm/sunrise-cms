@@ -1,5 +1,3 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
 import { ConsignoCloudAPI, ConsignoCloudError } from '@cityssm/consigno-cloud-api';
 import { WorkflowStatus } from '@cityssm/consigno-cloud-api/lookups.js';
 import Debug from 'debug';
@@ -9,10 +7,10 @@ import deleteConsignoCloudContractMetadata from '../../database/deleteConsingoCl
 import getUserSettings from '../../database/getUserSettings.js';
 import updateContractMetadata from '../../database/updateContractMetadata.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
+import { writeAttachment } from '../../helpers/attachments.helpers.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:integrations:consignoCloud:pollWorkflow`);
 let apiCache = {};
-const rootAttachmentsPath = getConfigProperty('application.attachmentsPath');
 export default async function pollWorkflow(workflow, user) {
     debug('Polling workflow for contract ID:', workflow.contractId);
     let consignoCloudAPI = apiCache[workflow.metadata.workflowUser];
@@ -62,23 +60,21 @@ export default async function pollWorkflow(workflow, user) {
             // Documents
             const workflowDocuments = await consignoCloudAPI.downloadDocuments(workflow.metadata.workflowId);
             const documentsFileName = `Contract ${workflow.contractId} (Workflow ${workflow.metadata.workflowId}) - Documents.${workflowDocuments.contentType === 'application/pdf' ? 'pdf' : 'zip'}`;
-            // eslint-disable-next-line security/detect-non-literal-fs-filename
-            await fs.writeFile(path.join(rootAttachmentsPath, documentsFileName), workflowDocuments.data);
+            const documentsAttachment = await writeAttachment(documentsFileName, workflowDocuments.data);
             addContractAttachment({
                 contractId: workflow.contractId,
-                fileName: documentsFileName,
-                filePath: rootAttachmentsPath,
+                fileName: documentsAttachment.fileName,
+                filePath: documentsAttachment.filePath,
                 attachmentTitle: `ConsignO Cloud Workflow Documents (${workflow.metadata.workflowId})`
             }, user);
             // Audit Trail
             const workflowAuditTrail = await consignoCloudAPI.downloadAuditTrail(workflow.metadata.workflowId);
             const auditTrailFileName = `Contract ${workflow.contractId} (Workflow ${workflow.metadata.workflowId}) - Audit Trail.pdf`;
-            // eslint-disable-next-line security/detect-non-literal-fs-filename
-            await fs.writeFile(path.join(rootAttachmentsPath, auditTrailFileName), workflowAuditTrail.data);
+            const auditTrailAttachment = await writeAttachment(auditTrailFileName, workflowAuditTrail.data);
             addContractAttachment({
                 contractId: workflow.contractId,
-                fileName: auditTrailFileName,
-                filePath: rootAttachmentsPath,
+                fileName: auditTrailAttachment.fileName,
+                filePath: auditTrailAttachment.filePath,
                 attachmentTitle: `ConsignO Cloud Workflow Audit Trail (${workflow.metadata.workflowId})`
             }, user);
         }
