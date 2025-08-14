@@ -105,12 +105,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             renderMilestones(responseJSON.workOrderMilestones);
         });
     }
-    workOrderMilestoneDateFilterElement.addEventListener('change', () => {
+    function toggleDateFilterAndGetMilestones() {
         ;
         workOrderMilestoneDateStringElement.closest('fieldset').disabled = workOrderMilestoneDateFilterElement.value !== 'date';
         getMilestones();
-    });
+    }
+    workOrderMilestoneDateFilterElement.addEventListener('change', toggleDateFilterAndGetMilestones);
     workOrderMilestoneDateStringElement.addEventListener('change', getMilestones);
     workOrderSearchFiltersFormElement.addEventListener('submit', getMilestones);
-    getMilestones();
+    toggleDateFilterAndGetMilestones();
 })();

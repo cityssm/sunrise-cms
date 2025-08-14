@@ -108,6 +108,7 @@ function buildWhereClause(filters) {
         getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays') +
         getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentAfterDays'));
     const recentAfterDateNumber = dateToInteger(date);
+    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
     switch (filters.workOrderMilestoneDateFilter) {
         case 'blank': {
             sqlWhereClause += ' and m.workOrderMilestoneDate = 0';

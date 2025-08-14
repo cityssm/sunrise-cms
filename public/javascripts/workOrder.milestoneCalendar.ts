@@ -168,17 +168,23 @@ declare const exports: Record<string, unknown>
     )
   }
 
-  workOrderMilestoneDateFilterElement.addEventListener('change', () => {
+  function toggleDateFilterAndGetMilestones(): void {
     ;(
       workOrderMilestoneDateStringElement.closest(
         'fieldset'
       ) as HTMLFieldSetElement
     ).disabled = workOrderMilestoneDateFilterElement.value !== 'date'
+
     getMilestones()
-  })
+  }
+
+  workOrderMilestoneDateFilterElement.addEventListener(
+    'change',
+    toggleDateFilterAndGetMilestones
+  )
 
   workOrderMilestoneDateStringElement.addEventListener('change', getMilestones)
   workOrderSearchFiltersFormElement.addEventListener('submit', getMilestones)
 
-  getMilestones()
+  toggleDateFilterAndGetMilestones()
 })()

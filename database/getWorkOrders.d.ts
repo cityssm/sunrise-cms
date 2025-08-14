@@ -1,3 +1,4 @@
+import { type DateString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import type { WorkOrder } from '../types/record.types.js';
 export interface GetWorkOrdersFilters {
@@ -7,8 +8,10 @@ export interface GetWorkOrdersFilters {
     burialSiteName?: string;
     contractId?: number | string;
     deceasedName?: string;
+    workOrderMilestoneDateString?: DateString;
 }
 export interface GetWorkOrdersOptions {
+    /** -1 = no limit */
     limit: number;
     offset: number | string;
     includeBurialSites?: boolean;

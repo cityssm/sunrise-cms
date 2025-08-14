@@ -127,6 +127,12 @@ function buildWhereClause(filters) {
         sqlWhereClause += ' and w.workOrderOpenDate = ?';
         sqlParameters.push(dateStringToInteger(filters.workOrderOpenDateString));
     }
+    if ((filters.workOrderMilestoneDateString ?? '') !== '') {
+        sqlWhereClause +=
+            ` and (w.workOrderId in (select workOrderId from WorkOrderMilestones where recordDelete_timeMillis is null and workOrderMilestoneDate = ?)
+        or (w.workOrderOpenDate = ? and (select count(*) from WorkOrderMilestones m where m.recordDelete_timeMillis is null and m.workOrderId = w.workOrderId) = 0))`;
+        sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString), dateStringToInteger(filters.workOrderMilestoneDateString));
+    }
     const deceasedNameFilters = getDeceasedNameWhereClause(filters.deceasedName, 'o');
     if (deceasedNameFilters.sqlParameters.length > 0) {
         sqlWhereClause += ` and w.workOrderId in (

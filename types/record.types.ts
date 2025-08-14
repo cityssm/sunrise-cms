@@ -156,7 +156,7 @@ export interface Contract extends Record {
 
   printEJS?: string
 
-  burialSiteId?: number
+  burialSiteId?: number | null
   burialSiteIsActive?: 0 | 1
   burialSiteName?: string
   burialSiteType?: string
@@ -435,7 +435,7 @@ export interface WorkOrder extends Record {
   workOrderOpenDate?: number
   workOrderOpenDateString?: string
 
-  workOrderCloseDate?: number
+  workOrderCloseDate?: number | null
   workOrderCloseDateString?: string
 
   workOrderMilestoneCount?: number
@@ -480,7 +480,7 @@ export interface WorkOrderMilestone extends Record, WorkOrder {
 
   workOrderMilestoneDescription?: string
 
-  workOrderMilestoneCompletionDate?: number
+  workOrderMilestoneCompletionDate?: number | null
   workOrderMilestoneCompletionDateString?: string
 
   workOrderMilestoneCompletionTime?: number

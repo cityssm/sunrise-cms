@@ -1,0 +1,66 @@
+<%- include('_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('_menu-workOrders'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li>
+          <a href="<%= urlPrefix %>/workOrders">
+            <span class="icon is-small"><i class="fa-solid fa-hard-hat"></i></span>
+            <span>Work Orders</span>
+          </a>
+        </li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            Workday Report
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="columns is-vcentered">
+      <div class="column">
+        <h1 class="title is-1">
+          Workday Report
+        </h1>
+      </div>
+      <div class="column is-narrow has-text-right">
+        <%
+          const currentDateString = dateTimeFunctions.dateToString(new Date())
+        %>
+        <div class="field has-addons">
+          <div class="control">
+            <button class="button has-tooltip-right" type="button" id="button--workdayPreviousDay" data-tooltip="Previous Day">
+              <span class="icon is-small"><i class="fa-solid fa-arrow-left"></i></span>
+            </button>
+          </div>
+          <div class="control is-expanded">
+            <span class="button is-fullwidth is-static" id="workdayDateStringSpan">
+              <%= currentDateString %>
+            </span>
+          </div>
+          <div class="control">
+            <button class="button has-tooltip-left" type="button" id="button--workdayNextDay" data-tooltip="Next Day">
+              <span class="icon is-small"><i class="fa-solid fa-arrow-right"></i></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="container--workday"></div>
+  </div>
+</div>
+
+<%- include('_footerA'); -%>
+
+<script>
+  exports.workdayDateString = "<%= currentDateString %>";
+</script>
+<script src="<%= urlPrefix %>/javascripts/workOrder.workday.js"></script>
+
+<%- include('_footerB'); -%>

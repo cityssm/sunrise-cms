@@ -10,6 +10,7 @@ import handler_new from '../handlers/workOrders-get/new.js'
 import handler_outlook from '../handlers/workOrders-get/outlook.js'
 import handler_search from '../handlers/workOrders-get/search.js'
 import handler_view from '../handlers/workOrders-get/view.js'
+import handler_workday from '../handlers/workOrders-get/workday.js'
 import handler_doAddWorkOrderBurialSite from '../handlers/workOrders-post/doAddWorkOrderBurialSite.js'
 import handler_doAddWorkOrderComment from '../handlers/workOrders-post/doAddWorkOrderComment.js'
 import handler_doAddWorkOrderContract from '../handlers/workOrders-post/doAddWorkOrderContract.js'
@@ -22,6 +23,7 @@ import handler_doDeleteWorkOrderBurialSite from '../handlers/workOrders-post/doD
 import handler_doDeleteWorkOrderComment from '../handlers/workOrders-post/doDeleteWorkOrderComment.js'
 import handler_doDeleteWorkOrderContract from '../handlers/workOrders-post/doDeleteWorkOrderContract.js'
 import handler_doDeleteWorkOrderMilestone from '../handlers/workOrders-post/doDeleteWorkOrderMilestone.js'
+import handler_doGetWorkdayReport from '../handlers/workOrders-post/doGetWorkdayReport.js'
 import handler_doGetWorkOrderMilestones from '../handlers/workOrders-post/doGetWorkOrderMilestones.js'
 import handler_doReopenWorkOrder from '../handlers/workOrders-post/doReopenWorkOrder.js'
 import handler_doReopenWorkOrderMilestone from '../handlers/workOrders-post/doReopenWorkOrderMilestone.js'
@@ -48,6 +50,12 @@ router.post('/doGetWorkOrderMilestones', handler_doGetWorkOrderMilestones)
 // Outlook Integration
 
 router.get('/outlook', handler_outlook)
+
+// Workday
+
+router.get('/workday', handler_workday)
+
+router.post('/doGetWorkdayReport', handler_doGetWorkdayReport)
 
 // New
 

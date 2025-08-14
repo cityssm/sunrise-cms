@@ -30,9 +30,12 @@ export interface GetWorkOrdersFilters {
   burialSiteName?: string
   contractId?: number | string
   deceasedName?: string
+
+  workOrderMilestoneDateString?: DateString
 }
 
 export interface GetWorkOrdersOptions {
+  /** -1 = no limit */
   limit: number
   offset: number | string
 
@@ -215,6 +218,16 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
     sqlWhereClause += ' and w.workOrderOpenDate = ?'
     sqlParameters.push(
       dateStringToInteger(filters.workOrderOpenDateString as DateString)
+    )
+  }
+
+  if ((filters.workOrderMilestoneDateString ?? '') !== '') {
+    sqlWhereClause +=
+      ` and (w.workOrderId in (select workOrderId from WorkOrderMilestones where recordDelete_timeMillis is null and workOrderMilestoneDate = ?)
+        or (w.workOrderOpenDate = ? and (select count(*) from WorkOrderMilestones m where m.recordDelete_timeMillis is null and m.workOrderId = w.workOrderId) = 0))`
+    sqlParameters.push(
+      dateStringToInteger(filters.workOrderMilestoneDateString as DateString),
+      dateStringToInteger(filters.workOrderMilestoneDateString as DateString)
     )
   }
 

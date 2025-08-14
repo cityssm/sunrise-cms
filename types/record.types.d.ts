@@ -109,7 +109,7 @@ export interface Contract extends Record {
     contractTypeId: number;
     isPreneed: boolean;
     printEJS?: string;
-    burialSiteId?: number;
+    burialSiteId?: number | null;
     burialSiteIsActive?: 0 | 1;
     burialSiteName?: string;
     burialSiteType?: string;
@@ -313,7 +313,7 @@ export interface WorkOrder extends Record {
     workOrderNumber?: string;
     workOrderOpenDate?: number;
     workOrderOpenDateString?: string;
-    workOrderCloseDate?: number;
+    workOrderCloseDate?: number | null;
     workOrderCloseDateString?: string;
     workOrderMilestoneCount?: number;
     workOrderMilestones?: WorkOrderMilestone[];
@@ -343,7 +343,7 @@ export interface WorkOrderMilestone extends Record, WorkOrder {
     workOrderMilestoneTimePeriodString?: string;
     workOrderMilestoneTimeString?: string;
     workOrderMilestoneDescription?: string;
-    workOrderMilestoneCompletionDate?: number;
+    workOrderMilestoneCompletionDate?: number | null;
     workOrderMilestoneCompletionDateString?: string;
     workOrderMilestoneCompletionTime?: number;
     workOrderMilestoneCompletionTimePeriodString?: string;
