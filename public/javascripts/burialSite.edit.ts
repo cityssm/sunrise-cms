@@ -648,7 +648,7 @@ declare const exports: {
     .querySelector('#burialSite--contractsToggle')
     ?.addEventListener('click', () => {
       const tableRowElements = document.querySelectorAll(
-        '#burialSite--contractsTbody tr[data-is-active="false"]'
+        '#burialSite--contractsTbody tr[data-is-active="0"]'
       )
 
       for (const tableRowElement of tableRowElements) {
