@@ -135,5 +135,20 @@ describe('Update - Cemeteries', () => {
         cemeteryData.cemeteryLongitude?.toString()
       )
     })
+
+    cy.log('Test More Options Dropdown')
+
+    const moreOptionsSelector = '[data-cy="dropdown--moreOptions"]'
+
+    cy.get(moreOptionsSelector).should('not.have.class', 'is-active')
+
+    cy.get(moreOptionsSelector).find('.dropdown-trigger button').click()
+
+    cy.get(moreOptionsSelector).should('have.class', 'is-active')
+
+    cy.get(moreOptionsSelector).find('.dropdown-trigger button').click()
+
+    cy.get(moreOptionsSelector).should('not.have.class', 'is-active')
+
   })
 })
