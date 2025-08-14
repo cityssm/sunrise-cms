@@ -72,12 +72,6 @@ export const configDefaultValues = {
 
   'settings.cemeteries.refreshImageChanges': false,
 
-  // eslint-disable-next-line no-secrets/no-secrets
-  'settings.burialSiteTypes.bodyCapacityMaxDefault': 2,
-
-  // eslint-disable-next-line no-secrets/no-secrets
-  'settings.burialSiteTypes.crematedCapacityMaxDefault': 6,
-
   'settings.burialSites.burialSiteNameSegments': {
     includeCemeteryKey: false,
     separator: '-',

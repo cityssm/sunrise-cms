@@ -1,5 +1,5 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable perfectionist/sort-objects */
+/* eslint-disable no-secrets/no-secrets, perfectionist/sort-objects */
 export const settingProperties = [
     {
         settingKey: 'aliases.externalReceiptNumber',
@@ -21,6 +21,20 @@ export const settingProperties = [
         description: 'The alias for the work order close date.',
         type: 'string',
         defaultValue: 'Completion Date'
+    },
+    {
+        settingKey: 'burialSiteTypes.bodyCapacityMaxDefault',
+        settingName: 'Burial Site Types - Body Capacity Max Default',
+        description: 'The default maximum body capacity for burial site types.',
+        type: 'number',
+        defaultValue: '2'
+    },
+    {
+        settingKey: 'burialSiteTypes.crematedCapacityMaxDefault',
+        settingName: 'Burial Site Types - Cremated Capacity Max Default',
+        description: 'The default maximum cremated capacity for burial site types.',
+        type: 'number',
+        defaultValue: '6'
     },
     {
         settingKey: 'workOrder.workDay.0.startHour',

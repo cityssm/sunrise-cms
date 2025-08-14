@@ -8,7 +8,6 @@ export const config: Config = {
   settings: {
     adminCleanup: {},
     burialSites: {},
-    burialSiteTypes: {},
     cemeteries: {},
     contracts: {},
     fees: {},

@@ -207,8 +207,8 @@
                   id="burialSite--burialSiteTypeId" name="burialSiteTypeId" required>
                   <% if (isCreate) { %>
                     <option value=""
-                      data-body-capacity-max="<%= configFunctions.getConfigProperty('settings.burialSiteTypes.bodyCapacityMaxDefault') %>"
-                      data-cremated-capacity-max="<%= configFunctions.getConfigProperty('settings.burialSiteTypes.crematedCapacityMaxDefault') %>">
+                      data-body-capacity-max="<%= settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault') %>"
+                      data-cremated-capacity-max="<%= settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault') %>">
                       (Select a Type)
                     </option>
                   <% } %>
@@ -252,9 +252,9 @@
                   <input class="input has-text-right"
                     id="burialSite--bodyCapacity" name="bodyCapacity" type="number"
                     min="0"
-                    max="<%= burialSite.bodyCapacityMax ?? configFunctions.getConfigProperty('settings.burialSiteTypes.bodyCapacityMaxDefault') %>"
+                    max="<%= burialSite.bodyCapacityMax ?? settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault') %>"
                     step="1"
-                    placeholder="<%= burialSite.bodyCapacityMax ?? configFunctions.getConfigProperty('settings.burialSiteTypes.bodyCapacityMaxDefault') %>"
+                    placeholder="<%= burialSite.bodyCapacityMax ?? settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault') %>"
                     value="<%= burialSite.bodyCapacity %>"
                     onwheel="return false" />
                 </div>
@@ -267,9 +267,9 @@
                   <input class="input has-text-right"
                     id="burialSite--crematedCapacity" name="crematedCapacity" type="number"
                     min="0"
-                    max="<%= burialSite.crematedCapacityMax ?? configFunctions.getConfigProperty('settings.burialSiteTypes.crematedCapacityMaxDefault') %>"
+                    max="<%= burialSite.crematedCapacityMax ?? settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault') %>"
                     step="1"
-                    placeholder="<%= burialSite.crematedCapacityMax ?? configFunctions.getConfigProperty('settings.burialSiteTypes.crematedCapacityMaxDefault') %>"
+                    placeholder="<%= burialSite.crematedCapacityMax ?? settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault') %>"
                     value="<%= burialSite.crematedCapacity %>"
                     onwheel="return false" />
                 </div>
@@ -648,8 +648,8 @@
 <%- include('_footerA'); -%>
 
 <script>
-  exports.bodyCapacityMaxDefault = <%- JSON.stringify(configFunctions.getConfigProperty('settings.burialSiteTypes.bodyCapacityMaxDefault')) %>;
-  exports.crematedCapacityMaxDefault = <%- JSON.stringify(configFunctions.getConfigProperty('settings.burialSiteTypes.crematedCapacityMaxDefault')) %>;
+  exports.bodyCapacityMaxDefault = <%- JSON.stringify(settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault')) %>;
+  exports.crematedCapacityMaxDefault = <%- JSON.stringify(settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault')) %>;
 </script>
 <% if (!isCreate) { %>
   <script>

@@ -96,9 +96,25 @@
             </a>
           <% } %>
         </p>
-        <p class="mb-2">
+        <p>
           <strong>Burial Site Type</strong><br />
           <%= burialSite.burialSiteType %>
+        </p>
+      </div>
+      <div class="column">
+        <p class="mb-2">
+          <%
+            const bodyCapacity = burialSite.bodyCapacity ?? 
+              burialSite.bodyCapacityMax ??
+              settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault')
+
+            const crematedCapacity = burialSite.crematedCapacity ??
+              burialSite.crematedCapacityMax ??
+              settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault')
+          %>
+          <strong>Capacity</strong><br />
+          <%= bodyCapacity %> bodies,
+          <%= crematedCapacity %> cremated remains
         </p>
         <p>
           <strong>Status</strong><br />

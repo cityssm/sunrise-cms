@@ -45,8 +45,8 @@
 
 <script>
   exports.burialSiteTypes = <%- JSON.stringify(burialSiteTypes) %>;
-  exports.bodyCapacityMaxDefault = <%- JSON.stringify(configFunctions.getConfigProperty('settings.burialSiteTypes.bodyCapacityMaxDefault')) %>
-  exports.crematedCapacityMaxDefault = <%- JSON.stringify(configFunctions.getConfigProperty('settings.burialSiteTypes.crematedCapacityMaxDefault')) %>
+  exports.bodyCapacityMaxDefault = <%- JSON.stringify(settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault')) %>
+  exports.crematedCapacityMaxDefault = <%- JSON.stringify(settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault')) %>
 </script>
 
 <script src="<%= urlPrefix %>/javascripts/burialSiteTypes.admin.js"></script>
