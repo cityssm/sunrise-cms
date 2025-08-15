@@ -57,19 +57,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const contractIdElement = document.querySelector('#quickSearchContract--contractId');
         globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(contractIdElement.value)}`;
     }
+    function doWorkOrderQuickSearch(formEvent) {
+        formEvent.preventDefault();
+        const workOrderNumberElement = document.querySelector('#quickSearchWorkOrder--workOrderNumber');
+        globalThis.location.href = `${urlPrefix}/workOrders/byWorkOrderNumber/${encodeURIComponent(workOrderNumberElement.value)}`;
+    }
     document
         .querySelector('#navbar--quickSearch')
         ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         cityssm.openHtmlModal('quickSearch', {
+            onshow(modalElement) {
+                ;
+                modalElement.querySelector('#quickSearch--contractsLink').href = `${urlPrefix}/contracts`;
+                modalElement.querySelector('#quickSearch--workOrdersLink').href = `${urlPrefix}/workOrders`;
+            },
             onshown(modalElement) {
                 bulmaJS.toggleHtmlClipped();
                 modalElement.querySelector('input')?.focus();
-                modalElement.querySelector('#form--quickSearchContract')?.addEventListener('submit', doContractQuickSearch);
+                modalElement
+                    .querySelector('#form--quickSearchContract')
+                    ?.addEventListener('submit', doContractQuickSearch);
+                modalElement
+                    .querySelector('#form--quickSearchWorkOrder')
+                    ?.addEventListener('submit', doWorkOrderQuickSearch);
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();
-            },
+            }
         });
     });
 })();

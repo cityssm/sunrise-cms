@@ -96,9 +96,21 @@ declare const bulmaJS: BulmaJS
   function doContractQuickSearch(formEvent: Event): void {
     formEvent.preventDefault()
 
-    const contractIdElement = document.querySelector('#quickSearchContract--contractId') as HTMLInputElement
+    const contractIdElement = document.querySelector(
+      '#quickSearchContract--contractId'
+    ) as HTMLInputElement
 
     globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(contractIdElement.value)}`
+  }
+
+  function doWorkOrderQuickSearch(formEvent: Event): void {
+    formEvent.preventDefault()
+
+    const workOrderNumberElement = document.querySelector(
+      '#quickSearchWorkOrder--workOrderNumber'
+    ) as HTMLInputElement
+
+    globalThis.location.href = `${urlPrefix}/workOrders/byWorkOrderNumber/${encodeURIComponent(workOrderNumberElement.value)}`
   }
 
   document
@@ -107,17 +119,35 @@ declare const bulmaJS: BulmaJS
       clickEvent.preventDefault()
 
       cityssm.openHtmlModal('quickSearch', {
+        onshow(modalElement) {
+          ;(
+            modalElement.querySelector(
+              '#quickSearch--contractsLink'
+            ) as HTMLAnchorElement
+          ).href = `${urlPrefix}/contracts`
+          ;(
+            modalElement.querySelector(
+              '#quickSearch--workOrdersLink'
+            ) as HTMLAnchorElement
+          ).href = `${urlPrefix}/workOrders`
+        },
         onshown(modalElement) {
           bulmaJS.toggleHtmlClipped()
 
           modalElement.querySelector('input')?.focus()
 
-          modalElement.querySelector('#form--quickSearchContract')?.addEventListener('submit', doContractQuickSearch)
+          modalElement
+            .querySelector('#form--quickSearchContract')
+            ?.addEventListener('submit', doContractQuickSearch)
+
+          modalElement
+            .querySelector('#form--quickSearchWorkOrder')
+            ?.addEventListener('submit', doWorkOrderQuickSearch)
         },
 
         onremoved() {
           bulmaJS.toggleHtmlClipped()
-        },
+        }
       })
     })
 })()

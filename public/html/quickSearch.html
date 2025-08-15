@@ -10,7 +10,21 @@
       ></button>
     </header>
     <section class="modal-card-body">
-      <h4 class="title is-4">Contracts</h4>
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h4 class="title is-4">Contracts</h4>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <a id="quickSearch--contractsLink" href="#" class="button is-link is-light">
+              <span class="icon is-small"><i class="fa-solid fa-search"></i></span>
+              <span>Contract Search</span>
+            </a>
+          </div>
+        </div>
+      </div>
       <form id="form--quickSearchContract">
         <div class="field has-addons">
           <div class="control">
@@ -26,6 +40,48 @@
               class="input"
               id="quickSearchContract--contractId"
               name="contractId"
+              type="text"
+              required
+            />
+          </div>
+          <div class="control">
+            <button class="button is-primary" type="submit">Go To</button>
+          </div>
+        </div>
+      </form>
+
+      <hr />
+
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h4 class="title is-4">Work Orders</h4>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <a id="quickSearch--workOrdersLink" href="#" class="button is-link is-light">
+              <span class="icon is-small"><i class="fa-solid fa-search"></i></span>
+              <span>Work Order Search</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <form id="form--quickSearchWorkOrder">
+        <div class="field has-addons">
+          <div class="control">
+            <label
+              class="button is-static"
+              for="quickSearchWorkOrder--workOrderNumber"
+            >
+              Work Order #
+            </label>
+          </div>
+          <div class="control is-expanded">
+            <input
+              class="input"
+              id="quickSearchWorkOrder--workOrderNumber"
+              name="workOrderNumber"
               type="text"
               required
             />

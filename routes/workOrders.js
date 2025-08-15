@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { updateWorkOrdersGetHandler, updateWorkOrdersPostHandler } from '../handlers/permissions.js';
+import handler_byWorkOrderNumber from '../handlers/workOrders-get/byWorkOrderNumber.js';
 import handler_edit from '../handlers/workOrders-get/edit.js';
 import handler_milestoneCalendar from '../handlers/workOrders-get/milestoneCalendar.js';
 import handler_new from '../handlers/workOrders-get/new.js';
@@ -50,6 +51,7 @@ router.post('/doCloseWorkdayWorkOrder', updateWorkOrdersPostHandler, handler_doC
 router.get('/new', updateWorkOrdersGetHandler, handler_new);
 router.post('/doCreateWorkOrder', updateWorkOrdersPostHandler, handler_doCreateWorkOrder);
 // View
+router.get('/byWorkOrderNumber/:workOrderNumber', handler_byWorkOrderNumber);
 router.get('/:workOrderId', handler_view);
 router.post('/doReopenWorkOrder', updateWorkOrdersPostHandler, handler_doReopenWorkOrder);
 // Edit
