@@ -28,13 +28,18 @@
           Workday Report
         </h1>
       </div>
+      <div class="column is-narrow">
+        <button class="button is-fullwidth" type="button" id="button--workdayToday">
+          Set to Today
+        </button>
+      </div>
       <div class="column is-narrow has-text-right">
         <%
           const currentDateString = dateTimeFunctions.dateToString(new Date())
         %>
         <div class="field has-addons">
           <div class="control">
-            <button class="button has-tooltip-right" type="button" id="button--workdayPreviousDay" data-tooltip="Previous Day">
+            <button class="button" type="button" id="button--workdayPreviousDay" title="Previous Day">
               <span class="icon is-small"><i class="fa-solid fa-arrow-left"></i></span>
             </button>
           </div>
@@ -44,7 +49,7 @@
             </span>
           </div>
           <div class="control">
-            <button class="button has-tooltip-left" type="button" id="button--workdayNextDay" data-tooltip="Next Day">
+            <button class="button" type="button" id="button--workdayNextDay" title="Next Day">
               <span class="icon is-small"><i class="fa-solid fa-arrow-right"></i></span>
             </button>
           </div>

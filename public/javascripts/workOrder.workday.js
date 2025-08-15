@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const sunrise = exports.sunrise;
     const canUpdateWorkOrders = document.querySelector('main')?.dataset.canUpdateWorkOrders === 'true';
     let currentDateString = cityssm.dateToString(new Date());
-    const workdayDate = cityssm.dateStringToDate(exports.workdayDateString);
+    let workdayDate = cityssm.dateStringToDate(exports.workdayDateString);
     const workdayContainer = document.querySelector('#container--workday');
     function toggleWorkOrderMilestoneCompletion(clickEvent) {
         const toggleButtonElement = clickEvent.currentTarget;
@@ -299,19 +299,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
             renderWorkOrders(workdayDateString, responseJSON.workOrders);
         });
     }
+    function updateFiltersAndGetReport() {
+        ;
+        document.querySelector('#workdayDateStringSpan').textContent = cityssm.dateToString(workdayDate);
+        document
+            .querySelector('#button--workdayToday')
+            ?.classList.toggle('is-hidden', workdayDate.toDateString() === new Date().toDateString());
+        getWorkdayReport();
+    }
+    document
+        .querySelector('#button--workdayToday')
+        ?.addEventListener('click', () => {
+        workdayDate = new Date();
+        updateFiltersAndGetReport();
+    });
     document
         .querySelector('#button--workdayPreviousDay')
         ?.addEventListener('click', () => {
         workdayDate.setDate(workdayDate.getDate() - 1);
-        document.querySelector('#workdayDateStringSpan').textContent = cityssm.dateToString(workdayDate);
-        getWorkdayReport();
+        updateFiltersAndGetReport();
     });
     document
         .querySelector('#button--workdayNextDay')
         ?.addEventListener('click', () => {
         workdayDate.setDate(workdayDate.getDate() + 1);
-        document.querySelector('#workdayDateStringSpan').textContent = cityssm.dateToString(workdayDate);
-        getWorkdayReport();
+        updateFiltersAndGetReport();
     });
-    getWorkdayReport();
+    updateFiltersAndGetReport();
 })();

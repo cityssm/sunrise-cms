@@ -28,7 +28,7 @@ declare const exports: {
 
   let currentDateString = cityssm.dateToString(new Date())
 
-  const workdayDate = cityssm.dateStringToDate(exports.workdayDateString)
+  let workdayDate = cityssm.dateStringToDate(exports.workdayDateString)
 
   const workdayContainer = document.querySelector(
     '#container--workday'
@@ -446,27 +446,41 @@ declare const exports: {
     )
   }
 
+  function updateFiltersAndGetReport(): void {
+    ;(
+      document.querySelector('#workdayDateStringSpan') as HTMLSpanElement
+    ).textContent = cityssm.dateToString(workdayDate)
+
+    document
+      .querySelector('#button--workdayToday')
+      ?.classList.toggle(
+        'is-hidden',
+        workdayDate.toDateString() === new Date().toDateString()
+      )
+
+    getWorkdayReport()
+  }
+
+  document
+    .querySelector('#button--workdayToday')
+    ?.addEventListener('click', () => {
+      workdayDate = new Date()
+      updateFiltersAndGetReport()
+    })
+
   document
     .querySelector('#button--workdayPreviousDay')
     ?.addEventListener('click', () => {
       workdayDate.setDate(workdayDate.getDate() - 1)
-      ;(
-        document.querySelector('#workdayDateStringSpan') as HTMLSpanElement
-      ).textContent = cityssm.dateToString(workdayDate)
-
-      getWorkdayReport()
+      updateFiltersAndGetReport()
     })
 
   document
     .querySelector('#button--workdayNextDay')
     ?.addEventListener('click', () => {
       workdayDate.setDate(workdayDate.getDate() + 1)
-      ;(
-        document.querySelector('#workdayDateStringSpan') as HTMLSpanElement
-      ).textContent = cityssm.dateToString(workdayDate)
-
-      getWorkdayReport()
+      updateFiltersAndGetReport()
     })
 
-  getWorkdayReport()
+  updateFiltersAndGetReport()
 })()
