@@ -38,7 +38,7 @@
           const currentDateString = dateTimeFunctions.dateToString(new Date())
         %>
         <div class="field has-addons">
-          <div class="control">
+          <div class="control is-hidden-print">
             <button class="button" type="button" id="button--workdayPreviousDay" title="Previous Day">
               <span class="icon is-small"><i class="fa-solid fa-arrow-left"></i></span>
             </button>
@@ -48,7 +48,7 @@
               <%= currentDateString %>
             </span>
           </div>
-          <div class="control">
+          <div class="control is-hidden-print">
             <button class="button" type="button" id="button--workdayNextDay" title="Next Day">
               <span class="icon is-small"><i class="fa-solid fa-arrow-right"></i></span>
             </button>

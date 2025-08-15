@@ -186,7 +186,18 @@ declare const exports: {
       const workOrderIsClosed = workOrder.workOrderCloseDate !== null
 
       const workOrderElement = document.createElement('div')
-      workOrderElement.className = 'panel'
+      workOrderElement.className = 'panel avoid-page-break'
+
+      let progressTagClassName = ''
+
+      if (
+        workOrder.workOrderMilestoneCompletionCount ===
+        workOrder.workOrderMilestoneCount
+      ) {
+        progressTagClassName = 'is-success'
+      } else if ((workOrder.workOrderMilestoneOverdueCount ?? 0) > 0) {
+        progressTagClassName = 'is-warning'
+      }
 
       // eslint-disable-next-line no-unsanitized/property
       workOrderElement.innerHTML = `<div class="panel-heading p-3">
@@ -197,23 +208,43 @@ declare const exports: {
                   <a class="has-text-white" href="${sunrise.urlPrefix}/workOrders/${workOrder.workOrderId}" target="_blank">
                     #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
                   </a>
-                  ${workOrderIsClosed ? '<span class="tag">Closed</span>' : ''}
+                  ${
+                    workOrderIsClosed
+                      ? `<span class="tag is-info">
+                          <span class="icon is-small"><i class="fa-solid fa-stop"></i></span>
+                          <span>Closed</span>
+                          </span>`
+                      : ''
+                  }
                 </h2>
               </div>
             </div>
-            <div class="level-right"></div>
+            <div class="level-right">
+              <div class="level-item">
+                <div class="tags has-addons">
+                  <span class="tag is-dark">Progress</span>
+                  <span class="tag ${progressTagClassName}">
+                    ${workOrder.workOrderMilestoneCompletionCount ?? 0} / ${workOrder.workOrderMilestoneCount ?? 0}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="panel-block is-block">
-          <p>${cityssm.escapeHTML(workOrder.workOrderDescription ?? '')}</p>
-          <div class="columns">
-            <div class="column">
-              <ul class="fa-ul list--contacts"></ul>
-            </div>
-            <div class="column column--burialSites">
-              <ul class="fa-ul list--burialSites"></ul>
-            </div>
-          </div>
+          <p>${cityssm.escapeHTML((workOrder.workOrderDescription ?? '') === '' ? workOrder.workOrderType ?? '' : workOrder.workOrderDescription ?? '')}</p>
+          ${
+            (workOrder.workOrderContracts ?? []).length > 0 || (workOrder.workOrderBurialSites ?? []).length > 0
+              ? `<div class="columns">
+                  <div class="column">
+                    <ul class="fa-ul list--contacts"></ul>
+                  </div>
+                  <div class="column column--burialSites">
+                    <ul class="fa-ul list--burialSites"></ul>
+                  </div>
+                </div>`
+              : ''
+          }
         </div>`
 
       /*
@@ -396,7 +427,7 @@ declare const exports: {
           .querySelector('.panel-heading .level-right')
           ?.insertAdjacentHTML(
             'beforeend',
-            `<div class="level-item">
+            `<div class="level-item is-hidden-print">
               <button class="button is-small button--close-work-order"
                 data-work-order-id="${cityssm.escapeHTML(workOrder.workOrderId.toString())}"
                 type="button">
@@ -483,4 +514,9 @@ declare const exports: {
     })
 
   updateFiltersAndGetReport()
+
+  document
+    .querySelector('aside.menu')
+    ?.closest('.column')
+    ?.classList.add('is-hidden-mobile')
 })()
