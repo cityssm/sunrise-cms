@@ -30,7 +30,7 @@
     <div class="level-right">
       <div class="level-item">
         <span class="tag is-info is-medium">
-          <span class="icon is-small">
+          <span class="icon">
             <i class="fa-solid fa-stop"></i>
           </span>
           <span>Closed</span>
@@ -351,7 +351,7 @@
                 </div>
                 <div class="dropdown-menu">
                   <div class="dropdown-content">
-                    <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
+                    <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userSettings.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
                       <span class="icon is-small"><i class="fa-solid fa-calendar"></i></span>
                       <span>Download iCalendar</span>
                     </a>
