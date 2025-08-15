@@ -316,9 +316,9 @@ declare const exports: {
       let includesIncompleteMilestones = false
 
       const canUpdateThisWorkOrder =
+        !workOrderIsClosed &&
         canUpdateWorkOrders &&
-        cityssm.dateToString(workdayDate) === currentDateString &&
-        !workOrderIsClosed
+        cityssm.dateToString(workdayDate) <= currentDateString
 
       for (const milestone of workOrder.workOrderMilestones ?? []) {
         if (milestone.workOrderMilestoneCompletionDate === null) {
@@ -391,7 +391,7 @@ declare const exports: {
         )
       }
 
-      if (!includesIncompleteMilestones && !workOrderIsClosed) {
+      if (!includesIncompleteMilestones && canUpdateThisWorkOrder) {
         workOrderElement
           .querySelector('.panel-heading .level-right')
           ?.insertAdjacentHTML(

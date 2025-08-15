@@ -204,9 +204,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
              */
             let includesMilestones = false;
             let includesIncompleteMilestones = false;
-            const canUpdateThisWorkOrder = canUpdateWorkOrders &&
-                cityssm.dateToString(workdayDate) === currentDateString &&
-                !workOrderIsClosed;
+            const canUpdateThisWorkOrder = !workOrderIsClosed &&
+                canUpdateWorkOrders &&
+                cityssm.dateToString(workdayDate) <= currentDateString;
             for (const milestone of workOrder.workOrderMilestones ?? []) {
                 if (milestone.workOrderMilestoneCompletionDate === null) {
                     includesIncompleteMilestones = true;
@@ -263,7 +263,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               <p class="has-text-grey">No individual milestones for this work order.</p>
             </div>`);
             }
-            if (!includesIncompleteMilestones && !workOrderIsClosed) {
+            if (!includesIncompleteMilestones && canUpdateThisWorkOrder) {
                 workOrderElement
                     .querySelector('.panel-heading .level-right')
                     ?.insertAdjacentHTML('beforeend', `<div class="level-item">
