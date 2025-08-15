@@ -109,6 +109,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         currentDateString = cityssm.dateToString(new Date());
         for (const workOrder of workOrders) {
             const workOrderIsClosed = workOrder.workOrderCloseDate !== null;
+            const canUpdateThisWorkOrder = !workOrderIsClosed &&
+                canUpdateWorkOrders &&
+                cityssm.dateToString(workdayDate) <= currentDateString;
             const workOrderElement = document.createElement('div');
             workOrderElement.className = 'panel avoid-page-break';
             let progressTagClassName = '';
@@ -125,7 +128,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <div class="level-left">
               <div class="level-item">
                 <h2>
-                  <a class="has-text-white" href="${sunrise.urlPrefix}/workOrders/${workOrder.workOrderId}" target="_blank">
+                  <a class="has-text-white"
+                    href="${sunrise.urlPrefix}/workOrders/${workOrder.workOrderId}${canUpdateThisWorkOrder ? '/edit' : ''}"
+                    title="Open Work Order #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}"
+                    target="_blank">
                     #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
                   </a>
                   ${workOrderIsClosed
@@ -228,9 +234,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
              */
             let includesMilestones = false;
             let includesIncompleteMilestones = false;
-            const canUpdateThisWorkOrder = !workOrderIsClosed &&
-                canUpdateWorkOrders &&
-                cityssm.dateToString(workdayDate) <= currentDateString;
             for (const milestone of workOrder.workOrderMilestones ?? []) {
                 if (milestone.workOrderMilestoneCompletionDate === null) {
                     includesIncompleteMilestones = true;
