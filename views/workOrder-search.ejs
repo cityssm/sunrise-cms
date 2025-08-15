@@ -39,31 +39,34 @@
         <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
 
         <div class="columns">
-          <div class="column">
-            <div class="field">
-              <label class="label" for="searchFilter--workOrderTypeId">Work Order Type</label>
-              <div class="control has-icons-left">
-                <div class="select is-fullwidth">
-                  <select id="searchFilter--workOrderTypeId" name="workOrderTypeId"
-                    <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %>>
-                    <option value="">(All Work Order Types)</option>
-                    <% for (const workOrderType of workOrderTypes) { %>
-                      <option value="<%= workOrderType.workOrderTypeId %>"><%= workOrderType.workOrderType || "(No Name)" %></option>
-                    <% } %>
-                  </select>
+          <% if (workOrderTypes.length > 1) { %>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--workOrderTypeId">Work Order Type</label>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--workOrderTypeId" name="workOrderTypeId"
+                      <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %>>
+                      <option value="">(All Work Order Types)</option>
+                      <% for (const workOrderType of workOrderTypes) { %>
+                        <option value="<%= workOrderType.workOrderTypeId %>"><%= workOrderType.workOrderType || "(No Name)" %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
                 </div>
-                <span class="icon is-small is-left">
-                  <i class="fa-solid fa-search"></i>
-                </span>
               </div>
             </div>
-          </div>
+          <% } %>
           <div class="column">
             <div class="field">
               <label class="label" for="searchFilter--workOrderOpenStatus">Open Status</label>
               <div class="control has-icons-left">
                 <div class="select is-fullwidth">
-                  <select id="searchFilter--workOrderOpenStatus" name="workOrderOpenStatus">
+                  <select id="searchFilter--workOrderOpenStatus" name="workOrderOpenStatus"
+                    <%- enableKeyboardShortcuts && workOrderTypes.length <= 1 ? ' accesskey="f" ' : '' %>>
                     <option value="" <%= (workOrderOpenDateString ? " selected" : "") %>>(All Statuses)</option>
                     <option value="open" <%= (workOrderOpenDateString ? "" : " selected") %>>Open</option>
                     <option value="closed">Closed</option>
