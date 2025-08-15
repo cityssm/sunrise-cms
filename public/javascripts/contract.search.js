@@ -88,7 +88,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ? '<span class="has-text-grey">(No Burial Site)</span>'
                 : `<a class="has-tooltip-right ${burialSiteLinkClass}"
                     data-tooltip="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
-                    href="${sunrise.getBurialSiteURL(contract.burialSiteId)}">
+                    href="${sunrise.getBurialSiteURL(contract.burialSiteId ?? '')}">
                       ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
                     </a>`}<br />
             <span class="is-size-7">${cityssm.escapeHTML(contract.cemeteryName ?? '')}</span>

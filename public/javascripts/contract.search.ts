@@ -145,7 +145,7 @@ declare const exports: Record<string, unknown>
                 ? '<span class="has-text-grey">(No Burial Site)</span>'
                 : `<a class="has-tooltip-right ${burialSiteLinkClass}"
                     data-tooltip="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
-                    href="${sunrise.getBurialSiteURL(contract.burialSiteId)}">
+                    href="${sunrise.getBurialSiteURL(contract.burialSiteId ?? '')}">
                       ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
                     </a>`
             }<br />

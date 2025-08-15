@@ -363,7 +363,7 @@ export interface WorkOrderType extends Record {
 }
 export interface Setting {
     settingKey: SettingKey;
-    settingValue: string | null;
     previousSettingValue: string | null;
+    settingValue: string | null;
     recordUpdate_timeMillis: number;
 }
