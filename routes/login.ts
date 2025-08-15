@@ -8,7 +8,7 @@ import {
 } from '../helpers/authentication.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { useTestDatabases } from '../helpers/database.helpers.js'
-import { getUser } from '../helpers/functions.user.js'
+import { getUser } from '../helpers/user.helpers.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:login`)
 

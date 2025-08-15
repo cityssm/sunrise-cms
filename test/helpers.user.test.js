@@ -1,9 +1,9 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 import { getCachedApiKeys } from '../helpers/cache/apiKeys.cache.js';
-import * as userFunctions from '../helpers/functions.user.js';
+import * as userFunctions from '../helpers/user.helpers.js';
 import { testAdmin, testUpdate, testView } from './_globals.js';
-await describe('functions.user', async () => {
+await describe('helpers.user', async () => {
     await describe('unauthenticated, no user in session', async () => {
         const noUserRequest = {
             session: {}

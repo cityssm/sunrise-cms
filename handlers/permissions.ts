@@ -6,7 +6,7 @@ import {
   userCanUpdate,
   userCanUpdateWorkOrders,
   userIsAdmin
-} from '../helpers/functions.user.js'
+} from '../helpers/user.helpers.js'
 
 const urlPrefix = getConfigProperty('reverseProxy.urlPrefix')
 

@@ -1,5 +1,5 @@
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { apiKeyIsValid, userCanUpdate, userCanUpdateWorkOrders, userIsAdmin } from '../helpers/functions.user.js';
+import { apiKeyIsValid, userCanUpdate, userCanUpdateWorkOrders, userIsAdmin } from '../helpers/user.helpers.js';
 const urlPrefix = getConfigProperty('reverseProxy.urlPrefix');
 const forbiddenStatus = 403;
 const forbiddenJSON = {
