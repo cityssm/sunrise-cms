@@ -216,16 +216,20 @@ app.use(
  * ROUTES
  */
 
+function hasSession(request: express.Request): boolean {
+  return (
+    Object.hasOwn(request.session, 'user') &&
+    Object.hasOwn(request.cookies, sessionCookieName)
+  )
+}
+
 // Redirect logged in users
-const sessionChecker = (
+const sessionCheckHandler = (
   request: express.Request,
   response: express.Response,
   next: express.NextFunction
 ): void => {
-  if (
-    Object.hasOwn(request.session, 'user') &&
-    Object.hasOwn(request.cookies, sessionCookieName)
-  ) {
+  if (hasSession(request)) {
     next()
     return
   }
@@ -266,25 +270,25 @@ app.use((request, response, next) => {
   next()
 })
 
-app.get(`${urlPrefix}/`, sessionChecker, (_request, response) => {
+app.get(`${urlPrefix}/`, sessionCheckHandler, (_request, response) => {
   response.redirect(`${urlPrefix}/dashboard`)
 })
 
-app.use(`${urlPrefix}/dashboard`, sessionChecker, routerDashboard)
+app.use(`${urlPrefix}/dashboard`, sessionCheckHandler, routerDashboard)
 
 app.use(`${urlPrefix}/api/:apiKey`, permissionHandlers.apiGetHandler, routerApi)
 
-app.use(`${urlPrefix}/print`, sessionChecker, routerPrint)
-app.use(`${urlPrefix}/cemeteries`, sessionChecker, routerCemeteries)
-app.use(`${urlPrefix}/burialSites`, sessionChecker, routerBurialSites)
-app.use(`${urlPrefix}/funeralHomes`, sessionChecker, routerFuneralHomes)
-app.use(`${urlPrefix}/contracts`, sessionChecker, routerContracts)
-app.use(`${urlPrefix}/workOrders`, sessionChecker, routerWorkOrders)
+app.use(`${urlPrefix}/print`, sessionCheckHandler, routerPrint)
+app.use(`${urlPrefix}/cemeteries`, sessionCheckHandler, routerCemeteries)
+app.use(`${urlPrefix}/burialSites`, sessionCheckHandler, routerBurialSites)
+app.use(`${urlPrefix}/funeralHomes`, sessionCheckHandler, routerFuneralHomes)
+app.use(`${urlPrefix}/contracts`, sessionCheckHandler, routerContracts)
+app.use(`${urlPrefix}/workOrders`, sessionCheckHandler, routerWorkOrders)
+app.use(`${urlPrefix}/reports`, sessionCheckHandler, routerReports)
 
-app.use(`${urlPrefix}/reports`, sessionChecker, routerReports)
 app.use(
   `${urlPrefix}/admin`,
-  sessionChecker,
+  sessionCheckHandler,
   permissionHandlers.adminGetHandler,
   routerAdmin
 )

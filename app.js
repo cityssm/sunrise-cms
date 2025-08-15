@@ -129,10 +129,13 @@ app.use(`${urlPrefix}/lib/randomcolor/randomColor.js`, express.static('node_modu
 /*
  * ROUTES
  */
+function hasSession(request) {
+    return (Object.hasOwn(request.session, 'user') &&
+        Object.hasOwn(request.cookies, sessionCookieName));
+}
 // Redirect logged in users
-const sessionChecker = (request, response, next) => {
-    if (Object.hasOwn(request.session, 'user') &&
-        Object.hasOwn(request.cookies, sessionCookieName)) {
+const sessionCheckHandler = (request, response, next) => {
+    if (hasSession(request)) {
         next();
         return;
     }
@@ -155,19 +158,19 @@ app.use((request, response, next) => {
     response.locals.enableKeyboardShortcuts = configFunctions.getConfigProperty('settings.enableKeyboardShortcuts');
     next();
 });
-app.get(`${urlPrefix}/`, sessionChecker, (_request, response) => {
+app.get(`${urlPrefix}/`, sessionCheckHandler, (_request, response) => {
     response.redirect(`${urlPrefix}/dashboard`);
 });
-app.use(`${urlPrefix}/dashboard`, sessionChecker, routerDashboard);
+app.use(`${urlPrefix}/dashboard`, sessionCheckHandler, routerDashboard);
 app.use(`${urlPrefix}/api/:apiKey`, permissionHandlers.apiGetHandler, routerApi);
-app.use(`${urlPrefix}/print`, sessionChecker, routerPrint);
-app.use(`${urlPrefix}/cemeteries`, sessionChecker, routerCemeteries);
-app.use(`${urlPrefix}/burialSites`, sessionChecker, routerBurialSites);
-app.use(`${urlPrefix}/funeralHomes`, sessionChecker, routerFuneralHomes);
-app.use(`${urlPrefix}/contracts`, sessionChecker, routerContracts);
-app.use(`${urlPrefix}/workOrders`, sessionChecker, routerWorkOrders);
-app.use(`${urlPrefix}/reports`, sessionChecker, routerReports);
-app.use(`${urlPrefix}/admin`, sessionChecker, permissionHandlers.adminGetHandler, routerAdmin);
+app.use(`${urlPrefix}/print`, sessionCheckHandler, routerPrint);
+app.use(`${urlPrefix}/cemeteries`, sessionCheckHandler, routerCemeteries);
+app.use(`${urlPrefix}/burialSites`, sessionCheckHandler, routerBurialSites);
+app.use(`${urlPrefix}/funeralHomes`, sessionCheckHandler, routerFuneralHomes);
+app.use(`${urlPrefix}/contracts`, sessionCheckHandler, routerContracts);
+app.use(`${urlPrefix}/workOrders`, sessionCheckHandler, routerWorkOrders);
+app.use(`${urlPrefix}/reports`, sessionCheckHandler, routerReports);
+app.use(`${urlPrefix}/admin`, sessionCheckHandler, permissionHandlers.adminGetHandler, routerAdmin);
 if (configFunctions.getConfigProperty('session.doKeepAlive')) {
     app.all(`${urlPrefix}/keepAlive`, (request, response) => {
         response.json({
