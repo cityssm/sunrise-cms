@@ -55,7 +55,7 @@ export default async function handler(
   const cemeteries = getCemeteries()
 
   const burialSiteDirectionsOfArrival =
-    contract.burialSiteId === undefined
+    contract.burialSiteId === undefined || contract.burialSiteId === null
       ? defaultDirectionsOfArrival
       : getBurialSiteDirectionsOfArrival(contract.burialSiteId)
 

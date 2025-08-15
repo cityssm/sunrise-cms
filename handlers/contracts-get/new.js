@@ -40,7 +40,7 @@ export default async function handler(request, response) {
     const burialSiteStatuses = getCachedBurialSiteStatuses();
     const burialSiteTypes = getCachedBurialSiteTypes();
     const cemeteries = getCemeteries();
-    const burialSiteDirectionsOfArrival = contract.burialSiteId === undefined
+    const burialSiteDirectionsOfArrival = contract.burialSiteId === undefined || contract.burialSiteId === null
         ? defaultDirectionsOfArrival
         : getBurialSiteDirectionsOfArrival(contract.burialSiteId);
     response.render('contract-edit', {
