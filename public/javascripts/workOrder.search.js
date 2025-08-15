@@ -52,7 +52,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             }
             // eslint-disable-next-line no-unsanitized/method
-            resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr class="avoid-page-break">
+            resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr class="avoid-page-break ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0 ? 'has-background-warning-light' : ''}">
           <td>
             <a class="has-text-weight-bold" href="${sunrise.getWorkOrderURL(workOrder.workOrderId)}">
               ${workOrder.workOrderNumber?.trim() === ''

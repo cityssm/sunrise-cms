@@ -1,4 +1,4 @@
-import { dateIntegerToString, dateStringToInteger } from '@cityssm/utils-datetime';
+import { dateIntegerToString, dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sanitizeLimit, sanitizeOffset, sunriseDB } from '../helpers/database.helpers.js';
 import { getBurialSiteNameWhereClause, getDeceasedNameWhereClause } from '../helpers/functions.sqlFilters.js';
@@ -21,6 +21,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
         const sqlLimitClause = options.limit === -1
             ? ''
             : ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`;
+        const currentDateNumber = dateToInteger(new Date());
         workOrders = database
             .prepare(`select w.workOrderId,
           w.workOrderTypeId, t.workOrderType,
@@ -29,6 +30,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
           w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
           ifnull(m.workOrderMilestoneCount, 0) as workOrderMilestoneCount,
           ifnull(m.workOrderMilestoneCompletionCount, 0) as workOrderMilestoneCompletionCount,
+          ifnull(m.workOrderMilestoneOverdueCount, 0) as workOrderMilestoneOverdueCount,
           ifnull(l.workOrderBurialSiteCount, 0) as workOrderBurialSiteCount
 
           from WorkOrders w
@@ -36,7 +38,8 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
           left join (
             select workOrderId,
             count(workOrderMilestoneId) as workOrderMilestoneCount,
-            sum(case when workOrderMilestoneCompletionDate is null then 0 else 1 end) as workOrderMilestoneCompletionCount
+            sum(case when workOrderMilestoneCompletionDate is null then 0 else 1 end) as workOrderMilestoneCompletionCount,
+            sum(case when workOrderMilestoneDate < ${currentDateNumber} and workOrderMilestoneCompletionDate is null then 1 else 0 end) as workOrderMilestoneOverdueCount
             from WorkOrderMilestones
             where recordDelete_timeMillis is null
             group by workOrderId) m on w.workOrderId = m.workOrderId

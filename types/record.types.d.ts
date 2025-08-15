@@ -318,6 +318,7 @@ export interface WorkOrder extends Record {
     workOrderMilestoneCount?: number;
     workOrderMilestones?: WorkOrderMilestone[];
     workOrderMilestoneCompletionCount?: number;
+    workOrderMilestoneOverdueCount?: number;
     workOrderComments?: WorkOrderComment[];
     workOrderBurialSiteCount?: number;
     workOrderBurialSites?: BurialSite[];
