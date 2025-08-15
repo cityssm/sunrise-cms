@@ -1,3 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable sonarjs/no-nested-conditional */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
@@ -23,13 +26,142 @@ declare const exports: {
   const canUpdateWorkOrders =
     document.querySelector('main')?.dataset.canUpdateWorkOrders === 'true'
 
+  let currentDateString = cityssm.dateToString(new Date())
+
   const workdayDate = cityssm.dateStringToDate(exports.workdayDateString)
 
   const workdayContainer = document.querySelector(
     '#container--workday'
   ) as HTMLElement
 
-  function toggleWorkOrderMilestoneCompletion(clickEvent: Event): void {}
+  function toggleWorkOrderMilestoneCompletion(clickEvent: Event): void {
+    const toggleButtonElement = clickEvent.currentTarget as HTMLElement
+
+    const workOrderMilestoneId = Number.parseInt(
+      toggleButtonElement.dataset.workOrderMilestoneId ?? '',
+      10
+    )
+
+    const milestoneIsCompleted = toggleButtonElement.ariaChecked === 'true'
+
+    function doToggleMilestone(): void {
+      const workdayDateString = cityssm.dateToString(workdayDate)
+
+      cityssm.postJSON(
+        `${sunrise.urlPrefix}/workOrders/${milestoneIsCompleted ? 'doReopenWorkdayWorkOrderMilestone' : 'doCompleteWorkdayWorkOrderMilestone'}`,
+        {
+          workdayDateString,
+          workOrderMilestoneId
+        },
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            workOrders: WorkOrder[]
+          }
+
+          if (responseJSON.success) {
+            bulmaJS.alert({
+              contextualColorName: 'success',
+              message: 'Work Order Milestone updated successfully.'
+            })
+
+            renderWorkOrders(workdayDateString, responseJSON.workOrders)
+          } else {
+            bulmaJS.alert({
+              contextualColorName: 'danger',
+              title: 'Error Updating Milestone',
+
+              message: 'Please try again.'
+            })
+          }
+        }
+      )
+    }
+
+    if (milestoneIsCompleted) {
+      bulmaJS.confirm({
+        contextualColorName: 'warning',
+        title: 'Reopen Work Order Milestone',
+
+        message: 'Are you sure you want to reopen this milestone?',
+
+        okButton: {
+          text: 'Yes, Reopen this Milestone',
+
+          callbackFunction: doToggleMilestone
+        }
+      })
+    } else {
+      bulmaJS.confirm({
+        contextualColorName: 'info',
+        title: 'Complete Work Order Milestone',
+
+        message: 'Are you sure you want to complete this milestone?',
+
+        okButton: {
+          text: 'Yes, Complete this Milestone',
+
+          callbackFunction: doToggleMilestone
+        }
+      })
+    }
+  }
+
+  function closeWorkOrder(clickEvent: Event): void {
+    const closeButtonElement = clickEvent.currentTarget as HTMLElement
+
+    const workdayDateString = cityssm.dateToString(workdayDate)
+
+    const workOrderId = Number.parseInt(
+      closeButtonElement.dataset.workOrderId ?? '',
+      10
+    )
+
+    function doClose(): void {
+      cityssm.postJSON(
+        `${sunrise.urlPrefix}/workOrders/doCloseWorkdayWorkOrder`,
+        {
+          workdayDateString,
+          workOrderId
+        },
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            workOrders: WorkOrder[]
+          }
+
+          if (responseJSON.success) {
+            bulmaJS.alert({
+              contextualColorName: 'success',
+              message: 'Work Order closed successfully.'
+            })
+
+            renderWorkOrders(workdayDateString, responseJSON.workOrders)
+          } else {
+            bulmaJS.alert({
+              contextualColorName: 'danger',
+              title: 'Error Closing Work Order',
+
+              message: 'Please try again.'
+            })
+          }
+        }
+      )
+    }
+
+    bulmaJS.confirm({
+      contextualColorName: 'warning',
+      title: 'Close Work Order',
+
+      message: 'Are you sure you want to close this work order?',
+
+      okButton: {
+        text: 'Yes, Close this Work Order',
+
+        callbackFunction: doClose
+      }
+    })
+  }
 
   function buildBurialSiteHTML(burialSite: BurialSite | Contract): string {
     return `<li>
@@ -48,22 +180,29 @@ declare const exports: {
   ): void {
     workdayContainer.innerHTML = ''
 
+    currentDateString = cityssm.dateToString(new Date())
+
     for (const workOrder of workOrders) {
+      const workOrderIsClosed = workOrder.workOrderCloseDate !== null
+
       const workOrderElement = document.createElement('div')
       workOrderElement.className = 'panel'
 
       // eslint-disable-next-line no-unsanitized/property
       workOrderElement.innerHTML = `<div class="panel-heading p-3">
-        <h2>
-          <a class="has-text-white" href="${sunrise.urlPrefix}/workOrders/${workOrder.workOrderId}" target="_blank">
-          #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
-          </a>
-          ${
-            workOrder.workOrderCloseDate === null
-              ? ''
-              : '<span class="tag">Closed</span>'
-          }
-        </h2>
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2>
+                  <a class="has-text-white" href="${sunrise.urlPrefix}/workOrders/${workOrder.workOrderId}" target="_blank">
+                    #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
+                  </a>
+                  ${workOrderIsClosed ? '<span class="tag">Closed</span>' : ''}
+                </h2>
+              </div>
+            </div>
+            <div class="level-right"></div>
+          </div>
         </div>
         <div class="panel-block is-block">
           <p>${cityssm.escapeHTML(workOrder.workOrderDescription ?? '')}</p>
@@ -174,11 +313,18 @@ declare const exports: {
        */
 
       let includesMilestones = false
+      let includesIncompleteMilestones = false
 
       const canUpdateThisWorkOrder =
-        canUpdateWorkOrders && workOrder.workOrderCloseDate === null
+        canUpdateWorkOrders &&
+        cityssm.dateToString(workdayDate) === currentDateString &&
+        !workOrderIsClosed
 
       for (const milestone of workOrder.workOrderMilestones ?? []) {
+        if (milestone.workOrderMilestoneCompletionDate === null) {
+          includesIncompleteMilestones = true
+        }
+
         if (milestone.workOrderMilestoneDateString !== workdayDateString) {
           continue
         }
@@ -188,15 +334,18 @@ declare const exports: {
         const milestoneElement = document.createElement('div')
         milestoneElement.className = 'panel-block is-block'
 
-        const milestoneCheckIcon =
-          milestone.workOrderMilestoneCompletionDate === null
-            ? 'fa-regular fa-square'
-            : 'fa-solid fa-check'
+        const milestoneIsCompleted =
+          milestone.workOrderMilestoneCompletionDate !== null
+
+        const milestoneCheckIcon = milestoneIsCompleted
+          ? 'fa-solid fa-check'
+          : 'fa-regular fa-square'
 
         const milestoneCheckHTML = canUpdateThisWorkOrder
-          ? `<button class="button has-tooltip-right"
+          ? `<button class="button has-tooltip-right button--toggle-milestone"
               data-work-order-milestone-id="${milestone.workOrderMilestoneId}
               data-tooltip="Toggle Milestone Completion"
+              aria-checked="${milestoneIsCompleted ? 'true' : 'false'}"
               type="button">
                 <span class="icon is-small">
                   <i class="${milestoneCheckIcon}"></i>
@@ -224,6 +373,12 @@ declare const exports: {
             </div>
           </div>`
 
+        if (canUpdateThisWorkOrder) {
+          milestoneElement
+            .querySelector('.button--toggle-milestone')
+            ?.addEventListener('click', toggleWorkOrderMilestoneCompletion)
+        }
+
         workOrderElement.append(milestoneElement)
       }
 
@@ -236,7 +391,38 @@ declare const exports: {
         )
       }
 
+      if (!includesIncompleteMilestones && !workOrderIsClosed) {
+        workOrderElement
+          .querySelector('.panel-heading .level-right')
+          ?.insertAdjacentHTML(
+            'beforeend',
+            `<div class="level-item">
+              <button class="button is-small button--close-work-order"
+                data-work-order-id="${cityssm.escapeHTML(workOrder.workOrderId.toString())}"
+                type="button">
+                <span class="icon is-small">
+                  <i class="fa-solid fa-stop-circle"></i>
+                </span>
+                <span>Close Work Order</span>
+              </button>
+            </div>`
+          )
+
+        workOrderElement
+          .querySelector('.button--close-work-order')
+          ?.addEventListener('click', closeWorkOrder)
+      }
+
       workdayContainer.append(workOrderElement)
+    }
+
+    if (workOrders.length === 0) {
+      workdayContainer.insertAdjacentHTML(
+        'beforeend',
+        `<div class="message is-info">
+            <p class="message-body">No work orders for this workday.</p>
+          </div>`
+      )
     }
   }
 

@@ -15,7 +15,9 @@ import handler_doAddWorkOrderBurialSite from '../handlers/workOrders-post/doAddW
 import handler_doAddWorkOrderComment from '../handlers/workOrders-post/doAddWorkOrderComment.js'
 import handler_doAddWorkOrderContract from '../handlers/workOrders-post/doAddWorkOrderContract.js'
 import handler_doAddWorkOrderMilestone from '../handlers/workOrders-post/doAddWorkOrderMilestone.js'
+import handler_doCloseWorkdayWorkOrder from '../handlers/workOrders-post/doCloseWorkdayWorkOrder.js'
 import handler_doCloseWorkOrder from '../handlers/workOrders-post/doCloseWorkOrder.js'
+import handler_doCompleteWorkdayWorkOrderMilestone from '../handlers/workOrders-post/doCompleteWorkdayWorkOrderMilestone.js'
 import handler_doCompleteWorkOrderMilestone from '../handlers/workOrders-post/doCompleteWorkOrderMilestone.js'
 import handler_doCreateWorkOrder from '../handlers/workOrders-post/doCreateWorkOrder.js'
 import handler_doDeleteWorkOrder from '../handlers/workOrders-post/doDeleteWorkOrder.js'
@@ -25,6 +27,7 @@ import handler_doDeleteWorkOrderContract from '../handlers/workOrders-post/doDel
 import handler_doDeleteWorkOrderMilestone from '../handlers/workOrders-post/doDeleteWorkOrderMilestone.js'
 import handler_doGetWorkdayReport from '../handlers/workOrders-post/doGetWorkdayReport.js'
 import handler_doGetWorkOrderMilestones from '../handlers/workOrders-post/doGetWorkOrderMilestones.js'
+import handler_doReopenWorkdayWorkOrderMilestone from '../handlers/workOrders-post/doReopenWorkdayWorkOrderMilestone.js'
 import handler_doReopenWorkOrder from '../handlers/workOrders-post/doReopenWorkOrder.js'
 import handler_doReopenWorkOrderMilestone from '../handlers/workOrders-post/doReopenWorkOrderMilestone.js'
 import handler_doSearchWorkOrders from '../handlers/workOrders-post/doSearchWorkOrders.js'
@@ -56,6 +59,24 @@ router.get('/outlook', handler_outlook)
 router.get('/workday', handler_workday)
 
 router.post('/doGetWorkdayReport', handler_doGetWorkdayReport)
+
+router.post(
+  '/doCompleteWorkdayWorkOrderMilestone',
+  updateWorkOrdersPostHandler,
+  handler_doCompleteWorkdayWorkOrderMilestone
+)
+
+router.post(
+  '/doReopenWorkdayWorkOrderMilestone',
+  updateWorkOrdersPostHandler,
+  handler_doReopenWorkdayWorkOrderMilestone
+)
+
+router.post(
+  '/doCloseWorkdayWorkOrder',
+  updateWorkOrdersPostHandler,
+  handler_doCloseWorkdayWorkOrder
+)
 
 // New
 
