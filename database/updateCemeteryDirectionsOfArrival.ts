@@ -45,7 +45,5 @@ export default function updateCemeteryDirectionsOfArrival(
     }
   }
 
-  database.close()
-
   return updateCount
 }

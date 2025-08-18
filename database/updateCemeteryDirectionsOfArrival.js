@@ -16,6 +16,5 @@ export default function updateCemeteryDirectionsOfArrival(cemeteryId, updateForm
             updateCount += 1;
         }
     }
-    database.close();
     return updateCount;
 }
