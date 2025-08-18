@@ -656,6 +656,7 @@
                 <th>Work Order Number</th>
                 <th>Description</th>
                 <th>Date</th>
+                <th>Milestones</th>
               </tr>
             </thead>
             <tbody>
@@ -683,6 +684,29 @@
                         <span class="has-text-grey">(No <%= workOrderCloseDateAlias %>)</span>
                       <% } %>
                     </span>
+                  </td>
+                  <td>
+                    <% for (const milestone of workOrder.workOrderMilestones) { %>
+                      <div class="columns mb-0">
+                        <div class="column is-narrow">
+                          <% if (milestone.workOrderMilestoneCompletionDate) { %>
+                            <span class="icon has-text-success">
+                              <i class="fa-solid fa-check"></i>
+                            </span>
+                          <% } else { %>
+                            <span class="icon has-text-grey">
+                              <i class="fa-regular fa-square"></i>
+                            </span>
+                          <% } %>
+                        </div>
+                        <div class="column">
+                          <strong><%= milestone.workOrderMilestoneType %></strong><br />
+                          <span class="is-size-7">
+                            <%= milestone.workOrderMilestoneCompletionDate === null ? milestone.workOrderMilestoneDateString : milestone.workOrderMilestoneCompletionDateString %>
+                          </span>
+                        </div>
+                      </div>
+                    <% } %>
                   </td>
                 </tr>
               <% } %>

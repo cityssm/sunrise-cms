@@ -101,7 +101,9 @@ export default async function getContract(
       },
       {
         limit: -1,
-        offset: 0
+        offset: 0,
+
+        includeMilestones: true
       },
       database
     )

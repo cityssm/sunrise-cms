@@ -72,7 +72,8 @@ export default async function getContract(contractId, connectedDatabase) {
             contractId
         }, {
             limit: -1,
-            offset: 0
+            offset: 0,
+            includeMilestones: true
         }, database);
         contract.workOrders = workOrdersResults.workOrders;
         const relatedContractsResults = await getContracts({
