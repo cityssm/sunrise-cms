@@ -42,7 +42,7 @@ export default function updateWorkOrderMilestone(
         ? 0
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
       (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
-        ? 0
+        ? undefined
         : timeStringToInteger(
             milestoneForm.workOrderMilestoneTimeString as TimeString
           ),
