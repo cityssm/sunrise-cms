@@ -7,6 +7,7 @@ import { sunriseDB as databasePath } from '../helpers/database.helpers.js';
 import addBurialSiteType from './addBurialSiteType.js';
 import addCommittalType from './addCommittalType.js';
 import addContractType from './addContractType.js';
+import addContractTypeField from './addContractTypeField.js';
 import addFeeCategory from './addFeeCategory.js';
 import addIntermentContainerType from './addIntermentContainerType.js';
 import addRecord from './addRecord.js';
@@ -415,7 +416,7 @@ const createStatements = [
     workOrderId integer not null,
     workOrderMilestoneTypeId integer,
     workOrderMilestoneDate integer not null check (workOrderMilestoneDate >= 0),
-    workOrderMilestoneTime integer not null check (workOrderMilestoneTime >= 0),
+    workOrderMilestoneTime integer check (workOrderMilestoneTime >= 0),
     workOrderMilestoneDescription text not null,
     workOrderMilestoneCompletionDate integer check (workOrderMilestoneCompletionDate > 0),
     workOrderMilestoneCompletionTime integer check (workOrderMilestoneCompletionTime >= 0),
@@ -524,9 +525,16 @@ export function initializeData() {
             isPreneed: '1',
             orderNumber: 1
         }, initializingUser);
-        addContractType({
+        const intermentContractTypeId = addContractType({
             contractType: 'Interment',
             orderNumber: 2
+        }, initializingUser);
+        addContractTypeField({
+            contractTypeId: intermentContractTypeId,
+            contractTypeField: 'Interment Depth',
+            fieldType: 'select',
+            fieldValues: 'Single\nDouble',
+            isRequired: ''
         }, initializingUser);
         addContractType({
             contractType: 'Cremation',
