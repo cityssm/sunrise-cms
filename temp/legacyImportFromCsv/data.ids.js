@@ -6,13 +6,16 @@ import { getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType } from '../../h
  */
 export const availableBurialSiteStatusId = getCachedBurialSiteStatusByBurialSiteStatus('Available', true)
     ?.burialSiteStatusId;
-export const reservedBurialSiteStatusId = getCachedBurialSiteStatusByBurialSiteStatus('Reserved', true)?.burialSiteStatusId;
-export const occupiedBurialSiteStatusId = getCachedBurialSiteStatusByBurialSiteStatus('Occupied', true)?.burialSiteStatusId;
+export const reservedBurialSiteStatusId = getCachedBurialSiteStatusByBurialSiteStatus('Reserved', true)
+    ?.burialSiteStatusId;
+export const occupiedBurialSiteStatusId = getCachedBurialSiteStatusByBurialSiteStatus('Occupied', true)
+    ?.burialSiteStatusId;
 /*
  * Contract Type IDs
  */
 export const preneedContractType = getCachedContractTypeByContractType('Preneed', true);
-export const deceasedContractType = getCachedContractTypeByContractType('Interment', true);
+export const intermentContractType = getCachedContractTypeByContractType('Interment', true);
+export const intermentDepthContractField = intermentContractType.contractTypeFields?.find((field) => field.contractTypeField === 'Interment Depth');
 export const cremationContractType = getCachedContractTypeByContractType('Cremation', true);
 /*
  * Work Order Milestone Type IDs

@@ -13,7 +13,9 @@ import sqlite from 'better-sqlite3'
 import papa from 'papaparse'
 
 import addBurialSite from '../../database/addBurialSite.js'
-import addContract from '../../database/addContract.js'
+import addContract, {
+  type AddContractForm
+} from '../../database/addContract.js'
 import addContractComment from '../../database/addContractComment.js'
 import addContractFee from '../../database/addContractFee.js'
 import addContractTransaction from '../../database/addContractTransaction.js'
@@ -346,7 +348,7 @@ async function importFromMasterCSV(): Promise<void> {
           : deceasedContractStartDateString
 
         const contractType = burialSiteId
-          ? importIds.deceasedContractType
+          ? importIds.intermentContractType
           : importIds.cremationContractType
 
         const deceasedPostalCode =
@@ -393,51 +395,74 @@ async function importFromMasterCSV(): Promise<void> {
             ? ''
             : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user)
 
-        deceasedContractId = addContract(
-          {
-            contractTypeId: contractType.contractTypeId,
-            burialSiteId: burialSiteId ?? '',
-            contractStartDateString: deceasedContractStartDateString,
-            contractEndDateString: deceasedContractEndDateString,
-            contractTypeFieldIds: '',
+        const contractForm = {
+          contractTypeId: contractType.contractTypeId,
+          burialSiteId: burialSiteId ?? '',
+          contractStartDateString: deceasedContractStartDateString,
+          contractEndDateString: deceasedContractEndDateString,
 
-            committalTypeId,
-            funeralHomeId,
-            funeralDirectorName: masterRow.CM_FUNERAL_HOME,
-            funeralDateString,
+          contractTypeFieldIds: '',
 
-            purchaserName:
-              masterRow.CM_PRENEED_OWNER === ''
-                ? masterRow.CM_DECEASED_NAME
-                : masterRow.CM_PRENEED_OWNER,
+          committalTypeId,
+          funeralHomeId,
+          funeralDirectorName: masterRow.CM_FUNERAL_HOME,
+          funeralDateString,
 
-            purchaserAddress1: masterRow.CM_ADDRESS,
-            purchaserAddress2: '',
-            purchaserCity: masterRow.CM_CITY,
-            purchaserPostalCode: deceasedPostalCode,
-            purchaserProvince: masterRow.CM_PROV,
+          purchaserName:
+            masterRow.CM_PRENEED_OWNER === ''
+              ? masterRow.CM_DECEASED_NAME
+              : masterRow.CM_PRENEED_OWNER,
 
-            purchaserEmail: '',
-            purchaserPhoneNumber: '',
+          purchaserAddress1: masterRow.CM_ADDRESS,
+          purchaserAddress2: '',
+          purchaserCity: masterRow.CM_CITY,
+          purchaserPostalCode: deceasedPostalCode,
+          purchaserProvince: masterRow.CM_PROV,
 
-            deceasedName: masterRow.CM_DECEASED_NAME,
+          purchaserEmail: '',
+          purchaserPhoneNumber: '',
 
-            deceasedAddress1: masterRow.CM_ADDRESS,
-            deceasedAddress2: '',
-            deceasedCity: masterRow.CM_CITY,
-            deceasedPostalCode,
-            deceasedProvince: masterRow.CM_PROV,
+          deceasedName: masterRow.CM_DECEASED_NAME,
 
-            birthDateString: '',
-            birthPlace: '',
-            deathDateString,
-            deathPlace: '',
-            deathAge: masterRow.CM_AGE,
-            deathAgePeriod: getDeathAgePeriod(masterRow.CM_PERIOD),
-            intermentContainerTypeId
-          },
-          user
-        )
+          deceasedAddress1: masterRow.CM_ADDRESS,
+          deceasedAddress2: '',
+          deceasedCity: masterRow.CM_CITY,
+          deceasedPostalCode,
+          deceasedProvince: masterRow.CM_PROV,
+
+          birthDateString: '',
+          birthPlace: '',
+          deathDateString,
+          deathPlace: '',
+          deathAge: masterRow.CM_AGE,
+          deathAgePeriod: getDeathAgePeriod(masterRow.CM_PERIOD),
+          intermentContainerTypeId
+        } satisfies AddContractForm
+
+        if (
+          contractType.contractType === 'Interment' &&
+          masterRow.CM_DEPTH !== ''
+        ) {
+          contractForm.contractTypeFieldIds =
+            importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
+            ''
+
+          let depth = masterRow.CM_DEPTH
+
+          if (depth === 'S') {
+            depth = 'Single'
+          } else if (depth === 'D') {
+            depth = 'Double'
+          }
+
+          contractForm[
+            'fieldValue_' +
+              (importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
+                '')
+          ] = depth
+        }
+
+        deceasedContractId = addContract(contractForm, user)
 
         if (preneedContractId !== undefined) {
           addRelatedContract({
@@ -992,7 +1017,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
       }
 
       const contractType = burialSite
-        ? importIds.deceasedContractType
+        ? importIds.intermentContractType
         : importIds.cremationContractType
 
       const funeralHomeId =
@@ -1025,59 +1050,83 @@ async function importFromWorkOrderCSV(): Promise<void> {
         funeralHour += 12
       }
 
-      const contractId = addContract(
-        {
-          burialSiteId: burialSite ? burialSite.burialSiteId : '',
-          contractTypeId: contractType.contractTypeId,
+      const contractForm = {
+        burialSiteId: burialSite ? burialSite.burialSiteId : '',
+        contractTypeId: contractType.contractTypeId,
 
-          contractEndDateString: '',
-          contractStartDateString,
+        contractEndDateString: '',
+        contractStartDateString,
 
-          funeralHomeId,
-          funeralDirectorName: workOrderRow.WO_FUNERAL_HOME,
+        contractTypeFieldIds: '',
 
-          funeralDateString:
-            workOrderRow.WO_FUNERAL_YR === ''
-              ? ''
-              : formatDateString(
-                  workOrderRow.WO_FUNERAL_YR,
-                  workOrderRow.WO_FUNERAL_MON,
-                  workOrderRow.WO_FUNERAL_DAY
-                ),
+        funeralHomeId,
+        funeralDirectorName: workOrderRow.WO_FUNERAL_HOME,
 
-          funeralTimeString:
-            workOrderRow.WO_FUNERAL_YR === ''
-              ? ''
-              : formatTimeString(
-                  funeralHour.toString(),
-                  workOrderRow.WO_FUNERAL_MIN
-                ),
+        funeralDateString:
+          workOrderRow.WO_FUNERAL_YR === ''
+            ? ''
+            : formatDateString(
+                workOrderRow.WO_FUNERAL_YR,
+                workOrderRow.WO_FUNERAL_MON,
+                workOrderRow.WO_FUNERAL_DAY
+              ),
 
-          committalTypeId,
+        funeralTimeString:
+          workOrderRow.WO_FUNERAL_YR === ''
+            ? ''
+            : formatTimeString(
+                funeralHour.toString(),
+                workOrderRow.WO_FUNERAL_MIN
+              ),
 
-          deceasedName: workOrderRow.WO_DECEASED_NAME,
+        committalTypeId,
 
-          deceasedAddress1: workOrderRow.WO_ADDRESS,
-          deceasedAddress2: '',
-          deceasedCity: workOrderRow.WO_CITY,
-          deceasedPostalCode: `${workOrderRow.WO_POST1} ${workOrderRow.WO_POST2}`,
-          deceasedProvince: workOrderRow.WO_PROV.slice(0, 2),
+        deceasedName: workOrderRow.WO_DECEASED_NAME,
 
-          deathDateString:
-            workOrderRow.WO_DEATH_YR === ''
-              ? ''
-              : formatDateString(
-                  workOrderRow.WO_DEATH_YR,
-                  workOrderRow.WO_DEATH_MON,
-                  workOrderRow.WO_DEATH_DAY
-                ),
-          deathPlace: workOrderRow.WO_DEATH_PLACE,
-          deathAge: workOrderRow.WO_AGE,
-          deathAgePeriod: getDeathAgePeriod(workOrderRow.WO_PERIOD),
-          intermentContainerTypeId
-        },
-        user
-      )
+        deceasedAddress1: workOrderRow.WO_ADDRESS,
+        deceasedAddress2: '',
+        deceasedCity: workOrderRow.WO_CITY,
+        deceasedPostalCode: `${workOrderRow.WO_POST1} ${workOrderRow.WO_POST2}`,
+        deceasedProvince: workOrderRow.WO_PROV.slice(0, 2),
+
+        deathDateString:
+          workOrderRow.WO_DEATH_YR === ''
+            ? ''
+            : formatDateString(
+                workOrderRow.WO_DEATH_YR,
+                workOrderRow.WO_DEATH_MON,
+                workOrderRow.WO_DEATH_DAY
+              ),
+        deathPlace: workOrderRow.WO_DEATH_PLACE,
+        deathAge: workOrderRow.WO_AGE,
+        deathAgePeriod: getDeathAgePeriod(workOrderRow.WO_PERIOD),
+        intermentContainerTypeId
+      } satisfies AddContractForm
+
+      if (
+        contractType.contractType === 'Interment' &&
+        workOrderRow.WO_DEPTH !== ''
+      ) {
+        contractForm.contractTypeFieldIds =
+          importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
+          ''
+
+        let depth = workOrderRow.WO_DEPTH
+
+        if (depth === 'S') {
+          depth = 'Single'
+        } else if (depth === 'D') {
+          depth = 'Double'
+        }
+
+        contractForm[
+          'fieldValue_' +
+            (importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
+              '')
+        ] = depth
+      }
+
+      const contractId = addContract(contractForm, user)
 
       addWorkOrderContract(
         {

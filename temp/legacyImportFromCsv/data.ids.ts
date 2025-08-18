@@ -11,15 +11,13 @@ export const availableBurialSiteStatusId =
   getCachedBurialSiteStatusByBurialSiteStatus('Available', true)
     ?.burialSiteStatusId as number
 
-export const reservedBurialSiteStatusId = getCachedBurialSiteStatusByBurialSiteStatus(
-  'Reserved',
-  true
-)?.burialSiteStatusId as number
+export const reservedBurialSiteStatusId =
+  getCachedBurialSiteStatusByBurialSiteStatus('Reserved', true)
+    ?.burialSiteStatusId as number
 
-export const occupiedBurialSiteStatusId = getCachedBurialSiteStatusByBurialSiteStatus(
-  'Occupied',
-  true
-)?.burialSiteStatusId as number
+export const occupiedBurialSiteStatusId =
+  getCachedBurialSiteStatusByBurialSiteStatus('Occupied', true)
+    ?.burialSiteStatusId as number
 
 /*
  * Contract Type IDs
@@ -30,10 +28,15 @@ export const preneedContractType = getCachedContractTypeByContractType(
   true
 ) as ContractType
 
-export const deceasedContractType = getCachedContractTypeByContractType(
+export const intermentContractType = getCachedContractTypeByContractType(
   'Interment',
   true
 ) as ContractType
+
+export const intermentDepthContractField =
+  intermentContractType.contractTypeFields?.find(
+    (field) => field.contractTypeField === 'Interment Depth'
+  )
 
 export const cremationContractType = getCachedContractTypeByContractType(
   'Cremation',

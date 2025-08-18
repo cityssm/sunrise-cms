@@ -209,7 +209,7 @@ async function importFromMasterCSV() {
                     ? ''
                     : deceasedContractStartDateString;
                 const contractType = burialSiteId
-                    ? importIds.deceasedContractType
+                    ? importIds.intermentContractType
                     : importIds.cremationContractType;
                 const deceasedPostalCode = `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim();
                 const funeralHomeId = masterRow.CM_FUNERAL_HOME === ''
@@ -233,7 +233,7 @@ async function importFromMasterCSV() {
                 const intermentContainerTypeId = intermentContainerTypeKey === ''
                     ? ''
                     : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user);
-                deceasedContractId = addContract({
+                const contractForm = {
                     contractTypeId: contractType.contractTypeId,
                     burialSiteId: burialSiteId ?? '',
                     contractStartDateString: deceasedContractStartDateString,
@@ -266,7 +266,24 @@ async function importFromMasterCSV() {
                     deathAge: masterRow.CM_AGE,
                     deathAgePeriod: getDeathAgePeriod(masterRow.CM_PERIOD),
                     intermentContainerTypeId
-                }, user);
+                };
+                if (contractType.contractType === 'Interment' &&
+                    masterRow.CM_DEPTH !== '') {
+                    contractForm.contractTypeFieldIds =
+                        importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
+                            '';
+                    let depth = masterRow.CM_DEPTH;
+                    if (depth === 'S') {
+                        depth = 'Single';
+                    }
+                    else if (depth === 'D') {
+                        depth = 'Double';
+                    }
+                    contractForm['fieldValue_' +
+                        (importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
+                            '')] = depth;
+                }
+                deceasedContractId = addContract(contractForm, user);
                 if (preneedContractId !== undefined) {
                     addRelatedContract({
                         contractId: preneedContractId,
@@ -623,7 +640,7 @@ async function importFromWorkOrderCSV() {
                 contractStartDateString = formatDateString(workOrderRow.WO_INTERMENT_YR, workOrderRow.WO_INTERMENT_MON, workOrderRow.WO_INTERMENT_DAY);
             }
             const contractType = burialSite
-                ? importIds.deceasedContractType
+                ? importIds.intermentContractType
                 : importIds.cremationContractType;
             const funeralHomeId = workOrderRow.WO_FUNERAL_HOME === ''
                 ? ''
@@ -643,11 +660,12 @@ async function importFromWorkOrderCSV() {
             if (funeralHour <= 6) {
                 funeralHour += 12;
             }
-            const contractId = addContract({
+            const contractForm = {
                 burialSiteId: burialSite ? burialSite.burialSiteId : '',
                 contractTypeId: contractType.contractTypeId,
                 contractEndDateString: '',
                 contractStartDateString,
+                contractTypeFieldIds: '',
                 funeralHomeId,
                 funeralDirectorName: workOrderRow.WO_FUNERAL_HOME,
                 funeralDateString: workOrderRow.WO_FUNERAL_YR === ''
@@ -670,7 +688,24 @@ async function importFromWorkOrderCSV() {
                 deathAge: workOrderRow.WO_AGE,
                 deathAgePeriod: getDeathAgePeriod(workOrderRow.WO_PERIOD),
                 intermentContainerTypeId
-            }, user);
+            };
+            if (contractType.contractType === 'Interment' &&
+                workOrderRow.WO_DEPTH !== '') {
+                contractForm.contractTypeFieldIds =
+                    importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
+                        '';
+                let depth = workOrderRow.WO_DEPTH;
+                if (depth === 'S') {
+                    depth = 'Single';
+                }
+                else if (depth === 'D') {
+                    depth = 'Double';
+                }
+                contractForm['fieldValue_' +
+                    (importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
+                        '')] = depth;
+            }
+            const contractId = addContract(contractForm, user);
             addWorkOrderContract({
                 contractId,
                 workOrderId: workOrder?.workOrderId

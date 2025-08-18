@@ -10,6 +10,7 @@ export interface AddContractTypeFieldForm {
 
   fieldType?: string
   fieldValues?: string
+  /** '' = not required */
   isRequired?: string
   maxLength?: number | string
   minLength?: number | string
