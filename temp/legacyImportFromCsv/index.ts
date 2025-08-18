@@ -395,7 +395,7 @@ async function importFromMasterCSV(): Promise<void> {
             ? ''
             : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user)
 
-        const contractForm = {
+        const contractForm: AddContractForm = {
           contractTypeId: contractType.contractTypeId,
           burialSiteId: burialSiteId ?? '',
           contractStartDateString: deceasedContractStartDateString,
@@ -437,15 +437,16 @@ async function importFromMasterCSV(): Promise<void> {
           deathAge: masterRow.CM_AGE,
           deathAgePeriod: getDeathAgePeriod(masterRow.CM_PERIOD),
           intermentContainerTypeId
-        } satisfies AddContractForm
+        }
 
         if (
           contractType.contractType === 'Interment' &&
+          importIds.intermentDepthContractField?.contractTypeFieldId !==
+            undefined &&
           masterRow.CM_DEPTH !== ''
         ) {
           contractForm.contractTypeFieldIds =
-            importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
-            ''
+            importIds.intermentDepthContractField.contractTypeFieldId.toString()
 
           let depth = masterRow.CM_DEPTH
 
@@ -457,8 +458,7 @@ async function importFromMasterCSV(): Promise<void> {
 
           contractForm[
             'fieldValue_' +
-              (importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
-                '')
+              importIds.intermentDepthContractField.contractTypeFieldId.toString()
           ] = depth
         }
 
@@ -1050,7 +1050,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
         funeralHour += 12
       }
 
-      const contractForm = {
+      const contractForm: AddContractForm = {
         burialSiteId: burialSite ? burialSite.burialSiteId : '',
         contractTypeId: contractType.contractTypeId,
 
@@ -1101,15 +1101,16 @@ async function importFromWorkOrderCSV(): Promise<void> {
         deathAge: workOrderRow.WO_AGE,
         deathAgePeriod: getDeathAgePeriod(workOrderRow.WO_PERIOD),
         intermentContainerTypeId
-      } satisfies AddContractForm
+      }
 
       if (
         contractType.contractType === 'Interment' &&
+        importIds.intermentDepthContractField?.contractTypeFieldId !==
+          undefined &&
         workOrderRow.WO_DEPTH !== ''
       ) {
         contractForm.contractTypeFieldIds =
-          importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
-          ''
+          importIds.intermentDepthContractField.contractTypeFieldId.toString()
 
         let depth = workOrderRow.WO_DEPTH
 
@@ -1121,8 +1122,7 @@ async function importFromWorkOrderCSV(): Promise<void> {
 
         contractForm[
           'fieldValue_' +
-            (importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
-              '')
+            importIds.intermentDepthContractField.contractTypeFieldId.toString()
         ] = depth
       }
 

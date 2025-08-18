@@ -268,10 +268,11 @@ async function importFromMasterCSV() {
                     intermentContainerTypeId
                 };
                 if (contractType.contractType === 'Interment' &&
+                    importIds.intermentDepthContractField?.contractTypeFieldId !==
+                        undefined &&
                     masterRow.CM_DEPTH !== '') {
                     contractForm.contractTypeFieldIds =
-                        importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
-                            '';
+                        importIds.intermentDepthContractField.contractTypeFieldId.toString();
                     let depth = masterRow.CM_DEPTH;
                     if (depth === 'S') {
                         depth = 'Single';
@@ -280,8 +281,7 @@ async function importFromMasterCSV() {
                         depth = 'Double';
                     }
                     contractForm['fieldValue_' +
-                        (importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
-                            '')] = depth;
+                        importIds.intermentDepthContractField.contractTypeFieldId.toString()] = depth;
                 }
                 deceasedContractId = addContract(contractForm, user);
                 if (preneedContractId !== undefined) {
@@ -690,10 +690,11 @@ async function importFromWorkOrderCSV() {
                 intermentContainerTypeId
             };
             if (contractType.contractType === 'Interment' &&
+                importIds.intermentDepthContractField?.contractTypeFieldId !==
+                    undefined &&
                 workOrderRow.WO_DEPTH !== '') {
                 contractForm.contractTypeFieldIds =
-                    importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
-                        '';
+                    importIds.intermentDepthContractField.contractTypeFieldId.toString();
                 let depth = workOrderRow.WO_DEPTH;
                 if (depth === 'S') {
                     depth = 'Single';
@@ -702,8 +703,7 @@ async function importFromWorkOrderCSV() {
                     depth = 'Double';
                 }
                 contractForm['fieldValue_' +
-                    (importIds.intermentDepthContractField?.contractTypeFieldId.toString() ??
-                        '')] = depth;
+                    importIds.intermentDepthContractField.contractTypeFieldId.toString()] = depth;
             }
             const contractId = addContract(contractForm, user);
             addWorkOrderContract({
