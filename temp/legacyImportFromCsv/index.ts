@@ -2,17 +2,19 @@
 /* eslint-disable no-console */
 
 import sqlite from 'better-sqlite3'
+import Debug from 'debug'
 
 import { initializeData } from '../../database/initializeDatabase.js'
+import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
 
-import {
-  initializeFuneralHomes
-} from './data.funeralHomes.js'
+import { initializeFuneralHomes } from './data.funeralHomes.js'
 import { importFromMasterCSV } from './import.master.js'
 import { importFromPrepaidCSV } from './import.prepaid.js'
 import { importFromWorkOrderCSV } from './import.workOrder.js'
 import { user } from './utilities.js'
+
+const debug = Debug(`${DEBUG_NAMESPACE}:legacyImportFromCsv`)
 
 function purgeConfigTables(): void {
   console.time('purgeConfigTables')
@@ -33,7 +35,7 @@ function purgeConfigTables(): void {
   const database = sqlite(databasePath)
 
   for (const tableName of configTablesToPurge) {
-    console.log(`Purging table: ${tableName}`)
+    debug(`Purging table: ${tableName}`)
     database.prepare(`delete from ${tableName}`).run()
     database
       .prepare('delete from sqlite_sequence where name = ?')
@@ -85,7 +87,8 @@ function purgeTables(): void {
   console.timeEnd('purgeTables')
 }
 
-console.log(`Started ${new Date().toLocaleString()}`)
+debug(`Started ${new Date().toLocaleString()}`)
+
 console.time('importFromCsv')
 
 // Purge Tables
@@ -101,4 +104,5 @@ await importFromPrepaidCSV()
 await importFromWorkOrderCSV()
 
 console.timeEnd('importFromCsv')
-console.log(`Finished ${new Date().toLocaleString()}`)
+
+debug(`Finished ${new Date().toLocaleString()}`)

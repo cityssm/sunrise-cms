@@ -15,9 +15,10 @@ export interface CloseWorkOrderForm {
 
 export default function closeWorkOrder(
   workOrderForm: CloseWorkOrderForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNow = new Date()
 
@@ -38,7 +39,9 @@ export default function closeWorkOrder(
       workOrderForm.workOrderId
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return result.changes > 0
 }

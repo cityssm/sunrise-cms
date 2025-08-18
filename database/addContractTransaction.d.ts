@@ -1,4 +1,5 @@
 import { type DateString, type TimeString } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
 export interface AddTransactionForm {
     contractId: number | string;
     transactionDateString?: '' | DateString;
@@ -8,4 +9,4 @@ export interface AddTransactionForm {
     transactionAmount: number | string;
     transactionNote: string;
 }
-export default function addContractTransaction(contractTransactionForm: AddTransactionForm, user: User): number;
+export default function addContractTransaction(contractTransactionForm: AddTransactionForm, user: User, connectedDatabase?: sqlite.Database): number;

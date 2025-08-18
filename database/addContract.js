@@ -1,9 +1,12 @@
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
+import Debug from 'debug';
+import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import addContractInterment from './addContractInterment.js';
 import addFuneralHome from './addFuneralHome.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
+const debug = Debug(`${DEBUG_NAMESPACE}:addContract`);
 // eslint-disable-next-line complexity
 export default function addContract(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
@@ -66,8 +69,8 @@ export default function addContract(addForm, user, connectedDatabase) {
         return contractId;
     }
     catch (error) {
-        console.error('Error adding contract:', error);
-        console.error('Add Form:', addForm);
+        debug('Error adding contract:', error);
+        debug('Add Form:', addForm);
         throw error;
     }
     finally {

@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function addWorkOrderBurialSite(workOrderLotForm, user) {
-    const database = sqlite(sunriseDB);
+export default function addWorkOrderBurialSite(workOrderLotForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const recordDeleteTimeMillis = database
         .prepare(`select recordDelete_timeMillis
@@ -32,6 +32,8 @@ export default function addWorkOrderBurialSite(workOrderLotForm, user) {
             and burialSiteId = ?`)
             .run(user.userName, rightNowMillis, user.userName, rightNowMillis, workOrderLotForm.workOrderId, workOrderLotForm.burialSiteId);
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return true;
 }

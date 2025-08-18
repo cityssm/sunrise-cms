@@ -1,6 +1,7 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @cspell/spellchecker, complexity, no-console */
 import fs from 'node:fs';
+import sqlite from 'better-sqlite3';
 import papa from 'papaparse';
 import addBurialSite from '../../database/addBurialSite.js';
 import addContract from '../../database/addContract.js';
@@ -11,6 +12,7 @@ import getBurialSite, { getBurialSiteByBurialSiteName } from '../../database/get
 import getContracts from '../../database/getContracts.js';
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js';
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js';
+import { sunriseDB as databasePath } from '../../helpers/database.helpers.js';
 import { getBurialSiteTypeId } from './data.burialSiteTypes.js';
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js';
 import { getFeeIdByFeeDescription } from './data.fees.js';
@@ -28,6 +30,7 @@ export async function importFromPrepaidCSV() {
     for (const parseError of cmprpaid.errors) {
         console.log(parseError);
     }
+    const database = sqlite(databasePath);
     try {
         for (prepaidRow of cmprpaid.data) {
             if (!prepaidRow.CMPP_PREPAID_FOR_NAME) {
@@ -39,7 +42,7 @@ export async function importFromPrepaidCSV() {
             }
             let burialSite;
             if (!cremationCemeteryKeys.has(cemeteryKey)) {
-                const cemeteryId = getCemeteryIdByKey(cemeteryKey, user);
+                const cemeteryId = getCemeteryIdByKey(cemeteryKey, user, database);
                 const burialSiteNameSegment1 = prepaidRow.CMPP_BLOCK === '0' ? '' : prepaidRow.CMPP_BLOCK;
                 const burialSiteNameSegment2 = (prepaidRow.CMPP_RANGE1 === '0' ? '' : prepaidRow.CMPP_RANGE1) +
                     (prepaidRow.CMPP_RANGE2 === '0' ? '' : prepaidRow.CMPP_RANGE2);
@@ -56,7 +59,7 @@ export async function importFromPrepaidCSV() {
                     burialSiteNameSegment3,
                     burialSiteNameSegment4
                 });
-                burialSite = await getBurialSiteByBurialSiteName(burialSiteName);
+                burialSite = await getBurialSiteByBurialSiteName(burialSiteName, true, database);
                 if (!burialSite) {
                     const burialSiteTypeId = getBurialSiteTypeId(cemeteryKey);
                     const burialSiteKeys = addBurialSite({
@@ -73,13 +76,13 @@ export async function importFromPrepaidCSV() {
                         burialSiteLatitude: '',
                         burialSiteLongitude: '',
                         burialSiteImage: ''
-                    }, user);
-                    burialSite = await getBurialSite(burialSiteKeys.burialSiteId);
+                    }, user, database);
+                    burialSite = await getBurialSite(burialSiteKeys.burialSiteId, true, database);
                 }
             }
             if (burialSite &&
                 burialSite.burialSiteStatusId === importIds.availableBurialSiteStatusId) {
-                updateBurialSiteStatus(burialSite.burialSiteId, importIds.reservedBurialSiteStatusId, user);
+                updateBurialSiteStatus(burialSite.burialSiteId, importIds.reservedBurialSiteStatusId, user, database);
             }
             const contractStartDateString = formatDateString(prepaidRow.CMPP_PURCH_YR, prepaidRow.CMPP_PURCH_MON, prepaidRow.CMPP_PURCH_DAY);
             let contractId;
@@ -95,7 +98,7 @@ export async function importFromPrepaidCSV() {
                     includeTransactions: false,
                     limit: -1,
                     offset: 0
-                });
+                }, database);
                 if (possibleContracts.contracts.length > 0) {
                     contractId = possibleContracts.contracts[0].contractId;
                 }
@@ -112,7 +115,7 @@ export async function importFromPrepaidCSV() {
                 deceasedCity: prepaidRow.CMPP_CITY,
                 deceasedPostalCode: `${prepaidRow.CMPP_POSTAL1} ${prepaidRow.CMPP_POSTAL2}`,
                 deceasedProvince: prepaidRow.CMPP_PROV.slice(0, 2)
-            }, user);
+            }, user, database);
             if (prepaidRow.CMPP_FEE_GRAV_SD !== '0.0') {
                 await addContractFee({
                     contractId,
@@ -120,7 +123,7 @@ export async function importFromPrepaidCSV() {
                     quantity: 1,
                     feeAmount: prepaidRow.CMPP_FEE_GRAV_SD,
                     taxAmount: prepaidRow.CMPP_GST_GRAV_SD
-                }, user);
+                }, user, database);
             }
             if (prepaidRow.CMPP_FEE_GRAV_DD !== '0.0') {
                 await addContractFee({
@@ -129,7 +132,7 @@ export async function importFromPrepaidCSV() {
                     quantity: 1,
                     feeAmount: prepaidRow.CMPP_FEE_GRAV_DD,
                     taxAmount: prepaidRow.CMPP_GST_GRAV_DD
-                }, user);
+                }, user, database);
             }
             if (prepaidRow.CMPP_FEE_CHAP_SD !== '0.0') {
                 await addContractFee({
@@ -138,7 +141,7 @@ export async function importFromPrepaidCSV() {
                     quantity: 1,
                     feeAmount: prepaidRow.CMPP_FEE_CHAP_SD,
                     taxAmount: prepaidRow.CMPP_GST_CHAP_SD
-                }, user);
+                }, user, database);
             }
             if (prepaidRow.CMPP_FEE_CHAP_DD !== '0.0') {
                 await addContractFee({
@@ -147,7 +150,7 @@ export async function importFromPrepaidCSV() {
                     quantity: 1,
                     feeAmount: prepaidRow.CMPP_FEE_CHAP_DD,
                     taxAmount: prepaidRow.CMPP_GST_CHAP_DD
-                }, user);
+                }, user, database);
             }
             if (prepaidRow.CMPP_FEE_ENTOMBMENT !== '0.0') {
                 await addContractFee({
@@ -156,7 +159,7 @@ export async function importFromPrepaidCSV() {
                     quantity: 1,
                     feeAmount: prepaidRow.CMPP_FEE_ENTOMBMENT,
                     taxAmount: prepaidRow.CMPP_GST_ENTOMBMENT
-                }, user);
+                }, user, database);
             }
             if (prepaidRow.CMPP_FEE_CREM !== '0.0') {
                 await addContractFee({
@@ -165,7 +168,7 @@ export async function importFromPrepaidCSV() {
                     quantity: 1,
                     feeAmount: prepaidRow.CMPP_FEE_CREM,
                     taxAmount: prepaidRow.CMPP_GST_CREM
-                }, user);
+                }, user, database);
             }
             if (prepaidRow.CMPP_FEE_NICHE !== '0.0') {
                 await addContractFee({
@@ -174,7 +177,7 @@ export async function importFromPrepaidCSV() {
                     quantity: 1,
                     feeAmount: prepaidRow.CMPP_FEE_NICHE,
                     taxAmount: prepaidRow.CMPP_GST_NICHE
-                }, user);
+                }, user, database);
             }
             if (prepaidRow.CMPP_FEE_DISINTERMENT !== '0.0' &&
                 prepaidRow.CMPP_FEE_DISINTERMENT !== '20202.02') {
@@ -184,7 +187,7 @@ export async function importFromPrepaidCSV() {
                     quantity: 1,
                     feeAmount: prepaidRow.CMPP_FEE_DISINTERMENT,
                     taxAmount: prepaidRow.CMPP_GST_DISINTERMENT
-                }, user);
+                }, user, database);
             }
             const transactionAmount = Number.parseFloat(prepaidRow.CMPP_FEE_GRAV_SD) +
                 Number.parseFloat(prepaidRow.CMPP_GST_GRAV_SD) +
@@ -213,26 +216,36 @@ export async function importFromPrepaidCSV() {
                 transactionDateString: contractStartDateString,
                 transactionTimeString: '00:00',
                 transactionNote: `Order Number: ${prepaidRow.CMPP_ORDER_NO}`
-            }, user);
+            }, user, database);
             if (prepaidRow.CMPP_REMARK1 !== '') {
                 addContractComment({
                     contractId,
                     comment: prepaidRow.CMPP_REMARK1,
                     commentDateString: contractStartDateString
-                }, user);
+                }, user, database);
             }
             if (prepaidRow.CMPP_REMARK2 !== '') {
                 addContractComment({
                     contractId,
                     comment: prepaidRow.CMPP_REMARK2,
                     commentDateString: contractStartDateString
-                }, user);
+                }, user, database);
+            }
+            if (prepaidRow.CMPP_REMARK2 !== '') {
+                addContractComment({
+                    contractId,
+                    comment: prepaidRow.CMPP_REMARK2,
+                    commentDateString: contractStartDateString
+                }, user, database);
             }
         }
     }
     catch (error) {
         console.error(error);
         console.log(prepaidRow);
+    }
+    finally {
+        database.close();
     }
     console.timeEnd('importFromPrepaidCSV');
 }

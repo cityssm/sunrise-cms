@@ -9,9 +9,10 @@ export interface AddForm {
 
 export default function addWorkOrderBurialSite(
   workOrderLotForm: AddForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -68,7 +69,9 @@ export default function addWorkOrderBurialSite(
       )
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return true
 }

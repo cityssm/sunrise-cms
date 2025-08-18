@@ -23,11 +23,12 @@ export interface AddWorkOrderMilestoneForm {
 
 export default function addWorkOrderMilestone(
   milestoneForm: AddWorkOrderMilestoneForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): number {
   const rightNowMillis = Date.now()
 
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -70,7 +71,9 @@ export default function addWorkOrderMilestone(
       rightNowMillis
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return result.lastInsertRowid as number
 }

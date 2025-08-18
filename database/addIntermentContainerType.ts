@@ -12,9 +12,10 @@ export interface AddIntermentContainerTypeForm {
 
 export default function addIntermentContainerType(
   addForm: AddIntermentContainerTypeForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): number {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -37,7 +38,9 @@ export default function addIntermentContainerType(
       rightNowMillis
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   clearCacheByTableName('IntermentContainerTypes')
 

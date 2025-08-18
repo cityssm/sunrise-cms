@@ -1,3 +1,5 @@
+import type sqlite from 'better-sqlite3'
+
 import addCommittalType from '../../database/addCommittalType.js'
 import getCommittalTypes from '../../database/getCommittalTypes.js'
 
@@ -5,7 +7,8 @@ let committalTypes = getCommittalTypes(true)
 
 export function getCommittalTypeIdByKey(
   committalTypeKey: string,
-  user: User
+  user: User,
+  database: sqlite.Database
 ): number {
   const committalType = committalTypes.find(
     (possibleCommittalType) =>
@@ -18,10 +21,11 @@ export function getCommittalTypeIdByKey(
         committalType: committalTypeKey,
         committalTypeKey
       },
-      user
+      user,
+      database
     )
 
-    committalTypes = getCommittalTypes(true)
+    committalTypes = getCommittalTypes(true, database)
 
     return committalTypeId
   }

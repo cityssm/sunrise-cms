@@ -3,6 +3,7 @@
 
 import fs from 'node:fs'
 
+import sqlite from 'better-sqlite3'
 import papa from 'papaparse'
 
 import addBurialSite from '../../database/addBurialSite.js'
@@ -16,6 +17,7 @@ import getBurialSite, {
 import getContracts from '../../database/getContracts.js'
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js'
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js'
+import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
 import type { BurialSite } from '../../types/record.types.js'
 
 import { getBurialSiteTypeId } from './data.burialSiteTypes.js'
@@ -42,6 +44,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
     console.log(parseError)
   }
 
+  const database = sqlite(databasePath)
+
   try {
     for (prepaidRow of cmprpaid.data) {
       if (!prepaidRow.CMPP_PREPAID_FOR_NAME) {
@@ -57,7 +61,7 @@ export async function importFromPrepaidCSV(): Promise<void> {
       let burialSite: BurialSite | undefined
 
       if (!cremationCemeteryKeys.has(cemeteryKey)) {
-        const cemeteryId = getCemeteryIdByKey(cemeteryKey, user)
+        const cemeteryId = getCemeteryIdByKey(cemeteryKey, user, database)
 
         const burialSiteNameSegment1 =
           prepaidRow.CMPP_BLOCK === '0' ? '' : prepaidRow.CMPP_BLOCK
@@ -85,7 +89,11 @@ export async function importFromPrepaidCSV(): Promise<void> {
           burialSiteNameSegment4
         })
 
-        burialSite = await getBurialSiteByBurialSiteName(burialSiteName)
+        burialSite = await getBurialSiteByBurialSiteName(
+          burialSiteName,
+          true,
+          database
+        )
 
         if (!burialSite) {
           const burialSiteTypeId = getBurialSiteTypeId(cemeteryKey)
@@ -110,10 +118,15 @@ export async function importFromPrepaidCSV(): Promise<void> {
 
               burialSiteImage: ''
             },
-            user
+            user,
+            database
           )
 
-          burialSite = await getBurialSite(burialSiteKeys.burialSiteId)
+          burialSite = await getBurialSite(
+            burialSiteKeys.burialSiteId,
+            true,
+            database
+          )
         }
       }
 
@@ -124,7 +137,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
         updateBurialSiteStatus(
           burialSite.burialSiteId,
           importIds.reservedBurialSiteStatusId,
-          user
+          user,
+          database
         )
       }
 
@@ -150,7 +164,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
             includeTransactions: false,
             limit: -1,
             offset: 0
-          }
+          },
+          database
         )
 
         if (possibleContracts.contracts.length > 0) {
@@ -176,7 +191,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
           deceasedPostalCode: `${prepaidRow.CMPP_POSTAL1} ${prepaidRow.CMPP_POSTAL2}`,
           deceasedProvince: prepaidRow.CMPP_PROV.slice(0, 2)
         },
-        user
+        user,
+        database
       )
 
       if (prepaidRow.CMPP_FEE_GRAV_SD !== '0.0') {
@@ -189,7 +205,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
             feeAmount: prepaidRow.CMPP_FEE_GRAV_SD,
             taxAmount: prepaidRow.CMPP_GST_GRAV_SD
           },
-          user
+          user,
+          database
         )
       }
 
@@ -203,7 +220,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
             feeAmount: prepaidRow.CMPP_FEE_GRAV_DD,
             taxAmount: prepaidRow.CMPP_GST_GRAV_DD
           },
-          user
+          user,
+          database
         )
       }
 
@@ -217,7 +235,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
             feeAmount: prepaidRow.CMPP_FEE_CHAP_SD,
             taxAmount: prepaidRow.CMPP_GST_CHAP_SD
           },
-          user
+          user,
+          database
         )
       }
 
@@ -231,7 +250,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
             feeAmount: prepaidRow.CMPP_FEE_CHAP_DD,
             taxAmount: prepaidRow.CMPP_GST_CHAP_DD
           },
-          user
+          user,
+          database
         )
       }
 
@@ -245,7 +265,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
             feeAmount: prepaidRow.CMPP_FEE_ENTOMBMENT,
             taxAmount: prepaidRow.CMPP_GST_ENTOMBMENT
           },
-          user
+          user,
+          database
         )
       }
 
@@ -259,7 +280,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
             feeAmount: prepaidRow.CMPP_FEE_CREM,
             taxAmount: prepaidRow.CMPP_GST_CREM
           },
-          user
+          user,
+          database
         )
       }
 
@@ -273,7 +295,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
             feeAmount: prepaidRow.CMPP_FEE_NICHE,
             taxAmount: prepaidRow.CMPP_GST_NICHE
           },
-          user
+          user,
+          database
         )
       }
 
@@ -290,7 +313,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
             feeAmount: prepaidRow.CMPP_FEE_DISINTERMENT,
             taxAmount: prepaidRow.CMPP_GST_DISINTERMENT
           },
-          user
+          user,
+          database
         )
       }
 
@@ -330,7 +354,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
 
           transactionNote: `Order Number: ${prepaidRow.CMPP_ORDER_NO}`
         },
-        user
+        user,
+        database
       )
 
       if (prepaidRow.CMPP_REMARK1 !== '') {
@@ -341,7 +366,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
             comment: prepaidRow.CMPP_REMARK1,
             commentDateString: contractStartDateString
           },
-          user
+          user,
+          database
         )
       }
 
@@ -353,13 +379,29 @@ export async function importFromPrepaidCSV(): Promise<void> {
             comment: prepaidRow.CMPP_REMARK2,
             commentDateString: contractStartDateString
           },
-          user
+          user,
+          database
+        )
+      }
+
+      if (prepaidRow.CMPP_REMARK2 !== '') {
+        addContractComment(
+          {
+            contractId,
+
+            comment: prepaidRow.CMPP_REMARK2,
+            commentDateString: contractStartDateString
+          },
+          user,
+          database
         )
       }
     }
   } catch (error) {
     console.error(error)
     console.log(prepaidRow)
+  } finally {
+    database.close()
   }
 
   console.timeEnd('importFromPrepaidCSV')

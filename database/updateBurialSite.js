@@ -77,8 +77,8 @@ export default function updateBurialSite(updateForm, user) {
     database.close();
     return result.changes > 0;
 }
-export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user) {
-    const database = sqlite(sunriseDB);
+export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update BurialSites
@@ -88,6 +88,8 @@ export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user) {
         where burialSiteId = ?
           and recordDelete_timeMillis is null`)
         .run(burialSiteStatusId === '' ? undefined : burialSiteStatusId, user.userName, rightNowMillis, burialSiteId);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return result.changes > 0;
 }

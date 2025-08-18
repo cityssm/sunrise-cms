@@ -6,9 +6,10 @@ import type { CommittalType } from '../types/record.types.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getCommittalTypes(
-  includeDeleted = false
+  includeDeleted = false,
+  connectedDatabase?: sqlite.Database
 ): CommittalType[] {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const updateOrderNumbers = !database.readonly && !includeDeleted
 
@@ -40,7 +41,9 @@ export default function getCommittalTypes(
     }
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return committalTypes
 }

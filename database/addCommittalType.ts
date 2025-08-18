@@ -9,8 +9,12 @@ export interface AddForm {
   orderNumber?: number | string
 }
 
-export default function addCommittalType(addForm: AddForm, user: User): number {
-  const database = sqlite(sunriseDB)
+export default function addCommittalType(
+  addForm: AddForm,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): number {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -32,7 +36,9 @@ export default function addCommittalType(addForm: AddForm, user: User): number {
       rightNowMillis
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   clearCacheByTableName('CommittalTypes')
 

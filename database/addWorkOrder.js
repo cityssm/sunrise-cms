@@ -3,8 +3,8 @@ import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import addWorkOrderContract from './addWorkOrderContract.js';
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js';
-export default function addWorkOrder(workOrderForm, user) {
-    const database = sqlite(sunriseDB);
+export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNow = new Date();
     let workOrderNumber = workOrderForm.workOrderNumber;
     if ((workOrderNumber ?? '') === '') {
@@ -26,9 +26,11 @@ export default function addWorkOrder(workOrderForm, user) {
     if ((workOrderForm.contractId ?? '') !== '') {
         addWorkOrderContract({
             contractId: workOrderForm.contractId,
-            workOrderId,
+            workOrderId
         }, user, database);
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return workOrderId;
 }

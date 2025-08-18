@@ -4,15 +4,19 @@
 import fs from 'node:fs'
 
 import type { DateString } from '@cityssm/utils-datetime'
+import sqlite from 'better-sqlite3'
 import papa from 'papaparse'
 
 import addBurialSite from '../../database/addBurialSite.js'
-import addContract, { type AddContractForm } from '../../database/addContract.js'
+import addContract, {
+  type AddContractForm
+} from '../../database/addContract.js'
 import addContractComment from '../../database/addContractComment.js'
 import addRelatedContract from '../../database/addRelatedContract.js'
 import { getBurialSiteByBurialSiteName } from '../../database/getBurialSite.js'
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js'
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js'
+import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
 
 import { getBurialSiteTypeId } from './data.burialSiteTypes.js'
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js'
@@ -41,9 +45,15 @@ export async function importFromMasterCSV(): Promise<void> {
     console.log(parseError)
   }
 
+  const database = sqlite(databasePath)
+
   try {
     for (masterRow of cmmaster.data) {
-      const cemeteryId = getCemeteryIdByKey(masterRow.CM_CEMETERY, user)
+      const cemeteryId = getCemeteryIdByKey(
+        masterRow.CM_CEMETERY,
+        user,
+        database
+      )
 
       let burialSiteId: number | undefined
 
@@ -74,7 +84,11 @@ export async function importFromMasterCSV(): Promise<void> {
           burialSiteNameSegment4
         })
 
-        const burialSite = await getBurialSiteByBurialSiteName(burialSiteName)
+        const burialSite = await getBurialSiteByBurialSiteName(
+          burialSiteName,
+          true,
+          database
+        )
 
         burialSiteId =
           burialSite === undefined
@@ -95,7 +109,8 @@ export async function importFromMasterCSV(): Promise<void> {
                   burialSiteLatitude: '',
                   burialSiteLongitude: ''
                 },
-                user
+                user,
+                database
               ).burialSiteId
             : burialSite.burialSiteId
       }
@@ -196,7 +211,8 @@ export async function importFromMasterCSV(): Promise<void> {
             deceasedPostalCode: purchaserPostalCode,
             deceasedProvince: masterRow.CM_PROV
           },
-          user
+          user,
+          database
         )
 
         if (masterRow.CM_REMARK1 !== '') {
@@ -208,7 +224,8 @@ export async function importFromMasterCSV(): Promise<void> {
               commentDateString: preneedContractStartDateString,
               commentTimeString: '00:00'
             },
-            user
+            user,
+            database
           )
         }
 
@@ -221,7 +238,8 @@ export async function importFromMasterCSV(): Promise<void> {
               commentDateString: preneedContractStartDateString,
               commentTimeString: '00:00'
             },
-            user
+            user,
+            database
           )
         }
 
@@ -234,7 +252,8 @@ export async function importFromMasterCSV(): Promise<void> {
               commentDateString: preneedContractStartDateString,
               commentTimeString: '00:00'
             },
-            user
+            user,
+            database
           )
         }
 
@@ -242,7 +261,8 @@ export async function importFromMasterCSV(): Promise<void> {
           updateBurialSiteStatus(
             burialSiteId ?? '',
             importIds.reservedBurialSiteStatusId,
-            user
+            user,
+            database
           )
         }
       }
@@ -295,7 +315,7 @@ export async function importFromMasterCSV(): Promise<void> {
         const funeralHomeId =
           masterRow.CM_FUNERAL_HOME === ''
             ? ''
-            : getFuneralHomeIdByKey(masterRow.CM_FUNERAL_HOME, user)
+            : getFuneralHomeIdByKey(masterRow.CM_FUNERAL_HOME, user, database)
 
         const funeralDateString =
           masterRow.CM_FUNERAL_YR === '' || masterRow.CM_FUNERAL_YR === '0'
@@ -310,7 +330,11 @@ export async function importFromMasterCSV(): Promise<void> {
           contractType.contractType === 'Cremation' ||
           masterRow.CM_COMMITTAL_TYPE === ''
             ? ''
-            : getCommittalTypeIdByKey(masterRow.CM_COMMITTAL_TYPE, user)
+            : getCommittalTypeIdByKey(
+                masterRow.CM_COMMITTAL_TYPE,
+                user,
+                database
+              )
 
         const deathDateString =
           masterRow.CM_DEATH_YR === '' || masterRow.CM_DEATH_YR === '0'
@@ -331,7 +355,11 @@ export async function importFromMasterCSV(): Promise<void> {
         const intermentContainerTypeId =
           intermentContainerTypeKey === ''
             ? ''
-            : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user)
+            : getIntermentContainerTypeIdByKey(
+                intermentContainerTypeKey,
+                user,
+                database
+              )
 
         const contractForm: AddContractForm = {
           burialSiteId: burialSiteId ?? '',
@@ -400,13 +428,16 @@ export async function importFromMasterCSV(): Promise<void> {
           ] = depth
         }
 
-        deceasedContractId = addContract(contractForm, user)
+        deceasedContractId = addContract(contractForm, user, database)
 
         if (preneedContractId !== undefined) {
-          addRelatedContract({
-            contractId: preneedContractId,
-            relatedContractId: deceasedContractId
-          })
+          addRelatedContract(
+            {
+              contractId: preneedContractId,
+              relatedContractId: deceasedContractId
+            },
+            database
+          )
         }
 
         if (masterRow.CM_REMARK1 !== '') {
@@ -418,7 +449,8 @@ export async function importFromMasterCSV(): Promise<void> {
               commentDateString: deceasedContractStartDateString,
               commentTimeString: '00:00'
             },
-            user
+            user,
+            database
           )
         }
 
@@ -431,7 +463,8 @@ export async function importFromMasterCSV(): Promise<void> {
               commentDateString: deceasedContractStartDateString,
               commentTimeString: '00:00'
             },
-            user
+            user,
+            database
           )
         }
 
@@ -444,20 +477,24 @@ export async function importFromMasterCSV(): Promise<void> {
               commentDateString: deceasedContractStartDateString,
               commentTimeString: '00:00'
             },
-            user
+            user,
+            database
           )
         }
 
         updateBurialSiteStatus(
           burialSiteId ?? '',
           importIds.occupiedBurialSiteStatusId,
-          user
+          user,
+          database
         )
       }
     }
   } catch (error) {
     console.error(error)
     console.log(masterRow)
+  } finally {
+    database.close()
   }
 
   console.timeEnd('importFromMasterCSV')

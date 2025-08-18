@@ -1,6 +1,7 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @cspell/spellchecker, complexity, no-console */
 import fs from 'node:fs';
+import sqlite from 'better-sqlite3';
 import papa from 'papaparse';
 import addBurialSite from '../../database/addBurialSite.js';
 import addContract from '../../database/addContract.js';
@@ -9,6 +10,7 @@ import addRelatedContract from '../../database/addRelatedContract.js';
 import { getBurialSiteByBurialSiteName } from '../../database/getBurialSite.js';
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js';
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js';
+import { sunriseDB as databasePath } from '../../helpers/database.helpers.js';
 import { getBurialSiteTypeId } from './data.burialSiteTypes.js';
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js';
 import { getCommittalTypeIdByKey } from './data.committalTypes.js';
@@ -29,9 +31,10 @@ export async function importFromMasterCSV() {
     for (const parseError of cmmaster.errors) {
         console.log(parseError);
     }
+    const database = sqlite(databasePath);
     try {
         for (masterRow of cmmaster.data) {
-            const cemeteryId = getCemeteryIdByKey(masterRow.CM_CEMETERY, user);
+            const cemeteryId = getCemeteryIdByKey(masterRow.CM_CEMETERY, user, database);
             let burialSiteId;
             if (!cremationCemeteryKeys.has(masterRow.CM_CEMETERY)) {
                 const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY);
@@ -51,7 +54,7 @@ export async function importFromMasterCSV() {
                     burialSiteNameSegment3,
                     burialSiteNameSegment4
                 });
-                const burialSite = await getBurialSiteByBurialSiteName(burialSiteName);
+                const burialSite = await getBurialSiteByBurialSiteName(burialSiteName, true, database);
                 burialSiteId =
                     burialSite === undefined
                         ? addBurialSite({
@@ -66,7 +69,7 @@ export async function importFromMasterCSV() {
                             cemeterySvgId: '',
                             burialSiteLatitude: '',
                             burialSiteLongitude: ''
-                        }, user).burialSiteId
+                        }, user, database).burialSiteId
                         : burialSite.burialSiteId;
             }
             /*
@@ -124,14 +127,14 @@ export async function importFromMasterCSV() {
                     deceasedCity: masterRow.CM_CITY,
                     deceasedPostalCode: purchaserPostalCode,
                     deceasedProvince: masterRow.CM_PROV
-                }, user);
+                }, user, database);
                 if (masterRow.CM_REMARK1 !== '') {
                     addContractComment({
                         contractId: preneedContractId,
                         comment: masterRow.CM_REMARK1,
                         commentDateString: preneedContractStartDateString,
                         commentTimeString: '00:00'
-                    }, user);
+                    }, user, database);
                 }
                 if (masterRow.CM_REMARK2 !== '') {
                     addContractComment({
@@ -139,7 +142,7 @@ export async function importFromMasterCSV() {
                         comment: masterRow.CM_REMARK2,
                         commentDateString: preneedContractStartDateString,
                         commentTimeString: '00:00'
-                    }, user);
+                    }, user, database);
                 }
                 if (masterRow.CM_WORK_ORDER.trim() !== '') {
                     addContractComment({
@@ -147,10 +150,10 @@ export async function importFromMasterCSV() {
                         comment: `Imported Contract #${masterRow.CM_WORK_ORDER}`,
                         commentDateString: preneedContractStartDateString,
                         commentTimeString: '00:00'
-                    }, user);
+                    }, user, database);
                 }
                 if (contractEndDateString === '') {
-                    updateBurialSiteStatus(burialSiteId ?? '', importIds.reservedBurialSiteStatusId, user);
+                    updateBurialSiteStatus(burialSiteId ?? '', importIds.reservedBurialSiteStatusId, user, database);
                 }
             }
             /*
@@ -179,14 +182,14 @@ export async function importFromMasterCSV() {
                 const deceasedPostalCode = `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim();
                 const funeralHomeId = masterRow.CM_FUNERAL_HOME === ''
                     ? ''
-                    : getFuneralHomeIdByKey(masterRow.CM_FUNERAL_HOME, user);
+                    : getFuneralHomeIdByKey(masterRow.CM_FUNERAL_HOME, user, database);
                 const funeralDateString = masterRow.CM_FUNERAL_YR === '' || masterRow.CM_FUNERAL_YR === '0'
                     ? ''
                     : formatDateString(masterRow.CM_FUNERAL_YR, masterRow.CM_FUNERAL_MON, masterRow.CM_FUNERAL_DAY);
                 const committalTypeId = contractType.contractType === 'Cremation' ||
                     masterRow.CM_COMMITTAL_TYPE === ''
                     ? ''
-                    : getCommittalTypeIdByKey(masterRow.CM_COMMITTAL_TYPE, user);
+                    : getCommittalTypeIdByKey(masterRow.CM_COMMITTAL_TYPE, user, database);
                 const deathDateString = masterRow.CM_DEATH_YR === '' || masterRow.CM_DEATH_YR === '0'
                     ? ''
                     : formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
@@ -197,7 +200,7 @@ export async function importFromMasterCSV() {
                     : masterRow.CM_CONTAINER_TYPE;
                 const intermentContainerTypeId = intermentContainerTypeKey === ''
                     ? ''
-                    : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user);
+                    : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user, database);
                 const contractForm = {
                     burialSiteId: burialSiteId ?? '',
                     contractEndDateString: deceasedContractEndDateString,
@@ -248,12 +251,12 @@ export async function importFromMasterCSV() {
                     contractForm['fieldValue_' +
                         importIds.intermentDepthContractField.contractTypeFieldId.toString()] = depth;
                 }
-                deceasedContractId = addContract(contractForm, user);
+                deceasedContractId = addContract(contractForm, user, database);
                 if (preneedContractId !== undefined) {
                     addRelatedContract({
                         contractId: preneedContractId,
                         relatedContractId: deceasedContractId
-                    });
+                    }, database);
                 }
                 if (masterRow.CM_REMARK1 !== '') {
                     addContractComment({
@@ -261,7 +264,7 @@ export async function importFromMasterCSV() {
                         comment: masterRow.CM_REMARK1,
                         commentDateString: deceasedContractStartDateString,
                         commentTimeString: '00:00'
-                    }, user);
+                    }, user, database);
                 }
                 if (masterRow.CM_REMARK2 !== '') {
                     addContractComment({
@@ -269,7 +272,7 @@ export async function importFromMasterCSV() {
                         comment: masterRow.CM_REMARK2,
                         commentDateString: deceasedContractStartDateString,
                         commentTimeString: '00:00'
-                    }, user);
+                    }, user, database);
                 }
                 if (masterRow.CM_WORK_ORDER.trim() !== '') {
                     addContractComment({
@@ -277,15 +280,18 @@ export async function importFromMasterCSV() {
                         comment: `Imported Work Order #${masterRow.CM_WORK_ORDER}`,
                         commentDateString: deceasedContractStartDateString,
                         commentTimeString: '00:00'
-                    }, user);
+                    }, user, database);
                 }
-                updateBurialSiteStatus(burialSiteId ?? '', importIds.occupiedBurialSiteStatusId, user);
+                updateBurialSiteStatus(burialSiteId ?? '', importIds.occupiedBurialSiteStatusId, user, database);
             }
         }
     }
     catch (error) {
         console.error(error);
         console.log(masterRow);
+    }
+    finally {
+        database.close();
     }
     console.timeEnd('importFromMasterCSV');
 }

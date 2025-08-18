@@ -3,8 +3,8 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import getBurialSiteComments from './getBurialSiteComments.js';
 import getBurialSiteFields from './getBurialSiteFields.js';
 import getContracts from './getContracts.js';
-export default async function getBurialSite(burialSiteId, includeDeleted = false) {
-    return await _getBurialSite('burialSiteId', burialSiteId, includeDeleted);
+export default async function getBurialSite(burialSiteId, includeDeleted = false, connectedDatabase) {
+    return await _getBurialSite('burialSiteId', burialSiteId, includeDeleted, connectedDatabase);
 }
 export async function getBurialSiteByBurialSiteName(burialSiteName, includeDeleted = false, connectedDatabase) {
     return await _getBurialSite('burialSiteName', burialSiteName, includeDeleted, connectedDatabase);

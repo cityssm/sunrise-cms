@@ -1,3 +1,4 @@
+import sqlite from 'better-sqlite3';
 export interface AddBurialSiteForm {
     burialSiteNameSegment1?: string;
     burialSiteNameSegment2?: string;
@@ -20,10 +21,11 @@ export interface AddBurialSiteForm {
  * Creates a new burial site.
  * @param burialSiteForm - The new burial site's information
  * @param user - The user making the request
+ * @param connectedDatabase - An optional database connection
  * @returns The new burial site's id.
  * @throws If an active burial site with the same name already exists.
  */
-export default function addBurialSite(burialSiteForm: AddBurialSiteForm, user: User): {
+export default function addBurialSite(burialSiteForm: AddBurialSiteForm, user: User, connectedDatabase?: sqlite.Database): {
     burialSiteId: number;
     burialSiteName: string;
 };

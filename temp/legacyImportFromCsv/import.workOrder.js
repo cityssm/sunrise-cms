@@ -1,7 +1,8 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @cspell/spellchecker, complexity, no-console */
+/* eslint-disable @cspell/spellchecker, complexity, max-lines, no-console */
 import fs from 'node:fs';
 import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
 import papa from 'papaparse';
 import addBurialSite from '../../database/addBurialSite.js';
 import addContract from '../../database/addContract.js';
@@ -15,6 +16,7 @@ import getWorkOrder, { getWorkOrderByWorkOrderNumber } from '../../database/getW
 import reopenWorkOrder from '../../database/reopenWorkOrder.js';
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js';
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js';
+import { sunriseDB as databasePath } from '../../helpers/database.helpers.js';
 import { getBurialSiteTypeId } from './data.burialSiteTypes.js';
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js';
 import { getCommittalTypeIdByKey } from './data.committalTypes.js';
@@ -36,6 +38,7 @@ export async function importFromWorkOrderCSV() {
         console.log(parseError);
     }
     const currentDateString = dateToString(new Date());
+    const database = sqlite(databasePath);
     try {
         for (workOrderRow of cmwkordr.data) {
             const workOrderNumber = `000000${workOrderRow.WO_WORK_ORDER}`.slice(-6);
@@ -43,7 +46,7 @@ export async function importFromWorkOrderCSV() {
             const workOrderOpenDateString = dateIntegerToString(Number.parseInt(workOrderRow.WO_INITIATION_DATE, 10));
             if (workOrder) {
                 if (workOrder.workOrderCloseDate) {
-                    reopenWorkOrder(workOrder.workOrderId, user);
+                    reopenWorkOrder(workOrder.workOrderId, user, database);
                     delete workOrder.workOrderCloseDate;
                     delete workOrder.workOrderCloseDateString;
                 }
@@ -54,12 +57,12 @@ export async function importFromWorkOrderCSV() {
                     workOrderNumber,
                     workOrderOpenDateString,
                     workOrderTypeId: importIds.workOrderTypeId
-                }, user);
+                }, user, database);
                 workOrder = await getWorkOrder(workOrderId, {
                     includeBurialSites: true,
                     includeComments: true,
                     includeMilestones: true
-                });
+                }, database);
             }
             let burialSite;
             if (!cremationCemeteryKeys.has(workOrderRow.WO_CEMETERY)) {
@@ -79,12 +82,12 @@ export async function importFromWorkOrderCSV() {
                     burialSiteNameSegment3,
                     burialSiteNameSegment4
                 });
-                burialSite = await getBurialSiteByBurialSiteName(burialSiteName);
+                burialSite = await getBurialSiteByBurialSiteName(burialSiteName, true, database);
                 if (burialSite) {
-                    updateBurialSiteStatus(burialSite.burialSiteId, importIds.occupiedBurialSiteStatusId, user);
+                    updateBurialSiteStatus(burialSite.burialSiteId, importIds.occupiedBurialSiteStatusId, user, database);
                 }
                 else {
-                    const cemeteryId = getCemeteryIdByKey(workOrderRow.WO_CEMETERY, user);
+                    const cemeteryId = getCemeteryIdByKey(workOrderRow.WO_CEMETERY, user, database);
                     const burialSiteTypeId = getBurialSiteTypeId(workOrderRow.WO_CEMETERY);
                     const burialSiteKeys = addBurialSite({
                         burialSiteNameSegment1,
@@ -100,15 +103,15 @@ export async function importFromWorkOrderCSV() {
                         burialSiteImage: '',
                         burialSiteLatitude: '',
                         burialSiteLongitude: ''
-                    }, user);
-                    burialSite = await getBurialSite(burialSiteKeys.burialSiteId);
+                    }, user, database);
+                    burialSite = await getBurialSite(burialSiteKeys.burialSiteId, true, database);
                 }
                 const workOrderContainsBurialSite = workOrder?.workOrderBurialSites?.find((possibleLot) => possibleLot.burialSiteId === burialSite?.burialSiteId);
                 if (!workOrderContainsBurialSite) {
                     addWorkOrderBurialSite({
                         burialSiteId: burialSite?.burialSiteId,
                         workOrderId: workOrder?.workOrderId
-                    }, user);
+                    }, user, database);
                     workOrder?.workOrderBurialSites?.push(burialSite);
                 }
             }
@@ -121,18 +124,18 @@ export async function importFromWorkOrderCSV() {
                 : importIds.cremationContractType;
             const funeralHomeId = workOrderRow.WO_FUNERAL_HOME === ''
                 ? ''
-                : getFuneralHomeIdByKey(workOrderRow.WO_FUNERAL_HOME, user);
+                : getFuneralHomeIdByKey(workOrderRow.WO_FUNERAL_HOME, user, database);
             const committalTypeId = contractType.contractType === 'Cremation' ||
                 workOrderRow.WO_COMMITTAL_TYPE === ''
                 ? ''
-                : getCommittalTypeIdByKey(workOrderRow.WO_COMMITTAL_TYPE, user);
+                : getCommittalTypeIdByKey(workOrderRow.WO_COMMITTAL_TYPE, user, database);
             const intermentContainerTypeKey = contractType.contractType === 'Cremation' &&
                 workOrderRow.WO_CONTAINER_TYPE === ''
                 ? 'U'
                 : workOrderRow.WO_CONTAINER_TYPE;
             const intermentContainerTypeId = intermentContainerTypeKey === ''
                 ? ''
-                : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user);
+                : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user, database);
             let funeralHour = Number.parseInt(workOrderRow.WO_FUNERAL_HR === '' ? '0' : workOrderRow.WO_FUNERAL_HR, 10);
             if (funeralHour <= 6) {
                 funeralHour += 12;
@@ -182,11 +185,11 @@ export async function importFromWorkOrderCSV() {
                 contractForm['fieldValue_' +
                     importIds.intermentDepthContractField.contractTypeFieldId.toString()] = depth;
             }
-            const contractId = addContract(contractForm, user);
+            const contractId = addContract(contractForm, user, database);
             addWorkOrderContract({
                 contractId,
                 workOrderId: workOrder?.workOrderId
-            }, user);
+            }, user, database);
             // Milestones
             let hasIncompleteMilestones = !workOrderRow.WO_CONFIRMATION_IN;
             let maxMilestoneCompletionDateString = workOrderOpenDateString;
@@ -200,7 +203,7 @@ export async function importFromWorkOrderCSV() {
                     workOrderMilestoneDateString: workOrderOpenDateString,
                     workOrderMilestoneDescription: '',
                     workOrderMilestoneTypeId: importIds.acknowledgedWorkOrderMilestoneTypeId
-                }, user);
+                }, user, database);
             }
             if (workOrderRow.WO_DEATH_YR) {
                 const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_DEATH_YR, workOrderRow.WO_DEATH_MON, workOrderRow.WO_DEATH_DAY);
@@ -216,7 +219,7 @@ export async function importFromWorkOrderCSV() {
                         workOrderMilestoneDateString,
                         workOrderMilestoneDescription: `Death Place: ${workOrderRow.WO_DEATH_PLACE}`,
                         workOrderMilestoneTypeId: importIds.deathWorkOrderMilestoneTypeId
-                    }, user);
+                    }, user, database);
                 }
                 if (workOrderMilestoneDateString > maxMilestoneCompletionDateString) {
                     maxMilestoneCompletionDateString = workOrderMilestoneDateString;
@@ -245,7 +248,7 @@ export async function importFromWorkOrderCSV() {
                         workOrderMilestoneDescription: `Funeral Home: ${workOrderRow.WO_FUNERAL_HOME}`,
                         workOrderMilestoneTimeString,
                         workOrderMilestoneTypeId: importIds.funeralWorkOrderMilestoneTypeId
-                    }, user);
+                    }, user, database);
                 }
                 if (workOrderMilestoneDateString > maxMilestoneCompletionDateString) {
                     maxMilestoneCompletionDateString = workOrderMilestoneDateString;
@@ -267,7 +270,7 @@ export async function importFromWorkOrderCSV() {
                     workOrderMilestoneDateString: maxMilestoneCompletionDateString,
                     workOrderMilestoneDescription: '',
                     workOrderMilestoneTypeId: importIds.cremationWorkOrderMilestoneTypeId
-                }, user);
+                }, user, database);
             }
             if (workOrderRow.WO_INTERMENT_YR) {
                 const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_INTERMENT_YR, workOrderRow.WO_INTERMENT_MON, workOrderRow.WO_INTERMENT_DAY);
@@ -283,7 +286,7 @@ export async function importFromWorkOrderCSV() {
                         workOrderMilestoneDateString,
                         workOrderMilestoneDescription: `Depth: ${workOrderRow.WO_DEPTH}`,
                         workOrderMilestoneTypeId: importIds.intermentWorkOrderMilestoneTypeId
-                    }, user);
+                    }, user, database);
                 }
                 if (workOrderMilestoneDateString > maxMilestoneCompletionDateString) {
                     maxMilestoneCompletionDateString = workOrderMilestoneDateString;
@@ -296,13 +299,16 @@ export async function importFromWorkOrderCSV() {
                 closeWorkOrder({
                     workOrderId: workOrder?.workOrderId,
                     workOrderCloseDateString: maxMilestoneCompletionDateString
-                }, user);
+                }, user, database);
             }
         }
     }
     catch (error) {
         console.error(error);
         console.log(workOrderRow);
+    }
+    finally {
+        database.close();
     }
     console.timeEnd('importFromWorkOrderCSV');
 }

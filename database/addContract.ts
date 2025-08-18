@@ -5,12 +5,16 @@ import {
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
+import Debug from 'debug'
 
+import { DEBUG_NAMESPACE } from '../debug.config.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addContractInterment from './addContractInterment.js'
 import addFuneralHome from './addFuneralHome.js'
 import addOrUpdateContractField from './addOrUpdateContractField.js'
+
+const debug = Debug(`${DEBUG_NAMESPACE}:addContract`)
 
 export interface AddContractForm {
   burialSiteId: number | string
@@ -28,14 +32,14 @@ export interface AddContractForm {
   funeralHomeId?: '' | 'new' | `${number}` | number
   funeralTimeString?: '' | TimeString
 
-  // Optional on create
-  funeralHomeName?: string
   funeralHomeAddress1?: string
   funeralHomeAddress2?: string
   funeralHomeCity?: string
-  funeralHomeProvince?: string
-  funeralHomePostalCode?: string
+  // Optional on create
+  funeralHomeName?: string
   funeralHomePhoneNumber?: string
+  funeralHomePostalCode?: string
+  funeralHomeProvince?: string
 
   purchaserAddress1?: string
   purchaserAddress2?: string
@@ -181,8 +185,8 @@ export default function addContract(
     
     return contractId
   } catch (error) {
-    console.error('Error adding contract:', error)
-    console.error('Add Form:', addForm)
+    debug('Error adding contract:', error)
+    debug('Add Form:', addForm)
 
     throw error
   } finally {

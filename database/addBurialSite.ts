@@ -36,18 +36,20 @@ export interface AddBurialSiteForm {
  * Creates a new burial site.
  * @param burialSiteForm - The new burial site's information
  * @param user - The user making the request
+ * @param connectedDatabase - An optional database connection
  * @returns The new burial site's id.
  * @throws If an active burial site with the same name already exists.
  */
 // eslint-disable-next-line complexity
 export default function addBurialSite(
   burialSiteForm: AddBurialSiteForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): { burialSiteId: number; burialSiteName: string } {
   let database: sqlite.Database | undefined
 
   try {
-    database = sqlite(sunriseDB)
+    database = connectedDatabase ?? sqlite(sunriseDB)
 
     const rightNowMillis = Date.now()
 
@@ -179,6 +181,8 @@ export default function addBurialSite(
       burialSiteName
     }
   } finally {
-    database?.close()
+    if (connectedDatabase === undefined) {
+      database?.close()
+    }
   }
 }

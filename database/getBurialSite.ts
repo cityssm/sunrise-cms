@@ -9,9 +9,10 @@ import getContracts from './getContracts.js'
 
 export default async function getBurialSite(
   burialSiteId: number | string,
-  includeDeleted = false
+  includeDeleted = false,
+  connectedDatabase?: sqlite.Database
 ): Promise<BurialSite | undefined> {
-  return await _getBurialSite('burialSiteId', burialSiteId, includeDeleted)
+  return await _getBurialSite('burialSiteId', burialSiteId, includeDeleted, connectedDatabase)
 }
 
 export async function getBurialSiteByBurialSiteName(

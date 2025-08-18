@@ -18,15 +18,16 @@ export interface AddWorkOrderForm {
 
   workOrderCloseDateString?: string
   workOrderOpenDateString?: string
-  
+
   contractId?: string
 }
 
 export default function addWorkOrder(
   workOrderForm: AddWorkOrderForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): number {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNow = new Date()
 
@@ -71,14 +72,16 @@ export default function addWorkOrder(
     addWorkOrderContract(
       {
         contractId: workOrderForm.contractId as string,
-        workOrderId,
+        workOrderId
       },
       user,
       database
     )
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return workOrderId
 }

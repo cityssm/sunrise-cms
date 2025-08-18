@@ -1,3 +1,4 @@
+import sqlite from 'better-sqlite3';
 export interface UpdateBurialSiteForm {
     burialSiteId: number | string;
     burialSiteNameSegment1?: string;
@@ -25,4 +26,4 @@ export interface UpdateBurialSiteForm {
  * @throws If an active burial site with the same name already exists.
  */
 export default function updateBurialSite(updateForm: UpdateBurialSiteForm, user: User): boolean;
-export declare function updateBurialSiteStatus(burialSiteId: number | string, burialSiteStatusId: number | string, user: User): boolean;
+export declare function updateBurialSiteStatus(burialSiteId: number | string, burialSiteStatusId: number | string, user: User, connectedDatabase?: sqlite.Database): boolean;

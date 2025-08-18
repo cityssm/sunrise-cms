@@ -6,5 +6,5 @@ interface WorkOrderOptions {
     includeMilestones: boolean;
 }
 export default function getWorkOrder(workOrderId: number | string, options: WorkOrderOptions, connectedDatabase?: sqlite.Database): Promise<WorkOrder | undefined>;
-export declare function getWorkOrderByWorkOrderNumber(workOrderNumber: string): Promise<WorkOrder | undefined>;
+export declare function getWorkOrderByWorkOrderNumber(workOrderNumber: string, connectedDatabase?: sqlite.Database): Promise<WorkOrder | undefined>;
 export {};

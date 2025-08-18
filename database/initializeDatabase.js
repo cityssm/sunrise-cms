@@ -19,7 +19,7 @@ import getFeeCategories from './getFeeCategories.js';
 import getIntermentContainerTypes from './getIntermentContainerTypes.js';
 import getWorkOrderMilestoneTypes from './getWorkOrderMilestoneTypes.js';
 import getWorkOrderTypes from './getWorkOrderTypes.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:database/initializeDatabase`);
+const debug = Debug(`${DEBUG_NAMESPACE}:database:initializeDatabase`);
 const recordColumns = `recordCreate_userName varchar(30) not null,
   recordCreate_timeMillis integer not null,
   recordUpdate_userName varchar(30) not null,
