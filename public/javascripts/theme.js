@@ -54,8 +54,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const urlPrefix = document.querySelector('main')?.getAttribute('data-url-prefix') ?? '';
     function doContractQuickSearch(formEvent) {
         formEvent.preventDefault();
-        const contractIdElement = document.querySelector('#quickSearchContract--contractId');
-        globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(contractIdElement.value)}`;
+        const contractFieldElement = document.querySelector('#quickSearchContract--searchField');
+        const searchValueElement = document.querySelector('#quickSearchContract--searchValue');
+        if (contractFieldElement.value === 'deceasedName') {
+            globalThis.location.href = `${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValueElement.value)}`;
+        }
+        else if (contractFieldElement.value === 'contractId') {
+            globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(searchValueElement.value)}`;
+        }
+        else {
+            bulmaJS.alert({
+                contextualColorName: 'danger',
+                title: 'Invalid Search',
+                message: 'Please select a valid search field and enter a search value.'
+            });
+        }
     }
     function doWorkOrderQuickSearch(formEvent) {
         formEvent.preventDefault();

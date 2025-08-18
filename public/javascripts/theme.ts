@@ -96,11 +96,26 @@ declare const bulmaJS: BulmaJS
   function doContractQuickSearch(formEvent: Event): void {
     formEvent.preventDefault()
 
-    const contractIdElement = document.querySelector(
-      '#quickSearchContract--contractId'
+    const contractFieldElement = document.querySelector(
+      '#quickSearchContract--searchField'
+    ) as HTMLSelectElement
+
+    const searchValueElement = document.querySelector(
+      '#quickSearchContract--searchValue'
     ) as HTMLInputElement
 
-    globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(contractIdElement.value)}`
+    if (contractFieldElement.value === 'deceasedName') {
+      globalThis.location.href = `${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValueElement.value)}`
+    } else if (contractFieldElement.value === 'contractId') {
+      globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(searchValueElement.value)}`
+    } else {
+      bulmaJS.alert({
+        contextualColorName: 'danger',
+        title: 'Invalid Search',
+
+        message: 'Please select a valid search field and enter a search value.'
+      })
+    }
   }
 
   function doWorkOrderQuickSearch(formEvent: Event): void {

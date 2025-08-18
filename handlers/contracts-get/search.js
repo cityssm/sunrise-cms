@@ -9,9 +9,10 @@ export default function handler(request, response) {
     const funeralHomes = getFuneralHomes();
     response.render('contract-search', {
         headTitle: 'Contract Search',
+        cemeteryId: request.query.cemeteryId,
+        deceasedName: request.query.deceasedName,
         burialSiteTypes,
         cemeteries,
-        cemeteryId: request.query.cemeteryId,
         contractTypes,
         funeralHomes
     });
