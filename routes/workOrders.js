@@ -29,6 +29,7 @@ import handler_doReopenWorkOrder from '../handlers/workOrders-post/doReopenWorkO
 import handler_doReopenWorkOrderMilestone from '../handlers/workOrders-post/doReopenWorkOrderMilestone.js';
 import handler_doSearchWorkOrders from '../handlers/workOrders-post/doSearchWorkOrders.js';
 import handler_doUpdateBurialSiteStatus from '../handlers/workOrders-post/doUpdateBurialSiteStatus.js';
+import handler_doUpdateWorkdayWorkOrderMilestoneTime from '../handlers/workOrders-post/doUpdateWorkdayWorkOrderMilestoneTime.js';
 import handler_doUpdateWorkOrder from '../handlers/workOrders-post/doUpdateWorkOrder.js';
 import handler_doUpdateWorkOrderComment from '../handlers/workOrders-post/doUpdateWorkOrderComment.js';
 import handler_doUpdateWorkOrderMilestone from '../handlers/workOrders-post/doUpdateWorkOrderMilestone.js';
@@ -46,6 +47,7 @@ router.get('/workday', handler_workday);
 router.post('/doGetWorkdayReport', handler_doGetWorkdayReport);
 router.post('/doCompleteWorkdayWorkOrderMilestone', updateWorkOrdersPostHandler, handler_doCompleteWorkdayWorkOrderMilestone);
 router.post('/doReopenWorkdayWorkOrderMilestone', updateWorkOrdersPostHandler, handler_doReopenWorkdayWorkOrderMilestone);
+router.post('/doUpdateWorkdayWorkOrderMilestoneTime', updateWorkOrdersPostHandler, handler_doUpdateWorkdayWorkOrderMilestoneTime);
 router.post('/doCloseWorkdayWorkOrder', updateWorkOrdersPostHandler, handler_doCloseWorkdayWorkOrder);
 // New
 router.get('/new', updateWorkOrdersGetHandler, handler_new);

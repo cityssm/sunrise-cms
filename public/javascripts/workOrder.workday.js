@@ -1,6 +1,6 @@
 "use strict";
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable sonarjs/no-nested-conditional */
+/* eslint-disable max-lines, sonarjs/no-nested-conditional */
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
@@ -57,6 +57,61 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         }
+    }
+    function updateMilestoneTime(clickEvent) {
+        const buttonElement = clickEvent.currentTarget;
+        const workOrderMilestoneId = Number.parseInt(buttonElement.dataset.workOrderMilestoneId ?? '', 10);
+        const workOrderMilestoneTimeString = buttonElement.dataset.workOrderMilestoneTimeString ?? '';
+        let closeModalFunction;
+        function doUpdateTime(submitEvent) {
+            submitEvent.preventDefault();
+            const formElement = submitEvent.currentTarget;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkdayWorkOrderMilestoneTime`, formElement, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
+                if (responseJSON.success) {
+                    closeModalFunction?.();
+                    bulmaJS.alert({
+                        contextualColorName: 'success',
+                        message: 'Work Order Milestone Time updated successfully.'
+                    });
+                    renderWorkOrders(cityssm.dateToString(workdayDate), responseJSON.workOrders);
+                }
+                else {
+                    bulmaJS.alert({
+                        contextualColorName: 'danger',
+                        title: 'Error Updating Milestone Time',
+                        message: 'Please try again.'
+                    });
+                }
+            });
+        }
+        cityssm.openHtmlModal('workOrderWorkday-editMilestoneTime', {
+            onshow(modalElement) {
+                ;
+                modalElement.querySelector('#workOrderMilestoneUpdate--workdayDateString').value = cityssm.dateToString(workdayDate);
+                modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneId').value = workOrderMilestoneId.toString();
+                modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneDateString').value = cityssm.dateToString(workdayDate);
+                modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneTimeString').value = workOrderMilestoneTimeString;
+            },
+            onshown(modalElement, _closeModalFunction) {
+                bulmaJS.toggleHtmlClipped();
+                closeModalFunction = _closeModalFunction;
+                modalElement
+                    .querySelector('.is-unlock-button')
+                    ?.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const dateElement = modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneDateString');
+                    dateElement.removeAttribute('readonly');
+                    dateElement.focus();
+                });
+                modalElement
+                    .querySelector('form')
+                    ?.addEventListener('submit', doUpdateTime);
+            },
+            onremoved() {
+                bulmaJS.toggleHtmlClipped();
+            }
+        });
     }
     function closeWorkOrder(clickEvent) {
         const closeButtonElement = clickEvent.currentTarget;
@@ -157,7 +212,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </div>
         <div class="panel-block is-block">
           <p>${cityssm.escapeHTML((workOrder.workOrderDescription ?? '') === '' ? workOrder.workOrderType ?? '' : workOrder.workOrderDescription ?? '')}</p>
-          ${(workOrder.workOrderContracts ?? []).length > 0 || (workOrder.workOrderBurialSites ?? []).length > 0
+          ${(workOrder.workOrderContracts ?? []).length > 0 ||
+                (workOrder.workOrderBurialSites ?? []).length > 0
                 ? `<div class="columns">
                   <div class="column">
                     <ul class="fa-ul list--contacts"></ul>
@@ -261,6 +317,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     : `<span class="icon is-small">
               <i class="${milestoneCheckIcon}"></i>
             </span>`;
+                const milestoneTimeString = milestone.workOrderMilestoneTime === null
+                    ? 'No Set Time'
+                    : milestone.workOrderMilestoneTimePeriodString;
+                const milestoneTimeHTML = canUpdateThisWorkOrder && !milestoneIsCompleted
+                    ? `<button class="button has-tooltip-right button--edit-milestone-time"
+              data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
+              data-work-order-milestone-time-string="${milestone.workOrderMilestoneTime === null ? '' : milestone.workOrderMilestoneTimeString}"
+              title="Edit Milestone Time"
+              type="button">
+                ${milestoneTimeString}
+              </button>`
+                    : milestoneTimeString;
                 // eslint-disable-next-line no-unsanitized/property
                 milestoneElement.innerHTML = `<div class="columns is-mobile">
             <div class="column is-narrow">
@@ -272,7 +340,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                   <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
                 </div>
                 <div class="column is-narrow">
-                  ${milestone.workOrderMilestoneTime === null ? 'No Set Time' : milestone.workOrderMilestoneTimePeriodString}
+                  ${milestoneTimeHTML}
                 </div>
               </div>
               <p>${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}</p>
@@ -282,6 +350,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     milestoneElement
                         .querySelector('.button--toggle-milestone')
                         ?.addEventListener('click', toggleWorkOrderMilestoneCompletion);
+                    milestoneElement
+                        .querySelector('.button--edit-milestone-time')
+                        ?.addEventListener('click', updateMilestoneTime);
                 }
                 workOrderElement.append(milestoneElement);
             }

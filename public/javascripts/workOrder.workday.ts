@@ -1,5 +1,5 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable sonarjs/no-nested-conditional */
+/* eslint-disable max-lines, sonarjs/no-nested-conditional */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
@@ -107,6 +107,108 @@ declare const exports: {
     }
   }
 
+  function updateMilestoneTime(clickEvent: Event): void {
+    const buttonElement = clickEvent.currentTarget as HTMLElement
+
+    const workOrderMilestoneId = Number.parseInt(
+      buttonElement.dataset.workOrderMilestoneId ?? '',
+      10
+    )
+
+    const workOrderMilestoneTimeString =
+      buttonElement.dataset.workOrderMilestoneTimeString ?? ''
+
+    let closeModalFunction: (() => void) | undefined
+
+    function doUpdateTime(submitEvent: Event): void {
+      submitEvent.preventDefault()
+
+      const formElement = submitEvent.currentTarget as HTMLFormElement
+
+      cityssm.postJSON(
+        `${sunrise.urlPrefix}/workOrders/doUpdateWorkdayWorkOrderMilestoneTime`,
+        formElement,
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            workOrders: WorkOrder[]
+          }
+
+          if (responseJSON.success) {
+            closeModalFunction?.()
+
+            bulmaJS.alert({
+              contextualColorName: 'success',
+              message: 'Work Order Milestone Time updated successfully.'
+            })
+
+            renderWorkOrders(
+              cityssm.dateToString(workdayDate),
+              responseJSON.workOrders
+            )
+          } else {
+            bulmaJS.alert({
+              contextualColorName: 'danger',
+              title: 'Error Updating Milestone Time',
+
+              message: 'Please try again.'
+            })
+          }
+        }
+      )
+    }
+
+    cityssm.openHtmlModal('workOrderWorkday-editMilestoneTime', {
+      onshow(modalElement) {
+        ;(
+          modalElement.querySelector(
+            '#workOrderMilestoneUpdate--workdayDateString'
+          ) as HTMLInputElement
+        ).value = cityssm.dateToString(workdayDate)
+        ;(
+          modalElement.querySelector(
+            '#workOrderMilestoneUpdate--workOrderMilestoneId'
+          ) as HTMLInputElement
+        ).value = workOrderMilestoneId.toString()
+        ;(
+          modalElement.querySelector(
+            '#workOrderMilestoneUpdate--workOrderMilestoneDateString'
+          ) as HTMLInputElement
+        ).value = cityssm.dateToString(workdayDate)
+        ;(
+          modalElement.querySelector(
+            '#workOrderMilestoneUpdate--workOrderMilestoneTimeString'
+          ) as HTMLInputElement
+        ).value = workOrderMilestoneTimeString
+      },
+      onshown(modalElement, _closeModalFunction) {
+        bulmaJS.toggleHtmlClipped()
+        closeModalFunction = _closeModalFunction
+
+        modalElement
+          .querySelector('.is-unlock-button')
+          ?.addEventListener('click', (event) => {
+            event.preventDefault()
+
+            const dateElement = modalElement.querySelector(
+              '#workOrderMilestoneUpdate--workOrderMilestoneDateString'
+            ) as HTMLInputElement
+
+            dateElement.removeAttribute('readonly')
+            dateElement.focus()
+          })
+
+        modalElement
+          .querySelector('form')
+          ?.addEventListener('submit', doUpdateTime)
+      },
+
+      onremoved() {
+        bulmaJS.toggleHtmlClipped()
+      }
+    })
+  }
+
   function closeWorkOrder(clickEvent: Event): void {
     const closeButtonElement = clickEvent.currentTarget as HTMLElement
 
@@ -184,7 +286,7 @@ declare const exports: {
 
     for (const workOrder of workOrders) {
       const workOrderIsClosed = workOrder.workOrderCloseDate !== null
-      
+
       const canUpdateThisWorkOrder =
         !workOrderIsClosed &&
         canUpdateWorkOrders &&
@@ -242,7 +344,8 @@ declare const exports: {
         <div class="panel-block is-block">
           <p>${cityssm.escapeHTML((workOrder.workOrderDescription ?? '') === '' ? workOrder.workOrderType ?? '' : workOrder.workOrderDescription ?? '')}</p>
           ${
-            (workOrder.workOrderContracts ?? []).length > 0 || (workOrder.workOrderBurialSites ?? []).length > 0
+            (workOrder.workOrderContracts ?? []).length > 0 ||
+            (workOrder.workOrderBurialSites ?? []).length > 0
               ? `<div class="columns">
                   <div class="column">
                     <ul class="fa-ul list--contacts"></ul>
@@ -389,6 +492,22 @@ declare const exports: {
               <i class="${milestoneCheckIcon}"></i>
             </span>`
 
+        const milestoneTimeString =
+          milestone.workOrderMilestoneTime === null
+            ? 'No Set Time'
+            : milestone.workOrderMilestoneTimePeriodString
+
+        const milestoneTimeHTML =
+          canUpdateThisWorkOrder && !milestoneIsCompleted
+            ? `<button class="button has-tooltip-right button--edit-milestone-time"
+              data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
+              data-work-order-milestone-time-string="${milestone.workOrderMilestoneTime === null ? '' : milestone.workOrderMilestoneTimeString}"
+              title="Edit Milestone Time"
+              type="button">
+                ${milestoneTimeString}
+              </button>`
+            : milestoneTimeString
+
         // eslint-disable-next-line no-unsanitized/property
         milestoneElement.innerHTML = `<div class="columns is-mobile">
             <div class="column is-narrow">
@@ -400,7 +519,7 @@ declare const exports: {
                   <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
                 </div>
                 <div class="column is-narrow">
-                  ${milestone.workOrderMilestoneTime === null ? 'No Set Time' : milestone.workOrderMilestoneTimePeriodString}
+                  ${milestoneTimeHTML}
                 </div>
               </div>
               <p>${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}</p>
@@ -411,6 +530,10 @@ declare const exports: {
           milestoneElement
             .querySelector('.button--toggle-milestone')
             ?.addEventListener('click', toggleWorkOrderMilestoneCompletion)
+
+          milestoneElement
+            .querySelector('.button--edit-milestone-time')
+            ?.addEventListener('click', updateMilestoneTime)
         }
 
         workOrderElement.append(milestoneElement)
