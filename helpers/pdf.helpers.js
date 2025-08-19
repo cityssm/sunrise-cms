@@ -25,15 +25,15 @@ export async function generatePdf(printConfig, parameters) {
         const pdf = await pdfPuppeteer.fromHtml(renderedHtml);
         return pdf;
     }
-    catch (error) {
+    catch (pdfGenerationError) {
         const browserInstallAttempted = getCachedSettingValue('pdfPuppeteer.browserInstallAttempted');
         if (browserInstallAttempted === 'false') {
             try {
                 await installChromeBrowser();
                 await installFirefoxBrowser();
             }
-            catch (error) {
-                debug('Error installing browsers:', error);
+            catch (browserInstallError) {
+                debug('Error installing browsers:', browserInstallError);
             }
             updateSetting({
                 settingKey: 'pdfPuppeteer.browserInstallAttempted',
@@ -43,7 +43,7 @@ export async function generatePdf(printConfig, parameters) {
             debug('PDF Puppeteer browser installation was attempted.');
             return await generatePdf(printConfig, parameters);
         }
-        throw new Error(`Error generating PDF for ${printConfig.title}: ${error.message}`);
+        throw new Error(`Error generating PDF for ${printConfig.title}: ${pdfGenerationError.message}`);
     }
 }
 export async function closePdfPuppeteer() {

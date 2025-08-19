@@ -28,8 +28,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:edit`)
 
 export default async function handler(
   request: Request,
-  response: Response,
-  next: (error?: Error) => void
+  response: Response
 ): Promise<void> {
   let database: sqlite.Database | undefined
 

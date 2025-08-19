@@ -17,7 +17,7 @@ import { sunriseDB } from '../../helpers/database.helpers.js';
 import { userCanUpdateWorkOrders } from '../../helpers/user.helpers.js';
 import { userHasConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:edit`);
-export default async function handler(request, response, next) {
+export default async function handler(request, response) {
     let database;
     try {
         database = sqlite(sunriseDB, { readonly: true });
