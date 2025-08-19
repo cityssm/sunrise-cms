@@ -1,9 +1,11 @@
+import sqlite from 'better-sqlite3'
 import type { Request, Response } from 'express'
 
 import getWorkOrderComments from '../../database/getWorkOrderComments.js'
 import updateWorkOrderComment, {
   type UpdateWorkOrderCommentForm
 } from '../../database/updateWorkOrderComment.js'
+import { sunriseDB } from '../../helpers/database.helpers.js'
 
 export default function handler(
   request: Request<
@@ -13,15 +15,26 @@ export default function handler(
   >,
   response: Response
 ): void {
-  const success = updateWorkOrderComment(
-    request.body as UpdateWorkOrderCommentForm,
-    request.session.user as User
-  )
+  let database: sqlite.Database | undefined
 
-  const workOrderComments = getWorkOrderComments(request.body.workOrderId)
+  try {
+    database = sqlite(sunriseDB)
 
-  response.json({
-    success,
-    workOrderComments
-  })
+    const success = updateWorkOrderComment(
+      request.body as UpdateWorkOrderCommentForm,
+      request.session.user as User,
+      database
+    )
+
+    const workOrderComments = getWorkOrderComments(request.body.workOrderId, database)
+
+    response.json({
+      success,
+      workOrderComments
+    })
+  } catch (error) {
+    response.status(500).json({ success: false, error: 'Database error' })
+  } finally {
+    database?.close()
+  }
 }
