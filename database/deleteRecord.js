@@ -32,8 +32,8 @@ const relatedTables = new Map([
         ]
     ]
 ]);
-export function deleteRecord(recordTable, recordId, user) {
-    const database = sqlite(sunriseDB);
+export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update ${recordTable}
@@ -51,7 +51,9 @@ export function deleteRecord(recordTable, recordId, user) {
           and recordDelete_timeMillis is null`)
             .run(user.userName, rightNowMillis, recordId);
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     // Clear cache for tables that are cached
     if (cacheTableNames.includes(recordTable)) {
         clearCacheByTableName(recordTable);

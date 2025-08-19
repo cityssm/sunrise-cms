@@ -1,7 +1,9 @@
+import sqlite from 'better-sqlite3'
 import type { Request, Response } from 'express'
 
 import getBurialSites from '../../database/getBurialSites.js'
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js'
+import { sunriseDB } from '../../helpers/database.helpers.js'
 
 export default function handler(
   request: Request<
@@ -11,26 +13,38 @@ export default function handler(
   >,
   response: Response
 ): void {
-  const success = updateBurialSiteStatus(
-    request.body.burialSiteId,
-    request.body.burialSiteStatusId,
-    request.session.user as User
-  )
+  let database: sqlite.Database | undefined
 
-  const results = getBurialSites(
-    {
-      workOrderId: request.body.workOrderId
-    },
-    {
-      limit: -1,
-      offset: 0,
-      
-      includeContractCount: true
-    }
-  )
+  try {
+    database = sqlite(sunriseDB)
 
-  response.json({
-    success,
-    workOrderBurialSites: results.burialSites
-  })
+    const success = updateBurialSiteStatus(
+      request.body.burialSiteId,
+      request.body.burialSiteStatusId,
+      request.session.user as User,
+      database
+    )
+
+    const results = getBurialSites(
+      {
+        workOrderId: request.body.workOrderId
+      },
+      {
+        limit: -1,
+        offset: 0,
+        
+        includeContractCount: true
+      },
+      database
+    )
+
+    response.json({
+      success,
+      workOrderBurialSites: results.burialSites
+    })
+  } catch (error) {
+    response.status(500).json({ success: false, error: 'Database error' })
+  } finally {
+    database?.close()
+  }
 }

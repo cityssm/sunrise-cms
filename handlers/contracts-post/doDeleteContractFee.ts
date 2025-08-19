@@ -1,23 +1,36 @@
+import sqlite from 'better-sqlite3'
 import type { Request, Response } from 'express'
 
 import deleteContractFee from '../../database/deleteContractFee.js'
 import getContractFees from '../../database/getContractFees.js'
+import { sunriseDB } from '../../helpers/database.helpers.js'
 
 export default function handler(
   request: Request<unknown, unknown, { contractId: string; feeId: string }>,
   response: Response
 ): void {
-  const success = deleteContractFee(
-    request.body.contractId,
-    request.body.feeId,
-    request.session.user as User
-  )
+  let database: sqlite.Database | undefined
 
-  const contractFees = getContractFees(request.body.contractId)
+  try {
+    database = sqlite(sunriseDB)
 
-  response.json({
-    success,
+    const success = deleteContractFee(
+      request.body.contractId,
+      request.body.feeId,
+      request.session.user as User,
+      database
+    )
 
-    contractFees
-  })
+    const contractFees = getContractFees(request.body.contractId, database)
+
+    response.json({
+      success,
+
+      contractFees
+    })
+  } catch (error) {
+    response.status(500).json({ success: false, error: 'Database error' })
+  } finally {
+    database?.close()
+  }
 }

@@ -5,9 +5,10 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 export default function deleteContractTransaction(
   contractId: number | string,
   transactionIndex: number | string,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -19,7 +20,9 @@ export default function deleteContractTransaction(
     )
     .run(user.userName, Date.now(), contractId, transactionIndex)
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return result.changes > 0
 }

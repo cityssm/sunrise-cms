@@ -1,23 +1,36 @@
+import sqlite from 'better-sqlite3'
 import type { Request, Response } from 'express'
 
 import addContractComment, {
   type AddContractCommentForm
 } from '../../database/addContractComment.js'
 import getContractComments from '../../database/getContractComments.js'
+import { sunriseDB } from '../../helpers/database.helpers.js'
 
 export default function handler(
   request: Request<unknown, unknown, AddContractCommentForm>,
   response: Response
 ): void {
-  addContractComment(request.body, request.session.user as User)
+  let database: sqlite.Database | undefined
 
-  const contractComments = getContractComments(
-    request.body.contractId as string
-  )
+  try {
+    database = sqlite(sunriseDB)
 
-  response.json({
-    success: true,
+    addContractComment(request.body, request.session.user as User, database)
 
-    contractComments
-  })
+    const contractComments = getContractComments(
+      request.body.contractId as string,
+      database
+    )
+
+    response.json({
+      success: true,
+
+      contractComments
+    })
+  } catch (error) {
+    response.status(500).json({ success: false, error: 'Database error' })
+  } finally {
+    database?.close()
+  }
 }
