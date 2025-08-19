@@ -222,17 +222,17 @@ async function addInclusions(
   return contract
 }
 
-// eslint-disable-next-line complexity
-function buildWhereClause(filters: GetContractsFilters): {
+function addBurialSiteFilters(
+  filters: GetContractsFilters,
+  sqlWhereClause: string,
   sqlParameters: unknown[]
-  sqlWhereClause: string
-} {
-  let sqlWhereClause = ' where c.recordDelete_timeMillis is null'
-  const sqlParameters: unknown[] = []
+): { sqlWhereClause: string; sqlParameters: unknown[] } {
+  let whereClause = sqlWhereClause
+  const parameters = [...sqlParameters]
 
   if ((filters.burialSiteId ?? '') !== '') {
-    sqlWhereClause += ' and c.burialSiteId = ?'
-    sqlParameters.push(filters.burialSiteId)
+    whereClause += ' and c.burialSiteId = ?'
+    parameters.push(filters.burialSiteId)
   }
 
   const burialSiteNameFilters = getBurialSiteNameWhereClause(
@@ -240,9 +240,138 @@ function buildWhereClause(filters: GetContractsFilters): {
     filters.burialSiteNameSearchType ?? '',
     'l'
   )
-  sqlWhereClause += burialSiteNameFilters.sqlWhereClause
-  sqlParameters.push(...burialSiteNameFilters.sqlParameters)
+  whereClause += burialSiteNameFilters.sqlWhereClause
+  parameters.push(...burialSiteNameFilters.sqlParameters)
 
+  if ((filters.burialSiteTypeId ?? '') !== '') {
+    whereClause += ' and l.burialSiteTypeId = ?'
+    parameters.push(filters.burialSiteTypeId)
+  }
+
+  return { sqlWhereClause: whereClause, sqlParameters: parameters }
+}
+
+function addContractFilters(
+  filters: GetContractsFilters,
+  sqlWhereClause: string,
+  sqlParameters: unknown[]
+): { sqlWhereClause: string; sqlParameters: unknown[] } {
+  let whereClause = sqlWhereClause
+  const parameters = [...sqlParameters]
+
+  if ((filters.contractTypeId ?? '') !== '') {
+    whereClause += ' and c.contractTypeId = ?'
+    parameters.push(filters.contractTypeId)
+  }
+
+  const contractTimeFilters = getContractTimeWhereClause(
+    filters.contractTime ?? '',
+    'c'
+  )
+  whereClause += contractTimeFilters.sqlWhereClause
+  parameters.push(...contractTimeFilters.sqlParameters)
+
+  if ((filters.contractStartDateString ?? '') !== '') {
+    whereClause += ' and c.contractStartDate = ?'
+    parameters.push(
+      dateStringToInteger(filters.contractStartDateString as DateString)
+    )
+  }
+
+  if ((filters.contractEffectiveDateString ?? '') !== '') {
+    whereClause += ` and (
+        c.contractEndDate is null
+        or (c.contractStartDate <= ? and c.contractEndDate >= ?)
+      )`
+    parameters.push(
+      dateStringToInteger(filters.contractEffectiveDateString as DateString),
+      dateStringToInteger(filters.contractEffectiveDateString as DateString)
+    )
+  }
+
+  return { sqlWhereClause: whereClause, sqlParameters: parameters }
+}
+
+function addLocationAndTypeFilters(
+  filters: GetContractsFilters,
+  sqlWhereClause: string,
+  sqlParameters: unknown[]
+): { sqlWhereClause: string; sqlParameters: unknown[] } {
+  let whereClause = sqlWhereClause
+  const parameters = [...sqlParameters]
+
+  if ((filters.cemeteryId ?? '') !== '') {
+    whereClause += ' and (m.cemeteryId = ? or m.parentCemeteryId = ?)'
+    parameters.push(filters.cemeteryId, filters.cemeteryId)
+  }
+
+  if ((filters.funeralHomeId ?? '') !== '') {
+    whereClause += ' and c.funeralHomeId = ?'
+    parameters.push(filters.funeralHomeId)
+  }
+
+  if ((filters.funeralTime ?? '') === 'upcoming') {
+    whereClause += ' and c.funeralDate >= ?'
+    parameters.push(dateToInteger(new Date()))
+  }
+
+  return { sqlWhereClause: whereClause, sqlParameters: parameters }
+}
+
+function addWorkOrderAndRelationFilters(
+  filters: GetContractsFilters,
+  sqlWhereClause: string,
+  sqlParameters: unknown[]
+): { sqlWhereClause: string; sqlParameters: unknown[] } {
+  let whereClause = sqlWhereClause
+  const parameters = [...sqlParameters]
+
+  if ((filters.workOrderId ?? '') !== '') {
+    whereClause +=
+      ' and c.contractId in (select contractId from WorkOrderContracts where recordDelete_timeMillis is null and workOrderId = ?)'
+    parameters.push(filters.workOrderId)
+  }
+
+  if ((filters.notWorkOrderId ?? '') !== '') {
+    whereClause +=
+      ' and c.contractId not in (select contractId from WorkOrderContracts where recordDelete_timeMillis is null and workOrderId = ?)'
+    parameters.push(filters.notWorkOrderId)
+  }
+
+  if ((filters.notContractId ?? '') !== '') {
+    whereClause += ' and c.contractId <> ?'
+    parameters.push(filters.notContractId)
+  }
+
+  if ((filters.relatedContractId ?? '') !== '') {
+    whereClause += ` and (
+        c.contractId in (select contractIdA from RelatedContracts where contractIdB = ?)
+        or c.contractId in (select contractIdB from RelatedContracts where contractIdA = ?)
+      )`
+    parameters.push(filters.relatedContractId, filters.relatedContractId)
+  }
+
+  if ((filters.notRelatedContractId ?? '') !== '') {
+    whereClause += ` and c.contractId not in (select contractIdA from RelatedContracts where contractIdB = ?)
+      and c.contractId not in (select contractIdB from RelatedContracts where contractIdA = ?)`
+
+    parameters.push(
+      filters.notRelatedContractId,
+      filters.notRelatedContractId
+    )
+  }
+
+  return { sqlWhereClause: whereClause, sqlParameters: parameters }
+}
+
+function buildWhereClause(filters: GetContractsFilters): {
+  sqlParameters: unknown[]
+  sqlWhereClause: string
+} {
+  let sqlWhereClause = ' where c.recordDelete_timeMillis is null'
+  let sqlParameters: unknown[] = []
+
+  // Handle deceased name filter
   const deceasedNameFilters = getDeceasedNameWhereClause(
     filters.deceasedName,
     'c'
@@ -255,93 +384,14 @@ function buildWhereClause(filters: GetContractsFilters): {
     sqlParameters.push(...deceasedNameFilters.sqlParameters)
   }
 
-  if ((filters.contractTypeId ?? '') !== '') {
-    sqlWhereClause += ' and c.contractTypeId = ?'
-    sqlParameters.push(filters.contractTypeId)
-  }
-
-  const contractTimeFilters = getContractTimeWhereClause(
-    filters.contractTime ?? '',
-    'c'
-  )
-  sqlWhereClause += contractTimeFilters.sqlWhereClause
-  sqlParameters.push(...contractTimeFilters.sqlParameters)
-
-  if ((filters.contractStartDateString ?? '') !== '') {
-    sqlWhereClause += ' and c.contractStartDate = ?'
-    sqlParameters.push(
-      dateStringToInteger(filters.contractStartDateString as DateString)
-    )
-  }
-
-  if ((filters.contractEffectiveDateString ?? '') !== '') {
-    sqlWhereClause += ` and (
-        c.contractEndDate is null
-        or (c.contractStartDate <= ? and c.contractEndDate >= ?)
-      )`
-    sqlParameters.push(
-      dateStringToInteger(filters.contractEffectiveDateString as DateString),
-      dateStringToInteger(filters.contractEffectiveDateString as DateString)
-    )
-  }
-
-  if ((filters.cemeteryId ?? '') !== '') {
-    sqlWhereClause += ' and (m.cemeteryId = ? or m.parentCemeteryId = ?)'
-    sqlParameters.push(filters.cemeteryId, filters.cemeteryId)
-  }
-
-  if ((filters.burialSiteTypeId ?? '') !== '') {
-    sqlWhereClause += ' and l.burialSiteTypeId = ?'
-    sqlParameters.push(filters.burialSiteTypeId)
-  }
-
-  if ((filters.funeralHomeId ?? '') !== '') {
-    sqlWhereClause += ' and c.funeralHomeId = ?'
-    sqlParameters.push(filters.funeralHomeId)
-  }
-
-  if ((filters.funeralTime ?? '') === 'upcoming') {
-    sqlWhereClause += ' and c.funeralDate >= ?'
-    sqlParameters.push(dateToInteger(new Date()))
-  }
-
-  if ((filters.workOrderId ?? '') !== '') {
-    sqlWhereClause +=
-      ' and c.contractId in (select contractId from WorkOrderContracts where recordDelete_timeMillis is null and workOrderId = ?)'
-    sqlParameters.push(filters.workOrderId)
-  }
-
-  if ((filters.notWorkOrderId ?? '') !== '') {
-    sqlWhereClause +=
-      ' and c.contractId not in (select contractId from WorkOrderContracts where recordDelete_timeMillis is null and workOrderId = ?)'
-    sqlParameters.push(filters.notWorkOrderId)
-  }
-
-  if ((filters.notContractId ?? '') !== '') {
-    sqlWhereClause += ' and c.contractId <> ?'
-    sqlParameters.push(filters.notContractId)
-  }
-
-  if ((filters.relatedContractId ?? '') !== '') {
-    sqlWhereClause += ` and (
-        c.contractId in (select contractIdA from RelatedContracts where contractIdB = ?)
-        or c.contractId in (select contractIdB from RelatedContracts where contractIdA = ?)
-      )`
-    sqlParameters.push(filters.relatedContractId, filters.relatedContractId)
-  }
-
-  if ((filters.notRelatedContractId ?? '') !== '') {
-    sqlWhereClause += ` and c.contractId not in (select contractIdA from RelatedContracts where contractIdB = ?)
-      and c.contractId not in (select contractIdB from RelatedContracts where contractIdA = ?)`
-
-    sqlParameters.push(
-      filters.notRelatedContractId,
-      filters.notRelatedContractId
-    )
-  }
+  // Apply filter groups
+  const burialSiteResult = addBurialSiteFilters(filters, sqlWhereClause, sqlParameters)
+  const contractResult = addContractFilters(filters, burialSiteResult.sqlWhereClause, burialSiteResult.sqlParameters)
+  const locationResult = addLocationAndTypeFilters(filters, contractResult.sqlWhereClause, contractResult.sqlParameters)
+  const finalResult = addWorkOrderAndRelationFilters(filters, locationResult.sqlWhereClause, locationResult.sqlParameters)
 
   return {
-    sqlParameters,
-    sqlWhereClause
+    sqlParameters: finalResult.sqlParameters,
+    sqlWhereClause: finalResult.sqlWhereClause
   }
 }

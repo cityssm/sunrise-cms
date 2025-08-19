@@ -165,7 +165,89 @@ function buildEventLocation(milestone) {
     }
     return burialSiteNames.join(', ');
 }
-// eslint-disable-next-line complexity
+
+function createEventData(milestone, request) {
+    const milestoneTimePieces = `${milestone.workOrderMilestoneDateString} ${milestone.workOrderMilestoneTimeString}`.split(timeStringSplitRegex);
+    const milestoneDate = new Date(Number.parseInt(milestoneTimePieces[0], 10), Number.parseInt(milestoneTimePieces[1], 10) - 1, Number.parseInt(milestoneTimePieces[2], 10), Number.parseInt(milestoneTimePieces[3], 10), Number.parseInt(milestoneTimePieces[4], 10));
+    const milestoneEndDate = new Date(milestoneDate);
+    milestoneEndDate.setHours(milestoneEndDate.getHours() + 1);
+
+    const eventData = {
+        start: milestoneDate,
+        created: new Date(milestone.recordCreate_timeMillis ?? 0),
+        stamp: new Date(milestone.recordCreate_timeMillis ?? 0),
+        lastModified: new Date(Math.max(milestone.recordUpdate_timeMillis ?? 0, milestone.workOrderRecordUpdate_timeMillis ?? 0)),
+        allDay: !milestone.workOrderMilestoneTime,
+        summary: buildEventSummary(milestone),
+        url: getWorkOrderUrl(request, milestone)
+    };
+
+    if (!eventData.allDay) {
+        eventData.end = milestoneEndDate;
+    }
+
+    return eventData;
+}
+
+function setupEventOrganizerAndAttendees(calendarEvent, milestone) {
+    if ((milestone.workOrderContracts ?? []).length > 0) {
+        let organizerSet = false;
+        for (const contract of milestone.workOrderContracts ?? []) {
+            for (const interment of contract.contractInterments ?? []) {
+                if (organizerSet) {
+                    calendarEvent.createAttendee({
+                        name: interment.deceasedName ?? '',
+                        email: getConfigProperty('settings.workOrders.calendarEmailAddress')
+                    });
+                } else {
+                    calendarEvent.organizer({
+                        name: interment.deceasedName ?? '',
+                        email: getConfigProperty('settings.workOrders.calendarEmailAddress')
+                    });
+                    organizerSet = true;
+                }
+            }
+        }
+    } else {
+        calendarEvent.organizer({
+            name: milestone.recordCreate_userName ?? '',
+            email: getConfigProperty('settings.workOrders.calendarEmailAddress')
+        });
+    }
+}
+
+function processMilestone(calendar, milestone, request) {
+    const eventData = createEventData(milestone, request);
+    const calendarEvent = calendar.createEvent(eventData);
+
+    // Build description
+    const descriptionHTML = buildEventDescriptionHTML(request, milestone);
+    calendarEvent.description({
+        plain: eventData.url,
+        html: descriptionHTML
+    });
+
+    // Set status
+    if (milestone.workOrderMilestoneCompletionDate) {
+        calendarEvent.status(ICalEventStatus.CONFIRMED);
+    }
+
+    // Add categories
+    const categories = buildEventCategoryList(milestone);
+    for (const category of categories) {
+        calendarEvent.createCategory({
+            name: category
+        });
+    }
+
+    // Set location
+    const location = buildEventLocation(milestone);
+    calendarEvent.location(location);
+
+    // Set organizer / attendees
+    setupEventOrganizerAndAttendees(calendarEvent, milestone);
+}
+
 export default async function handler(request, response) {
     const urlRoot = getUrlRoot(request);
     /*
@@ -205,75 +287,7 @@ export default async function handler(request, response) {
      * Loop through milestones
      */
     for (const milestone of workOrderMilestones) {
-        const milestoneTimePieces = `${milestone.workOrderMilestoneDateString} ${milestone.workOrderMilestoneTimeString}`.split(timeStringSplitRegex);
-        const milestoneDate = new Date(Number.parseInt(milestoneTimePieces[0], 10), Number.parseInt(milestoneTimePieces[1], 10) - 1, Number.parseInt(milestoneTimePieces[2], 10), Number.parseInt(milestoneTimePieces[3], 10), Number.parseInt(milestoneTimePieces[4], 10));
-        const milestoneEndDate = new Date(milestoneDate);
-        milestoneEndDate.setHours(milestoneEndDate.getHours() + 1);
-        // Build summary (title in Outlook)
-        const summary = buildEventSummary(milestone);
-        // Build URL
-        const workOrderUrl = getWorkOrderUrl(request, milestone);
-        // Create event
-        const eventData = {
-            start: milestoneDate,
-            created: new Date(milestone.recordCreate_timeMillis ?? 0),
-            stamp: new Date(milestone.recordCreate_timeMillis ?? 0),
-            lastModified: new Date(Math.max(milestone.recordUpdate_timeMillis ?? 0, milestone.workOrderRecordUpdate_timeMillis ?? 0)),
-            allDay: !milestone.workOrderMilestoneTime,
-            summary,
-            url: workOrderUrl
-        };
-        if (!eventData.allDay) {
-            eventData.end = milestoneEndDate;
-        }
-        const calendarEvent = calendar.createEvent(eventData);
-        // Build description
-        const descriptionHTML = buildEventDescriptionHTML(request, milestone);
-        calendarEvent.description({
-            plain: workOrderUrl,
-            html: descriptionHTML
-        });
-        // Set status
-        if (milestone.workOrderMilestoneCompletionDate) {
-            calendarEvent.status(ICalEventStatus.CONFIRMED);
-        }
-        // Add categories
-        const categories = buildEventCategoryList(milestone);
-        for (const category of categories) {
-            calendarEvent.createCategory({
-                name: category
-            });
-        }
-        // Set location
-        const location = buildEventLocation(milestone);
-        calendarEvent.location(location);
-        // Set organizer / attendees
-        if ((milestone.workOrderContracts ?? []).length > 0) {
-            let organizerSet = false;
-            for (const contract of milestone.workOrderContracts ?? []) {
-                for (const interment of contract.contractInterments ?? []) {
-                    if (organizerSet) {
-                        calendarEvent.createAttendee({
-                            name: interment.deceasedName ?? '',
-                            email: getConfigProperty('settings.workOrders.calendarEmailAddress')
-                        });
-                    }
-                    else {
-                        calendarEvent.organizer({
-                            name: interment.deceasedName ?? '',
-                            email: getConfigProperty('settings.workOrders.calendarEmailAddress')
-                        });
-                        organizerSet = true;
-                    }
-                }
-            }
-        }
-        else {
-            calendarEvent.organizer({
-                name: milestone.recordCreate_userName ?? '',
-                email: getConfigProperty('settings.workOrders.calendarEmailAddress')
-            });
-        }
+        processMilestone(calendar, milestone, request);
     }
     response.setHeader('Content-Disposition', 'inline; filename=calendar.ics');
     response.setHeader('Content-Type', 'text/calendar; charset=utf-8');
