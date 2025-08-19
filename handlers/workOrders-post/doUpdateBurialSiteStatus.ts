@@ -1,9 +1,15 @@
 import sqlite from 'better-sqlite3'
+import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import getBurialSites from '../../database/getBurialSites.js'
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js'
+import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+
+const debug = Debug(
+  `${DEBUG_NAMESPACE}:handlers:workOrders:doUpdateBurialSiteStatus`
+)
 
 export default function handler(
   request: Request<
@@ -32,7 +38,7 @@ export default function handler(
       {
         limit: -1,
         offset: 0,
-        
+
         includeContractCount: true
       },
       database
@@ -43,7 +49,10 @@ export default function handler(
       workOrderBurialSites: results.burialSites
     })
   } catch (error) {
-    response.status(500).json({ success: false, error: 'Database error' })
+    debug(error)
+    response
+      .status(500)
+      .json({ errorMessage: 'Database error', success: false })
   } finally {
     database?.close()
   }

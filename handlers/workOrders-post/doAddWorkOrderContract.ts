@@ -1,15 +1,21 @@
 import sqlite from 'better-sqlite3'
+import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import addWorkOrderContract from '../../database/addWorkOrderContract.js'
 import getContracts from '../../database/getContracts.js'
+import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+
+const debug = Debug(
+  `${DEBUG_NAMESPACE}:handlers:workOrders:doAddWorkOrderContract`
+)
 
 export default async function handler(
   request: Request<
     unknown,
     unknown,
-    { contractId: string; workOrderId: string; }
+    { contractId: string; workOrderId: string }
   >,
   response: Response
 ): Promise<void> {
@@ -47,7 +53,10 @@ export default async function handler(
       workOrderContracts: results.contracts
     })
   } catch (error) {
-    response.status(500).json({ success: false, error: 'Database error' })
+    debug(error)
+    response
+      .status(500)
+      .json({ errorMessage: 'Database error', success: false })
   } finally {
     database?.close()
   }

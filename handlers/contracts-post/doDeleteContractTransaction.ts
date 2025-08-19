@@ -1,9 +1,15 @@
 import sqlite from 'better-sqlite3'
+import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import deleteContractTransaction from '../../database/deleteContractTransaction.js'
 import getContractTransactions from '../../database/getContractTransactions.js'
+import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+
+const debug = Debug(
+  `${DEBUG_NAMESPACE}:handlers:contracts:doDeleteContractTransaction`
+)
 
 export default async function handler(
   request: Request<
@@ -39,7 +45,10 @@ export default async function handler(
       contractTransactions
     })
   } catch (error) {
-    response.status(500).json({ success: false, error: 'Database error' })
+    debug(error)
+    response
+      .status(500)
+      .json({ errorMessage: 'Database error', success: false })
   } finally {
     database?.close()
   }

@@ -1,11 +1,17 @@
 import sqlite from 'better-sqlite3'
+import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import getContractComments from '../../database/getContractComments.js'
 import updateContractComment, {
   type UpdateForm
 } from '../../database/updateContractComment.js'
+import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+
+const debug = Debug(
+  `${DEBUG_NAMESPACE}:handlers:contracts:doUpdateContractComment`
+)
 
 export default function handler(
   request: Request<unknown, unknown, UpdateForm & { contractId: string }>,
@@ -22,7 +28,10 @@ export default function handler(
       database
     )
 
-    const contractComments = getContractComments(request.body.contractId, database)
+    const contractComments = getContractComments(
+      request.body.contractId,
+      database
+    )
 
     response.json({
       success,
@@ -30,7 +39,10 @@ export default function handler(
       contractComments
     })
   } catch (error) {
-    response.status(500).json({ success: false, error: 'Database error' })
+    debug(error)
+    response
+      .status(500)
+      .json({ errorMessage: 'Database error', success: false })
   } finally {
     database?.close()
   }
