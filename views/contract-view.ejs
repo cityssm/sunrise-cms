@@ -158,8 +158,8 @@
           <% for (const contractField of contract.contractFields) { %>
             <p class="mb-2">
               <strong><%= contractField.contractTypeField %></strong><br />
-              <% if (contractField.contractFieldValue) { %>
-                <%= contractField.contractFieldValue %>
+              <% if (contractField.fieldValue) { %>
+                <%= contractField.fieldValue %>
               <% } else { %>
                 <span class="has-text-grey">(No Value)</span>
               <% } %>
