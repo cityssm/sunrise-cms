@@ -2,7 +2,9 @@
 /* eslint-disable security/detect-object-injection */
 
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
+import JsBarcode from 'jsbarcode'
 import type { PrintConfig } from 'sunrise-cms-customizations'
+import xmldom from 'xmldom'
 
 import getBurialSite from '../database/getBurialSite.js'
 import getContract from '../database/getContract.js'
@@ -26,6 +28,11 @@ interface ReportData {
   dateTimeFunctions: typeof dateTimeFunctions
   settingFunctions: {
     getSettingValue: typeof getCachedSettingValue
+  }
+
+  libraries: {
+    JsBarcode: typeof JsBarcode
+    xmldom: typeof xmldom
   }
 }
 
@@ -107,6 +114,13 @@ export async function getReportData(
     dateTimeFunctions,
     settingFunctions: {
       getSettingValue: getCachedSettingValue
+    },
+
+    libraries: {
+      JsBarcode,
+      
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      xmldom
     }
   }
 
@@ -125,7 +139,8 @@ export async function getReportData(
 
   if (
     printConfig.params.includes('workOrderId') &&
-    (typeof requestQuery.workOrderId === 'number' || typeof requestQuery.workOrderId === 'string')
+    (typeof requestQuery.workOrderId === 'number' ||
+      typeof requestQuery.workOrderId === 'string')
   ) {
     reportData.workOrder = await getWorkOrder(requestQuery.workOrderId, {
       includeBurialSites: true,
