@@ -2,6 +2,7 @@ import {
   type DateString,
   type TimeString,
   dateStringToInteger,
+  dateToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
@@ -47,7 +48,7 @@ export default function addWorkOrderMilestone(
         ? undefined
         : milestoneForm.workOrderMilestoneTypeId,
       milestoneForm.workOrderMilestoneDateString === ''
-        ? 0
+        ? dateToInteger(new Date())
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
       (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
         ? undefined

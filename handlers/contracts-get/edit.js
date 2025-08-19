@@ -8,9 +8,11 @@ import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.ca
 import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js';
 import { getCachedContractTypePrintsById, getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js';
 import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js';
+import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js';
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { sunriseDB } from '../../helpers/database.helpers.js';
+import { userCanUpdateWorkOrders } from '../../helpers/user.helpers.js';
 import { userHasConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js';
 export default async function handler(request, response, next) {
     let database;
@@ -42,7 +44,9 @@ export default async function handler(request, response, next) {
         /*
          * Work Order Drop Lists
          */
-        const workOrderTypes = getCachedWorkOrderTypes();
+        const canUpdateWorkOrders = userCanUpdateWorkOrders(request);
+        const workOrderTypes = canUpdateWorkOrders ? getCachedWorkOrderTypes() : [];
+        const workOrderMilestoneTypes = canUpdateWorkOrders ? getCachedWorkOrderMilestoneTypes() : [];
         response.render('contract-edit', {
             headTitle: 'Contract Update',
             contract,
@@ -56,6 +60,7 @@ export default async function handler(request, response, next) {
             burialSiteTypes,
             cemeteries,
             burialSiteDirectionsOfArrival,
+            workOrderMilestoneTypes,
             workOrderTypes,
             isCreate: false
         });

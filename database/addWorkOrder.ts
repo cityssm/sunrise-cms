@@ -1,13 +1,16 @@
 import {
   type DateString,
+  type TimeString,
   dateStringToInteger,
   dateToInteger
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
+import { getCachedWorkOrderMilestoneTypes } from '../helpers/cache/workOrderMilestoneTypes.cache.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addWorkOrderContract from './addWorkOrderContract.js'
+import addWorkOrderMilestone from './addWorkOrderMilestone.js'
 import getNextWorkOrderNumber from './getNextWorkOrderNumber.js'
 
 export interface AddWorkOrderForm {
@@ -20,6 +23,21 @@ export interface AddWorkOrderForm {
   workOrderOpenDateString?: string
 
   contractId?: string
+
+  [workOrderMilestoneId: `workOrderMilestoneId_${number}`]: string | undefined
+
+  [workOrderMilestoneDateString: `workOrderMilestoneDateString_${number}`]:
+    | DateString
+    | undefined
+    
+  [workOrderMilestoneTimeString: `workOrderMilestoneTimeString_${number}`]:
+    | ''
+    | TimeString
+    | undefined
+
+  [workOrderMilestoneDescription: `workOrderMilestoneDescription_${number}`]:
+    | string
+    | undefined
 }
 
 export default function addWorkOrder(
@@ -77,6 +95,43 @@ export default function addWorkOrder(
       user,
       database
     )
+  }
+
+  const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes()
+
+  for (const workOrderMilestoneType of workOrderMilestoneTypes) {
+    const milestoneTypeId =
+      workOrderForm[
+        `workOrderMilestoneId_${workOrderMilestoneType.workOrderMilestoneTypeId}`
+      ]
+    const milestoneDateString =
+      workOrderForm[
+        `workOrderMilestoneDateString_${workOrderMilestoneType.workOrderMilestoneTypeId}`
+      ]
+    const milestoneTimeString =
+      workOrderForm[
+        `workOrderMilestoneTimeString_${workOrderMilestoneType.workOrderMilestoneTypeId}`
+      ]
+    const milestoneDescription =
+      workOrderForm[
+        `workOrderMilestoneDescription_${workOrderMilestoneType.workOrderMilestoneTypeId}`
+      ]
+
+    if ((milestoneTypeId ?? '') !== '') {
+      addWorkOrderMilestone(
+        {
+          workOrderId,
+          workOrderMilestoneTypeId: milestoneTypeId ?? '',
+
+          workOrderMilestoneDateString: milestoneDateString ?? '',
+          workOrderMilestoneTimeString: milestoneTimeString ?? '',
+
+          workOrderMilestoneDescription: milestoneDescription ?? ''
+        },
+        user,
+        database
+      )
+    }
   }
 
   if (connectedDatabase === undefined) {

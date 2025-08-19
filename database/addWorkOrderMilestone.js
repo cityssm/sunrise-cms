@@ -1,4 +1,4 @@
-import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
+import { dateStringToInteger, dateToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function addWorkOrderMilestone(milestoneForm, user, connectedDatabase) {
@@ -16,7 +16,7 @@ export default function addWorkOrderMilestone(milestoneForm, user, connectedData
         .run(milestoneForm.workOrderId, milestoneForm.workOrderMilestoneTypeId === ''
         ? undefined
         : milestoneForm.workOrderMilestoneTypeId, milestoneForm.workOrderMilestoneDateString === ''
-        ? 0
+        ? dateToInteger(new Date())
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
         ? undefined
         : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), milestoneForm.workOrderMilestoneDescription, (milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''

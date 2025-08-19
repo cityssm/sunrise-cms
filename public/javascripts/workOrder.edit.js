@@ -168,7 +168,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 targetPanelElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
               <div class="columns">
                 <div class="column is-5">
-                  ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === 0 ? 'No Time' : milestone.workOrderMilestoneTimePeriodString ?? '')}<br />
+                  ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === null ? 'No Time' : milestone.workOrderMilestoneTimePeriodString ?? '')}<br />
                   <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
                 </div>
                 <div class="column">

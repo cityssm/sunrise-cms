@@ -366,6 +366,13 @@
           </div>
         </div>
       </div>
+      <% if (workOrder.workOrderMilestones.length === 0) { %>
+        <div class="panel-block is-block">
+          <div class="message is-info">
+            <p class="message-body">There are no milestones on this work order.</p>
+          </div>
+        </div>
+      <% } %>
       <%
         const currentDateNumber = dateTimeFunctions.dateToInteger(new Date())
       %>

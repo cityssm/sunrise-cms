@@ -1,6 +1,6 @@
 <div class="modal" role="dialog">
   <div class="modal-background"></div>
-  <div class="modal-card">
+  <div class="modal-card has-width-900">
     <header class="modal-card-head">
       <h3 class="modal-card-title">Create a New Work Order</h3>
       <button
@@ -23,57 +23,70 @@
           type="hidden"
           value=""
         />
-        <label class="label" for="workOrderCreate--workOrderNumber"
-          >Work Order Number</label
-        >
-        <div class="field has-addons">
-          <div class="control is-expanded">
-            <input
-              class="input"
-              id="workOrderCreate--workOrderNumber"
-              name="workOrderNumber"
-              maxlength="50"
-              readonly
-            />
-          </div>
-          <div class="control">
-            <button
-              class="button is-unlock-field-button has-tooltip-left"
-              data-tooltip="Unlock Field"
-              type="button"
-              aria-label="Unlock Field"
+        <div class="columns">
+          <div class="column">
+            <label class="label" for="workOrderCreate--workOrderNumber"
+              >Work Order Number</label
             >
-              <span class="icon"><i class="fa-solid fa-unlock"></i></span>
-            </button>
-          </div>
-        </div>
-        <p class="help mb-2">Leave work order number blank to autopopulate.</p>
-        <div class="field">
-          <label class="label" for="workOrderCreate--workOrderTypeId"
-            >Work Order Type</label
-          >
-          <div class="control">
-            <div class="select is-fullwidth">
-              <select
-                id="workOrderCreate--workOrderTypeId"
-                name="workOrderTypeId"
-                required
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input
+                  class="input"
+                  id="workOrderCreate--workOrderNumber"
+                  name="workOrderNumber"
+                  maxlength="50"
+                  readonly
+                />
+              </div>
+              <div class="control">
+                <button
+                  class="button is-unlock-field-button has-tooltip-left"
+                  data-tooltip="Unlock Field"
+                  type="button"
+                  aria-label="Unlock Field"
+                >
+                  <span class="icon"><i class="fa-solid fa-unlock"></i></span>
+                </button>
+              </div>
+            </div>
+            <p class="help mb-2">
+              Leave work order number blank to autopopulate.
+            </p>
+            <div class="field">
+              <label class="label" for="workOrderCreate--workOrderTypeId"
+                >Work Order Type</label
               >
-                <option value="">(Select Type)</option>
-              </select>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    id="workOrderCreate--workOrderTypeId"
+                    name="workOrderTypeId"
+                    required
+                  >
+                    <option value="">(Select Type)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label" for="workOrderCreate--workOrderDescription"
+                >Description</label
+              >
+              <div class="control">
+                <textarea
+                  class="textarea"
+                  id="workOrderCreate--workOrderDescription"
+                  name="workOrderDescription"
+                ></textarea>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="field">
-          <label class="label" for="workOrderCreate--workOrderDescription"
-            >Description</label
-          >
-          <div class="control">
-            <textarea
-              class="textarea"
-              id="workOrderCreate--workOrderDescription"
-              name="workOrderDescription"
-            ></textarea>
+          <div class="column is-hidden">
+            <div class="panel" id="workOrderCreateContainer--workOrderMilestones">
+              <h4 class="panel-heading">
+                Work Order Milestones
+              </h4>
+            </div>
           </div>
         </div>
       </form>
@@ -88,7 +101,9 @@
           <span class="icon"><i class="fa-solid fa-plus"></i></span>
           <span>Create Work Order</span>
         </button>
-        <button class="button is-close-modal-button" type="button">Cancel</button>
+        <button class="button is-close-modal-button" type="button">
+          Cancel
+        </button>
       </div>
     </footer>
   </div>

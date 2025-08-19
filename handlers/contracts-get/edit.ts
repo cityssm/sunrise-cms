@@ -15,9 +15,11 @@ import {
   getCachedContractTypes
 } from '../../helpers/cache/contractTypes.cache.js'
 import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js'
+import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js'
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
+import { userCanUpdateWorkOrders } from '../../helpers/user.helpers.js'
 import { userHasConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js'
 
 export default async function handler(
@@ -73,7 +75,10 @@ export default async function handler(
      * Work Order Drop Lists
      */
 
-    const workOrderTypes = getCachedWorkOrderTypes()
+    const canUpdateWorkOrders = userCanUpdateWorkOrders(request)
+
+    const workOrderTypes = canUpdateWorkOrders ? getCachedWorkOrderTypes() : []
+    const workOrderMilestoneTypes = canUpdateWorkOrders ? getCachedWorkOrderMilestoneTypes() : []
 
     response.render('contract-edit', {
       headTitle: 'Contract Update',
@@ -94,6 +99,7 @@ export default async function handler(
 
       burialSiteDirectionsOfArrival,
 
+      workOrderMilestoneTypes,
       workOrderTypes,
 
       isCreate: false
