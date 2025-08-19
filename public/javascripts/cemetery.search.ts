@@ -66,17 +66,12 @@ declare const exports: Record<string, unknown>
         `<tr style="page-break-inside: avoid;">
           <td>
             <a class="has-text-weight-bold" href="${sunrise.getCemeteryURL(cemetery.cemeteryId)}">
-              ${cityssm.escapeHTML(
-                cemetery.cemeteryName === ''
-                  ? '(No Name)'
-                  : cemetery.cemeteryName
-              )}
               ${
                 cemetery.cemeteryName === ''
-                  ? `<span class="icon is-small has-text-danger">
+                  ? `(No Name) <span class="icon is-small has-text-danger">
                       <i class="fa-solid fa-exclamation-triangle"></i>
                       </span>`
-                  : ''
+                  : cityssm.escapeHTML(cemetery.cemeteryName)
               }
               ${
                 cemetery.cemeteryKey === ''
@@ -117,7 +112,8 @@ declare const exports: Record<string, unknown>
                     </span>`
             }
             ${
-              cemetery.cemeteryLatitude && cemetery.cemeteryLongitude
+              typeof cemetery.cemeteryLatitude === 'number' &&
+              typeof cemetery.cemeteryLongitude === 'number'
                 ? `<span class="icon" data-tooltip="Geographic Coordinates">
                     <i class="fa-solid fa-map-marker-alt" role="img" aria-label="Geographic Coordinates"></i>
                     </span>`

@@ -39,14 +39,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             searchResultsTbodyElement.insertAdjacentHTML('beforeend', `<tr style="page-break-inside: avoid;">
           <td>
             <a class="has-text-weight-bold" href="${sunrise.getCemeteryURL(cemetery.cemeteryId)}">
-              ${cityssm.escapeHTML(cemetery.cemeteryName === ''
-                ? '(No Name)'
-                : cemetery.cemeteryName)}
               ${cemetery.cemeteryName === ''
-                ? `<span class="icon is-small has-text-danger">
+                ? `(No Name) <span class="icon is-small has-text-danger">
                       <i class="fa-solid fa-exclamation-triangle"></i>
                       </span>`
-                : ''}
+                : cityssm.escapeHTML(cemetery.cemeteryName)}
               ${cemetery.cemeteryKey === ''
                 ? ''
                 : `<span class="tag">${cityssm.escapeHTML(cemetery.cemeteryKey)}</span>`}
@@ -75,7 +72,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : `<span class="icon" data-tooltip="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
                     <i class="fa-solid fa-turn-up" role="img" aria-label="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}"></i>
                     </span>`}
-            ${cemetery.cemeteryLatitude && cemetery.cemeteryLongitude
+            ${typeof cemetery.cemeteryLatitude === 'number' &&
+                typeof cemetery.cemeteryLongitude === 'number'
                 ? `<span class="icon" data-tooltip="Geographic Coordinates">
                     <i class="fa-solid fa-map-marker-alt" role="img" aria-label="Geographic Coordinates"></i>
                     </span>`
