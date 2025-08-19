@@ -200,9 +200,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         else {
             bulmaJS.alert({
+                contextualColorName: 'danger',
                 title: 'Error Reopening Milestone',
                 message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
             });
         }
     }
@@ -388,9 +388,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
         for (const panelBlockToDelete of panelBlockElementsToDelete) {
             panelBlockToDelete.remove();
         }
+        const currentDateString = cityssm.dateToString(new Date());
         for (const milestone of workOrderMilestones) {
             const panelBlockElement = document.createElement('div');
             panelBlockElement.className = 'panel-block is-block container--milestone';
+            if (milestone.workOrderMilestoneCompletionDate === null && (milestone.workOrderMilestoneDateString ?? '') < currentDateString) {
+                panelBlockElement.classList.add('has-background-warning-light');
+            }
             panelBlockElement.dataset.workOrderMilestoneId =
                 milestone.workOrderMilestoneId?.toString();
             // eslint-disable-next-line no-unsanitized/property
@@ -412,9 +416,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
           ${milestone.workOrderMilestoneDate === 0
                 ? '<span class="has-text-grey">(No Set Date)</span>'
                 : milestone.workOrderMilestoneDateString}
-          ${milestone.workOrderMilestoneTime
-                ? ` ${milestone.workOrderMilestoneTimePeriodString}`
-                : ''}<br />
+          ${milestone.workOrderMilestoneTime === null
+                ? ''
+                : ` ${milestone.workOrderMilestoneTimePeriodString}`}<br />
           <span class="is-size-7">
             ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}
           </span>

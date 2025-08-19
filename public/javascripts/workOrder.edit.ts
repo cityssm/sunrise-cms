@@ -318,9 +318,10 @@ declare const exports: {
       renderMilestones()
     } else {
       bulmaJS.alert({
+        contextualColorName: 'danger',
         title: 'Error Reopening Milestone',
+
         message: responseJSON.errorMessage ?? '',
-        contextualColorName: 'danger'
       })
     }
   }
@@ -669,9 +670,15 @@ declare const exports: {
       panelBlockToDelete.remove()
     }
 
+    const currentDateString = cityssm.dateToString(new Date())
+
     for (const milestone of workOrderMilestones) {
       const panelBlockElement = document.createElement('div')
       panelBlockElement.className = 'panel-block is-block container--milestone'
+
+      if (milestone.workOrderMilestoneCompletionDate === null && (milestone.workOrderMilestoneDateString ?? '') < currentDateString) {
+        panelBlockElement.classList.add('has-background-warning-light')
+      }
 
       panelBlockElement.dataset.workOrderMilestoneId =
         milestone.workOrderMilestoneId?.toString()
@@ -702,9 +709,9 @@ declare const exports: {
               : milestone.workOrderMilestoneDateString
           }
           ${
-            milestone.workOrderMilestoneTime
-              ? ` ${milestone.workOrderMilestoneTimePeriodString}`
-              : ''
+            milestone.workOrderMilestoneTime === null
+              ? ''
+              : ` ${milestone.workOrderMilestoneTimePeriodString}`
           }<br />
           <span class="is-size-7">
             ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}

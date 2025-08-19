@@ -650,6 +650,9 @@
           </div>
         </div>
         <div class="panel-block is-block">
+          <%
+            const currentDateNumber = dateTimeFunctions.dateToInteger(new Date())
+          %>
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
@@ -687,7 +690,10 @@
                   </td>
                   <td>
                     <% for (const milestone of workOrder.workOrderMilestones) { %>
-                      <div class="columns mb-0">
+                      <%
+                        const isOverdue = milestone.workOrderMilestoneCompletionDate === null && milestone.workOrderMilestoneDate < currentDateNumber
+                      %>
+                      <div class="columns mb-0 <%= (isOverdue ? 'has-background-warning-light' : '') %>">
                         <div class="column is-narrow">
                           <% if (milestone.workOrderMilestoneCompletionDate) { %>
                             <span class="icon has-text-success">
@@ -702,7 +708,7 @@
                         <div class="column">
                           <strong><%= milestone.workOrderMilestoneType %></strong><br />
                           <span class="is-size-7">
-                            <%= milestone.workOrderMilestoneCompletionDate === null ? milestone.workOrderMilestoneDateString : milestone.workOrderMilestoneCompletionDateString %>
+                            <%= milestone.workOrderMilestoneDateString %>
                           </span>
                         </div>
                       </div>
