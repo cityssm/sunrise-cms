@@ -3,8 +3,10 @@ import sqlite from 'better-sqlite3'
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { FuneralHome } from '../types/record.types.js'
 
-export default function getFuneralHomes(): FuneralHome[] {
-  const database = sqlite(sunriseDB, { readonly: true })
+export default function getFuneralHomes(
+  connectedDatabase?: sqlite.Database
+): FuneralHome[] {
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const funeralHomes = database
     .prepare(
@@ -17,7 +19,9 @@ export default function getFuneralHomes(): FuneralHome[] {
     )
     .all() as FuneralHome[]
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return funeralHomes
 }
