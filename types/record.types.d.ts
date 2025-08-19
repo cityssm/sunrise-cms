@@ -340,7 +340,7 @@ export interface WorkOrderMilestone extends Record, WorkOrder {
     workOrderMilestoneTypeId?: number;
     workOrderMilestoneDate?: number;
     workOrderMilestoneDateString?: string;
-    workOrderMilestoneTime?: number;
+    workOrderMilestoneTime?: number | null;
     workOrderMilestoneTimePeriodString?: string;
     workOrderMilestoneTimeString?: string;
     workOrderMilestoneDescription?: string;

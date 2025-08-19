@@ -400,7 +400,7 @@ declare const exports: {
                   <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
                 </div>
                 <div class="column is-narrow">
-                  ${milestone.workOrderMilestoneTime === 0 ? 'No Set Time' : milestone.workOrderMilestoneTimePeriodString}
+                  ${milestone.workOrderMilestoneTime === null ? 'No Set Time' : milestone.workOrderMilestoneTimePeriodString}
                 </div>
               </div>
               <p>${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}</p>

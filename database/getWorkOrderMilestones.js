@@ -20,13 +20,13 @@ export default async function getWorkOrderMilestones(filters, options, connected
             orderByClause = ` order by
         m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime,
         m.workOrderMilestoneDate,
-        case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end,
+        ifnull(m.workOrderMilestoneTime, 9999),
         t.orderNumber, m.workOrderMilestoneId`;
             break;
         }
         case 'date': {
             orderByClause = ` order by m.workOrderMilestoneDate,
-        case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end,
+        ifnull(m.workOrderMilestoneTime, 9999),
         t.orderNumber, m.workOrderId, m.workOrderMilestoneId`;
             break;
         }

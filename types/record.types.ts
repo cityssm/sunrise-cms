@@ -475,7 +475,7 @@ export interface WorkOrderMilestone extends Record, WorkOrder {
   workOrderMilestoneDate?: number
   workOrderMilestoneDateString?: string
 
-  workOrderMilestoneTime?: number
+  workOrderMilestoneTime?: number | null
   workOrderMilestoneTimePeriodString?: string
   workOrderMilestoneTimeString?: string
 
