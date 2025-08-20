@@ -103,6 +103,46 @@
           <%
             const burialSiteNameSegments = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments')
           %>
+          <label class="label" for="burialSite--cemeteryId">Cemetery</label>
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select
+                  <% if (!isCreate) { %>
+                    class="is-readonly"
+                  <% } %>
+                  id="burialSite--cemeteryId" name="cemeteryId">
+                  <option value="" <%= (!isCreate && burialSite.cemeteryId ? " disabled" : "") %>>
+                    (No Cemetery Selected)
+                  </option>
+                  <% let cemeteryIsFound = false; %>
+                  <% for (const cemetery of cemeteries) { %>
+                    <%
+                      if (burialSite.cemeteryId === cemetery.cemeteryId) {
+                        cemeteryIsFound = true;
+                      }
+                    %>
+                    <option value="<%= cemetery.cemeteryId %>"
+                      <%= (burialSite.cemeteryId === cemetery.cemeteryId ? " selected" : "") %>
+                      <%= (!isCreate && burialSite.cemeteryId !== cemetery.cemeteryId ? " disabled" : "") %>>
+                      <%= cemetery.cemeteryName || "(No Name)"  %>
+                    </option>
+                  <% } %>
+                  <% if (burialSite.cemeteryId && !cemeteryIsFound) { %>
+                    <option value="<%= burialSite.cemeteryId %>" selected>
+                      <%= burialSite.cemeteryName %>
+                    </option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+            <div class="control">
+              <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
+                <span class="icon"><i class="fa-solid fa-unlock"></i></span>
+              </button>
+            </div>
+          </div>
+
           <label class="label" for="burialSite--burialSiteNameSegment1">
             Burial Site Name
           </label>
@@ -151,46 +191,6 @@
                 <% } %>
               <% } %>
             <% } %>
-          </div>
-
-          <label class="label" for="burialSite--cemeteryId">Cemetery</label>
-          <div class="field has-addons">
-            <div class="control is-expanded">
-              <div class="select is-fullwidth">
-                <select
-                  <% if (!isCreate) { %>
-                    class="is-readonly"
-                  <% } %>
-                  id="burialSite--cemeteryId" name="cemeteryId">
-                  <option value="" <%= (!isCreate && burialSite.cemeteryId ? " disabled" : "") %>>
-                    (No Cemetery Selected)
-                  </option>
-                  <% let cemeteryIsFound = false; %>
-                  <% for (const cemetery of cemeteries) { %>
-                    <%
-                      if (burialSite.cemeteryId === cemetery.cemeteryId) {
-                        cemeteryIsFound = true;
-                      }
-                    %>
-                    <option value="<%= cemetery.cemeteryId %>"
-                      <%= (burialSite.cemeteryId === cemetery.cemeteryId ? " selected" : "") %>
-                      <%= (!isCreate && burialSite.cemeteryId !== cemetery.cemeteryId ? " disabled" : "") %>>
-                      <%= cemetery.cemeteryName || "(No Name)"  %>
-                    </option>
-                  <% } %>
-                  <% if (burialSite.cemeteryId && !cemeteryIsFound) { %>
-                    <option value="<%= burialSite.cemeteryId %>" selected>
-                      <%= burialSite.cemeteryName %>
-                    </option>
-                  <% } %>
-                </select>
-              </div>
-            </div>
-            <div class="control">
-              <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
-                <span class="icon"><i class="fa-solid fa-unlock"></i></span>
-              </button>
-            </div>
           </div>
         </div>
         <div class="column is-6-tablet is-6-desktop is-4-widescreen">
