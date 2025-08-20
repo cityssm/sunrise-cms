@@ -35,20 +35,13 @@
           
     <p style="position: absolute; bottom: 5px; left: 20px;">
       <%
-        const xmlSerializer = new libraries.xmldom.XMLSerializer();
-        const barcodeDocument = new libraries.xmldom.DOMImplementation().createDocument('http://www.w3.org/1999/xhtml', 'html', null);
-        const svgNode = barcodeDocument.createElementNS('http://www.w3.org/2000/svg', 'svg');
-
-        libraries.JsBarcode(svgNode, workOrder.workOrderNumber, {
+        const barcodeData = barcodeFunctions.generateBarcodeSvg(workOrder.workOrderNumber, {
           format: 'CODE128',
           width: 2,
           height: 50,
           margin: 0,
-          displayValue: false,
-          xmlDocument: barcodeDocument
+          displayValue: false
         })
-
-        const barcodeData = xmlSerializer.serializeToString(svgNode);
       %>
       <%- barcodeData %>
     </p>

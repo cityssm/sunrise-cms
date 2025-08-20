@@ -1,8 +1,7 @@
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
-import JsBarcode from 'jsbarcode';
 import type { PrintConfig } from 'sunrise-cms-customizations';
-import xmldom from 'xmldom';
 import type { BurialSite, Contract, WorkOrder } from '../types/record.types.js';
+import * as barcodeFunctions from './barcode.helpers.js';
 import { getCachedSettingValue } from './cache/settings.cache.js';
 import * as configFunctions from './config.helpers.js';
 import * as contractFunctions from './contracts.helpers.js';
@@ -17,10 +16,7 @@ interface ReportData {
     settingFunctions: {
         getSettingValue: typeof getCachedSettingValue;
     };
-    libraries: {
-        JsBarcode: typeof JsBarcode;
-        xmldom: typeof xmldom;
-    };
+    barcodeFunctions: typeof barcodeFunctions;
 }
 export interface PrintConfigWithPath extends PrintConfig {
     path: string;
