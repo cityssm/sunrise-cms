@@ -17,6 +17,18 @@
 }
 
 /*
+ * Modals
+ */
+
+.modal-card {
+  max-width: 100%;
+}
+
+.modal-card.has-width-900 {
+  width: 900px;
+}
+
+/*
  * Panels
  */
 
@@ -167,11 +179,6 @@ span.button.is-static {
 
 .is-block.is-hidden {
   display: none !important;
-}
-
-.modal-card.has-width-900 {
-  max-width: 100%;
-  width: 900px;
 }
 
 /*
