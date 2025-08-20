@@ -60,6 +60,24 @@
             <%
               const burialSiteNameSegments = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments')
             %>
+            <div class="field">
+              <label class="label" for="burialSiteCreator--cemeteryId">
+                Cemetery
+              </label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="burialSiteCreator--cemeteryId" name="cemeteryId">
+                    <option value="">(No Cemetery Selected)</option>
+                    <% for (const cemetery of cemeteries) { %>
+                      <option value="<%= cemetery.cemeteryId %>">
+                        <%= cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName %>
+                      </option>
+                    <% } %>
+                  </select>
+                </div>
+              </div>
+            </div>
+
             <label class="label" for="burialSiteCreator--burialSiteNameSegment1_from">
               From Burial Site Name
             </label>
@@ -172,24 +190,6 @@
               </div>
             </div>
             <% } %>
-    
-            <div class="field">
-              <label class="label" for="burialSiteCreator--cemeteryId">
-                Cemetery
-              </label>
-              <div class="control">
-                <div class="select is-fullwidth">
-                  <select id="burialSiteCreator--cemeteryId" name="cemeteryId">
-                    <option value="">(No Cemetery Selected)</option>
-                    <% for (const cemetery of cemeteries) { %>
-                      <option value="<%= cemetery.cemeteryId %>">
-                        <%= cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName %>
-                      </option>
-                    <% } %>
-                  </select>
-                </div>
-              </div>
-            </div>
     
             <p class="has-text-right">
               <button class="button is-primary" id="burialSiteCreator--submit" type="submit">
