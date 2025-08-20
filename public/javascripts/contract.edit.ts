@@ -24,7 +24,6 @@ declare const exports: {
   cemeteries: Cemetery[]
 
   directionsOfArrival: string[]
-  burialSiteNameSegments?: any
 }
 ;(() => {
   const sunrise = exports.sunrise
@@ -687,72 +686,6 @@ declare const exports: {
         ) as HTMLFormElement
 
         burialSiteCreateFormElement.addEventListener('submit', createBurialSite)
-
-        // Add burial site name preview functionality
-        const previewElement = modalElement.querySelector('#burialSiteCreate--namePreview') as HTMLInputElement
-        const previewFieldElement = modalElement.querySelector('#burialSiteCreate--namePreviewField') as HTMLElement
-        const segmentConfig = exports.burialSiteNameSegments
-
-        if (previewElement && segmentConfig?.includeCemeteryKey) {
-          // Show the preview field
-          previewFieldElement.style.display = 'block'
-
-          function buildBurialSiteNamePreview(): string {
-            const cemeteryId = (modalElement.querySelector('#burialSiteCreate--cemeteryId') as HTMLSelectElement)?.value
-            const cemetery = exports.cemeteries.find(c => c.cemeteryId?.toString() === cemeteryId)
-            const cemeteryKey = cemetery?.cemeteryKey
-
-            const segmentPieces: string[] = []
-
-            if (segmentConfig.includeCemeteryKey && cemeteryKey !== undefined && cemeteryKey !== '') {
-              segmentPieces.push(cemeteryKey)
-            }
-
-            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-            for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex++) {
-              const segmentIndexString = segmentIndex.toString()
-              const segment = segmentConfig.segments?.[segmentIndexString]
-
-              if (segment?.isAvailable ?? false) {
-                const inputElement = modalElement.querySelector(`input[name="burialSiteNameSegment${segmentIndexString}"]`) as HTMLInputElement
-                const segmentValue = inputElement?.value ?? ''
-
-                if ((segment.isRequired ?? false) || segmentValue !== '') {
-                  segmentPieces.push(
-                    (segment.prefix ?? '') +
-                    segmentValue +
-                    (segment.suffix ?? '')
-                  )
-                }
-              }
-            }
-
-            return segmentPieces.join(segmentConfig.separator ?? '-')
-          }
-
-          function updatePreview(): void {
-            if (previewElement) {
-              previewElement.value = buildBurialSiteNamePreview()
-            }
-          }
-
-          // Update preview when segment fields change
-          for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex++) {
-            const segmentInput = modalElement.querySelector(`input[name="burialSiteNameSegment${segmentIndex}"]`) as HTMLInputElement
-            if (segmentInput) {
-              segmentInput.addEventListener('input', updatePreview)
-            }
-          }
-
-          // Update preview when cemetery changes
-          const cemeterySelect = modalElement.querySelector('#burialSiteCreate--cemeteryId') as HTMLSelectElement
-          if (cemeterySelect) {
-            cemeterySelect.addEventListener('change', updatePreview)
-          }
-
-          // Initial preview update
-          updatePreview()
-        }
       },
 
       onremoved() {
