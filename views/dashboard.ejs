@@ -6,7 +6,7 @@
 
 <div class="columns">
   <div class="column">
-    <div class="columns is-desktop">
+    <div class="columns">
       <div class="column">
         <div class="panel">
           <a class="panel-block" href="<%= urlPrefix %>/workOrders">
@@ -79,7 +79,7 @@
         </div>
       </div>
     </div>
-    <div class="columns is-desktop">
+    <div class="columns">
       <div class="column">
         <div class="panel">
           <a class="panel-block" href="<%= urlPrefix %>/burialSites">
@@ -140,7 +140,7 @@
       </div>
     </div>
     <div class="columns is-multiline">
-      <div class="column is-6-widescreen is-full-desktop is-full-tablet">
+      <div class="column">
         <div class="panel">
           <a class="panel-block" href="<%= urlPrefix %>/reports">
             <div class="media">
@@ -157,7 +157,7 @@
           </a>
         </div>
       </div>
-      <div class="column is-6-widescreen is-full-desktop is-full-tablet">
+      <div class="column">
         <div class="panel">
           <a class="panel-block" href="https://cityssm.github.io/sunrise-cms/docs" rel="noopener noreferrer" target="_blank">
             <div class="media">
@@ -186,131 +186,127 @@
     </div>
     
     <% if (user.userProperties.isAdmin) { %>
-      <div class="panel">
-        <div class="panel-heading">
-          <div class="level is-mobile">
-            <div class="level-left">
-              <div class="level-item">
-                <div class="has-text-weight-bold">
-                  Administrator Tools
+      <h2 class="title is-3">
+        Administrator Tools
+      </h2>
+
+      <div class="columns">
+        <div class="column">
+          <div class="panel">
+            <a class="panel-block" href="<%= urlPrefix %>/admin/fees">
+              <div class="media">
+                <div class="media-left">
+                  <span class="fa-layers fa-4x">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                    <i class="fa-solid fa-cog" data-fa-transform="shrink-8 right-7 down-5" data-fa-glow="10"></i>
+                  </span>
+                </div>
+                <div class="media-content">
+                  <h2 class="title is-4 mb-0 has-text-link">
+                    Fee Management
+                  </h2>
+                  <p>
+                    Manage fees for contracts
+                    and specific burial site types.
+                  </p>
                 </div>
               </div>
-            </div>
-            <div class="level-right">
-              <div class="level-item">
-                <span class="icon"><i class="fa-solid fa-cog"></i></span>
+            </a>
+            <a class="panel-block" href="<%= urlPrefix %>/admin/contractTypes">
+              <div class="media">
+                <div class="media-left">
+                  <span class="fa-layers fa-4x">
+                    <i class="fa-solid fa-file-contract"></i>
+                    <i class="fa-solid fa-cog" data-fa-transform="shrink-8 right-7 down-5" data-fa-glow="10"></i>
+                  </span>
+                </div>
+                <div class="media-content">
+                  <h2 class="title is-4 mb-0 has-text-link">
+                    Contract Type Management
+                  </h2>
+                  <p>
+                    Manage contract types,
+                    the fields associated with them,
+                    and their available print options.
+                  </p>
+                </div>
               </div>
-            </div>
+            </a>
+            <a class="panel-block" href="<%= urlPrefix %>/admin/burialSiteTypes">
+              <div class="media">
+                <div class="media-left">
+                  <span class="fa-layers fa-4x">
+                    <i class="fa-solid fa-map-pin"></i>
+                    <i class="fa-solid fa-cog" data-fa-transform="shrink-8 right-7 down-5" data-fa-glow="10"></i>
+                  </span>
+                </div>
+                <div class="media-content">
+                  <h2 class="title is-4 mb-0 has-text-link">
+                    Burial Site Type Management
+                  </h2>
+                  <p>
+                    Manage burial site types and fields associated with them.
+                  </p>
+                </div>
+              </div>
+            </a>
+            <a class="panel-block" href="<%= urlPrefix %>/admin/tables">
+              <div class="media">
+                <div class="media-left">
+                  <span class="fa-layers fa-4x">
+                    <i class="fa-solid fa-table"></i>
+                    <i class="fa-solid fa-cog" data-fa-transform="shrink-8 right-7 down-5" data-fa-glow="10"></i>
+                  </span>
+                </div>
+                <div class="media-content">
+                  <h2 class="title is-4 mb-0 has-text-link">
+                    Config Table Management
+                  </h2>
+                  <p>
+                    Manage simple configuration tables for
+                    work order types
+                    and burial site statuses.
+                  </p>
+                </div>
+              </div>
+            </a>
           </div>
         </div>
-        <a class="panel-block" href="<%= urlPrefix %>/admin/fees">
-          <div class="media">
-            <div class="media-left">
-              <span class="fa-layers fa-4x">
-                <i class="fa-solid fa-dollar-sign"></i>
-                <i class="fa-solid fa-cog" data-fa-transform="shrink-8 right-7 down-5" data-fa-glow="10"></i>
-              </span>
-            </div>
-            <div class="media-content">
-              <h2 class="title is-4 mb-0 has-text-link">
-                Fee Management
-              </h2>
-              <p>
-                Manage fees for contracts
-                and specific burial site types.
-              </p>
-            </div>
+        <div class="column">
+          <div class="panel">
+            <a class="panel-block" href="<%= urlPrefix %>/admin/settings">
+              <div class="media">
+                <div class="media-left">
+                  <i class="fa-solid fa-4x fa-sliders"></i>
+                </div>
+                <div class="media-content">
+                  <h2 class="title is-4 mb-0 has-text-link">
+                    Settings Management
+                  </h2>
+                  <p>
+                    Manage application settings.
+                  </p>
+                </div>
+              </div>
+            </a>
+            <a class="panel-block" href="<%= urlPrefix %>/admin/database">
+              <div class="media">
+                <div class="media-left">
+                  <i class="fa-solid fa-4x fa-database"></i>
+                </div>
+                <div class="media-content">
+                  <h2 class="title is-4 mb-0 has-text-link">
+                    Database Maintenance
+                  </h2>
+                  <p>
+                    Backup the database before making significant updates.
+                    Permanently delete records that have been previously deleted from the database.
+                  </p>
+                </div>
+              </div>
+            </a>
           </div>
-        </a>
-        <a class="panel-block" href="<%= urlPrefix %>/admin/contractTypes">
-          <div class="media">
-            <div class="media-left">
-              <span class="fa-layers fa-4x">
-                <i class="fa-solid fa-file-contract"></i>
-                <i class="fa-solid fa-cog" data-fa-transform="shrink-8 right-7 down-5" data-fa-glow="10"></i>
-              </span>
-            </div>
-            <div class="media-content">
-              <h2 class="title is-4 mb-0 has-text-link">
-                Contract Type Management
-              </h2>
-              <p>
-                Manage contract types,
-                the fields associated with them,
-                and their available print options.
-              </p>
-            </div>
-          </div>
-        </a>
-        <a class="panel-block" href="<%= urlPrefix %>/admin/burialSiteTypes">
-          <div class="media">
-            <div class="media-left">
-              <span class="fa-layers fa-4x">
-                <i class="fa-solid fa-map-pin"></i>
-                <i class="fa-solid fa-cog" data-fa-transform="shrink-8 right-7 down-5" data-fa-glow="10"></i>
-              </span>
-            </div>
-            <div class="media-content">
-              <h2 class="title is-4 mb-0 has-text-link">
-                Burial Site Type Management
-              </h2>
-              <p>
-                Manage burial site types and fields associated with them.
-              </p>
-            </div>
-          </div>
-        </a>
-        <a class="panel-block" href="<%= urlPrefix %>/admin/tables">
-          <div class="media">
-            <div class="media-left">
-              <span class="fa-layers fa-4x">
-                <i class="fa-solid fa-table"></i>
-                <i class="fa-solid fa-cog" data-fa-transform="shrink-8 right-7 down-5" data-fa-glow="10"></i>
-              </span>
-            </div>
-            <div class="media-content">
-              <h2 class="title is-4 mb-0 has-text-link">
-                Config Table Management
-              </h2>
-              <p>
-                Manage simple configuration tables for
-                work order types
-                and burial site statuses.
-              </p>
-            </div>
-          </div>
-        </a>
-        <a class="panel-block" href="<%= urlPrefix %>/admin/settings">
-          <div class="media">
-            <div class="media-left">
-              <i class="fa-solid fa-4x fa-sliders"></i>
-            </div>
-            <div class="media-content">
-              <h2 class="title is-4 mb-0 has-text-link">
-                Settings Management
-              </h2>
-              <p>
-                Manage application settings.
-              </p>
-            </div>
-          </div>
-        </a>
-        <a class="panel-block" href="<%= urlPrefix %>/admin/database">
-          <div class="media">
-            <div class="media-left">
-              <i class="fa-solid fa-4x fa-database"></i>
-            </div>
-            <div class="media-content">
-              <h2 class="title is-4 mb-0 has-text-link">
-                Database Maintenance
-              </h2>
-              <p>
-                Backup the database before making significant updates.
-                Permanently delete records that have been previously deleted from the database.
-              </p>
-            </div>
-          </div>
-        </a>
+        </div>
       </div>
     <% } %>
   </div>
