@@ -19,8 +19,8 @@ import handler_doUpdateBurialSite from '../handlers/burialSites-post/doUpdateBur
 import handler_doUpdateBurialSiteComment from '../handlers/burialSites-post/doUpdateBurialSiteComment.js'
 import {
   adminPostHandler,
-  updateGetHandler,
-  updatePostHandler
+  updateCemeteriesGetHandler,
+  updateCemeteriesPostHandler
 } from '../handlers/permissions.js'
 
 export const router = Router()
@@ -37,11 +37,11 @@ router.post('/doSearchBurialSites', handler_doSearchBurialSites)
  * Burial Site Creator
  */
 
-router.get('/creator', updateGetHandler, handler_creator)
+router.get('/creator', updateCemeteriesGetHandler, handler_creator)
 
 router.post(
   '/doGetBurialSiteNamesByRange',
-  updatePostHandler,
+  updateCemeteriesPostHandler,
   handler_doGetBurialSiteNamesByRange
 )
 
@@ -49,7 +49,7 @@ router.post(
  * Burial Site View / Edit
  */
 
-router.get('/new', updateGetHandler, handler_new)
+router.get('/new', updateCemeteriesGetHandler, handler_new)
 
 router.get('/:burialSiteId', handler_view)
 
@@ -57,29 +57,29 @@ router.get('/:burialSiteId/next', handler_next)
 
 router.get('/:burialSiteId/previous', handler_previous)
 
-router.get('/:burialSiteId/edit', updateGetHandler, handler_edit)
+router.get('/:burialSiteId/edit', updateCemeteriesGetHandler, handler_edit)
 
 router.post(
   '/doGetBurialSiteTypeFields',
-  updatePostHandler,
+  updateCemeteriesPostHandler,
   handler_doGetBurialSiteTypeFields
 )
 
 router.post(
   '/doCreateBurialSite',
-  updatePostHandler,
+  updateCemeteriesPostHandler,
   handler_doCreateBurialSite
 )
 
 router.post(
   '/doUpdateBurialSite',
-  updatePostHandler,
+  updateCemeteriesPostHandler,
   handler_doUpdateBurialSite
 )
 
 router.post(
   '/doDeleteBurialSite',
-  updatePostHandler,
+  updateCemeteriesPostHandler,
   handler_doDeleteBurialSite
 )
 
@@ -95,19 +95,19 @@ router.post(
 
 router.post(
   '/doAddBurialSiteComment',
-  updatePostHandler,
+  updateCemeteriesPostHandler,
   handler_doAddBurialSiteComment
 )
 
 router.post(
   '/doUpdateBurialSiteComment',
-  updatePostHandler,
+  updateCemeteriesPostHandler,
   handler_doUpdateBurialSiteComment
 )
 
 router.post(
   '/doDeleteBurialSiteComment',
-  updatePostHandler,
+  updateCemeteriesPostHandler,
   handler_doDeleteBurialSiteComment
 )
 

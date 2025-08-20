@@ -2,7 +2,7 @@ import getContracts from '../../database/getContracts.js';
 import getFuneralHome from '../../database/getFuneralHome.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 export default async function handler(request, response) {
-    const funeralHome = getFuneralHome(request.params.funeralHomeId, request.session.user?.userProperties?.canUpdate);
+    const funeralHome = getFuneralHome(request.params.funeralHomeId, request.session.user?.userProperties.canUpdateContracts);
     if (funeralHome === undefined) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/funeralHomes/?error=funeralHomeIdNotFound`);
         return;

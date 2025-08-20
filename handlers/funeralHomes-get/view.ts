@@ -10,7 +10,7 @@ export default async function handler(
 ): Promise<void> {
   const funeralHome = getFuneralHome(
     request.params.funeralHomeId,
-    request.session.user?.userProperties?.canUpdate
+    request.session.user?.userProperties.canUpdateContracts
   )
 
   if (funeralHome === undefined) {

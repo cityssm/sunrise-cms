@@ -1,7 +1,8 @@
 export const user = {
     userName: 'import.unix',
     userProperties: {
-        canUpdate: true,
+        canUpdateCemeteries: true,
+        canUpdateContracts: true,
         canUpdateWorkOrders: true,
         isAdmin: false
     },

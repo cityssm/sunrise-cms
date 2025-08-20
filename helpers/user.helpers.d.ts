@@ -9,7 +9,8 @@ export interface UserRequest {
     };
 }
 export declare function apiKeyIsValid(request: APIRequest): boolean;
-export declare function userCanUpdate(request: UserRequest): boolean;
+export declare function userCanUpdateCemeteries(request: UserRequest): boolean;
+export declare function userCanUpdateContracts(request: UserRequest): boolean;
 export declare function userCanUpdateWorkOrders(request: UserRequest): boolean;
 export declare function userIsAdmin(request: UserRequest): boolean;
 export declare function getUser(userName: string): User | undefined;

@@ -3,7 +3,8 @@ import type { DateString, TimeString } from "@cityssm/utils-datetime"
 export const user: User = {
   userName: 'import.unix',
   userProperties: {
-    canUpdate: true,
+    canUpdateCemeteries: true,
+    canUpdateContracts: true,
     canUpdateWorkOrders: true,
     isAdmin: false
   },

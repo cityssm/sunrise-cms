@@ -3,7 +3,8 @@ import type { NextFunction, Request, Response } from 'express'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import {
   apiKeyIsValid,
-  userCanUpdate,
+  userCanUpdateCemeteries,
+  userCanUpdateContracts,
   userCanUpdateWorkOrders,
   userIsAdmin
 } from '../helpers/user.helpers.js'
@@ -57,12 +58,12 @@ export function apiGetHandler(
   }
 }
 
-export function updateGetHandler(
+export function updateCemeteriesGetHandler(
   request: Request,
   response: Response,
   next: NextFunction
 ): void {
-  if (userCanUpdate(request)) {
+  if (userCanUpdateCemeteries(request)) {
     next()
     return
   }
@@ -70,12 +71,38 @@ export function updateGetHandler(
   response.redirect(forbiddenRedirectURL)
 }
 
-export function updatePostHandler(
+export function updateCemeteriesPostHandler(
   request: Request,
   response: Response,
   next: NextFunction
 ): void {
-  if (userCanUpdate(request)) {
+  if (userCanUpdateCemeteries(request)) {
+    next()
+    return
+  }
+
+  response.status(forbiddenStatus).json(forbiddenJSON)
+}
+
+export function updateContractsGetHandler(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): void {
+  if (userCanUpdateContracts(request)) {
+    next()
+    return
+  }
+
+  response.redirect(forbiddenRedirectURL)
+}
+
+export function updateContractsPostHandler(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): void {
+  if (userCanUpdateContracts(request)) {
     next()
     return
   }

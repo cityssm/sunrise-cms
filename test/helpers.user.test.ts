@@ -13,7 +13,10 @@ await describe('helpers.user', async () => {
     }
 
     await it('can not update', () => {
-      assert.strictEqual(userFunctions.userCanUpdate(noUserRequest), false)
+      assert.strictEqual(
+        userFunctions.userCanUpdateContracts(noUserRequest),
+        false
+      )
     })
 
     await it('is not admin', () => {
@@ -27,7 +30,8 @@ await describe('helpers.user', async () => {
         user: {
           userName: '*test',
           userProperties: {
-            canUpdate: false,
+            canUpdateCemeteries: false,
+            canUpdateContracts: false,
             canUpdateWorkOrders: false,
             isAdmin: false
           },
@@ -37,7 +41,18 @@ await describe('helpers.user', async () => {
     }
 
     await it('can not update', () => {
-      assert.strictEqual(userFunctions.userCanUpdate(readOnlyRequest), false)
+      assert.strictEqual(
+        userFunctions.userCanUpdateCemeteries(readOnlyRequest),
+        false
+      )
+      assert.strictEqual(
+        userFunctions.userCanUpdateContracts(readOnlyRequest),
+        false
+      )
+      assert.strictEqual(
+        userFunctions.userCanUpdateWorkOrders(readOnlyRequest),
+        false
+      )
     })
 
     await it('is not admin', () => {
@@ -51,7 +66,8 @@ await describe('helpers.user', async () => {
         user: {
           userName: '*test',
           userProperties: {
-            canUpdate: true,
+            canUpdateCemeteries: true,
+            canUpdateContracts: true,
             canUpdateWorkOrders: true,
             isAdmin: false
           },
@@ -61,7 +77,18 @@ await describe('helpers.user', async () => {
     }
 
     await it('can update', () => {
-      assert.strictEqual(userFunctions.userCanUpdate(updateOnlyRequest), true)
+      assert.strictEqual(
+        userFunctions.userCanUpdateCemeteries(updateOnlyRequest),
+        true
+      )
+      assert.strictEqual(
+        userFunctions.userCanUpdateContracts(updateOnlyRequest),
+        true
+      )
+      assert.strictEqual(
+        userFunctions.userCanUpdateWorkOrders(updateOnlyRequest),
+        true
+      )
     })
 
     await it('is not admin', () => {
@@ -75,7 +102,8 @@ await describe('helpers.user', async () => {
         user: {
           userName: '*test',
           userProperties: {
-            canUpdate: false,
+            canUpdateCemeteries: false,
+            canUpdateContracts: false,
             canUpdateWorkOrders: false,
             isAdmin: true
           },
@@ -85,7 +113,9 @@ await describe('helpers.user', async () => {
     }
 
     await it('can not update', () => {
-      assert.strictEqual(userFunctions.userCanUpdate(adminOnlyRequest), false)
+      assert.strictEqual(userFunctions.userCanUpdateCemeteries(adminOnlyRequest), false)
+      assert.strictEqual(userFunctions.userCanUpdateContracts(adminOnlyRequest), false)
+      assert.strictEqual(userFunctions.userCanUpdateWorkOrders(adminOnlyRequest), false)
     })
 
     await it('is admin', () => {
@@ -99,7 +129,8 @@ await describe('helpers.user', async () => {
         user: {
           userName: '*test',
           userProperties: {
-            canUpdate: true,
+            canUpdateCemeteries: true,
+            canUpdateContracts: true,
             canUpdateWorkOrders: true,
             isAdmin: true
           },
@@ -109,7 +140,9 @@ await describe('helpers.user', async () => {
     }
 
     await it('can update', () => {
-      assert.strictEqual(userFunctions.userCanUpdate(updateAdminRequest), true)
+      assert.strictEqual(userFunctions.userCanUpdateCemeteries(updateAdminRequest), true)
+      assert.strictEqual(userFunctions.userCanUpdateContracts(updateAdminRequest), true)
+      assert.strictEqual(userFunctions.userCanUpdateWorkOrders(updateAdminRequest), true)
     })
 
     await it('is admin', () => {

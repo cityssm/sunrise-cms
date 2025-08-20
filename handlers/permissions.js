@@ -1,5 +1,5 @@
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { apiKeyIsValid, userCanUpdate, userCanUpdateWorkOrders, userIsAdmin } from '../helpers/user.helpers.js';
+import { apiKeyIsValid, userCanUpdateCemeteries, userCanUpdateContracts, userCanUpdateWorkOrders, userIsAdmin } from '../helpers/user.helpers.js';
 const urlPrefix = getConfigProperty('reverseProxy.urlPrefix');
 const forbiddenStatus = 403;
 const forbiddenJSON = {
@@ -29,15 +29,29 @@ export function apiGetHandler(request, response, next) {
         response.redirect(`${urlPrefix}/login`);
     }
 }
-export function updateGetHandler(request, response, next) {
-    if (userCanUpdate(request)) {
+export function updateCemeteriesGetHandler(request, response, next) {
+    if (userCanUpdateCemeteries(request)) {
         next();
         return;
     }
     response.redirect(forbiddenRedirectURL);
 }
-export function updatePostHandler(request, response, next) {
-    if (userCanUpdate(request)) {
+export function updateCemeteriesPostHandler(request, response, next) {
+    if (userCanUpdateCemeteries(request)) {
+        next();
+        return;
+    }
+    response.status(forbiddenStatus).json(forbiddenJSON);
+}
+export function updateContractsGetHandler(request, response, next) {
+    if (userCanUpdateContracts(request)) {
+        next();
+        return;
+    }
+    response.redirect(forbiddenRedirectURL);
+}
+export function updateContractsPostHandler(request, response, next) {
+    if (userCanUpdateContracts(request)) {
         next();
         return;
     }

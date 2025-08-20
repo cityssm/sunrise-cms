@@ -34,8 +34,12 @@ export function apiKeyIsValid(request: APIRequest): boolean {
   )
 }
 
-export function userCanUpdate(request: UserRequest): boolean {
-  return request.session?.user?.userProperties.canUpdate ?? false
+export function userCanUpdateCemeteries(request: UserRequest): boolean {
+  return request.session?.user?.userProperties.canUpdateCemeteries ?? false
+}
+
+export function userCanUpdateContracts(request: UserRequest): boolean {
+  return request.session?.user?.userProperties.canUpdateContracts ?? false
 }
 
 export function userCanUpdateWorkOrders(request: UserRequest): boolean {
@@ -54,15 +58,27 @@ export function getUser(userName: string): User | undefined {
   )
 
   if (canLogin) {
-    const canUpdate = getConfigProperty('users.canUpdate').some(
+    const canUpdateAll = getConfigProperty('users.canUpdate').some(
       (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
     )
 
-    const canUpdateWorkOrders = getConfigProperty(
-      'users.canUpdateWorkOrders'
-    ).some(
-      (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
-    )
+    const canUpdateCemeteries =
+      canUpdateAll ||
+      getConfigProperty('users.canUpdateCemeteries').some(
+        (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
+      )
+
+    const canUpdateContracts =
+      canUpdateAll ||
+      getConfigProperty('users.canUpdateContracts').some(
+        (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
+      )
+
+    const canUpdateWorkOrders =
+      canUpdateAll ||
+      getConfigProperty('users.canUpdateWorkOrders').some(
+        (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
+      )
 
     const isAdmin = getConfigProperty('users.isAdmin').some(
       (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
@@ -73,7 +89,8 @@ export function getUser(userName: string): User | undefined {
     return {
       userName: userNameLowerCase,
       userProperties: {
-        canUpdate,
+        canUpdateCemeteries,
+        canUpdateContracts,
         canUpdateWorkOrders,
         isAdmin
       },

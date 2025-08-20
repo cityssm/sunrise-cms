@@ -47,7 +47,7 @@
         <span>Next</span>
         <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
       </a>
-      <% if (user.userProperties.canUpdate) { %>
+      <% if (user.userProperties.canUpdateCemeteries) { %>
         <div class="level-item">
           <a class="button is-primary"
             href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>/edit"

@@ -19,6 +19,8 @@ export const configDefaultValues = {
     'session.secret': 'cityssm/sunrise',
     'users.canLogin': ['administrator'],
     'users.canUpdate': [],
+    'users.canUpdateCemeteries': [],
+    'users.canUpdateContracts': [],
     'users.canUpdateWorkOrders': [],
     'users.isAdmin': ['administrator'],
     'users.testing': [],

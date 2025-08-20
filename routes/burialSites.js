@@ -16,7 +16,7 @@ import handler_doRestoreBurialSite from '../handlers/burialSites-post/doRestoreB
 import handler_doSearchBurialSites from '../handlers/burialSites-post/doSearchBurialSites.js';
 import handler_doUpdateBurialSite from '../handlers/burialSites-post/doUpdateBurialSite.js';
 import handler_doUpdateBurialSiteComment from '../handlers/burialSites-post/doUpdateBurialSiteComment.js';
-import { adminPostHandler, updateGetHandler, updatePostHandler } from '../handlers/permissions.js';
+import { adminPostHandler, updateCemeteriesGetHandler, updateCemeteriesPostHandler } from '../handlers/permissions.js';
 export const router = Router();
 /*
  * Burial Site Search
@@ -26,25 +26,25 @@ router.post('/doSearchBurialSites', handler_doSearchBurialSites);
 /*
  * Burial Site Creator
  */
-router.get('/creator', updateGetHandler, handler_creator);
-router.post('/doGetBurialSiteNamesByRange', updatePostHandler, handler_doGetBurialSiteNamesByRange);
+router.get('/creator', updateCemeteriesGetHandler, handler_creator);
+router.post('/doGetBurialSiteNamesByRange', updateCemeteriesPostHandler, handler_doGetBurialSiteNamesByRange);
 /*
  * Burial Site View / Edit
  */
-router.get('/new', updateGetHandler, handler_new);
+router.get('/new', updateCemeteriesGetHandler, handler_new);
 router.get('/:burialSiteId', handler_view);
 router.get('/:burialSiteId/next', handler_next);
 router.get('/:burialSiteId/previous', handler_previous);
-router.get('/:burialSiteId/edit', updateGetHandler, handler_edit);
-router.post('/doGetBurialSiteTypeFields', updatePostHandler, handler_doGetBurialSiteTypeFields);
-router.post('/doCreateBurialSite', updatePostHandler, handler_doCreateBurialSite);
-router.post('/doUpdateBurialSite', updatePostHandler, handler_doUpdateBurialSite);
-router.post('/doDeleteBurialSite', updatePostHandler, handler_doDeleteBurialSite);
+router.get('/:burialSiteId/edit', updateCemeteriesGetHandler, handler_edit);
+router.post('/doGetBurialSiteTypeFields', updateCemeteriesPostHandler, handler_doGetBurialSiteTypeFields);
+router.post('/doCreateBurialSite', updateCemeteriesPostHandler, handler_doCreateBurialSite);
+router.post('/doUpdateBurialSite', updateCemeteriesPostHandler, handler_doUpdateBurialSite);
+router.post('/doDeleteBurialSite', updateCemeteriesPostHandler, handler_doDeleteBurialSite);
 router.post('/doRestoreBurialSite', adminPostHandler, handler_doRestoreBurialSite);
 /*
  * Burial Site Comments
  */
-router.post('/doAddBurialSiteComment', updatePostHandler, handler_doAddBurialSiteComment);
-router.post('/doUpdateBurialSiteComment', updatePostHandler, handler_doUpdateBurialSiteComment);
-router.post('/doDeleteBurialSiteComment', updatePostHandler, handler_doDeleteBurialSiteComment);
+router.post('/doAddBurialSiteComment', updateCemeteriesPostHandler, handler_doAddBurialSiteComment);
+router.post('/doUpdateBurialSiteComment', updateCemeteriesPostHandler, handler_doUpdateBurialSiteComment);
+router.post('/doDeleteBurialSiteComment', updateCemeteriesPostHandler, handler_doDeleteBurialSiteComment);
 export default router;

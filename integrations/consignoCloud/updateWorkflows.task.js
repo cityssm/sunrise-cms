@@ -7,7 +7,8 @@ const taskName = 'Update Consigno Workflows Task';
 const taskUser = {
     userName: 'task.updateConsignoWorkflows',
     userProperties: {
-        canUpdate: true,
+        canUpdateCemeteries: false,
+        canUpdateContracts: true,
         canUpdateWorkOrders: false,
         isAdmin: false
     },

@@ -61,7 +61,7 @@
             </div>
           </a>
           <div class="panel-block is-block">
-            <% if (user.userProperties.canUpdate) { %>
+            <% if (user.userProperties.canUpdateContracts) { %>
               <a class="button is-fullwidth is-success is-light mb-2" href="<%= urlPrefix %>/contracts/new">
                 <span class="icon">
                   <i class="fa-solid fa-plus"></i>
@@ -97,7 +97,7 @@
               </div>
             </div>
           </a>
-          <% if (user.userProperties.canUpdate) { %>
+          <% if (user.userProperties.canUpdateCemeteries) { %>
             <div class="panel-block is-block">
               <a class="button is-fullwidth is-success is-light" href="<%= urlPrefix %>/burialSites/new">
                 <span class="icon">
@@ -126,7 +126,7 @@
               </div>
             </div>
           </a>
-          <% if (user.userProperties.canUpdate) { %>
+          <% if (user.userProperties.canUpdateCemeteries) { %>
             <div class="panel-block is-block">
               <a class="button is-fullwidth is-success is-light" href="<%= urlPrefix %>/cemeteries/new">
                 <span class="icon">

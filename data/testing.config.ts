@@ -30,7 +30,6 @@ config.session.doKeepAlive = true
 config.users = {
   canLogin: ['*testView', '*testUpdate', '*testAdmin'],
   canUpdate: ['*testUpdate'],
-  canUpdateWorkOrders: ['*testUpdate'],
   isAdmin: ['*testAdmin'],
   testing: ['*testView', '*testUpdate', '*testAdmin']
 }

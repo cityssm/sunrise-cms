@@ -506,7 +506,8 @@ const createStatements = [
 const initializingUser: User = {
   userName: 'databaseInit',
   userProperties: {
-    canUpdate: true,
+    canUpdateCemeteries: true,
+    canUpdateContracts: true,
     canUpdateWorkOrders: true,
     isAdmin: true
   },

@@ -67,7 +67,7 @@
           <span class="icon"><i class="fa-solid fa-undo"></i></span>
           <span>Restore Funeral Home</span>
         </button>
-      <% } else if (!funeralHomeIsDeleted && user.userProperties.canUpdate) { %>
+      <% } else if (!funeralHomeIsDeleted && user.userProperties.canUpdateContracts) { %>
         <a class="button is-primary"
           href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/edit"
           <%- enableKeyboardShortcuts ? ' accesskey="e" ' : '' %>>

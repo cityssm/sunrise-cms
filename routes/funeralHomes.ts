@@ -12,15 +12,15 @@ import handler_doRestoreFuneralHome from '../handlers/funeralHomes-post/doRestor
 import handler_doUpdateFuneralHome from '../handlers/funeralHomes-post/doUpdateFuneralHome.js'
 import {
   adminPostHandler,
-  updateGetHandler,
-  updatePostHandler
+  updateContractsGetHandler,
+  updateContractsPostHandler
 } from '../handlers/permissions.js'
 
 export const router = Router()
 
 router.get('/', handler_search)
 
-router.get('/new', updateGetHandler, handler_new)
+router.get('/new', updateContractsGetHandler, handler_new)
 
 router.get('/:funeralHomeId', handler_view)
 
@@ -30,21 +30,21 @@ router.get('/:funeralHomeId/previous', handler_previous)
 
 router.post(
   '/doCreateFuneralHome',
-  updatePostHandler,
+  updateContractsPostHandler,
   handler_doCreateFuneralHome
 )
 
-router.get('/:funeralHomeId/edit', updateGetHandler, handler_edit)
+router.get('/:funeralHomeId/edit', updateContractsGetHandler, handler_edit)
 
 router.post(
   '/doUpdateFuneralHome',
-  updatePostHandler,
+  updateContractsPostHandler,
   handler_doUpdateFuneralHome
 )
 
 router.post(
   '/doDeleteFuneralHome',
-  updatePostHandler,
+  updateContractsPostHandler,
   handler_doDeleteFuneralHome
 )
 

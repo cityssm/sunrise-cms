@@ -9,13 +9,16 @@ import handler_view from '../handlers/cemeteries-get/view.js'
 import handler_doCreateCemetery from '../handlers/cemeteries-post/doCreateCemetery.js'
 import handler_doDeleteCemetery from '../handlers/cemeteries-post/doDeleteCemetery.js'
 import handler_doUpdateCemetery from '../handlers/cemeteries-post/doUpdateCemetery.js'
-import { updateGetHandler, updatePostHandler } from '../handlers/permissions.js'
+import {
+  updateCemeteriesGetHandler,
+  updateCemeteriesPostHandler
+} from '../handlers/permissions.js'
 
 export const router = Router()
 
 router.get('/', handler_search)
 
-router.get('/new', updateGetHandler, handler_new)
+router.get('/new', updateCemeteriesGetHandler, handler_new)
 
 router.get('/:cemeteryId', handler_view)
 
@@ -23,23 +26,23 @@ router.get('/:cemeteryId/next', handler_next)
 
 router.get('/:cemeteryId/previous', handler_previous)
 
-router.get('/:cemeteryId/edit', updateGetHandler, handler_edit)
+router.get('/:cemeteryId/edit', updateCemeteriesGetHandler, handler_edit)
 
 router.post(
   '/doCreateCemetery',
-  updatePostHandler,
+  updateCemeteriesPostHandler,
   handler_doCreateCemetery
 )
 
 router.post(
   '/doUpdateCemetery',
-  updatePostHandler,
+  updateCemeteriesPostHandler,
   handler_doUpdateCemetery
 )
 
 router.post(
   '/doDeleteCemetery',
-  updatePostHandler,
+  updateCemeteriesPostHandler,
   handler_doDeleteCemetery
 )
 

@@ -46,8 +46,13 @@ export interface Config {
     testing?: Array<`*${string}`>
 
     canLogin?: string[]
+
     canUpdate?: string[]
+
+    canUpdateCemeteries?: string[]
+    canUpdateContracts?: string[]
     canUpdateWorkOrders?: string[]
+
     isAdmin?: string[]
   }
 

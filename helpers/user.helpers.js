@@ -13,8 +13,11 @@ export function apiKeyIsValid(request) {
     }
     return getConfigProperty('users.canLogin').some((currentUserName) => userName === currentUserName.toLowerCase());
 }
-export function userCanUpdate(request) {
-    return request.session?.user?.userProperties.canUpdate ?? false;
+export function userCanUpdateCemeteries(request) {
+    return request.session?.user?.userProperties.canUpdateCemeteries ?? false;
+}
+export function userCanUpdateContracts(request) {
+    return request.session?.user?.userProperties.canUpdateContracts ?? false;
 }
 export function userCanUpdateWorkOrders(request) {
     return request.session?.user?.userProperties.canUpdateWorkOrders ?? false;
@@ -26,14 +29,20 @@ export function getUser(userName) {
     const userNameLowerCase = userName.toLowerCase();
     const canLogin = getConfigProperty('users.canLogin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
     if (canLogin) {
-        const canUpdate = getConfigProperty('users.canUpdate').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
-        const canUpdateWorkOrders = getConfigProperty('users.canUpdateWorkOrders').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+        const canUpdateAll = getConfigProperty('users.canUpdate').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+        const canUpdateCemeteries = canUpdateAll ||
+            getConfigProperty('users.canUpdateCemeteries').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+        const canUpdateContracts = canUpdateAll ||
+            getConfigProperty('users.canUpdateContracts').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+        const canUpdateWorkOrders = canUpdateAll ||
+            getConfigProperty('users.canUpdateWorkOrders').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
         const isAdmin = getConfigProperty('users.isAdmin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
         const userSettings = getUserSettings(userName);
         return {
             userName: userNameLowerCase,
             userProperties: {
-                canUpdate,
+                canUpdateCemeteries,
+                canUpdateContracts,
                 canUpdateWorkOrders,
                 isAdmin
             },
