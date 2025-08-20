@@ -43,7 +43,7 @@ const debug = Debug(
 
 export const app = express()
 
-app.disable('X-Powered-By')
+app.disable('x-powered-by')
 
 if (!configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
   app.set('etag', false)
