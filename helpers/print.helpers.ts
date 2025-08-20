@@ -2,9 +2,7 @@
 /* eslint-disable security/detect-object-injection */
 
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
-import JsBarcode from 'jsbarcode'
 import type { PrintConfig } from 'sunrise-cms-customizations'
-import xmldom from 'xmldom'
 
 import getBurialSite from '../database/getBurialSite.js'
 import getContract from '../database/getContract.js'
