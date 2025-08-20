@@ -20,9 +20,9 @@ declare const exports: Record<string, unknown>
     let url = `${
       globalThis.location.href.slice(
         0,
-        Math.max(0, globalThis.location.href.indexOf(globalThis.location.pathname) + 1)
+        Math.max(0, globalThis.location.href.indexOf(globalThis.location.pathname))
       ) + sunrise.urlPrefix
-    }api/${sunrise.apiKey}/milestoneICS/?`
+    }/api/${sunrise.apiKey}/milestoneICS/?`
 
     if (
       !workOrderTypeIdsElement.disabled &&
