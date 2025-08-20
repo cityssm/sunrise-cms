@@ -208,6 +208,10 @@ span.button.is-static {
   }
 }
 
+.input:read-only {
+  background-color: var(--bulma-input-disabled-background-color);
+}
+
 .select option:disabled {
   display: none;
 }
