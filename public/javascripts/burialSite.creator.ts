@@ -8,6 +8,8 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
+  burialSiteNameSegments?: any
+  cemeteries?: any[]
 }
 
 interface GetBurialSiteNamesByRangeResult {
@@ -27,6 +29,79 @@ interface GetBurialSiteNamesByRangeResult {
 
 ;(() => {
   const sunrise = exports.sunrise
+
+  // Burial Site Name Preview
+  const fromPreviewElement = document.querySelector('#burialSiteCreator--fromPreview') as HTMLInputElement
+  const toPreviewElement = document.querySelector('#burialSiteCreator--toPreview') as HTMLInputElement
+  const segmentConfig = exports.burialSiteNameSegments
+  const cemeteries = exports.cemeteries || []
+
+  if ((fromPreviewElement || toPreviewElement) && segmentConfig?.includeCemeteryKey) {
+    function buildBurialSiteNamePreview(isFrom: boolean): string {
+      const cemeteryId = (document.querySelector('#burialSiteCreator--cemeteryId') as HTMLSelectElement)?.value
+      const cemetery = cemeteries.find(c => c.cemeteryId?.toString() === cemeteryId)
+      const cemeteryKey = cemetery?.cemeteryKey
+
+      const segmentPieces: string[] = []
+
+      if (segmentConfig.includeCemeteryKey && cemeteryKey !== undefined && cemeteryKey !== '') {
+        segmentPieces.push(cemeteryKey)
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex++) {
+        const segmentIndexString = segmentIndex.toString()
+        const segment = segmentConfig.segments?.[segmentIndexString]
+
+        if (segment?.isAvailable ?? false) {
+          const suffix = isFrom ? '_from' : '_to'
+          const inputElement = document.querySelector(`#burialSiteCreator--burialSiteNameSegment${segmentIndexString}${suffix}`) as HTMLInputElement
+          const segmentValue = inputElement?.value ?? ''
+
+          if ((segment.isRequired ?? false) || segmentValue !== '') {
+            segmentPieces.push(
+              (segment.prefix ?? '') +
+              segmentValue +
+              (segment.suffix ?? '')
+            )
+          }
+        }
+      }
+
+      return segmentPieces.join(segmentConfig.separator ?? '-')
+    }
+
+    function updatePreviews(): void {
+      if (fromPreviewElement) {
+        fromPreviewElement.value = buildBurialSiteNamePreview(true)
+      }
+      if (toPreviewElement) {
+        toPreviewElement.value = buildBurialSiteNamePreview(false)
+      }
+    }
+
+    // Update previews when segment fields change
+    for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex++) {
+      const fromInput = document.querySelector(`#burialSiteCreator--burialSiteNameSegment${segmentIndex}_from`) as HTMLInputElement
+      const toInput = document.querySelector(`#burialSiteCreator--burialSiteNameSegment${segmentIndex}_to`) as HTMLInputElement
+      
+      if (fromInput) {
+        fromInput.addEventListener('input', updatePreviews)
+      }
+      if (toInput) {
+        toInput.addEventListener('input', updatePreviews)
+      }
+    }
+
+    // Update previews when cemetery changes
+    const cemeterySelect = document.querySelector('#burialSiteCreator--cemeteryId') as HTMLSelectElement
+    if (cemeterySelect) {
+      cemeterySelect.addEventListener('change', updatePreviews)
+    }
+
+    // Initial preview update
+    updatePreviews()
+  }
 
   const newResultsPanelElement = document.querySelector(
     '#panel--burialSitePreview_new'

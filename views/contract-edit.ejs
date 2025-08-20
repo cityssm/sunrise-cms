@@ -1248,6 +1248,7 @@
   exports.burialSiteTypes = <%- JSON.stringify(burialSiteTypes) %>;
   exports.cemeteries = <%- JSON.stringify(cemeteries) %>;
   exports.directionsOfArrival = <%- JSON.stringify(dataLists.directionsOfArrival) %>;
+  exports.burialSiteNameSegments = <%- JSON.stringify(configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments')) %>;
 </script>
 
 <script src="<%= urlPrefix %>/javascripts/contract.edit.js"></script>
