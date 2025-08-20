@@ -17,6 +17,15 @@
 }
 
 /*
+ * Panels
+ */
+
+.panel-block:first-child {
+  border-start-start-radius: var(--bulma-panel-radius);
+  border-start-end-radius: var(--bulma-panel-radius);
+}
+
+/*
  * Tables
  */
 
