@@ -71,7 +71,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : '<i class="fa-regular fa-square has-text-grey" aria-label="Incomplete"></i>'}
           </span>
         </div><div class="column">
-          ${milestone.workOrderMilestoneTime === 0
+          ${milestone.workOrderMilestoneTime === null
                 ? ''
                 : `${milestone.workOrderMilestoneTimePeriodString}<br />`}
           ${milestone.workOrderMilestoneTypeId

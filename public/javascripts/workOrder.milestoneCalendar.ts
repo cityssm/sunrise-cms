@@ -114,7 +114,7 @@ declare const exports: Record<string, unknown>
           </span>
         </div><div class="column">
           ${
-            milestone.workOrderMilestoneTime === 0
+            milestone.workOrderMilestoneTime === null
               ? ''
               : `${milestone.workOrderMilestoneTimePeriodString}<br />`
           }
