@@ -122,7 +122,9 @@ Controls user permissions and access levels.
 ```typescript
 users: {
   canLogin?: string[]             // Users who can log in
-  canUpdate?: string[]            // Users who can update records
+  canUpdate?: string[]            // Users who can update all types of records (cemeteries, contracts, and work orders)
+  canUpdateCemeteries?: string[]  // Users who can update cemeteries and burial sites
+  canUpdateContracts?: string[]   // Users who can update contracts and funeral homes
   canUpdateWorkOrders?: string[]  // Users who can update work orders
   isAdmin?: string[]              // Administrative users
 }
