@@ -45,7 +45,7 @@
             </div>
             <div class="control is-expanded">
               <div class="select is-fullwidth">
-                <select id="searchFilter--workOrderMilestoneMonth" name="workOrderMilestoneMonth">
+                <select id="searchFilter--workOrderMilestoneMonth" name="workOrderMilestoneMonth" aria-label="Month">
                   <option value="1" <%= (currentMonth === 1 ? 'selected' : '') %>>January</option>
                   <option value="2" <%= (currentMonth === 2 ? 'selected' : '') %>>February</option>
                   <option value="3" <%= (currentMonth === 3 ? 'selected' : '') %>>March</option>
@@ -63,7 +63,7 @@
             </div>
             <div class="control is-expanded">
               <div class="select is-fullwidth">
-                <select id="searchFilter--workOrderMilestoneYear" name="workOrderMilestoneYear">
+                <select id="searchFilter--workOrderMilestoneYear" name="workOrderMilestoneYear" aria-label="Year">
                   <% for (let year = (new Date().getFullYear() - 5); year <= (new Date().getFullYear() + 1); year += 1) { %>
                     <option value="<%= year %>" <%= (year === currentDate.getFullYear() ? 'selected' : '') %>><%= year %></option>
                   <% } %>
