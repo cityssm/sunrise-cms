@@ -56,11 +56,14 @@ const safeRedirects = new Set([
     '/cemeteries/new',
     '/contracts',
     '/contracts/new',
+    '/dashboard',
+    '/dashboard/updatelog',
     '/reports',
     '/workorders',
     '/workorders/milestonecalendar',
     '/workorders/new',
-    '/workorders/outlook'
+    '/workorders/outlook',
+    '/workorders/workday'
 ]);
 /* eslint-enable @cspell/spellchecker */
 const recordUrl = /^\/(?:cemeteries|burialsites|contracts|workorders)\/\d+(?:\/edit)?$/;
