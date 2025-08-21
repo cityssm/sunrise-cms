@@ -26,7 +26,13 @@ export interface WorkOrderMilestoneFilters {
     | 'notBlank'
     | 'recent'
     | 'upcomingMissed'
+    | 'yearMonth'
+
   workOrderMilestoneDateString?: '' | DateString
+
+  workOrderMilestoneYear?: number | string
+
+  workOrderMilestoneMonth?: number | string
 }
 
 interface WorkOrderMilestoneOptions {
@@ -216,6 +222,24 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
       sqlWhereClause +=
         ' and (m.workOrderMilestoneCompletionDate is null or m.workOrderMilestoneDate >= ?)'
       sqlParameters.push(currentDateNumber)
+      break
+    }
+
+    case 'yearMonth': {
+      const yearNumber =
+        typeof filters.workOrderMilestoneYear === 'string'
+          ? Number.parseInt(filters.workOrderMilestoneYear)
+          : filters.workOrderMilestoneYear ?? new Date().getFullYear()
+
+      const monthNumber =
+        typeof filters.workOrderMilestoneMonth === 'string'
+          ? Number.parseInt(filters.workOrderMilestoneMonth)
+          : filters.workOrderMilestoneMonth ?? new Date().getMonth() + 1
+
+      const yearMonth = yearNumber * 10_000 + monthNumber * 100
+
+      sqlWhereClause += ' and m.workOrderMilestoneDate between ? and ?'
+      sqlParameters.push(yearMonth, yearMonth + 100)
       break
     }
   }

@@ -34,9 +34,6 @@
         </button>
       </div>
       <div class="column is-narrow has-text-right">
-        <%
-          const currentDateString = dateTimeFunctions.dateToString(new Date())
-        %>
         <div class="field has-addons">
           <div class="control is-hidden-print">
             <button class="button" type="button" id="button--workdayPreviousDay" title="Previous Day">
@@ -47,7 +44,7 @@
           </div>
           <div class="control is-expanded">
             <span class="button is-fullwidth is-static has-text-weight-bold" id="workdayDateStringSpan">
-              <%= currentDateString %>
+              <%= workdayDateString %>
             </span>
           </div>
           <div class="control is-hidden-print">
@@ -68,7 +65,7 @@
 <%- include('_footerA'); -%>
 
 <script>
-  exports.workdayDateString = "<%= currentDateString %>";
+  exports.workdayDateString = "<%= workdayDateString %>";
 </script>
 <script src="<%= urlPrefix %>/javascripts/workOrder.workday.js"></script>
 

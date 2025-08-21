@@ -17,6 +17,7 @@ export const config = tseslint.config(configWebApp, {
                         'autoincrement',
                         'consigno',
                         'fontawesome',
+                        'gapless',
                         'ical',
                         'latlng',
                         'ntfy',

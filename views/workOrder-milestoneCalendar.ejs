@@ -22,46 +22,64 @@
       </ul>
     </nav>
 
-    <h1 class="title is-1">
-      Milestone Calendar
-    </h1>
-
-    <div class="box">
-      <form id="form--searchFilters">
-        <div class="columns">
-          <div class="column">
-            <div class="field">
-              <label class="label" for="searchFilter--workOrderMilestoneDateFilter">Milestone Date Filter Type</label>
-              <div class="control has-icons-left">
-                <div class="select is-fullwidth">
-                  <select id="searchFilter--workOrderMilestoneDateFilter" name="workOrderMilestoneDateFilter"
-                    <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %>>
-                    <option value="upcomingMissed" selected>Upcoming and Missed</option>
-                    <option value="recent">Recent</option>
-                    <option value="date">Specific Date</option>
-                  </select>
-                </div>
-                <span class="icon is-small is-left">
-                  <i class="fa-solid fa-filter"></i>
+    <div class="columns is-vcentered">
+      <div class="column">
+        <h1 class="title is-1">
+          Milestone Calendar
+        </h1>
+      </div>
+      <div class="column is-narrow has-text-right">
+        <%
+          const currentDate = new Date();
+          const currentMonth = currentDate.getMonth() + 1;
+        %>
+        <form id="form--searchFilters">
+          <input type="hidden" name="workOrderMilestoneDateFilter" value="yearMonth" />
+          <div class="field has-addons">
+            <div class="control is-hidden-print">
+              <button class="button" type="button" id="button--previousMonth" title="Previous Month">
+                <span class="icon is-small">
+                  <i class="fa-solid fa-arrow-left"></i>
                 </span>
+              </button>
+            </div>
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select id="searchFilter--workOrderMilestoneMonth" name="workOrderMilestoneMonth">
+                  <option value="1" <%= (currentMonth === 1 ? 'selected' : '') %>>January</option>
+                  <option value="2" <%= (currentMonth === 2 ? 'selected' : '') %>>February</option>
+                  <option value="3" <%= (currentMonth === 3 ? 'selected' : '') %>>March</option>
+                  <option value="4" <%= (currentMonth === 4 ? 'selected' : '') %>>April</option>
+                  <option value="5" <%= (currentMonth === 5 ? 'selected' : '') %>>May</option>
+                  <option value="6" <%= (currentMonth === 6 ? 'selected' : '') %>>June</option>
+                  <option value="7" <%= (currentMonth === 7 ? 'selected' : '') %>>July</option>
+                  <option value="8" <%= (currentMonth === 8 ? 'selected' : '') %>>August</option>
+                  <option value="9" <%= (currentMonth === 9 ? 'selected' : '') %>>September</option>
+                  <option value="10" <%= (currentMonth === 10 ? 'selected' : '') %>>October</option>
+                  <option value="11" <%= (currentMonth === 11 ? 'selected' : '') %>>November</option>
+                  <option value="12" <%= (currentMonth === 12 ? 'selected' : '') %>>December</option>
+                </select>
               </div>
             </div>
-          </div>
-          <div class="column">
-            <fieldset disabled>
-              <div class="field">
-                <label class="label" for="searchFilter--workOrderMilestoneDateString">Milestone Date</label>
-                <div class="control has-icons-left">
-                  <input class="input" id="searchFilter--workOrderMilestoneDateString" name="workOrderMilestoneDateString" type="date" value="<%= dateTimeFunctions.dateToString(new Date()) %>" required />
-                  <span class="icon is-small is-left">
-                    <i class="fa-solid fa-calendar"></i>
-                  </span>
-                </div>
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select id="searchFilter--workOrderMilestoneYear" name="workOrderMilestoneYear">
+                  <% for (let year = (new Date().getFullYear() - 5); year <= (new Date().getFullYear() + 1); year += 1) { %>
+                    <option value="<%= year %>" <%= (year === currentDate.getFullYear() ? 'selected' : '') %>><%= year %></option>
+                  <% } %>
+                </select>
               </div>
-            </fieldset>
+            </div>
+            <div class="control is-hidden-print">
+              <button class="button" type="button" id="button--nextMonth" title="Next Month">
+                <span class="icon is-small">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </span>
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
 
     <div id="container--milestoneCalendar"></div>

@@ -335,15 +335,15 @@ export interface WorkOrderComment extends Record {
     comment?: string;
 }
 export interface WorkOrderMilestone extends Record, WorkOrder {
-    workOrderMilestoneId?: number;
+    workOrderMilestoneId: number;
     workOrderMilestoneType?: string;
     workOrderMilestoneTypeId?: number;
-    workOrderMilestoneDate?: number;
+    workOrderMilestoneDate: number;
     workOrderMilestoneDateString?: string;
     workOrderMilestoneTime?: number | null;
     workOrderMilestoneTimePeriodString?: string;
     workOrderMilestoneTimeString?: string;
-    workOrderMilestoneDescription?: string;
+    workOrderMilestoneDescription: string;
     workOrderMilestoneCompletionDate?: number | null;
     workOrderMilestoneCompletionDateString?: string;
     workOrderMilestoneCompletionTime?: number;

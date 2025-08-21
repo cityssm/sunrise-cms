@@ -261,3 +261,24 @@ span.button.is-static {
 .avoid-page-break {
   page-break-inside: avoid;
 }
+
+/*
+ * Milestone Calendar
+ */
+
+#container--milestoneCalendar:has(.container--workOrder:hover)
+  .container--workOrder {
+  opacity: 0.4;
+}
+
+#container--milestoneCalendar .container--workOrder:hover {
+  opacity: 1 !important;
+}
+
+/* Open Work Orders with All Completed Milestones */
+#container--milestoneCalendar
+  .container--workOrder[data-is-complete='0']:not(
+    :has(> .container--workOrderMilestone[data-is-complete='0'])
+  ) {
+  background-color: var(--bulma-warning-light);
+}
