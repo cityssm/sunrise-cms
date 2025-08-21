@@ -1,0 +1,76 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li class="is-active">
+      <a href="#" aria-current="page">
+        <span class="icon is-small"><i class="fa-solid fa-scroll"></i></span>
+        <span>Update Log</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<div class="columns is-vcentered">
+  <div class="column">
+    <h1 class="title is-1">Update Log</h1>
+  </div>
+  <div class="column is-narrow">
+    <div class="field has-addons">
+      <div class="control">
+        <label class="button is-static" for="filter--recordType">
+          Record Type
+        </label>
+      </div>
+      <div class="control is-expanded">
+        <div class="select is-fullwidth">
+          <select id="filter--recordType">
+            <option value="">(All Record Types)</option>
+            <option class="has-text-weight-bold" value="contract">Contracts</option>
+            <option value="contractTransactions">Contract Transactions</option>
+            <option class="has-text-weight-bold" value="workOrder">Work Orders</option>
+            <option value="workOrderMilestone">Work Order Milestones</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table
+  id="table--updateLog"
+  class="table is-striped is-hoverable is-fullwidth is-hidden"
+>
+  <thead>
+    <tr>
+      <th class="has-width-1">Type</th>
+      <th>Record</th>
+      <th>Description</th>
+      <th>Updated</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<button
+  class="button is-fullwidth mt-4 is-hidden"
+  type="button"
+  id="button--updateLogLoadMore"
+>
+  <span class="icon is-small"><i class="fa-solid fa-arrow-down"></i></span>
+  <span>Load More</span>
+</button>
+
+<div class="has-text-centered pt-4" id="loading--updateLog">
+  <div class="icon">
+    <i class="fa-solid fa-4x fa-spinner fa-spin-pulse"></i>
+  </div>
+  <div>Loading Update Log...</div>
+</div>
+
+<%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/updateLog.js"></script>
+
+<%- include('_footerB'); -%>
