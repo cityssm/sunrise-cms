@@ -18,7 +18,7 @@ export default function handler(
   )
 
   const burialSiteComments = getBurialSiteComments(
-    request.body.burialSiteId as string
+    request.body.burialSiteId
   )
 
   response.json({

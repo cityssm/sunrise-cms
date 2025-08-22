@@ -151,7 +151,7 @@ declare const exports: {
 
   const cemeteryKeySpanElement = document.querySelector(
     '#burialSite--cemeteryKey'
-  ) as HTMLSpanElement | null
+  )
 
   if (cemeteryKeySpanElement !== null) {
     document

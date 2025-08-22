@@ -293,7 +293,7 @@ interface GetBurialSiteNamesByRangeResult {
 
   const cemeteryKeyFromSpanElement = document.querySelector(
     '#burialSiteCreator--cemeteryKey_from'
-  ) as HTMLSpanElement | null
+  )
 
   if (cemeteryKeyFromSpanElement !== null) {
 
