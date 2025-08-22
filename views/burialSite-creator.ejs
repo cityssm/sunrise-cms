@@ -69,7 +69,7 @@
                   <select id="burialSiteCreator--cemeteryId" name="cemeteryId">
                     <option value="">(No Cemetery Selected)</option>
                     <% for (const cemetery of cemeteries) { %>
-                      <option value="<%= cemetery.cemeteryId %>">
+                      <option data-cemetery-key="<%= cemetery.cemeteryKey %>" value="<%= cemetery.cemeteryId %>">
                         <%= cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName %>
                       </option>
                     <% } %>
@@ -82,6 +82,16 @@
               From Burial Site Name
             </label>
             <div class="field has-addons">
+              <% if (burialSiteNameSegments.includeCemeteryKey ?? false) { %>
+                <p class="control">
+                  <span class="button is-static">
+                    <span id="burialSiteCreator--cemeteryKey_from">&nbsp;</span>
+                    <% if ((burialSiteNameSegments.separator ?? '') !== '') { %>
+                      <%= burialSiteNameSegments.separator %>
+                    <% } %>
+                  </span>
+                </p>
+              <% } %>
               <% for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) { %>
                 <%
                   const segmentIndexString = segmentIndex.toString();
@@ -129,6 +139,16 @@
               To Burial Site Name
             </label>
             <div class="field has-addons">
+              <% if (burialSiteNameSegments.includeCemeteryKey ?? false) { %>
+                <p class="control">
+                  <span class="button is-static">
+                    <span id="burialSiteCreator--cemeteryKey_to">&nbsp;</span>
+                    <% if ((burialSiteNameSegments.separator ?? '') !== '') { %>
+                      <%= burialSiteNameSegments.separator %>
+                    <% } %>
+                  </span>
+                </p>
+              <% } %>
               <% for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) { %>
                 <%
                   const segmentIndexString = segmentIndex.toString();
