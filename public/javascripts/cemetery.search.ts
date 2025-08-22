@@ -20,6 +20,53 @@ declare const exports: Record<string, unknown>
     '#container--searchResults'
   ) as HTMLElement
 
+  function buildCemeteryAddressHTML(cemetery: Cemetery): string {
+    let addressHTML = ''
+
+    if (cemetery.cemeteryAddress1 !== '') {
+      addressHTML += `${cityssm.escapeHTML(cemetery.cemeteryAddress1)}<br />`
+    }
+
+    if (cemetery.cemeteryAddress2 !== '') {
+      addressHTML += `${cityssm.escapeHTML(cemetery.cemeteryAddress2)}<br />`
+    }
+
+    if (cemetery.cemeteryCity !== '' || cemetery.cemeteryProvince !== '') {
+      addressHTML += `<span class="is-size-7">
+              ${cityssm.escapeHTML(cemetery.cemeteryCity)}, ${cityssm.escapeHTML(cemetery.cemeteryProvince)}
+              </span>`
+    }
+
+    return addressHTML
+  }
+
+  function buildCemeteryFeaturesHTML(cemetery: Cemetery): string {
+    let featuresHTML = ''
+
+    if (cemetery.parentCemeteryId !== null) {
+      featuresHTML += `<span class="icon" data-tooltip="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
+        <i class="fa-solid fa-turn-up" role="img" aria-label="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}"></i>
+        </span>`
+    }
+
+    if (
+      typeof cemetery.cemeteryLatitude === 'number' &&
+      typeof cemetery.cemeteryLongitude === 'number'
+    ) {
+      featuresHTML += `<span class="icon" data-tooltip="Geographic Coordinates">
+        <i class="fa-solid fa-map-marker-alt" role="img" aria-label="Geographic Coordinates"></i>
+        </span>`
+    }
+
+    if ((cemetery.cemeterySvg ?? '') !== '') {
+      featuresHTML += `<span class="icon" data-tooltip="Image">
+        <i class="fa-solid fa-image" role="img" aria-label="Image"></i>
+        </span>`
+    }
+
+    return featuresHTML
+  }
+
   function renderResults(): void {
     // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
@@ -84,48 +131,11 @@ declare const exports: Record<string, unknown>
               ${cityssm.escapeHTML(cemetery.cemeteryDescription)}
             </span>
           </td><td>
-            ${
-              cemetery.cemeteryAddress1 === ''
-                ? ''
-                : `${cityssm.escapeHTML(cemetery.cemeteryAddress1)}<br />`
-            }
-            ${
-              cemetery.cemeteryAddress2 === ''
-                ? ''
-                : `${cityssm.escapeHTML(cemetery.cemeteryAddress2)}<br />`
-            }
-            ${
-              cemetery.cemeteryCity !== '' || cemetery.cemeteryProvince !== ''
-                ? `<span class="is-size-7">
-                    ${cityssm.escapeHTML(cemetery.cemeteryCity)}, ${cityssm.escapeHTML(cemetery.cemeteryProvince)}
-                    </span>`
-                : ''
-            }
+            ${buildCemeteryAddressHTML(cemetery)}
           </td><td>
             ${cityssm.escapeHTML(cemetery.cemeteryPhoneNumber)}
           </td><td class="has-text-centered">
-            ${
-              cemetery.parentCemeteryId === null
-                ? ''
-                : `<span class="icon" data-tooltip="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
-                    <i class="fa-solid fa-turn-up" role="img" aria-label="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}"></i>
-                    </span>`
-            }
-            ${
-              typeof cemetery.cemeteryLatitude === 'number' &&
-              typeof cemetery.cemeteryLongitude === 'number'
-                ? `<span class="icon" data-tooltip="Geographic Coordinates">
-                    <i class="fa-solid fa-map-marker-alt" role="img" aria-label="Geographic Coordinates"></i>
-                    </span>`
-                : ''
-            }
-            ${
-              (cemetery.cemeterySvg ?? '') === ''
-                ? ''
-                : `<span class="icon" data-tooltip="Image">
-                    <i class="fa-solid fa-image" role="img" aria-label="Image"></i>
-                    </span>`
-            }
+            ${buildCemeteryFeaturesHTML(cemetery)}
           </td><td class="has-text-right">
             <a href="${sunrise.urlPrefix}/burialSites?cemeteryId=${cemetery.cemeteryId}">${cemetery.burialSiteCount}</a>
           </td>
