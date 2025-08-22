@@ -7,28 +7,28 @@ export default function getCemeteries(filters, connectedDatabase) {
         sqlParameters.push(filters.parentCemeteryId);
     }
     const cemeteries = database
-        .prepare(`select c.cemeteryId, c.cemeteryName, c.cemeteryKey, c.cemeteryDescription,
-          c.cemeteryLatitude, c.cemeteryLongitude, c.cemeterySvg,
-          c.cemeteryAddress1, c.cemeteryAddress2,
-          c.cemeteryCity, c.cemeteryProvince, c.cemeteryPostalCode,
-          c.cemeteryPhoneNumber,
+        .prepare(`select cem.cemeteryId, cem.cemeteryName, cem.cemeteryKey, cem.cemeteryDescription,
+          cem.cemeteryLatitude, cem.cemeteryLongitude, cem.cemeterySvg,
+          cem.cemeteryAddress1, cem.cemeteryAddress2,
+          cem.cemeteryCity, cem.cemeteryProvince, cem.cemeteryPostalCode,
+          cem.cemeteryPhoneNumber,
           p.cemeteryId as parentCemeteryId, p.cemeteryName as parentCemeteryName,
           count(b.burialSiteId) as burialSiteCount
 
-        from Cemeteries c
-        left join Cemeteries p on c.parentCemeteryId = p.cemeteryId and p.recordDelete_timeMillis is null
-        left join BurialSites b on c.cemeteryId = b.cemeteryId and b.recordDelete_timeMillis is null
+        from Cemeteries cem
+        left join Cemeteries p on cem.parentCemeteryId = p.cemeteryId and p.recordDelete_timeMillis is null
+        left join BurialSites b on cem.cemeteryId = b.cemeteryId and b.recordDelete_timeMillis is null
         
-        where c.recordDelete_timeMillis is null
-        ${filters?.parentCemeteryId === undefined ? '' : 'and c.parentCemeteryId = ?'}
+        where cem.recordDelete_timeMillis is null
+        ${filters?.parentCemeteryId === undefined ? '' : 'and cem.parentCemeteryId = ?'}
 
-        group by c.cemeteryId, c.cemeteryName, c.cemeteryDescription,
-          c.cemeteryLatitude, c.cemeteryLongitude, c.cemeterySvg,
-          c.cemeteryAddress1, c.cemeteryAddress2, c.cemeteryCity, c.cemeteryProvince, c.cemeteryPostalCode,
-          c.cemeteryPhoneNumber,
+        group by cem.cemeteryId, cem.cemeteryName, cem.cemeteryDescription,
+          cem.cemeteryLatitude, cem.cemeteryLongitude, cem.cemeterySvg,
+          cem.cemeteryAddress1, cem.cemeteryAddress2, cem.cemeteryCity, cem.cemeteryProvince, cem.cemeteryPostalCode,
+          cem.cemeteryPhoneNumber,
           p.cemeteryId, p.cemeteryName
 
-        order by c.cemeteryName, c.cemeteryId`)
+        order by cem.cemeteryName, cem.cemeteryId`)
         .all(sqlParameters);
     if (connectedDatabase === undefined) {
         database.close();

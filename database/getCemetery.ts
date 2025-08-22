@@ -29,32 +29,32 @@ function _getCemetery(
 
   const cemetery = database
     .prepare(
-      `select c.cemeteryId, c.cemeteryName, c.cemeteryKey, c.cemeteryDescription,
-        c.cemeteryLatitude, c.cemeteryLongitude, c.cemeterySvg,
-        c.cemeteryAddress1, c.cemeteryAddress2, c.cemeteryCity, c.cemeteryProvince, c.cemeteryPostalCode,
-        c.cemeteryPhoneNumber,
+      `select cem.cemeteryId, cem.cemeteryName, cem.cemeteryKey, cem.cemeteryDescription,
+        cem.cemeteryLatitude, cem.cemeteryLongitude, cem.cemeterySvg,
+        cem.cemeteryAddress1, cem.cemeteryAddress2, cem.cemeteryCity, cem.cemeteryProvince, cem.cemeteryPostalCode,
+        cem.cemeteryPhoneNumber,
 
         p.cemeteryId as parentCemeteryId, p.cemeteryName as parentCemeteryName,
         p.cemeteryLatitude as parentCemeteryLatitude, p.cemeteryLongitude as parentCemeteryLongitude,
         p.cemeterySvg as parentCemeterySvg,
 
-        c.recordCreate_userName, c.recordCreate_timeMillis,
-        c.recordUpdate_userName, c.recordUpdate_timeMillis,
-        c.recordDelete_userName, c.recordDelete_timeMillis,
+        cem.recordCreate_userName, cem.recordCreate_timeMillis,
+        cem.recordUpdate_userName, cem.recordUpdate_timeMillis,
+        cem.recordDelete_userName, cem.recordDelete_timeMillis,
         count(b.burialSiteId) as burialSiteCount
-        from Cemeteries c
-        left join Cemeteries p on c.parentCemeteryId = p.cemeteryId and p.recordDelete_timeMillis is null
-        left join BurialSites b on c.cemeteryId = b.cemeteryId and b.recordDelete_timeMillis is null
-        where c.${keyColumn} = ?
-          and c.recordDelete_timeMillis is null
-        group by c.cemeteryId, c.cemeteryName, c.cemeteryDescription,
-          c.cemeteryLatitude, c.cemeteryLongitude, c.cemeterySvg,
-          c.cemeteryAddress1, c.cemeteryAddress2, c.cemeteryCity, c.cemeteryProvince, c.cemeteryPostalCode,
-          c.cemeteryPhoneNumber,
+        from Cemeteries cem
+        left join Cemeteries p on cem.parentCemeteryId = p.cemeteryId and p.recordDelete_timeMillis is null
+        left join BurialSites b on cem.cemeteryId = b.cemeteryId and b.recordDelete_timeMillis is null
+        where cem.${keyColumn} = ?
+          and cem.recordDelete_timeMillis is null
+        group by cem.cemeteryId, cem.cemeteryName, cem.cemeteryDescription,
+          cem.cemeteryLatitude, cem.cemeteryLongitude, cem.cemeterySvg,
+          cem.cemeteryAddress1, cem.cemeteryAddress2, cem.cemeteryCity, cem.cemeteryProvince, cem.cemeteryPostalCode,
+          cem.cemeteryPhoneNumber,
           p.cemeteryId, p.cemeteryName,
-          c.recordCreate_userName, c.recordCreate_timeMillis,
-          c.recordUpdate_userName, c.recordUpdate_timeMillis,
-          c.recordDelete_userName, c.recordDelete_timeMillis`
+          cem.recordCreate_userName, cem.recordCreate_timeMillis,
+          cem.recordUpdate_userName, cem.recordUpdate_timeMillis,
+          cem.recordDelete_userName, cem.recordDelete_timeMillis`
     )
     .get(cemeteryIdOrKey) as Cemetery | undefined
 
