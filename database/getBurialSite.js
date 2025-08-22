@@ -25,7 +25,7 @@ async function _getBurialSite(keyColumn, burialSiteIdOrLotName, includeDeleted =
         l.bodyCapacity, l.crematedCapacity,
         t.bodyCapacityMax, t.crematedCapacityMax,
 
-        l.cemeteryId, m.cemeteryName,
+        l.cemeteryId, m.cemeteryName, m.cemeteryKey,
         m.cemeteryLatitude, m.cemeteryLongitude,
         m.cemeterySvg, l.cemeterySvgId, l.burialSiteImage,
         l.burialSiteLatitude, l.burialSiteLongitude,

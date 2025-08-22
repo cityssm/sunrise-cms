@@ -147,6 +147,26 @@ declare const exports: {
       })
     })
 
+  // Cemetery
+
+  const cemeteryKeySpanElement = document.querySelector(
+    '#burialSite--cemeteryKey'
+  ) as HTMLSpanElement | null
+
+  if (cemeteryKeySpanElement !== null) {
+    document
+      .querySelector('#burialSite--cemeteryId')
+      ?.addEventListener('change', (changeEvent) => {
+        const cemeterySelectElement =
+          changeEvent.currentTarget as HTMLSelectElement
+
+        const cemeteryKey =
+          cemeterySelectElement.selectedOptions[0].dataset.cemeteryKey ?? ''
+
+        cemeteryKeySpanElement.innerHTML = cityssm.escapeHTML(cemeteryKey)
+      })
+  }
+
   // Burial Site Type
 
   const burialSiteTypeIdElement = document.querySelector(

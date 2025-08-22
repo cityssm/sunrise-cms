@@ -19,6 +19,7 @@ export interface BurialSite extends Record {
     crematedCapacityMax?: number | null;
     cemetery?: Cemetery;
     cemeteryId?: number | null;
+    cemeteryKey?: string;
     cemeteryName?: string;
     cemeterySvg?: string;
     cemeterySvgId?: string;

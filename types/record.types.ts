@@ -26,6 +26,7 @@ export interface BurialSite extends Record {
 
   cemetery?: Cemetery
   cemeteryId?: number | null
+  cemeteryKey?: string
   cemeteryName?: string
   cemeterySvg?: string
   cemeterySvgId?: string
