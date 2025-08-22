@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import addRecord from '../../database/addRecord.js'
+import { addWorkOrderMilestoneType } from '../../database/addRecord.js'
 import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js'
 
 export default function handler(
@@ -11,8 +11,7 @@ export default function handler(
   >,
   response: Response
 ): void {
-  const workOrderMilestoneTypeId = addRecord(
-    'WorkOrderMilestoneTypes',
+  const workOrderMilestoneTypeId = addWorkOrderMilestoneType(
     request.body.workOrderMilestoneType,
     request.body.orderNumber ?? -1,
     request.session.user as User

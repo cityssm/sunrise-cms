@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import addRecord from '../../database/addRecord.js'
+import { addWorkOrderType } from '../../database/addRecord.js'
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 
 export default function handler(
@@ -11,8 +11,7 @@ export default function handler(
   >,
   response: Response
 ): void {
-  const workOrderTypeId = addRecord(
-    'WorkOrderTypes',
+  const workOrderTypeId = addWorkOrderType(
     request.body.workOrderType,
     request.body.orderNumber ?? -1,
     request.session.user as User

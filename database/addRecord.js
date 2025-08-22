@@ -6,20 +6,41 @@ const recordNameColumns = new Map([
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneType'],
     ['WorkOrderTypes', 'workOrderType']
 ]);
-export default function addRecord(recordTable, recordName, orderNumber, user, connectedDatabase) {
+function addRecord(record, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`insert into ${recordTable} (
-        ${recordNameColumns.get(recordTable)},
+        .prepare(`insert into ${record.recordTable} (
+        ${recordNameColumns.get(record.recordTable)},
         orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?)`)
-        .run(recordName, orderNumber === '' ? -1 : orderNumber, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        .run(record.recordName, record.orderNumber === '' ? -1 : record.orderNumber, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (connectedDatabase === undefined) {
         database.close();
     }
-    clearCacheByTableName(recordTable);
+    clearCacheByTableName(record.recordTable);
     return result.lastInsertRowid;
+}
+export function addBurialSiteStatus(burialSiteStatus, orderNumber, user, connectedDatabase) {
+    return addRecord({
+        recordTable: 'BurialSiteStatuses',
+        recordName: burialSiteStatus,
+        orderNumber
+    }, user, connectedDatabase);
+}
+export function addWorkOrderMilestoneType(workOrderMilestoneType, orderNumber, user, connectedDatabase) {
+    return addRecord({
+        recordTable: 'WorkOrderMilestoneTypes',
+        recordName: workOrderMilestoneType,
+        orderNumber
+    }, user, connectedDatabase);
+}
+export function addWorkOrderType(workOrderType, orderNumber, user, connectedDatabase) {
+    return addRecord({
+        recordTable: 'WorkOrderTypes',
+        recordName: workOrderType,
+        orderNumber
+    }, user, connectedDatabase);
 }

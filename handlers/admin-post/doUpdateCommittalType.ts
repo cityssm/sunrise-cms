@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { updateRecord } from '../../database/updateRecord.js'
+import { updateCommittalType } from '../../database/updateRecord.js'
 import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js'
 
 export default function handler(
@@ -11,8 +11,7 @@ export default function handler(
   >,
   response: Response
 ): void {
-  const success = updateRecord(
-    'CommittalTypes',
+  const success = updateCommittalType(
     request.body.committalTypeId,
     request.body.committalType,
     request.session.user as User

@@ -10,7 +10,7 @@ import addContractType from './addContractType.js';
 import addContractTypeField from './addContractTypeField.js';
 import addFeeCategory from './addFeeCategory.js';
 import addIntermentContainerType from './addIntermentContainerType.js';
-import addRecord from './addRecord.js';
+import { addBurialSiteStatus, addWorkOrderMilestoneType, addWorkOrderType } from './addRecord.js';
 import getBurialSiteStatuses from './getBurialSiteStatuses.js';
 import getBurialSiteTypes from './getBurialSiteTypes.js';
 import getCommittalTypes from './getCommittalTypes.js';
@@ -513,9 +513,9 @@ export function initializeData(connectedDatabase) {
     const burialSiteStatuses = getBurialSiteStatuses();
     if (burialSiteStatuses.length <= 0) {
         debug('No burial site statuses found, adding default statuses.');
-        addRecord('BurialSiteStatuses', 'Available', 1, initializingUser);
-        addRecord('BurialSiteStatuses', 'Reserved', 2, initializingUser);
-        addRecord('BurialSiteStatuses', 'Occupied', 3, initializingUser);
+        addBurialSiteStatus('Available', 1, initializingUser);
+        addBurialSiteStatus('Reserved', 2, initializingUser);
+        addBurialSiteStatus('Occupied', 3, initializingUser);
     }
     // Contract Types
     const contractTypes = getContractTypes();
@@ -639,15 +639,15 @@ export function initializeData(connectedDatabase) {
     const workOrderTypes = getWorkOrderTypes();
     if (workOrderTypes.length <= 0) {
         debug('No work order types found, adding default types.');
-        addRecord('WorkOrderTypes', 'Cemetery Work Order', 1, initializingUser);
+        addWorkOrderType('Cemetery Work Order', 1, initializingUser);
     }
     // Work Order Milestone Types
     const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
     if (workOrderMilestoneTypes.length <= 0) {
         debug('No work order milestone types found, adding default types.');
-        addRecord('WorkOrderMilestoneTypes', 'Funeral', 1, initializingUser);
-        addRecord('WorkOrderMilestoneTypes', 'Arrival', 2, initializingUser);
-        addRecord('WorkOrderMilestoneTypes', 'Cremation', 3, initializingUser);
-        addRecord('WorkOrderMilestoneTypes', 'Interment', 4, initializingUser);
+        addWorkOrderMilestoneType('Funeral', 1, initializingUser);
+        addWorkOrderMilestoneType('Arrival', 2, initializingUser);
+        addWorkOrderMilestoneType('Cremation', 3, initializingUser);
+        addWorkOrderMilestoneType('Interment', 4, initializingUser);
     }
 }

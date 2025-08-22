@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { updateRecord } from '../../database/updateRecord.js'
+import { updateBurialSiteStatus } from '../../database/updateRecord.js'
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
 
 export default function handler(
@@ -11,8 +11,7 @@ export default function handler(
   >,
   response: Response
 ): void {
-  const success = updateRecord(
-    'BurialSiteStatuses',
+  const success = updateBurialSiteStatus(
     request.body.burialSiteStatusId,
     request.body.burialSiteStatus,
     request.session.user as User

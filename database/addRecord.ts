@@ -14,10 +14,12 @@ const recordNameColumns = new Map<RecordTable, string>([
   ['WorkOrderTypes', 'workOrderType']
 ])
 
-export default function addRecord(
-  recordTable: RecordTable,
-  recordName: string,
-  orderNumber: number | string,
+function addRecord(
+  record: {
+    recordTable: RecordTable
+    recordName: string
+    orderNumber: number | string
+  },
   user: User,
   connectedDatabase?: sqlite.Database
 ): number {
@@ -27,16 +29,16 @@ export default function addRecord(
 
   const result = database
     .prepare(
-      `insert into ${recordTable} (
-        ${recordNameColumns.get(recordTable)},
+      `insert into ${record.recordTable} (
+        ${recordNameColumns.get(record.recordTable)},
         orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?)`
     )
     .run(
-      recordName,
-      orderNumber === '' ? -1 : orderNumber,
+      record.recordName,
+      record.orderNumber === '' ? -1 : record.orderNumber,
       user.userName,
       rightNowMillis,
       user.userName,
@@ -46,7 +48,58 @@ export default function addRecord(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  clearCacheByTableName(recordTable)
+  clearCacheByTableName(record.recordTable)
 
   return result.lastInsertRowid as number
+}
+
+export function addBurialSiteStatus(
+  burialSiteStatus: string,
+  orderNumber: number | string,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): number {
+  return addRecord(
+    {
+      recordTable: 'BurialSiteStatuses',
+      recordName: burialSiteStatus,
+      orderNumber
+    },
+    user,
+    connectedDatabase
+  )
+}
+
+export function addWorkOrderMilestoneType(
+  workOrderMilestoneType: string,
+  orderNumber: number | string,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): number {
+  return addRecord(
+    {
+      recordTable: 'WorkOrderMilestoneTypes',
+      recordName: workOrderMilestoneType,
+      orderNumber
+    },
+    user,
+    connectedDatabase
+  )
+}
+
+export function addWorkOrderType(
+  workOrderType: string,
+  orderNumber: number | string,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): number {
+  return addRecord(
+    {
+      recordTable: 'WorkOrderTypes',
+      recordName: workOrderType,
+      orderNumber
+    },
+    user,
+    connectedDatabase
+  )
 }
