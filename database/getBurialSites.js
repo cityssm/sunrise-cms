@@ -12,7 +12,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
         count = database
             .prepare(`select count(*) as recordCount
           from BurialSites l
-          left join Cemeteries m on l.cemeteryId = m.cemeteryId
+          left join Cemeteries c on l.cemeteryId = c.cemeteryId
           left join (
             select burialSiteId, count(contractId) as contractCount from Contracts
             where recordDelete_timeMillis is null
@@ -44,7 +44,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           l.burialSiteName,
           t.burialSiteType,
           l.bodyCapacity, l.crematedCapacity,
-          l.cemeteryId, m.cemeteryName, l.cemeterySvgId,
+          l.cemeteryId, c.cemeteryName, l.cemeterySvgId,
           l.burialSiteStatusId, s.burialSiteStatus
           ${includeContractCount
             ? ', ifnull(o.contractCount, 0) as contractCount'
@@ -52,7 +52,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           from BurialSites l
           left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
           left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
-          left join Cemeteries m on l.cemeteryId = m.cemeteryId
+          left join Cemeteries c on l.cemeteryId = c.cemeteryId
           ${includeContractCount
             ? `left join (
                   select burialSiteId, count(contractId) as contractCount
@@ -86,7 +86,7 @@ function buildWhereClause(filters, includeDeleted) {
     sqlWhereClause += burialSiteNameFilters.sqlWhereClause;
     sqlParameters.push(...burialSiteNameFilters.sqlParameters);
     if ((filters.cemeteryId ?? '') !== '') {
-        sqlWhereClause += ' and (m.cemeteryId = ? or m.parentCemeteryId = ?)';
+        sqlWhereClause += ' and (c.cemeteryId = ? or c.parentCemeteryId = ?)';
         sqlParameters.push(filters.cemeteryId, filters.cemeteryId);
     }
     if ((filters.burialSiteTypeId ?? '') !== '') {

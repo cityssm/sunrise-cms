@@ -11,32 +11,32 @@ export function getCemeteryByKey(cemeteryKey, connectedDatabase) {
 function _getCemetery(keyColumn, cemeteryIdOrKey, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const cemetery = database
-        .prepare(`select m.cemeteryId, m.cemeteryName, m.cemeteryKey, m.cemeteryDescription,
-        m.cemeteryLatitude, m.cemeteryLongitude, m.cemeterySvg,
-        m.cemeteryAddress1, m.cemeteryAddress2, m.cemeteryCity, m.cemeteryProvince, m.cemeteryPostalCode,
-        m.cemeteryPhoneNumber,
+        .prepare(`select c.cemeteryId, c.cemeteryName, c.cemeteryKey, c.cemeteryDescription,
+        c.cemeteryLatitude, c.cemeteryLongitude, c.cemeterySvg,
+        c.cemeteryAddress1, c.cemeteryAddress2, c.cemeteryCity, c.cemeteryProvince, c.cemeteryPostalCode,
+        c.cemeteryPhoneNumber,
 
         p.cemeteryId as parentCemeteryId, p.cemeteryName as parentCemeteryName,
         p.cemeteryLatitude as parentCemeteryLatitude, p.cemeteryLongitude as parentCemeteryLongitude,
         p.cemeterySvg as parentCemeterySvg,
 
-        m.recordCreate_userName, m.recordCreate_timeMillis,
-        m.recordUpdate_userName, m.recordUpdate_timeMillis,
-        m.recordDelete_userName, m.recordDelete_timeMillis,
+        c.recordCreate_userName, c.recordCreate_timeMillis,
+        c.recordUpdate_userName, c.recordUpdate_timeMillis,
+        c.recordDelete_userName, c.recordDelete_timeMillis,
         count(l.burialSiteId) as burialSiteCount
-        from Cemeteries m
-        left join Cemeteries p on m.parentCemeteryId = p.cemeteryId and p.recordDelete_timeMillis is null
-        left join BurialSites l on m.cemeteryId = l.cemeteryId and l.recordDelete_timeMillis is null
-        where m.${keyColumn} = ?
-          and m.recordDelete_timeMillis is null
-        group by m.cemeteryId, m.cemeteryName, m.cemeteryDescription,
-          m.cemeteryLatitude, m.cemeteryLongitude, m.cemeterySvg,
-          m.cemeteryAddress1, m.cemeteryAddress2, m.cemeteryCity, m.cemeteryProvince, m.cemeteryPostalCode,
-          m.cemeteryPhoneNumber,
+        from Cemeteries c
+        left join Cemeteries p on c.parentCemeteryId = p.cemeteryId and p.recordDelete_timeMillis is null
+        left join BurialSites l on c.cemeteryId = l.cemeteryId and l.recordDelete_timeMillis is null
+        where c.${keyColumn} = ?
+          and c.recordDelete_timeMillis is null
+        group by c.cemeteryId, c.cemeteryName, c.cemeteryDescription,
+          c.cemeteryLatitude, c.cemeteryLongitude, c.cemeterySvg,
+          c.cemeteryAddress1, c.cemeteryAddress2, c.cemeteryCity, c.cemeteryProvince, c.cemeteryPostalCode,
+          c.cemeteryPhoneNumber,
           p.cemeteryId, p.cemeteryName,
-          m.recordCreate_userName, m.recordCreate_timeMillis,
-          m.recordUpdate_userName, m.recordUpdate_timeMillis,
-          m.recordDelete_userName, m.recordDelete_timeMillis`)
+          c.recordCreate_userName, c.recordCreate_timeMillis,
+          c.recordUpdate_userName, c.recordUpdate_timeMillis,
+          c.recordDelete_userName, c.recordDelete_timeMillis`)
         .get(cemeteryIdOrKey);
     if (cemetery !== undefined) {
         cemetery.childCemeteries =

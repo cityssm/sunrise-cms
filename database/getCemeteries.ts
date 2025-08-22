@@ -19,28 +19,28 @@ export default function getCemeteries(
 
   const cemeteries = database
     .prepare(
-      `select m.cemeteryId, m.cemeteryName, m.cemeteryKey, m.cemeteryDescription,
-          m.cemeteryLatitude, m.cemeteryLongitude, m.cemeterySvg,
-          m.cemeteryAddress1, m.cemeteryAddress2,
-          m.cemeteryCity, m.cemeteryProvince, m.cemeteryPostalCode,
-          m.cemeteryPhoneNumber,
+      `select c.cemeteryId, c.cemeteryName, c.cemeteryKey, c.cemeteryDescription,
+          c.cemeteryLatitude, c.cemeteryLongitude, c.cemeterySvg,
+          c.cemeteryAddress1, c.cemeteryAddress2,
+          c.cemeteryCity, c.cemeteryProvince, c.cemeteryPostalCode,
+          c.cemeteryPhoneNumber,
           p.cemeteryId as parentCemeteryId, p.cemeteryName as parentCemeteryName,
           count(b.burialSiteId) as burialSiteCount
 
-        from Cemeteries m
-        left join Cemeteries p on m.parentCemeteryId = p.cemeteryId and p.recordDelete_timeMillis is null
-        left join BurialSites b on m.cemeteryId = b.cemeteryId and b.recordDelete_timeMillis is null
+        from Cemeteries c
+        left join Cemeteries p on c.parentCemeteryId = p.cemeteryId and p.recordDelete_timeMillis is null
+        left join BurialSites b on c.cemeteryId = b.cemeteryId and b.recordDelete_timeMillis is null
         
-        where m.recordDelete_timeMillis is null
-        ${filters?.parentCemeteryId === undefined ? '' : 'and m.parentCemeteryId = ?'}
+        where c.recordDelete_timeMillis is null
+        ${filters?.parentCemeteryId === undefined ? '' : 'and c.parentCemeteryId = ?'}
 
-        group by m.cemeteryId, m.cemeteryName, m.cemeteryDescription,
-          m.cemeteryLatitude, m.cemeteryLongitude, m.cemeterySvg,
-          m.cemeteryAddress1, m.cemeteryAddress2, m.cemeteryCity, m.cemeteryProvince, m.cemeteryPostalCode,
-          m.cemeteryPhoneNumber,
+        group by c.cemeteryId, c.cemeteryName, c.cemeteryDescription,
+          c.cemeteryLatitude, c.cemeteryLongitude, c.cemeterySvg,
+          c.cemeteryAddress1, c.cemeteryAddress2, c.cemeteryCity, c.cemeteryProvince, c.cemeteryPostalCode,
+          c.cemeteryPhoneNumber,
           p.cemeteryId, p.cemeteryName
 
-        order by m.cemeteryName, m.cemeteryId`
+        order by c.cemeteryName, c.cemeteryId`
     )
     .all(sqlParameters) as Cemetery[]
 
