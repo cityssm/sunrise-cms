@@ -1,38 +1,35 @@
-import addLocalUser from '../../database/addLocalUser.js';
+import sqlite from 'better-sqlite3';
+import Debug from 'debug';
+import addUser from '../../database/addUser.js';
+import getUsers from '../../database/getUsers.js';
+import { DEBUG_NAMESPACE } from '../../debug.config.js';
+import { sunriseDB } from '../../helpers/database.helpers.js';
+const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddUser`);
 export default function handler(request, response) {
-    const user = request.session?.user;
-    if (!user) {
-        response.status(403).json({ success: false, message: 'Unauthorized' });
-        return;
-    }
-    const { userName, displayName, password, canUpdateCemeteries = '0', canUpdateContracts = '0', canUpdateWorkOrders = '0', isAdmin = '0' } = request.body;
-    if (!userName || !password) {
-        response.status(400).json({
-            success: false,
-            message: 'Username and password are required'
-        });
-        return;
-    }
+    const { userName, canUpdateCemeteries = '0', canUpdateContracts = '0', canUpdateWorkOrders = '0', isAdmin = '0' } = request.body;
+    let database;
     try {
-        const userId = addLocalUser({
+        database = sqlite(sunriseDB);
+        const success = addUser({
             userName,
-            displayName,
-            password,
             canUpdateCemeteries: canUpdateCemeteries === '1',
             canUpdateContracts: canUpdateContracts === '1',
             canUpdateWorkOrders: canUpdateWorkOrders === '1',
             isAdmin: isAdmin === '1'
-        }, user);
+        }, request.session.user, database);
+        const users = getUsers(database);
         response.json({
-            success: true,
-            message: 'User created successfully',
-            userId
+            success,
+            users
         });
     }
     catch (error) {
-        response.status(500).json({
-            success: false,
-            message: error instanceof Error ? error.message : 'Failed to create user'
-        });
+        debug(error);
+        response
+            .status(500)
+            .json({ errorMessage: 'Database error', success: false });
+    }
+    finally {
+        database?.close();
     }
 }

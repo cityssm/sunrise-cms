@@ -1,10 +1,5 @@
-import deleteLocalUser from '../../database/deleteLocalUser.js';
+import deleteUser from '../../database/deleteUser.js';
 export default function handler(request, response) {
-    const user = request.session?.user;
-    if (!user) {
-        response.status(403).json({ success: false, message: 'Unauthorized' });
-        return;
-    }
     const { userId } = request.body;
     if (!userId) {
         response.status(400).json({
@@ -14,7 +9,7 @@ export default function handler(request, response) {
         return;
     }
     try {
-        const success = deleteLocalUser(parseInt(userId, 10), user);
+        const success = deleteUser(Number.parseInt(userId, 10), request.session.user);
         if (success) {
             response.json({
                 success: true,

@@ -515,3 +515,14 @@ export interface Setting {
 
   recordUpdate_timeMillis: number
 }
+
+export interface DatabaseUser extends Record {
+  userName: string
+
+  isActive: boolean
+
+  canUpdateCemeteries: boolean
+  canUpdateContracts: boolean
+  canUpdateWorkOrders: boolean
+  isAdmin: boolean
+}

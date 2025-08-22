@@ -511,22 +511,13 @@ const createStatements = [
    */
 
   `CREATE TABLE if not exists Users (
-    userId integer not null primary key autoincrement,
-    userName varchar(30) not null unique,
-    displayName varchar(100),
-    passwordHash varchar(200),
+    userName varchar(30) not null primary key,
     isActive bit not null default 1,
     canUpdateCemeteries bit not null default 0,
     canUpdateContracts bit not null default 0,
     canUpdateWorkOrders bit not null default 0,
     isAdmin bit not null default 0,
-    ${recordColumns})`,
-
-  `CREATE INDEX if not exists idx_Users_userName
-    on Users (userName)`,
-
-  `CREATE INDEX if not exists idx_Users_isActive
-    on Users (isActive, userName)`
+    ${recordColumns}) without rowid`
 ]
 
 const initializingUser: User = {
@@ -547,7 +538,7 @@ export function initializeDatabase(
 
   const row = sunriseDB
     .prepare(
-      "select name from sqlite_master where type = 'table' and name = 'ContractAttachments'"
+      "select name from sqlite_master where type = 'table' and name = 'Users'"
     )
     .get()
 

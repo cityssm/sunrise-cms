@@ -8,7 +8,6 @@ import {
 import Debug from 'debug'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
-import authenticateLocalUser from '../database/authenticateLocalUser.js'
 
 import { getConfigProperty } from './config.helpers.js'
 
@@ -56,11 +55,6 @@ export async function authenticate(
 ): Promise<boolean> {
   if ((userName ?? '') === '' || (password ?? '') === '') {
     return false
-  }
-
-  // First try local user authentication
-  if (authenticateLocalUser(userName!, password!)) {
-    return true
   }
 
   // Fallback to external authenticator

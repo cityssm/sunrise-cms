@@ -1,5 +1,5 @@
+import getUserFromDatabase from '../database/getUser.js'
 import getUserSettings from '../database/getUserSettings.js'
-import { getLocalUser } from '../database/getLocalUsers.js'
 
 import { getUserNameFromApiKey } from './cache/apiKeys.cache.js'
 import { getConfigProperty } from './config.helpers.js'
@@ -55,17 +55,18 @@ export function getUser(userName: string): User | undefined {
   const userNameLowerCase = userName.toLowerCase()
 
   // First check local users in database
-  const localUser = getLocalUser(userNameLowerCase)
-  if (localUser && localUser.isActive) {
+  const localUser = getUserFromDatabase(userNameLowerCase)
+
+  if (localUser?.isActive ?? false) {
     const userSettings = getUserSettings(userName)
 
     return {
       userName: userNameLowerCase,
       userProperties: {
-        canUpdateCemeteries: localUser.canUpdateCemeteries,
-        canUpdateContracts: localUser.canUpdateContracts,
-        canUpdateWorkOrders: localUser.canUpdateWorkOrders,
-        isAdmin: localUser.isAdmin
+        canUpdateCemeteries: localUser?.canUpdateCemeteries ?? false,
+        canUpdateContracts: localUser?.canUpdateContracts ?? false,
+        canUpdateWorkOrders: localUser?.canUpdateWorkOrders ?? false,
+        isAdmin: localUser?.isAdmin ?? false
       },
       userSettings
     } satisfies User

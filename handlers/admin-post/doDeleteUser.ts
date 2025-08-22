@@ -1,15 +1,8 @@
 import type { Request, Response } from 'express'
 
-import deleteLocalUser from '../../database/deleteLocalUser.js'
+import deleteUser from '../../database/deleteUser.js'
 
 export default function handler(request: Request, response: Response): void {
-  const user = request.session?.user
-
-  if (!user) {
-    response.status(403).json({ success: false, message: 'Unauthorized' })
-    return
-  }
-
   const { userId } = request.body as { userId: string }
 
   if (!userId) {
@@ -21,7 +14,10 @@ export default function handler(request: Request, response: Response): void {
   }
 
   try {
-    const success = deleteLocalUser(parseInt(userId, 10), user)
+    const success = deleteUser(
+      Number.parseInt(userId, 10),
+      request.session.user as User
+    )
 
     if (success) {
       response.json({

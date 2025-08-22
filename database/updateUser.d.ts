@@ -1,5 +1,5 @@
 import sqlite from 'better-sqlite3';
-export interface UpdateLocalUserOptions {
+export interface UpdateUserForm {
     userName: string;
     displayName?: string;
     password?: string;
@@ -9,5 +9,4 @@ export interface UpdateLocalUserOptions {
     isAdmin: boolean;
     isActive: boolean;
 }
-export declare function updateLocalUser(userId: number, options: UpdateLocalUserOptions, user: User, connectedDatabase?: sqlite.Database): boolean;
-export default updateLocalUser;
+export default function updateUser(updateForm: UpdateUserForm, user: User, connectedDatabase?: sqlite.Database): boolean;

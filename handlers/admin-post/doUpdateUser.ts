@@ -1,28 +1,18 @@
 import type { Request, Response } from 'express'
 
-import updateLocalUser from '../../database/updateLocalUser.js'
+import updateUser from '../../database/updateUser.js'
 
 export default function handler(request: Request, response: Response): void {
-  const user = request.session?.user
-
-  if (!user) {
-    response.status(403).json({ success: false, message: 'Unauthorized' })
-    return
-  }
 
   const {
-    userId,
-    displayName,
-    password,
+    userName,
     canUpdateCemeteries = '0',
     canUpdateContracts = '0',
     canUpdateWorkOrders = '0',
     isAdmin = '0',
     isActive = '0'
   } = request.body as {
-    userId: string
-    displayName?: string
-    password?: string
+    userName: string
     canUpdateCemeteries?: string
     canUpdateContracts?: string
     canUpdateWorkOrders?: string
@@ -30,28 +20,19 @@ export default function handler(request: Request, response: Response): void {
     isActive?: string
   }
 
-  if (!userId) {
-    response.status(400).json({
-      success: false,
-      message: 'User ID is required'
-    })
-    return
-  }
-
   try {
-    const success = updateLocalUser(
-      parseInt(userId, 10),
+    const success = updateUser(
       {
-        userName: '', // userName is not updated through this endpoint
-        displayName,
-        password: password || undefined,
+        userName,
+        isActive: isActive === '1',
+
         canUpdateCemeteries: canUpdateCemeteries === '1',
         canUpdateContracts: canUpdateContracts === '1',
         canUpdateWorkOrders: canUpdateWorkOrders === '1',
+
         isAdmin: isAdmin === '1',
-        isActive: isActive === '1'
       },
-      user
+      request.session.user as User
     )
 
     if (success) {
