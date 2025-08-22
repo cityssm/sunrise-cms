@@ -38,35 +38,35 @@ async function _getBurialSite(
 
   const burialSite = database
     .prepare(
-      `select l.burialSiteId,
-        l.burialSiteTypeId, t.burialSiteType,
-        l.burialSiteNameSegment1,
-        l.burialSiteNameSegment2,
-        l.burialSiteNameSegment3,
-        l.burialSiteNameSegment4,
-        l.burialSiteNameSegment5,
-        l.burialSiteName,
-        l.burialSiteStatusId, s.burialSiteStatus,
+      `select b.burialSiteId,
+        b.burialSiteTypeId, t.burialSiteType,
+        b.burialSiteNameSegment1,
+        b.burialSiteNameSegment2,
+        b.burialSiteNameSegment3,
+        b.burialSiteNameSegment4,
+        b.burialSiteNameSegment5,
+        b.burialSiteName,
+        b.burialSiteStatusId, s.burialSiteStatus,
 
-        l.bodyCapacity, l.crematedCapacity,
+        b.bodyCapacity, b.crematedCapacity,
         t.bodyCapacityMax, t.crematedCapacityMax,
 
-        l.cemeteryId, c.cemeteryName, c.cemeteryKey,
+        b.cemeteryId, c.cemeteryName, c.cemeteryKey,
         c.cemeteryLatitude, c.cemeteryLongitude,
-        c.cemeterySvg, l.cemeterySvgId, l.burialSiteImage,
-        l.burialSiteLatitude, l.burialSiteLongitude,
+        c.cemeterySvg, b.cemeterySvgId, b.burialSiteImage,
+        b.burialSiteLatitude, b.burialSiteLongitude,
 
-        l.recordDelete_userName, l.recordDelete_timeMillis
+        b.recordDelete_userName, b.recordDelete_timeMillis
 
-        from BurialSites l
-        left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
-        left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
-        left join Cemeteries c on l.cemeteryId = c.cemeteryId
+        from BurialSites b
+        left join BurialSiteTypes t on b.burialSiteTypeId = t.burialSiteTypeId
+        left join BurialSiteStatuses s on b.burialSiteStatusId = s.burialSiteStatusId
+        left join Cemeteries c on b.cemeteryId = c.cemeteryId
 
-        where l.${keyColumn} = ?
-        ${includeDeleted ? '' : ' and l.recordDelete_timeMillis is null '}
+        where b.${keyColumn} = ?
+        ${includeDeleted ? '' : ' and b.recordDelete_timeMillis is null '}
         
-        order by l.burialSiteId`
+        order by b.burialSiteId`
     )
     .get(burialSiteIdOrLotName) as BurialSite | undefined
 
