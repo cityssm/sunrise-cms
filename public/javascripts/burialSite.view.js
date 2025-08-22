@@ -1,18 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-(function () {
+(() => {
     /*
      * Map
      */
-    var _a, _b, _c, _d, _e;
-    var sunrise = exports.sunrise;
-    var mapContainerElement = document.querySelector('#burialSite--leaflet');
+    const sunrise = exports.sunrise;
+    const mapContainerElement = document.querySelector('#burialSite--leaflet');
     if (mapContainerElement !== null) {
-        var mapLatitude = Number.parseFloat((_a = mapContainerElement.dataset.latitude) !== null && _a !== void 0 ? _a : '');
-        var mapLongitude = Number.parseFloat((_b = mapContainerElement.dataset.longitude) !== null && _b !== void 0 ? _b : '');
-        var mapCoordinates = [mapLatitude, mapLongitude];
-        // eslint-disable-next-line unicorn/no-array-callback-reference, unicorn/no-array-method-this-argument
-        var map = new L.Map(mapContainerElement, {
+        const mapLatitude = Number.parseFloat(mapContainerElement.dataset.latitude ?? '');
+        const mapLongitude = Number.parseFloat(mapContainerElement.dataset.longitude ?? '');
+        const mapCoordinates = [mapLatitude, mapLongitude];
+        const map = new L.Map(mapContainerElement, {
             scrollWheelZoom: false
         });
         map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom);
@@ -25,37 +23,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
     /*
      * Image
      */
-    var svgContainerElement = document.querySelector('#burialSite--cemeterySvg');
+    const svgContainerElement = document.querySelector('#burialSite--cemeterySvg');
     if (svgContainerElement !== null) {
-        sunrise.highlightMap(svgContainerElement, (_c = svgContainerElement.dataset.cemeterySvgId) !== null && _c !== void 0 ? _c : '', 'success');
+        sunrise.highlightMap(svgContainerElement, svgContainerElement.dataset.cemeterySvgId ?? '', 'success');
     }
     /*
      * Contracts
      */
-    (_d = document
-        .querySelector('#burialSite--contractsToggle')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', function () {
-        var tableRowElements = document.querySelectorAll('#burialSite--contractsTbody tr[data-is-active="false"]');
-        for (var _i = 0, tableRowElements_1 = tableRowElements; _i < tableRowElements_1.length; _i++) {
-            var tableRowElement = tableRowElements_1[_i];
+    document
+        .querySelector('#burialSite--contractsToggle')
+        ?.addEventListener('click', () => {
+        const tableRowElements = document.querySelectorAll('#burialSite--contractsTbody tr[data-is-active="false"]');
+        for (const tableRowElement of tableRowElements) {
             tableRowElement.classList.toggle('is-hidden');
         }
     });
     /*
      * Restore Deleted
      */
-    (_e = document
-        .querySelector('button.is-restore-burial-site-button')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', function (clickEvent) {
-        var _a;
+    document
+        .querySelector('button.is-restore-burial-site-button')
+        ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
-        var buttonElement = clickEvent.currentTarget;
-        var burialSiteId = (_a = buttonElement.dataset.burialSiteId) !== null && _a !== void 0 ? _a : '';
+        const buttonElement = clickEvent.currentTarget;
+        const burialSiteId = buttonElement.dataset.burialSiteId ?? '';
         if (burialSiteId === '') {
             return;
         }
         function doRestore() {
-            cityssm.postJSON("".concat(sunrise.urlPrefix, "/burialSites/doRestoreBurialSite"), { burialSiteId: burialSiteId }, function (rawResponseJSON) {
-                var _a;
-                var responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doRestoreBurialSite`, { burialSiteId }, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     globalThis.location.reload();
                 }
@@ -63,7 +60,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Restoring Burial Site',
-                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : ''
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
