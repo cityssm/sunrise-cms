@@ -154,9 +154,9 @@ declare const exports: Record<string, unknown>
             ${contract.contractStartDateString}
           </td><td>
             ${
-              contract.contractEndDate
-                ? contract.contractEndDateString
-                : '<span class="has-text-grey">(No End Date)</span>'
+              contract.contractEndDate === null && contract.contractEndDateString === undefined
+                ? '<span class="has-text-grey">(No End Date)</span>'
+                : contract.contractEndDateString
             }
           </td><td>
             ${
@@ -180,14 +180,14 @@ declare const exports: Record<string, unknown>
 
     searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
       <thead><tr>
-      <th class="has-width-1"></th>
-      <th>Contract Type</th>
-      <th>Burial Site</th>
-      <th>Contract Date</th>
-      <th>End Date</th>
-      <th>Contacts</th>
-      <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
-      <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Print</span></th>
+        <th class="has-width-1"></th>
+        <th>Contract Type</th>
+        <th>Burial Site</th>
+        <th>Contract Date</th>
+        <th>End Date</th>
+        <th>Contacts</th>
+        <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
+        <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Print</span></th>
       </tr></thead>
       <table>`
 

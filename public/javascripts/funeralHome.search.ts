@@ -20,6 +20,32 @@ declare const exports: Record<string, unknown>
     '#container--searchResults'
   ) as HTMLElement
 
+  function buildFuneralHomeAddressHTML(funeralHome: FuneralHome): string {
+    let addressHTML = ''
+
+    if (funeralHome.funeralHomeAddress1 !== '') {
+      addressHTML += `${cityssm.escapeHTML(funeralHome.funeralHomeAddress1)}<br />`
+    }
+
+    if (funeralHome.funeralHomeAddress2 !== '') {
+      addressHTML += `${cityssm.escapeHTML(funeralHome.funeralHomeAddress2)}<br />`
+    }
+
+    if (
+      funeralHome.funeralHomeCity !== '' ||
+      funeralHome.funeralHomeProvince !== ''
+    ) {
+      addressHTML += `${cityssm.escapeHTML(funeralHome.funeralHomeCity)},
+        ${cityssm.escapeHTML(funeralHome.funeralHomeProvince)}<br />`
+    }
+
+    if (funeralHome.funeralHomePostalCode !== '') {
+      addressHTML += cityssm.escapeHTML(funeralHome.funeralHomePostalCode)
+    }
+
+    return addressHTML
+  }
+
   function renderResults(): void {
     // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
@@ -66,28 +92,7 @@ declare const exports: Record<string, unknown>
               )}
             </a>
           </td><td>
-            ${
-              funeralHome.funeralHomeAddress1 === ''
-                ? ''
-                : `${cityssm.escapeHTML(funeralHome.funeralHomeAddress1)}<br />`
-            }
-            ${
-              funeralHome.funeralHomeAddress2 === ''
-                ? ''
-                : `${cityssm.escapeHTML(funeralHome.funeralHomeAddress2)}<br />`
-            }
-            ${
-              funeralHome.funeralHomeCity !== '' ||
-              funeralHome.funeralHomeProvince !== ''
-                ? `${cityssm.escapeHTML(funeralHome.funeralHomeCity)},
-                    ${cityssm.escapeHTML(funeralHome.funeralHomeProvince)}<br />`
-                : ''
-            }
-            ${
-              funeralHome.funeralHomePostalCode === ''
-                ? ''
-                : cityssm.escapeHTML(funeralHome.funeralHomePostalCode)
-            }
+            ${buildFuneralHomeAddressHTML(funeralHome)}
           </td><td>
             ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
           </td>

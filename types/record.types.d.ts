@@ -119,7 +119,7 @@ export interface Contract extends Record {
     cemeteryName?: string;
     contractStartDate: number;
     contractStartDateString: string;
-    contractEndDate?: number;
+    contractEndDate?: number | null;
     contractEndDateString?: string;
     contractIsActive: 0 | 1;
     contractIsFuture: 0 | 1;

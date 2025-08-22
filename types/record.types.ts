@@ -169,7 +169,7 @@ export interface Contract extends Record {
   contractStartDate: number
   contractStartDateString: string
 
-  contractEndDate?: number
+  contractEndDate?: number | null
   contractEndDateString?: string
 
   contractIsActive: 0 | 1
