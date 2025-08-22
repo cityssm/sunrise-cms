@@ -504,7 +504,29 @@ const createStatements = [
     settingValue varchar(500),
     previousSettingValue varchar(500),
     recordUpdate_timeMillis integer not null,
-    primary key (userName, settingKey)) without rowid`
+    primary key (userName, settingKey)) without rowid`,
+
+  /*
+   * Local Users
+   */
+
+  `CREATE TABLE if not exists Users (
+    userId integer not null primary key autoincrement,
+    userName varchar(30) not null unique,
+    displayName varchar(100),
+    passwordHash varchar(200),
+    isActive bit not null default 1,
+    canUpdateCemeteries bit not null default 0,
+    canUpdateContracts bit not null default 0,
+    canUpdateWorkOrders bit not null default 0,
+    isAdmin bit not null default 0,
+    ${recordColumns})`,
+
+  `CREATE INDEX if not exists idx_Users_userName
+    on Users (userName)`,
+
+  `CREATE INDEX if not exists idx_Users_isActive
+    on Users (isActive, userName)`
 ]
 
 const initializingUser: User = {

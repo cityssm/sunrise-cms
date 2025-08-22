@@ -5,6 +5,7 @@ import handler_database from '../handlers/admin-get/database.js';
 import handler_fees from '../handlers/admin-get/fees.js';
 import handler_settings from '../handlers/admin-get/settings.js';
 import handler_tables from '../handlers/admin-get/tables.js';
+import handler_users from '../handlers/admin-get/users.js';
 import handler_doAddBurialSiteStatus from '../handlers/admin-post/doAddBurialSiteStatus.js';
 import handler_doAddBurialSiteType from '../handlers/admin-post/doAddBurialSiteType.js';
 import handler_doAddBurialSiteTypeField from '../handlers/admin-post/doAddBurialSiteTypeField.js';
@@ -17,6 +18,7 @@ import handler_doAddFeeCategory from '../handlers/admin-post/doAddFeeCategory.js
 import handler_doAddIntermentContainerType from '../handlers/admin-post/doAddIntermentContainerType.js';
 import handler_doAddWorkOrderMilestoneType from '../handlers/admin-post/doAddWorkOrderMilestoneType.js';
 import handler_doAddWorkOrderType from '../handlers/admin-post/doAddWorkOrderType.js';
+import handler_doAddUser from '../handlers/admin-post/doAddUser.js';
 import handler_doBackupDatabase from '../handlers/admin-post/doBackupDatabase.js';
 import handler_doCleanupDatabase from '../handlers/admin-post/doCleanupDatabase.js';
 import handler_doDeleteBurialSiteStatus from '../handlers/admin-post/doDeleteBurialSiteStatus.js';
@@ -31,6 +33,7 @@ import handler_doDeleteFeeCategory from '../handlers/admin-post/doDeleteFeeCateg
 import handler_doDeleteIntermentContainerType from '../handlers/admin-post/doDeleteIntermentContainerType.js';
 import handler_doDeleteWorkOrderMilestoneType from '../handlers/admin-post/doDeleteWorkOrderMilestoneType.js';
 import handler_doDeleteWorkOrderType from '../handlers/admin-post/doDeleteWorkOrderType.js';
+import handler_doDeleteUser from '../handlers/admin-post/doDeleteUser.js';
 import handler_doMoveBurialSiteStatusDown from '../handlers/admin-post/doMoveBurialSiteStatusDown.js';
 import handler_doMoveBurialSiteStatusUp from '../handlers/admin-post/doMoveBurialSiteStatusUp.js';
 import handler_doMoveBurialSiteTypeDown from '../handlers/admin-post/doMoveBurialSiteTypeDown.js';
@@ -68,6 +71,7 @@ import handler_doUpdateIntermentContainerType from '../handlers/admin-post/doUpd
 import handler_doUpdateSetting from '../handlers/admin-post/doUpdateSetting.js';
 import handler_doUpdateWorkOrderMilestoneType from '../handlers/admin-post/doUpdateWorkOrderMilestoneType.js';
 import handler_doUpdateWorkOrderType from '../handlers/admin-post/doUpdateWorkOrderType.js';
+import handler_doUpdateUser from '../handlers/admin-post/doUpdateUser.js';
 // Ntfy Startup
 export const router = Router();
 /*
@@ -126,6 +130,13 @@ router.post('/doDeleteBurialSiteTypeField', handler_doDeleteBurialSiteTypeField)
  * Config Tables
  */
 router.get('/tables', handler_tables);
+/*
+ * Users
+ */
+router.get('/users', handler_users);
+router.post('/doAddUser', handler_doAddUser);
+router.post('/doUpdateUser', handler_doUpdateUser);
+router.post('/doDeleteUser', handler_doDeleteUser);
 // Config Tables - Work Order Types
 router.post('/doAddWorkOrderType', handler_doAddWorkOrderType);
 router.post('/doUpdateWorkOrderType', handler_doUpdateWorkOrderType);

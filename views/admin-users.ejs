@@ -1,0 +1,407 @@
+<%- include('_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('_menu-admin'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li>
+          <a href="#">
+            <span class="icon is-small"><i class="fa-solid fa-cog"></i></span>
+            <span>Administrator Tools</span>
+          </a>
+        </li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            User Management
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="columns is-vcentered">
+      <div class="column">
+        <h1 class="title is-1">
+          User Management
+        </h1>
+      </div>
+      <div class="column is-narrow">
+        <button class="button is-primary" id="button--addUser" type="button">
+          <span class="icon">
+            <i class="fa-solid fa-plus"></i>
+          </span>
+          <span>Add User</span>
+        </button>
+      </div>
+    </div>
+
+    <% if (users.length === 0) { %>
+      <div class="message">
+        <div class="message-body">
+          <p><strong>No local users found.</strong></p>
+          <p>Users are currently managed through configuration files. You can create local users that are managed through this interface.</p>
+        </div>
+      </div>
+    <% } else { %>
+      <table class="table is-striped is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Display Name</th>
+            <th>Status</th>
+            <th>Permissions</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (const user of users) { %>
+            <tr>
+              <td>
+                <strong><%= user.userName %></strong>
+              </td>
+              <td>
+                <%= user.displayName || '' %>
+              </td>
+              <td>
+                <% if (user.isActive) { %>
+                  <span class="tag is-success">Active</span>
+                <% } else { %>
+                  <span class="tag is-danger">Inactive</span>
+                <% } %>
+              </td>
+              <td>
+                <div class="tags">
+                  <% if (user.isAdmin) { %>
+                    <span class="tag is-danger">Admin</span>
+                  <% } %>
+                  <% if (user.canUpdateCemeteries) { %>
+                    <span class="tag is-info">Cemeteries</span>
+                  <% } %>
+                  <% if (user.canUpdateContracts) { %>
+                    <span class="tag is-info">Contracts</span>
+                  <% } %>
+                  <% if (user.canUpdateWorkOrders) { %>
+                    <span class="tag is-info">Work Orders</span>
+                  <% } %>
+                </div>
+              </td>
+              <td>
+                <div class="buttons are-small">
+                  <button class="button is-light" type="button" data-edit-user="<%= user.userId %>" data-username="<%= user.userName %>" data-display-name="<%= user.displayName || '' %>" data-is-active="<%= user.isActive ? '1' : '0' %>" data-can-update-cemeteries="<%= user.canUpdateCemeteries ? '1' : '0' %>" data-can-update-contracts="<%= user.canUpdateContracts ? '1' : '0' %>" data-can-update-work-orders="<%= user.canUpdateWorkOrders ? '1' : '0' %>" data-is-admin="<%= user.isAdmin ? '1' : '0' %>">
+                    <span class="icon">
+                      <i class="fa-solid fa-edit"></i>
+                    </span>
+                    <span>Edit</span>
+                  </button>
+                  <button class="button is-danger" type="button" data-delete-user="<%= user.userId %>" data-username="<%= user.userName %>">
+                    <span class="icon">
+                      <i class="fa-solid fa-trash"></i>
+                    </span>
+                    <span>Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal" id="modal--addUser">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Add User</p>
+      <button class="delete" aria-label="close" type="button"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--addUser">
+        <div class="field">
+          <label class="label" for="userName">Username</label>
+          <div class="control">
+            <input class="input" id="userName" name="userName" type="text" required />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="displayName">Display Name</label>
+          <div class="control">
+            <input class="input" id="displayName" name="displayName" type="text" />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="password">Password</label>
+          <div class="control">
+            <input class="input" id="password" name="password" type="password" required />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Permissions</label>
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" name="canUpdateCemeteries" value="1" />
+              Can Update Cemeteries
+            </label>
+          </div>
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" name="canUpdateContracts" value="1" />
+              Can Update Contracts
+            </label>
+          </div>
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" name="canUpdateWorkOrders" value="1" />
+              Can Update Work Orders
+            </label>
+          </div>
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" name="isAdmin" value="1" />
+              Administrator
+            </label>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-primary" id="button--saveUser" type="button">Save</button>
+      <button class="button" type="button" data-modal-close>Cancel</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal" id="modal--editUser">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Edit User</p>
+      <button class="delete" aria-label="close" type="button"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--editUser">
+        <input type="hidden" id="edit_userId" name="userId" />
+        <div class="field">
+          <label class="label" for="edit_userName">Username</label>
+          <div class="control">
+            <input class="input" id="edit_userName" name="userName" type="text" readonly />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="edit_displayName">Display Name</label>
+          <div class="control">
+            <input class="input" id="edit_displayName" name="displayName" type="text" />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="edit_password">New Password (leave blank to keep current)</label>
+          <div class="control">
+            <input class="input" id="edit_password" name="password" type="password" />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Status</label>
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" id="edit_isActive" name="isActive" value="1" />
+              Active
+            </label>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Permissions</label>
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" id="edit_canUpdateCemeteries" name="canUpdateCemeteries" value="1" />
+              Can Update Cemeteries
+            </label>
+          </div>
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" id="edit_canUpdateContracts" name="canUpdateContracts" value="1" />
+              Can Update Contracts
+            </label>
+          </div>
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" id="edit_canUpdateWorkOrders" name="canUpdateWorkOrders" value="1" />
+              Can Update Work Orders
+            </label>
+          </div>
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" id="edit_isAdmin" name="isAdmin" value="1" />
+              Administrator
+            </label>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-primary" id="button--updateUser" type="button">Update</button>
+      <button class="button" type="button" data-modal-close>Cancel</button>
+    </footer>
+  </div>
+</div>
+
+<script>
+// Modal management
+document.addEventListener('DOMContentLoaded', () => {
+  // Modal toggle functions
+  function openModal(modalId) {
+    document.getElementById(modalId).classList.add('is-active')
+  }
+  
+  function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('is-active')
+    // Reset forms
+    if (modalId === 'modal--addUser') {
+      document.getElementById('form--addUser').reset()
+    } else if (modalId === 'modal--editUser') {
+      document.getElementById('form--editUser').reset()
+    }
+  }
+
+  // Add user modal
+  document.getElementById('button--addUser').addEventListener('click', () => {
+    openModal('modal--addUser')
+  })
+
+  // Edit user buttons
+  document.querySelectorAll('[data-edit-user]').forEach(button => {
+    button.addEventListener('click', () => {
+      const userId = button.dataset.editUser
+      const userName = button.dataset.username
+      const displayName = button.dataset.displayName
+      const isActive = button.dataset.isActive === '1'
+      const canUpdateCemeteries = button.dataset.canUpdateCemeteries === '1'
+      const canUpdateContracts = button.dataset.canUpdateContracts === '1'
+      const canUpdateWorkOrders = button.dataset.canUpdateWorkOrders === '1'
+      const isAdmin = button.dataset.isAdmin === '1'
+
+      document.getElementById('edit_userId').value = userId
+      document.getElementById('edit_userName').value = userName
+      document.getElementById('edit_displayName').value = displayName
+      document.getElementById('edit_isActive').checked = isActive
+      document.getElementById('edit_canUpdateCemeteries').checked = canUpdateCemeteries
+      document.getElementById('edit_canUpdateContracts').checked = canUpdateContracts
+      document.getElementById('edit_canUpdateWorkOrders').checked = canUpdateWorkOrders
+      document.getElementById('edit_isAdmin').checked = isAdmin
+
+      openModal('modal--editUser')
+    })
+  })
+
+  // Close modal buttons
+  document.querySelectorAll('[data-modal-close], .modal-background, .delete').forEach(button => {
+    button.addEventListener('click', (event) => {
+      const modal = event.target.closest('.modal')
+      if (modal) {
+        closeModal(modal.id)
+      }
+    })
+  })
+
+  // Save user
+  document.getElementById('button--saveUser').addEventListener('click', async () => {
+    const form = document.getElementById('form--addUser')
+    const formData = new FormData(form)
+    
+    // Add CSRF token
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    formData.append('_csrf', csrfToken)
+    
+    try {
+      const response = await fetch('<%= urlPrefix %>/admin/doAddUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(formData)
+      })
+      
+      const result = await response.json()
+      
+      if (result.success) {
+        location.reload()
+      } else {
+        alert('Error: ' + result.message)
+      }
+    } catch (error) {
+      alert('Error creating user: ' + error.message)
+    }
+  })
+
+  // Update user
+  document.getElementById('button--updateUser').addEventListener('click', async () => {
+    const form = document.getElementById('form--editUser')
+    const formData = new FormData(form)
+    
+    // Add CSRF token
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    formData.append('_csrf', csrfToken)
+    
+    try {
+      const response = await fetch('<%= urlPrefix %>/admin/doUpdateUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(formData)
+      })
+      
+      const result = await response.json()
+      
+      if (result.success) {
+        location.reload()
+      } else {
+        alert('Error: ' + result.message)
+      }
+    } catch (error) {
+      alert('Error updating user: ' + error.message)
+    }
+  })
+
+  // Delete user buttons
+  document.querySelectorAll('[data-delete-user]').forEach(button => {
+    button.addEventListener('click', async () => {
+      const userId = button.dataset.deleteUser
+      const userName = button.dataset.username
+      
+      if (confirm(`Are you sure you want to delete user "${userName}"?`)) {
+        // Add CSRF token
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        const formData = new URLSearchParams({ userId, _csrf: csrfToken })
+        
+        try {
+          const response = await fetch('<%= urlPrefix %>/admin/doDeleteUser', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData
+          })
+          
+          const result = await response.json()
+          
+          if (result.success) {
+            location.reload()
+          } else {
+            alert('Error: ' + result.message)
+          }
+        } catch (error) {
+          alert('Error deleting user: ' + error.message)
+        }
+      }
+    })
+  })
+})
+</script>
+
+<%- include('_footerB'); -%>
