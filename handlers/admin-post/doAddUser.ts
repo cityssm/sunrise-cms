@@ -12,14 +12,12 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddUser`)
 export default function handler(request: Request, response: Response): void {
   const {
     userName,
-
     canUpdateCemeteries = '0',
     canUpdateContracts = '0',
     canUpdateWorkOrders = '0',
     isAdmin = '0'
   } = request.body as {
     userName: string
-
     canUpdateCemeteries?: string
     canUpdateContracts?: string
     canUpdateWorkOrders?: string
@@ -34,7 +32,6 @@ export default function handler(request: Request, response: Response): void {
     const success = addUser(
       {
         userName,
-
         canUpdateCemeteries: canUpdateCemeteries === '1',
         canUpdateContracts: canUpdateContracts === '1',
         canUpdateWorkOrders: canUpdateWorkOrders === '1',

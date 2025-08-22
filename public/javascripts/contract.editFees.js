@@ -644,7 +644,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.openHtmlModal('contract-addTransaction', {
             onshow(modalElement) {
                 sunrise.populateAliases(modalElement);
-                modalElement.querySelector('#contractTransactionAdd--contractId').value = contractId.toString();
+                modalElement.querySelector('#contractTransactionAdd--contractId').value = contractId;
                 const feeGrandTotal = getFeeGrandTotal();
                 const transactionGrandTotal = getTransactionGrandTotal();
                 transactionAmountElement = modalElement.querySelector('#contractTransactionAdd--transactionAmount');
