@@ -29,7 +29,50 @@ declare const exports: Record<string, unknown>
     '#searchFilter--offset'
   ) as HTMLInputElement
 
-  // eslint-disable-next-line complexity
+  function buildRelatedLiHTML(workOrder: WorkOrder): string {
+    let relatedHTML = ''
+
+    for (const burialSite of workOrder.workOrderBurialSites ?? []) {
+      relatedHTML += `<li class="has-tooltip-left"
+          data-tooltip="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
+          <span class="fa-li">
+            <i class="fa-solid fa-map-pin"
+              aria-label="Burial Site"></i>
+          </span>
+          ${cityssm.escapeHTML(
+            (burialSite.burialSiteName ?? '') === ''
+              ? '(No Burial Site Name)'
+              : burialSite.burialSiteName ?? ''
+          )}
+        </li>`
+    }
+
+    for (const contract of workOrder.workOrderContracts ?? []) {
+      for (const interment of contract.contractInterments ?? []) {
+        relatedHTML += `<li class="has-tooltip-left"
+            data-tooltip="${cityssm.escapeHTML(
+              contract.isPreneed ? 'Recipient' : 'Deceased'
+            )}">
+            <span class="fa-li">
+              <i class="fa-solid fa-user"></i>
+            </span>
+            ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+          </li>`
+      }
+
+      if (contract.funeralHomeName !== null) {
+        relatedHTML += `<li class="has-tooltip-left" data-tooltip="Funeral Home">
+            <span class="fa-li">
+              <i class="fa-solid fa-place-of-worship"></i>
+            </span>
+            ${cityssm.escapeHTML(contract.funeralHomeName)}
+          </li>`
+      }
+    }
+
+    return relatedHTML
+  }
+
   function renderWorkOrders(rawResponseJSON: unknown): void {
     const responseJSON = rawResponseJSON as {
       count: number
@@ -48,46 +91,7 @@ declare const exports: Record<string, unknown>
     const resultsTbodyElement = document.createElement('tbody')
 
     for (const workOrder of responseJSON.workOrders) {
-      let relatedHTML = ''
-
-      for (const burialSite of workOrder.workOrderBurialSites ?? []) {
-        relatedHTML += `<li class="has-tooltip-left"
-          data-tooltip="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
-          <span class="fa-li">
-            <i class="fa-solid fa-map-pin"
-              aria-label="Burial Site"></i>
-          </span>
-          ${cityssm.escapeHTML(
-            (burialSite.burialSiteName ?? '') === ''
-              ? '(No Burial Site Name)'
-              : burialSite.burialSiteName ?? ''
-          )}
-          </li>`
-      }
-
-      for (const contract of workOrder.workOrderContracts ?? []) {
-        for (const interment of contract.contractInterments ?? []) {
-          relatedHTML += `<li class="has-tooltip-left"
-            data-tooltip="${cityssm.escapeHTML(
-              contract.isPreneed ? 'Recipient' : 'Deceased'
-            )}">
-            <span class="fa-li">
-              <i class="fa-solid fa-user"></i>
-            </span>
-            ${cityssm.escapeHTML(interment.deceasedName ?? '')}
-            </li>`
-        }
-
-        if (contract.funeralHomeName !== null) {
-          relatedHTML += `<li class="has-tooltip-left"
-            data-tooltip="Funeral Home">
-            <span class="fa-li">
-              <i class="fa-solid fa-place-of-worship"></i>
-            </span>
-            ${cityssm.escapeHTML(contract.funeralHomeName)}
-            </li>`
-        }
-      }
+      const relatedHTML = buildRelatedLiHTML(workOrder)
 
       // eslint-disable-next-line no-unsanitized/method
       resultsTbodyElement.insertAdjacentHTML(

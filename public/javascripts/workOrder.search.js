@@ -7,7 +7,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
     const offsetElement = document.querySelector('#searchFilter--offset');
-    // eslint-disable-next-line complexity
+    function buildRelatedLiHTML(workOrder) {
+        let relatedHTML = '';
+        for (const burialSite of workOrder.workOrderBurialSites ?? []) {
+            relatedHTML += `<li class="has-tooltip-left"
+          data-tooltip="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
+          <span class="fa-li">
+            <i class="fa-solid fa-map-pin"
+              aria-label="Burial Site"></i>
+          </span>
+          ${cityssm.escapeHTML((burialSite.burialSiteName ?? '') === ''
+                ? '(No Burial Site Name)'
+                : burialSite.burialSiteName ?? '')}
+        </li>`;
+        }
+        for (const contract of workOrder.workOrderContracts ?? []) {
+            for (const interment of contract.contractInterments ?? []) {
+                relatedHTML += `<li class="has-tooltip-left"
+            data-tooltip="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
+            <span class="fa-li">
+              <i class="fa-solid fa-user"></i>
+            </span>
+            ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+          </li>`;
+            }
+            if (contract.funeralHomeName !== null) {
+                relatedHTML += `<li class="has-tooltip-left" data-tooltip="Funeral Home">
+            <span class="fa-li">
+              <i class="fa-solid fa-place-of-worship"></i>
+            </span>
+            ${cityssm.escapeHTML(contract.funeralHomeName)}
+          </li>`;
+            }
+        }
+        return relatedHTML;
+    }
     function renderWorkOrders(rawResponseJSON) {
         const responseJSON = rawResponseJSON;
         if (responseJSON.workOrders.length === 0) {
@@ -18,39 +52,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         const resultsTbodyElement = document.createElement('tbody');
         for (const workOrder of responseJSON.workOrders) {
-            let relatedHTML = '';
-            for (const burialSite of workOrder.workOrderBurialSites ?? []) {
-                relatedHTML += `<li class="has-tooltip-left"
-          data-tooltip="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
-          <span class="fa-li">
-            <i class="fa-solid fa-map-pin"
-              aria-label="Burial Site"></i>
-          </span>
-          ${cityssm.escapeHTML((burialSite.burialSiteName ?? '') === ''
-                    ? '(No Burial Site Name)'
-                    : burialSite.burialSiteName ?? '')}
-          </li>`;
-            }
-            for (const contract of workOrder.workOrderContracts ?? []) {
-                for (const interment of contract.contractInterments ?? []) {
-                    relatedHTML += `<li class="has-tooltip-left"
-            data-tooltip="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
-            <span class="fa-li">
-              <i class="fa-solid fa-user"></i>
-            </span>
-            ${cityssm.escapeHTML(interment.deceasedName ?? '')}
-            </li>`;
-                }
-                if (contract.funeralHomeName !== null) {
-                    relatedHTML += `<li class="has-tooltip-left"
-            data-tooltip="Funeral Home">
-            <span class="fa-li">
-              <i class="fa-solid fa-place-of-worship"></i>
-            </span>
-            ${cityssm.escapeHTML(contract.funeralHomeName)}
-            </li>`;
-                }
-            }
+            const relatedHTML = buildRelatedLiHTML(workOrder);
             // eslint-disable-next-line no-unsanitized/method
             resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr class="avoid-page-break ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0 ? 'has-background-warning-light' : ''}">
           <td>
