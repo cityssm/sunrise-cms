@@ -716,8 +716,8 @@ declare const exports: {
     ?.addEventListener('click', () => {
       if (burialSiteNameElement.disabled) {
         bulmaJS.alert({
+          contextualColorName: 'info',
           message: 'You need to unlock the field before clearing it.',
-          contextualColorName: 'info'
         })
       } else {
         burialSiteNameElement.value = '(No Burial Site)'

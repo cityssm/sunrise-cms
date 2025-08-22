@@ -87,9 +87,10 @@ type ResponseJSON =
       renderBurialSiteTypes()
     } else {
       bulmaJS.alert({
+        contextualColorName: 'danger',
         title: 'Error Updating Burial Site Type',
-        message: responseJSON.errorMessage ?? '',
-        contextualColorName: 'danger'
+
+        message: responseJSON.errorMessage ?? ''
       })
     }
   }
@@ -115,11 +116,13 @@ type ResponseJSON =
     }
 
     bulmaJS.confirm({
-      title: 'Delete Burial Site Type',
-      message: 'Are you sure you want to delete this burial site type?',
       contextualColorName: 'warning',
+      title: 'Delete Burial Site Type',
+
+      message: 'Are you sure you want to delete this burial site type?',
       okButton: {
         text: 'Yes, Delete Burial Site Type',
+
         callbackFunction: doDelete
       }
     })
@@ -378,12 +381,14 @@ type ResponseJSON =
 
     function confirmDoDelete(): void {
       bulmaJS.confirm({
+        contextualColorName: 'warning',
         title: 'Delete Field',
+
         message: `Are you sure you want to delete this field? 
             Note that historical records that make use of this field will not be affected.`,
-        contextualColorName: 'warning',
         okButton: {
           text: 'Yes, Delete Field',
+
           callbackFunction: doDelete
         }
       })
@@ -726,9 +731,10 @@ type ResponseJSON =
               renderBurialSiteTypes()
             } else {
               bulmaJS.alert({
+                contextualColorName: 'danger',
                 title: 'Error Adding Burial Site Type',
-                message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
+
+                message: responseJSON.errorMessage ?? ''
               })
             }
           }

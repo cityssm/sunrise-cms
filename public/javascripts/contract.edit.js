@@ -424,8 +424,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         ?.addEventListener('click', () => {
         if (burialSiteNameElement.disabled) {
             bulmaJS.alert({
+                contextualColorName: 'info',
                 message: 'You need to unlock the field before clearing it.',
-                contextualColorName: 'info'
             });
         }
         else {
