@@ -129,9 +129,9 @@ declare const exports: Record<string, unknown> & {
         ) as HTMLElement
 
         // eslint-disable-next-line unicorn/no-array-callback-reference
-        const map = L.map(mapContainerElement)
+        const map = new L.Map(mapContainerElement)
 
-        L.tileLayer(sunrise.leafletConstants.tileLayerURL, {
+        new L.TileLayer(sunrise.leafletConstants.tileLayerURL, {
           attribution: sunrise.leafletConstants.attribution,
           maxZoom: sunrise.leafletConstants.maxZoom
         }).addTo(map)
@@ -139,7 +139,7 @@ declare const exports: Record<string, unknown> & {
         if (!Number.isNaN(latitude) && !Number.isNaN(longitude)) {
           const mapCoordinates: Leaflet.LatLngTuple = [latitude, longitude]
           map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom)
-          currentMarker = L.marker(mapCoordinates).addTo(map)
+          currentMarker = new L.Marker(mapCoordinates).addTo(map)
         } else {
           const middleLatitude =
             (Number.parseFloat(options.latitudeElement.min) +
@@ -164,7 +164,7 @@ declare const exports: Record<string, unknown> & {
             currentMarker.remove()
           }
 
-          currentMarker = L.marker(mapCoordinates).addTo(map)
+          currentMarker = new L.Marker(mapCoordinates).addTo(map)
         })
 
         modalElement

@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-(() => {
+(function () {
     /*
      * Unsaved Changes
      */
-    let _hasUnsavedChanges = false;
+    var _a, _b, _c, _d;
+    var _hasUnsavedChanges = false;
     function setUnsavedChanges() {
         if (!hasUnsavedChanges()) {
             _hasUnsavedChanges = true;
@@ -23,11 +24,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
      */
     function highlightMap(mapContainerElement, mapKey, contextualClass) {
         // Search for ID
-        let svgId = mapKey;
+        var svgId = mapKey;
         // eslint-disable-next-line unicorn/no-null
-        let svgElementToHighlight = null;
+        var svgElementToHighlight = null;
         while (svgId !== '') {
-            svgElementToHighlight = mapContainerElement.querySelector(`#${svgId}`);
+            svgElementToHighlight = mapContainerElement.querySelector("#".concat(svgId));
             if (svgElementToHighlight !== null || !svgId.includes('-')) {
                 break;
             }
@@ -35,9 +36,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         if (svgElementToHighlight !== null) {
             svgElementToHighlight.style.fill = '';
-            svgElementToHighlight.classList.add('highlight', `is-${contextualClass}`);
-            const childPathElements = svgElementToHighlight.querySelectorAll('path');
-            for (const pathElement of childPathElements) {
+            svgElementToHighlight.classList.add('highlight', "is-".concat(contextualClass));
+            var childPathElements = svgElementToHighlight.querySelectorAll('path');
+            for (var _i = 0, childPathElements_1 = childPathElements; _i < childPathElements_1.length; _i++) {
+                var pathElement = childPathElements_1[_i];
                 pathElement.style.fill = '';
             }
         }
@@ -45,61 +47,61 @@ Object.defineProperty(exports, "__esModule", { value: true });
     /*
      * Leaflet Mapping
      */
-    const coordinatePrecision = 8;
-    const leafletConstants = {
+    var coordinatePrecision = 8;
+    var leafletConstants = {
         tileLayerURL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         defaultZoom: 15,
         maxZoom: 19,
         attribution: '© OpenStreetMap'
     };
     function openLeafletCoordinateSelectorModal(options) {
-        const latitude = Number.parseFloat(options.latitudeElement.value);
-        const longitude = Number.parseFloat(options.longitudeElement.value);
-        let currentMarker;
+        var latitude = Number.parseFloat(options.latitudeElement.value);
+        var longitude = Number.parseFloat(options.longitudeElement.value);
+        var currentMarker;
         cityssm.openHtmlModal('leaflet-selectCoordinate', {
-            onshown(modalElement, closeModalFunction) {
+            onshown: function (modalElement, closeModalFunction) {
+                var _a;
                 bulmaJS.toggleHtmlClipped();
                 /*
                  * Set up the Leaflet map
                  */
-                const mapContainerElement = modalElement.querySelector('.leaflet-map');
+                var mapContainerElement = modalElement.querySelector('.leaflet-map');
                 // eslint-disable-next-line unicorn/no-array-callback-reference
-                const map = L.map(mapContainerElement);
-                L.tileLayer(sunrise.leafletConstants.tileLayerURL, {
+                var map = new L.Map(mapContainerElement);
+                new L.TileLayer(sunrise.leafletConstants.tileLayerURL, {
                     attribution: sunrise.leafletConstants.attribution,
                     maxZoom: sunrise.leafletConstants.maxZoom
                 }).addTo(map);
                 if (!Number.isNaN(latitude) && !Number.isNaN(longitude)) {
-                    const mapCoordinates = [latitude, longitude];
+                    var mapCoordinates = [latitude, longitude];
                     map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom);
-                    currentMarker = L.marker(mapCoordinates).addTo(map);
+                    currentMarker = new L.Marker(mapCoordinates).addTo(map);
                 }
                 else {
-                    const middleLatitude = (Number.parseFloat(options.latitudeElement.min) +
+                    var middleLatitude = (Number.parseFloat(options.latitudeElement.min) +
                         Number.parseFloat(options.latitudeElement.max)) /
                         2;
-                    const middleLongitude = (Number.parseFloat(options.longitudeElement.min) +
+                    var middleLongitude = (Number.parseFloat(options.longitudeElement.min) +
                         Number.parseFloat(options.longitudeElement.max)) /
                         2;
-                    const mapCoordinates = [
+                    var mapCoordinates = [
                         middleLatitude,
                         middleLongitude
                     ];
                     map.setView(mapCoordinates, 5);
                 }
-                map.on('click', (clickEvent) => {
-                    const mapCoordinates = clickEvent.latlng;
+                map.on('click', function (clickEvent) {
+                    var mapCoordinates = clickEvent.latlng;
                     if (currentMarker !== undefined) {
                         currentMarker.remove();
                     }
-                    currentMarker = L.marker(mapCoordinates).addTo(map);
+                    currentMarker = new L.Marker(mapCoordinates).addTo(map);
                 });
-                modalElement
-                    .querySelector('.is-update-button')
-                    ?.addEventListener('click', (clickEvent) => {
+                (_a = modalElement
+                    .querySelector('.is-update-button')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', function (clickEvent) {
                     clickEvent.preventDefault();
                     if (currentMarker !== undefined) {
-                        const mapCoordinates = currentMarker.getLatLng();
+                        var mapCoordinates = currentMarker.getLatLng();
                         options.latitudeElement.value =
                             mapCoordinates.lat.toFixed(coordinatePrecision);
                         options.longitudeElement.value =
@@ -109,7 +111,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     closeModalFunction();
                 });
             },
-            onremoved() {
+            onremoved: function () {
                 bulmaJS.toggleHtmlClipped();
             }
         });
@@ -118,8 +120,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
      * Field Unlocking
      */
     function unlockField(clickEvent) {
-        const fieldElement = clickEvent.currentTarget.closest('.field');
-        const inputOrSelectElement = fieldElement.querySelector('input, select');
+        var fieldElement = clickEvent.currentTarget.closest('.field');
+        var inputOrSelectElement = fieldElement.querySelector('input, select');
         inputOrSelectElement.classList.remove('is-readonly');
         if (inputOrSelectElement.tagName === 'INPUT') {
             ;
@@ -127,16 +129,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
             inputOrSelectElement.disabled = false;
         }
         else {
-            const optionElements = inputOrSelectElement.querySelectorAll('option');
-            for (const optionElement of optionElements) {
+            var optionElements = inputOrSelectElement.querySelectorAll('option');
+            for (var _i = 0, optionElements_1 = optionElements; _i < optionElements_1.length; _i++) {
+                var optionElement = optionElements_1[_i];
                 optionElement.disabled = false;
             }
         }
         inputOrSelectElement.focus();
     }
     function initializeUnlockFieldButtons(containerElement) {
-        const unlockFieldButtonElements = containerElement.querySelectorAll('.is-unlock-field-button');
-        for (const unlockFieldButtonElement of unlockFieldButtonElements) {
+        var unlockFieldButtonElements = containerElement.querySelectorAll('.is-unlock-field-button');
+        for (var _i = 0, unlockFieldButtonElements_1 = unlockFieldButtonElements; _i < unlockFieldButtonElements_1.length; _i++) {
+            var unlockFieldButtonElement = unlockFieldButtonElements_1[_i];
             unlockFieldButtonElement.addEventListener('click', unlockField);
         }
     }
@@ -144,15 +148,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
      * Aliases
      */
     function populateAliases(containerElement) {
-        const aliasElements = containerElement.querySelectorAll('.alias');
-        for (const aliasElement of aliasElements) {
+        var aliasElements = containerElement.querySelectorAll('.alias');
+        for (var _i = 0, aliasElements_1 = aliasElements; _i < aliasElements_1.length; _i++) {
+            var aliasElement = aliasElements_1[_i];
             if (aliasElement.dataset.alias === 'ExternalReceiptNumber') {
                 aliasElement.textContent = exports.aliases.externalReceiptNumber;
                 break;
             }
         }
     }
-    const escapedAliases = Object.freeze({
+    var escapedAliases = Object.freeze({
         ExternalReceiptNumber: cityssm.escapeHTML(exports.aliases.externalReceiptNumber),
         externalReceiptNumber: cityssm.escapeHTML(exports.aliases.externalReceiptNumber.toLowerCase()),
         WorkOrderOpenDate: cityssm.escapeHTML(exports.aliases.workOrderOpenDate),
@@ -163,7 +168,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     /*
      * Colors
      */
-    const hues = [
+    var hues = [
         'red',
         'green',
         'orange',
@@ -172,9 +177,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         'yellow',
         'purple'
     ];
-    const luminosity = ['bright', 'light', 'dark'];
+    var luminosity = ['bright', 'light', 'dark'];
     function getRandomColor(seedString) {
-        let actualSeedString = seedString;
+        var actualSeedString = seedString;
         if (actualSeedString.length < 2) {
             actualSeedString += 'a1';
         }
@@ -188,86 +193,61 @@ Object.defineProperty(exports, "__esModule", { value: true });
     /*
      * Bulma Snippets
      */
-    function getMoveUpDownButtonFieldHTML(upButtonClassNames, downButtonClassNames, isSmall = true) {
-        return `<div class="field has-addons">
-      <div class="control">
-      <button
-          class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
-          data-tooltip="Move Up" data-direction="up" type="button" aria-label="Move Up">
-        <span class="icon"><i class="fa-solid fa-arrow-up"></i></span>
-      </button>
-      </div>
-      <div class="control">
-      <button
-          class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
-          data-tooltip="Move Down" data-direction="down" type="button" aria-label="Move Down">
-        <span class="icon"><i class="fa-solid fa-arrow-down"></i></span>
-      </button>
-      </div>
-      </div>`;
+    function getMoveUpDownButtonFieldHTML(upButtonClassNames, downButtonClassNames, isSmall) {
+        if (isSmall === void 0) { isSmall = true; }
+        return "<div class=\"field has-addons\">\n      <div class=\"control\">\n      <button\n          class=\"button ".concat(isSmall ? 'is-small' : '', " ").concat(upButtonClassNames, "\"\n          data-tooltip=\"Move Up\" data-direction=\"up\" type=\"button\" aria-label=\"Move Up\">\n        <span class=\"icon\"><i class=\"fa-solid fa-arrow-up\"></i></span>\n      </button>\n      </div>\n      <div class=\"control\">\n      <button\n          class=\"button ").concat(isSmall ? 'is-small' : '', " ").concat(downButtonClassNames, "\"\n          data-tooltip=\"Move Down\" data-direction=\"down\" type=\"button\" aria-label=\"Move Down\">\n        <span class=\"icon\"><i class=\"fa-solid fa-arrow-down\"></i></span>\n      </button>\n      </div>\n      </div>");
     }
-    function getLoadingParagraphHTML(captionText = 'Loading...') {
-        return `<p class="has-text-centered has-text-grey">
-      <i class="fa-solid fa-5x fa-circle-notch fa-spin"></i><br />
-      ${cityssm.escapeHTML(captionText)}
-      </p>`;
+    function getLoadingParagraphHTML(captionText) {
+        if (captionText === void 0) { captionText = 'Loading...'; }
+        return "<p class=\"has-text-centered has-text-grey\">\n      <i class=\"fa-solid fa-5x fa-circle-notch fa-spin\"></i><br />\n      ".concat(cityssm.escapeHTML(captionText), "\n      </p>");
     }
     function getSearchResultsPagerHTML(limit, offset, count) {
-        return `<div class="level">
-      <div class="level-left">
-        <div class="level-item has-text-weight-bold">
-          Displaying
-          ${(offset + 1).toString()}
-          to
-          ${Math.min(count, limit + offset).toString()}
-          of
-          ${count.toString()}
-        </div>
-      </div>
-      <div class="level-right is-hidden-print">
-        ${offset > 0
-            ? `<div class="level-item">
-                <button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">
-                  <i class="fa-solid fa-arrow-left"></i>
-                </button>
-                </div>`
-            : ''}
-        ${limit + offset < count
-            ? `<div class="level-item">
-                <button class="button is-rounded is-link" data-page="next" type="button" title="Next">
-                  <span>Next</span>
-                  <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
-                </button>
-                </div>`
-            : ''}
-      </div>
-      </div>`;
+        return "<div class=\"level\">\n      <div class=\"level-left\">\n        <div class=\"level-item has-text-weight-bold\">\n          Displaying\n          ".concat((offset + 1).toString(), "\n          to\n          ").concat(Math.min(count, limit + offset).toString(), "\n          of\n          ").concat(count.toString(), "\n        </div>\n      </div>\n      <div class=\"level-right is-hidden-print\">\n        ").concat(offset > 0
+            ? "<div class=\"level-item\">\n                <button class=\"button is-rounded is-link is-outlined\" data-page=\"previous\" type=\"button\" title=\"Previous\">\n                  <i class=\"fa-solid fa-arrow-left\"></i>\n                </button>\n                </div>"
+            : '', "\n        ").concat(limit + offset < count
+            ? "<div class=\"level-item\">\n                <button class=\"button is-rounded is-link\" data-page=\"next\" type=\"button\" title=\"Next\">\n                  <span>Next</span>\n                  <span class=\"icon\"><i class=\"fa-solid fa-arrow-right\"></i></span>\n                </button>\n                </div>"
+            : '', "\n      </div>\n      </div>");
     }
     /*
      * URLs
      */
-    const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
+    var urlPrefix = (_b = (_a = document.querySelector('main')) === null || _a === void 0 ? void 0 : _a.dataset.urlPrefix) !== null && _b !== void 0 ? _b : '';
     function getRecordURL(recordTypePlural, recordId, edit, time) {
         return (urlPrefix +
             '/' +
             recordTypePlural +
-            (recordId ? `/${recordId.toString()}` : '') +
+            (recordId ? "/".concat(recordId.toString()) : '') +
             (recordId && edit ? '/edit' : '') +
-            (time ? `/?t=${Date.now().toString()}` : ''));
+            (time ? "/?t=".concat(Date.now().toString()) : ''));
     }
-    function getCemeteryURL(cemeteryId = '', edit = false, time = false) {
+    function getCemeteryURL(cemeteryId, edit, time) {
+        if (cemeteryId === void 0) { cemeteryId = ''; }
+        if (edit === void 0) { edit = false; }
+        if (time === void 0) { time = false; }
         return getRecordURL('cemeteries', cemeteryId, edit, time);
     }
-    function getFuneralHomeURL(funeralHomeId = '', edit = false, time = false) {
+    function getFuneralHomeURL(funeralHomeId, edit, time) {
+        if (funeralHomeId === void 0) { funeralHomeId = ''; }
+        if (edit === void 0) { edit = false; }
+        if (time === void 0) { time = false; }
         return getRecordURL('funeralHomes', funeralHomeId, edit, time);
     }
-    function getBurialSiteURL(burialSiteId = '', edit = false, time = false) {
+    function getBurialSiteURL(burialSiteId, edit, time) {
+        if (burialSiteId === void 0) { burialSiteId = ''; }
+        if (edit === void 0) { edit = false; }
+        if (time === void 0) { time = false; }
         return getRecordURL('burialSites', burialSiteId, edit, time);
     }
-    function getContractURL(contractId = '', edit = false, time = false) {
+    function getContractURL(contractId, edit, time) {
+        if (contractId === void 0) { contractId = ''; }
+        if (edit === void 0) { edit = false; }
+        if (time === void 0) { time = false; }
         return getRecordURL('contracts', contractId, edit, time);
     }
-    function getWorkOrderURL(workOrderId = '', edit = false, time = false) {
+    function getWorkOrderURL(workOrderId, edit, time) {
+        if (workOrderId === void 0) { workOrderId = ''; }
+        if (edit === void 0) { edit = false; }
+        if (time === void 0) { time = false; }
         return getRecordURL('workOrders', workOrderId, edit, time);
     }
     /*
@@ -275,40 +255,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
      */
     function initializeMinDateUpdate(minDateElement, valueDateElement) {
         valueDateElement.min = minDateElement.value;
-        minDateElement.addEventListener('change', () => {
+        minDateElement.addEventListener('change', function () {
             valueDateElement.min = minDateElement.value;
         });
     }
     /*
      * Settings
      */
-    const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled;
+    var dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled;
     /*
      * Declare sunrise
      */
-    const sunrise = {
-        apiKey: document.querySelector('main')?.dataset.apiKey ?? '',
-        dynamicsGPIntegrationIsEnabled,
-        urlPrefix,
-        highlightMap,
-        leafletConstants,
-        openLeafletCoordinateSelectorModal,
-        initializeUnlockFieldButtons,
-        escapedAliases,
-        populateAliases,
-        getRandomColor,
-        clearUnsavedChanges,
-        hasUnsavedChanges,
-        setUnsavedChanges,
-        getLoadingParagraphHTML,
-        getMoveUpDownButtonFieldHTML,
-        getSearchResultsPagerHTML,
-        getBurialSiteURL,
-        getCemeteryURL,
-        getContractURL,
-        getFuneralHomeURL,
-        getWorkOrderURL,
-        initializeMinDateUpdate
+    var sunrise = {
+        apiKey: (_d = (_c = document.querySelector('main')) === null || _c === void 0 ? void 0 : _c.dataset.apiKey) !== null && _d !== void 0 ? _d : '',
+        dynamicsGPIntegrationIsEnabled: dynamicsGPIntegrationIsEnabled,
+        urlPrefix: urlPrefix,
+        highlightMap: highlightMap,
+        leafletConstants: leafletConstants,
+        openLeafletCoordinateSelectorModal: openLeafletCoordinateSelectorModal,
+        initializeUnlockFieldButtons: initializeUnlockFieldButtons,
+        escapedAliases: escapedAliases,
+        populateAliases: populateAliases,
+        getRandomColor: getRandomColor,
+        clearUnsavedChanges: clearUnsavedChanges,
+        hasUnsavedChanges: hasUnsavedChanges,
+        setUnsavedChanges: setUnsavedChanges,
+        getLoadingParagraphHTML: getLoadingParagraphHTML,
+        getMoveUpDownButtonFieldHTML: getMoveUpDownButtonFieldHTML,
+        getSearchResultsPagerHTML: getSearchResultsPagerHTML,
+        getBurialSiteURL: getBurialSiteURL,
+        getCemeteryURL: getCemeteryURL,
+        getContractURL: getContractURL,
+        getFuneralHomeURL: getFuneralHomeURL,
+        getWorkOrderURL: getWorkOrderURL,
+        initializeMinDateUpdate: initializeMinDateUpdate
     };
     exports.sunrise = sunrise;
 })();
