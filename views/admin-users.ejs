@@ -38,6 +38,26 @@
       </div>
     </div>
 
+    <% if (hasConfigUsers) { %>
+    <div class="notification is-warning">
+      <p>
+        <strong>Notice:</strong> Some users are configured in the application config file and will not appear in this table.
+        Users defined in config: 
+        <% const allConfigUsers = [...new Set([
+            ...configUsers.canLogin,
+            ...configUsers.canUpdate,
+            ...configUsers.canUpdateCemeteries,
+            ...configUsers.canUpdateContracts,
+            ...configUsers.canUpdateWorkOrders,
+            ...configUsers.isAdmin
+        ])]; %>
+        <% if (allConfigUsers.length > 0) { %>
+          <strong><%= allConfigUsers.join(', ') %></strong>
+        <% } %>
+      </p>
+    </div>
+    <% } %>
+
     <div id="container--users"></div>
   </div>
 </div>
