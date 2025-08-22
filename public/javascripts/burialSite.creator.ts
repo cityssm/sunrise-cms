@@ -288,4 +288,30 @@ interface GetBurialSiteNamesByRangeResult {
         }
       )
     })
+
+  // Cemetery Key Preview
+
+  const cemeteryKeyFromSpanElement = document.querySelector(
+    '#burialSiteCreator--cemeteryKey_from'
+  ) as HTMLSpanElement | null
+
+  if (cemeteryKeyFromSpanElement !== null) {
+
+    const cemeteryKeyToSpanElement = document.querySelector(
+      '#burialSiteCreator--cemeteryKey_to'
+    ) as HTMLSpanElement
+
+    document
+      .querySelector('#burialSiteCreator--cemeteryId')
+      ?.addEventListener('change', (changeEvent) => {
+        const cemeterySelectElement =
+          changeEvent.currentTarget as HTMLSelectElement
+
+        const cemeteryKey =
+          cemeterySelectElement.selectedOptions[0].dataset.cemeteryKey ?? ''
+
+        cemeteryKeyFromSpanElement.innerHTML = cityssm.escapeHTML(cemeteryKey)
+        cemeteryKeyToSpanElement.innerHTML = cityssm.escapeHTML(cemeteryKey)
+      })
+  }
 })()
