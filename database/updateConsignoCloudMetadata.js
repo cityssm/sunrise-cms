@@ -1,8 +1,8 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import updateContractMetadata from './updateContractMetadata.js';
-export default function updateConsignoCloudMetadata(contractId, metadata, user) {
-    const database = sqlite(sunriseDB);
+export default function updateConsignoCloudMetadata(contractId, metadata, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     updateContractMetadata(contractId, {
         metadataKey: 'consignoCloud.workflowId',
         metadataValue: metadata.workflowId
@@ -19,6 +19,10 @@ export default function updateConsignoCloudMetadata(contractId, metadata, user) 
         metadataKey: 'consignoCloud.workflowUser',
         metadataValue: user.userName
     }, user, database);
-    database.close();
+    if (connectedDatabase === undefined) {
+
+      database.close()
+
+    }
     return true;
 }

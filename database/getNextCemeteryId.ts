@@ -4,8 +4,8 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 export default function getNextCemeteryId(
   cemeteryId: number | string
-): number | undefined {
-  const database = sqlite(sunriseDB, { readonly: true })
+, connectedDatabase?: sqlite.Database): number | undefined {
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const result = database
     .prepare(
@@ -19,7 +19,12 @@ export default function getNextCemeteryId(
     .pluck()
     .get(cemeteryId) as number | undefined
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return result
 }

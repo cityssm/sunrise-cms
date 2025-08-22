@@ -5,8 +5,8 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 export default function reopenWorkOrderMilestone(
   workOrderMilestoneId: number | string,
   user: User
-): boolean {
-  const database = sqlite(sunriseDB)
+, connectedDatabase?: sqlite.Database): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -20,7 +20,12 @@ export default function reopenWorkOrderMilestone(
     )
     .run(user.userName, Date.now(), workOrderMilestoneId)
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return result.changes > 0
 }

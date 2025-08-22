@@ -1,3 +1,4 @@
+import sqlite from 'better-sqlite3';
 export interface UpdateFeeForm {
     feeId: string;
     feeCategoryId: string;
@@ -14,7 +15,7 @@ export interface UpdateFeeForm {
     quantityUnit?: string;
     isRequired: '' | '1';
 }
-export default function updateFee(feeForm: UpdateFeeForm, user: User): boolean;
+export default function updateFee(feeForm: UpdateFeeForm, user: User, connectedDatabase?: sqlite.Database): boolean;
 export interface UpdateFeeAmountForm {
     feeId: string;
     feeAmount: string;

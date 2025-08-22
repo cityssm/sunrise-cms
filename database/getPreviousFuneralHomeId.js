@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function getPreviousFuneralHomeId(funeralHomeId) {
-    const database = sqlite(sunriseDB, { readonly: true });
+export default function getPreviousFuneralHomeId(funeralHomeId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const result = database
         .prepare(`select funeralHomeId from FuneralHomes
         where recordDelete_timeMillis is null
@@ -10,6 +10,10 @@ export default function getPreviousFuneralHomeId(funeralHomeId) {
         limit 1`)
         .pluck()
         .get(funeralHomeId);
-    database.close();
+    if (connectedDatabase === undefined) {
+
+      database.close()
+
+    }
     return result;
 }

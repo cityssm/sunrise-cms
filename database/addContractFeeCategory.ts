@@ -36,7 +36,9 @@ export default async function addContractFeeCategory(
     }
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return addedFeeCount
 }

@@ -31,10 +31,10 @@ export default function getRecordUpdateLog(
     limit?: number
     offset?: number
   }
-): RecordUpdateLog[] {
+, connectedDatabase?: sqlite.Database): RecordUpdateLog[] {
   const minimumMillis = Date.now() - daysToMillis(maxDays)
 
-  const database = sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const recordTableSql: string[] = []
 
@@ -121,7 +121,12 @@ export default function getRecordUpdateLog(
       offset
     }) as RecordUpdateLog[]
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return result
 }

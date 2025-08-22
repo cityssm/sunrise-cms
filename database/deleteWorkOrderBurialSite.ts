@@ -6,8 +6,8 @@ export default function deleteWorkOrderBurialSite(
   workOrderId: number | string,
   burialSiteId: number | string,
   user: User
-): boolean {
-  const database = sqlite(sunriseDB)
+, connectedDatabase?: sqlite.Database): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -19,7 +19,12 @@ export default function deleteWorkOrderBurialSite(
     )
     .run(user.userName, Date.now(), workOrderId, burialSiteId)
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return result.changes > 0
 }

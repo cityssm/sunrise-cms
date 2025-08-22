@@ -1,8 +1,8 @@
 import sqlite from 'better-sqlite3';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function updateBurialSiteType(updateForm, user) {
-    const database = sqlite(sunriseDB);
+export default function updateBurialSiteType(updateForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update BurialSiteTypes
@@ -17,7 +17,11 @@ export default function updateBurialSiteType(updateForm, user) {
         : updateForm.bodyCapacityMax, updateForm.crematedCapacityMax === ''
         ? undefined
         : updateForm.crematedCapacityMax, user.userName, rightNowMillis, updateForm.burialSiteTypeId);
-    database.close();
+    if (connectedDatabase === undefined) {
+
+      database.close()
+
+    }
     clearCacheByTableName('BurialSiteTypes');
     return result.changes > 0;
 }

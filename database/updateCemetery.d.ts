@@ -1,3 +1,4 @@
+import sqlite from 'better-sqlite3';
 import { type UpdateCemeteryDirectionsOfArrivalForm } from './updateCemeteryDirectionsOfArrival.js';
 export type UpdateCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
     cemeteryId: string;
@@ -22,4 +23,4 @@ export type UpdateCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
  * @param user - The user who is updating the cemetery.
  * @returns `true` if the cemetery was updated successfully, `false` otherwise.
  */
-export default function updateCemetery(updateForm: UpdateCemeteryForm, user: User): boolean;
+export default function updateCemetery(updateForm: UpdateCemeteryForm, user: User, connectedDatabase?: sqlite.Database): boolean;

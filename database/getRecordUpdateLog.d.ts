@@ -1,3 +1,4 @@
+import sqlite from 'better-sqlite3';
 export declare const defaultRecordLimit = 100;
 export type RecordType = 'contract' | 'contractTransactions' | 'workOrder' | 'workOrderMilestone';
 export interface RecordUpdateLog {
@@ -14,4 +15,4 @@ export default function getRecordUpdateLog(filters: {
 }, options?: {
     limit?: number;
     offset?: number;
-}): RecordUpdateLog[];
+}, connectedDatabase?: sqlite.Database): RecordUpdateLog[];

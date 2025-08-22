@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export function restoreFuneralHome(funeralHomeId, user) {
-    const database = sqlite(sunriseDB);
+export function restoreFuneralHome(funeralHomeId, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`update FuneralHomes
@@ -12,6 +12,10 @@ export function restoreFuneralHome(funeralHomeId, user) {
         where funeralHomeId = ?
           and recordDelete_timeMillis is not null`)
         .run(user.userName, rightNowMillis, funeralHomeId);
-    database.close();
+    if (connectedDatabase === undefined) {
+
+      database.close()
+
+    }
     return result.changes > 0;
 }

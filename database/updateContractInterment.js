@@ -1,8 +1,8 @@
 import { dateStringToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function updateContractInterment(contractForm, user) {
-    const database = sqlite(sunriseDB);
+export default function updateContractInterment(contractForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const results = database
         .prepare(`update ContractInterments
         set deceasedName = ?,
@@ -30,6 +30,10 @@ export default function updateContractInterment(contractForm, user) {
         : dateStringToInteger(contractForm.deathDateString), contractForm.deathPlace, contractForm.deathAge, contractForm.deathAgePeriod, contractForm.intermentContainerTypeId === ''
         ? undefined
         : contractForm.intermentContainerTypeId, user.userName, Date.now(), contractForm.contractId, contractForm.intermentNumber);
-    database.close();
+    if (connectedDatabase === undefined) {
+
+      database.close()
+
+    }
     return results.changes > 0;
 }

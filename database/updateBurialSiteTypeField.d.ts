@@ -1,3 +1,4 @@
+import sqlite from 'better-sqlite3';
 export interface UpdateBurialSiteTypeFieldForm {
     burialSiteTypeFieldId: number | string;
     burialSiteTypeField: string;
@@ -8,4 +9,4 @@ export interface UpdateBurialSiteTypeFieldForm {
     minLength?: string;
     pattern?: string;
 }
-export default function updateBurialSiteTypeField(updateForm: UpdateBurialSiteTypeFieldForm, user: User): boolean;
+export default function updateBurialSiteTypeField(updateForm: UpdateBurialSiteTypeFieldForm, user: User, connectedDatabase?: sqlite.Database): boolean;

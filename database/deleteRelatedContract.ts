@@ -9,8 +9,8 @@ export interface DeleteRelatedContractForm {
 
 export default function deleteRelatedContract(
   relatedContractForm: DeleteRelatedContractForm
-): boolean {
-  const database = sqlite(sunriseDB)
+, connectedDatabase?: sqlite.Database): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   database
     .prepare(
@@ -25,7 +25,12 @@ export default function deleteRelatedContract(
       relatedContractForm.contractId
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return true
 }

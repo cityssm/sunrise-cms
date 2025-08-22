@@ -20,8 +20,8 @@ export interface UpdateBurialSiteTypeFieldForm {
 export default function updateBurialSiteTypeField(
   updateForm: UpdateBurialSiteTypeFieldForm,
   user: User
-): boolean {
-  const database = sqlite(sunriseDB)
+, connectedDatabase?: sqlite.Database): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -51,8 +51,13 @@ export default function updateBurialSiteTypeField(
       updateForm.burialSiteTypeFieldId
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   clearCacheByTableName('BurialSiteTypeFields')
 
   return result.changes > 0

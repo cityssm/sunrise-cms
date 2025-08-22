@@ -514,7 +514,7 @@ const initializingUser: User = {
   userSettings: {}
 }
 
-export function initializeDatabase(): boolean {
+export function initializeDatabase(connectedDatabase?: sqlite.Database): boolean {
   const sunriseDB = sqlite(databasePath)
 
   const row = sunriseDB
@@ -542,7 +542,7 @@ export function initializeDatabase(): boolean {
   return true
 }
 
-export function initializeData(): void {
+export function initializeData(connectedDatabase?: sqlite.Database): void {
   debug('Initializing data...')
 
   // Burial Site Types

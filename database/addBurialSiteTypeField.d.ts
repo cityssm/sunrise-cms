@@ -1,3 +1,4 @@
+import sqlite from 'better-sqlite3';
 export interface AddBurialSiteTypeFieldForm {
     burialSiteTypeId: number | string;
     burialSiteTypeField: string;
@@ -9,4 +10,4 @@ export interface AddBurialSiteTypeFieldForm {
     pattern?: string;
     orderNumber?: number;
 }
-export default function addBurialSiteTypeField(addForm: AddBurialSiteTypeFieldForm, user: User): number;
+export default function addBurialSiteTypeField(addForm: AddBurialSiteTypeFieldForm, user: User, connectedDatabase?: sqlite.Database): number;

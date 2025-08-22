@@ -13,8 +13,8 @@ export interface UpdateIntermentContainerTypeForm {
 export default function updateIntermentContainerType(
   updateForm: UpdateIntermentContainerTypeForm,
   user: User
-): boolean {
-  const database = sqlite(sunriseDB)
+, connectedDatabase?: sqlite.Database): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -35,8 +35,13 @@ export default function updateIntermentContainerType(
       updateForm.intermentContainerTypeId
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   clearCacheByTableName('IntermentContainerTypes')
 
   return result.changes > 0

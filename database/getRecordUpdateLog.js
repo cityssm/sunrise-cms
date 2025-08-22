@@ -4,9 +4,9 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 const maxDays = 30;
 export const defaultRecordLimit = 100;
 const maxRecordLimit = 500;
-export default function getRecordUpdateLog(filters, options) {
+export default function getRecordUpdateLog(filters, options, connectedDatabase) {
     const minimumMillis = Date.now() - daysToMillis(maxDays);
-    const database = sqlite(sunriseDB, { readonly: true });
+    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const recordTableSql = [];
     if (filters.recordType === '' || filters.recordType === 'contract') {
         recordTableSql.push(`select 'contract' as recordType,
@@ -82,6 +82,10 @@ export default function getRecordUpdateLog(filters, options) {
         limit,
         offset
     });
-    database.close();
+    if (connectedDatabase === undefined) {
+
+      database.close()
+
+    }
     return result;
 }

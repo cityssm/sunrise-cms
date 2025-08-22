@@ -18,8 +18,8 @@ export interface UpdateContractTypeFieldForm {
 export default function updateContractTypeField(
   updateForm: UpdateContractTypeFieldForm,
   user: User
-): boolean {
-  const database = sqlite(sunriseDB)
+, connectedDatabase?: sqlite.Database): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -49,8 +49,13 @@ export default function updateContractTypeField(
       updateForm.contractTypeFieldId
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   clearCacheByTableName('ContractTypeFields')
 
   return result.changes > 0

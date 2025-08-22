@@ -18,8 +18,8 @@ export interface UpdateForm {
 export default function updateFuneralHome(
   updateForm: UpdateForm,
   user: User
-): boolean {
-  const database = sqlite(sunriseDB)
+, connectedDatabase?: sqlite.Database): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -47,7 +47,12 @@ export default function updateFuneralHome(
       updateForm.funeralHomeId
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return result.changes > 0
 }

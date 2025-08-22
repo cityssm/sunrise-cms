@@ -1,3 +1,4 @@
+import sqlite from 'better-sqlite3';
 export interface GetBurialSiteNamesByRangeForm {
     burialSiteNameSegment1_from?: string;
     burialSiteNameSegment1_to?: string;
@@ -21,4 +22,4 @@ export type GetBurialSiteNamesByRangeResult = Array<{
     burialSiteNameSegment5: string;
 }>;
 export declare const burialSiteNameRangeLimit = 1000;
-export default function getBurialSiteNamesByRange(rangeForm: GetBurialSiteNamesByRangeForm): GetBurialSiteNamesByRangeResult;
+export default function getBurialSiteNamesByRange(rangeForm: GetBurialSiteNamesByRangeForm, connectedDatabase?: sqlite.Database): GetBurialSiteNamesByRangeResult;

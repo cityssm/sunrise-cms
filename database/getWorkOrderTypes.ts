@@ -5,8 +5,8 @@ import type { WorkOrderType } from '../types/record.types.js'
 
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export default function getWorkOrderTypes(): WorkOrderType[] {
-  const database = sqlite(sunriseDB)
+export default function getWorkOrderTypes(connectedDatabase?: sqlite.Database): WorkOrderType[] {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const workOrderTypes = database
     .prepare(
@@ -34,7 +34,12 @@ export default function getWorkOrderTypes(): WorkOrderType[] {
     expectedOrderNumber += 1
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return workOrderTypes
 }

@@ -1,3 +1,4 @@
+import sqlite from 'better-sqlite3';
 export interface AddFeeForm {
     feeCategoryId: number | string;
     feeName: string;
@@ -14,4 +15,4 @@ export interface AddFeeForm {
     isRequired?: '' | '1';
     orderNumber?: number;
 }
-export default function addFee(feeForm: AddFeeForm, user: User): number;
+export default function addFee(feeForm: AddFeeForm, user: User, connectedDatabase?: sqlite.Database): number;

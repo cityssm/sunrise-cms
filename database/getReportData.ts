@@ -68,7 +68,7 @@ const simpleReports: Record<`${string}-all` | `${string}-formatted`, string> = {
 export default function getReportData(
   reportName: string,
   reportParameters: ReportParameters = {}
-): unknown[] | undefined {
+, connectedDatabase?: sqlite.Database): unknown[] | undefined {
   let sql = ''
   const sqlParameters: unknown[] = []
 
@@ -232,14 +232,19 @@ export default function getReportData(
     sql = simpleReports[reportName]
   }
 
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
 
   const rows = database.prepare(sql).all(sqlParameters)
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return rows
 }
