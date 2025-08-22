@@ -13,7 +13,8 @@ export default function handler(request: Request, response: Response): void {
   const {
     userId,
     displayName,
-    password,
+    canLogin = '0',
+    canUpdate = '0',
     canUpdateCemeteries = '0',
     canUpdateContracts = '0',
     canUpdateWorkOrders = '0',
@@ -22,7 +23,8 @@ export default function handler(request: Request, response: Response): void {
   } = request.body as {
     userId: string
     displayName?: string
-    password?: string
+    canLogin?: string
+    canUpdate?: string
     canUpdateCemeteries?: string
     canUpdateContracts?: string
     canUpdateWorkOrders?: string
@@ -44,7 +46,8 @@ export default function handler(request: Request, response: Response): void {
       {
         userName: '', // userName is not updated through this endpoint
         displayName,
-        password: password || undefined,
+        canLogin: canLogin === '1',
+        canUpdate: canUpdate === '1',
         canUpdateCemeteries: canUpdateCemeteries === '1',
         canUpdateContracts: canUpdateContracts === '1',
         canUpdateWorkOrders: canUpdateWorkOrders === '1',

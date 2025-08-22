@@ -13,7 +13,8 @@ export default function handler(request: Request, response: Response): void {
   const {
     userName,
     displayName,
-    password,
+    canLogin = '0',
+    canUpdate = '0',
     canUpdateCemeteries = '0',
     canUpdateContracts = '0',
     canUpdateWorkOrders = '0',
@@ -21,17 +22,18 @@ export default function handler(request: Request, response: Response): void {
   } = request.body as {
     userName: string
     displayName?: string
-    password: string
+    canLogin?: string
+    canUpdate?: string
     canUpdateCemeteries?: string
     canUpdateContracts?: string
     canUpdateWorkOrders?: string
     isAdmin?: string
   }
 
-  if (!userName || !password) {
+  if (!userName) {
     response.status(400).json({
       success: false,
-      message: 'Username and password are required'
+      message: 'Username is required'
     })
     return
   }
@@ -41,7 +43,8 @@ export default function handler(request: Request, response: Response): void {
       {
         userName,
         displayName,
-        password,
+        canLogin: canLogin === '1',
+        canUpdate: canUpdate === '1',
         canUpdateCemeteries: canUpdateCemeteries === '1',
         canUpdateContracts: canUpdateContracts === '1',
         canUpdateWorkOrders: canUpdateWorkOrders === '1',

@@ -77,6 +77,12 @@
                   <% if (user.isAdmin) { %>
                     <span class="tag is-danger">Admin</span>
                   <% } %>
+                  <% if (user.canLogin) { %>
+                    <span class="tag is-primary">Login</span>
+                  <% } %>
+                  <% if (user.canUpdate) { %>
+                    <span class="tag is-info">Update</span>
+                  <% } %>
                   <% if (user.canUpdateCemeteries) { %>
                     <span class="tag is-info">Cemeteries</span>
                   <% } %>
@@ -90,7 +96,7 @@
               </td>
               <td>
                 <div class="buttons are-small">
-                  <button class="button is-light" type="button" data-edit-user="<%= user.userId %>" data-username="<%= user.userName %>" data-display-name="<%= user.displayName || '' %>" data-is-active="<%= user.isActive ? '1' : '0' %>" data-can-update-cemeteries="<%= user.canUpdateCemeteries ? '1' : '0' %>" data-can-update-contracts="<%= user.canUpdateContracts ? '1' : '0' %>" data-can-update-work-orders="<%= user.canUpdateWorkOrders ? '1' : '0' %>" data-is-admin="<%= user.isAdmin ? '1' : '0' %>">
+                  <button class="button is-light" type="button" data-edit-user="<%= user.userId %>" data-username="<%= user.userName %>" data-display-name="<%= user.displayName || '' %>" data-is-active="<%= user.isActive ? '1' : '0' %>" data-can-login="<%= user.canLogin ? '1' : '0' %>" data-can-update="<%= user.canUpdate ? '1' : '0' %>" data-can-update-cemeteries="<%= user.canUpdateCemeteries ? '1' : '0' %>" data-can-update-contracts="<%= user.canUpdateContracts ? '1' : '0' %>" data-can-update-work-orders="<%= user.canUpdateWorkOrders ? '1' : '0' %>" data-is-admin="<%= user.isAdmin ? '1' : '0' %>">
                     <span class="icon">
                       <i class="fa-solid fa-edit"></i>
                     </span>
@@ -135,13 +141,19 @@
           </div>
         </div>
         <div class="field">
-          <label class="label" for="password">Password</label>
-          <div class="control">
-            <input class="input" id="password" name="password" type="password" required />
-          </div>
-        </div>
-        <div class="field">
           <label class="label">Permissions</label>
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" name="canLogin" value="1" />
+              Can Login
+            </label>
+          </div>
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" name="canUpdate" value="1" />
+              Can Update (General)
+            </label>
+          </div>
           <div class="control">
             <label class="checkbox">
               <input type="checkbox" name="canUpdateCemeteries" value="1" />
@@ -200,12 +212,6 @@
           </div>
         </div>
         <div class="field">
-          <label class="label" for="edit_password">New Password (leave blank to keep current)</label>
-          <div class="control">
-            <input class="input" id="edit_password" name="password" type="password" />
-          </div>
-        </div>
-        <div class="field">
           <label class="label">Status</label>
           <div class="control">
             <label class="checkbox">
@@ -216,6 +222,18 @@
         </div>
         <div class="field">
           <label class="label">Permissions</label>
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" id="edit_canLogin" name="canLogin" value="1" />
+              Can Login
+            </label>
+          </div>
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" id="edit_canUpdate" name="canUpdate" value="1" />
+              Can Update (General)
+            </label>
+          </div>
           <div class="control">
             <label class="checkbox">
               <input type="checkbox" id="edit_canUpdateCemeteries" name="canUpdateCemeteries" value="1" />
@@ -280,6 +298,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const userName = button.dataset.username
       const displayName = button.dataset.displayName
       const isActive = button.dataset.isActive === '1'
+      const canLogin = button.dataset.canLogin === '1'
+      const canUpdate = button.dataset.canUpdate === '1'
       const canUpdateCemeteries = button.dataset.canUpdateCemeteries === '1'
       const canUpdateContracts = button.dataset.canUpdateContracts === '1'
       const canUpdateWorkOrders = button.dataset.canUpdateWorkOrders === '1'
@@ -289,6 +309,8 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('edit_userName').value = userName
       document.getElementById('edit_displayName').value = displayName
       document.getElementById('edit_isActive').checked = isActive
+      document.getElementById('edit_canLogin').checked = canLogin
+      document.getElementById('edit_canUpdate').checked = canUpdate
       document.getElementById('edit_canUpdateCemeteries').checked = canUpdateCemeteries
       document.getElementById('edit_canUpdateContracts').checked = canUpdateContracts
       document.getElementById('edit_canUpdateWorkOrders').checked = canUpdateWorkOrders

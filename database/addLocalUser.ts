@@ -1,12 +1,12 @@
 import sqlite from 'better-sqlite3'
-import bcrypt from 'bcrypt'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface AddLocalUserOptions {
   userName: string
   displayName?: string
-  password: string
+  canLogin: boolean
+  canUpdate: boolean
   canUpdateCemeteries: boolean
   canUpdateContracts: boolean
   canUpdateWorkOrders: boolean
@@ -21,21 +21,21 @@ export function addLocalUser(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
-  const passwordHash = bcrypt.hashSync(options.password, 10)
 
   const result = database
     .prepare(
       `INSERT INTO Users (
-        userName, displayName, passwordHash, isActive,
-        canUpdateCemeteries, canUpdateContracts, canUpdateWorkOrders, isAdmin,
+        userName, displayName, isActive,
+        canLogin, canUpdate, canUpdateCemeteries, canUpdateContracts, canUpdateWorkOrders, isAdmin,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis
-      ) VALUES (?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?)`
+      ) VALUES (?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       options.userName,
       options.displayName || null,
-      passwordHash,
+      options.canLogin ? 1 : 0,
+      options.canUpdate ? 1 : 0,
       options.canUpdateCemeteries ? 1 : 0,
       options.canUpdateContracts ? 1 : 0,
       options.canUpdateWorkOrders ? 1 : 0,
