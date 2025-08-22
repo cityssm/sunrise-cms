@@ -1,3 +1,4 @@
+import sqlite from 'better-sqlite3';
 export interface AddContractTypeFieldForm {
     contractTypeId?: number | string;
     contractTypeField: string;
@@ -10,4 +11,4 @@ export interface AddContractTypeFieldForm {
     pattern?: string;
     orderNumber?: number;
 }
-export default function addContractTypeField(addForm: AddContractTypeFieldForm, user: User): number;
+export default function addContractTypeField(addForm: AddContractTypeFieldForm, user: User, connectedDatabase?: sqlite.Database): number;

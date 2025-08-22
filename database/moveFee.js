@@ -2,8 +2,8 @@ import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getFee from './getFee.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export function moveFeeDown(feeId) {
-    const database = sqlite(sunriseDB);
+export function moveFeeDown(feeId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentFee = getFee(feeId, database);
     database
         .prepare(`update Fees
@@ -13,11 +13,13 @@ export function moveFeeDown(feeId) {
           and orderNumber = ? + 1`)
         .run(currentFee.feeCategoryId, currentFee.orderNumber);
     const success = updateRecordOrderNumber('Fees', feeId, currentFee.orderNumber + 1, database);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return success;
 }
-export function moveFeeDownToBottom(feeId) {
-    const database = sqlite(sunriseDB);
+export function moveFeeDownToBottom(feeId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentFee = getFee(feeId, database);
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
@@ -34,14 +36,18 @@ export function moveFeeDownToBottom(feeId) {
             and feeCategoryId = ? and orderNumber > ?`)
             .run(currentFee.feeCategoryId, currentFee.orderNumber);
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return true;
 }
-export function moveFeeUp(feeId) {
-    const database = sqlite(sunriseDB);
+export function moveFeeUp(feeId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentFee = getFee(feeId, database);
     if (currentFee.orderNumber <= 0) {
-        database.close();
+        if (connectedDatabase === undefined) {
+            database.close();
+        }
         return true;
     }
     database
@@ -52,11 +58,13 @@ export function moveFeeUp(feeId) {
           and orderNumber = ? - 1`)
         .run(currentFee.feeCategoryId, currentFee.orderNumber);
     const success = updateRecordOrderNumber('Fees', feeId, currentFee.orderNumber - 1, database);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return success;
 }
-export function moveFeeUpToTop(feeId) {
-    const database = sqlite(sunriseDB);
+export function moveFeeUpToTop(feeId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentFee = getFee(feeId, database);
     if (currentFee.orderNumber > 0) {
         updateRecordOrderNumber('Fees', feeId, -1, database);
@@ -68,7 +76,9 @@ export function moveFeeUpToTop(feeId) {
             and orderNumber < ?`)
             .run(currentFee.feeCategoryId, currentFee.orderNumber);
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return true;
 }
 export default moveFeeUp;

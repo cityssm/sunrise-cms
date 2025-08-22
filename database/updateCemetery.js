@@ -6,10 +6,11 @@ import updateCemeteryDirectionsOfArrival from './updateCemeteryDirectionsOfArriv
  * Be sure to rebuild burial site names after updating a cemetery.
  * @param updateForm - The form data from the update cemetery form.
  * @param user - The user who is updating the cemetery.
+ * @param connectedDatabase - An optional connected database instance.
  * @returns `true` if the cemetery was updated successfully, `false` otherwise.
  */
-export default function updateCemetery(updateForm, user) {
-    const database = sqlite(sunriseDB);
+export default function updateCemetery(updateForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
         .prepare(`update Cemeteries
         set cemeteryName = ?,
@@ -37,6 +38,8 @@ export default function updateCemetery(updateForm, user) {
         ? undefined
         : updateForm.parentCemeteryId, user.userName, Date.now(), updateForm.cemeteryId);
     updateCemeteryDirectionsOfArrival(updateForm.cemeteryId, updateForm, database);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return result.changes > 0;
 }

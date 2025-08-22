@@ -1,3 +1,4 @@
+import sqlite from 'better-sqlite3';
 export interface UpdateContractTypeFieldForm {
     contractTypeFieldId: number | string;
     contractTypeField: string;
@@ -8,4 +9,4 @@ export interface UpdateContractTypeFieldForm {
     minLength?: string;
     pattern?: string;
 }
-export default function updateContractTypeField(updateForm: UpdateContractTypeFieldForm, user: User): boolean;
+export default function updateContractTypeField(updateForm: UpdateContractTypeFieldForm, user: User, connectedDatabase?: sqlite.Database): boolean;

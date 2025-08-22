@@ -11,9 +11,10 @@ export default function updateConsignoCloudMetadata(
     workflowStatus: number | string
     workflowEditUrl: string
   },
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   updateContractMetadata(
     contractId,
@@ -55,7 +56,9 @@ export default function updateConsignoCloudMetadata(
     database
   )
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
+  
   return true
 }

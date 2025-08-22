@@ -48,7 +48,7 @@ const simpleReports = {
     'workOrders-all': 'select * from WorkOrders',
     'workOrderTypes-all': 'select * from WorkOrderTypes'
 };
-export default function getReportData(reportName, reportParameters = {}) {
+export default function getReportData(reportName, reportParameters = {}, connectedDatabase) {
     let sql = '';
     const sqlParameters = [];
     // eslint-disable-next-line security/detect-object-injection
@@ -183,10 +183,12 @@ export default function getReportData(reportName, reportParameters = {}) {
     else {
         sql = simpleReports[reportName];
     }
-    const database = sqlite(sunriseDB);
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     const rows = database.prepare(sql).all(sqlParameters);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return rows;
 }

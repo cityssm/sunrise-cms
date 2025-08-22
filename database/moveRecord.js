@@ -12,8 +12,8 @@ const recordIdColumns = new Map([
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
     ['WorkOrderTypes', 'workOrderTypeId']
 ]);
-export function moveRecordDown(recordTable, recordId) {
-    const database = sqlite(sunriseDB);
+export function moveRecordDown(recordTable, recordId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     database
         .prepare(`update ${recordTable}
@@ -22,12 +22,14 @@ export function moveRecordDown(recordTable, recordId) {
         and orderNumber = ? + 1`)
         .run(currentOrderNumber);
     const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber + 1, database);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     clearCacheByTableName(recordTable);
     return success;
 }
-export function moveRecordDownToBottom(recordTable, recordId) {
-    const database = sqlite(sunriseDB);
+export function moveRecordDownToBottom(recordTable, recordId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     const maxOrderNumber = database
         .prepare(`select max(orderNumber) as maxOrderNumber
@@ -43,15 +45,19 @@ export function moveRecordDownToBottom(recordTable, recordId) {
           and orderNumber > ?`)
             .run(currentOrderNumber);
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     clearCacheByTableName(recordTable);
     return true;
 }
-export function moveRecordUp(recordTable, recordId) {
-    const database = sqlite(sunriseDB);
+export function moveRecordUp(recordTable, recordId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     if (currentOrderNumber <= 0) {
-        database.close();
+        if (connectedDatabase === undefined) {
+            database.close();
+        }
         return true;
     }
     database
@@ -61,12 +67,14 @@ export function moveRecordUp(recordTable, recordId) {
         and orderNumber = ? - 1`)
         .run(currentOrderNumber);
     const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber - 1, database);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     clearCacheByTableName(recordTable);
     return success;
 }
-export function moveRecordUpToTop(recordTable, recordId) {
-    const database = sqlite(sunriseDB);
+export function moveRecordUpToTop(recordTable, recordId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     if (currentOrderNumber > 0) {
         updateRecordOrderNumber(recordTable, recordId, -1, database);
@@ -77,7 +85,9 @@ export function moveRecordUpToTop(recordTable, recordId) {
           and orderNumber < ?`)
             .run(currentOrderNumber);
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     clearCacheByTableName(recordTable);
     return true;
 }

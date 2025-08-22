@@ -449,7 +449,7 @@ const initializingUser = {
     },
     userSettings: {}
 };
-export function initializeDatabase() {
+export function initializeDatabase(connectedDatabase) {
     const sunriseDB = sqlite(databasePath);
     const row = sunriseDB
         .prepare("select name from sqlite_master where type = 'table' and name = 'ContractAttachments'")
@@ -466,7 +466,7 @@ export function initializeDatabase() {
     initializeData();
     return true;
 }
-export function initializeData() {
+export function initializeData(connectedDatabase) {
     debug('Initializing data...');
     // Burial Site Types
     const burialSiteTypes = getBurialSiteTypes();

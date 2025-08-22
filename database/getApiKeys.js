@@ -2,8 +2,8 @@ import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 const loginUsers = getConfigProperty('users.canLogin');
-export default function getApiKeys() {
-    const database = sqlite(sunriseDB, { readonly: true });
+export default function getApiKeys(connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const databaseSettings = database
         .prepare(`select s.userName, s.settingValue
         from UserSettings s
@@ -18,6 +18,8 @@ export default function getApiKeys() {
         // eslint-disable-next-line security/detect-object-injection
         apiKeys[userName] = databaseSetting.settingValue;
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return apiKeys;
 }

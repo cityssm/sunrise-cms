@@ -514,7 +514,9 @@ const initializingUser: User = {
   userSettings: {}
 }
 
-export function initializeDatabase(): boolean {
+export function initializeDatabase(
+  connectedDatabase?: sqlite.Database
+): boolean {
   const sunriseDB = sqlite(databasePath)
 
   const row = sunriseDB
@@ -542,7 +544,7 @@ export function initializeDatabase(): boolean {
   return true
 }
 
-export function initializeData(): void {
+export function initializeData(connectedDatabase?: sqlite.Database): void {
   debug('Initializing data...')
 
   // Burial Site Types
@@ -655,14 +657,17 @@ export function initializeData(): void {
       initializingUser
     )
 
-    addContractTypeField({
-      contractTypeId: intermentContractTypeId,
+    addContractTypeField(
+      {
+        contractTypeId: intermentContractTypeId,
 
-      contractTypeField: 'Interment Depth',
-      fieldType: 'select',
-      fieldValues: 'Single\nDouble',
-      isRequired: ''
-    }, initializingUser)
+        contractTypeField: 'Interment Depth',
+        fieldType: 'select',
+        fieldValues: 'Single\nDouble',
+        isRequired: ''
+      },
+      initializingUser
+    )
 
     addContractType(
       {

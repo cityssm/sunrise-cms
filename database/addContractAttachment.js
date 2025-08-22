@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function addContractAttachment(attachment, user) {
-    const database = sqlite(sunriseDB);
+export default function addContractAttachment(attachment, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`insert into ContractAttachments (
@@ -11,6 +11,8 @@ export default function addContractAttachment(attachment, user) {
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(attachment.contractId, attachment.attachmentTitle ?? attachment.fileName, attachment.attachmentDetails ?? '', attachment.fileName, attachment.filePath, user.userName, rightNowMillis, user.userName, rightNowMillis);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return result.lastInsertRowid;
 }

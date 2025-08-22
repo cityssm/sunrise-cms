@@ -7,8 +7,8 @@ import addContractInterment from './addContractInterment.js';
 import addRelatedContract from './addRelatedContract.js';
 import getContract from './getContract.js';
 // eslint-disable-next-line complexity
-export default async function copyContract(oldContractId, user) {
-    const database = sqlite(sunriseDB);
+export default async function copyContract(oldContractId, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const oldContract = (await getContract(oldContractId, database));
     const newContractId = addContract({
         burialSiteId: oldContract.burialSiteId ?? '',
@@ -77,6 +77,8 @@ export default async function copyContract(oldContractId, user) {
         comment: `New record copied from #${oldContractId}.`,
         contractId: newContractId
     }, user);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return newContractId;
 }

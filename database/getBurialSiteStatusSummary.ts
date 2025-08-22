@@ -12,9 +12,10 @@ interface GetFilters {
 }
 
 export default function getBurialSiteStatusSummary(
-  filters: GetFilters
+  filters: GetFilters,
+  connectedDatabase?: sqlite.Database
 ): BurialSiteStatusSummary[] {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   let sqlWhereClause = ' where l.recordDelete_timeMillis is null'
   const sqlParameters: unknown[] = []
@@ -36,7 +37,8 @@ export default function getBurialSiteStatusSummary(
     )
     .all(sqlParameters) as BurialSiteStatusSummary[]
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
   return statuses
 }

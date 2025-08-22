@@ -6,8 +6,11 @@ import type { Fee } from '../types/record.types.js'
 import getFee from './getFee.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
-export function moveFeeDown(feeId: number | string): boolean {
-  const database = sqlite(sunriseDB)
+export function moveFeeDown(
+  feeId: number | string,
+  connectedDatabase?: sqlite.Database
+): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const currentFee = getFee(feeId, database) as Fee
 
@@ -28,13 +31,17 @@ export function moveFeeDown(feeId: number | string): boolean {
     database
   )
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
   return success
 }
 
-export function moveFeeDownToBottom(feeId: number | string): boolean {
-  const database = sqlite(sunriseDB)
+export function moveFeeDownToBottom(
+  feeId: number | string,
+  connectedDatabase?: sqlite.Database
+): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const currentFee = getFee(feeId, database) as Fee
 
@@ -62,18 +69,24 @@ export function moveFeeDownToBottom(feeId: number | string): boolean {
       .run(currentFee.feeCategoryId, currentFee.orderNumber)
   }
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
   return true
 }
 
-export function moveFeeUp(feeId: number | string): boolean {
-  const database = sqlite(sunriseDB)
+export function moveFeeUp(
+  feeId: number | string,
+  connectedDatabase?: sqlite.Database
+): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const currentFee = getFee(feeId, database) as Fee
 
   if (currentFee.orderNumber <= 0) {
-    database.close()
+    if (connectedDatabase === undefined) {
+      database.close()
+    }
     return true
   }
 
@@ -94,13 +107,17 @@ export function moveFeeUp(feeId: number | string): boolean {
     database
   )
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
   return success
 }
 
-export function moveFeeUpToTop(feeId: number | string): boolean {
-  const database = sqlite(sunriseDB)
+export function moveFeeUpToTop(
+  feeId: number | string,
+  connectedDatabase?: sqlite.Database
+): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const currentFee = getFee(feeId, database) as Fee
 
@@ -118,8 +135,9 @@ export function moveFeeUpToTop(feeId: number | string): boolean {
       .run(currentFee.feeCategoryId, currentFee.orderNumber)
   }
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
   return true
 }
 

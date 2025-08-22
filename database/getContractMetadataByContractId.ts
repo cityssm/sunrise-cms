@@ -8,9 +8,10 @@ import type {
 
 export default function getContractMetadataByContractId(
   contractId: number | string,
-  startsWith: '' | MetadataPrefix = ''
+  startsWith: '' | MetadataPrefix = '',
+  connectedDatabase?: sqlite.Database
 ): Partial<Record<MetadataKey, string>> {
-  const database = sqlite(sunriseDB, { readonly: true })
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const result = database
     .prepare(
@@ -26,8 +27,9 @@ export default function getContractMetadataByContractId(
     metadataValue: string
   }>
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
   const metadata: Partial<Record<MetadataKey, string>> = {}
 
   for (const row of result) {

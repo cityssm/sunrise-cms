@@ -6,9 +6,10 @@ import type { WorkOrderMilestoneType } from '../types/record.types.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getWorkOrderMilestoneTypes(
-  includeDeleted = false
+  includeDeleted = false,
+  connectedDatabase?: sqlite.Database
 ): WorkOrderMilestoneType[] {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const updateOrderNumbers = !includeDeleted
 
@@ -40,7 +41,8 @@ export default function getWorkOrderMilestoneTypes(
     }
   }
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
   return workOrderMilestoneTypes
 }

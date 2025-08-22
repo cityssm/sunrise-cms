@@ -3,8 +3,8 @@ import { generateApiKey } from '../helpers/api.helpers.js';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import updateUserSetting from './updateUserSetting.js';
-export default function getUserSettings(userName) {
-    const database = sqlite(sunriseDB);
+export default function getUserSettings(userName, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const databaseSettings = database
         .prepare(`select s.settingKey, s.settingValue
         from UserSettings s
@@ -21,6 +21,8 @@ export default function getUserSettings(userName) {
         updateUserSetting(userName, 'apiKey', settings.apiKey, database);
         clearCacheByTableName('UserSettings');
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return settings;
 }

@@ -1,8 +1,8 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export function deleteBurialSite(burialSiteId, user) {
-    const database = sqlite(sunriseDB);
+export function deleteBurialSite(burialSiteId, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     /*
      * Ensure no active contracts reference the burial site
      */
@@ -16,7 +16,9 @@ export function deleteBurialSite(burialSiteId, user) {
         .pluck()
         .get(burialSiteId, currentDateInteger);
     if (activeContract !== undefined) {
-        database.close();
+        if (connectedDatabase === undefined) {
+            database.close();
+        }
         return false;
     }
     /*
@@ -30,6 +32,8 @@ export function deleteBurialSite(burialSiteId, user) {
         where burialSiteId = ?
           and recordDelete_timeMillis is null`)
         .run(user.userName, rightNowMillis, burialSiteId);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return true;
 }

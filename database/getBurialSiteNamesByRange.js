@@ -8,7 +8,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import getCemetery from './getCemetery.js';
 const segmentCount = 5;
 export const burialSiteNameRangeLimit = 1000;
-export default function getBurialSiteNamesByRange(rangeForm) {
+export default function getBurialSiteNamesByRange(rangeForm, connectedDatabase) {
     const segmentRanges = [];
     try {
         for (let segmentIndex = 1; segmentIndex <= segmentCount; segmentIndex++) {
@@ -37,7 +37,7 @@ export default function getBurialSiteNamesByRange(rangeForm) {
     }
     const burialSiteNameSegments = cartesianProduct(segmentRanges);
     const results = [];
-    const database = sqlite(sunriseDB);
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const cemetery = rangeForm.cemeteryId === ''
         ? undefined
         : getCemetery(rangeForm.cemeteryId, database);
@@ -66,6 +66,8 @@ export default function getBurialSiteNamesByRange(rangeForm) {
             burialSiteNameSegment5: burialSiteNameSegmentsArray[4]
         });
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return results;
 }

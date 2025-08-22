@@ -7,8 +7,10 @@ import {
   settingProperties
 } from '../types/setting.types.js'
 
-export default function getSettings(): Array<Partial<Setting> & SettingProperties> {
-  const database = sqlite(sunriseDB, { readonly: true })
+export default function getSettings(
+  connectedDatabase?: sqlite.Database
+): Array<Partial<Setting> & SettingProperties> {
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const databaseSettings = database
     .prepare(

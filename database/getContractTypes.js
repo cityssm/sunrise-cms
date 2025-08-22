@@ -3,8 +3,8 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import getContractTypeFields from './getContractTypeFields.js';
 import getContractTypePrints from './getContractTypePrints.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default function getContractTypes(includeDeleted = false) {
-    const database = sqlite(sunriseDB);
+export default function getContractTypes(includeDeleted = false, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !includeDeleted;
     const contractTypes = database
         .prepare(`select contractTypeId, contractType, isPreneed, orderNumber
@@ -23,6 +23,8 @@ export default function getContractTypes(includeDeleted = false) {
         contractType.contractTypeFields = getContractTypeFields(contractType.contractTypeId, database);
         contractType.contractTypePrints = getContractTypePrints(contractType.contractTypeId, database);
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return contractTypes;
 }

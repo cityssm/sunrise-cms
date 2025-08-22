@@ -4,8 +4,8 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
 import deleteContractField from './deleteContractField.js';
 // eslint-disable-next-line complexity
-export default function updateContract(updateForm, user) {
-    const database = sqlite(sunriseDB);
+export default function updateContract(updateForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
         .prepare(`update Contracts
         set contractTypeId = ?,
@@ -53,6 +53,8 @@ export default function updateContract(updateForm, user) {
                 }, user, database);
         }
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return result.changes > 0;
 }

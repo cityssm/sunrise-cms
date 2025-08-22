@@ -10,8 +10,8 @@ const recordNameIdColumns = new Map([
     ],
     ['WorkOrderTypes', ['workOrderType', 'workOrderTypeId']]
 ]);
-export function updateRecord(recordTable, recordId, recordName, user) {
-    const database = sqlite(sunriseDB);
+export function updateRecord(recordTable, recordId, recordName, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const columnNames = recordNameIdColumns.get(recordTable);
     if (columnNames === undefined) {
         throw new Error(`Invalid record table: ${recordTable}`);
@@ -24,7 +24,9 @@ export function updateRecord(recordTable, recordId, recordName, user) {
         where recordDelete_timeMillis is null
         and ${columnNames[1]} = ?`)
         .run(recordName, user.userName, Date.now(), recordId);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     clearCacheByTableName(recordTable);
     return result.changes > 0;
 }

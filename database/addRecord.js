@@ -6,8 +6,8 @@ const recordNameColumns = new Map([
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneType'],
     ['WorkOrderTypes', 'workOrderType']
 ]);
-export default function addRecord(recordTable, recordName, orderNumber, user) {
-    const database = sqlite(sunriseDB);
+export default function addRecord(recordTable, recordName, orderNumber, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`insert into ${recordTable} (
@@ -17,7 +17,9 @@ export default function addRecord(recordTable, recordName, orderNumber, user) {
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?)`)
         .run(recordName, orderNumber === '' ? -1 : orderNumber, user.userName, rightNowMillis, user.userName, rightNowMillis);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     clearCacheByTableName(recordTable);
     return result.lastInsertRowid;
 }
