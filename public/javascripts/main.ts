@@ -394,11 +394,8 @@ declare const exports: Record<string, unknown> & {
     time: boolean
   ): string {
     return (
-      urlPrefix +
-      '/' +
-      recordTypePlural +
-      (recordId ? `/${recordId.toString()}` : '') +
-      (recordId && edit ? '/edit' : '') +
+      `${urlPrefix}/${recordTypePlural}/${recordId.toString()}` +
+      (recordId !== '' && edit ? '/edit' : '') +
       (time ? `/?t=${Date.now().toString()}` : '')
     )
   }

@@ -247,11 +247,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
      */
     const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
     function getRecordURL(recordTypePlural, recordId, edit, time) {
-        return (urlPrefix +
-            '/' +
-            recordTypePlural +
-            (recordId ? `/${recordId.toString()}` : '') +
-            (recordId && edit ? '/edit' : '') +
+        return (`${urlPrefix}/${recordTypePlural}/${recordId.toString()}` +
+            (recordId !== '' && edit ? '/edit' : '') +
             (time ? `/?t=${Date.now().toString()}` : ''));
     }
     function getCemeteryURL(cemeteryId = '', edit = false, time = false) {
