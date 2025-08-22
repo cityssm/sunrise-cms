@@ -18,10 +18,10 @@ export default async function getContract(contractId, connectedDatabase) {
         .prepare(`select o.contractId,
           o.contractTypeId, t.contractType, t.isPreneed,
 
-          o.burialSiteId, l.burialSiteName, l.burialSiteTypeId,
-          case when l.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
+          o.burialSiteId, b.burialSiteName, b.burialSiteTypeId,
+          case when b.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
           
-          l.cemeteryId, m.cemeteryName,
+          b.cemeteryId, c.cemeteryName,
           
           o.contractStartDate, userFn_dateIntegerToString(o.contractStartDate) as contractStartDateString,
           o.contractEndDate, userFn_dateIntegerToString(o.contractEndDate) as contractEndDateString,
@@ -53,10 +53,10 @@ export default async function getContract(contractId, connectedDatabase) {
         left join ContractTypes t on o.contractTypeId = t.contractTypeId
         left join FuneralHomes f on o.funeralHomeId = f.funeralHomeId
         left join CommittalTypes c on o.committalTypeId = c.committalTypeId
-        left join BurialSites l on o.burialSiteId = l.burialSiteId
-        left join Cemeteries m on l.cemeteryId = m.cemeteryId
+        left join BurialSites b on o.burialSiteId = b.burialSiteId
+        left join Cemeteries c on b.cemeteryId = c.cemeteryId
         left join CemeteryDirectionsOfArrival d
-          on l.cemeteryId = d.cemeteryId
+          on b.cemeteryId = d.cemeteryId
           and o.directionOfArrival = d.directionOfArrival
 
         where o.recordDelete_timeMillis is null

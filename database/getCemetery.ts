@@ -41,10 +41,10 @@ function _getCemetery(
         c.recordCreate_userName, c.recordCreate_timeMillis,
         c.recordUpdate_userName, c.recordUpdate_timeMillis,
         c.recordDelete_userName, c.recordDelete_timeMillis,
-        count(l.burialSiteId) as burialSiteCount
+        count(b.burialSiteId) as burialSiteCount
         from Cemeteries c
         left join Cemeteries p on c.parentCemeteryId = p.cemeteryId and p.recordDelete_timeMillis is null
-        left join BurialSites l on c.cemeteryId = l.cemeteryId and l.recordDelete_timeMillis is null
+        left join BurialSites b on c.cemeteryId = b.cemeteryId and b.recordDelete_timeMillis is null
         where c.${keyColumn} = ?
           and c.recordDelete_timeMillis is null
         group by c.cemeteryId, c.cemeteryName, c.cemeteryDescription,
