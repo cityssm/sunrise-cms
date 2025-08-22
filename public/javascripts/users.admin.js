@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const usersContainerElement = document.querySelector('#container--users');
@@ -28,17 +26,112 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // eslint-disable-next-line no-unsanitized/property
             rowElement.innerHTML = `
         <td>${cityssm.escapeHTML(user.userName)}</td>
-        <td>${user.isActive ? 'Yes' : 'No'}</td>
-        <td>${user.canUpdateCemeteries ? 'Yes' : 'No'}</td>
-        <td>${user.canUpdateContracts ? 'Yes' : 'No'}</td>
-        <td>${user.canUpdateWorkOrders ? 'Yes' : 'No'}</td>
-        <td>${user.isAdmin ? 'Yes' : 'No'}</td>
         <td>
-          <button class="button is-small is-danger">Delete</button>
+          <button class="button is-small permission-toggle ${user.isActive ? 'is-success' : 'is-light'}" 
+                  data-permission="isActive" data-user-name="${cityssm.escapeHTML(user.userName)}">
+            ${user.isActive ? 'Yes' : 'No'}
+          </button>
+        </td>
+        <td>
+          <button class="button is-small permission-toggle ${user.canUpdateCemeteries ? 'is-success' : 'is-light'}" 
+                  data-permission="canUpdateCemeteries" data-user-name="${cityssm.escapeHTML(user.userName)}">
+            ${user.canUpdateCemeteries ? 'Yes' : 'No'}
+          </button>
+        </td>
+        <td>
+          <button class="button is-small permission-toggle ${user.canUpdateContracts ? 'is-success' : 'is-light'}" 
+                  data-permission="canUpdateContracts" data-user-name="${cityssm.escapeHTML(user.userName)}">
+            ${user.canUpdateContracts ? 'Yes' : 'No'}
+          </button>
+        </td>
+        <td>
+          <button class="button is-small permission-toggle ${user.canUpdateWorkOrders ? 'is-success' : 'is-light'}" 
+                  data-permission="canUpdateWorkOrders" data-user-name="${cityssm.escapeHTML(user.userName)}">
+            ${user.canUpdateWorkOrders ? 'Yes' : 'No'}
+          </button>
+        </td>
+        <td>
+          <button class="button is-small permission-toggle ${user.isAdmin ? 'is-success' : 'is-light'}" 
+                  data-permission="isAdmin" data-user-name="${cityssm.escapeHTML(user.userName)}">
+            ${user.isAdmin ? 'Yes' : 'No'}
+          </button>
+        </td>
+        <td>
+          <button class="button is-small is-danger delete-user" data-user-name="${cityssm.escapeHTML(user.userName)}">Delete</button>
         </td>
       `;
             tableElement.querySelector('tbody')?.append(rowElement);
         }
+        // Add event listeners for permission toggles
+        tableElement.querySelectorAll('.permission-toggle').forEach(button => {
+            button.addEventListener('click', function () {
+                const userName = this.dataset.userName;
+                const permission = this.dataset.permission;
+                if (!userName || !permission)
+                    return;
+                cityssm.postJSON(`${sunrise.urlPrefix}/admin/doToggleUserPermission`, {
+                    userName,
+                    permissionField: permission
+                }, (rawResponseJSON) => {
+                    const responseJSON = rawResponseJSON;
+                    if (responseJSON.success) {
+                        renderUsers(responseJSON.users);
+                    }
+                    else {
+                        bulmaJS.alert({
+                            contextualColorName: 'danger',
+                            title: 'Error Updating Permission',
+                            message: responseJSON.message || 'Please try again.'
+                        });
+                    }
+                });
+            });
+        });
+        // Add event listeners for delete buttons
+        tableElement.querySelectorAll('.delete-user').forEach(button => {
+            button.addEventListener('click', function () {
+                const userName = this.dataset.userName;
+                if (!userName)
+                    return;
+                bulmaJS.confirm({
+                    title: 'Delete User',
+                    message: `Are you sure you want to delete user "${userName}"? This action cannot be undone.`,
+                    contextualColorName: 'danger',
+                    okButton: {
+                        text: 'Delete User',
+                        contextualColorName: 'danger',
+                        callbackFunction: () => {
+                            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteUser`, {
+                                userId: userName // Note: the backend expects userId but uses it as userName
+                            }, (rawResponseJSON) => {
+                                const responseJSON = rawResponseJSON;
+                                if (responseJSON.success) {
+                                    // Update the users list with the new data from the server
+                                    if (responseJSON.users) {
+                                        renderUsers(responseJSON.users);
+                                    }
+                                    bulmaJS.alert({
+                                        contextualColorName: 'success',
+                                        title: 'User Deleted',
+                                        message: 'User has been successfully deleted.'
+                                    });
+                                }
+                                else {
+                                    bulmaJS.alert({
+                                        contextualColorName: 'danger',
+                                        title: 'Error Deleting User',
+                                        message: responseJSON.message || 'Please try again.'
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    cancelButton: {
+                        text: 'Cancel'
+                    }
+                });
+            });
+        });
         usersContainerElement.replaceChildren(tableElement);
     }
     document.querySelector('#button--addUser')?.addEventListener('click', () => {

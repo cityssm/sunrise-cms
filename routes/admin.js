@@ -72,6 +72,7 @@ import handler_doUpdateSetting from '../handlers/admin-post/doUpdateSetting.js';
 import handler_doUpdateWorkOrderMilestoneType from '../handlers/admin-post/doUpdateWorkOrderMilestoneType.js';
 import handler_doUpdateWorkOrderType from '../handlers/admin-post/doUpdateWorkOrderType.js';
 import handler_doUpdateUser from '../handlers/admin-post/doUpdateUser.js';
+import handler_doToggleUserPermission from '../handlers/admin-post/doToggleUserPermission.js';
 // Ntfy Startup
 export const router = Router();
 /*
@@ -136,6 +137,7 @@ router.get('/tables', handler_tables);
 router.get('/users', handler_users);
 router.post('/doAddUser', handler_doAddUser);
 router.post('/doUpdateUser', handler_doUpdateUser);
+router.post('/doToggleUserPermission', handler_doToggleUserPermission);
 router.post('/doDeleteUser', handler_doDeleteUser);
 // Config Tables - Work Order Types
 router.post('/doAddWorkOrderType', handler_doAddWorkOrderType);

@@ -134,44 +134,45 @@ declare const exports: {
           contextualColorName: 'danger',
           okButton: {
             text: 'Delete User',
-            contextualColorName: 'danger'
+            contextualColorName: 'danger',
+            callbackFunction: () => {
+              cityssm.postJSON(
+                `${sunrise.urlPrefix}/admin/doDeleteUser`,
+                {
+                  userId: userName  // Note: the backend expects userId but uses it as userName
+                },
+                (rawResponseJSON) => {
+                  const responseJSON = rawResponseJSON as {
+                    success: boolean
+                    users?: DatabaseUser[]
+                    message?: string
+                  }
+
+                  if (responseJSON.success) {
+                    // Update the users list with the new data from the server
+                    if (responseJSON.users) {
+                      renderUsers(responseJSON.users)
+                    }
+                    
+                    bulmaJS.alert({
+                      contextualColorName: 'success',
+                      title: 'User Deleted',
+                      message: 'User has been successfully deleted.'
+                    })
+                  } else {
+                    bulmaJS.alert({
+                      contextualColorName: 'danger',
+                      title: 'Error Deleting User',
+                      message: responseJSON.message || 'Please try again.'
+                    })
+                  }
+                }
+              )
+            }
           },
           cancelButton: {
             text: 'Cancel'
           }
-        }, () => {
-          cityssm.postJSON(
-            `${sunrise.urlPrefix}/admin/doDeleteUser`,
-            {
-              userId: userName  // Note: the backend expects userId but uses it as userName
-            },
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                success: boolean
-                users?: DatabaseUser[]
-                message?: string
-              }
-
-              if (responseJSON.success) {
-                // Update the users list with the new data from the server
-                if (responseJSON.users) {
-                  renderUsers(responseJSON.users)
-                }
-                
-                bulmaJS.alert({
-                  contextualColorName: 'success',
-                  title: 'User Deleted',
-                  message: 'User has been successfully deleted.'
-                })
-              } else {
-                bulmaJS.alert({
-                  contextualColorName: 'danger',
-                  title: 'Error Deleting User',
-                  message: responseJSON.message || 'Please try again.'
-                })
-              }
-            }
-          )
         })
       })
     })
