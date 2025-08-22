@@ -25,9 +25,9 @@ async function _getBurialSite(keyColumn, burialSiteIdOrLotName, includeDeleted =
         l.bodyCapacity, l.crematedCapacity,
         t.bodyCapacityMax, t.crematedCapacityMax,
 
-        l.cemeteryId, m.cemeteryName, m.cemeteryKey,
-        m.cemeteryLatitude, m.cemeteryLongitude,
-        m.cemeterySvg, l.cemeterySvgId, l.burialSiteImage,
+        l.cemeteryId, c.cemeteryName, c.cemeteryKey,
+        c.cemeteryLatitude, c.cemeteryLongitude,
+        c.cemeterySvg, l.cemeterySvgId, l.burialSiteImage,
         l.burialSiteLatitude, l.burialSiteLongitude,
 
         l.recordDelete_userName, l.recordDelete_timeMillis
@@ -35,7 +35,7 @@ async function _getBurialSite(keyColumn, burialSiteIdOrLotName, includeDeleted =
         from BurialSites l
         left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
         left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
-        left join Cemeteries m on l.cemeteryId = m.cemeteryId
+        left join Cemeteries c on l.cemeteryId = c.cemeteryId
 
         where l.${keyColumn} = ?
         ${includeDeleted ? '' : ' and l.recordDelete_timeMillis is null '}

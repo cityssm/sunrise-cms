@@ -99,7 +99,7 @@ export default async function getContracts(
         `select count(*) as recordCount
           from Contracts c
           left join BurialSites l on c.burialSiteId = l.burialSiteId
-          left join Cemeteries m on l.cemeteryId = m.cemeteryId
+          left join Cemeteries cem on l.cemeteryId = cem.cemeteryId
           ${sqlWhereClause}`
       )
       .pluck()
@@ -120,7 +120,7 @@ export default async function getContracts(
             c.contractTypeId, t.contractType, t.isPreneed,
             c.burialSiteId, lt.burialSiteType, l.burialSiteName,
             case when l.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
-            l.cemeteryId, m.cemeteryName,
+            l.cemeteryId, cem.cemeteryName,
 
             c.contractStartDate, userFn_dateIntegerToString(c.contractStartDate) as contractStartDateString,
             c.contractEndDate, userFn_dateIntegerToString(c.contractEndDate) as contractEndDateString,
@@ -147,7 +147,7 @@ export default async function getContracts(
           left join CommittalTypes cm on c.committalTypeId = cm.committalTypeId
           left join BurialSites l on c.burialSiteId = l.burialSiteId
           left join BurialSiteTypes lt on l.burialSiteTypeId = lt.burialSiteTypeId
-          left join Cemeteries m on l.cemeteryId = m.cemeteryId
+          left join Cemeteries cem on l.cemeteryId = cem.cemeteryId
           left join FuneralHomes f on c.funeralHomeId = f.funeralHomeId
           ${sqlWhereClause}
           ${
@@ -286,7 +286,7 @@ function buildWhereClause(filters: GetContractsFilters): {
   }
 
   if ((filters.cemeteryId ?? '') !== '') {
-    sqlWhereClause += ' and (m.cemeteryId = ? or m.parentCemeteryId = ?)'
+    sqlWhereClause += ' and (cem.cemeteryId = ? or cem.parentCemeteryId = ?)'
     sqlParameters.push(filters.cemeteryId, filters.cemeteryId)
   }
 
