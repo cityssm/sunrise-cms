@@ -32,8 +32,7 @@ declare const exports: {
 
     const mapCoordinates: Leaflet.LatLngTuple = [mapLatitude, mapLongitude]
 
-    // eslint-disable-next-line unicorn/no-array-callback-reference, unicorn/no-array-method-this-argument
-    const map: Leaflet.Map = new L.Map(mapContainerElement, {
+    const map = new L.Map(mapContainerElement, {
       scrollWheelZoom: false
     })
     map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom)

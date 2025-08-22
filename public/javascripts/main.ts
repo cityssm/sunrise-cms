@@ -128,7 +128,6 @@ declare const exports: Record<string, unknown> & {
           '.leaflet-map'
         ) as HTMLElement
 
-        // eslint-disable-next-line unicorn/no-array-callback-reference
         const map = new L.Map(mapContainerElement)
 
         new L.TileLayer(sunrise.leafletConstants.tileLayerURL, {
