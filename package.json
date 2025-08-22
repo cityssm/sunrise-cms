@@ -67,7 +67,7 @@
     "http-errors": "^2.0.0",
     "ical-generator": "^9.0.0",
     "jsbarcode": "^3.12.1",
-    "leaflet": "^1.9.4",
+    "leaflet": "^2.0.0-alpha.1",
     "papaparse": "^5.5.3",
     "parse-full-name": "^1.2.6",
     "randomcolor": "^0.6.2",
