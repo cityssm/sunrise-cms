@@ -3,11 +3,9 @@ import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-export default function deleteCemetery(
-  cemeteryId: number | string,
-  user: User
-): boolean {
-  const database = sqlite(sunriseDB)
+export default function deleteCemetery(cemeteryId: number | string,
+  user: User, connectedDatabase?: sqlite.Database): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   /*
    * Ensure no active contracts reference the cemetery
@@ -28,7 +26,11 @@ export default function deleteCemetery(
     .get(cemeteryId, currentDateInteger) as number | undefined
 
   if (activeContract !== undefined) {
-    database.close()
+    if (connectedDatabase === undefined) {
+
+      database.close()
+
+    }
     return false
   }
 
@@ -98,7 +100,12 @@ export default function deleteCemetery(
     }
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return true
 }

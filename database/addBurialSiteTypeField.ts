@@ -22,8 +22,8 @@ export interface AddBurialSiteTypeFieldForm {
 export default function addBurialSiteTypeField(
   addForm: AddBurialSiteTypeFieldForm,
   user: User
-): number {
-  const database = sqlite(sunriseDB)
+, connectedDatabase?: sqlite.Database): number {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -56,8 +56,13 @@ export default function addBurialSiteTypeField(
       rightNowMillis
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close();
+
+
+  }
   clearCacheByTableName('BurialSiteTypeFields')
 
   return result.lastInsertRowid as number

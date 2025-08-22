@@ -5,8 +5,8 @@ import type { ContractAttachment } from '../types/record.types.js'
 
 export default function getContractAttachment(
   contractAttachmentId: number | string
-): ContractAttachment | undefined {
-  const database = sqlite(sunriseDB, { readonly: true })
+, connectedDatabase?: sqlite.Database): ContractAttachment | undefined {
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const attachment = database
     .prepare(
@@ -20,7 +20,12 @@ export default function getContractAttachment(
     )
     .get(contractAttachmentId) as ContractAttachment
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return attachment
 }

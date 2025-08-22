@@ -2,8 +2,8 @@ import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import getBurialSiteTypeFields from './getBurialSiteTypeFields.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default function getBurialSiteTypes(includeDeleted = false) {
-    const database = sqlite(sunriseDB);
+export default function getBurialSiteTypes(includeDeleted = false, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !includeDeleted;
     const burialSiteTypes = database
         .prepare(`select burialSiteTypeId, burialSiteType,
@@ -22,6 +22,8 @@ export default function getBurialSiteTypes(includeDeleted = false) {
         }
         burialSiteType.burialSiteTypeFields = getBurialSiteTypeFields(burialSiteType.burialSiteTypeId, database);
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return burialSiteTypes;
 }

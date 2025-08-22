@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function getBurialSiteStatusSummary(filters) {
-    const database = sqlite(sunriseDB);
+export default function getBurialSiteStatusSummary(filters, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     let sqlWhereClause = ' where l.recordDelete_timeMillis is null';
     const sqlParameters = [];
     if ((filters.cemeteryId ?? '') !== '') {
@@ -17,6 +17,10 @@ export default function getBurialSiteStatusSummary(filters) {
         group by s.burialSiteStatusId, s.burialSiteStatus, s.orderNumber
         order by s.orderNumber`)
         .all(sqlParameters);
-    database.close();
+    if (connectedDatabase === undefined) {
+
+      database.close()
+
+    }
     return statuses;
 }

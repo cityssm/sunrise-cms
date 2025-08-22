@@ -8,11 +8,9 @@ export interface AddWorkOrderCommentForm {
   workOrderId: string
 }
 
-export default function addWorkOrderComment(
-  workOrderCommentForm: AddWorkOrderCommentForm,
-  user: User
-): number {
-  const database = sqlite(sunriseDB)
+export default function addWorkOrderComment(workOrderCommentForm: AddWorkOrderCommentForm,
+  user: User, connectedDatabase?: sqlite.Database): number {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNow = new Date()
 
@@ -37,7 +35,12 @@ export default function addWorkOrderComment(
       rightNow.getTime()
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return result.lastInsertRowid as number
 }

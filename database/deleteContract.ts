@@ -3,8 +3,8 @@ import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-export function deleteContract(contractId: number | string, user: User): boolean {
-  const database = sqlite(sunriseDB)
+export function deleteContract(contractId: number | string, user: User, connectedDatabase?: sqlite.Database): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   /*
    * Ensure no active work orders reference the contract
@@ -24,7 +24,11 @@ export function deleteContract(contractId: number | string, user: User): boolean
     .get(contractId, currentDateInteger) as number | undefined
 
   if (activeWorkOrder !== undefined) {
-    database.close()
+    if (connectedDatabase === undefined) {
+
+      database.close()
+
+    }
     return false
   }
 
@@ -46,7 +50,12 @@ export function deleteContract(contractId: number | string, user: User): boolean
       .run(user.userName, rightNowMillis, contractId)
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return true
 }

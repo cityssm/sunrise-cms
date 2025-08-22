@@ -47,7 +47,7 @@ export const burialSiteNameRangeLimit = 1000
 
 export default function getBurialSiteNamesByRange(
   rangeForm: GetBurialSiteNamesByRangeForm
-): GetBurialSiteNamesByRangeResult {
+, connectedDatabase?: sqlite.Database): GetBurialSiteNamesByRangeResult {
   const segmentRanges: string[][] = []
 
   try {
@@ -90,7 +90,7 @@ export default function getBurialSiteNamesByRange(
 
   const results: GetBurialSiteNamesByRangeResult = []
 
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const cemetery =
     rangeForm.cemeteryId === ''
@@ -127,7 +127,12 @@ export default function getBurialSiteNamesByRange(
     })
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return results
 }

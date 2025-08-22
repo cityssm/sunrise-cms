@@ -3,12 +3,10 @@ import sqlite from 'better-sqlite3'
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-export default function deleteContractTypePrint(
-  contractTypeId: number | string,
+export default function deleteContractTypePrint(contractTypeId: number | string,
   printEJS: string,
-  user: User
-): boolean {
-  const database = sqlite(sunriseDB)
+  user: User, connectedDatabase?: sqlite.Database): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -20,8 +18,13 @@ export default function deleteContractTypePrint(
     )
     .run(user.userName, Date.now(), contractTypeId, printEJS)
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   clearCacheByTableName('ContractTypePrints')
 
   return result.changes > 0

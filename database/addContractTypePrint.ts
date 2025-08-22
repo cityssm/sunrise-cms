@@ -13,8 +13,8 @@ export interface AddContractTypePrintForm {
 export default function addContractTypePrint(
   addForm: AddContractTypePrintForm,
   user: User
-): boolean {
-  const database = sqlite(sunriseDB)
+, connectedDatabase?: sqlite.Database): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -55,8 +55,13 @@ export default function addContractTypePrint(
       )
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close();
+
+
+  }
   clearCacheByTableName('ContractTypePrints')
 
   return result.changes > 0

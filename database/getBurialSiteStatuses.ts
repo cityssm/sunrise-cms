@@ -7,8 +7,8 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getBurialSiteStatuses(
   includeDeleted = false
-): BurialSiteStatus[] {
-  const database = sqlite(sunriseDB)
+, connectedDatabase?: sqlite.Database): BurialSiteStatus[] {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const updateOrderNumbers = !includeDeleted
 
@@ -40,7 +40,12 @@ export default function getBurialSiteStatuses(
     }
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return statuses
 }

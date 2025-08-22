@@ -7,8 +7,8 @@ import type { ContractMetadata } from '../types/record.types.js'
 export default function getContractMetadata(filters: {
   contractId?: number | string
   startsWith?: '' | MetadataPrefix
-}): ContractMetadata[] {
-  const database = sqlite(sunriseDB, { readonly: true })
+}, connectedDatabase?: sqlite.Database): ContractMetadata[] {
+  const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   let sql = `select contractId, metadataKey, metadataValue, recordUpdate_timeMillis
     from ContractMetadata
@@ -28,7 +28,12 @@ export default function getContractMetadata(filters: {
 
   const rows = database.prepare(sql).all(sqlParameters) as ContractMetadata[]
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close()
+
+
+  }
   return rows
 }

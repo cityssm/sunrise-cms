@@ -19,8 +19,8 @@ export default function addRecord(
   recordName: string,
   orderNumber: number | string,
   user: User
-): number {
-  const database = sqlite(sunriseDB)
+, connectedDatabase?: sqlite.Database): number {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -42,8 +42,13 @@ export default function addRecord(
       rightNowMillis
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
 
+
+    database.close();
+
+
+  }
   clearCacheByTableName(recordTable)
 
   return result.lastInsertRowid as number
