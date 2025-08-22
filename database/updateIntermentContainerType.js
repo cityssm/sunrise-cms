@@ -13,9 +13,7 @@ export default function updateIntermentContainerType(updateForm, user, connected
           and intermentContainerTypeId = ?`)
         .run(updateForm.intermentContainerType, updateForm.isCremationType, user.userName, rightNowMillis, updateForm.intermentContainerTypeId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName('IntermentContainerTypes');
     return result.changes > 0;

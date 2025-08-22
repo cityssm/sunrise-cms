@@ -16,9 +16,7 @@ export function updateWorkOrderMilestoneTime(milestoneForm, user, connectedDatab
         ? undefined
         : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), user.userName, Date.now(), milestoneForm.workOrderMilestoneId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

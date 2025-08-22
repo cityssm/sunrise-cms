@@ -18,9 +18,7 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
         .get(cemeteryId, currentDateInteger);
     if (activeContract !== undefined) {
         if (connectedDatabase === undefined) {
-
-          database.close()
-
+            database.close();
         }
         return false;
     }
@@ -72,9 +70,7 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
         }
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return true;
 }

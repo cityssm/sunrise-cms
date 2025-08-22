@@ -14,9 +14,7 @@ export default function updateFuneralHome(updateForm, user, connectedDatabase) {
           and funeralHomeId = ?`)
         .run(updateForm.funeralHomeName, updateForm.funeralHomeAddress1, updateForm.funeralHomeAddress2, updateForm.funeralHomeCity, updateForm.funeralHomeProvince, updateForm.funeralHomePostalCode.toUpperCase(), updateForm.funeralHomePhoneNumber, user.userName, rightNowMillis, updateForm.funeralHomeId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

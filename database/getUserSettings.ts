@@ -8,8 +8,9 @@ import type { UserSettingKey } from '../types/user.types.js'
 import updateUserSetting from './updateUserSetting.js'
 
 export default function getUserSettings(
-  userName: string
-, connectedDatabase?: sqlite.Database): Partial<Record<UserSettingKey, string>> {
+  userName: string,
+  connectedDatabase?: sqlite.Database
+): Partial<Record<UserSettingKey, string>> {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const databaseSettings = database
@@ -39,11 +40,8 @@ export default function getUserSettings(
   }
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+  
   return settings
 }

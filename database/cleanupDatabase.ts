@@ -4,7 +4,10 @@ import sqlite from 'better-sqlite3'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-export default function cleanupDatabase(user: User, connectedDatabase?: sqlite.Database): {
+export default function cleanupDatabase(
+  user: User,
+  connectedDatabase?: sqlite.Database
+): {
   inactivatedRecordCount: number
   purgedRecordCount: number
 } {
@@ -445,11 +448,7 @@ export default function cleanupDatabase(user: User, connectedDatabase?: sqlite.D
     .run(recordDeleteTimeMillisMin).changes
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   return {
     inactivatedRecordCount,

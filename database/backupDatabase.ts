@@ -5,7 +5,9 @@ import { backupFolder, sunriseDB } from '../helpers/database.helpers.js'
 
 const debug = Debug('sunrise:database:backupDatabase')
 
-export async function backupDatabase(connectedDatabase?: sqlite.Database): Promise<false | string> {
+export async function backupDatabase(
+  connectedDatabase?: sqlite.Database
+): Promise<false | string> {
   const databasePathSplit = sunriseDB.split(/[/\\]/)
 
   const backupDatabasePath = `${backupFolder}/${databasePathSplit.at(-1)}.${Date.now().toString()}`
@@ -31,9 +33,7 @@ export async function backupDatabase(connectedDatabase?: sqlite.Database): Promi
     return false
   } finally {
     if (connectedDatabase === undefined) {
-
       database.close()
-
     }
   }
 }

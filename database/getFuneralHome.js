@@ -1,12 +1,12 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getFuneralHome(funeralHomeId, includeDeleted = false, connectedDatabase) {
-    return _getFuneralHome('funeralHomeId', funeralHomeId, includeDeleted);
+    return _getFuneralHome('funeralHomeId', funeralHomeId, includeDeleted, connectedDatabase);
 }
 export function getFuneralHomeByKey(funeralHomeKey, includeDeleted = false, connectedDatabase) {
-    return _getFuneralHome('funeralHomeKey', funeralHomeKey, includeDeleted);
+    return _getFuneralHome('funeralHomeKey', funeralHomeKey, includeDeleted, connectedDatabase);
 }
-function _getFuneralHome(keyColumn, funeralHomeIdOrKey, includeDeleted = false) {
+function _getFuneralHome(keyColumn, funeralHomeIdOrKey, includeDeleted = false, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const funeralHome = database
         .prepare(`select funeralHomeId, funeralHomeKey, funeralHomeName,
@@ -19,9 +19,7 @@ function _getFuneralHome(keyColumn, funeralHomeIdOrKey, includeDeleted = false) 
         order by f.funeralHomeName, f.funeralHomeId`)
         .get(funeralHomeIdOrKey);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return funeralHome;
 }

@@ -304,9 +304,7 @@ export default function cleanupDatabase(user, connectedDatabase) {
           and cemeteryId not in (select cemeteryId from BurialSites where cemeteryId is not null)`)
         .run(recordDeleteTimeMillisMin).changes;
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return {
         inactivatedRecordCount,

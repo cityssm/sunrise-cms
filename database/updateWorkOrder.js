@@ -15,9 +15,7 @@ export default function updateWorkOrder(workOrderForm, user, connectedDatabase) 
           and recordDelete_timeMillis is null`)
         .run(workOrderForm.workOrderNumber, workOrderForm.workOrderTypeId, workOrderForm.workOrderDescription, dateStringToInteger(workOrderForm.workOrderOpenDateString), user.userName, Date.now(), workOrderForm.workOrderId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

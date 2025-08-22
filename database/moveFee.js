@@ -14,9 +14,7 @@ export function moveFeeDown(feeId, connectedDatabase) {
         .run(currentFee.feeCategoryId, currentFee.orderNumber);
     const success = updateRecordOrderNumber('Fees', feeId, currentFee.orderNumber + 1, database);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return success;
 }
@@ -39,9 +37,7 @@ export function moveFeeDownToBottom(feeId, connectedDatabase) {
             .run(currentFee.feeCategoryId, currentFee.orderNumber);
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return true;
 }
@@ -50,9 +46,7 @@ export function moveFeeUp(feeId, connectedDatabase) {
     const currentFee = getFee(feeId, database);
     if (currentFee.orderNumber <= 0) {
         if (connectedDatabase === undefined) {
-
-          database.close()
-
+            database.close();
         }
         return true;
     }
@@ -65,9 +59,7 @@ export function moveFeeUp(feeId, connectedDatabase) {
         .run(currentFee.feeCategoryId, currentFee.orderNumber);
     const success = updateRecordOrderNumber('Fees', feeId, currentFee.orderNumber - 1, database);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return success;
 }
@@ -85,9 +77,7 @@ export function moveFeeUpToTop(feeId, connectedDatabase) {
             .run(currentFee.feeCategoryId, currentFee.orderNumber);
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return true;
 }

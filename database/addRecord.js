@@ -18,9 +18,7 @@ export default function addRecord(recordTable, recordName, orderNumber, user, co
         values (?, ?, ?, ?, ?, ?)`)
         .run(recordName, orderNumber === '' ? -1 : orderNumber, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (connectedDatabase === undefined) {
-
-      database.close();
-
+        database.close();
     }
     clearCacheByTableName(recordTable);
     return result.lastInsertRowid;

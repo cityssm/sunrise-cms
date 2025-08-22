@@ -31,9 +31,7 @@ export default function updateContractInterment(contractForm, user, connectedDat
         ? undefined
         : contractForm.intermentContainerTypeId, user.userName, Date.now(), contractForm.contractId, contractForm.intermentNumber);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return results.changes > 0;
 }

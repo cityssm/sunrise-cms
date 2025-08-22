@@ -3,7 +3,11 @@ import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-export function deleteBurialSite(burialSiteId: number, user: User, connectedDatabase?: sqlite.Database): boolean {
+export function deleteBurialSite(
+  burialSiteId: number,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   /*
@@ -25,9 +29,7 @@ export function deleteBurialSite(burialSiteId: number, user: User, connectedData
 
   if (activeContract !== undefined) {
     if (connectedDatabase === undefined) {
-
       database.close()
-
     }
     return false
   }
@@ -49,11 +51,7 @@ export function deleteBurialSite(burialSiteId: number, user: User, connectedData
     .run(user.userName, rightNowMillis, burialSiteId)
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   return true
 }

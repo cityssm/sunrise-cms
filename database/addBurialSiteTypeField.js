@@ -18,9 +18,7 @@ export default function addBurialSiteTypeField(addForm, user, connectedDatabase)
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     addForm.maxLength ?? 100, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (connectedDatabase === undefined) {
-
-      database.close();
-
+        database.close();
     }
     clearCacheByTableName('BurialSiteTypeFields');
     return result.lastInsertRowid;

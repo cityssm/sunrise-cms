@@ -5,7 +5,9 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 const loginUsers = getConfigProperty('users.canLogin')
 
-export default function getApiKeys(connectedDatabase?: sqlite.Database): Record<string, string> {
+export default function getApiKeys(
+  connectedDatabase?: sqlite.Database
+): Record<string, string> {
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const databaseSettings = database
@@ -33,11 +35,7 @@ export default function getApiKeys(connectedDatabase?: sqlite.Database): Record<
   }
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   return apiKeys
 }

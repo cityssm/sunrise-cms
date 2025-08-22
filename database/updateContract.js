@@ -54,9 +54,7 @@ export default function updateContract(updateForm, user, connectedDatabase) {
         }
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

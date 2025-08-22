@@ -23,9 +23,7 @@ export default function addContractTypePrint(addForm, user, connectedDatabase) {
             .run(addForm.contractTypeId, addForm.printEJS, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
     if (connectedDatabase === undefined) {
-
-      database.close();
-
+        database.close();
     }
     clearCacheByTableName('ContractTypePrints');
     return result.changes > 0;

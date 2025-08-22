@@ -18,9 +18,7 @@ export default function updateBurialSiteTypeField(updateForm, user, connectedDat
           and recordDelete_timeMillis is null`)
         .run(updateForm.burialSiteTypeField, Number.parseInt(updateForm.isRequired, 10), updateForm.fieldType ?? 'text', updateForm.minLength ?? 0, updateForm.maxLength ?? 100, updateForm.pattern ?? '', updateForm.fieldValues, user.userName, Date.now(), updateForm.burialSiteTypeFieldId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName('BurialSiteTypeFields');
     return result.changes > 0;

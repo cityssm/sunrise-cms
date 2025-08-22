@@ -13,9 +13,7 @@ export default function deleteConsignoCloudContractMetadata(contractId, user, co
         deleteContractMetadata(contractId, metadataKey, user, database);
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return true;
 }

@@ -21,9 +21,7 @@ export default function getWorkOrderMilestoneTypes(includeDeleted = false, conne
         }
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return workOrderMilestoneTypes;
 }

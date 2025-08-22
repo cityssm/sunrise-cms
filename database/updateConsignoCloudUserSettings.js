@@ -8,9 +8,7 @@ export function updateConsignoCloudUserSettings(updateForm, user, connectedDatab
         updateUserSetting(user.userName, 'consignoCloud.thirdPartyApplicationPassword', updateForm.thirdPartyApplicationPassword, database);
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return true;
 }

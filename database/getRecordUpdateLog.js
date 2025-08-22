@@ -23,7 +23,9 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
       where r.recordDelete_timeMillis is null
         and r.recordUpdate_timeMillis >= @minimumMillis`);
     }
-    if (filters.recordType === '' || filters.recordType === 'contract' || filters.recordType === 'contractTransactions') {
+    if (filters.recordType === '' ||
+        filters.recordType === 'contract' ||
+        filters.recordType === 'contractTransactions') {
         recordTableSql.push(`select 'contractTransactions' as recordType,
         case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
           then 'create'
@@ -51,7 +53,9 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
       where r.recordDelete_timeMillis is null
         and r.recordUpdate_timeMillis >= @minimumMillis`);
     }
-    if (filters.recordType === '' || filters.recordType === 'workOrder' || filters.recordType === 'workOrderMilestone') {
+    if (filters.recordType === '' ||
+        filters.recordType === 'workOrder' ||
+        filters.recordType === 'workOrderMilestone') {
         recordTableSql.push(`select 'workOrderMilestone' as recordType,
         case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
           then 'create'
@@ -83,9 +87,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         offset
     });
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result;
 }

@@ -20,4 +20,4 @@ export interface UpdateFeeAmountForm {
     feeId: string;
     feeAmount: string;
 }
-export declare function updateFeeAmount(feeAmountForm: UpdateFeeAmountForm, user: User): boolean;
+export declare function updateFeeAmount(feeAmountForm: UpdateFeeAmountForm, user: User, connectedDatabase?: sqlite.Database): boolean;

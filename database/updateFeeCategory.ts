@@ -11,8 +11,9 @@ export interface UpdateFeeCategoryForm {
 
 export default function updateFeeCategory(
   feeCategoryForm: UpdateFeeCategoryForm,
-  user: User
-, connectedDatabase?: sqlite.Database): boolean {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
@@ -34,11 +35,8 @@ export default function updateFeeCategory(
     )
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+
   return result.changes > 0
 }

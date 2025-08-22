@@ -5,8 +5,9 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 export function moveContractTypePrintDown(
   contractTypeId: number | string,
-  printEJS: string
-, connectedDatabase?: sqlite.Database): boolean {
+  printEJS: string,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const currentOrderNumber = (
@@ -34,11 +35,7 @@ export function moveContractTypePrintDown(
     .run(currentOrderNumber, contractTypeId, printEJS)
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   clearCacheByTableName('ContractTypePrints')
 
@@ -47,8 +44,9 @@ export function moveContractTypePrintDown(
 
 export function moveContractTypePrintDownToBottom(
   contractTypeId: number | string,
-  printEJS: string
-, connectedDatabase?: sqlite.Database): boolean {
+  printEJS: string,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const currentOrderNumber = (
@@ -92,11 +90,7 @@ export function moveContractTypePrintDownToBottom(
   }
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   clearCacheByTableName('ContractTypePrints')
 

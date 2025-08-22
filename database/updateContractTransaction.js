@@ -18,9 +18,7 @@ export default function updateContractTransaction(updateForm, user, connectedDat
           and transactionIndex = ?`)
         .run(updateForm.transactionAmount, updateForm.isInvoiced ?? 0, updateForm.externalReceiptNumber, updateForm.transactionNote, dateStringToInteger(updateForm.transactionDateString), timeStringToInteger(updateForm.transactionTimeString), user.userName, Date.now(), updateForm.contractId, updateForm.transactionIndex);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

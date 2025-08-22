@@ -14,8 +14,9 @@ export interface UpdateBurialSiteTypeForm {
 
 export default function updateBurialSiteType(
   updateForm: UpdateBurialSiteTypeForm,
-  user: User
-, connectedDatabase?: sqlite.Database): boolean {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
@@ -45,12 +46,9 @@ export default function updateBurialSiteType(
     )
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+  
   clearCacheByTableName('BurialSiteTypes')
 
   return result.changes > 0

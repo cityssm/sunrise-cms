@@ -11,9 +11,7 @@ export default function getPreviousCemeteryId(cemeteryId, connectedDatabase) {
         .pluck()
         .get(cemeteryId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result;
 }

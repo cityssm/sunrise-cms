@@ -10,8 +10,9 @@ export interface AddFeeCategoryForm {
 
 export default function addFeeCategory(
   feeCategoryForm: AddFeeCategoryForm,
-  user: User
-, connectedDatabase?: sqlite.Database): number {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): number {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
@@ -36,11 +37,7 @@ export default function addFeeCategory(
     )
 
   if (connectedDatabase === undefined) {
-
-
-    database.close();
-
-
+    database.close()
   }
   return result.lastInsertRowid as number
 }

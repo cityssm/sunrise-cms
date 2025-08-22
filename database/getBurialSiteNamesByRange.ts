@@ -46,8 +46,9 @@ const segmentCount = 5
 export const burialSiteNameRangeLimit = 1000
 
 export default function getBurialSiteNamesByRange(
-  rangeForm: GetBurialSiteNamesByRangeForm
-, connectedDatabase?: sqlite.Database): GetBurialSiteNamesByRangeResult {
+  rangeForm: GetBurialSiteNamesByRangeForm,
+  connectedDatabase?: sqlite.Database
+): GetBurialSiteNamesByRangeResult {
   const segmentRanges: string[][] = []
 
   try {
@@ -82,7 +83,9 @@ export default function getBurialSiteNamesByRange(
     return []
   }
 
-  if (calculateCartesianProductLength(segmentRanges) > burialSiteNameRangeLimit) {
+  if (
+    calculateCartesianProductLength(segmentRanges) > burialSiteNameRangeLimit
+  ) {
     return []
   }
 
@@ -128,11 +131,7 @@ export default function getBurialSiteNamesByRange(
   }
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   return results
 }

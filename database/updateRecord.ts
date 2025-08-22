@@ -23,8 +23,9 @@ export function updateRecord(
   recordTable: RecordTable,
   recordId: number | string,
   recordName: string,
-  user: User
-, connectedDatabase?: sqlite.Database): boolean {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const columnNames = recordNameIdColumns.get(recordTable)
@@ -45,12 +46,9 @@ export function updateRecord(
     .run(recordName, user.userName, Date.now(), recordId)
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+  
   clearCacheByTableName(recordTable)
 
   return result.changes > 0

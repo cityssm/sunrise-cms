@@ -16,9 +16,7 @@ export default function getContractMetadata(filters, connectedDatabase) {
     }
     const rows = database.prepare(sql).all(sqlParameters);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return rows;
 }

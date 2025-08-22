@@ -20,9 +20,7 @@ export default function updateConsignoCloudMetadata(contractId, metadata, user, 
         metadataValue: user.userName
     }, user, database);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return true;
 }

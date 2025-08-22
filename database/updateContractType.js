@@ -14,9 +14,7 @@ export default function updateContractType(updateForm, user, connectedDatabase) 
           and contractTypeId = ?`)
         .run(updateForm.contractType, updateForm.isPreneed === undefined ? 0 : 1, user.userName, rightNowMillis, updateForm.contractTypeId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName('ContractTypes');
     return result.changes > 0;

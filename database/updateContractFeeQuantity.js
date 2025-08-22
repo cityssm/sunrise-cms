@@ -12,9 +12,7 @@ export default function updateContractFeeQuantity(feeQuantityForm, user, connect
           and feeId = ?`)
         .run(feeQuantityForm.quantity, user.userName, Date.now(), feeQuantityForm.contractId, feeQuantityForm.feeId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

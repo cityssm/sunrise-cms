@@ -5,8 +5,11 @@ import type { MetadataKey } from '../types/contractMetadata.types.js'
 
 import deleteContractMetadata from './deleteContractMetadata.js'
 
-export default function deleteConsignoCloudContractMetadata(contractId: number | string,
-  user: User, connectedDatabase?: sqlite.Database): boolean {
+export default function deleteConsignoCloudContractMetadata(
+  contractId: number | string,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const consignoCloudMetadataKeys = [
@@ -21,12 +24,7 @@ export default function deleteConsignoCloudContractMetadata(contractId: number |
   }
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   return true
-
 }

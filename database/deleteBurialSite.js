@@ -17,9 +17,7 @@ export function deleteBurialSite(burialSiteId, user, connectedDatabase) {
         .get(burialSiteId, currentDateInteger);
     if (activeContract !== undefined) {
         if (connectedDatabase === undefined) {
-
-          database.close()
-
+            database.close();
         }
         return false;
     }
@@ -35,9 +33,7 @@ export function deleteBurialSite(burialSiteId, user, connectedDatabase) {
           and recordDelete_timeMillis is null`)
         .run(user.userName, rightNowMillis, burialSiteId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return true;
 }

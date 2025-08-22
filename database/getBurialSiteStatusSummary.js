@@ -18,9 +18,7 @@ export default function getBurialSiteStatusSummary(filters, connectedDatabase) {
         order by s.orderNumber`)
         .all(sqlParameters);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return statuses;
 }

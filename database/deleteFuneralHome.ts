@@ -3,8 +3,11 @@ import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-export default function deleteFuneralHome(funeralHomeId: number | string,
-  user: User, connectedDatabase?: sqlite.Database): boolean {
+export default function deleteFuneralHome(
+  funeralHomeId: number | string,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   /*
@@ -24,13 +27,13 @@ export default function deleteFuneralHome(funeralHomeId: number | string,
         and funeralDate >= ?`
     )
     .pluck()
-    .get(funeralHomeId, currentDateInteger, currentDateInteger) as number | undefined
+    .get(funeralHomeId, currentDateInteger, currentDateInteger) as
+    | number
+    | undefined
 
   if (activeContract !== undefined) {
     if (connectedDatabase === undefined) {
-
       database.close()
-
     }
     return false
   }
@@ -52,11 +55,7 @@ export default function deleteFuneralHome(funeralHomeId: number | string,
     .run(user.userName, rightNowMillis, funeralHomeId)
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   return true
 }

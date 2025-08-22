@@ -18,9 +18,7 @@ export default function updateContractTypeField(updateForm, user, connectedDatab
           and recordDelete_timeMillis is null`)
         .run(updateForm.contractTypeField, Number.parseInt(updateForm.isRequired, 10), updateForm.fieldType ?? 'text', updateForm.minLength ?? 0, updateForm.maxLength ?? 100, updateForm.pattern ?? '', updateForm.fieldValues, user.userName, Date.now(), updateForm.contractTypeFieldId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName('ContractTypeFields');
     return result.changes > 0;

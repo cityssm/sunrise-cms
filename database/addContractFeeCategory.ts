@@ -12,9 +12,10 @@ export interface AddContractCategoryForm {
 
 export default async function addContractFeeCategory(
   addFeeCategoryForm: AddContractCategoryForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): Promise<number> {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const feeCategory = getFeeCategory(addFeeCategoryForm.feeCategoryId, database)
 

@@ -11,8 +11,9 @@ export interface UpdateConsignoCloudUserSettingsForm {
 
 export function updateConsignoCloudUserSettings(
   updateForm: UpdateConsignoCloudUserSettingsForm,
-  user: User
-, connectedDatabase?: sqlite.Database): boolean {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   updateUserSetting(
@@ -32,11 +33,8 @@ export function updateConsignoCloudUserSettings(
   }
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+  
   return true
 }

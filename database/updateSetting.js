@@ -17,9 +17,7 @@ export default function updateSetting(updateForm, connectedDatabase) {
             .run(updateForm.settingKey, updateForm.settingValue, Date.now());
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     if (result.changes > 0) {
         clearCacheByTableName('SunriseSettings');

@@ -8,9 +8,7 @@ export function moveContractTypePrintUp(contractTypeId, printEJS, connectedDatab
         .get(contractTypeId, printEJS).orderNumber;
     if (currentOrderNumber <= 0) {
         if (connectedDatabase === undefined) {
-
-          database.close()
-
+            database.close();
         }
         return true;
     }
@@ -25,9 +23,7 @@ export function moveContractTypePrintUp(contractTypeId, printEJS, connectedDatab
         .prepare('update ContractTypePrints set orderNumber = ? - 1 where contractTypeId = ? and printEJS = ?')
         .run(currentOrderNumber, contractTypeId, printEJS);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName('ContractTypePrints');
     return result.changes > 0;
@@ -53,9 +49,7 @@ export function moveContractTypePrintUpToTop(contractTypeId, printEJS, connected
             .run(contractTypeId, currentOrderNumber);
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName('ContractTypePrints');
     return true;

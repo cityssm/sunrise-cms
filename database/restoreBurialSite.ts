@@ -2,7 +2,11 @@ import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-export function restoreBurialSite(burialSiteId: number, user: User, connectedDatabase?: sqlite.Database): boolean {
+export function restoreBurialSite(
+  burialSiteId: number,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
@@ -20,11 +24,8 @@ export function restoreBurialSite(burialSiteId: number, user: User, connectedDat
     .run(user.userName, rightNowMillis, burialSiteId)
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+  
   return result.changes > 0
 }

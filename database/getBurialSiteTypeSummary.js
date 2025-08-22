@@ -18,9 +18,7 @@ export default function getBurialSiteTypeSummary(filters, connectedDatabase) {
         order by t.orderNumber`)
         .all(sqlParameters);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return burialSiteTypes;
 }

@@ -12,9 +12,7 @@ export default function getContractAttachment(contractAttachmentId, connectedDat
           and contractAttachmentId = ?`)
         .get(contractAttachmentId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return attachment;
 }

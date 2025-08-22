@@ -5,10 +5,10 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface UpdateBurialSiteTypeFieldForm {
   burialSiteTypeFieldId: number | string
-  
+
   burialSiteTypeField: string
   isRequired: '0' | '1'
-  
+
   fieldType?: string
   fieldValues: string
 
@@ -19,8 +19,9 @@ export interface UpdateBurialSiteTypeFieldForm {
 
 export default function updateBurialSiteTypeField(
   updateForm: UpdateBurialSiteTypeFieldForm,
-  user: User
-, connectedDatabase?: sqlite.Database): boolean {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
@@ -52,12 +53,9 @@ export default function updateBurialSiteTypeField(
     )
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+  
   clearCacheByTableName('BurialSiteTypeFields')
 
   return result.changes > 0

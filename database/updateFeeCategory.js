@@ -12,9 +12,7 @@ export default function updateFeeCategory(feeCategoryForm, user, connectedDataba
           and feeCategoryId = ?`)
         .run(feeCategoryForm.feeCategory, (feeCategoryForm.isGroupedFee ?? '') === '1' ? 1 : 0, user.userName, Date.now(), feeCategoryForm.feeCategoryId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

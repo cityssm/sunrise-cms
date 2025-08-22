@@ -16,7 +16,8 @@ export default function getBurialSiteTypes(includeDeleted = false, connectedData
     let expectedOrderNumber = -1;
     for (const burialSiteType of burialSiteTypes) {
         expectedOrderNumber += 1;
-        if (updateOrderNumbers && burialSiteType.orderNumber !== expectedOrderNumber) {
+        if (updateOrderNumbers &&
+            burialSiteType.orderNumber !== expectedOrderNumber) {
             updateRecordOrderNumber('BurialSiteTypes', burialSiteType.burialSiteTypeId, expectedOrderNumber, database);
             burialSiteType.orderNumber = expectedOrderNumber;
         }

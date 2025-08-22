@@ -17,9 +17,7 @@ export function moveContractTypePrintDown(contractTypeId, printEJS, connectedDat
         .prepare('update ContractTypePrints set orderNumber = ? + 1 where contractTypeId = ? and printEJS = ?')
         .run(currentOrderNumber, contractTypeId, printEJS);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName('ContractTypePrints');
     return result.changes > 0;
@@ -51,9 +49,7 @@ export function moveContractTypePrintDownToBottom(contractTypeId, printEJS, conn
             .run(contractTypeId, currentOrderNumber);
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName('ContractTypePrints');
     return true;

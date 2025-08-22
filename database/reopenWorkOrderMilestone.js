@@ -12,9 +12,7 @@ export default function reopenWorkOrderMilestone(workOrderMilestoneId, user, con
         and workOrderMilestoneCompletionDate is not null`)
         .run(user.userName, Date.now(), workOrderMilestoneId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

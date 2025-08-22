@@ -21,6 +21,7 @@ export type UpdateCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
  * Be sure to rebuild burial site names after updating a cemetery.
  * @param updateForm - The form data from the update cemetery form.
  * @param user - The user who is updating the cemetery.
+ * @param connectedDatabase - An optional connected database instance.
  * @returns `true` if the cemetery was updated successfully, `false` otherwise.
  */
 export default function updateCemetery(updateForm: UpdateCemeteryForm, user: User, connectedDatabase?: sqlite.Database): boolean;

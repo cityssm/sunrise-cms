@@ -6,6 +6,7 @@ import updateCemeteryDirectionsOfArrival from './updateCemeteryDirectionsOfArriv
  * Be sure to rebuild burial site names after updating a cemetery.
  * @param updateForm - The form data from the update cemetery form.
  * @param user - The user who is updating the cemetery.
+ * @param connectedDatabase - An optional connected database instance.
  * @returns `true` if the cemetery was updated successfully, `false` otherwise.
  */
 export default function updateCemetery(updateForm, user, connectedDatabase) {
@@ -38,9 +39,7 @@ export default function updateCemetery(updateForm, user, connectedDatabase) {
         : updateForm.parentCemeteryId, user.userName, Date.now(), updateForm.cemeteryId);
     updateCemeteryDirectionsOfArrival(updateForm.cemeteryId, updateForm, database);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

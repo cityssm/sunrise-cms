@@ -21,9 +21,7 @@ export default function getBurialSiteStatuses(includeDeleted = false, connectedD
         }
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return statuses;
 }

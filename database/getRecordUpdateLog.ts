@@ -8,7 +8,11 @@ const maxDays = 30
 export const defaultRecordLimit = 100
 const maxRecordLimit = 500
 
-export type RecordType = 'contract' | 'contractTransactions' | 'workOrder' | 'workOrderMilestone'
+export type RecordType =
+  | 'contract'
+  | 'contractTransactions'
+  | 'workOrder'
+  | 'workOrderMilestone'
 
 export interface RecordUpdateLog {
   recordType: RecordType
@@ -30,8 +34,9 @@ export default function getRecordUpdateLog(
   options?: {
     limit?: number
     offset?: number
-  }
-, connectedDatabase?: sqlite.Database): RecordUpdateLog[] {
+  },
+  connectedDatabase?: sqlite.Database
+): RecordUpdateLog[] {
   const minimumMillis = Date.now() - daysToMillis(maxDays)
 
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
@@ -54,7 +59,11 @@ export default function getRecordUpdateLog(
         and r.recordUpdate_timeMillis >= @minimumMillis`)
   }
 
-  if (filters.recordType === '' || filters.recordType === 'contract' || filters.recordType === 'contractTransactions') {
+  if (
+    filters.recordType === '' ||
+    filters.recordType === 'contract' ||
+    filters.recordType === 'contractTransactions'
+  ) {
     recordTableSql.push(`select 'contractTransactions' as recordType,
         case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
           then 'create'
@@ -84,7 +93,11 @@ export default function getRecordUpdateLog(
         and r.recordUpdate_timeMillis >= @minimumMillis`)
   }
 
-  if (filters.recordType === '' || filters.recordType === 'workOrder' || filters.recordType === 'workOrderMilestone') {
+  if (
+    filters.recordType === '' ||
+    filters.recordType === 'workOrder' ||
+    filters.recordType === 'workOrderMilestone'
+  ) {
     recordTableSql.push(`select 'workOrderMilestone' as recordType,
         case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
           then 'create'
@@ -122,11 +135,8 @@ export default function getRecordUpdateLog(
     }) as RecordUpdateLog[]
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+  
   return result
 }

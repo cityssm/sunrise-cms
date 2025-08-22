@@ -17,8 +17,9 @@ export interface UpdateBurialSiteCommentForm {
 
 export default function updateBurialSiteComment(
   commentForm: UpdateBurialSiteCommentForm,
-  user: User
-, connectedDatabase?: sqlite.Database): boolean {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
@@ -42,11 +43,8 @@ export default function updateBurialSiteComment(
     )
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+  
   return result.changes > 0
 }

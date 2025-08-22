@@ -12,12 +12,7 @@ export default function getNextBurialSiteId(burialSiteId, connectedDatabase) {
         .pluck()
         .get(burialSiteId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
-    }
-    if (result === undefined) {
-        return undefined;
+        database.close();
     }
     return result;
 }

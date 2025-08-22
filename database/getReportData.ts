@@ -67,8 +67,9 @@ const simpleReports: Record<`${string}-all` | `${string}-formatted`, string> = {
 
 export default function getReportData(
   reportName: string,
-  reportParameters: ReportParameters = {}
-, connectedDatabase?: sqlite.Database): unknown[] | undefined {
+  reportParameters: ReportParameters = {},
+  connectedDatabase?: sqlite.Database
+): unknown[] | undefined {
   let sql = ''
   const sqlParameters: unknown[] = []
 
@@ -240,11 +241,7 @@ export default function getReportData(
   const rows = database.prepare(sql).all(sqlParameters)
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   return rows
 }

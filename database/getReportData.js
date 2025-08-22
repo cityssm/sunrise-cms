@@ -188,9 +188,7 @@ export default function getReportData(reportName, reportParameters = {}, connect
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     const rows = database.prepare(sql).all(sqlParameters);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return rows;
 }

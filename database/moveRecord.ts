@@ -28,8 +28,9 @@ const recordIdColumns = new Map<RecordTable, string>([
 
 export function moveRecordDown(
   recordTable: RecordTable,
-  recordId: number | string
-, connectedDatabase?: sqlite.Database): boolean {
+  recordId: number | string,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const currentOrderNumber = getCurrentOrderNumber(
@@ -55,11 +56,7 @@ export function moveRecordDown(
   )
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   clearCacheByTableName(recordTable)
 
@@ -68,8 +65,9 @@ export function moveRecordDown(
 
 export function moveRecordDownToBottom(
   recordTable: RecordTable,
-  recordId: number | string
-, connectedDatabase?: sqlite.Database): boolean {
+  recordId: number | string,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const currentOrderNumber = getCurrentOrderNumber(
@@ -102,11 +100,7 @@ export function moveRecordDownToBottom(
   }
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   clearCacheByTableName(recordTable)
 
@@ -115,8 +109,9 @@ export function moveRecordDownToBottom(
 
 export function moveRecordUp(
   recordTable: RecordTable,
-  recordId: number | string
-, connectedDatabase?: sqlite.Database): boolean {
+  recordId: number | string,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const currentOrderNumber = getCurrentOrderNumber(
@@ -127,9 +122,7 @@ export function moveRecordUp(
 
   if (currentOrderNumber <= 0) {
     if (connectedDatabase === undefined) {
-
       database.close()
-
     }
     return true
   }
@@ -151,11 +144,7 @@ export function moveRecordUp(
   )
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   clearCacheByTableName(recordTable)
 
@@ -164,8 +153,9 @@ export function moveRecordUp(
 
 export function moveRecordUpToTop(
   recordTable: RecordTable,
-  recordId: number | string
-, connectedDatabase?: sqlite.Database): boolean {
+  recordId: number | string,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const currentOrderNumber = getCurrentOrderNumber(
@@ -188,11 +178,7 @@ export function moveRecordUpToTop(
   }
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   clearCacheByTableName(recordTable)
 

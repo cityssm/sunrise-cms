@@ -19,7 +19,11 @@ export interface AddFeeForm {
   orderNumber?: number
 }
 
-export default function addFee(feeForm: AddFeeForm, user: User, connectedDatabase?: sqlite.Database): number {
+export default function addFee(
+  feeForm: AddFeeForm,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): number {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
@@ -60,11 +64,7 @@ export default function addFee(feeForm: AddFeeForm, user: User, connectedDatabas
     )
 
   if (connectedDatabase === undefined) {
-
-
-    database.close();
-
-
+    database.close()
   }
   return result.lastInsertRowid as number
 }

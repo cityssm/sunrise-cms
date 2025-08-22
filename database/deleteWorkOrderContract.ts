@@ -5,8 +5,9 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 export default function deleteWorkOrderContract(
   workOrderId: number | string,
   contractId: number | string,
-  user: User
-, connectedDatabase?: sqlite.Database): boolean {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
@@ -20,11 +21,7 @@ export default function deleteWorkOrderContract(
     .run(user.userName, Date.now(), workOrderId, contractId)
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   return result.changes > 0
 }

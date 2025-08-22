@@ -18,9 +18,7 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
         ? undefined
         : updateForm.crematedCapacityMax, user.userName, rightNowMillis, updateForm.burialSiteTypeId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName('BurialSiteTypes');
     return result.changes > 0;

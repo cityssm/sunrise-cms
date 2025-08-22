@@ -22,9 +22,7 @@ export default function getUserSettings(userName, connectedDatabase) {
         clearCacheByTableName('UserSettings');
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return settings;
 }

@@ -11,9 +11,7 @@ export default function deleteContractTypePrint(contractTypeId, printEJS, user, 
         and printEJS = ?`)
         .run(user.userName, Date.now(), contractTypeId, printEJS);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName('ContractTypePrints');
     return result.changes > 0;

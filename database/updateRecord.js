@@ -25,9 +25,7 @@ export function updateRecord(recordTable, recordId, recordName, user, connectedD
         and ${columnNames[1]} = ?`)
         .run(recordName, user.userName, Date.now(), recordId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName(recordTable);
     return result.changes > 0;

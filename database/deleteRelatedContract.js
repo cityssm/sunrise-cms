@@ -8,9 +8,7 @@ export default function deleteRelatedContract(relatedContractForm, connectedData
           or (contractIdA = ? and contractIdB = ?)`)
         .run(relatedContractForm.contractId, relatedContractForm.relatedContractId, relatedContractForm.relatedContractId, relatedContractForm.contractId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return true;
 }

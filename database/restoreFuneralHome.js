@@ -13,9 +13,7 @@ export function restoreFuneralHome(funeralHomeId, user, connectedDatabase) {
           and recordDelete_timeMillis is not null`)
         .run(user.userName, rightNowMillis, funeralHomeId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

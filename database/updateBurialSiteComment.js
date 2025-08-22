@@ -14,9 +14,7 @@ export default function updateBurialSiteComment(commentForm, user, connectedData
         and burialSiteCommentId = ?`)
         .run(dateStringToInteger(commentForm.commentDateString), timeStringToInteger(commentForm.commentTimeString), commentForm.comment, user.userName, Date.now(), commentForm.burialSiteCommentId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

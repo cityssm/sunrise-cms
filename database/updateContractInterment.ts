@@ -22,14 +22,15 @@ export interface UpdateForm {
 
   deathAge: string
   deathAgePeriod: string
-  
+
   intermentContainerTypeId: number | string
 }
 
 export default function updateContractInterment(
   contractForm: UpdateForm,
-  user: User
-, connectedDatabase?: sqlite.Database): boolean {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const results = database
@@ -81,11 +82,8 @@ export default function updateContractInterment(
     )
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+
   return results.changes > 0
 }

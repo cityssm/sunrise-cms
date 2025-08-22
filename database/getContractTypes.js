@@ -24,9 +24,7 @@ export default function getContractTypes(includeDeleted = false, connectedDataba
         contractType.contractTypePrints = getContractTypePrints(contractType.contractTypeId, database);
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return contractTypes;
 }

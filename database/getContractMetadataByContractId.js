@@ -11,9 +11,7 @@ export default function getContractMetadataByContractId(contractId, startsWith =
         order by metadataKey`)
         .all(contractId, startsWith);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     const metadata = {};
     for (const row of result) {

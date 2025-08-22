@@ -18,8 +18,9 @@ export interface UpdateWorkOrderMilestoneTimeForm {
 
 export function updateWorkOrderMilestoneTime(
   milestoneForm: UpdateWorkOrderMilestoneTimeForm,
-  user: User
-, connectedDatabase?: sqlite.Database): boolean {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
@@ -47,11 +48,8 @@ export function updateWorkOrderMilestoneTime(
     )
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+  
   return result.changes > 0
 }

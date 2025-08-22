@@ -5,22 +5,35 @@ import type { FuneralHome } from '../types/record.types.js'
 
 export default function getFuneralHome(
   funeralHomeId: number | string,
-  includeDeleted = false
-, connectedDatabase?: sqlite.Database): FuneralHome | undefined {
-  return _getFuneralHome('funeralHomeId', funeralHomeId, includeDeleted)
+  includeDeleted = false,
+  connectedDatabase?: sqlite.Database
+): FuneralHome | undefined {
+  return _getFuneralHome(
+    'funeralHomeId',
+    funeralHomeId,
+    includeDeleted,
+    connectedDatabase
+  )
 }
 
 export function getFuneralHomeByKey(
   funeralHomeKey: string,
-  includeDeleted = false
-, connectedDatabase?: sqlite.Database): FuneralHome | undefined {
-  return _getFuneralHome('funeralHomeKey', funeralHomeKey, includeDeleted)
+  includeDeleted = false,
+  connectedDatabase?: sqlite.Database
+): FuneralHome | undefined {
+  return _getFuneralHome(
+    'funeralHomeKey',
+    funeralHomeKey,
+    includeDeleted,
+    connectedDatabase
+  )
 }
 
 function _getFuneralHome(
   keyColumn: 'funeralHomeId' | 'funeralHomeKey',
   funeralHomeIdOrKey: number | string,
-  includeDeleted = false
+  includeDeleted = false,
+  connectedDatabase?: sqlite.Database
 ): FuneralHome | undefined {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
@@ -38,11 +51,8 @@ function _getFuneralHome(
     .get(funeralHomeIdOrKey) as FuneralHome | undefined
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+  
   return funeralHome
 }

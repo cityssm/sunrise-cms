@@ -9,7 +9,11 @@ export interface AddForm {
   orderNumber?: number
 }
 
-export default function addContractType(addForm: AddForm, user: User, connectedDatabase?: sqlite.Database): number {
+export default function addContractType(
+  addForm: AddForm,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): number {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
@@ -33,11 +37,7 @@ export default function addContractType(addForm: AddForm, user: User, connectedD
     )
 
   if (connectedDatabase === undefined) {
-
-
-    database.close();
-
-
+    database.close()
   }
   clearCacheByTableName('ContractTypes')
 

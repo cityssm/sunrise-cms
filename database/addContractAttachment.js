@@ -12,9 +12,7 @@ export default function addContractAttachment(attachment, user, connectedDatabas
         values (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(attachment.contractId, attachment.attachmentTitle ?? attachment.fileName, attachment.attachmentDetails ?? '', attachment.fileName, attachment.filePath, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (connectedDatabase === undefined) {
-
-      database.close();
-
+        database.close();
     }
     return result.lastInsertRowid;
 }

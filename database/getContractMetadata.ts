@@ -4,10 +4,13 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import type { MetadataPrefix } from '../types/contractMetadata.types.js'
 import type { ContractMetadata } from '../types/record.types.js'
 
-export default function getContractMetadata(filters: {
-  contractId?: number | string
-  startsWith?: '' | MetadataPrefix
-}, connectedDatabase?: sqlite.Database): ContractMetadata[] {
+export default function getContractMetadata(
+  filters: {
+    contractId?: number | string
+    startsWith?: '' | MetadataPrefix
+  },
+  connectedDatabase?: sqlite.Database
+): ContractMetadata[] {
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   let sql = `select contractId, metadataKey, metadataValue, recordUpdate_timeMillis
@@ -29,11 +32,7 @@ export default function getContractMetadata(filters: {
   const rows = database.prepare(sql).all(sqlParameters) as ContractMetadata[]
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   return rows
 }

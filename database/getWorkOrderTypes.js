@@ -18,9 +18,7 @@ export default function getWorkOrderTypes(connectedDatabase) {
         expectedOrderNumber += 1;
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return workOrderTypes;
 }

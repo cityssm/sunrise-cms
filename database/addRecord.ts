@@ -18,8 +18,9 @@ export default function addRecord(
   recordTable: RecordTable,
   recordName: string,
   orderNumber: number | string,
-  user: User
-, connectedDatabase?: sqlite.Database): number {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): number {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
@@ -43,11 +44,7 @@ export default function addRecord(
     )
 
   if (connectedDatabase === undefined) {
-
-
-    database.close();
-
-
+    database.close()
   }
   clearCacheByTableName(recordTable)
 

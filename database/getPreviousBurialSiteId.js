@@ -11,9 +11,7 @@ export default function getPreviousBurialSiteId(burialSiteId, connectedDatabase)
         .pluck()
         .get(burialSiteId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result;
 }

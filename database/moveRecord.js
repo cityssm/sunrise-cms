@@ -23,9 +23,7 @@ export function moveRecordDown(recordTable, recordId, connectedDatabase) {
         .run(currentOrderNumber);
     const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber + 1, database);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName(recordTable);
     return success;
@@ -48,9 +46,7 @@ export function moveRecordDownToBottom(recordTable, recordId, connectedDatabase)
             .run(currentOrderNumber);
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName(recordTable);
     return true;
@@ -60,9 +56,7 @@ export function moveRecordUp(recordTable, recordId, connectedDatabase) {
     const currentOrderNumber = getCurrentOrderNumber(recordTable, recordId, database);
     if (currentOrderNumber <= 0) {
         if (connectedDatabase === undefined) {
-
-          database.close()
-
+            database.close();
         }
         return true;
     }
@@ -74,9 +68,7 @@ export function moveRecordUp(recordTable, recordId, connectedDatabase) {
         .run(currentOrderNumber);
     const success = updateRecordOrderNumber(recordTable, recordId, currentOrderNumber - 1, database);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName(recordTable);
     return success;
@@ -94,9 +86,7 @@ export function moveRecordUpToTop(recordTable, recordId, connectedDatabase) {
             .run(currentOrderNumber);
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     clearCacheByTableName(recordTable);
     return true;

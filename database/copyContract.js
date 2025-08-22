@@ -78,9 +78,7 @@ export default async function copyContract(oldContractId, user, connectedDatabas
         contractId: newContractId
     }, user);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return newContractId;
 }

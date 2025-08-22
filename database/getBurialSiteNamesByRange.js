@@ -67,9 +67,7 @@ export default function getBurialSiteNamesByRange(rangeForm, connectedDatabase) 
         });
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return results;
 }

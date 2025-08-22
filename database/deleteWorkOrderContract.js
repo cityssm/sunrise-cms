@@ -10,9 +10,7 @@ export default function deleteWorkOrderContract(workOrderId, contractId, user, c
         and contractId = ?`)
         .run(user.userName, Date.now(), workOrderId, contractId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

@@ -25,9 +25,7 @@ export default function updateFee(feeForm, user, connectedDatabase) {
         ? 0
         : feeForm.feeAmount, feeForm.feeFunction ?? undefined, feeForm.taxAmount === '' ? undefined : feeForm.taxAmount, feeForm.taxPercentage === '' ? undefined : feeForm.taxPercentage, feeForm.includeQuantity === '' ? 0 : 1, feeForm.quantityUnit, feeForm.isRequired === '' ? 0 : 1, user.userName, Date.now(), feeForm.feeId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }
@@ -42,9 +40,7 @@ export function updateFeeAmount(feeAmountForm, user, connectedDatabase) {
         and feeId = ?`)
         .run(feeAmountForm.feeAmount, user.userName, Date.now(), feeAmountForm.feeId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

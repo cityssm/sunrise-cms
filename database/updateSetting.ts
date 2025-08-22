@@ -8,7 +8,10 @@ export interface UpdateSettingForm {
   settingValue: string
 }
 
-export default function updateSetting(updateForm: UpdateSettingForm, connectedDatabase?: sqlite.Database): boolean {
+export default function updateSetting(
+  updateForm: UpdateSettingForm,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   let result = database
@@ -31,12 +34,9 @@ export default function updateSetting(updateForm: UpdateSettingForm, connectedDa
   }
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+  
   if (result.changes > 0) {
     clearCacheByTableName('SunriseSettings')
   }

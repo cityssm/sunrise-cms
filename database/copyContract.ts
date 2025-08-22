@@ -13,8 +13,9 @@ import getContract from './getContract.js'
 // eslint-disable-next-line complexity
 export default async function copyContract(
   oldContractId: number | string,
-  user: User
-, connectedDatabase?: sqlite.Database): Promise<number> {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): Promise<number> {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const oldContract = (await getContract(oldContractId, database)) as Contract
@@ -123,11 +124,7 @@ export default async function copyContract(
   )
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   return newContractId
 }

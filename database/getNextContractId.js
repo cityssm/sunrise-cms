@@ -12,9 +12,7 @@ export default function getNextContractId(contractId, connectedDatabase) {
         .pluck()
         .get(contractId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result;
 }

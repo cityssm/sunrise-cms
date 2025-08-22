@@ -10,8 +10,9 @@ export interface UpdateBurialSiteFeeForm {
 
 export default function updateContractFeeQuantity(
   feeQuantityForm: UpdateBurialSiteFeeForm,
-  user: User
-, connectedDatabase?: sqlite.Database): boolean {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
@@ -33,11 +34,8 @@ export default function updateContractFeeQuantity(
     )
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+  
   return result.changes > 0
 }

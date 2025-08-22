@@ -12,9 +12,7 @@ export default function addContractType(addForm, user, connectedDatabase) {
         values (?, ?, ?, ?, ?, ?, ?)`)
         .run(addForm.contractType, addForm.isPreneed === undefined ? 0 : 1, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (connectedDatabase === undefined) {
-
-      database.close();
-
+        database.close();
     }
     clearCacheByTableName('ContractTypes');
     return result.lastInsertRowid;

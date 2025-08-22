@@ -19,9 +19,7 @@ export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase
         .get(funeralHomeId, currentDateInteger, currentDateInteger);
     if (activeContract !== undefined) {
         if (connectedDatabase === undefined) {
-
-          database.close()
-
+            database.close();
         }
         return false;
     }
@@ -37,9 +35,7 @@ export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase
         and recordDelete_timeMillis is null`)
         .run(user.userName, rightNowMillis, funeralHomeId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return true;
 }

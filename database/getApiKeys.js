@@ -19,9 +19,7 @@ export default function getApiKeys(connectedDatabase) {
         apiKeys[userName] = databaseSetting.settingValue;
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return apiKeys;
 }

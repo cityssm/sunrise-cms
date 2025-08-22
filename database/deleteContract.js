@@ -17,9 +17,7 @@ export function deleteContract(contractId, user, connectedDatabase) {
         .get(contractId, currentDateInteger);
     if (activeWorkOrder !== undefined) {
         if (connectedDatabase === undefined) {
-
-          database.close()
-
+            database.close();
         }
         return false;
     }
@@ -37,9 +35,7 @@ export function deleteContract(contractId, user, connectedDatabase) {
             .run(user.userName, rightNowMillis, contractId);
     }
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return true;
 }

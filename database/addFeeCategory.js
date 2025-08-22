@@ -12,9 +12,7 @@ export default function addFeeCategory(feeCategoryForm, user, connectedDatabase)
         values (?, ?, ?, ?, ?, ?, ?)`)
         .run(feeCategoryForm.feeCategory, (feeCategoryForm.isGroupedFee ?? '') === '1' ? 1 : 0, feeCategoryForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (connectedDatabase === undefined) {
-
-      database.close();
-
+        database.close();
     }
     return result.lastInsertRowid;
 }

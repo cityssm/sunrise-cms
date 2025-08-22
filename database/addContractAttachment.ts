@@ -12,8 +12,9 @@ export default function addContractAttachment(
     fileName: string
     filePath: string
   },
-  user: User
-, connectedDatabase?: sqlite.Database): number {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): number {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
@@ -40,11 +41,7 @@ export default function addContractAttachment(
     )
 
   if (connectedDatabase === undefined) {
-
-
-    database.close();
-
-
+    database.close()
   }
   return result.lastInsertRowid as number
 }

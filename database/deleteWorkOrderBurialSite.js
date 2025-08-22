@@ -10,9 +10,7 @@ export default function deleteWorkOrderBurialSite(workOrderId, burialSiteId, use
         and burialSiteId = ?`)
         .run(user.userName, Date.now(), workOrderId, burialSiteId);
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.changes > 0;
 }

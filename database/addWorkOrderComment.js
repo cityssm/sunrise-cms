@@ -14,9 +14,7 @@ export default function addWorkOrderComment(workOrderCommentForm, user, connecte
         values (?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(workOrderCommentForm.workOrderId, dateToInteger(rightNow), dateToTimeInteger(rightNow), workOrderCommentForm.comment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     if (connectedDatabase === undefined) {
-
-      database.close()
-
+        database.close();
     }
     return result.lastInsertRowid;
 }

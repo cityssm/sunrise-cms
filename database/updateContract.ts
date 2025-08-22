@@ -47,8 +47,9 @@ export interface UpdateContractForm {
 // eslint-disable-next-line complexity
 export default function updateContract(
   updateForm: UpdateContractForm,
-  user: User
-, connectedDatabase?: sqlite.Database): boolean {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
@@ -142,11 +143,8 @@ export default function updateContract(
   }
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
+  
   return result.changes > 0
 }
