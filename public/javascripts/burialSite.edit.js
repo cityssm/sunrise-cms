@@ -84,6 +84,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
+    // Cemetery
+    const cemeteryKeySpanElement = document.querySelector('#burialSite--cemeteryKey');
+    if (cemeteryKeySpanElement !== null) {
+        document
+            .querySelector('#burialSite--cemeteryId')
+            ?.addEventListener('change', (changeEvent) => {
+            const cemeterySelectElement = changeEvent.currentTarget;
+            const cemeteryKey = cemeterySelectElement.selectedOptions[0].dataset.cemeteryKey ?? '';
+            cemeteryKeySpanElement.innerHTML = cityssm.escapeHTML(cemeteryKey);
+        });
+    }
     // Burial Site Type
     const burialSiteTypeIdElement = document.querySelector('#burialSite--burialSiteTypeId');
     function updateCapacities() {
