@@ -1,7 +1,13 @@
+import sqlite from 'better-sqlite3'
+import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import { addWorkOrderType } from '../../database/addRecord.js'
+import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
+import { sunriseDB } from '../../helpers/database.helpers.js'
+
+const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddWorkOrderType`)
 
 export default function handler(
   request: Request<
@@ -11,17 +17,31 @@ export default function handler(
   >,
   response: Response
 ): void {
-  const workOrderTypeId = addWorkOrderType(
-    request.body.workOrderType,
-    request.body.orderNumber ?? -1,
-    request.session.user as User
-  )
+  let database: sqlite.Database | undefined
 
-  const workOrderTypes = getCachedWorkOrderTypes()
+  try {
+    database = sqlite(sunriseDB)
 
-  response.json({
-    success: true,
-    workOrderTypeId,
-    workOrderTypes
-  })
+    const workOrderTypeId = addWorkOrderType(
+      request.body.workOrderType,
+      request.body.orderNumber ?? -1,
+      request.session.user as User,
+      database
+    )
+
+    const workOrderTypes = getCachedWorkOrderTypes()
+
+    response.json({
+      success: true,
+      workOrderTypeId,
+      workOrderTypes
+    })
+  } catch (error) {
+    debug(error)
+    response
+      .status(500)
+      .json({ errorMessage: 'Database error', success: false })
+  } finally {
+    database?.close()
+  }
 }
