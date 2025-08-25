@@ -1,3 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable max-nested-callbacks */
+
 import { testUpdate } from '../../../test/_globals.js'
 import type { BurialSite } from '../../../types/record.types.js'
 import { login, logout, pageLoadDelayMillis } from '../../support/index.js'
@@ -57,12 +60,14 @@ describe('Update - Burial Sites', () => {
       }
 
       // Fill in capacities
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (burialSiteData.bodyCapacity !== null && burialSiteData.bodyCapacity !== undefined) {
         cy.get("input[name='bodyCapacity']")
           .clear()
           .type(burialSiteData.bodyCapacity.toString())
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (burialSiteData.crematedCapacity !== null && burialSiteData.crematedCapacity !== undefined) {
         cy.get("input[name='crematedCapacity']")
           .clear()
@@ -95,6 +100,7 @@ describe('Update - Burial Sites', () => {
         )
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (burialSiteData.bodyCapacity !== null && burialSiteData.bodyCapacity !== undefined) {
         cy.get("input[name='bodyCapacity']").should(
           'have.value',
@@ -102,6 +108,7 @@ describe('Update - Burial Sites', () => {
         )
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (burialSiteData.crematedCapacity !== null && burialSiteData.crematedCapacity !== undefined) {
         cy.get("input[name='crematedCapacity']").should(
           'have.value',
