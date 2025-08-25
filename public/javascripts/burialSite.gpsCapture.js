@@ -14,19 +14,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
     let watchId = null;
     // Initialize GPS
     function initializeGPS() {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/strict-boolean-expressions
         if (!navigator.geolocation) {
             gpsStatusElement.className = 'notification is-danger';
-            gpsStatusTextElement.textContent = 'GPS not supported by this device/browser';
+            gpsStatusTextElement.textContent =
+                'GPS not supported by this device/browser';
             return;
         }
         gpsStatusElement.className = 'notification is-warning';
         gpsStatusTextElement.textContent = 'Requesting GPS permission...';
         const options = {
             enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 30000
+            timeout: 10_000,
+            maximumAge: 30_000
         };
         // Watch position for continuous updates
+        // eslint-disable-next-line sonarjs/no-intrusive-permissions
         watchId = navigator.geolocation.watchPosition((position) => {
             currentPosition = {
                 latitude: position.coords.latitude,
@@ -40,18 +43,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }, (error) => {
             gpsStatusElement.className = 'notification is-danger';
             switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    gpsStatusTextElement.textContent = 'GPS permission denied. Please enable location access.';
+                case error.PERMISSION_DENIED: {
+                    gpsStatusTextElement.textContent =
+                        'GPS permission denied. Please enable location access.';
                     break;
-                case error.POSITION_UNAVAILABLE:
+                }
+                case error.POSITION_UNAVAILABLE: {
                     gpsStatusTextElement.textContent = 'GPS position unavailable.';
                     break;
-                case error.TIMEOUT:
+                }
+                case error.TIMEOUT: {
                     gpsStatusTextElement.textContent = 'GPS request timed out.';
                     break;
-                default:
+                }
+                default: {
                     gpsStatusTextElement.textContent = 'Unknown GPS error occurred.';
                     break;
+                }
             }
         }, options);
     }
@@ -76,7 +84,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const searchData = {
             cemeteryId: cemeteryId,
             burialSiteTypeId: formData.get('burialSiteTypeId'),
-            coordinateStatus: formData.get('coordinateStatus'),
+            hasCoordinates: formData.get('hasCoordinates'),
             burialSiteName: formData.get('burialSiteName')
         };
         cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSitesForGPS`, searchData, (rawResponseJSON) => {
@@ -87,7 +95,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 burialSitesContainerElement.innerHTML = `<div class="message is-danger">
-            <p class="message-body">${responseJSON.errorMessage || 'Failed to search burial sites.'}</p>
+            <p class="message-body">${cityssm.escapeHTML(responseJSON.errorMessage ?? 'Failed to search burial sites.')}</p>
           </div>`;
             }
         });
@@ -106,58 +114,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const captureButton = document.querySelector(`#capture-${burialSiteId}`);
         const originalText = captureButton.innerHTML;
         captureButton.disabled = true;
-        captureButton.innerHTML = '<span class="icon"><i class="fa-solid fa-spinner fa-pulse"></i></span><span>Capturing...</span>';
+        captureButton.innerHTML =
+            '<span class="icon"><i class="fa-solid fa-spinner fa-pulse"></i></span><span>Capturing...</span>';
         // Update burial site with current GPS coordinates
         const updateData = {
             burialSiteId: burialSiteId,
             burialSiteLatitude: currentPosition.latitude.toFixed(8),
-            burialSiteLongitude: currentPosition.longitude.toFixed(8),
-            // We need to preserve existing data, so we'll get the current site data
-            ...getCurrentBurialSiteData(burialSiteId)
+            burialSiteLongitude: currentPosition.longitude.toFixed(8)
         };
-        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doUpdateBurialSite`, updateData, (rawResponseJSON) => {
+        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doUpdateBurialSiteLatitudeLongitude`, updateData, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
             captureButton.disabled = false;
             if (responseJSON.success) {
-                captureButton.innerHTML = '<span class="icon"><i class="fa-solid fa-check"></i></span><span>Captured!</span>';
+                captureButton.innerHTML =
+                    '<span class="icon"><i class="fa-solid fa-check"></i></span><span>Captured!</span>';
                 captureButton.className = 'button is-success is-small';
                 // Update the displayed coordinates
                 const coordsElement = document.querySelector(`#coords-${burialSiteId}`);
-                coordsElement.innerHTML = `<strong>Lat:</strong> ${currentPosition.latitude.toFixed(6)}<br>
-                                     <strong>Lng:</strong> ${currentPosition.longitude.toFixed(6)}<br>
-                                     <span class="has-text-success"><small>Just captured (±${Math.round(currentPosition.accuracy)}m)</small></span>`;
+                // eslint-disable-next-line no-unsanitized/property
+                coordsElement.innerHTML = `<strong>Lat:</strong> ${currentPosition?.latitude.toFixed(6)}<br>
+            <strong>Lng:</strong> ${currentPosition?.longitude.toFixed(6)}<br>
+            <span class="has-text-success"><small>Just captured (±${Math.round(currentPosition?.accuracy ?? 0)}m)</small></span>`;
                 // Update the burial site data in memory
-                const siteIndex = allBurialSites.findIndex(site => site.burialSiteId === burialSiteId);
+                const siteIndex = allBurialSites.findIndex((site) => site.burialSiteId === burialSiteId);
                 if (siteIndex !== -1) {
-                    allBurialSites[siteIndex].burialSiteLatitude = currentPosition.latitude;
-                    allBurialSites[siteIndex].burialSiteLongitude = currentPosition.longitude;
+                    allBurialSites[siteIndex].burialSiteLatitude =
+                        currentPosition.latitude;
+                    allBurialSites[siteIndex].burialSiteLongitude =
+                        currentPosition.longitude;
                 }
             }
             else {
                 captureButton.innerHTML = originalText;
-                cityssm.alertModal('Capture Failed', responseJSON.errorMessage || 'Failed to capture coordinates. Please try again.', 'OK', 'danger');
+                cityssm.alertModal('Capture Failed', responseJSON.errorMessage ??
+                    'Failed to capture coordinates. Please try again.', 'OK', 'danger');
             }
         });
-    }
-    // Get current burial site data to preserve existing fields
-    function getCurrentBurialSiteData(burialSiteId) {
-        const site = allBurialSites.find(s => s.burialSiteId === burialSiteId);
-        if (!site)
-            return {};
-        return {
-            burialSiteNameSegment1: site.burialSiteNameSegment1 || '',
-            burialSiteNameSegment2: site.burialSiteNameSegment2 || '',
-            burialSiteNameSegment3: site.burialSiteNameSegment3 || '',
-            burialSiteNameSegment4: site.burialSiteNameSegment4 || '',
-            burialSiteNameSegment5: site.burialSiteNameSegment5 || '',
-            burialSiteStatusId: site.burialSiteStatusId || 0,
-            burialSiteTypeId: site.burialSiteTypeId || 0,
-            bodyCapacity: site.bodyCapacity || 0,
-            crematedCapacity: site.crematedCapacity || 0,
-            burialSiteImage: site.burialSiteImage || '',
-            cemeteryId: site.cemeteryId || 0,
-            cemeterySvgId: site.cemeterySvgId || ''
-        };
     }
     // Render the filtered burial sites
     function renderBurialSites() {
@@ -194,12 +186,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <div class="content">
               <p class="title is-6">
                 <a href="${sunrise.getBurialSiteURL(site.burialSiteId)}" target="_blank">
-                  ${cityssm.escapeHTML(site.burialSiteName || 'Unnamed Site')}
+                  ${cityssm.escapeHTML(site.burialSiteName ?? 'Unnamed Site')}
                 </a>
               </p>
               <p class="subtitle is-7">
-                ${cityssm.escapeHTML(site.cemeteryName || 'No Cemetery')} - 
-                ${cityssm.escapeHTML(site.burialSiteType || 'No Type')}
+                ${cityssm.escapeHTML(site.cemeteryName ?? 'No Cemetery')} - 
+                ${cityssm.escapeHTML(site.burialSiteType ?? 'No Type')}
               </p>
               <div id="coords-${site.burialSiteId}" class="is-size-7">
                 ${coordsHtml}
@@ -224,7 +216,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const captureButtons = burialSitesContainerElement.querySelectorAll('[data-burial-site-id]');
         for (const button of captureButtons) {
             button.addEventListener('click', (event) => {
-                const burialSiteId = Number.parseInt(event.currentTarget.dataset.burialSiteId, 10);
+                const burialSiteId = Number.parseInt(event.currentTarget.dataset.burialSiteId ?? '0', 10);
                 captureCoordinates(burialSiteId);
             });
         }

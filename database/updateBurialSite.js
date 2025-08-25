@@ -93,3 +93,21 @@ export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, c
     }
     return result.changes > 0;
 }
+export function updateBurialSiteLatitudeLongitude(burialSiteId, burialSiteLatitude, burialSiteLongitude, user) {
+    const database = sqlite(sunriseDB);
+    const result = database
+        .prepare(`update BurialSites
+        set burialSiteLatitude = ?,
+          burialSiteLongitude = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
+        where burialSiteId = ?
+          and recordDelete_timeMillis is null`)
+        .run(burialSiteLatitude === ''
+        ? undefined
+        : burialSiteLatitude, burialSiteLongitude === ''
+        ? undefined
+        : burialSiteLongitude, user.userName, Date.now(), burialSiteId);
+    database.close();
+    return result.changes > 0;
+}

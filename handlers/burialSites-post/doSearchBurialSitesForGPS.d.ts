@@ -1,2 +1,3 @@
 import type { Request, Response } from 'express';
-export default function handler(request: Request, response: Response): void;
+import { type GetBurialSitesFilters } from '../../database/getBurialSites.js';
+export default function handler(request: Request<unknown, unknown, GetBurialSitesFilters>, response: Response): void;

@@ -8,6 +8,7 @@ export interface GetBurialSitesFilters {
     burialSiteTypeId?: number | string;
     contractStatus?: '' | 'occupied' | 'unoccupied';
     workOrderId?: number | string;
+    hasCoordinates?: '' | 'no' | 'yes';
 }
 export interface GetBurialSitesOptions {
     /** -1 for no limit */

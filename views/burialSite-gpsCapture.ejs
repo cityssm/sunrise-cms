@@ -38,12 +38,12 @@
     </div>
 
     <!-- Filters -->
-    <form id="form--filters">
-      <div class="box">
+    <div class="box mb-4">
+      <form id="form--filters">
         <div class="columns is-multiline">
           <div class="column is-half">
             <div class="field">
-              <label class="label" for="filter--cemeteryId">Cemetery *</label>
+              <label class="label" for="filter--cemeteryId">Cemetery</label>
               <div class="control has-icons-left">
                 <div class="select is-fullwidth">
                   <select id="filter--cemeteryId" name="cemeteryId" required>
@@ -62,13 +62,13 @@
             </div>
           </div>
           <div class="column is-half">
-            <div class="field">
-              <label class="label" for="filter--burialSiteName">Burial Site Name</label>
-              <div class="control has-icons-left">
+            <label class="label" for="filter--burialSiteName">Burial Site Name</label>
+            <div class="field has-addons">
+              <div class="control">
+                <span class="button is-static">starts with</span>
+              </div>
+              <div class="control is-expanded">
                 <input class="input" type="text" id="filter--burialSiteName" name="burialSiteName" placeholder="Search by site name...">
-                <span class="icon is-small is-left">
-                  <i class="fa-solid fa-search"></i>
-                </span>
               </div>
             </div>
           </div>
@@ -94,13 +94,13 @@
           </div>
           <div class="column is-half">
             <div class="field">
-              <label class="label" for="filter--coordinateStatus">Coordinate Status</label>
+              <label class="label" for="filter--hasCoordinates">Coordinate Status</label>
               <div class="control has-icons-left">
                 <div class="select is-fullwidth">
-                  <select id="filter--coordinateStatus" name="coordinateStatus">
+                  <select id="filter--hasCoordinates" name="hasCoordinates">
                     <option value="">(All Sites)</option>
-                    <option value="missing">Missing Coordinates</option>
-                    <option value="present">Has Coordinates</option>
+                    <option value="no">Missing Coordinates</option>
+                    <option value="yes">Has Coordinates</option>
                   </select>
                 </div>
                 <span class="icon is-small is-left">
@@ -118,8 +118,8 @@
             </button>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
 
     <!-- Burial Sites List -->
     <div id="container--burialSites">
