@@ -1,3 +1,4 @@
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { BurialSite } from '../../types/record.types.js'
@@ -5,6 +6,7 @@ import type { BurialSite } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
+declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
@@ -13,6 +15,7 @@ declare const exports: {
 interface GPSPosition {
   latitude: number
   longitude: number
+
   accuracy: number
 }
 
@@ -38,7 +41,7 @@ interface GPSPosition {
     '#container--burialSites'
   ) as HTMLElement
 
-  let currentPosition: GPSPosition | null
+  let currentPosition: GPSPosition | null | undefined
   let watchId: number | null
 
   // Initialize GPS
@@ -156,7 +159,7 @@ interface GPSPosition {
 
   // Capture GPS coordinates for a burial site
   function captureCoordinates(burialSiteId: number): void {
-    if (!currentPosition) {
+    if (currentPosition === null || currentPosition === undefined) {
       cityssm.alertModal(
         'GPS Not Ready',
         'GPS coordinates are not available. Please wait for GPS to initialize.',
@@ -219,21 +222,23 @@ interface GPSPosition {
 
           if (siteIndex !== -1) {
             allBurialSites[siteIndex].burialSiteLatitude =
-              currentPosition!.latitude
+              currentPosition?.latitude
+
             allBurialSites[siteIndex].burialSiteLongitude =
-              currentPosition!.longitude
+              currentPosition?.longitude
           }
         } else {
           // eslint-disable-next-line no-unsanitized/property
           captureButton.innerHTML = originalText
 
-          cityssm.alertModal(
-            'Capture Failed',
-            responseJSON.errorMessage ??
-              'Failed to capture coordinates. Please try again.',
-            'OK',
-            'danger'
-          )
+          bulmaJS.alert({
+            contextualColorName: 'danger',
+            title: 'Capture Failed',
+
+            message:
+              responseJSON.errorMessage ??
+              'Failed to capture coordinates. Please try again.'
+          })
         }
       }
     )
@@ -251,8 +256,9 @@ interface GPSPosition {
     let html = '<div class="columns is-multiline">'
 
     for (const site of allBurialSites) {
-      const hasCoords = site.burialSiteLatitude !== null && site.burialSiteLongitude !== null
-      
+      const hasCoords =
+        site.burialSiteLatitude !== null && site.burialSiteLongitude !== null
+
       const coordsHtml = hasCoords
         ? `<strong>Latitude:</strong> ${site.burialSiteLatitude}<br>
            <strong>Longitude:</strong> ${site.burialSiteLongitude}`
@@ -260,14 +266,14 @@ interface GPSPosition {
 
       // Build interment names display
       let intermentNamesHtml = ''
-      if (site.intermentNames && site.intermentNames.length > 0) {
-        const names = site.intermentNames.slice(0, 3) // Show max 3 names
+      if (site.deceasedNames !== undefined && site.deceasedNames.length > 0) {
+        const names = site.deceasedNames.slice(0, 3) // Show max 3 names
         intermentNamesHtml = `<div class="is-size-7 has-text-grey-dark mt-2">
           <span class="icon-text">
             <span class="icon is-small">
               <i class="fa-solid fa-users"></i>
             </span>
-            <span>${cityssm.escapeHTML(names.join(', '))}${site.intermentNames.length > 3 ? ` +${site.intermentNames.length - 3} more` : ''}</span>
+            <span>${cityssm.escapeHTML(names.join(', '))}${site.deceasedNames.length > 3 ? ` +${site.deceasedNames.length - 3} more` : ''}</span>
           </span>
         </div>`
       }
