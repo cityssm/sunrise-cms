@@ -44,7 +44,8 @@ export function getUser(userName) {
         };
     }
     // Fallback to config-based users
-    const canLogin = getConfigProperty('users.canLogin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+    const canLogin = localUser === undefined &&
+        getConfigProperty('users.canLogin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
     if (canLogin) {
         const canUpdateAll = getConfigProperty('users.canUpdate').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
         const canUpdateCemeteries = canUpdateAll ||

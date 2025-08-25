@@ -4,9 +4,9 @@ import deleteUser from '../../database/deleteUser.js'
 import getUsers from '../../database/getUsers.js'
 
 export default function handler(request: Request, response: Response): void {
-  const { userId } = request.body as { userId: string }
+  const { userName } = request.body as { userName: string }
 
-  if (!userId) {
+  if (!userName) {
     response.status(400).json({
       success: false,
       message: 'User name is required'
@@ -15,10 +15,7 @@ export default function handler(request: Request, response: Response): void {
   }
 
   try {
-    const success = deleteUser(
-      userId, // This is actually userName based on the frontend code
-      request.session.user as User
-    )
+    const success = deleteUser(userName, request.session.user as User)
 
     if (success) {
       const users = getUsers()

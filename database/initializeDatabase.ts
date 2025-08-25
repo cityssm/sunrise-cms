@@ -513,8 +513,6 @@ const createStatements = [
   `CREATE TABLE if not exists Users (
     userName varchar(30) not null primary key,
     isActive bit not null default 1,
-    canLogin bit not null default 0,
-    canUpdate bit not null default 0,
     canUpdateCemeteries bit not null default 0,
     canUpdateContracts bit not null default 0,
     canUpdateWorkOrders bit not null default 0,

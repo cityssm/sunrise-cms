@@ -53,7 +53,7 @@ export default function handler(request: Request, response: Response): void {
       isAdmin: permissionField === 'isAdmin' ? !currentUser.isAdmin : currentUser.isAdmin
     }
 
-    const success = updateUser(updateForm, request.session.user)
+    const success = updateUser(updateForm, request.session.user as User)
 
     if (success) {
       const updatedUsers = getUsers()

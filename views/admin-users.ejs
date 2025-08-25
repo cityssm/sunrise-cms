@@ -39,22 +39,33 @@
     </div>
 
     <% if (hasConfigUsers) { %>
-    <div class="notification is-warning">
-      <p>
-        <strong>Notice:</strong> Some users are configured in the application config file and will not appear in this table.
-        Users defined in config: 
-        <% const allConfigUsers = [...new Set([
-            ...configUsers.canLogin,
-            ...configUsers.canUpdate,
-            ...configUsers.canUpdateCemeteries,
-            ...configUsers.canUpdateContracts,
-            ...configUsers.canUpdateWorkOrders,
-            ...configUsers.isAdmin
-        ])]; %>
-        <% if (allConfigUsers.length > 0) { %>
-          <strong><%= allConfigUsers.join(', ') %></strong>
-        <% } %>
-      </p>
+    <div class="message is-warning">
+      <div class="message-body content">
+        <div class="columns">
+          <div class="column is-7">
+            <p>
+              <strong>Note:</strong><br />
+              Some users are configured in the application config file and will not appear in this table.
+            </p>
+          </div>
+          <div class="column">
+            <p>Users defined in config:</p>
+            <ul>
+              <% const allConfigUsers = [...new Set([
+                  ...configUsers.canLogin,
+                  ...configUsers.canUpdate,
+                  ...configUsers.canUpdateCemeteries,
+                  ...configUsers.canUpdateContracts,
+                  ...configUsers.canUpdateWorkOrders,
+                  ...configUsers.isAdmin
+              ])]; %>
+              <% for(const userName of allConfigUsers) { %>
+                <li><%= userName %></li>
+              <% } %>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
     <% } %>
 

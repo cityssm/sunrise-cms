@@ -73,9 +73,11 @@ export function getUser(userName: string): User | undefined {
   }
 
   // Fallback to config-based users
-  const canLogin = getConfigProperty('users.canLogin').some(
-    (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
-  )
+  const canLogin =
+    localUser === undefined &&
+    getConfigProperty('users.canLogin').some(
+      (currentUserName) => userNameLowerCase === currentUserName.toLowerCase()
+    )
 
   if (canLogin) {
     const canUpdateAll = getConfigProperty('users.canUpdate').some(

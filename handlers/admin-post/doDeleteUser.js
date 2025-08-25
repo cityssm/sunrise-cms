@@ -1,19 +1,22 @@
 import deleteUser from '../../database/deleteUser.js';
+import getUsers from '../../database/getUsers.js';
 export default function handler(request, response) {
-    const { userId } = request.body;
-    if (!userId) {
+    const { userName } = request.body;
+    if (!userName) {
         response.status(400).json({
             success: false,
-            message: 'User ID is required'
+            message: 'User name is required'
         });
         return;
     }
     try {
-        const success = deleteUser(Number.parseInt(userId, 10), request.session.user);
+        const success = deleteUser(userName, request.session.user);
         if (success) {
+            const users = getUsers();
             response.json({
                 success: true,
-                message: 'User deleted successfully'
+                message: 'User deleted successfully',
+                users
             });
         }
         else {
