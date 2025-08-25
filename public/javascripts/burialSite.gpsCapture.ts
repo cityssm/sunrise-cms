@@ -38,8 +38,8 @@ interface GPSPosition {
     '#container--burialSites'
   ) as HTMLElement
 
-  let currentPosition: GPSPosition | null = null
-  let watchId: number | null = null
+  let currentPosition: GPSPosition | null
+  let watchId: number | null
 
   // Initialize GPS
   function initializeGPS(): void {
@@ -67,6 +67,7 @@ interface GPSPosition {
         currentPosition = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
+
           accuracy: position.coords.accuracy
         }
 
@@ -107,10 +108,10 @@ interface GPSPosition {
   // Search for burial sites using AJAX
   function searchBurialSites(): void {
     const formData = new FormData(filtersFormElement)
-    const cemeteryId = formData.get('cemeteryId') as string
+    const cemeteryId = formData.get('cemeteryId') as string | null
 
     // Cemetery is required
-    if (!cemeteryId) {
+    if (cemeteryId === null) {
       burialSitesContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">Select a cemetery to view burial sites.</p>
       </div>`
@@ -126,7 +127,7 @@ interface GPSPosition {
     </div>`
 
     const searchData = {
-      cemeteryId: cemeteryId,
+      cemeteryId,
       burialSiteName: formData.get('burialSiteName') as string,
       hasCoordinates: formData.get('hasCoordinates') as string
     }
@@ -153,12 +154,6 @@ interface GPSPosition {
     )
   }
 
-  // Filter burial sites based on form selections (now used for local filtering after AJAX)
-  function getFilteredBurialSites(): BurialSite[] {
-    // Since filtering is now done on the server, just return all loaded sites
-    return allBurialSites
-  }
-
   // Capture GPS coordinates for a burial site
   function captureCoordinates(burialSiteId: number): void {
     if (!currentPosition) {
@@ -182,7 +177,7 @@ interface GPSPosition {
 
     // Update burial site with current GPS coordinates
     const updateData = {
-      burialSiteId: burialSiteId,
+      burialSiteId,
       burialSiteLatitude: currentPosition.latitude.toFixed(8),
       burialSiteLongitude: currentPosition.longitude.toFixed(8)
     }
@@ -225,6 +220,7 @@ interface GPSPosition {
               currentPosition!.longitude
           }
         } else {
+          // eslint-disable-next-line no-unsanitized/property
           captureButton.innerHTML = originalText
 
           cityssm.alertModal(
@@ -241,9 +237,7 @@ interface GPSPosition {
 
   // Render the filtered burial sites
   function renderBurialSites(): void {
-    const filteredSites = getFilteredBurialSites()
-
-    if (filteredSites.length === 0) {
+    if (allBurialSites.length === 0) {
       burialSitesContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">No burial sites match the current filters.</p>
       </div>`
@@ -252,7 +246,7 @@ interface GPSPosition {
 
     let html = '<div class="columns is-multiline">'
 
-    for (const site of filteredSites) {
+    for (const site of allBurialSites) {
       const hasCoords = site.burialSiteLatitude && site.burialSiteLongitude
       const coordsHtml = hasCoords
         ? `<strong>Lat:</strong> ${site.burialSiteLatitude}<br>

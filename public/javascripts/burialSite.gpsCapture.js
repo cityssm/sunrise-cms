@@ -10,8 +10,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const gpsAccuracyTextElement = gpsAccuracyElement.querySelector('span');
     const filtersFormElement = document.querySelector('#form--filters');
     const burialSitesContainerElement = document.querySelector('#container--burialSites');
-    let currentPosition = null;
-    let watchId = null;
+    let currentPosition;
+    let watchId;
     // Initialize GPS
     function initializeGPS() {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/strict-boolean-expressions
@@ -68,7 +68,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const formData = new FormData(filtersFormElement);
         const cemeteryId = formData.get('cemeteryId');
         // Cemetery is required
-        if (!cemeteryId) {
+        if (cemeteryId === null) {
             burialSitesContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">Select a cemetery to view burial sites.</p>
       </div>`;
@@ -82,7 +82,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
       </p>
     </div>`;
         const searchData = {
-            cemeteryId: cemeteryId,
+            cemeteryId,
             burialSiteName: formData.get('burialSiteName'),
             hasCoordinates: formData.get('hasCoordinates')
         };
@@ -99,11 +99,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
-    // Filter burial sites based on form selections (now used for local filtering after AJAX)
-    function getFilteredBurialSites() {
-        // Since filtering is now done on the server, just return all loaded sites
-        return allBurialSites;
-    }
     // Capture GPS coordinates for a burial site
     function captureCoordinates(burialSiteId) {
         if (!currentPosition) {
@@ -117,7 +112,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             '<span class="icon"><i class="fa-solid fa-spinner fa-pulse"></i></span><span>Capturing...</span>';
         // Update burial site with current GPS coordinates
         const updateData = {
-            burialSiteId: burialSiteId,
+            burialSiteId,
             burialSiteLatitude: currentPosition.latitude.toFixed(8),
             burialSiteLongitude: currentPosition.longitude.toFixed(8)
         };
@@ -144,6 +139,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             }
             else {
+                // eslint-disable-next-line no-unsanitized/property
                 captureButton.innerHTML = originalText;
                 cityssm.alertModal('Capture Failed', responseJSON.errorMessage ??
                     'Failed to capture coordinates. Please try again.', 'OK', 'danger');
@@ -152,15 +148,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     // Render the filtered burial sites
     function renderBurialSites() {
-        const filteredSites = getFilteredBurialSites();
-        if (filteredSites.length === 0) {
+        if (allBurialSites.length === 0) {
             burialSitesContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">No burial sites match the current filters.</p>
       </div>`;
             return;
         }
         let html = '<div class="columns is-multiline">';
-        for (const site of filteredSites) {
+        for (const site of allBurialSites) {
             const hasCoords = site.burialSiteLatitude && site.burialSiteLongitude;
             const coordsHtml = hasCoords
                 ? `<strong>Lat:</strong> ${site.burialSiteLatitude}<br>
