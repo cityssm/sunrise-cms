@@ -25,7 +25,7 @@ jobs:
 
       - name: Install Application
         run: |
-          npm ci
+          npm ci --legacy-peer-deps
           npm install -g c8 cypress@15 --legacy-peer-deps
 
       - name: Copy Test Config
@@ -77,7 +77,7 @@ jobs:
 
       - name: Install Application
         run: |
-          npm ci
+          npm ci --legacy-peer-deps
           npm install -g cross-env c8 cypress@15 --legacy-peer-deps
 
       - name: Copy Test Config
