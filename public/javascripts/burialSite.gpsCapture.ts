@@ -196,7 +196,9 @@ interface GPSPosition {
         if (responseJSON.success) {
           captureButton.innerHTML =
             '<span class="icon"><i class="fa-solid fa-check"></i></span><span>Captured!</span>'
-          captureButton.className = 'button is-success is-small'
+
+          captureButton.classList.add('is-success')
+          captureButton.classList.remove('is-primary')
 
           // Update the displayed coordinates
           const coordsElement = document.querySelector(

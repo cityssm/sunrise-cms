@@ -122,7 +122,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 captureButton.innerHTML =
                     '<span class="icon"><i class="fa-solid fa-check"></i></span><span>Captured!</span>';
-                captureButton.className = 'button is-success is-small';
+                captureButton.classList.add('is-success');
+                captureButton.classList.remove('is-primary');
                 // Update the displayed coordinates
                 const coordsElement = document.querySelector(`#coords-${burialSiteId}`);
                 // eslint-disable-next-line no-unsanitized/property
