@@ -47,16 +47,20 @@ describe('Update - Burial Sites', () => {
                     .clear()
                     .type(burialSiteData.burialSiteNameSegment2);
             }
+            cy.get("input[name='burialSiteNameSegment3']")
+                .clear()
+                // eslint-disable-next-line sonarjs/pseudo-random
+                .type((Math.random() * 999).toFixed(0));
             // Fill in capacities
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (burialSiteData.bodyCapacity !== null &&
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 burialSiteData.bodyCapacity !== undefined) {
                 cy.get("input[name='bodyCapacity']")
                     .clear()
                     .type(burialSiteData.bodyCapacity.toString());
             }
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (burialSiteData.crematedCapacity !== null &&
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 burialSiteData.crematedCapacity !== undefined) {
                 cy.get("input[name='crematedCapacity']")
                     .clear()
