@@ -34,6 +34,33 @@ config.users = {
   testing: ['*testView', '*testUpdate', '*testAdmin']
 }
 
-config.integrations.dynamicsGP!.integrationIsEnabled = false
+config.settings.burialSites.burialSiteNameSegments = {
+  includeCemeteryKey: true,
+  separator: '-',
+
+  segments: {
+    1: {
+      isAvailable: true,
+      isRequired: false,
+      label: 'Range',
+      maxLength: 4,
+      minLength: 1
+    },
+    2: {
+      isAvailable: true,
+      isRequired: false,
+      label: 'Lot',
+      maxLength: 4,
+      minLength: 1
+    },
+    3: {
+      isAvailable: true,
+      isRequired: true,
+      label: 'Grave',
+      maxLength: 4,
+      minLength: 1
+    }
+  }
+}
 
 export default config

@@ -1,4 +1,4 @@
-import { getConfigProperty } from '../../../helpers/config.helpers.js'
+import config from '../../../data/config.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { Cemetery } from '../../../types/record.types.js'
 import { login, logout, pageLoadDelayMillis } from '../../support/index.js'
@@ -67,12 +67,12 @@ describe('Update - Cemeteries', () => {
 
     cy.get("input[name='cemeteryCity']").should(
       'have.value',
-      getConfigProperty('settings.cityDefault')
+      config.settings.cityDefault ?? ''
     )
 
     cy.get("input[name='cemeteryProvince']").should(
       'have.value',
-      getConfigProperty('settings.provinceDefault')
+      config.settings.provinceDefault ?? ''
     )
 
     cy.log('Submit the form')
@@ -107,12 +107,12 @@ describe('Update - Cemeteries', () => {
 
       cy.get("input[name='cemeteryCity']").should(
         'have.value',
-        getConfigProperty('settings.cityDefault')
+        config.settings.cityDefault ?? ''
       )
 
       cy.get("input[name='cemeteryProvince']").should(
         'have.value',
-        getConfigProperty('settings.provinceDefault')
+        config.settings.provinceDefault ?? ''
       )
 
       cy.get("input[name='cemeteryPostalCode']").should(

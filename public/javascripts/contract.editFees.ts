@@ -1011,7 +1011,7 @@ declare const exports: Record<string, unknown>
           modalElement.querySelector(
             '#contractTransactionAdd--contractId'
           ) as HTMLInputElement
-        ).value = contractId.toString()
+        ).value = contractId
 
         const feeGrandTotal = getFeeGrandTotal()
         const transactionGrandTotal = getTransactionGrandTotal()
@@ -1076,6 +1076,7 @@ declare const exports: Record<string, unknown>
           .querySelector('form')
           ?.addEventListener('submit', doAddTransaction)
       },
+      
       onremoved() {
         bulmaJS.toggleHtmlClipped()
         addTransactionButtonElement.focus()

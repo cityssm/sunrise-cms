@@ -27,3 +27,4 @@ export interface UpdateBurialSiteForm {
  */
 export default function updateBurialSite(updateForm: UpdateBurialSiteForm, user: User): boolean;
 export declare function updateBurialSiteStatus(burialSiteId: number | string, burialSiteStatusId: number | string, user: User, connectedDatabase?: sqlite.Database): boolean;
+export declare function updateBurialSiteLatitudeLongitude(burialSiteId: number | string, burialSiteLatitude: string, burialSiteLongitude: string, user: User): boolean;

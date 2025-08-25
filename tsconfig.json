@@ -15,5 +15,5 @@
   },
   "compileOnSave": true,
   "buildOnSave": true,
-  "exclude": ["node_modules/*", "public/javascripts/*"]
+  "exclude": ["node_modules/*", "public/javascripts/*", "temp/*"]
 }

@@ -31,3 +31,4 @@ temp/config.*
 temp/*.csv
 
 megalinter-reports/
+temp_build/

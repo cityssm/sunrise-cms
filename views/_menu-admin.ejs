@@ -60,6 +60,20 @@
       </a>
     </li>
     <li>
+      <a class="<%= (headTitle === "User Management" ? "is-active" : "") %>"
+        href="<%= urlPrefix %>/admin/users"
+        title="User Management">
+        <div class="columns is-1 is-mobile">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-users"></i></span>
+          </div>
+          <div class="column is-hidden-touch">
+            Users
+          </div>
+        </div>
+      </a>
+    </li>
+    <li>
       <a class="<%= (headTitle === "Settings Management" ? "is-active" : "") %>"
         href="<%= urlPrefix %>/admin/settings"
         title="Settings Management">

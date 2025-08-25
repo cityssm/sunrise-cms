@@ -18,6 +18,8 @@ export interface GetBurialSitesFilters {
   burialSiteTypeId?: number | string
   contractStatus?: '' | 'occupied' | 'unoccupied'
   workOrderId?: number | string
+
+  hasCoordinates?: '' | 'no' | 'yes'
 }
 
 export interface GetBurialSitesOptions {
@@ -92,7 +94,8 @@ export default function getBurialSites(
           t.burialSiteType,
           b.bodyCapacity, b.crematedCapacity,
           b.cemeteryId, c.cemeteryName, b.cemeterySvgId,
-          b.burialSiteStatusId, s.burialSiteStatus
+          b.burialSiteStatusId, s.burialSiteStatus,
+          b.burialSiteLatitude, b.burialSiteLongitude
           ${
             includeContractCount
               ? ', ifnull(o.contractCount, 0) as contractCount'
@@ -180,6 +183,14 @@ function buildWhereClause(
     sqlWhereClause +=
       ' and b.burialSiteId in (select burialSiteId from WorkOrderBurialSites where recordDelete_timeMillis is null and workOrderId = ?)'
     sqlParameters.push(filters.workOrderId)
+  }
+
+  if ((filters.hasCoordinates ?? '') === 'yes') {
+    sqlWhereClause += ' and (b.burialSiteLatitude is not null and b.burialSiteLongitude is not null)'
+  }
+
+  if ((filters.hasCoordinates ?? '') === 'no') {
+    sqlWhereClause += ' and (b.burialSiteLatitude is null or b.burialSiteLongitude is null)'
   }
 
   return {

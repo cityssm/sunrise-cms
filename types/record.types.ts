@@ -36,8 +36,8 @@ export interface BurialSite extends Record {
 
   burialSiteImage?: string
 
-  burialSiteLatitude?: number
-  burialSiteLongitude?: number
+  burialSiteLatitude?: number | null
+  burialSiteLongitude?: number | null
 
   burialSiteStatus?: string
   burialSiteStatusId?: number | null
@@ -46,6 +46,8 @@ export interface BurialSite extends Record {
 
   contractCount?: number
   contracts?: Contract[]
+
+  intermentNames?: string[]
 
   burialSiteComments?: BurialSiteComment[]
 }
@@ -514,4 +516,15 @@ export interface Setting {
   settingValue: string | null
 
   recordUpdate_timeMillis: number
+}
+
+export interface DatabaseUser extends Record {
+  userName: string
+
+  isActive: boolean
+
+  canUpdateCemeteries: boolean
+  canUpdateContracts: boolean
+  canUpdateWorkOrders: boolean
+  isAdmin: boolean
 }
