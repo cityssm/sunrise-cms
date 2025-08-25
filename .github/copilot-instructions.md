@@ -76,17 +76,19 @@ Always reference these instructions first and fallback to search or bash command
 - Main config: `data/config.js` (required)
 - Test config: `data/testing.config.js` (includes test authentication)
 - TypeScript config: `tsconfig.json`
-- ESLint config: `eslint.config.js` (may have missing @cspell plugin)
+- ESLint config: `eslint.config.js` (uses eslint-config-cityssm@27.1.0 with @cspell/spellchecker rule)
 
 ## Known Issues and Workarounds
 
 **Cypress Installation Fails:**
 - Use `npm install --ignore-scripts` to skip Cypress download
 - Cypress tests will fail but core functionality works
-- For E2E testing, install Cypress separately: `npm install -g cypress@14.5.2`
+- For E2E testing, install Cypress separately: `npm install -g cypress@15.0.0`
+- Note: cypress-axe@1.6.0 has peer dependency conflicts with Cypress 15.x, use `--legacy-peer-deps` flag
 
-**ESLint Plugin Missing:**
-- `@cspell` plugin may not be available, causing lint failures
+**ESLint Dependencies:**
+- Missing optional dependencies (jsonc-eslint-parser) may cause lint failures
+- Use `npm install --legacy-peer-deps` to resolve dependency conflicts
 - Core application works despite linting issues
 - Focus on functional testing over linting when developing
 
