@@ -30,7 +30,7 @@ export declare const configDefaultValues: {
     'reverseProxy.urlPrefix': string;
     'session.cookieName': string;
     'session.doKeepAlive': boolean;
-    'session.maxAgeMillis': any;
+    'session.maxAgeMillis': number;
     'session.secret': string;
     'users.canLogin': string[];
     'users.canUpdate': string[];
