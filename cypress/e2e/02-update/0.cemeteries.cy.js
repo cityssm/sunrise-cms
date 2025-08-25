@@ -1,4 +1,4 @@
-import { getConfigProperty } from '../../../helpers/config.helpers.js';
+import config from '../../../data/config.js';
 import { testUpdate } from '../../../test/_globals.js';
 import { login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Update - Cemeteries', () => {
@@ -47,8 +47,8 @@ describe('Update - Cemeteries', () => {
                 .type(cemeteryData.cemeteryLongitude?.toString() ?? '');
         });
         cy.log('Ensure the default city and province are used');
-        cy.get("input[name='cemeteryCity']").should('have.value', getConfigProperty('settings.cityDefault'));
-        cy.get("input[name='cemeteryProvince']").should('have.value', getConfigProperty('settings.provinceDefault'));
+        cy.get("input[name='cemeteryCity']").should('have.value', config.settings.cityDefault ?? '');
+        cy.get("input[name='cemeteryProvince']").should('have.value', config.settings.provinceDefault ?? '');
         cy.log('Submit the form');
         cy.get('#form--cemetery').submit();
         cy.wait(pageLoadDelayMillis)
@@ -60,8 +60,8 @@ describe('Update - Cemeteries', () => {
             cy.get("textarea[name='cemeteryDescription']").should('have.value', cemeteryData.cemeteryDescription);
             cy.get("input[name='cemeteryAddress1']").should('have.value', cemeteryData.cemeteryAddress1);
             cy.get("input[name='cemeteryAddress2']").should('have.value', cemeteryData.cemeteryAddress2);
-            cy.get("input[name='cemeteryCity']").should('have.value', getConfigProperty('settings.cityDefault'));
-            cy.get("input[name='cemeteryProvince']").should('have.value', getConfigProperty('settings.provinceDefault'));
+            cy.get("input[name='cemeteryCity']").should('have.value', config.settings.cityDefault ?? '');
+            cy.get("input[name='cemeteryProvince']").should('have.value', config.settings.provinceDefault ?? '');
             cy.get("input[name='cemeteryPostalCode']").should('have.value', cemeteryData.cemeteryPostalCode);
             cy.get("input[name='cemeteryPhoneNumber']").should('have.value', cemeteryData.cemeteryPhoneNumber);
             cy.get("input[name='cemeteryLatitude']").should('have.value', cemeteryData.cemeteryLatitude?.toString());
