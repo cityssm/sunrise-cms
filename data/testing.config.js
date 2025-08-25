@@ -23,7 +23,6 @@ config.users = {
     isAdmin: ['*testAdmin'],
     testing: ['*testView', '*testUpdate', '*testAdmin']
 };
-config.integrations.dynamicsGP.integrationIsEnabled = false;
 config.settings.burialSites.burialSiteNameSegments = {
     includeCemeteryKey: true,
     separator: '-',
