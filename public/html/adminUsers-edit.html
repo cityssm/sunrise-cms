@@ -1,0 +1,93 @@
+<div class="modal" id="modal--editUser">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Edit User</p>
+      <button class="delete" aria-label="close" type="button"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--editUser">
+        <input type="hidden" id="edit_userId" name="userId" />
+        <div class="field">
+          <label class="label" for="edit_userName">Username</label>
+          <div class="control">
+            <input
+              class="input"
+              id="edit_userName"
+              name="userName"
+              type="text"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Status</label>
+          <div class="control">
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                id="edit_isActive"
+                name="isActive"
+                value="1"
+              />
+              Active
+            </label>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Permissions</label>
+          <div class="control">
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                id="edit_canUpdateCemeteries"
+                name="canUpdateCemeteries"
+                value="1"
+              />
+              Can Update Cemeteries
+            </label>
+          </div>
+          <div class="control">
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                id="edit_canUpdateContracts"
+                name="canUpdateContracts"
+                value="1"
+              />
+              Can Update Contracts
+            </label>
+          </div>
+          <div class="control">
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                id="edit_canUpdateWorkOrders"
+                name="canUpdateWorkOrders"
+                value="1"
+              />
+              Can Update Work Orders
+            </label>
+          </div>
+          <div class="control">
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                id="edit_isAdmin"
+                name="isAdmin"
+                value="1"
+              />
+              Administrator
+            </label>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-primary" id="button--updateUser" type="button">
+        Update
+      </button>
+      <button class="button" type="button" data-modal-close>Cancel</button>
+    </footer>
+  </div>
+</div>

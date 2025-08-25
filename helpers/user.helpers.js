@@ -1,3 +1,4 @@
+import getUserFromDatabase from '../database/getUser.js';
 import getUserSettings from '../database/getUserSettings.js';
 import { getUserNameFromApiKey } from './cache/apiKeys.cache.js';
 import { getConfigProperty } from './config.helpers.js';
@@ -27,7 +28,24 @@ export function userIsAdmin(request) {
 }
 export function getUser(userName) {
     const userNameLowerCase = userName.toLowerCase();
-    const canLogin = getConfigProperty('users.canLogin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
+    // First check local users in database
+    const localUser = getUserFromDatabase(userNameLowerCase);
+    if (localUser?.isActive ?? false) {
+        const userSettings = getUserSettings(userName);
+        return {
+            userName: userNameLowerCase,
+            userProperties: {
+                canUpdateCemeteries: localUser?.canUpdateCemeteries ?? false,
+                canUpdateContracts: localUser?.canUpdateContracts ?? false,
+                canUpdateWorkOrders: localUser?.canUpdateWorkOrders ?? false,
+                isAdmin: localUser?.isAdmin ?? false
+            },
+            userSettings
+        };
+    }
+    // Fallback to config-based users
+    const canLogin = localUser === undefined &&
+        getConfigProperty('users.canLogin').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
     if (canLogin) {
         const canUpdateAll = getConfigProperty('users.canUpdate').some((currentUserName) => userNameLowerCase === currentUserName.toLowerCase());
         const canUpdateCemeteries = canUpdateAll ||

@@ -35,9 +35,11 @@ else {
     }
 }
 export async function authenticate(userName, password) {
-    if (authenticator === undefined ||
-        (userName ?? '') === '' ||
-        (password ?? '') === '') {
+    if ((userName ?? '') === '' || (password ?? '') === '') {
+        return false;
+    }
+    // Fallback to external authenticator
+    if (authenticator === undefined) {
         return false;
     }
     return await authenticator.authenticate(`${domain}\\${userName}`, password ?? '');

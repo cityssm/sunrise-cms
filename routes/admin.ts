@@ -6,6 +6,7 @@ import handler_database from '../handlers/admin-get/database.js'
 import handler_fees from '../handlers/admin-get/fees.js'
 import handler_settings from '../handlers/admin-get/settings.js'
 import handler_tables from '../handlers/admin-get/tables.js'
+import handler_users from '../handlers/admin-get/users.js'
 import handler_doAddBurialSiteStatus from '../handlers/admin-post/doAddBurialSiteStatus.js'
 import handler_doAddBurialSiteType from '../handlers/admin-post/doAddBurialSiteType.js'
 import handler_doAddBurialSiteTypeField from '../handlers/admin-post/doAddBurialSiteTypeField.js'
@@ -16,6 +17,7 @@ import handler_doAddContractTypePrint from '../handlers/admin-post/doAddContract
 import handler_doAddFee from '../handlers/admin-post/doAddFee.js'
 import handler_doAddFeeCategory from '../handlers/admin-post/doAddFeeCategory.js'
 import handler_doAddIntermentContainerType from '../handlers/admin-post/doAddIntermentContainerType.js'
+import handler_doAddUser from '../handlers/admin-post/doAddUser.js'
 import handler_doAddWorkOrderMilestoneType from '../handlers/admin-post/doAddWorkOrderMilestoneType.js'
 import handler_doAddWorkOrderType from '../handlers/admin-post/doAddWorkOrderType.js'
 import handler_doBackupDatabase from '../handlers/admin-post/doBackupDatabase.js'
@@ -30,6 +32,7 @@ import handler_doDeleteContractTypePrint from '../handlers/admin-post/doDeleteCo
 import handler_doDeleteFee from '../handlers/admin-post/doDeleteFee.js'
 import handler_doDeleteFeeCategory from '../handlers/admin-post/doDeleteFeeCategory.js'
 import handler_doDeleteIntermentContainerType from '../handlers/admin-post/doDeleteIntermentContainerType.js'
+import handler_doDeleteUser from '../handlers/admin-post/doDeleteUser.js'
 import handler_doDeleteWorkOrderMilestoneType from '../handlers/admin-post/doDeleteWorkOrderMilestoneType.js'
 import handler_doDeleteWorkOrderType from '../handlers/admin-post/doDeleteWorkOrderType.js'
 import handler_doMoveBurialSiteStatusDown from '../handlers/admin-post/doMoveBurialSiteStatusDown.js'
@@ -56,6 +59,7 @@ import handler_doMoveWorkOrderMilestoneTypeDown from '../handlers/admin-post/doM
 import handler_doMoveWorkOrderMilestoneTypeUp from '../handlers/admin-post/doMoveWorkOrderMilestoneTypeUp.js'
 import handler_doMoveWorkOrderTypeDown from '../handlers/admin-post/doMoveWorkOrderTypeDown.js'
 import handler_doMoveWorkOrderTypeUp from '../handlers/admin-post/doMoveWorkOrderTypeUp.js'
+import handler_doToggleUserPermission from '../handlers/admin-post/doToggleUserPermission.js'
 import handler_doUpdateBurialSiteStatus from '../handlers/admin-post/doUpdateBurialSiteStatus.js'
 import handler_doUpdateBurialSiteType from '../handlers/admin-post/doUpdateBurialSiteType.js'
 import handler_doUpdateBurialSiteTypeField from '../handlers/admin-post/doUpdateBurialSiteTypeField.js'
@@ -67,6 +71,7 @@ import handler_doUpdateFeeAmount from '../handlers/admin-post/doUpdateFeeAmount.
 import handler_doUpdateFeeCategory from '../handlers/admin-post/doUpdateFeeCategory.js'
 import handler_doUpdateIntermentContainerType from '../handlers/admin-post/doUpdateIntermentContainerType.js'
 import handler_doUpdateSetting from '../handlers/admin-post/doUpdateSetting.js'
+import handler_doUpdateUser from '../handlers/admin-post/doUpdateUser.js'
 import handler_doUpdateWorkOrderMilestoneType from '../handlers/admin-post/doUpdateWorkOrderMilestoneType.js'
 import handler_doUpdateWorkOrderType from '../handlers/admin-post/doUpdateWorkOrderType.js'
 
@@ -177,6 +182,20 @@ router.post('/doDeleteBurialSiteTypeField', handler_doDeleteBurialSiteTypeField)
  */
 
 router.get('/tables', handler_tables)
+
+/*
+ * Users
+ */
+
+router.get('/users', handler_users)
+
+router.post('/doAddUser', handler_doAddUser)
+
+router.post('/doUpdateUser', handler_doUpdateUser)
+
+router.post('/doToggleUserPermission', handler_doToggleUserPermission)
+
+router.post('/doDeleteUser', handler_doDeleteUser)
 
 // Config Tables - Work Order Types
 
