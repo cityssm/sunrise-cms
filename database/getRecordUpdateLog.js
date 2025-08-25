@@ -1,12 +1,19 @@
-import { daysToMillis } from '@cityssm/to-millis';
-import sqlite from 'better-sqlite3';
-import { sunriseDB } from '../helpers/database.helpers.js';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.defaultRecordLimit = void 0;
+exports.default = getRecordUpdateLog;
+const to_millis_1 = require("@cityssm/to-millis");
+const better_sqlite3_1 = __importDefault(require("better-sqlite3"));
+const database_helpers_js_1 = require("../helpers/database.helpers.js");
 const maxDays = 30;
-export const defaultRecordLimit = 100;
+exports.defaultRecordLimit = 100;
 const maxRecordLimit = 500;
-export default function getRecordUpdateLog(filters, options, connectedDatabase) {
-    const minimumMillis = Date.now() - daysToMillis(maxDays);
-    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
+function getRecordUpdateLog(filters, options, connectedDatabase) {
+    const minimumMillis = Date.now() - (0, to_millis_1.daysToMillis)(maxDays);
+    const database = connectedDatabase ?? (0, better_sqlite3_1.default)(database_helpers_js_1.sunriseDB, { readonly: true });
     const recordTableSql = [];
     if (filters.recordType === '' || filters.recordType === 'contract') {
         recordTableSql.push(`select 'contract' as recordType,
@@ -74,7 +81,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         and w.recordDelete_timeMillis is null
         and r.recordUpdate_timeMillis >= @minimumMillis`);
     }
-    const limit = Math.min(options?.limit ?? defaultRecordLimit, maxRecordLimit);
+    const limit = Math.min(options?.limit ?? exports.defaultRecordLimit, maxRecordLimit);
     const offset = options?.offset ?? 0;
     const result = database
         .prepare(`${recordTableSql.join(' union all ')}

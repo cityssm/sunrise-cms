@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import handler_creator from '../handlers/burialSites-get/creator.js';
 import handler_edit from '../handlers/burialSites-get/edit.js';
+import handler_gpsCapture from '../handlers/burialSites-get/gpsCapture.js';
 import handler_new from '../handlers/burialSites-get/new.js';
 import handler_next from '../handlers/burialSites-get/next.js';
 import handler_previous from '../handlers/burialSites-get/previous.js';
@@ -23,6 +24,10 @@ export const router = Router();
  */
 router.get('/', handler_search);
 router.post('/doSearchBurialSites', handler_doSearchBurialSites);
+/*
+ * GPS Coordinate Capture
+ */
+router.get('/gpsCapture', updateCemeteriesGetHandler, handler_gpsCapture);
 /*
  * Burial Site Creator
  */

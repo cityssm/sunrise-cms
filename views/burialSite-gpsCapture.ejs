@@ -1,0 +1,121 @@
+<%- include('_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('_menu-cemeteries'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li><a href="<%= urlPrefix %>/burialSites">Burial Sites</a></li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            <span class="icon is-small"><i class="fa-solid fa-crosshairs"></i></span>
+            <span>GPS Coordinate Capture</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="columns is-vcentered is-mobile">
+      <div class="column">
+        <h1 class="title is-1">
+          GPS Coordinate Capture
+        </h1>
+        <p class="subtitle">
+          Capture latitude and longitude coordinates using your device's GPS
+        </p>
+      </div>
+    </div>
+
+    <!-- GPS Status -->
+    <div class="notification is-info" id="gps-status">
+      <div class="content">
+        <p><strong>GPS Status:</strong> <span id="gps-status-text">Not initialized</span></p>
+        <p id="gps-accuracy" style="display: none;"><strong>Accuracy:</strong> <span></span> meters</p>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <form id="form--filters">
+      <div class="box">
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="filter--cemeteryId">Cemetery</label>
+              <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                  <select id="filter--cemeteryId" name="cemeteryId">
+                    <option value="">(All Cemeteries)</option>
+                    <% for (const cemetery of cemeteries) { %>
+                    <option value="<%= cemetery.cemeteryId %>" <%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>>
+                      <%= cemetery.cemeteryName || "(No Name)" %>
+                    </option>
+                    <% } %>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i class="fa-solid fa-filter"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="filter--burialSiteTypeId">Burial Site Type</label>
+              <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                  <select id="filter--burialSiteTypeId" name="burialSiteTypeId">
+                    <option value="">(All Types)</option>
+                    <% for (const burialSiteType of burialSiteTypes) { %>
+                    <option value="<%= burialSiteType.burialSiteTypeId %>" <%= (burialSiteType.burialSiteTypeId.toString() === burialSiteTypeId) ? " selected" : "" %>>
+                      <%= burialSiteType.burialSiteType || "(No Name)" %>
+                    </option>
+                    <% } %>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i class="fa-solid fa-filter"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="filter--coordinateStatus">Coordinate Status</label>
+              <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                  <select id="filter--coordinateStatus" name="coordinateStatus">
+                    <option value="">(All Sites)</option>
+                    <option value="missing">Missing Coordinates</option>
+                    <option value="present">Has Coordinates</option>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i class="fa-solid fa-filter"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Burial Sites List -->
+    <div id="container--burialSites">
+      <div class="message is-info">
+        <p class="message-body">Loading burial sites...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('_footerA'); -%>
+
+<script>
+  exports.burialSites = <%- JSON.stringify(burialSites) %>;
+</script>
+<script src="<%= urlPrefix %>/javascripts/burialSite.gpsCapture.js"></script>
+
+<%- include('_footerB'); -%>
