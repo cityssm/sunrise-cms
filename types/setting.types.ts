@@ -8,6 +8,8 @@ export type SettingKey =
   | 'burialSiteTypes.bodyCapacityMaxDefault'
   | 'burialSiteTypes.crematedCapacityMaxDefault'
   | 'pdfPuppeteer.browserInstallAttempted'
+  | 'pdfPuppeteer.lastSuccessfulBrowser'
+  | 'pdfPuppeteer.lastInstallationDate'
   | 'workOrder.workDay.0.endHour'
   | 'workOrder.workDay.0.startHour'
   | 'workOrder.workDay.1.endHour'
@@ -174,5 +176,19 @@ export const settingProperties: SettingProperties[] = [
     description: 'Whether the PDF Puppeteer browser installation was attempted.',
     type: 'boolean',
     defaultValue: 'false'
+  },
+  {
+    settingKey: 'pdfPuppeteer.lastSuccessfulBrowser',
+    settingName: 'PDF Puppeteer - Last Successful Browser',
+    description: 'The last browser that was successfully used for PDF generation.',
+    type: 'string',
+    defaultValue: ''
+  },
+  {
+    settingKey: 'pdfPuppeteer.lastInstallationDate',
+    settingName: 'PDF Puppeteer - Last Installation Date',
+    description: 'The date when browsers were last successfully installed.',
+    type: 'string',
+    defaultValue: ''
   }
 ]
