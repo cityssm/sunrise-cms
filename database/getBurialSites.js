@@ -45,7 +45,8 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           t.burialSiteType,
           b.bodyCapacity, b.crematedCapacity,
           b.cemeteryId, c.cemeteryName, b.cemeterySvgId,
-          b.burialSiteStatusId, s.burialSiteStatus
+          b.burialSiteStatusId, s.burialSiteStatus,
+          b.burialSiteLatitude, b.burialSiteLongitude
           ${includeContractCount
             ? ', ifnull(o.contractCount, 0) as contractCount'
             : ''}
@@ -109,6 +110,12 @@ function buildWhereClause(filters, includeDeleted) {
         sqlWhereClause +=
             ' and b.burialSiteId in (select burialSiteId from WorkOrderBurialSites where recordDelete_timeMillis is null and workOrderId = ?)';
         sqlParameters.push(filters.workOrderId);
+    }
+    if ((filters.hasCoordinates ?? '') === 'yes') {
+        sqlWhereClause += ' and (b.burialSiteLatitude is not null and b.burialSiteLongitude is not null)';
+    }
+    if ((filters.hasCoordinates ?? '') === 'no') {
+        sqlWhereClause += ' and (b.burialSiteLatitude is null or b.burialSiteLongitude is null)';
     }
     return {
         sqlParameters,
