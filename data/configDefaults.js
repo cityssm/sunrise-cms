@@ -60,11 +60,6 @@ export const configDefaultValues = {
     'settings.adminCleanup.recordDeleteAgeDays': 60,
     'settings.printPdf.browser': 'chrome',
     'settings.printPdf.contentDisposition': 'attachment',
-    'settings.printPdf.maxRetries': 3,
-    'settings.printPdf.installBothBrowsers': true,
-    'settings.printPdf.forceReinstallOnStartup': false,
-    'settings.printPdf.reinstallAfterDays': 30,
-    'settings.printPdf.proactiveInstallation': true,
     // Dynamics GP
     'integrations.dynamicsGP.integrationIsEnabled': false,
     'integrations.dynamicsGP.mssqlConfig': undefined,

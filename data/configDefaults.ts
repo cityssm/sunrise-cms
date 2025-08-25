@@ -115,11 +115,6 @@ export const configDefaultValues = {
   'settings.printPdf.contentDisposition': 'attachment' as
     | 'attachment'
     | 'inline',
-  'settings.printPdf.maxRetries': 3,
-  'settings.printPdf.installBothBrowsers': true,
-  'settings.printPdf.forceReinstallOnStartup': false,
-  'settings.printPdf.reinstallAfterDays': 30,
-  'settings.printPdf.proactiveInstallation': true,
 
   // Dynamics GP
 

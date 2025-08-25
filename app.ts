@@ -323,27 +323,4 @@ app.use((request, _response, next) => {
   next(createError(404, `File not found: ${request.url}`))
 })
 
-/*
- * INITIALIZE PDF BROWSERS (Proactive installation for reliability)
- */
-
-// Only initialize if we're not in a startup test
-if (!process.env.STARTUP_TEST) {
-  // Import PDF helpers dynamically to avoid circular dependencies
-  void (async () => {
-    try {
-      const { initializePdfBrowsers } = await import('./helpers/pdf.helpers.js')
-      const success = await initializePdfBrowsers()
-      if (success) {
-        debug('PDF browsers initialized successfully during startup')
-      } else {
-        debug('PDF browser initialization completed with some failures')
-      }
-    } catch (error) {
-      debug('Error during PDF browser initialization:', error)
-      // Don't fail startup for PDF issues
-    }
-  })()
-}
-
 export default app
