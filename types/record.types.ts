@@ -36,8 +36,8 @@ export interface BurialSite extends Record {
 
   burialSiteImage?: string
 
-  burialSiteLatitude?: number
-  burialSiteLongitude?: number
+  burialSiteLatitude?: number | null
+  burialSiteLongitude?: number | null
 
   burialSiteStatus?: string
   burialSiteStatusId?: number | null

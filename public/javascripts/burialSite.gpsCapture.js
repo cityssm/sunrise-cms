@@ -128,7 +128,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 // eslint-disable-next-line no-unsanitized/property
                 coordsElement.innerHTML = `<strong>Lat:</strong> ${currentPosition?.latitude.toFixed(6)}<br>
             <strong>Lng:</strong> ${currentPosition?.longitude.toFixed(6)}<br>
-            <span class="has-text-success"><small>Just captured (±${Math.round(currentPosition?.accuracy ?? 0)}m)</small></span>`;
+            <span class="has-text-success">
+              <small>Just captured (±${Math.round(currentPosition?.accuracy ?? 0)}m)</small>
+            </span>`;
                 // Update the burial site data in memory
                 const siteIndex = allBurialSites.findIndex((site) => site.burialSiteId === burialSiteId);
                 if (siteIndex !== -1) {
@@ -156,10 +158,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         let html = '<div class="columns is-multiline">';
         for (const site of allBurialSites) {
-            const hasCoords = site.burialSiteLatitude && site.burialSiteLongitude;
+            const hasCoords = site.burialSiteLatitude !== null && site.burialSiteLongitude !== null;
             const coordsHtml = hasCoords
-                ? `<strong>Lat:</strong> ${site.burialSiteLatitude}<br>
-           <strong>Lng:</strong> ${site.burialSiteLongitude}`
+                ? `<strong>Latitude:</strong> ${site.burialSiteLatitude}<br>
+           <strong>Longitude:</strong> ${site.burialSiteLongitude}`
                 : '<span class="has-text-grey">No coordinates</span>';
             // Build interment names display
             let intermentNamesHtml = '';
