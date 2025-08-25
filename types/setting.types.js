@@ -140,19 +140,5 @@ export const settingProperties = [
         description: 'Whether the PDF Puppeteer browser installation was attempted.',
         type: 'boolean',
         defaultValue: 'false'
-    },
-    {
-        settingKey: 'pdfPuppeteer.lastSuccessfulBrowser',
-        settingName: 'PDF Puppeteer - Last Successful Browser',
-        description: 'The last browser that was successfully used for PDF generation.',
-        type: 'string',
-        defaultValue: ''
-    },
-    {
-        settingKey: 'pdfPuppeteer.lastInstallationDate',
-        settingName: 'PDF Puppeteer - Last Installation Date',
-        description: 'The date when browsers were last successfully installed.',
-        type: 'string',
-        defaultValue: ''
     }
 ];
