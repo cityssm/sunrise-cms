@@ -15,6 +15,7 @@ import handler_doGetBurialSiteNamesByRange from '../handlers/burialSites-post/do
 import handler_doGetBurialSiteTypeFields from '../handlers/burialSites-post/doGetBurialSiteTypeFields.js';
 import handler_doRestoreBurialSite from '../handlers/burialSites-post/doRestoreBurialSite.js';
 import handler_doSearchBurialSites from '../handlers/burialSites-post/doSearchBurialSites.js';
+import handler_doSearchBurialSitesForGPS from '../handlers/burialSites-post/doSearchBurialSitesForGPS.js';
 import handler_doUpdateBurialSite from '../handlers/burialSites-post/doUpdateBurialSite.js';
 import handler_doUpdateBurialSiteComment from '../handlers/burialSites-post/doUpdateBurialSiteComment.js';
 import { adminPostHandler, updateCemeteriesGetHandler, updateCemeteriesPostHandler } from '../handlers/permissions.js';
@@ -28,6 +29,7 @@ router.post('/doSearchBurialSites', handler_doSearchBurialSites);
  * GPS Coordinate Capture
  */
 router.get('/gpsCapture', updateCemeteriesGetHandler, handler_gpsCapture);
+router.post('/doSearchBurialSitesForGPS', updateCemeteriesPostHandler, handler_doSearchBurialSitesForGPS);
 /*
  * Burial Site Creator
  */

@@ -40,14 +40,14 @@
     <!-- Filters -->
     <form id="form--filters">
       <div class="box">
-        <div class="columns">
-          <div class="column">
+        <div class="columns is-multiline">
+          <div class="column is-half">
             <div class="field">
-              <label class="label" for="filter--cemeteryId">Cemetery</label>
+              <label class="label" for="filter--cemeteryId">Cemetery *</label>
               <div class="control has-icons-left">
                 <div class="select is-fullwidth">
-                  <select id="filter--cemeteryId" name="cemeteryId">
-                    <option value="">(All Cemeteries)</option>
+                  <select id="filter--cemeteryId" name="cemeteryId" required>
+                    <option value="">Select Cemetery...</option>
                     <% for (const cemetery of cemeteries) { %>
                     <option value="<%= cemetery.cemeteryId %>" <%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>>
                       <%= cemetery.cemeteryName || "(No Name)" %>
@@ -56,12 +56,23 @@
                   </select>
                 </div>
                 <span class="icon is-small is-left">
-                  <i class="fa-solid fa-filter"></i>
+                  <i class="fa-solid fa-building"></i>
                 </span>
               </div>
             </div>
           </div>
-          <div class="column">
+          <div class="column is-half">
+            <div class="field">
+              <label class="label" for="filter--burialSiteName">Burial Site Name</label>
+              <div class="control has-icons-left">
+                <input class="input" type="text" id="filter--burialSiteName" name="burialSiteName" placeholder="Search by site name...">
+                <span class="icon is-small is-left">
+                  <i class="fa-solid fa-search"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="column is-half">
             <div class="field">
               <label class="label" for="filter--burialSiteTypeId">Burial Site Type</label>
               <div class="control has-icons-left">
@@ -81,7 +92,7 @@
               </div>
             </div>
           </div>
-          <div class="column">
+          <div class="column is-half">
             <div class="field">
               <label class="label" for="filter--coordinateStatus">Coordinate Status</label>
               <div class="control has-icons-left">
@@ -99,13 +110,21 @@
             </div>
           </div>
         </div>
+        <div class="field">
+          <div class="control">
+            <button type="submit" class="button is-primary">
+              <span class="icon"><i class="fa-solid fa-search"></i></span>
+              <span>Search Burial Sites</span>
+            </button>
+          </div>
+        </div>
       </div>
     </form>
 
     <!-- Burial Sites List -->
     <div id="container--burialSites">
       <div class="message is-info">
-        <p class="message-body">Loading burial sites...</p>
+        <p class="message-body">Select a cemetery to view burial sites.</p>
       </div>
     </div>
   </div>
@@ -113,9 +132,6 @@
 
 <%- include('_footerA'); -%>
 
-<script>
-  exports.burialSites = <%- JSON.stringify(burialSites) %>;
-</script>
 <script src="<%= urlPrefix %>/javascripts/burialSite.gpsCapture.js"></script>
 
 <%- include('_footerB'); -%>

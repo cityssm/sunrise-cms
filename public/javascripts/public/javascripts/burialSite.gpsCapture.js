@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 ;
 (() => {
     const sunrise = exports.sunrise;
@@ -150,12 +148,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             burialSiteNameSegment3: site.burialSiteNameSegment3 || '',
             burialSiteNameSegment4: site.burialSiteNameSegment4 || '',
             burialSiteNameSegment5: site.burialSiteNameSegment5 || '',
-            burialSiteStatusId: site.burialSiteStatusId || '',
-            burialSiteTypeId: site.burialSiteTypeId || '',
-            bodyCapacity: site.bodyCapacity || '',
-            crematedCapacity: site.crematedCapacity || '',
+            burialSiteStatusId: site.burialSiteStatusId || 0,
+            burialSiteTypeId: site.burialSiteTypeId || 0,
+            bodyCapacity: site.bodyCapacity || 0,
+            crematedCapacity: site.crematedCapacity || 0,
             burialSiteImage: site.burialSiteImage || '',
-            cemeteryId: site.cemeteryId || '',
+            cemeteryId: site.cemeteryId || 0,
             cemeterySvgId: site.cemeterySvgId || ''
         };
     }
@@ -251,3 +249,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     });
 })();
+export {};

@@ -8,7 +8,6 @@ declare const cityssm: cityssmGlobal
 
 declare const exports: {
   sunrise: Sunrise
-  burialSites: BurialSite[]
 }
 
 interface GPSPosition {
@@ -19,7 +18,7 @@ interface GPSPosition {
 
 ;(() => {
   const sunrise = exports.sunrise
-  const allBurialSites = exports.burialSites
+  let allBurialSites: BurialSite[] = []
 
   const gpsStatusElement = document.querySelector('#gps-status') as HTMLElement
   const gpsStatusTextElement = document.querySelector('#gps-status-text') as HTMLElement
@@ -85,33 +84,56 @@ interface GPSPosition {
     )
   }
 
-  // Filter burial sites based on form selections
-  function getFilteredBurialSites(): BurialSite[] {
+  // Search for burial sites using AJAX
+  function searchBurialSites(): void {
     const formData = new FormData(filtersFormElement)
     const cemeteryId = formData.get('cemeteryId') as string
-    const burialSiteTypeId = formData.get('burialSiteTypeId') as string
-    const coordinateStatus = formData.get('coordinateStatus') as string
 
-    return allBurialSites.filter((site) => {
-      // Cemetery filter
-      if (cemeteryId && site.cemeteryId?.toString() !== cemeteryId) {
-        return false
+    // Cemetery is required
+    if (!cemeteryId) {
+      burialSitesContainerElement.innerHTML = `<div class="message is-info">
+        <p class="message-body">Select a cemetery to view burial sites.</p>
+      </div>`
+      return
+    }
+
+    // Show loading message
+    burialSitesContainerElement.innerHTML = `<div class="message is-info">
+      <p class="message-body">
+        <span class="icon"><i class="fa-solid fa-spinner fa-pulse"></i></span>
+        Searching burial sites...
+      </p>
+    </div>`
+
+    const searchData = {
+      cemeteryId: cemeteryId,
+      burialSiteTypeId: formData.get('burialSiteTypeId') as string,
+      coordinateStatus: formData.get('coordinateStatus') as string,
+      burialSiteName: formData.get('burialSiteName') as string
+    }
+
+    cityssm.postJSON(
+      `${sunrise.urlPrefix}/burialSites/doSearchBurialSitesForGPS`,
+      searchData,
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as { success: boolean; errorMessage?: string; burialSites?: BurialSite[] }
+        
+        if (responseJSON.success && responseJSON.burialSites) {
+          allBurialSites = responseJSON.burialSites
+          renderBurialSites()
+        } else {
+          burialSitesContainerElement.innerHTML = `<div class="message is-danger">
+            <p class="message-body">${responseJSON.errorMessage || 'Failed to search burial sites.'}</p>
+          </div>`
+        }
       }
+    )
+  }
 
-      // Burial site type filter
-      if (burialSiteTypeId && site.burialSiteTypeId?.toString() !== burialSiteTypeId) {
-        return false
-      }
-
-      // Coordinate status filter
-      if (coordinateStatus === 'missing') {
-        return !site.burialSiteLatitude || !site.burialSiteLongitude
-      } else if (coordinateStatus === 'present') {
-        return site.burialSiteLatitude && site.burialSiteLongitude
-      }
-
-      return true
-    })
+  // Filter burial sites based on form selections (now used for local filtering after AJAX)
+  function getFilteredBurialSites(): BurialSite[] {
+    // Since filtering is now done on the server, just return all loaded sites
+    return allBurialSites
   }
 
   // Capture GPS coordinates for a burial site
@@ -282,10 +304,21 @@ interface GPSPosition {
 
   // Initialize everything
   initializeGPS()
-  renderBurialSites()
+  
+  // Search on form submission
+  filtersFormElement.addEventListener('submit', (event) => {
+    event.preventDefault()
+    searchBurialSites()
+  })
 
-  // Add filter event listeners
-  filtersFormElement.addEventListener('change', renderBurialSites)
+  // Also search when filters change (for convenience)
+  filtersFormElement.addEventListener('change', () => {
+    const formData = new FormData(filtersFormElement)
+    const cemeteryId = formData.get('cemeteryId') as string
+    if (cemeteryId) {
+      searchBurialSites()
+    }
+  })
 
   // Cleanup on page unload
   window.addEventListener('beforeunload', () => {
