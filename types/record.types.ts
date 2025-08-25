@@ -47,6 +47,8 @@ export interface BurialSite extends Record {
   contractCount?: number
   contracts?: Contract[]
 
+  intermentNames?: string[]
+
   burialSiteComments?: BurialSiteComment[]
 }
 

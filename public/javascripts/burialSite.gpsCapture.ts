@@ -219,6 +219,20 @@ interface GPSPosition {
            <strong>Lng:</strong> ${site.burialSiteLongitude}`
         : '<span class="has-text-grey">No coordinates</span>'
 
+      // Build interment names display
+      let intermentNamesHtml = ''
+      if (site.intermentNames && site.intermentNames.length > 0) {
+        const names = site.intermentNames.slice(0, 3) // Show max 3 names
+        intermentNamesHtml = `<div class="is-size-7 has-text-grey-dark mt-2">
+          <span class="icon-text">
+            <span class="icon is-small">
+              <i class="fa-solid fa-users"></i>
+            </span>
+            <span><strong>Interred:</strong> ${cityssm.escapeHTML(names.join(', '))}${site.intermentNames.length > 3 ? ` +${site.intermentNames.length - 3} more` : ''}</span>
+          </span>
+        </div>`
+      }
+
       html += `<div class="column is-one-third-desktop is-half-tablet">
         <div class="card">
           <div class="card-content">
@@ -235,6 +249,7 @@ interface GPSPosition {
               <div id="coords-${site.burialSiteId}" class="is-size-7">
                 ${coordsHtml}
               </div>
+              ${intermentNamesHtml}
             </div>
           </div>
           <footer class="card-footer">
