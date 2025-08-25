@@ -25,11 +25,15 @@ describe('Update - Burial Sites', () => {
         cy.log('Populate the fields');
         cy.fixture('burialSite.json').then((burialSiteData) => {
             // Select the first available cemetery
-            cy.get("select[name='cemeteryId'] option").eq(1).then(($option) => {
+            cy.get("select[name='cemeteryId'] option")
+                .eq(1)
+                .then(($option) => {
                 cy.get("select[name='cemeteryId']").select($option.val());
             });
             // Select the first available burial site type
-            cy.get("select[name='burialSiteTypeId'] option").eq(1).then(($option) => {
+            cy.get("select[name='burialSiteTypeId'] option")
+                .eq(1)
+                .then(($option) => {
                 cy.get("select[name='burialSiteTypeId']").select($option.val());
             });
             // Fill in burial site name segments
@@ -45,13 +49,15 @@ describe('Update - Burial Sites', () => {
             }
             // Fill in capacities
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            if (burialSiteData.bodyCapacity !== null && burialSiteData.bodyCapacity !== undefined) {
+            if (burialSiteData.bodyCapacity !== null &&
+                burialSiteData.bodyCapacity !== undefined) {
                 cy.get("input[name='bodyCapacity']")
                     .clear()
                     .type(burialSiteData.bodyCapacity.toString());
             }
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            if (burialSiteData.crematedCapacity !== null && burialSiteData.crematedCapacity !== undefined) {
+            if (burialSiteData.crematedCapacity !== null &&
+                burialSiteData.crematedCapacity !== undefined) {
                 cy.get("input[name='crematedCapacity']")
                     .clear()
                     .type(burialSiteData.crematedCapacity.toString());
@@ -72,11 +78,13 @@ describe('Update - Burial Sites', () => {
                 cy.get("input[name='burialSiteNameSegment2']").should('have.value', burialSiteData.burialSiteNameSegment2);
             }
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            if (burialSiteData.bodyCapacity !== null && burialSiteData.bodyCapacity !== undefined) {
+            if (burialSiteData.bodyCapacity !== null &&
+                burialSiteData.bodyCapacity !== undefined) {
                 cy.get("input[name='bodyCapacity']").should('have.value', burialSiteData.bodyCapacity.toString());
             }
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            if (burialSiteData.crematedCapacity !== null && burialSiteData.crematedCapacity !== undefined) {
+            if (burialSiteData.crematedCapacity !== null &&
+                burialSiteData.crematedCapacity !== undefined) {
                 cy.get("input[name='crematedCapacity']").should('have.value', burialSiteData.crematedCapacity.toString());
             }
         });

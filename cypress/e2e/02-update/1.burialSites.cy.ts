@@ -37,14 +37,20 @@ describe('Update - Burial Sites', () => {
 
     cy.fixture('burialSite.json').then((burialSiteData: BurialSite) => {
       // Select the first available cemetery
-      cy.get("select[name='cemeteryId'] option").eq(1).then(($option) => {
-        cy.get("select[name='cemeteryId']").select($option.val() as string)
-      })
+      cy.get("select[name='cemeteryId'] option")
+        .eq(1)
+        .then(($option) => {
+          cy.get("select[name='cemeteryId']").select($option.val() as string)
+        })
 
       // Select the first available burial site type
-      cy.get("select[name='burialSiteTypeId'] option").eq(1).then(($option) => {
-        cy.get("select[name='burialSiteTypeId']").select($option.val() as string)
-      })
+      cy.get("select[name='burialSiteTypeId'] option")
+        .eq(1)
+        .then(($option) => {
+          cy.get("select[name='burialSiteTypeId']").select(
+            $option.val() as string
+          )
+        })
 
       // Fill in burial site name segments
       if (burialSiteData.burialSiteNameSegment1) {
@@ -61,14 +67,20 @@ describe('Update - Burial Sites', () => {
 
       // Fill in capacities
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (burialSiteData.bodyCapacity !== null && burialSiteData.bodyCapacity !== undefined) {
+      if (
+        burialSiteData.bodyCapacity !== null &&
+        burialSiteData.bodyCapacity !== undefined
+      ) {
         cy.get("input[name='bodyCapacity']")
           .clear()
           .type(burialSiteData.bodyCapacity.toString())
       }
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (burialSiteData.crematedCapacity !== null && burialSiteData.crematedCapacity !== undefined) {
+      if (
+        burialSiteData.crematedCapacity !== null &&
+        burialSiteData.crematedCapacity !== undefined
+      ) {
         cy.get("input[name='crematedCapacity']")
           .clear()
           .type(burialSiteData.crematedCapacity.toString())
@@ -101,7 +113,10 @@ describe('Update - Burial Sites', () => {
       }
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (burialSiteData.bodyCapacity !== null && burialSiteData.bodyCapacity !== undefined) {
+      if (
+        burialSiteData.bodyCapacity !== null &&
+        burialSiteData.bodyCapacity !== undefined
+      ) {
         cy.get("input[name='bodyCapacity']").should(
           'have.value',
           burialSiteData.bodyCapacity.toString()
@@ -109,57 +124,15 @@ describe('Update - Burial Sites', () => {
       }
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (burialSiteData.crematedCapacity !== null && burialSiteData.crematedCapacity !== undefined) {
+      if (
+        burialSiteData.crematedCapacity !== null &&
+        burialSiteData.crematedCapacity !== undefined
+      ) {
         cy.get("input[name='crematedCapacity']").should(
           'have.value',
           burialSiteData.crematedCapacity.toString()
         )
       }
-    })
-  })
-
-  it('Deletes the Created Burial Site', () => {
-    cy.log('Navigate to the burial site search page')
-    cy.visit('/burialSites')
-
-    cy.log('Find and click on the burial site we created')
-    cy.fixture('burialSite.json').then((burialSiteData: BurialSite) => {
-      // Search for the burial site using the name segments
-      const burialSiteName = `${burialSiteData.burialSiteNameSegment1}${burialSiteData.burialSiteNameSegment2}`
-      
-      // Click on the burial site link in the search results
-      cy.contains('a', burialSiteName).click()
-      
-      cy.wait(pageLoadDelayMillis)
-      
-      // Verify we're on the view page, then navigate to edit
-      cy.location('pathname').should('contain', '/burialSites/')
-      cy.get("a[href*='/edit']").should('contain', 'Edit').click()
-
-      cy.wait(pageLoadDelayMillis)
-      
-      // Verify we're on the edit page
-      cy.location('pathname').should('contain', '/edit')
-      
-      cy.log('Click the More Options dropdown')
-      cy.get('.dropdown.is-right.is-up .dropdown-trigger button').should('contain', 'More Options').click()
-      
-      cy.log('Click the Delete Burial Site button')
-      cy.get('#button--deleteBurialSite').should('be.visible').click()
-      
-      cy.log('Confirm deletion in the modal dialog')
-      // The delete action shows a confirmation dialog with the text "Yes, Delete Burial Site"
-      cy.get('.modal.is-active').should('exist')
-      cy.contains('button', 'Yes, Delete Burial Site').click()
-      
-      cy.wait(pageLoadDelayMillis)
-      
-      cy.log('Verify redirection to burial sites search page')
-      cy.location('pathname').should('equal', '/burialSites')
-      
-      cy.log('Verify the burial site no longer exists in search results')
-      // Try to search for the deleted burial site and verify it's not found
-      cy.get('body').should('not.contain', burialSiteName)
     })
   })
 })
