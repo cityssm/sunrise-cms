@@ -7,7 +7,7 @@ export default function handler(request: Request<unknown, unknown, GetBurialSite
   const filters = request.body
 
   // Cemetery is required
-  if (!filters.cemeteryId) {
+  if ((filters.cemeteryId ?? '') === '') {
     response.json({
       errorMessage: 'Cemetery selection is required',
       success: false

@@ -81,13 +81,13 @@ describe('Update - Burial Sites', () => {
             if (burialSiteData.burialSiteNameSegment2) {
                 cy.get("input[name='burialSiteNameSegment2']").should('have.value', burialSiteData.burialSiteNameSegment2);
             }
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (burialSiteData.bodyCapacity !== null &&
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 burialSiteData.bodyCapacity !== undefined) {
                 cy.get("input[name='bodyCapacity']").should('have.value', burialSiteData.bodyCapacity.toString());
             }
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (burialSiteData.crematedCapacity !== null &&
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 burialSiteData.crematedCapacity !== undefined) {
                 cy.get("input[name='crematedCapacity']").should('have.value', burialSiteData.crematedCapacity.toString());
             }

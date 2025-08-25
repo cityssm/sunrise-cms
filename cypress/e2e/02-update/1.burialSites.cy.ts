@@ -117,9 +117,9 @@ describe('Update - Burial Sites', () => {
         )
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (
         burialSiteData.bodyCapacity !== null &&
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         burialSiteData.bodyCapacity !== undefined
       ) {
         cy.get("input[name='bodyCapacity']").should(
@@ -128,9 +128,9 @@ describe('Update - Burial Sites', () => {
         )
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (
         burialSiteData.crematedCapacity !== null &&
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         burialSiteData.crematedCapacity !== undefined
       ) {
         cy.get("input[name='crematedCapacity']").should(

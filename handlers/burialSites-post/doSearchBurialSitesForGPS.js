@@ -3,7 +3,7 @@ import getBurialSites from '../../database/getBurialSites.js';
 export default function handler(request, response) {
     const filters = request.body;
     // Cemetery is required
-    if (!filters.cemeteryId) {
+    if ((filters.cemeteryId ?? '') === '') {
         response.json({
             errorMessage: 'Cemetery selection is required',
             success: false
