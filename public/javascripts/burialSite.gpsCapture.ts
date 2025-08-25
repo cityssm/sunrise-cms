@@ -127,9 +127,8 @@ interface GPSPosition {
 
     const searchData = {
       cemeteryId: cemeteryId,
-      burialSiteTypeId: formData.get('burialSiteTypeId') as string,
-      hasCoordinates: formData.get('hasCoordinates') as string,
-      burialSiteName: formData.get('burialSiteName') as string
+      burialSiteName: formData.get('burialSiteName') as string,
+      hasCoordinates: formData.get('hasCoordinates') as string
     }
 
     cityssm.postJSON(
@@ -269,7 +268,7 @@ interface GPSPosition {
             <span class="icon is-small">
               <i class="fa-solid fa-users"></i>
             </span>
-            <span><strong>Interred:</strong> ${cityssm.escapeHTML(names.join(', '))}${site.intermentNames.length > 3 ? ` +${site.intermentNames.length - 3} more` : ''}</span>
+            <span>${cityssm.escapeHTML(names.join(', '))}${site.intermentNames.length > 3 ? ` +${site.intermentNames.length - 3} more` : ''}</span>
           </span>
         </div>`
       }
@@ -307,6 +306,7 @@ interface GPSPosition {
 
     html += '</div>'
 
+    // eslint-disable-next-line no-unsanitized/property
     burialSitesContainerElement.innerHTML = html
 
     // Add event listeners to capture buttons

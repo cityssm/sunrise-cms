@@ -83,9 +83,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     </div>`;
         const searchData = {
             cemeteryId: cemeteryId,
-            burialSiteTypeId: formData.get('burialSiteTypeId'),
-            hasCoordinates: formData.get('hasCoordinates'),
-            burialSiteName: formData.get('burialSiteName')
+            burialSiteName: formData.get('burialSiteName'),
+            hasCoordinates: formData.get('hasCoordinates')
         };
         cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSitesForGPS`, searchData, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
@@ -176,7 +175,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <span class="icon is-small">
               <i class="fa-solid fa-users"></i>
             </span>
-            <span><strong>Interred:</strong> ${cityssm.escapeHTML(names.join(', '))}${site.intermentNames.length > 3 ? ` +${site.intermentNames.length - 3} more` : ''}</span>
+            <span>${cityssm.escapeHTML(names.join(', '))}${site.intermentNames.length > 3 ? ` +${site.intermentNames.length - 3} more` : ''}</span>
           </span>
         </div>`;
             }
@@ -211,6 +210,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
       </div>`;
         }
         html += '</div>';
+        // eslint-disable-next-line no-unsanitized/property
         burialSitesContainerElement.innerHTML = html;
         // Add event listeners to capture buttons
         const captureButtons = burialSitesContainerElement.querySelectorAll('[data-burial-site-id]');

@@ -40,8 +40,8 @@
     <!-- Filters -->
     <div class="box mb-4">
       <form id="form--filters">
-        <div class="columns is-multiline">
-          <div class="column is-half">
+        <div class="columns">
+          <div class="column">
             <div class="field">
               <label class="label" for="filter--cemeteryId">Cemetery</label>
               <div class="control has-icons-left">
@@ -61,38 +61,18 @@
               </div>
             </div>
           </div>
-          <div class="column is-half">
+          <div class="column">
             <label class="label" for="filter--burialSiteName">Burial Site Name</label>
             <div class="field has-addons">
               <div class="control">
-                <span class="button is-static">starts with</span>
+                <span class="button is-static">contains</span>
               </div>
               <div class="control is-expanded">
                 <input class="input" type="text" id="filter--burialSiteName" name="burialSiteName" placeholder="Search by site name...">
               </div>
             </div>
           </div>
-          <div class="column is-half">
-            <div class="field">
-              <label class="label" for="filter--burialSiteTypeId">Burial Site Type</label>
-              <div class="control has-icons-left">
-                <div class="select is-fullwidth">
-                  <select id="filter--burialSiteTypeId" name="burialSiteTypeId">
-                    <option value="">(All Types)</option>
-                    <% for (const burialSiteType of burialSiteTypes) { %>
-                    <option value="<%= burialSiteType.burialSiteTypeId %>" <%= (burialSiteType.burialSiteTypeId.toString() === burialSiteTypeId) ? " selected" : "" %>>
-                      <%= burialSiteType.burialSiteType || "(No Name)" %>
-                    </option>
-                    <% } %>
-                  </select>
-                </div>
-                <span class="icon is-small is-left">
-                  <i class="fa-solid fa-filter"></i>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="column is-half">
+          <div class="column">
             <div class="field">
               <label class="label" for="filter--hasCoordinates">Coordinate Status</label>
               <div class="control has-icons-left">
@@ -110,13 +90,12 @@
             </div>
           </div>
         </div>
-        <div class="field">
-          <div class="control">
-            <button type="submit" class="button is-primary">
-              <span class="icon"><i class="fa-solid fa-search"></i></span>
-              <span>Search Burial Sites</span>
-            </button>
-          </div>
+
+        <div class="has-text-right">
+          <button type="submit" class="button is-primary">
+            <span class="icon"><i class="fa-solid fa-search"></i></span>
+            <span>Search Burial Sites</span>
+          </button>
         </div>
       </form>
     </div>
