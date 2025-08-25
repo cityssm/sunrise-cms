@@ -101,7 +101,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     // Capture GPS coordinates for a burial site
     function captureCoordinates(burialSiteId) {
-        if (!currentPosition) {
+        if (currentPosition === null || currentPosition === undefined) {
             cityssm.alertModal('GPS Not Ready', 'GPS coordinates are not available. Please wait for GPS to initialize.', 'OK', 'danger');
             return;
         }
@@ -136,16 +136,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const siteIndex = allBurialSites.findIndex((site) => site.burialSiteId === burialSiteId);
                 if (siteIndex !== -1) {
                     allBurialSites[siteIndex].burialSiteLatitude =
-                        currentPosition.latitude;
+                        currentPosition?.latitude;
                     allBurialSites[siteIndex].burialSiteLongitude =
-                        currentPosition.longitude;
+                        currentPosition?.longitude;
                 }
             }
             else {
                 // eslint-disable-next-line no-unsanitized/property
                 captureButton.innerHTML = originalText;
-                cityssm.alertModal('Capture Failed', responseJSON.errorMessage ??
-                    'Failed to capture coordinates. Please try again.', 'OK', 'danger');
+                bulmaJS.alert({
+                    contextualColorName: 'danger',
+                    title: 'Capture Failed',
+                    message: responseJSON.errorMessage ??
+                        'Failed to capture coordinates. Please try again.'
+                });
             }
         });
     }
@@ -166,14 +170,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : '<span class="has-text-grey">No coordinates</span>';
             // Build interment names display
             let intermentNamesHtml = '';
-            if (site.intermentNames && site.intermentNames.length > 0) {
-                const names = site.intermentNames.slice(0, 3); // Show max 3 names
+            if (site.deceasedNames !== undefined && site.deceasedNames.length > 0) {
+                const names = site.deceasedNames.slice(0, 3); // Show max 3 names
                 intermentNamesHtml = `<div class="is-size-7 has-text-grey-dark mt-2">
           <span class="icon-text">
             <span class="icon is-small">
               <i class="fa-solid fa-users"></i>
             </span>
-            <span>${cityssm.escapeHTML(names.join(', '))}${site.intermentNames.length > 3 ? ` +${site.intermentNames.length - 3} more` : ''}</span>
+            <span>${cityssm.escapeHTML(names.join(', '))}${site.deceasedNames.length > 3 ? ` +${site.deceasedNames.length - 3} more` : ''}</span>
           </span>
         </div>`;
             }

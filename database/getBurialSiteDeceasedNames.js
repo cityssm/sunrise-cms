@@ -1,7 +1,7 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function getBurialSiteInterments(burialSiteIds) {
+export default function getBurialSiteDeceasedNames(burialSiteIds) {
     if (burialSiteIds.length === 0) {
         return [];
     }

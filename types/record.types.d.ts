@@ -33,7 +33,7 @@ export interface BurialSite extends Record {
     burialSiteFields?: BurialSiteField[];
     contractCount?: number;
     contracts?: Contract[];
-    intermentNames?: string[];
+    deceasedNames?: string[];
     burialSiteComments?: BurialSiteComment[];
 }
 export interface BurialSiteComment extends Record {

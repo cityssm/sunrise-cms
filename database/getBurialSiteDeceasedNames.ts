@@ -3,12 +3,12 @@ import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-export interface BurialSiteInterment {
+export interface BurialSiteDeceasedNames {
   burialSiteId: number
   deceasedNames: string[]
 }
 
-export default function getBurialSiteInterments(burialSiteIds: number[]): BurialSiteInterment[] {
+export default function getBurialSiteDeceasedNames(burialSiteIds: number[]): BurialSiteDeceasedNames[] {
   if (burialSiteIds.length === 0) {
     return []
   }
