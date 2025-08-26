@@ -40,6 +40,7 @@ declare const exports: {
           <th>Title</th>
           <th>Details</th>
           <th>Uploaded</th>
+          <th class="has-text-right">Actions</th>
         </tr>
       </thead>
       <tbody></tbody>`
@@ -67,7 +68,40 @@ declare const exports: {
           ${cityssm.escapeHTML(cityssm.dateToString(attachmentDate))}
           ${cityssm.escapeHTML(cityssm.dateToTimeString(attachmentDate))}
         </td>
+        <td class="has-text-right">
+          <div class="buttons is-right">
+            <button class="button is-small is-primary has-tooltip-left" 
+              data-tooltip="Edit Attachment"
+              data-attachment-id="${attachment.contractAttachmentId}"
+              data-cy="edit-attachment">
+              <span class="icon is-small">
+                <i class="fa-solid fa-pencil-alt"></i>
+              </span>
+            </button>
+            <button class="button is-small is-danger has-tooltip-left" 
+              data-tooltip="Delete Attachment"
+              data-attachment-id="${attachment.contractAttachmentId}"
+              data-cy="delete-attachment">
+              <span class="icon is-small">
+                <i class="fa-solid fa-trash"></i>
+              </span>
+            </button>
+          </div>
+        </td>
       `
+      
+      // Add event listeners for the buttons
+      const editButton = rowElement.querySelector('[data-cy="edit-attachment"]') as HTMLButtonElement
+      const deleteButton = rowElement.querySelector('[data-cy="delete-attachment"]') as HTMLButtonElement
+      
+      editButton.addEventListener('click', () => {
+        openEditAttachmentModal(attachment)
+      })
+      
+      deleteButton.addEventListener('click', () => {
+        deleteAttachment(attachment.contractAttachmentId)
+      })
+      
       tableElement.querySelector('tbody')?.append(rowElement)
     }
 
@@ -216,4 +250,197 @@ declare const exports: {
         }
       })
     })
+
+  /*
+   * Edit Attachment
+   */
+
+  function openEditAttachmentModal(attachment: ContractAttachment): void {
+    let editModalElement: HTMLElement
+    let editFormElement: HTMLFormElement
+    let editCloseModalFunction: (() => void) | undefined
+
+    function editAttachment(submitEvent: Event): void {
+      submitEvent.preventDefault()
+
+      const formData = new FormData(editFormElement)
+      formData.set('contractAttachmentId', String(attachment.contractAttachmentId))
+
+      // Disable submit button and show loading
+      const submitButton = editModalElement.querySelector(
+        'button[type="submit"]'
+      ) as HTMLButtonElement
+
+      const originalText = (
+        submitButton.querySelector('span:last-child') as HTMLElement
+      ).textContent as string
+
+      submitButton.disabled = true
+      ;(
+        submitButton.querySelector('span:last-child') as HTMLElement
+      ).textContent = 'Saving...'
+
+      fetch(`${sunrise.urlPrefix}/contracts/doUpdateContractAttachment`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRF-Token':
+            document
+              .querySelector('meta[name="csrf-token"]')
+              ?.getAttribute('content') ?? ''
+        }
+      })
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        .then(async (response) => await response.json())
+        .then(
+          (responseJSON: {
+            success: boolean
+            errorMessage?: string
+            contractAttachments: ContractAttachment[]
+          }) => {
+            if (responseJSON.success) {
+              editCloseModalFunction?.()
+
+              bulmaJS.alert({
+                contextualColorName: 'success',
+                message: 'Attachment updated successfully.'
+              })
+
+              // Refresh the attachments display
+              renderAttachments(responseJSON.contractAttachments)
+            } else {
+              bulmaJS.alert({
+                contextualColorName: 'danger',
+                title: 'Error Updating Attachment',
+                message:
+                  responseJSON.errorMessage ??
+                  'An error occurred while updating the attachment.'
+              })
+            }
+          }
+        )
+        .catch(() => {
+          bulmaJS.alert({
+            contextualColorName: 'danger',
+            title: 'Error Updating Attachment',
+            message: 'An error occurred while updating the attachment.'
+          })
+        })
+        .finally(() => {
+          // Re-enable submit button
+          submitButton.disabled = false
+          ;(
+            submitButton.querySelector('span:last-child') as HTMLElement
+          ).textContent = originalText
+        })
+    }
+
+    cityssm.openHtmlModal('contract-editAttachment', {
+      onshow(modalElement) {
+        editModalElement = modalElement
+
+        // Set the attachment ID
+        modalElement
+          .querySelector('#contractAttachmentEdit--contractAttachmentId')
+          ?.setAttribute('value', String(attachment.contractAttachmentId))
+
+        // Set the current values
+        ;(
+          modalElement.querySelector(
+            '#contractAttachmentEdit--attachmentTitle'
+          ) as HTMLInputElement
+        ).value = attachment.attachmentTitle === attachment.fileName ? '' : attachment.attachmentTitle
+        ;(
+          modalElement.querySelector(
+            '#contractAttachmentEdit--attachmentDetails'
+          ) as HTMLTextAreaElement
+        ).value = attachment.attachmentDetails
+      },
+
+      onshown(modalElement, closeModalFunction) {
+        bulmaJS.toggleHtmlClipped()
+        editCloseModalFunction = closeModalFunction
+
+        editFormElement = modalElement.querySelector(
+          '#form--contractAttachmentEdit'
+        ) as HTMLFormElement
+
+        editFormElement.addEventListener('submit', editAttachment)
+
+        // Focus on title input
+        const titleInputElement = modalElement.querySelector(
+          '#contractAttachmentEdit--attachmentTitle'
+        ) as HTMLInputElement
+
+        titleInputElement.focus()
+        titleInputElement.select()
+      },
+
+      onremoved() {
+        bulmaJS.toggleHtmlClipped()
+      }
+    })
+  }
+
+  /*
+   * Delete Attachment
+   */
+
+  function deleteAttachment(contractAttachmentId: number): void {
+    bulmaJS.confirm({
+      title: 'Delete Attachment',
+      message: 'Are you sure you want to delete this attachment? This action cannot be undone.',
+      contextualColorName: 'danger',
+      
+      onConfirm() {
+        const formData = new FormData()
+        formData.set('contractAttachmentId', String(contractAttachmentId))
+
+        fetch(`${sunrise.urlPrefix}/contracts/doDeleteContractAttachment`, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRF-Token':
+              document
+                .querySelector('meta[name="csrf-token"]')
+                ?.getAttribute('content') ?? ''
+          }
+        })
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+          .then(async (response) => await response.json())
+          .then(
+            (responseJSON: {
+              success: boolean
+              errorMessage?: string
+              contractAttachments: ContractAttachment[]
+            }) => {
+              if (responseJSON.success) {
+                bulmaJS.alert({
+                  contextualColorName: 'success',
+                  message: 'Attachment deleted successfully.'
+                })
+
+                // Refresh the attachments display
+                renderAttachments(responseJSON.contractAttachments)
+              } else {
+                bulmaJS.alert({
+                  contextualColorName: 'danger',
+                  title: 'Error Deleting Attachment',
+                  message:
+                    responseJSON.errorMessage ??
+                    'An error occurred while deleting the attachment.'
+                })
+              }
+            }
+          )
+          .catch(() => {
+            bulmaJS.alert({
+              contextualColorName: 'danger',
+              title: 'Error Deleting Attachment',
+              message: 'An error occurred while deleting the attachment.'
+            })
+          })
+      }
+    })
+  }
 })()

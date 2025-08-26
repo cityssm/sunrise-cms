@@ -37,6 +37,8 @@ import handler_doUpdateContractFeeQuantity from '../handlers/contracts-post/doUp
 import handler_doUpdateContractInterment from '../handlers/contracts-post/doUpdateContractInterment.js'
 import handler_doUpdateContractTransaction from '../handlers/contracts-post/doUpdateContractTransaction.js'
 import handler_doUploadContractAttachment from '../handlers/contracts-post/doUploadContractAttachment.js'
+import handler_doUpdateContractAttachment from '../handlers/contracts-post/doUpdateContractAttachment.js'
+import handler_doDeleteContractAttachment from '../handlers/contracts-post/doDeleteContractAttachment.js'
 import {
   updateContractsGetHandler,
   updateContractsPostHandler
@@ -240,6 +242,18 @@ router.post(
   updateContractsPostHandler,
   upload.single('file'),
   handler_doUploadContractAttachment
+)
+
+router.post(
+  '/doUpdateContractAttachment',
+  updateContractsPostHandler,
+  handler_doUpdateContractAttachment
+)
+
+router.post(
+  '/doDeleteContractAttachment',
+  updateContractsPostHandler,
+  handler_doDeleteContractAttachment
 )
 
 // Related Contracts
