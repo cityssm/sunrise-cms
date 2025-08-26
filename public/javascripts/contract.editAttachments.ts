@@ -56,7 +56,7 @@ declare const exports: {
             class="has-text-weight-bold"
             target="_blank"
             download>
-            ${cityssm.escapeHTML(attachment.attachmentTitle)}
+            ${cityssm.escapeHTML(attachment.attachmentTitle === '' ? attachment.fileName : attachment.attachmentTitle)}
           </a><br />
           <small class="has-text-grey">${cityssm.escapeHTML(attachment.fileName)}</small>
         </td>
