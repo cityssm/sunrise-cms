@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import multer from 'multer'
 
 import handler_attachment from '../handlers/contracts-get/attachment.js'
 import handler_edit from '../handlers/contracts-get/edit.js'
@@ -26,6 +27,7 @@ import handler_doGetContractDetailsForConsignoCloud from '../handlers/contracts-
 import handler_doGetContractTypeFields from '../handlers/contracts-post/doGetContractTypeFields.js'
 import handler_doGetDynamicsGPDocument from '../handlers/contracts-post/doGetDynamicsGPDocument.js'
 import handler_doGetFees from '../handlers/contracts-post/doGetFees.js'
+import handler_doGetFuneralDirectors from '../handlers/contracts-post/doGetFuneralDirectors.js'
 import handler_doGetPossibleRelatedContracts from '../handlers/contracts-post/doGetPossibleRelatedContracts.js'
 import handler_doSearchContracts from '../handlers/contracts-post/doSearchContracts.js'
 import handler_doStartConsignoCloudWorkflow from '../handlers/contracts-post/doStartConsignoCloudWorkflow.js'
@@ -34,6 +36,7 @@ import handler_doUpdateContractComment from '../handlers/contracts-post/doUpdate
 import handler_doUpdateContractFeeQuantity from '../handlers/contracts-post/doUpdateContractFeeQuantity.js'
 import handler_doUpdateContractInterment from '../handlers/contracts-post/doUpdateContractInterment.js'
 import handler_doUpdateContractTransaction from '../handlers/contracts-post/doUpdateContractTransaction.js'
+import handler_doUploadContractAttachment from '../handlers/contracts-post/doUploadContractAttachment.js'
 import {
   updateContractsGetHandler,
   updateContractsPostHandler
@@ -41,6 +44,16 @@ import {
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export const router = Router()
+
+// Configure multer for file uploads
+const upload = multer({
+  storage: multer.memoryStorage(),
+
+  limits: {
+    fileSize:
+      getConfigProperty('application.maxAttachmentFileSize') * 1024 * 1024
+  }
+})
 
 // Search
 
@@ -145,6 +158,12 @@ router.post(
 router.post('/doGetFees', updateContractsPostHandler, handler_doGetFees)
 
 router.post(
+  '/doGetFuneralDirectors',
+  updateContractsPostHandler,
+  handler_doGetFuneralDirectors
+)
+
+router.post(
   '/doAddContractFee',
   updateContractsPostHandler,
   handler_doAddContractFee
@@ -215,6 +234,13 @@ if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
 // Attachments
 
 router.get('/attachment/:attachmentId', handler_attachment)
+
+router.post(
+  '/doUploadContractAttachment',
+  updateContractsPostHandler,
+  upload.single('file'),
+  handler_doUploadContractAttachment
+)
 
 // Related Contracts
 
