@@ -2,30 +2,28 @@ import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-export interface FuneralDirectorSuggestion {
-  funeralDirectorName: string
-  usageCount: number
-}
+const limit = 20
 
-export default function getFuneralDirectorsByFuneralHomeId(
+export default function getFuneralDirectorNamesByFuneralHomeId(
   funeralHomeId: number | string,
   connectedDatabase?: sqlite.Database
-): FuneralDirectorSuggestion[] {
+): string[] {
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const funeralDirectors = database
     .prepare(
-      `select funeralDirectorName, count(*) as usageCount
+      `select funeralDirectorName
        from Contracts
        where recordDelete_timeMillis is null
          and funeralHomeId = ?
          and funeralDirectorName is not null
          and trim(funeralDirectorName) != ''
        group by funeralDirectorName
-       order by usageCount desc, funeralDirectorName
-       limit 20`
+       order by count(*) desc, funeralDirectorName
+       limit ${limit}`
     )
-    .all(funeralHomeId) as FuneralDirectorSuggestion[]
+    .pluck()
+    .all(funeralHomeId) as string[]
 
   if (connectedDatabase === undefined) {
     database.close()

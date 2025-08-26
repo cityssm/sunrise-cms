@@ -7,7 +7,7 @@ import getBurialSiteDirectionsOfArrival, {
 } from '../../database/getBurialSiteDirectionsOfArrival.js'
 import getCemeteries from '../../database/getCemeteries.js'
 import getContract from '../../database/getContract.js'
-import getFuneralDirectorsByFuneralHomeId from '../../database/getFuneralDirectorsByFuneralHomeId.js'
+import getFuneralDirectorNamesByFuneralHomeId from '../../database/getFuneralDirectorNamesByFuneralHomeId.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
@@ -79,11 +79,13 @@ export default async function handler(
      * Funeral Director Suggestions
      */
 
-    const funeralDirectorSuggestions =
-      contract.funeralHomeId === undefined ||
+    const funeralDirectorNames =
       contract.funeralHomeId === null
         ? []
-        : getFuneralDirectorsByFuneralHomeId(contract.funeralHomeId, database)
+        : getFuneralDirectorNamesByFuneralHomeId(
+            contract.funeralHomeId,
+            database
+          )
 
     /*
      * Work Order Drop Lists
@@ -115,7 +117,7 @@ export default async function handler(
 
       burialSiteDirectionsOfArrival,
 
-      funeralDirectorSuggestions,
+      funeralDirectorNames,
 
       workOrderMilestoneTypes,
       workOrderTypes,

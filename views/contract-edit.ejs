@@ -470,8 +470,8 @@
             <div class="control">
               <input class="input" id="contract--funeralDirectorName" name="funeralDirectorName" type="text" maxlength="100" autocomplete="off" value="<%= contract.funeralDirectorName %>" list="datalist--funeralDirectors" />
               <datalist id="datalist--funeralDirectors">
-                <% for (const suggestion of funeralDirectorSuggestions) { %>
-                  <option value="<%= suggestion.funeralDirectorName %>">
+                <% for (const funeralDirectorName of funeralDirectorNames) { %>
+                  <option value="<%= funeralDirectorName %>">
                 <% } %>
               </datalist>
             </div>
@@ -1253,60 +1253,6 @@
   exports.burialSiteTypes = <%- JSON.stringify(burialSiteTypes) %>;
   exports.cemeteries = <%- JSON.stringify(cemeteries) %>;
   exports.directionsOfArrival = <%- JSON.stringify(dataLists.directionsOfArrival) %>;
-</script>
-
-<script>
-  // Funeral Director Suggestions
-  (function() {
-    'use strict';
-    
-    const funeralHomeSelect = document.getElementById('contract--funeralHomeId');
-    const funeralDirectorInput = document.getElementById('contract--funeralDirectorName');
-    const funeralDirectorDatalist = document.getElementById('datalist--funeralDirectors');
-    
-    if (!funeralHomeSelect || !funeralDirectorInput || !funeralDirectorDatalist) {
-      return;
-    }
-    
-    function updateFuneralDirectorSuggestions(funeralHomeId) {
-      // Clear existing suggestions
-      funeralDirectorDatalist.innerHTML = '';
-      
-      if (!funeralHomeId || funeralHomeId === '' || funeralHomeId === 'new') {
-        return;
-      }
-      
-      // Make AJAX request to get suggestions
-      fetch('<%= urlPrefix %>/contracts/doGetFuneralDirectors', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: JSON.stringify({
-          funeralHomeId: funeralHomeId
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success && data.funeralDirectors) {
-          data.funeralDirectors.forEach(function(suggestion) {
-            const option = document.createElement('option');
-            option.value = suggestion.funeralDirectorName;
-            funeralDirectorDatalist.appendChild(option);
-          });
-        }
-      })
-      .catch(error => {
-        console.error('Error loading funeral director suggestions:', error);
-      });
-    }
-    
-    // Handle funeral home selection change
-    funeralHomeSelect.addEventListener('change', function() {
-      updateFuneralDirectorSuggestions(this.value);
-    });
-  })();
 </script>
 
 <script src="<%= urlPrefix %>/javascripts/contract.edit.js"></script>
