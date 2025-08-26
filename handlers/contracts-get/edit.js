@@ -49,8 +49,7 @@ export default async function handler(request, response) {
          * Funeral Director Suggestions
          */
         const funeralDirectorSuggestions = contract.funeralHomeId === undefined ||
-            contract.funeralHomeId === null ||
-            contract.funeralHomeId === ''
+            contract.funeralHomeId === null
             ? []
             : getFuneralDirectorsByFuneralHomeId(contract.funeralHomeId, database);
         /*

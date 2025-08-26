@@ -1,15 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DEBUG_ENABLE_NAMESPACES = exports.DEBUG_NAMESPACE = void 0;
-var debug_1 = require("@cityssm/consigno-cloud-api/debug");
-var debug_2 = require("@cityssm/dynamics-gp/debug");
-var debug_3 = require("@cityssm/pdf-puppeteer/debug");
-var debug_4 = require("@cityssm/scheduled-task/debug");
-exports.DEBUG_NAMESPACE = 'sunrise';
-exports.DEBUG_ENABLE_NAMESPACES = [
-    "".concat(exports.DEBUG_NAMESPACE, ":*"),
-    debug_1.DEBUG_ENABLE_NAMESPACES,
-    debug_2.DEBUG_ENABLE_NAMESPACES,
-    debug_3.DEBUG_ENABLE_NAMESPACES,
-    debug_4.DEBUG_ENABLE_NAMESPACES
+import { DEBUG_ENABLE_NAMESPACES as DEBUG_ENABLE_NAMESPACES_CONSIGNO_CLOUD } from '@cityssm/consigno-cloud-api/debug';
+import { DEBUG_ENABLE_NAMESPACES as DEBUG_ENABLE_NAMESPACES_DYNAMICS } from '@cityssm/dynamics-gp/debug';
+import { DEBUG_ENABLE_NAMESPACES as DEBUG_ENABLE_NAMESPACES_PDF_PUPPETEER } from '@cityssm/pdf-puppeteer/debug';
+import { DEBUG_ENABLE_NAMESPACES as DEBUG_ENABLE_NAMESPACES_SCHEDULED_TASK } from '@cityssm/scheduled-task/debug';
+export const DEBUG_NAMESPACE = 'sunrise';
+export const DEBUG_ENABLE_NAMESPACES = [
+    `${DEBUG_NAMESPACE}:*`,
+    DEBUG_ENABLE_NAMESPACES_CONSIGNO_CLOUD,
+    DEBUG_ENABLE_NAMESPACES_DYNAMICS,
+    DEBUG_ENABLE_NAMESPACES_PDF_PUPPETEER,
+    DEBUG_ENABLE_NAMESPACES_SCHEDULED_TASK
 ].join(',');
