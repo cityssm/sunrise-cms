@@ -1,8 +1,10 @@
 import addContractAttachment from '../../database/addContractAttachment.js';
 import getContract from '../../database/getContract.js';
+import getContractAttachments from '../../database/getContractAttachments.js';
 import { writeAttachment } from '../../helpers/attachments.helpers.js';
 export default async function handler(request, response) {
     const file = request.file;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (file === undefined) {
         response.json({
             success: false,
@@ -12,7 +14,7 @@ export default async function handler(request, response) {
     }
     const contractId = Number.parseInt(request.body.contractId, 10);
     // Verify contract exists
-    const contract = getContract(contractId);
+    const contract = await getContract(contractId);
     if (contract === undefined) {
         response.json({
             success: false,
@@ -26,14 +28,16 @@ export default async function handler(request, response) {
         // Add attachment record to database
         const attachmentId = addContractAttachment({
             contractId,
-            attachmentTitle: request.body.attachmentTitle || file.originalname,
-            attachmentDetails: request.body.attachmentDetails || '',
+            attachmentDetails: request.body.attachmentDetails ?? '',
+            attachmentTitle: request.body.attachmentTitle ?? file.originalname,
             fileName,
             filePath
         }, request.session.user);
+        const contractAttachments = getContractAttachments(contractId);
         response.json({
             success: true,
-            attachmentId
+            attachmentId,
+            contractAttachments
         });
     }
     catch (error) {
