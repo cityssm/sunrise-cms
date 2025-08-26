@@ -13,7 +13,7 @@ export default function handler(
       limit?: number | string
       offset?: number | string
       recordType?: '' | RecordType
-      sortBy?: 'recordUpdate_timeMillis' | 'recordCreate_timeMillis'
+      sortBy?: 'recordCreate_timeMillis' | 'recordUpdate_timeMillis'
       sortDirection?: 'asc' | 'desc'
     }
   >,

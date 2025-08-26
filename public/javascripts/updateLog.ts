@@ -12,18 +12,19 @@ declare const exports: {
 ;(() => {
   const sunrise = exports.sunrise
 
-  const limit = 50
+  const limitElement = document.querySelector(
+    '#filter--limit'
+  ) as HTMLSelectElement
+
   let offset = 0
-  let sortBy: 'recordUpdate_timeMillis' | 'recordCreate_timeMillis' = 'recordUpdate_timeMillis'
+
+  let sortBy: 'recordCreate_timeMillis' | 'recordUpdate_timeMillis' =
+    'recordUpdate_timeMillis'
   let sortDirection: 'asc' | 'desc' = 'desc'
 
   const recordTypeFilterElement = document.querySelector(
     '#filter--recordType'
   ) as HTMLSelectElement
-
-  const limitInputElement = document.querySelector(
-    '#input--limit'
-  ) as HTMLInputElement
 
   const updateLogTableElement = document.querySelector(
     '#table--updateLog'
@@ -49,86 +50,9 @@ declare const exports: {
     let recordURL = ''
 
     switch (logEntry.recordType) {
-      case 'contract': {
-        recordTypeHTML = `<span class="icon" title="Contract">
-          <i class="fa-solid fa-file-contract"></i>
-          </span>`
-
-        recordURL = sunrise.getContractURL(logEntry.recordId)
-
-        break
-      }
-      case 'contractTransactions': {
-        recordTypeHTML = `<span class="icon" title="Contract Transaction">
-          <i class="fa-solid fa-money-bill-1"></i>
-          </span>`
-
-        recordURL = sunrise.getContractURL(logEntry.recordId)
-
-        break
-      }
-      case 'contractFee': {
-        recordTypeHTML = `<span class="icon" title="Contract Fee">
-          <span class="fa-layers fa-fw">
-            <i class="fa-solid fa-file-contract"></i>
-            <i class="fa-solid fa-dollar-sign" data-fa-transform="shrink-6 down-4 right-4"></i>
-          </span>
-          </span>`
-
-        recordURL = sunrise.getContractURL(logEntry.recordId)
-
-        break
-      }
-      case 'contractComment': {
-        recordTypeHTML = `<span class="icon" title="Contract Comment">
-          <span class="fa-layers fa-fw">
-            <i class="fa-solid fa-file-contract"></i>
-            <i class="fa-solid fa-comment" data-fa-transform="shrink-6 down-4 right-4"></i>
-          </span>
-          </span>`
-
-        recordURL = sunrise.getContractURL(logEntry.recordId)
-
-        break
-      }
-      case 'workOrder': {
-        recordTypeHTML = `<span class="icon" title="Work Order">
-            <i class="fa-solid fa-hard-hat"></i>
-          </span>`
-
-        recordURL = sunrise.getWorkOrderURL(logEntry.recordId)
-
-        break
-      }
-
-      case 'workOrderMilestone': {
-        recordTypeHTML = `<span class="icon" title="Work Order Milestone">
-            <span class="fa-layers fa-fw">
-              <i class="fa-solid fa-hard-hat"></i>
-              <i class="fa-solid fa-clock" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
-            </span>
-
-          </span>`
-
-        recordURL = sunrise.getWorkOrderURL(logEntry.recordId)
-
-        break
-      }
-      case 'workOrderComment': {
-        recordTypeHTML = `<span class="icon" title="Work Order Comment">
-          <span class="fa-layers fa-fw">
-            <i class="fa-solid fa-hard-hat"></i>
-            <i class="fa-solid fa-comment" data-fa-transform="shrink-6 down-4 right-4"></i>
-          </span>
-          </span>`
-
-        recordURL = sunrise.getWorkOrderURL(logEntry.recordId)
-
-        break
-      }
       case 'burialSite': {
-        recordTypeHTML = `<span class="icon" title="Burial Site">
-          <i class="fa-solid fa-cross"></i>
+        recordTypeHTML = `<span title="Burial Site">
+          <i class="fa-solid fa-2x fa-map-pin"></i>
           </span>`
 
         recordURL = sunrise.getBurialSiteURL(logEntry.recordId)
@@ -136,10 +60,10 @@ declare const exports: {
         break
       }
       case 'burialSiteComment': {
-        recordTypeHTML = `<span class="icon" title="Burial Site Comment">
-          <span class="fa-layers fa-fw">
-            <i class="fa-solid fa-cross"></i>
-            <i class="fa-solid fa-comment" data-fa-transform="shrink-6 down-4 right-4"></i>
+        recordTypeHTML = `<span title="Burial Site Comment">
+          <span class="fa-layers fa-2x fa-fw">
+            <i class="fa-solid fa-map-pin" data-fa-transform="left-4"></i>
+            <i class="fa-solid fa-comment" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
           </span>
           </span>`
 
@@ -147,21 +71,89 @@ declare const exports: {
 
         break
       }
-      case 'fee': {
-        recordTypeHTML = `<span class="icon" title="Fee">
-          <i class="fa-solid fa-tags"></i>
-          </span>`
-
-        recordURL = '#' // No direct URL for fees yet
-
-        break
-      }
       case 'comments': {
-        recordTypeHTML = `<span class="icon" title="Comment">
-          <i class="fa-solid fa-comments"></i>
+        recordTypeHTML = `<span title="Comment">
+          <i class="fa-solid fa-2x fa-comments"></i>
           </span>`
 
         recordURL = '#'
+
+        break
+      }
+      case 'contract': {
+        recordTypeHTML = `<span title="Contract">
+          <i class="fa-solid fa-2x fa-file-contract"></i>
+          </span>`
+
+        recordURL = sunrise.getContractURL(logEntry.recordId)
+
+        break
+      }
+      case 'contractComment': {
+        recordTypeHTML = `<span title="Contract Comment">
+          <span class="fa-layers fa-2x fa-fw">
+            <i class="fa-solid fa-file-contract"></i>
+            <i class="fa-solid fa-comment" data-fa-glow="10" data-fa-transform="shrink-6 down-5 right-4"></i>
+          </span>`
+
+        recordURL = sunrise.getContractURL(logEntry.recordId)
+
+        break
+      }
+
+      case 'contractFee': {
+        recordTypeHTML = `<span title="Contract Fee">
+          <span class="fa-layers fa-2x fa-fw">
+            <i class="fa-solid fa-file-contract"></i>
+            <i class="fa-solid fa-dollar-sign" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
+          </span>
+          </span>`
+
+        recordURL = sunrise.getContractURL(logEntry.recordId)
+
+        break
+      }
+      case 'contractTransactions': {
+        recordTypeHTML = `<span title="Contract Transaction">
+          <i class="fa-solid fa-2x fa-money-bill-1"></i>
+          </span>`
+
+        recordURL = sunrise.getContractURL(logEntry.recordId)
+
+        break
+      }
+
+      case 'workOrder': {
+        recordTypeHTML = `<span title="Work Order">
+            <i class="fa-solid fa-2x fa-hard-hat"></i>
+          </span>`
+
+        recordURL = sunrise.getWorkOrderURL(logEntry.recordId)
+
+        break
+      }
+      case 'workOrderComment': {
+        recordTypeHTML = `<span title="Work Order Comment">
+          <span class="fa-layers fa-2x fa-fw">
+            <i class="fa-solid fa-hard-hat"></i>
+            <i class="fa-solid fa-comment" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
+          </span>
+          </span>`
+
+        recordURL = sunrise.getWorkOrderURL(logEntry.recordId)
+
+        break
+      }
+      case 'workOrderMilestone': {
+        recordTypeHTML = `<span title="Work Order Milestone">
+            <span class="fa-layers fa-2x fa-fw">
+              <i class="fa-solid fa-hard-hat"></i>
+              <i class="fa-solid fa-clock" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
+            </span>
+
+          </span>`
+
+        recordURL = sunrise.getWorkOrderURL(logEntry.recordId)
 
         break
       }
@@ -226,7 +218,7 @@ declare const exports: {
   function getUpdateLog(): void {
     loadingElement.classList.remove('is-hidden')
 
-    const currentLimit = Math.min(Number.parseInt(limitInputElement.value, 10) || 50, 200)
+    const currentLimit = Math.min(Number.parseInt(limitElement.value, 10), 100)
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/dashboard/doGetRecordUpdateLog`,
@@ -254,7 +246,7 @@ declare const exports: {
   loadMoreButtonElement.addEventListener('click', () => {
     loadMoreButtonElement.classList.add('is-hidden')
 
-    const currentLimit = Math.min(Number.parseInt(limitInputElement.value, 10) || 50, 200)
+    const currentLimit = Math.min(Number.parseInt(limitElement.value, 10), 200)
     offset += currentLimit
     getUpdateLog()
   })
@@ -266,7 +258,7 @@ declare const exports: {
     getUpdateLog()
   })
 
-  limitInputElement.addEventListener('change', () => {
+  limitElement.addEventListener('change', () => {
     offset = 0
     loadMoreButtonElement.classList.add('is-hidden')
     updateLogTableElement.querySelector('tbody')?.replaceChildren()
@@ -274,10 +266,13 @@ declare const exports: {
   })
 
   // Add sorting functionality
-  function addSortClickHandler(headerElement: HTMLElement, sortColumn: 'recordUpdate_timeMillis' | 'recordCreate_timeMillis'): void {
+  function addSortClickHandler(
+    headerElement: HTMLElement,
+    sortColumn: 'recordCreate_timeMillis' | 'recordUpdate_timeMillis'
+  ): void {
     headerElement.style.cursor = 'pointer'
     headerElement.classList.add('is-clickable')
-    
+
     headerElement.addEventListener('click', () => {
       if (sortBy === sortColumn) {
         sortDirection = sortDirection === 'desc' ? 'asc' : 'desc'
@@ -285,43 +280,52 @@ declare const exports: {
         sortBy = sortColumn
         sortDirection = 'desc'
       }
-      
+
       offset = 0
       loadMoreButtonElement.classList.add('is-hidden')
       updateLogTableElement.querySelector('tbody')?.replaceChildren()
       getUpdateLog()
-      
+
       // Update sort indicators
-      document.querySelectorAll('#table--updateLog th[data-sort]').forEach(th => {
+      for (const th of document.querySelectorAll(
+        '#table--updateLog th[data-sort]'
+      )) {
         th.classList.remove('has-text-primary')
-        const icon = th.querySelector('.fa-sort, .fa-sort-up, .fa-sort-down')
-        if (icon) {
-          icon.className = 'fa-solid fa-sort'
+        const iconContainerElement = th.querySelector('.icon')
+
+        if (iconContainerElement !== null) {
+          iconContainerElement.innerHTML = '<i class="fa-solid fa-sort"></i>'
         }
-      })
-      
+      }
+
       headerElement.classList.add('has-text-primary')
-      const icon = headerElement.querySelector('.fa-sort, .fa-sort-up, .fa-sort-down')
-      if (icon) {
-        icon.className = `fa-solid fa-sort-${sortDirection === 'desc' ? 'down' : 'up'}`
+
+      const iconContainerElement = headerElement.querySelector('.icon')
+
+      if (iconContainerElement !== null) {
+        // eslint-disable-next-line no-unsanitized/property
+        iconContainerElement.innerHTML = `<i class="fa-solid fa-sort-${sortDirection === 'desc' ? 'down' : 'up'}"></i>`
       }
     })
   }
 
-  const updateHeader = document.querySelector('#header--updated') as HTMLElement
-  const createHeader = document.querySelector('#header--created') as HTMLElement
-  
-  if (updateHeader) {
+  const updateHeader = document.querySelector('#header--updated') as HTMLElement | null
+  const createHeader = document.querySelector('#header--created') as HTMLElement | null
+
+  if (updateHeader !== null) {
     addSortClickHandler(updateHeader, 'recordUpdate_timeMillis')
   }
-  if (createHeader) {
+  if (createHeader !== null) {
     addSortClickHandler(createHeader, 'recordCreate_timeMillis')
   }
 
   // Add export functionality
-  exportButtonElement?.addEventListener('click', () => {
+  exportButtonElement.addEventListener('click', () => {
     const recordType = recordTypeFilterElement.value
-    window.open(`${sunrise.urlPrefix}/dashboard/exportRecordUpdateLog?recordType=${encodeURIComponent(recordType)}`, '_blank')
+    window.open(
+      `${sunrise.urlPrefix}/dashboard/exportRecordUpdateLog?recordType=${encodeURIComponent(recordType)}`,
+      '_blank'
+    )
   })
 
   getUpdateLog()

@@ -9,17 +9,16 @@ export const defaultRecordLimit = 100
 const maxRecordLimit = 500
 
 export type RecordType =
-  | 'contract'
-  | 'contractTransactions'
-  | 'workOrder'
-  | 'workOrderMilestone'
   | 'burialSite'
-  | 'fee'
-  | 'contractFee'
-  | 'contractComment'
-  | 'workOrderComment'
   | 'burialSiteComment'
   | 'comments'
+  | 'contract'
+  | 'contractComment'
+  | 'contractFee'
+  | 'contractTransactions'
+  | 'workOrder'
+  | 'workOrderComment'
+  | 'workOrderMilestone'
 
 export interface RecordUpdateLog {
   recordType: RecordType
@@ -30,12 +29,13 @@ export interface RecordUpdateLog {
 
   recordDescription: string
 
-  recordUpdate_timeMillis: number
-  recordUpdate_userName: string
   recordCreate_timeMillis: number
   recordCreate_userName: string
+  recordUpdate_timeMillis: number
+  recordUpdate_userName: string
 }
 
+// eslint-disable-next-line complexity
 export default function getRecordUpdateLog(
   filters: {
     recordType: '' | RecordType
@@ -43,7 +43,7 @@ export default function getRecordUpdateLog(
   options?: {
     limit?: number
     offset?: number
-    sortBy?: 'recordUpdate_timeMillis' | 'recordCreate_timeMillis'
+    sortBy?: 'recordCreate_timeMillis' | 'recordUpdate_timeMillis'
     sortDirection?: 'asc' | 'desc'
   },
   connectedDatabase?: sqlite.Database
@@ -105,10 +105,10 @@ export default function getRecordUpdateLog(
         case when r.workOrderDescription is not null and r.workOrderDescription != ''
           then r.workOrderDescription
           else coalesce(t.workOrderType, 'Work Order') end as recordDescription,
-        recordUpdate_timeMillis,
-        recordUpdate_userName,
-        recordCreate_timeMillis,
-        recordCreate_userName
+        r.recordUpdate_timeMillis,
+        r.recordUpdate_userName,
+        r.recordCreate_timeMillis,
+        r.recordCreate_userName
       from WorkOrders r
       left join WorkOrderTypes t on r.workOrderTypeId = t.workOrderTypeId
       where r.recordDelete_timeMillis is null
@@ -158,26 +158,6 @@ export default function getRecordUpdateLog(
       from BurialSites r
       left join BurialSiteTypes t on r.burialSiteTypeId = t.burialSiteTypeId
       left join BurialSiteStatuses s on r.burialSiteStatusId = s.burialSiteStatusId
-      where r.recordDelete_timeMillis is null
-        and r.recordUpdate_timeMillis >= @minimumMillis`)
-  }
-
-  // Fees
-  if (filters.recordType === '' || filters.recordType === 'fee') {
-    recordTableSql.push(`select 'fee' as recordType,
-        case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
-          then 'create'
-          else 'update' end as updateType,
-        r.feeName as displayRecordId,
-        r.feeId as recordId,
-        coalesce(c.feeCategory, 'Fee') || ' - ' || r.feeName ||
-        case when r.feeAmount is not null then ' ($' || printf('%.2f', r.feeAmount) || ')' else '' end as recordDescription,
-        r.recordUpdate_timeMillis,
-        r.recordUpdate_userName,
-        r.recordCreate_timeMillis,
-        r.recordCreate_userName
-      from Fees r
-      left join FeeCategories c on r.feeCategoryId = c.feeCategoryId
       where r.recordDelete_timeMillis is null
         and r.recordUpdate_timeMillis >= @minimumMillis`)
   }
@@ -285,7 +265,10 @@ export default function getRecordUpdateLog(
 
   const result = database
     .prepare(
-      `${recordTableSql.join(' union all ')}
+      `
+        select recordType, updateType, displayRecordId, recordId, recordDescription,
+        recordUpdate_timeMillis, recordUpdate_userName, recordCreate_timeMillis, recordCreate_userName
+        from (${recordTableSql.join(' union all ')})
 
         order by ${sortBy} ${sortDirection}
         limit @limit offset @offset`
@@ -300,6 +283,6 @@ export default function getRecordUpdateLog(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return result
 }

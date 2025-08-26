@@ -19,12 +19,18 @@
   <div class="column is-narrow">
     <div class="field has-addons">
       <div class="control">
-        <label class="button is-static" for="input--limit">
+        <label class="button is-static" for="filter--limit">
           Limit
         </label>
       </div>
       <div class="control">
-        <input id="input--limit" class="input" type="number" min="1" max="200" value="50" style="width: 80px;">
+        <div class="select">
+          <select id="filter--limit">
+            <option value="10">10</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
@@ -40,20 +46,21 @@
           <select id="filter--recordType">
             <option value="">(All Record Types)</option>
             <optgroup label="Core Records">
-              <option value="contract">Contracts</option>
               <option value="workOrder">Work Orders</option>
+              <option value="contract">Contracts</option>
               <option value="burialSite">Burial Sites</option>
-              <option value="fee">Fees</option>
+            </optgroup>
+            <optgroup label="Work Orders">
+              <option value="workOrderMilestone">Work Order Milestones</option>
             </optgroup>
             <optgroup label="Transactions & Fees">
-              <option value="contractTransactions">Contract Transactions</option>
               <option value="contractFee">Contract Fees</option>
-              <option value="workOrderMilestone">Work Order Milestones</option>
+              <option value="contractTransactions">Contract Transactions</option>
             </optgroup>
             <optgroup label="Comments">
               <option value="comments">All Comments</option>
-              <option value="contractComment">Contract Comments</option>
               <option value="workOrderComment">Work Order Comments</option>
+              <option value="contractComment">Contract Comments</option>
               <option value="burialSiteComment">Burial Site Comments</option>
             </optgroup>
           </select>
