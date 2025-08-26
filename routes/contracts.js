@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import multer from 'multer';
 import handler_attachment from '../handlers/contracts-get/attachment.js';
 import handler_edit from '../handlers/contracts-get/edit.js';
 import handler_new from '../handlers/contracts-get/new.js';
@@ -34,9 +35,17 @@ import handler_doUpdateContractComment from '../handlers/contracts-post/doUpdate
 import handler_doUpdateContractFeeQuantity from '../handlers/contracts-post/doUpdateContractFeeQuantity.js';
 import handler_doUpdateContractInterment from '../handlers/contracts-post/doUpdateContractInterment.js';
 import handler_doUpdateContractTransaction from '../handlers/contracts-post/doUpdateContractTransaction.js';
+import handler_doUploadContractAttachment from '../handlers/contracts-post/doUploadContractAttachment.js';
 import { updateContractsGetHandler, updateContractsPostHandler } from '../handlers/permissions.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 export const router = Router();
+// Configure multer for file uploads
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: getConfigProperty('application.maxAttachmentFileSize') * 1024 * 1024
+    }
+});
 // Search
 router.get('/', handler_search);
 router.post('/doSearchContracts', handler_doSearchContracts);
@@ -83,6 +92,7 @@ if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
 }
 // Attachments
 router.get('/attachment/:attachmentId', handler_attachment);
+router.post('/doUploadContractAttachment', updateContractsPostHandler, upload.single('file'), handler_doUploadContractAttachment);
 // Related Contracts
 router.post('/doGetPossibleRelatedContracts', updateContractsPostHandler, handler_doGetPossibleRelatedContracts);
 router.post('/doAddRelatedContract', updateContractsPostHandler, handler_doAddRelatedContract);

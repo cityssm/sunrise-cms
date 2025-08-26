@@ -22,6 +22,7 @@ export const configDefaultValues = {
   'application.useTestDatabases': false,
 
   'application.attachmentsPath': 'data/attachments',
+  'application.maxAttachmentFileSize': 20,
 
   'login.authentication': undefined as
     | {

@@ -145,6 +145,9 @@ interface ConfigApplication {
   useTestDatabases?: boolean
 
   attachmentsPath?: string
+
+  /** In megabytes */
+  maxAttachmentFileSize?: number
 }
 
 interface ConfigSession {
