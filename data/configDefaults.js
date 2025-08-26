@@ -60,6 +60,8 @@ export const configDefaultValues = {
     'settings.adminCleanup.recordDeleteAgeDays': 60,
     'settings.printPdf.browser': 'chrome',
     'settings.printPdf.contentDisposition': 'attachment',
+    'settings.databaseBackup.taskIsEnabled': false,
+    'settings.databaseBackup.intervalHours': 24,
     // Dynamics GP
     'integrations.dynamicsGP.integrationIsEnabled': false,
     'integrations.dynamicsGP.mssqlConfig': undefined,

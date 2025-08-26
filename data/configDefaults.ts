@@ -116,6 +116,9 @@ export const configDefaultValues = {
     | 'attachment'
     | 'inline',
 
+  'settings.databaseBackup.taskIsEnabled': false,
+  'settings.databaseBackup.intervalHours': 24,
+
   // Dynamics GP
 
   'integrations.dynamicsGP.integrationIsEnabled': false,

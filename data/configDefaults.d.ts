@@ -63,6 +63,8 @@ export declare const configDefaultValues: {
     'settings.adminCleanup.recordDeleteAgeDays': number;
     'settings.printPdf.browser': "chrome" | "firefox";
     'settings.printPdf.contentDisposition': "attachment" | "inline";
+    'settings.databaseBackup.taskIsEnabled': boolean;
+    'settings.databaseBackup.intervalHours': number;
     'integrations.dynamicsGP.integrationIsEnabled': boolean;
     'integrations.dynamicsGP.mssqlConfig': MSSQLConfig;
     'integrations.dynamicsGP.lookupOrder': DynamicsGPLookup[];

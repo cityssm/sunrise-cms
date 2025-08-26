@@ -9,7 +9,8 @@ export const config = {
         contracts: {},
         fees: {},
         printPdf: {},
-        workOrders: {}
+        workOrders: {},
+        databaseBackup: {}
     },
     integrations: {
         consignoCloud: {

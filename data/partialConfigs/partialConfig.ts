@@ -12,7 +12,8 @@ export const config: Config = {
     contracts: {},
     fees: {},
     printPdf: {},
-    workOrders: {}
+    workOrders: {},
+    databaseBackup: {}
   },
 
   integrations: {
