@@ -392,54 +392,57 @@ declare const exports: {
       message: 'Are you sure you want to delete this attachment? This action cannot be undone.',
       contextualColorName: 'danger',
       
-      onConfirm() {
-        const formData = new FormData()
-        formData.set('contractAttachmentId', String(contractAttachmentId))
+      okButton: {
+        text: 'Yes, Delete Attachment',
+        callbackFunction() {
+          const formData = new FormData()
+          formData.set('contractAttachmentId', String(contractAttachmentId))
 
-        fetch(`${sunrise.urlPrefix}/contracts/doDeleteContractAttachment`, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'X-CSRF-Token':
-              document
-                .querySelector('meta[name="csrf-token"]')
-                ?.getAttribute('content') ?? ''
-          }
-        })
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-          .then(async (response) => await response.json())
-          .then(
-            (responseJSON: {
-              success: boolean
-              errorMessage?: string
-              contractAttachments: ContractAttachment[]
-            }) => {
-              if (responseJSON.success) {
-                bulmaJS.alert({
-                  contextualColorName: 'success',
-                  message: 'Attachment deleted successfully.'
-                })
-
-                // Refresh the attachments display
-                renderAttachments(responseJSON.contractAttachments)
-              } else {
-                bulmaJS.alert({
-                  contextualColorName: 'danger',
-                  title: 'Error Deleting Attachment',
-                  message:
-                    responseJSON.errorMessage ??
-                    'An error occurred while deleting the attachment.'
-                })
-              }
+          fetch(`${sunrise.urlPrefix}/contracts/doDeleteContractAttachment`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-CSRF-Token':
+                document
+                  .querySelector('meta[name="csrf-token"]')
+                  ?.getAttribute('content') ?? ''
             }
-          )
-          .catch(() => {
-            bulmaJS.alert({
-              contextualColorName: 'danger',
-              title: 'Error Deleting Attachment',
-              message: 'An error occurred while deleting the attachment.'
-            })
           })
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+            .then(async (response) => await response.json())
+            .then(
+              (responseJSON: {
+                success: boolean
+                errorMessage?: string
+                contractAttachments: ContractAttachment[]
+              }) => {
+                if (responseJSON.success) {
+                  bulmaJS.alert({
+                    contextualColorName: 'success',
+                    message: 'Attachment deleted successfully.'
+                  })
+
+                  // Refresh the attachments display
+                  renderAttachments(responseJSON.contractAttachments)
+                } else {
+                  bulmaJS.alert({
+                    contextualColorName: 'danger',
+                    title: 'Error Deleting Attachment',
+                    message:
+                      responseJSON.errorMessage ??
+                      'An error occurred while deleting the attachment.'
+                  })
+                }
+              }
+            )
+            .catch(() => {
+              bulmaJS.alert({
+                contextualColorName: 'danger',
+                title: 'Error Deleting Attachment',
+                message: 'An error occurred while deleting the attachment.'
+              })
+            })
+        }
       }
     })
   }
