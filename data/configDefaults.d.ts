@@ -10,6 +10,7 @@ export declare const configDefaultValues: {
     'application.maximumProcesses': number;
     'application.useTestDatabases': boolean;
     'application.attachmentsPath': string;
+    'application.maxAttachmentFileSize': number;
     'login.authentication': {
         config: ActiveDirectoryAuthenticatorConfiguration;
         type: "activeDirectory";

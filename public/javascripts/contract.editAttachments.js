@@ -116,13 +116,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement
                     .querySelector('#contractAttachmentUpload--contractId')
                     ?.setAttribute('value', contractId);
+                modalElement.querySelector('#contractAttachmentUpload--maxAttachmentFileSize').textContent = String(exports.maxAttachmentFileSize);
             },
             onshown(modalElement, closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 uploadCloseModalFunction = closeModalFunction;
                 uploadFormElement = modalElement.querySelector('#form--contractAttachmentUpload');
                 uploadFormElement.addEventListener('submit', uploadAttachment);
-                modalElement.querySelector('#contractAttachmentUpload--file').focus();
+                // Focus on file input
+                const fileInputElement = modalElement.querySelector('#contractAttachmentUpload--file');
+                fileInputElement.focus();
+                fileInputElement.addEventListener('change', () => {
+                    const fileSize = fileInputElement.files?.[0]?.size ?? 0;
+                    if (fileSize > exports.maxAttachmentFileSize * 1024 * 1024) {
+                        bulmaJS.alert({
+                            contextualColorName: 'danger',
+                            message: 'File exceeds the maximum size limit.'
+                        });
+                        fileInputElement.value = '';
+                    }
+                });
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();

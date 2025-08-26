@@ -10,6 +10,7 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 
+  maxAttachmentFileSize: number
   contractAttachments: ContractAttachment[]
 }
 ;(() => {
@@ -172,6 +173,11 @@ declare const exports: {
           modalElement
             .querySelector('#contractAttachmentUpload--contractId')
             ?.setAttribute('value', contractId)
+          ;(
+            modalElement.querySelector(
+              '#contractAttachmentUpload--maxAttachmentFileSize'
+            ) as HTMLElement
+          ).textContent = String(exports.maxAttachmentFileSize)
         },
 
         onshown(modalElement, closeModalFunction) {
@@ -185,11 +191,24 @@ declare const exports: {
           uploadFormElement.addEventListener('submit', uploadAttachment)
 
           // Focus on file input
-          ;(
-            modalElement.querySelector(
-              '#contractAttachmentUpload--file'
-            ) as HTMLInputElement
-          ).focus()
+          const fileInputElement = modalElement.querySelector(
+            '#contractAttachmentUpload--file'
+          ) as HTMLInputElement
+
+          fileInputElement.focus()
+
+          fileInputElement.addEventListener('change', () => {
+            const fileSize = fileInputElement.files?.[0]?.size ?? 0
+
+            if (fileSize > exports.maxAttachmentFileSize * 1024 * 1024) {
+              bulmaJS.alert({
+                contextualColorName: 'danger',
+                message: 'File exceeds the maximum size limit.'
+              })
+
+              fileInputElement.value = ''
+            }
+          })
         },
 
         onremoved() {

@@ -1217,6 +1217,7 @@
     exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
     exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
 
+    exports.maxAttachmentFileSize = <%= configFunctions.getConfigProperty('application.maxAttachmentFileSize') %>;
     exports.contractAttachments = <%- JSON.stringify(contract.contractAttachments) %>;
   </script>
 <% } %>
