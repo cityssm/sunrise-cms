@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.config = void 0;
-exports.config = {
+export const config = {
     application: {},
     reverseProxy: {},
     session: {},
@@ -24,4 +21,4 @@ exports.config = {
     },
     users: {}
 };
-exports.default = exports.config;
+export default config;

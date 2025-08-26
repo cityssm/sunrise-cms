@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.directionsOfArrival = exports.purchaserRelationships = exports.deathAgePeriods = void 0;
-exports.deathAgePeriods = ['Years', 'Months', 'Days', 'Stillborn'];
-exports.purchaserRelationships = [
+export const deathAgePeriods = ['Years', 'Months', 'Days', 'Stillborn'];
+export const purchaserRelationships = [
     'Spouse',
     'Husband',
     'Wife',
@@ -12,7 +9,7 @@ exports.purchaserRelationships = [
     'Friend',
     'Self'
 ];
-exports.directionsOfArrival = [
+export const directionsOfArrival = [
     'N',
     'NE',
     'E',
@@ -22,8 +19,8 @@ exports.directionsOfArrival = [
     'W',
     'NW'
 ];
-exports.default = {
-    deathAgePeriods: exports.deathAgePeriods,
-    directionsOfArrival: exports.directionsOfArrival,
-    purchaserRelationships: exports.purchaserRelationships
+export default {
+    deathAgePeriods,
+    directionsOfArrival,
+    purchaserRelationships
 };

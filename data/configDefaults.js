@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.configDefaultValues = void 0;
-const to_millis_1 = require("@cityssm/to-millis");
-exports.configDefaultValues = {
+import { hoursToMillis } from '@cityssm/to-millis';
+export const configDefaultValues = {
     'application.applicationName': 'Sunrise CMS',
     'application.backgroundURL': '/images/cemetery-background.jpg',
     'application.httpPort': 9000,
@@ -18,7 +15,7 @@ exports.configDefaultValues = {
     'reverseProxy.urlPrefix': '',
     'session.cookieName': 'sunrise-user-sid',
     'session.doKeepAlive': false,
-    'session.maxAgeMillis': (0, to_millis_1.hoursToMillis)(1),
+    'session.maxAgeMillis': hoursToMillis(1),
     'session.secret': 'cityssm/sunrise',
     'users.canLogin': ['administrator'],
     'users.canUpdate': [],
@@ -81,4 +78,4 @@ exports.configDefaultValues = {
     'integrations.ntfy.server': '',
     'integrations.ntfy.topics': {},
 };
-exports.default = exports.configDefaultValues;
+export default configDefaultValues;
