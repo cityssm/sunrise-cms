@@ -290,7 +290,7 @@ declare const exports: {
       for (const th of document.querySelectorAll(
         '#table--updateLog th[data-sort]'
       )) {
-        th.classList.remove('has-text-primary')
+        th.classList.remove('has-background-primary-light')
         const iconContainerElement = th.querySelector('.icon')
 
         if (iconContainerElement !== null) {
@@ -298,7 +298,7 @@ declare const exports: {
         }
       }
 
-      headerElement.classList.add('has-text-primary')
+      headerElement.classList.add('has-background-primary-light')
 
       const iconContainerElement = headerElement.querySelector('.icon')
 
