@@ -1,0 +1,81 @@
+<div class="modal" role="dialog">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h3 class="modal-card-title">Upload Attachment</h3>
+      <button
+        class="delete is-close-modal-button"
+        aria-label="close"
+        type="button"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--contractAttachmentUpload" enctype="multipart/form-data">
+        <input
+          id="contractAttachmentUpload--contractId"
+          name="contractId"
+          type="hidden"
+          value=""
+        />
+        <div class="field">
+          <label class="label" for="contractAttachmentUpload--file">File</label>
+          <div class="control">
+            <input
+              class="input"
+              id="contractAttachmentUpload--file"
+              name="file"
+              type="file"
+              required
+              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.txt,.csv,.xls,.xlsx"
+            />
+          </div>
+          <p class="help">
+            Maximum file size: 10MB. Supported formats: PDF, Word documents, images, text files, spreadsheets.
+          </p>
+        </div>
+        <div class="field">
+          <label class="label" for="contractAttachmentUpload--attachmentTitle">
+            Title (optional)
+          </label>
+          <div class="control">
+            <input
+              class="input"
+              id="contractAttachmentUpload--attachmentTitle"
+              name="attachmentTitle"
+              type="text"
+              maxlength="100"
+              placeholder="Leave blank to use filename"
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="contractAttachmentUpload--attachmentDetails">
+            Details (optional)
+          </label>
+          <div class="control">
+            <textarea
+              class="textarea"
+              id="contractAttachmentUpload--attachmentDetails"
+              name="attachmentDetails"
+              maxlength="500"
+              placeholder="Additional details about this attachment"
+            ></textarea>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <div class="buttons">
+        <button
+          class="button is-success"
+          type="submit"
+          form="form--contractAttachmentUpload"
+        >
+          <span class="icon"><i class="fa-solid fa-upload"></i></span>
+          <span>Upload</span>
+        </button>
+        <button class="button is-close-modal-button" type="button">Cancel</button>
+      </div>
+    </footer>
+  </div>
+</div>

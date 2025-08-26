@@ -1,12 +1,16 @@
-import { dateIntegerToString, timeIntegerToString } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
-import { getConfigProperty } from '../helpers/config.helpers.js';
-import { sunriseDB } from '../helpers/database.helpers.js';
-import { getDynamicsGPDocument } from '../integrations/dynamicsGp/helpers.js';
-export default async function GetContractTransactions(contractId, options, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
-    database.function('userFn_dateIntegerToString', dateIntegerToString);
-    database.function('userFn_timeIntegerToString', timeIntegerToString);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = GetContractTransactions;
+const utils_datetime_1 = require("@cityssm/utils-datetime");
+const better_sqlite3_1 = require("better-sqlite3");
+const config_helpers_js_1 = require("../helpers/config.helpers.js");
+const database_helpers_js_1 = require("../helpers/database.helpers.js");
+const helpers_js_1 = require("../integrations/dynamicsGp/helpers.js");
+async function GetContractTransactions(contractId, options, connectedDatabase) {
+    var _a, _b;
+    const database = connectedDatabase !== null && connectedDatabase !== void 0 ? connectedDatabase : (0, better_sqlite3_1.default)(database_helpers_js_1.sunriseDB, { readonly: true });
+    database.function('userFn_dateIntegerToString', utils_datetime_1.dateIntegerToString);
+    database.function('userFn_timeIntegerToString', utils_datetime_1.timeIntegerToString);
     const contractTransactions = database
         .prepare(`select contractId, transactionIndex,
           transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString,
@@ -21,10 +25,10 @@ export default async function GetContractTransactions(contractId, options, conne
         database.close();
     }
     if (options.includeIntegrations &&
-        getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
+        (0, config_helpers_js_1.getConfigProperty)('integrations.dynamicsGP.integrationIsEnabled')) {
         for (const transaction of contractTransactions) {
-            if ((transaction.externalReceiptNumber ?? '') !== '') {
-                const gpDocument = await getDynamicsGPDocument(transaction.externalReceiptNumber ?? '');
+            if (((_a = transaction.externalReceiptNumber) !== null && _a !== void 0 ? _a : '') !== '') {
+                const gpDocument = await (0, helpers_js_1.getDynamicsGPDocument)((_b = transaction.externalReceiptNumber) !== null && _b !== void 0 ? _b : '');
                 if (gpDocument !== undefined) {
                     transaction.dynamicsGPDocument = gpDocument;
                 }

@@ -1,9 +1,12 @@
-import { dateIntegerToString } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
-import { sunriseDB } from '../helpers/database.helpers.js';
-export default function getContractInterments(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
-    database.function('userFn_dateIntegerToString', dateIntegerToString);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = getContractInterments;
+const utils_datetime_1 = require("@cityssm/utils-datetime");
+const better_sqlite3_1 = require("better-sqlite3");
+const database_helpers_js_1 = require("../helpers/database.helpers.js");
+function getContractInterments(contractId, connectedDatabase) {
+    const database = connectedDatabase !== null && connectedDatabase !== void 0 ? connectedDatabase : (0, better_sqlite3_1.default)(database_helpers_js_1.sunriseDB, { readonly: true });
+    database.function('userFn_dateIntegerToString', utils_datetime_1.dateIntegerToString);
     const interments = database
         .prepare(`select ci.contractId, ci.intermentNumber,
         ci.deceasedName,

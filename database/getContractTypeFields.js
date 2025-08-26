@@ -1,11 +1,14 @@
-import sqlite from 'better-sqlite3';
-import { sunriseDB } from '../helpers/database.helpers.js';
-import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default function getContractTypeFields(contractTypeId, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = getContractTypeFields;
+const better_sqlite3_1 = require("better-sqlite3");
+const database_helpers_js_1 = require("../helpers/database.helpers.js");
+const updateRecordOrderNumber_js_1 = require("./updateRecordOrderNumber.js");
+function getContractTypeFields(contractTypeId, connectedDatabase) {
+    const database = connectedDatabase !== null && connectedDatabase !== void 0 ? connectedDatabase : (0, better_sqlite3_1.default)(database_helpers_js_1.sunriseDB);
     const updateOrderNumbers = !database.readonly && contractTypeId !== undefined;
     const sqlParameters = [];
-    if ((contractTypeId ?? -1) !== -1) {
+    if ((contractTypeId !== null && contractTypeId !== void 0 ? contractTypeId : -1) !== -1) {
         sqlParameters.push(contractTypeId);
     }
     const contractTypeFields = database
@@ -13,7 +16,7 @@ export default function getContractTypeFields(contractTypeId, connectedDatabase)
         fieldValues, isRequired, pattern, minLength, maxLength, orderNumber
         from ContractTypeFields
         where recordDelete_timeMillis is null
-        ${(contractTypeId ?? -1) === -1
+        ${(contractTypeId !== null && contractTypeId !== void 0 ? contractTypeId : -1) === -1
         ? ' and contractTypeId is null'
         : ' and contractTypeId = ?'}
         order by orderNumber, contractTypeField`)
@@ -22,7 +25,7 @@ export default function getContractTypeFields(contractTypeId, connectedDatabase)
         let expectedOrderNumber = 0;
         for (const contractTypeField of contractTypeFields) {
             if (contractTypeField.orderNumber !== expectedOrderNumber) {
-                updateRecordOrderNumber('ContractTypeFields', contractTypeField.contractTypeFieldId, expectedOrderNumber, database);
+                (0, updateRecordOrderNumber_js_1.updateRecordOrderNumber)('ContractTypeFields', contractTypeField.contractTypeFieldId, expectedOrderNumber, database);
                 contractTypeField.orderNumber = expectedOrderNumber;
             }
             expectedOrderNumber += 1;

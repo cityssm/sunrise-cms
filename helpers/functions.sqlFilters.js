@@ -1,5 +1,10 @@
-import { dateToInteger } from '@cityssm/utils-datetime';
-export function getBurialSiteNameWhereClause(burialSiteName = '', burialSiteNameSearchType = '', burialSitesTableAlias = 'l') {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getBurialSiteNameWhereClause = getBurialSiteNameWhereClause;
+exports.getContractTimeWhereClause = getContractTimeWhereClause;
+exports.getDeceasedNameWhereClause = getDeceasedNameWhereClause;
+const utils_datetime_1 = require("@cityssm/utils-datetime");
+function getBurialSiteNameWhereClause(burialSiteName = '', burialSiteNameSearchType = '', burialSitesTableAlias = 'l') {
     let sqlWhereClause = '';
     const sqlParameters = [];
     if (burialSiteName !== '') {
@@ -33,12 +38,12 @@ export function getBurialSiteNameWhereClause(burialSiteName = '', burialSiteName
         sqlWhereClause
     };
 }
-export function getContractTimeWhereClause(contractTime, contractsTableAlias = 'o') {
+function getContractTimeWhereClause(contractTime, contractsTableAlias = 'o') {
     let sqlWhereClause = '';
     const sqlParameters = [];
-    const currentDateString = dateToInteger(new Date());
+    const currentDateString = (0, utils_datetime_1.dateToInteger)(new Date());
     // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
-    switch (contractTime ?? '') {
+    switch (contractTime !== null && contractTime !== void 0 ? contractTime : '') {
         case 'current': {
             sqlWhereClause += ` and ${contractsTableAlias}.contractStartDate <= ?
         and (${contractsTableAlias}.contractEndDate is null or ${contractsTableAlias}.contractEndDate >= ?)`;
@@ -63,7 +68,7 @@ export function getContractTimeWhereClause(contractTime, contractsTableAlias = '
         sqlWhereClause
     };
 }
-export function getDeceasedNameWhereClause(deceasedName = '', tableAlias = 'o') {
+function getDeceasedNameWhereClause(deceasedName = '', tableAlias = 'o') {
     let sqlWhereClause = '';
     const sqlParameters = [];
     const usedPieces = new Set();

@@ -1,11 +1,14 @@
-import { dateIntegerToString, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
-import { sunriseDB } from '../helpers/database.helpers.js';
-export default function getContractComments(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
-    database.function('userFn_dateIntegerToString', dateIntegerToString);
-    database.function('userFn_timeIntegerToString', timeIntegerToString);
-    database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = getContractComments;
+const utils_datetime_1 = require("@cityssm/utils-datetime");
+const better_sqlite3_1 = require("better-sqlite3");
+const database_helpers_js_1 = require("../helpers/database.helpers.js");
+function getContractComments(contractId, connectedDatabase) {
+    const database = connectedDatabase !== null && connectedDatabase !== void 0 ? connectedDatabase : (0, better_sqlite3_1.default)(database_helpers_js_1.sunriseDB, { readonly: true });
+    database.function('userFn_dateIntegerToString', utils_datetime_1.dateIntegerToString);
+    database.function('userFn_timeIntegerToString', utils_datetime_1.timeIntegerToString);
+    database.function('userFn_timeIntegerToPeriodString', utils_datetime_1.timeIntegerToPeriodString);
     const comments = database
         .prepare(`select contractCommentId,
         commentDate, userFn_dateIntegerToString(commentDate) as commentDateString,

@@ -1,19 +1,22 @@
-import { dateIntegerToString, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
-import sqlite from 'better-sqlite3';
-import { sunriseDB } from '../helpers/database.helpers.js';
-import getContractAttachments from './getContractAttachments.js';
-import getContractComments from './getContractComments.js';
-import getContractFees from './getContractFees.js';
-import getContractFields from './getContractFields.js';
-import getContractInterments from './getContractInterments.js';
-import getContracts from './getContracts.js';
-import getContractTransactions from './getContractTransactions.js';
-import { getWorkOrders } from './getWorkOrders.js';
-export default async function getContract(contractId, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
-    database.function('userFn_dateIntegerToString', dateIntegerToString);
-    database.function('userFn_timeIntegerToString', timeIntegerToString);
-    database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = getContract;
+const utils_datetime_1 = require("@cityssm/utils-datetime");
+const better_sqlite3_1 = require("better-sqlite3");
+const database_helpers_js_1 = require("../helpers/database.helpers.js");
+const getContractAttachments_js_1 = require("./getContractAttachments.js");
+const getContractComments_js_1 = require("./getContractComments.js");
+const getContractFees_js_1 = require("./getContractFees.js");
+const getContractFields_js_1 = require("./getContractFields.js");
+const getContractInterments_js_1 = require("./getContractInterments.js");
+const getContracts_js_1 = require("./getContracts.js");
+const getContractTransactions_js_1 = require("./getContractTransactions.js");
+const getWorkOrders_js_1 = require("./getWorkOrders.js");
+async function getContract(contractId, connectedDatabase) {
+    const database = connectedDatabase !== null && connectedDatabase !== void 0 ? connectedDatabase : (0, better_sqlite3_1.default)(database_helpers_js_1.sunriseDB);
+    database.function('userFn_dateIntegerToString', utils_datetime_1.dateIntegerToString);
+    database.function('userFn_timeIntegerToString', utils_datetime_1.timeIntegerToString);
+    database.function('userFn_timeIntegerToPeriodString', utils_datetime_1.timeIntegerToPeriodString);
     const contract = database
         .prepare(`select o.contractId,
           o.contractTypeId, t.contractType, t.isPreneed,
@@ -63,12 +66,12 @@ export default async function getContract(contractId, connectedDatabase) {
           and o.contractId = ?`)
         .get(contractId);
     if (contract !== undefined) {
-        contract.contractFields = getContractFields(contractId, database);
-        contract.contractInterments = getContractInterments(contractId, database);
-        contract.contractComments = getContractComments(contractId, database);
-        contract.contractFees = getContractFees(contractId, database);
-        contract.contractTransactions = await getContractTransactions(contractId, { includeIntegrations: true }, database);
-        const workOrdersResults = await getWorkOrders({
+        contract.contractFields = (0, getContractFields_js_1.default)(contractId, database);
+        contract.contractInterments = (0, getContractInterments_js_1.default)(contractId, database);
+        contract.contractComments = (0, getContractComments_js_1.default)(contractId, database);
+        contract.contractFees = (0, getContractFees_js_1.default)(contractId, database);
+        contract.contractTransactions = await (0, getContractTransactions_js_1.default)(contractId, { includeIntegrations: true }, database);
+        const workOrdersResults = await (0, getWorkOrders_js_1.getWorkOrders)({
             contractId
         }, {
             limit: -1,
@@ -76,7 +79,7 @@ export default async function getContract(contractId, connectedDatabase) {
             includeMilestones: true
         }, database);
         contract.workOrders = workOrdersResults.workOrders;
-        const relatedContractsResults = await getContracts({
+        const relatedContractsResults = await (0, getContracts_js_1.default)({
             relatedContractId: contractId
         }, {
             limit: -1,
@@ -86,7 +89,7 @@ export default async function getContract(contractId, connectedDatabase) {
             includeTransactions: false
         }, database);
         contract.relatedContracts = relatedContractsResults.contracts;
-        contract.contractAttachments = getContractAttachments(contractId, database);
+        contract.contractAttachments = (0, getContractAttachments_js_1.default)(contractId, database);
     }
     if (connectedDatabase === undefined) {
         database.close();

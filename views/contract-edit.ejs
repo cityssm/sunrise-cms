@@ -1118,23 +1118,35 @@
     <div class="panel-block is-block" id="container--contractComments"></div>
   </div>
 
-  <% if (contract.contractAttachments.length > 0) { %>
-    <div class="panel">
-      <div class="panel-heading">
-        <div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <h2 class="has-text-weight-bold">Attachments</h2>
-            </div>
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="has-text-weight-bold">Attachments</h2>
           </div>
-          <div class="level-right">
+        </div>
+        <div class="level-right">
+          <% if (!isCreate) { %>
             <div class="level-item">
-              <i class="fa-solid fa-paperclip"></i>
+              <button class="button is-small is-success is-hidden-print" id="button--uploadAttachment" type="button">
+                <span class="icon is-small"><i class="fa-solid fa-upload"></i></span>
+                <span>Upload Attachment</span>
+              </button>
             </div>
+          <% } %>
+          <div class="level-item">
+            <i class="fa-solid fa-paperclip"></i>
           </div>
         </div>
       </div>
-      <div class="panel-block is-block">
+    </div>
+    <div class="panel-block is-block" id="container--contractAttachments">
+      <% if (contract.contractAttachments.length === 0) { %>
+        <div class="message is-info">
+          <p class="message-body">No attachments uploaded.</p>
+        </div>
+      <% } else { %>
         <table class="table is-fullwidth is-striped is-hoverable">
           <thead>
             <tr>
@@ -1165,9 +1177,9 @@
             <% } %>
           </tbody>
         </table>
-      </div>
+      <% } %>
     </div>
-  <% } %>
+  </div>
 <% } %>
 
 <datalist id="datalist--cityDefault">
