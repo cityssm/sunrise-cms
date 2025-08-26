@@ -2,7 +2,9 @@ import { dateToInteger, dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
 import getBurialSite from '../../database/getBurialSite.js'
-import getBurialSiteDirectionsOfArrival, { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js'
+import getBurialSiteDirectionsOfArrival, {
+  defaultDirectionsOfArrival
+} from '../../database/getBurialSiteDirectionsOfArrival.js'
 import getCemeteries from '../../database/getCemeteries.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
@@ -76,6 +78,8 @@ export default async function handler(
     cemeteries,
 
     burialSiteDirectionsOfArrival,
+
+    funeralDirectorNames: [],
 
     isCreate: true
   })

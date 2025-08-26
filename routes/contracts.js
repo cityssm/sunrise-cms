@@ -25,6 +25,7 @@ import handler_doGetContractDetailsForConsignoCloud from '../handlers/contracts-
 import handler_doGetContractTypeFields from '../handlers/contracts-post/doGetContractTypeFields.js';
 import handler_doGetDynamicsGPDocument from '../handlers/contracts-post/doGetDynamicsGPDocument.js';
 import handler_doGetFees from '../handlers/contracts-post/doGetFees.js';
+import handler_doGetFuneralDirectors from '../handlers/contracts-post/doGetFuneralDirectors.js';
 import handler_doGetPossibleRelatedContracts from '../handlers/contracts-post/doGetPossibleRelatedContracts.js';
 import handler_doSearchContracts from '../handlers/contracts-post/doSearchContracts.js';
 import handler_doStartConsignoCloudWorkflow from '../handlers/contracts-post/doStartConsignoCloudWorkflow.js';
@@ -63,6 +64,7 @@ router.post('/doUpdateContractComment', updateContractsPostHandler, handler_doUp
 router.post('/doDeleteContractComment', updateContractsPostHandler, handler_doDeleteContractComment);
 // Fees
 router.post('/doGetFees', updateContractsPostHandler, handler_doGetFees);
+router.post('/doGetFuneralDirectors', updateContractsPostHandler, handler_doGetFuneralDirectors);
 router.post('/doAddContractFee', updateContractsPostHandler, handler_doAddContractFee);
 router.post('/doAddContractFeeCategory', updateContractsPostHandler, handler_doAddContractFeeCategory);
 router.post('/doUpdateContractFeeQuantity', updateContractsPostHandler, handler_doUpdateContractFeeQuantity);

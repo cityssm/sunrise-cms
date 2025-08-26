@@ -468,7 +468,12 @@
               Funeral Director's Name
             </label>
             <div class="control">
-              <input class="input" id="contract--funeralDirectorName" name="funeralDirectorName" type="text" maxlength="100" autocomplete="off" value="<%= contract.funeralDirectorName %>" />
+              <input class="input" id="contract--funeralDirectorName" name="funeralDirectorName" type="text" maxlength="100" autocomplete="off" value="<%= contract.funeralDirectorName %>" list="datalist--funeralDirectors" />
+              <datalist id="datalist--funeralDirectors">
+                <% for (const funeralDirectorName of funeralDirectorNames) { %>
+                  <option value="<%= funeralDirectorName %>">
+                <% } %>
+              </datalist>
             </div>
           </div>
         </div>

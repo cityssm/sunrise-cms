@@ -334,7 +334,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Creating Burial Site',
-                        message: responseJSON.errorMessage ?? '',
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -412,7 +412,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         if (burialSiteId === '') {
             bulmaJS.alert({
                 contextualColorName: 'info',
-                message: 'No burial site selected.',
+                message: 'No burial site selected.'
             });
         }
         else {
@@ -425,7 +425,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         if (burialSiteNameElement.disabled) {
             bulmaJS.alert({
                 contextualColorName: 'info',
-                message: 'You need to unlock the field before clearing it.',
+                message: 'You need to unlock the field before clearing it.'
             });
         }
         else {
@@ -467,6 +467,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ?.classList.toggle('is-hidden', funeralHomeId !== 'new');
         });
     }
+    const funeralHomeSelect = document.querySelector('#contract--funeralHomeId');
+    const funeralDirectorDatalist = document.querySelector('#datalist--funeralDirectors');
+    // Handle funeral home selection change
+    funeralHomeSelect?.addEventListener('change', (event) => {
+        const funeralHomeId = event.currentTarget.value;
+        // Clear existing suggestions
+        funeralDirectorDatalist?.replaceChildren();
+        if (funeralHomeId === '') {
+            return;
+        }
+        // Make AJAX request to get suggestions
+        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetFuneralDirectors`, {
+            funeralHomeId
+        }, (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON;
+            for (const funeralDirectorName of responseJSON.funeralDirectorNames) {
+                const option = document.createElement('option');
+                option.value = funeralDirectorName;
+                funeralDirectorDatalist?.append(option);
+            }
+        });
+    });
     /*
      * Deceased
      */
