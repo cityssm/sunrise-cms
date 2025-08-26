@@ -930,4 +930,115 @@ declare const exports: {
       setUnsavedChanges()
     })
   }
+
+  /*
+   * Attachment Upload
+   */
+
+  if (!isCreate) {
+    document
+      .querySelector('#button--uploadAttachment')
+      ?.addEventListener('click', (clickEvent) => {
+        clickEvent.preventDefault()
+
+        let uploadFormElement: HTMLFormElement
+        let uploadCloseModalFunction: (() => void) | undefined
+
+        function uploadAttachment(submitEvent: Event): void {
+          submitEvent.preventDefault()
+
+          const formData = new FormData(uploadFormElement)
+          formData.set('contractId', contractId)
+
+          // Disable submit button and show loading
+          const submitButton = uploadFormElement.querySelector(
+            'button[type="submit"]'
+          ) as HTMLButtonElement
+          const originalText = (
+            submitButton.querySelector('span:last-child') as HTMLElement
+          ).textContent as string
+          submitButton.disabled = true
+          ;(
+            submitButton.querySelector('span:last-child') as HTMLElement
+          ).textContent = 'Uploading...'
+
+          fetch(`${sunrise.urlPrefix}/contracts/doUploadContractAttachment`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-CSRF-Token':
+                document
+                  .querySelector('meta[name="csrf-token"]')
+                  ?.getAttribute('content') ?? ''
+            }
+          })
+            .then(async (response) => await response.json())
+            .then((responseJSON: { success: boolean; errorMessage?: string }) => {
+              if (responseJSON.success) {
+                bulmaJS.alert({
+                  contextualColorName: 'success',
+                  message: 'Attachment uploaded successfully.'
+                })
+                if (uploadCloseModalFunction !== undefined) {
+                  uploadCloseModalFunction()
+                }
+                // Refresh the page to show the new attachment
+                globalThis.location.reload()
+              } else {
+                bulmaJS.alert({
+                  contextualColorName: 'danger',
+                  title: 'Error Uploading Attachment',
+                  message:
+                    responseJSON.errorMessage ??
+                    'An error occurred while uploading the file.'
+                })
+              }
+            })
+            .catch(() => {
+              bulmaJS.alert({
+                contextualColorName: 'danger',
+                title: 'Error Uploading Attachment',
+                message: 'An error occurred while uploading the file.'
+              })
+            })
+            .finally(() => {
+              // Re-enable submit button
+              submitButton.disabled = false
+              ;(
+                submitButton.querySelector('span:last-child') as HTMLElement
+              ).textContent = originalText
+            })
+        }
+
+        cityssm.openHtmlModal('contract-uploadAttachment', {
+          onshow(modalElement) {
+            sunrise.populateAliases(modalElement)
+            modalElement
+              .querySelector('#contractAttachmentUpload--contractId')
+              ?.setAttribute('value', contractId)
+          },
+
+          onshown(modalElement, closeModalFunction) {
+            bulmaJS.toggleHtmlClipped()
+            uploadCloseModalFunction = closeModalFunction
+            bulmaJS.init(modalElement)
+
+            uploadFormElement = modalElement.querySelector(
+              '#form--contractAttachmentUpload'
+            ) as HTMLFormElement
+
+            uploadFormElement.addEventListener('submit', uploadAttachment)
+
+            // Focus on file input
+            modalElement
+              .querySelector('#contractAttachmentUpload--file')
+              ?.focus()
+          },
+
+          onremoved() {
+            bulmaJS.toggleHtmlClipped()
+          }
+        })
+      })
+  }
 })()
