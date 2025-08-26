@@ -309,14 +309,14 @@ declare const exports: {
     })
   }
 
-  const updateHeader = document.querySelector('#header--updated') as HTMLElement | null
-  const createHeader = document.querySelector('#header--created') as HTMLElement | null
+  const updateHeader = document.querySelector('#header--updated')
+  const createHeader = document.querySelector('#header--created')
 
   if (updateHeader !== null) {
-    addSortClickHandler(updateHeader, 'recordUpdate_timeMillis')
+    addSortClickHandler(updateHeader as HTMLElement, 'recordUpdate_timeMillis')
   }
   if (createHeader !== null) {
-    addSortClickHandler(createHeader, 'recordCreate_timeMillis')
+    addSortClickHandler(createHeader as HTMLElement, 'recordCreate_timeMillis')
   }
 
   // Add export functionality
