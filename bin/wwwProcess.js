@@ -4,13 +4,13 @@ import http from 'node:http';
 import Debug from 'debug';
 import exitHook from 'exit-hook';
 import { app } from '../app.js';
-import { initializeDatabase } from '../database/initializeDatabase.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
+import { initializeApplication } from '../helpers/application.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:wwwProcess:${process.pid.toString().padEnd(5)}`);
 if (process.send === undefined) {
-    // INITIALIZE THE DATABASE
-    initializeDatabase();
+    // INITIALIZE THE APPLICATION
+    await initializeApplication();
 }
 function onError(error) {
     if (error.syscall !== 'listen') {
