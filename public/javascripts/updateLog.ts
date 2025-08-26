@@ -294,7 +294,10 @@ declare const exports: {
       // Update sort indicators
       document.querySelectorAll('#table--updateLog th[data-sort]').forEach(th => {
         th.classList.remove('has-text-primary')
-        th.querySelector('.fa-sort, .fa-sort-up, .fa-sort-down')?.className = 'fa-solid fa-sort'
+        const icon = th.querySelector('.fa-sort, .fa-sort-up, .fa-sort-down')
+        if (icon) {
+          icon.className = 'fa-solid fa-sort'
+        }
       })
       
       headerElement.classList.add('has-text-primary')
