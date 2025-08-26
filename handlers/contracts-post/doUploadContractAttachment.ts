@@ -7,8 +7,9 @@ import { writeAttachment } from '../../helpers/attachments.helpers.js'
 
 export interface UploadContractAttachmentForm {
   contractId: string
-  attachmentTitle?: string
+
   attachmentDetails?: string
+  attachmentTitle?: string
 }
 
 export default async function handler(
