@@ -43,6 +43,10 @@ export default async function handler(request, response) {
     const burialSiteDirectionsOfArrival = contract.burialSiteId === undefined || contract.burialSiteId === null
         ? defaultDirectionsOfArrival
         : getBurialSiteDirectionsOfArrival(contract.burialSiteId);
+    /*
+     * Funeral Director Suggestions (empty for new contracts)
+     */
+    const funeralDirectorSuggestions = [];
     response.render('contract-edit', {
         headTitle: 'Create a New Contract',
         contract,
@@ -54,6 +58,7 @@ export default async function handler(request, response) {
         burialSiteTypes,
         cemeteries,
         burialSiteDirectionsOfArrival,
+        funeralDirectorSuggestions,
         isCreate: true
     });
 }

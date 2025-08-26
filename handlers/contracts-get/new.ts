@@ -61,6 +61,12 @@ export default async function handler(
       ? defaultDirectionsOfArrival
       : getBurialSiteDirectionsOfArrival(contract.burialSiteId)
 
+  /*
+   * Funeral Director Suggestions (empty for new contracts)
+   */
+
+  const funeralDirectorSuggestions: never[] = []
+
   response.render('contract-edit', {
     headTitle: 'Create a New Contract',
 
@@ -76,6 +82,8 @@ export default async function handler(
     cemeteries,
 
     burialSiteDirectionsOfArrival,
+
+    funeralDirectorSuggestions,
 
     isCreate: true
   })

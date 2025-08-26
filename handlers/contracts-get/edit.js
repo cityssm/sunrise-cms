@@ -3,6 +3,7 @@ import Debug from 'debug';
 import getBurialSiteDirectionsOfArrival, { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js';
 import getCemeteries from '../../database/getCemeteries.js';
 import getContract from '../../database/getContract.js';
+import getFuneralDirectorsByFuneralHomeId from '../../database/getFuneralDirectorsByFuneralHomeId.js';
 import getFuneralHomes from '../../database/getFuneralHomes.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js';
@@ -45,6 +46,14 @@ export default async function handler(request, response) {
             ? defaultDirectionsOfArrival
             : getBurialSiteDirectionsOfArrival(contract.burialSiteId, database);
         /*
+         * Funeral Director Suggestions
+         */
+        const funeralDirectorSuggestions = contract.funeralHomeId === undefined ||
+            contract.funeralHomeId === null ||
+            contract.funeralHomeId === ''
+            ? []
+            : getFuneralDirectorsByFuneralHomeId(contract.funeralHomeId, database);
+        /*
          * Work Order Drop Lists
          */
         const canUpdateWorkOrders = userCanUpdateWorkOrders(request);
@@ -65,6 +74,7 @@ export default async function handler(request, response) {
             burialSiteTypes,
             cemeteries,
             burialSiteDirectionsOfArrival,
+            funeralDirectorSuggestions,
             workOrderMilestoneTypes,
             workOrderTypes,
             isCreate: false
