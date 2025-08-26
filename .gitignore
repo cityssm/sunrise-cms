@@ -26,9 +26,7 @@ data/config.ts
 
 public/images-custom/*
 
-temp/wmf/
-temp/config.*
-temp/*.csv
+temp/
 
 megalinter-reports/
 temp_build/
