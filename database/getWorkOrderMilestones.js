@@ -1,20 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = getWorkOrderMilestones;
-const utils_datetime_1 = require("@cityssm/utils-datetime");
-const better_sqlite3_1 = require("better-sqlite3");
-const config_helpers_js_1 = require("../helpers/config.helpers.js");
-const database_helpers_js_1 = require("../helpers/database.helpers.js");
-const getBurialSites_js_1 = require("./getBurialSites.js");
-const getContracts_js_1 = require("./getContracts.js");
+import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
+import { getConfigProperty } from '../helpers/config.helpers.js';
+import { sunriseDB } from '../helpers/database.helpers.js';
+import getBurialSites from './getBurialSites.js';
+import getContracts from './getContracts.js';
 // eslint-disable-next-line security/detect-unsafe-regex
 const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/;
-async function getWorkOrderMilestones(filters, options, connectedDatabase) {
-    var _a, _b;
-    const database = connectedDatabase !== null && connectedDatabase !== void 0 ? connectedDatabase : (0, better_sqlite3_1.default)(database_helpers_js_1.sunriseDB);
-    database.function('userFn_dateIntegerToString', utils_datetime_1.dateIntegerToString);
-    database.function('userFn_timeIntegerToString', utils_datetime_1.timeIntegerToString);
-    database.function('userFn_timeIntegerToPeriodString', utils_datetime_1.timeIntegerToPeriodString);
+export default async function getWorkOrderMilestones(filters, options, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
+    database.function('userFn_dateIntegerToString', dateIntegerToString);
+    database.function('userFn_timeIntegerToString', timeIntegerToString);
+    database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
     // Filters
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     // Order By
@@ -50,7 +46,7 @@ async function getWorkOrderMilestones(filters, options, connectedDatabase) {
     m.workOrderMilestoneCompletionTime,
     userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString,
     userFn_timeIntegerToPeriodString(ifnull(m.workOrderMilestoneCompletionTime, 0)) as workOrderMilestoneCompletionTimePeriodString,
-    ${((_a = options.includeWorkOrders) !== null && _a !== void 0 ? _a : false)
+    ${options.includeWorkOrders ?? false
         ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,
             w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
             w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
@@ -69,9 +65,9 @@ async function getWorkOrderMilestones(filters, options, connectedDatabase) {
     const workOrderMilestones = database
         .prepare(sql)
         .all(sqlParameters);
-    if ((_b = options.includeWorkOrders) !== null && _b !== void 0 ? _b : false) {
+    if (options.includeWorkOrders ?? false) {
         for (const workOrderMilestone of workOrderMilestones) {
-            const burialSites = (0, getBurialSites_js_1.default)({
+            const burialSites = getBurialSites({
                 workOrderId: workOrderMilestone.workOrderId
             }, {
                 limit: -1,
@@ -79,7 +75,7 @@ async function getWorkOrderMilestones(filters, options, connectedDatabase) {
                 includeContractCount: false
             }, database);
             workOrderMilestone.workOrderBurialSites = burialSites.burialSites;
-            const contracts = await (0, getContracts_js_1.default)({
+            const contracts = await getContracts({
                 workOrderId: workOrderMilestone.workOrderId
             }, {
                 limit: -1,
@@ -97,22 +93,21 @@ async function getWorkOrderMilestones(filters, options, connectedDatabase) {
     return workOrderMilestones;
 }
 function buildWhereClause(filters) {
-    var _a, _b, _c;
     let sqlWhereClause = ' where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null';
     const sqlParameters = [];
-    if (((_a = filters.workOrderId) !== null && _a !== void 0 ? _a : '') !== '') {
+    if ((filters.workOrderId ?? '') !== '') {
         sqlWhereClause += ' and m.workOrderId = ?';
         sqlParameters.push(filters.workOrderId);
     }
     const date = new Date();
-    const currentDateNumber = (0, utils_datetime_1.dateToInteger)(date);
+    const currentDateNumber = dateToInteger(date);
     date.setDate(date.getDate() -
-        (0, config_helpers_js_1.getConfigProperty)('settings.workOrders.workOrderMilestoneDateRecentBeforeDays'));
-    const recentBeforeDateNumber = (0, utils_datetime_1.dateToInteger)(date);
+        getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays'));
+    const recentBeforeDateNumber = dateToInteger(date);
     date.setDate(date.getDate() +
-        (0, config_helpers_js_1.getConfigProperty)('settings.workOrders.workOrderMilestoneDateRecentBeforeDays') +
-        (0, config_helpers_js_1.getConfigProperty)('settings.workOrders.workOrderMilestoneDateRecentAfterDays'));
-    const recentAfterDateNumber = (0, utils_datetime_1.dateToInteger)(date);
+        getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentBeforeDays') +
+        getConfigProperty('settings.workOrders.workOrderMilestoneDateRecentAfterDays'));
+    const recentAfterDateNumber = dateToInteger(date);
     // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
     switch (filters.workOrderMilestoneDateFilter) {
         case 'blank': {
@@ -138,11 +133,11 @@ function buildWhereClause(filters) {
         case 'yearMonth': {
             const yearNumber = typeof filters.workOrderMilestoneYear === 'string'
                 ? Number.parseInt(filters.workOrderMilestoneYear)
-                : (_b = filters.workOrderMilestoneYear) !== null && _b !== void 0 ? _b : new Date().getFullYear();
+                : filters.workOrderMilestoneYear ?? new Date().getFullYear();
             const monthNumber = typeof filters.workOrderMilestoneMonth === 'string'
                 ? Number.parseInt(filters.workOrderMilestoneMonth)
-                : (_c = filters.workOrderMilestoneMonth) !== null && _c !== void 0 ? _c : new Date().getMonth() + 1;
-            const yearMonth = yearNumber * 10000 + monthNumber * 100;
+                : filters.workOrderMilestoneMonth ?? new Date().getMonth() + 1;
+            const yearMonth = yearNumber * 10_000 + monthNumber * 100;
             sqlWhereClause += ' and m.workOrderMilestoneDate between ? and ?';
             sqlParameters.push(yearMonth, yearMonth + 100);
             break;
@@ -151,7 +146,7 @@ function buildWhereClause(filters) {
     if (filters.workOrderMilestoneDateString !== undefined &&
         filters.workOrderMilestoneDateString !== '') {
         sqlWhereClause += ' and m.workOrderMilestoneDate = ?';
-        sqlParameters.push((0, utils_datetime_1.dateStringToInteger)(filters.workOrderMilestoneDateString));
+        sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString));
     }
     if (filters.workOrderTypeIds !== undefined &&
         filters.workOrderTypeIds !== '' &&

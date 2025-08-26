@@ -550,7 +550,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             setUnsavedChanges();
         });
     }
-    
     /*
      * Attachment Upload
      */
@@ -561,28 +560,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
             clickEvent.preventDefault();
             let uploadFormElement;
             let uploadCloseModalFunction;
-            
             function uploadAttachment(submitEvent) {
                 submitEvent.preventDefault();
-                
                 const formData = new FormData(uploadFormElement);
                 formData.set('contractId', contractId);
-                
                 // Disable submit button and show loading
                 const submitButton = uploadFormElement.querySelector('button[type="submit"]');
                 const originalText = submitButton.querySelector('span:last-child').textContent;
                 submitButton.disabled = true;
                 submitButton.querySelector('span:last-child').textContent = 'Uploading...';
-                
                 fetch(`${sunrise.urlPrefix}/contracts/doUploadContractAttachment`, {
                     method: 'POST',
                     body: formData,
                     headers: {
-                        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? ''
+                        'X-CSRF-Token': document
+                            .querySelector('meta[name="csrf-token"]')
+                            ?.getAttribute('content') ?? ''
                     }
                 })
-                .then(response => response.json())
-                .then((responseJSON) => {
+                    .then(async (response) => await response.json())
+                    .then((responseJSON) => {
                     if (responseJSON.success) {
                         bulmaJS.alert({
                             contextualColorName: 'success',
@@ -593,28 +590,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         }
                         // Refresh the page to show the new attachment
                         globalThis.location.reload();
-                    } else {
+                    }
+                    else {
                         bulmaJS.alert({
                             contextualColorName: 'danger',
                             title: 'Error Uploading Attachment',
-                            message: responseJSON.errorMessage ?? 'An error occurred while uploading the file.'
+                            message: responseJSON.errorMessage ??
+                                'An error occurred while uploading the file.'
                         });
                     }
                 })
-                .catch((error) => {
+                    .catch(() => {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Uploading Attachment',
                         message: 'An error occurred while uploading the file.'
                     });
                 })
-                .finally(() => {
+                    .finally(() => {
                     // Re-enable submit button
                     submitButton.disabled = false;
                     submitButton.querySelector('span:last-child').textContent = originalText;
                 });
             }
-            
             cityssm.openHtmlModal('contract-uploadAttachment', {
                 onshow(modalElement) {
                     sunrise.populateAliases(modalElement);
@@ -626,12 +624,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     bulmaJS.toggleHtmlClipped();
                     uploadCloseModalFunction = closeModalFunction;
                     bulmaJS.init(modalElement);
-                    
                     uploadFormElement = modalElement.querySelector('#form--contractAttachmentUpload');
                     uploadFormElement.addEventListener('submit', uploadAttachment);
-                    
                     // Focus on file input
-                    modalElement.querySelector('#contractAttachmentUpload--file')?.focus();
+                    modalElement
+                        .querySelector('#contractAttachmentUpload--file')
+                        ?.focus();
                 },
                 onremoved() {
                     bulmaJS.toggleHtmlClipped();

@@ -39,15 +39,13 @@ import handler_doUploadContractAttachment from '../handlers/contracts-post/doUpl
 import { updateContractsGetHandler, updateContractsPostHandler } from '../handlers/permissions.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 export const router = Router();
-
 // Configure multer for file uploads
 const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 10 * 1024 * 1024 // 10MB limit
-  }
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: 10 * 1024 * 1024 // 10MB limit
+    }
 });
-
 // Search
 router.get('/', handler_search);
 router.post('/doSearchContracts', handler_doSearchContracts);

@@ -1,10 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = getContractTypePrints;
-const better_sqlite3_1 = require("better-sqlite3");
-const config_helpers_js_1 = require("../helpers/config.helpers.js");
-const database_helpers_js_1 = require("../helpers/database.helpers.js");
-const availablePrints = (0, config_helpers_js_1.getConfigProperty)('settings.contracts.prints');
+import sqlite from 'better-sqlite3';
+import { getConfigProperty } from '../helpers/config.helpers.js';
+import { sunriseDB } from '../helpers/database.helpers.js';
+const availablePrints = getConfigProperty('settings.contracts.prints');
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const userFunction_configContainsPrintEJS = (printEJS) => {
     if (printEJS === '*' || availablePrints.includes(printEJS)) {
@@ -12,8 +9,8 @@ const userFunction_configContainsPrintEJS = (printEJS) => {
     }
     return 0;
 };
-function getContractTypePrints(contractTypeId, connectedDatabase) {
-    const database = connectedDatabase !== null && connectedDatabase !== void 0 ? connectedDatabase : (0, better_sqlite3_1.default)(database_helpers_js_1.sunriseDB);
+export default function getContractTypePrints(contractTypeId, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function(
     // eslint-disable-next-line no-secrets/no-secrets
     'userFn_configContainsPrintEJS', userFunction_configContainsPrintEJS);

@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateRecordOrderNumber = updateRecordOrderNumber;
 const recordIdColumns = new Map([
     ['BurialSiteStatuses', 'burialSiteStatusId'],
     ['BurialSiteTypeFields', 'burialSiteTypeFieldId'],
@@ -14,7 +11,7 @@ const recordIdColumns = new Map([
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneTypeId'],
     ['WorkOrderTypes', 'workOrderTypeId']
 ]);
-function updateRecordOrderNumber(recordTable, recordId, orderNumber, connectedDatabase) {
+export function updateRecordOrderNumber(recordTable, recordId, orderNumber, connectedDatabase) {
     const result = connectedDatabase
         .prepare(`update ${recordTable}
         set orderNumber = ?

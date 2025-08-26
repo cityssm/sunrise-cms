@@ -1,12 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.backupFolder = exports.sunriseDB = exports.sunriseDBTesting = exports.sunriseDBLive = exports.useTestDatabases = void 0;
 exports.sanitizeLimit = sanitizeLimit;
 exports.sanitizeOffset = sanitizeOffset;
 exports.getLastBackupDate = getLastBackupDate;
-const promises_1 = require("node:fs/promises");
-const node_path_1 = require("node:path");
-const debug_1 = require("debug");
+const promises_1 = __importDefault(require("node:fs/promises"));
+const node_path_1 = __importDefault(require("node:path"));
+const debug_1 = __importDefault(require("debug"));
 const debug_config_js_1 = require("../debug.config.js");
 const config_helpers_js_1 = require("./config.helpers.js");
 const debug = (0, debug_1.default)(`${debug_config_js_1.DEBUG_NAMESPACE}:helpers:database:${process.pid.toString().padEnd(5)}`);

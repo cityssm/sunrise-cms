@@ -1,21 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDynamicsGPDocument = getDynamicsGPDocument;
-const dynamics_gp_1 = require("@cityssm/dynamics-gp");
-const debug_1 = require("debug");
-const debug_config_js_1 = require("../../debug.config.js");
-const config_helpers_js_1 = require("../../helpers/config.helpers.js");
-const debug = (0, debug_1.default)(`${debug_config_js_1.DEBUG_NAMESPACE}:dynamicsGP.helpers:${process.pid}`);
+import { DynamicsGP } from '@cityssm/dynamics-gp';
+import Debug from 'debug';
+import { DEBUG_NAMESPACE } from '../../debug.config.js';
+import { getConfigProperty } from '../../helpers/config.helpers.js';
+const debug = Debug(`${DEBUG_NAMESPACE}:dynamicsGP.helpers:${process.pid}`);
 let gp;
-if ((0, config_helpers_js_1.getConfigProperty)('integrations.dynamicsGP.integrationIsEnabled')) {
-    gp = new dynamics_gp_1.DynamicsGP((0, config_helpers_js_1.getConfigProperty)('integrations.dynamicsGP.mssqlConfig'));
+if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
+    gp = new DynamicsGP(getConfigProperty('integrations.dynamicsGP.mssqlConfig'));
 }
-async function getDynamicsGPDocument(documentNumber) {
-    if (!(0, config_helpers_js_1.getConfigProperty)('integrations.dynamicsGP.integrationIsEnabled')) {
+export async function getDynamicsGPDocument(documentNumber) {
+    if (!getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
         return undefined;
     }
     let document;
-    for (const lookupType of (0, config_helpers_js_1.getConfigProperty)(
+    for (const lookupType of getConfigProperty(
     // eslint-disable-next-line no-secrets/no-secrets
     'integrations.dynamicsGP.lookupOrder')) {
         try {
@@ -102,17 +99,16 @@ async function _getDynamicsGPDocument(documentNumber, lookupType) {
     return document;
 }
 function filterCashReceipt(cashReceipt) {
-    var _a, _b;
-    const accountCodes = (0, config_helpers_js_1.getConfigProperty)('integrations.dynamicsGP.accountCodes');
+    const accountCodes = getConfigProperty('integrations.dynamicsGP.accountCodes');
     if (accountCodes.length > 0) {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        for (const detail of (_a = cashReceipt === null || cashReceipt === void 0 ? void 0 : cashReceipt.details) !== null && _a !== void 0 ? _a : []) {
+        for (const detail of cashReceipt?.details ?? []) {
             if (accountCodes.includes(detail.accountCode)) {
                 return cashReceipt;
             }
         }
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        for (const distribution of (_b = cashReceipt === null || cashReceipt === void 0 ? void 0 : cashReceipt.distributions) !== null && _b !== void 0 ? _b : []) {
+        for (const distribution of cashReceipt?.distributions ?? []) {
             if (accountCodes.includes(distribution.accountCode)) {
                 return cashReceipt;
             }
@@ -122,19 +118,18 @@ function filterCashReceipt(cashReceipt) {
     return cashReceipt;
 }
 function filterExtendedInvoice(invoice) {
-    var _a;
     if (filterInvoice(invoice) === undefined) {
         return undefined;
     }
-    const trialBalanceCodes = (0, config_helpers_js_1.getConfigProperty)('integrations.dynamicsGP.trialBalanceCodes');
+    const trialBalanceCodes = getConfigProperty('integrations.dynamicsGP.trialBalanceCodes');
     if (trialBalanceCodes.length > 0 &&
-        trialBalanceCodes.includes((_a = invoice.trialBalanceCode) !== null && _a !== void 0 ? _a : '')) {
+        trialBalanceCodes.includes(invoice.trialBalanceCode ?? '')) {
         return invoice;
     }
     return undefined;
 }
 function filterInvoice(invoice) {
-    const itemNumbers = (0, config_helpers_js_1.getConfigProperty)('integrations.dynamicsGP.itemNumbers');
+    const itemNumbers = getConfigProperty('integrations.dynamicsGP.itemNumbers');
     for (const itemNumber of itemNumbers) {
         const found = invoice.lineItems.some((itemRecord) => itemRecord.itemNumber === itemNumber);
         if (!found) {

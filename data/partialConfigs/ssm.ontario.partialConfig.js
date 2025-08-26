@@ -1,7 +1,10 @@
-import { config as cemeteryConfig } from './ontario.partialConfig.js';
-export const config = { ...cemeteryConfig };
-config.settings.customizationsPath = '../sunrise-cms-saultstemarie';
-config.settings.burialSites.burialSiteNameSegments = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.config = void 0;
+const ontario_partialConfig_js_1 = require("./ontario.partialConfig.js");
+exports.config = { ...ontario_partialConfig_js_1.config };
+exports.config.settings.customizationsPath = '../sunrise-cms-saultstemarie';
+exports.config.settings.burialSites.burialSiteNameSegments = {
     includeCemeteryKey: true,
     separator: '-',
     segments: {
@@ -35,21 +38,21 @@ config.settings.burialSites.burialSiteNameSegments = {
         }
     }
 };
-config.settings.cityDefault = 'Sault Ste. Marie';
-config.settings.latitudeMax = 46.75;
-config.settings.latitudeMin = 46.4;
-config.settings.longitudeMax = -84.2;
-config.settings.longitudeMin = -84.5;
-config.settings.contracts.prints = [
+exports.config.settings.cityDefault = 'Sault Ste. Marie';
+exports.config.settings.latitudeMax = 46.75;
+exports.config.settings.latitudeMin = 46.4;
+exports.config.settings.longitudeMax = -84.2;
+exports.config.settings.longitudeMin = -84.5;
+exports.config.settings.contracts.prints = [
     'pdf/ssm.contract.burialPermit',
     'pdf/ssm.contract'
 ];
-config.settings.printPdf.browser = 'firefox';
-config.settings.workOrders.workOrderNumberLength = 6;
-config.settings.workOrders.workOrderMilestoneDateRecentBeforeDays = 7;
-config.settings.workOrders.workOrderMilestoneDateRecentAfterDays = 30;
-config.integrations.dynamicsGP = {
+exports.config.settings.printPdf.browser = 'firefox';
+exports.config.settings.workOrders.workOrderNumberLength = 6;
+exports.config.settings.workOrders.workOrderMilestoneDateRecentBeforeDays = 7;
+exports.config.settings.workOrders.workOrderMilestoneDateRecentAfterDays = 30;
+exports.config.integrations.dynamicsGP = {
     integrationIsEnabled: true,
     lookupOrder: ['diamond/cashReceipt', 'diamond/extendedInvoice']
 };
-export default config;
+exports.default = exports.config;
