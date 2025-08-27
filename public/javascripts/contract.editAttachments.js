@@ -176,30 +176,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
      * Edit Attachment
      */
     function openEditAttachmentModal(attachment) {
-        let editModalElement;
         let editFormElement;
         let editCloseModalFunction;
         function editAttachment(submitEvent) {
             submitEvent.preventDefault();
-            const formData = new FormData(editFormElement);
-            formData.set('contractAttachmentId', String(attachment.contractAttachmentId));
-            // Disable submit button and show loading
-            const submitButton = editModalElement.querySelector('button[type="submit"]');
-            const originalText = submitButton.querySelector('span:last-child').textContent;
-            submitButton.disabled = true;
-            submitButton.querySelector('span:last-child').textContent = 'Saving...';
-            fetch(`${sunrise.urlPrefix}/contracts/doUpdateContractAttachment`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-Token': document
-                        .querySelector('meta[name="csrf-token"]')
-                        ?.getAttribute('content') ?? ''
-                }
-            })
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                .then(async (response) => await response.json())
-                .then((responseJSON) => {
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractAttachment`, editFormElement, (responseJSON) => {
                 if (responseJSON.success) {
                     editCloseModalFunction?.();
                     bulmaJS.alert({
@@ -217,28 +198,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             'An error occurred while updating the attachment.'
                     });
                 }
-            })
-                .catch(() => {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Updating Attachment',
-                    message: 'An error occurred while updating the attachment.'
-                });
-            })
-                .finally(() => {
-                // Re-enable submit button
-                submitButton.disabled = false;
-                submitButton.querySelector('span:last-child').textContent = originalText;
             });
         }
         cityssm.openHtmlModal('contract-editAttachment', {
             onshow(modalElement) {
-                editModalElement = modalElement;
                 // Set the attachment ID
                 modalElement
                     .querySelector('#contractAttachmentEdit--contractAttachmentId')
                     ?.setAttribute('value', String(attachment.contractAttachmentId));
-                modalElement.querySelector('#contractAttachmentEdit--attachmentTitle').value = attachment.attachmentTitle === attachment.fileName ? '' : attachment.attachmentTitle;
+                modalElement.querySelector('#contractAttachmentEdit--attachmentTitle').value = attachment.attachmentTitle;
                 modalElement.querySelector('#contractAttachmentEdit--attachmentDetails').value = attachment.attachmentDetails;
             },
             onshown(modalElement, closeModalFunction) {
@@ -260,52 +228,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
      * Delete Attachment
      */
     function deleteAttachment(contractAttachmentId) {
-        bulmaJS.confirm({
-            title: 'Delete Attachment',
-            message: 'Are you sure you want to delete this attachment? This action cannot be undone.',
-            contextualColorName: 'danger',
-            okButton: {
-                text: 'Yes, Delete Attachment',
-                callbackFunction() {
-                    const formData = new FormData();
-                    formData.set('contractAttachmentId', String(contractAttachmentId));
-                    fetch(`${sunrise.urlPrefix}/contracts/doDeleteContractAttachment`, {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-CSRF-Token': document
-                                .querySelector('meta[name="csrf-token"]')
-                                ?.getAttribute('content') ?? ''
-                        }
-                    })
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                        .then(async (response) => await response.json())
-                        .then((responseJSON) => {
-                        if (responseJSON.success) {
-                            bulmaJS.alert({
-                                contextualColorName: 'success',
-                                message: 'Attachment deleted successfully.'
-                            });
-                            // Refresh the attachments display
-                            renderAttachments(responseJSON.contractAttachments);
-                        }
-                        else {
-                            bulmaJS.alert({
-                                contextualColorName: 'danger',
-                                title: 'Error Deleting Attachment',
-                                message: responseJSON.errorMessage ??
-                                    'An error occurred while deleting the attachment.'
-                            });
-                        }
-                    })
-                        .catch(() => {
-                        bulmaJS.alert({
-                            contextualColorName: 'danger',
-                            title: 'Error Deleting Attachment',
-                            message: 'An error occurred while deleting the attachment.'
-                        });
+        function doDelete() {
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractAttachment`, {
+                contractAttachmentId
+            }, (responseJSON) => {
+                if (responseJSON.success) {
+                    bulmaJS.alert({
+                        contextualColorName: 'success',
+                        message: 'Attachment deleted successfully.'
+                    });
+                    // Refresh the attachments display
+                    renderAttachments(responseJSON.contractAttachments);
+                }
+                else {
+                    bulmaJS.alert({
+                        contextualColorName: 'danger',
+                        title: 'Error Deleting Attachment',
+                        message: responseJSON.errorMessage ??
+                            'An error occurred while deleting the attachment.'
                     });
                 }
+            });
+        }
+        bulmaJS.confirm({
+            contextualColorName: 'danger',
+            title: 'Delete Attachment',
+            message: 'Are you sure you want to delete this attachment? This action cannot be undone.',
+            okButton: {
+                text: 'Yes, Delete Attachment',
+                callbackFunction: doDelete
             }
         });
     }
