@@ -36,6 +36,8 @@ import handler_doUpdateContractFeeQuantity from '../handlers/contracts-post/doUp
 import handler_doUpdateContractInterment from '../handlers/contracts-post/doUpdateContractInterment.js';
 import handler_doUpdateContractTransaction from '../handlers/contracts-post/doUpdateContractTransaction.js';
 import handler_doUploadContractAttachment from '../handlers/contracts-post/doUploadContractAttachment.js';
+import handler_doUpdateContractAttachment from '../handlers/contracts-post/doUpdateContractAttachment.js';
+import handler_doDeleteContractAttachment from '../handlers/contracts-post/doDeleteContractAttachment.js';
 import { updateContractsGetHandler, updateContractsPostHandler } from '../handlers/permissions.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 export const router = Router();
@@ -93,6 +95,8 @@ if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
 // Attachments
 router.get('/attachment/:attachmentId', handler_attachment);
 router.post('/doUploadContractAttachment', updateContractsPostHandler, upload.single('file'), handler_doUploadContractAttachment);
+router.post('/doUpdateContractAttachment', updateContractsPostHandler, handler_doUpdateContractAttachment);
+router.post('/doDeleteContractAttachment', updateContractsPostHandler, handler_doDeleteContractAttachment);
 // Related Contracts
 router.post('/doGetPossibleRelatedContracts', updateContractsPostHandler, handler_doGetPossibleRelatedContracts);
 router.post('/doAddRelatedContract', updateContractsPostHandler, handler_doAddRelatedContract);
