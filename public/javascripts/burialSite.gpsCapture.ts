@@ -59,8 +59,8 @@ interface GPSPosition {
 
     const options: PositionOptions = {
       enableHighAccuracy: true,
-      timeout: 10_000,
-      maximumAge: 30_000
+      maximumAge: 30_000,
+      timeout: 10_000
     }
 
     // Watch position for continuous updates
@@ -130,8 +130,8 @@ interface GPSPosition {
     </div>`
 
     const searchData = {
-      cemeteryId,
       burialSiteName: formData.get('burialSiteName') as string,
+      cemeteryId,
       hasCoordinates: formData.get('hasCoordinates') as string
     }
 
@@ -141,11 +141,12 @@ interface GPSPosition {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          errorMessage?: string
+
           burialSites?: BurialSite[]
+          errorMessage?: string
         }
 
-        if (responseJSON.success && responseJSON.burialSites) {
+        if (responseJSON.success && responseJSON.burialSites !== undefined) {
           allBurialSites = responseJSON.burialSites
           renderBurialSites()
         } else {

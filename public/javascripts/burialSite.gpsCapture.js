@@ -25,8 +25,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         gpsStatusTextElement.textContent = 'Requesting GPS permission...';
         const options = {
             enableHighAccuracy: true,
-            timeout: 10_000,
-            maximumAge: 30_000
+            maximumAge: 30_000,
+            timeout: 10_000
         };
         // Watch position for continuous updates
         // eslint-disable-next-line sonarjs/no-intrusive-permissions
@@ -82,13 +82,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
       </p>
     </div>`;
         const searchData = {
-            cemeteryId,
             burialSiteName: formData.get('burialSiteName'),
+            cemeteryId,
             hasCoordinates: formData.get('hasCoordinates')
         };
         cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSitesForGPS`, searchData, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
-            if (responseJSON.success && responseJSON.burialSites) {
+            if (responseJSON.success && responseJSON.burialSites !== undefined) {
                 allBurialSites = responseJSON.burialSites;
                 renderBurialSites();
             }

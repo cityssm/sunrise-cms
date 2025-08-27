@@ -140,7 +140,7 @@ declare const exports: {
 
         const originalText = (
           submitButton.querySelector('span:last-child') as HTMLElement
-        ).textContent as string
+        ).textContent
 
         submitButton.disabled = true
         ;(
