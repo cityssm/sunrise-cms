@@ -871,7 +871,7 @@
                    class="has-text-weight-bold"
                    target="_blank"
                    download>
-                  <%= attachment.attachmentTitle %>
+                  <%= attachment.attachmentTitle === '' ? attachment.fileName : attachment.attachmentTitle %>
                 </a><br />
                 <small class="has-text-grey"><%= attachment.fileName %></small>
               </td>
