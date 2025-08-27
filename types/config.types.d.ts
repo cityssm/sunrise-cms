@@ -107,6 +107,8 @@ interface ConfigApplication {
     maximumProcesses?: number;
     useTestDatabases?: boolean;
     attachmentsPath?: string;
+    /** In megabytes */
+    maxAttachmentFileSize?: number;
 }
 interface ConfigSession {
     cookieName?: string;

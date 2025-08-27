@@ -7,6 +7,7 @@ export const configDefaultValues = {
     'application.maximumProcesses': 4,
     'application.useTestDatabases': false,
     'application.attachmentsPath': 'data/attachments',
+    'application.maxAttachmentFileSize': 20,
     'login.authentication': undefined,
     'login.domain': '',
     'reverseProxy.disableCompression': false,
