@@ -16,6 +16,7 @@ export const backupFolder = 'data/backups';
 export function sanitizeLimit(limit) {
     const limitNumber = Number(limit);
     if (Number.isNaN(limitNumber) || limitNumber < 0) {
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         return 50;
     }
     return Math.floor(limitNumber);
@@ -28,7 +29,7 @@ export function sanitizeOffset(offset) {
     return Math.floor(offsetNumber);
 }
 export async function getLastBackupDate() {
-    let lastBackupDate = undefined;
+    let lastBackupDate;
     const filesInBackup = await fs.readdir(backupFolder);
     for (const file of filesInBackup) {
         if (!file.includes('.db.')) {

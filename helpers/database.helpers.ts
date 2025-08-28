@@ -30,6 +30,7 @@ export function sanitizeLimit(limit: number | string): number {
   const limitNumber = Number(limit)
 
   if (Number.isNaN(limitNumber) || limitNumber < 0) {
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     return 50
   }
 
@@ -47,7 +48,7 @@ export function sanitizeOffset(offset: number | string): number {
 }
 
 export async function getLastBackupDate(): Promise<Date | undefined> {
-  let lastBackupDate: Date | undefined = undefined
+  let lastBackupDate: Date | undefined
 
   const filesInBackup = await fs.readdir(backupFolder)
 
