@@ -119,6 +119,7 @@ export const configDefaultValues = {
 
   'settings.databaseBackup.taskIsEnabled': false,
   'settings.databaseBackup.backupHour': 2,
+  'settings.databaseBackup.deleteAgeDays': 0,
 
   // Dynamics GP
 
