@@ -6,13 +6,19 @@ export const config: Config = {
   session: {},
 
   settings: {
-    adminCleanup: {},
     burialSites: {},
     cemeteries: {},
     contracts: {},
     fees: {},
+    workOrders: {},
+    
     printPdf: {},
-    workOrders: {}
+    
+    adminCleanup: {},
+    
+    databaseBackup: {
+      taskIsEnabled: false
+    }
   },
 
   integrations: {

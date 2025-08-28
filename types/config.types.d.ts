@@ -74,6 +74,11 @@ export interface Config {
             browser?: 'chrome' | 'firefox';
             contentDisposition?: 'attachment' | 'inline';
         };
+        databaseBackup: {
+            taskIsEnabled: boolean;
+            backupHour?: number;
+            deleteAgeDays?: number;
+        };
     };
     integrations: {
         dynamicsGP?: {

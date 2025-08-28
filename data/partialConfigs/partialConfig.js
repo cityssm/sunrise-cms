@@ -3,13 +3,16 @@ export const config = {
     reverseProxy: {},
     session: {},
     settings: {
-        adminCleanup: {},
         burialSites: {},
         cemeteries: {},
         contracts: {},
         fees: {},
+        workOrders: {},
         printPdf: {},
-        workOrders: {}
+        adminCleanup: {},
+        databaseBackup: {
+            taskIsEnabled: false
+        }
     },
     integrations: {
         consignoCloud: {

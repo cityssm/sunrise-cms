@@ -61,6 +61,9 @@ const childProcesses = [];
 if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
     childProcesses.push(fork(path.join('integrations', 'consignoCloud', 'updateWorkflows.task.js')));
 }
+if (getConfigProperty('settings.databaseBackup.taskIsEnabled')) {
+    childProcesses.push(fork(path.join('tasks', 'backupDatabase.task.js')));
+}
 /*
  * Set up the ntfy notifications
  */

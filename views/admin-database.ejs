@@ -38,12 +38,40 @@
 
     <div class="columns">
       <div class="column">
-        <div class="panel is-primary">
-          <h2 class="panel-heading">
-            Database Backup
-          </h2>
+        <div class="panel is-info">
+          <div class="panel-heading">
+            <div class="level is-mobile">
+              <div class="level-left">
+                <div class="level-item">
+                  <span>Database Backup</span>
+                </div>
+              </div>
+              <div class="level-right">
+                <div class="level-item">
+                  <% if (configFunctions.getConfigProperty('settings.databaseBackup.taskIsEnabled')) { %>
+                    <span class="tag is-success">
+                      <span class="icon">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
+                      <span>
+                        Scheduled
+                        (<%= configFunctions.getConfigProperty('settings.databaseBackup.backupHour') %>:00)
+                      </span>
+                    </span>
+                  <% } else { %>
+                    <span class="tag is-danger">
+                      <span class="icon">
+                        <i class="fa-solid fa-times"></i>
+                      </span>
+                      <span>Disabled</span>
+                    </span>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="panel-block is-block">
-            <div class="message is-primary">
+            <div class="message is-info">
               <div class="message-body">
                 <p>
                   Before making significant changes to the records in the database,
@@ -67,7 +95,7 @@
                 </p>
               </div>
               <div class="column is-narrow has-text-right">
-                <button class="button is-primary" id="button--backupDatabase" data-cy="backup" type="button">
+                <button class="button is-success" id="button--backupDatabase" data-cy="backup" type="button">
                   <span class="icon"><i class="fa-solid fa-save"></i></span>
                   <span>Backup Database</span>
                 </button>
