@@ -5,10 +5,15 @@ import type { NtfyTopic } from '../integrations/ntfy/types.js';
 export interface Config {
     application: ConfigApplication;
     session: ConfigSession;
+    /** Reverse Proxy Configuration */
     reverseProxy: {
+        /** Disable Compression */
         disableCompression?: boolean;
+        /** Disable ETag */
         disableEtag?: boolean;
+        /** Disable Rate Limiting */
         disableRateLimit?: boolean;
+        /** URL Prefix */
         urlPrefix?: string;
     };
     login?: {
@@ -27,6 +32,7 @@ export interface Config {
         };
         domain: string;
     };
+    /** Users - Can also be defined in the database */
     users: {
         testing?: Array<`*${string}`>;
         canLogin?: string[];
@@ -37,12 +43,18 @@ export interface Config {
         isAdmin?: string[];
     };
     settings: {
+        /** Default City */
         cityDefault?: string;
+        /** Default Province */
         provinceDefault?: string;
         enableKeyboardShortcuts?: boolean;
+        /** The maximum latitude */
         latitudeMax?: number;
+        /** The minimum latitude */
         latitudeMin?: number;
+        /** The maximum longitude */
         longitudeMax?: number;
+        /** The minimum longitude */
         longitudeMin?: number;
         customizationsPath?: string;
         fees: {
@@ -105,7 +117,9 @@ interface ConfigApplication {
     httpPort?: number;
     backgroundURL?: string;
     logoURL?: string;
+    /** The maximum number of concurrent processes */
     maximumProcesses?: number;
+    /** Use test databases */
     useTestDatabases?: boolean;
     attachmentsPath?: string;
     /** In megabytes */

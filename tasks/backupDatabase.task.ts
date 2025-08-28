@@ -81,9 +81,7 @@ async function runDatabaseBackup(): Promise<void> {
   }
 }
 
-const backupHour = getConfigProperty(
-  'settings.databaseBackup.backupHour'
-)
+const backupHour = getConfigProperty('settings.databaseBackup.backupHour')
 
 const lastBackupDate = await getLastBackupDate()
 
@@ -95,10 +93,13 @@ const scheduledTask = new ScheduledTask(taskName, runDatabaseBackup, {
   },
 
   lastRunMillis: lastBackupDate?.getTime(),
-  minimumIntervalMillis: hoursToMillis(6), // Run a maximum of once every 6 hours
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+  minimumIntervalMillis: hoursToMillis(6),
+
   startTask: true
 })
 
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 if (Date.now() - (lastBackupDate?.getTime() ?? 0) > hoursToMillis(24)) {
   await scheduledTask.runTask()
 }

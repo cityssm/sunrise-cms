@@ -14,10 +14,18 @@ export interface Config {
 
   session: ConfigSession
 
+  /** Reverse Proxy Configuration */
   reverseProxy: {
+    /** Disable Compression */
     disableCompression?: boolean
+
+    /** Disable ETag */
     disableEtag?: boolean
+
+    /** Disable Rate Limiting */
     disableRateLimit?: boolean
+
+    /** URL Prefix */
     urlPrefix?: string
   }
 
@@ -42,6 +50,7 @@ export interface Config {
     domain: string
   }
 
+  /** Users - Can also be defined in the database */
   users: {
     testing?: Array<`*${string}`>
 
@@ -57,14 +66,21 @@ export interface Config {
   }
 
   settings: {
+    /** Default City */
     cityDefault?: string
+
+    /** Default Province */
     provinceDefault?: string
 
     enableKeyboardShortcuts?: boolean
 
+    /** The maximum latitude */
     latitudeMax?: number
+    /** The minimum latitude */
     latitudeMin?: number
+    /** The maximum longitude */
     longitudeMax?: number
+    /** The minimum longitude */
     longitudeMin?: number
 
     customizationsPath?: string
@@ -107,6 +123,7 @@ export interface Config {
 
     databaseBackup: {
       taskIsEnabled: boolean
+
       backupHour?: number
       deleteAgeDays?: number
     }
@@ -147,7 +164,10 @@ interface ConfigApplication {
   backgroundURL?: string
   logoURL?: string
 
+  /** The maximum number of concurrent processes */
   maximumProcesses?: number
+
+  /** Use test databases */
   useTestDatabases?: boolean
 
   attachmentsPath?: string

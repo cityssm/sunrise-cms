@@ -70,9 +70,11 @@ const scheduledTask = new ScheduledTask(taskName, runDatabaseBackup, {
         second: 0
     },
     lastRunMillis: lastBackupDate?.getTime(),
-    minimumIntervalMillis: hoursToMillis(6), // Run a maximum of once every 6 hours
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    minimumIntervalMillis: hoursToMillis(6),
     startTask: true
 });
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 if (Date.now() - (lastBackupDate?.getTime() ?? 0) > hoursToMillis(24)) {
     await scheduledTask.runTask();
 }

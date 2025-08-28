@@ -406,16 +406,7 @@ export async function importFromWorkOrderCSV(): Promise<void> {
           workOrderRow.WO_FUNERAL_DAY
         )
 
-        /*
-          // Determine Funeral Hour (Done)
-          let funeralHour = Number.parseInt(
-            workOrderRow.WO_FUNERAL_HR === '' ? '0' : workOrderRow.WO_FUNERAL_HR,
-            10
-          )
-          if (funeralHour <= 6) {
-            funeralHour += 12
-          }
-        */
+        /* Funeral Hour calculated above */
 
         const workOrderMilestoneTimeString = formatTimeString(
           funeralHour.toString(),
