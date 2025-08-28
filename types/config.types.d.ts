@@ -75,8 +75,9 @@ export interface Config {
             contentDisposition?: 'attachment' | 'inline';
         };
         databaseBackup: {
-            taskIsEnabled?: boolean;
+            taskIsEnabled: boolean;
             backupHour?: number;
+            deleteAgeDays?: number;
         };
     };
     integrations: {

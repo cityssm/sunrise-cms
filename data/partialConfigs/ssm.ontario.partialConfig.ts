@@ -56,6 +56,8 @@ config.settings.contracts.prints = [
 
 config.settings.printPdf.browser = 'firefox'
 
+config.settings.databaseBackup.taskIsEnabled = true
+
 config.settings.workOrders.workOrderNumberLength = 6
 config.settings.workOrders.workOrderMilestoneDateRecentBeforeDays = 7
 config.settings.workOrders.workOrderMilestoneDateRecentAfterDays = 30

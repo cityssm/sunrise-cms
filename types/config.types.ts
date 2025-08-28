@@ -106,7 +106,7 @@ export interface Config {
     }
 
     databaseBackup: {
-      taskIsEnabled?: boolean
+      taskIsEnabled: boolean
       backupHour?: number
       deleteAgeDays?: number
     }

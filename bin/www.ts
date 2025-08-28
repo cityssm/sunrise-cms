@@ -96,7 +96,7 @@ if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
 
 if (getConfigProperty('settings.databaseBackup.taskIsEnabled')) {
   childProcesses.push(
-    fork(path.join('database', 'backupDatabase.task.js'))
+    fork(path.join('tasks', 'backupDatabase.task.js'))
   )
 }
 

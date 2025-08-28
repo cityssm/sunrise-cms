@@ -66,6 +66,7 @@ export declare const configDefaultValues: {
     'settings.printPdf.contentDisposition': "attachment" | "inline";
     'settings.databaseBackup.taskIsEnabled': boolean;
     'settings.databaseBackup.backupHour': number;
+    'settings.databaseBackup.deleteAgeDays': number;
     'integrations.dynamicsGP.integrationIsEnabled': boolean;
     'integrations.dynamicsGP.mssqlConfig': MSSQLConfig;
     'integrations.dynamicsGP.lookupOrder': DynamicsGPLookup[];

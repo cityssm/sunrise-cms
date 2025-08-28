@@ -63,6 +63,7 @@ export const configDefaultValues = {
     'settings.printPdf.contentDisposition': 'attachment',
     'settings.databaseBackup.taskIsEnabled': false,
     'settings.databaseBackup.backupHour': 2,
+    'settings.databaseBackup.deleteAgeDays': 0,
     // Dynamics GP
     'integrations.dynamicsGP.integrationIsEnabled': false,
     'integrations.dynamicsGP.mssqlConfig': undefined,
