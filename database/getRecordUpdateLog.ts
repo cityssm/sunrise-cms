@@ -260,13 +260,20 @@ export default function getRecordUpdateLog(
 
   const limit = Math.min(options?.limit ?? defaultRecordLimit, maxRecordLimit)
   const offset = options?.offset ?? 0
-  const sortBy = options?.sortBy ?? 'recordUpdate_timeMillis'
-  const sortDirection = options?.sortDirection ?? 'desc'
+
+  let sortBy = options?.sortBy ?? 'recordUpdate_timeMillis'
+  if (!['recordCreate_timeMillis', 'recordUpdate_timeMillis'].includes(sortBy)) {
+    sortBy = 'recordUpdate_timeMillis'
+  }
+
+  let sortDirection = options?.sortDirection ?? 'desc'
+  if (!['asc', 'desc'].includes(sortDirection)) {
+    sortDirection = 'desc'
+  }
 
   const result = database
     .prepare(
-      `
-        select recordType, updateType, displayRecordId, recordId, recordDescription,
+      `select recordType, updateType, displayRecordId, recordId, recordDescription,
         recordUpdate_timeMillis, recordUpdate_userName, recordCreate_timeMillis, recordCreate_userName
         from (${recordTableSql.join(' union all ')})
 
