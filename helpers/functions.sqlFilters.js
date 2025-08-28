@@ -1,5 +1,5 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
-export function getBurialSiteNameWhereClause(burialSiteName = '', burialSiteNameSearchType = '', burialSitesTableAlias = 'l') {
+export function getBurialSiteNameWhereClause(burialSiteName = '', burialSiteNameSearchType = '', burialSitesTableAlias = 'b') {
     let sqlWhereClause = '';
     const sqlParameters = [];
     if (burialSiteName !== '') {
@@ -63,7 +63,7 @@ export function getContractTimeWhereClause(contractTime, contractsTableAlias = '
         sqlWhereClause
     };
 }
-export function getDeceasedNameWhereClause(deceasedName = '', tableAlias = 'o') {
+export function getDeceasedNameWhereClause(deceasedName = '', tableAlias = 'ci') {
     let sqlWhereClause = '';
     const sqlParameters = [];
     const usedPieces = new Set();

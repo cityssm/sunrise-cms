@@ -12,7 +12,7 @@ interface WhereClauseReturn {
 export function getBurialSiteNameWhereClause(
   burialSiteName = '',
   burialSiteNameSearchType: BurialSiteNameSearchType = '',
-  burialSitesTableAlias = 'l'
+  burialSitesTableAlias = 'b'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
   const sqlParameters: unknown[] = []
@@ -95,7 +95,7 @@ export function getContractTimeWhereClause(
 
 export function getDeceasedNameWhereClause(
   deceasedName = '',
-  tableAlias = 'o'
+  tableAlias = 'ci'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
   const sqlParameters: unknown[] = []
