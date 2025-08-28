@@ -1,10 +1,10 @@
-import { testAdmin } from '../../../test/_globals.js'
+import { testUpdate } from '../../../test/_globals.js'
 import { login, logout } from '../../support/index.js'
 
-describe('Admin - User Management', () => {
+describe('Update - Burial Sites - Range Creator', () => {
   beforeEach('Loads page', () => {
     logout()
-    login(testAdmin)
+    login(testUpdate)
     cy.visit('/burialSites/creator')
     cy.location('pathname').should('equal', '/burialSites/creator')
   })
