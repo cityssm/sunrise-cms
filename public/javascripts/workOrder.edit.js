@@ -281,7 +281,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             workOrderMilestoneDateTimeMessageElement.textContent = '';
             return;
         }
-        const dateValue = new Date(dateValueString + 'T00:00:00');
+        const dateValue = new Date(`${dateValueString}T00:00:00`);
         const timeRange = exports.workOrderWorkDayRanges?.[dateValue.getDay()] === undefined
             ? {
                 startHour: 0,
