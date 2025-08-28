@@ -16,14 +16,14 @@ async function runDatabaseBackup() {
         debug('Database backup failed');
     }
 }
-const intervalHours = getConfigProperty('settings.databaseBackup.intervalHours');
+const backupHour = getConfigProperty('settings.databaseBackup.backupHour');
 const scheduledTask = new ScheduledTask(taskName, runDatabaseBackup, {
     schedule: {
-        hour: 2, // Run at 2 AM by default
+        hour: backupHour,
         minute: 0,
         second: 0
     },
-    minimumIntervalMillis: hoursToMillis(intervalHours),
+    minimumIntervalMillis: hoursToMillis(24), // Run once per day
     startTask: true
 });
 await scheduledTask.runTask();

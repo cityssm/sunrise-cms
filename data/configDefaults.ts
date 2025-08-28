@@ -118,7 +118,7 @@ export const configDefaultValues = {
     | 'inline',
 
   'settings.databaseBackup.taskIsEnabled': false,
-  'settings.databaseBackup.intervalHours': 24,
+  'settings.databaseBackup.backupHour': 2,
 
   // Dynamics GP
 

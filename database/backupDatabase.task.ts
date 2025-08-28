@@ -23,16 +23,16 @@ async function runDatabaseBackup(): Promise<void> {
   }
 }
 
-const intervalHours = getConfigProperty('settings.databaseBackup.intervalHours') as number
+const backupHour = getConfigProperty('settings.databaseBackup.backupHour') as number
 
 const scheduledTask = new ScheduledTask(taskName, runDatabaseBackup, {
   schedule: {
-    hour: 2, // Run at 2 AM by default
+    hour: backupHour,
     minute: 0,
     second: 0
   },
 
-  minimumIntervalMillis: hoursToMillis(intervalHours),
+  minimumIntervalMillis: hoursToMillis(24), // Run once per day
   startTask: true
 })
 

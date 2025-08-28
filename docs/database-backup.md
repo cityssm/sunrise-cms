@@ -11,7 +11,7 @@ The backup task is controlled by configuration settings in your `config.js` file
   settings: {
     databaseBackup: {
       taskIsEnabled: false,    // Enable/disable the backup task (default: false)
-      intervalHours: 24        // Backup interval in hours (default: 24)
+      backupHour: 2           // Hour of day to run backup (0-23, default: 2 for 2 AM)
     }
   }
 }
@@ -19,8 +19,8 @@ The backup task is controlled by configuration settings in your `config.js` file
 
 ## Features
 
-- **Automatic Scheduling**: Runs at 2 AM daily by default, with respect to minimum interval
-- **Configurable Interval**: Set custom backup frequency via `intervalHours` setting
+- **Automatic Scheduling**: Runs daily at the specified hour (2 AM by default)
+- **Configurable Hour**: Set custom backup time via `backupHour` setting
 - **Safe Operation**: Uses SQLite's built-in backup API for consistent backups
 - **Timestamped Files**: Backup files include timestamps for easy identification
 - **Debug Logging**: Uses the same debug system as other Sunrise components
@@ -37,7 +37,7 @@ To enable database backups:
 
 1. Edit your `config.js` file
 2. Set `settings.databaseBackup.taskIsEnabled` to `true`
-3. Optionally adjust `settings.databaseBackup.intervalHours`
+3. Optionally adjust `settings.databaseBackup.backupHour`
 4. Restart the Sunrise CMS application
 
 ## Example Configuration
@@ -48,7 +48,7 @@ export const config = {
   settings: {
     databaseBackup: {
       taskIsEnabled: true,
-      intervalHours: 12  // Backup every 12 hours
+      backupHour: 3  // Backup at 3 AM instead of 2 AM
     }
   }
 }

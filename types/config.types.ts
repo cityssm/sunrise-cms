@@ -107,7 +107,7 @@ export interface Config {
 
     databaseBackup: {
       taskIsEnabled?: boolean
-      intervalHours?: number
+      backupHour?: number
     }
   }
 

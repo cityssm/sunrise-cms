@@ -62,7 +62,7 @@ export const configDefaultValues = {
     'settings.printPdf.browser': 'chrome',
     'settings.printPdf.contentDisposition': 'attachment',
     'settings.databaseBackup.taskIsEnabled': false,
-    'settings.databaseBackup.intervalHours': 24,
+    'settings.databaseBackup.backupHour': 2,
     // Dynamics GP
     'integrations.dynamicsGP.integrationIsEnabled': false,
     'integrations.dynamicsGP.mssqlConfig': undefined,
