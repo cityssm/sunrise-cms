@@ -18,7 +18,7 @@ const debug = Debug(`${DEBUG_NAMESPACE}:tasks:${camelcase(taskName)}`)
 async function cleanupOldBackups(): Promise<void> {
   const deleteAgeDays = getConfigProperty(
     'settings.databaseBackup.deleteAgeDays'
-  ) as number
+  )
 
   if (deleteAgeDays <= 0) {
     debug('Backup cleanup is disabled (deleteAgeDays <= 0)')
@@ -83,7 +83,7 @@ async function runDatabaseBackup(): Promise<void> {
 
 const backupHour = getConfigProperty(
   'settings.databaseBackup.backupHour'
-) as number
+)
 
 const lastBackupDate = await getLastBackupDate()
 
