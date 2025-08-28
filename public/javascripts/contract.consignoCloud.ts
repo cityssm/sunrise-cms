@@ -268,6 +268,7 @@ declare const exports: {
           bulmaJS.alert({
             contextualColorName: 'danger',
             title: 'ConsignO Cloud Error',
+            
             message: responseJSON.errorMessage
           })
 

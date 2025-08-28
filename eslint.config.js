@@ -16,6 +16,7 @@ export const config = tseslint.config(configWebApp, {
                         ...cspellWords,
                         'autoincrement',
                         'consigno',
+                        'crosshairs',
                         'fontawesome',
                         'gapless',
                         'ical',

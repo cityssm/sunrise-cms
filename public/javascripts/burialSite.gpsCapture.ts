@@ -1,3 +1,4 @@
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { BurialSite } from '../../types/record.types.js'
@@ -5,6 +6,7 @@ import type { BurialSite } from '../../types/record.types.js'
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
+declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
@@ -13,20 +15,28 @@ declare const exports: {
 interface GPSPosition {
   latitude: number
   longitude: number
+
   accuracy: number
 }
 
 ;(() => {
   const sunrise = exports.sunrise
+
+  const coordinatePrecision = 8
+  const maxDeceasedNames = 3
+
   let allBurialSites: BurialSite[] = []
 
   const gpsStatusElement = document.querySelector('#gps-status') as HTMLElement
+
   const gpsStatusTextElement = document.querySelector(
     '#gps-status-text'
   ) as HTMLElement
+
   const gpsAccuracyElement = document.querySelector(
     '#gps-accuracy'
   ) as HTMLElement
+
   const gpsAccuracyTextElement = gpsAccuracyElement.querySelector(
     'span'
   ) as HTMLElement
@@ -34,11 +44,12 @@ interface GPSPosition {
   const filtersFormElement = document.querySelector(
     '#form--filters'
   ) as HTMLFormElement
+
   const burialSitesContainerElement = document.querySelector(
     '#container--burialSites'
   ) as HTMLElement
 
-  let currentPosition: GPSPosition | null
+  let currentPosition: GPSPosition | null | undefined
   let watchId: number | null
 
   // Initialize GPS
@@ -56,8 +67,8 @@ interface GPSPosition {
 
     const options: PositionOptions = {
       enableHighAccuracy: true,
-      timeout: 10_000,
-      maximumAge: 30_000
+      maximumAge: 30_000,
+      timeout: 10_000
     }
 
     // Watch position for continuous updates
@@ -127,8 +138,8 @@ interface GPSPosition {
     </div>`
 
     const searchData = {
-      cemeteryId,
       burialSiteName: formData.get('burialSiteName') as string,
+      cemeteryId,
       hasCoordinates: formData.get('hasCoordinates') as string
     }
 
@@ -138,11 +149,12 @@ interface GPSPosition {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          errorMessage?: string
+
           burialSites?: BurialSite[]
+          errorMessage?: string
         }
 
-        if (responseJSON.success && responseJSON.burialSites) {
+        if (responseJSON.success && responseJSON.burialSites !== undefined) {
           allBurialSites = responseJSON.burialSites
           renderBurialSites()
         } else {
@@ -156,7 +168,7 @@ interface GPSPosition {
 
   // Capture GPS coordinates for a burial site
   function captureCoordinates(burialSiteId: number): void {
-    if (!currentPosition) {
+    if (currentPosition === null || currentPosition === undefined) {
       cityssm.alertModal(
         'GPS Not Ready',
         'GPS coordinates are not available. Please wait for GPS to initialize.',
@@ -178,8 +190,8 @@ interface GPSPosition {
     // Update burial site with current GPS coordinates
     const updateData = {
       burialSiteId,
-      burialSiteLatitude: currentPosition.latitude.toFixed(8),
-      burialSiteLongitude: currentPosition.longitude.toFixed(8)
+      burialSiteLatitude: currentPosition.latitude.toFixed(coordinatePrecision),
+      burialSiteLongitude: currentPosition.longitude.toFixed(coordinatePrecision)
     }
 
     cityssm.postJSON(
@@ -188,6 +200,7 @@ interface GPSPosition {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
+          
           errorMessage?: string
         }
 
@@ -206,8 +219,8 @@ interface GPSPosition {
           ) as HTMLElement
 
           // eslint-disable-next-line no-unsanitized/property
-          coordsElement.innerHTML = `<strong>Lat:</strong> ${currentPosition?.latitude.toFixed(6)}<br>
-            <strong>Lng:</strong> ${currentPosition?.longitude.toFixed(6)}<br>
+          coordsElement.innerHTML = `<strong>Lat:</strong> ${currentPosition?.latitude.toFixed(coordinatePrecision)}<br>
+            <strong>Lng:</strong> ${currentPosition?.longitude.toFixed(coordinatePrecision)}<br>
             <span class="has-text-success">
               <small>Just captured (±${Math.round(currentPosition?.accuracy ?? 0)}m)</small>
             </span>`
@@ -218,22 +231,26 @@ interface GPSPosition {
           )
 
           if (siteIndex !== -1) {
+            // eslint-disable-next-line security/detect-object-injection
             allBurialSites[siteIndex].burialSiteLatitude =
-              currentPosition!.latitude
+              currentPosition?.latitude
+
+            // eslint-disable-next-line security/detect-object-injection
             allBurialSites[siteIndex].burialSiteLongitude =
-              currentPosition!.longitude
+              currentPosition?.longitude
           }
         } else {
           // eslint-disable-next-line no-unsanitized/property
           captureButton.innerHTML = originalText
 
-          cityssm.alertModal(
-            'Capture Failed',
-            responseJSON.errorMessage ??
-              'Failed to capture coordinates. Please try again.',
-            'OK',
-            'danger'
-          )
+          bulmaJS.alert({
+            contextualColorName: 'danger',
+            title: 'Capture Failed',
+
+            message:
+              responseJSON.errorMessage ??
+              'Failed to capture coordinates. Please try again.'
+          })
         }
       }
     )
@@ -251,23 +268,25 @@ interface GPSPosition {
     let html = '<div class="columns is-multiline">'
 
     for (const site of allBurialSites) {
-      const hasCoords = site.burialSiteLatitude !== null && site.burialSiteLongitude !== null
-      
+      const hasCoords =
+        site.burialSiteLatitude !== null && site.burialSiteLongitude !== null
+
       const coordsHtml = hasCoords
-        ? `<strong>Latitude:</strong> ${site.burialSiteLatitude}<br>
-           <strong>Longitude:</strong> ${site.burialSiteLongitude}`
+        ? `<strong>Latitude:</strong> ${site.burialSiteLatitude?.toFixed(coordinatePrecision)}<br>
+           <strong>Longitude:</strong> ${site.burialSiteLongitude?.toFixed(coordinatePrecision)}`
         : '<span class="has-text-grey">No coordinates</span>'
 
       // Build interment names display
       let intermentNamesHtml = ''
-      if (site.intermentNames && site.intermentNames.length > 0) {
-        const names = site.intermentNames.slice(0, 3) // Show max 3 names
+      if (site.deceasedNames !== undefined && site.deceasedNames.length > 0) {
+        const names = site.deceasedNames.slice(0, maxDeceasedNames)
+
         intermentNamesHtml = `<div class="is-size-7 has-text-grey-dark mt-2">
           <span class="icon-text">
             <span class="icon is-small">
               <i class="fa-solid fa-users"></i>
             </span>
-            <span>${cityssm.escapeHTML(names.join(', '))}${site.intermentNames.length > 3 ? ` +${site.intermentNames.length - 3} more` : ''}</span>
+            <span>${cityssm.escapeHTML(names.join(', '))}${site.deceasedNames.length > maxDeceasedNames ? ` +${site.deceasedNames.length - maxDeceasedNames} more` : ''}</span>
           </span>
         </div>`
       }
@@ -335,8 +354,10 @@ interface GPSPosition {
   // Also search when filters change (for convenience)
   filtersFormElement.addEventListener('change', () => {
     const formData = new FormData(filtersFormElement)
-    const cemeteryId = formData.get('cemeteryId') as string
-    if (cemeteryId) {
+
+    const cemeteryId = formData.get('cemeteryId') as string | null
+
+    if (cemeteryId !== null) {
       searchBurialSites()
     }
   })

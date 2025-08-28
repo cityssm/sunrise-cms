@@ -19,7 +19,25 @@
   <div class="column is-narrow">
     <div class="field has-addons">
       <div class="control">
-        <label class="button is-static" for="filter--recordType">
+        <label class="button is-static has-text-grey-dark" for="filter--limit">
+          Limit
+        </label>
+      </div>
+      <div class="control">
+        <div class="select">
+          <select id="filter--limit">
+            <option value="10">10</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column is-narrow">
+    <div class="field has-addons">
+      <div class="control">
+        <label class="button is-static has-text-grey-dark" for="filter--recordType">
           Record Type
         </label>
       </div>
@@ -27,14 +45,34 @@
         <div class="select is-fullwidth">
           <select id="filter--recordType">
             <option value="">(All Record Types)</option>
-            <option class="has-text-weight-bold" value="contract">Contracts</option>
-            <option value="contractTransactions">Contract Transactions</option>
-            <option class="has-text-weight-bold" value="workOrder">Work Orders</option>
-            <option value="workOrderMilestone">Work Order Milestones</option>
+            <optgroup label="Core Records">
+              <option value="workOrder">Work Orders</option>
+              <option value="contract">Contracts</option>
+              <option value="burialSite">Burial Sites</option>
+            </optgroup>
+            <optgroup label="Work Orders">
+              <option value="workOrderMilestone">Work Order Milestones</option>
+            </optgroup>
+            <optgroup label="Transactions & Fees">
+              <option value="contractFee">Contract Fees</option>
+              <option value="contractTransactions">Contract Transactions</option>
+            </optgroup>
+            <optgroup label="Comments">
+              <option value="comments">All Comments</option>
+              <option value="workOrderComment">Work Order Comments</option>
+              <option value="contractComment">Contract Comments</option>
+              <option value="burialSiteComment">Burial Site Comments</option>
+            </optgroup>
           </select>
         </div>
       </div>
     </div>
+  </div>
+  <div class="column is-narrow">
+    <button id="button--exportUpdateLog" class="button is-info" type="button">
+      <span class="icon is-small"><i class="fa-solid fa-download"></i></span>
+      <span>Export CSV</span>
+    </button>
   </div>
 </div>
 
@@ -47,7 +85,18 @@
       <th class="has-width-1">Type</th>
       <th>Record</th>
       <th>Description</th>
-      <th>Updated</th>
+      <th id="header--updated" data-sort="recordUpdate_timeMillis" class="is-clickable">
+        <span>Updated</span>
+        <span class="icon is-small ml-1">
+          <i class="fa-solid fa-sort-down"></i>
+        </span>
+      </th>
+      <th id="header--created" data-sort="recordCreate_timeMillis" class="is-clickable">
+        <span>Created</span>
+        <span class="icon is-small ml-1">
+          <i class="fa-solid fa-sort"></i>
+        </span>
+      </th>
     </tr>
   </thead>
   <tbody></tbody>

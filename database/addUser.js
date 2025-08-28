@@ -5,7 +5,7 @@ export default function addUser(options, user, connectedDatabase) {
     const rightNowMillis = Date.now();
     // Check if an user with the same name already exists
     const recordDeleteTimeMillis = database
-        .prepare(`select recordDelete_timeMillis from Users where userName = ?`)
+        .prepare('select recordDelete_timeMillis from Users where userName = ?')
         .pluck()
         .get(options.userName);
     let success = false;

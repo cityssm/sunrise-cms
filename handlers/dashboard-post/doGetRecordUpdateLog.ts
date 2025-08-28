@@ -13,6 +13,8 @@ export default function handler(
       limit?: number | string
       offset?: number | string
       recordType?: '' | RecordType
+      sortBy?: 'recordCreate_timeMillis' | 'recordUpdate_timeMillis'
+      sortDirection?: 'asc' | 'desc'
     }
   >,
   response: Response
@@ -32,7 +34,9 @@ export default function handler(
       offset:
         typeof request.body.offset === 'number'
           ? request.body.offset
-          : Number.parseInt(request.body.offset ?? '0', 10)
+          : Number.parseInt(request.body.offset ?? '0', 10),
+      sortBy: request.body.sortBy ?? 'recordUpdate_timeMillis',
+      sortDirection: request.body.sortDirection ?? 'desc'
     }
   )
 

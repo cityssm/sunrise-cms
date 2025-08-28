@@ -1,4 +1,4 @@
-import getBurialSiteInterments from '../../database/getBurialSiteInterments.js';
+import getBurialSiteDeceasedNames from '../../database/getBurialSiteDeceasedNames.js';
 import getBurialSites from '../../database/getBurialSites.js';
 export default function handler(request, response) {
     const filters = request.body;
@@ -19,14 +19,14 @@ export default function handler(request, response) {
     // Filter by coordinate status if specified
     const burialSites = result.burialSites;
     // Get interment names for burial sites with active contracts
-    const burialSiteInterments = getBurialSiteInterments(burialSites.map(site => site.burialSiteId));
+    const burialSiteInterments = getBurialSiteDeceasedNames(burialSites.map(site => site.burialSiteId));
     // Add interment names to burial sites
-    const burialSitesWithInterments = burialSites.map(site => ({
+    const burialSitesWithDeceasedNames = burialSites.map(site => ({
         ...site,
-        intermentNames: burialSiteInterments.find(bi => bi.burialSiteId === site.burialSiteId)?.deceasedNames ?? []
+        deceasedNames: burialSiteInterments.find(bi => bi.burialSiteId === site.burialSiteId)?.deceasedNames ?? []
     }));
     response.json({
-        burialSites: burialSitesWithInterments,
+        burialSites: burialSitesWithDeceasedNames,
         success: true
     });
 }

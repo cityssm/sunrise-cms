@@ -54,6 +54,7 @@ export default async function handler(request, response) {
         burialSiteTypes,
         cemeteries,
         burialSiteDirectionsOfArrival,
+        funeralDirectorNames: [],
         isCreate: true
     });
 }

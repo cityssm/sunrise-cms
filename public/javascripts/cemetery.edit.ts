@@ -69,9 +69,10 @@ declare const exports: Record<string, unknown>
       cemeteryForm,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
-          success: boolean
-          cemeteryId?: number
           errorMessage?: string
+          success: boolean
+
+          cemeteryId?: number
         }
 
         if (responseJSON.success) {
@@ -122,8 +123,8 @@ declare const exports: Record<string, unknown>
           },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
-              success: boolean
               errorMessage?: string
+              success: boolean
             }
 
             if (responseJSON.success) {

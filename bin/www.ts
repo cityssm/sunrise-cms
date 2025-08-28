@@ -8,8 +8,8 @@ import { secondsToMillis } from '@cityssm/to-millis'
 import Debug from 'debug'
 import exitHook from 'exit-hook'
 
-import { initializeDatabase } from '../database/initializeDatabase.js'
 import { DEBUG_NAMESPACE } from '../debug.config.js'
+import { initializeApplication } from '../helpers/application.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import {
   ntfyIsEnabled,
@@ -21,8 +21,8 @@ import version from '../version.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:www:${process.pid}`)
 
-// INITIALIZE THE DATABASE
-initializeDatabase()
+// INITIALIZE THE APPLICATION
+await initializeApplication()
 
 const directoryName = path.dirname(fileURLToPath(import.meta.url))
 

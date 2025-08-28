@@ -8,7 +8,9 @@ export default function handler(request, response) {
             : Number.parseInt(request.body.limit ?? defaultRecordLimit.toString(), 10),
         offset: typeof request.body.offset === 'number'
             ? request.body.offset
-            : Number.parseInt(request.body.offset ?? '0', 10)
+            : Number.parseInt(request.body.offset ?? '0', 10),
+        sortBy: request.body.sortBy ?? 'recordUpdate_timeMillis',
+        sortDirection: request.body.sortDirection ?? 'desc'
     });
     response.json({
         updateLog

@@ -1,0 +1,65 @@
+<div class="modal" role="dialog">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h3 class="modal-card-title">Edit Attachment</h3>
+      <button
+        class="delete is-close-modal-button"
+        aria-label="close"
+        type="button"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--contractAttachmentEdit">
+        <input
+          id="contractAttachmentEdit--contractAttachmentId"
+          name="contractAttachmentId"
+          type="hidden"
+          value=""
+        />
+        <div class="field">
+          <label class="label" for="contractAttachmentEdit--attachmentTitle">
+            Title
+          </label>
+          <div class="control">
+            <input
+              class="input"
+              id="contractAttachmentEdit--attachmentTitle"
+              name="attachmentTitle"
+              type="text"
+              maxlength="100"
+              required
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="contractAttachmentEdit--attachmentDetails">
+            Details
+          </label>
+          <div class="control">
+            <textarea
+              class="textarea"
+              id="contractAttachmentEdit--attachmentDetails"
+              name="attachmentDetails"
+              maxlength="500"
+              placeholder="Additional details about this attachment"
+            ></textarea>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <div class="buttons">
+        <button
+          class="button is-success"
+          type="submit"
+          form="form--contractAttachmentEdit"
+        >
+          <span class="icon"><i class="fa-solid fa-save"></i></span>
+          <span>Save Changes</span>
+        </button>
+        <button class="button is-close-modal-button" type="button">Cancel</button>
+      </div>
+    </footer>
+  </div>
+</div>

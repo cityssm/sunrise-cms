@@ -16,7 +16,7 @@ function runCypress(browser: 'chrome' | 'firefox', done: () => void): void {
   let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}`
 
   if ((process.env.CYPRESS_RECORD_KEY ?? '') !== '') {
-    cypressCommand += ` --tag "${browser},${process.version}" --record`
+    cypressCommand += ` --tag "${browser},${process.version},${process.platform}" --record`
   }
 
   // eslint-disable-next-line security/detect-child-process, sonarjs/os-command

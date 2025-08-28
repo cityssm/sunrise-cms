@@ -5,7 +5,7 @@ on: [workflow_dispatch, push, pull_request]
 permissions: read-all
 
 jobs:
-  Coverage:
+  Ubuntu:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -15,7 +15,7 @@ jobs:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
       DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
-    name: Node ${{ matrix.node }}
+    name: Ubuntu - Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node
@@ -25,8 +25,8 @@ jobs:
 
       - name: Install Application
         run: |
-          npm ci --legacy-peer-deps
-          npm install -g c8 cypress@15 --legacy-peer-deps
+          npm ci
+          npm install -g c8 cypress@14
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
@@ -58,16 +58,16 @@ jobs:
           # From the root directory, run the report coverage command
           ./bin/deepsource report --analyzer test-coverage --key javascript --value-file ./coverage/lcov.info
 
-  Node20:
-    runs-on: ubuntu-latest
+  Windows:
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
-        node: [ 20 ]
+        node: [ 20, 22 ]
     env:
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 
-    name: Node ${{ matrix.node }}
+    name: Windows - Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node
@@ -77,8 +77,8 @@ jobs:
 
       - name: Install Application
         run: |
-          npm ci --legacy-peer-deps
-          npm install -g cross-env c8 cypress@15 --legacy-peer-deps
+          npm ci
+          npm install -g cross-env c8 cypress@14
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js

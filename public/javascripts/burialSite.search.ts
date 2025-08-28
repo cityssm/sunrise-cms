@@ -73,7 +73,7 @@ declare const exports: {
             ${
               burialSite.burialSiteStatusId === null ||
               burialSite.burialSiteStatusId === undefined
-                ? '<span class="has-text-grey">(No Status)</span>'
+                ? '<span class="has-text-grey-dark">(No Status)</span>'
                 : cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
             }<br />
             ${

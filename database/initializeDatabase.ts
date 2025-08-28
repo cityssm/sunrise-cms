@@ -507,7 +507,7 @@ const createStatements = [
     primary key (userName, settingKey)) without rowid`,
 
   /*
-   * Local Users
+   * Users
    */
 
   `CREATE TABLE if not exists Users (

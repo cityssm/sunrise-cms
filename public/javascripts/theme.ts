@@ -106,14 +106,17 @@ declare const bulmaJS: BulmaJS
 
     if (contractFieldElement.value === 'deceasedName') {
       globalThis.location.href = `${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValueElement.value)}`
-    } else if (contractFieldElement.value === 'contractId') {
+    } else if (
+      contractFieldElement.value === 'contractId' &&
+      /^\d+$/.test(searchValueElement.value)
+    ) {
       globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(searchValueElement.value)}`
     } else {
       bulmaJS.alert({
         contextualColorName: 'danger',
         title: 'Invalid Search',
 
-        message: 'Please select a valid search field and enter a search value.'
+        message: 'Please enter a valid search value.'
       })
     }
   }
