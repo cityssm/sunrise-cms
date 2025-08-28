@@ -591,7 +591,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                     contractTypeElement.append(optionElement);
                 }
-                const lotTypeElement = modalElement.querySelector('#feeEdit--burialSiteTypeId');
+                const burialSiteTypeElement = modalElement.querySelector('#feeEdit--burialSiteTypeId');
                 for (const burialSiteType of exports.burialSiteTypes) {
                     const optionElement = document.createElement('option');
                     optionElement.value = burialSiteType.burialSiteTypeId.toString();
@@ -599,7 +599,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     if (burialSiteType.burialSiteTypeId === fee.burialSiteTypeId) {
                         optionElement.selected = true;
                     }
-                    lotTypeElement.append(optionElement);
+                    burialSiteTypeElement.append(optionElement);
                 }
                 ;
                 modalElement.querySelector('#feeEdit--feeAmount').value = fee.feeAmount ? fee.feeAmount.toFixed(2) : '';
