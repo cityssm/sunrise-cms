@@ -230,10 +230,7 @@ export async function importFromWorkOrderCSV() {
             }
             if (workOrderRow.WO_FUNERAL_YR) {
                 const workOrderMilestoneDateString = formatDateString(workOrderRow.WO_FUNERAL_YR, workOrderRow.WO_FUNERAL_MON, workOrderRow.WO_FUNERAL_DAY);
-                let funeralHour = Number.parseInt(workOrderRow.WO_FUNERAL_HR === '' ? '0' : workOrderRow.WO_FUNERAL_HR, 10);
-                if (funeralHour <= 6) {
-                    funeralHour += 12;
-                }
+                /* Funeral Hour calculated above */
                 const workOrderMilestoneTimeString = formatTimeString(funeralHour.toString(), workOrderRow.WO_FUNERAL_MIN === '' ? '0' : workOrderRow.WO_FUNERAL_MIN);
                 if (importIds.funeralWorkOrderMilestoneTypeId) {
                     addWorkOrderMilestone({
