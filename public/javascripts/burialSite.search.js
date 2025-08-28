@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </td><td>
             ${burialSite.burialSiteStatusId === null ||
                 burialSite.burialSiteStatusId === undefined
-                ? '<span class="has-text-grey">(No Status)</span>'
+                ? '<span class="has-text-grey-dark">(No Status)</span>'
                 : cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')}<br />
             ${(burialSite.contractCount ?? 0) > 0
                 ? '<span class="is-size-7">Has Current Contracts</span>'
