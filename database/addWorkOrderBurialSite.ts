@@ -8,7 +8,7 @@ export interface AddForm {
 }
 
 export default function addWorkOrderBurialSite(
-  workOrderLotForm: AddForm,
+  workOrderBurialSiteForm: AddForm,
   user: User,
   connectedDatabase?: sqlite.Database
 ): boolean {
@@ -24,7 +24,7 @@ export default function addWorkOrderBurialSite(
         and burialSiteId = ?`
     )
     .pluck()
-    .get(workOrderLotForm.workOrderId, workOrderLotForm.burialSiteId) as
+    .get(workOrderBurialSiteForm.workOrderId, workOrderBurialSiteForm.burialSiteId) as
     | number
     | null
     | undefined
@@ -39,8 +39,8 @@ export default function addWorkOrderBurialSite(
           values (?, ?, ?, ?, ?, ?)`
       )
       .run(
-        workOrderLotForm.workOrderId,
-        workOrderLotForm.burialSiteId,
+        workOrderBurialSiteForm.workOrderId,
+        workOrderBurialSiteForm.burialSiteId,
         user.userName,
         rightNowMillis,
         user.userName,
@@ -64,8 +64,8 @@ export default function addWorkOrderBurialSite(
         rightNowMillis,
         user.userName,
         rightNowMillis,
-        workOrderLotForm.workOrderId,
-        workOrderLotForm.burialSiteId
+        workOrderBurialSiteForm.workOrderId,
+        workOrderBurialSiteForm.burialSiteId
       )
   }
 

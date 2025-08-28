@@ -14,7 +14,7 @@ export default function getFee(
       `select f.feeId,
         f.feeCategoryId, c.feeCategory,
         f.feeName, f.feeDescription, f.feeAccount,
-        f.contractTypeId, o.contractType,
+        f.contractTypeId, ct.contractType,
         f.burialSiteTypeId, l.burialSiteType,
         ifnull(f.feeAmount, 0) as feeAmount, f.feeFunction,
         f.taxAmount, f.taxPercentage,
@@ -22,7 +22,7 @@ export default function getFee(
         f.isRequired, f.orderNumber
         from Fees f
         left join FeeCategories c on f.feeCategoryId = c.feeCategoryId
-        left join ContractTypes o on f.contractTypeId = o.contractTypeId
+        left join ContractTypes ct on f.contractTypeId = ct.contractTypeId
         left join BurialSiteTypes l on f.burialSiteTypeId = l.burialSiteTypeId
         where f.recordDelete_timeMillis is null
         and f.feeId = ?`

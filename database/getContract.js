@@ -15,52 +15,52 @@ export default async function getContract(contractId, connectedDatabase) {
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
     const contract = database
-        .prepare(`select o.contractId,
-          o.contractTypeId, t.contractType, t.isPreneed,
+        .prepare(`select c.contractId,
+          c.contractTypeId, t.contractType, t.isPreneed,
 
-          o.burialSiteId, b.burialSiteName, b.burialSiteTypeId,
+          c.burialSiteId, b.burialSiteName, b.burialSiteTypeId,
           case when b.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
           
-          b.cemeteryId, c.cemeteryName,
+          b.cemeteryId, cem.cemeteryName,
           
-          o.contractStartDate, userFn_dateIntegerToString(o.contractStartDate) as contractStartDateString,
-          o.contractEndDate, userFn_dateIntegerToString(o.contractEndDate) as contractEndDateString,
+          c.contractStartDate, userFn_dateIntegerToString(c.contractStartDate) as contractStartDateString,
+          c.contractEndDate, userFn_dateIntegerToString(c.contractEndDate) as contractEndDateString,
 
-          (o.contractEndDate is null or o.contractEndDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsActive,
-          (o.contractStartDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsFuture,
+          (c.contractEndDate is null or c.contractEndDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsActive,
+          (c.contractStartDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsFuture,
           
-          o.purchaserName, o.purchaserAddress1, o.purchaserAddress2,
-          o.purchaserCity, o.purchaserProvince, o.purchaserPostalCode,
-          o.purchaserPhoneNumber, o.purchaserEmail, o.purchaserRelationship,
+          c.purchaserName, c.purchaserAddress1, c.purchaserAddress2,
+          c.purchaserCity, c.purchaserProvince, c.purchaserPostalCode,
+          c.purchaserPhoneNumber, c.purchaserEmail, c.purchaserRelationship,
 
-          o.funeralHomeId, o.funeralDirectorName, f.funeralHomeKey,
+          c.funeralHomeId, c.funeralDirectorName, f.funeralHomeKey,
           f.funeralHomeName, f.funeralHomeAddress1, f.funeralHomeAddress2,
           f.funeralHomeCity, f.funeralHomeProvince, f.funeralHomePostalCode,
           case when f.recordDelete_timeMillis is null then 1 else 0 end as funeralHomeIsActive,
 
-          o.funeralDate, userFn_dateIntegerToString(o.funeralDate) as funeralDateString,
+          c.funeralDate, userFn_dateIntegerToString(c.funeralDate) as funeralDateString,
 
-          o.funeralTime,
-          userFn_timeIntegerToString(o.funeralTime) as funeralTimeString,
-          userFn_timeIntegerToPeriodString(o.funeralTime) as funeralTimePeriodString,
+          c.funeralTime,
+          userFn_timeIntegerToString(c.funeralTime) as funeralTimeString,
+          userFn_timeIntegerToPeriodString(c.funeralTime) as funeralTimePeriodString,
           
-          o.directionOfArrival, d.directionOfArrivalDescription,
-          o.committalTypeId, c.committalType,
+          c.directionOfArrival, d.directionOfArrivalDescription,
+          c.committalTypeId, ct.committalType,
 
-          o.recordUpdate_timeMillis
+          c.recordUpdate_timeMillis
           
-        from Contracts o
-        left join ContractTypes t on o.contractTypeId = t.contractTypeId
-        left join FuneralHomes f on o.funeralHomeId = f.funeralHomeId
-        left join CommittalTypes c on o.committalTypeId = c.committalTypeId
-        left join BurialSites b on o.burialSiteId = b.burialSiteId
-        left join Cemeteries c on b.cemeteryId = c.cemeteryId
+        from Contracts c
+        left join ContractTypes t on c.contractTypeId = t.contractTypeId
+        left join FuneralHomes f on c.funeralHomeId = f.funeralHomeId
+        left join CommittalTypes ct on c.committalTypeId = ct.committalTypeId
+        left join BurialSites b on c.burialSiteId = b.burialSiteId
+        left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
         left join CemeteryDirectionsOfArrival d
           on b.cemeteryId = d.cemeteryId
-          and o.directionOfArrival = d.directionOfArrival
+          and c.directionOfArrival = d.directionOfArrival
 
-        where o.recordDelete_timeMillis is null
-          and o.contractId = ?`)
+        where c.recordDelete_timeMillis is null
+          and c.contractId = ?`)
         .get(contractId);
     if (contract !== undefined) {
         contract.contractFields = getContractFields(contractId, database);

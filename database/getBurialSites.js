@@ -12,14 +12,14 @@ export default function getBurialSites(filters, options, connectedDatabase) {
         count = database
             .prepare(`select count(*) as recordCount
           from BurialSites b
-          left join Cemeteries c on b.cemeteryId = c.cemeteryId
+          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
           left join (
             select burialSiteId, count(contractId) as contractCount from Contracts
             where recordDelete_timeMillis is null
             and contractStartDate <= ${currentDate.toString()}
             and (contractEndDate is null or contractEndDate >= ${currentDate.toString()})
             group by burialSiteId
-          ) o on b.burialSiteId = o.burialSiteId
+          ) c on b.burialSiteId = c.burialSiteId
           ${sqlWhereClause}`)
             .pluck()
             .get(sqlParameters);
@@ -44,16 +44,16 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           b.burialSiteName,
           t.burialSiteType,
           b.bodyCapacity, b.crematedCapacity,
-          b.cemeteryId, c.cemeteryName, b.cemeterySvgId,
+          b.cemeteryId, cem.cemeteryName, b.cemeterySvgId,
           b.burialSiteStatusId, s.burialSiteStatus,
           b.burialSiteLatitude, b.burialSiteLongitude
           ${includeContractCount
-            ? ', ifnull(o.contractCount, 0) as contractCount'
+            ? ', ifnull(c.contractCount, 0) as contractCount'
             : ''}
           from BurialSites b
           left join BurialSiteTypes t on b.burialSiteTypeId = t.burialSiteTypeId
           left join BurialSiteStatuses s on b.burialSiteStatusId = s.burialSiteStatusId
-          left join Cemeteries c on b.cemeteryId = c.cemeteryId
+          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
           ${includeContractCount
             ? `left join (
                   select burialSiteId, count(contractId) as contractCount
@@ -61,7 +61,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
                   where recordDelete_timeMillis is null
                   and contractStartDate <= ?
                   and (contractEndDate is null or contractEndDate >= ?)
-                  group by burialSiteId) o on b.burialSiteId = o.burialSiteId`
+                  group by burialSiteId) c on b.burialSiteId = c.burialSiteId`
             : ''}
           ${sqlWhereClause}
           order by b.burialSiteName,

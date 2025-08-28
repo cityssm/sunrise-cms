@@ -57,8 +57,8 @@ await describe('functions.sqlFilters', async () => {
     });
     await describe('DeceasedName filter', async () => {
         await it('returns filter', () => {
-            const filter = sqlFilterFunctions.getDeceasedNameWhereClause('TEST1 TEST2', 'o');
-            assert.strictEqual(filter.sqlWhereClause, ' and instr(lower(o.deceasedName), ?) and instr(lower(o.deceasedName), ?)');
+            const filter = sqlFilterFunctions.getDeceasedNameWhereClause('TEST1 TEST2', 'ci');
+            assert.strictEqual(filter.sqlWhereClause, ' and instr(lower(ci.deceasedName), ?) and instr(lower(ci.deceasedName), ?)');
             assert.ok(filter.sqlParameters.length === 2);
             assert.ok(filter.sqlParameters.includes('test1'));
             assert.ok(filter.sqlParameters.includes('test2'));

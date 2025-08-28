@@ -3,4 +3,4 @@ export interface AddForm {
     burialSiteId: number | string;
     workOrderId: number | string;
 }
-export default function addWorkOrderBurialSite(workOrderLotForm: AddForm, user: User, connectedDatabase?: sqlite.Database): boolean;
+export default function addWorkOrderBurialSite(workOrderBurialSiteForm: AddForm, user: User, connectedDatabase?: sqlite.Database): boolean;

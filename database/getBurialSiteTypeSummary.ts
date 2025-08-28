@@ -4,7 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import type { BurialSiteType } from '../types/record.types.js'
 
 interface BurialSiteTypeSummary extends BurialSiteType {
-  lotCount: number
+  burialSiteCount: number
 }
 
 interface GetFilters {

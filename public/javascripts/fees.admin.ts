@@ -940,7 +940,7 @@ declare const exports: Record<string, unknown>
           contractTypeElement.append(optionElement)
         }
 
-        const lotTypeElement = modalElement.querySelector(
+        const burialSiteTypeElement = modalElement.querySelector(
           '#feeEdit--burialSiteTypeId'
         ) as HTMLSelectElement
 
@@ -953,7 +953,7 @@ declare const exports: Record<string, unknown>
             optionElement.selected = true
           }
 
-          lotTypeElement.append(optionElement)
+          burialSiteTypeElement.append(optionElement)
         }
 
         ;(

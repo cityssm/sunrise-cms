@@ -29,7 +29,7 @@ await describe('helpers.cache', async () => {
             const byBadId = getCachedBurialSiteStatusById(badId);
             assert.ok(byBadId === undefined);
         });
-        await it('returns undefined with a bad lotStatus', () => {
+        await it('returns undefined with a bad burialSiteStatus', () => {
             const byBadName = getCachedBurialSiteStatusByBurialSiteStatus(badName);
             assert.ok(byBadName === undefined);
         });
@@ -50,7 +50,7 @@ await describe('helpers.cache', async () => {
             const byBadId = getCachedBurialSiteTypeById(badId);
             assert.ok(byBadId === undefined);
         });
-        await it('returns undefined with a bad lotType', () => {
+        await it('returns undefined with a bad burialSiteType', () => {
             const byBadName = getCachedBurialSiteTypesByBurialSiteType(badName);
             assert.ok(byBadName === undefined);
         });

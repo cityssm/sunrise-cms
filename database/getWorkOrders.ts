@@ -238,14 +238,14 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
 
   const deceasedNameFilters = getDeceasedNameWhereClause(
     filters.deceasedName,
-    'o'
+    'ci'
   )
   if (deceasedNameFilters.sqlParameters.length > 0) {
     sqlWhereClause += ` and w.workOrderId in (
-        select workOrderId from WorkOrderContracts o
-        where recordDelete_timeMillis is null
-        and o.contractId in (
-          select contractId from ContractInterments o where recordDelete_timeMillis is null
+        select workOrderId from WorkOrderContracts wc
+        where wc.recordDelete_timeMillis is null
+        and wc.contractId in (
+          select contractId from ContractInterments ci where ci.recordDelete_timeMillis is null
           ${deceasedNameFilters.sqlWhereClause}
         ))`
     sqlParameters.push(...deceasedNameFilters.sqlParameters)

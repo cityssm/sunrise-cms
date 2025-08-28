@@ -9,7 +9,7 @@ export default async function getBurialSite(burialSiteId, includeDeleted = false
 export async function getBurialSiteByBurialSiteName(burialSiteName, includeDeleted = false, connectedDatabase) {
     return await _getBurialSite('burialSiteName', burialSiteName, includeDeleted, connectedDatabase);
 }
-async function _getBurialSite(keyColumn, burialSiteIdOrLotName, includeDeleted = false, connectedDatabase) {
+async function _getBurialSite(keyColumn, burialSiteIdOrName, includeDeleted = false, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const burialSite = database
         .prepare(`select b.burialSiteId,
@@ -41,7 +41,7 @@ async function _getBurialSite(keyColumn, burialSiteIdOrLotName, includeDeleted =
         ${includeDeleted ? '' : ' and b.recordDelete_timeMillis is null '}
         
         order by b.burialSiteId`)
-        .get(burialSiteIdOrLotName);
+        .get(burialSiteIdOrName);
     if (burialSite !== undefined) {
         const contracts = await getContracts({
             burialSiteId: burialSite.burialSiteId

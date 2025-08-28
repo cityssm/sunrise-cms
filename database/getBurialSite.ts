@@ -30,7 +30,7 @@ export async function getBurialSiteByBurialSiteName(
 
 async function _getBurialSite(
   keyColumn: 'burialSiteId' | 'burialSiteName',
-  burialSiteIdOrLotName: number | string,
+  burialSiteIdOrName: number | string,
   includeDeleted = false,
   connectedDatabase?: sqlite.Database
 ): Promise<BurialSite | undefined> {
@@ -68,7 +68,7 @@ async function _getBurialSite(
         
         order by b.burialSiteId`
     )
-    .get(burialSiteIdOrLotName) as BurialSite | undefined
+    .get(burialSiteIdOrName) as BurialSite | undefined
 
   if (burialSite !== undefined) {
     const contracts = await getContracts(
