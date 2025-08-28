@@ -49,15 +49,6 @@ jobs:
           chmod +x codecov
           ./codecov -t ${CODECOV_TOKEN}
 
-      - name: DeepSource
-        if: ${{ github.event_name != 'pull_request' && env.DEEPSOURCE_DSN != '' && matrix.node == 22 }}
-        run: |
-          # Install deepsource CLI
-          curl https://deepsource.io/cli | sh
-    
-          # From the root directory, run the report coverage command
-          ./bin/deepsource report --analyzer test-coverage --key javascript --value-file ./coverage/lcov.info
-
   Windows:
     runs-on: windows-latest
     strategy:
