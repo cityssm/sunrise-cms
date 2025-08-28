@@ -202,7 +202,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             bulmaJS.alert({
                 contextualColorName: 'danger',
                 title: 'Error Reopening Milestone',
-                message: responseJSON.errorMessage ?? '',
+                message: responseJSON.errorMessage ?? ''
             });
         }
     }
@@ -266,8 +266,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             title: 'Delete Milestone',
             message: 'Are you sure you want to delete this milestone?',
             okButton: {
-                text: 'Yes, Delete Milestone',
-                callbackFunction: doDeleteMilestone
+                callbackFunction: doDeleteMilestone,
+                text: 'Yes, Delete Milestone'
             }
         });
     }
@@ -322,7 +322,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             onshow(modalElement) {
                 ;
                 modalElement.querySelector('#milestoneEdit--workOrderId').value = workOrderId;
-                modalElement.querySelector('#milestoneEdit--workOrderMilestoneId').value = workOrderMilestone.workOrderMilestoneId?.toString() ?? '';
+                modalElement.querySelector('#milestoneEdit--workOrderMilestoneId').value = workOrderMilestone.workOrderMilestoneId.toString();
                 const milestoneTypeElement = modalElement.querySelector('#milestoneEdit--workOrderMilestoneTypeId');
                 let milestoneTypeFound = false;
                 for (const milestoneType of exports.workOrderMilestoneTypes) {
@@ -364,7 +364,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     refreshWorkOrderMilestoneDateTimeMessage('milestoneEdit');
                 });
                 refreshWorkOrderMilestoneDateTimeMessage('milestoneEdit');
-                modalElement.querySelector('#milestoneEdit--workOrderMilestoneDescription').value = workOrderMilestone.workOrderMilestoneDescription ?? '';
+                modalElement.querySelector('#milestoneEdit--workOrderMilestoneDescription').value = workOrderMilestone.workOrderMilestoneDescription;
             },
             onshown(modalElement, closeModalFunction) {
                 editCloseModalFunction = closeModalFunction;
@@ -392,11 +392,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         for (const milestone of workOrderMilestones) {
             const panelBlockElement = document.createElement('div');
             panelBlockElement.className = 'panel-block is-block container--milestone';
-            if (milestone.workOrderMilestoneCompletionDate === null && (milestone.workOrderMilestoneDateString ?? '') < currentDateString) {
+            if (milestone.workOrderMilestoneCompletionDate === null &&
+                (milestone.workOrderMilestoneDateString ?? '') < currentDateString) {
                 panelBlockElement.classList.add('has-background-warning-light');
             }
             panelBlockElement.dataset.workOrderMilestoneId =
-                milestone.workOrderMilestoneId?.toString();
+                milestone.workOrderMilestoneId.toString();
             // eslint-disable-next-line no-unsanitized/property
             panelBlockElement.innerHTML = `<div class="columns is-mobile">
         <div class="column is-narrow">
@@ -420,7 +421,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ? ''
                 : ` ${milestone.workOrderMilestoneTimePeriodString}`}<br />
           <span class="is-size-7">
-            ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}
+            ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}
           </span>
         </div><div class="column is-narrow">
           <div class="dropdown is-right">
@@ -506,7 +507,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     message: 'Are you sure you want to create a milestone with a date in the past?',
                     okButton: {
                         callbackFunction: _doAdd,
-                        text: 'Yes, Create a Past Milestone',
+                        text: 'Yes, Create a Past Milestone'
                     }
                 });
             }

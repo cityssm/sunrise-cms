@@ -23,7 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         const responseJSON = rawResponseJSON;
                         if (responseJSON.success) {
                             // Update the users list with the new data from the server
-                            if (responseJSON.users) {
+                            if (responseJSON.users !== undefined) {
                                 renderUsers(responseJSON.users);
                             }
                             bulmaJS.alert({

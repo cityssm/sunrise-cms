@@ -321,7 +321,7 @@ declare const exports: {
         contextualColorName: 'danger',
         title: 'Error Reopening Milestone',
 
-        message: responseJSON.errorMessage ?? '',
+        message: responseJSON.errorMessage ?? ''
       })
     }
   }
@@ -432,10 +432,11 @@ declare const exports: {
     bulmaJS.confirm({
       contextualColorName: 'warning',
       title: 'Delete Milestone',
+
       message: 'Are you sure you want to delete this milestone?',
       okButton: {
-        text: 'Yes, Delete Milestone',
-        callbackFunction: doDeleteMilestone
+        callbackFunction: doDeleteMilestone,
+        text: 'Yes, Delete Milestone'
       }
     })
   }
@@ -550,7 +551,7 @@ declare const exports: {
           modalElement.querySelector(
             '#milestoneEdit--workOrderMilestoneId'
           ) as HTMLInputElement
-        ).value = workOrderMilestone.workOrderMilestoneId?.toString() ?? ''
+        ).value = workOrderMilestone.workOrderMilestoneId.toString()
 
         const milestoneTypeElement = modalElement.querySelector(
           '#milestoneEdit--workOrderMilestoneTypeId'
@@ -625,7 +626,7 @@ declare const exports: {
           modalElement.querySelector(
             '#milestoneEdit--workOrderMilestoneDescription'
           ) as HTMLTextAreaElement
-        ).value = workOrderMilestone.workOrderMilestoneDescription ?? ''
+        ).value = workOrderMilestone.workOrderMilestoneDescription
       },
       onshown(modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
@@ -676,12 +677,15 @@ declare const exports: {
       const panelBlockElement = document.createElement('div')
       panelBlockElement.className = 'panel-block is-block container--milestone'
 
-      if (milestone.workOrderMilestoneCompletionDate === null && (milestone.workOrderMilestoneDateString ?? '') < currentDateString) {
+      if (
+        milestone.workOrderMilestoneCompletionDate === null &&
+        (milestone.workOrderMilestoneDateString ?? '') < currentDateString
+      ) {
         panelBlockElement.classList.add('has-background-warning-light')
       }
 
       panelBlockElement.dataset.workOrderMilestoneId =
-        milestone.workOrderMilestoneId?.toString()
+        milestone.workOrderMilestoneId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
       panelBlockElement.innerHTML = `<div class="columns is-mobile">
@@ -714,7 +718,7 @@ declare const exports: {
               : ` ${milestone.workOrderMilestoneTimePeriodString}`
           }<br />
           <span class="is-size-7">
-            ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}
+            ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}
           </span>
         </div><div class="column is-narrow">
           <div class="dropdown is-right">
@@ -836,7 +840,7 @@ declare const exports: {
 
             okButton: {
               callbackFunction: _doAdd,
-              text: 'Yes, Create a Past Milestone',
+              text: 'Yes, Create a Past Milestone'
             }
           })
         } else {

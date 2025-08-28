@@ -46,14 +46,15 @@ declare const exports: {
             },
             (rawResponseJSON) => {
               const responseJSON = rawResponseJSON as {
-                success: boolean
-                users?: DatabaseUser[]
                 message?: string
+                success: boolean
+
+                users?: DatabaseUser[]
               }
 
               if (responseJSON.success) {
                 // Update the users list with the new data from the server
-                if (responseJSON.users) {
+                if (responseJSON.users !== undefined) {
                   renderUsers(responseJSON.users)
                 }
 
@@ -95,9 +96,10 @@ declare const exports: {
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
-          success: boolean
-          users: DatabaseUser[]
           message?: string
+          success: boolean
+
+          users: DatabaseUser[]
         }
 
         if (responseJSON.success) {

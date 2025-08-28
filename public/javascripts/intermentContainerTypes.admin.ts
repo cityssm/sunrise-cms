@@ -23,10 +23,12 @@ declare const bulmaJS: BulmaJS
   type IntermentContainerTypeResponseJSON =
     | {
         success: false
+
         errorMessage?: string
       }
     | {
         success: true
+
         intermentContainerTypes: IntermentContainerType[]
       }
 
@@ -143,9 +145,10 @@ declare const bulmaJS: BulmaJS
           renderIntermentContainerTypes()
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Moving Interment Container Type',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }

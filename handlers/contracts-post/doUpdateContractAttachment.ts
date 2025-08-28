@@ -30,7 +30,7 @@ export default async function handler(
     return
   }
 
-  const contractId = attachment.contractId!
+  const contractId = attachment.contractId as number
 
   // Verify contract exists
   const contract = await getContract(contractId)
