@@ -131,6 +131,7 @@ declare const exports: Record<string, unknown>
         formElement,
         (responseJSON: {
           success: boolean
+
           contractInterments: ContractInterment[]
         }) => {
           if (responseJSON.success) {
@@ -312,6 +313,7 @@ declare const exports: Record<string, unknown>
         },
         (responseJSON: {
           success: boolean
+
           contractInterments: ContractInterment[]
         }) => {
           if (responseJSON.success) {
@@ -458,6 +460,7 @@ declare const exports: Record<string, unknown>
           formElement,
           (responseJSON: {
             success: boolean
+            
             contractInterments: ContractInterment[]
           }) => {
             if (responseJSON.success) {

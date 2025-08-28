@@ -255,8 +255,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             title: 'Delete Attachment',
             message: 'Are you sure you want to delete this attachment? This action cannot be undone.',
             okButton: {
-                text: 'Yes, Delete Attachment',
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete Attachment'
             }
         });
     }

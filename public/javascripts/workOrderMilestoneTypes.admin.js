@@ -11,15 +11,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 bulmaJS.alert({
-                    message: 'Work Order Milestone Type Updated Successfully',
-                    contextualColorName: 'success'
+                    contextualColorName: 'success',
+                    message: 'Work Order Milestone Type Updated Successfully'
                 });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Updating Work Order Milestone Type',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -41,28 +41,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         tableRowElement.remove();
                     }
                     bulmaJS.alert({
-                        message: 'Work Order Milestone Type Deleted Successfully',
-                        contextualColorName: 'success'
+                        contextualColorName: 'success',
+                        message: 'Work Order Milestone Type Deleted Successfully'
                     });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Deleting Work Order Milestone Type',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Work Order Milestone Type',
             message: `Are you sure you want to delete this work order milestone type?<br />
           Note that no work orders will be removed.`,
             messageIsHtml: true,
-            contextualColorName: 'warning',
             okButton: {
-                text: 'Yes, Delete Work Order Milestone Type',
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete Work Order Milestone Type'
             }
         });
     }
@@ -83,9 +83,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Moving Work Order Milestone Type',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -167,9 +167,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Adding Work Order Milestone Type',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });

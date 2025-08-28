@@ -190,8 +190,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             onshow(_modalElement) {
                 modalElement = _modalElement;
                 formElement = modalElement.querySelector('form');
-                formElement.querySelector('#relatedContractSelect--notContractId').value = contractId.toString();
-                formElement.querySelector('#relatedContractSelect--notRelatedContractId').value = contractId.toString();
+                formElement.querySelector('#relatedContractSelect--notContractId').value = contractId;
+                formElement.querySelector('#relatedContractSelect--notRelatedContractId').value = contractId;
                 formElement.querySelector('#relatedContractSelect--burialSiteName').value = document.querySelector('#contract--burialSiteName').value;
                 loadContracts();
             },

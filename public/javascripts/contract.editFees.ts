@@ -157,7 +157,7 @@ declare const exports: Record<string, unknown>
               contextualColorName: 'danger',
               title: 'Error Deleting Fee',
 
-              message: responseJSON.errorMessage ?? '',
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -304,7 +304,7 @@ declare const exports: Record<string, unknown>
     if (sunrise.hasUnsavedChanges()) {
       bulmaJS.alert({
         contextualColorName: 'warning',
-        message: 'Please save all unsaved changes before adding fees.',
+        message: 'Please save all unsaved changes before adding fees.'
       })
       return
     }
@@ -341,14 +341,14 @@ declare const exports: Record<string, unknown>
 
             bulmaJS.alert({
               contextualColorName: 'success',
-              message: 'Fee Group Added Successfully',
+              message: 'Fee Group Added Successfully'
             })
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
               title: 'Error Adding Fee',
 
-              message: responseJSON.errorMessage ?? '',
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -379,7 +379,7 @@ declare const exports: Record<string, unknown>
               contextualColorName: 'danger',
               title: 'Error Adding Fee',
 
-              message: responseJSON.errorMessage ?? '',
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -463,13 +463,13 @@ declare const exports: Record<string, unknown>
           feeCategory.feeCategoryId.toString()
 
         categoryContainerElement.innerHTML = `<div class="columns is-vcentered">
-        <div class="column">
-          <h4 class="title is-5">
-          ${cityssm.escapeHTML(feeCategory.feeCategory)}
-          </h4>
-        </div>
-        </div>
-        <div class="panel mb-5"></div>`
+          <div class="column">
+            <h4 class="title is-5">
+            ${cityssm.escapeHTML(feeCategory.feeCategory)}
+            </h4>
+          </div>
+          </div>
+          <div class="panel mb-5"></div>`
 
         if (feeCategory.isGroupedFee) {
           // eslint-disable-next-line no-unsanitized/method
@@ -482,7 +482,7 @@ declare const exports: Record<string, unknown>
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                     <span>Add Fee Group</span>
                   </button>
-                  </div>`
+                </div>`
             )
 
           categoryContainerElement
@@ -648,7 +648,7 @@ declare const exports: Record<string, unknown>
               contextualColorName: 'danger',
               title: 'Error Updating Transaction',
 
-              message: 'Please try again.',
+              message: 'Please try again.'
             })
           }
         }
@@ -751,7 +751,7 @@ declare const exports: Record<string, unknown>
               contextualColorName: 'danger',
               title: 'Error Deleting Transaction',
 
-              message: responseJSON.errorMessage ?? '',
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -765,7 +765,7 @@ declare const exports: Record<string, unknown>
       message: 'Are you sure you want to delete this transaction?',
       okButton: {
         callbackFunction: doDelete,
-        text: 'Yes, Delete Transaction',
+        text: 'Yes, Delete Transaction'
       }
     })
   }
@@ -965,8 +965,7 @@ declare const exports: Record<string, unknown>
 
       if (externalReceiptNumber === '') {
         helpTextElement.innerHTML = '&nbsp;'
-        iconElement.innerHTML =
-          '<i class="fa-solid fa-minus"></i>'
+        iconElement.innerHTML = '<i class="fa-solid fa-minus"></i>'
         return
       }
 
@@ -978,6 +977,7 @@ declare const exports: Record<string, unknown>
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
+
             dynamicsGPDocument?: DynamicsGPDocument
           }
 
@@ -986,15 +986,13 @@ declare const exports: Record<string, unknown>
             responseJSON.dynamicsGPDocument === undefined
           ) {
             helpTextElement.textContent = 'No Matching Document Found'
-            iconElement.innerHTML =
-              '<i class="fa-solid fa-times-circle"></i>'
+            iconElement.innerHTML = '<i class="fa-solid fa-times-circle"></i>'
           } else if (
             transactionAmountElement.valueAsNumber ===
             responseJSON.dynamicsGPDocument.documentTotal
           ) {
             helpTextElement.textContent = 'Matching Document Found'
-            iconElement.innerHTML =
-              '<i class="fa-solid fa-check-circle"></i>'
+            iconElement.innerHTML = '<i class="fa-solid fa-check-circle"></i>'
           } else {
             helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)}`
             iconElement.innerHTML =
@@ -1076,7 +1074,7 @@ declare const exports: Record<string, unknown>
           .querySelector('form')
           ?.addEventListener('submit', doAddTransaction)
       },
-      
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
         addTransactionButtonElement.focus()

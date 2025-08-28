@@ -23,6 +23,8 @@ describe('Read Only User', () => {
     it('Has no link to create burial sites on Burial Site Search', () => {
         cy.visit('/burialSites');
         cy.get("a[href*='/new']").should('not.exist');
+        cy.get("a[href*='/creator']").should('not.exist');
+        cy.get("a[href*='/gpsCapture']").should('not.exist');
     });
     it('Has no link to create contracts on Contract Search', () => {
         cy.visit('/contracts');

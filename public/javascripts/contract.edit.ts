@@ -810,6 +810,7 @@ declare const exports: {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
+          
           funeralDirectorNames: string[]
         }
 
