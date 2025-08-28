@@ -1,6 +1,7 @@
 import getContractMetadata from './getContractMetadata.js';
 export default function getConsignoCloudContractMetadata(contractId) {
     const rawMetadata = getContractMetadata({
+        contractId,
         startsWith: 'consignoCloud.'
     });
     const metadata = {};

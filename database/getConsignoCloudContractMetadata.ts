@@ -6,6 +6,7 @@ export default function getConsignoCloudContractMetadata(
   contractId?: number | string
 ): Record<number, Record<ConsignoCloudMetadataKey, string>> {
   const rawMetadata = getContractMetadata({
+    contractId,
     startsWith: 'consignoCloud.'
   })
 
