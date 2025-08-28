@@ -9,13 +9,12 @@ Always reference these instructions first and fallback to search or bash command
 **CRITICAL - Bootstrap the repository:**
 - Install build tools: `sudo apt-get update && sudo apt-get install -y build-essential python3`
 - Clone repository: `git clone https://github.com/cityssm/sunrise-cms`
-- Install dependencies: `npm install --ignore-scripts` (skip Cypress download that may fail in restricted environments)
-- Rebuild native modules: `npm rebuild better-sqlite3`
+- Install dependencies: `npm install`
 - Copy test configuration: `cp data/testing.config.js data/config.js`
 
 **CRITICAL - Build and test validation (run EVERY time):**
 - Test startup: `npm run test:startup` -- takes 10 seconds. NEVER CANCEL. Set timeout to 120+ seconds.
-- Run core unit tests: `npx cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node --test --test-concurrency 1 test/functions.sqlFilters.test.js test/helpers.burialSites.test.js test/helpers.cache.test.js test/helpers.user.test.js test/version.test.js` -- takes 1 second. All 40 tests should pass.
+- Run core unit tests: `npx cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node --test --test-concurrency 1 test/functions.sqlFilters.test.js test/helpers.burialSites.test.js test/helpers.cache.test.js test/helpers.pdf.test.js test/helpers.user.test.js test/version.test.js` -- All 40 tests should pass.
 - **WARNING**: Full test suite `npm run test` includes Cypress tests that require separate installation and will fail without Cypress binary.
 
 **Run the application:**
@@ -26,9 +25,9 @@ Always reference these instructions first and fallback to search or bash command
 ## Validation
 
 **ALWAYS manually validate changes via these scenarios:**
-1. **Login Flow Test**: Navigate to http://localhost:9000, login with username `*testAdmin` and password `*testAdmin`, verify dashboard loads completely
-2. **Admin Features Test**: After login, verify Administrator Tools section is visible and links are functional
-3. **Database Operations Test**: Create/view a cemetery or burial site to ensure database operations work
+1. **Login Flow Test**: Navigate to http://localhost:9000, login with username `*testAdmin` and password `*testAdmin`, verify dashboard loads completely.
+2. **Admin Features Test**: After login, verify Administrator Tools section is visible and links are functional.
+3. **Database Operations Test**: Create/view a cemetery or burial site to ensure database operations work.
 
 **Test Users (testing environment only):**
 - `*testView` / `*testView` - Read-only access
@@ -41,8 +40,8 @@ Always reference these instructions first and fallback to search or bash command
 - npm install takes 8-10 seconds  
 - Database initialization takes up to 5 seconds on first run
 - Application startup takes 8-12 seconds total
-- Unit tests complete in under 2 seconds
-- Full test suite (with Cypress) takes 60+ minutes when Cypress is installed. NEVER CANCEL.
+- Unit tests complete in under 10 seconds
+- Full test suite (with Cypress) takes 30+ minutes when Cypress is installed. NEVER CANCEL.
 
 ## Common Tasks
 
@@ -61,7 +60,7 @@ Always reference these instructions first and fallback to search or bash command
 **Key Directories:**
 - `/docs` - User documentation and configuration guides
 - `/test` - Unit tests (Node.js test framework)
-- `/cypress` - End-to-end tests (requires separate Cypress installation)
+- `/cypress` - End-to-end tests (requires working Cypress installation)
 - `/handlers` - Business logic handlers
 - `/helpers` - Utility functions
 - `/database` - Database initialization and migration scripts
@@ -76,20 +75,17 @@ Always reference these instructions first and fallback to search or bash command
 - Main config: `data/config.js` (required)
 - Test config: `data/testing.config.js` (includes test authentication)
 - TypeScript config: `tsconfig.json`
-- ESLint config: `eslint.config.js` (uses eslint-config-cityssm@27.1.0 with @cspell/spellchecker rule)
+- ESLint config: `eslint.config.js` (uses eslint-config-cityssm@27.1.0)
 
 ## Known Issues and Workarounds
 
 **Cypress Installation Fails:**
 - Use `npm install --ignore-scripts` to skip Cypress download
 - Cypress tests will fail but core functionality works
-- For E2E testing, install Cypress separately: `npm install -g cypress@15.0.0`
-- Note: cypress-axe@1.6.0 has peer dependency conflicts with Cypress 15.x, use `--legacy-peer-deps` flag
+- For E2E testing, install Cypress separately: `npm install -g cypress@14`
 
-**ESLint Dependencies:**
-- Missing optional dependencies (jsonc-eslint-parser) may cause lint failures
-- Use `npm install --legacy-peer-deps` to resolve dependency conflicts
-- Core application works despite linting issues
+**ESLint:**
+- Make an effort to limit the number of errors identified by ESLint .
 - Focus on functional testing over linting when developing
 
 **Windows Service (Windows only):**
