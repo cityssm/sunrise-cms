@@ -461,7 +461,7 @@ const initializingUser = {
     userSettings: {}
 };
 export function initializeDatabase(connectedDatabase) {
-    const sunriseDB = sqlite(databasePath);
+    const sunriseDB = connectedDatabase ?? sqlite(databasePath);
     const row = sunriseDB
         .prepare("select name from sqlite_master where type = 'table' and name = 'Users'")
         .get();
@@ -473,14 +473,16 @@ export function initializeDatabase(connectedDatabase) {
         sunriseDB.prepare(sql).run();
     }
     debug(`Finished creating tables in ${databasePath}`);
-    sunriseDB.close();
+    if (connectedDatabase === undefined) {
+        sunriseDB.close();
+    }
     initializeData();
     return true;
 }
 export function initializeData(connectedDatabase) {
     debug('Initializing data...');
     // Burial Site Types
-    const burialSiteTypes = getBurialSiteTypes();
+    const burialSiteTypes = getBurialSiteTypes(false, connectedDatabase);
     if (burialSiteTypes.length <= 0) {
         debug('No burial site types found, adding default types.');
         addBurialSiteType({
@@ -488,177 +490,177 @@ export function initializeData(connectedDatabase) {
             bodyCapacityMax: 2,
             crematedCapacityMax: 6,
             orderNumber: 1
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addBurialSiteType({
             burialSiteType: 'Columbarium',
             bodyCapacityMax: 0,
             crematedCapacityMax: '',
             orderNumber: 2
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addBurialSiteType({
             burialSiteType: 'Mausoleum',
             bodyCapacityMax: 2,
             crematedCapacityMax: 0,
             orderNumber: 2
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addBurialSiteType({
             burialSiteType: 'Niche Wall',
             bodyCapacityMax: 0,
             crematedCapacityMax: 1,
             orderNumber: 2
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addBurialSiteType({
             burialSiteType: 'Urn Garden',
             bodyCapacityMax: 0,
             crematedCapacityMax: 1,
             orderNumber: 2
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addBurialSiteType({
             burialSiteType: 'Crematorium',
             bodyCapacityMax: 0,
             crematedCapacityMax: 1,
             orderNumber: 2
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
     }
     // Burial Site Statuses
-    const burialSiteStatuses = getBurialSiteStatuses();
+    const burialSiteStatuses = getBurialSiteStatuses(false, connectedDatabase);
     if (burialSiteStatuses.length <= 0) {
         debug('No burial site statuses found, adding default statuses.');
-        addBurialSiteStatus('Available', 1, initializingUser);
-        addBurialSiteStatus('Reserved', 2, initializingUser);
-        addBurialSiteStatus('Occupied', 3, initializingUser);
+        addBurialSiteStatus('Available', 1, initializingUser, connectedDatabase);
+        addBurialSiteStatus('Reserved', 2, initializingUser, connectedDatabase);
+        addBurialSiteStatus('Occupied', 3, initializingUser, connectedDatabase);
     }
     // Contract Types
-    const contractTypes = getContractTypes();
+    const contractTypes = getContractTypes(false, connectedDatabase);
     if (contractTypes.length <= 0) {
         debug('No contract types found, adding default types.');
         addContractType({
             contractType: 'Preneed',
             isPreneed: '1',
             orderNumber: 1
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         const intermentContractTypeId = addContractType({
             contractType: 'Interment',
             orderNumber: 2
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addContractTypeField({
             contractTypeId: intermentContractTypeId,
             contractTypeField: 'Interment Depth',
             fieldType: 'select',
             fieldValues: 'Single\nDouble',
             isRequired: ''
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addContractType({
             contractType: 'Cremation',
             orderNumber: 3
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
     }
     // Interment Container Types
-    const intermentContainerTypes = getIntermentContainerTypes();
+    const intermentContainerTypes = getIntermentContainerTypes(false, connectedDatabase);
     if (intermentContainerTypes.length <= 0) {
         debug('No interment container types found, adding default types.');
         addIntermentContainerType({
             intermentContainerType: 'No Shell',
             intermentContainerTypeKey: 'NS',
             orderNumber: 1
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addIntermentContainerType({
             intermentContainerType: 'Concrete Liner',
             intermentContainerTypeKey: 'CL',
             orderNumber: 2
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addIntermentContainerType({
             intermentContainerType: 'Unpainted Vault',
             intermentContainerTypeKey: 'UV',
             orderNumber: 3
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addIntermentContainerType({
             intermentContainerType: 'Concrete Vault',
             intermentContainerTypeKey: 'CV',
             orderNumber: 4
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addIntermentContainerType({
             intermentContainerType: 'Wooden Shell',
             intermentContainerTypeKey: 'WS',
             orderNumber: 5
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addIntermentContainerType({
             intermentContainerType: 'Steel Vault',
             intermentContainerTypeKey: 'SV',
             orderNumber: 6
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addIntermentContainerType({
             intermentContainerType: 'Shroud',
             intermentContainerTypeKey: 'SH',
             orderNumber: 7
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addIntermentContainerType({
             intermentContainerType: 'Urn',
             intermentContainerTypeKey: 'U',
             isCremationType: '1',
             orderNumber: 7
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
     }
     // Committal Types
-    const committalTypes = getCommittalTypes();
+    const committalTypes = getCommittalTypes(false, connectedDatabase);
     if (committalTypes.length <= 0) {
         debug('No committal types found, adding default types.');
         addCommittalType({
             committalType: 'Graveside',
             committalTypeKey: 'GS',
             orderNumber: 1
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addCommittalType({
             committalType: 'Chapel',
             committalTypeKey: 'CS',
             orderNumber: 2
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addCommittalType({
             committalType: 'Church',
             committalTypeKey: 'CH',
             orderNumber: 3
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
     }
     /*
      * Fee Categories
      */
-    const feeCategories = getFeeCategories({}, {});
+    const feeCategories = getFeeCategories({}, {}, connectedDatabase);
     if (feeCategories.length <= 0) {
         debug('No fee categories found, adding default categories.');
         addFeeCategory({
             feeCategory: 'Interment Rights',
             orderNumber: 1
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addFeeCategory({
             feeCategory: 'Cremation Services',
             orderNumber: 2
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addFeeCategory({
             feeCategory: 'Burial Charges',
             orderNumber: 3
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addFeeCategory({
             feeCategory: 'Disinterment of Human Remains',
             orderNumber: 4
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
         addFeeCategory({
             feeCategory: 'Additional Services',
             orderNumber: 5
-        }, initializingUser);
+        }, initializingUser, connectedDatabase);
     }
     // Work Order Types
-    const workOrderTypes = getWorkOrderTypes();
+    const workOrderTypes = getWorkOrderTypes(connectedDatabase);
     if (workOrderTypes.length <= 0) {
         debug('No work order types found, adding default types.');
-        addWorkOrderType('Cemetery Work Order', 1, initializingUser);
+        addWorkOrderType('Cemetery Work Order', 1, initializingUser, connectedDatabase);
     }
     // Work Order Milestone Types
-    const workOrderMilestoneTypes = getWorkOrderMilestoneTypes();
+    const workOrderMilestoneTypes = getWorkOrderMilestoneTypes(false, connectedDatabase);
     if (workOrderMilestoneTypes.length <= 0) {
         debug('No work order milestone types found, adding default types.');
-        addWorkOrderMilestoneType('Funeral', 1, initializingUser);
-        addWorkOrderMilestoneType('Arrival', 2, initializingUser);
-        addWorkOrderMilestoneType('Cremation', 3, initializingUser);
-        addWorkOrderMilestoneType('Interment', 4, initializingUser);
+        addWorkOrderMilestoneType('Funeral', 1, initializingUser, connectedDatabase);
+        addWorkOrderMilestoneType('Arrival', 2, initializingUser, connectedDatabase);
+        addWorkOrderMilestoneType('Cremation', 3, initializingUser, connectedDatabase);
+        addWorkOrderMilestoneType('Interment', 4, initializingUser, connectedDatabase);
     }
 }

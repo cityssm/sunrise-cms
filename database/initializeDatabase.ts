@@ -534,7 +534,7 @@ const initializingUser: User = {
 export function initializeDatabase(
   connectedDatabase?: sqlite.Database
 ): boolean {
-  const sunriseDB = sqlite(databasePath)
+  const sunriseDB = connectedDatabase ?? sqlite(databasePath)
 
   const row = sunriseDB
     .prepare(
@@ -554,7 +554,9 @@ export function initializeDatabase(
 
   debug(`Finished creating tables in ${databasePath}`)
 
-  sunriseDB.close()
+  if (connectedDatabase === undefined) {
+    sunriseDB.close()
+  }
 
   initializeData()
 
@@ -566,7 +568,7 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
 
   // Burial Site Types
 
-  const burialSiteTypes = getBurialSiteTypes()
+  const burialSiteTypes = getBurialSiteTypes(false, connectedDatabase)
 
   if (burialSiteTypes.length <= 0) {
     debug('No burial site types found, adding default types.')
@@ -579,7 +581,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         crematedCapacityMax: 6,
         orderNumber: 1
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addBurialSiteType(
@@ -590,7 +593,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         crematedCapacityMax: '',
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addBurialSiteType(
@@ -601,7 +605,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         crematedCapacityMax: 0,
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addBurialSiteType(
@@ -612,7 +617,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         crematedCapacityMax: 1,
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addBurialSiteType(
@@ -623,7 +629,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         crematedCapacityMax: 1,
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addBurialSiteType(
@@ -634,25 +641,26 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         crematedCapacityMax: 1,
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
   }
 
   // Burial Site Statuses
 
-  const burialSiteStatuses = getBurialSiteStatuses()
+  const burialSiteStatuses = getBurialSiteStatuses(false, connectedDatabase)
 
   if (burialSiteStatuses.length <= 0) {
     debug('No burial site statuses found, adding default statuses.')
 
-    addBurialSiteStatus('Available', 1, initializingUser)
-    addBurialSiteStatus('Reserved', 2, initializingUser)
-    addBurialSiteStatus('Occupied', 3, initializingUser)
+    addBurialSiteStatus('Available', 1, initializingUser, connectedDatabase)
+    addBurialSiteStatus('Reserved', 2, initializingUser, connectedDatabase)
+    addBurialSiteStatus('Occupied', 3, initializingUser, connectedDatabase)
   }
 
   // Contract Types
 
-  const contractTypes = getContractTypes()
+  const contractTypes = getContractTypes(false, connectedDatabase)
 
   if (contractTypes.length <= 0) {
     debug('No contract types found, adding default types.')
@@ -663,7 +671,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         isPreneed: '1',
         orderNumber: 1
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     const intermentContractTypeId = addContractType(
@@ -671,7 +680,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         contractType: 'Interment',
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addContractTypeField(
@@ -683,7 +693,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         fieldValues: 'Single\nDouble',
         isRequired: ''
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addContractType(
@@ -691,13 +702,17 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         contractType: 'Cremation',
         orderNumber: 3
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
   }
 
   // Interment Container Types
 
-  const intermentContainerTypes = getIntermentContainerTypes()
+  const intermentContainerTypes = getIntermentContainerTypes(
+    false,
+    connectedDatabase
+  )
 
   if (intermentContainerTypes.length <= 0) {
     debug('No interment container types found, adding default types.')
@@ -708,7 +723,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         intermentContainerTypeKey: 'NS',
         orderNumber: 1
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -717,7 +733,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         intermentContainerTypeKey: 'CL',
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -726,7 +743,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         intermentContainerTypeKey: 'UV',
         orderNumber: 3
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -735,7 +753,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         intermentContainerTypeKey: 'CV',
         orderNumber: 4
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -744,7 +763,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         intermentContainerTypeKey: 'WS',
         orderNumber: 5
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -753,7 +773,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         intermentContainerTypeKey: 'SV',
         orderNumber: 6
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -762,7 +783,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         intermentContainerTypeKey: 'SH',
         orderNumber: 7
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -772,13 +794,14 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         isCremationType: '1',
         orderNumber: 7
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
   }
 
   // Committal Types
 
-  const committalTypes = getCommittalTypes()
+  const committalTypes = getCommittalTypes(false, connectedDatabase)
 
   if (committalTypes.length <= 0) {
     debug('No committal types found, adding default types.')
@@ -789,7 +812,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         committalTypeKey: 'GS',
         orderNumber: 1
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addCommittalType(
@@ -798,7 +822,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         committalTypeKey: 'CS',
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addCommittalType(
@@ -807,7 +832,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         committalTypeKey: 'CH',
         orderNumber: 3
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
   }
 
@@ -815,7 +841,7 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
    * Fee Categories
    */
 
-  const feeCategories = getFeeCategories({}, {})
+  const feeCategories = getFeeCategories({}, {}, connectedDatabase)
 
   if (feeCategories.length <= 0) {
     debug('No fee categories found, adding default categories.')
@@ -825,7 +851,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         feeCategory: 'Interment Rights',
         orderNumber: 1
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addFeeCategory(
@@ -833,7 +860,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         feeCategory: 'Cremation Services',
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addFeeCategory(
@@ -841,7 +869,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         feeCategory: 'Burial Charges',
         orderNumber: 3
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addFeeCategory(
@@ -849,7 +878,8 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         feeCategory: 'Disinterment of Human Remains',
         orderNumber: 4
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addFeeCategory(
@@ -857,28 +887,47 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         feeCategory: 'Additional Services',
         orderNumber: 5
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
   }
 
   // Work Order Types
 
-  const workOrderTypes = getWorkOrderTypes()
+  const workOrderTypes = getWorkOrderTypes(connectedDatabase)
 
   if (workOrderTypes.length <= 0) {
     debug('No work order types found, adding default types.')
-    addWorkOrderType('Cemetery Work Order', 1, initializingUser)
+    addWorkOrderType(
+      'Cemetery Work Order',
+      1,
+      initializingUser,
+      connectedDatabase
+    )
   }
 
   // Work Order Milestone Types
 
-  const workOrderMilestoneTypes = getWorkOrderMilestoneTypes()
+  const workOrderMilestoneTypes = getWorkOrderMilestoneTypes(
+    false,
+    connectedDatabase
+  )
 
   if (workOrderMilestoneTypes.length <= 0) {
     debug('No work order milestone types found, adding default types.')
-    addWorkOrderMilestoneType('Funeral', 1, initializingUser)
-    addWorkOrderMilestoneType('Arrival', 2, initializingUser)
-    addWorkOrderMilestoneType('Cremation', 3, initializingUser)
-    addWorkOrderMilestoneType('Interment', 4, initializingUser)
+    addWorkOrderMilestoneType('Funeral', 1, initializingUser, connectedDatabase)
+    addWorkOrderMilestoneType('Arrival', 2, initializingUser, connectedDatabase)
+    addWorkOrderMilestoneType(
+      'Cremation',
+      3,
+      initializingUser,
+      connectedDatabase
+    )
+    addWorkOrderMilestoneType(
+      'Interment',
+      4,
+      initializingUser,
+      connectedDatabase
+    )
   }
 }
