@@ -262,14 +262,15 @@ declare const exports: {
           workOrderMilestones: WorkOrderMilestone[]
         }
 
-        const workOrderMilestones = responseJSON.workOrderMilestones.filter(
-          (possibleMilestone) =>
-            possibleMilestone.workOrderId.toString() !== workOrderId
-        )
+        const conflictingWorkOrderMilestones =
+          responseJSON.workOrderMilestones.filter(
+            (possibleMilestone) =>
+              possibleMilestone.workOrderId.toString() !== workOrderId
+          )
 
         clearPanelBlockElements(targetPanelElement)
 
-        for (const milestone of workOrderMilestones) {
+        for (const milestone of conflictingWorkOrderMilestones) {
           targetPanelElement.insertAdjacentHTML(
             'beforeend',
             `<div class="panel-block is-block">
@@ -289,7 +290,7 @@ declare const exports: {
           )
         }
 
-        if (workOrderMilestones.length === 0) {
+        if (conflictingWorkOrderMilestones.length === 0) {
           targetPanelElement.insertAdjacentHTML(
             'beforeend',
             `<div class="panel-block is-block">
@@ -308,8 +309,9 @@ declare const exports: {
 
   function processMilestoneResponse(rawResponseJSON: unknown): void {
     const responseJSON = rawResponseJSON as {
-      success: boolean
       errorMessage?: string
+      success: boolean
+
       workOrderMilestones: WorkOrderMilestone[]
     }
 
@@ -357,7 +359,9 @@ declare const exports: {
     }
 
     bulmaJS.confirm({
+      contextualColorName: 'warning',
       title: 'Complete Milestone',
+
       message: `Are you sure you want to complete this milestone?
         ${
           workOrderMilestone.workOrderMilestoneDateString !== undefined &&
@@ -367,10 +371,9 @@ declare const exports: {
             : ''
         }`,
       messageIsHtml: true,
-      contextualColorName: 'warning',
       okButton: {
-        text: 'Yes, Complete Milestone',
-        callbackFunction: doComplete
+        callbackFunction: doComplete,
+        text: 'Yes, Complete Milestone'
       }
     })
   }

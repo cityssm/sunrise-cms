@@ -162,9 +162,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             workOrderMilestoneDateString
         }, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
-            const workOrderMilestones = responseJSON.workOrderMilestones.filter((possibleMilestone) => possibleMilestone.workOrderId.toString() !== workOrderId);
+            const conflictingWorkOrderMilestones = responseJSON.workOrderMilestones.filter((possibleMilestone) => possibleMilestone.workOrderId.toString() !== workOrderId);
             clearPanelBlockElements(targetPanelElement);
-            for (const milestone of workOrderMilestones) {
+            for (const milestone of conflictingWorkOrderMilestones) {
                 targetPanelElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
               <div class="columns">
                 <div class="column is-5">
@@ -180,7 +180,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               </div>
               </div>`);
             }
-            if (workOrderMilestones.length === 0) {
+            if (conflictingWorkOrderMilestones.length === 0) {
                 targetPanelElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
               <div class="message is-info">
                 <p class="message-body">
@@ -218,6 +218,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, processMilestoneResponse);
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Complete Milestone',
             message: `Are you sure you want to complete this milestone?
         ${workOrderMilestone.workOrderMilestoneDateString !== undefined &&
@@ -226,10 +227,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ? '<br /><strong>Note that this milestone is expected to be completed in the future.</strong>'
                 : ''}`,
             messageIsHtml: true,
-            contextualColorName: 'warning',
             okButton: {
-                text: 'Yes, Complete Milestone',
-                callbackFunction: doComplete
+                callbackFunction: doComplete,
+                text: 'Yes, Complete Milestone'
             }
         });
     }
