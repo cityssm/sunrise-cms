@@ -10,8 +10,8 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 
-  maxAttachmentFileSize: number
   contractAttachments: ContractAttachment[]
+  maxAttachmentFileSize: number
 }
 ;(() => {
   const sunrise = exports.sunrise
@@ -149,6 +149,7 @@ declare const exports: {
 
         fetch(`${sunrise.urlPrefix}/contracts/doUploadContractAttachment`, {
           method: 'POST',
+
           body: formData,
           headers: {
             'X-CSRF-Token':
@@ -161,8 +162,9 @@ declare const exports: {
           .then(async (response) => await response.json())
           .then(
             (responseJSON: {
-              success: boolean
               errorMessage?: string
+              success: boolean
+
               contractAttachments: ContractAttachment[]
             }) => {
               if (responseJSON.success) {
@@ -270,8 +272,9 @@ declare const exports: {
         `${sunrise.urlPrefix}/contracts/doUpdateContractAttachment`,
         editFormElement,
         (responseJSON: {
-          success: boolean
           errorMessage?: string
+          success: boolean
+
           contractAttachments: ContractAttachment[]
         }) => {
           if (responseJSON.success) {
@@ -355,8 +358,9 @@ declare const exports: {
           contractAttachmentId
         },
         (responseJSON: {
-          success: boolean
           errorMessage?: string
+          success: boolean
+
           contractAttachments: ContractAttachment[]
         }) => {
           if (responseJSON.success) {
@@ -389,8 +393,8 @@ declare const exports: {
         'Are you sure you want to delete this attachment? This action cannot be undone.',
 
       okButton: {
-        text: 'Yes, Delete Attachment',
-        callbackFunction: doDelete
+        callbackFunction: doDelete,
+        text: 'Yes, Delete Attachment'
       }
     })
   }

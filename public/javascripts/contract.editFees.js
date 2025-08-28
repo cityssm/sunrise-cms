@@ -77,7 +77,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Fee',
-                        message: responseJSON.errorMessage ?? '',
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -187,7 +187,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         if (sunrise.hasUnsavedChanges()) {
             bulmaJS.alert({
                 contextualColorName: 'warning',
-                message: 'Please save all unsaved changes before adding fees.',
+                message: 'Please save all unsaved changes before adding fees.'
             });
             return;
         }
@@ -207,14 +207,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     renderContractFees();
                     bulmaJS.alert({
                         contextualColorName: 'success',
-                        message: 'Fee Group Added Successfully',
+                        message: 'Fee Group Added Successfully'
                     });
                 }
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Fee',
-                        message: responseJSON.errorMessage ?? '',
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -235,7 +235,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Fee',
-                        message: responseJSON.errorMessage ?? '',
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -287,13 +287,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 categoryContainerElement.dataset.feeCategoryId =
                     feeCategory.feeCategoryId.toString();
                 categoryContainerElement.innerHTML = `<div class="columns is-vcentered">
-        <div class="column">
-          <h4 class="title is-5">
-          ${cityssm.escapeHTML(feeCategory.feeCategory)}
-          </h4>
-        </div>
-        </div>
-        <div class="panel mb-5"></div>`;
+          <div class="column">
+            <h4 class="title is-5">
+            ${cityssm.escapeHTML(feeCategory.feeCategory)}
+            </h4>
+          </div>
+          </div>
+          <div class="panel mb-5"></div>`;
                 if (feeCategory.isGroupedFee) {
                     // eslint-disable-next-line no-unsanitized/method
                     categoryContainerElement
@@ -303,7 +303,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                     <span>Add Fee Group</span>
                   </button>
-                  </div>`);
+                </div>`);
                     categoryContainerElement
                         .querySelector('button')
                         ?.addEventListener('click', doAddFeeCategory);
@@ -406,7 +406,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Transaction',
-                        message: 'Please try again.',
+                        message: 'Please try again.'
                     });
                 }
             });
@@ -454,7 +454,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Transaction',
-                        message: responseJSON.errorMessage ?? '',
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -465,7 +465,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             message: 'Are you sure you want to delete this transaction?',
             okButton: {
                 callbackFunction: doDelete,
-                text: 'Yes, Delete Transaction',
+                text: 'Yes, Delete Transaction'
             }
         });
     }
@@ -614,8 +614,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ?.querySelector('.help');
             if (externalReceiptNumber === '') {
                 helpTextElement.innerHTML = '&nbsp;';
-                iconElement.innerHTML =
-                    '<i class="fa-solid fa-minus"></i>';
+                iconElement.innerHTML = '<i class="fa-solid fa-minus"></i>';
                 return;
             }
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetDynamicsGPDocument`, {
@@ -625,14 +624,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 if (!responseJSON.success ||
                     responseJSON.dynamicsGPDocument === undefined) {
                     helpTextElement.textContent = 'No Matching Document Found';
-                    iconElement.innerHTML =
-                        '<i class="fa-solid fa-times-circle"></i>';
+                    iconElement.innerHTML = '<i class="fa-solid fa-times-circle"></i>';
                 }
                 else if (transactionAmountElement.valueAsNumber ===
                     responseJSON.dynamicsGPDocument.documentTotal) {
                     helpTextElement.textContent = 'Matching Document Found';
-                    iconElement.innerHTML =
-                        '<i class="fa-solid fa-check-circle"></i>';
+                    iconElement.innerHTML = '<i class="fa-solid fa-check-circle"></i>';
                 }
                 else {
                     helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)}`;

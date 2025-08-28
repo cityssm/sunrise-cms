@@ -288,12 +288,12 @@ declare const exports: {
             formElement.querySelector(
               '#relatedContractSelect--notContractId'
             ) as HTMLInputElement
-          ).value = contractId.toString()
+          ).value = contractId
           ;(
             formElement.querySelector(
               '#relatedContractSelect--notRelatedContractId'
             ) as HTMLInputElement
-          ).value = contractId.toString()
+          ).value = contractId
           ;(
             formElement.querySelector(
               '#relatedContractSelect--burialSiteName'
