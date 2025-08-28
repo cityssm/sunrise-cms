@@ -15,7 +15,7 @@ jobs:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
       DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
-    name: Node ${{ matrix.node }}
+    name: Ubuntu - Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node
@@ -58,42 +58,6 @@ jobs:
           # From the root directory, run the report coverage command
           ./bin/deepsource report --analyzer test-coverage --key javascript --value-file ./coverage/lcov.info
 
-  Node20:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node: [ 20 ]
-    env:
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-
-    name: Node ${{ matrix.node }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Install Application
-        run: |
-          npm ci
-          npm install -g cross-env c8 cypress@14
-
-      - name: Copy Test Config
-        run: cp ./data/testing.config.js ./data/config.js
-        
-      - name: Test Application Startup
-        run: npm run test:startup
-
-      - name: Verify Cypress
-        run: cypress verify
-        env:
-          CYPRESS_VERIFY_TIMEOUT: 600000
-
-      - name: Run Test
-        run: cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node --test --test-concurrency 1
-
   Windows:
     runs-on: windows-latest
     strategy:
@@ -103,7 +67,7 @@ jobs:
     env:
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 
-    name: Node ${{ matrix.node }}
+    name: Windows - Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node
