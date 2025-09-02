@@ -46,8 +46,6 @@ config.settings.contracts.prints = [
 ];
 config.settings.databaseBackup.taskIsEnabled = true;
 config.settings.workOrders.workOrderNumberLength = 6;
-config.settings.workOrders.workOrderMilestoneDateRecentBeforeDays = 7;
-config.settings.workOrders.workOrderMilestoneDateRecentAfterDays = 30;
 config.integrations.dynamicsGP = {
     integrationIsEnabled: true,
     lookupOrder: ['diamond/cashReceipt', 'diamond/extendedInvoice']

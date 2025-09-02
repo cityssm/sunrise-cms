@@ -3,14 +3,11 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import { calculateFeeAmount, calculateTaxAmount } from '../helpers/functions.fee.js';
 import getContract from './getContract.js';
 import getFee from './getFee.js';
-export default async function addContractFee(addFeeForm, user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
-    const rightNowMillis = Date.now();
-    // Calculate fee and tax (if not set)
+async function determineFeeTaxAmounts(addFeeForm, database) {
     let feeAmount;
     let taxAmount;
     if ((addFeeForm.feeAmount ?? '') === '') {
-        const contract = (await getContract(addFeeForm.contractId));
+        const contract = (await getContract(addFeeForm.contractId, database));
         const fee = getFee(addFeeForm.feeId);
         feeAmount = calculateFeeAmount(fee, contract);
         taxAmount = calculateTaxAmount(fee, feeAmount);
@@ -25,6 +22,13 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                 ? Number.parseFloat(addFeeForm.taxAmount)
                 : 0;
     }
+    return { feeAmount, taxAmount };
+}
+export default async function addContractFee(addFeeForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
+    const rightNowMillis = Date.now();
+    // Calculate fee and tax (if not set)
+    const { feeAmount, taxAmount } = await determineFeeTaxAmounts(addFeeForm, database);
     try {
         // Check if record already exists
         const record = database

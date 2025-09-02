@@ -516,7 +516,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         sunrise.initializeMinDateUpdate(birthDateStringElement, deathDateStringElement);
         sunrise.initializeMinDateUpdate(deathDateStringElement, document.querySelector('#contract--funeralDateString'));
         const calculateDeathAgeButtonElement = document.querySelector('#button--calculateDeathAge');
-        function toggleDeathAgeCalculatorButton() {
+        // Avoid potential hoisting issues
+        const toggleDeathAgeCalculatorButton = () => {
             if (birthDateStringElement.value === '' ||
                 deathDateStringElement.value === '') {
                 calculateDeathAgeButtonElement.setAttribute('disabled', 'disabled');
@@ -524,7 +525,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 calculateDeathAgeButtonElement.removeAttribute('disabled');
             }
-        }
+        };
         birthDateStringElement.addEventListener('change', toggleDeathAgeCalculatorButton);
         deathDateStringElement.addEventListener('change', toggleDeathAgeCalculatorButton);
         calculateDeathAgeButtonElement.addEventListener('click', (clickEvent) => {

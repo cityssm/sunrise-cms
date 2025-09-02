@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 
 import { secondsToMillis } from '@cityssm/to-millis'
 import Debug from 'debug'
-import exitHook from 'exit-hook'
+import exitHook, { gracefulExit } from 'exit-hook'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 import { initializeApplication } from '../helpers/application.helpers.js'
@@ -22,7 +22,7 @@ import version from '../version.js'
 const debug = Debug(`${DEBUG_NAMESPACE}:www:${process.pid}`)
 
 // INITIALIZE THE APPLICATION
-await initializeApplication()
+initializeApplication()
 
 const directoryName = path.dirname(fileURLToPath(import.meta.url))
 
@@ -122,8 +122,7 @@ if (process.env.STARTUP_TEST === 'true') {
 
     doShutdown = true
 
-    // eslint-disable-next-line unicorn/no-process-exit
-    process.exit(0)
+    gracefulExit(0)
   }, secondsToMillis(killSeconds))
 }
 

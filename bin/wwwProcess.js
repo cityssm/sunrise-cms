@@ -1,8 +1,6 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/no-process-exit */
 import http from 'node:http';
 import Debug from 'debug';
-import exitHook from 'exit-hook';
+import exitHook, { gracefulExit } from 'exit-hook';
 import { app } from '../app.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { initializeApplication } from '../helpers/application.helpers.js';
@@ -10,7 +8,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:wwwProcess:${process.pid.toString().padEnd(5)}`);
 if (process.send === undefined) {
     // INITIALIZE THE APPLICATION
-    await initializeApplication();
+    initializeApplication();
 }
 function onError(error) {
     if (error.syscall !== 'listen') {
@@ -20,13 +18,13 @@ function onError(error) {
     switch (error.code) {
         case 'EACCES': {
             debug('Requires elevated privileges');
-            process.exit(1);
+            gracefulExit(1);
             // break;
         }
         // eslint-disable-next-line no-fallthrough
         case 'EADDRINUSE': {
             debug('Port is already in use.');
-            process.exit(1);
+            gracefulExit(1);
             // break;
         }
         // eslint-disable-next-line no-fallthrough

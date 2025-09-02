@@ -248,8 +248,7 @@ export async function importFromMasterCSV() {
                     else if (depth === 'D') {
                         depth = 'Double';
                     }
-                    contractForm['fieldValue_' +
-                        importIds.intermentDepthContractField.contractTypeFieldId.toString()] = depth;
+                    contractForm[`fieldValue_${importIds.intermentDepthContractField.contractTypeFieldId.toString()}`] = depth;
                 }
                 deceasedContractId = addContract(contractForm, user, database);
                 if (preneedContractId !== undefined) {

@@ -182,8 +182,7 @@ export async function importFromWorkOrderCSV() {
                 else if (depth === 'D') {
                     depth = 'Double';
                 }
-                contractForm['fieldValue_' +
-                    importIds.intermentDepthContractField.contractTypeFieldId.toString()] = depth;
+                contractForm[`fieldValue_${importIds.intermentDepthContractField.contractTypeFieldId.toString()}`] = depth;
             }
             const contractId = addContract(contractForm, user, database);
             addWorkOrderContract({

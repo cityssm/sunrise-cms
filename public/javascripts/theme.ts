@@ -38,8 +38,7 @@ declare const bulmaJS: BulmaJS
  * KEEP ALIVE
  */
 ;(() => {
-  const urlPrefix =
-    document.querySelector('main')?.getAttribute('data-url-prefix') ?? ''
+  const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
 
   const keepAliveMillis =
     document.querySelector('main')?.dataset.sessionKeepAliveMillis
@@ -90,8 +89,7 @@ declare const bulmaJS: BulmaJS
  * QUICK SEARCH
  */
 ;(() => {
-  const urlPrefix =
-    document.querySelector('main')?.getAttribute('data-url-prefix') ?? ''
+  const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
 
   function doContractQuickSearch(formEvent: Event): void {
     formEvent.preventDefault()

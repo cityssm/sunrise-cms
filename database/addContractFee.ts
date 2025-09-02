@@ -19,22 +19,18 @@ export interface AddContractFeeForm {
   taxAmount?: number | string
 }
 
-export default async function addContractFee(
+async function determineFeeTaxAmounts(
   addFeeForm: AddContractFeeForm,
-  user: User,
-  connectedDatabase?: sqlite.Database
-): Promise<boolean> {
-  const database = connectedDatabase ?? sqlite(sunriseDB)
-
-  const rightNowMillis = Date.now()
-
-  // Calculate fee and tax (if not set)
+  database: sqlite.Database
+): Promise<{ feeAmount: number; taxAmount: number }> {
   let feeAmount: number
   let taxAmount: number
 
   if ((addFeeForm.feeAmount ?? '') === '') {
-    const contract = (await getContract(addFeeForm.contractId)) as Contract
-
+    const contract = (await getContract(
+      addFeeForm.contractId,
+      database
+    )) as Contract
     const fee = getFee(addFeeForm.feeId) as Fee
 
     feeAmount = calculateFeeAmount(fee, contract)
@@ -49,6 +45,24 @@ export default async function addContractFee(
         ? Number.parseFloat(addFeeForm.taxAmount)
         : 0
   }
+
+  return { feeAmount, taxAmount }
+}
+
+export default async function addContractFee(
+  addFeeForm: AddContractFeeForm,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): Promise<boolean> {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
+
+  const rightNowMillis = Date.now()
+
+  // Calculate fee and tax (if not set)
+  const { feeAmount, taxAmount } = await determineFeeTaxAmounts(
+    addFeeForm,
+    database
+  )
 
   try {
     // Check if record already exists

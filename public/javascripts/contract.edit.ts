@@ -877,7 +877,8 @@ declare const exports: {
       '#button--calculateDeathAge'
     ) as HTMLButtonElement
 
-    function toggleDeathAgeCalculatorButton(): void {
+    // Avoid potential hoisting issues
+    const toggleDeathAgeCalculatorButton = (): void => {
       if (
         birthDateStringElement.value === '' ||
         deathDateStringElement.value === ''

@@ -71,7 +71,7 @@ export async function importFromWorkOrderCSV(): Promise<void> {
 
       if (workOrder) {
         if (workOrder.workOrderCloseDate) {
-          reopenWorkOrder(workOrder.workOrderId!, user, database)
+          reopenWorkOrder(workOrder.workOrderId, user, database)
           delete workOrder.workOrderCloseDate
           delete workOrder.workOrderCloseDateString
         }
@@ -321,8 +321,7 @@ export async function importFromWorkOrderCSV(): Promise<void> {
         }
 
         contractForm[
-          'fieldValue_' +
-            importIds.intermentDepthContractField.contractTypeFieldId.toString()
+          `fieldValue_${importIds.intermentDepthContractField.contractTypeFieldId.toString()}`
         ] = depth
       }
 

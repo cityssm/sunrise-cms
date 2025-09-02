@@ -423,8 +423,7 @@ export async function importFromMasterCSV(): Promise<void> {
           }
 
           contractForm[
-            'fieldValue_' +
-              importIds.intermentDepthContractField.contractTypeFieldId.toString()
+            `fieldValue_${importIds.intermentDepthContractField.contractTypeFieldId.toString()}`
           ] = depth
         }
 

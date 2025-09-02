@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { secondsToMillis } from '@cityssm/to-millis';
 import Debug from 'debug';
-import exitHook from 'exit-hook';
+import exitHook, { gracefulExit } from 'exit-hook';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { initializeApplication } from '../helpers/application.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
@@ -13,7 +13,7 @@ import { ntfyIsEnabled, sendShutdownNotification, sendStartupNotification } from
 import version from '../version.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:www:${process.pid}`);
 // INITIALIZE THE APPLICATION
-await initializeApplication();
+initializeApplication();
 const directoryName = path.dirname(fileURLToPath(import.meta.url));
 const processCount = Math.min(getConfigProperty('application.maximumProcesses'), os.cpus().length * 2);
 const applicationName = getConfigProperty('application.applicationName');
@@ -79,8 +79,7 @@ if (process.env.STARTUP_TEST === 'true') {
     setTimeout(() => {
         debug('Killing processes');
         doShutdown = true;
-        // eslint-disable-next-line unicorn/no-process-exit
-        process.exit(0);
+        gracefulExit(0);
     }, secondsToMillis(killSeconds));
 }
 /*
