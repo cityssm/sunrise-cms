@@ -25,7 +25,7 @@ export interface Config {
     /** Disable Rate Limiting */
     disableRateLimit?: boolean
 
-    /** URL Prefix */
+    /** URL Prefix, should start with a slash, but have no trailing slash */
     urlPrefix?: string
   }
 
@@ -160,6 +160,9 @@ export type DynamicsGPLookup =
 interface ConfigApplication {
   applicationName?: string
   httpPort?: number
+
+  /** The base, public facing URL of the application, including the protocol (http or https), and any URL prefixes */
+  applicationUrl?: string
 
   backgroundURL?: string
   logoURL?: string

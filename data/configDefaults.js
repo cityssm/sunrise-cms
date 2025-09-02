@@ -3,6 +3,7 @@ export const configDefaultValues = {
     'application.applicationName': 'Sunrise CMS',
     'application.backgroundURL': '/images/cemetery-background.jpg',
     'application.httpPort': 9000,
+    'application.applicationUrl': undefined,
     'application.logoURL': '/images/sunrise-cms.svg',
     'application.maximumProcesses': 4,
     'application.useTestDatabases': false,

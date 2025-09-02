@@ -1,6 +1,7 @@
 /* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 import ical, { ICalEventStatus } from 'ical-generator';
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
+import { getApplicationUrl } from '../../helpers/application.helpers.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 import { getPrintConfig } from '../../helpers/print.helpers.js';
 const calendarCompany = 'cityssm.github.io';
@@ -9,13 +10,8 @@ const timeStringSplitRegex = /[ :-]/;
 function escapeHTML(stringToEscape) {
     return stringToEscape.replaceAll(/[^\d a-z]/gi, (c) => `&#${c.codePointAt(0)};`);
 }
-function getUrlRoot(request) {
-    return `http://${request.hostname}${getConfigProperty('application.httpPort') === 80
-        ? ''
-        : `:${getConfigProperty('application.httpPort')}`}${getConfigProperty('reverseProxy.urlPrefix')}`;
-}
 function getWorkOrderUrl(request, milestone) {
-    return `${getUrlRoot(request)}/workOrders/${milestone.workOrderId}`;
+    return `${getApplicationUrl(request)}/workOrders/${milestone.workOrderId}`;
 }
 function buildEventSummary(milestone) {
     let summary = (milestone.workOrderMilestoneCompletionDate ? '✔ ' : '') +
@@ -43,7 +39,7 @@ function buildEventSummary(milestone) {
 function buildEventDescriptionHTML_occupancies(request, milestone) {
     let descriptionHTML = '';
     if ((milestone.workOrderContracts ?? []).length > 0) {
-        const urlRoot = getUrlRoot(request);
+        const urlRoot = getApplicationUrl(request);
         descriptionHTML = `<h2>
       Related Contracts
       </h2>
@@ -88,7 +84,7 @@ function buildEventDescriptionHTML_occupancies(request, milestone) {
 function buildEventDescriptionHTML_lots(request, milestone) {
     let descriptionHTML = '';
     if ((milestone.workOrderBurialSites ?? []).length > 0) {
-        const urlRoot = getUrlRoot(request);
+        const urlRoot = getApplicationUrl(request);
         descriptionHTML += `<h2>
       Related Burial Sites
       </h2>
@@ -120,7 +116,7 @@ function buildEventDescriptionHTML_prints(request, milestone) {
     let descriptionHTML = '';
     const prints = getConfigProperty('settings.workOrders.prints');
     if (prints.length > 0) {
-        const urlRoot = getUrlRoot(request);
+        const urlRoot = getApplicationUrl(request);
         descriptionHTML += '<h2>Prints</h2>';
         for (const printName of prints) {
             const printConfig = getPrintConfig(printName);
@@ -167,7 +163,7 @@ function buildEventLocation(milestone) {
 }
 // eslint-disable-next-line complexity
 export default async function handler(request, response) {
-    const urlRoot = getUrlRoot(request);
+    const urlRoot = getApplicationUrl(request);
     /*
      * Get work order milestones
      */

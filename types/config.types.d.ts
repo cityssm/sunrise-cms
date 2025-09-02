@@ -13,7 +13,7 @@ export interface Config {
         disableEtag?: boolean;
         /** Disable Rate Limiting */
         disableRateLimit?: boolean;
-        /** URL Prefix */
+        /** URL Prefix, should start with a slash, but have no trailing slash */
         urlPrefix?: string;
     };
     login?: {
@@ -115,6 +115,8 @@ export type DynamicsGPLookup = 'diamond/cashReceipt' | 'diamond/extendedInvoice'
 interface ConfigApplication {
     applicationName?: string;
     httpPort?: number;
+    /** The base, public facing URL of the application, including the protocol (http or https), and any URL prefixes */
+    applicationUrl?: string;
     backgroundURL?: string;
     logoURL?: string;
     /** The maximum number of concurrent processes */

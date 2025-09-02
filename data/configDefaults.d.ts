@@ -6,6 +6,7 @@ export declare const configDefaultValues: {
     'application.applicationName': string;
     'application.backgroundURL': string;
     'application.httpPort': number;
+    'application.applicationUrl': string | undefined;
     'application.logoURL': string;
     'application.maximumProcesses': number;
     'application.useTestDatabases': boolean;

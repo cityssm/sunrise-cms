@@ -6,6 +6,7 @@ import ical, { type ICalEventData, ICalEventStatus } from 'ical-generator'
 import getWorkOrderMilestones, {
   type WorkOrderMilestoneFilters
 } from '../../database/getWorkOrderMilestones.js'
+import { getApplicationUrl } from '../../helpers/application.helpers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getPrintConfig } from '../../helpers/print.helpers.js'
 import type { WorkOrderMilestone } from '../../types/record.types.js'
@@ -22,19 +23,11 @@ function escapeHTML(stringToEscape: string): string {
   )
 }
 
-function getUrlRoot(request: Request): string {
-  return `http://${request.hostname}${
-    getConfigProperty('application.httpPort') === 80
-      ? ''
-      : `:${getConfigProperty('application.httpPort')}`
-  }${getConfigProperty('reverseProxy.urlPrefix')}`
-}
-
 function getWorkOrderUrl(
   request: Request,
   milestone: WorkOrderMilestone
 ): string {
-  return `${getUrlRoot(request)}/workOrders/${milestone.workOrderId}`
+  return `${getApplicationUrl(request)}/workOrders/${milestone.workOrderId}`
 }
 
 function buildEventSummary(milestone: WorkOrderMilestone): string {
@@ -76,7 +69,7 @@ function buildEventDescriptionHTML_occupancies(
   let descriptionHTML = ''
 
   if ((milestone.workOrderContracts ?? []).length > 0) {
-    const urlRoot = getUrlRoot(request)
+    const urlRoot = getApplicationUrl(request)
 
     descriptionHTML = `<h2>
       Related Contracts
@@ -134,7 +127,7 @@ function buildEventDescriptionHTML_lots(
   let descriptionHTML = ''
 
   if ((milestone.workOrderBurialSites ?? []).length > 0) {
-    const urlRoot = getUrlRoot(request)
+    const urlRoot = getApplicationUrl(request)
 
     descriptionHTML += `<h2>
       Related Burial Sites
@@ -176,7 +169,7 @@ function buildEventDescriptionHTML_prints(
   const prints = getConfigProperty('settings.workOrders.prints')
 
   if (prints.length > 0) {
-    const urlRoot = getUrlRoot(request)
+    const urlRoot = getApplicationUrl(request)
 
     descriptionHTML += '<h2>Prints</h2>'
 
@@ -247,7 +240,7 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const urlRoot = getUrlRoot(request)
+  const urlRoot = getApplicationUrl(request)
 
   /*
    * Get work order milestones

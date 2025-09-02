@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const workOrderMilestoneTypeIdsElement = document.querySelector('#icsFilters--workOrderMilestoneTypeIds');
     const calendarLinkElement = document.querySelector('#icsFilters--calendarURL');
     function updateCalendarURL() {
-        let url = `${globalThis.location.href.slice(0, Math.max(0, globalThis.location.href.indexOf(globalThis.location.pathname))) + sunrise.urlPrefix}/api/${sunrise.apiKey}/milestoneICS/?`;
+        let url = `${calendarLinkElement.dataset.applicationUrl}/api/${sunrise.apiKey}/milestoneICS/?`;
         if (!workOrderTypeIdsElement.disabled &&
             workOrderTypeIdsElement.selectedOptions.length > 0) {
             url += 'workOrderTypeIds=';
