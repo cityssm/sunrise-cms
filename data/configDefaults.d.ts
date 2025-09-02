@@ -4,9 +4,9 @@ import type { NtfyTopic } from '../integrations/ntfy/types.js';
 import type { ConfigBurialSiteNameSegments, DynamicsGPLookup } from '../types/config.types.js';
 export declare const configDefaultValues: {
     'application.applicationName': string;
+    'application.applicationUrl': string | undefined;
     'application.backgroundURL': string;
     'application.httpPort': number;
-    'application.applicationUrl': string | undefined;
     'application.logoURL': string;
     'application.maximumProcesses': number;
     'application.useTestDatabases': boolean;

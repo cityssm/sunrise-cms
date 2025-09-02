@@ -22,6 +22,7 @@ let applicationUrl = getConfigProperty('application.applicationUrl')
 export function getApplicationUrl(request: Request): string {
   if (applicationUrl === undefined || applicationUrl === '') {
     applicationUrl = `http://${request.hostname}${
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       getConfigProperty('application.httpPort') === 80
         ? ''
         : `:${getConfigProperty('application.httpPort')}`

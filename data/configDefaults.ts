@@ -15,9 +15,9 @@ import type {
 
 export const configDefaultValues = {
   'application.applicationName': 'Sunrise CMS',
+  'application.applicationUrl': undefined as string | undefined,
   'application.backgroundURL': '/images/cemetery-background.jpg',
   'application.httpPort': 9000,
-  'application.applicationUrl': undefined as string | undefined,
   'application.logoURL': '/images/sunrise-cms.svg',
   'application.maximumProcesses': 4,
   'application.useTestDatabases': false,
