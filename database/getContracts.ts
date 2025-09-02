@@ -171,15 +171,7 @@ export default async function getContracts(
     }
 
     for (const contract of contracts) {
-      const contractType = getCachedContractTypeById(contract.contractTypeId)
-
-      if (contractType !== undefined) {
-        contract.printEJS = (contractType.contractTypePrints ?? []).includes(
-          '*'
-        )
-          ? getConfigProperty('settings.contracts.prints')[0]
-          : (contractType.contractTypePrints ?? [])[0]
-      }
+      addPrint(contract)
 
       await addInclusions(contract, options, database)
     }
@@ -193,6 +185,18 @@ export default async function getContracts(
     contracts,
     count
   }
+}
+
+function addPrint(contract: Contract): Contract {
+  const contractType = getCachedContractTypeById(contract.contractTypeId)
+
+  if (contractType !== undefined) {
+    contract.printEJS = (contractType.contractTypePrints ?? []).includes('*')
+      ? getConfigProperty('settings.contracts.prints')[0]
+      : (contractType.contractTypePrints ?? [])[0]
+  }
+
+  return contract
 }
 
 async function addInclusions(

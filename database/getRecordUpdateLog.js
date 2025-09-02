@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 const maxDays = 30;
 export const defaultRecordLimit = 100;
-const maxRecordLimit = 500;
+const maxRecordLimit = 10_000;
 const allowedSortBy = [
     'recordCreate_timeMillis',
     'recordUpdate_timeMillis'

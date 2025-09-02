@@ -16,7 +16,7 @@ export default function handler(
       recordType
     },
     {
-      limit: 1000, // Max limit for export to avoid overwhelming the system
+      limit: 10_000, // Max limit for export to avoid overwhelming the system
       offset: 0,
       sortBy: 'recordUpdate_timeMillis',
       sortDirection: 'desc'
@@ -27,19 +27,32 @@ export default function handler(
   const csvData = updateLog.map((entry) => ({
     recordType: entry.recordType,
     updateType: entry.updateType,
+
     displayRecordId: entry.displayRecordId,
     recordDescription: entry.recordDescription,
+
     updateDateTime: new Date(entry.recordUpdate_timeMillis).toISOString(),
     updateUser: entry.recordUpdate_userName,
+
     createDateTime: new Date(entry.recordCreate_timeMillis).toISOString(),
     createUser: entry.recordCreate_userName
   }))
 
   const csv = papaParse.unparse(csvData)
 
-  const filename = `update-log${recordType ? `-${recordType}` : ''}-${Date.now()}.csv`
+  // Construct file name
 
-  response.setHeader('Content-Disposition', `attachment; filename=${filename}`)
+  let fileName = 'update-log'
+
+  if (recordType !== '') {
+    fileName += `-${recordType}`
+  }
+
+  fileName += `-${Date.now()}.csv`
+
+  // Output file
+
+  response.setHeader('Content-Disposition', `attachment; filename=${fileName}`)
   response.setHeader('Content-Type', 'text/csv')
   response.send(csv)
 }

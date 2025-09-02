@@ -87,12 +87,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
             count = contracts.length;
         }
         for (const contract of contracts) {
-            const contractType = getCachedContractTypeById(contract.contractTypeId);
-            if (contractType !== undefined) {
-                contract.printEJS = (contractType.contractTypePrints ?? []).includes('*')
-                    ? getConfigProperty('settings.contracts.prints')[0]
-                    : (contractType.contractTypePrints ?? [])[0];
-            }
+            addPrint(contract);
             await addInclusions(contract, options, database);
         }
     }
@@ -103,6 +98,15 @@ export default async function getContracts(filters, options, connectedDatabase) 
         contracts,
         count
     };
+}
+function addPrint(contract) {
+    const contractType = getCachedContractTypeById(contract.contractTypeId);
+    if (contractType !== undefined) {
+        contract.printEJS = (contractType.contractTypePrints ?? []).includes('*')
+            ? getConfigProperty('settings.contracts.prints')[0]
+            : (contractType.contractTypePrints ?? [])[0];
+    }
+    return contract;
 }
 async function addInclusions(contract, options, database) {
     if (options.includeFees) {

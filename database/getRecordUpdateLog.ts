@@ -6,7 +6,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 const maxDays = 30
 
 export const defaultRecordLimit = 100
-const maxRecordLimit = 500
+const maxRecordLimit = 10_000
 
 export type RecordType =
   | 'burialSite'

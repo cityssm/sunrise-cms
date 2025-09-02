@@ -5,7 +5,7 @@ export default function handler(request, response) {
     const updateLog = getRecordUpdateLog({
         recordType
     }, {
-        limit: 1000, // Max limit for export to avoid overwhelming the system
+        limit: 10_000, // Max limit for export to avoid overwhelming the system
         offset: 0,
         sortBy: 'recordUpdate_timeMillis',
         sortDirection: 'desc'
@@ -22,8 +22,14 @@ export default function handler(request, response) {
         createUser: entry.recordCreate_userName
     }));
     const csv = papaParse.unparse(csvData);
-    const filename = `update-log${recordType ? `-${recordType}` : ''}-${Date.now()}.csv`;
-    response.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+    // Construct file name
+    let fileName = 'update-log';
+    if (recordType !== '') {
+        fileName += `-${recordType}`;
+    }
+    fileName += `-${Date.now()}.csv`;
+    // Output file
+    response.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
     response.setHeader('Content-Type', 'text/csv');
     response.send(csv);
 }
