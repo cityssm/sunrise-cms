@@ -22,6 +22,8 @@ export type SettingKey =
   | 'workOrder.workDay.5.startHour'
   | 'workOrder.workDay.6.endHour'
   | 'workOrder.workDay.6.startHour'
+  | 'workOrder.workOrderMilestone.recentAfterDays'
+  | 'workOrder.workOrderMilestone.recentBeforeDays'
 
 export interface SettingProperties {
   settingKey: SettingKey
@@ -169,9 +171,26 @@ export const settingProperties: SettingProperties[] = [
     defaultValue: ''
   },
   {
+    settingKey: 'workOrder.workOrderMilestone.recentBeforeDays',
+    settingName: 'Work Order Milestone - Recent Before Days',
+    description:
+      'The number of days before the current date to consider a work order milestone as recent.',
+    type: 'number',
+    defaultValue: '5'
+  },
+  {
+    settingKey: 'workOrder.workOrderMilestone.recentAfterDays',
+    settingName: 'Work Order Milestone - Recent After Days',
+    description:
+      'The number of days after the current date to consider a work order milestone as recent.',
+    type: 'number',
+    defaultValue: '60'
+  },
+  {
     settingKey: 'pdfPuppeteer.browserInstallAttempted',
     settingName: 'PDF Puppeteer - Browser Install Has Been Attempted',
-    description: 'Whether the PDF Puppeteer browser installation was attempted.',
+    description:
+      'Whether the PDF Puppeteer browser installation was attempted.',
     type: 'boolean',
     defaultValue: 'false'
   }

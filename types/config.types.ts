@@ -107,8 +107,6 @@ export interface Config {
     workOrders: {
       calendarEmailAddress?: string
       prints?: string[]
-      workOrderMilestoneDateRecentAfterDays?: number
-      workOrderMilestoneDateRecentBeforeDays?: number
       workOrderNumberLength?: number
     }
 

@@ -8,7 +8,7 @@ import {
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
-import { getConfigProperty } from '../helpers/config.helpers.js'
+import { getCachedSettingValue } from '../helpers/cache/settings.cache.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { WorkOrderMilestone } from '../types/record.types.js'
 
@@ -166,6 +166,13 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
   sqlParameters: unknown[]
   sqlWhereClause: string
 } {
+  const recentBeforeDays = Number.parseInt(
+    getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays')
+  )
+  const recentAfterDays = Number.parseInt(
+    getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays')
+  )
+
   let sqlWhereClause =
     ' where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null'
   const sqlParameters: unknown[] = []
@@ -178,24 +185,11 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
   const date = new Date()
   const currentDateNumber = dateToInteger(date)
 
-  date.setDate(
-    date.getDate() -
-      getConfigProperty(
-        'settings.workOrders.workOrderMilestoneDateRecentBeforeDays'
-      )
-  )
+  date.setDate(date.getDate() - recentBeforeDays)
 
   const recentBeforeDateNumber = dateToInteger(date)
 
-  date.setDate(
-    date.getDate() +
-      getConfigProperty(
-        'settings.workOrders.workOrderMilestoneDateRecentBeforeDays'
-      ) +
-      getConfigProperty(
-        'settings.workOrders.workOrderMilestoneDateRecentAfterDays'
-      )
-  )
+  date.setDate(date.getDate() + recentBeforeDays + recentAfterDays)
 
   const recentAfterDateNumber = dateToInteger(date)
 

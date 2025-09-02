@@ -57,8 +57,6 @@ export const configDefaultValues = {
     'settings.workOrders.workOrderNumberLength': 6,
     'settings.workOrders.calendarEmailAddress': 'no-reply@127.0.0.1',
     'settings.workOrders.prints': ['pdf/workOrder', 'pdf/workOrder-commentLog'],
-    'settings.workOrders.workOrderMilestoneDateRecentAfterDays': 60,
-    'settings.workOrders.workOrderMilestoneDateRecentBeforeDays': 5,
     'settings.adminCleanup.recordDeleteAgeDays': 60,
     'settings.printPdf.browser': 'chrome',
     'settings.printPdf.contentDisposition': 'attachment',

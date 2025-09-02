@@ -60,8 +60,6 @@ export declare const configDefaultValues: {
     'settings.workOrders.workOrderNumberLength': number;
     'settings.workOrders.calendarEmailAddress': string;
     'settings.workOrders.prints': string[];
-    'settings.workOrders.workOrderMilestoneDateRecentAfterDays': number;
-    'settings.workOrders.workOrderMilestoneDateRecentBeforeDays': number;
     'settings.adminCleanup.recordDeleteAgeDays': number;
     'settings.printPdf.browser': "chrome" | "firefox";
     'settings.printPdf.contentDisposition': "attachment" | "inline";

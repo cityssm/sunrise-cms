@@ -135,6 +135,20 @@ export const settingProperties = [
         defaultValue: ''
     },
     {
+        settingKey: 'workOrder.workOrderMilestone.recentBeforeDays',
+        settingName: 'Work Order Milestone - Recent Before Days',
+        description: 'The number of days before the current date to consider a work order milestone as recent.',
+        type: 'number',
+        defaultValue: '5'
+    },
+    {
+        settingKey: 'workOrder.workOrderMilestone.recentAfterDays',
+        settingName: 'Work Order Milestone - Recent After Days',
+        description: 'The number of days after the current date to consider a work order milestone as recent.',
+        type: 'number',
+        defaultValue: '60'
+    },
+    {
         settingKey: 'pdfPuppeteer.browserInstallAttempted',
         settingName: 'PDF Puppeteer - Browser Install Has Been Attempted',
         description: 'Whether the PDF Puppeteer browser installation was attempted.',
