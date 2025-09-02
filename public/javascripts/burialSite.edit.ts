@@ -264,7 +264,7 @@ declare const exports: {
               fieldElement.querySelector('label') as HTMLLabelElement
             ).textContent = burialSiteTypeField.burialSiteTypeField as string
 
-            if (burialSiteTypeField.fieldValues === '') {
+            if ((burialSiteTypeField.fieldValues ?? '') === '') {
               const inputElement = document.createElement('input')
 
               inputElement.className = 'input'

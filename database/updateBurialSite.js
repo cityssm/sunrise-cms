@@ -1,8 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js';
-import deleteBurialSiteField from './deleteBurialSiteField.js';
+import addOrUpdateBurialSiteFields from './addOrUpdateBurialSiteFields.js';
 import getCemetery from './getCemetery.js';
 /**
  * Updates a burial site.
@@ -11,7 +10,6 @@ import getCemetery from './getCemetery.js';
  * @returns True if the burial site was updated.
  * @throws If an active burial site with the same name already exists.
  */
-// eslint-disable-next-line complexity
 export default function updateBurialSite(updateForm, user) {
     const database = sqlite(sunriseDB);
     const cemetery = updateForm.cemeteryId === ''
@@ -62,17 +60,10 @@ export default function updateBurialSite(updateForm, user) {
         ? undefined
         : updateForm.burialSiteLongitude, user.userName, Date.now(), updateForm.burialSiteId);
     if (result.changes > 0) {
-        const burialSiteTypeFieldIds = (updateForm.burialSiteTypeFieldIds ?? '').split(',');
-        for (const burialSiteTypeFieldId of burialSiteTypeFieldIds) {
-            const fieldValue = updateForm[`fieldValue_${burialSiteTypeFieldId}`];
-            (fieldValue ?? '') === ''
-                ? deleteBurialSiteField(updateForm.burialSiteId, burialSiteTypeFieldId, user, database)
-                : addOrUpdateBurialSiteField({
-                    burialSiteId: updateForm.burialSiteId,
-                    burialSiteTypeFieldId,
-                    fieldValue: fieldValue ?? ''
-                }, user, database);
-        }
+        addOrUpdateBurialSiteFields({
+            burialSiteId: updateForm.burialSiteId,
+            fieldForm: updateForm
+        }, false, user, database);
     }
     database.close();
     return result.changes > 0;
@@ -103,11 +94,7 @@ export function updateBurialSiteLatitudeLongitude(burialSiteId, burialSiteLatitu
           recordUpdate_timeMillis = ?
         where burialSiteId = ?
           and recordDelete_timeMillis is null`)
-        .run(burialSiteLatitude === ''
-        ? undefined
-        : burialSiteLatitude, burialSiteLongitude === ''
-        ? undefined
-        : burialSiteLongitude, user.userName, Date.now(), burialSiteId);
+        .run(burialSiteLatitude === '' ? undefined : burialSiteLatitude, burialSiteLongitude === '' ? undefined : burialSiteLongitude, user.userName, Date.now(), burialSiteId);
     database.close();
     return result.changes > 0;
 }

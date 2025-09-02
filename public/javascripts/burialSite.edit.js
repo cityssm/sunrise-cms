@@ -152,7 +152,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label>
               <div class="control"></div>`;
                     fieldElement.querySelector('label').textContent = burialSiteTypeField.burialSiteTypeField;
-                    if (burialSiteTypeField.fieldValues === '') {
+                    if ((burialSiteTypeField.fieldValues ?? '') === '') {
                         const inputElement = document.createElement('input');
                         inputElement.className = 'input';
                         inputElement.id = fieldId;

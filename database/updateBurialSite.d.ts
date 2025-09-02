@@ -1,5 +1,6 @@
 import sqlite from 'better-sqlite3';
-export interface UpdateBurialSiteForm {
+import type { BurialSiteFieldsForm } from './addOrUpdateBurialSiteFields.js';
+export interface UpdateBurialSiteForm extends BurialSiteFieldsForm {
     burialSiteId: number | string;
     burialSiteNameSegment1?: string;
     burialSiteNameSegment2?: string;
@@ -15,8 +16,6 @@ export interface UpdateBurialSiteForm {
     cemeterySvgId: string;
     burialSiteLatitude: string;
     burialSiteLongitude: string;
-    [fieldValue_burialSiteTypeFieldId: string]: unknown;
-    burialSiteTypeFieldIds?: string;
 }
 /**
  * Updates a burial site.

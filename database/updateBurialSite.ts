@@ -3,11 +3,11 @@ import sqlite from 'better-sqlite3'
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js'
-import deleteBurialSiteField from './deleteBurialSiteField.js'
+import type { BurialSiteFieldsForm } from './addOrUpdateBurialSiteFields.js'
+import addOrUpdateBurialSiteFields from './addOrUpdateBurialSiteFields.js'
 import getCemetery from './getCemetery.js'
 
-export interface UpdateBurialSiteForm {
+export interface UpdateBurialSiteForm extends BurialSiteFieldsForm {
   burialSiteId: number | string
 
   burialSiteNameSegment1?: string
@@ -28,9 +28,6 @@ export interface UpdateBurialSiteForm {
 
   burialSiteLatitude: string
   burialSiteLongitude: string
-
-  [fieldValue_burialSiteTypeFieldId: string]: unknown
-  burialSiteTypeFieldIds?: string
 }
 
 /**
@@ -40,7 +37,6 @@ export interface UpdateBurialSiteForm {
  * @returns True if the burial site was updated.
  * @throws If an active burial site with the same name already exists.
  */
-// eslint-disable-next-line complexity
 export default function updateBurialSite(
   updateForm: UpdateBurialSiteForm,
   user: User
@@ -128,32 +124,15 @@ export default function updateBurialSite(
     )
 
   if (result.changes > 0) {
-    const burialSiteTypeFieldIds = (
-      updateForm.burialSiteTypeFieldIds ?? ''
-    ).split(',')
-
-    for (const burialSiteTypeFieldId of burialSiteTypeFieldIds) {
-      const fieldValue = updateForm[`fieldValue_${burialSiteTypeFieldId}`] as
-        | string
-        | undefined
-
-      ;(fieldValue ?? '') === ''
-        ? deleteBurialSiteField(
-            updateForm.burialSiteId,
-            burialSiteTypeFieldId,
-            user,
-            database
-          )
-        : addOrUpdateBurialSiteField(
-            {
-              burialSiteId: updateForm.burialSiteId,
-              burialSiteTypeFieldId,
-              fieldValue: fieldValue ?? ''
-            },
-            user,
-            database
-          )
-    }
+    addOrUpdateBurialSiteFields(
+      {
+        burialSiteId: updateForm.burialSiteId,
+        fieldForm: updateForm
+      },
+      false,
+      user,
+      database
+    )
   }
 
   database.close()
@@ -213,12 +192,8 @@ export function updateBurialSiteLatitudeLongitude(
           and recordDelete_timeMillis is null`
     )
     .run(
-      burialSiteLatitude === ''
-        ? undefined
-        : burialSiteLatitude,
-      burialSiteLongitude === ''
-        ? undefined
-        : burialSiteLongitude,
+      burialSiteLatitude === '' ? undefined : burialSiteLatitude,
+      burialSiteLongitude === '' ? undefined : burialSiteLongitude,
       user.userName,
       Date.now(),
       burialSiteId

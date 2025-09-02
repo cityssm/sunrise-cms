@@ -99,7 +99,7 @@ export interface BurialSiteTypeField extends Record {
   burialSiteTypeId?: number
 
   fieldType: string
-  fieldValues?: string
+  fieldValues?: string | null
   isRequired?: boolean
   maxLength?: number
   minLength?: number

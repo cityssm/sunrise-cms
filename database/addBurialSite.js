@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js';
+import addOrUpdateBurialSiteFields from './addOrUpdateBurialSiteFields.js';
 import getCemetery from './getCemetery.js';
 import { purgeBurialSite } from './purgeBurialSite.js';
 /**
@@ -72,17 +72,7 @@ export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
             ? undefined
             : burialSiteForm.burialSiteLongitude, user.userName, rightNowMillis, user.userName, rightNowMillis);
         const burialSiteId = result.lastInsertRowid;
-        const burialSiteTypeFieldIds = (burialSiteForm.burialSiteTypeFieldIds ?? '').split(',');
-        for (const burialSiteTypeFieldId of burialSiteTypeFieldIds) {
-            const fieldValue = burialSiteForm[`burialSiteFieldValue_${burialSiteTypeFieldId}`];
-            if ((fieldValue ?? '') !== '') {
-                addOrUpdateBurialSiteField({
-                    burialSiteId,
-                    burialSiteTypeFieldId,
-                    fieldValue: fieldValue ?? ''
-                }, user, database);
-            }
-        }
+        addOrUpdateBurialSiteFields({ burialSiteId, fieldForm: burialSiteForm }, true, user, database);
         return {
             burialSiteId,
             burialSiteName
