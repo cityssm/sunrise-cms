@@ -7,6 +7,12 @@ if (process.env.NODE_ENV === 'development') {
 }
 const debug = Debug(`${DEBUG_NAMESPACE}:puppeteerSetup`);
 const browser = getConfigProperty('settings.printPdf.browser');
-debug('Testing browser: %o', browser);
+debug('Testing configured Puppeteer browser: %o', browser);
 const result = await testInstalledBrowser(browser, true);
-debug('Browser test result: %o', result);
+debug('Puppeteer browser test result: %o', result);
+if (!result.success) {
+    const otherBrowser = browser === 'chrome' ? 'firefox' : 'chrome';
+    debug('Testing other Puppeteer browser: %o', otherBrowser);
+    const otherResult = await testInstalledBrowser(otherBrowser, true);
+    debug('Other Puppeteer browser test result: %o', otherResult);
+}
