@@ -4,6 +4,11 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 const maxDays = 30;
 export const defaultRecordLimit = 100;
 const maxRecordLimit = 500;
+const allowedSortBy = [
+    'recordCreate_timeMillis',
+    'recordUpdate_timeMillis'
+];
+const allowedSortDirection = ['asc', 'desc'];
 // eslint-disable-next-line complexity
 export default function getRecordUpdateLog(filters, options, connectedDatabase) {
     const minimumMillis = Date.now() - daysToMillis(maxDays);
@@ -195,11 +200,11 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
     const limit = Math.min(options?.limit ?? defaultRecordLimit, maxRecordLimit);
     const offset = options?.offset ?? 0;
     let sortBy = options?.sortBy ?? 'recordUpdate_timeMillis';
-    if (!['recordCreate_timeMillis', 'recordUpdate_timeMillis'].includes(sortBy)) {
+    if (!allowedSortBy.includes(sortBy)) {
         sortBy = 'recordUpdate_timeMillis';
     }
     let sortDirection = options?.sortDirection ?? 'desc';
-    if (!['asc', 'desc'].includes(sortDirection)) {
+    if (!allowedSortDirection.includes(sortDirection)) {
         sortDirection = 'desc';
     }
     const result = database

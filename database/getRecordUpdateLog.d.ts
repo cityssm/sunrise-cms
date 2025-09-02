@@ -12,11 +12,14 @@ export interface RecordUpdateLog {
     recordUpdate_timeMillis: number;
     recordUpdate_userName: string;
 }
+declare const allowedSortBy: readonly ["recordCreate_timeMillis", "recordUpdate_timeMillis"];
+declare const allowedSortDirection: readonly ["asc", "desc"];
 export default function getRecordUpdateLog(filters: {
     recordType: '' | RecordType;
 }, options?: {
     limit?: number;
     offset?: number;
-    sortBy?: 'recordCreate_timeMillis' | 'recordUpdate_timeMillis';
-    sortDirection?: 'asc' | 'desc';
+    sortBy?: (typeof allowedSortBy)[number];
+    sortDirection?: (typeof allowedSortDirection)[number];
 }, connectedDatabase?: sqlite.Database): RecordUpdateLog[];
+export {};

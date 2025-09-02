@@ -35,6 +35,12 @@ export interface RecordUpdateLog {
   recordUpdate_userName: string
 }
 
+const allowedSortBy = [
+  'recordCreate_timeMillis',
+  'recordUpdate_timeMillis'
+] as const
+const allowedSortDirection = ['asc', 'desc'] as const
+
 // eslint-disable-next-line complexity
 export default function getRecordUpdateLog(
   filters: {
@@ -43,8 +49,8 @@ export default function getRecordUpdateLog(
   options?: {
     limit?: number
     offset?: number
-    sortBy?: 'recordCreate_timeMillis' | 'recordUpdate_timeMillis'
-    sortDirection?: 'asc' | 'desc'
+    sortBy?: (typeof allowedSortBy)[number]
+    sortDirection?: (typeof allowedSortDirection)[number]
   },
   connectedDatabase?: sqlite.Database
 ): RecordUpdateLog[] {
@@ -262,12 +268,12 @@ export default function getRecordUpdateLog(
   const offset = options?.offset ?? 0
 
   let sortBy = options?.sortBy ?? 'recordUpdate_timeMillis'
-  if (!['recordCreate_timeMillis', 'recordUpdate_timeMillis'].includes(sortBy)) {
+  if (!allowedSortBy.includes(sortBy)) {
     sortBy = 'recordUpdate_timeMillis'
   }
 
   let sortDirection = options?.sortDirection ?? 'desc'
-  if (!['asc', 'desc'].includes(sortDirection)) {
+  if (!allowedSortDirection.includes(sortDirection)) {
     sortDirection = 'desc'
   }
 
