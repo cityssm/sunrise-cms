@@ -44,7 +44,6 @@ config.settings.contracts.prints = [
     'pdf/ssm.contract.burialPermit',
     'pdf/ssm.contract'
 ];
-config.settings.printPdf.browser = 'firefox';
 config.settings.databaseBackup.taskIsEnabled = true;
 config.settings.workOrders.workOrderNumberLength = 6;
 config.settings.workOrders.workOrderMilestoneDateRecentBeforeDays = 7;

@@ -1,9 +1,9 @@
-import { testInstalledBrowser } from '@cityssm/pdf-puppeteer';
+import { fork } from 'node:child_process';
 import { initializeDatabase } from '../database/initializeDatabase.js';
 import { getConfigProperty } from './config.helpers.js';
-export async function initializeApplication() {
+export function initializeApplication() {
     initializeDatabase();
-    await testInstalledBrowser(getConfigProperty('settings.printPdf.browser'), true);
+    fork('./tasks/puppeteerSetup.task.js');
 }
 let applicationUrl = getConfigProperty('application.applicationUrl');
 /**
