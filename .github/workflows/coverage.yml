@@ -26,7 +26,7 @@ jobs:
       - name: Install Application
         run: |
           npm ci
-          npm install -g c8 cypress@14
+          npm install -g c8 cypress@15
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
@@ -55,8 +55,6 @@ jobs:
       fail-fast: false
       matrix:
         node: [ 20, 22 ]
-    env:
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 
     name: Windows - Node ${{ matrix.node }}
     steps:
@@ -69,15 +67,10 @@ jobs:
       - name: Install Application
         run: |
           npm ci
-          npm install -g cross-env c8 cypress@14
+          npm install -g cross-env c8 cypress@15
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
         
-      - name: Verify Cypress
-        run: cypress verify
-        env:
-          CYPRESS_VERIFY_TIMEOUT: 600000
-
       - name: Run Test
         run: cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node --test --test-concurrency 1
