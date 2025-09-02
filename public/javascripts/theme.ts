@@ -96,21 +96,22 @@ declare const bulmaJS: BulmaJS
   function doContractQuickSearch(formEvent: Event): void {
     formEvent.preventDefault()
 
-    const contractFieldElement = document.querySelector(
-      '#quickSearchContract--searchField'
-    ) as HTMLSelectElement
+    const contractField = (
+      document.querySelector(
+        '#quickSearchContract--searchField'
+      ) as HTMLSelectElement
+    ).value
 
-    const searchValueElement = document.querySelector(
-      '#quickSearchContract--searchValue'
-    ) as HTMLInputElement
+    const searchValue = (
+      document.querySelector(
+        '#quickSearchContract--searchValue'
+      ) as HTMLInputElement
+    ).value
 
-    if (contractFieldElement.value === 'deceasedName') {
-      globalThis.location.href = `${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValueElement.value)}`
-    } else if (
-      contractFieldElement.value === 'contractId' &&
-      /^\d+$/.test(searchValueElement.value)
-    ) {
-      globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(searchValueElement.value)}`
+    if (contractField === 'deceasedName') {
+      globalThis.location.href = `${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValue)}`
+    } else if (contractField === 'contractId' && /^\d+$/.test(searchValue)) {
+      globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(searchValue)}`
     } else {
       bulmaJS.alert({
         contextualColorName: 'danger',
@@ -124,11 +125,13 @@ declare const bulmaJS: BulmaJS
   function doWorkOrderQuickSearch(formEvent: Event): void {
     formEvent.preventDefault()
 
-    const workOrderNumberElement = document.querySelector(
-      '#quickSearchWorkOrder--workOrderNumber'
-    ) as HTMLInputElement
+    const workOrderNumber = (
+      document.querySelector(
+        '#quickSearchWorkOrder--workOrderNumber'
+      ) as HTMLInputElement
+    ).value
 
-    globalThis.location.href = `${urlPrefix}/workOrders/byWorkOrderNumber/${encodeURIComponent(workOrderNumberElement.value)}`
+    globalThis.location.href = `${urlPrefix}/workOrders/byWorkOrderNumber/${encodeURIComponent(workOrderNumber)}`
   }
 
   document

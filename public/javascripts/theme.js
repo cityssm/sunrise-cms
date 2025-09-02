@@ -54,14 +54,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const urlPrefix = document.querySelector('main')?.getAttribute('data-url-prefix') ?? '';
     function doContractQuickSearch(formEvent) {
         formEvent.preventDefault();
-        const contractFieldElement = document.querySelector('#quickSearchContract--searchField');
-        const searchValueElement = document.querySelector('#quickSearchContract--searchValue');
-        if (contractFieldElement.value === 'deceasedName') {
-            globalThis.location.href = `${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValueElement.value)}`;
+        const contractField = document.querySelector('#quickSearchContract--searchField').value;
+        const searchValue = document.querySelector('#quickSearchContract--searchValue').value;
+        if (contractField === 'deceasedName') {
+            globalThis.location.href = `${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValue)}`;
         }
-        else if (contractFieldElement.value === 'contractId' &&
-            /^\d+$/.test(searchValueElement.value)) {
-            globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(searchValueElement.value)}`;
+        else if (contractField === 'contractId' && /^\d+$/.test(searchValue)) {
+            globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(searchValue)}`;
         }
         else {
             bulmaJS.alert({
@@ -73,8 +72,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function doWorkOrderQuickSearch(formEvent) {
         formEvent.preventDefault();
-        const workOrderNumberElement = document.querySelector('#quickSearchWorkOrder--workOrderNumber');
-        globalThis.location.href = `${urlPrefix}/workOrders/byWorkOrderNumber/${encodeURIComponent(workOrderNumberElement.value)}`;
+        const workOrderNumber = document.querySelector('#quickSearchWorkOrder--workOrderNumber').value;
+        globalThis.location.href = `${urlPrefix}/workOrders/byWorkOrderNumber/${encodeURIComponent(workOrderNumber)}`;
     }
     document
         .querySelector('#navbar--quickSearch')
