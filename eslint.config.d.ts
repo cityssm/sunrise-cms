@@ -1,2 +1,2 @@
-export declare const config: import("@typescript-eslint/utils/ts-eslint").FlatConfig.ConfigArray;
+export declare const config: import("eslint").Linter.Config<import("eslint").Linter.RulesRecord>[];
 export default config;
