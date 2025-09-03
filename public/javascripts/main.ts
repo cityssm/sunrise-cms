@@ -1,6 +1,6 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
-import type * as Leaflet from 'leaflet'
+import type Leaflet from 'leaflet'
 
 import type { Sunrise } from './types.js'
 

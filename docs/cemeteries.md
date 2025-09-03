@@ -20,4 +20,4 @@ Helpful when breaking larger cemeteries into smaller sections.
 Used to show the cemetery location on a map.
 
 **Image**<br />
-An SVG image of the cemetery, optional labelled to allow for burial site highlighting.
+An SVG image of the cemetery, optionally labelled to allow for burial site highlighting.

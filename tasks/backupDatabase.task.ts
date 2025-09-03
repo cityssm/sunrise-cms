@@ -2,7 +2,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 
 import { ScheduledTask } from '@cityssm/scheduled-task'
-import { daysToMillis, hoursToMillis } from '@cityssm/to-millis'
+import { daysToMillis, hoursToMillis, millisecondsInOneDay } from '@cityssm/to-millis'
 import camelcase from 'camelcase'
 import Debug from 'debug'
 
@@ -99,7 +99,6 @@ const scheduledTask = new ScheduledTask(taskName, runDatabaseBackup, {
   startTask: true
 })
 
-// eslint-disable-next-line @typescript-eslint/no-magic-numbers
-if (Date.now() - (lastBackupDate?.getTime() ?? 0) > hoursToMillis(24)) {
+if (Date.now() - (lastBackupDate?.getTime() ?? 0) > millisecondsInOneDay) {
   await scheduledTask.runTask()
 }

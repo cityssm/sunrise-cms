@@ -139,10 +139,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 if (siteIndex !== -1) {
                     // eslint-disable-next-line security/detect-object-injection
                     allBurialSites[siteIndex].burialSiteLatitude =
-                        currentPosition?.latitude;
+                        // eslint-disable-next-line unicorn/no-null
+                        currentPosition?.latitude ?? null;
                     // eslint-disable-next-line security/detect-object-injection
                     allBurialSites[siteIndex].burialSiteLongitude =
-                        currentPosition?.longitude;
+                        // eslint-disable-next-line unicorn/no-null
+                        currentPosition?.longitude ?? null;
                 }
             }
             else {
@@ -191,7 +193,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <div class="content">
               <p class="title is-6">
                 <a href="${sunrise.getBurialSiteURL(site.burialSiteId)}" target="_blank">
-                  ${cityssm.escapeHTML(site.burialSiteName ?? 'Unnamed Site')}
+                  ${cityssm.escapeHTML(site.burialSiteName === '' ? 'Unnamed Site' : site.burialSiteName)}
                 </a>
               </p>
               <p class="subtitle is-7">

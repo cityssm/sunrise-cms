@@ -1,4 +1,4 @@
-import type * as Leaflet from 'leaflet'
+import type Leaflet from 'leaflet'
 
 import type { Sunrise } from './types.js'
 

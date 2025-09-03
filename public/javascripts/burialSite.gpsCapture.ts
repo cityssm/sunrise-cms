@@ -191,7 +191,8 @@ interface GPSPosition {
     const updateData = {
       burialSiteId,
       burialSiteLatitude: currentPosition.latitude.toFixed(coordinatePrecision),
-      burialSiteLongitude: currentPosition.longitude.toFixed(coordinatePrecision)
+      burialSiteLongitude:
+        currentPosition.longitude.toFixed(coordinatePrecision)
     }
 
     cityssm.postJSON(
@@ -200,7 +201,7 @@ interface GPSPosition {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          
+
           errorMessage?: string
         }
 
@@ -233,11 +234,13 @@ interface GPSPosition {
           if (siteIndex !== -1) {
             // eslint-disable-next-line security/detect-object-injection
             allBurialSites[siteIndex].burialSiteLatitude =
-              currentPosition?.latitude
+              // eslint-disable-next-line unicorn/no-null
+              currentPosition?.latitude ?? null
 
             // eslint-disable-next-line security/detect-object-injection
             allBurialSites[siteIndex].burialSiteLongitude =
-              currentPosition?.longitude
+              // eslint-disable-next-line unicorn/no-null
+              currentPosition?.longitude ?? null
           }
         } else {
           // eslint-disable-next-line no-unsanitized/property
@@ -297,7 +300,7 @@ interface GPSPosition {
             <div class="content">
               <p class="title is-6">
                 <a href="${sunrise.getBurialSiteURL(site.burialSiteId)}" target="_blank">
-                  ${cityssm.escapeHTML(site.burialSiteName ?? 'Unnamed Site')}
+                  ${cityssm.escapeHTML(site.burialSiteName === '' ? 'Unnamed Site' : site.burialSiteName)}
                 </a>
               </p>
               <p class="subtitle is-7">
