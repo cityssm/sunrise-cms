@@ -83,29 +83,19 @@ export const router = Router()
  * Fees
  */
 
-router.get('/fees', handler_fees)
-
-router.post('/doAddFeeCategory', handler_doAddFeeCategory)
-
-router.post('/doUpdateFeeCategory', handler_doUpdateFeeCategory)
-
-router.post('/doMoveFeeCategoryUp', handler_doMoveFeeCategoryUp)
-
-router.post('/doMoveFeeCategoryDown', handler_doMoveFeeCategoryDown)
-
-router.post('/doDeleteFeeCategory', handler_doDeleteFeeCategory)
-
-router.post('/doAddFee', handler_doAddFee)
-
-router.post('/doUpdateFee', handler_doUpdateFee)
-
-router.post('/doUpdateFeeAmount', handler_doUpdateFeeAmount)
-
-router.post('/doMoveFeeUp', handler_doMoveFeeUp)
-
-router.post('/doMoveFeeDown', handler_doMoveFeeDown)
-
-router.post('/doDeleteFee', handler_doDeleteFee)
+router
+  .get('/fees', handler_fees)
+  .post('/doAddFeeCategory', handler_doAddFeeCategory)
+  .post('/doUpdateFeeCategory', handler_doUpdateFeeCategory)
+  .post('/doMoveFeeCategoryUp', handler_doMoveFeeCategoryUp)
+  .post('/doMoveFeeCategoryDown', handler_doMoveFeeCategoryDown)
+  .post('/doDeleteFeeCategory', handler_doDeleteFeeCategory)
+  .post('/doAddFee', handler_doAddFee)
+  .post('/doUpdateFee', handler_doUpdateFee)
+  .post('/doUpdateFeeAmount', handler_doUpdateFeeAmount)
+  .post('/doMoveFeeUp', handler_doMoveFeeUp)
+  .post('/doMoveFeeDown', handler_doMoveFeeDown)
+  .post('/doDeleteFee', handler_doDeleteFee)
 
 /*
  * Contract Type Management

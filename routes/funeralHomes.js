@@ -12,13 +12,16 @@ import handler_doUpdateFuneralHome from '../handlers/funeralHomes-post/doUpdateF
 import { adminPostHandler, updateContractsGetHandler, updateContractsPostHandler } from '../handlers/permissions.js';
 export const router = Router();
 router.get('/', handler_search);
-router.get('/new', updateContractsGetHandler, handler_new);
-router.get('/:funeralHomeId', handler_view);
-router.get('/:funeralHomeId/next', handler_next);
-router.get('/:funeralHomeId/previous', handler_previous);
-router.post('/doCreateFuneralHome', updateContractsPostHandler, handler_doCreateFuneralHome);
-router.get('/:funeralHomeId/edit', updateContractsGetHandler, handler_edit);
-router.post('/doUpdateFuneralHome', updateContractsPostHandler, handler_doUpdateFuneralHome);
-router.post('/doDeleteFuneralHome', updateContractsPostHandler, handler_doDeleteFuneralHome);
-router.post('/doRestoreFuneralHome', adminPostHandler, handler_doRestoreFuneralHome);
+router
+    .get('/new', updateContractsGetHandler, handler_new)
+    .post('/doCreateFuneralHome', updateContractsPostHandler, handler_doCreateFuneralHome);
+router
+    .get('/:funeralHomeId', handler_view)
+    .get('/:funeralHomeId/next', handler_next)
+    .get('/:funeralHomeId/previous', handler_previous)
+    .post('/doRestoreFuneralHome', adminPostHandler, handler_doRestoreFuneralHome);
+router
+    .get('/:funeralHomeId/edit', updateContractsGetHandler, handler_edit)
+    .post('/doUpdateFuneralHome', updateContractsPostHandler, handler_doUpdateFuneralHome)
+    .post('/doDeleteFuneralHome', updateContractsPostHandler, handler_doDeleteFuneralHome);
 export default router;

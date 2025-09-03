@@ -17,6 +17,7 @@ import handler_doAddRelatedContract from '../handlers/contracts-post/doAddRelate
 import handler_doCopyContract from '../handlers/contracts-post/doCopyContract.js'
 import handler_doCreateContract from '../handlers/contracts-post/doCreateContract.js'
 import handler_doDeleteContract from '../handlers/contracts-post/doDeleteContract.js'
+import handler_doDeleteContractAttachment from '../handlers/contracts-post/doDeleteContractAttachment.js'
 import handler_doDeleteContractComment from '../handlers/contracts-post/doDeleteContractComment.js'
 import handler_doDeleteContractFee from '../handlers/contracts-post/doDeleteContractFee.js'
 import handler_doDeleteContractInterment from '../handlers/contracts-post/doDeleteContractInterment.js'
@@ -32,13 +33,12 @@ import handler_doGetPossibleRelatedContracts from '../handlers/contracts-post/do
 import handler_doSearchContracts from '../handlers/contracts-post/doSearchContracts.js'
 import handler_doStartConsignoCloudWorkflow from '../handlers/contracts-post/doStartConsignoCloudWorkflow.js'
 import handler_doUpdateContract from '../handlers/contracts-post/doUpdateContract.js'
+import handler_doUpdateContractAttachment from '../handlers/contracts-post/doUpdateContractAttachment.js'
 import handler_doUpdateContractComment from '../handlers/contracts-post/doUpdateContractComment.js'
 import handler_doUpdateContractFeeQuantity from '../handlers/contracts-post/doUpdateContractFeeQuantity.js'
 import handler_doUpdateContractInterment from '../handlers/contracts-post/doUpdateContractInterment.js'
 import handler_doUpdateContractTransaction from '../handlers/contracts-post/doUpdateContractTransaction.js'
 import handler_doUploadContractAttachment from '../handlers/contracts-post/doUploadContractAttachment.js'
-import handler_doUpdateContractAttachment from '../handlers/contracts-post/doUpdateContractAttachment.js'
-import handler_doDeleteContractAttachment from '../handlers/contracts-post/doDeleteContractAttachment.js'
 import {
   updateContractsGetHandler,
   updateContractsPostHandler
@@ -53,141 +53,127 @@ const upload = multer({
 
   limits: {
     fileSize:
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       getConfigProperty('application.maxAttachmentFileSize') * 1024 * 1024
   }
 })
 
 // Search
 
-router.get('/', handler_search)
-
-router.post('/doSearchContracts', handler_doSearchContracts)
+router
+  .get('/', handler_search)
+  .post('/doSearchContracts', handler_doSearchContracts)
 
 // Create
 
-router.get('/new', updateContractsGetHandler, handler_new)
-
-router.post(
-  '/doGetContractTypeFields',
-  updateContractsPostHandler,
-  handler_doGetContractTypeFields
-)
-
-router.post(
-  '/doCreateContract',
-  updateContractsPostHandler,
-  handler_doCreateContract
-)
+router
+  .get('/new', updateContractsGetHandler, handler_new)
+  .post(
+    '/doGetContractTypeFields',
+    updateContractsPostHandler,
+    handler_doGetContractTypeFields
+  )
+  .post(
+    '/doCreateContract',
+    updateContractsPostHandler,
+    handler_doCreateContract
+  )
 
 // View
 
-router.get('/:contractId', handler_view)
-
-router.get('/:contractId/next', handler_next)
-
-router.get('/:contractId/previous', handler_previous)
+router
+  .get('/:contractId', handler_view)
+  .get('/:contractId/next', handler_next)
+  .get('/:contractId/previous', handler_previous)
 
 // Edit
 
-router.get('/:contractId/edit', updateContractsGetHandler, handler_edit)
-
-router.post(
-  '/doUpdateContract',
-  updateContractsPostHandler,
-  handler_doUpdateContract
-)
-
-router.post(
-  '/doCopyContract',
-  updateContractsPostHandler,
-  handler_doCopyContract
-)
-
-router.post(
-  '/doDeleteContract',
-  updateContractsPostHandler,
-  handler_doDeleteContract
-)
-
-router.post(
-  '/doGetBurialSiteDirectionsOfArrival',
-  updateContractsPostHandler,
-  handler_doGetBurialSiteDirectionsOfArrival
-)
+router
+  .get('/:contractId/edit', updateContractsGetHandler, handler_edit)
+  .post(
+    '/doUpdateContract',
+    updateContractsPostHandler,
+    handler_doUpdateContract
+  )
+  .post('/doCopyContract', updateContractsPostHandler, handler_doCopyContract)
+  .post(
+    '/doDeleteContract',
+    updateContractsPostHandler,
+    handler_doDeleteContract
+  )
+  .post(
+    '/doGetBurialSiteDirectionsOfArrival',
+    updateContractsPostHandler,
+    handler_doGetBurialSiteDirectionsOfArrival
+  )
+  .post(
+    '/doGetFuneralDirectors',
+    updateContractsPostHandler,
+    handler_doGetFuneralDirectors
+  )
 
 // Interments
 
-router.post(
-  '/doAddContractInterment',
-  updateContractsPostHandler,
-  handler_doAddContractInterment
-)
-
-router.post(
-  '/doUpdateContractInterment',
-  updateContractsPostHandler,
-  handler_doUpdateContractInterment
-)
-
-router.post(
-  '/doDeleteContractInterment',
-  updateContractsPostHandler,
-  handler_doDeleteContractInterment
-)
+router
+  .post(
+    '/doAddContractInterment',
+    updateContractsPostHandler,
+    handler_doAddContractInterment
+  )
+  .post(
+    '/doUpdateContractInterment',
+    updateContractsPostHandler,
+    handler_doUpdateContractInterment
+  )
+  .post(
+    '/doDeleteContractInterment',
+    updateContractsPostHandler,
+    handler_doDeleteContractInterment
+  )
 
 // Comments
 
-router.post(
-  '/doAddContractComment',
-  updateContractsPostHandler,
-  handler_doAddContractComment
-)
-
-router.post(
-  '/doUpdateContractComment',
-  updateContractsPostHandler,
-  handler_doUpdateContractComment
-)
-
-router.post(
-  '/doDeleteContractComment',
-  updateContractsPostHandler,
-  handler_doDeleteContractComment
-)
+router
+  .post(
+    '/doAddContractComment',
+    updateContractsPostHandler,
+    handler_doAddContractComment
+  )
+  .post(
+    '/doUpdateContractComment',
+    updateContractsPostHandler,
+    handler_doUpdateContractComment
+  )
+  .post(
+    '/doDeleteContractComment',
+    updateContractsPostHandler,
+    handler_doDeleteContractComment
+  )
 
 // Fees
 
-router.post('/doGetFees', updateContractsPostHandler, handler_doGetFees)
-
-router.post(
-  '/doGetFuneralDirectors',
-  updateContractsPostHandler,
-  handler_doGetFuneralDirectors
-)
-
-router.post(
-  '/doAddContractFee',
-  updateContractsPostHandler,
-  handler_doAddContractFee
-)
-
-router.post(
-  '/doAddContractFeeCategory',
-  updateContractsPostHandler,
-  handler_doAddContractFeeCategory
-)
-
-router.post(
-  '/doUpdateContractFeeQuantity',
-  updateContractsPostHandler,
-  handler_doUpdateContractFeeQuantity
-)
-
-router.post(
-  '/doDeleteContractFee',
-  updateContractsPostHandler,
-  handler_doDeleteContractFee
-)
+router
+  .post('/doGetFees', updateContractsPostHandler, handler_doGetFees)
+  .post(
+    '/doAddContractFee',
+    updateContractsPostHandler,
+    handler_doAddContractFee
+  )
+  .post(
+    '/doAddContractFeeCategory',
+    updateContractsPostHandler,
+    handler_doAddContractFeeCategory
+  )
+  .post(
+    '/doUpdateContractFeeQuantity',
+    updateContractsPostHandler,
+    handler_doUpdateContractFeeQuantity
+  )
+  .post(
+    '/doDeleteContractFee',
+    updateContractsPostHandler,
+    handler_doDeleteContractFee
+  )
 
 // Transactions
 
@@ -199,81 +185,77 @@ if (getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
   )
 }
 
-router.post(
-  '/doAddContractTransaction',
-  updateContractsPostHandler,
-  handler_doAddContractTransaction
-)
-
-router.post(
-  '/doUpdateContractTransaction',
-  updateContractsPostHandler,
-  handler_doUpdateContractTransaction
-)
-
-router.post(
-  '/doDeleteContractTransaction',
-  updateContractsPostHandler,
-  handler_doDeleteContractTransaction
-)
+router
+  .post(
+    '/doAddContractTransaction',
+    updateContractsPostHandler,
+    handler_doAddContractTransaction
+  )
+  .post(
+    '/doUpdateContractTransaction',
+    updateContractsPostHandler,
+    handler_doUpdateContractTransaction
+  )
+  .post(
+    '/doDeleteContractTransaction',
+    updateContractsPostHandler,
+    handler_doDeleteContractTransaction
+  )
 
 // Consigno Cloud
 
 if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
-  router.post(
-    '/doGetContractDetailsForConsignoCloud',
-    updateContractsPostHandler,
-    handler_doGetContractDetailsForConsignoCloud
-  )
-
-  router.post(
-    '/doStartConsignoCloudWorkflow',
-    updateContractsPostHandler,
-    handler_doStartConsignoCloudWorkflow
-  )
+  router
+    .post(
+      '/doGetContractDetailsForConsignoCloud',
+      updateContractsPostHandler,
+      handler_doGetContractDetailsForConsignoCloud
+    )
+    .post(
+      '/doStartConsignoCloudWorkflow',
+      updateContractsPostHandler,
+      handler_doStartConsignoCloudWorkflow
+    )
 }
 
 // Attachments
 
-router.get('/attachment/:attachmentId', handler_attachment)
-
-router.post(
-  '/doUploadContractAttachment',
-  updateContractsPostHandler,
-  upload.single('file'),
-  handler_doUploadContractAttachment
-)
-
-router.post(
-  '/doUpdateContractAttachment',
-  updateContractsPostHandler,
-  handler_doUpdateContractAttachment
-)
-
-router.post(
-  '/doDeleteContractAttachment',
-  updateContractsPostHandler,
-  handler_doDeleteContractAttachment
-)
+router
+  .get('/attachment/:attachmentId', handler_attachment)
+  .post(
+    '/doUploadContractAttachment',
+    updateContractsPostHandler,
+    upload.single('file'),
+    handler_doUploadContractAttachment
+  )
+  .post(
+    '/doUpdateContractAttachment',
+    updateContractsPostHandler,
+    handler_doUpdateContractAttachment
+  )
+  .post(
+    '/doDeleteContractAttachment',
+    updateContractsPostHandler,
+    handler_doDeleteContractAttachment
+  )
 
 // Related Contracts
 
-router.post(
-  '/doGetPossibleRelatedContracts',
-  updateContractsPostHandler,
-  handler_doGetPossibleRelatedContracts
-)
-
-router.post(
-  '/doAddRelatedContract',
-  updateContractsPostHandler,
-  handler_doAddRelatedContract
-)
-
-router.post(
-  '/doDeleteRelatedContract',
-  updateContractsPostHandler,
-  handler_doDeleteRelatedContract
-)
+router
+  .post(
+    '/doGetPossibleRelatedContracts',
+    updateContractsPostHandler,
+    handler_doGetPossibleRelatedContracts
+  )
+  .post(
+    '/doAddRelatedContract',
+    updateContractsPostHandler,
+    handler_doAddRelatedContract
+  )
+  .post(
+    '/doDeleteRelatedContract',
+    updateContractsPostHandler,
+    handler_doDeleteRelatedContract
+  )
 
 export default router

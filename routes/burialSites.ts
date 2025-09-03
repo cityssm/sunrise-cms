@@ -32,39 +32,38 @@ export const router = Router()
  * Burial Site Search
  */
 
-router.get('/', handler_search)
-
-router.post('/doSearchBurialSites', handler_doSearchBurialSites)
+router
+  .get('/', handler_search)
+  .post('/doSearchBurialSites', handler_doSearchBurialSites)
 
 /*
  * GPS Coordinate Capture
  */
 
-router.get('/gpsCapture', updateCemeteriesGetHandler, handler_gpsCapture)
-
-router.post(
-  '/doSearchBurialSitesForGPS',
-  updateCemeteriesPostHandler,
-  handler_doSearchBurialSitesForGps
-)
-
-router.post(
-  '/doUpdateBurialSiteLatitudeLongitude',
-  updateCemeteriesPostHandler,
-  handler_doUpdateBurialSiteLatitudeLongitude
-)
+router
+  .get('/gpsCapture', updateCemeteriesGetHandler, handler_gpsCapture)
+  .post(
+    '/doSearchBurialSitesForGPS',
+    updateCemeteriesPostHandler,
+    handler_doSearchBurialSitesForGps
+  )
+  .post(
+    '/doUpdateBurialSiteLatitudeLongitude',
+    updateCemeteriesPostHandler,
+    handler_doUpdateBurialSiteLatitudeLongitude
+  )
 
 /*
  * Burial Site Creator
  */
 
-router.get('/creator', updateCemeteriesGetHandler, handler_creator)
-
-router.post(
-  '/doGetBurialSiteNamesByRange',
-  updateCemeteriesPostHandler,
-  handler_doGetBurialSiteNamesByRange
-)
+router
+  .get('/creator', updateCemeteriesGetHandler, handler_creator)
+  .post(
+    '/doGetBurialSiteNamesByRange',
+    updateCemeteriesPostHandler,
+    handler_doGetBurialSiteNamesByRange
+  )
 
 /*
  * Burial Site View / Edit
@@ -72,64 +71,54 @@ router.post(
 
 router.get('/new', updateCemeteriesGetHandler, handler_new)
 
-router.get('/:burialSiteId', handler_view)
+router
+  .get('/:burialSiteId', handler_view)
+  .get('/:burialSiteId/next', handler_next)
+  .get('/:burialSiteId/previous', handler_previous)
 
-router.get('/:burialSiteId/next', handler_next)
-
-router.get('/:burialSiteId/previous', handler_previous)
-
-router.get('/:burialSiteId/edit', updateCemeteriesGetHandler, handler_edit)
-
-router.post(
-  '/doGetBurialSiteTypeFields',
-  updateCemeteriesPostHandler,
-  handler_doGetBurialSiteTypeFields
-)
-
-router.post(
-  '/doCreateBurialSite',
-  updateCemeteriesPostHandler,
-  handler_doCreateBurialSite
-)
-
-router.post(
-  '/doUpdateBurialSite',
-  updateCemeteriesPostHandler,
-  handler_doUpdateBurialSite
-)
-
-router.post(
-  '/doDeleteBurialSite',
-  updateCemeteriesPostHandler,
-  handler_doDeleteBurialSite
-)
-
-router.post(
-  '/doRestoreBurialSite',
-  adminPostHandler,
-  handler_doRestoreBurialSite
-)
+router
+  .get('/:burialSiteId/edit', updateCemeteriesGetHandler, handler_edit)
+  .post(
+    '/doGetBurialSiteTypeFields',
+    updateCemeteriesPostHandler,
+    handler_doGetBurialSiteTypeFields
+  )
+  .post(
+    '/doCreateBurialSite',
+    updateCemeteriesPostHandler,
+    handler_doCreateBurialSite
+  )
+  .post(
+    '/doUpdateBurialSite',
+    updateCemeteriesPostHandler,
+    handler_doUpdateBurialSite
+  )
+  .post(
+    '/doDeleteBurialSite',
+    updateCemeteriesPostHandler,
+    handler_doDeleteBurialSite
+  )
+  .post('/doRestoreBurialSite', adminPostHandler, handler_doRestoreBurialSite)
 
 /*
  * Burial Site Comments
  */
 
-router.post(
-  '/doAddBurialSiteComment',
-  updateCemeteriesPostHandler,
-  handler_doAddBurialSiteComment
-)
-
-router.post(
-  '/doUpdateBurialSiteComment',
-  updateCemeteriesPostHandler,
-  handler_doUpdateBurialSiteComment
-)
-
-router.post(
-  '/doDeleteBurialSiteComment',
-  updateCemeteriesPostHandler,
-  handler_doDeleteBurialSiteComment
-)
+router
+  .post(
+    '/doAddBurialSiteComment',
+    updateCemeteriesPostHandler,
+    handler_doAddBurialSiteComment
+  )
+  .post(
+    '/doUpdateBurialSiteComment',
+    updateCemeteriesPostHandler,
+    handler_doUpdateBurialSiteComment
+  )
+  .post(
+    '/doDeleteBurialSiteComment',
+    updateCemeteriesPostHandler,
+    handler_doDeleteBurialSiteComment
+  )
 
 export default router

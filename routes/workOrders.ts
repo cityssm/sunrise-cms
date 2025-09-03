@@ -42,15 +42,15 @@ export const router = Router()
 
 // Search
 
-router.get('/', handler_search)
-
-router.post('/doSearchWorkOrders', handler_doSearchWorkOrders)
+router
+  .get('/', handler_search)
+  .post('/doSearchWorkOrders', handler_doSearchWorkOrders)
 
 // Milestone Calendar
 
-router.get('/milestoneCalendar', handler_milestoneCalendar)
-
-router.post('/doGetWorkOrderMilestones', handler_doGetWorkOrderMilestones)
+router
+  .get('/milestoneCalendar', handler_milestoneCalendar)
+  .post('/doGetWorkOrderMilestones', handler_doGetWorkOrderMilestones)
 
 // Outlook Integration
 
@@ -58,160 +58,147 @@ router.get('/outlook', handler_outlook)
 
 // Workday
 
-router.get('/workday', handler_workday)
-
-router.post('/doGetWorkdayReport', handler_doGetWorkdayReport)
-
-router.post(
-  '/doCompleteWorkdayWorkOrderMilestone',
-  updateWorkOrdersPostHandler,
-  handler_doCompleteWorkdayWorkOrderMilestone
-)
-
-router.post(
-  '/doReopenWorkdayWorkOrderMilestone',
-  updateWorkOrdersPostHandler,
-  handler_doReopenWorkdayWorkOrderMilestone
-)
-
-router.post(
-  '/doUpdateWorkdayWorkOrderMilestoneTime',
-  updateWorkOrdersPostHandler,
-  handler_doUpdateWorkdayWorkOrderMilestoneTime
-)
-
-router.post(
-  '/doCloseWorkdayWorkOrder',
-  updateWorkOrdersPostHandler,
-  handler_doCloseWorkdayWorkOrder
-)
+router
+  .get('/workday', handler_workday)
+  .post('/doGetWorkdayReport', handler_doGetWorkdayReport)
+  .post(
+    '/doCompleteWorkdayWorkOrderMilestone',
+    updateWorkOrdersPostHandler,
+    handler_doCompleteWorkdayWorkOrderMilestone
+  )
+  .post(
+    '/doReopenWorkdayWorkOrderMilestone',
+    updateWorkOrdersPostHandler,
+    handler_doReopenWorkdayWorkOrderMilestone
+  )
+  .post(
+    '/doUpdateWorkdayWorkOrderMilestoneTime',
+    updateWorkOrdersPostHandler,
+    handler_doUpdateWorkdayWorkOrderMilestoneTime
+  )
+  .post(
+    '/doCloseWorkdayWorkOrder',
+    updateWorkOrdersPostHandler,
+    handler_doCloseWorkdayWorkOrder
+  )
 
 // New
 
-router.get('/new', updateWorkOrdersGetHandler, handler_new)
-
-router.post(
-  '/doCreateWorkOrder',
-  updateWorkOrdersPostHandler,
-  handler_doCreateWorkOrder
-)
+router
+  .get('/new', updateWorkOrdersGetHandler, handler_new)
+  .post(
+    '/doCreateWorkOrder',
+    updateWorkOrdersPostHandler,
+    handler_doCreateWorkOrder
+  )
 
 // View
 
 router.get('/byWorkOrderNumber/:workOrderNumber', handler_byWorkOrderNumber)
 
-router.get('/:workOrderId', handler_view)
-
-router.post(
-  '/doReopenWorkOrder',
-  updateWorkOrdersPostHandler,
-  handler_doReopenWorkOrder
-)
+router
+  .get('/:workOrderId', handler_view)
+  .post(
+    '/doReopenWorkOrder',
+    updateWorkOrdersPostHandler,
+    handler_doReopenWorkOrder
+  )
 
 // Edit
 
-router.get('/:workOrderId/edit', updateWorkOrdersGetHandler, handler_edit)
-
-router.post(
-  '/doUpdateWorkOrder',
-  updateWorkOrdersPostHandler,
-  handler_doUpdateWorkOrder
-)
-
-router.post(
-  '/doCloseWorkOrder',
-  updateWorkOrdersPostHandler,
-  handler_doCloseWorkOrder
-)
-
-router.post(
-  '/doDeleteWorkOrder',
-  updateWorkOrdersPostHandler,
-  handler_doDeleteWorkOrder
-)
+router
+  .get('/:workOrderId/edit', updateWorkOrdersGetHandler, handler_edit)
+  .post(
+    '/doUpdateWorkOrder',
+    updateWorkOrdersPostHandler,
+    handler_doUpdateWorkOrder
+  )
+  .post(
+    '/doCloseWorkOrder',
+    updateWorkOrdersPostHandler,
+    handler_doCloseWorkOrder
+  )
+  .post(
+    '/doDeleteWorkOrder',
+    updateWorkOrdersPostHandler,
+    handler_doDeleteWorkOrder
+  )
 
 // Burial Site Contract
 
-router.post(
-  '/doAddWorkOrderContract',
-  updateWorkOrdersPostHandler,
-  handler_doAddWorkOrderContract
-)
-
-router.post(
-  '/doDeleteWorkOrderContract',
-  updateWorkOrdersPostHandler,
-  handler_doDeleteWorkOrderContract
-)
-
-router.post(
-  '/doAddWorkOrderBurialSite',
-  updateWorkOrdersPostHandler,
-  handler_doAddWorkOrderBurialSite
-)
-
-router.post(
-  '/doUpdateBurialSiteStatus',
-  updateWorkOrdersPostHandler,
-  handler_doUpdateBurialSiteStatus
-)
-
-router.post(
-  '/doDeleteWorkOrderBurialSite',
-  updateWorkOrdersPostHandler,
-  handler_doDeleteWorkOrderBurialSite
-)
+router
+  .post(
+    '/doAddWorkOrderContract',
+    updateWorkOrdersPostHandler,
+    handler_doAddWorkOrderContract
+  )
+  .post(
+    '/doDeleteWorkOrderContract',
+    updateWorkOrdersPostHandler,
+    handler_doDeleteWorkOrderContract
+  )
+  .post(
+    '/doAddWorkOrderBurialSite',
+    updateWorkOrdersPostHandler,
+    handler_doAddWorkOrderBurialSite
+  )
+  .post(
+    '/doUpdateBurialSiteStatus',
+    updateWorkOrdersPostHandler,
+    handler_doUpdateBurialSiteStatus
+  )
+  .post(
+    '/doDeleteWorkOrderBurialSite',
+    updateWorkOrdersPostHandler,
+    handler_doDeleteWorkOrderBurialSite
+  )
 
 // Comments
 
-router.post(
-  '/doAddWorkOrderComment',
-  updateWorkOrdersPostHandler,
-  handler_doAddWorkOrderComment
-)
-
-router.post(
-  '/doUpdateWorkOrderComment',
-  updateWorkOrdersPostHandler,
-  handler_doUpdateWorkOrderComment
-)
-
-router.post(
-  '/doDeleteWorkOrderComment',
-  updateWorkOrdersPostHandler,
-  handler_doDeleteWorkOrderComment
-)
+router
+  .post(
+    '/doAddWorkOrderComment',
+    updateWorkOrdersPostHandler,
+    handler_doAddWorkOrderComment
+  )
+  .post(
+    '/doUpdateWorkOrderComment',
+    updateWorkOrdersPostHandler,
+    handler_doUpdateWorkOrderComment
+  )
+  .post(
+    '/doDeleteWorkOrderComment',
+    updateWorkOrdersPostHandler,
+    handler_doDeleteWorkOrderComment
+  )
 
 // Milestones
 
-router.post(
-  '/doAddWorkOrderMilestone',
-  updateWorkOrdersPostHandler,
-  handler_doAddWorkOrderMilestone
-)
-
-router.post(
-  '/doUpdateWorkOrderMilestone',
-  updateWorkOrdersPostHandler,
-  handler_doUpdateWorkOrderMilestone
-)
-
-router.post(
-  '/doCompleteWorkOrderMilestone',
-  updateWorkOrdersPostHandler,
-  handler_doCompleteWorkOrderMilestone
-)
-
-router.post(
-  '/doReopenWorkOrderMilestone',
-  updateWorkOrdersPostHandler,
-  handler_doReopenWorkOrderMilestone
-)
-
-router.post(
-  '/doDeleteWorkOrderMilestone',
-  updateWorkOrdersPostHandler,
-  handler_doDeleteWorkOrderMilestone
-)
+router
+  .post(
+    '/doAddWorkOrderMilestone',
+    updateWorkOrdersPostHandler,
+    handler_doAddWorkOrderMilestone
+  )
+  .post(
+    '/doUpdateWorkOrderMilestone',
+    updateWorkOrdersPostHandler,
+    handler_doUpdateWorkOrderMilestone
+  )
+  .post(
+    '/doCompleteWorkOrderMilestone',
+    updateWorkOrdersPostHandler,
+    handler_doCompleteWorkOrderMilestone
+  )
+  .post(
+    '/doReopenWorkOrderMilestone',
+    updateWorkOrdersPostHandler,
+    handler_doReopenWorkOrderMilestone
+  )
+  .post(
+    '/doDeleteWorkOrderMilestone',
+    updateWorkOrdersPostHandler,
+    handler_doDeleteWorkOrderMilestone
+  )
 
 export default router

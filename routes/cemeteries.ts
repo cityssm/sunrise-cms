@@ -18,32 +18,30 @@ export const router = Router()
 
 router.get('/', handler_search)
 
-router.get('/new', updateCemeteriesGetHandler, handler_new)
+router
+  .get('/new', updateCemeteriesGetHandler, handler_new)
+  .post(
+    '/doCreateCemetery',
+    updateCemeteriesPostHandler,
+    handler_doCreateCemetery
+  )
 
-router.get('/:cemeteryId', handler_view)
+router
+  .get('/:cemeteryId', handler_view)
+  .get('/:cemeteryId/next', handler_next)
+  .get('/:cemeteryId/previous', handler_previous)
 
-router.get('/:cemeteryId/next', handler_next)
-
-router.get('/:cemeteryId/previous', handler_previous)
-
-router.get('/:cemeteryId/edit', updateCemeteriesGetHandler, handler_edit)
-
-router.post(
-  '/doCreateCemetery',
-  updateCemeteriesPostHandler,
-  handler_doCreateCemetery
-)
-
-router.post(
-  '/doUpdateCemetery',
-  updateCemeteriesPostHandler,
-  handler_doUpdateCemetery
-)
-
-router.post(
-  '/doDeleteCemetery',
-  updateCemeteriesPostHandler,
-  handler_doDeleteCemetery
-)
+router
+  .get('/:cemeteryId/edit', updateCemeteriesGetHandler, handler_edit)
+  .post(
+    '/doUpdateCemetery',
+    updateCemeteriesPostHandler,
+    handler_doUpdateCemetery
+  )
+  .post(
+    '/doDeleteCemetery',
+    updateCemeteriesPostHandler,
+    handler_doDeleteCemetery
+  )
 
 export default router
