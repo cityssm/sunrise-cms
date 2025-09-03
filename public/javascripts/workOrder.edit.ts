@@ -122,9 +122,10 @@ declare const exports: {
           globalThis.location.href = sunrise.getWorkOrderURL(workOrderId)
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Closing Work Order',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -139,8 +140,8 @@ declare const exports: {
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
-          success: boolean
           errorMessage?: string
+          success: boolean
         }
 
         if (responseJSON.success) {
@@ -164,7 +165,7 @@ declare const exports: {
     .querySelector('#button--closeWorkOrder')
     ?.addEventListener('click', () => {
       const hasOpenMilestones = workOrderMilestones.some(
-        (milestone) => !milestone.workOrderMilestoneCompletionDate
+        (milestone) => milestone.workOrderMilestoneCompletionDate === null
       )
 
       if (hasOpenMilestones) {
@@ -175,20 +176,6 @@ declare const exports: {
           message: `You cannot close a work order with outstanding milestones.
             Either complete the outstanding milestones, or remove them from the work order.`
         })
-
-        /*
-          // Disable closing work orders with open milestones
-          bulmaJS.confirm({
-            title: "Close Work Order with Outstanding Milestones",
-            message:
-              "Are you sure you want to close this work order with outstanding milestones?",
-            contextualColorName: "danger",
-            okButton: {
-              text: "Yes, Close Work Order",
-              callbackFunction: doClose
-            }
-          });
-      */
       } else {
         bulmaJS.confirm({
           contextualColorName: sunrise.hasUnsavedChanges() ? 'warning' : 'info',
@@ -425,8 +412,8 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderMilestone`,
         {
-          workOrderMilestoneId,
-          workOrderId
+          workOrderId,
+          workOrderMilestoneId
         },
         processMilestoneResponse
       )
@@ -735,17 +722,17 @@ declare const exports: {
                 ${
                   milestone.workOrderMilestoneCompletionDate
                     ? `<a class="dropdown-item button--reopenMilestone" href="#">
-                        <span class="icon is-small"><i class="fa-solid fa-times"></i></span>
+                        <span class="icon"><i class="fa-solid fa-times"></i></span>
                         <span>Reopen Milestone</span>
                         </a>`
                     : `<a class="dropdown-item button--editMilestone" href="#">
-                        <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
+                        <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
                         <span>Edit Milestone</span>
                         </a>`
                 }
                 <hr class="dropdown-divider" />
                 <a class="dropdown-item button--deleteMilestone" href="#">
-                  <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
+                  <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
                   <span>Delete Milestone</span>
                 </a>
               </div>

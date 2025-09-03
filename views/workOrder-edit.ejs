@@ -94,7 +94,7 @@
           <div class="dropdown-menu">
             <div class="dropdown-content has-text-left">
               <a class="dropdown-item" id="button--deleteWorkOrder" href="#">
-                <span class="icon is-small">
+                <span class="icon">
                   <i class="fa-solid fa-trash has-text-danger"></i>
                 </span>
                 <span>Delete Work Order</span>
@@ -229,11 +229,11 @@
                   <div class="dropdown-menu">
                     <div class="dropdown-content has-text-weight-normal">
                       <a class="dropdown-item" id="button--addContract" href="#">
-                        <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
                         <span>Add a Related Contract</span>
                       </a>
                       <a class="dropdown-item" id="button--addBurialSite" href="#">
-                        <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
                         <span>Add a Related Burial Site</span>
                       </a>
                     </div>
@@ -303,11 +303,11 @@
                   <div class="dropdown-menu">
                     <div class="dropdown-content">
                       <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
-                        <span class="icon is-small"><i class="fa-solid fa-calendar"></i></span>
+                        <span class="icon"><i class="fa-solid fa-calendar"></i></span>
                         <span>Download iCalendar</span>
                       </a>
                       <a class="dropdown-item" href="<%= urlPrefix %>/reports/workOrderMilestones-byWorkOrderId/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" download>
-                        <span class="icon is-small"><i class="fa-solid fa-download"></i></span>
+                        <span class="icon"><i class="fa-solid fa-download"></i></span>
                         <span>Export as CSV</span>
                       </a>
                     </div>
