@@ -3,7 +3,6 @@ export const config = defineConfig(configWebApp, {
     files: ['**/*.ts'],
     languageOptions: {
         parserOptions: {
-            // eslint-disable-next-line @cspell/spellchecker
             project: ['./tsconfig.json', './public/javascripts/tsconfig.json']
         }
     },
@@ -20,12 +19,12 @@ export const config = defineConfig(configWebApp, {
                         'fontawesome',
                         'gapless',
                         'ical',
+                        'javascripts',
                         'latlng',
                         'ntfy',
                         'onhidden',
                         'pdfa',
-                        'preneed',
-                        'randomcolor'
+                        'preneed'
                     ]
                 }
             }

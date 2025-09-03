@@ -160,31 +160,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         workOrderCloseDate: cityssm.escapeHTML(exports.aliases.workOrderCloseDate.toLowerCase())
     });
     /*
-     * Colors
-     */
-    const hues = [
-        'red',
-        'green',
-        'orange',
-        'blue',
-        'pink',
-        'yellow',
-        'purple'
-    ];
-    const luminosity = ['bright', 'light', 'dark'];
-    function getRandomColor(seedString) {
-        let actualSeedString = seedString;
-        if (actualSeedString.length < 2) {
-            actualSeedString += 'a1';
-        }
-        return exports.randomColor({
-            hue: hues[actualSeedString.codePointAt(actualSeedString.length - 1) %
-                hues.length],
-            luminosity: luminosity[actualSeedString.codePointAt(actualSeedString.length - 2) % luminosity.length],
-            seed: actualSeedString + actualSeedString
-        });
-    }
-    /*
      * Bulma Snippets
      */
     function getMoveUpDownButtonFieldHTML(upButtonClassNames, downButtonClassNames, isSmall = true) {
@@ -292,7 +267,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         initializeUnlockFieldButtons,
         escapedAliases,
         populateAliases,
-        getRandomColor,
         clearUnsavedChanges,
         hasUnsavedChanges,
         setUnsavedChanges,

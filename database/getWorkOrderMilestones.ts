@@ -232,6 +232,7 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
           ? Number.parseInt(filters.workOrderMilestoneMonth)
           : filters.workOrderMilestoneMonth ?? new Date().getMonth() + 1
 
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       const yearMonth = yearNumber * 10_000 + monthNumber * 100
 
       sqlWhereClause += ' and m.workOrderMilestoneDate between ? and ?'

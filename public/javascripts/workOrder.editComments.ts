@@ -42,8 +42,8 @@ declare const exports: Record<string, unknown>
         editFormElement,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
             errorMessage?: string
+            success: boolean
             workOrderComments: WorkOrderComment[]
           }
 
@@ -53,9 +53,10 @@ declare const exports: Record<string, unknown>
             renderWorkOrderComments()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Updating Comment',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -90,7 +91,8 @@ declare const exports: Record<string, unknown>
         const currentDateString = cityssm.dateToString(new Date())
 
         workOrderCommentDateStringElement.max =
-          workOrderComment.commentDateString! <= currentDateString
+          // eslint-disable-next-line unicorn/prefer-math-min-max
+          (workOrderComment.commentDateString ?? '') <= currentDateString
             ? currentDateString
             : workOrderComment.commentDateString ?? ''
         ;(
@@ -112,6 +114,7 @@ declare const exports: Record<string, unknown>
 
         editCloseModalFunction = closeModalFunction
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
@@ -129,13 +132,13 @@ declare const exports: Record<string, unknown>
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderComment`,
         {
-          workOrderId,
-          workOrderCommentId
+          workOrderCommentId,
+          workOrderId
         },
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            success: boolean
             errorMessage?: string
+            success: boolean
             workOrderComments: WorkOrderComment[]
           }
 
@@ -144,9 +147,10 @@ declare const exports: Record<string, unknown>
             renderWorkOrderComments()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Removing Comment',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -154,13 +158,14 @@ declare const exports: Record<string, unknown>
     }
 
     bulmaJS.confirm({
+      contextualColorName: 'warning',
       title: 'Remove Comment?',
+
       message: 'Are you sure you want to remove this comment?',
       okButton: {
-        text: 'Yes, Remove Comment',
-        callbackFunction: doDelete
-      },
-      contextualColorName: 'warning'
+        callbackFunction: doDelete,
+        text: 'Yes, Remove Comment'
+      }
     })
   }
 
@@ -179,12 +184,12 @@ declare const exports: Record<string, unknown>
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-fullwidth is-striped is-hoverable'
     tableElement.innerHTML = `<thead><tr>
-          <th>Author</th>
-          <th>Comment Date</th>
-          <th>Comment</th>
-          <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-          </tr></thead>
-          <tbody></tbody>`
+      <th>Author</th>
+      <th>Comment Date</th>
+      <th>Comment</th>
+      <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+      </tr></thead>
+      <tbody></tbody>`
 
     for (const workOrderComment of workOrderComments) {
       const tableRowElement = document.createElement('tr')
@@ -277,6 +282,7 @@ declare const exports: Record<string, unknown>
           ) as HTMLTextAreaElement
         ).focus()
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
         ;(

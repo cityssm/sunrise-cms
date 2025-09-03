@@ -22,9 +22,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Updating Comment',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -40,7 +40,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     workOrderComment.commentDateString ?? '';
                 const currentDateString = cityssm.dateToString(new Date());
                 workOrderCommentDateStringElement.max =
-                    workOrderComment.commentDateString <= currentDateString
+                    // eslint-disable-next-line unicorn/prefer-math-min-max
+                    (workOrderComment.commentDateString ?? '') <= currentDateString
                         ? currentDateString
                         : workOrderComment.commentDateString ?? '';
                 modalElement.querySelector('#workOrderCommentEdit--commentTimeString').value = workOrderComment.commentTimeString ?? '';
@@ -62,8 +63,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .workOrderCommentId ?? '', 10);
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderComment`, {
-                workOrderId,
-                workOrderCommentId
+                workOrderCommentId,
+                workOrderId
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
@@ -72,21 +73,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Removing Comment',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Remove Comment?',
             message: 'Are you sure you want to remove this comment?',
             okButton: {
-                text: 'Yes, Remove Comment',
-                callbackFunction: doDelete
-            },
-            contextualColorName: 'warning'
+                callbackFunction: doDelete,
+                text: 'Yes, Remove Comment'
+            }
         });
     }
     function renderWorkOrderComments() {
@@ -100,12 +101,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
         tableElement.innerHTML = `<thead><tr>
-          <th>Author</th>
-          <th>Comment Date</th>
-          <th>Comment</th>
-          <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-          </tr></thead>
-          <tbody></tbody>`;
+      <th>Author</th>
+      <th>Comment Date</th>
+      <th>Comment</th>
+      <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+      </tr></thead>
+      <tbody></tbody>`;
         for (const workOrderComment of workOrderComments) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.workOrderCommentId =

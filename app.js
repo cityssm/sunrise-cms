@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { secondsToMillis } from '@cityssm/to-millis';
+import { millisecondsInOneMinute } from '@cityssm/to-millis';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
@@ -11,7 +11,7 @@ import session from 'express-session';
 import createError from 'http-errors';
 import FileStore from 'session-file-store';
 import dataLists from './data/dataLists.js';
-import { DEBUG_NAMESPACE } from './debug.config.js';
+import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from './debug.config.js';
 import * as permissionHandlers from './handlers/permissions.js';
 import { getSafeRedirectURL } from './helpers/authentication.helpers.js';
 import { getCachedSettingValue } from './helpers/cache/settings.cache.js';
@@ -30,7 +30,7 @@ import routerPrint from './routes/print.js';
 import routerReports from './routes/reports.js';
 import routerWorkOrders from './routes/workOrders.js';
 import { version } from './version.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(5)}`);
+const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`);
 /*
  * INITIALIZE APP
  */
@@ -62,10 +62,11 @@ csurf({
 /*
  * Rate Limiter
  */
-if (configFunctions.getConfigProperty('reverseProxy.disableRateLimit')) {
+if (!configFunctions.getConfigProperty('reverseProxy.disableRateLimit')) {
     app.use(rateLimit({
-        limit: useTestDatabases ? 1_000_000 : 200,
-        windowMs: secondsToMillis(10)
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        limit: useTestDatabases ? 1_000_000 : 2000,
+        windowMs: millisecondsInOneMinute
     }));
 }
 /*
@@ -82,7 +83,7 @@ app.use(session({
     },
     secret: configFunctions.getConfigProperty('session.secret'),
     store: new FileStoreSession({
-        logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid.toString().padEnd(5)}`),
+        logFn: Debug(`${DEBUG_NAMESPACE}:session:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`),
         path: './data/sessions',
         retries: 20
     }),
@@ -125,7 +126,6 @@ app.use(`${urlPrefix}/lib/cityssm-bulma-sticky-table`, express.static('node_modu
 app.use(`${urlPrefix}/lib/cityssm-bulma-webapp-js`, express.static('node_modules/@cityssm/bulma-webapp-js/dist'));
 app.use(`${urlPrefix}/lib/fa`, express.static('node_modules/@fortawesome/fontawesome-free'));
 app.use(`${urlPrefix}/lib/leaflet`, express.static('node_modules/leaflet/dist'));
-app.use(`${urlPrefix}/lib/randomcolor/randomColor.js`, express.static('node_modules/randomcolor/randomColor.js'));
 /*
  * ROUTES
  */

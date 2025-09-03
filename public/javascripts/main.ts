@@ -4,31 +4,12 @@ import type * as Leaflet from 'leaflet'
 
 import type { Sunrise } from './types.js'
 
-type RandomColorHue =
-  | 'blue'
-  | 'green'
-  | 'monochrome'
-  | 'orange'
-  | 'pink'
-  | 'purple'
-  | 'red'
-  | 'yellow'
-type RandomColorLuminosity = 'bright' | 'dark' | 'light'
-
 declare const L: typeof Leaflet
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const exports: Record<string, unknown> & {
   aliases: Record<string, string>
-  randomColor: (options?: {
-    alpha?: number
-    count?: number
-    format?: 'hex' | 'hsl' | 'hsla' | 'hslArray' | 'rgb' | 'rgba' | 'rgbArray'
-    hue?: RandomColorHue
-    luminosity?: RandomColorLuminosity
-    seed?: number | string
-  }) => string
 }
 ;(() => {
   /*
@@ -266,43 +247,6 @@ declare const exports: Record<string, unknown> & {
   })
 
   /*
-   * Colors
-   */
-
-  const hues = [
-    'red',
-    'green',
-    'orange',
-    'blue',
-    'pink',
-    'yellow',
-    'purple'
-  ] as RandomColorHue[]
-  const luminosity = ['bright', 'light', 'dark'] as RandomColorLuminosity[]
-
-  function getRandomColor(seedString: string): string {
-    let actualSeedString = seedString
-
-    if (actualSeedString.length < 2) {
-      actualSeedString += 'a1'
-    }
-
-    return exports.randomColor({
-      hue: hues[
-        (actualSeedString.codePointAt(actualSeedString.length - 1) as number) %
-          hues.length
-      ],
-      luminosity:
-        luminosity[
-          (actualSeedString.codePointAt(
-            actualSeedString.length - 2
-          ) as number) % luminosity.length
-        ],
-      seed: actualSeedString + actualSeedString
-    })
-  }
-
-  /*
    * Bulma Snippets
    */
 
@@ -479,8 +423,6 @@ declare const exports: Record<string, unknown> & {
 
     escapedAliases,
     populateAliases,
-
-    getRandomColor,
 
     clearUnsavedChanges,
     hasUnsavedChanges,

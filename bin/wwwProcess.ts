@@ -4,7 +4,7 @@ import Debug from 'debug'
 import exitHook, { gracefulExit } from 'exit-hook'
 
 import { app } from '../app.js'
-import { DEBUG_NAMESPACE } from '../debug.config.js'
+import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import {
   initializeApplication,
@@ -12,7 +12,7 @@ import {
 } from '../helpers/startup.helpers.js'
 
 const debug = Debug(
-  `${DEBUG_NAMESPACE}:wwwProcess:${process.pid.toString().padEnd(5)}`
+  `${DEBUG_NAMESPACE}:wwwProcess:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`
 )
 
 if (isPrimaryProcess()) {

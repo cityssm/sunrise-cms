@@ -39,8 +39,6 @@ export interface Sunrise {
 
   dynamicsGPIntegrationIsEnabled: boolean
 
-  getRandomColor: (seedString: string) => string
-
   clearUnsavedChanges: () => void
   hasUnsavedChanges: () => boolean
   setUnsavedChanges: () => void

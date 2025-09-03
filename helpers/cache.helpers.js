@@ -1,6 +1,6 @@
 import cluster from 'node:cluster';
 import Debug from 'debug';
-import { DEBUG_NAMESPACE } from '../debug.config.js';
+import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js';
 import { clearApiKeysCache, getCachedApiKeys } from './cache/apiKeys.cache.js';
 import { clearBurialSiteStatusesCache, getCachedBurialSiteStatuses } from './cache/burialSiteStatuses.cache.js';
 import { clearBurialSiteTypesCache, getCachedBurialSiteTypes } from './cache/burialSiteTypes.cache.js';
@@ -10,7 +10,7 @@ import { clearIntermentContainerTypesCache, getCachedIntermentContainerTypes } f
 import { clearSettingsCache, getCachedSettings } from './cache/settings.cache.js';
 import { clearWorkOrderMilestoneTypesCache, getCachedWorkOrderMilestoneTypes } from './cache/workOrderMilestoneTypes.cache.js';
 import { clearWorkOrderTypesCache, getCachedWorkOrderTypes } from './cache/workOrderTypes.cache.js';
-const debug = Debug(`${DEBUG_NAMESPACE}:helpers.cache:${process.pid.toString().padEnd(5)}`);
+const debug = Debug(`${DEBUG_NAMESPACE}:helpers.cache:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`);
 /*
  * Cache Management
  */
