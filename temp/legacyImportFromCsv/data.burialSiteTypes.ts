@@ -50,7 +50,8 @@ export function getBurialSiteTypeId(cemeteryKey: string): number {
     case 'UG': {
       return urnGardenBurialSiteTypeId
     }
+    default: {
+      return inGroundBurialSiteTypeId
+    }
   }
-
-  return inGroundBurialSiteTypeId
 }

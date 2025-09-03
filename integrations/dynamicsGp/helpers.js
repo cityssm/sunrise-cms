@@ -95,6 +95,8 @@ async function _getDynamicsGPDocument(documentNumber, lookupType) {
             }
             break;
         }
+        // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
+        // no default
     }
     return document;
 }

@@ -30,6 +30,8 @@ export default async function getWorkOrderMilestones(filters, options, connected
         t.orderNumber, m.workOrderId, m.workOrderMilestoneId`;
             break;
         }
+        // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
+        // no default
     }
     // Query
     // eslint-disable-next-line no-secrets/no-secrets
@@ -107,7 +109,6 @@ function buildWhereClause(filters) {
     const recentBeforeDateNumber = dateToInteger(date);
     date.setDate(date.getDate() + recentBeforeDays + recentAfterDays);
     const recentAfterDateNumber = dateToInteger(date);
-    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
     switch (filters.workOrderMilestoneDateFilter) {
         case 'blank': {
             sqlWhereClause += ' and m.workOrderMilestoneDate = 0';
@@ -141,6 +142,7 @@ function buildWhereClause(filters) {
             sqlParameters.push(yearMonth, yearMonth + 100);
             break;
         }
+        // no default
     }
     if (filters.workOrderMilestoneDateString !== undefined &&
         filters.workOrderMilestoneDateString !== '') {

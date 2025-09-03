@@ -100,6 +100,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 recordURL = sunrise.getWorkOrderURL(logEntry.recordId);
                 break;
             }
+            // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
+            // no default
         }
         return { recordTypeHTML, recordURL };
     }

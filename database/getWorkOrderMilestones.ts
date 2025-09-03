@@ -79,6 +79,9 @@ export default async function getWorkOrderMilestones(
         t.orderNumber, m.workOrderId, m.workOrderMilestoneId`
       break
     }
+
+    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
+    // no default
   }
 
   // Query
@@ -193,7 +196,6 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
 
   const recentAfterDateNumber = dateToInteger(date)
 
-  // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
   switch (filters.workOrderMilestoneDateFilter) {
     case 'blank': {
       sqlWhereClause += ' and m.workOrderMilestoneDate = 0'
@@ -236,6 +238,8 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
       sqlParameters.push(yearMonth, yearMonth + 100)
       break
     }
+
+    // no default
   }
 
   if (

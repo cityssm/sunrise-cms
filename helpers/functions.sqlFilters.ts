@@ -35,7 +35,10 @@ export function getBurialSiteNameWhereClause(
         const burialSiteNamePieces = burialSiteName.toLowerCase().split(' ')
 
         for (const burialSiteNamePiece of burialSiteNamePieces) {
-          if (burialSiteNamePiece === '' || usedPieces.has(burialSiteNamePiece)) {
+          if (
+            burialSiteNamePiece === '' ||
+            usedPieces.has(burialSiteNamePiece)
+          ) {
             continue
           }
 
@@ -63,7 +66,6 @@ export function getContractTimeWhereClause(
 
   const currentDateString = dateToInteger(new Date())
 
-  // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
   switch (contractTime ?? '') {
     case 'current': {
       sqlWhereClause += ` and ${contractsTableAlias}.contractStartDate <= ?
@@ -73,18 +75,18 @@ export function getContractTimeWhereClause(
     }
 
     case 'future': {
-      sqlWhereClause +=
-        ` and ${contractsTableAlias}.contractStartDate > ?`
+      sqlWhereClause += ` and ${contractsTableAlias}.contractStartDate > ?`
       sqlParameters.push(currentDateString)
       break
     }
 
     case 'past': {
-      sqlWhereClause +=
-        ` and ${contractsTableAlias}.contractEndDate < ?`
+      sqlWhereClause += ` and ${contractsTableAlias}.contractEndDate < ?`
       sqlParameters.push(currentDateString)
       break
     }
+
+    // no default
   }
 
   return {

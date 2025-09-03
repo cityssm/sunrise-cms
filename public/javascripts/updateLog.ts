@@ -157,6 +157,9 @@ declare const exports: {
 
         break
       }
+
+      // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
+      // no default
     }
 
     return { recordTypeHTML, recordURL }

@@ -50,6 +50,7 @@ export function getPrintConfig(screenOrPdfPrintName) {
         case 'screen': {
             return getScreenPrintConfig(printNameSplit[1]);
         }
+        // no default
     }
     return undefined;
 }

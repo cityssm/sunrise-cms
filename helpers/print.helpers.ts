@@ -93,6 +93,7 @@ export function getPrintConfig(
     case 'screen': {
       return getScreenPrintConfig(printNameSplit[1])
     }
+    // no default
   }
 
   return undefined

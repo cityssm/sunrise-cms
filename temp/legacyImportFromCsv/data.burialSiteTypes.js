@@ -25,6 +25,8 @@ export function getBurialSiteTypeId(cemeteryKey) {
         case 'UG': {
             return urnGardenBurialSiteTypeId;
         }
+        default: {
+            return inGroundBurialSiteTypeId;
+        }
     }
-    return inGroundBurialSiteTypeId;
 }
