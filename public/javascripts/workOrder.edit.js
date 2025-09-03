@@ -62,7 +62,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
-                globalThis.location.href = sunrise.getWorkOrderURL(workOrderId);
+                globalThis.location.href = sunrise.getWorkOrderURL(responseJSON.workOrderId);
             }
             else {
                 bulmaJS.alert({

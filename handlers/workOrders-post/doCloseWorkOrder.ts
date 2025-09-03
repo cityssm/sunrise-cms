@@ -10,7 +10,14 @@ export default function handler(
 ): void {
   const success = closeWorkOrder(request.body, request.session.user as User)
 
+  const workOrderIdNumber =
+    typeof request.body.workOrderId === 'string'
+      ? Number.parseInt(request.body.workOrderId)
+      : request.body.workOrderId
+
   response.json({
-    success
+    success,
+
+    workOrderId: success ? workOrderIdNumber : undefined
   })
 }

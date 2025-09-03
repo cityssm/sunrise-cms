@@ -116,14 +116,15 @@ declare const exports: {
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
+          errorMessage?: string
           success: boolean
 
-          errorMessage?: string
+          workOrderId?: number
         }
 
         if (responseJSON.success) {
           clearUnsavedChanges()
-          globalThis.location.href = sunrise.getWorkOrderURL(workOrderId)
+          globalThis.location.href = sunrise.getWorkOrderURL(responseJSON.workOrderId)
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
