@@ -1,4 +1,3 @@
-import { fork } from 'node:child_process';
 import cluster from 'node:cluster';
 import os from 'node:os';
 import path from 'node:path';
@@ -7,13 +6,12 @@ import { secondsToMillis } from '@cityssm/to-millis';
 import Debug from 'debug';
 import exitHook, { gracefulExit } from 'exit-hook';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
-import { initializeApplication } from '../helpers/application.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { ntfyIsEnabled, sendShutdownNotification, sendStartupNotification } from '../integrations/ntfy/helpers.js';
+import { initializeApplication } from '../helpers/startup.helpers.js';
 import version from '../version.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:www:${process.pid}`);
 // INITIALIZE THE APPLICATION
-initializeApplication();
+await initializeApplication();
 const directoryName = path.dirname(fileURLToPath(import.meta.url));
 const processCount = Math.min(getConfigProperty('application.maximumProcesses'), os.cpus().length * 2);
 const applicationName = getConfigProperty('application.applicationName');
@@ -55,24 +53,19 @@ cluster.on('exit', (worker) => {
     }
 });
 /*
- * Start other tasks
+ * Set up the exit hook
  */
-const childProcesses = [];
-if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
-    childProcesses.push(fork(path.join('integrations', 'consignoCloud', 'updateWorkflows.task.js')));
-}
-if (getConfigProperty('settings.databaseBackup.taskIsEnabled')) {
-    childProcesses.push(fork(path.join('tasks', 'backupDatabase.task.js')));
-}
+exitHook(() => {
+    doShutdown = true;
+    debug('Shutting down cluster workers...');
+    for (const worker of activeWorkers.values()) {
+        debug(`Killing worker ${worker.process.pid}`);
+        worker.kill();
+    }
+});
 /*
- * Set up the ntfy notifications
+ * Set up the startup test
  */
-if (ntfyIsEnabled) {
-    await sendStartupNotification();
-    exitHook(() => {
-        void sendShutdownNotification();
-    });
-}
 if (process.env.STARTUP_TEST === 'true') {
     const killSeconds = 10;
     debug(`Killing processes in ${killSeconds} seconds...`);
@@ -82,18 +75,3 @@ if (process.env.STARTUP_TEST === 'true') {
         gracefulExit(0);
     }, secondsToMillis(killSeconds));
 }
-/*
- * Set up the exit hook
- */
-exitHook(() => {
-    doShutdown = true;
-    debug('Shutting down...');
-    for (const worker of activeWorkers.values()) {
-        debug(`Killing worker ${worker.process.pid}`);
-        worker.kill();
-    }
-    for (const childProcess of childProcesses) {
-        debug(`Killing child process ${childProcess.pid}`);
-        childProcess.kill();
-    }
-});

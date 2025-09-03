@@ -1,4 +1,3 @@
-import { type ChildProcess, fork } from 'node:child_process'
 import cluster, { type Worker } from 'node:cluster'
 import os from 'node:os'
 import path from 'node:path'
@@ -9,20 +8,15 @@ import Debug from 'debug'
 import exitHook, { gracefulExit } from 'exit-hook'
 
 import { DEBUG_NAMESPACE } from '../debug.config.js'
-import { initializeApplication } from '../helpers/application.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
-import {
-  ntfyIsEnabled,
-  sendShutdownNotification,
-  sendStartupNotification
-} from '../integrations/ntfy/helpers.js'
+import { initializeApplication } from '../helpers/startup.helpers.js'
 import type { WorkerMessage } from '../types/application.types.js'
 import version from '../version.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:www:${process.pid}`)
 
 // INITIALIZE THE APPLICATION
-initializeApplication()
+await initializeApplication()
 
 const directoryName = path.dirname(fileURLToPath(import.meta.url))
 
@@ -83,34 +77,22 @@ cluster.on('exit', (worker) => {
 })
 
 /*
- * Start other tasks
+ * Set up the exit hook
  */
 
-const childProcesses: ChildProcess[] = []
+exitHook(() => {
+  doShutdown = true
+  debug('Shutting down cluster workers...')
 
-if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
-  childProcesses.push(
-    fork(path.join('integrations', 'consignoCloud', 'updateWorkflows.task.js'))
-  )
-}
-
-if (getConfigProperty('settings.databaseBackup.taskIsEnabled')) {
-  childProcesses.push(
-    fork(path.join('tasks', 'backupDatabase.task.js'))
-  )
-}
+  for (const worker of activeWorkers.values()) {
+    debug(`Killing worker ${worker.process.pid}`)
+    worker.kill()
+  }
+})
 
 /*
- * Set up the ntfy notifications
+ * Set up the startup test
  */
-
-if (ntfyIsEnabled) {
-  await sendStartupNotification()
-
-  exitHook(() => {
-    void sendShutdownNotification()
-  })
-}
 
 if (process.env.STARTUP_TEST === 'true') {
   const killSeconds = 10
@@ -125,22 +107,3 @@ if (process.env.STARTUP_TEST === 'true') {
     gracefulExit(0)
   }, secondsToMillis(killSeconds))
 }
-
-/*
- * Set up the exit hook
- */
-
-exitHook(() => {
-  doShutdown = true
-  debug('Shutting down...')
-
-  for (const worker of activeWorkers.values()) {
-    debug(`Killing worker ${worker.process.pid}`)
-    worker.kill()
-  }
-
-  for (const childProcess of childProcesses) {
-    debug(`Killing child process ${childProcess.pid}`)
-    childProcess.kill()
-  }
-})

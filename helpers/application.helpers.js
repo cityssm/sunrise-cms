@@ -1,13 +1,4 @@
-import { fork } from 'node:child_process';
-import { minutesToMillis } from '@cityssm/to-millis';
-import { initializeDatabase } from '../database/initializeDatabase.js';
 import { getConfigProperty } from './config.helpers.js';
-export function initializeApplication() {
-    initializeDatabase();
-    fork('./tasks/puppeteerSetup.task.js', {
-        timeout: minutesToMillis(15)
-    });
-}
 let applicationUrl = getConfigProperty('application.applicationUrl');
 /**
  * Get the application URL, including the reverse proxy URL prefix if set.

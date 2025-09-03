@@ -3,12 +3,12 @@ import Debug from 'debug';
 import exitHook, { gracefulExit } from 'exit-hook';
 import { app } from '../app.js';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
-import { initializeApplication } from '../helpers/application.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
+import { initializeApplication, isPrimaryProcess } from '../helpers/startup.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:wwwProcess:${process.pid.toString().padEnd(5)}`);
-if (process.send === undefined) {
+if (isPrimaryProcess()) {
     // INITIALIZE THE APPLICATION
-    initializeApplication();
+    await initializeApplication();
 }
 function onError(error) {
     if (error.syscall !== 'listen') {

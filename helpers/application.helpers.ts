@@ -1,19 +1,6 @@
-import { fork } from 'node:child_process'
-
-import { minutesToMillis } from '@cityssm/to-millis'
 import type { Request } from 'express'
 
-import { initializeDatabase } from '../database/initializeDatabase.js'
-
 import { getConfigProperty } from './config.helpers.js'
-
-export function initializeApplication(): void {
-  initializeDatabase()
-
-  fork('./tasks/puppeteerSetup.task.js', {
-    timeout: minutesToMillis(15)
-  })
-}
 
 let applicationUrl = getConfigProperty('application.applicationUrl')
 
