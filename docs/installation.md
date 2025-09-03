@@ -16,8 +16,13 @@ which is able to run on budget hardware.
 _More is better_, however under stress tests,
 the application peaked at the following:
 
-- 512 MB of RAM
+- x64 architecture.
+- 2 GB of RAM.
 - 1 GB of storage for application, dependencies, and data.
+  More if you intend to store attachments.
+
+## Recommended Requirements
+
 - Active Directory for authentication.
 
 ## Step 1: Install Node.js 20 or better and npm
@@ -35,31 +40,54 @@ Node.js and npm are also available in most package managers.
     > sudo apt install nodejs
     > sudo apt install npm
 
-## Step 2: Install git
+## Step 2: Install git and clone the repository
 
-_Alternatively, [releases are available on GitHub](https://github.com/cityssm/sunrise-cms/releases). Git is not required when using releases._
+_Alternatively, [releases are available on GitHub](https://github.com/cityssm/sunrise-cms/releases)._
+_Git is not required when using releases. If you are using releases, you can skip this step._
 
 [Git](https://git-scm.com/) is the version control system that manages the
 code for Sunrise CMS.
 
 Git can run on Windows, Mac, and Linux.
-You can install it using an install on the [Git website](https://git-scm.com/),
+You can install it using an installer from the [Git website](https://git-scm.com/),
 or from most package managers.
 
     > sudo apt install git
 
-## Step 3: Clone the `sunrise-cms` repository using git
-
-Open a command line, and navigate to the folder where the application will reside.
+Once git is ready, open a command line, and navigate to the folder where the application will reside.
 
     > git clone https://github.com/cityssm/sunrise-cms
 
-## Step 4: Install the dependencies
+## Step 3: Install the dependencies
 
     > cd sunrise-cms
     > npm install
 
-## Step 5: Create a `config.js` file
+In a perfect world, all of the dependencies will install successfully. There are however a couple dependencies
+that are occasionally difficult, depending on the platform you are installing on.
+If an error occurs during the install, the first recommendation is to delete the `node_modules` folder,
+and rerun `npm install`. If errors persist, here are the more common ones and their fixes.
+
+### Error Installing `better-sqlite3`
+
+On some platforms, the `better-sqlite3` needs to compile itself. When that is the case,
+it uses Python to do so. If compilation is necessary and Python is unavailable, the installation will fail.
+
+See the
+[common troubleshooting steps for `better-sqlite3`](https://github.com/WiseLibs/better-sqlite3/blob/master/docs/troubleshooting.md)
+for more troubleshooting steps.
+
+### Error Installing `puppeteer`
+
+Puppeteer is used by Sunrise CMS to generate PDFs.
+Installation may fail on platforms that no longer support the current versions of Google Chrome and Mozilla Firefox.
+Installation may also fail if the platform is missing certain system packages that are required by
+the web browsers. This issue is more common on Linux platforms that lack a desktop environment.
+
+See the [system requirements for Puppeteer](https://pptr.dev/guides/system-requirements)
+for Puppeteer's requirements, and the requirements of the browsers it uses.
+
+## Step 4: Create a `config.js` file
 
 It is recommended to copy the `testing.config.js` file to get started.
 
@@ -68,7 +96,7 @@ It is recommended to copy the `testing.config.js` file to get started.
 See the [config.js documentation](configJs.md) for help customizing
 your configuration.
 
-## Step 6: Start the application
+## Step 5: Start the application
 
 **Start Using npm**
 
