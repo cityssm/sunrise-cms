@@ -33,6 +33,7 @@ export async function initializeApplication(): Promise<void> {
    */
 
   fork('./tasks/puppeteerSetup.task.js', {
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     timeout: minutesToMillis(15)
   })
 

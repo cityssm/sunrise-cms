@@ -55,7 +55,10 @@ export function getContractTimeWhereClause(contractTime, contractsTableAlias = '
             sqlParameters.push(currentDateString);
             break;
         }
-        // no default
+        default: {
+            // no default
+            break;
+        }
     }
     return {
         sqlParameters,

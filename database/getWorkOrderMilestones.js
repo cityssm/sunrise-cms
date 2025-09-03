@@ -142,7 +142,10 @@ function buildWhereClause(filters) {
             sqlParameters.push(yearMonth, yearMonth + 100);
             break;
         }
-        // no default
+        default: {
+            // no default
+            break;
+        }
     }
     if (filters.workOrderMilestoneDateString !== undefined &&
         filters.workOrderMilestoneDateString !== '') {

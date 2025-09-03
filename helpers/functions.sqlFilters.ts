@@ -86,7 +86,10 @@ export function getContractTimeWhereClause(
       break
     }
 
-    // no default
+    default: {
+      // no default
+      break
+    }
   }
 
   return {

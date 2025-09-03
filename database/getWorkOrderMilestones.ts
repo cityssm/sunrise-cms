@@ -239,7 +239,10 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
       break
     }
 
-    // no default
+    default: {
+      // no default
+      break
+    }
   }
 
   if (
