@@ -33,7 +33,7 @@ export async function importFromPrepaidCSV() {
     const database = sqlite(databasePath);
     try {
         for (prepaidRow of cmprpaid.data) {
-            if (!prepaidRow.CMPP_PREPAID_FOR_NAME) {
+            if (prepaidRow.CMPP_PREPAID_FOR_NAME === '') {
                 continue;
             }
             let cemeteryKey = prepaidRow.CMPP_CEMETERY;
@@ -60,7 +60,7 @@ export async function importFromPrepaidCSV() {
                     burialSiteNameSegment4
                 });
                 burialSite = await getBurialSiteByBurialSiteName(burialSiteName, true, database);
-                if (!burialSite) {
+                if (burialSite !== undefined) {
                     const burialSiteTypeId = getBurialSiteTypeId(cemeteryKey);
                     const burialSiteKeys = addBurialSite({
                         burialSiteNameSegment1,
@@ -80,13 +80,13 @@ export async function importFromPrepaidCSV() {
                     burialSite = await getBurialSite(burialSiteKeys.burialSiteId, true, database);
                 }
             }
-            if (burialSite &&
+            if (burialSite !== undefined &&
                 burialSite.burialSiteStatusId === importIds.availableBurialSiteStatusId) {
                 updateBurialSiteStatus(burialSite.burialSiteId, importIds.reservedBurialSiteStatusId, user, database);
             }
             const contractStartDateString = formatDateString(prepaidRow.CMPP_PURCH_YR, prepaidRow.CMPP_PURCH_MON, prepaidRow.CMPP_PURCH_DAY);
             let contractId;
-            if (burialSite) {
+            if (burialSite !== undefined) {
                 const possibleContracts = await getContracts({
                     burialSiteId: burialSite.burialSiteId,
                     contractStartDateString,

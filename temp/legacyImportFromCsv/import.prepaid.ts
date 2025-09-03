@@ -48,7 +48,7 @@ export async function importFromPrepaidCSV(): Promise<void> {
 
   try {
     for (prepaidRow of cmprpaid.data) {
-      if (!prepaidRow.CMPP_PREPAID_FOR_NAME) {
+      if (prepaidRow.CMPP_PREPAID_FOR_NAME === '') {
         continue
       }
 
@@ -95,7 +95,7 @@ export async function importFromPrepaidCSV(): Promise<void> {
           database
         )
 
-        if (!burialSite) {
+        if (burialSite !== undefined) {
           const burialSiteTypeId = getBurialSiteTypeId(cemeteryKey)
 
           const burialSiteKeys = addBurialSite(
@@ -131,7 +131,7 @@ export async function importFromPrepaidCSV(): Promise<void> {
       }
 
       if (
-        burialSite &&
+        burialSite !== undefined &&
         burialSite.burialSiteStatusId === importIds.availableBurialSiteStatusId
       ) {
         updateBurialSiteStatus(
@@ -150,7 +150,7 @@ export async function importFromPrepaidCSV(): Promise<void> {
 
       let contractId: number
 
-      if (burialSite) {
+      if (burialSite !== undefined) {
         const possibleContracts = await getContracts(
           {
             burialSiteId: burialSite.burialSiteId,
@@ -169,7 +169,7 @@ export async function importFromPrepaidCSV(): Promise<void> {
         )
 
         if (possibleContracts.contracts.length > 0) {
-          contractId = possibleContracts.contracts[0].contractId!
+          contractId = possibleContracts.contracts[0].contractId
         }
       }
 

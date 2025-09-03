@@ -273,7 +273,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     burialSiteComment.commentDateString ?? '';
                 const currentDateString = cityssm.dateToString(new Date());
                 commentDateStringElement.max =
-                    burialSiteComment.commentDateString <= currentDateString
+                    // eslint-disable-next-line unicorn/prefer-math-min-max
+                    (burialSiteComment.commentDateString ?? '') <= currentDateString
                         ? currentDateString
                         : burialSiteComment.commentDateString ?? '';
                 modalElement.querySelector('#burialSiteCommentEdit--commentTimeString').value = burialSiteComment.commentTimeString ?? '';

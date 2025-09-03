@@ -122,7 +122,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     '<i class="fa-solid fa-fast-forward" title="Future Contract"></i>';
             }
             else if (contract.contractIsActive === 1) {
-                contractIcon = '<i class="fa-solid fa-play" title="Current Contract"></i>';
+                contractIcon =
+                    '<i class="fa-solid fa-play" title="Current Contract"></i>';
             }
             // eslint-disable-next-line no-unsanitized/property
             rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
@@ -416,6 +417,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         rowElement.insertAdjacentHTML('beforeend', '<td><span class="has-text-grey">(No Burial Site)</span></td>');
                     }
+                    const intermentCount = contract.contractInterments?.length ?? 0;
+                    const recipientOrDeceased = contract.isPreneed
+                        ? 'Recipients'
+                        : 'Deceased';
+                    const intermentsHtml = intermentCount === 0
+                        ? `<span class="has-text-grey">
+                      (No ${cityssm.escapeHTML(recipientOrDeceased)})
+                      </span>`
+                        : cityssm.escapeHTML(contract.contractInterments?.[0].deceasedName ?? '') +
+                            // eslint-disable-next-line sonarjs/no-nested-conditional
+                            (intermentCount > 1
+                                ? ` plus ${(intermentCount - 1).toString()}`
+                                : '');
                     // eslint-disable-next-line no-unsanitized/method
                     rowElement.insertAdjacentHTML('beforeend', `<td>
                   ${contract.contractStartDateString}
@@ -423,16 +437,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                   ${contract.contractEndDate
                         ? contract.contractEndDateString
                         : '<span class="has-text-grey">(No End Date)</span>'}
-                </td><td>
-                  ${(contract.contractInterments ?? []).length === 0
-                        ? `<span class="has-text-grey">
-                          (No ${cityssm.escapeHTML(contract.isPreneed ? 'Recipients' : 'Deceased')})
-                          </span>`
-                        : cityssm.escapeHTML(contract.contractInterments[0].deceasedName ?? '') +
-                            (contract.contractInterments.length > 1
-                                ? ` plus
-                              ${(contract.contractInterments.length - 1).toString()}`
-                                : '')}</td>`);
+                </td>
+                <td>${intermentsHtml}</td>`);
                     rowElement
                         .querySelector('.button--addContract')
                         ?.addEventListener('click', doAddContract);
