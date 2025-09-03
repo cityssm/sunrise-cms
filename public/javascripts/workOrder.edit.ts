@@ -32,6 +32,10 @@ declare const exports: {
 
   const isCreate = workOrderId === ''
 
+  if (!isCreate && !/^\d+$/.test(workOrderId)) {
+    globalThis.location.href = `${sunrise.urlPrefix}/workOrders`
+  }
+
   const workOrderFormElement = document.querySelector(
     '#form--workOrderEdit'
   ) as HTMLFormElement

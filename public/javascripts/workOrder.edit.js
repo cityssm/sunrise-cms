@@ -6,6 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const sunrise = exports.sunrise;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     const isCreate = workOrderId === '';
+    if (!isCreate && !/^\d+$/.test(workOrderId)) {
+        globalThis.location.href = `${sunrise.urlPrefix}/workOrders`;
+    }
     const workOrderFormElement = document.querySelector('#form--workOrderEdit');
     sunrise.initializeUnlockFieldButtons(workOrderFormElement);
     function setUnsavedChanges() {
