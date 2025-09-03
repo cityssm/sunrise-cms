@@ -1,10 +1,13 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/no-null */
+
 import type { Request, Response } from 'express'
 
+import { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js'
 import getCemeteries from '../../database/getCemeteries.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getCemeterySVGs } from '../../helpers/images.helpers.js'
 import type { Cemetery } from '../../types/record.types.js'
-import { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js'
 
 export default async function handler(
   _request: Request,
@@ -21,6 +24,10 @@ export default async function handler(
     cemeteryName: '',
     cemeteryPhoneNumber: '',
     cemeteryPostalCode: '',
+
+    cemeteryLatitude: null,
+    cemeteryLongitude: null,
+    cemeterySvg: '',
 
     childCemeteries: [],
     directionsOfArrival: defaultDirectionsOfArrival

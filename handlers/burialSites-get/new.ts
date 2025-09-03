@@ -1,3 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/no-null */
+
 import type { Request, Response } from 'express'
 
 import getCemeteries from '../../database/getCemeteries.js'
@@ -12,12 +15,25 @@ export default async function handler(
 ): Promise<void> {
   const burialSite: BurialSite = {
     burialSiteId: -1,
+
+    burialSiteName: '',
+    burialSiteNameSegment1: '',
+    burialSiteNameSegment2: '',
+    burialSiteNameSegment3: '',
+    burialSiteNameSegment4: '',
+    burialSiteNameSegment5: '',
+
+    burialSiteType: '',
+
+    burialSiteLatitude: null,
+    burialSiteLongitude: null,
+
+    cemeteryId: null,
+    cemeteryName: null,
+
     contracts: [],
 
-    // eslint-disable-next-line unicorn/no-null
     bodyCapacity: null,
-
-    // eslint-disable-next-line unicorn/no-null
     crematedCapacity: null
   }
 
@@ -31,7 +47,7 @@ export default async function handler(
     )
 
     if (cemetery !== undefined) {
-      burialSite.cemeteryId = cemetery.cemeteryId
+      burialSite.cemeteryId = cemetery.cemeteryId as number
       burialSite.cemeteryName = cemetery.cemeteryName
     }
   }

@@ -37,7 +37,7 @@ export default async function handler(
       contract.burialSiteId = burialSite.burialSiteId
       contract.burialSiteName = burialSite.burialSiteName
       contract.cemeteryId = burialSite.cemeteryId ?? undefined
-      contract.cemeteryName = burialSite.cemeteryName
+      contract.cemeteryName = burialSite.cemeteryName ?? ''
     }
   }
 

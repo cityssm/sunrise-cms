@@ -10,8 +10,9 @@ import { getBurialSiteNameWhereClause } from '../helpers/functions.sqlFilters.js
 import type { BurialSite } from '../types/record.types.js'
 
 export interface GetBurialSitesFilters {
-  burialSiteNameSearchType?: '' | 'endsWith' | 'startsWith'
   burialSiteName?: string
+  burialSiteNameSearchType?: '' | 'endsWith' | 'startsWith'
+
   cemeteryId?: number | string
 
   burialSiteStatusId?: number | string

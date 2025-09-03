@@ -9,14 +9,14 @@ import type { SettingKey } from './setting.types.js'
 export interface BurialSite extends Record {
   burialSiteId: number
 
-  burialSiteName?: string
-  burialSiteNameSegment1?: string
-  burialSiteNameSegment2?: string
-  burialSiteNameSegment3?: string
-  burialSiteNameSegment4?: string
-  burialSiteNameSegment5?: string
+  burialSiteName: string
+  burialSiteNameSegment1: string
+  burialSiteNameSegment2: string
+  burialSiteNameSegment3: string
+  burialSiteNameSegment4: string
+  burialSiteNameSegment5: string
 
-  burialSiteType?: string
+  burialSiteType: string | null
   burialSiteTypeId?: number
 
   bodyCapacity: number | null
@@ -25,19 +25,19 @@ export interface BurialSite extends Record {
   crematedCapacityMax?: number | null
 
   cemetery?: Cemetery
-  cemeteryId?: number | null
+  cemeteryId: number | null
   cemeteryKey?: string
-  cemeteryName?: string
+  cemeteryName: string | null
   cemeterySvg?: string
   cemeterySvgId?: string
 
-  cemeteryLatitude?: number
-  cemeteryLongitude?: number
+  cemeteryLatitude?: number | null
+  cemeteryLongitude?: number | null
 
   burialSiteImage?: string
 
-  burialSiteLatitude?: number | null
-  burialSiteLongitude?: number | null
+  burialSiteLatitude: number | null
+  burialSiteLongitude: number | null
 
   burialSiteStatus?: string
   burialSiteStatusId?: number | null
@@ -122,9 +122,9 @@ export interface Cemetery extends Record {
   parentCemeteryLongitude?: number | null
   parentCemeterySvg?: string | null
 
-  cemeteryLatitude?: number
-  cemeteryLongitude?: number
-  cemeterySvg?: string
+  cemeteryLatitude: number | null
+  cemeteryLongitude: number | null
+  cemeterySvg: string
 
   cemeteryAddress1: string
   cemeteryAddress2: string

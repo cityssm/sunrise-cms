@@ -46,9 +46,10 @@ function onListening(server) {
 process.title = `${getConfigProperty('application.applicationName')} (Worker)`;
 const httpPort = getConfigProperty('application.httpPort');
 const httpServer = http.createServer(app);
-httpServer.listen(httpPort);
-httpServer.on('error', onError);
-httpServer.on('listening', () => {
+httpServer
+    .listen(httpPort)
+    .on('error', onError)
+    .on('listening', () => {
     onListening(httpServer);
 });
 exitHook(() => {

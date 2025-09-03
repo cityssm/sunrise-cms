@@ -72,12 +72,12 @@ const httpPort = getConfigProperty('application.httpPort')
 
 const httpServer = http.createServer(app)
 
-httpServer.listen(httpPort)
-
-httpServer.on('error', onError)
-httpServer.on('listening', () => {
-  onListening(httpServer)
-})
+httpServer
+  .listen(httpPort)
+  .on('error', onError)
+  .on('listening', () => {
+    onListening(httpServer)
+  })
 
 exitHook(() => {
   debug('Closing HTTP')
