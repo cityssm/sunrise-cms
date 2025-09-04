@@ -152,7 +152,7 @@ declare const exports: {
 
           body: formData,
           headers: {
-            'X-CSRF-Token':
+            'x-csrf-token':
               document
                 .querySelector('meta[name="csrf-token"]')
                 ?.getAttribute('content') ?? ''

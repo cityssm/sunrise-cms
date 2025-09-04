@@ -101,7 +101,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRF-Token': document
+                    'x-csrf-token': document
                         .querySelector('meta[name="csrf-token"]')
                         ?.getAttribute('content') ?? ''
                 }

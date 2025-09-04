@@ -31,7 +31,6 @@
               <%= configFunctions.getConfigProperty("application.applicationName") %>
             </h1>
             <form id="form--login" method="post" action="<%= urlPrefix %>/login">
-              <input name="_csrf" type="hidden" value="<%= csrfToken %>" />
               <input name="redirect" type="hidden" value="<%= redirect %>" />
 
               <div class="field has-addons">

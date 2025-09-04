@@ -28,7 +28,7 @@ export function getCachedSettingValue(settingKey: SettingKey): string {
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (setting === undefined) {
-    return settingKey
+    return ''
   }
 
   let settingValue = setting.settingValue ?? ''

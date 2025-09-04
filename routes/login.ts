@@ -27,6 +27,9 @@ function getHandler(request: Request, response: Response): void {
 
     response.redirect(redirectURL)
   } else {
+
+    
+
     response.render('login', {
       userName: '',
       message: '',

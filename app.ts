@@ -4,7 +4,7 @@ import { millisecondsInOneMinute } from '@cityssm/to-millis'
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
-import csurf from 'csurf'
+import { doubleCsrf } from 'csrf-csrf'
 import Debug from 'debug'
 import express from 'express'
 import rateLimit from 'express-rate-limit'
@@ -20,6 +20,7 @@ import { getCachedSettingValue } from './helpers/cache/settings.cache.js'
 import * as configFunctions from './helpers/config.helpers.js'
 import { useTestDatabases } from './helpers/database.helpers.js'
 import * as printFunctions from './helpers/print.helpers.js'
+import { getCsrfSecret } from './helpers/settings.helpers.js'
 import routerAdmin from './routes/admin.js'
 import routerApi from './routes/api.js'
 import routerBurialSites from './routes/burialSites.js'
@@ -37,11 +38,34 @@ const debug = Debug(
   `${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`
 )
 
+function hasSession(request: express.Request): boolean {
+  return (
+    Object.hasOwn(request.session, 'user') &&
+    Object.hasOwn(request.cookies, sessionCookieName)
+  )
+}
+
 /*
  * INITIALIZE APP
  */
 
 export const app = express()
+
+app.use((request, _response, next) => {
+  debug(`${request.method} ${request.url}`)
+  next()
+})
+
+/*
+ * Configure Views
+ */
+
+app.set('views', 'views')
+app.set('view engine', 'ejs')
+
+/*
+ * Adjust headers
+ */
 
 app.disable('x-powered-by')
 
@@ -49,18 +73,13 @@ if (!configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
   app.set('etag', false)
 }
 
-// View engine setup
-app.set('views', 'views')
-app.set('view engine', 'ejs')
-
 if (!configFunctions.getConfigProperty('reverseProxy.disableCompression')) {
   app.use(compression())
 }
 
-app.use((request, _response, next) => {
-  debug(`${request.method} ${request.url}`)
-  next()
-})
+/*
+ * Parsers
+ */
 
 app.use(express.json())
 
@@ -71,12 +90,20 @@ app.use(
 )
 
 app.use(cookieParser())
-app.use(
-  // eslint-disable-next-line sonarjs/insecure-cookie, sonarjs/cookie-no-httponly
-  csurf({
-    cookie: true
+
+/*
+ * URL Prefix
+ */
+
+const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix')
+
+if (urlPrefix !== '') {
+  debug(`urlPrefix = ${urlPrefix}`)
+
+  app.all('', (_request, response) => {
+    response.redirect(urlPrefix)
   })
-)
+}
 
 /*
  * Rate Limiter
@@ -93,71 +120,13 @@ if (!configFunctions.getConfigProperty('reverseProxy.disableRateLimit')) {
 }
 
 /*
- * SESSION MANAGEMENT
+ * Static content
  */
-
-const sessionCookieName: string =
-  configFunctions.getConfigProperty('session.cookieName')
-
-const FileStoreSession = FileStore(session)
-
-// Initialize session
-app.use(
-  session({
-    name: sessionCookieName,
-
-    cookie: {
-      maxAge: configFunctions.getConfigProperty('session.maxAgeMillis'),
-      sameSite: 'strict'
-    },
-    secret: configFunctions.getConfigProperty('session.secret'),
-    store: new FileStoreSession({
-      logFn: Debug(
-        `${DEBUG_NAMESPACE}:session:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`
-      ),
-      path: './data/sessions',
-      retries: 20
-    }),
-
-    resave: true,
-    rolling: true,
-    saveUninitialized: false
-  })
-)
-
-// Clear cookie if no corresponding session
-app.use((request, response, next) => {
-  if (
-    Object.hasOwn(request.cookies, sessionCookieName) &&
-    !Object.hasOwn(request.session, 'user')
-  ) {
-    response.clearCookie(sessionCookieName)
-  }
-
-  next()
-})
-
-/*
- * STATIC ROUTES
- */
-
-const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix')
-
-if (urlPrefix !== '') {
-  debug(`urlPrefix = ${urlPrefix}`)
-
-  app.all('', (_request, response) => {
-    response.redirect(urlPrefix)
-  })
-}
 
 app.use(
   `${urlPrefix}/public-internal`,
   (request, response, next) => {
-    if (
-      Object.hasOwn(request.session, 'user') &&
-      Object.hasOwn(request.cookies, sessionCookieName)
-    ) {
+    if (hasSession(request)) {
       next()
       return
     }
@@ -209,15 +178,37 @@ app.use(
 app.use(`${urlPrefix}/lib/leaflet`, express.static('node_modules/leaflet/dist'))
 
 /*
- * ROUTES
+ * SESSION MANAGEMENT
  */
 
-function hasSession(request: express.Request): boolean {
-  return (
-    Object.hasOwn(request.session, 'user') &&
-    Object.hasOwn(request.cookies, sessionCookieName)
-  )
-}
+const sessionCookieName: string =
+  configFunctions.getConfigProperty('session.cookieName')
+
+const FileStoreSession = FileStore(session)
+
+// Initialize session
+app.use(
+  session({
+    name: sessionCookieName,
+
+    cookie: {
+      maxAge: configFunctions.getConfigProperty('session.maxAgeMillis'),
+      sameSite: 'strict'
+    },
+    secret: configFunctions.getConfigProperty('session.secret'),
+    store: new FileStoreSession({
+      logFn: Debug(
+        `${DEBUG_NAMESPACE}:session:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`
+      ),
+      path: './data/sessions',
+      retries: 20
+    }),
+
+    resave: true,
+    rolling: true,
+    saveUninitialized: false
+  })
+)
 
 // Redirect logged in users
 const sessionCheckHandler = (
@@ -230,6 +221,8 @@ const sessionCheckHandler = (
     return
   }
 
+  response.clearCookie(sessionCookieName)
+
   const redirectUrl = getSafeRedirectURL(request.originalUrl)
 
   response.redirect(
@@ -237,13 +230,14 @@ const sessionCheckHandler = (
   )
 }
 
-// Make the user and config objects available to the templates
+/*
+ * Locals
+ */
 
 app.use((request, response, next) => {
   response.locals.buildNumber = version
 
   response.locals.user = request.session.user
-  response.locals.csrfToken = request.csrfToken()
 
   response.locals.configFunctions = configFunctions
   response.locals.printFunctions = printFunctions
@@ -255,13 +249,56 @@ app.use((request, response, next) => {
 
   response.locals.dataLists = dataLists
 
-  response.locals.urlPrefix = configFunctions.getConfigProperty(
-    'reverseProxy.urlPrefix'
-  )
+  response.locals.urlPrefix = urlPrefix
 
   response.locals.enableKeyboardShortcuts = configFunctions.getConfigProperty(
     'settings.enableKeyboardShortcuts'
   )
+
+  next()
+})
+
+/*
+ * LOGIN / LOGOUT
+ * Before CSRF Protection
+ */
+
+app.use(`${urlPrefix}/login`, routerLogin)
+
+app.get(`${urlPrefix}/logout`, (request, response) => {
+  if (
+    Object.hasOwn(request.session, 'user') &&
+    Object.hasOwn(request.cookies, sessionCookieName)
+  ) {
+    request.session.destroy(() => {
+      response.clearCookie(sessionCookieName)
+      response.redirect(`${urlPrefix}/`)
+    })
+  } else {
+    response.redirect(`${urlPrefix}/login`)
+  }
+})
+
+/*
+ * CSRF PROTECTION
+ */
+
+const {
+  doubleCsrfProtection, // This is the default CSRF protection middleware.
+  generateCsrfToken // Use this in your routes to provide a CSRF token.
+} = doubleCsrf({
+  getSecret: (_request) => getCsrfSecret(), // return a secret for the request
+  getSessionIdentifier: (request) => request.session.id // return the requests unique identifier
+})
+
+app.use(doubleCsrfProtection)
+
+/*
+ * ROUTES
+ */
+
+app.use((request, response, next) => {
+  response.locals.csrfToken = generateCsrfToken(request, response)
 
   next()
 })
@@ -297,22 +334,6 @@ if (configFunctions.getConfigProperty('session.doKeepAlive')) {
   })
 }
 
-app.use(`${urlPrefix}/login`, routerLogin)
-
-app.get(`${urlPrefix}/logout`, (request, response) => {
-  if (
-    Object.hasOwn(request.session, 'user') &&
-    Object.hasOwn(request.cookies, sessionCookieName)
-  ) {
-    request.session.destroy(() => {
-      response.clearCookie(sessionCookieName)
-      response.redirect(`${urlPrefix}/`)
-    })
-  } else {
-    response.redirect(`${urlPrefix}/login`)
-  }
-})
-
 /*
  * Error handling
  */
@@ -340,6 +361,11 @@ app.use(
     response.locals.message = error.message
     response.locals.error =
       request.app.get('env') === 'development' ? error : {}
+
+    response.locals.configFunctions = configFunctions
+    response.locals.urlPrefix = configFunctions.getConfigProperty(
+      'reverseProxy.urlPrefix'
+    )
 
     // Render the error page
     response.status(error.status ?? 500)

@@ -1,3 +1,5 @@
+import { randomBytes } from 'node:crypto';
+import updateSetting from '../database/updateSetting.js';
 import { getCachedSettingValue } from './cache/settings.cache.js';
 export function getWorkOrderWorkDayRanges() {
     return {
@@ -58,4 +60,16 @@ export function getWorkOrderWorkDayRanges() {
                 : Number.parseInt(getCachedSettingValue('workOrder.workDay.6.startHour'), 10)
         } // Saturday
     };
+}
+export function getCsrfSecret() {
+    let csrfSecret = getCachedSettingValue('application.csrfSecret');
+    if (csrfSecret === '') {
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        csrfSecret = randomBytes(64).toString('hex');
+        updateSetting({
+            settingKey: 'application.csrfSecret',
+            settingValue: csrfSecret
+        });
+    }
+    return csrfSecret;
 }
