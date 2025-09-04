@@ -33,6 +33,7 @@ import routerReports from './routes/reports.js';
 import routerWorkOrders from './routes/workOrders.js';
 import { version } from './version.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`);
+const sessionCookieName = configFunctions.getConfigProperty('session.cookieName');
 function hasSession(request) {
     return (Object.hasOwn(request.session, 'user') &&
         Object.hasOwn(request.cookies, sessionCookieName));
@@ -48,8 +49,7 @@ app.use((request, _response, next) => {
 /*
  * Configure Views
  */
-app.set('views', 'views');
-app.set('view engine', 'ejs');
+app.set('views', 'views').set('view engine', 'ejs');
 /*
  * Adjust headers
  */
@@ -98,19 +98,19 @@ app.use(`${urlPrefix}/public-internal`, (request, response, next) => {
     }
     response.sendStatus(403);
 }, express.static(path.join(configFunctions.getConfigProperty('settings.customizationsPath'), 'public-internal')));
-app.use(urlPrefix, express.static('public'));
-app.use(`${urlPrefix}/lib/bulma`, express.static('node_modules/bulma/css'));
-app.use(`${urlPrefix}/lib/bulma-tooltip`, express.static('node_modules/bulma-tooltip/dist/css'));
-app.use(`${urlPrefix}/lib/cityssm-bulma-js/bulma-js.js`, express.static('node_modules/@cityssm/bulma-js/dist/bulma-js.js'));
-app.use(`${urlPrefix}/lib/cityssm-fa-glow`, express.static('node_modules/@cityssm/fa-glow'));
-app.use(`${urlPrefix}/lib/cityssm-bulma-sticky-table`, express.static('node_modules/@cityssm/bulma-sticky-table'));
-app.use(`${urlPrefix}/lib/cityssm-bulma-webapp-js`, express.static('node_modules/@cityssm/bulma-webapp-js/dist'));
-app.use(`${urlPrefix}/lib/fa`, express.static('node_modules/@fortawesome/fontawesome-free'));
-app.use(`${urlPrefix}/lib/leaflet`, express.static('node_modules/leaflet/dist'));
+app
+    .use(urlPrefix, express.static('public'))
+    .use(`${urlPrefix}/lib/bulma`, express.static('node_modules/bulma/css'))
+    .use(`${urlPrefix}/lib/bulma-tooltip`, express.static('node_modules/bulma-tooltip/dist/css'))
+    .use(`${urlPrefix}/lib/cityssm-bulma-js/bulma-js.js`, express.static('node_modules/@cityssm/bulma-js/dist/bulma-js.js'))
+    .use(`${urlPrefix}/lib/cityssm-fa-glow`, express.static('node_modules/@cityssm/fa-glow'))
+    .use(`${urlPrefix}/lib/cityssm-bulma-sticky-table`, express.static('node_modules/@cityssm/bulma-sticky-table'))
+    .use(`${urlPrefix}/lib/cityssm-bulma-webapp-js`, express.static('node_modules/@cityssm/bulma-webapp-js/dist'))
+    .use(`${urlPrefix}/lib/fa`, express.static('node_modules/@fortawesome/fontawesome-free'))
+    .use(`${urlPrefix}/lib/leaflet`, express.static('node_modules/leaflet/dist'));
 /*
  * SESSION MANAGEMENT
  */
-const sessionCookieName = configFunctions.getConfigProperty('session.cookieName');
 const FileStoreSession = FileStore(session);
 // Initialize session
 app.use(session({
@@ -166,6 +166,7 @@ const loginAbuseCheck = abuseCheck({
     abusePoints: 1,
     abusePointsMax: 5,
     clearIntervalMillis: millisecondsInOneHour,
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     expiryMillis: minutesToMillis(5),
     abuseMessageText: 'Too many login attempts. Please try again later.'
 });
@@ -202,15 +203,16 @@ app.use((request, response, next) => {
 app.get(`${urlPrefix}/`, sessionCheckHandler, (_request, response) => {
     response.redirect(`${urlPrefix}/dashboard`);
 });
-app.use(`${urlPrefix}/dashboard`, sessionCheckHandler, routerDashboard);
+app
+    .use(`${urlPrefix}/dashboard`, sessionCheckHandler, routerDashboard)
+    .use(`${urlPrefix}/print`, sessionCheckHandler, routerPrint)
+    .use(`${urlPrefix}/cemeteries`, sessionCheckHandler, routerCemeteries)
+    .use(`${urlPrefix}/burialSites`, sessionCheckHandler, routerBurialSites)
+    .use(`${urlPrefix}/funeralHomes`, sessionCheckHandler, routerFuneralHomes)
+    .use(`${urlPrefix}/contracts`, sessionCheckHandler, routerContracts)
+    .use(`${urlPrefix}/workOrders`, sessionCheckHandler, routerWorkOrders)
+    .use(`${urlPrefix}/reports`, sessionCheckHandler, routerReports);
 app.use(`${urlPrefix}/api/:apiKey`, permissionHandlers.apiGetHandler, routerApi);
-app.use(`${urlPrefix}/print`, sessionCheckHandler, routerPrint);
-app.use(`${urlPrefix}/cemeteries`, sessionCheckHandler, routerCemeteries);
-app.use(`${urlPrefix}/burialSites`, sessionCheckHandler, routerBurialSites);
-app.use(`${urlPrefix}/funeralHomes`, sessionCheckHandler, routerFuneralHomes);
-app.use(`${urlPrefix}/contracts`, sessionCheckHandler, routerContracts);
-app.use(`${urlPrefix}/workOrders`, sessionCheckHandler, routerWorkOrders);
-app.use(`${urlPrefix}/reports`, sessionCheckHandler, routerReports);
 app.use(`${urlPrefix}/admin`, sessionCheckHandler, permissionHandlers.adminGetHandler, routerAdmin);
 if (configFunctions.getConfigProperty('session.doKeepAlive')) {
     app.all(`${urlPrefix}/keepAlive`, (request, response) => {
