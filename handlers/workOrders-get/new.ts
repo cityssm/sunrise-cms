@@ -14,7 +14,7 @@ export default function handler(request: Request, response: Response): void {
 
   const workOrderTypes = getCachedWorkOrderTypes()
 
-  response.render('workOrder-edit', {
+  response.render('workOrders/edit', {
     headTitle: 'New Work Order',
 
     workOrder,

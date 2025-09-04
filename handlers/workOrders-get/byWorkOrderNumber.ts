@@ -15,7 +15,7 @@ export default async function handler(
     response.redirect(
       `${getConfigProperty(
         'reverseProxy.urlPrefix'
-      )}/workOrders/?error=noWorkOrderFound`
+      )}/workOrders/?error=workOrderNumberNotFound`
     )
     return
   }

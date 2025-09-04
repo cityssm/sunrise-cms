@@ -191,9 +191,21 @@ app.get(`${urlPrefix}/logout`, (request, response) => {
         response.redirect(`${urlPrefix}/login`);
     }
 });
+/*
+ * Error handling
+ */
 // Catch 404 and forward to error handler
-app.use((request, _response, next) => {
-    debug(request.url);
-    next(createError(404, `File not found: ${request.url}`));
+app.use((_request, _response, next) => {
+    next(createError(404));
+});
+// Error handler
+app.use((error, request, response, _next) => {
+    // Set locals, only providing error in development
+    response.locals.message = error.message;
+    response.locals.error =
+        request.app.get('env') === 'development' ? error : {};
+    // Render the error page
+    response.status(error.status ?? 500);
+    response.render('error');
 });
 export default app;

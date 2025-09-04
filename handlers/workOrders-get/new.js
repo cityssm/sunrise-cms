@@ -7,7 +7,7 @@ export default function handler(request, response) {
         workOrderOpenDateString: dateToString(currentDate)
     };
     const workOrderTypes = getCachedWorkOrderTypes();
-    response.render('workOrder-edit', {
+    response.render('workOrders/edit', {
         headTitle: 'New Work Order',
         workOrder,
         isCreate: true,

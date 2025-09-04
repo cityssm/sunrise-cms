@@ -4,6 +4,16 @@
   <%= configFunctions.getConfigProperty("application.applicationName") %>
 </h1>
 
+<% if (error !== undefined) { %>
+  <div class="notification is-danger is-light">
+    <button class="delete" aria-label="delete"></button>
+    <p>
+      <strong>Error</strong><br />
+      <%= error %>
+    </p>
+  </div>
+<% } %>
+
 <div class="columns">
   <div class="column">
     <div class="columns">

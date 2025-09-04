@@ -1,4 +1,4 @@
-<%- include('_header'); -%>
+<%- include('../_header'); -%>
 
 <nav class="breadcrumb">
   <ul>
@@ -206,7 +206,7 @@
         <% } else if (burialSite.cemeterySvg) { %>
           <% const imageURL = urlPrefix + "/public-internal/images/cemeteries/" + burialSite.cemeterySvg %>
           <div class="image" id="burialSite--cemeterySvg" data-cemetery-svg-id="<%= burialSite.cemeterySvgId %>">
-            <%- include('../' + configFunctions.getConfigProperty('settings.customizationsPath') + '/public-internal/images/cemeteries/' + burialSite.cemeterySvg); -%>
+            <%- include('../../' + configFunctions.getConfigProperty('settings.customizationsPath') + '/public-internal/images/cemeteries/' + burialSite.cemeterySvg); -%>
           </div>
         <% } else { %>
           <div class="message is-info">
@@ -375,8 +375,8 @@
   </div>
 </div>
 
-<%- include('_footerA'); -%>
+<%- include('../_footerA'); -%>
 
 <script src="<%= urlPrefix %>/javascripts/burialSite.view.js"></script>
 
-<%- include('_footerB'); -%>
+<%- include('../_footerB'); -%>

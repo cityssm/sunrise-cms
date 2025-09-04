@@ -12,7 +12,7 @@ export default function handler(_request, response) {
             contractTypePrintTitles[printEJS] = printConfig.title;
         }
     }
-    response.render('admin-contractTypes', {
+    response.render('admin/contractTypes', {
         headTitle: 'Contract Type Management',
         allContractTypeFields,
         contractTypePrintTitles,

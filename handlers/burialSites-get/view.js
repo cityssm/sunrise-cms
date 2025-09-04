@@ -8,7 +8,7 @@ export default async function handler(request, response) {
         return;
     }
     const burialSiteIsDeleted = burialSite.recordDelete_timeMillis !== null;
-    response.render('burialSite-view', {
+    response.render('burialSites/view', {
         headTitle: burialSite.burialSiteName,
         burialSite
     });

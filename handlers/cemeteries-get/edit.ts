@@ -32,7 +32,7 @@ export default async function handler(
     cemeteryId: cemetery.cemeteryId
   })
 
-  response.render('cemetery-edit', {
+  response.render('cemeteries/edit', {
     headTitle: cemetery.cemeteryName,
 
     cemetery,

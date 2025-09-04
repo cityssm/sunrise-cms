@@ -43,7 +43,7 @@ export default async function handler(request, response) {
     const burialSiteDirectionsOfArrival = contract.burialSiteId === undefined || contract.burialSiteId === null
         ? defaultDirectionsOfArrival
         : getBurialSiteDirectionsOfArrival(contract.burialSiteId);
-    response.render('contract-edit', {
+    response.render('contracts/edit', {
         headTitle: 'Create a New Contract',
         contract,
         committalTypes,

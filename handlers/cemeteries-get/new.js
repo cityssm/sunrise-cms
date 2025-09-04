@@ -23,7 +23,7 @@ export default async function handler(_request, response) {
     };
     const cemeteries = getCemeteries();
     const cemeterySVGs = await getCemeterySVGs();
-    response.render('cemetery-edit', {
+    response.render('cemeteries/edit', {
         headTitle: 'Create a Cemetery',
         cemetery,
         cemeterySVGs,

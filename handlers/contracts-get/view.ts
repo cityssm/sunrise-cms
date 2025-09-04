@@ -21,7 +21,7 @@ export default async function handler(
 
   const contractTypePrints = getCachedContractTypePrintsById(contract.contractTypeId)
 
-  response.render('contract-view', {
+  response.render('contracts/view', {
     headTitle: `Contract #${contract.contractId.toString()}`,
 
     contract,

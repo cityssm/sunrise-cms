@@ -9,7 +9,7 @@ export default function handler(request: Request, response: Response): void {
   const burialSiteTypes = getCachedBurialSiteTypes()
   const burialSiteStatuses = getCachedBurialSiteStatuses()
 
-  response.render('burialSite-creator', {
+  response.render('burialSites/creator', {
     headTitle: 'Burial Site Range Creator',
 
     burialSiteStatuses,

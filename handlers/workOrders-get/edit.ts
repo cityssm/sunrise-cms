@@ -43,7 +43,7 @@ export default async function handler(
 
   const workOrderWorkDayRanges = getWorkOrderWorkDayRanges()
 
-  response.render('workOrder-edit', {
+  response.render('workOrders/edit', {
     headTitle: `Work Order #${workOrder.workOrderNumber}`,
 
     workOrder,

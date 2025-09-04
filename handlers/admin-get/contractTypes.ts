@@ -23,7 +23,7 @@ export default function handler(_request: Request, response: Response): void {
     }
   }
 
-  response.render('admin-contractTypes', {
+  response.render('admin/contractTypes', {
     headTitle: 'Contract Type Management',
 
     allContractTypeFields,

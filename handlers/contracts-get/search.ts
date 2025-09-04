@@ -10,16 +10,37 @@ export default function handler(
     unknown,
     unknown,
     unknown,
-    { cemeteryId?: string; deceasedName?: string }
+    { cemeteryId?: string; deceasedName?: string; error?: string }
   >,
   response: Response
 ): void {
+  let error = request.query.error
+
+  switch (error) {
+    case 'contractIdNotFound': {
+      error = 'Contract ID not found.'
+
+      break
+    }
+    case 'noNextContractIdFound': {
+      error = 'No next Contract ID found.'
+
+      break
+    }
+    case 'noPreviousContractIdFound': {
+      error = 'No previous Contract ID found.'
+
+      break
+    }
+    // No default
+  }
+
   const cemeteries = getCemeteries()
   const burialSiteTypes = getCachedBurialSiteTypes()
   const contractTypes = getCachedContractTypes()
   const funeralHomes = getFuneralHomes()
 
-  response.render('contract-search', {
+  response.render('contracts/search', {
     headTitle: 'Contract Search',
 
     cemeteryId: request.query.cemeteryId,
@@ -28,6 +49,8 @@ export default function handler(
     burialSiteTypes,
     cemeteries,
     contractTypes,
-    funeralHomes
+    funeralHomes,
+
+    error
   })
 }

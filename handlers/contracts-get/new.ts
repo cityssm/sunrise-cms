@@ -63,7 +63,7 @@ export default async function handler(
       ? defaultDirectionsOfArrival
       : getBurialSiteDirectionsOfArrival(contract.burialSiteId)
 
-  response.render('contract-edit', {
+  response.render('contracts/edit', {
     headTitle: 'Create a New Contract',
 
     contract,

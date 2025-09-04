@@ -2,15 +2,32 @@ import type { Request, Response } from 'express'
 
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 
-export default function handler(request: Request, response: Response): void {
-  const workOrderOpenDateString = request.query.workOrderOpenDateString
-
+export default function handler(
+  request: Request<
+    unknown,
+    unknown,
+    unknown,
+    { error?: string; workOrderOpenDateString?: string }
+  >,
+  response: Response
+): void {
   const workOrderTypes = getCachedWorkOrderTypes()
 
-  response.render('workOrder-search', {
+  let error = request.query.error
+
+  if (error === 'workOrderIdNotFound') {
+    error = 'Work Order ID not found.'
+  } else if (error === 'workOrderNumberNotFound') {
+    error = 'Work Order Number not found.'
+  }
+
+  response.render('workOrders/search', {
     headTitle: 'Work Order Search',
 
-    workOrderOpenDateString,
-    workOrderTypes
+    workOrderTypes,
+
+    workOrderOpenDateString: request.query.workOrderOpenDateString ?? '',
+
+    error
   })
 }

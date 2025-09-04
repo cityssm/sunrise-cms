@@ -15,7 +15,7 @@ export default function handler(_request: Request, response: Response): void {
   const contractTypes = getCachedContractTypes()
   const burialSiteTypes = getCachedBurialSiteTypes()
 
-  response.render('admin-fees', {
+  response.render('admin/fees', {
     headTitle: 'Fee Management',
 
     burialSiteTypes,

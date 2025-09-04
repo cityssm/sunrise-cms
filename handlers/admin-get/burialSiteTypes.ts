@@ -8,7 +8,7 @@ export default function handler(
 ): void {
   const burialSiteTypes = getCachedBurialSiteTypes()
 
-  response.render('admin-burialSiteTypes', {
+  response.render('admin/burialSiteTypes', {
     headTitle: "Burial Site Type Management",
     
     burialSiteTypes

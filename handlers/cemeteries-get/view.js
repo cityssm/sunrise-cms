@@ -14,7 +14,7 @@ export default function handler(request, response) {
     const burialSiteStatusSummary = getBurialSiteStatusSummary({
         cemeteryId: cemetery.cemeteryId
     });
-    response.render('cemetery-view', {
+    response.render('cemeteries/view', {
         headTitle: cemetery.cemeteryName,
         cemetery,
         burialSiteStatusSummary,

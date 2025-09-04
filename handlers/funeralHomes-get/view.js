@@ -18,7 +18,7 @@ export default async function handler(request, response) {
         includeInterments: true,
         includeTransactions: false
     });
-    response.render('funeralHome-view', {
+    response.render('funeralHomes/view', {
         headTitle: funeralHome.funeralHomeName,
         funeralHome,
         contracts: contracts.contracts

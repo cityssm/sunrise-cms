@@ -1,8 +1,8 @@
-<%- include('_header'); -%>
+<%- include('../_header'); -%>
 
 <div class="columns is-mobile">
   <div class="column is-2-desktop is-narrow-touch is-hidden-print">
-    <%- include('_menu-workOrders'); -%>
+    <%- include('_menu'); -%>
   </div>
   <div class="column">
     <nav class="breadcrumb">
@@ -16,6 +16,16 @@
         </li>
       </ul>
     </nav>
+
+    <% if (error !== undefined) { %>
+      <div class="notification is-danger is-light">
+        <button class="delete" aria-label="delete"></button>
+        <p>
+          <strong>Work Order Error</strong><br />
+          <%= error %>
+        </p>
+      </div>
+    <% } %>
 
     <h1 class="title is-1">
       Work Order Search
@@ -121,11 +131,11 @@
   </div>
 </div>
 
-<%- include('_footerA'); -%>
+<%- include('../_footerA'); -%>
 
 <script>
   exports.workOrderPrints = <%- JSON.stringify(configFunctions.getConfigProperty("settings.workOrders.prints")) %>;
 </script>
 <script src="<%= urlPrefix %>/javascripts/workOrder.search.js"></script>
 
-<%- include('_footerB'); -%>
+<%- include('../_footerB'); -%>

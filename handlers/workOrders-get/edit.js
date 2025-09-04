@@ -22,7 +22,7 @@ export default async function handler(request, response) {
     const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes();
     const burialSiteStatuses = getCachedBurialSiteStatuses();
     const workOrderWorkDayRanges = getWorkOrderWorkDayRanges();
-    response.render('workOrder-edit', {
+    response.render('workOrders/edit', {
         headTitle: `Work Order #${workOrder.workOrderNumber}`,
         workOrder,
         burialSiteStatuses,

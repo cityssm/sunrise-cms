@@ -13,7 +13,7 @@ export default function handler(request: Request, response: Response): void {
     return
   }
 
-  response.render('funeralHome-edit', {
+  response.render('funeralHomes/edit', {
     headTitle: funeralHome.funeralHomeName,
 
     funeralHome,

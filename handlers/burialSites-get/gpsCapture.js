@@ -5,7 +5,7 @@ export default function handler(request, response) {
     const cemeteries = getCemeteries();
     const burialSiteTypes = getCachedBurialSiteTypes();
     const burialSiteStatuses = getCachedBurialSiteStatuses();
-    response.render('burialSite-gpsCapture', {
+    response.render('burialSites/gpsCapture', {
         headTitle: 'GPS Coordinate Capture',
         burialSiteStatuses,
         burialSiteTypes,

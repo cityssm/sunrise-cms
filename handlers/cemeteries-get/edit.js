@@ -18,7 +18,7 @@ export default async function handler(request, response) {
     const burialSiteStatusSummary = getBurialSiteStatusSummary({
         cemeteryId: cemetery.cemeteryId
     });
-    response.render('cemetery-edit', {
+    response.render('cemeteries/edit', {
         headTitle: cemetery.cemeteryName,
         cemetery,
         cemeterySVGs,

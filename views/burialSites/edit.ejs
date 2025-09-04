@@ -1,4 +1,4 @@
-<%- include('_header'); -%>
+<%- include('../_header'); -%>
 
 <nav class="breadcrumb">
   <ul>
@@ -664,7 +664,7 @@
     </div>
 <% } %>
 
-<%- include('_footerA'); -%>
+<%- include('../_footerA'); -%>
 
 <script>
   exports.bodyCapacityMaxDefault = <%- JSON.stringify(settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault')) %>;
@@ -677,4 +677,4 @@
 <% } %>
 <script src="<%= urlPrefix %>/javascripts/burialSite.edit.js"></script>
 
-<%- include('_footerB'); -%>
+<%- include('../_footerB'); -%>

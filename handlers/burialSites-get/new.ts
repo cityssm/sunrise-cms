@@ -56,7 +56,7 @@ export default async function handler(
   const burialSiteTypes = getCachedBurialSiteTypes()
   const burialSiteStatuses = getCachedBurialSiteStatuses()
 
-  response.render('burialSite-edit', {
+  response.render('burialSites/edit', {
     headTitle: 'Create a New Burial Site',
 
     burialSite,

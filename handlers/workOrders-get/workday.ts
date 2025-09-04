@@ -5,9 +5,7 @@ export default function handler(
   request: Request,
   response: Response
 ): void {
-console.log(request.query.workdayDateString)
-
-  response.render('workOrder-workday', {
+  response.render('workOrders/workday', {
     headTitle: 'Workday Report',
     workdayDateString:
       request.query.workdayDateString ?? dateToString(new Date())

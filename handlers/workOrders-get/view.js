@@ -10,7 +10,7 @@ export default async function handler(request, response) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/workOrders/?error=workOrderIdNotFound`);
         return;
     }
-    response.render('workOrder-view', {
+    response.render('workOrders/view', {
         headTitle: `Work Order #${workOrder.workOrderNumber}`,
         workOrder
     });

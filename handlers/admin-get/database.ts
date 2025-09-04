@@ -18,7 +18,7 @@ export default async function handler(
   const lastBackupTimePeriodString =
     lastBackupDate === undefined ? '' : dateToTimePeriodString(lastBackupDate)
 
-  response.render('admin-database', {
+  response.render('admin/database', {
     headTitle: 'Database Maintenance',
     lastBackupDateString,
     lastBackupTimePeriodString

@@ -9,7 +9,7 @@ import Debug from 'debug'
 import express from 'express'
 import rateLimit from 'express-rate-limit'
 import session from 'express-session'
-import createError from 'http-errors'
+import createError, { type HttpError } from 'http-errors'
 import FileStore from 'session-file-store'
 
 import dataLists from './data/dataLists.js'
@@ -313,10 +313,38 @@ app.get(`${urlPrefix}/logout`, (request, response) => {
   }
 })
 
+/*
+ * Error handling
+ */
+
 // Catch 404 and forward to error handler
-app.use((request, _response, next) => {
-  debug(request.url)
-  next(createError(404, `File not found: ${request.url}`))
-})
+app.use(
+  (
+    _request: express.Request,
+    _response: express.Response,
+    next: express.NextFunction
+  ) => {
+    next(createError(404))
+  }
+)
+
+// Error handler
+app.use(
+  (
+    error: Partial<HttpError>,
+    request: express.Request,
+    response: express.Response,
+    _next: express.NextFunction
+  ) => {
+    // Set locals, only providing error in development
+    response.locals.message = error.message
+    response.locals.error =
+      request.app.get('env') === 'development' ? error : {}
+
+    // Render the error page
+    response.status(error.status ?? 500)
+    response.render('error')
+  }
+)
 
 export default app

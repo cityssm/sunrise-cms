@@ -1,8 +1,8 @@
-<%- include('_header'); -%>
+<%- include('../_header'); -%>
 
 <div class="columns is-mobile">
   <div class="column is-2-desktop is-narrow-touch is-hidden-print">
-    <%- include('_menu-contracts'); -%>
+    <%- include('../contracts/_menu'); -%>
   </div>
   <div class="column">
     <nav class="breadcrumb">
@@ -16,6 +16,16 @@
         </li>
       </ul>
     </nav>
+
+    <% if (error !== undefined) { %>
+      <div class="notification is-danger is-light">
+        <button class="delete" aria-label="delete"></button>
+        <p>
+          <strong>Funeral Home Error</strong><br />
+          <%= error %>
+        </p>
+      </div>
+    <% } %>
 
     <div class="columns is-vcentered">
       <div class="column">
@@ -62,11 +72,11 @@
   </div>
 </div>
 
-<%- include('_footerA'); -%>
+<%- include('../_footerA'); -%>
 
 <script>
   exports.funeralHomes = <%- JSON.stringify(funeralHomes) %>;
 </script>
 <script src="<%= urlPrefix %>/javascripts/funeralHome.search.js"></script>
 
-<%- include('_footerB'); -%>
+<%- include('../_footerB'); -%>

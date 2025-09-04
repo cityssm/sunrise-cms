@@ -98,7 +98,7 @@ export default async function handler(
       ? getCachedWorkOrderMilestoneTypes()
       : []
 
-    response.render('contract-edit', {
+    response.render('contracts/edit', {
       headTitle: 'Contract Update',
 
       contract,

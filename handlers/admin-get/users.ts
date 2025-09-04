@@ -20,7 +20,7 @@ export default function handler(_request: Request, response: Response): void {
     (userArray) => userArray.length > 0
   )
 
-  response.render('admin-users', {
+  response.render('admin/users', {
     headTitle: 'User Management',
     users,
 

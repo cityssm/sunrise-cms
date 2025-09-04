@@ -7,7 +7,7 @@ export default function handler(_request, response) {
     });
     const contractTypes = getCachedContractTypes();
     const burialSiteTypes = getCachedBurialSiteTypes();
-    response.render('admin-fees', {
+    response.render('admin/fees', {
         headTitle: 'Fee Management',
         burialSiteTypes,
         contractTypes,

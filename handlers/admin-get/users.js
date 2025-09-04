@@ -12,7 +12,7 @@ export default function handler(_request, response) {
         isAdmin: getConfigProperty('users.isAdmin')
     };
     const hasConfigUsers = Object.values(configUsers).some((userArray) => userArray.length > 0);
-    response.render('admin-users', {
+    response.render('admin/users', {
         headTitle: 'User Management',
         users,
         hasConfigUsers,

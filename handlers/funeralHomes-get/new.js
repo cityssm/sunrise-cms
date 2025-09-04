@@ -9,7 +9,7 @@ export default function handler(_request, response) {
         funeralHomeProvince: getConfigProperty('settings.provinceDefault'),
         funeralHomePhoneNumber: ''
     };
-    response.render('funeralHome-edit', {
+    response.render('funeralHomes/edit', {
         headTitle: 'Create a Funeral Home',
         funeralHome,
         isCreate: true

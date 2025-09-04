@@ -13,7 +13,7 @@ export default function handler(_request: Request, response: Response): void {
   const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes()
   const workOrderTypes = getCachedWorkOrderTypes()
 
-  response.render('admin-tables', {
+  response.render('admin/tables', {
     headTitle: 'Config Table Management',
 
     burialSiteStatuses,

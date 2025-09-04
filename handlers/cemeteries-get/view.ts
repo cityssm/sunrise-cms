@@ -26,7 +26,7 @@ export default function handler(
     cemeteryId: cemetery.cemeteryId
   })
 
-  response.render('cemetery-view', {
+  response.render('cemeteries/view', {
     headTitle: cemetery.cemeteryName,
 
     cemetery,

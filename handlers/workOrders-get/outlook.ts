@@ -10,7 +10,7 @@ export default function handler(request: Request, response: Response): void {
 
   const applicationUrl = getApplicationUrl(request)
 
-  response.render('workOrder-outlook', {
+  response.render('workOrders/outlook', {
     headTitle: 'Work Order Outlook Integration',
 
     workOrderMilestoneTypes,

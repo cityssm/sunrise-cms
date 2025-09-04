@@ -59,7 +59,7 @@ export default async function handler(request, response) {
         const workOrderMilestoneTypes = canUpdateWorkOrders
             ? getCachedWorkOrderMilestoneTypes()
             : [];
-        response.render('contract-edit', {
+        response.render('contracts/edit', {
             headTitle: 'Contract Update',
             contract,
             contractTypePrints,

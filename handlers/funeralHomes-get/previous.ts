@@ -15,7 +15,7 @@ export default function handler(
     response.redirect(
       `${getConfigProperty(
         'reverseProxy.urlPrefix'
-      )}/funeralHomes/?error=noPreviousCemeteryIdFound`
+      )}/funeralHomes/?error=noPreviousFuneralHomeIdFound`
     )
     return
   }
