@@ -169,12 +169,14 @@ interface GPSPosition {
   // Capture GPS coordinates for a burial site
   function captureCoordinates(burialSiteId: number): void {
     if (currentPosition === null || currentPosition === undefined) {
-      cityssm.alertModal(
-        'GPS Not Ready',
-        'GPS coordinates are not available. Please wait for GPS to initialize.',
-        'OK',
-        'danger'
-      )
+      bulmaJS.alert({
+        contextualColorName: 'danger',
+        title: 'GPS Not Ready',
+
+        message:
+          'GPS coordinates are not available. Please wait for GPS to initialize.'
+      })
+      
       return
     }
 

@@ -104,7 +104,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
     // Capture GPS coordinates for a burial site
     function captureCoordinates(burialSiteId) {
         if (currentPosition === null || currentPosition === undefined) {
-            cityssm.alertModal('GPS Not Ready', 'GPS coordinates are not available. Please wait for GPS to initialize.', 'OK', 'danger');
+            bulmaJS.alert({
+                contextualColorName: 'danger',
+                title: 'GPS Not Ready',
+                message: 'GPS coordinates are not available. Please wait for GPS to initialize.'
+            });
             return;
         }
         const captureButton = document.querySelector(`#capture-${burialSiteId}`);

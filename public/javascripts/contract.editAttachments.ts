@@ -240,6 +240,7 @@ declare const exports: {
           fileInputElement.addEventListener('change', () => {
             const fileSize = fileInputElement.files?.[0]?.size ?? 0
 
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             if (fileSize > exports.maxAttachmentFileSize * 1024 * 1024) {
               bulmaJS.alert({
                 contextualColorName: 'danger',
