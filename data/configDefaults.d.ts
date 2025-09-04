@@ -29,6 +29,7 @@ export declare const configDefaultValues: {
     'reverseProxy.disableCompression': boolean;
     'reverseProxy.disableEtag': boolean;
     'reverseProxy.disableRateLimit': boolean;
+    'reverseProxy.trafficIsForwarded': boolean;
     'reverseProxy.urlPrefix': string;
     'session.cookieName': string;
     'session.doKeepAlive': boolean;

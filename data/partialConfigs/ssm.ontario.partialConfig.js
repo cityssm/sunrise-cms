@@ -1,5 +1,6 @@
 import { config as cemeteryConfig } from './ontario.partialConfig.js';
 export const config = { ...cemeteryConfig };
+config.reverseProxy.trafficIsForwarded = true;
 config.settings.customizationsPath = '../sunrise-cms-saultstemarie';
 config.settings.burialSites.burialSiteNameSegments = {
     includeCemeteryKey: true,

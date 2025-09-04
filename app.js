@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { abuseCheck, clearAbuse } from '@cityssm/express-abuse-points';
-import { millisecondsInOneMinute } from '@cityssm/to-millis';
+import { millisecondsInOneHour, millisecondsInOneMinute, minutesToMillis } from '@cityssm/to-millis';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
@@ -160,10 +160,18 @@ app.use((request, response, next) => {
  * LOGIN / LOGOUT
  * Before CSRF Protection
  */
-app.use(`${urlPrefix}/login`, abuseCheck(), routerLogin);
+const loginAbuseCheck = abuseCheck({
+    byIP: !configFunctions.getConfigProperty('reverseProxy.trafficIsForwarded'),
+    byXForwardedFor: configFunctions.getConfigProperty('reverseProxy.trafficIsForwarded'),
+    abusePoints: 1,
+    abusePointsMax: 5,
+    clearIntervalMillis: millisecondsInOneHour,
+    expiryMillis: minutesToMillis(5),
+    abuseMessageText: 'Too many login attempts. Please try again later.'
+});
+app.use(`${urlPrefix}/login`, loginAbuseCheck, routerLogin);
 app.get(`${urlPrefix}/logout`, (request, response) => {
-    if (Object.hasOwn(request.session, 'user') &&
-        Object.hasOwn(request.cookies, sessionCookieName)) {
+    if (hasSession(request)) {
         request.session.destroy(() => {
             clearAbuse(request);
             response.clearCookie(sessionCookieName);
