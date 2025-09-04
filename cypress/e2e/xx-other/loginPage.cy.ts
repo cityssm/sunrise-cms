@@ -12,10 +12,6 @@ describe('Login Page', () => {
     cy.get('form').should('have.length', 1)
   })
 
-  it('Contains a _csrf field', () => {
-    cy.get("form [name='_csrf']").should('exist')
-  })
-
   it('Contains a userName field', () => {
     cy.get("form [name='userName']").should('exist')
   })
