@@ -1,3 +1,4 @@
+import { clearAbuse, recordAbuse } from '@cityssm/express-abuse-points'
 import Debug from 'debug'
 import { type Request, type Response, Router } from 'express'
 
@@ -27,13 +28,10 @@ function getHandler(request: Request, response: Response): void {
 
     response.redirect(redirectURL)
   } else {
-
-    
-
     response.render('login', {
-      userName: '',
       message: '',
       redirect: request.query.redirect,
+      userName: '',
       useTestDatabases
     })
   }
@@ -80,10 +78,14 @@ async function postHandler(
   }
 
   if (isAuthenticated && userObject !== undefined) {
+    clearAbuse(request as unknown as Express.Request)
+
     request.session.user = userObject
 
     response.redirect(redirectURL)
   } else {
+    recordAbuse(request as unknown as Express.Request)
+    
     response.render('login', {
       message: 'Login Failed',
       redirect: redirectURL,

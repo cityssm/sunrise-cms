@@ -1,3 +1,4 @@
+import { clearAbuse, recordAbuse } from '@cityssm/express-abuse-points';
 import Debug from 'debug';
 import { Router } from 'express';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
@@ -16,9 +17,9 @@ function getHandler(request, response) {
     }
     else {
         response.render('login', {
-            userName: '',
             message: '',
             redirect: request.query.redirect,
+            userName: '',
             useTestDatabases
         });
     }
@@ -45,10 +46,12 @@ async function postHandler(request, response) {
         userObject = getUser(userName);
     }
     if (isAuthenticated && userObject !== undefined) {
+        clearAbuse(request);
         request.session.user = userObject;
         response.redirect(redirectURL);
     }
     else {
+        recordAbuse(request);
         response.render('login', {
             message: 'Login Failed',
             redirect: redirectURL,

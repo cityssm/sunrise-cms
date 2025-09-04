@@ -42,6 +42,7 @@
     "@cityssm/consigno-cloud-api": "^1.1.4",
     "@cityssm/date-diff": "^2.2.3",
     "@cityssm/dynamics-gp": "^1.4.1",
+    "@cityssm/express-abuse-points": "^3.0.0",
     "@cityssm/fa-glow": "^0.1.0",
     "@cityssm/fill-block-range": "^0.3.0",
     "@cityssm/ntfy-publish": "^1.1.0",
@@ -75,7 +76,6 @@
     "parse-full-name": "^1.2.6",
     "sanitize-filename": "^1.6.3",
     "session-file-store": "^1.5.0",
-    "set-interval-async": "^3.0.3",
     "sunrise-cms-customizations": "^0.0.2"
   },
   "devDependencies": {

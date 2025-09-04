@@ -1,5 +1,6 @@
 import path from 'node:path'
 
+import { abuseCheck, clearAbuse } from '@cityssm/express-abuse-points'
 import { millisecondsInOneMinute } from '@cityssm/to-millis'
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import compression from 'compression'
@@ -263,7 +264,7 @@ app.use((request, response, next) => {
  * Before CSRF Protection
  */
 
-app.use(`${urlPrefix}/login`, routerLogin)
+app.use(`${urlPrefix}/login`, abuseCheck(), routerLogin)
 
 app.get(`${urlPrefix}/logout`, (request, response) => {
   if (
@@ -271,6 +272,7 @@ app.get(`${urlPrefix}/logout`, (request, response) => {
     Object.hasOwn(request.cookies, sessionCookieName)
   ) {
     request.session.destroy(() => {
+      clearAbuse(request as unknown as Express.Request)
       response.clearCookie(sessionCookieName)
       response.redirect(`${urlPrefix}/`)
     })
