@@ -3,7 +3,7 @@ import http from 'node:http'
 import Debug from 'debug'
 import exitHook, { gracefulExit } from 'exit-hook'
 
-import { app } from '../app.js'
+import { app, shutdownAbuseCheck } from '../app.js'
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import {
@@ -70,6 +70,7 @@ process.title = `${getConfigProperty('application.applicationName')} (Worker)`
 
 const httpPort = getConfigProperty('application.httpPort')
 
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
 const httpServer = http.createServer(app)
 
 httpServer
@@ -82,4 +83,5 @@ httpServer
 exitHook(() => {
   debug('Closing HTTP')
   httpServer.close()
+  shutdownAbuseCheck()
 })
