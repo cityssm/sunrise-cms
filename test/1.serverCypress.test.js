@@ -4,16 +4,17 @@ import assert from 'node:assert';
 import { exec } from 'node:child_process';
 import http from 'node:http';
 import { after, before, describe, it } from 'node:test';
-import { hoursToMillis } from '@cityssm/to-millis';
+import { minutesToMillis } from '@cityssm/to-millis';
 import { app } from '../app.js';
 import { portNumber } from './_globals.js';
+const cypressTimeoutMillis = minutesToMillis(30);
 function runCypress(browser, done) {
     let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}`;
     if ((process.env.CYPRESS_RECORD_KEY ?? '') !== '') {
         cypressCommand += ` --tag "${browser},${process.version},${process.platform}" --record`;
     }
     // eslint-disable-next-line security/detect-child-process, sonarjs/os-command
-    const childProcess = exec(cypressCommand);
+    const childProcess = exec(cypressCommand, { timeout: cypressTimeoutMillis });
     childProcess.stdout?.on('data', (data) => {
         console.log(data);
     });
@@ -48,12 +49,12 @@ await describe('sunrise-cms', async () => {
     });
     await describe('Cypress tests', async () => {
         await it('Should run Cypress tests in Chrome', {
-            timeout: hoursToMillis(1)
+            timeout: cypressTimeoutMillis
         }, (context, done) => {
             runCypress('chrome', done);
         });
         await it('Should run Cypress tests in Firefox', {
-            timeout: hoursToMillis(1)
+            timeout: cypressTimeoutMillis
         }, (context, done) => {
             runCypress('firefox', done);
         });
