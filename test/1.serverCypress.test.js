@@ -7,6 +7,7 @@ import { after, before, describe, it } from 'node:test';
 import { minutesToMillis } from '@cityssm/to-millis';
 import { app, shutdownAbuseCheck } from '../app.js';
 import { portNumber } from './_globals.js';
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const cypressTimeoutMillis = minutesToMillis(15);
 function runCypress(browser, done) {
     let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}`;

@@ -12,6 +12,7 @@ import { app, shutdownAbuseCheck } from '../app.js'
 
 import { portNumber } from './_globals.js'
 
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const cypressTimeoutMillis = minutesToMillis(15)
 
 function runCypress(browser: 'chrome' | 'firefox', done: () => void): void {

@@ -31,6 +31,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             (modalElement?.querySelector('#consignoCloudStart--contractId')).value = contractId;
             (modalElement?.querySelector('#consignoCloudStart--workflowTitle')).value = responseJSON.workflowTitle;
             const oneWeekFromNow = new Date();
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);
             (modalElement?.querySelector(
             // eslint-disable-next-line no-secrets/no-secrets

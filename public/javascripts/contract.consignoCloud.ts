@@ -87,6 +87,7 @@ declare const exports: {
         ).value = responseJSON.workflowTitle
 
         const oneWeekFromNow = new Date()
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7)
         ;(
           modalElement?.querySelector(
@@ -242,8 +243,8 @@ declare const exports: {
           | {
               success: true
 
-              workflowId: string
               workflowEditUrl: string
+              workflowId: string
             }
 
         if (responseJSON.success) {
