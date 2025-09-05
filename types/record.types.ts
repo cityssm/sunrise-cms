@@ -1,6 +1,6 @@
 import type { DateString, TimeString } from '@cityssm/utils-datetime'
 
-import type { directionsOfArrival } from '../data/dataLists.js'
+import type { directionsOfArrival } from '../helpers/dataLists.js'
 import type { DynamicsGPDocument } from '../integrations/dynamicsGp/types.js'
 
 import type { MetadataKey } from './contractMetadata.types.js'

@@ -1,6 +1,6 @@
 import type sqlite from 'better-sqlite3'
 
-import { directionsOfArrival } from '../data/dataLists.js'
+import { directionsOfArrival } from '../helpers/dataLists.js'
 
 export type UpdateCemeteryDirectionsOfArrivalForm = Partial<
   Record<

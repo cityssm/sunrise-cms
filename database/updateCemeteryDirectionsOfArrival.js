@@ -1,4 +1,4 @@
-import { directionsOfArrival } from '../data/dataLists.js';
+import { directionsOfArrival } from '../helpers/dataLists.js';
 export default function updateCemeteryDirectionsOfArrival(cemeteryId, updateForm, database) {
     database
         .prepare(`delete from CemeteryDirectionsOfArrival
