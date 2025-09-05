@@ -101,71 +101,55 @@ router
  * Contract Type Management
  */
 
-router.get('/contractTypes', handler_contractTypes)
-
-router.post('/doAddContractType', handler_doAddContractType)
-
-router.post('/doUpdateContractType', handler_doUpdateContractType)
-
-router.post('/doMoveContractTypeUp', handler_doMoveContractTypeUp)
-
-router.post('/doMoveContractTypeDown', handler_doMoveContractTypeDown)
-
-router.post('/doDeleteContractType', handler_doDeleteContractType)
+router
+  .get('/contractTypes', handler_contractTypes)
+  .post('/doAddContractType', handler_doAddContractType)
+  .post('/doUpdateContractType', handler_doUpdateContractType)
+  .post('/doMoveContractTypeUp', handler_doMoveContractTypeUp)
+  .post('/doMoveContractTypeDown', handler_doMoveContractTypeDown)
+  .post('/doDeleteContractType', handler_doDeleteContractType)
 
 // Contract Type Fields
 
-router.post('/doAddContractTypeField', handler_doAddContractTypeField)
-
-router.post('/doUpdateContractTypeField', handler_doUpdateContractTypeField)
-
-router.post('/doMoveContractTypeFieldUp', handler_doMoveContractTypeFieldUp)
-
-router.post('/doMoveContractTypeFieldDown', handler_doMoveContractTypeFieldDown)
-
-router.post('/doDeleteContractTypeField', handler_doDeleteContractTypeField)
+router
+  .post('/doAddContractTypeField', handler_doAddContractTypeField)
+  .post('/doUpdateContractTypeField', handler_doUpdateContractTypeField)
+  .post('/doMoveContractTypeFieldUp', handler_doMoveContractTypeFieldUp)
+  .post('/doMoveContractTypeFieldDown', handler_doMoveContractTypeFieldDown)
+  .post('/doDeleteContractTypeField', handler_doDeleteContractTypeField)
 
 // Contract Type Prints
 
-router.post('/doAddContractTypePrint', handler_doAddContractTypePrint)
-
-router.post('/doMoveContractTypePrintUp', handler_doMoveContractTypePrintUp)
-
-router.post('/doMoveContractTypePrintDown', handler_doMoveContractTypePrintDown)
-
-router.post('/doDeleteContractTypePrint', handler_doDeleteContractTypePrint)
+router
+  .post('/doAddContractTypePrint', handler_doAddContractTypePrint)
+  .post('/doMoveContractTypePrintUp', handler_doMoveContractTypePrintUp)
+  .post('/doMoveContractTypePrintDown', handler_doMoveContractTypePrintDown)
+  .post('/doDeleteContractTypePrint', handler_doDeleteContractTypePrint)
 
 /*
  * Burial Site Type Management
  */
 
-router.get('/burialSiteTypes', handler_burialSiteTypes)
-
-router.post('/doAddBurialSiteType', handler_doAddBurialSiteType)
-
-router.post('/doUpdateBurialSiteType', handler_doUpdateBurialSiteType)
-
-router.post('/doMoveBurialSiteTypeUp', handler_doMoveBurialSiteTypeUp)
-
-router.post('/doMoveBurialSiteTypeDown', handler_doMoveBurialSiteTypeDown)
-
-router.post('/doDeleteBurialSiteType', handler_doDeleteBurialSiteType)
+router
+  .get('/burialSiteTypes', handler_burialSiteTypes)
+  .post('/doAddBurialSiteType', handler_doAddBurialSiteType)
+  .post('/doUpdateBurialSiteType', handler_doUpdateBurialSiteType)
+  .post('/doMoveBurialSiteTypeUp', handler_doMoveBurialSiteTypeUp)
+  .post('/doMoveBurialSiteTypeDown', handler_doMoveBurialSiteTypeDown)
+  .post('/doDeleteBurialSiteType', handler_doDeleteBurialSiteType)
 
 // Burial Site Type Fields
 
-router.post('/doAddBurialSiteTypeField', handler_doAddBurialSiteTypeField)
-
-router.post('/doUpdateBurialSiteTypeField', handler_doUpdateBurialSiteTypeField)
-
-router.post('/doMoveBurialSiteTypeFieldUp', handler_doMoveBurialSiteTypeFieldUp)
-
-router.post(
-  // eslint-disable-next-line no-secrets/no-secrets
-  '/doMoveBurialSiteTypeFieldDown',
-  handler_doMoveBurialSiteTypeFieldDown
-)
-
-router.post('/doDeleteBurialSiteTypeField', handler_doDeleteBurialSiteTypeField)
+router
+  .post('/doAddBurialSiteTypeField', handler_doAddBurialSiteTypeField)
+  .post('/doUpdateBurialSiteTypeField', handler_doUpdateBurialSiteTypeField)
+  .post('/doMoveBurialSiteTypeFieldUp', handler_doMoveBurialSiteTypeFieldUp)
+  .post(
+    // eslint-disable-next-line no-secrets/no-secrets
+    '/doMoveBurialSiteTypeFieldDown',
+    handler_doMoveBurialSiteTypeFieldDown
+  )
+  .post('/doDeleteBurialSiteTypeField', handler_doDeleteBurialSiteTypeField)
 
 /*
  * Config Tables
@@ -173,120 +157,101 @@ router.post('/doDeleteBurialSiteTypeField', handler_doDeleteBurialSiteTypeField)
 
 router.get('/tables', handler_tables)
 
+// Config Tables - Work Order Types
+
+router
+  .post('/doAddWorkOrderType', handler_doAddWorkOrderType)
+  .post('/doUpdateWorkOrderType', handler_doUpdateWorkOrderType)
+  .post('/doMoveWorkOrderTypeUp', handler_doMoveWorkOrderTypeUp)
+  .post('/doMoveWorkOrderTypeDown', handler_doMoveWorkOrderTypeDown)
+  .post('/doDeleteWorkOrderType', handler_doDeleteWorkOrderType)
+
+// Config Tables - Work Order Milestone Types
+
+router
+  .post('/doAddWorkOrderMilestoneType', handler_doAddWorkOrderMilestoneType)
+  .post(
+    '/doUpdateWorkOrderMilestoneType',
+    handler_doUpdateWorkOrderMilestoneType
+  )
+  .post(
+    '/doMoveWorkOrderMilestoneTypeUp',
+    handler_doMoveWorkOrderMilestoneTypeUp
+  )
+  .post(
+    '/doMoveWorkOrderMilestoneTypeDown',
+    handler_doMoveWorkOrderMilestoneTypeDown
+  )
+  .post(
+    '/doDeleteWorkOrderMilestoneType',
+    handler_doDeleteWorkOrderMilestoneType
+  )
+
+// Config Tables - Burial Site Statuses
+
+router
+  .post('/doAddBurialSiteStatus', handler_doAddBurialSiteStatus)
+  .post('/doUpdateBurialSiteStatus', handler_doUpdateBurialSiteStatus)
+  .post('/doMoveBurialSiteStatusUp', handler_doMoveBurialSiteStatusUp)
+  .post('/doMoveBurialSiteStatusDown', handler_doMoveBurialSiteStatusDown)
+  .post('/doDeleteBurialSiteStatus', handler_doDeleteBurialSiteStatus)
+
+// Config Tables - Committal Types
+
+router
+  .post('/doAddCommittalType', handler_doAddCommittalType)
+  .post('/doUpdateCommittalType', handler_doUpdateCommittalType)
+  .post('/doMoveCommittalTypeUp', handler_doMoveCommittalTypeUp)
+  .post('/doMoveCommittalTypeDown', handler_doMoveCommittalTypeDown)
+  .post('/doDeleteCommittalType', handler_doDeleteCommittalType)
+
+// Config Tables - Interment Container Types
+
+router
+  .post('/doAddIntermentContainerType', handler_doAddIntermentContainerType)
+  .post(
+    '/doUpdateIntermentContainerType',
+    handler_doUpdateIntermentContainerType
+  )
+  .post(
+    '/doMoveIntermentContainerTypeUp',
+    handler_doMoveIntermentContainerTypeUp
+  )
+  .post(
+    '/doMoveIntermentContainerTypeDown',
+    handler_doMoveIntermentContainerTypeDown
+  )
+  .post(
+    '/doDeleteIntermentContainerType',
+    handler_doDeleteIntermentContainerType
+  )
+
 /*
  * Users
  */
 
-router.get('/users', handler_users)
-
-router.post('/doAddUser', handler_doAddUser)
-
-router.post('/doUpdateUser', handler_doUpdateUser)
-
-router.post('/doToggleUserPermission', handler_doToggleUserPermission)
-
-router.post('/doDeleteUser', handler_doDeleteUser)
-
-// Config Tables - Work Order Types
-
-router.post('/doAddWorkOrderType', handler_doAddWorkOrderType)
-
-router.post('/doUpdateWorkOrderType', handler_doUpdateWorkOrderType)
-
-router.post('/doMoveWorkOrderTypeUp', handler_doMoveWorkOrderTypeUp)
-
-router.post('/doMoveWorkOrderTypeDown', handler_doMoveWorkOrderTypeDown)
-
-router.post('/doDeleteWorkOrderType', handler_doDeleteWorkOrderType)
-
-// Config Tables - Work Order Milestone Types
-
-router.post('/doAddWorkOrderMilestoneType', handler_doAddWorkOrderMilestoneType)
-
-router.post(
-  '/doUpdateWorkOrderMilestoneType',
-  handler_doUpdateWorkOrderMilestoneType
-)
-
-router.post(
-  '/doMoveWorkOrderMilestoneTypeUp',
-  handler_doMoveWorkOrderMilestoneTypeUp
-)
-
-router.post(
-  '/doMoveWorkOrderMilestoneTypeDown',
-  handler_doMoveWorkOrderMilestoneTypeDown
-)
-
-router.post(
-  '/doDeleteWorkOrderMilestoneType',
-  handler_doDeleteWorkOrderMilestoneType
-)
-
-// Config Tables - Burial Site Statuses
-
-router.post('/doAddBurialSiteStatus', handler_doAddBurialSiteStatus)
-
-router.post('/doUpdateBurialSiteStatus', handler_doUpdateBurialSiteStatus)
-
-router.post('/doMoveBurialSiteStatusUp', handler_doMoveBurialSiteStatusUp)
-
-router.post('/doMoveBurialSiteStatusDown', handler_doMoveBurialSiteStatusDown)
-
-router.post('/doDeleteBurialSiteStatus', handler_doDeleteBurialSiteStatus)
-
-// Config Tables - Committal Types
-
-router.post('/doAddCommittalType', handler_doAddCommittalType)
-
-router.post('/doUpdateCommittalType', handler_doUpdateCommittalType)
-
-router.post('/doMoveCommittalTypeUp', handler_doMoveCommittalTypeUp)
-
-router.post('/doMoveCommittalTypeDown', handler_doMoveCommittalTypeDown)
-
-router.post('/doDeleteCommittalType', handler_doDeleteCommittalType)
-
-// Config Tables - Interment Container Types
-
-router.post('/doAddIntermentContainerType', handler_doAddIntermentContainerType)
-
-router.post(
-  '/doUpdateIntermentContainerType',
-  handler_doUpdateIntermentContainerType
-)
-
-router.post(
-  '/doMoveIntermentContainerTypeUp',
-  handler_doMoveIntermentContainerTypeUp
-)
-
-router.post(
-  '/doMoveIntermentContainerTypeDown',
-  handler_doMoveIntermentContainerTypeDown
-)
-
-router.post(
-  '/doDeleteIntermentContainerType',
-  handler_doDeleteIntermentContainerType
-)
+router
+  .get('/users', handler_users)
+  .post('/doAddUser', handler_doAddUser)
+  .post('/doUpdateUser', handler_doUpdateUser)
+  .post('/doToggleUserPermission', handler_doToggleUserPermission)
+  .post('/doDeleteUser', handler_doDeleteUser)
 
 /*
  * Settings Management
  */
 
-router.get('/settings', handler_settings)
-
-router.post('/doUpdateSetting', handler_doUpdateSetting)
+router
+  .get('/settings', handler_settings)
+  .post('/doUpdateSetting', handler_doUpdateSetting)
 
 /*
  * Database Maintenance
  */
 
-router.get('/database', handler_database)
-
-router.post('/doBackupDatabase', handler_doBackupDatabase)
-
-router.post('/doCleanupDatabase', handler_doCleanupDatabase)
+router
+  .get('/database', handler_database)
+  .post('/doBackupDatabase', handler_doBackupDatabase)
+  .post('/doCleanupDatabase', handler_doCleanupDatabase)
 
 export default router
