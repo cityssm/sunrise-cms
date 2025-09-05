@@ -13,7 +13,7 @@ Most user workstations are sufficient for modest installations.
 The system must meet the minimum requirements for Node.js,
 which is able to run on budget hardware.
 
-_More is better_, however under stress tests,
+_More is better_ 💪, however under stress tests,
 the application peaked at the following:
 
 - x64 architecture.

@@ -288,6 +288,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ${cityssm.escapeHTML(burialSiteTypeField.burialSiteTypeField ?? '')}
               </a>
             </div>
+            <div class="level-item">
+              <span class="tag">${burialSiteTypeField.fieldType}</span>
+            </div>
           </div>
           <div class="level-right is-hidden-print">
             <div class="level-item">
@@ -358,7 +361,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <div class="level-item">
               <button class="button is-primary is-small button--editBurialSiteType" type="button">
                 <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
-                <span>Edit Burial Site Type</span>
+                <span>Edit <span class="is-hidden-desktop-only is-hidden-tablet-only">Burial Site Type</span></span>
               </button>
             </div>
             <div class="level-item">

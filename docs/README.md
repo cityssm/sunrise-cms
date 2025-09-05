@@ -53,4 +53,7 @@ Create database snapshots. Perform database cleanup operations.
 Spin up your own instance of Sunrise CMS.
 
 [**config.js**](./configJs.md)<br />
-Configure Sunrise CMS to meet your needs.
+Customize Sunrise CMS to meet your needs.
+
+[**Regular Administrator Maintenance**](./regularAdminMaintenance.md)<br />
+Tasks that should be regularly performed to keep Sunrise CMS running smoothly.
