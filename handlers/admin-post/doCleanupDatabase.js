@@ -1,6 +1,6 @@
 import cleanupDatabase from '../../database/cleanupDatabase.js';
-export default function handler(request, response) {
-    const recordCounts = cleanupDatabase(request.session.user);
+export default async function handler(request, response) {
+    const recordCounts = await cleanupDatabase(request.session.user);
     response.json({
         success: true,
         inactivatedRecordCount: recordCounts.inactivatedRecordCount,

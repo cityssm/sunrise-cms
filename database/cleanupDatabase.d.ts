@@ -1,5 +1,6 @@
-import sqlite from 'better-sqlite3';
-export default function cleanupDatabase(user: User, connectedDatabase?: sqlite.Database): {
+interface CleanupResult {
     inactivatedRecordCount: number;
     purgedRecordCount: number;
-};
+}
+export default function cleanupDatabase(user: User): Promise<CleanupResult>;
+export {};

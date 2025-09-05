@@ -1,12 +1,19 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import { daysToMillis } from '@cityssm/to-millis';
 import sqlite from 'better-sqlite3';
+import Debug from 'debug';
+import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function cleanupDatabase(user, connectedDatabase) {
-    const database = connectedDatabase ?? sqlite(sunriseDB);
+const debug = Debug(`${DEBUG_NAMESPACE}:database:cleanupDatabase`);
+function getRecordDeleteTimeMillisMin() {
+    return (Date.now() -
+        daysToMillis(getConfigProperty('settings.adminCleanup.recordDeleteAgeDays')));
+}
+function cleanupWorkOrders(user, database) {
     const rightNowMillis = Date.now();
-    const recordDeleteTimeMillisMin = rightNowMillis -
-        daysToMillis(getConfigProperty('settings.adminCleanup.recordDeleteAgeDays'));
+    const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin();
     let inactivatedRecordCount = 0;
     let purgedRecordCount = 0;
     /*
@@ -93,6 +100,57 @@ export default function cleanupDatabase(user, connectedDatabase) {
         where recordDelete_timeMillis <= ?
           and workOrderTypeId not in (select workOrderTypeId from WorkOrders)`)
         .run(recordDeleteTimeMillisMin).changes;
+    return { inactivatedRecordCount, purgedRecordCount };
+}
+async function cleanupContracts(user, database) {
+    const rightNowMillis = Date.now();
+    const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin();
+    let inactivatedRecordCount = 0;
+    let purgedRecordCount = 0;
+    /*
+     * Contract Attachments
+     */
+    inactivatedRecordCount += database
+        .prepare(`update ContractAttachments
+        set recordDelete_userName = ?,
+          recordDelete_timeMillis = ?
+        where recordDelete_timeMillis is null
+          and contractId in (select contractId from Contracts where recordDelete_timeMillis is not null)`)
+        .run(user.userName, rightNowMillis).changes;
+    const attachmentsToPurge = database
+        .prepare(`select contractAttachmentId, fileName, filePath
+        from ContractAttachments
+        where recordDelete_timeMillis <= ?`)
+        .all(recordDeleteTimeMillisMin);
+    for (const attachment of attachmentsToPurge) {
+        const fullFilePath = path.join(attachment.filePath, attachment.fileName);
+        try {
+            // Test if file exists before deletion attempt
+            await fs.access(fullFilePath);
+            debug(`Deleting file: ${fullFilePath}`);
+            // eslint-disable-next-line security/detect-non-literal-fs-filename
+            await fs.unlink(fullFilePath);
+            purgedRecordCount += database
+                .prepare('delete from ContractAttachments where contractAttachmentId = ?')
+                .run(attachment.contractAttachmentId).changes;
+        }
+        catch {
+            debug(`File not found for deletion: ${fullFilePath}`);
+        }
+    }
+    /*
+     * Contract Metadata
+     */
+    inactivatedRecordCount += database
+        .prepare(`update ContractMetadata
+        set recordDelete_userName = ?,
+          recordDelete_timeMillis = ?
+        where recordDelete_timeMillis is null
+          and contractId in (select contractId from Contracts where recordDelete_timeMillis is not null)`)
+        .run(user.userName, rightNowMillis).changes;
+    purgedRecordCount += database
+        .prepare('delete from ContractMetadata where recordDelete_timeMillis <= ?')
+        .run(recordDeleteTimeMillisMin).changes;
     /*
      * Contract Comments
      */
@@ -144,10 +202,12 @@ export default function cleanupDatabase(user, connectedDatabase) {
     purgedRecordCount += database
         .prepare(`delete from Contracts
         where recordDelete_timeMillis <= ?
+          and contractId not in (select contractId from ContractAttachments)
           and contractId not in (select contractId from ContractComments)
           and contractId not in (select contractId from ContractFees)
           and contractId not in (select contractId from ContractFields)
           and contractId not in (select contractId from ContractInterments)
+          and contractId not in (select contractId from ContractMetadata)
           and contractId not in (select contractId from ContractTransactions)
           and contractId not in (select contractIdA from RelatedContracts)
           and contractId not in (select contractIdB from RelatedContracts)
@@ -215,6 +275,13 @@ export default function cleanupDatabase(user, connectedDatabase) {
           and contractTypeId not in (select contractTypeId from Contracts)
           and contractTypeId not in (select contractTypeId from Fees)`)
         .run(recordDeleteTimeMillisMin).changes;
+    return { inactivatedRecordCount, purgedRecordCount };
+}
+function cleanupBurialSites(user, database) {
+    const rightNowMillis = Date.now();
+    const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin();
+    let inactivatedRecordCount = 0;
+    let purgedRecordCount = 0;
     /*
      * Burial Site Comments
      */
@@ -290,6 +357,12 @@ export default function cleanupDatabase(user, connectedDatabase) {
         where recordDelete_timeMillis <= ?
           and burialSiteTypeId not in (select burialSiteTypeId from BurialSites)`)
         .run(recordDeleteTimeMillisMin).changes;
+    return { inactivatedRecordCount, purgedRecordCount };
+}
+function cleanupCemeteries(user, database) {
+    const recordDeleteTimeMillisMin = getRecordDeleteTimeMillisMin();
+    const inactivatedRecordCount = 0;
+    let purgedRecordCount = 0;
     /*
      * Cemeteries
      */
@@ -303,9 +376,27 @@ export default function cleanupDatabase(user, connectedDatabase) {
           and cemeteryId not in (select cemeteryId from CemeteryDirectionsOfArrival)
           and cemeteryId not in (select cemeteryId from BurialSites where cemeteryId is not null)`)
         .run(recordDeleteTimeMillisMin).changes;
-    if (connectedDatabase === undefined) {
-        database.close();
-    }
+    return { inactivatedRecordCount, purgedRecordCount };
+}
+export default async function cleanupDatabase(user) {
+    const database = sqlite(sunriseDB);
+    // Work Orders
+    const workOrderResult = cleanupWorkOrders(user, database);
+    let inactivatedRecordCount = workOrderResult.inactivatedRecordCount;
+    let purgedRecordCount = workOrderResult.purgedRecordCount;
+    // Contracts
+    const contractResult = await cleanupContracts(user, database);
+    inactivatedRecordCount += contractResult.inactivatedRecordCount;
+    purgedRecordCount += contractResult.purgedRecordCount;
+    // Burial Sites
+    const burialSiteResult = cleanupBurialSites(user, database);
+    inactivatedRecordCount += burialSiteResult.inactivatedRecordCount;
+    purgedRecordCount += burialSiteResult.purgedRecordCount;
+    // Cemeteries
+    const cemeteryResult = cleanupCemeteries(user, database);
+    inactivatedRecordCount += cemeteryResult.inactivatedRecordCount;
+    purgedRecordCount += cemeteryResult.purgedRecordCount;
+    database.close();
     return {
         inactivatedRecordCount,
         purgedRecordCount
