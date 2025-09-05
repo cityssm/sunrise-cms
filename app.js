@@ -1,11 +1,12 @@
 import path from 'node:path';
-import { abuseCheck, clearAbuse } from '@cityssm/express-abuse-points';
+import { abuseCheck, clearAbuse, shutdown as shutdownAbuseCheck } from '@cityssm/express-abuse-points';
 import { millisecondsInOneHour, millisecondsInOneMinute, minutesToMillis } from '@cityssm/to-millis';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import { doubleCsrf } from 'csrf-csrf';
 import Debug from 'debug';
+import exitHook from 'exit-hook';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 import session from 'express-session';
@@ -170,6 +171,9 @@ const loginAbuseCheck = abuseCheck({
     expiryMillis: minutesToMillis(5),
     abuseMessageText: 'Too many login attempts. Please try again later.'
 });
+exitHook(() => {
+    shutdownAbuseCheck();
+});
 app.use(`${urlPrefix}/login`, loginAbuseCheck, routerLogin);
 app.get(`${urlPrefix}/logout`, (request, response) => {
     if (hasSession(request)) {
@@ -241,3 +245,4 @@ app.use((error, request, response, _next) => {
     response.render('error');
 });
 export default app;
+export { shutdown as shutdownAbuseCheck } from '@cityssm/express-abuse-points';

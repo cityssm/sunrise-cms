@@ -5,7 +5,7 @@ import { exec } from 'node:child_process';
 import http from 'node:http';
 import { after, before, describe, it } from 'node:test';
 import { minutesToMillis } from '@cityssm/to-millis';
-import { app } from '../app.js';
+import { app, shutdownAbuseCheck } from '../app.js';
 import { portNumber } from './_globals.js';
 const cypressTimeoutMillis = minutesToMillis(15);
 function runCypress(browser, done) {
@@ -29,7 +29,7 @@ function runCypress(browser, done) {
 await describe('sunrise-cms', async () => {
     const httpServer = http.createServer(app);
     let serverStarted = false;
-    before((context, done) => {
+    before((_context, done) => {
         httpServer.listen(portNumber);
         httpServer.on('listening', () => {
             serverStarted = true;
@@ -43,6 +43,12 @@ await describe('sunrise-cms', async () => {
         catch {
             // ignore
         }
+        try {
+            shutdownAbuseCheck();
+        }
+        catch {
+            // ignore
+        }
     });
     await it(`Ensure server starts on port ${portNumber.toString()}`, () => {
         assert.ok(serverStarted);
@@ -50,12 +56,12 @@ await describe('sunrise-cms', async () => {
     await describe('Cypress tests', async () => {
         await it('Should run Cypress tests in Chrome', {
             timeout: cypressTimeoutMillis
-        }, (context, done) => {
+        }, (_context, done) => {
             runCypress('chrome', done);
         });
         await it('Should run Cypress tests in Firefox', {
             timeout: cypressTimeoutMillis
-        }, (context, done) => {
+        }, (_context, done) => {
             runCypress('firefox', done);
         });
     });

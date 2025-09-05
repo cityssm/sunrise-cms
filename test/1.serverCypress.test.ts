@@ -8,7 +8,7 @@ import { after, before, describe, it } from 'node:test'
 
 import { minutesToMillis } from '@cityssm/to-millis'
 
-import { app } from '../app.js'
+import { app, shutdownAbuseCheck } from '../app.js'
 
 import { portNumber } from './_globals.js'
 
@@ -43,7 +43,7 @@ await describe('sunrise-cms', async () => {
 
   let serverStarted = false
 
-  before((context, done) => {
+  before((_context, done) => {
     httpServer.listen(portNumber)
 
     httpServer.on('listening', () => {
@@ -55,6 +55,12 @@ await describe('sunrise-cms', async () => {
   after(() => {
     try {
       httpServer.close()
+    } catch {
+      // ignore
+    }
+
+    try {
+      shutdownAbuseCheck()
     } catch {
       // ignore
     }
@@ -70,7 +76,7 @@ await describe('sunrise-cms', async () => {
       {
         timeout: cypressTimeoutMillis
       },
-      (context, done) => {
+      (_context, done) => {
         runCypress('chrome', done)
       }
     )
@@ -80,7 +86,7 @@ await describe('sunrise-cms', async () => {
       {
         timeout: cypressTimeoutMillis
       },
-      (context, done) => {
+      (_context, done) => {
         runCypress('firefox', done)
       }
     )
