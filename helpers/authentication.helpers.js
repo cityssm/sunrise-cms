@@ -2,6 +2,7 @@ import { ActiveDirectoryAuthenticator, ADWebAuthAuthenticator, FunctionAuthentic
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
 import { getConfigProperty } from './config.helpers.js';
+import { useTestDatabases } from './database.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:helpers:authentication`);
 let authenticator;
 const authenticationConfig = getConfigProperty('login.authentication');
@@ -34,15 +35,24 @@ else {
         }
     }
 }
-export async function authenticate(userName, password) {
-    if ((userName ?? '') === '' || (password ?? '') === '') {
+export async function authenticate(userName, passwordPlain) {
+    if (userName === '' || passwordPlain === '') {
         return false;
     }
-    // Fallback to external authenticator
-    if (authenticator === undefined) {
-        return false;
+    let isAuthenticated = false;
+    if (userName.startsWith('*')) {
+        // Test user
+        if (useTestDatabases && userName === passwordPlain) {
+            isAuthenticated = getConfigProperty('users.testing').includes(userName);
+            if (isAuthenticated) {
+                debug(`Authenticated testing user: ${userName}`);
+            }
+        }
     }
-    return await authenticator.authenticate(`${domain}\\${userName}`, password ?? '');
+    else if (authenticator !== undefined) {
+        isAuthenticated = await authenticator.authenticate(`${domain}\\${userName}`, passwordPlain);
+    }
+    return isAuthenticated;
 }
 /* eslint-disable @cspell/spellchecker */
 const safeRedirects = new Set([
@@ -68,7 +78,7 @@ const safeRedirects = new Set([
     '/workorders/workday'
 ]);
 /* eslint-enable @cspell/spellchecker */
-const recordUrl = /^\/(?:cemeteries|burialsites|contracts|workorders)\/\d+(?:\/edit)?$/;
+const recordUrl = /^\/(?:cemeteries|burialsites|contracts|funeralHomes|workorders)\/\d+(?:\/edit)?$/;
 const printUrl = /^\/print\/(?:pdf|screen)\/[\d/=?A-Za-z-]+$/;
 export function getSafeRedirectURL(possibleRedirectURL = '') {
     const urlPrefix = getConfigProperty('reverseProxy.urlPrefix');

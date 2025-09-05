@@ -1,8 +1,6 @@
 import { clearAbuse, recordAbuse } from '@cityssm/express-abuse-points'
-import Debug from 'debug'
 import { type Request, type Response, Router } from 'express'
 
-import { DEBUG_NAMESPACE } from '../debug.config.js'
 import {
   authenticate,
   getSafeRedirectURL
@@ -10,8 +8,6 @@ import {
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { useTestDatabases } from '../helpers/database.helpers.js'
 import { getUser } from '../helpers/user.helpers.js'
-
-const debug = Debug(`${DEBUG_NAMESPACE}:login`)
 
 export const router = Router()
 
@@ -57,19 +53,15 @@ async function postHandler(
     typeof unsafeRedirectURL === 'string' ? unsafeRedirectURL : ''
   )
 
-  let isAuthenticated = false
+  /*
+   * Authenticate User
+   */
 
-  if (userName.startsWith('*')) {
-    if (useTestDatabases && userName === passwordPlain) {
-      isAuthenticated = getConfigProperty('users.testing').includes(userName)
+  const isAuthenticated = await authenticate(userName, passwordPlain)
 
-      if (isAuthenticated) {
-        debug(`Authenticated testing user: ${userName}`)
-      }
-    }
-  } else if (userName !== '' && passwordPlain !== '') {
-    isAuthenticated = await authenticate(userName, passwordPlain)
-  }
+  /*
+   * Get User Object
+   */
 
   let userObject: User | undefined
 
@@ -85,7 +77,7 @@ async function postHandler(
     response.redirect(redirectURL)
   } else {
     recordAbuse(request as unknown as Express.Request)
-    
+
     response.render('login', {
       message: 'Login Failed',
       redirect: redirectURL,

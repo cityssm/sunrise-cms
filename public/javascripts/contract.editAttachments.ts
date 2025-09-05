@@ -46,6 +46,7 @@ declare const exports: {
       <tbody></tbody>`
 
     for (const attachment of attachments) {
+      const contractAttachmentId = attachment.contractAttachmentId.toString()
       const attachmentDate = new Date(attachment.recordCreate_timeMillis ?? 0)
 
       const rowElement = document.createElement('tr')
@@ -53,7 +54,7 @@ declare const exports: {
       // eslint-disable-next-line no-unsanitized/property
       rowElement.innerHTML = `
         <td>
-          <a href="${sunrise.urlPrefix}/contracts/attachment/${attachment.contractAttachmentId}"
+          <a href="${sunrise.urlPrefix}/contracts/attachment/${cityssm.escapeHTML(contractAttachmentId)}"
             class="has-text-weight-bold"
             target="_blank"
             download>
@@ -72,7 +73,7 @@ declare const exports: {
           <div class="buttons is-right">
             <button class="button is-small is-primary has-tooltip-left" 
               data-tooltip="Edit Attachment"
-              data-attachment-id="${attachment.contractAttachmentId}"
+              data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
               data-cy="edit-attachment">
               <span class="icon is-small">
                 <i class="fa-solid fa-pencil-alt"></i>
@@ -80,7 +81,7 @@ declare const exports: {
             </button>
             <button class="button is-small is-danger has-tooltip-left" 
               data-tooltip="Delete Attachment"
-              data-attachment-id="${attachment.contractAttachmentId}"
+              data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
               data-cy="delete-attachment">
               <span class="icon is-small">
                 <i class="fa-solid fa-trash"></i>
