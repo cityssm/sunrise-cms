@@ -12,7 +12,7 @@ import { app } from '../app.js'
 
 import { portNumber } from './_globals.js'
 
-const cypressTimeoutMillis = minutesToMillis(30)
+const cypressTimeoutMillis = minutesToMillis(15)
 
 function runCypress(browser: 'chrome' | 'firefox', done: () => void): void {
   let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}`

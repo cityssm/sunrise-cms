@@ -7,7 +7,7 @@ import { after, before, describe, it } from 'node:test';
 import { minutesToMillis } from '@cityssm/to-millis';
 import { app } from '../app.js';
 import { portNumber } from './_globals.js';
-const cypressTimeoutMillis = minutesToMillis(30);
+const cypressTimeoutMillis = minutesToMillis(15);
 function runCypress(browser, done) {
     let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}`;
     if ((process.env.CYPRESS_RECORD_KEY ?? '') !== '') {
