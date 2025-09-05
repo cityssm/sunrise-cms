@@ -3,13 +3,13 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import getBurialSiteComments from './getBurialSiteComments.js';
 import getBurialSiteFields from './getBurialSiteFields.js';
 import getContracts from './getContracts.js';
-export default async function getBurialSite(burialSiteId, includeDeleted = false, connectedDatabase) {
+export default async function getBurialSite(burialSiteId, includeDeleted = false, connectedDatabase = undefined) {
     return await _getBurialSite('burialSiteId', burialSiteId, includeDeleted, connectedDatabase);
 }
-export async function getBurialSiteByBurialSiteName(burialSiteName, includeDeleted = false, connectedDatabase) {
+export async function getBurialSiteByBurialSiteName(burialSiteName, includeDeleted = false, connectedDatabase = undefined) {
     return await _getBurialSite('burialSiteName', burialSiteName, includeDeleted, connectedDatabase);
 }
-async function _getBurialSite(keyColumn, burialSiteIdOrName, includeDeleted = false, connectedDatabase) {
+async function _getBurialSite(keyColumn, burialSiteIdOrName, includeDeleted = false, connectedDatabase = undefined) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const burialSite = database
         .prepare(`select b.burialSiteId,

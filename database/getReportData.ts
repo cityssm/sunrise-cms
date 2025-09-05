@@ -68,7 +68,7 @@ const simpleReports: Record<`${string}-all` | `${string}-formatted`, string> = {
 export default function getReportData(
   reportName: string,
   reportParameters: ReportParameters = {},
-  connectedDatabase?: sqlite.Database
+  connectedDatabase: sqlite.Database | undefined = undefined
 ): unknown[] | undefined {
   let sql = ''
   const sqlParameters: unknown[] = []
@@ -230,6 +230,7 @@ export default function getReportData(
       }
     }
   } else {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, security/detect-object-injection
     sql = simpleReports[reportName]
   }
 

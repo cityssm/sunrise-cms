@@ -9,7 +9,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getContractTypes(
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase: sqlite.Database | undefined = undefined
 ): ContractType[] {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 

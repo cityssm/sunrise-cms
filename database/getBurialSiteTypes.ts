@@ -8,7 +8,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getBurialSiteTypes(
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase: sqlite.Database | undefined = undefined
 ): BurialSiteType[] {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 

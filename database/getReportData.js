@@ -48,7 +48,7 @@ const simpleReports = {
     'workOrders-all': 'select * from WorkOrders',
     'workOrderTypes-all': 'select * from WorkOrderTypes'
 };
-export default function getReportData(reportName, reportParameters = {}, connectedDatabase) {
+export default function getReportData(reportName, reportParameters = {}, connectedDatabase = undefined) {
     let sql = '';
     const sqlParameters = [];
     // eslint-disable-next-line security/detect-object-injection
@@ -181,6 +181,7 @@ export default function getReportData(reportName, reportParameters = {}, connect
         }
     }
     else {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, security/detect-object-injection
         sql = simpleReports[reportName];
     }
     const database = connectedDatabase ?? sqlite(sunriseDB);

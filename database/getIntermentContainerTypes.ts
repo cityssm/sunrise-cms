@@ -7,7 +7,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getIntermentContainerTypes(
   includeDeleted = false,
-  connectedDatabase?: sqlite.Database
+  connectedDatabase: sqlite.Database | undefined = undefined
 ): IntermentContainerType[] {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
