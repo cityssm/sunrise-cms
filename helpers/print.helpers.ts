@@ -1,6 +1,7 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable security/detect-object-injection */
 
+import generateBarcodeSvg from '@cityssm/jsbarcode-svg'
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import type { PrintConfig } from 'sunrise-cms-customizations'
 
@@ -9,7 +10,6 @@ import getContract from '../database/getContract.js'
 import getWorkOrder from '../database/getWorkOrder.js'
 import type { BurialSite, Contract, WorkOrder } from '../types/record.types.js'
 
-import * as barcodeFunctions from './barcode.helpers.js'
 import { getCachedSettingValue } from './cache/settings.cache.js'
 import * as configFunctions from './config.helpers.js'
 import * as contractFunctions from './contracts.helpers.js'
@@ -29,7 +29,9 @@ interface ReportData {
     getSettingValue: typeof getCachedSettingValue
   }
 
-  barcodeFunctions: typeof barcodeFunctions
+  barcodeFunctions: {
+    generateBarcodeSvg: typeof generateBarcodeSvg
+  }
 }
 
 export interface PrintConfigWithPath extends PrintConfig {
@@ -113,7 +115,9 @@ export async function getReportData(
       getSettingValue: getCachedSettingValue
     },
 
-    barcodeFunctions
+    barcodeFunctions: {
+      generateBarcodeSvg
+    }
   }
 
   if (

@@ -1,7 +1,7 @@
+import generateBarcodeSvg from '@cityssm/jsbarcode-svg';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import type { PrintConfig } from 'sunrise-cms-customizations';
 import type { BurialSite, Contract, WorkOrder } from '../types/record.types.js';
-import * as barcodeFunctions from './barcode.helpers.js';
 import { getCachedSettingValue } from './cache/settings.cache.js';
 import * as configFunctions from './config.helpers.js';
 import * as contractFunctions from './contracts.helpers.js';
@@ -16,7 +16,9 @@ interface ReportData {
     settingFunctions: {
         getSettingValue: typeof getCachedSettingValue;
     };
-    barcodeFunctions: typeof barcodeFunctions;
+    barcodeFunctions: {
+        generateBarcodeSvg: typeof generateBarcodeSvg;
+    };
 }
 export interface PrintConfigWithPath extends PrintConfig {
     path: string;

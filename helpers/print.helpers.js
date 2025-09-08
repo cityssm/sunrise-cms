@@ -1,10 +1,10 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable security/detect-object-injection */
+import generateBarcodeSvg from '@cityssm/jsbarcode-svg';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import getBurialSite from '../database/getBurialSite.js';
 import getContract from '../database/getContract.js';
 import getWorkOrder from '../database/getWorkOrder.js';
-import * as barcodeFunctions from './barcode.helpers.js';
 import { getCachedSettingValue } from './cache/settings.cache.js';
 import * as configFunctions from './config.helpers.js';
 import * as contractFunctions from './contracts.helpers.js';
@@ -63,7 +63,9 @@ export async function getReportData(printConfig, requestQuery) {
         settingFunctions: {
             getSettingValue: getCachedSettingValue
         },
-        barcodeFunctions
+        barcodeFunctions: {
+            generateBarcodeSvg
+        }
     };
     if (printConfig.params.includes('contractId') &&
         typeof requestQuery.contractId === 'string') {
