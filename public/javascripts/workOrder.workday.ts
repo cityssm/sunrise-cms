@@ -7,7 +7,8 @@ import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 import type {
   BurialSite,
   Contract,
-  WorkOrder
+  WorkOrder,
+  WorkOrderMilestone
 } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -275,6 +276,81 @@ declare const exports: {
       </li>`
   }
 
+  function buildMilestoneElement(
+    milestone: WorkOrderMilestone,
+    options: { canUpdateThisWorkOrder: boolean }
+  ): HTMLElement {
+    const milestoneElement = document.createElement('div')
+    milestoneElement.className = 'panel-block is-block'
+
+    const milestoneIsCompleted =
+      milestone.workOrderMilestoneCompletionDate !== null
+
+    const milestoneCheckIcon = milestoneIsCompleted
+      ? 'fa-solid fa-check'
+      : 'fa-regular fa-square'
+
+    const milestoneCheckHTML = options.canUpdateThisWorkOrder
+      ? `<button class="button has-tooltip-right button--toggle-milestone"
+            data-work-order-milestone-id="${milestone.workOrderMilestoneId}
+            data-tooltip="Toggle Milestone Completion"
+            aria-checked="${milestoneIsCompleted ? 'true' : 'false'}"
+            type="button">
+              <span class="icon is-small">
+                <i class="${milestoneCheckIcon}"></i>
+              </span>
+            </button>`
+      : `<span class="icon is-small">
+            <i class="${milestoneCheckIcon}"></i>
+          </span>`
+
+    const milestoneTimeString =
+      milestone.workOrderMilestoneTime === null
+        ? 'No Set Time'
+        : milestone.workOrderMilestoneTimePeriodString
+
+    const milestoneTimeHTML =
+      options.canUpdateThisWorkOrder && !milestoneIsCompleted
+        ? `<button class="button has-tooltip-right button--edit-milestone-time"
+              data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
+              data-work-order-milestone-time-string="${milestone.workOrderMilestoneTime === null ? '' : milestone.workOrderMilestoneTimeString}"
+              title="Edit Milestone Time"
+              type="button">
+                ${milestoneTimeString}
+              </button>`
+        : milestoneTimeString
+
+    // eslint-disable-next-line no-unsanitized/property
+    milestoneElement.innerHTML = `<div class="columns is-mobile">
+          <div class="column is-narrow">
+            ${milestoneCheckHTML}
+          </div>
+          <div class="column">
+            <div class="columns is-mobile mb-0">
+              <div class="column">
+                <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
+              </div>
+              <div class="column is-narrow">
+                ${milestoneTimeHTML}
+              </div>
+            </div>
+            <p>${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}</p>
+          </div>
+        </div>`
+
+    if (options.canUpdateThisWorkOrder) {
+      milestoneElement
+        .querySelector('.button--toggle-milestone')
+        ?.addEventListener('click', toggleWorkOrderMilestoneCompletion)
+
+      milestoneElement
+        .querySelector('.button--edit-milestone-time')
+        ?.addEventListener('click', updateMilestoneTime)
+    }
+
+    return milestoneElement
+  }
+
   function renderContractsAndBurialSitesOnWorkOrder(
     workOrder: WorkOrder,
     workOrderElement: HTMLElement
@@ -368,7 +444,6 @@ declare const exports: {
     }
   }
 
-  // eslint-disable-next-line complexity
   function renderMilestonesOnWorkOrder(
     workOrder: WorkOrder,
     workOrderElement: HTMLElement,
@@ -392,73 +467,7 @@ declare const exports: {
 
       includesMilestones = true
 
-      const milestoneElement = document.createElement('div')
-      milestoneElement.className = 'panel-block is-block'
-
-      const milestoneIsCompleted =
-        milestone.workOrderMilestoneCompletionDate !== null
-
-      const milestoneCheckIcon = milestoneIsCompleted
-        ? 'fa-solid fa-check'
-        : 'fa-regular fa-square'
-
-      const milestoneCheckHTML = options.canUpdateThisWorkOrder
-        ? `<button class="button has-tooltip-right button--toggle-milestone"
-              data-work-order-milestone-id="${milestone.workOrderMilestoneId}
-              data-tooltip="Toggle Milestone Completion"
-              aria-checked="${milestoneIsCompleted ? 'true' : 'false'}"
-              type="button">
-                <span class="icon is-small">
-                  <i class="${milestoneCheckIcon}"></i>
-                </span>
-              </button>`
-        : `<span class="icon is-small">
-              <i class="${milestoneCheckIcon}"></i>
-            </span>`
-
-      const milestoneTimeString =
-        milestone.workOrderMilestoneTime === null
-          ? 'No Set Time'
-          : milestone.workOrderMilestoneTimePeriodString
-
-      const milestoneTimeHTML =
-        options.canUpdateThisWorkOrder && !milestoneIsCompleted
-          ? `<button class="button has-tooltip-right button--edit-milestone-time"
-              data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
-              data-work-order-milestone-time-string="${milestone.workOrderMilestoneTime === null ? '' : milestone.workOrderMilestoneTimeString}"
-              title="Edit Milestone Time"
-              type="button">
-                ${milestoneTimeString}
-              </button>`
-          : milestoneTimeString
-
-      // eslint-disable-next-line no-unsanitized/property
-      milestoneElement.innerHTML = `<div class="columns is-mobile">
-            <div class="column is-narrow">
-              ${milestoneCheckHTML}
-            </div>
-            <div class="column">
-              <div class="columns is-mobile mb-0">
-                <div class="column">
-                  <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
-                </div>
-                <div class="column is-narrow">
-                  ${milestoneTimeHTML}
-                </div>
-              </div>
-              <p>${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}</p>
-            </div>
-          </div>`
-
-      if (options.canUpdateThisWorkOrder) {
-        milestoneElement
-          .querySelector('.button--toggle-milestone')
-          ?.addEventListener('click', toggleWorkOrderMilestoneCompletion)
-
-        milestoneElement
-          .querySelector('.button--edit-milestone-time')
-          ?.addEventListener('click', updateMilestoneTime)
-      }
+      const milestoneElement = buildMilestoneElement(milestone, options)
 
       workOrderElement.append(milestoneElement)
     }
@@ -467,8 +476,8 @@ declare const exports: {
       workOrderElement.insertAdjacentHTML(
         'beforeend',
         `<div class="panel-block is-block">
-              <p class="has-text-grey">No individual milestones for this work order.</p>
-            </div>`
+            <p class="has-text-grey">No individual milestones for this work order.</p>
+          </div>`
       )
     }
 
@@ -478,14 +487,14 @@ declare const exports: {
         ?.insertAdjacentHTML(
           'beforeend',
           `<div class="level-item is-hidden-print">
-              <button class="button is-small button--close-work-order"
-                data-work-order-id="${cityssm.escapeHTML(workOrder.workOrderId.toString())}"
-                type="button">
-                <span class="icon is-small">
-                  <i class="fa-solid fa-stop-circle"></i>
-                </span>
-                <span>Close Work Order</span>
-              </button>
+            <button class="button is-small button--close-work-order"
+              data-work-order-id="${cityssm.escapeHTML(workOrder.workOrderId.toString())}"
+              type="button">
+              <span class="icon is-small">
+                <i class="fa-solid fa-stop-circle"></i>
+              </span>
+              <span>Close Work Order</span>
+            </button>
             </div>`
         )
 
