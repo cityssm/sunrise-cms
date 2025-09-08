@@ -275,6 +275,226 @@ declare const exports: {
       </li>`
   }
 
+  function renderContractsAndBurialSitesOnWorkOrder(
+    workOrder: WorkOrder,
+    workOrderElement: HTMLElement
+  ): void {
+    const usedFuneralHomeIds = new Set<number>()
+    const usedBurialSiteIds = new Set<number>()
+
+    const contactContainerElement = workOrderElement.querySelector(
+      '.list--contacts'
+    ) as HTMLElement
+
+    const burialSitesContainerElement = workOrderElement.querySelector(
+      '.list--burialSites'
+    ) as HTMLElement
+
+    for (const contract of workOrder.workOrderContracts ?? []) {
+      if (
+        contract.funeralHomeId !== null &&
+        !usedFuneralHomeIds.has(contract.funeralHomeId)
+      ) {
+        usedFuneralHomeIds.add(contract.funeralHomeId)
+
+        // eslint-disable-next-line no-unsanitized/method
+        workOrderElement.insertAdjacentHTML(
+          'beforeend',
+          `<div class="panel-block is-block">
+            <div class="columns is-mobile">
+              <div class="column is-narrow">
+                <span class="icon"><i class="fa-solid fa-place-of-worship"></i></span>
+              </div>
+              <div class="column">
+                <div class="columns is-mobile mb-0">
+                  <div class="column">
+                    <a href="${sunrise.urlPrefix}/funeralHomes/${cityssm.escapeHTML(contract.funeralHomeId.toString())}" target="_blank">
+                      ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}
+                    </a>
+                  </div>
+                  <div class="column is-narrow">
+                    ${cityssm.escapeHTML(contract.funeralDateString ?? '')}
+                    ${cityssm.escapeHTML(contract.funeralTimePeriodString ?? '')}
+                  </div>
+                </div>
+                <p>
+                  <strong>Direction of Arrival:</strong> ${cityssm.escapeHTML(contract.directionOfArrival ?? '')}<br />
+                  <strong>Committal Type:</strong> ${cityssm.escapeHTML(contract.committalType ?? '')}
+                </p>
+              </div>
+            </div>`
+        )
+      }
+
+      for (const interment of contract.contractInterments ?? []) {
+        // eslint-disable-next-line no-unsanitized/method
+        contactContainerElement.insertAdjacentHTML(
+          'beforeend',
+          `<li>
+              <span class="fa-li"><i class="fa-solid fa-user"></i></span>
+              ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
+              <a class="is-size-7" href="${sunrise.urlPrefix}/contracts/${cityssm.escapeHTML(contract.contractId.toString())}" target="_blank">
+              Contract #${cityssm.escapeHTML(contract.contractId.toString())}
+              </a>
+              </li>`
+        )
+      }
+
+      if (
+        contract.burialSiteId !== undefined &&
+        contract.burialSiteId !== null &&
+        !usedBurialSiteIds.has(contract.burialSiteId)
+      ) {
+        usedBurialSiteIds.add(contract.burialSiteId)
+
+        // eslint-disable-next-line no-unsanitized/method
+        burialSitesContainerElement.insertAdjacentHTML(
+          'beforeend',
+          buildBurialSiteHTML(contract)
+        )
+      }
+    }
+
+    for (const burialSite of workOrder.workOrderBurialSites ?? []) {
+      if (usedBurialSiteIds.has(burialSite.burialSiteId)) {
+        continue
+      }
+
+      // eslint-disable-next-line no-unsanitized/method
+      burialSitesContainerElement.insertAdjacentHTML(
+        'beforeend',
+        buildBurialSiteHTML(burialSite)
+      )
+    }
+  }
+
+  // eslint-disable-next-line complexity
+  function renderMilestonesOnWorkOrder(
+    workOrder: WorkOrder,
+    workOrderElement: HTMLElement,
+    options: {
+      canUpdateThisWorkOrder: boolean
+      workdayDateString: string
+    }
+  ): void {
+    const workdayDateString = cityssm.dateToString(workdayDate)
+    let includesMilestones = false
+    let includesIncompleteMilestones = false
+
+    for (const milestone of workOrder.workOrderMilestones ?? []) {
+      if (milestone.workOrderMilestoneCompletionDate === null) {
+        includesIncompleteMilestones = true
+      }
+
+      if (milestone.workOrderMilestoneDateString !== workdayDateString) {
+        continue
+      }
+
+      includesMilestones = true
+
+      const milestoneElement = document.createElement('div')
+      milestoneElement.className = 'panel-block is-block'
+
+      const milestoneIsCompleted =
+        milestone.workOrderMilestoneCompletionDate !== null
+
+      const milestoneCheckIcon = milestoneIsCompleted
+        ? 'fa-solid fa-check'
+        : 'fa-regular fa-square'
+
+      const milestoneCheckHTML = options.canUpdateThisWorkOrder
+        ? `<button class="button has-tooltip-right button--toggle-milestone"
+              data-work-order-milestone-id="${milestone.workOrderMilestoneId}
+              data-tooltip="Toggle Milestone Completion"
+              aria-checked="${milestoneIsCompleted ? 'true' : 'false'}"
+              type="button">
+                <span class="icon is-small">
+                  <i class="${milestoneCheckIcon}"></i>
+                </span>
+              </button>`
+        : `<span class="icon is-small">
+              <i class="${milestoneCheckIcon}"></i>
+            </span>`
+
+      const milestoneTimeString =
+        milestone.workOrderMilestoneTime === null
+          ? 'No Set Time'
+          : milestone.workOrderMilestoneTimePeriodString
+
+      const milestoneTimeHTML =
+        options.canUpdateThisWorkOrder && !milestoneIsCompleted
+          ? `<button class="button has-tooltip-right button--edit-milestone-time"
+              data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
+              data-work-order-milestone-time-string="${milestone.workOrderMilestoneTime === null ? '' : milestone.workOrderMilestoneTimeString}"
+              title="Edit Milestone Time"
+              type="button">
+                ${milestoneTimeString}
+              </button>`
+          : milestoneTimeString
+
+      // eslint-disable-next-line no-unsanitized/property
+      milestoneElement.innerHTML = `<div class="columns is-mobile">
+            <div class="column is-narrow">
+              ${milestoneCheckHTML}
+            </div>
+            <div class="column">
+              <div class="columns is-mobile mb-0">
+                <div class="column">
+                  <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
+                </div>
+                <div class="column is-narrow">
+                  ${milestoneTimeHTML}
+                </div>
+              </div>
+              <p>${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}</p>
+            </div>
+          </div>`
+
+      if (options.canUpdateThisWorkOrder) {
+        milestoneElement
+          .querySelector('.button--toggle-milestone')
+          ?.addEventListener('click', toggleWorkOrderMilestoneCompletion)
+
+        milestoneElement
+          .querySelector('.button--edit-milestone-time')
+          ?.addEventListener('click', updateMilestoneTime)
+      }
+
+      workOrderElement.append(milestoneElement)
+    }
+
+    if (!includesMilestones) {
+      workOrderElement.insertAdjacentHTML(
+        'beforeend',
+        `<div class="panel-block is-block">
+              <p class="has-text-grey">No individual milestones for this work order.</p>
+            </div>`
+      )
+    }
+
+    if (!includesIncompleteMilestones && options.canUpdateThisWorkOrder) {
+      workOrderElement
+        .querySelector('.panel-heading .level-right')
+        ?.insertAdjacentHTML(
+          'beforeend',
+          `<div class="level-item is-hidden-print">
+              <button class="button is-small button--close-work-order"
+                data-work-order-id="${cityssm.escapeHTML(workOrder.workOrderId.toString())}"
+                type="button">
+                <span class="icon is-small">
+                  <i class="fa-solid fa-stop-circle"></i>
+                </span>
+                <span>Close Work Order</span>
+              </button>
+            </div>`
+        )
+
+      workOrderElement
+        .querySelector('.button--close-work-order')
+        ?.addEventListener('click', closeWorkOrder)
+    }
+  }
+
   // eslint-disable-next-line complexity
   function renderWorkOrders(
     workdayDateString: string,
@@ -362,213 +582,16 @@ declare const exports: {
        * Contracts
        */
 
-      const usedFuneralHomeIds = new Set<number>()
-      const usedBurialSiteIds = new Set<number>()
-
-      const contactContainerElement = workOrderElement.querySelector(
-        '.list--contacts'
-      ) as HTMLElement
-
-      const burialSitesContainerElement = workOrderElement.querySelector(
-        '.list--burialSites'
-      ) as HTMLElement
-
-      for (const contract of workOrder.workOrderContracts ?? []) {
-        if (
-          contract.funeralHomeId !== null &&
-          !usedFuneralHomeIds.has(contract.funeralHomeId)
-        ) {
-          usedFuneralHomeIds.add(contract.funeralHomeId)
-
-          // eslint-disable-next-line no-unsanitized/method
-          workOrderElement.insertAdjacentHTML(
-            'beforeend',
-            `<div class="panel-block is-block">
-              <div class="columns is-mobile">
-                <div class="column is-narrow">
-                  <span class="icon"><i class="fa-solid fa-place-of-worship"></i></span>
-                </div>
-                <div class="column">
-                  <div class="columns is-mobile mb-0">
-                    <div class="column">
-                      <a href="${sunrise.urlPrefix}/funeralHomes/${cityssm.escapeHTML(contract.funeralHomeId.toString())}" target="_blank">
-                        ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}
-                      </a>
-                    </div>
-                    <div class="column is-narrow">
-                      ${cityssm.escapeHTML(contract.funeralDateString ?? '')}
-                      ${cityssm.escapeHTML(contract.funeralTimePeriodString ?? '')}
-                    </div>
-                  </div>
-                  <p>
-                    <strong>Direction of Arrival:</strong> ${cityssm.escapeHTML(contract.directionOfArrival ?? '')}<br />
-                    <strong>Committal Type:</strong> ${cityssm.escapeHTML(contract.committalType ?? '')}
-                  </p>
-                </div>
-              </div>`
-          )
-        }
-
-        for (const interment of contract.contractInterments ?? []) {
-          // eslint-disable-next-line no-unsanitized/method
-          contactContainerElement.insertAdjacentHTML(
-            'beforeend',
-            `<li>
-              <span class="fa-li"><i class="fa-solid fa-user"></i></span>
-              ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
-              <a class="is-size-7" href="${sunrise.urlPrefix}/contracts/${cityssm.escapeHTML(contract.contractId.toString())}" target="_blank">
-              Contract #${cityssm.escapeHTML(contract.contractId.toString())}
-              </a>
-              </li>`
-          )
-        }
-
-        if (
-          contract.burialSiteId !== undefined &&
-          contract.burialSiteId !== null &&
-          !usedBurialSiteIds.has(contract.burialSiteId)
-        ) {
-          usedBurialSiteIds.add(contract.burialSiteId)
-
-          // eslint-disable-next-line no-unsanitized/method
-          burialSitesContainerElement.insertAdjacentHTML(
-            'beforeend',
-            buildBurialSiteHTML(contract)
-          )
-        }
-      }
-
-      for (const burialSite of workOrder.workOrderBurialSites ?? []) {
-        if (usedBurialSiteIds.has(burialSite.burialSiteId)) {
-          continue
-        }
-
-        // eslint-disable-next-line no-unsanitized/method
-        burialSitesContainerElement.insertAdjacentHTML(
-          'beforeend',
-          buildBurialSiteHTML(burialSite)
-        )
-      }
+      renderContractsAndBurialSitesOnWorkOrder(workOrder, workOrderElement)
 
       /*
        * Milestones
        */
 
-      let includesMilestones = false
-      let includesIncompleteMilestones = false
-
-      for (const milestone of workOrder.workOrderMilestones ?? []) {
-        if (milestone.workOrderMilestoneCompletionDate === null) {
-          includesIncompleteMilestones = true
-        }
-
-        if (milestone.workOrderMilestoneDateString !== workdayDateString) {
-          continue
-        }
-
-        includesMilestones = true
-
-        const milestoneElement = document.createElement('div')
-        milestoneElement.className = 'panel-block is-block'
-
-        const milestoneIsCompleted =
-          milestone.workOrderMilestoneCompletionDate !== null
-
-        const milestoneCheckIcon = milestoneIsCompleted
-          ? 'fa-solid fa-check'
-          : 'fa-regular fa-square'
-
-        const milestoneCheckHTML = canUpdateThisWorkOrder
-          ? `<button class="button has-tooltip-right button--toggle-milestone"
-              data-work-order-milestone-id="${milestone.workOrderMilestoneId}
-              data-tooltip="Toggle Milestone Completion"
-              aria-checked="${milestoneIsCompleted ? 'true' : 'false'}"
-              type="button">
-                <span class="icon is-small">
-                  <i class="${milestoneCheckIcon}"></i>
-                </span>
-              </button>`
-          : `<span class="icon is-small">
-              <i class="${milestoneCheckIcon}"></i>
-            </span>`
-
-        const milestoneTimeString =
-          milestone.workOrderMilestoneTime === null
-            ? 'No Set Time'
-            : milestone.workOrderMilestoneTimePeriodString
-
-        const milestoneTimeHTML =
-          canUpdateThisWorkOrder && !milestoneIsCompleted
-            ? `<button class="button has-tooltip-right button--edit-milestone-time"
-              data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
-              data-work-order-milestone-time-string="${milestone.workOrderMilestoneTime === null ? '' : milestone.workOrderMilestoneTimeString}"
-              title="Edit Milestone Time"
-              type="button">
-                ${milestoneTimeString}
-              </button>`
-            : milestoneTimeString
-
-        // eslint-disable-next-line no-unsanitized/property
-        milestoneElement.innerHTML = `<div class="columns is-mobile">
-            <div class="column is-narrow">
-              ${milestoneCheckHTML}
-            </div>
-            <div class="column">
-              <div class="columns is-mobile mb-0">
-                <div class="column">
-                  <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
-                </div>
-                <div class="column is-narrow">
-                  ${milestoneTimeHTML}
-                </div>
-              </div>
-              <p>${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}</p>
-            </div>
-          </div>`
-
-        if (canUpdateThisWorkOrder) {
-          milestoneElement
-            .querySelector('.button--toggle-milestone')
-            ?.addEventListener('click', toggleWorkOrderMilestoneCompletion)
-
-          milestoneElement
-            .querySelector('.button--edit-milestone-time')
-            ?.addEventListener('click', updateMilestoneTime)
-        }
-
-        workOrderElement.append(milestoneElement)
-      }
-
-      if (!includesMilestones) {
-        workOrderElement.insertAdjacentHTML(
-          'beforeend',
-          `<div class="panel-block is-block">
-              <p class="has-text-grey">No individual milestones for this work order.</p>
-            </div>`
-        )
-      }
-
-      if (!includesIncompleteMilestones && canUpdateThisWorkOrder) {
-        workOrderElement
-          .querySelector('.panel-heading .level-right')
-          ?.insertAdjacentHTML(
-            'beforeend',
-            `<div class="level-item is-hidden-print">
-              <button class="button is-small button--close-work-order"
-                data-work-order-id="${cityssm.escapeHTML(workOrder.workOrderId.toString())}"
-                type="button">
-                <span class="icon is-small">
-                  <i class="fa-solid fa-stop-circle"></i>
-                </span>
-                <span>Close Work Order</span>
-              </button>
-            </div>`
-          )
-
-        workOrderElement
-          .querySelector('.button--close-work-order')
-          ?.addEventListener('click', closeWorkOrder)
-      }
+      renderMilestonesOnWorkOrder(workOrder, workOrderElement, {
+        canUpdateThisWorkOrder,
+        workdayDateString
+      })
 
       workdayContainer.append(workOrderElement)
     }

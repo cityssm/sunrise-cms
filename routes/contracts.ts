@@ -47,17 +47,6 @@ import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export const router = Router()
 
-// Configure multer for file uploads
-const upload = multer({
-  storage: multer.memoryStorage(),
-
-  limits: {
-    fileSize:
-      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-      getConfigProperty('application.maxAttachmentFileSize') * 1024 * 1024
-  }
-})
-
 // Search
 
 router
@@ -219,6 +208,17 @@ if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
 }
 
 // Attachments
+
+// Configure multer for file uploads
+const upload = multer({
+  storage: multer.memoryStorage(),
+
+  limits: {
+    fileSize:
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      getConfigProperty('application.maxAttachmentFileSize') * 1024 * 1024
+  }
+})
 
 router
   .get('/attachment/:attachmentId', handler_attachment)

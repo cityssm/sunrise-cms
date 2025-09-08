@@ -41,15 +41,6 @@ import handler_doUploadContractAttachment from '../handlers/contracts-post/doUpl
 import { updateContractsGetHandler, updateContractsPostHandler } from '../handlers/permissions.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 export const router = Router();
-// Configure multer for file uploads
-const upload = multer({
-    storage: multer.memoryStorage(),
-    limits: {
-        fileSize: 
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        getConfigProperty('application.maxAttachmentFileSize') * 1024 * 1024
-    }
-});
 // Search
 router
     .get('/', handler_search)
@@ -104,6 +95,15 @@ if (getConfigProperty('integrations.consignoCloud.integrationIsEnabled')) {
         .post('/doStartConsignoCloudWorkflow', updateContractsPostHandler, handler_doStartConsignoCloudWorkflow);
 }
 // Attachments
+// Configure multer for file uploads
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: 
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        getConfigProperty('application.maxAttachmentFileSize') * 1024 * 1024
+    }
+});
 router
     .get('/attachment/:attachmentId', handler_attachment)
     .post('/doUploadContractAttachment', updateContractsPostHandler, upload.single('file'), handler_doUploadContractAttachment)
