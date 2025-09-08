@@ -58,6 +58,7 @@ export async function importFromWorkOrderCSV(): Promise<void> {
   const currentDateString = dateToString(new Date())
 
   const database = sqlite(databasePath)
+  database.pragma('journal_mode = WAL')
 
   try {
     for (workOrderRow of cmwkordr.data) {

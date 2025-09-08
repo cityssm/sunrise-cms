@@ -31,6 +31,7 @@ export async function importFromPrepaidCSV() {
         console.log(parseError);
     }
     const database = sqlite(databasePath);
+    database.pragma('journal_mode = WAL');
     try {
         for (prepaidRow of cmprpaid.data) {
             if (prepaidRow.CMPP_PREPAID_FOR_NAME === '') {
@@ -60,7 +61,7 @@ export async function importFromPrepaidCSV() {
                     burialSiteNameSegment4
                 });
                 burialSite = await getBurialSiteByBurialSiteName(burialSiteName, true, database);
-                if (burialSite !== undefined) {
+                if (burialSite === undefined) {
                     const burialSiteTypeId = getBurialSiteTypeId(cemeteryKey);
                     const burialSiteKeys = addBurialSite({
                         burialSiteNameSegment1,

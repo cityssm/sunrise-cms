@@ -32,6 +32,7 @@ export async function importFromMasterCSV() {
         console.log(parseError);
     }
     const database = sqlite(databasePath);
+    database.pragma('journal_mode = WAL');
     try {
         for (masterRow of cmmaster.data) {
             const cemeteryId = getCemeteryIdByKey(masterRow.CM_CEMETERY, user, database);

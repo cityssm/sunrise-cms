@@ -535,6 +535,7 @@ export function initializeDatabase(
   connectedDatabase?: sqlite.Database
 ): boolean {
   const sunriseDB = connectedDatabase ?? sqlite(databasePath)
+  sunriseDB.pragma('journal_mode = WAL')
 
   const row = sunriseDB
     .prepare(

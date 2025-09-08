@@ -45,6 +45,7 @@ export async function importFromPrepaidCSV(): Promise<void> {
   }
 
   const database = sqlite(databasePath)
+  database.pragma('journal_mode = WAL')
 
   try {
     for (prepaidRow of cmprpaid.data) {
@@ -95,7 +96,7 @@ export async function importFromPrepaidCSV(): Promise<void> {
           database
         )
 
-        if (burialSite !== undefined) {
+        if (burialSite === undefined) {
           const burialSiteTypeId = getBurialSiteTypeId(cemeteryKey)
 
           const burialSiteKeys = addBurialSite(

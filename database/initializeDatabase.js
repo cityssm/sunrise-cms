@@ -462,6 +462,7 @@ const initializingUser = {
 };
 export function initializeDatabase(connectedDatabase) {
     const sunriseDB = connectedDatabase ?? sqlite(databasePath);
+    sunriseDB.pragma('journal_mode = WAL');
     const row = sunriseDB
         .prepare("select name from sqlite_master where type = 'table' and name = 'Users'")
         .get();

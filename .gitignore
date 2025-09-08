@@ -18,6 +18,8 @@ node_modules/
 
 data/*.db
 data/*.db-journal
+data/*.db-shm
+data/*.db-wal
 data/apiKeys.json
 
 data/config.d.ts

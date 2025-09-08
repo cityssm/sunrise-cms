@@ -39,6 +39,7 @@ export async function importFromWorkOrderCSV() {
     }
     const currentDateString = dateToString(new Date());
     const database = sqlite(databasePath);
+    database.pragma('journal_mode = WAL');
     try {
         for (workOrderRow of cmwkordr.data) {
             const workOrderNumber = `000000${workOrderRow.WO_WORK_ORDER}`.slice(-6);

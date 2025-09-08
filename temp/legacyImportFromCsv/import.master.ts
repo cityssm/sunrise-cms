@@ -46,6 +46,7 @@ export async function importFromMasterCSV(): Promise<void> {
   }
 
   const database = sqlite(databasePath)
+  database.pragma('journal_mode = WAL')
 
   try {
     for (masterRow of cmmaster.data) {
