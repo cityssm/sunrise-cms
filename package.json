@@ -45,7 +45,7 @@
     "@cityssm/express-abuse-points": "^3.1.0",
     "@cityssm/fa-glow": "^0.1.0",
     "@cityssm/fill-block-range": "^0.3.0",
-    "@cityssm/jsbarcode-svg": "^0.1.0",
+    "@cityssm/jsbarcode-svg": "^0.1.1",
     "@cityssm/ntfy-publish": "^1.1.0",
     "@cityssm/pdf-puppeteer": "^6.3.2",
     "@cityssm/scheduled-task": "^0.3.0",
@@ -100,7 +100,7 @@
     "axe-core": "^4.10.3",
     "cypress": "^15.1.0",
     "cypress-axe": "^1.7.0",
-    "eslint-config-cityssm": "^28.0.0",
+    "eslint-config-cityssm": "^29.1.1",
     "nodemon": "^3.1.10",
     "prettier-config-cityssm": "^1.0.0"
   },
