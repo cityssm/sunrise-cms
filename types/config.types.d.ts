@@ -49,6 +49,7 @@ export interface Config {
         cityDefault?: string;
         /** Default Province */
         provinceDefault?: string;
+        /** Whether keyboard shortcuts are enabled */
         enableKeyboardShortcuts?: boolean;
         /** The maximum latitude */
         latitudeMax?: number;

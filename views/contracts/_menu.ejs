@@ -28,6 +28,35 @@
       </a>
     </li>
   </ul>
+  <% if (user.userProperties.isAdmin) { %>
+    <h2 class="menu-label is-hidden-touch">
+      Administrator Tools
+    </h2>
+    <ul class="menu-list">
+      <li>
+        <a href="<%= urlPrefix %>/admin/contractTypes"
+          title="Contract Type Maintenance">
+          <div class="columns is-mobile is-1">
+            <div class="column is-narrow">
+              <span class="icon"><i class="fa-solid fa-gear"></i></span>
+            </div>
+            <div class="column is-hidden-touch">Contract Type Maintenance</div>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="<%= urlPrefix %>/admin/fees"
+          title="Fee Maintenance">
+          <div class="columns is-mobile is-1">
+            <div class="column is-narrow">
+              <span class="icon"><i class="fa-solid fa-gear"></i></span>
+            </div>
+            <div class="column is-hidden-touch">Fee Maintenance</div>
+          </div>
+        </a>
+      </li>
+    </ul>
+  <% } %>
   <h2 class="menu-label is-hidden-touch">
     Reports
   </h2>

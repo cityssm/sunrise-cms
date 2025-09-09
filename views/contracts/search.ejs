@@ -77,8 +77,31 @@
                 <div class="select is-fullwidth">
                   <select id="searchFilter--contractTypeId" name="contractTypeId">
                     <option value="">(All Contract Types)</option>
-                    <% for (const contractType of contractTypes) { %>
-                      <option value="<%= contractType.contractTypeId %>"><%= contractType.contractType %></option>
+                    <%
+                      let preneedHtml = ''
+                      let atNeedHtml = ''
+
+                      for (const contractType of contractTypes) {
+                        if (contractType.isPreneed) {
+                          preneedHtml += `<option value="${contractType.contractTypeId}">
+                            ${contractType.contractType}
+                            </option>`
+                        } else {
+                          atNeedHtml += `<option value="${contractType.contractTypeId}">
+                            ${contractType.contractType}
+                            </option>`
+                        }
+                      }
+                    %>
+                    <% if (preneedHtml !== '') { %>
+                      <optgroup label="Preneed Contract Types">
+                        <%- preneedHtml %>
+                      </optgroup>
+                    <% } %>
+                    <% if (atNeedHtml !== '') { %>
+                      <optgroup label="At Need Contract Types">
+                        <%- atNeedHtml %>
+                      </optgroup>
                     <% } %>
                   </select>
                 </div>

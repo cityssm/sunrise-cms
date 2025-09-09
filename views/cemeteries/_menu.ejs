@@ -30,7 +30,7 @@
   </ul>
   <% if (user.userProperties.canUpdateCemeteries) { %>
     <h2 class="menu-label is-hidden-touch">
-      Tools
+      Creator Tools
     </h2>
     <ul class="menu-list">
       <li>
@@ -54,6 +54,24 @@
               <span class="icon"><i class="fa-solid fa-crosshairs"></i></span>
             </div>
             <div class="column is-hidden-touch">GPS Coordinate Capture</div>
+          </div>
+        </a>
+      </li>
+    </ul>
+  <% } %>
+  <% if (user.userProperties.isAdmin) { %>
+    <h2 class="menu-label is-hidden-touch">
+      Administrator Tools
+    </h2>
+    <ul class="menu-list">
+      <li>
+        <a href="<%= urlPrefix %>/admin/burialSiteTypes"
+          title="Burial Site Type Maintenance">
+          <div class="columns is-mobile is-1">
+            <div class="column is-narrow">
+              <span class="icon"><i class="fa-solid fa-gear"></i></span>
+            </div>
+            <div class="column is-hidden-touch">Burial Site Type Maintenance</div>
           </div>
         </a>
       </li>
