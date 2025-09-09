@@ -26,6 +26,51 @@ declare const exports: Record<string, unknown>
     '#searchFilter--offset'
   ) as HTMLInputElement
 
+  function getContractTimeHtml(contract: Contract): string {
+    if (contract.contractIsFuture === 1) {
+      return `<span class="has-tooltip-right" data-tooltip="Future Contract">
+          <i class="fa-solid fa-fast-forward" aria-label="Future Contract"></i>
+          </span>`
+    } else if (contract.contractIsActive === 1) {
+      return `<span class="has-tooltip-right" data-tooltip="Current Contract">
+          <i class="fa-solid fa-play" aria-label="Current Contract"></i>
+          </span>`
+    } else {
+      return `<span class="has-tooltip-right" data-tooltip="Past Contract">
+          <i class="fa-solid fa-stop" aria-label="Past Contract"></i>
+          </span>`
+    }
+  }
+
+  function getContactsHTML(contract: Contract): string {
+    let contactsHTML = ''
+
+    for (const interment of contract.contractInterments ?? []) {
+      contactsHTML += `<li class="has-tooltip-left"
+          data-tooltip="${contract.isPreneed ? 'Recipient' : 'Deceased'}">
+          <span class="fa-li"><i class="fa-solid fa-user"></i></span>
+          ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+          </li>`
+    }
+
+    if (contract.purchaserName !== '') {
+      contactsHTML += `<li class="has-tooltip-left has-text-grey"
+          data-tooltip="Purchaser">
+          <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar"></i></span>
+          ${cityssm.escapeHTML(contract.purchaserName)}
+          </li>`
+    }
+
+    if (contract.funeralHomeName !== null && contract.funeralHomeName !== '') {
+      contactsHTML += `<li class="has-tooltip-left has-text-grey"
+          data-tooltip="Funeral Home">
+          <span class="fa-li"><i class="fa-solid fa-place-of-worship"></i></span>
+          ${cityssm.escapeHTML(contract.funeralHomeName)}
+          </li>`
+    }
+    return contactsHTML
+  }
+
   // eslint-disable-next-line complexity
   function renderContracts(rawResponseJSON: unknown): void {
     const responseJSON = rawResponseJSON as {
@@ -37,7 +82,7 @@ declare const exports: Record<string, unknown>
     if (responseJSON.contracts.length === 0) {
       searchResultsContainerElement.innerHTML = `<div class="message is-info">
         <p class="message-body">
-        There are no contracts that meet the search criteria.
+          There are no contracts that meet the search criteria.
         </p>
         </div>`
 
@@ -47,50 +92,8 @@ declare const exports: Record<string, unknown>
     const resultsTbodyElement = document.createElement('tbody')
 
     for (const contract of responseJSON.contracts) {
-      let contractTimeHTML = ''
-
-      if (contract.contractIsFuture === 1) {
-        contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Future Contract">
-          <i class="fa-solid fa-fast-forward" aria-label="Future Contract"></i>
-          </span>`
-      } else if (contract.contractIsActive === 1) {
-        contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Current Contract">
-          <i class="fa-solid fa-play" aria-label="Current Contract"></i>
-          </span>`
-      } else {
-        contractTimeHTML = `<span class="has-tooltip-right" data-tooltip="Past Contract">
-          <i class="fa-solid fa-stop" aria-label="Past Contract"></i>
-          </span>`
-      }
-
-      let contactsHTML = ''
-
-      for (const interment of contract.contractInterments ?? []) {
-        contactsHTML += `<li class="has-tooltip-left"
-          data-tooltip="${contract.isPreneed ? 'Recipient' : 'Deceased'}">
-          <span class="fa-li"><i class="fa-solid fa-user"></i></span>
-          ${cityssm.escapeHTML(interment.deceasedName ?? '')}
-          </li>`
-      }
-
-      if (contract.purchaserName !== '') {
-        contactsHTML += `<li class="has-tooltip-left has-text-grey"
-          data-tooltip="Purchaser">
-          <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar"></i></span>
-          ${cityssm.escapeHTML(contract.purchaserName)}
-          </li>`
-      }
-
-      if (
-        contract.funeralHomeName !== null &&
-        contract.funeralHomeName !== ''
-      ) {
-        contactsHTML += `<li class="has-tooltip-left has-text-grey"
-          data-tooltip="Funeral Home">
-          <span class="fa-li"><i class="fa-solid fa-place-of-worship"></i></span>
-          ${cityssm.escapeHTML(contract.funeralHomeName)}
-          </li>`
-      }
+      const contractTimeHTML = getContractTimeHtml(contract)
+      const contactsHTML = getContactsHTML(contract)
 
       const feeTotal = (
         contract.contractFees?.reduce(
@@ -154,7 +157,8 @@ declare const exports: Record<string, unknown>
             ${contract.contractStartDateString}
           </td><td>
             ${
-              contract.contractEndDate === null && contract.contractEndDateString === undefined
+              contract.contractEndDate === null &&
+              contract.contractEndDateString === undefined
                 ? '<span class="has-text-grey">(No End Date)</span>'
                 : contract.contractEndDateString
             }
@@ -168,13 +172,14 @@ declare const exports: Record<string, unknown>
             ${feeIconHTML}
           </td><td class="is-hidden-print">
             ${
-              contract.printEJS
-                ? `<a class="button is-small" data-tooltip="Print"
+              contract.printEJS === undefined
+                ? ''
+                : `<a class="button is-small" data-tooltip="Print"
                     href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}" target="_blank">
                     <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
                     </a>`
-                : ''
-            }</td></tr>`
+            }
+          </td></tr>`
       )
     }
 
