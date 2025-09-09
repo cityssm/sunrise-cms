@@ -26,6 +26,22 @@ declare const exports: {
     document.querySelector('#contract--contractId') as HTMLInputElement
   ).value
 
+  function confirmOpenNewWorkOrder(workOrderId: number): void {
+    bulmaJS.confirm({
+      contextualColorName: 'success',
+      title: 'Work Order Created Successfully',
+
+      message: 'Would you like to open the work order now?',
+
+      okButton: {
+        callbackFunction() {
+          globalThis.location.href = sunrise.getWorkOrderURL(workOrderId, true)
+        },
+        text: 'Yes, Open the Work Order'
+      }
+    })
+  }
+
   document
     .querySelector('#button--createWorkOrder')
     ?.addEventListener('click', (clickEvent) => {
@@ -55,30 +71,15 @@ declare const exports: {
           formEvent.currentTarget,
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
-              success: boolean
               errorMessage?: string
+              success: boolean
               workOrderId?: number
             }
 
             if (responseJSON.success) {
               createCloseModalFunction()
 
-              bulmaJS.confirm({
-                contextualColorName: 'success',
-                title: 'Work Order Created Successfully',
-
-                message: 'Would you like to open the work order now?',
-
-                okButton: {
-                  callbackFunction() {
-                    globalThis.location.href = sunrise.getWorkOrderURL(
-                      responseJSON.workOrderId,
-                      true
-                    )
-                  },
-                  text: 'Yes, Open the Work Order'
-                }
-              })
+              confirmOpenNewWorkOrder(responseJSON.workOrderId as number)
             } else {
               bulmaJS.alert({
                 contextualColorName: 'danger',

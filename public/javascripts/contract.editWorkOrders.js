@@ -5,6 +5,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
+    function confirmOpenNewWorkOrder(workOrderId) {
+        bulmaJS.confirm({
+            contextualColorName: 'success',
+            title: 'Work Order Created Successfully',
+            message: 'Would you like to open the work order now?',
+            okButton: {
+                callbackFunction() {
+                    globalThis.location.href = sunrise.getWorkOrderURL(workOrderId, true);
+                },
+                text: 'Yes, Open the Work Order'
+            }
+        });
+    }
     document
         .querySelector('#button--createWorkOrder')
         ?.addEventListener('click', (clickEvent) => {
@@ -22,17 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     createCloseModalFunction();
-                    bulmaJS.confirm({
-                        contextualColorName: 'success',
-                        title: 'Work Order Created Successfully',
-                        message: 'Would you like to open the work order now?',
-                        okButton: {
-                            callbackFunction() {
-                                globalThis.location.href = sunrise.getWorkOrderURL(responseJSON.workOrderId, true);
-                            },
-                            text: 'Yes, Open the Work Order'
-                        }
-                    });
+                    confirmOpenNewWorkOrder(responseJSON.workOrderId);
                 }
                 else {
                     bulmaJS.alert({
