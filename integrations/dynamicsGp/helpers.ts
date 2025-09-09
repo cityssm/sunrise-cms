@@ -66,8 +66,10 @@ async function _getDynamicsGPDocument(
       if (receipt !== undefined) {
         document = {
           documentType: 'Cash Receipt',
-          documentNumber: receipt.documentNumber.toString(),
+
           documentDate: receipt.documentDate,
+          documentNumber: receipt.documentNumber.toString(),
+
           documentDescription: [
             receipt.description,
             receipt.description2,
@@ -92,8 +94,10 @@ async function _getDynamicsGPDocument(
       if (invoice !== undefined) {
         document = {
           documentType: 'Invoice',
-          documentNumber: invoice.invoiceNumber,
+
           documentDate: invoice.documentDate,
+          documentNumber: invoice.invoiceNumber,
+
           documentDescription: [
             invoice.comment1,
             invoice.comment2,
@@ -116,8 +120,10 @@ async function _getDynamicsGPDocument(
       if (invoice !== undefined) {
         document = {
           documentType: 'Invoice',
-          documentNumber: invoice.invoiceNumber,
+
           documentDate: invoice.documentDate,
+          documentNumber: invoice.invoiceNumber,
+
           documentDescription: [
             invoice.comment1,
             invoice.comment2,

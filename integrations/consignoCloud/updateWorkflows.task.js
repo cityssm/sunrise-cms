@@ -25,6 +25,7 @@ async function updateConsignoWorkflows() {
     // Clear the API cache after polling all workflows
     clearApiCache();
 }
+/* eslint-disable @typescript-eslint/no-magic-numbers */
 const scheduledTask = new ScheduledTask(taskName, updateConsignoWorkflows, {
     schedule: {
         hour: new Range(0, 23),
@@ -34,4 +35,5 @@ const scheduledTask = new ScheduledTask(taskName, updateConsignoWorkflows, {
     minimumIntervalMillis: minutesToMillis(10),
     startTask: true
 });
+/* eslint-enable @typescript-eslint/no-magic-numbers */
 await scheduledTask.runTask();

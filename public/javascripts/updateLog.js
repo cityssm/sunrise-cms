@@ -149,6 +149,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     function getUpdateLog() {
         loadingElement.classList.remove('is-hidden');
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         const currentLimit = Math.min(Number.parseInt(limitElement.value, 10), 100);
         cityssm.postJSON(`${sunrise.urlPrefix}/dashboard/doGetRecordUpdateLog`, {
             limit: currentLimit,
@@ -158,12 +159,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             sortDirection
         }, (rawResponseJSON) => {
             const responseJSON = rawResponseJSON;
-            if (responseJSON.updateLog.length < currentLimit) {
-                loadMoreButtonElement.classList.add('is-hidden');
-            }
-            else {
-                loadMoreButtonElement.classList.remove('is-hidden');
-            }
+            loadMoreButtonElement.classList.toggle('is-hidden', responseJSON.updateLog.length < currentLimit);
             renderUpdateLog(responseJSON.updateLog);
         });
     }

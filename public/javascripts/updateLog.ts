@@ -221,6 +221,7 @@ declare const exports: {
   function getUpdateLog(): void {
     loadingElement.classList.remove('is-hidden')
 
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     const currentLimit = Math.min(Number.parseInt(limitElement.value, 10), 100)
 
     cityssm.postJSON(
@@ -235,11 +236,10 @@ declare const exports: {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as { updateLog: RecordUpdateLog[] }
 
-        if (responseJSON.updateLog.length < currentLimit) {
-          loadMoreButtonElement.classList.add('is-hidden')
-        } else {
-          loadMoreButtonElement.classList.remove('is-hidden')
-        }
+        loadMoreButtonElement.classList.toggle(
+          'is-hidden',
+          responseJSON.updateLog.length < currentLimit
+        )
 
         renderUpdateLog(responseJSON.updateLog)
       }

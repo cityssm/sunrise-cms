@@ -27,11 +27,8 @@ function escapeHTML(stringToEscape: string): string {
   )
 }
 
-function getWorkOrderUrl(
-  request: Request,
-  milestone: WorkOrderMilestone
-): string {
-  return `${getApplicationUrl(request)}/workOrders/${milestone.workOrderId}`
+function getWorkOrderUrl(request: Request, workOrderId?: number): string {
+  return `${getApplicationUrl(request)}/workOrders/${workOrderId}`
 }
 
 function buildEventSummary(milestone: WorkOrderMilestone): string {
@@ -196,7 +193,7 @@ function buildEventDescriptionHTML(
   request: Request,
   milestone: WorkOrderMilestone
 ): string {
-  const workOrderUrl = getWorkOrderUrl(request, milestone)
+  const workOrderUrl = getWorkOrderUrl(request, milestone.workOrderId)
 
   let descriptionHTML = `<h1>Milestone Description</h1>
     <p>${escapeHTML(milestone.workOrderMilestoneDescription)}</p>
@@ -266,7 +263,7 @@ function createCalendarEventFormMilestone(
   const summary = buildEventSummary(milestone)
 
   // Build URL
-  const workOrderUrl = getWorkOrderUrl(request, milestone)
+  const workOrderUrl = getWorkOrderUrl(request, milestone.workOrderId)
 
   const isAllDayEvent =
     milestone.workOrderMilestoneTime === null ||
@@ -303,7 +300,7 @@ function createCalendarEventFormMilestone(
 
   calendarEvent.description({
     html: descriptionHTML,
-    plain: workOrderUrl,
+    plain: workOrderUrl
   })
 
   // Set status
@@ -330,13 +327,17 @@ function createCalendarEventFormMilestone(
       for (const interment of contract.contractInterments ?? []) {
         if (organizerSet) {
           calendarEvent.createAttendee({
-            name: interment.deceasedName ?? '',
-            email: getConfigProperty('settings.workOrders.calendarEmailAddress')
+            email: getConfigProperty(
+              'settings.workOrders.calendarEmailAddress'
+            ),
+            name: interment.deceasedName ?? ''
           })
         } else {
           calendarEvent.organizer({
-            name: interment.deceasedName ?? '',
-            email: getConfigProperty('settings.workOrders.calendarEmailAddress')
+            email: getConfigProperty(
+              'settings.workOrders.calendarEmailAddress'
+            ),
+            name: interment.deceasedName ?? ''
           })
           organizerSet = true
         }
@@ -344,8 +345,8 @@ function createCalendarEventFormMilestone(
     }
   } else {
     calendarEvent.organizer({
-      name: milestone.recordCreate_userName ?? '',
-      email: getConfigProperty('settings.workOrders.calendarEmailAddress')
+      email: getConfigProperty('settings.workOrders.calendarEmailAddress'),
+      name: milestone.recordCreate_userName ?? ''
     })
   }
 }
@@ -354,14 +355,13 @@ export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const urlRoot = getApplicationUrl(request)
-
   /*
    * Get work order milestones
    */
   const workOrderMilestoneFilters: WorkOrderMilestoneFilters = {
-    workOrderTypeIds: request.query.workOrderTypeIds as string,
-    workOrderMilestoneTypeIds: request.query.workOrderMilestoneTypeIds as string
+    workOrderMilestoneTypeIds: request.query
+      .workOrderMilestoneTypeIds as string,
+    workOrderTypeIds: request.query.workOrderTypeIds as string
   }
 
   if (request.query.workOrderId) {
@@ -384,14 +384,12 @@ export default async function handler(
    */
   const calendar = ical({
     name: 'Work Order Milestone Calendar',
-    url: `${urlRoot}/workOrders`
+    url: getWorkOrderUrl(request)
   })
 
   if (request.query.workOrderId && workOrderMilestones.length > 0) {
     calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber}`)
-    calendar.url(
-      `${urlRoot}/workOrders/${workOrderMilestones[0].workOrderId.toString()}`
-    )
+    calendar.url(getWorkOrderUrl(request, workOrderMilestones[0].workOrderId))
   }
 
   calendar.prodId({

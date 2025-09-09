@@ -90,7 +90,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const burialSiteNames = new Set();
         const deceasedNames = new Set();
         for (const burialSite of workOrder.workOrderBurialSites ?? []) {
-            burialSiteNames.add(burialSite.burialSiteName ?? '');
+            burialSiteNames.add(burialSite.burialSiteName);
         }
         for (const contract of workOrder.workOrderContracts ?? []) {
             burialSiteNames.add(contract.burialSiteName ?? '');
@@ -175,7 +175,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
     }
     function getMilestones(event) {
-        if (event) {
+        if (event !== undefined) {
             event.preventDefault();
         }
         // eslint-disable-next-line no-unsanitized/property

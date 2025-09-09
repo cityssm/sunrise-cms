@@ -23,15 +23,20 @@ async function updateConsignoWorkflows(): Promise<void> {
   const consignoCloudMetadata = getConsignoCloudContractMetadata()
 
   for (const [contractId, metadata] of Object.entries(consignoCloudMetadata)) {
-    await pollWorkflow({
-      contractId,
-      metadata
-    }, taskUser)
+    await pollWorkflow(
+      {
+        contractId,
+        metadata
+      },
+      taskUser
+    )
   }
 
   // Clear the API cache after polling all workflows
   clearApiCache()
 }
+
+/* eslint-disable @typescript-eslint/no-magic-numbers */
 
 const scheduledTask = new ScheduledTask(taskName, updateConsignoWorkflows, {
   schedule: {
@@ -39,9 +44,11 @@ const scheduledTask = new ScheduledTask(taskName, updateConsignoWorkflows, {
     minute: 0,
     second: 0
   },
-
+  
   minimumIntervalMillis: minutesToMillis(10),
   startTask: true
 })
+
+/* eslint-enable @typescript-eslint/no-magic-numbers */
 
 await scheduledTask.runTask()

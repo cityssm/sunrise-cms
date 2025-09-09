@@ -38,7 +38,8 @@ export async function generatePdf(
     renderedHtml = await renderEjsFile(printConfig.path, reportData)
   } catch (error) {
     throw new Error(
-      `Error rendering HTML for ${printConfig.title}: ${error.message}`
+      `Error rendering HTML for ${printConfig.title}: ${error.message}`,
+      { cause: error }
     )
   }
 
@@ -71,7 +72,8 @@ export async function generatePdf(
     }
 
     throw new Error(
-      `Error generating PDF for ${printConfig.title}: ${pdfGenerationError.message}`
+      `Error generating PDF for ${printConfig.title}: ${pdfGenerationError.message}`,
+      { cause: pdfGenerationError }
     )
   }
 }

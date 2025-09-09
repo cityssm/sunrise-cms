@@ -2,7 +2,8 @@ export interface DynamicsGPDocument {
   documentType: 'Cash Receipt' | 'Invoice'
 
   documentDate: Date
-  documentDescription: string[]
   documentNumber: string
+
+  documentDescription: string[]
   documentTotal: number
 }

@@ -10,8 +10,8 @@ const timeStringSplitRegex = /[ :-]/;
 function escapeHTML(stringToEscape) {
     return stringToEscape.replaceAll(/[^\d a-z]/gi, (c) => `&#${c.codePointAt(0)};`);
 }
-function getWorkOrderUrl(request, milestone) {
-    return `${getApplicationUrl(request)}/workOrders/${milestone.workOrderId}`;
+function getWorkOrderUrl(request, workOrderId) {
+    return `${getApplicationUrl(request)}/workOrders/${workOrderId}`;
 }
 function buildEventSummary(milestone) {
     let summary = (milestone.workOrderMilestoneCompletionDate ? '✔ ' : '') +
@@ -131,7 +131,7 @@ function buildEventDescriptionHTML_prints(request, milestone) {
     return descriptionHTML;
 }
 function buildEventDescriptionHTML(request, milestone) {
-    const workOrderUrl = getWorkOrderUrl(request, milestone);
+    const workOrderUrl = getWorkOrderUrl(request, milestone.workOrderId);
     let descriptionHTML = `<h1>Milestone Description</h1>
     <p>${escapeHTML(milestone.workOrderMilestoneDescription)}</p>
     <h2>Work Order #${milestone.workOrderNumber ?? ''}</h2>
@@ -169,7 +169,7 @@ function createCalendarEventFormMilestone(request, calendar, milestone) {
     // Build summary (title in Outlook)
     const summary = buildEventSummary(milestone);
     // Build URL
-    const workOrderUrl = getWorkOrderUrl(request, milestone);
+    const workOrderUrl = getWorkOrderUrl(request, milestone.workOrderId);
     const isAllDayEvent = milestone.workOrderMilestoneTime === null ||
         milestone.workOrderMilestoneTime === undefined;
     // Create event
@@ -190,7 +190,7 @@ function createCalendarEventFormMilestone(request, calendar, milestone) {
     const descriptionHTML = buildEventDescriptionHTML(request, milestone);
     calendarEvent.description({
         html: descriptionHTML,
-        plain: workOrderUrl,
+        plain: workOrderUrl
     });
     // Set status
     if (milestone.workOrderMilestoneCompletionDate) {
@@ -213,14 +213,14 @@ function createCalendarEventFormMilestone(request, calendar, milestone) {
             for (const interment of contract.contractInterments ?? []) {
                 if (organizerSet) {
                     calendarEvent.createAttendee({
-                        name: interment.deceasedName ?? '',
-                        email: getConfigProperty('settings.workOrders.calendarEmailAddress')
+                        email: getConfigProperty('settings.workOrders.calendarEmailAddress'),
+                        name: interment.deceasedName ?? ''
                     });
                 }
                 else {
                     calendarEvent.organizer({
-                        name: interment.deceasedName ?? '',
-                        email: getConfigProperty('settings.workOrders.calendarEmailAddress')
+                        email: getConfigProperty('settings.workOrders.calendarEmailAddress'),
+                        name: interment.deceasedName ?? ''
                     });
                     organizerSet = true;
                 }
@@ -229,19 +229,19 @@ function createCalendarEventFormMilestone(request, calendar, milestone) {
     }
     else {
         calendarEvent.organizer({
-            name: milestone.recordCreate_userName ?? '',
-            email: getConfigProperty('settings.workOrders.calendarEmailAddress')
+            email: getConfigProperty('settings.workOrders.calendarEmailAddress'),
+            name: milestone.recordCreate_userName ?? ''
         });
     }
 }
 export default async function handler(request, response) {
-    const urlRoot = getApplicationUrl(request);
     /*
      * Get work order milestones
      */
     const workOrderMilestoneFilters = {
-        workOrderTypeIds: request.query.workOrderTypeIds,
-        workOrderMilestoneTypeIds: request.query.workOrderMilestoneTypeIds
+        workOrderMilestoneTypeIds: request.query
+            .workOrderMilestoneTypeIds,
+        workOrderTypeIds: request.query.workOrderTypeIds
     };
     if (request.query.workOrderId) {
         workOrderMilestoneFilters.workOrderId = request.query.workOrderId;
@@ -259,11 +259,11 @@ export default async function handler(request, response) {
      */
     const calendar = ical({
         name: 'Work Order Milestone Calendar',
-        url: `${urlRoot}/workOrders`
+        url: getWorkOrderUrl(request)
     });
     if (request.query.workOrderId && workOrderMilestones.length > 0) {
         calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber}`);
-        calendar.url(`${urlRoot}/workOrders/${workOrderMilestones[0].workOrderId.toString()}`);
+        calendar.url(getWorkOrderUrl(request, workOrderMilestones[0].workOrderId));
     }
     calendar.prodId({
         company: calendarCompany,

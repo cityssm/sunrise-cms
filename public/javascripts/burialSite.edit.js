@@ -361,7 +361,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               <span>Edit</span>
             </button>
             <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
-              <i class="fa-solid fa-trash"></i>
+              <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>
         </td>`;

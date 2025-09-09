@@ -40,9 +40,9 @@ declare const exports: Record<string, unknown>
               aria-label="Burial Site"></i>
           </span>
           ${cityssm.escapeHTML(
-            (burialSite.burialSiteName ?? '') === ''
+            burialSite.burialSiteName === ''
               ? '(No Burial Site Name)'
-              : burialSite.burialSiteName ?? ''
+              : burialSite.burialSiteName
           )}
         </li>`
     }

@@ -230,7 +230,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             onshow(modalElement) {
                 sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#burialSiteStatusEdit--burialSiteId').value = burialSiteId.toString();
-                modalElement.querySelector('#burialSiteStatusEdit--burialSiteName').value = burialSite.burialSiteName ?? '';
+                modalElement.querySelector('#burialSiteStatusEdit--burialSiteName').value = burialSite.burialSiteName;
                 const burialSiteStatusElement = modalElement.querySelector('#burialSiteStatusEdit--burialSiteStatusId');
                 let statusFound = false;
                 for (const burialSiteStatus of exports.burialSiteStatuses) {
@@ -328,7 +328,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // eslint-disable-next-line no-unsanitized/property
             rowElement.innerHTML = `<td>
           <a class="has-text-weight-bold" href="${sunrise.getBurialSiteURL(burialSite.burialSiteId)}">
-            ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
+            ${cityssm.escapeHTML(burialSite.burialSiteName)}
           </a>
         </td><td>
           ${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}
@@ -519,7 +519,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                   </button>
                 </td><td class="has-text-weight-bold">
-                  ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
+                  ${cityssm.escapeHTML(burialSite.burialSiteName)}
                 </td><td>
                   ${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}
                 </td><td>

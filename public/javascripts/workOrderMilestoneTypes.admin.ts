@@ -179,42 +179,46 @@ declare const bulmaJS: BulmaJS
       tableRowElement.dataset.workOrderMilestoneTypeId =
         workOrderMilestoneType.workOrderMilestoneTypeId.toString()
 
-      // eslint-disable-next-line no-unsanitized/property, no-secrets/no-secrets
+      /* eslint-disable no-secrets/no-secrets */
+
+      // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = `<td>
-        <form>
-          <input name="workOrderMilestoneTypeId" type="hidden"
-            value="${workOrderMilestoneType.workOrderMilestoneTypeId.toString()}" />
-          <div class="field has-addons">
-            <div class="control is-expanded">
-              <input class="input"
-                name="workOrderMilestoneType" type="text"
-                value="${cityssm.escapeHTML(workOrderMilestoneType.workOrderMilestoneType)}"
-                maxlength="100"
-                aria-label="Work Order Milestone Type" required />
+          <form>
+            <input name="workOrderMilestoneTypeId" type="hidden"
+              value="${cityssm.escapeHTML(workOrderMilestoneType.workOrderMilestoneTypeId.toString())}" />
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input class="input"
+                  name="workOrderMilestoneType" type="text"
+                  value="${cityssm.escapeHTML(workOrderMilestoneType.workOrderMilestoneType)}"
+                  maxlength="100"
+                  aria-label="Work Order Milestone Type" required />
+              </div>
+              <div class="control">
+                <button class="button is-success" type="submit" aria-label="Save">
+                  <span class="icon"><i class="fa-solid fa-save"></i></span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </td><td class="is-nowrap">
+          <div class="field is-grouped">
+            <div class="control">
+              ${sunrise.getMoveUpDownButtonFieldHTML(
+                'button--moveWorkOrderMilestoneTypeUp',
+                'button--moveWorkOrderMilestoneTypeDown',
+                false
+              )}
             </div>
             <div class="control">
-              <button class="button is-success" type="submit" aria-label="Save">
-                <span class="icon"><i class="fa-solid fa-save"></i></span>
+              <button class="button is-danger is-light button--deleteWorkOrderMilestoneType" data-tooltip="Delete Milestone Type" type="button" aria-label="Delete Milestone Type">
+                <span class="icon"><i class="fa-solid fa-trash"></i></span>
               </button>
             </div>
           </div>
-        </form>
-      </td><td class="is-nowrap">
-        <div class="field is-grouped">
-          <div class="control">
-            ${sunrise.getMoveUpDownButtonFieldHTML(
-              'button--moveWorkOrderMilestoneTypeUp',
-              'button--moveWorkOrderMilestoneTypeDown',
-              false
-            )}
-          </div>
-          <div class="control">
-            <button class="button is-danger is-light button--deleteWorkOrderMilestoneType" data-tooltip="Delete Milestone Type" type="button" aria-label="Delete Milestone Type">
-              <span class="icon"><i class="fa-solid fa-trash"></i></span>
-            </button>
-          </div>
-        </div>
-      </td>`
+        </td>`
+
+      /* eslint-enable no-secrets/no-secrets */
 
       tableRowElement
         .querySelector('form')

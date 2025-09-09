@@ -376,7 +376,7 @@ declare const exports: {
           modalElement.querySelector(
             '#burialSiteStatusEdit--burialSiteName'
           ) as HTMLInputElement
-        ).value = burialSite.burialSiteName ?? ''
+        ).value = burialSite.burialSiteName
 
         const burialSiteStatusElement = modalElement.querySelector(
           '#burialSiteStatusEdit--burialSiteStatusId'
@@ -524,7 +524,7 @@ declare const exports: {
       // eslint-disable-next-line no-unsanitized/property
       rowElement.innerHTML = `<td>
           <a class="has-text-weight-bold" href="${sunrise.getBurialSiteURL(burialSite.burialSiteId)}">
-            ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
+            ${cityssm.escapeHTML(burialSite.burialSiteName)}
           </a>
         </td><td>
           ${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}
@@ -814,7 +814,7 @@ declare const exports: {
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                   </button>
                 </td><td class="has-text-weight-bold">
-                  ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
+                  ${cityssm.escapeHTML(burialSite.burialSiteName)}
                 </td><td>
                   ${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}
                 </td><td>

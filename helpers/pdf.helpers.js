@@ -23,7 +23,7 @@ export async function generatePdf(printConfig, parameters) {
         renderedHtml = await renderEjsFile(printConfig.path, reportData);
     }
     catch (error) {
-        throw new Error(`Error rendering HTML for ${printConfig.title}: ${error.message}`);
+        throw new Error(`Error rendering HTML for ${printConfig.title}: ${error.message}`, { cause: error });
     }
     try {
         const pdf = await pdfPuppeteer.fromHtml(renderedHtml);
@@ -47,7 +47,7 @@ export async function generatePdf(printConfig, parameters) {
             debug('PDF Puppeteer browser installation was attempted.');
             return await generatePdf(printConfig, parameters);
         }
-        throw new Error(`Error generating PDF for ${printConfig.title}: ${pdfGenerationError.message}`);
+        throw new Error(`Error generating PDF for ${printConfig.title}: ${pdfGenerationError.message}`, { cause: pdfGenerationError });
     }
 }
 export async function closePdfPuppeteer() {

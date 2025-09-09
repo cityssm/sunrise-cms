@@ -91,8 +91,8 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doToggleUserPermission`,
       {
-        userName,
-        permissionField: permission
+        permissionField: permission,
+        userName
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
@@ -114,6 +114,60 @@ declare const exports: {
         }
       }
     )
+  }
+
+  const activePermissionClass = 'is-success'
+  const inactivePermissionClass = 'is-light'
+
+  function buildUserRowElement(user: DatabaseUser): HTMLTableRowElement {
+    const rowElement = document.createElement('tr')
+    rowElement.dataset.userName = user.userName
+
+    // eslint-disable-next-line no-unsanitized/property
+    rowElement.innerHTML = `<th>${cityssm.escapeHTML(user.userName)}</th>
+      <td class="has-text-centered">
+        <button class="button is-small permission-toggle ${user.isActive ? activePermissionClass : inactivePermissionClass}"
+          title="Toggle Active Status"
+          data-permission="isActive" data-user-name="${cityssm.escapeHTML(user.userName)}">
+          ${user.isActive ? 'Yes' : 'No'}
+        </button>
+      </td>
+      <td class="has-text-centered">
+        <button class="button is-small permission-toggle ${user.canUpdateCemeteries ? activePermissionClass : inactivePermissionClass}"
+          title="Toggle Can Update Cemeteries"
+          data-permission="canUpdateCemeteries" data-user-name="${cityssm.escapeHTML(user.userName)}">
+          ${user.canUpdateCemeteries ? 'Yes' : 'No'}
+        </button>
+      </td>
+      <td class="has-text-centered">
+        <button class="button is-small permission-toggle ${user.canUpdateContracts ? activePermissionClass : inactivePermissionClass}"
+          title="Toggle Can Update Contracts"
+          data-permission="canUpdateContracts" data-user-name="${cityssm.escapeHTML(user.userName)}">
+          ${user.canUpdateContracts ? 'Yes' : 'No'}
+        </button>
+      </td>
+      <td class="has-text-centered">
+        <button class="button is-small permission-toggle ${user.canUpdateWorkOrders ? activePermissionClass : inactivePermissionClass}"
+          title="Toggle Can Update Work Orders"
+          data-permission="canUpdateWorkOrders" data-user-name="${cityssm.escapeHTML(user.userName)}">
+          ${user.canUpdateWorkOrders ? 'Yes' : 'No'}
+        </button>
+      </td>
+      <td class="has-text-centered">
+        <button class="button is-small permission-toggle ${user.isAdmin ? activePermissionClass : inactivePermissionClass}"
+          title="Toggle Is Admin"
+          data-permission="isAdmin" data-user-name="${cityssm.escapeHTML(user.userName)}">
+          ${user.isAdmin ? 'Yes' : 'No'}
+        </button>
+      </td>
+      <td class="has-text-centered">
+        <button class="button is-small is-danger delete-user" title="Delete User"
+          data-user-name="${cityssm.escapeHTML(user.userName)}">
+          Delete
+        </button>
+      </td>`
+
+    return rowElement
   }
 
   function renderUsers(users: DatabaseUser[]): void {
@@ -139,55 +193,7 @@ declare const exports: {
       <tbody></tbody>`
 
     for (const user of users) {
-      const rowElement = document.createElement('tr')
-      rowElement.dataset.userName = user.userName
-
-      // eslint-disable-next-line no-unsanitized/property
-      rowElement.innerHTML = `
-        <th>${cityssm.escapeHTML(user.userName)}</th>
-        <td class="has-text-centered">
-          <button class="button is-small permission-toggle ${user.isActive ? 'is-success' : 'is-light'}"
-            title="Toggle Active Status"
-            data-permission="isActive" data-user-name="${cityssm.escapeHTML(user.userName)}">
-            ${user.isActive ? 'Yes' : 'No'}
-          </button>
-        </td>
-        <td class="has-text-centered">
-          <button class="button is-small permission-toggle ${user.canUpdateCemeteries ? 'is-success' : 'is-light'}"
-            title="Toggle Can Update Cemeteries"
-            data-permission="canUpdateCemeteries" data-user-name="${cityssm.escapeHTML(user.userName)}">
-            ${user.canUpdateCemeteries ? 'Yes' : 'No'}
-          </button>
-        </td>
-        <td class="has-text-centered">
-          <button class="button is-small permission-toggle ${user.canUpdateContracts ? 'is-success' : 'is-light'}"
-            title="Toggle Can Update Contracts"
-            data-permission="canUpdateContracts" data-user-name="${cityssm.escapeHTML(user.userName)}">
-            ${user.canUpdateContracts ? 'Yes' : 'No'}
-          </button>
-        </td>
-        <td class="has-text-centered">
-          <button class="button is-small permission-toggle ${user.canUpdateWorkOrders ? 'is-success' : 'is-light'}"
-            title="Toggle Can Update Work Orders"
-            data-permission="canUpdateWorkOrders" data-user-name="${cityssm.escapeHTML(user.userName)}">
-            ${user.canUpdateWorkOrders ? 'Yes' : 'No'}
-          </button>
-        </td>
-        <td class="has-text-centered">
-          <button class="button is-small permission-toggle ${user.isAdmin ? 'is-success' : 'is-light'}"
-            title="Toggle Is Admin"
-            data-permission="isAdmin" data-user-name="${cityssm.escapeHTML(user.userName)}">
-            ${user.isAdmin ? 'Yes' : 'No'}
-          </button>
-        </td>
-        <td class="has-text-centered">
-          <button class="button is-small is-danger delete-user" title="Delete User"
-            data-user-name="${cityssm.escapeHTML(user.userName)}">
-            Delete
-          </button>
-        </td>
-      `
-
+      const rowElement = buildUserRowElement(user)
       tableElement.querySelector('tbody')?.append(rowElement)
     }
 

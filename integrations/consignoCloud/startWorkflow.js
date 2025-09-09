@@ -94,14 +94,14 @@ export default async function startConsignoCloudWorkflow(form, user) {
      */
     const comment = `ConsignO Cloud workflow created: ${workflowEditUrl}`;
     addContractComment({
-        contractId: form.contractId,
-        comment
+        comment,
+        contractId: form.contractId
     }, user);
     /*
      * Return the workflow ID and edit URL
      */
     return {
-        workflowId,
-        workflowEditUrl
+        workflowEditUrl,
+        workflowId
     };
 }

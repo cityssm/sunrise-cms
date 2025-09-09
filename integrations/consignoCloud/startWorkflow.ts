@@ -180,8 +180,8 @@ export default async function startConsignoCloudWorkflow(
 
   addContractComment(
     {
-      contractId: form.contractId,
-      comment
+      comment,
+      contractId: form.contractId
     },
     user
   )
@@ -191,7 +191,7 @@ export default async function startConsignoCloudWorkflow(
    */
 
   return {
-    workflowId,
-    workflowEditUrl
+    workflowEditUrl,
+    workflowId
   }
 }

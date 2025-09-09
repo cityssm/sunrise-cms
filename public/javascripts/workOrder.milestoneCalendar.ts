@@ -138,7 +138,7 @@ declare const exports: Record<string, unknown>
     const deceasedNames = new Set<string>()
 
     for (const burialSite of workOrder.workOrderBurialSites ?? []) {
-      burialSiteNames.add(burialSite.burialSiteName ?? '')
+      burialSiteNames.add(burialSite.burialSiteName)
     }
 
     for (const contract of workOrder.workOrderContracts ?? []) {
@@ -266,7 +266,7 @@ declare const exports: Record<string, unknown>
   }
 
   function getMilestones(event?: Event): void {
-    if (event) {
+    if (event !== undefined) {
       event.preventDefault()
     }
 

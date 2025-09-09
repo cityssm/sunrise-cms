@@ -16,9 +16,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <i class="fa-solid fa-map-pin"
               aria-label="Burial Site"></i>
           </span>
-          ${cityssm.escapeHTML((burialSite.burialSiteName ?? '') === ''
+          ${cityssm.escapeHTML(burialSite.burialSiteName === ''
                 ? '(No Burial Site Name)'
-                : burialSite.burialSiteName ?? '')}
+                : burialSite.burialSiteName)}
         </li>`;
         }
         for (const contract of workOrder.workOrderContracts ?? []) {
