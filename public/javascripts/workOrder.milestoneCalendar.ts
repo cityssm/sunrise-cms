@@ -95,6 +95,7 @@ declare const exports: Record<string, unknown>
         'tr:last-child'
       ) as HTMLTableRowElement
 
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       while (finalRow.children.length < 7) {
         const emptyCell = document.createElement('td')
         emptyCell.className = 'has-background-white-ter'

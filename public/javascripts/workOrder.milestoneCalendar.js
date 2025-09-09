@@ -56,6 +56,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         if (calendarDate.getDay() !== 0) {
             const finalRow = tableBodyElement.querySelector('tr:last-child');
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             while (finalRow.children.length < 7) {
                 const emptyCell = document.createElement('td');
                 emptyCell.className = 'has-background-white-ter';

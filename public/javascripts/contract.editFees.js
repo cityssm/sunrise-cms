@@ -564,7 +564,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const differenceClassName = difference < 0 ? 'is-danger' : 'is-warning';
             // eslint-disable-next-line no-unsanitized/method
             contractTransactionsContainerElement.insertAdjacentHTML('afterbegin', `<div class="message ${differenceClassName}">
-            <div class="message-body">
+          <div class="message-body">
             <div class="level">
               <div class="level-left">
                 <div class="level-item">
@@ -577,7 +577,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 </div>
               </div>
             </div>
-            </div></div>`);
+          </div></div>`);
         }
     }
     const addTransactionButtonElement = document.querySelector('#button--addTransaction');

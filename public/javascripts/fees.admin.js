@@ -15,7 +15,99 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function getFee(feeCategory, feeId) {
         return feeCategory.fees.find((currentFee) => currentFee.feeId === feeId);
     }
-    // eslint-disable-next-line complexity
+    function renderFee(feeCategoryContainerElement, fee) {
+        const panelBlockElement = document.createElement('div');
+        panelBlockElement.className = 'panel-block is-block container--fee';
+        panelBlockElement.dataset.feeId = fee.feeId.toString();
+        let tagsHTML = '';
+        if (fee.isRequired ?? false) {
+            tagsHTML += '<span class="tag is-warning">Required</span>';
+        }
+        if ((fee.contractTypeId ?? -1) !== -1) {
+            tagsHTML += ` <span class="tag has-tooltip-bottom" data-tooltip="Contract Type Filter">
+          <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
+          <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
+        </span>`;
+        }
+        if ((fee.burialSiteTypeId ?? -1) !== -1) {
+            tagsHTML += ` <span class="tag has-tooltip-bottom" data-tooltip="Burial Site Type Filter">
+          <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
+          <span>${cityssm.escapeHTML(fee.burialSiteType ?? '')}</span>
+        </span>`;
+        }
+        // eslint-disable-next-line no-unsanitized/property
+        panelBlockElement.innerHTML = `<div class="columns">
+      <div class="column is-half">
+        <p>
+          <a class="has-text-weight-bold a--editFee" href="#">
+            ${cityssm.escapeHTML(fee.feeName ?? '')}
+          </a><br />
+          <small>
+            ${cityssm
+            .escapeHTML(fee.feeDescription ?? '')
+            .replaceAll('\n', '<br />')}
+          </small>
+        </p>
+        <p class="tags">${tagsHTML}</p>
+      </div>
+      <div class="column">
+        <div class="columns is-mobile">
+          <div class="column has-text-centered">
+            ${fee.feeFunction
+            ? `${cityssm.escapeHTML(fee.feeFunction)}<br />
+                    <small>Fee Function</small>`
+            : `<a class="a--editFeeAmount" href="#">
+                    $${(fee.feeAmount ?? 0).toFixed(2)}<br />
+                    <small>Fee</small>
+                    </a>`}
+          </div>
+          <div class="column has-text-centered">
+            ${fee.taxPercentage
+            ? `${fee.taxPercentage.toString()}%`
+            : `$${(fee.taxAmount ?? 0).toFixed(2)}`}<br />
+            <small>Tax</small>
+          </div>
+          <div class="column has-text-centered">
+            ${fee.includeQuantity
+            ? `${cityssm.escapeHTML(fee.quantityUnit ?? '')}<br />
+                    <small>Quantity</small>`
+            : ''}
+          </div>
+        </div>
+      </div>
+      <div class="column is-narrow is-hidden-print">
+        ${sunrise.getMoveUpDownButtonFieldHTML('button--moveFeeUp', 'button--moveFeeDown')}
+      </div>
+      </div>`;
+        panelBlockElement
+            .querySelector('.a--editFee')
+            ?.addEventListener('click', openEditFee);
+        panelBlockElement
+            .querySelector('.a--editFeeAmount')
+            ?.addEventListener('click', openEditFeeAmount);
+        panelBlockElement.querySelector('.button--moveFeeUp').addEventListener('click', moveFee);
+        panelBlockElement.querySelector('.button--moveFeeDown').addEventListener('click', moveFee);
+        feeCategoryContainerElement.append(panelBlockElement);
+    }
+    function renderFees(feeCategoryContainerElement, feeCategory) {
+        if (feeCategory.fees.length === 0) {
+            feeCategoryContainerElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
+          <div class="message is-info">
+            <p class="message-body">
+              There are no fees in the
+              "${cityssm.escapeHTML(feeCategory.feeCategory)}"
+              category.
+            </p>
+          </div>
+          </div>`);
+            feeCategoryContainerElement
+                .querySelector('.button--deleteFeeCategory')
+                ?.addEventListener('click', confirmDeleteFeeCategory);
+        }
+        for (const fee of feeCategory.fees) {
+            renderFee(feeCategoryContainerElement, fee);
+        }
+    }
     function renderFeeCategories() {
         if (feeCategories.length === 0) {
             feeCategoriesContainerElement.innerHTML = `<div class="message is-warning">
@@ -72,105 +164,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </div>
         </div>
         </div>`;
-            if (feeCategory.fees.length === 0) {
-                feeCategoryContainerElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
-            <div class="message is-info">
-              <p class="message-body">
-                There are no fees in the
-                "${cityssm.escapeHTML(feeCategory.feeCategory)}"
-                category.
-              </p>
-            </div>
-            </div>`);
-                feeCategoryContainerElement
-                    .querySelector('.button--deleteFeeCategory')
-                    ?.addEventListener('click', confirmDeleteFeeCategory);
-            }
-            for (const fee of feeCategory.fees) {
-                const panelBlockElement = document.createElement('div');
-                panelBlockElement.className = 'panel-block is-block container--fee';
-                panelBlockElement.dataset.feeId = fee.feeId.toString();
-                const hasTagsBlock = (fee.isRequired ?? false) ||
-                    fee.contractTypeId !== undefined ||
-                    fee.burialSiteTypeId !== undefined;
-                // eslint-disable-next-line no-unsanitized/property
-                panelBlockElement.innerHTML = `<div class="columns">
-          <div class="column is-half">
-            <p>
-              <a class="has-text-weight-bold a--editFee" href="#">
-                ${cityssm.escapeHTML(fee.feeName ?? '')}
-              </a><br />
-              <small>
-              ${cityssm
-                    .escapeHTML(fee.feeDescription ?? '')
-                    .replaceAll('\n', '<br />')}
-              </small>
-            </p>
-            ${hasTagsBlock
-                    ? `<p class="tags">
-                    ${
-                    // eslint-disable-next-line sonarjs/no-nested-conditional
-                    fee.isRequired ?? false
-                        ? '<span class="tag is-warning">Required</span>'
-                        : ''}
-                    ${
-                    // eslint-disable-next-line sonarjs/no-nested-conditional
-                    (fee.contractTypeId ?? -1) === -1
-                        ? ''
-                        : ` <span class="tag has-tooltip-bottom" data-tooltip="Contract Type Filter">
-                            <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
-                            <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
-                            </span>`}
-                    ${
-                    // eslint-disable-next-line sonarjs/no-nested-conditional
-                    (fee.burialSiteTypeId ?? -1) === -1
-                        ? ''
-                        : ` <span class="tag has-tooltip-bottom" data-tooltip="Burial Site Type Filter">
-                            <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
-                            <span>${cityssm.escapeHTML(fee.burialSiteType ?? '')}</span>
-                            </span>`}
-                    </p>`
-                    : ''}
-          </div>
-          <div class="column">
-            <div class="columns is-mobile">
-              <div class="column has-text-centered">
-                ${fee.feeFunction
-                    ? `${cityssm.escapeHTML(fee.feeFunction)}<br />
-                        <small>Fee Function</small>`
-                    : `<a class="a--editFeeAmount" href="#">
-                        $${(fee.feeAmount ?? 0).toFixed(2)}<br />
-                        <small>Fee</small>
-                        </a>`}
-              </div>
-              <div class="column has-text-centered">
-                ${fee.taxPercentage
-                    ? `${fee.taxPercentage.toString()}%`
-                    : `$${(fee.taxAmount ?? 0).toFixed(2)}`}<br />
-                <small>Tax</small>
-              </div>
-              <div class="column has-text-centered">
-                ${fee.includeQuantity
-                    ? `${cityssm.escapeHTML(fee.quantityUnit ?? '')}<br />
-                        <small>Quantity</small>`
-                    : ''}
-              </div>
-            </div>
-          </div>
-          <div class="column is-narrow is-hidden-print">
-            ${sunrise.getMoveUpDownButtonFieldHTML('button--moveFeeUp', 'button--moveFeeDown')}
-          </div>
-        </div>`;
-                panelBlockElement
-                    .querySelector('.a--editFee')
-                    ?.addEventListener('click', openEditFee);
-                panelBlockElement
-                    .querySelector('.a--editFeeAmount')
-                    ?.addEventListener('click', openEditFeeAmount);
-                panelBlockElement.querySelector('.button--moveFeeUp').addEventListener('click', moveFee);
-                panelBlockElement.querySelector('.button--moveFeeDown').addEventListener('click', moveFee);
-                feeCategoryContainerElement.append(panelBlockElement);
-            }
+            renderFees(feeCategoryContainerElement, feeCategory);
             feeCategoryContainerElement
                 .querySelector('.button--editFeeCategory')
                 ?.addEventListener('click', openEditFeeCategory);
@@ -200,9 +194,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Creating Fee Category',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -237,9 +231,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Updating Fee Category',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -280,20 +274,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Updating Fee Category',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Fee Category?',
             message: 'Are you sure you want to delete this fee category?',
-            contextualColorName: 'warning',
             okButton: {
-                text: 'Yes, Delete the Fee Category',
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete the Fee Category'
             }
         });
     }
@@ -314,9 +308,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Moving Fee Category',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -338,9 +332,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Adding Fee',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -445,9 +439,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Updating Fee Amount',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -491,9 +485,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Updating Fee',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -514,20 +508,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                     else {
                         bulmaJS.alert({
+                            contextualColorName: 'danger',
                             title: 'Error Deleting Fee',
-                            message: responseJSON.errorMessage ?? '',
-                            contextualColorName: 'danger'
+                            message: responseJSON.errorMessage ?? ''
                         });
                     }
                 });
             }
             bulmaJS.confirm({
+                contextualColorName: 'warning',
                 title: 'Delete Fee?',
                 message: 'Are you sure you want to delete this fee?',
-                contextualColorName: 'warning',
                 okButton: {
-                    text: 'Yes, Delete the Fee',
-                    callbackFunction: doDelete
+                    callbackFunction: doDelete,
+                    text: 'Yes, Delete the Fee'
                 }
             });
         }
@@ -660,9 +654,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Moving Fee',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });

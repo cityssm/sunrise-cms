@@ -30,21 +30,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
           data-tooltip="${contract.isPreneed ? 'Recipient' : 'Deceased'}">
           <span class="fa-li"><i class="fa-solid fa-user"></i></span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
-          </li>`;
+        </li>`;
         }
         if (contract.purchaserName !== '') {
             contactsHTML += `<li class="has-tooltip-left has-text-grey"
           data-tooltip="Purchaser">
           <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar"></i></span>
           ${cityssm.escapeHTML(contract.purchaserName)}
-          </li>`;
+        </li>`;
         }
         if (contract.funeralHomeName !== null && contract.funeralHomeName !== '') {
             contactsHTML += `<li class="has-tooltip-left has-text-grey"
           data-tooltip="Funeral Home">
           <span class="fa-li"><i class="fa-solid fa-place-of-worship"></i></span>
           ${cityssm.escapeHTML(contract.funeralHomeName)}
-          </li>`;
+        </li>`;
         }
         return contactsHTML;
     }

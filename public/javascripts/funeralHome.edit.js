@@ -28,16 +28,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        message: "Funeral Home Updated Successfully",
-                        contextualColorName: 'success'
+                        contextualColorName: 'success',
+                        message: 'Funeral Home Updated Successfully'
                     });
                 }
             }
             else {
                 bulmaJS.alert({
-                    title: "Error Updating Funeral Home",
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    contextualColorName: 'danger',
+                    title: 'Error Updating Funeral Home',
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -61,20 +61,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        title: "Error Deleting Funeral Home",
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        contextualColorName: 'danger',
+                        title: 'Error Deleting Funeral Home',
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
         }
         bulmaJS.confirm({
-            title: "Delete Funeral Home",
-            message: "Are you sure you want to delete this funeral home?",
             contextualColorName: 'warning',
+            title: 'Delete Funeral Home',
+            message: 'Are you sure you want to delete this funeral home?',
             okButton: {
-                text: "Yes, Delete Funeral Home",
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete Funeral Home'
             }
         });
     });

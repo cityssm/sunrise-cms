@@ -50,7 +50,7 @@ declare const exports: Record<string, unknown>
           data-tooltip="${contract.isPreneed ? 'Recipient' : 'Deceased'}">
           <span class="fa-li"><i class="fa-solid fa-user"></i></span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
-          </li>`
+        </li>`
     }
 
     if (contract.purchaserName !== '') {
@@ -58,7 +58,7 @@ declare const exports: Record<string, unknown>
           data-tooltip="Purchaser">
           <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar"></i></span>
           ${cityssm.escapeHTML(contract.purchaserName)}
-          </li>`
+        </li>`
     }
 
     if (contract.funeralHomeName !== null && contract.funeralHomeName !== '') {
@@ -66,7 +66,7 @@ declare const exports: Record<string, unknown>
           data-tooltip="Funeral Home">
           <span class="fa-li"><i class="fa-solid fa-place-of-worship"></i></span>
           ${cityssm.escapeHTML(contract.funeralHomeName)}
-          </li>`
+        </li>`
     }
     return contactsHTML
   }

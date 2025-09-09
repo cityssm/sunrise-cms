@@ -895,7 +895,7 @@ declare const exports: Record<string, unknown>
       contractTransactionsContainerElement.insertAdjacentHTML(
         'afterbegin',
         `<div class="message ${differenceClassName}">
-            <div class="message-body">
+          <div class="message-body">
             <div class="level">
               <div class="level-left">
                 <div class="level-item">
@@ -908,7 +908,7 @@ declare const exports: Record<string, unknown>
                 </div>
               </div>
             </div>
-            </div></div>`
+          </div></div>`
       )
     }
   }
