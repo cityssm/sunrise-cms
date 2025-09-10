@@ -1,3 +1,3 @@
-export const version = '1.0.0-alpha.32'
+export const version = '1.0.0-alpha.33'
 
 export default version
