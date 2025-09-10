@@ -69,8 +69,8 @@ type ResponseJSON =
 
     // eslint-disable-next-line no-unsanitized/property
     toggleButtonElement.innerHTML = expandedContractTypes.has(contractTypeId)
-      ? '<i class="fa-solid fa-minus"></i>'
-      : '<i class="fa-solid fa-plus"></i>'
+      ? '<span class="icon"><i class="fa-solid fa-minus"></i></span>'
+      : '<span class="icon"><i class="fa-solid fa-plus"></i></span>'
 
     const panelBlockElements =
       contractTypeElement.querySelectorAll('.panel-block')
@@ -879,11 +879,13 @@ type ResponseJSON =
           <div class="level-left">
             <div class="level-item">
               <button class="button is-small button--toggleContractTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
-                ${
-                  expandedContractTypes.has(contractType.contractTypeId)
-                    ? '<i class="fa-solid fa-minus"></i>'
-                    : '<i class="fa-solid fa-plus"></i>'
-                }
+                <span class="icon">
+                  ${
+                    expandedContractTypes.has(contractType.contractTypeId)
+                      ? '<i class="fa-solid fa-minus"></i>'
+                      : '<i class="fa-solid fa-plus"></i>'
+                  }
+                </span>
               </button>
             </div>
             <div class="level-item">
@@ -1024,9 +1026,10 @@ type ResponseJSON =
               renderContractTypes()
             } else {
               bulmaJS.alert({
+                contextualColorName: 'danger',
                 title: 'Error Adding Contract Type',
-                message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
+
+                message: responseJSON.errorMessage ?? ''
               })
             }
           }
@@ -1049,6 +1052,7 @@ type ResponseJSON =
 
           bulmaJS.toggleHtmlClipped()
         },
+
         onremoved() {
           bulmaJS.toggleHtmlClipped()
         }
