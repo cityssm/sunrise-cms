@@ -610,12 +610,67 @@ type ResponseJSON =
       burialSiteTypeContainer.dataset.burialSiteTypeId =
         burialSiteType.burialSiteTypeId.toString()
 
+      /*
+       * Body Capacity Tag
+        */
+
+      let bodyCapacityMax =
+        burialSiteType.bodyCapacityMax?.toString() ?? 'unlimited'
+
+      if (bodyCapacityMax === '0') {
+        bodyCapacityMax = 'none'
+      }
+
+      let bodyCapacityTagClass = 'is-info'
+
+      if (bodyCapacityMax === 'none') {
+        bodyCapacityTagClass = 'is-danger'
+      } else if (bodyCapacityMax === 'unlimited') {
+        bodyCapacityTagClass = 'is-success'
+      }
+
+      const bodiesTagHtml = `<div class="control">
+        <div class="tags has-addons">
+          <span class="tag is-dark">Bodies</span>
+          <span class="tag ${bodyCapacityTagClass}">
+            ${cityssm.escapeHTML(bodyCapacityMax)}
+          </span>
+        </div>
+        </div>`
+
+      /*
+       * Cremains Capacity Tag
+       */
+
+      let crematedCapacityMax =
+        burialSiteType.crematedCapacityMax?.toString() ?? 'unlimited'
+
+      if (crematedCapacityMax === '0') {
+        crematedCapacityMax = 'none'
+      }
+
+      let crematedCapacityTagClass = 'is-info'
+
+      if (crematedCapacityMax === 'none') {
+        crematedCapacityTagClass = 'is-danger'
+      } else if (crematedCapacityMax === 'unlimited') {
+        crematedCapacityTagClass = 'is-success'
+      }
+
+      const crematedTagHtml = `<div class="control">
+        <div class="tags has-addons">
+          <span class="tag is-dark">Cremains</span>
+          <span class="tag ${crematedCapacityTagClass}">
+            ${cityssm.escapeHTML(crematedCapacityMax)}
+          </span>
+        </div>
+        </div>`
+
       // eslint-disable-next-line no-unsanitized/property
       burialSiteTypeContainer.innerHTML = `<div class="panel-heading">
-        <div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <button class="button is-small button--toggleBurialSiteTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
+        <div class="columns">
+          <div class="column is-narrow">
+            <button class="button is-small button--toggleBurialSiteTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
               <span class="icon">
                 ${
                   expandedBurialSiteTypes.has(burialSiteType.burialSiteTypeId)
@@ -623,54 +678,34 @@ type ResponseJSON =
                     : '<i class="fa-solid fa-plus"></i>'
                 }
               </span>
-              </button>
-            </div>
-            <div class="level-item">
-              <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(burialSiteType.burialSiteType)}</h2>
-            </div>
-            <div class="level-item">
-              <div class="tags">
-                ${
-                  burialSiteType.bodyCapacityMax === null
-                    ? ''
-                    : `<span class="tag is-info">
-                        Bodies: ${cityssm.escapeHTML(
-                          burialSiteType.bodyCapacityMax.toString()
-                        )}
-                        </span>`
-                }
-                ${
-                  burialSiteType.crematedCapacityMax === null
-                    ? ''
-                    : `<span class="tag is-info">
-                        Cremains: ${cityssm.escapeHTML(
-                          burialSiteType.crematedCapacityMax.toString()
-                        )}
-                        </span>`
-                }
-              </div>
+            </button>
+          </div>
+          <div class="column is-narrow">
+            <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(burialSiteType.burialSiteType)}</h2>
+          </div>
+          <div class="column">
+            <div class="field is-grouped is-grouped-multiline">
+            ${bodiesTagHtml}
+            ${crematedTagHtml}
             </div>
           </div>
-          <div class="level-right is-hidden-print">
-            <div class="level-item">
+          <div class="column is-narrow is-hidden-print">
+            <div class="buttons">
               <button class="button is-danger is-small button--deleteBurialSiteType" type="button">
                 <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
                 <span>Delete</span>
               </button>
-            </div>
-            <div class="level-item">
+
               <button class="button is-primary is-small button--editBurialSiteType" type="button">
                 <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
                 <span>Edit <span class="is-hidden-desktop-only is-hidden-tablet-only">Burial Site Type</span></span>
               </button>
-            </div>
-            <div class="level-item">
+
               <button class="button is-success is-small button--addBurialSiteTypeField" type="button">
                 <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                 <span>Add Field</span>
               </button>
-            </div>
-            <div class="level-item">
+
               ${sunrise.getMoveUpDownButtonFieldHTML(
                 'button--moveBurialSiteTypeUp',
                 'button--moveBurialSiteTypeDown'
