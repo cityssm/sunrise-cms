@@ -282,3 +282,9 @@ span.button.is-static {
   ) {
   background-color: var(--bulma-warning-light);
 }
+
+/* Fix hover effect when hovering on a label */
+.control.has-icons-left .select:has(select:hover) ~ .icon,
+.control.has-icons-right .select:has(select:hover) ~ .icon {
+  color: var(--bulma-input-icon-hover-color)
+}
