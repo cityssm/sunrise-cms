@@ -7,16 +7,17 @@
 Low level configuration is done using the required `data/config.js` file.
 The available properties are defined below.
 
-In Typescript environments, the configuration object can be tied to
-the `Config` interface in `types/config.types.ts` for help with configuration.
+💡 In Typescript environments, the configuration object can be tied to the `Config` interface in
+[`types/config.types.ts`](https://github.com/cityssm/sunrise-cms/blob/main/types/config.types.ts)
+for help with configuration.
 
-Another way to help with configuration is by importing one of the partial
-configurations in the `data/partialConfigs` folder. For example,
-if you are setting up an instance of Sunrise CMS for a cemetery in
+Another way to help with configuration is by importing one of the partial configurations in the
+[`data/partialConfigs`](https://github.com/cityssm/sunrise-cms/tree/main/data/partialConfigs) folder. For example, if you are setting up an instance of Sunrise CMS for a cemetery in
 Ontario Canada, some configuration can be imported from
-`data/partialConfigs/ontario.partialConfig.js`.
+[`data/partialConfigs/ontario.partialConfig.js`](https://github.com/cityssm/sunrise-cms/blob/main/data/partialConfigs/ontario.partialConfig.js).
 
-As a starting point, it is recommended to import `data/partialConfigs/partialConfig.js`.
+As a starting point, it is recommended to import
+[`data/partialConfigs/partialConfig.js`](https://github.com/cityssm/sunrise-cms/blob/main/data/partialConfigs/partialConfig.js).
 
 ## Sample Configuration File
 
@@ -47,7 +48,6 @@ config.login = {
 config.users = {
   canLogin: ['administrator', 'readOnlyUser', 'updateUser'],
   canUpdate: ['updateUser'],
-  canUpdateWorkOrders: ['updateUser'],
   isAdmin: ['administrator']
 }
 
@@ -56,7 +56,7 @@ export default config
 ```
 
 A sample working configuration file is available in
-`data/testing.config.js`.
+[`data/testing.config.js`](https://github.com/cityssm/sunrise-cms/blob/main/data/testing.config.js).
 
 ## Application Configuration
 
@@ -65,6 +65,8 @@ application: {
   applicationName?: string    // Defaults to 'Sunrise CMS'
   httpPort?: number
 
+  application
+
   backgroundURL?: string      // Shown on login
   logoURL?: string
 
@@ -72,7 +74,8 @@ application: {
 
   useTestDatabases?: boolean
 
-  attachmentsPath?: string    // The folder to save files to
+  attachmentsPath?: string       // The folder to save files to
+  maxAttachmentFileSize?: number // In megabytes
 }
 ```
 
@@ -99,6 +102,7 @@ reverseProxy: {
   disableCompression?: boolean   // Disable response compression
   disableEtag?: boolean          // Disable ETag headers
   disableRateLimit?: boolean     // Disable rate limiting
+  trafficIsForwarded?: boolean   // Whether or not traffic is forwarded
   urlPrefix?: string             // URL prefix for the application
 }
 ```
@@ -118,6 +122,9 @@ login: {
 ## User Configuration
 
 Controls user permissions and access levels.
+
+User permissions can also be managed in Sunrise CMS itself.
+Permissions managed there are recorded in the database.
 
 ```typescript
 users: {
