@@ -18,7 +18,8 @@ import {
 import {
   getBurialSiteNameWhereClause,
   getContractTimeWhereClause,
-  getDeceasedNameWhereClause
+  getDeceasedNameWhereClause,
+  getPurchaserNameWhereClause
 } from '../helpers/functions.sqlFilters.js'
 import type { Contract } from '../types/record.types.js'
 
@@ -35,7 +36,9 @@ export interface GetContractsFilters {
 
   cemeteryId?: number | string
   contractTypeId?: number | string
+
   deceasedName?: string
+  purchaserName?: string
 
   burialSiteName?: string
   burialSiteNameSearchType?: '' | 'endsWith' | 'startsWith'
@@ -234,6 +237,10 @@ function buildWhereClause(filters: GetContractsFilters): {
   let sqlWhereClause = ' where c.recordDelete_timeMillis is null'
   const sqlParameters: unknown[] = []
 
+  /*
+   * Burial Site
+   */
+
   if ((filters.burialSiteId ?? '') !== '') {
     sqlWhereClause += ' and c.burialSiteId = ?'
     sqlParameters.push(filters.burialSiteId)
@@ -244,16 +251,36 @@ function buildWhereClause(filters: GetContractsFilters): {
     filters.burialSiteNameSearchType ?? '',
     'l'
   )
+
   sqlWhereClause += burialSiteNameFilters.sqlWhereClause
   sqlParameters.push(...burialSiteNameFilters.sqlParameters)
 
-  const deceasedNameFilters = getDeceasedNameWhereClause(
-    filters.deceasedName,
+  /*
+   * Purchaser Name
+    */
+
+  const purchaserNameFilters = getPurchaserNameWhereClause(
+    filters.purchaserName,
     'c'
   )
+
+  if (purchaserNameFilters.sqlParameters.length > 0) {
+    sqlWhereClause += purchaserNameFilters.sqlWhereClause
+    sqlParameters.push(...purchaserNameFilters.sqlParameters)
+  }
+
+  /*
+   * Deceased Name
+   */
+
+  const deceasedNameFilters = getDeceasedNameWhereClause(
+    filters.deceasedName,
+    'ci'
+  )
+
   if (deceasedNameFilters.sqlParameters.length > 0) {
     sqlWhereClause += ` and c.contractId in (
-        select contractId from ContractInterments c
+        select contractId from ContractInterments ci
         where recordDelete_timeMillis is null
         ${deceasedNameFilters.sqlWhereClause})`
     sqlParameters.push(...deceasedNameFilters.sqlParameters)

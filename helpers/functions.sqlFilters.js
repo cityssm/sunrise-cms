@@ -83,3 +83,21 @@ export function getDeceasedNameWhereClause(deceasedName = '', tableAlias = 'ci')
         sqlWhereClause
     };
 }
+export function getPurchaserNameWhereClause(purchaserName = '', tableAlias = 'c') {
+    let sqlWhereClause = '';
+    const sqlParameters = [];
+    const usedPieces = new Set();
+    const purchaserNamePieces = purchaserName.toLowerCase().split(' ');
+    for (const namePiece of purchaserNamePieces) {
+        if (namePiece === '' || usedPieces.has(namePiece)) {
+            continue;
+        }
+        usedPieces.add(namePiece);
+        sqlWhereClause += ` and instr(lower(${tableAlias}.purchaserName), ?)`;
+        sqlParameters.push(namePiece);
+    }
+    return {
+        sqlParameters,
+        sqlWhereClause
+    };
+}

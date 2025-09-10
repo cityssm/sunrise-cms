@@ -9,6 +9,7 @@ export interface GetContractsFilters {
     cemeteryId?: number | string;
     contractTypeId?: number | string;
     deceasedName?: string;
+    purchaserName?: string;
     burialSiteName?: string;
     burialSiteNameSearchType?: '' | 'endsWith' | 'startsWith';
     burialSiteTypeId?: number | string;

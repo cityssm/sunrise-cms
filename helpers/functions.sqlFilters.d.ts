@@ -7,4 +7,5 @@ interface WhereClauseReturn {
 export declare function getBurialSiteNameWhereClause(burialSiteName?: string, burialSiteNameSearchType?: BurialSiteNameSearchType, burialSitesTableAlias?: string): WhereClauseReturn;
 export declare function getContractTimeWhereClause(contractTime: ContractTime | undefined, contractsTableAlias?: string): WhereClauseReturn;
 export declare function getDeceasedNameWhereClause(deceasedName?: string, tableAlias?: string): WhereClauseReturn;
+export declare function getPurchaserNameWhereClause(purchaserName?: string, tableAlias?: string): WhereClauseReturn;
 export {};

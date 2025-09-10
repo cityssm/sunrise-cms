@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3';
 import { getCachedContractTypeById } from '../helpers/cache/contractTypes.cache.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sanitizeLimit, sanitizeOffset, sunriseDB } from '../helpers/database.helpers.js';
-import { getBurialSiteNameWhereClause, getContractTimeWhereClause, getDeceasedNameWhereClause } from '../helpers/functions.sqlFilters.js';
+import { getBurialSiteNameWhereClause, getContractTimeWhereClause, getDeceasedNameWhereClause, getPurchaserNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import getContractFees from './getContractFees.js';
 import getContractInterments from './getContractInterments.js';
 import getContractTransactions from './getContractTransactions.js';
@@ -124,6 +124,9 @@ async function addInclusions(contract, options, database) {
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where c.recordDelete_timeMillis is null';
     const sqlParameters = [];
+    /*
+     * Burial Site
+     */
     if ((filters.burialSiteId ?? '') !== '') {
         sqlWhereClause += ' and c.burialSiteId = ?';
         sqlParameters.push(filters.burialSiteId);
@@ -131,10 +134,21 @@ function buildWhereClause(filters) {
     const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'l');
     sqlWhereClause += burialSiteNameFilters.sqlWhereClause;
     sqlParameters.push(...burialSiteNameFilters.sqlParameters);
-    const deceasedNameFilters = getDeceasedNameWhereClause(filters.deceasedName, 'c');
+    /*
+     * Purchaser Name
+      */
+    const purchaserNameFilters = getPurchaserNameWhereClause(filters.purchaserName, 'c');
+    if (purchaserNameFilters.sqlParameters.length > 0) {
+        sqlWhereClause += purchaserNameFilters.sqlWhereClause;
+        sqlParameters.push(...purchaserNameFilters.sqlParameters);
+    }
+    /*
+     * Deceased Name
+     */
+    const deceasedNameFilters = getDeceasedNameWhereClause(filters.deceasedName, 'ci');
     if (deceasedNameFilters.sqlParameters.length > 0) {
         sqlWhereClause += ` and c.contractId in (
-        select contractId from ContractInterments c
+        select contractId from ContractInterments ci
         where recordDelete_timeMillis is null
         ${deceasedNameFilters.sqlWhereClause})`;
         sqlParameters.push(...deceasedNameFilters.sqlParameters);

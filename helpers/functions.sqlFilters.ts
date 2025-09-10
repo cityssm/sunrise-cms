@@ -124,3 +124,30 @@ export function getDeceasedNameWhereClause(
     sqlWhereClause
   }
 }
+
+export function getPurchaserNameWhereClause(
+  purchaserName = '',
+  tableAlias = 'c'
+): WhereClauseReturn {
+  let sqlWhereClause = ''
+  const sqlParameters: unknown[] = []
+
+  const usedPieces = new Set<string>()
+
+  const purchaserNamePieces = purchaserName.toLowerCase().split(' ')
+  for (const namePiece of purchaserNamePieces) {
+    if (namePiece === '' || usedPieces.has(namePiece)) {
+      continue
+    }
+
+    usedPieces.add(namePiece)
+
+    sqlWhereClause += ` and instr(lower(${tableAlias}.purchaserName), ?)`
+    sqlParameters.push(namePiece)
+  }
+
+  return {
+    sqlParameters,
+    sqlWhereClause
+  }
+}

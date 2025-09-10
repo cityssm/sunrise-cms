@@ -1,6 +1,6 @@
 import { testView } from '../../../test/_globals.js';
 import { ajaxDelayMillis, login, logout } from '../../support/index.js';
-describe('Update  Log', () => {
+describe('Update Log', () => {
     beforeEach(() => {
         logout();
         login(testView);
