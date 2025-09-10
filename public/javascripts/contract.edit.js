@@ -30,7 +30,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
-                    globalThis.location.href = sunrise.getContractURL(responseJSON.contractId, true, true);
+                    globalThis.location.href = sunrise.getContractUrl(responseJSON.contractId, true, true);
                 }
                 else {
                     bulmaJS.alert({
@@ -59,7 +59,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
-                globalThis.location.href = sunrise.getContractURL(responseJSON.contractId, true);
+                globalThis.location.href = sunrise.getContractUrl(responseJSON.contractId, true);
             }
             else {
                 bulmaJS.alert({
@@ -104,7 +104,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     clearUnsavedChanges();
-                    globalThis.location.href = sunrise.getContractURL();
+                    globalThis.location.href = sunrise.getContractUrl();
                 }
                 else {
                     bulmaJS.alert({

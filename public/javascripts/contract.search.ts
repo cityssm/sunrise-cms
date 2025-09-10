@@ -138,7 +138,7 @@ declare const exports: Record<string, unknown>
             ${contractTimeHTML}
           </td><td>
             <a class="has-text-weight-bold"
-              href="${sunrise.getContractURL(contract.contractId)}">
+              href="${sunrise.getContractUrl(contract.contractId)}">
               ${cityssm.escapeHTML(contract.contractType)}
             </a><br />
             <span class="is-size-7">#${contract.contractId}</span>
@@ -148,7 +148,7 @@ declare const exports: Record<string, unknown>
                 ? '<span class="has-text-grey">(No Burial Site)</span>'
                 : `<a class="has-tooltip-right ${burialSiteLinkClass}"
                     data-tooltip="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
-                    href="${sunrise.getBurialSiteURL(contract.burialSiteId ?? '')}">
+                    href="${sunrise.getBurialSiteUrl(contract.burialSiteId ?? '')}">
                       ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
                     </a>`
             }<br />

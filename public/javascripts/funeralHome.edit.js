@@ -24,7 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
-                    globalThis.location.href = sunrise.getFuneralHomeURL(responseJSON.funeralHomeId, true);
+                    globalThis.location.href = sunrise.getFuneralHomeUrl(responseJSON.funeralHomeId, true);
                 }
                 else {
                     bulmaJS.alert({
@@ -57,7 +57,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    globalThis.location.href = sunrise.getFuneralHomeURL();
+                    globalThis.location.href = sunrise.getFuneralHomeUrl();
                 }
                 else {
                     bulmaJS.alert({

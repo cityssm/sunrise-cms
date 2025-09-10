@@ -56,14 +56,14 @@ declare const exports: {
         'beforeend',
         `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${sunrise.getBurialSiteURL(burialSite.burialSiteId)}">
+            <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
               ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
             </a>
           </td><td>
           ${
             burialSite.cemeteryId === null
               ? '<span class="has-text-grey">(No Cemetery)</span>'
-              : `<a href="${sunrise.getCemeteryURL(burialSite.cemeteryId)}">
+              : `<a href="${sunrise.getCemeteryUrl(burialSite.cemeteryId)}">
                   ${cemeteryNameHtml}
                   </a>`
           }

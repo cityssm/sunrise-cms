@@ -73,7 +73,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // eslint-disable-next-line no-unsanitized/method
             searchResultsTbodyElement.insertAdjacentHTML('beforeend', `<tr style="page-break-inside: avoid;">
           <td>
-            <a class="has-text-weight-bold" href="${sunrise.getCemeteryURL(cemetery.cemeteryId)}">
+            <a class="has-text-weight-bold" href="${sunrise.getCemeteryUrl(cemetery.cemeteryId)}">
               ${cemetery.cemeteryName === ''
                 ? `(No Name) <span class="icon is-small has-text-danger">
                       <i class="fa-solid fa-exclamation-triangle"></i>

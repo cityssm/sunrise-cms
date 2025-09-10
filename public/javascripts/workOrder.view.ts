@@ -30,7 +30,7 @@ declare const exports: Record<string, unknown>
             }
 
             if (responseJSON.success) {
-              globalThis.location.href = sunrise.getWorkOrderURL(
+              globalThis.location.href = sunrise.getWorkOrderUrl(
                 workOrderId,
                 true,
                 true

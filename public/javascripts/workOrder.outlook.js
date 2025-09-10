@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const workOrderTypeIdsElement = document.querySelector('#icsFilters--workOrderTypeIds');
     const workOrderMilestoneTypeIdsElement = document.querySelector('#icsFilters--workOrderMilestoneTypeIds');
     const calendarLinkElement = document.querySelector('#icsFilters--calendarURL');
-    function updateCalendarURL() {
+    function updateCalendarUrl() {
         let url = `${calendarLinkElement.dataset.applicationUrl}/api/${sunrise.apiKey}/milestoneICS/?`;
         if (!workOrderTypeIdsElement.disabled &&
             workOrderTypeIdsElement.selectedOptions.length > 0) {
@@ -34,9 +34,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     });
     const inputSelectElements = document.querySelector('#panel--icsFilters').querySelectorAll('input, select');
     for (const element of inputSelectElements) {
-        element.addEventListener('change', updateCalendarURL);
+        element.addEventListener('change', updateCalendarUrl);
     }
-    updateCalendarURL();
+    updateCalendarUrl();
     calendarLinkElement.addEventListener('click', () => {
         calendarLinkElement.focus();
         calendarLinkElement.select();

@@ -48,7 +48,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // eslint-disable-next-line no-unsanitized/method
             searchResultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeURL(funeralHome.funeralHomeId)}">
+            <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeUrl(funeralHome.funeralHomeId)}">
               ${cityssm.escapeHTML(funeralHome.funeralHomeName === ''
                 ? '(No Name)'
                 : funeralHome.funeralHomeName)}

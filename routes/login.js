@@ -1,6 +1,6 @@
 import { clearAbuse, recordAbuse } from '@cityssm/express-abuse-points';
 import { Router } from 'express';
-import { authenticate, getSafeRedirectURL } from '../helpers/authentication.helpers.js';
+import { authenticate, getSafeRedirectUrl } from '../helpers/authentication.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { useTestDatabases } from '../helpers/database.helpers.js';
 import { getUser } from '../helpers/user.helpers.js';
@@ -9,8 +9,8 @@ function getHandler(request, response) {
     const sessionCookieName = getConfigProperty('session.cookieName');
     if (request.session.user !== undefined &&
         request.cookies[sessionCookieName] !== undefined) {
-        const redirectURL = getSafeRedirectURL((request.query.redirect ?? ''));
-        response.redirect(redirectURL);
+        const redirectUrl = getSafeRedirectUrl((request.query.redirect ?? ''));
+        response.redirect(redirectUrl);
     }
     else {
         response.render('login', {
@@ -24,8 +24,8 @@ function getHandler(request, response) {
 async function postHandler(request, response) {
     const userName = typeof request.body.userName === 'string' ? request.body.userName : '';
     const passwordPlain = typeof request.body.password === 'string' ? request.body.password : '';
-    const unsafeRedirectURL = request.body.redirect;
-    const redirectURL = getSafeRedirectURL(typeof unsafeRedirectURL === 'string' ? unsafeRedirectURL : '');
+    const unsafeRedirectUrl = request.body.redirect;
+    const redirectUrl = getSafeRedirectUrl(typeof unsafeRedirectUrl === 'string' ? unsafeRedirectUrl : '');
     /*
      * Authenticate User
      */
@@ -40,13 +40,13 @@ async function postHandler(request, response) {
     if (isAuthenticated && userObject !== undefined) {
         clearAbuse(request);
         request.session.user = userObject;
-        response.redirect(redirectURL);
+        response.redirect(redirectUrl);
     }
     else {
         recordAbuse(request);
         response.render('login', {
             message: 'Login Failed',
-            redirect: redirectURL,
+            redirect: redirectUrl,
             userName,
             useTestDatabases
         });

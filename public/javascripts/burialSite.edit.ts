@@ -69,7 +69,7 @@ declare const exports: {
           clearUnsavedChanges()
 
           if (isCreate || refreshAfterSave) {
-            globalThis.location.href = sunrise.getBurialSiteURL(
+            globalThis.location.href = sunrise.getBurialSiteUrl(
               responseJSON.burialSiteId,
               true,
               true
@@ -121,7 +121,7 @@ declare const exports: {
 
             if (responseJSON.success) {
               clearUnsavedChanges()
-              globalThis.location.href = sunrise.getBurialSiteURL()
+              globalThis.location.href = sunrise.getBurialSiteUrl()
             } else {
               bulmaJS.alert({
                 contextualColorName: 'danger',

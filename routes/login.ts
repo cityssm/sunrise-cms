@@ -3,7 +3,7 @@ import { type Request, type Response, Router } from 'express'
 
 import {
   authenticate,
-  getSafeRedirectURL
+  getSafeRedirectUrl
 } from '../helpers/authentication.helpers.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { useTestDatabases } from '../helpers/database.helpers.js'
@@ -18,11 +18,11 @@ function getHandler(request: Request, response: Response): void {
     request.session.user !== undefined &&
     request.cookies[sessionCookieName] !== undefined
   ) {
-    const redirectURL = getSafeRedirectURL(
+    const redirectUrl = getSafeRedirectUrl(
       (request.query.redirect ?? '') as string
     )
 
-    response.redirect(redirectURL)
+    response.redirect(redirectUrl)
   } else {
     response.render('login', {
       message: '',
@@ -47,10 +47,10 @@ async function postHandler(
   const passwordPlain =
     typeof request.body.password === 'string' ? request.body.password : ''
 
-  const unsafeRedirectURL = request.body.redirect
+  const unsafeRedirectUrl = request.body.redirect
 
-  const redirectURL = getSafeRedirectURL(
-    typeof unsafeRedirectURL === 'string' ? unsafeRedirectURL : ''
+  const redirectUrl = getSafeRedirectUrl(
+    typeof unsafeRedirectUrl === 'string' ? unsafeRedirectUrl : ''
   )
 
   /*
@@ -74,13 +74,13 @@ async function postHandler(
 
     request.session.user = userObject
 
-    response.redirect(redirectURL)
+    response.redirect(redirectUrl)
   } else {
     recordAbuse(request as unknown as Express.Request)
 
     response.render('login', {
       message: 'Login Failed',
-      redirect: redirectURL,
+      redirect: redirectUrl,
       userName,
       useTestDatabases
     })

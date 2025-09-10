@@ -5,9 +5,9 @@ import type { ConfigBurialSiteNameSegments, DynamicsGPLookup } from '../types/co
 export declare const configDefaultValues: {
     'application.applicationName': string;
     'application.applicationUrl': string | undefined;
-    'application.backgroundURL': string;
+    'application.backgroundUrl': string;
     'application.httpPort': number;
-    'application.logoURL': string;
+    'application.logoUrl': string;
     'application.maximumProcesses': number;
     'application.useTestDatabases': boolean;
     'application.attachmentsPath': string;

@@ -80,12 +80,12 @@ const safeRedirects = new Set([
 /* eslint-enable @cspell/spellchecker */
 const recordUrl = /^\/(?:cemeteries|burialsites|contracts|funeralHomes|workorders)\/\d+(?:\/edit)?$/;
 const printUrl = /^\/print\/(?:pdf|screen)\/[\d/=?A-Za-z-]+$/;
-export function getSafeRedirectURL(possibleRedirectURL = '') {
+export function getSafeRedirectUrl(possibleRedirectUrl = '') {
     const urlPrefix = getConfigProperty('reverseProxy.urlPrefix');
-    if (typeof possibleRedirectURL === 'string') {
-        const urlToCheck = possibleRedirectURL.startsWith(urlPrefix)
-            ? possibleRedirectURL.slice(urlPrefix.length)
-            : possibleRedirectURL;
+    if (typeof possibleRedirectUrl === 'string') {
+        const urlToCheck = possibleRedirectUrl.startsWith(urlPrefix)
+            ? possibleRedirectUrl.slice(urlPrefix.length)
+            : possibleRedirectUrl;
         const urlToCheckLowerCase = urlToCheck.toLowerCase();
         if (safeRedirects.has(urlToCheckLowerCase) ||
             recordUrl.test(urlToCheckLowerCase) ||

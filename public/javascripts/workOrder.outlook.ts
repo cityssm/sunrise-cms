@@ -16,7 +16,7 @@ declare const exports: Record<string, unknown>
     '#icsFilters--calendarURL'
   ) as HTMLTextAreaElement
 
-  function updateCalendarURL(): void {
+  function updateCalendarUrl(): void {
     let url = `${calendarLinkElement.dataset.applicationUrl}/api/${sunrise.apiKey}/milestoneICS/?`
 
     if (
@@ -72,10 +72,10 @@ declare const exports: Record<string, unknown>
   ).querySelectorAll('input, select')
 
   for (const element of inputSelectElements) {
-    element.addEventListener('change', updateCalendarURL)
+    element.addEventListener('change', updateCalendarUrl)
   }
 
-  updateCalendarURL()
+  updateCalendarUrl()
 
   calendarLinkElement.addEventListener('click', () => {
     calendarLinkElement.focus()

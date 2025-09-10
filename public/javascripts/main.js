@@ -47,7 +47,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
      */
     const coordinatePrecision = 8;
     const leafletConstants = {
-        tileLayerURL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         defaultZoom: 15,
         maxZoom: 19,
         attribution: '© OpenStreetMap'
@@ -64,7 +64,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                  */
                 const mapContainerElement = modalElement.querySelector('.leaflet-map');
                 const map = new L.Map(mapContainerElement);
-                new L.TileLayer(sunrise.leafletConstants.tileLayerURL, {
+                new L.TileLayer(sunrise.leafletConstants.tileLayerUrl, {
                     attribution: sunrise.leafletConstants.attribution,
                     maxZoom: sunrise.leafletConstants.maxZoom
                 }).addTo(map);
@@ -221,25 +221,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
      * URLs
      */
     const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
-    function getRecordURL(recordTypePlural, recordId, edit, time) {
+    function getRecordUrl(recordTypePlural, recordId, edit, time) {
         return (`${urlPrefix}/${recordTypePlural}/${recordId.toString()}` +
             (recordId !== '' && edit ? '/edit' : '') +
             (time ? `/?t=${Date.now().toString()}` : ''));
     }
-    function getCemeteryURL(cemeteryId = '', edit = false, time = false) {
-        return getRecordURL('cemeteries', cemeteryId, edit, time);
+    function getCemeteryUrl(cemeteryId = '', edit = false, time = false) {
+        return getRecordUrl('cemeteries', cemeteryId, edit, time);
     }
-    function getFuneralHomeURL(funeralHomeId = '', edit = false, time = false) {
-        return getRecordURL('funeralHomes', funeralHomeId, edit, time);
+    function getFuneralHomeUrl(funeralHomeId = '', edit = false, time = false) {
+        return getRecordUrl('funeralHomes', funeralHomeId, edit, time);
     }
-    function getBurialSiteURL(burialSiteId = '', edit = false, time = false) {
-        return getRecordURL('burialSites', burialSiteId, edit, time);
+    function getBurialSiteUrl(burialSiteId = '', edit = false, time = false) {
+        return getRecordUrl('burialSites', burialSiteId, edit, time);
     }
-    function getContractURL(contractId = '', edit = false, time = false) {
-        return getRecordURL('contracts', contractId, edit, time);
+    function getContractUrl(contractId = '', edit = false, time = false) {
+        return getRecordUrl('contracts', contractId, edit, time);
     }
-    function getWorkOrderURL(workOrderId = '', edit = false, time = false) {
-        return getRecordURL('workOrders', workOrderId, edit, time);
+    function getWorkOrderUrl(workOrderId = '', edit = false, time = false) {
+        return getRecordUrl('workOrders', workOrderId, edit, time);
     }
     /*
      * Date Fields
@@ -273,11 +273,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         getLoadingParagraphHTML,
         getMoveUpDownButtonFieldHTML,
         getSearchResultsPagerHTML,
-        getBurialSiteURL,
-        getCemeteryURL,
-        getContractURL,
-        getFuneralHomeURL,
-        getWorkOrderURL,
+        getBurialSiteUrl,
+        getCemeteryUrl,
+        getContractUrl,
+        getFuneralHomeUrl,
+        getWorkOrderUrl,
         initializeMinDateUpdate
     };
     exports.sunrise = sunrise;

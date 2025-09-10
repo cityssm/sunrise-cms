@@ -27,7 +27,7 @@ declare const exports: {
     })
     map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom)
 
-    new L.TileLayer(sunrise.leafletConstants.tileLayerURL, {
+    new L.TileLayer(sunrise.leafletConstants.tileLayerUrl, {
       attribution: sunrise.leafletConstants.attribution,
       maxZoom: sunrise.leafletConstants.maxZoom
     }).addTo(map)

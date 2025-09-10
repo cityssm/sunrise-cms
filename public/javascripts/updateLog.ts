@@ -44,10 +44,10 @@ declare const exports: {
 
   function getRecordSpecificElements(logEntry: RecordUpdateLog): {
     recordTypeHTML: string
-    recordURL: string
+    recordUrl: string
   } {
     let recordTypeHTML = ''
-    let recordURL = ''
+    let recordUrl = ''
 
     switch (logEntry.recordType) {
       case 'burialSite': {
@@ -55,7 +55,7 @@ declare const exports: {
           <i class="fa-solid fa-2x fa-map-pin"></i>
           </span>`
 
-        recordURL = sunrise.getBurialSiteURL(logEntry.recordId)
+        recordUrl = sunrise.getBurialSiteUrl(logEntry.recordId)
 
         break
       }
@@ -67,7 +67,7 @@ declare const exports: {
           </span>
           </span>`
 
-        recordURL = sunrise.getBurialSiteURL(logEntry.recordId)
+        recordUrl = sunrise.getBurialSiteUrl(logEntry.recordId)
 
         break
       }
@@ -76,7 +76,7 @@ declare const exports: {
           <i class="fa-solid fa-2x fa-comments"></i>
           </span>`
 
-        recordURL = '#'
+        recordUrl = '#'
 
         break
       }
@@ -85,7 +85,7 @@ declare const exports: {
           <i class="fa-solid fa-2x fa-file-contract"></i>
           </span>`
 
-        recordURL = sunrise.getContractURL(logEntry.recordId)
+        recordUrl = sunrise.getContractUrl(logEntry.recordId)
 
         break
       }
@@ -96,7 +96,7 @@ declare const exports: {
             <i class="fa-solid fa-comment" data-fa-glow="10" data-fa-transform="shrink-6 down-5 right-4"></i>
           </span>`
 
-        recordURL = sunrise.getContractURL(logEntry.recordId)
+        recordUrl = sunrise.getContractUrl(logEntry.recordId)
 
         break
       }
@@ -109,7 +109,7 @@ declare const exports: {
           </span>
           </span>`
 
-        recordURL = sunrise.getContractURL(logEntry.recordId)
+        recordUrl = sunrise.getContractUrl(logEntry.recordId)
 
         break
       }
@@ -118,7 +118,7 @@ declare const exports: {
           <i class="fa-solid fa-2x fa-money-bill-1"></i>
           </span>`
 
-        recordURL = sunrise.getContractURL(logEntry.recordId)
+        recordUrl = sunrise.getContractUrl(logEntry.recordId)
 
         break
       }
@@ -128,7 +128,7 @@ declare const exports: {
             <i class="fa-solid fa-2x fa-hard-hat"></i>
           </span>`
 
-        recordURL = sunrise.getWorkOrderURL(logEntry.recordId)
+        recordUrl = sunrise.getWorkOrderUrl(logEntry.recordId)
 
         break
       }
@@ -140,7 +140,7 @@ declare const exports: {
           </span>
           </span>`
 
-        recordURL = sunrise.getWorkOrderURL(logEntry.recordId)
+        recordUrl = sunrise.getWorkOrderUrl(logEntry.recordId)
 
         break
       }
@@ -153,7 +153,7 @@ declare const exports: {
 
           </span>`
 
-        recordURL = sunrise.getWorkOrderURL(logEntry.recordId)
+        recordUrl = sunrise.getWorkOrderUrl(logEntry.recordId)
 
         break
       }
@@ -162,7 +162,7 @@ declare const exports: {
       // no default
     }
 
-    return { recordTypeHTML, recordURL }
+    return { recordTypeHTML, recordUrl: recordUrl }
   }
 
   function renderUpdateLog(updateLog: RecordUpdateLog[]): void {
@@ -173,7 +173,7 @@ declare const exports: {
     for (const logEntry of updateLog) {
       const rowElement = document.createElement('tr')
 
-      const { recordTypeHTML, recordURL } = getRecordSpecificElements(logEntry)
+      const { recordTypeHTML, recordUrl } = getRecordSpecificElements(logEntry)
 
       const logEntryUpdateDate = new Date(logEntry.recordUpdate_timeMillis)
       const logEntryCreateDate = new Date(logEntry.recordCreate_timeMillis)
@@ -181,7 +181,7 @@ declare const exports: {
       // eslint-disable-next-line no-unsanitized/property
       rowElement.innerHTML = `<td class="has-text-centered">${recordTypeHTML}</td>
         <td>
-          <a href="${recordURL}" title="Open Record" target="_blank">${logEntry.displayRecordId}</a>
+          <a href="${recordUrl}" title="Open Record" target="_blank">${logEntry.displayRecordId}</a>
         </td>
         <td>${logEntry.recordDescription}</td>
         <td>

@@ -9,7 +9,7 @@ export interface Sunrise {
   ) => void
 
   leafletConstants: {
-    tileLayerURL: string
+    tileLayerUrl: string
 
     defaultZoom: number
     maxZoom: number
@@ -55,27 +55,27 @@ export interface Sunrise {
     count: number
   ) => string
 
-  getBurialSiteURL: (
+  getBurialSiteUrl: (
     burialSiteId?: number | string,
     edit?: boolean,
     time?: boolean
   ) => string
-  getCemeteryURL: (
+  getCemeteryUrl: (
     cemeteryId?: number | string,
     edit?: boolean,
     time?: boolean
   ) => string
-  getContractURL: (
+  getContractUrl: (
     contractId?: number | string,
     edit?: boolean,
     time?: boolean
   ) => string
-  getFuneralHomeURL: (
+  getFuneralHomeUrl: (
     funeralHomeId?: number | string,
     edit?: boolean,
     time?: boolean
   ) => string
-  getWorkOrderURL: (
+  getWorkOrderUrl: (
     workOrderId?: number | string,
     edit?: boolean,
     time?: boolean

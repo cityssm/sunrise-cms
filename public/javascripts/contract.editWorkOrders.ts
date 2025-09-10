@@ -35,7 +35,7 @@ declare const exports: {
 
       okButton: {
         callbackFunction() {
-          globalThis.location.href = sunrise.getWorkOrderURL(workOrderId, true)
+          globalThis.location.href = sunrise.getWorkOrderUrl(workOrderId, true)
         },
         text: 'Yes, Open the Work Order'
       }

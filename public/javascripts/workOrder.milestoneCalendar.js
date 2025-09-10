@@ -73,7 +73,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         workOrderElement.dataset.workOrderId = String(workOrder.workOrderId);
         workOrderElement.dataset.isComplete =
             workOrder.workOrderCloseDate === null ? '0' : '1';
-        workOrderElement.href = sunrise.getWorkOrderURL(workOrder.workOrderId);
+        workOrderElement.href = sunrise.getWorkOrderUrl(workOrder.workOrderId);
         // eslint-disable-next-line no-unsanitized/property
         workOrderElement.innerHTML = `<div class="columns m-0 is-gapless is-mobile">
       <div class="column has-text-weight-semibold">

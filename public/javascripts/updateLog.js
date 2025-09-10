@@ -13,13 +13,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const exportButtonElement = document.querySelector('#button--exportUpdateLog');
     function getRecordSpecificElements(logEntry) {
         let recordTypeHTML = '';
-        let recordURL = '';
+        let recordUrl = '';
         switch (logEntry.recordType) {
             case 'burialSite': {
                 recordTypeHTML = `<span title="Burial Site">
           <i class="fa-solid fa-2x fa-map-pin"></i>
           </span>`;
-                recordURL = sunrise.getBurialSiteURL(logEntry.recordId);
+                recordUrl = sunrise.getBurialSiteUrl(logEntry.recordId);
                 break;
             }
             case 'burialSiteComment': {
@@ -29,21 +29,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <i class="fa-solid fa-comment" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
           </span>
           </span>`;
-                recordURL = sunrise.getBurialSiteURL(logEntry.recordId);
+                recordUrl = sunrise.getBurialSiteUrl(logEntry.recordId);
                 break;
             }
             case 'comments': {
                 recordTypeHTML = `<span title="Comment">
           <i class="fa-solid fa-2x fa-comments"></i>
           </span>`;
-                recordURL = '#';
+                recordUrl = '#';
                 break;
             }
             case 'contract': {
                 recordTypeHTML = `<span title="Contract">
           <i class="fa-solid fa-2x fa-file-contract"></i>
           </span>`;
-                recordURL = sunrise.getContractURL(logEntry.recordId);
+                recordUrl = sunrise.getContractUrl(logEntry.recordId);
                 break;
             }
             case 'contractComment': {
@@ -52,7 +52,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <i class="fa-solid fa-file-contract"></i>
             <i class="fa-solid fa-comment" data-fa-glow="10" data-fa-transform="shrink-6 down-5 right-4"></i>
           </span>`;
-                recordURL = sunrise.getContractURL(logEntry.recordId);
+                recordUrl = sunrise.getContractUrl(logEntry.recordId);
                 break;
             }
             case 'contractFee': {
@@ -62,21 +62,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <i class="fa-solid fa-dollar-sign" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
           </span>
           </span>`;
-                recordURL = sunrise.getContractURL(logEntry.recordId);
+                recordUrl = sunrise.getContractUrl(logEntry.recordId);
                 break;
             }
             case 'contractTransactions': {
                 recordTypeHTML = `<span title="Contract Transaction">
           <i class="fa-solid fa-2x fa-money-bill-1"></i>
           </span>`;
-                recordURL = sunrise.getContractURL(logEntry.recordId);
+                recordUrl = sunrise.getContractUrl(logEntry.recordId);
                 break;
             }
             case 'workOrder': {
                 recordTypeHTML = `<span title="Work Order">
             <i class="fa-solid fa-2x fa-hard-hat"></i>
           </span>`;
-                recordURL = sunrise.getWorkOrderURL(logEntry.recordId);
+                recordUrl = sunrise.getWorkOrderUrl(logEntry.recordId);
                 break;
             }
             case 'workOrderComment': {
@@ -86,7 +86,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             <i class="fa-solid fa-comment" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
           </span>
           </span>`;
-                recordURL = sunrise.getWorkOrderURL(logEntry.recordId);
+                recordUrl = sunrise.getWorkOrderUrl(logEntry.recordId);
                 break;
             }
             case 'workOrderMilestone': {
@@ -97,25 +97,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
             </span>
 
           </span>`;
-                recordURL = sunrise.getWorkOrderURL(logEntry.recordId);
+                recordUrl = sunrise.getWorkOrderUrl(logEntry.recordId);
                 break;
             }
             // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
             // no default
         }
-        return { recordTypeHTML, recordURL };
+        return { recordTypeHTML, recordUrl: recordUrl };
     }
     function renderUpdateLog(updateLog) {
         const tableBodyElement = updateLogTableElement.querySelector('tbody');
         for (const logEntry of updateLog) {
             const rowElement = document.createElement('tr');
-            const { recordTypeHTML, recordURL } = getRecordSpecificElements(logEntry);
+            const { recordTypeHTML, recordUrl } = getRecordSpecificElements(logEntry);
             const logEntryUpdateDate = new Date(logEntry.recordUpdate_timeMillis);
             const logEntryCreateDate = new Date(logEntry.recordCreate_timeMillis);
             // eslint-disable-next-line no-unsanitized/property
             rowElement.innerHTML = `<td class="has-text-centered">${recordTypeHTML}</td>
         <td>
-          <a href="${recordURL}" title="Open Record" target="_blank">${logEntry.displayRecordId}</a>
+          <a href="${recordUrl}" title="Open Record" target="_blank">${logEntry.displayRecordId}</a>
         </td>
         <td>${logEntry.recordDescription}</td>
         <td>

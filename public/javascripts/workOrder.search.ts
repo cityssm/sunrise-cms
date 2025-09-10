@@ -98,7 +98,7 @@ declare const exports: Record<string, unknown>
         'beforeend',
         `<tr class="avoid-page-break ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0 ? 'has-background-warning-light' : ''}">
           <td>
-            <a class="has-text-weight-bold" href="${sunrise.getWorkOrderURL(workOrder.workOrderId)}">
+            <a class="has-text-weight-bold" href="${sunrise.getWorkOrderUrl(workOrder.workOrderId)}">
               ${
                 workOrder.workOrderNumber?.trim() === ''
                   ? '(No Number)'

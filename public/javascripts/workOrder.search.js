@@ -56,7 +56,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // eslint-disable-next-line no-unsanitized/method
             resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr class="avoid-page-break ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0 ? 'has-background-warning-light' : ''}">
           <td>
-            <a class="has-text-weight-bold" href="${sunrise.getWorkOrderURL(workOrder.workOrderId)}">
+            <a class="has-text-weight-bold" href="${sunrise.getWorkOrderUrl(workOrder.workOrderId)}">
               ${workOrder.workOrderNumber?.trim() === ''
                 ? '(No Number)'
                 : cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}

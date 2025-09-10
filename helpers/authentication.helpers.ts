@@ -112,13 +112,13 @@ const recordUrl =
 
 const printUrl = /^\/print\/(?:pdf|screen)\/[\d/=?A-Za-z-]+$/
 
-export function getSafeRedirectURL(possibleRedirectURL = ''): string {
+export function getSafeRedirectUrl(possibleRedirectUrl = ''): string {
   const urlPrefix = getConfigProperty('reverseProxy.urlPrefix')
 
-  if (typeof possibleRedirectURL === 'string') {
-    const urlToCheck = possibleRedirectURL.startsWith(urlPrefix)
-      ? possibleRedirectURL.slice(urlPrefix.length)
-      : possibleRedirectURL
+  if (typeof possibleRedirectUrl === 'string') {
+    const urlToCheck = possibleRedirectUrl.startsWith(urlPrefix)
+      ? possibleRedirectUrl.slice(urlPrefix.length)
+      : possibleRedirectUrl
 
     const urlToCheckLowerCase = urlToCheck.toLowerCase()
 

@@ -6,13 +6,13 @@ const forbiddenJSON = {
     message: 'Forbidden',
     success: false
 };
-const forbiddenRedirectURL = `${urlPrefix}/dashboard/?error=accessDenied`;
+const forbiddenRedirectUrl = `${urlPrefix}/dashboard/?error=accessDenied`;
 export function adminGetHandler(request, response, next) {
     if (userIsAdmin(request)) {
         next();
         return;
     }
-    response.redirect(forbiddenRedirectURL);
+    response.redirect(forbiddenRedirectUrl);
 }
 export function adminPostHandler(request, response, next) {
     if (userIsAdmin(request)) {
@@ -34,7 +34,7 @@ export function updateCemeteriesGetHandler(request, response, next) {
         next();
         return;
     }
-    response.redirect(forbiddenRedirectURL);
+    response.redirect(forbiddenRedirectUrl);
 }
 export function updateCemeteriesPostHandler(request, response, next) {
     if (userCanUpdateCemeteries(request)) {
@@ -48,7 +48,7 @@ export function updateContractsGetHandler(request, response, next) {
         next();
         return;
     }
-    response.redirect(forbiddenRedirectURL);
+    response.redirect(forbiddenRedirectUrl);
 }
 export function updateContractsPostHandler(request, response, next) {
     if (userCanUpdateContracts(request)) {
@@ -62,7 +62,7 @@ export function updateWorkOrdersGetHandler(request, response, next) {
         next();
         return;
     }
-    response.redirect(forbiddenRedirectURL);
+    response.redirect(forbiddenRedirectUrl);
 }
 export function updateWorkOrdersPostHandler(request, response, next) {
     if (userCanUpdateWorkOrders(request)) {

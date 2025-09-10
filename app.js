@@ -14,7 +14,7 @@ import createError from 'http-errors';
 import FileStore from 'session-file-store';
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from './debug.config.js';
 import * as permissionHandlers from './handlers/permissions.js';
-import { getSafeRedirectURL } from './helpers/authentication.helpers.js';
+import { getSafeRedirectUrl } from './helpers/authentication.helpers.js';
 import { getCachedSettingValue } from './helpers/cache/settings.cache.js';
 import * as configFunctions from './helpers/config.helpers.js';
 import { useTestDatabases } from './helpers/database.helpers.js';
@@ -137,7 +137,7 @@ const sessionCheckHandler = (request, response, next) => {
         return;
     }
     response.clearCookie(sessionCookieName);
-    const redirectUrl = getSafeRedirectURL(request.originalUrl);
+    const redirectUrl = getSafeRedirectUrl(request.originalUrl);
     response.redirect(`${urlPrefix}/login?redirect=${encodeURIComponent(redirectUrl)}`);
 };
 /*

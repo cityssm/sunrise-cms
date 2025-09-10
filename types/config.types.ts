@@ -166,8 +166,8 @@ interface ConfigApplication {
   /** The base, public facing URL of the application, including the protocol (http or https), and any URL prefixes */
   applicationUrl?: string
 
-  backgroundURL?: string
-  logoURL?: string
+  backgroundUrl?: string
+  logoUrl?: string
 
   /** The maximum number of concurrent processes */
   maximumProcesses?: number

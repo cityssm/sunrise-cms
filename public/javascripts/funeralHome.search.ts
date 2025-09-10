@@ -84,7 +84,7 @@ declare const exports: Record<string, unknown>
         'beforeend',
         `<tr>
           <td>
-            <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeURL(funeralHome.funeralHomeId)}">
+            <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeUrl(funeralHome.funeralHomeId)}">
               ${cityssm.escapeHTML(
                 funeralHome.funeralHomeName === ''
                   ? '(No Name)'

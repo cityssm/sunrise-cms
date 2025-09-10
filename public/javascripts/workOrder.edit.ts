@@ -74,7 +74,7 @@ declare const exports: {
           clearUnsavedChanges()
 
           if (isCreate) {
-            globalThis.location.href = sunrise.getWorkOrderURL(
+            globalThis.location.href = sunrise.getWorkOrderUrl(
               responseJSON.workOrderId,
               true
             )
@@ -124,7 +124,7 @@ declare const exports: {
 
         if (responseJSON.success) {
           clearUnsavedChanges()
-          globalThis.location.href = sunrise.getWorkOrderURL(
+          globalThis.location.href = sunrise.getWorkOrderUrl(
             responseJSON.workOrderId
           )
         } else {

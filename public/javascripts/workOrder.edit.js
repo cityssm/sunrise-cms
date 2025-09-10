@@ -30,7 +30,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
-                    globalThis.location.href = sunrise.getWorkOrderURL(responseJSON.workOrderId, true);
+                    globalThis.location.href = sunrise.getWorkOrderUrl(responseJSON.workOrderId, true);
                 }
                 else {
                     bulmaJS.alert({
@@ -62,7 +62,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
-                globalThis.location.href = sunrise.getWorkOrderURL(responseJSON.workOrderId);
+                globalThis.location.href = sunrise.getWorkOrderUrl(responseJSON.workOrderId);
             }
             else {
                 bulmaJS.alert({

@@ -301,7 +301,7 @@ interface GPSPosition {
           <div class="card-content">
             <div class="content">
               <p class="title is-6">
-                <a href="${sunrise.getBurialSiteURL(site.burialSiteId)}" target="_blank">
+                <a href="${sunrise.getBurialSiteUrl(site.burialSiteId)}" target="_blank">
                   ${cityssm.escapeHTML(site.burialSiteName === '' ? 'Unnamed Site' : site.burialSiteName)}
                 </a>
               </p>

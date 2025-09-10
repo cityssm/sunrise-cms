@@ -78,7 +78,7 @@ declare const exports: Record<string, unknown> & {
   const coordinatePrecision = 8
 
   const leafletConstants = {
-    tileLayerURL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 
     defaultZoom: 15,
     maxZoom: 19,
@@ -111,7 +111,7 @@ declare const exports: Record<string, unknown> & {
 
         const map = new L.Map(mapContainerElement)
 
-        new L.TileLayer(sunrise.leafletConstants.tileLayerURL, {
+        new L.TileLayer(sunrise.leafletConstants.tileLayerUrl, {
           attribution: sunrise.leafletConstants.attribution,
           maxZoom: sunrise.leafletConstants.maxZoom
         }).addTo(map)
@@ -326,7 +326,7 @@ declare const exports: Record<string, unknown> & {
 
   const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
 
-  function getRecordURL(
+  function getRecordUrl(
     recordTypePlural:
       | 'burialSites'
       | 'cemeteries'
@@ -344,44 +344,44 @@ declare const exports: Record<string, unknown> & {
     )
   }
 
-  function getCemeteryURL(
+  function getCemeteryUrl(
     cemeteryId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('cemeteries', cemeteryId, edit, time)
+    return getRecordUrl('cemeteries', cemeteryId, edit, time)
   }
 
-  function getFuneralHomeURL(
+  function getFuneralHomeUrl(
     funeralHomeId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('funeralHomes', funeralHomeId, edit, time)
+    return getRecordUrl('funeralHomes', funeralHomeId, edit, time)
   }
 
-  function getBurialSiteURL(
+  function getBurialSiteUrl(
     burialSiteId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('burialSites', burialSiteId, edit, time)
+    return getRecordUrl('burialSites', burialSiteId, edit, time)
   }
 
-  function getContractURL(
+  function getContractUrl(
     contractId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('contracts', contractId, edit, time)
+    return getRecordUrl('contracts', contractId, edit, time)
   }
 
-  function getWorkOrderURL(
+  function getWorkOrderUrl(
     workOrderId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('workOrders', workOrderId, edit, time)
+    return getRecordUrl('workOrders', workOrderId, edit, time)
   }
 
   /*
@@ -432,11 +432,11 @@ declare const exports: Record<string, unknown> & {
     getMoveUpDownButtonFieldHTML,
     getSearchResultsPagerHTML,
 
-    getBurialSiteURL,
-    getCemeteryURL,
-    getContractURL,
-    getFuneralHomeURL,
-    getWorkOrderURL,
+    getBurialSiteUrl,
+    getCemeteryUrl,
+    getContractUrl,
+    getFuneralHomeUrl,
+    getWorkOrderUrl,
 
     initializeMinDateUpdate
   }

@@ -18,7 +18,7 @@ const forbiddenJSON = {
   success: false
 }
 
-const forbiddenRedirectURL = `${urlPrefix}/dashboard/?error=accessDenied`
+const forbiddenRedirectUrl = `${urlPrefix}/dashboard/?error=accessDenied`
 
 export function adminGetHandler(
   request: Request,
@@ -30,7 +30,7 @@ export function adminGetHandler(
     return
   }
 
-  response.redirect(forbiddenRedirectURL)
+  response.redirect(forbiddenRedirectUrl)
 }
 
 export function adminPostHandler(
@@ -68,7 +68,7 @@ export function updateCemeteriesGetHandler(
     return
   }
 
-  response.redirect(forbiddenRedirectURL)
+  response.redirect(forbiddenRedirectUrl)
 }
 
 export function updateCemeteriesPostHandler(
@@ -94,7 +94,7 @@ export function updateContractsGetHandler(
     return
   }
 
-  response.redirect(forbiddenRedirectURL)
+  response.redirect(forbiddenRedirectUrl)
 }
 
 export function updateContractsPostHandler(
@@ -120,7 +120,7 @@ export function updateWorkOrdersGetHandler(
     return
   }
 
-  response.redirect(forbiddenRedirectURL)
+  response.redirect(forbiddenRedirectUrl)
 }
 
 export function updateWorkOrdersPostHandler(

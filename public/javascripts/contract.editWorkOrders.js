@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             message: 'Would you like to open the work order now?',
             okButton: {
                 callbackFunction() {
-                    globalThis.location.href = sunrise.getWorkOrderURL(workOrderId, true);
+                    globalThis.location.href = sunrise.getWorkOrderUrl(workOrderId, true);
                 },
                 text: 'Yes, Open the Work Order'
             }

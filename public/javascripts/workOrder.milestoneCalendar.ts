@@ -115,7 +115,7 @@ declare const exports: Record<string, unknown>
     workOrderElement.dataset.isComplete =
       workOrder.workOrderCloseDate === null ? '0' : '1'
 
-    workOrderElement.href = sunrise.getWorkOrderURL(workOrder.workOrderId)
+    workOrderElement.href = sunrise.getWorkOrderUrl(workOrder.workOrderId)
 
     // eslint-disable-next-line no-unsanitized/property
     workOrderElement.innerHTML = `<div class="columns m-0 is-gapless is-mobile">

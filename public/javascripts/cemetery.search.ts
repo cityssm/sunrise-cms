@@ -112,7 +112,7 @@ declare const exports: Record<string, unknown>
         'beforeend',
         `<tr style="page-break-inside: avoid;">
           <td>
-            <a class="has-text-weight-bold" href="${sunrise.getCemeteryURL(cemetery.cemeteryId)}">
+            <a class="has-text-weight-bold" href="${sunrise.getCemeteryUrl(cemetery.cemeteryId)}">
               ${
                 cemetery.cemeteryName === ''
                   ? `(No Name) <span class="icon is-small has-text-danger">

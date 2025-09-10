@@ -28,7 +28,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
-                    globalThis.location.href = sunrise.getBurialSiteURL(responseJSON.burialSiteId, true, true);
+                    globalThis.location.href = sunrise.getBurialSiteUrl(responseJSON.burialSiteId, true, true);
                 }
                 else {
                     bulmaJS.alert({
@@ -63,7 +63,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     clearUnsavedChanges();
-                    globalThis.location.href = sunrise.getBurialSiteURL();
+                    globalThis.location.href = sunrise.getBurialSiteUrl();
                 }
                 else {
                     bulmaJS.alert({

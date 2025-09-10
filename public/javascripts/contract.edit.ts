@@ -75,7 +75,7 @@ declare const exports: {
           clearUnsavedChanges()
 
           if (isCreate || refreshAfterSave) {
-            globalThis.location.href = sunrise.getContractURL(
+            globalThis.location.href = sunrise.getContractUrl(
               responseJSON.contractId,
               true,
               true
@@ -121,7 +121,7 @@ declare const exports: {
         if (responseJSON.success) {
           clearUnsavedChanges()
 
-          globalThis.location.href = sunrise.getContractURL(
+          globalThis.location.href = sunrise.getContractUrl(
             responseJSON.contractId,
             true
           )
@@ -184,7 +184,7 @@ declare const exports: {
 
             if (responseJSON.success) {
               clearUnsavedChanges()
-              globalThis.location.href = sunrise.getContractURL()
+              globalThis.location.href = sunrise.getContractUrl()
             } else {
               bulmaJS.alert({
                 contextualColorName: 'danger',

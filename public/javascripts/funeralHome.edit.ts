@@ -51,7 +51,7 @@ declare const exports: Record<string, unknown>
           clearUnsavedChanges()
 
           if (isCreate) {
-            globalThis.location.href = sunrise.getFuneralHomeURL(
+            globalThis.location.href = sunrise.getFuneralHomeUrl(
               responseJSON.funeralHomeId,
               true
             )
@@ -100,7 +100,7 @@ declare const exports: Record<string, unknown>
             }
 
             if (responseJSON.success) {
-              globalThis.location.href = sunrise.getFuneralHomeURL()
+              globalThis.location.href = sunrise.getFuneralHomeUrl()
             } else {
               bulmaJS.alert({
                 contextualColorName: 'danger',

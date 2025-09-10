@@ -222,7 +222,7 @@ declare const exports: {
       rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
         ${contractIcon}
         </td><td>
-          <a class="has-text-weight-bold" href="${sunrise.getContractURL(contract.contractId)}">
+          <a class="has-text-weight-bold" href="${sunrise.getContractUrl(contract.contractId)}">
             ${cityssm.escapeHTML(contract.contractType)}
           </a><br />
           <span class="is-size-7">#${contract.contractId}</span>
@@ -523,7 +523,7 @@ declare const exports: {
 
       // eslint-disable-next-line no-unsanitized/property
       rowElement.innerHTML = `<td>
-          <a class="has-text-weight-bold" href="${sunrise.getBurialSiteURL(burialSite.burialSiteId)}">
+          <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
             ${cityssm.escapeHTML(burialSite.burialSiteName)}
           </a>
         </td><td>
