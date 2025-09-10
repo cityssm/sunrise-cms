@@ -668,7 +668,7 @@ type ResponseJSON =
 
       // eslint-disable-next-line no-unsanitized/property
       burialSiteTypeContainer.innerHTML = `<div class="panel-heading">
-        <div class="columns">
+        <div class="columns is-vcentered">
           <div class="column is-narrow">
             <button class="button is-small button--toggleBurialSiteTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
               <span class="icon">
