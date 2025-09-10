@@ -67,8 +67,8 @@ application: {
 
   application
 
-  backgroundURL?: string      // Shown on login
-  logoURL?: string
+  backgroundUrl?: string      // Shown on login
+  logoUrl?: string
 
   maximumProcesses?: number
 
@@ -89,7 +89,7 @@ session: {
   maxAgeMillis?: number
   secret?: string
 
-  doKeepAlive?: boolean
+  doKeepAlive?: boolean  // Whether or not to attempt to keep sessions active
 }
 ```
 
