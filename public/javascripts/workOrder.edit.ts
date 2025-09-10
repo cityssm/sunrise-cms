@@ -124,7 +124,9 @@ declare const exports: {
 
         if (responseJSON.success) {
           clearUnsavedChanges()
-          globalThis.location.href = sunrise.getWorkOrderURL(responseJSON.workOrderId)
+          globalThis.location.href = sunrise.getWorkOrderURL(
+            responseJSON.workOrderId
+          )
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
@@ -814,7 +816,7 @@ declare const exports: {
       }
 
       function doAddFormSubmit(submitEvent?: SubmitEvent): void {
-        if (submitEvent) {
+        if (submitEvent !== undefined) {
           submitEvent.preventDefault()
         }
 

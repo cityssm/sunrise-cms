@@ -55,5 +55,5 @@ Spin up your own instance of Sunrise CMS.
 [**config.js**](./configJs.md)<br />
 Customize Sunrise CMS to meet your needs.
 
-[**Regular Administrator Maintenance**](./regularAdminMaintenance.md)<br />
+[**Regular Administrative Maintenance**](./regularAdminMaintenance.md)<br />
 Tasks that should be regularly performed to keep Sunrise CMS running smoothly.

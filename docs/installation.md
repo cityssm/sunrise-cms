@@ -21,7 +21,7 @@ the application peaked at the following:
 - 1 GB of storage for application, dependencies, and data.
   More if you intend to store attachments.
 
-## Recommended Requirements
+### Recommended Requirements
 
 - Active Directory for authentication.
 
@@ -40,10 +40,16 @@ Node.js and npm are also available in most package managers.
     > sudo apt install nodejs
     > sudo apt install npm
 
-## Step 2: Install git and clone the repository
+## Step 2: Download Sunrise CMS
 
-_Alternatively, [releases are available on GitHub](https://github.com/cityssm/sunrise-cms/releases)._
-_Git is not required when using releases. If you are using releases, you can skip this step._
+### Download a release
+
+**For production environments, using releases is recommended.**
+[Releases are available on GitHub](https://github.com/cityssm/sunrise-cms/releases).
+
+### Download using git
+
+_Note that git downloads may contain incomplete features that are still under development._
 
 [Git](https://git-scm.com/) is the version control system that manages the
 code for Sunrise CMS.
@@ -113,3 +119,9 @@ the process of keeping the application running in a Windows environment
 by creating a service that can start with the hosting server.
 
     > windowsService-install
+
+## Step 5a: The application won't start!
+
+If the application won't start, it can be run with debug output using the following command.
+
+    > npm run dev:live

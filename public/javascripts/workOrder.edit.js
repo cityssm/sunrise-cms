@@ -484,7 +484,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
         }
         function doAddFormSubmit(submitEvent) {
-            if (submitEvent) {
+            if (submitEvent !== undefined) {
                 submitEvent.preventDefault();
             }
             const currentDateString = cityssm.dateToString(new Date());
