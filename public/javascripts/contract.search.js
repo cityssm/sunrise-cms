@@ -61,7 +61,65 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         return contactsHTML;
     }
-    // eslint-disable-next-line complexity
+    function buildContractRowElement(contract) {
+        const contractTimeHTML = getContractTimeHtml(contract);
+        const contactsHTML = getContactsHTML(contract);
+        const feeTotal = (contract.contractFees?.reduce((soFar, currentFee) => soFar +
+            ((currentFee.feeAmount ?? 0) + (currentFee.taxAmount ?? 0)) *
+                (currentFee.quantity ?? 0), 0) ?? 0).toFixed(2);
+        const transactionTotal = (contract.contractTransactions?.reduce((soFar, currentTransaction) => soFar + currentTransaction.transactionAmount, 0) ?? 0).toFixed(2);
+        let feeIconHTML = '';
+        if (feeTotal !== '0.00' || transactionTotal !== '0.00') {
+            feeIconHTML = `<span class="icon"
+          data-tooltip="Total Fees: $${feeTotal}"
+          aria-label="Total Fees: $${feeTotal}">
+          <i class="fa-solid fa-dollar-sign ${feeTotal === transactionTotal
+                ? 'has-text-success'
+                : 'has-text-danger'}"></i>
+          </span>`;
+        }
+        const burialSiteLinkClass = contract.burialSiteIsActive === 0 ? 'has-text-danger-dark' : '';
+        const contractRowElement = document.createElement('tr');
+        contractRowElement.className = 'avoid-page-break';
+        // eslint-disable-next-line no-unsanitized/property
+        contractRowElement.innerHTML = `<td class="has-width-1">
+        ${contractTimeHTML}
+      </td><td>
+        <a class="has-text-weight-bold"
+          href="${sunrise.getContractUrl(contract.contractId)}">
+          ${cityssm.escapeHTML(contract.contractType)}
+        </a><br />
+        <span class="is-size-7">#${contract.contractId}</span>
+      </td><td>
+        ${(contract.burialSiteId ?? -1) === -1
+            ? '<span class="has-text-grey">(No Burial Site)</span>'
+            : `<a class="has-tooltip-right ${burialSiteLinkClass}"
+                data-tooltip="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
+                href="${sunrise.getBurialSiteUrl(contract.burialSiteId ?? '')}">
+                  ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
+                </a>`}<br />
+        <span class="is-size-7">${cityssm.escapeHTML(contract.cemeteryName ?? '')}</span>
+      </td><td>
+        ${contract.contractStartDateString}
+      </td><td>
+        ${contract.contractEndDate === null &&
+            contract.contractEndDateString === undefined
+            ? '<span class="has-text-grey">(No End Date)</span>'
+            : contract.contractEndDateString}
+      </td><td>
+        <ul class="fa-ul ml-5">${contactsHTML}</ul>
+      </td><td>
+        ${feeIconHTML}
+      </td><td class="is-hidden-print">
+        ${contract.printEJS === undefined
+            ? ''
+            : `<a class="button is-small" data-tooltip="Print"
+                href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}" target="_blank">
+                <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
+                </a>`}
+      </td>`;
+        return contractRowElement;
+    }
     function renderContracts(rawResponseJSON) {
         const responseJSON = rawResponseJSON;
         if (responseJSON.contracts.length === 0) {
@@ -74,63 +132,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         const resultsTbodyElement = document.createElement('tbody');
         for (const contract of responseJSON.contracts) {
-            const contractTimeHTML = getContractTimeHtml(contract);
-            const contactsHTML = getContactsHTML(contract);
-            const feeTotal = (contract.contractFees?.reduce((soFar, currentFee) => soFar +
-                ((currentFee.feeAmount ?? 0) + (currentFee.taxAmount ?? 0)) *
-                    (currentFee.quantity ?? 0), 0) ?? 0).toFixed(2);
-            const transactionTotal = (contract.contractTransactions?.reduce((soFar, currentTransaction) => soFar + currentTransaction.transactionAmount, 0) ?? 0).toFixed(2);
-            let feeIconHTML = '';
-            if (feeTotal !== '0.00' || transactionTotal !== '0.00') {
-                feeIconHTML = `<span class="icon"
-          data-tooltip="Total Fees: $${feeTotal}"
-          aria-label="Total Fees: $${feeTotal}">
-          <i class="fa-solid fa-dollar-sign ${feeTotal === transactionTotal
-                    ? 'has-text-success'
-                    : 'has-text-danger'}"></i>
-        </span>`;
-            }
-            const burialSiteLinkClass = contract.burialSiteIsActive === 0 ? 'has-text-danger-dark' : '';
-            // eslint-disable-next-line no-unsanitized/method
-            resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr class="avoid-page-break">
-          <td class="has-width-1">
-            ${contractTimeHTML}
-          </td><td>
-            <a class="has-text-weight-bold"
-              href="${sunrise.getContractUrl(contract.contractId)}">
-              ${cityssm.escapeHTML(contract.contractType)}
-            </a><br />
-            <span class="is-size-7">#${contract.contractId}</span>
-          </td><td>
-            ${(contract.burialSiteId ?? -1) === -1
-                ? '<span class="has-text-grey">(No Burial Site)</span>'
-                : `<a class="has-tooltip-right ${burialSiteLinkClass}"
-                    data-tooltip="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
-                    href="${sunrise.getBurialSiteUrl(contract.burialSiteId ?? '')}">
-                      ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
-                    </a>`}<br />
-            <span class="is-size-7">${cityssm.escapeHTML(contract.cemeteryName ?? '')}</span>
-          </td><td>
-            ${contract.contractStartDateString}
-          </td><td>
-            ${contract.contractEndDate === null &&
-                contract.contractEndDateString === undefined
-                ? '<span class="has-text-grey">(No End Date)</span>'
-                : contract.contractEndDateString}
-          </td><td>
-            ${contactsHTML === ''
-                ? ''
-                : `<ul class="fa-ul ml-5">${contactsHTML}</ul>`}
-          </td><td>
-            ${feeIconHTML}
-          </td><td class="is-hidden-print">
-            ${contract.printEJS === undefined
-                ? ''
-                : `<a class="button is-small" data-tooltip="Print"
-                    href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}" target="_blank">
-                    <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
-                    </a>`}
-          </td></tr>`);
+            const contractRowElement = buildContractRowElement(contract);
+            resultsTbodyElement.append(contractRowElement);
         }
         searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
       <thead><tr>
