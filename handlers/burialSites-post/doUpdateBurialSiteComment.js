@@ -9,8 +9,8 @@ export default function handler(request, response) {
     let database;
     try {
         database = sqlite(sunriseDB);
-        const success = updateBurialSiteComment(request.body, request.session.user);
-        const burialSiteComments = getBurialSiteComments(request.body.burialSiteId);
+        const success = updateBurialSiteComment(request.body, request.session.user, database);
+        const burialSiteComments = getBurialSiteComments(request.body.burialSiteId, database);
         response.json({
             success,
             burialSiteComments

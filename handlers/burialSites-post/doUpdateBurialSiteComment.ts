@@ -28,10 +28,11 @@ export default function handler(
 
     const success = updateBurialSiteComment(
       request.body,
-      request.session.user as User
+      request.session.user as User,
+      database
     )
 
-    const burialSiteComments = getBurialSiteComments(request.body.burialSiteId)
+    const burialSiteComments = getBurialSiteComments(request.body.burialSiteId, database)
 
     response.json({
       success,

@@ -1,9 +1,14 @@
 import type { Request, Response } from 'express'
 
 import getBurialSiteDeceasedNames from '../../database/getBurialSiteDeceasedNames.js'
-import getBurialSites, { type GetBurialSitesFilters } from '../../database/getBurialSites.js'
+import getBurialSites, {
+  type GetBurialSitesFilters
+} from '../../database/getBurialSites.js'
 
-export default function handler(request: Request<unknown, unknown, GetBurialSitesFilters>, response: Response): void {
+export default function handler(
+  request: Request<unknown, unknown, GetBurialSitesFilters>,
+  response: Response
+): void {
   const filters = request.body
 
   // Cemetery is required
@@ -17,26 +22,27 @@ export default function handler(request: Request<unknown, unknown, GetBurialSite
   }
 
   // Get burial sites
-  const result = getBurialSites(
-    request.body,
-    {
-      limit: 500,
-      offset: 0,
+  const result = getBurialSites(request.body, {
+    limit: 500,
+    offset: 0,
 
-      includeContractCount: false
-    }
-  )
+    includeContractCount: false
+  })
 
   // Filter by coordinate status if specified
   const burialSites = result.burialSites
 
   // Get interment names for burial sites with active contracts
-  const burialSiteInterments = getBurialSiteDeceasedNames(burialSites.map(site => site.burialSiteId))
+  const burialSiteInterments = getBurialSiteDeceasedNames(
+    burialSites.map((site) => site.burialSiteId)
+  )
 
   // Add interment names to burial sites
-  const burialSitesWithDeceasedNames = burialSites.map(site => ({
+  const burialSitesWithDeceasedNames = burialSites.map((site) => ({
     ...site,
-    deceasedNames: burialSiteInterments.find(bi => bi.burialSiteId === site.burialSiteId)?.deceasedNames ?? []
+    deceasedNames:
+      burialSiteInterments.find((bi) => bi.burialSiteId === site.burialSiteId)
+        ?.deceasedNames ?? []
   }))
 
   response.json({

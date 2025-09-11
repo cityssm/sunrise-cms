@@ -8,8 +8,8 @@ export default async function handler(request, response) {
     const attachment = getContractAttachment(contractAttachmentId);
     if (attachment === undefined) {
         response.json({
-            success: false,
-            errorMessage: 'Attachment not found.'
+            errorMessage: 'Attachment not found.',
+            success: false
         });
         return;
     }
@@ -18,8 +18,8 @@ export default async function handler(request, response) {
     const contract = await getContract(contractId);
     if (contract === undefined) {
         response.json({
+            errorMessage: 'Contract not found.',
             success: false,
-            errorMessage: 'Contract not found.'
         });
         return;
     }
@@ -27,8 +27,8 @@ export default async function handler(request, response) {
         const success = deleteRecord('ContractAttachments', contractAttachmentId, request.session.user);
         if (!success) {
             response.json({
+                errorMessage: 'Failed to delete attachment.',
                 success: false,
-                errorMessage: 'Failed to delete attachment.'
             });
             return;
         }
@@ -40,8 +40,8 @@ export default async function handler(request, response) {
     }
     catch (error) {
         response.json({
+            errorMessage: error.message,
             success: false,
-            errorMessage: error.message
         });
     }
 }

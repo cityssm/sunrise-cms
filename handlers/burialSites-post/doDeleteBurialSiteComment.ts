@@ -31,7 +31,7 @@ export default function handler(
       database
     )
 
-    const burialSiteComments = getBurialSiteComments(request.body.burialSiteId)
+    const burialSiteComments = getBurialSiteComments(request.body.burialSiteId, database)
 
     response.json({
       success,

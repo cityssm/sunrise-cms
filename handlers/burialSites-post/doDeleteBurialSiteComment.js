@@ -10,7 +10,7 @@ export default function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = deleteRecord('BurialSiteComments', request.body.burialSiteCommentId, request.session.user, database);
-        const burialSiteComments = getBurialSiteComments(request.body.burialSiteId);
+        const burialSiteComments = getBurialSiteComments(request.body.burialSiteId, database);
         response.json({
             success,
             burialSiteComments

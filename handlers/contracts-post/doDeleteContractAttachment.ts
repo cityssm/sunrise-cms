@@ -22,8 +22,8 @@ export default async function handler(
   const attachment = getContractAttachment(contractAttachmentId)
   if (attachment === undefined) {
     response.json({
-      success: false,
-      errorMessage: 'Attachment not found.'
+      errorMessage: 'Attachment not found.',
+      success: false
     })
     return
   }
@@ -34,8 +34,8 @@ export default async function handler(
   const contract = await getContract(contractId)
   if (contract === undefined) {
     response.json({
+      errorMessage: 'Contract not found.',
       success: false,
-      errorMessage: 'Contract not found.'
     })
     return
   }
@@ -49,8 +49,8 @@ export default async function handler(
 
     if (!success) {
       response.json({
+        errorMessage: 'Failed to delete attachment.',
         success: false,
-        errorMessage: 'Failed to delete attachment.'
       })
       return
     }
@@ -59,12 +59,13 @@ export default async function handler(
 
     response.json({
       success: true,
+
       contractAttachments
     })
   } catch (error) {
     response.json({
+      errorMessage: (error as Error).message,
       success: false,
-      errorMessage: (error as Error).message
     })
   }
 }

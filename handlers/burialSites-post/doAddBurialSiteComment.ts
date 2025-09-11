@@ -22,9 +22,12 @@ export default function handler(
   try {
     database = sqlite(sunriseDB)
 
-    addBurialSiteComment(request.body, request.session.user as User)
+    addBurialSiteComment(request.body, request.session.user as User, database)
 
-    const burialSiteComments = getBurialSiteComments(request.body.burialSiteId)
+    const burialSiteComments = getBurialSiteComments(
+      request.body.burialSiteId,
+      database
+    )
 
     response.json({
       success: true,
