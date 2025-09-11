@@ -101,8 +101,7 @@ export async function importFromMasterCSV() {
                         contractEndDateString = preneedContractStartDateString;
                     }
                 }
-                if (preneedContractStartDateString === '' ||
-                    preneedContractStartDateString === '0000-00-00') {
+                if (preneedContractStartDateString === '0000-00-00') {
                     preneedContractStartDateString = '0001-01-01';
                 }
                 const purchaserPostalCode = `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim();
@@ -170,8 +169,7 @@ export async function importFromMasterCSV() {
                     masterRow.CM_DEATH_YR !== '0') {
                     deceasedContractStartDateString = formatDateString(masterRow.CM_DEATH_YR, masterRow.CM_DEATH_MON, masterRow.CM_DEATH_DAY);
                 }
-                if (deceasedContractStartDateString === '' ||
-                    deceasedContractStartDateString === '0000-00-00') {
+                if (deceasedContractStartDateString === '0000-00-00') {
                     deceasedContractStartDateString = '0001-01-01';
                 }
                 const deceasedContractEndDateString = burialSiteId

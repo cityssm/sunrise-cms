@@ -172,10 +172,7 @@ export async function importFromMasterCSV(): Promise<void> {
           }
         }
 
-        if (
-          preneedContractStartDateString === '' ||
-          preneedContractStartDateString === '0000-00-00'
-        ) {
+        if (preneedContractStartDateString === '0000-00-00') {
           preneedContractStartDateString = '0001-01-01'
         }
 
@@ -295,10 +292,7 @@ export async function importFromMasterCSV(): Promise<void> {
           )
         }
 
-        if (
-          deceasedContractStartDateString === '' ||
-          deceasedContractStartDateString === '0000-00-00'
-        ) {
+        if (deceasedContractStartDateString === '0000-00-00') {
           deceasedContractStartDateString = '0001-01-01'
         }
 
