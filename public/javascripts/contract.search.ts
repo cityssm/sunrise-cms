@@ -28,8 +28,10 @@ declare const exports: Record<string, unknown>
 
   function toggleFilterBlock(event: Event): void {
     event.preventDefault()
-    
+
     const target = event.currentTarget as HTMLElement
+
+    target.querySelector('.fa-caret-right')?.classList.toggle('fa-rotate-90')
 
     const nextElement = target.nextElementSibling as HTMLElement | null
 

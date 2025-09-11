@@ -133,13 +133,16 @@
             </div>
           </div>
         </div>
+        <%
+          const hideLocationFilters = (cemeteryId ?? '') === ''
+        %>
         <a class="panel-block has-background-light filter-block-toggle" data-cy="location-filters-toggle" href="#">
           <span class="panel-icon">
-            <i class="fa-solid fa-caret-down"></i>
+            <i class="fa-solid fa-caret-right <%= hideLocationFilters ? '' : 'fa-rotate-90' %>"></i>
           </span>
           Location Filters
         </a>
-        <div class="panel-block is-block <%= (cemeteryId ?? '') === '' ? 'is-hidden' : '' %>">
+        <div class="panel-block is-block <%= hideLocationFilters ? 'is-hidden' : '' %>">
           <div class="field">
             <label class="label" for="searchFilter--cemeteryId">Cemetery</label>
             <div class="control has-icons-left">
@@ -199,13 +202,16 @@
             </div>
           </div>
         </div>
+        <%
+          const hideContactFilters = (deceasedName ?? '') === ''
+        %>
         <a class="panel-block has-background-light filter-block-toggle" data-cy="contact-filters-toggle" href="#">
           <span class="panel-icon">
-            <i class="fa-solid fa-caret-down"></i>
+            <i class="fa-solid fa-caret-right <%= hideContactFilters ? '' : 'fa-rotate-90' %>"></i>
           </span>
           Contact Filters
         </a>
-        <div class="panel-block is-block <%= (deceasedName ?? '') === '' ? 'is-hidden' : '' %>">
+        <div class="panel-block is-block <%= hideContactFilters ? 'is-hidden' : '' %>">
           <div class="columns">
             <div class="column">
               <div class="field">
