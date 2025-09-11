@@ -5,7 +5,7 @@ import { exec } from 'node:child_process';
 import http from 'node:http';
 import { after, before, describe, it } from 'node:test';
 import { minutesToMillis } from '@cityssm/to-millis';
-import { app, shutdownAbuseCheck } from '../app.js';
+import { app, shutdownAbuseCheck } from '../app/app.js';
 import { portNumber } from './_globals.js';
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const cypressTimeoutMillis = minutesToMillis(15);

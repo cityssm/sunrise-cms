@@ -8,7 +8,7 @@ import { after, before, describe, it } from 'node:test'
 
 import { minutesToMillis } from '@cityssm/to-millis'
 
-import { app, shutdownAbuseCheck } from '../app.js'
+import { app, shutdownAbuseCheck } from '../app/app.js'
 
 import { portNumber } from './_globals.js'
 

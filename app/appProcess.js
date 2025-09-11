@@ -1,15 +1,10 @@
 import http from 'node:http';
 import Debug from 'debug';
 import exitHook, { gracefulExit } from 'exit-hook';
-import { app, shutdownAbuseCheck } from '../app.js';
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
-import { initializeApplication, isPrimaryProcess } from '../helpers/startup.helpers.js';
+import { app, shutdownAbuseCheck } from './app.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:wwwProcess:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`);
-if (isPrimaryProcess()) {
-    // INITIALIZE THE APPLICATION
-    await initializeApplication();
-}
 function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;
