@@ -16,6 +16,10 @@ declare const exports: Record<string, unknown>
     '#searchFilter--funeralHome'
   ) as HTMLInputElement
 
+  const hasUpcomingFuneralsFilterElement = document.querySelector(
+    '#searchFilter--hasUpcomingFunerals'
+  ) as HTMLInputElement
+
   const searchResultsContainerElement = document.querySelector(
     '#container--searchResults'
   ) as HTMLElement
@@ -61,6 +65,13 @@ declare const exports: Record<string, unknown>
       .split(' ')
 
     for (const funeralHome of funeralHomes) {
+      if (
+        hasUpcomingFuneralsFilterElement.checked &&
+        (funeralHome.upcomingFuneralCount ?? 0) === 0
+      ) {
+        continue
+      }
+
       const searchString =
         `${funeralHome.funeralHomeName} ${funeralHome.funeralHomeAddress1} ${funeralHome.funeralHomeAddress2}`.toLowerCase()
 
@@ -95,6 +106,8 @@ declare const exports: Record<string, unknown>
             ${buildFuneralHomeAddressHTML(funeralHome)}
           </td><td>
             ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
+          </td><td class="has-text-right">
+            ${funeralHome.upcomingFuneralCount ?? 0}
           </td>
           </tr>`
       )
@@ -116,6 +129,7 @@ declare const exports: Record<string, unknown>
         <th>Funeral Home</th>
         <th>Address</th>
         <th>Phone Number</th>
+        <th class="has-text-right">Upcoming Funerals</th>
         </tr></thead>`
 
       searchResultsTableElement.append(searchResultsTbodyElement)
@@ -125,6 +139,8 @@ declare const exports: Record<string, unknown>
   }
 
   searchFilterElement.addEventListener('keyup', renderResults)
+
+  hasUpcomingFuneralsFilterElement.addEventListener('change', renderResults)
 
   document
     .querySelector('#form--searchFilters')

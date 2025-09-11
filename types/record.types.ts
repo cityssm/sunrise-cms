@@ -397,6 +397,8 @@ export interface FuneralHome extends Record {
   funeralHomeProvince: string
 
   funeralHomePhoneNumber: string
+
+  upcomingFuneralCount?: number
 }
 
 export interface IntermentContainerType extends Record {

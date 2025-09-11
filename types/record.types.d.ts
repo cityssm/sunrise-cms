@@ -287,6 +287,7 @@ export interface FuneralHome extends Record {
     funeralHomePostalCode: string;
     funeralHomeProvince: string;
     funeralHomePhoneNumber: string;
+    upcomingFuneralCount?: number;
 }
 export interface IntermentContainerType extends Record {
     intermentContainerTypeId: number;

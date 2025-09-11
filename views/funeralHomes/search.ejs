@@ -55,14 +55,24 @@
 
     <div class="box">
       <form id="form--searchFilters">
-        <div class="field">
-          <div class="control has-icons-left">
-            <input class="input" id="searchFilter--funeralHome" type="text"
-              placeholder="Search funeral home name and address"
-              <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %> />
-            <span class="icon is-small is-left">
-              <i class="fa-solid fa-search"></i>
-            </span>
+        <div class="columns is-vcentered">
+          <div class="column">
+            <div class="field">
+              <div class="control has-icons-left">
+                <input class="input" id="searchFilter--funeralHome" type="text"
+                  placeholder="Search funeral home name and address"
+                  <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %> />
+                <span class="icon is-small is-left">
+                  <i class="fa-solid fa-search"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="column is-narrow">
+            <label class="checkbox">
+              <input id="searchFilter--hasUpcomingFunerals" type="checkbox" />
+              Only show funeral homes with upcoming funerals
+            </label>
           </div>
         </div>
       </form>

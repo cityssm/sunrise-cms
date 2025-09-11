@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const sunrise = exports.sunrise;
     const funeralHomes = exports.funeralHomes;
     const searchFilterElement = document.querySelector('#searchFilter--funeralHome');
+    const hasUpcomingFuneralsFilterElement = document.querySelector('#searchFilter--hasUpcomingFunerals');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     function buildFuneralHomeAddressHTML(funeralHome) {
         let addressHTML = '';
@@ -33,6 +34,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .toLowerCase()
             .split(' ');
         for (const funeralHome of funeralHomes) {
+            if (hasUpcomingFuneralsFilterElement.checked &&
+                (funeralHome.upcomingFuneralCount ?? 0) === 0) {
+                continue;
+            }
             const searchString = `${funeralHome.funeralHomeName} ${funeralHome.funeralHomeAddress1} ${funeralHome.funeralHomeAddress2}`.toLowerCase();
             let showRecord = true;
             for (const filterStringPiece of filterStringSplit) {
@@ -57,6 +62,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${buildFuneralHomeAddressHTML(funeralHome)}
           </td><td>
             ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
+          </td><td class="has-text-right">
+            ${funeralHome.upcomingFuneralCount ?? 0}
           </td>
           </tr>`);
         }
@@ -74,12 +81,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
         <th>Funeral Home</th>
         <th>Address</th>
         <th>Phone Number</th>
+        <th class="has-text-right">Upcoming Funerals</th>
         </tr></thead>`;
             searchResultsTableElement.append(searchResultsTbodyElement);
             searchResultsContainerElement.append(searchResultsTableElement);
         }
     }
     searchFilterElement.addEventListener('keyup', renderResults);
+    hasUpcomingFuneralsFilterElement.addEventListener('change', renderResults);
     document
         .querySelector('#form--searchFilters')
         ?.addEventListener('submit', (formEvent) => {
