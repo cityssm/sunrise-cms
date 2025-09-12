@@ -23,7 +23,7 @@
     </nav>
 
     <h1 class="title is-1">
-      Outlook Integration
+      iCalendar Integration
     </h1>
 
     <div class="panel" id="panel--icsFilters">
@@ -32,7 +32,8 @@
         <div class="message is-info">
           <p class="message-body">
             Recent milestones can be exported in the iCalendar format.
-            They can then imported into Outlook as Internet calendars that can be regularly refreshed.
+            They can then imported into tools like Microsoft Outlook, Google Calendar, and Apple Calendar
+            as Internet calendars that can be regularly refreshed.
           </p>
         </div>
         <div class="columns">
@@ -91,6 +92,6 @@
 
 <%- include('../_footerA'); -%>
 
-<script src="<%= urlPrefix %>/javascripts/workOrder.outlook.js"></script>
+<script src="<%= urlPrefix %>/javascripts/workOrder.ical.js"></script>
 
 <%- include('../_footerB'); -%>

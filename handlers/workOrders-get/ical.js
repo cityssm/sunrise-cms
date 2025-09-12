@@ -5,8 +5,8 @@ export default function handler(request, response) {
     const workOrderTypes = getCachedWorkOrderTypes();
     const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes();
     const applicationUrl = getApplicationUrl(request);
-    response.render('workOrders/outlook', {
-        headTitle: 'Work Order Outlook Integration',
+    response.render('workOrders/ical', {
+        headTitle: 'Work Order iCalendar Integration',
         workOrderMilestoneTypes,
         workOrderTypes,
         applicationUrl

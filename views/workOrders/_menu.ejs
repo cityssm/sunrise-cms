@@ -45,24 +45,24 @@
   </h2>
   <ul class="menu-list">
     <li>
+      <a class="<%= (headTitle.endsWith("iCalendar Integration") ? "is-active" : "") %>"
+        href="<%= urlPrefix %>/workOrders/ical"
+        title="iCalendar Integration">
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-envelope-open-text"></i></span>
+          </div>
+          <div class="column is-hidden-touch">iCalendar Integration</div>
+        </div>
+      </a>
+    </li>
+    <li>
       <a href="<%= urlPrefix %>/reports/?tab=workOrders" title="Work Order Reports">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-file"></i></span>
           </div>
           <div class="column is-hidden-touch">Work Order Reports</div>
-        </div>
-      </a>
-    </li>
-    <li>
-      <a class="<%= (headTitle.endsWith("Outlook Integration") ? "is-active" : "") %>"
-        href="<%= urlPrefix %>/workOrders/outlook"
-        title="Outlook Integration">
-        <div class="columns is-mobile is-1">
-          <div class="column is-narrow">
-            <span class="icon"><i class="fa-solid fa-envelope-open-text"></i></span>
-          </div>
-          <div class="column is-hidden-touch">Outlook Integration</div>
         </div>
       </a>
     </li>

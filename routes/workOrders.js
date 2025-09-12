@@ -2,9 +2,9 @@ import { Router } from 'express';
 import { updateWorkOrdersGetHandler, updateWorkOrdersPostHandler } from '../handlers/permissions.js';
 import handler_byWorkOrderNumber from '../handlers/workOrders-get/byWorkOrderNumber.js';
 import handler_edit from '../handlers/workOrders-get/edit.js';
+import handler_ical from '../handlers/workOrders-get/ical.js';
 import handler_milestoneCalendar from '../handlers/workOrders-get/milestoneCalendar.js';
 import handler_new from '../handlers/workOrders-get/new.js';
-import handler_outlook from '../handlers/workOrders-get/outlook.js';
 import handler_search from '../handlers/workOrders-get/search.js';
 import handler_view from '../handlers/workOrders-get/view.js';
 import handler_workday from '../handlers/workOrders-get/workday.js';
@@ -42,8 +42,8 @@ router
 router
     .get('/milestoneCalendar', handler_milestoneCalendar)
     .post('/doGetWorkOrderMilestones', handler_doGetWorkOrderMilestones);
-// Outlook Integration
-router.get('/outlook', handler_outlook);
+// iCalendar Integration
+router.get('/ical', handler_ical);
 // Workday
 router
     .get('/workday', handler_workday)
