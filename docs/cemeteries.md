@@ -15,9 +15,9 @@ Can be prepended to burial site names.
 
 **Parent Cemetery**<br />
 Helpful when breaking larger cemeteries into smaller sections.
-You may, for example, have a cemetery that includes in-ground graves, a mausoleum, and an urn garden.
-For organization, you may create individual child cemeteries in Sunrise CMS for each section,
-then relate them together using one parent cemetery.
+You may, for example, have a cemetery that includes in-ground graves, a mausoleum,
+and an urn garden. For organization, you may create individual child cemeteries
+in Sunrise CMS for each section, then relate them together using one parent cemetery.
 
 **Geographic Location**<br />
 Used to show the cemetery location on a map.

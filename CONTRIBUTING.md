@@ -16,7 +16,8 @@ Being a very small team, contributions are greatly appreciated. How can you cont
 
 ## Please Read the Code of Conduct
 
-The [Code of Conduct](CODE_OF_CONDUCT.md) document describes how we should act when working together.
+The [Code of Conduct](CODE_OF_CONDUCT.md) document describes how we should act
+when working together.
 Be nice! :smile:
 
 ## How to report a bug or suggest an enhancement

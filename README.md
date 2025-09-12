@@ -11,14 +11,15 @@
 
 🚧 **In development** 🚧
 
-**A completely free, open source, web-based application to assist cemetery managers with managing their cemetery records.**
+**A completely free, open source, web-based application**
+**to assist cemetery managers with managing their cemetery records.**
 
 ![Burial Site View](./docs/images/burialSite-view.png)
 
 This is a major refactoring of the now archived
 [Lot Occupancy System](https://github.com/cityssm/lot-occupancy-system),
-originally built with multiple focuses in mind. This fork completely reworks the project
-to focus exclusively on cemetery management.
+originally built with multiple focuses in mind. This fork completely
+reworks the project to focus exclusively on cemetery management.
 
 [**User Documentation (In the Works)**](./docs/README.md)
 
@@ -27,8 +28,9 @@ to focus exclusively on cemetery management.
 ### ✔️ Cemetery Maps are NOT Required
 
 Many cemetery applications rely on maps to drill down into burial sites.
-In Sunrise CMS, maps are completely optional, greatly reducing the effort needed to get started,
-and reducing the maintenance work when new blocks of burial sites are introduced.
+In Sunrise CMS, maps are completely optional, greatly reducing the effort needed
+to get started, and reducing the maintenance work when new blocks of
+burial sites are introduced.
 
 ### ✔️ The System Requirements are Very Low
 
@@ -57,9 +59,12 @@ There's no cost to use it.
 - 🛡️ [Security Policy](SECURITY.md)
 - 📃 [MIT Licence](LICENSE.md)
 
-Although the system is quite niche, it's being released in an open source environment in hopes to pool developer resources from other municipalities looking to move away from older, legacy systems.
+Although the system is quite niche, it's being released in an open source
+environment in hopes to pool developer resources from other municipalities
+looking to move away from older, legacy systems.
 
-It is being shared to start the dialog among other municipalities and present an option to those who may be looking to refresh their own cemetery systems.
+It is being shared to start the dialog among other municipalities and present
+an option to those who may be looking to refresh their own cemetery systems.
 
 ## Related Sunrise CMS Projects
 

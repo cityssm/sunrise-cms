@@ -20,8 +20,8 @@ Work orders can be related to either [contracts](./contracts.md) or burial sites
   like an interment, the work order should be linked to the associated contract.
 
 - If the work order is not directly associated with a contract,
-  like with ground maintenance, the work order could be associated with the burial sites
-  in the area of where the work should occur.
+  like with ground maintenance, the work order could be associated with
+  the burial sites in the area of where the work should occur.
 
 ### Milestones
 

@@ -28,7 +28,8 @@ the application peaked at the following:
 ## Step 1: Install Node.js 20 or better and npm
 
 [Node.js](https://nodejs.org) is a JavaScript runtime environment.
-Sunrise CMS is built to run on Node.js, and is regularly tested on the currently supported LTS versions.
+Sunrise CMS is built to run on Node.js, and is regularly tested
+on the currently supported LTS versions.
 
 [npm](https://www.npmjs.com/) is a package manager that contains all the prerequisites
 for Sunrise CMS.
@@ -60,7 +61,8 @@ or from most package managers.
 
     > sudo apt install git
 
-Once git is ready, open a command line, and navigate to the folder where the application will reside.
+Once git is ready, open a command line, and navigate to the folder where
+the application will reside.
 
     > git clone https://github.com/cityssm/sunrise-cms
 
@@ -69,15 +71,18 @@ Once git is ready, open a command line, and navigate to the folder where the app
     > cd sunrise-cms
     > npm install
 
-In a perfect world, all of the dependencies will install successfully. There are however a couple dependencies
-that are occasionally difficult, depending on the platform you are installing on.
-If an error occurs during the install, the first recommendation is to delete the `node_modules` folder,
-and rerun `npm install`. If errors persist, here are the more common ones and their fixes.
+In a perfect world, all of the dependencies will install successfully.
+There are however a couple dependencies that are occasionally difficult,
+depending on the platform you are installing on.
+If an error occurs during the install, the first recommendation is
+to delete the `node_modules` folder, and rerun `npm install`.
+If errors persist, here are the more common ones and their fixes.
 
 ### Error Installing `better-sqlite3`
 
-On some platforms, the `better-sqlite3` needs to compile itself. When that is the case,
-it uses Python to do so. If compilation is necessary and Python is unavailable, the installation will fail.
+On some platforms, the `better-sqlite3` needs to compile itself.
+When that is the case, it uses Python to do so. If compilation is necessary
+and Python is unavailable, the installation will fail.
 
 See the
 [common troubleshooting steps for `better-sqlite3`](https://github.com/WiseLibs/better-sqlite3/blob/master/docs/troubleshooting.md)
@@ -86,9 +91,11 @@ for more troubleshooting steps.
 ### Error Installing `puppeteer`
 
 Puppeteer is used by Sunrise CMS to generate PDFs.
-Installation may fail on platforms that no longer support the current versions of Google Chrome and Mozilla Firefox.
-Installation may also fail if the platform is missing certain system packages that are required by
-the web browsers. This issue is more common on Linux platforms that lack a desktop environment.
+Installation may fail on platforms that no longer support the current versions
+of Google Chrome and Mozilla Firefox.
+Installation may also fail if the platform is missing certain system packages
+that are required by the web browsers. This issue is more common on
+Linux platforms that lack a desktop environment.
 
 See the [system requirements for Puppeteer](https://pptr.dev/guides/system-requirements)
 for Puppeteer's requirements, and the requirements of the browsers it uses.
@@ -104,15 +111,15 @@ your configuration.
 
 ## Step 5: Start the application
 
-**Start Using npm**
+### Start Using npm
 
     > npm start
 
-**Start Using node**
+### Start Using node
 
-    > node ./bin/www.js
+    > node ./index.js
 
-**Start as a Windows Service**
+### Start as a Windows Service
 
 The included `windowsService-install.bat` script simplifies
 the process of keeping the application running in a Windows environment
@@ -122,6 +129,7 @@ by creating a service that can start with the hosting server.
 
 ## Step 5a: The application won't start!
 
-If the application won't start, it can be run with debug output using the following command.
+If the application won't start, it can be run with debug output using the
+following command.
 
     > npm run dev:live

@@ -23,7 +23,8 @@ Note that shortcuts can be disabled in [`config.js`](./configJs.md) by setting
 
 ## Main Section Shortcuts
 
-From any page in the application, you can use a section shortcut to jump to another section's search page.
+From any page in the application, you can use a section shortcut to jump to
+another section's search page.
 
 | Section      | Shortcut Key |
 | ------------ | ------------ |
@@ -38,7 +39,8 @@ From any page in the application, you can use a section shortcut to jump to anot
 
 ## Search Page Shortcuts
 
-From any search page in the application, you can quickly jump to the search filters or open the corresponding "new record" form.
+From any search page in the application, you can quickly jump to the
+search filters or open the corresponding "new record" form.
 
 | Description                      | Shortcut Key |
 | -------------------------------- | ------------ |
@@ -47,7 +49,8 @@ From any search page in the application, you can quickly jump to the search filt
 
 ## Record View Page Shortcuts
 
-From any view page with a toolbar at the bottom of the screen, you can use many of the toolbar options.
+From any view page with a toolbar at the bottom of the screen,
+you can use many of the toolbar options.
 
 | Description     | Shortcut Key |
 | --------------- | ------------ |
