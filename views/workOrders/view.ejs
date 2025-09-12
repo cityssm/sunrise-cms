@@ -346,17 +346,17 @@
               <div class="dropdown is-right has-text-weight-normal">
                 <div class="dropdown-trigger">
                   <button class="button is-small has-tooltip-left" type="button" data-tooltip="Milestone Options" aria-label="Options">
-                    <i class="fa-solid fa-ellipsis-v"></i>
+                    <span class="icon"><i class="fa-solid fa-ellipsis-v"></i></span>
                   </button>
                 </div>
                 <div class="dropdown-menu">
                   <div class="dropdown-content">
                     <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userSettings.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
-                      <span class="icon is-small"><i class="fa-solid fa-calendar"></i></span>
+                      <span class="icon"><i class="fa-solid fa-calendar"></i></span>
                       <span>Download iCalendar</span>
                     </a>
                     <a class="dropdown-item" href="<%= urlPrefix %>/reports/workOrderMilestones-byWorkOrderId/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" download>
-                      <span class="icon is-small"><i class="fa-solid fa-download"></i></span>
+                      <span class="icon"><i class="fa-solid fa-download"></i></span>
                       <span>Export as CSV</span>
                     </a>
                   </div>

@@ -18,7 +18,7 @@ The most popular combinations are below.
 Combinations for other operating systems and browsers can be found in the
 [mdn documentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/accesskey).
 
-Note that shortcuts can be disabled in `config.js` by setting
+Note that shortcuts can be disabled in [`config.js`](./configJs.md) by setting
 `"settings.enableKeyboardShortcuts" = false`
 
 ## Main Section Shortcuts
