@@ -9,16 +9,16 @@ while remaining open and budget conscious.
 
 Being a very small team, contributions are greatly appreciated. How can you contribute?
 
-- **Promote this project!**
-- Documentation and tutorials
-- Submit bug reports (or fix them!)
-- Request new features (or build them!)
+- 📣 **Promote this project!**
+- 🆘 Documentation and tutorials
+- 🐞 Submit bug reports (or fix them!)
+- ✨ Request new features (or build them!)
 
 ## Please Read the Code of Conduct
 
 The [Code of Conduct](CODE_OF_CONDUCT.md) document describes how we should act
 when working together.
-Be nice! :smile:
+Be nice! 😉
 
 ## How to report a bug or suggest an enhancement
 
@@ -31,4 +31,4 @@ open an issue and use the closest template.
 ## Thanks Again
 
 We are a very small team with big aspirations and limited resources.
-Thank you for helping with this project in any way you can!
+Thank you for helping with this project in any way you can! 🙌
