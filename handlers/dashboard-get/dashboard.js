@@ -6,7 +6,7 @@ export default function handler(request, response) {
     else if (error === 'printConfigNotFound') {
         error = 'Print configuration not found.';
     }
-    response.render('dashboard', {
+    response.render('dashboard/dashboard', {
         headTitle: 'Dashboard',
         error
     });

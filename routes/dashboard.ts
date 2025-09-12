@@ -5,6 +5,7 @@ import handler_exportRecordUpdateLog from '../handlers/dashboard-get/exportRecor
 import handler_updateLog from '../handlers/dashboard-get/updateLog.js'
 import handler_userSettings from '../handlers/dashboard-get/userSettings.js'
 import handler_doGetRecordUpdateLog from '../handlers/dashboard-post/doGetRecordUpdateLog.js'
+import handler_doResetApiKey from '../handlers/dashboard-post/doResetApiKey.js'
 import handler_doUpdateConsignoCloudUserSettings from '../handlers/dashboard-post/doUpdateConsignoCloudUserSettings.js'
 
 export const router = Router()
@@ -19,6 +20,7 @@ router
     '/doUpdateConsignoCloudUserSettings',
     handler_doUpdateConsignoCloudUserSettings
   )
+  .post('/doResetApiKey', handler_doResetApiKey)
 
 // Update Log
 

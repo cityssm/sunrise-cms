@@ -1,4 +1,6 @@
 import sqlite from 'better-sqlite3';
+import { generateApiKey } from '../helpers/api.helpers.js';
+import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function updateUserSetting(userName, settingKey, settingValue, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
@@ -19,4 +21,13 @@ export default function updateUserSetting(userName, settingKey, settingValue, co
         database.close();
     }
     return result.changes > 0;
+}
+export function updateApiKeyUserSetting(userName, connectedDatabase) {
+    if (userName === '') {
+        throw new Error('Cannot update API key for empty user name');
+    }
+    const apiKey = generateApiKey(userName);
+    updateUserSetting(userName, 'apiKey', apiKey, connectedDatabase);
+    clearCacheByTableName('UserSettings');
+    return apiKey;
 }

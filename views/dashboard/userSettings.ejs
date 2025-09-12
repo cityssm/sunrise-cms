@@ -1,0 +1,217 @@
+<%- include('../_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li class="is-active">
+      <a href="#" aria-current="page">
+        <span class="icon is-small"><i class="fa-solid fa-cog"></i></span>
+        <span>User Settings</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<h1 class="title is-1">
+  User Settings
+</h1>
+
+<div class="columns">
+  <div class="column">
+    <% const hasConsignoEnabled = configFunctions.getConfigProperty('integrations.consignoCloud.integrationIsEnabled') %>
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="has-text-weight-bold">ConsignO Cloud</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <% if (hasConsignoEnabled) { %>
+                <span class="tag is-success">
+                  <span class="icon">
+                    <i class="fa-solid fa-check"></i>
+                  </span>
+                  <span>Enabled</span>
+                </span>
+              <% } else { %>
+                <span class="tag is-danger">
+                  <span class="icon">
+                    <i class="fa-solid fa-times"></i>
+                  </span>
+                  <span>Disabled</span>
+                </span>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-block">
+        <div class="message is-info is-small">
+          <div class="message-body">
+            <p>
+              The
+              <a href="https://consignocloud.com/" target="_blank" rel="noopener noreferrer">ConsignO Cloud</a>
+              integration allows you to send contracts to purchasers for electronic signatures.
+            </p>
+          </div>
+        </div>
+        <% if (hasConsignoEnabled) { %>
+          <div class="content">
+            <form id="userSettingsForm--consignoCloud">
+              <div class="columns is-desktop">
+                <div class="column">
+                  <div class="field">
+                    <label class="label" for="consignoCloud--userName">ConsignO Cloud User Name</label>
+                    <div class="control">
+                      <input class="input" type="email" id="consignoCloud--userName"
+                        name="userName"
+                        value="<%= user.userSettings['consignoCloud.userName'] ?? '' %>" autocomplete="off" />
+                    </div>
+                    <p class="help">
+                      This is the email address you use to log in to ConsignO Cloud.
+                    </p>
+                  </div>
+                </div>
+                <div class="column">
+                  <div class="field">
+                    <label class="label" for="consignoCloud--thirdPartyApplicationPassword">Third-Party Application Password</label>
+                    <div class="control">
+                      <input class="input" type="text" id="consignoCloud--thirdPartyApplicationPassword"
+                        name="thirdPartyApplicationPassword"
+                        value=""
+                        placeholder="(Unchanged)"
+                        autocomplete="off" />
+                    </div>
+                    <p class="help">
+                      This is not the same as your ConsignO Cloud password.
+                      It is a separate password that you can generate in your ConsignO Cloud preferences.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <p class="has-text-right">
+                <button class="button is-primary" type="submit">
+                  <span class="icon is-small">
+                    <i class="fa-solid fa-save"></i>
+                  </span>
+                  <span>Save ConsignO Cloud Settings</span>
+                </button>
+              </p>
+            </form>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <% const hasNtfyEnabled = configFunctions.getConfigProperty('integrations.ntfy.integrationIsEnabled') %>
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="has-text-weight-bold">NTFY Notifications</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <% if (hasNtfyEnabled) { %>
+                <span class="tag is-success">
+                  <span class="icon">
+                    <i class="fa-solid fa-check"></i>
+                  </span>
+                  <span>Enabled</span>
+                </span>
+              <% } else { %>
+                <span class="tag is-danger">
+                  <span class="icon">
+                    <i class="fa-solid fa-times"></i>
+                  </span>
+                  <span>Disabled</span>
+                </span>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-block">
+        <div class="message is-info is-small">
+          <div class="message-body">
+            <p>
+              The <a href="https://ntfy.sh/" target="_blank" rel="noopener noreferrer">NTFY</a>
+              integration allows you to receive notifications about important events in the application.
+            </p>
+          </div>
+        </div>
+        <% if (hasNtfyEnabled) { %>
+          <div class="content">
+            <p class="has-text-centered">
+              <strong>Server</strong><br />
+              <%= configFunctions.getConfigProperty("integrations.ntfy.server") || "Default Server" %>
+            </p>
+
+            <table class="table is-fullwidth is-striped is-hoverable">
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>NTFY Topic</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (const [eventName, ntfyTopic] of Object.entries(configFunctions.getConfigProperty("integrations.ntfy.topics"))) { %>
+                  <%
+                    if ((ntfyTopic ?? '') === '') {
+                      continue
+                    } 
+                  %>
+                  <tr>
+                    <td><%= eventName %></td>
+                    <td>
+                      <%= ntfyTopic %>
+                    </td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2 class="panel-heading">API Key Reset</h2>
+  <div class="panel-block is-block">
+    <div class="message is-warning">
+      <div class="message-body">
+        <p>
+          API keys are used to authenticate API requests without using your username and password.
+          If you have set up your calendar application to automatically refresh milestone updates,
+          you are using your API key.
+        </p>
+        <p>
+          If you believe your API key has been compromised, you can reset it here.
+          This will invalidate your current API key and generate a new one.
+        </p>
+      </div>
+    </div>
+    <div class="has-text-right">
+      <button id="button--resetApiKey" class="button is-warning" type="button">
+        <span class="icon is-small">
+          <i class="fa-solid fa-rotate"></i>
+        </span>
+        <span>Reset API Key</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/userSettings.js"></script>
+
+<%- include('../_footerB'); -%>

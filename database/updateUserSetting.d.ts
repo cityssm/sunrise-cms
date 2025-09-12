@@ -5,3 +5,4 @@ export interface UpdateSettingForm {
     settingValue: string;
 }
 export default function updateUserSetting(userName: string, settingKey: UserSettingKey, settingValue: string, connectedDatabase?: sqlite.Database): boolean;
+export declare function updateApiKeyUserSetting(userName: string, connectedDatabase?: sqlite.Database): string;

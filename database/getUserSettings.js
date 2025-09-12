@@ -1,8 +1,6 @@
 import sqlite from 'better-sqlite3';
-import { generateApiKey } from '../helpers/api.helpers.js';
-import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import updateUserSetting from './updateUserSetting.js';
+import { updateApiKeyUserSetting } from './updateUserSetting.js';
 export default function getUserSettings(userName, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const databaseSettings = database
@@ -17,9 +15,7 @@ export default function getUserSettings(userName, connectedDatabase) {
         settings[settingKey] = databaseSetting.settingValue;
     }
     if ((settings.apiKey ?? '') === '') {
-        settings.apiKey = generateApiKey(userName);
-        updateUserSetting(userName, 'apiKey', settings.apiKey, database);
-        clearCacheByTableName('UserSettings');
+        settings.apiKey = updateApiKeyUserSetting(userName, database);
     }
     if (connectedDatabase === undefined) {
         database.close();

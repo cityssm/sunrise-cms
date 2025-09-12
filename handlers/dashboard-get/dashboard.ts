@@ -12,7 +12,7 @@ export default function handler(
     error = 'Print configuration not found.'
   }
 
-  response.render('dashboard', {
+  response.render('dashboard/dashboard', {
     headTitle: 'Dashboard',
 
     error
