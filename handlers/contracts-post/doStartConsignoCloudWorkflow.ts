@@ -21,8 +21,8 @@ export default async function handler(
     })
   } catch (error) {
     response.json({
+      errorMessage: (error as Error).message,
       success: false,
-      errorMessage: (error as Error).message
     })
   }
 }

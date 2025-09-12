@@ -10,8 +10,8 @@ export default async function handler(request, response) {
     }
     catch (error) {
         response.json({
+            errorMessage: error.message,
             success: false,
-            errorMessage: error.message
         });
     }
 }
