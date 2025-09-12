@@ -27,40 +27,80 @@
       </div>
     <% } %>
 
-    <h1 class="title is-1">
-      Work Order Search
-    </h1>
+    <form id="form--searchFilters">
+      <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
 
-    <% if (user.userProperties.canUpdateWorkOrders) { %>
-      <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-        <a class="button is-circle is-primary has-tooltip-left"
-          data-tooltip="Create a New Work Order"
-          href="<%= urlPrefix %>/workOrders/new"
-          <%- enableKeyboardShortcuts ? ' accesskey="n" ' : '' %>>
-          <i class="fa-solid fa-plus"></i>
-          <span class="is-sr-only">Create a New Work Order</span>
-        </a>
+      <div class="columns is-vcentered is-mobile">
+        <div class="column">
+          <h1 class="title is-1">
+            Work Order Search
+          </h1>
+        </div>
+        <div class="column has-text-right is-narrow">
+          <div class="field has-addons">
+            <div class="control">
+              <label class="button is-small is-static has-text-grey-dark" for="searchFilter--limit">Results</label>
+            </div>
+            <div class="control">
+              <div class="select is-small is-fullwidth">
+                <select id="searchFilter--limit" name="limit" aria-label="Results per page">
+                  <option value="50" selected>50</option>
+                  <option value="100">100</option>
+                  <option value="250">250</option>
+                  <option value="500">500</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    <% } %>
 
-    <div class="box">
-      <form id="form--searchFilters">
-        <input id="searchFilter--limit" name="limit" type="hidden" value="50" />
-        <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
+      <% if (user.userProperties.canUpdateWorkOrders) { %>
+        <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+          <a class="button is-circle is-primary has-tooltip-left"
+            data-tooltip="Create a New Work Order"
+            href="<%= urlPrefix %>/workOrders/new"
+            <%- enableKeyboardShortcuts ? ' accesskey="n" ' : '' %>>
+            <i class="fa-solid fa-plus"></i>
+            <span class="is-sr-only">Create a New Work Order</span>
+          </a>
+        </div>
+      <% } %>
 
-        <div class="columns">
-          <% if (workOrderTypes.length > 1) { %>
+      <div class="panel">
+        <div class="panel-block is-block">
+          <div class="columns">
+            <% if (workOrderTypes.length > 1) { %>
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="searchFilter--workOrderTypeId">Work Order Type</label>
+                  <div class="control has-icons-left">
+                    <div class="select is-fullwidth">
+                      <select id="searchFilter--workOrderTypeId" name="workOrderTypeId"
+                        <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %>>
+                        <option value="">(All Work Order Types)</option>
+                        <% for (const workOrderType of workOrderTypes) { %>
+                          <option value="<%= workOrderType.workOrderTypeId %>"><%= workOrderType.workOrderType || "(No Name)" %></option>
+                        <% } %>
+                      </select>
+                    </div>
+                    <span class="icon is-small is-left">
+                      <i class="fa-solid fa-search"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <% } %>
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--workOrderTypeId">Work Order Type</label>
+                <label class="label" for="searchFilter--workOrderOpenStatus">Open Status</label>
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
-                    <select id="searchFilter--workOrderTypeId" name="workOrderTypeId"
-                      <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %>>
-                      <option value="">(All Work Order Types)</option>
-                      <% for (const workOrderType of workOrderTypes) { %>
-                        <option value="<%= workOrderType.workOrderTypeId %>"><%= workOrderType.workOrderType || "(No Name)" %></option>
-                      <% } %>
+                    <select id="searchFilter--workOrderOpenStatus" name="workOrderOpenStatus"
+                      <%- enableKeyboardShortcuts && workOrderTypes.length <= 1 ? ' accesskey="f" ' : '' %>>
+                      <option value="" <%= (workOrderOpenDateString ? " selected" : "") %>>(All Statuses)</option>
+                      <option value="open" <%= (workOrderOpenDateString ? "" : " selected") %>>Open</option>
+                      <option value="closed">Closed</option>
                     </select>
                   </div>
                   <span class="icon is-small is-left">
@@ -68,66 +108,54 @@
                   </span>
                 </div>
               </div>
-            </div>
-          <% } %>
-          <div class="column">
-            <div class="field">
-              <label class="label" for="searchFilter--workOrderOpenStatus">Open Status</label>
-              <div class="control has-icons-left">
-                <div class="select is-fullwidth">
-                  <select id="searchFilter--workOrderOpenStatus" name="workOrderOpenStatus"
-                    <%- enableKeyboardShortcuts && workOrderTypes.length <= 1 ? ' accesskey="f" ' : '' %>>
-                    <option value="" <%= (workOrderOpenDateString ? " selected" : "") %>>(All Statuses)</option>
-                    <option value="open" <%= (workOrderOpenDateString ? "" : " selected") %>>Open</option>
-                    <option value="closed">Closed</option>
-                  </select>
+            </div>  
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--workOrderOpenDateString"><%= settingFunctions.getSettingValue("aliases.workOrderOpenDate") %></label>
+                <div class="control is-expanded has-icons-left">
+                  <input class="input" id="searchFilter--workOrderOpenDateString" name="workOrderOpenDateString" type="date" value="<%= workOrderOpenDateString %>" max="<%= dateTimeFunctions.dateToString(new Date()) %>" />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-calendar"></i>
+                  </span>
                 </div>
-                <span class="icon is-small is-left">
-                  <i class="fa-solid fa-search"></i>
-                </span>
-              </div>
-            </div>
-          </div>  
-          <div class="column">
-            <div class="field">
-              <label class="label" for="searchFilter--workOrderOpenDateString"><%= settingFunctions.getSettingValue("aliases.workOrderOpenDate") %></label>
-              <div class="control is-expanded has-icons-left">
-                <input class="input" id="searchFilter--workOrderOpenDateString" name="workOrderOpenDateString" type="date" value="<%= workOrderOpenDateString %>" max="<%= dateTimeFunctions.dateToString(new Date()) %>" />
-                <span class="icon is-small is-left">
-                  <i class="fa-solid fa-calendar"></i>
-                </span>
               </div>
             </div>
           </div>
         </div>
-        <div class="columns">
-          <div class="column">
-            <div class="field">
-              <label class="label" for="searchFilter--deceasedName">Related Interment Name</label>
-              <div class="control is-expanded has-icons-left">
-                <input class="input" id="searchFilter--deceasedName" name="deceasedName" type="text" />
-                <span class="icon is-small is-left">
-                  <i class="fa-solid fa-search"></i>
-                </span>
+        <a class="panel-block has-background-light filter-block-toggle">
+          <span class="icon"><i class="fa-solid fa-caret-right"></i></span>
+          Related Contract Filters
+        </a>
+        <div class="panel-block is-block is-hidden">
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--deceasedName">Related Interment Name</label>
+                <div class="control is-expanded has-icons-left">
+                  <input class="input" id="searchFilter--deceasedName" name="deceasedName" type="text" />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label" for="searchFilter--burialSiteName">Related Burial Site Name</label>
-              <div class="control is-expanded has-icons-left">
-                <input class="input" id="searchFilter--burialSiteName" name="burialSiteName" type="text" />
-                <span class="icon is-small is-left">
-                  <i class="fa-solid fa-search"></i>
-                </span>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--burialSiteName">Related Burial Site Name</label>
+                <div class="control is-expanded has-icons-left">
+                  <input class="input" id="searchFilter--burialSiteName" name="burialSiteName" type="text" />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
 
-    <div id="container--searchResults"></div>
+    <div class="mt-5" id="container--searchResults"></div>
   </div>
 </div>
 
@@ -137,5 +165,6 @@
   exports.workOrderPrints = <%- JSON.stringify(configFunctions.getConfigProperty("settings.workOrders.prints")) %>;
 </script>
 <script src="<%= urlPrefix %>/javascripts/workOrder.search.js"></script>
+<script src="<%= urlPrefix %>/javascripts/search.js"></script>
 
 <%- include('../_footerB'); -%>

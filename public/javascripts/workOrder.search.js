@@ -5,8 +5,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const workOrderPrints = exports.workOrderPrints;
     const searchFilterFormElement = document.querySelector('#form--searchFilters');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
-    const limit = Number.parseInt(document.querySelector('#searchFilter--limit').value, 10);
+    const limitElement = document.querySelector('#searchFilter--limit');
     const offsetElement = document.querySelector('#searchFilter--offset');
+    const hasWorkOrderTypeFilter = document.querySelector('#searchFilter--workOrderTypeId') !== null;
     function buildRelatedLiHTML(workOrder) {
         let relatedHTML = '';
         for (const burialSite of workOrder.workOrderBurialSites ?? []) {
@@ -40,6 +41,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </li>`;
             }
         }
+        if (relatedHTML !== '') {
+            relatedHTML = `<ul class="fa-ul ml-5 is-size-7">${relatedHTML}</ul>`;
+        }
         return relatedHTML;
     }
     function renderWorkOrders(rawResponseJSON) {
@@ -62,14 +66,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 : cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
             </a>
           </td><td>
-            ${cityssm.escapeHTML(workOrder.workOrderType ?? '')}<br />
+            ${hasWorkOrderTypeFilter
+                ? cityssm.escapeHTML(workOrder.workOrderType ?? '') + '<br />'
+                : ''}
             <span class="is-size-7">
               ${cityssm.escapeHTML(workOrder.workOrderDescription ?? '')}
             </span>
           </td><td>
-            ${relatedHTML === ''
-                ? ''
-                : `<ul class="fa-ul ml-5 is-size-7">${relatedHTML}</ul>`}
+            ${relatedHTML}
           </td><td>
             <ul class="fa-ul ml-5 is-size-7">
               <li class="has-tooltip-left"
@@ -117,7 +121,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
       </tr></thead>
       <table>`;
         // eslint-disable-next-line no-unsanitized/method
-        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(limit, responseJSON.offset, responseJSON.count));
+        searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Number.parseInt(limitElement.value, 10), responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector('table')
             ?.append(resultsTbodyElement);
@@ -138,11 +142,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
         getWorkOrders();
     }
     function previousAndGetWorkOrders() {
-        offsetElement.value = Math.max(Number.parseInt(offsetElement.value, 10) - limit, 0).toString();
+        offsetElement.value = Math.max(Number.parseInt(offsetElement.value, 10) -
+            Number.parseInt(limitElement.value, 10), 0).toString();
         getWorkOrders();
     }
     function nextAndGetWorkOrders() {
-        offsetElement.value = (Number.parseInt(offsetElement.value, 10) + limit).toString();
+        offsetElement.value = (Number.parseInt(offsetElement.value, 10) +
+            Number.parseInt(limitElement.value, 10)).toString();
         getWorkOrders();
     }
     const filterElements = searchFilterFormElement.querySelectorAll('input, select');

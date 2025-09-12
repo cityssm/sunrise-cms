@@ -6,19 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limitElement = document.querySelector('#searchFilter--limit');
     const offsetElement = document.querySelector('#searchFilter--offset');
-    function toggleFilterBlock(event) {
-        event.preventDefault();
-        const target = event.currentTarget;
-        target.querySelector('.fa-caret-right')?.classList.toggle('fa-rotate-90');
-        const nextElement = target.nextElementSibling;
-        if (nextElement !== null) {
-            nextElement.classList.toggle('is-hidden');
-        }
-    }
-    const filterBlockToggleElements = document.querySelectorAll('.filter-block-toggle');
-    for (const filterBlockToggleElement of filterBlockToggleElements) {
-        filterBlockToggleElement.addEventListener('click', toggleFilterBlock);
-    }
     function getContractTimeHtml(contract) {
         if (contract.contractIsFuture === 1) {
             return `<span class="has-tooltip-right" data-tooltip="Future Contract">

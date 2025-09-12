@@ -20,14 +20,16 @@ declare const exports: Record<string, unknown>
     '#container--searchResults'
   ) as HTMLElement
 
-  const limit = Number.parseInt(
-    (document.querySelector('#searchFilter--limit') as HTMLInputElement).value,
-    10
-  )
+  const limitElement = document.querySelector(
+    '#searchFilter--limit'
+  ) as HTMLSelectElement
 
   const offsetElement = document.querySelector(
     '#searchFilter--offset'
   ) as HTMLInputElement
+
+  const hasWorkOrderTypeFilter =
+    document.querySelector('#searchFilter--workOrderTypeId') !== null
 
   function buildRelatedLiHTML(workOrder: WorkOrder): string {
     let relatedHTML = ''
@@ -70,6 +72,10 @@ declare const exports: Record<string, unknown>
       }
     }
 
+    if (relatedHTML !== '') {
+      relatedHTML = `<ul class="fa-ul ml-5 is-size-7">${relatedHTML}</ul>`
+    }
+
     return relatedHTML
   }
 
@@ -106,16 +112,16 @@ declare const exports: Record<string, unknown>
               }
             </a>
           </td><td>
-            ${cityssm.escapeHTML(workOrder.workOrderType ?? '')}<br />
+            ${
+              hasWorkOrderTypeFilter
+                ? cityssm.escapeHTML(workOrder.workOrderType ?? '') + '<br />'
+                : ''
+            }
             <span class="is-size-7">
               ${cityssm.escapeHTML(workOrder.workOrderDescription ?? '')}
             </span>
           </td><td>
-            ${
-              relatedHTML === ''
-                ? ''
-                : `<ul class="fa-ul ml-5 is-size-7">${relatedHTML}</ul>`
-            }
+            ${relatedHTML}
           </td><td>
             <ul class="fa-ul ml-5 is-size-7">
               <li class="has-tooltip-left"
@@ -177,7 +183,7 @@ declare const exports: Record<string, unknown>
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
       sunrise.getSearchResultsPagerHTML(
-        limit,
+        Number.parseInt(limitElement.value, 10),
         responseJSON.offset,
         responseJSON.count
       )
@@ -216,7 +222,8 @@ declare const exports: Record<string, unknown>
 
   function previousAndGetWorkOrders(): void {
     offsetElement.value = Math.max(
-      Number.parseInt(offsetElement.value, 10) - limit,
+      Number.parseInt(offsetElement.value, 10) -
+        Number.parseInt(limitElement.value, 10),
       0
     ).toString()
     getWorkOrders()
@@ -224,7 +231,8 @@ declare const exports: Record<string, unknown>
 
   function nextAndGetWorkOrders(): void {
     offsetElement.value = (
-      Number.parseInt(offsetElement.value, 10) + limit
+      Number.parseInt(offsetElement.value, 10) +
+      Number.parseInt(limitElement.value, 10)
     ).toString()
     getWorkOrders()
   }
