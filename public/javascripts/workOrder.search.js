@@ -67,7 +67,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             </a>
           </td><td>
             ${hasWorkOrderTypeFilter
-                ? cityssm.escapeHTML(workOrder.workOrderType ?? '') + '<br />'
+                ? `${cityssm.escapeHTML(workOrder.workOrderType ?? '')}<br />`
                 : ''}
             <span class="is-size-7">
               ${cityssm.escapeHTML(workOrder.workOrderDescription ?? '')}

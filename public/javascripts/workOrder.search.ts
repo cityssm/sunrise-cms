@@ -114,7 +114,7 @@ declare const exports: Record<string, unknown>
           </td><td>
             ${
               hasWorkOrderTypeFilter
-                ? cityssm.escapeHTML(workOrder.workOrderType ?? '') + '<br />'
+                ? `${cityssm.escapeHTML(workOrder.workOrderType ?? '')}<br />`
                 : ''
             }
             <span class="is-size-7">
