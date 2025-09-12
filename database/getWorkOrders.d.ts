@@ -9,6 +9,7 @@ export interface GetWorkOrdersFilters {
     cemeteryId?: number | string;
     contractId?: number | string;
     deceasedName?: string;
+    funeralHomeId?: number | string;
     workOrderMilestoneDateString?: DateString;
 }
 export interface GetWorkOrdersOptions {

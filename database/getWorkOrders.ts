@@ -33,6 +33,7 @@ export interface GetWorkOrdersFilters {
 
   contractId?: number | string
   deceasedName?: string
+  funeralHomeId?: number | string
 
   workOrderMilestoneDateString?: DateString
 }
@@ -231,10 +232,25 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
   if ((filters.workOrderMilestoneDateString ?? '') !== '') {
     sqlWhereClause += ` and (w.workOrderId in (select workOrderId from WorkOrderMilestones where recordDelete_timeMillis is null and workOrderMilestoneDate = ?)
         or (w.workOrderOpenDate = ? and (select count(*) from WorkOrderMilestones m where m.recordDelete_timeMillis is null and m.workOrderId = w.workOrderId) = 0))`
+
     sqlParameters.push(
       dateStringToInteger(filters.workOrderMilestoneDateString as DateString),
       dateStringToInteger(filters.workOrderMilestoneDateString as DateString)
     )
+  }
+
+  /*
+   * Funeral Home
+   */
+
+  if ((filters.funeralHomeId ?? '') !== '') {
+    sqlWhereClause += ` and w.workOrderId in (
+      select workOrderId from WorkOrderContracts wc
+      left join Contracts c on wc.contractId = c.contractId
+      where wc.recordDelete_timeMillis is null
+      and c.funeralHomeId = ?)`
+
+    sqlParameters.push(filters.funeralHomeId)
   }
 
   /*
@@ -313,7 +329,12 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
         and (cem.cemeteryId = ? or cem.parentCemeteryId = ?)
       ))`
 
-    sqlParameters.push(filters.cemeteryId, filters.cemeteryId, filters.cemeteryId, filters.cemeteryId)
+    sqlParameters.push(
+      filters.cemeteryId,
+      filters.cemeteryId,
+      filters.cemeteryId,
+      filters.cemeteryId
+    )
   }
 
   /*

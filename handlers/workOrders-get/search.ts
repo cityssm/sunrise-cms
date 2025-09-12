@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express'
 
 import getCemeteries from '../../database/getCemeteries.js'
+import getFuneralHomes from '../../database/getFuneralHomes.js';
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 
 export default function handler(
@@ -21,12 +22,15 @@ export default function handler(
   }
 
   const cemeteries = getCemeteries()
+  const funeralHomes = getFuneralHomes()
+
   const workOrderTypes = getCachedWorkOrderTypes()
 
   response.render('workOrders/search', {
     headTitle: 'Work Order Search',
 
     cemeteries,
+    funeralHomes,
     workOrderTypes,
 
     workOrderOpenDateString: request.query.workOrderOpenDateString ?? '',

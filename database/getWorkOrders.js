@@ -136,6 +136,17 @@ function buildWhereClause(filters) {
         sqlParameters.push(dateStringToInteger(filters.workOrderMilestoneDateString), dateStringToInteger(filters.workOrderMilestoneDateString));
     }
     /*
+     * Funeral Home
+     */
+    if ((filters.funeralHomeId ?? '') !== '') {
+        sqlWhereClause += ` and w.workOrderId in (
+      select workOrderId from WorkOrderContracts wc
+      left join Contracts c on wc.contractId = c.contractId
+      where wc.recordDelete_timeMillis is null
+      and c.funeralHomeId = ?)`;
+        sqlParameters.push(filters.funeralHomeId);
+    }
+    /*
      * Deceased Name
      */
     const deceasedNameFilters = getDeceasedNameWhereClause(filters.deceasedName, 'ci');
