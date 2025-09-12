@@ -241,7 +241,7 @@ declare const exports: {
                     data-burial-site-id="${contract.burialSiteId.toString()}"
                     data-tooltip="Add Burial Site"
                     aria-label="Add Burial Site" type="button">
-                  <i class="fa-solid fa-plus"></i>
+                  <span class="icon"><i class="fa-solid fa-plus"></i></span>
                   </button>`
           }
         </td>`

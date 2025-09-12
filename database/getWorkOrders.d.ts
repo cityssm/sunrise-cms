@@ -6,6 +6,7 @@ export interface GetWorkOrdersFilters {
     workOrderOpenDateString?: string;
     workOrderOpenStatus?: '' | 'closed' | 'open';
     burialSiteName?: string;
+    cemeteryId?: number | string;
     contractId?: number | string;
     deceasedName?: string;
     workOrderMilestoneDateString?: DateString;

@@ -124,15 +124,22 @@
         </div>
         <a class="panel-block has-background-light filter-block-toggle">
           <span class="icon"><i class="fa-solid fa-caret-right"></i></span>
-          Related Contract Filters
+          Related Location Filters
         </a>
         <div class="panel-block is-block is-hidden">
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label" for="searchFilter--deceasedName">Related Interment Name</label>
+                <label class="label" for="searchFilter--cemeteryId">Related Cemetery</label>
                 <div class="control is-expanded has-icons-left">
-                  <input class="input" id="searchFilter--deceasedName" name="deceasedName" type="text" />
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--cemeteryId" name="cemeteryId">
+                      <option value="">(All Cemeteries)</option>
+                      <% for (const cemetery of cemeteries) { %>
+                        <option value="<%= cemetery.cemeteryId %>"><%= cemetery.cemeteryName || "(No Name)" %></option>
+                      <% } %>
+                    </select>
+                  </div>
                   <span class="icon is-small is-left">
                     <i class="fa-solid fa-search"></i>
                   </span>
@@ -149,6 +156,21 @@
                   </span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <a class="panel-block has-background-light filter-block-toggle">
+          <span class="icon"><i class="fa-solid fa-caret-right"></i></span>
+          Related Contact Filters
+        </a>
+        <div class="panel-block is-block is-hidden">
+          <div class="field">
+            <label class="label" for="searchFilter--deceasedName">Related Interment Name</label>
+            <div class="control is-expanded has-icons-left">
+              <input class="input" id="searchFilter--deceasedName" name="deceasedName" type="text" />
+              <span class="icon is-small is-left">
+                <i class="fa-solid fa-search"></i>
+              </span>
             </div>
           </div>
         </div>

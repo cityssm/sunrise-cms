@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express'
 
+import getCemeteries from '../../database/getCemeteries.js'
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 
 export default function handler(
@@ -11,8 +12,6 @@ export default function handler(
   >,
   response: Response
 ): void {
-  const workOrderTypes = getCachedWorkOrderTypes()
-
   let error = request.query.error
 
   if (error === 'workOrderIdNotFound') {
@@ -21,9 +20,13 @@ export default function handler(
     error = 'Work Order Number not found.'
   }
 
+  const cemeteries = getCemeteries()
+  const workOrderTypes = getCachedWorkOrderTypes()
+
   response.render('workOrders/search', {
     headTitle: 'Work Order Search',
 
+    cemeteries,
     workOrderTypes,
 
     workOrderOpenDateString: request.query.workOrderOpenDateString ?? '',
