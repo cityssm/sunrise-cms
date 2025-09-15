@@ -1,7 +1,7 @@
 import config from '../../../data/config.js';
 import { testUpdate } from '../../../test/_globals.js';
 import { login, logout, pageLoadDelayMillis } from '../../support/index.js';
-describe('Update - Funeral Homes', () => {
+describe('Funeral Homes - Update', () => {
     beforeEach('Loads page', () => {
         logout();
         login(testUpdate);

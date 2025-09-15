@@ -1,6 +1,6 @@
 import { testUpdate } from '../../../test/_globals.js';
 import { login, logout } from '../../support/index.js';
-describe('Update - Burial Sites - GPS Capture', () => {
+describe('Burial Sites - GPS Capture', () => {
     beforeEach('Loads page', () => {
         logout();
         login(testUpdate);

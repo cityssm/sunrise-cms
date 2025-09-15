@@ -1,7 +1,7 @@
 import { testUpdate } from '../../../test/_globals.js'
 import { login, logout } from '../../support/index.js'
 
-describe('Update - Burial Sites - Range Creator', () => {
+describe('Burial Sites - Range Creator', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testUpdate)

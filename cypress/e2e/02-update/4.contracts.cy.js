@@ -1,6 +1,6 @@
 import { testUpdate } from '../../../test/_globals.js';
 import { login, logout } from '../../support/index.js';
-describe('Update - Contracts', () => {
+describe('Contracts - Update', () => {
     beforeEach(() => {
         logout();
         login(testUpdate);

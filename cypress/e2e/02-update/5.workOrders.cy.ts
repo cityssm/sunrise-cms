@@ -6,7 +6,7 @@ import {
   pdfGenerationDelayMillis
 } from '../../support/index.js'
 
-describe('Update - Work Orders', () => {
+describe('Work Orders - Update', () => {
   beforeEach(() => {
     logout()
     login(testUpdate)

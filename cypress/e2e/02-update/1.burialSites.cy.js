@@ -2,7 +2,7 @@
 /* eslint-disable max-nested-callbacks */
 import { testUpdate } from '../../../test/_globals.js';
 import { login, logout, pageLoadDelayMillis } from '../../support/index.js';
-describe('Update - Burial Sites', () => {
+describe('Burial Sites - Update', () => {
     beforeEach('Loads page', () => {
         logout();
         login(testUpdate);

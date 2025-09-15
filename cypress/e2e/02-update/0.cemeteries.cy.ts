@@ -3,7 +3,7 @@ import { testUpdate } from '../../../test/_globals.js'
 import type { Cemetery } from '../../../types/record.types.js'
 import { login, logout, pageLoadDelayMillis } from '../../support/index.js'
 
-describe('Update - Cemeteries', () => {
+describe('Cemeteries - Update', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testUpdate)
