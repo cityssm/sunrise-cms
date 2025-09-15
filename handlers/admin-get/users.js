@@ -15,7 +15,8 @@ export default function handler(_request, response) {
     response.render('admin/users', {
         headTitle: 'User Management',
         users,
+        configUsers,
         hasConfigUsers,
-        configUsers
+        domain: getConfigProperty('login.domain')
     });
 }

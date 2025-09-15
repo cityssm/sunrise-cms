@@ -24,7 +24,9 @@ export default function handler(_request: Request, response: Response): void {
     headTitle: 'User Management',
     users,
 
+    configUsers,
     hasConfigUsers,
-    configUsers
+
+    domain: getConfigProperty('login.domain')
   })
 }

@@ -10,7 +10,9 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-  users?: DatabaseUser[]
+
+  domain: string
+  users: DatabaseUser[]
 }
 ;(() => {
   const sunrise = exports.sunrise
@@ -244,6 +246,11 @@ declare const exports: {
     }
 
     cityssm.openHtmlModal('adminUsers-add', {
+      onshow(modalElement) {
+        ;(
+          modalElement.querySelector('#span--domain') as HTMLSpanElement
+        ).textContent = exports.domain + '\\'
+      },
       onshown(modalElement, _closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
         closeModalFunction = _closeModalFunction
@@ -259,5 +266,5 @@ declare const exports: {
     })
   })
 
-  renderUsers(exports.users ?? [])
+  renderUsers(exports.users)
 })()
