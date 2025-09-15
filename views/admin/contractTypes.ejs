@@ -5,22 +5,32 @@
     <%- include('_menu'); -%>
   </div>
   <div class="column">
-    <nav class="breadcrumb">
-      <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
-        <li>
-          <a href="#">
-            <span class="icon is-small"><i class="fa-solid fa-cog"></i></span>
-            <span>Administrator Tools</span>
-          </a>
-        </li>
-        <li class="is-active">
-          <a href="#" aria-current="page">
-            Contract Type Management
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <div class="columns is-vcentered is-mobile">
+      <div class="column">
+        <nav class="breadcrumb">
+          <ul>
+            <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+            <li>
+              <a href="#">
+                <span class="icon is-small"><i class="fa-solid fa-cog"></i></span>
+                <span>Administrator Tools</span>
+              </a>
+            </li>
+            <li class="is-active">
+              <a href="#" aria-current="page">
+                Contract Type Management
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="column is-narrow has-text-right">
+        <a class="has-text-info-dark is-size-7" href="https://cityssm.github.io/sunrise-cms/docs/contractTypeManagement.html" title="Help Documentation" rel="noopener noreferrer" target="_blank">
+          <span class="icon is-small"><i class="fa-regular fa-circle-question"></i></span>
+          <span>Help</span>
+        </a>
+      </div>
+    </div>
     
     <div class="columns is-vcentered">
       <div class="column">
