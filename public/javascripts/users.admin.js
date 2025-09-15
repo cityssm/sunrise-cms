@@ -174,7 +174,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.openHtmlModal('adminUsers-add', {
             onshow(modalElement) {
                 ;
-                modalElement.querySelector('#span--domain').textContent = exports.domain + '\\';
+                modalElement.querySelector('#span--domain').textContent = `${exports.domain}\\`;
             },
             onshown(modalElement, _closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();

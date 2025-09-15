@@ -249,7 +249,7 @@ declare const exports: {
       onshow(modalElement) {
         ;(
           modalElement.querySelector('#span--domain') as HTMLSpanElement
-        ).textContent = exports.domain + '\\'
+        ).textContent = `${exports.domain}\\`
       },
       onshown(modalElement, _closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
