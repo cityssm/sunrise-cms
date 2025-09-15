@@ -2,11 +2,10 @@
 
 # Sunrise CMS Help Documentation
 
-**Thank you for taking the time to read the Sunrise Cemetery Management System (CMS) documentation.**
+**Thank you for taking the time to read the**
+**Sunrise Cemetery Management System (CMS) documentation.**
 
 ![Burial Site View](./images/burialSite-view.png)
-
-**In development**
 
 ## 👩 User Documentation
 
@@ -43,6 +42,12 @@ Maintain the types of burial sites.
 
 [**Config Table Management**](./configTableManagement.md)<br />
 Maintain simpler, list-like tables including work order types and burial site statuses.
+
+[**User Management**](./userManagement.md)<br />
+Grant permissions to Sunrise CMS users.
+
+[**Settings**](./settings.md)<br />
+Front-end management of application settings more common among power users.
 
 [**Database Management**](./databaseManagement.md)<br />
 Create database snapshots. Perform database cleanup operations.

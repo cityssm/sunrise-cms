@@ -128,8 +128,9 @@ The `users` block is one way to define user permissions within Sunrise CMS,
 and helpful for getting started or for smaller setups where users are not regularly
 changing.
 
-💡 User permissions can also be assigned within the Sunrise CMS interface itself
-by an admin user.
+💡 User permissions can also be
+[assigned within the Sunrise CMS interface](./userManagement.md)
+itself by an admin user.
 
 ```javascript
 config.users = {
