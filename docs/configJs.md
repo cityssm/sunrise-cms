@@ -7,6 +7,9 @@
 Low level configuration is done using the required `data/config.js` file.
 The available properties are defined below.
 
+💡 Note that any changes to settings in the `config.js` file
+require an application restart to take effect.
+
 💡 In Typescript environments, the configuration object can be tied to the
 `Config` interface in
 [`types/config.types.ts`](https://github.com/cityssm/sunrise-cms/blob/main/types/config.types.ts)
@@ -112,6 +115,8 @@ reverseProxy: {
 
 ## Login Configuration
 
+For examples, see the [`login` block section of "Logging In for the First Time"](./firstLogIn.md#login-block).
+
 ```typescript
 login: {
   authentication: {
@@ -129,14 +134,27 @@ Controls user permissions and access levels.
 User permissions can also be managed in Sunrise CMS itself.
 Permissions managed there are recorded in the database.
 
+For examples, see the [`users` block section of "Logging in for the First Time"](./firstLogIn.md#users-block).
+
 ```typescript
 users: {
-  canLogin?: string[]             // Users who can log in
-  canUpdate?: string[]            // Users who can update all types of records
-                                  // (cemeteries, contracts, and work orders)
-  canUpdateCemeteries?: string[]  // Users who can update cemeteries and burial sites
-  canUpdateContracts?: string[]   // Users who can update contracts and funeral homes
-  canUpdateWorkOrders?: string[]  // Users who can update work orders
-  isAdmin?: string[]              // Administrative users
+  // Users who can log in
+  canLogin?: string[]
+
+  // Users who can update all types of records
+  // (cemeteries, contracts, and work orders)
+  canUpdate?: string[]
+
+  // Users who can update cemeteries and burial sites
+  canUpdateCemeteries?: string[]
+
+  // Users who can update contracts and funeral homes
+  canUpdateContracts?: string[]
+
+  // Users who can update work orders
+  canUpdateWorkOrders?: string[]
+
+  // Administrative users
+  isAdmin?: string[]
 }
 ```

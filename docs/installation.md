@@ -106,8 +106,9 @@ It is recommended to copy the `testing.config.js` file to get started.
 
     > cp data/testing.config.js data/config.js
 
-See the [config.js documentation](configJs.md) for help customizing
-your configuration.
+See the [`config.js` documentation](configJs.md) for help customizing
+your configuration, and specifically ["Logging in for the First Time" documentation](./firstLogIn.md)
+for help configuring authentication.
 
 ## Step 5: Start the application
 
