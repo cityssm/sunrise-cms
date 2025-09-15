@@ -28,7 +28,7 @@ There are several methods available.
 - [Active Directory](#active-directory-configuration)
 - [AD Web Auth](#ad-web-auth-configuration)
 - [Function based authentication](#function-based-authentication-configuration)
-- Plain text authentication
+- [Plain text authentication](#plain-text-authentication-configuration)
 
 ### Active Directory Configuration
 
@@ -78,7 +78,7 @@ config.login = {
 Function based authentication puts you in charge of the authentication.
 You implement your own logic. You can connect to your own database,
 use your own API, or whatever other method you prefer.
-Keep security in mind when building your `authenticate` function.
+**Always keep security in mind when building your `authenticate` function.**
 
 💡 If your `authenticate` function is long, consider placing it in another file
 and importing it.
@@ -90,7 +90,7 @@ config.login = {
 
     config: {
       authenticate(userName, password) {
-        if (userName === 'example\\userName' && password === 'p@ssw0rd') {
+        if (satisfiesAuthenticationLogic(userName, password)) {
           return true
         }
 
