@@ -1,6 +1,7 @@
 .nyc_output/
 bin/daemon/
 coverage/
+daemon/
 
 cypress/downloads/
 cypress/screenshots/
