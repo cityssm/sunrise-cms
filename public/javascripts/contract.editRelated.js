@@ -198,10 +198,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 burialSiteNameElement.addEventListener('change', loadContracts);
                 loadContracts();
             },
-            onshown(modalElement, _closeModalFunction) {
+            onshown(_modalElement, _closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 closeModalFunction = _closeModalFunction;
-                modalElement
+                _modalElement
                     .querySelector('#relatedContractSelect--burialSiteNameSearchType')
                     ?.addEventListener('change', loadContracts);
                 formElement?.addEventListener('submit', loadContracts);
