@@ -31,7 +31,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         // eslint-disable-next-line no-unsanitized/property
         panelBlockElement.innerHTML = `<div class="columns is-vcentered is-mobile">
       <div class="column is-narrow">
-        <a class="button is-small is-primary" data-tooltip="View Burial Site"
+        <a class="button is-small is-primary" title="View Burial Site"
           href="${sunrise.urlPrefix}/burialSites/${burialSiteId}" target="_blank">
           <span class="icon"><i class="fa-solid fa-eye"></i></span>
         </a>
@@ -127,7 +127,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     burialSiteName.burialSiteNameSegment5;
                 panelBlockElement.innerHTML = `<div class="columns is-vcentered is-mobile">
           <div class="column is-narrow">
-            <button class="button is-small is-success" data-tooltip="Create Burial Site" type="button">
+            <button class="button is-small is-success" title="Create Burial Site" type="button">
               <span class="icon"><i class="fa-solid fa-plus"></i></span>
             </button>
           </div>

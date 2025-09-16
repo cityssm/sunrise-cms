@@ -239,8 +239,8 @@ declare const exports: {
               ? ''
               : ` <button class="button is-small is-light is-success button--addBurialSite"
                     data-burial-site-id="${contract.burialSiteId.toString()}"
-                    data-tooltip="Add Burial Site"
-                    aria-label="Add Burial Site" type="button">
+                    title="Add Burial Site"
+                    type="button">
                   <span class="icon"><i class="fa-solid fa-plus"></i></span>
                   </button>`
           }
@@ -256,8 +256,7 @@ declare const exports: {
       let contactsHtml = ''
 
       for (const interment of contract.contractInterments ?? []) {
-        contactsHtml += `<li class="has-tooltip-left"
-          data-tooltip="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
+        contactsHtml += `<li title="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
           <span class="fa-li">
             <i class="fa-solid fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
           </span>
@@ -266,8 +265,7 @@ declare const exports: {
       }
 
       if (contract.purchaserName !== '') {
-        contactsHtml += `<li class="has-tooltip-left"
-          data-tooltip="Purchaser">
+        contactsHtml += `<li title="Purchaser">
           <span class="fa-li">
             <i class="fa-solid fa-hand-holding-dollar" aria-label="Purchaser"></i>
           </span>
@@ -276,8 +274,7 @@ declare const exports: {
       }
 
       if (contract.funeralHomeName !== null) {
-        contactsHtml += `<li class="has-tooltip-left"
-          data-tooltip="Funeral Home">
+        contactsHtml += `<li title="Funeral Home">
           <span class="fa-li">
             <i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i>
           </span>
@@ -301,7 +298,7 @@ declare const exports: {
           ${contactsHtml}
           </ul>
         </td><td>
-          <button class="button is-small is-light is-danger button--deleteContract" data-tooltip="Delete Relationship" type="button">
+          <button class="button is-small is-light is-danger button--deleteContract" title="Delete Relationship" type="button">
             <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
           </button>
         </td>`
@@ -537,10 +534,10 @@ declare const exports: {
               : '<span class="has-text-grey">(No Status)</span>'
           }
         </td><td class="has-text-right">
-          <button class="button is-small mb-1 is-light is-info button--editBurialSiteStatus" data-tooltip="Update Status" type="button">
+          <button class="button is-small mb-1 is-light is-info button--editBurialSiteStatus" title="Update Status" type="button">
             <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
           </button>
-          <button class="button is-small is-light is-danger button--deleteBurialSite" data-tooltip="Delete Relationship" type="button">
+          <button class="button is-small is-light is-danger button--deleteBurialSite" title="Delete Relationship" type="button">
             <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
           </button>
         </td>`
@@ -627,7 +624,7 @@ declare const exports: {
               rowElement.dataset.contractId = contract.contractId.toString()
 
               rowElement.innerHTML = `<td class="has-text-centered">
-                  <button class="button is-small is-success button--addContract" data-tooltip="Add" type="button" aria-label="Add">
+                  <button class="button is-small is-success button--addContract" title="Add" type="button">
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                   </button>
                 </td>
@@ -810,7 +807,7 @@ declare const exports: {
                 burialSite.burialSiteId.toString()
 
               rowElement.innerHTML = `<td class="has-text-centered">
-                  <button class="button is-small is-success button--addBurialSite" data-tooltip="Add" type="button" aria-label="Add">
+                  <button class="button is-small is-success button--addBurialSite" title="Add" type="button">
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                   </button>
                 </td><td class="has-text-weight-bold">

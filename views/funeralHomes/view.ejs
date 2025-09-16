@@ -45,15 +45,15 @@
   <div class="column is-narrow has-text-right">
     <div class="buttons is-right">
       <% if (!funeralHomeIsDeleted) { %>
-        <a class="button is-link is-outlined has-tooltip-left"
-          data-tooltip="Previous Funeral Home"
+        <a class="button is-link is-outlined"
+          title="Previous Funeral Home"
           href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/previous"
           <%- enableKeyboardShortcuts ? ' accesskey="," ' : '' %>>
           <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
           <span class="is-sr-only">Previous Funeral Home</span>
         </a>
-        <a class="button is-link has-tooltip-left"
-          data-tooltip="Next Cemetery"
+        <a class="button is-link"
+          title="Next Cemetery"
           href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/next"
           <%- enableKeyboardShortcuts ? ' accesskey="." ' : '' %>>
           <span>Next</span>

@@ -778,7 +778,7 @@ type ResponseJSON =
               )}
             </div>
             <div class="level-item">
-              <button class="button is-small is-danger button--deleteContractTypePrint" data-tooltip="Delete" type="button" aria-label="Delete Print">
+              <button class="button is-small is-danger button--deleteContractTypePrint" title="Delete" type="button">
                 <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
               </button>
             </div>
@@ -878,7 +878,7 @@ type ResponseJSON =
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <button class="button is-small button--toggleContractTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
+              <button class="button is-small button--toggleContractTypeFields" title="Toggle Fields" type="button">
                 <span class="icon">
                   ${
                     expandedContractTypes.has(contractType.contractTypeId)

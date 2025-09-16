@@ -8,17 +8,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const offsetElement = document.querySelector('#searchFilter--offset');
     function getContractTimeHtml(contract) {
         if (contract.contractIsFuture === 1) {
-            return `<span class="has-tooltip-right" data-tooltip="Future Contract">
+            return `<span title="Future Contract">
           <i class="fa-solid fa-fast-forward" aria-label="Future Contract"></i>
           </span>`;
         }
         else if (contract.contractIsActive === 1) {
-            return `<span class="has-tooltip-right" data-tooltip="Current Contract">
+            return `<span title="Current Contract">
           <i class="fa-solid fa-play" aria-label="Current Contract"></i>
           </span>`;
         }
         else {
-            return `<span class="has-tooltip-right" data-tooltip="Past Contract">
+            return `<span title="Past Contract">
           <i class="fa-solid fa-stop" aria-label="Past Contract"></i>
           </span>`;
         }
@@ -26,22 +26,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function getContactsHTML(contract) {
         let contactsHTML = '';
         for (const interment of contract.contractInterments ?? []) {
-            contactsHTML += `<li class="has-tooltip-left"
-          data-tooltip="${contract.isPreneed ? 'Recipient' : 'Deceased'}">
+            contactsHTML += `<li title="${contract.isPreneed ? 'Recipient' : 'Deceased'}">
           <span class="fa-li"><i class="fa-solid fa-user"></i></span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
         </li>`;
         }
         if (contract.purchaserName !== '') {
-            contactsHTML += `<li class="has-tooltip-left has-text-grey"
-          data-tooltip="Purchaser">
+            contactsHTML += `<li class="has-text-grey"
+          title="Purchaser">
           <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar"></i></span>
           ${cityssm.escapeHTML(contract.purchaserName)}
         </li>`;
         }
         if (contract.funeralHomeName !== null && contract.funeralHomeName !== '') {
-            contactsHTML += `<li class="has-tooltip-left has-text-grey"
-          data-tooltip="Funeral Home">
+            contactsHTML += `<li class="has-text-grey"
+          title="Funeral Home">
           <span class="fa-li"><i class="fa-solid fa-place-of-worship"></i></span>
           ${cityssm.escapeHTML(contract.funeralHomeName)}
         </li>`;
@@ -58,8 +57,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         let feeIconHTML = '';
         if (feeTotal !== '0.00' || transactionTotal !== '0.00') {
             feeIconHTML = `<span class="icon"
-          data-tooltip="Total Fees: $${feeTotal}"
-          aria-label="Total Fees: $${feeTotal}">
+          title="Total Fees: $${feeTotal}">
           <i class="fa-solid fa-dollar-sign ${feeTotal === transactionTotal
                 ? 'has-text-success'
                 : 'has-text-danger'}"></i>
@@ -80,8 +78,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
       </td><td>
         ${(contract.burialSiteId ?? -1) === -1
             ? '<span class="has-text-grey">(No Burial Site)</span>'
-            : `<a class="has-tooltip-right ${burialSiteLinkClass}"
-                data-tooltip="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
+            : `<a class=" ${burialSiteLinkClass}"
+                title="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
                 href="${sunrise.getBurialSiteUrl(contract.burialSiteId ?? '')}">
                   ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
                 </a>`}<br />
@@ -100,7 +98,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
       </td><td class="is-hidden-print">
         ${contract.printEJS === undefined
             ? ''
-            : `<a class="button is-small" data-tooltip="Print"
+            : `<a class="button is-small" title="Print"
                 href="${sunrise.urlPrefix}/print/${contract.printEJS}/?contractId=${contract.contractId.toString()}" target="_blank">
                 <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
                 </a>`}

@@ -215,19 +215,19 @@
                       <td>
                         <ul class="fa-ul ml-5">
                           <% for (const interment of contract.contractInterments) { %>
-                            <li class="has-tooltip-left" data-tooltip="<%= contract.isPreneed ? 'Recipient' : 'Deceased' %>">
+                            <li title="<%= contract.isPreneed ? 'Recipient' : 'Deceased' %>">
                               <span class="fa-li"><i class="fa-solid fa-user" aria-label="Recipient"></i></span>
                               <%= interment.deceasedName %>
                             </li>
                           <% } %>
                           <% if (contract.purchaserName !== '') { %>
-                            <li class="has-tooltip-left" data-tooltip="Purchaser">
+                            <li title="Purchaser">
                               <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar" aria-label="Purchase"></i></span>
                               <%= contract.purchaserName %>
                             </li>
                           <% } %>
                           <% if (contract.funeralHomeName) { %>
-                            <li class="has-tooltip-left" data-tooltip="Funeral Home">
+                            <li title="Funeral Home">
                               <span class="fa-li"><i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i></span>
                               <%= contract.funeralHomeName %>
                             </li>
@@ -345,7 +345,7 @@
             <div class="level-item">
               <div class="dropdown is-right has-text-weight-normal">
                 <div class="dropdown-trigger">
-                  <button class="button is-small has-tooltip-left" type="button" data-tooltip="Milestone Options" aria-label="Options">
+                  <button class="button is-small" type="button" title="Milestone Options" aria-label="Options">
                     <span class="icon"><i class="fa-solid fa-ellipsis-v"></i></span>
                   </button>
                 </div>
@@ -384,12 +384,12 @@
           <div class="columns is-mobile">
             <div class="column is-narrow">
               <% if (milestone.workOrderMilestoneCompletionDate) { %>
-                <span class="icon is-small" data-tooltip="Completed <%= milestone.workOrderMilestoneCompletionDateString %>">
-                  <i class="fa-solid fa-check" aria-label="Completed <%= milestone.workOrderMilestoneCompletionDateString %>"></i>
+                <span class="icon is-small" title="Completed <%= milestone.workOrderMilestoneCompletionDateString %>">
+                  <i class="fa-solid fa-check"></i>
                 </span>
               <% } else { %>
-                <span class="icon is-small">
-                  <i class="fa-regular fa-square has-text-grey" aria-label="Incomplete"></i>
+                <span class="icon is-small" title="Incomplete">
+                  <i class="fa-regular fa-square has-text-grey"></i>
                 </span>
               <% } %>
             </div>

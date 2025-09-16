@@ -128,7 +128,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${sunrise.getMoveUpDownButtonFieldHTML('button--moveCommittalTypeUp', 'button--moveCommittalTypeDown', false)}
           </div>
           <div class="control">
-            <button class="button is-danger is-light button--deleteCommittalType" data-tooltip="Delete Type" type="button" aria-label="Delete Type">
+            <button class="button is-danger is-light button--deleteCommittalType" title="Delete Type" type="button">
               <span class="icon"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>

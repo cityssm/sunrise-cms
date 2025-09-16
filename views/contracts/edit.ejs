@@ -173,7 +173,7 @@
               </div>
             </div>
             <div class="control is-hidden-print">
-              <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Contract Type Field">
+              <button class="button is-unlock-field-button" title="Unlock Contract Type Field" type="button">
                 <span class="icon"><i class="fa-solid fa-unlock"></i></span>
               </button>
             </div>
@@ -192,17 +192,17 @@
                 <%= (isCreate ? "" : " disabled readonly") %> />
             </div>
             <div class="control is-hidden-print">
-              <button class="button is-clear-burial-site-button" data-tooltip="Clear" type="button" aria-label="Clear Burial Site Field">
+              <button class="button is-clear-burial-site-button" title="Clear" type="button">
                 <span class="icon"><i class="fa-solid fa-eraser"></i></span>
               </button>
             </div>
             <div class="control is-hidden-print">
-              <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Burial Site Field">
+              <button class="button is-unlock-field-button" title="Unlock Field" type="button">
                 <span class="icon"><i class="fa-solid fa-unlock"></i></span>
               </button>
             </div>
             <div class="control is-hidden-print">
-              <button class="button is-burial-site-view-button" data-tooltip="Open Burial Site" type="button" aria-label="Open Burial Site">
+              <button class="button is-burial-site-view-button" title="Open Burial Site" type="button">
                 <span class="icon"><i class="fa-solid fa-external-link-alt"></i></span>
               </button>
             </div>
@@ -1036,11 +1036,11 @@
                   <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
                 </td>
                 <td class="is-nowrap">
-                  <span class="has-tooltip-left" data-tooltip="<%= workOrderOpenDateAlias %>">
+                  <span title="<%= workOrderOpenDateAlias %>">
                     <i class="fa-solid fa-play" aria-label="<%= workOrderOpenDateAlias %>"></i>
                     <%= workOrder.workOrderOpenDateString %>
                   </span><br />
-                  <span class="has-tooltip-left" data-tooltip="<%= workOrderCloseDateAlias %>">
+                  <span title="<%= workOrderCloseDateAlias %>">
                     <i class="fa-solid fa-stop" aria-label="<%= workOrderCloseDateAlias %>"></i>
                     <% if (workOrder.workOrderCloseDate) { %>
                       <%= workOrder.workOrderCloseDateString %>
@@ -1175,7 +1175,7 @@
           </p>
         <% } %>
         <div class="control"
-          data-tooltip="<%= segment.label ?? '' %>">
+          title="<%= segment.label ?? '' %>">
 
           <input class="input"
             name="burialSiteNameSegment<%= segmentIndexString %>"

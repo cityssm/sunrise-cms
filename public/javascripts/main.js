@@ -167,14 +167,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
       <div class="control">
       <button
           class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
-          data-tooltip="Move Up" data-direction="up" type="button" aria-label="Move Up">
+          title="Move Up" data-direction="up" type="button">
         <span class="icon"><i class="fa-solid fa-arrow-up"></i></span>
       </button>
       </div>
       <div class="control">
       <button
           class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
-          data-tooltip="Move Down" data-direction="down" type="button" aria-label="Move Down">
+          title="Move Down" data-direction="down" type="button">
         <span class="icon"><i class="fa-solid fa-arrow-down"></i></span>
       </button>
       </div>

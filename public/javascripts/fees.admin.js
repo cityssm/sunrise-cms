@@ -24,13 +24,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             tagsHTML += '<span class="tag is-warning">Required</span>';
         }
         if ((fee.contractTypeId ?? -1) !== -1) {
-            tagsHTML += ` <span class="tag has-tooltip-bottom" data-tooltip="Contract Type Filter">
+            tagsHTML += ` <span class="tag" title="Contract Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
         </span>`;
         }
         if ((fee.burialSiteTypeId ?? -1) !== -1) {
-            tagsHTML += ` <span class="tag has-tooltip-bottom" data-tooltip="Burial Site Type Filter">
+            tagsHTML += ` <span class="tag" title="Burial Site Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.burialSiteType ?? '')}</span>
         </span>`;

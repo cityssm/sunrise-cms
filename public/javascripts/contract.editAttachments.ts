@@ -71,16 +71,16 @@ declare const exports: {
         </td>
         <td class="has-text-right">
           <div class="buttons is-right">
-            <button class="button is-small is-primary has-tooltip-left" 
-              data-tooltip="Edit Attachment"
+            <button class="button is-small is-primary" 
+              title="Edit Attachment"
               data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
               data-cy="edit-attachment">
               <span class="icon is-small">
                 <i class="fa-solid fa-pencil-alt"></i>
               </span>
             </button>
-            <button class="button is-small is-danger has-tooltip-left" 
-              data-tooltip="Delete Attachment"
+            <button class="button is-small is-danger" 
+              title="Delete Attachment"
               data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
               data-cy="delete-attachment">
               <span class="icon is-small">

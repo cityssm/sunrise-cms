@@ -23,19 +23,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function buildCemeteryFeaturesHTML(cemetery) {
         let featuresHTML = '';
         if (cemetery.parentCemeteryId !== null) {
-            featuresHTML += `<span class="icon" data-tooltip="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
-        <i class="fa-solid fa-turn-up" role="img" aria-label="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}"></i>
+            featuresHTML += `<span class="icon" title="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
+        <i class="fa-solid fa-turn-up" role="img"></i>
         </span>`;
         }
         if (typeof cemetery.cemeteryLatitude === 'number' &&
             typeof cemetery.cemeteryLongitude === 'number') {
-            featuresHTML += `<span class="icon" data-tooltip="Geographic Coordinates">
-        <i class="fa-solid fa-map-marker-alt" role="img" aria-label="Geographic Coordinates"></i>
+            featuresHTML += `<span class="icon" title="Geographic Coordinates">
+        <i class="fa-solid fa-map-marker-alt" role="img"></i>
         </span>`;
         }
         if ((cemetery.cemeterySvg ?? '') !== '') {
-            featuresHTML += `<span class="icon" data-tooltip="Image">
-        <i class="fa-solid fa-image" role="img" aria-label="Image"></i>
+            featuresHTML += `<span class="icon" title="Image">
+        <i class="fa-solid fa-image" role="img"></i>
         </span>`;
         }
         return featuresHTML;

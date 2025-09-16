@@ -370,7 +370,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             burialSiteTypeContainer.innerHTML = `<div class="panel-heading">
         <div class="columns is-vcentered">
           <div class="column is-narrow">
-            <button class="button is-small button--toggleBurialSiteTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
+            <button class="button is-small button--toggleBurialSiteTypeFields" title="Toggle Fields" type="button">
               <span class="icon">
                 ${expandedBurialSiteTypes.has(burialSiteType.burialSiteTypeId)
                 ? '<i class="fa-solid fa-minus"></i>'

@@ -215,7 +215,7 @@ declare const exports: Record<string, unknown>
               <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
               <span>Edit</span>
             </button>
-            <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
+            <button class="button is-light is-danger button--delete" title="Delete Comment" type="button">
               <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>

@@ -132,7 +132,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
               ${sunrise.getMoveUpDownButtonFieldHTML('button--moveWorkOrderMilestoneTypeUp', 'button--moveWorkOrderMilestoneTypeDown', false)}
             </div>
             <div class="control">
-              <button class="button is-danger is-light button--deleteWorkOrderMilestoneType" data-tooltip="Delete Milestone Type" type="button" aria-label="Delete Milestone Type">
+              <button class="button is-danger is-light button--deleteWorkOrderMilestoneType" title="Delete Milestone Type" type="button">
                 <span class="icon"><i class="fa-solid fa-trash"></i></span>
               </button>
             </div>

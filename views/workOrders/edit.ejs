@@ -41,7 +41,7 @@
 <% } %>
 
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
-  <div class="column">
+  <div class="column is-narrow">
     <% if (!isCreate) { %>
       <span class="has-text-weight-bold">
         Work Order
@@ -49,7 +49,7 @@
       </span>
     <% } %>
   </div>
-  <div class="column is-narrow has-text-right">
+  <div class="column has-text-right">
     <div class="buttons is-right">
       <% if (!isCreate && configFunctions.getConfigProperty("settings.workOrders.prints").length > 0) { %>
         <div class="dropdown is-right is-up">
@@ -130,7 +130,7 @@
                     <%= (isCreate ? "" : " required") %> />
                 </div>
                 <div class="control">
-                  <button class="button is-unlock-field-button" data-tooltip="Unlock Field" type="button" aria-label="Unlock Field">
+                  <button class="button is-unlock-field-button" title="Unlock Field" type="button">
                     <span class="icon"><i class="fa-solid fa-unlock"></i></span>
                   </button>
                 </div>
@@ -295,8 +295,8 @@
               <div class="level-item">
                 <div class="dropdown is-right has-text-weight-normal">
                   <div class="dropdown-trigger">
-                    <button class="button is-small has-tooltip-left" data-tooltip="Milestone Options" type="button" aria-label="Options">
-                      <span class="icon is-small"><i class="fa-solid fa-ellipsis-v"></i></span> 
+                    <button class="button is-small" title="Milestone Options" type="button" aria-label="Options">
+                      <span class="icon is-small"><i class="fa-solid fa-ellipsis-v"></i></span>
                     </button>
                   </div>
                   <div class="dropdown-menu">

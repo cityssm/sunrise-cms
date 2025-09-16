@@ -393,11 +393,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         <div class="column is-narrow">
           ${milestone.workOrderMilestoneCompletionDate
                 ? `<span class="button is-static"
-                  data-tooltip="Completed ${milestone.workOrderMilestoneCompletionDateString}"
-                  aria-label="Completed ${milestone.workOrderMilestoneCompletionDateString}">
+                  title="Completed ${milestone.workOrderMilestoneCompletionDateString}">
                   <span class="icon is-small"><i class="fa-solid fa-check"></i></span>
                   </span>`
-                : `<button class="button button--completeMilestone" data-tooltip="Incomplete" type="button" aria-label="Incomplete">
+                : `<button class="button button--completeMilestone" title="Incomplete" type="button">
                   <span class="icon is-small"><i class="fa-regular fa-square"></i></span>
                   </button>`}
         </div><div class="column">
@@ -416,7 +415,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </div><div class="column is-narrow">
           <div class="dropdown is-right">
             <div class="dropdown-trigger">
-              <button class="button is-small" data-tooltip="Options" type="button" aria-label="Options">
+              <button class="button is-small" title="Options" type="button">
                 <span class="icon is-small"><i class="fa-solid fa-ellipsis-v"></i></span>
               </button>
             </div>

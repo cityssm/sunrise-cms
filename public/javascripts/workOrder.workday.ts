@@ -291,9 +291,9 @@ declare const exports: {
       : 'fa-regular fa-square'
 
     const milestoneCheckHTML = options.canUpdateThisWorkOrder
-      ? `<button class="button has-tooltip-right button--toggle-milestone"
+      ? `<button class="button button--toggle-milestone"
             data-work-order-milestone-id="${milestone.workOrderMilestoneId}
-            data-tooltip="Toggle Milestone Completion"
+            title="Toggle Milestone Completion"
             aria-checked="${milestoneIsCompleted ? 'true' : 'false'}"
             type="button">
               <span class="icon is-small">
@@ -311,7 +311,7 @@ declare const exports: {
 
     const milestoneTimeHTML =
       options.canUpdateThisWorkOrder && !milestoneIsCompleted
-        ? `<button class="button has-tooltip-right button--edit-milestone-time"
+        ? `<button class="button button--edit-milestone-time"
               data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
               data-work-order-milestone-time-string="${milestone.workOrderMilestoneTime === null ? '' : milestone.workOrderMilestoneTimeString}"
               title="Edit Milestone Time"

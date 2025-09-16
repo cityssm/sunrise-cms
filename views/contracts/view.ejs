@@ -57,15 +57,15 @@
   </div>
   <div class="column is-narrow has-text-right">
     <div class="buttons is-right">
-      <a class="button is-link is-outlined has-tooltip-left"
-        data-tooltip="Previous Contract"
+      <a class="button is-link is-outlined"
+        title="Previous Contract"
         href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/previous"
         <%- enableKeyboardShortcuts ? ' accesskey="," ' : '' %>>
         <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
         <span class="is-sr-only">Previous Contract</span>
       </a>
-      <a class="button is-link has-tooltip-left"
-        data-tooltip="Next Contract"
+      <a class="button is-link"
+        title="Next Contract"
         href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/next"
         <%- enableKeyboardShortcuts ? ' accesskey="." ' : '' %>>
         <span>Next</span>
@@ -589,16 +589,16 @@
                         <%= contractTransaction.externalReceiptNumber %>
                         <% if (configFunctions.getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) { %>
                           <% if (contractTransaction.dynamicsGPDocument === undefined) { %>
-                            <span data-tooltip="No Matching Document Found">
-                              <i class="fa-solid fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
+                            <span title="No Matching Document Found">
+                              <i class="fa-solid fa-times-circle has-text-danger"></i>
                             </span>
                           <% } else if (contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) === contractTransaction.transactionAmount.toFixed(2)) { %>
-                            <span data-tooltip="Matching Document Found">
-                              <i class="fa-solid fa-check-circle has-text-success" aria-label="Matching Document Found"></i>
+                            <span title="Matching Document Found">
+                              <i class="fa-solid fa-check-circle has-text-success"></i>
                             </span>
                           <% } else { %>
-                            <span data-tooltip="Matching Document: $<%= contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) %>">
-                              <i class="fa-solid fa-exclamation-triangle has-text-warning" aria-label="Matching Document: $<%= contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) %>"></i>
+                            <span title="Matching Document: $<%= contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) %>">
+                              <i class="fa-solid fa-exclamation-triangle has-text-warning"></i>
                             </span>
                           <% } %>
                         <% } %>
@@ -675,12 +675,12 @@
                       <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
                   </td>
                   <td class="is-nowrap">
-                    <span class="has-tooltip-left" data-tooltip="<%= workOrderOpenDateAlias %>">
-                      <i class="fa-solid fa-play" aria-label="<%= workOrderOpenDateAlias %>"></i>
+                    <span title="<%= workOrderOpenDateAlias %>">
+                      <i class="fa-solid fa-play"></i>
                       <%= workOrder.workOrderOpenDateString %>
                     </span><br />
-                    <span class="has-tooltip-left" data-tooltip="<%= workOrderCloseDateAlias %>">
-                      <i class="fa-solid fa-stop" aria-label="<%= workOrderCloseDateAlias %>"></i>
+                    <span title="<%= workOrderCloseDateAlias %>">
+                      <i class="fa-solid fa-stop"></i>
                       <% if (workOrder.workOrderCloseDate) { %>
                         <%= workOrder.workOrderCloseDateString %>
                       <% } else { %>

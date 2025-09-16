@@ -157,7 +157,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                   <span>Edit</span>
                   </button>`
                 : ''}
-          <button class="button is-danger is-light button--delete" data-tooltip="Delete Fee" type="button">
+          <button class="button is-danger is-light button--delete" title="Delete Fee" type="button">
             <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
           </button>
           </div>
@@ -504,19 +504,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 externalReceiptNumberHTML = cityssm.escapeHTML(contractTransaction.externalReceiptNumber ?? '');
                 if (sunrise.dynamicsGPIntegrationIsEnabled) {
                     if (contractTransaction.dynamicsGPDocument === undefined) {
-                        externalReceiptNumberHTML += ` <span data-tooltip="No Matching Document Found">
-                <i class="fa-solid fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
-                </span>`;
+                        externalReceiptNumberHTML += ` <span title="No Matching Document Found">
+                <i class="fa-solid fa-times-circle has-text-danger"></i>
+              </span>`;
                     }
                     else if (contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) ===
                         contractTransaction.transactionAmount.toFixed(2)) {
-                        externalReceiptNumberHTML += ` <span data-tooltip="Matching Document Found">
-                <i class="fa-solid fa-check-circle has-text-success" aria-label="Matching Document Found"></i>
-                </span>`;
+                        externalReceiptNumberHTML += ` <span title="Matching Document Found">
+                <i class="fa-solid fa-check-circle has-text-success"></i>
+              </span>`;
                     }
                     else {
-                        externalReceiptNumberHTML += ` <span data-tooltip="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2)}">
-            <i class="fa-solid fa-check-circle has-text-warning" aria-label="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2)}"></i>
+                        externalReceiptNumberHTML += ` <span title="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2)}">
+            <i class="fa-solid fa-check-circle has-text-warning"></i>
             </span>`;
                     }
                 }
@@ -538,10 +538,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </td>
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-            <button class="button is-primary button--edit" data-tooltip="Edit Transaction" type="button">
+            <button class="button is-primary button--edit" title="Edit Transaction" type="button">
               <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
             </button>
-            <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
+            <button class="button is-danger is-light button--delete" title="Delete Transaction" type="button">
               <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>

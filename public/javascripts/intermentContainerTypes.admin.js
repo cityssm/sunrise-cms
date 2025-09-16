@@ -139,7 +139,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </div>
           <div class="control">
             <button class="button is-danger is-light button--deleteIntermentContainerType"
-              data-tooltip="Delete Type" type="button" aria-label="Delete Type">
+              title="Delete Type" type="button">
               <span class="icon"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>

@@ -93,9 +93,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </td>
         <td>${intermentsHTML}</td>
         <td>
-          <button class="button is-danger is-light is-small has-tooltip-left"
-            data-tooltip="Remove Related Contract"
-            aria-label="Remove Related Contract"
+          <button class="button is-danger is-light is-small"
+            title="Remove Related Contract"
             type="button">
             <span class="icon is-small">
               <i class="fa-solid fa-trash"></i>

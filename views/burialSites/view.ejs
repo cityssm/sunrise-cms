@@ -52,15 +52,15 @@
     </button>
     <% } else if (!burialSiteIsDeleted) { %>
       <div class="buttons is-right">
-        <a class="button is-link is-outlined has-tooltip-left"
-          data-tooltip="Previous Burial Site"
+        <a class="button is-link is-outlined"
+          title="Previous Burial Site"
           href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/previous"
           <%- enableKeyboardShortcuts ? ' accesskey="," ' : '' %>>
           <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
           <span class="is-sr-only">Previous Burial Site</span>
         </a>
-        <a class="button is-link has-tooltip-left"
-          data-tooltip="Next Burial Site"
+        <a class="button is-link"
+          title="Next Burial Site"
           href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/next"
           <%- enableKeyboardShortcuts ? ' accesskey="." ' : '' %>>
           <span>Next</span>

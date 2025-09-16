@@ -198,7 +198,7 @@ declare const bulmaJS: BulmaJS
           </div>
           <div class="control">
             <button class="button is-danger is-light button--deleteWorkOrderType"
-              data-tooltip="Delete Work Order Type" type="button" aria-label="Delete Work Order Type">
+              title="Delete Work Order Type" type="button">
               <span class="icon"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>
