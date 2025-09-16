@@ -1,12 +1,15 @@
 <aside class="menu" aria-label="Work Orders">
-  <h2 class="menu-label is-hidden-touch">
-    Work Orders
-  </h2>
+  <h2 class="menu-label is-hidden-touch">Work Orders</h2>
   <ul class="menu-list">
+    <%
+      const isWorkOrderSearch = headTitle === 'Work Order Search';
+    %>
     <li>
-      <a class="<%= (headTitle === "Work Order Search" ? "is-active" : "") %>"
+      <a
+        class="<%= (isWorkOrderSearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/workOrders"
-        title="Work Order Search">
+        title="Work Order Search"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-hard-hat"></i></span>
@@ -14,11 +17,27 @@
           <div class="column is-hidden-touch">Work Order Search</div>
         </div>
       </a>
+      <% if (isWorkOrderSearch && user.userProperties.canUpdateWorkOrders) { %>
+        <ul>
+          <li>
+            <a
+              href="<%= urlPrefix %>/workOrders/new"
+              title="Create New Work Order"
+              <%- enableKeyboardShortcuts ? ' accesskey="n" ' : '' %>
+            >
+              <span class="is-hidden-touch">Create New Work Order</span>
+              <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
+            </a>
+          </li>
+        </ul>
+      <% } %>
     </li>
     <li>
-      <a class="<%= (headTitle === "Workday Report" ? "is-active" : "") %>"
+      <a
+        class="<%= (headTitle === 'Workday Report' ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/workOrders/workday"
-        title="Workday Report">
+        title="Workday Report"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-calendar-check"></i></span>
@@ -28,9 +47,11 @@
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle.endsWith("Milestone Calendar") ? "is-active" : "") %>"
+      <a
+        class="<%= (headTitle.endsWith('Milestone Calendar') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/workOrders/milestoneCalendar"
-        title="Milestone Calendar">
+        title="Milestone Calendar"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-calendar"></i></span>
@@ -40,24 +61,29 @@
       </a>
     </li>
   </ul>
-  <h2 class="menu-label is-hidden-touch">
-    Reports
-  </h2>
+  <h2 class="menu-label is-hidden-touch">Reports</h2>
   <ul class="menu-list">
     <li>
-      <a class="<%= (headTitle.endsWith("iCalendar Integration") ? "is-active" : "") %>"
+      <a
+        class="<%= (headTitle.endsWith('iCalendar Integration') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/workOrders/ical"
-        title="iCalendar Integration">
+        title="iCalendar Integration"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
-            <span class="icon"><i class="fa-solid fa-envelope-open-text"></i></span>
+            <span class="icon"
+              ><i class="fa-solid fa-envelope-open-text"></i
+            ></span>
           </div>
           <div class="column is-hidden-touch">iCalendar Integration</div>
         </div>
       </a>
     </li>
     <li>
-      <a href="<%= urlPrefix %>/reports/?tab=workOrders" title="Work Order Reports">
+      <a
+        href="<%= urlPrefix %>/reports/?tab=workOrders"
+        title="Work Order Reports"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-file"></i></span>
@@ -67,10 +93,17 @@
       </a>
     </li>
     <li>
-      <a href="https://cityssm.github.io/sunrise-cms/docs/workOrders.html" title="Help Documentation" rel="noopener noreferrer" target="_blank">
+      <a
+        href="https://cityssm.github.io/sunrise-cms/docs/workOrders.html"
+        title="Help Documentation"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
-            <span class="icon"><i class="fa-solid fa-circle-question"></i></span>
+            <span class="icon"
+              ><i class="fa-solid fa-circle-question"></i
+            ></span>
           </div>
           <div class="column is-hidden-touch">Help</div>
         </div>

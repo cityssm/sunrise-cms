@@ -3,8 +3,12 @@
     Cemeteries
   </h2>
   <ul class="menu-list">
+    <%
+      const isCemeterySearch = headTitle === "Cemetery Search";
+      const isBurialSiteSearch = headTitle === "Burial Site Search";
+    %>
     <li>
-      <a class="<%= (headTitle === "Cemetery Search" ? "is-active" : "") %>"
+      <a class="<%= (isCemeterySearch ? "is-active" : "") %>"
         href="<%= urlPrefix %>/cemeteries"
         title="Cemetery Search">
         <div class="columns is-mobile is-1">
@@ -14,9 +18,23 @@
           <div class="column is-hidden-touch">Cemetery Search</div>
         </div>
       </a>
+      <% if (isCemeterySearch && user.userProperties.canUpdateCemeteries) { %>
+        <ul>
+          <li>
+            <a
+              href="<%= urlPrefix %>/cemeteries/new"
+              title="Create New Cemetery"
+              <%- enableKeyboardShortcuts ? ' accesskey="n" ' : '' %>
+            >
+              <span class="is-hidden-touch">Create New Cemetery</span>
+              <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
+            </a>
+          </li>
+        </ul>
+      <% } %>
     </li>
     <li>
-      <a class="<%= (headTitle === "Burial Site Search" ? "is-active" : "") %>"
+      <a class="<%= (isBurialSiteSearch ? "is-active" : "") %>"
         href="<%= urlPrefix %>/burialSites"
         title="Burial Site Search">
         <div class="columns is-mobile is-1">
@@ -26,6 +44,20 @@
           <div class="column is-hidden-touch">Burial Site Search</div>
         </div>
       </a>
+      <% if (isBurialSiteSearch && user.userProperties.canUpdateCemeteries) { %>
+        <ul>
+          <li>
+            <a
+              href="<%= urlPrefix %>/burialSites/new"
+              title="Create New Burial Site"
+              <%- enableKeyboardShortcuts ? ' accesskey="n" ' : '' %>
+            >
+              <span class="is-hidden-touch">Create New Burial Site</span>
+              <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
+            </a>
+          </li>
+        </ul>
+      <% } %>
     </li>
   </ul>
   <% if (user.userProperties.canUpdateCemeteries) { %>
