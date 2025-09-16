@@ -9,7 +9,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import { getDynamicsGPDocument } from '../integrations/dynamicsGp/helpers.js'
 import type { ContractTransaction } from '../types/record.types.js'
 
-export default async function GetContractTransactions(
+export default async function getContractTransactions(
   contractId: number | string,
   options: {
     includeIntegrations: boolean
