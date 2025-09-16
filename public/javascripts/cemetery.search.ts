@@ -58,7 +58,7 @@ declare const exports: Record<string, unknown>
         </span>`
     }
 
-    if ((cemetery.cemeterySvg ?? '') !== '') {
+    if (cemetery.cemeterySvg !== '') {
       featuresHTML += `<span class="icon" title="Image">
         <i class="fa-solid fa-image" role="img"></i>
         </span>`

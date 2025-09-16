@@ -33,7 +33,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         <i class="fa-solid fa-map-marker-alt" role="img"></i>
         </span>`;
         }
-        if ((cemetery.cemeterySvg ?? '') !== '') {
+        if (cemetery.cemeterySvg !== '') {
             featuresHTML += `<span class="icon" title="Image">
         <i class="fa-solid fa-image" role="img"></i>
         </span>`;
