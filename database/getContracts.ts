@@ -249,7 +249,7 @@ function buildWhereClause(filters: GetContractsFilters): {
   const burialSiteNameFilters = getBurialSiteNameWhereClause(
     filters.burialSiteName,
     filters.burialSiteNameSearchType ?? '',
-    'l'
+    'b'
   )
 
   sqlWhereClause += burialSiteNameFilters.sqlWhereClause

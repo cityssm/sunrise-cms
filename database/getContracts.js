@@ -131,7 +131,7 @@ function buildWhereClause(filters) {
         sqlWhereClause += ' and c.burialSiteId = ?';
         sqlParameters.push(filters.burialSiteId);
     }
-    const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'l');
+    const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'b');
     sqlWhereClause += burialSiteNameFilters.sqlWhereClause;
     sqlParameters.push(...burialSiteNameFilters.sqlParameters);
     /*
