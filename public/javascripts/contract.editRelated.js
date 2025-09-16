@@ -141,9 +141,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         function loadContracts(formEvent) {
             formEvent?.preventDefault();
+            const containerElement = modalElement?.querySelector('#resultsContainer--relatedContractSelect');
+            // eslint-disable-next-line no-unsanitized/property
+            containerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Contracts...');
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`, formElement, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
-                const containerElement = modalElement?.querySelector('#resultsContainer--relatedContractSelect');
                 containerElement.innerHTML = '<div class="panel"></div>';
                 for (const contract of responseJSON.contracts) {
                     let intermentsHTML = '';
@@ -191,12 +193,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 formElement = modalElement.querySelector('form');
                 formElement.querySelector('#relatedContractSelect--notContractId').value = contractId;
                 formElement.querySelector('#relatedContractSelect--notRelatedContractId').value = contractId;
-                formElement.querySelector('#relatedContractSelect--burialSiteName').value = document.querySelector('#contract--burialSiteName').value;
+                const burialSiteNameElement = formElement.querySelector('#relatedContractSelect--burialSiteName');
+                burialSiteNameElement.value = document.querySelector('#contract--burialSiteName').value;
+                burialSiteNameElement.addEventListener('change', loadContracts);
                 loadContracts();
             },
-            onshown(_modalElement, _closeModalFunction) {
+            onshown(modalElement, _closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 closeModalFunction = _closeModalFunction;
+                modalElement
+                    .querySelector('#relatedContractSelect--burialSiteNameSearchType')
+                    ?.addEventListener('change', loadContracts);
                 formElement?.addEventListener('submit', loadContracts);
             },
             onremoved() {

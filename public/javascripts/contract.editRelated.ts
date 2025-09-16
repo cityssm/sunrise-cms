@@ -42,7 +42,7 @@ declare const exports: {
       message: `Are you sure you want to remove this related contract?<br />
         Note that this will not delete the contract itself, only the relationship.`,
       messageIsHtml: true,
-      
+
       okButton: {
         text: 'Remove Related Contract',
 
@@ -214,6 +214,15 @@ declare const exports: {
       function loadContracts(formEvent?: Event): void {
         formEvent?.preventDefault()
 
+        const containerElement = modalElement?.querySelector(
+          '#resultsContainer--relatedContractSelect'
+        ) as HTMLDivElement
+
+        // eslint-disable-next-line no-unsanitized/property
+        containerElement.innerHTML = sunrise.getLoadingParagraphHTML(
+          'Loading Contracts...'
+        )
+
         cityssm.postJSON(
           `${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`,
           formElement,
@@ -224,10 +233,6 @@ declare const exports: {
 
               contracts: Contract[]
             }
-
-            const containerElement = modalElement?.querySelector(
-              '#resultsContainer--relatedContractSelect'
-            ) as HTMLDivElement
 
             containerElement.innerHTML = '<div class="panel"></div>'
 
@@ -293,22 +298,29 @@ declare const exports: {
               '#relatedContractSelect--notRelatedContractId'
             ) as HTMLInputElement
           ).value = contractId
-          ;(
-            formElement.querySelector(
-              '#relatedContractSelect--burialSiteName'
-            ) as HTMLInputElement
-          ).value = (
+
+          const burialSiteNameElement = formElement.querySelector(
+            '#relatedContractSelect--burialSiteName'
+          ) as HTMLInputElement
+
+          burialSiteNameElement.value = (
             document.querySelector(
               '#contract--burialSiteName'
             ) as HTMLInputElement
           ).value
 
+          burialSiteNameElement.addEventListener('change', loadContracts)
+
           loadContracts()
         },
-        onshown(_modalElement, _closeModalFunction) {
+        onshown(modalElement, _closeModalFunction) {
           bulmaJS.toggleHtmlClipped()
 
           closeModalFunction = _closeModalFunction
+
+          modalElement
+            .querySelector('#relatedContractSelect--burialSiteNameSearchType')
+            ?.addEventListener('change', loadContracts)
 
           formElement?.addEventListener('submit', loadContracts)
         },
