@@ -158,7 +158,7 @@ function buildWhereClause(
   sqlParameters.push(...burialSiteNameFilters.sqlParameters)
 
   if ((filters.cemeteryId ?? '') !== '') {
-    sqlWhereClause += ' and (c.cemeteryId = ? or c.parentCemeteryId = ?)'
+    sqlWhereClause += ' and (cem.cemeteryId = ? or cem.parentCemeteryId = ?)'
     sqlParameters.push(filters.cemeteryId, filters.cemeteryId)
   }
 
