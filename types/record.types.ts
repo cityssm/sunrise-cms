@@ -169,10 +169,10 @@ export interface Contract extends Record {
   cemeteryName?: string
 
   contractStartDate: number
-  contractStartDateString: string
+  contractStartDateString: '' | DateString
 
   contractEndDate?: number | null
-  contractEndDateString?: string
+  contractEndDateString?: '' | DateString
 
   contractIsActive: 0 | 1
   contractIsFuture: 0 | 1
@@ -203,7 +203,7 @@ export interface Contract extends Record {
   funeralHomeProvince?: string
 
   funeralDate?: number
-  funeralDateString?: DateString
+  funeralDateString?: '' | DateString
 
   funeralTime?: number
   funeralTimePeriodString?: string

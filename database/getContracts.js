@@ -12,9 +12,6 @@ const validOrderByStrings = [
 ];
 export default async function getContracts(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
-    database.function('userFn_dateIntegerToString', dateIntegerToString);
-    database.function('userFn_timeIntegerToString', timeIntegerToString);
-    database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     let count = typeof options.limit === 'string'
         ? Number.parseInt(options.limit, 10)
@@ -43,8 +40,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
             case when b.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
             b.cemeteryId, cem.cemeteryName,
 
-            c.contractStartDate, userFn_dateIntegerToString(c.contractStartDate) as contractStartDateString,
-            c.contractEndDate, userFn_dateIntegerToString(c.contractEndDate) as contractEndDateString,
+            c.contractStartDate, c.contractEndDate,
 
             (c.contractEndDate is null or c.contractEndDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsActive,
             (c.contractStartDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsFuture,
@@ -54,11 +50,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
             c.purchaserPhoneNumber, c.purchaserEmail, c.purchaserRelationship,
             c.funeralHomeId, c.funeralDirectorName, f.funeralHomeName,
 
-            c.funeralDate, userFn_dateIntegerToString(c.funeralDate) as funeralDateString,
-            
-            c.funeralTime,
-            userFn_timeIntegerToString(c.funeralTime) as funeralTimeString,
-            userFn_timeIntegerToPeriodString(c.funeralTime) as funeralTimePeriodString,
+            c.funeralDate, c.funeralTime,
 
             c.directionOfArrival,
             c.committalTypeId, cm.committalType
@@ -87,6 +79,17 @@ export default async function getContracts(filters, options, connectedDatabase) 
             count = contracts.length;
         }
         for (const contract of contracts) {
+            /*
+             * Format dates and times
+             */
+            contract.contractStartDateString = dateIntegerToString(contract.contractStartDate);
+            contract.contractEndDateString = dateIntegerToString(contract.contractEndDate ?? 0);
+            contract.funeralDateString = dateIntegerToString(contract.funeralDate ?? 0);
+            contract.funeralTimeString = timeIntegerToString(contract.funeralTime);
+            contract.funeralTimePeriodString = timeIntegerToPeriodString(contract.funeralTime);
+            /*
+             * Print
+             */
             addPrint(contract);
             await addInclusions(contract, options, database);
         }
@@ -136,7 +139,7 @@ function buildWhereClause(filters) {
     sqlParameters.push(...burialSiteNameFilters.sqlParameters);
     /*
      * Purchaser Name
-      */
+     */
     const purchaserNameFilters = getPurchaserNameWhereClause(filters.purchaserName, 'c');
     if (purchaserNameFilters.sqlParameters.length > 0) {
         sqlWhereClause += purchaserNameFilters.sqlWhereClause;

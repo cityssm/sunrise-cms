@@ -119,9 +119,9 @@ export interface Contract extends Record {
     cemeteryId?: number;
     cemeteryName?: string;
     contractStartDate: number;
-    contractStartDateString: string;
+    contractStartDateString: '' | DateString;
     contractEndDate?: number | null;
-    contractEndDateString?: string;
+    contractEndDateString?: '' | DateString;
     contractIsActive: 0 | 1;
     contractIsFuture: 0 | 1;
     purchaserName: string;
@@ -144,7 +144,7 @@ export interface Contract extends Record {
     funeralHomePostalCode?: string;
     funeralHomeProvince?: string;
     funeralDate?: number;
-    funeralDateString?: DateString;
+    funeralDateString?: '' | DateString;
     funeralTime?: number;
     funeralTimePeriodString?: string;
     funeralTimeString?: TimeString;
