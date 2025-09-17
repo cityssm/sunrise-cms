@@ -9,7 +9,7 @@ export default function handler(
 ): void {
   const success = deleteRecord(
     'IntermentContainerTypes',
-    request.body.intermentContainerTypeId as string,
+    request.body.intermentContainerTypeId,
     request.session.user as User
   )
 

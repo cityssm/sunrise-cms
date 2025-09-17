@@ -9,8 +9,8 @@ export default function handler(request, response) {
     let database;
     try {
         database = sqlite(sunriseDB);
-        addContractInterment(request.body, request.session.user);
-        const contractInterments = getContractInterments(request.body.contractId);
+        addContractInterment(request.body, request.session.user, database);
+        const contractInterments = getContractInterments(request.body.contractId, database);
         response.json({
             success: true,
             contractInterments

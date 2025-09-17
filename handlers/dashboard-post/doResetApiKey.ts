@@ -15,10 +15,14 @@ export default function handler(request: Request, response: Response): void {
   try {
     database = sqlite(sunriseDB)
 
-    const apiKey = updateApiKeyUserSetting(request.session.user?.userName ?? '')
+    const apiKey = updateApiKeyUserSetting(
+      request.session.user?.userName ?? '',
+      database
+    )
 
     ;(request.session.user as User).userSettings = getUserSettings(
-      request.session.user?.userName ?? ''
+      request.session.user?.userName ?? '',
+      database
     )
 
     response.json({

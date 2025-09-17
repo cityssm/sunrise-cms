@@ -9,7 +9,7 @@ export default async function handler(request, response) {
     let database;
     try {
         database = sqlite(sunriseDB);
-        addRelatedContract(request.body);
+        addRelatedContract(request.body, database);
         const relatedContracts = await getContracts({
             relatedContractId: request.body.contractId
         }, {
@@ -18,7 +18,7 @@ export default async function handler(request, response) {
             includeFees: false,
             includeInterments: true,
             includeTransactions: false
-        });
+        }, database);
         response.json({
             success: true,
             relatedContracts: relatedContracts.contracts

@@ -20,9 +20,12 @@ export default function handler(
   try {
     database = sqlite(sunriseDB)
 
-    addContractInterment(request.body, request.session.user as User)
+    addContractInterment(request.body, request.session.user as User, database)
 
-    const contractInterments = getContractInterments(request.body.contractId)
+    const contractInterments = getContractInterments(
+      request.body.contractId,
+      database
+    )
 
     response.json({
       success: true,

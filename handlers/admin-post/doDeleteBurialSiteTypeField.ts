@@ -9,7 +9,7 @@ export default function handler(
 ): void {
   const success = deleteRecord(
     'BurialSiteTypeFields',
-    request.body.burialSiteTypeFieldId as string,
+    request.body.burialSiteTypeFieldId,
     request.session.user as User
   )
 

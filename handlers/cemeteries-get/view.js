@@ -1,23 +1,41 @@
+import sqlite from 'better-sqlite3';
+import Debug from 'debug';
 import getBurialSiteStatusSummary from '../../database/getBurialSiteStatusSummary.js';
 import getBurialSiteTypeSummary from '../../database/getBurialSiteTypeSummary.js';
 import getCemetery from '../../database/getCemetery.js';
+import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
+import { sunriseDB } from '../../helpers/database.helpers.js';
+const debug = Debug(`${DEBUG_NAMESPACE}:handlers:cemeteries:view`);
 export default function handler(request, response) {
-    const cemetery = getCemetery(request.params.cemeteryId);
-    if (cemetery === undefined) {
-        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/cemeteries/?error=cemeteryIdNotFound`);
-        return;
+    let database;
+    try {
+        database = sqlite(sunriseDB);
+        const cemetery = getCemetery(request.params.cemeteryId, database);
+        if (cemetery === undefined) {
+            response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/cemeteries/?error=cemeteryIdNotFound`);
+            return;
+        }
+        const burialSiteTypeSummary = getBurialSiteTypeSummary({
+            cemeteryId: cemetery.cemeteryId
+        }, database);
+        const burialSiteStatusSummary = getBurialSiteStatusSummary({
+            cemeteryId: cemetery.cemeteryId
+        }, database);
+        response.render('cemeteries/view', {
+            headTitle: cemetery.cemeteryName,
+            cemetery,
+            burialSiteStatusSummary,
+            burialSiteTypeSummary
+        });
     }
-    const burialSiteTypeSummary = getBurialSiteTypeSummary({
-        cemeteryId: cemetery.cemeteryId
-    });
-    const burialSiteStatusSummary = getBurialSiteStatusSummary({
-        cemeteryId: cemetery.cemeteryId
-    });
-    response.render('cemeteries/view', {
-        headTitle: cemetery.cemeteryName,
-        cemetery,
-        burialSiteStatusSummary,
-        burialSiteTypeSummary
-    });
+    catch (error) {
+        debug(error);
+        response
+            .status(500)
+            .json({ errorMessage: 'Database error', success: false });
+    }
+    finally {
+        database?.close();
+    }
 }

@@ -1,5 +1,5 @@
 import sqlite from 'better-sqlite3'
-import Debug from "debug"
+import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import addContractFee, {
@@ -22,7 +22,10 @@ export default async function handler(
 
     await addContractFee(request.body, request.session.user as User, database)
 
-    const contractFees = getContractFees(request.body.contractId as string, database)
+    const contractFees = getContractFees(
+      request.body.contractId as string,
+      database
+    )
 
     response.json({
       success: true,
@@ -31,7 +34,9 @@ export default async function handler(
     })
   } catch (error) {
     debug(error)
-    response.status(500).json({ errorMessage: 'Database error', success: false })
+    response
+      .status(500)
+      .json({ errorMessage: 'Database error', success: false })
   } finally {
     database?.close()
   }

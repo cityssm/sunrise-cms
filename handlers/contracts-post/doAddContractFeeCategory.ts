@@ -22,9 +22,16 @@ export default async function handler(
   try {
     database = sqlite(sunriseDB)
 
-    await addContractFeeCategory(request.body, request.session.user as User, database)
+    await addContractFeeCategory(
+      request.body,
+      request.session.user as User,
+      database
+    )
 
-    const contractFees = getContractFees(request.body.contractId as string, database)
+    const contractFees = getContractFees(
+      request.body.contractId as string,
+      database
+    )
 
     response.json({
       success: true,

@@ -22,13 +22,14 @@ export default async function handler(
   try {
     database = sqlite(sunriseDB)
 
-    addContractTransaction(request.body, request.session.user as User)
+    addContractTransaction(request.body, request.session.user as User, database)
 
     const contractTransactions = await getContractTransactions(
       request.body.contractId,
       {
         includeIntegrations: true
-      }
+      },
+      database
     )
 
     response.json({

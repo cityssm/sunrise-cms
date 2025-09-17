@@ -1,5 +1,5 @@
 import sqlite from 'better-sqlite3'
-import Debug from "debug"
+import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import deleteContractFee from '../../database/deleteContractFee.js'
@@ -34,7 +34,9 @@ export default function handler(
     })
   } catch (error) {
     debug(error)
-    response.status(500).json({ errorMessage: 'Database error', success: false })
+    response
+      .status(500)
+      .json({ errorMessage: 'Database error', success: false })
   } finally {
     database?.close()
   }

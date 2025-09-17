@@ -9,7 +9,7 @@ export default function handler(
 ): void {
   const success = deleteRecord(
     'CommittalTypes',
-    request.body.committalTypeId as string,
+    request.body.committalTypeId,
     request.session.user as User
   )
 

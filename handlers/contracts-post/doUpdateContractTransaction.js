@@ -9,10 +9,10 @@ export default async function handler(request, response) {
     let database;
     try {
         database = sqlite(sunriseDB);
-        updateContractTransaction(request.body, request.session.user);
+        updateContractTransaction(request.body, request.session.user, database);
         const contractTransactions = await getContractTransactions(request.body.contractId, {
             includeIntegrations: true
-        });
+        }, database);
         response.json({
             success: true,
             contractTransactions

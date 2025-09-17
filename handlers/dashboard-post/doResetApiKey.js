@@ -9,8 +9,8 @@ export default function handler(request, response) {
     let database;
     try {
         database = sqlite(sunriseDB);
-        const apiKey = updateApiKeyUserSetting(request.session.user?.userName ?? '');
-        request.session.user.userSettings = getUserSettings(request.session.user?.userName ?? '');
+        const apiKey = updateApiKeyUserSetting(request.session.user?.userName ?? '', database);
+        request.session.user.userSettings = getUserSettings(request.session.user?.userName ?? '', database);
         response.json({
             success: true,
             apiKey

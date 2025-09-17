@@ -1,5 +1,5 @@
 import sqlite from 'better-sqlite3';
-import Debug from "debug";
+import Debug from 'debug';
 import addContractFee from '../../database/addContractFee.js';
 import getContractFees from '../../database/getContractFees.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
@@ -18,7 +18,9 @@ export default async function handler(request, response) {
     }
     catch (error) {
         debug(error);
-        response.status(500).json({ errorMessage: 'Database error', success: false });
+        response
+            .status(500)
+            .json({ errorMessage: 'Database error', success: false });
     }
     finally {
         database?.close();
