@@ -36,7 +36,6 @@ config.settings.burialSites.burialSiteNameSegments = {
         }
     }
 };
-config.settings.cityDefault = 'Sault Ste. Marie';
 config.settings.latitudeMax = 46.75;
 config.settings.latitudeMin = 46.4;
 config.settings.longitudeMax = -84.2;

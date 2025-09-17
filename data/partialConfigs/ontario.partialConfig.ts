@@ -4,8 +4,6 @@ import { config as baseConfig } from './partialConfig.js'
 
 export const config: Config = { ...baseConfig }
 
-config.settings.provinceDefault = 'ON'
-
 config.settings.latitudeMax = 56.85
 config.settings.latitudeMin = 41.68
 

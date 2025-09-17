@@ -45,10 +45,6 @@ export interface Config {
         isAdmin?: string[];
     };
     settings: {
-        /** Default City */
-        cityDefault?: string;
-        /** Default Province */
-        provinceDefault?: string;
         /** Whether keyboard shortcuts are enabled */
         enableKeyboardShortcuts?: boolean;
         /** The maximum latitude */

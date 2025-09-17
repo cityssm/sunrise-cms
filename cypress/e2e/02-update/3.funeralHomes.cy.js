@@ -1,4 +1,4 @@
-import config from '../../../data/config.js';
+import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js';
 import { testUpdate } from '../../../test/_globals.js';
 import { login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Funeral Homes - Update', () => {
@@ -36,8 +36,8 @@ describe('Funeral Homes - Update', () => {
                 .type(funeralHomeData.funeralHomePhoneNumber);
         });
         cy.log('Ensure the default city and province are used');
-        cy.get("input[name='funeralHomeCity']").should('have.value', config.settings.cityDefault ?? '');
-        cy.get("input[name='funeralHomeProvince']").should('have.value', config.settings.provinceDefault ?? '');
+        cy.get("input[name='funeralHomeCity']").should('have.value', getCachedSettingValue('defaults.city'));
+        cy.get("input[name='funeralHomeProvince']").should('have.value', getCachedSettingValue('defaults.province'));
         cy.log('Submit the form');
         cy.get('#form--funeralHome').submit();
         cy.wait(pageLoadDelayMillis)
@@ -48,9 +48,9 @@ describe('Funeral Homes - Update', () => {
             cy.get("input[name='funeralHomeName']").should('have.value', funeralHomeData.funeralHomeName);
             cy.get("input[name='funeralHomeAddress1']").should('have.value', funeralHomeData.funeralHomeAddress1);
             cy.get("input[name='funeralHomeAddress2']").should('have.value', funeralHomeData.funeralHomeAddress2);
-            cy.get("input[name='funeralHomeCity']").should('have.value', config.settings.cityDefault ?? '');
-            cy.get("input[name='funeralHomeProvince']").should('have.value', config.settings.provinceDefault ?? '');
-            cy.get("input[name='funeralHomeProvince']").should('have.value', config.settings.provinceDefault ?? '');
+            cy.get("input[name='funeralHomeCity']").should('have.value', getCachedSettingValue('defaults.city'));
+            cy.get("input[name='funeralHomeProvince']").should('have.value', getCachedSettingValue('defaults.province'));
+            cy.get("input[name='funeralHomeProvince']").should('have.value', getCachedSettingValue('defaults.province'));
             cy.get("input[name='funeralHomePostalCode']").should('have.value', funeralHomeData.funeralHomePostalCode);
             cy.get("input[name='funeralHomePhoneNumber']").should('have.value', funeralHomeData.funeralHomePhoneNumber);
         });

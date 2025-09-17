@@ -66,9 +66,6 @@ export const configDefaultValues = {
   'users.isAdmin': ['administrator'],
   'users.testing': [] as string[],
 
-  'settings.cityDefault': '',
-  'settings.provinceDefault': '',
-
   'settings.customizationsPath': '.',
   'settings.enableKeyboardShortcuts': true,
 

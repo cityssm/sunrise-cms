@@ -27,8 +27,6 @@ export const configDefaultValues = {
     'users.canUpdateWorkOrders': [],
     'users.isAdmin': ['administrator'],
     'users.testing': [],
-    'settings.cityDefault': '',
-    'settings.provinceDefault': '',
     'settings.customizationsPath': '.',
     'settings.enableKeyboardShortcuts': true,
     'settings.latitudeMax': 90,

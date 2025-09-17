@@ -5,7 +5,7 @@ import type { Request, Response } from 'express'
 
 import { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js'
 import getCemeteries from '../../database/getCemeteries.js'
-import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import { getCemeterySVGs } from '../../helpers/images.helpers.js'
 import type { Cemetery } from '../../types/record.types.js'
 
@@ -14,8 +14,8 @@ export default async function handler(
   response: Response
 ): Promise<void> {
   const cemetery: Cemetery = {
-    cemeteryCity: getConfigProperty('settings.cityDefault'),
-    cemeteryProvince: getConfigProperty('settings.provinceDefault'),
+    cemeteryCity: getCachedSettingValue('defaults.city'),
+    cemeteryProvince: getCachedSettingValue('defaults.province'),
 
     cemeteryAddress1: '',
     cemeteryAddress2: '',

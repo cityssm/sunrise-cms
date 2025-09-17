@@ -42,6 +42,22 @@ export const settingProperties = [
         isUserConfigurable: true
     },
     {
+        settingKey: 'defaults.city',
+        settingName: 'Defaults - City',
+        description: 'The default city for new records.',
+        type: 'string',
+        defaultValue: '',
+        isUserConfigurable: true
+    },
+    {
+        settingKey: 'defaults.province',
+        settingName: 'Defaults - Province',
+        description: 'The default two-letter province for new records.',
+        type: 'string',
+        defaultValue: '',
+        isUserConfigurable: true
+    },
+    {
         settingKey: 'workOrder.workDay.0.startHour',
         settingName: 'Work Order Work Day - Sunday - Start Hour',
         description: 'The first hour for work day on Sunday.',

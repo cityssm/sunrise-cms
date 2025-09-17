@@ -2,12 +2,12 @@
 /* eslint-disable unicorn/no-null */
 import { defaultDirectionsOfArrival } from '../../database/getBurialSiteDirectionsOfArrival.js';
 import getCemeteries from '../../database/getCemeteries.js';
-import { getConfigProperty } from '../../helpers/config.helpers.js';
+import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js';
 import { getCemeterySVGs } from '../../helpers/images.helpers.js';
 export default async function handler(_request, response) {
     const cemetery = {
-        cemeteryCity: getConfigProperty('settings.cityDefault'),
-        cemeteryProvince: getConfigProperty('settings.provinceDefault'),
+        cemeteryCity: getCachedSettingValue('defaults.city'),
+        cemeteryProvince: getCachedSettingValue('defaults.province'),
         cemeteryAddress1: '',
         cemeteryAddress2: '',
         cemeteryDescription: '',

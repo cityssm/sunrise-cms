@@ -69,12 +69,6 @@ export interface Config {
   }
 
   settings: {
-    /** Default City */
-    cityDefault?: string
-
-    /** Default Province */
-    provinceDefault?: string
-
     /** Whether keyboard shortcuts are enabled */
     enableKeyboardShortcuts?: boolean
 

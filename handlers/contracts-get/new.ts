@@ -12,7 +12,7 @@ import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.ca
 import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js'
 import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js'
 import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js'
-import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import type { Contract } from '../../types/record.types.js'
 
 export default async function handler(
@@ -26,8 +26,8 @@ export default async function handler(
 
     contractStartDate: dateToInteger(startDate),
     contractStartDateString: dateToString(startDate),
-    purchaserCity: getConfigProperty('settings.cityDefault'),
-    purchaserProvince: getConfigProperty('settings.provinceDefault')
+    purchaserCity: getCachedSettingValue('defaults.city'),
+    purchaserProvince: getCachedSettingValue('defaults.province')
   }
 
   if (request.query.burialSiteId !== undefined) {

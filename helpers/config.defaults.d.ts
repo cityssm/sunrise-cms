@@ -42,8 +42,6 @@ export declare const configDefaultValues: {
     'users.canUpdateWorkOrders': string[];
     'users.isAdmin': string[];
     'users.testing': string[];
-    'settings.cityDefault': string;
-    'settings.provinceDefault': string;
     'settings.customizationsPath': string;
     'settings.enableKeyboardShortcuts': boolean;
     'settings.latitudeMax': number;

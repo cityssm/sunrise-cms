@@ -8,6 +8,8 @@ export type SettingKey =
   | 'application.csrfSecret'
   | 'burialSiteTypes.bodyCapacityMaxDefault'
   | 'burialSiteTypes.crematedCapacityMaxDefault'
+  | 'defaults.city'
+  | 'defaults.province'
   | 'pdfPuppeteer.browserInstallAttempted'
   | 'workOrder.workDay.0.endHour'
   | 'workOrder.workDay.0.startHour'
@@ -78,6 +80,22 @@ export const settingProperties: SettingProperties[] = [
     description: 'The default maximum cremated capacity for burial site types.',
     type: 'number',
     defaultValue: '6',
+    isUserConfigurable: true
+  },
+  {
+    settingKey: 'defaults.city',
+    settingName: 'Defaults - City',
+    description: 'The default city for new records.',
+    type: 'string',
+    defaultValue: '',
+    isUserConfigurable: true
+  },
+  {
+    settingKey: 'defaults.province',
+    settingName: 'Defaults - Province',
+    description: 'The default two-letter province for new records.',
+    type: 'string',
+    defaultValue: '',
     isUserConfigurable: true
   },
   {

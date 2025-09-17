@@ -1,4 +1,4 @@
-import config from '../../../data/config.js'
+import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { FuneralHome } from '../../../types/record.types.js'
 import { login, logout, pageLoadDelayMillis } from '../../support/index.js'
@@ -53,12 +53,12 @@ describe('Funeral Homes - Update', () => {
 
     cy.get("input[name='funeralHomeCity']").should(
       'have.value',
-      config.settings.cityDefault ?? ''
+      getCachedSettingValue('defaults.city')
     )
 
     cy.get("input[name='funeralHomeProvince']").should(
       'have.value',
-      config.settings.provinceDefault ?? ''
+      getCachedSettingValue('defaults.province')
     )
 
     cy.log('Submit the form')
@@ -88,17 +88,17 @@ describe('Funeral Homes - Update', () => {
 
       cy.get("input[name='funeralHomeCity']").should(
         'have.value',
-        config.settings.cityDefault ?? ''
+        getCachedSettingValue('defaults.city')
       )
 
       cy.get("input[name='funeralHomeProvince']").should(
         'have.value',
-        config.settings.provinceDefault ?? ''
+        getCachedSettingValue('defaults.province')
       )
       
       cy.get("input[name='funeralHomeProvince']").should(
         'have.value',
-        config.settings.provinceDefault ?? ''
+        getCachedSettingValue('defaults.province')
       )
 
       cy.get("input[name='funeralHomePostalCode']").should(

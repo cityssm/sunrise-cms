@@ -1202,8 +1202,8 @@
 
 <% if (!isCreate) { %>
   <script>
-    exports.cityDefault = "<%= configFunctions.getConfigProperty('settings.cityDefault') %>";
-    exports.provinceDefault = "<%= configFunctions.getConfigProperty('settings.provinceDefault') %>";
+    exports.cityDefault = "<%= settingFunctions.getSettingValue('defaults.city') %>";
+    exports.provinceDefault = "<%= settingFunctions.getSettingValue('defaults.province') %>";
 
     exports.contractInterments = <%- JSON.stringify(contract.contractInterments) %>;
     exports.intermentContainerTypes = <%- JSON.stringify(intermentContainerTypes) %>;

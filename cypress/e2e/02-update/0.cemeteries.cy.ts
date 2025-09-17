@@ -1,4 +1,4 @@
-import config from '../../../data/config.js'
+import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { Cemetery } from '../../../types/record.types.js'
 import { login, logout, pageLoadDelayMillis } from '../../support/index.js'
@@ -67,12 +67,12 @@ describe('Cemeteries - Update', () => {
 
     cy.get("input[name='cemeteryCity']").should(
       'have.value',
-      config.settings.cityDefault ?? ''
+      getCachedSettingValue('defaults.city')
     )
 
     cy.get("input[name='cemeteryProvince']").should(
       'have.value',
-      config.settings.provinceDefault ?? ''
+      getCachedSettingValue('defaults.province')
     )
 
     cy.log('Submit the form')
@@ -107,12 +107,12 @@ describe('Cemeteries - Update', () => {
 
       cy.get("input[name='cemeteryCity']").should(
         'have.value',
-        config.settings.cityDefault ?? ''
+        getCachedSettingValue('defaults.city')
       )
 
       cy.get("input[name='cemeteryProvince']").should(
         'have.value',
-        config.settings.provinceDefault ?? ''
+        getCachedSettingValue('defaults.province')
       )
 
       cy.get("input[name='cemeteryPostalCode']").should(
@@ -149,6 +149,5 @@ describe('Cemeteries - Update', () => {
     cy.get(moreOptionsSelector).find('.dropdown-trigger button').click()
 
     cy.get(moreOptionsSelector).should('not.have.class', 'is-active')
-
   })
 })
