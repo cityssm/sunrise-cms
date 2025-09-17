@@ -42,6 +42,10 @@ The whole application could run on a current, modest workstation.
 
 There are no limits to the number of records that can be tracked in Sunrise CMS.
 
+### ✔️ No Limit on Users
+
+Create the user accounts you need without limits.
+
 ### ✔️ Includes a Simple Built-In Work Order System
 
 In addition to tracking data related to cemetery plots,
@@ -49,7 +53,7 @@ Sunrise CMS can also track work order activities, like interments and grave main
 
 ### ✔️ Sunrise CMS is Free and Open Source
 
-There's no cost to use it.
+There's no cost to use it and no risk to try it.
 
 ## About this Project
 
