@@ -5,7 +5,7 @@ while remaining open and budget conscious.
 
 **Thank you for taking the time to read the contributing guidelines.**
 
-## All contributions are welcome
+## Contributions are very welcome
 
 Being a very small team, contributions are greatly appreciated. How can you contribute?
 
@@ -13,6 +13,10 @@ Being a very small team, contributions are greatly appreciated. How can you cont
 - 🆘 Documentation and tutorials
 - 🐞 Submit bug reports (or fix them!)
 - ✨ Request new features (or build them!)
+
+Please note that this project has been written for use by
+the City of Sault Ste. Marie. Contributions can only be accepted if
+they do not go against the needs of the City.
 
 ## Please Read the Code of Conduct
 
