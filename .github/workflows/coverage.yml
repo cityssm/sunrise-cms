@@ -52,13 +52,41 @@ jobs:
           ./codecov -t ${CODECOV_TOKEN}
 
   Windows:
-    runs-on: windows-latest
+    runs-on: windows-2025
     strategy:
       fail-fast: false
       matrix:
         node: [ 20, 22 ]
 
     name: Windows - Node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v5
+      
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+
+      - name: Install Application
+        run: |
+          npm ci
+          npm install -g cypress@15
+
+      - name: Copy Test Config
+        run: cp ./data/testing.config.js ./data/config.js
+        
+      - name: Run Test
+        run: node --test --test-concurrency 1
+
+  Mac:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [ 22, 24 ]
+
+    name: MacOS - Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v5
       
