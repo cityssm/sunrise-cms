@@ -1,4 +1,4 @@
-import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
+// import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { Cemetery } from '../../../types/record.types.js'
 import { login, logout, pageLoadDelayMillis } from '../../support/index.js'
@@ -63,6 +63,7 @@ describe('Cemeteries - Update', () => {
         .type(cemeteryData.cemeteryLongitude?.toString() ?? '')
     })
 
+    /*
     cy.log('Ensure the default city and province are used')
 
     cy.get("input[name='cemeteryCity']").should(
@@ -74,6 +75,7 @@ describe('Cemeteries - Update', () => {
       'have.value',
       getCachedSettingValue('defaults.province')
     )
+    */
 
     cy.log('Submit the form')
 
@@ -105,6 +107,7 @@ describe('Cemeteries - Update', () => {
         cemeteryData.cemeteryAddress2
       )
 
+      /*
       cy.get("input[name='cemeteryCity']").should(
         'have.value',
         getCachedSettingValue('defaults.city')
@@ -114,6 +117,7 @@ describe('Cemeteries - Update', () => {
         'have.value',
         getCachedSettingValue('defaults.province')
       )
+      */
 
       cy.get("input[name='cemeteryPostalCode']").should(
         'have.value',

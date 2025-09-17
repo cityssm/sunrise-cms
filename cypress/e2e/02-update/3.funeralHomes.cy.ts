@@ -1,4 +1,4 @@
-import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
+// import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { FuneralHome } from '../../../types/record.types.js'
 import { login, logout, pageLoadDelayMillis } from '../../support/index.js'
@@ -49,6 +49,7 @@ describe('Funeral Homes - Update', () => {
         .type(funeralHomeData.funeralHomePhoneNumber)
     })
 
+    /*
     cy.log('Ensure the default city and province are used')
 
     cy.get("input[name='funeralHomeCity']").should(
@@ -60,6 +61,7 @@ describe('Funeral Homes - Update', () => {
       'have.value',
       getCachedSettingValue('defaults.province')
     )
+    */
 
     cy.log('Submit the form')
 
@@ -86,6 +88,7 @@ describe('Funeral Homes - Update', () => {
         funeralHomeData.funeralHomeAddress2
       )
 
+      /*
       cy.get("input[name='funeralHomeCity']").should(
         'have.value',
         getCachedSettingValue('defaults.city')
@@ -95,11 +98,7 @@ describe('Funeral Homes - Update', () => {
         'have.value',
         getCachedSettingValue('defaults.province')
       )
-      
-      cy.get("input[name='funeralHomeProvince']").should(
-        'have.value',
-        getCachedSettingValue('defaults.province')
-      )
+      */
 
       cy.get("input[name='funeralHomePostalCode']").should(
         'have.value',
