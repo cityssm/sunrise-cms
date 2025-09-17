@@ -1,15 +1,17 @@
+import sqlite from 'better-sqlite3'
 import type { Request, Response } from 'express'
 
 import deleteUser from '../../database/deleteUser.js'
 import getUsers from '../../database/getUsers.js'
+import { sunriseDB } from '../../helpers/database.helpers.js'
 
 export default function handler(
-  request: Request<unknown, unknown, { userName: string }>,
+  request: Request<unknown, unknown, { userName?: string }>,
   response: Response
 ): void {
-  const userName = request.body.userName
+  const userName = request.body.userName?.trim() ?? ''
 
-  if (!userName) {
+  if (userName === '') {
     response.status(400).json({
       message: 'User name is required',
       success: false
@@ -17,11 +19,16 @@ export default function handler(
     return
   }
 
+  let database: sqlite.Database | undefined
+
   try {
-    const success = deleteUser(userName, request.session.user as User)
+    database = sqlite(sunriseDB)
+
+    const success = deleteUser(userName, request.session.user as User, database)
 
     if (success) {
-      const users = getUsers()
+      const users = getUsers(database)
+
       response.json({
         message: 'User deleted successfully',
         success: true,
@@ -38,5 +45,7 @@ export default function handler(
       message: error instanceof Error ? error.message : 'Failed to delete user',
       success: false
     })
+  } finally {
+    database?.close()
   }
 }
