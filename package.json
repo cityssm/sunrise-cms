@@ -38,7 +38,6 @@
     "@cityssm/bulma-webapp-js": "^2.0.0-beta",
     "@cityssm/configurator": "^0.1.0",
     "@cityssm/consigno-cloud-api": "^1.1.4",
-    "@cityssm/date-diff": "^2.2.3",
     "@cityssm/dynamics-gp": "^1.4.1",
     "@cityssm/express-abuse-points": "^3.1.0",
     "@cityssm/fa-glow": "^0.1.0",
@@ -77,7 +76,6 @@
   "devDependencies": {
     "@cityssm/bulma-sticky-table": "^3.0.1",
     "@cityssm/is-pdf": "^2.0.0",
-    "@cityssm/mssql-multi-pool": "^5.1.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/compression": "^1.8.1",
     "@types/cookie-parser": "^1.4.9",
