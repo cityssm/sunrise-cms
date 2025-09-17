@@ -12,6 +12,6 @@ export default function handler(
 
   response.json({
     success,
-    workOrderId: request.body.workOrderId as string
+    workOrderId: request.body.workOrderId
   })
 }

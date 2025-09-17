@@ -21,9 +21,9 @@ const recordNameIdColumns = new Map<RecordTable, string[]>([
 
 function updateRecord(
   record: {
-    recordTable: RecordTable
     recordId: number | string
     recordName: string
+    recordTable: RecordTable
   },
   user: User,
   connectedDatabase?: sqlite.Database
@@ -64,9 +64,9 @@ export function updateBurialSiteStatus(
 ): boolean {
   return updateRecord(
     {
-      recordTable: 'BurialSiteStatuses',
       recordId: burialSiteStatusId,
-      recordName: burialSiteStatus
+      recordName: burialSiteStatus,
+      recordTable: 'BurialSiteStatuses'
     },
     user,
     connectedDatabase
@@ -81,9 +81,9 @@ export function updateCommittalType(
 ): boolean {
   return updateRecord(
     {
-      recordTable: 'CommittalTypes',
       recordId: committalTypeId,
-      recordName: committalType
+      recordName: committalType,
+      recordTable: 'CommittalTypes'
     },
     user,
     connectedDatabase
@@ -98,9 +98,9 @@ export function updateWorkOrderMilestoneType(
 ): boolean {
   return updateRecord(
     {
-      recordTable: 'WorkOrderMilestoneTypes',
       recordId: workOrderMilestoneTypeId,
-      recordName: workOrderMilestoneType
+      recordName: workOrderMilestoneType,
+      recordTable: 'WorkOrderMilestoneTypes'
     },
     user,
     connectedDatabase
@@ -115,9 +115,9 @@ export function updateWorkOrderType(
 ): boolean {
   return updateRecord(
     {
-      recordTable: 'WorkOrderTypes',
       recordId: workOrderTypeId,
-      recordName: workOrderType
+      recordName: workOrderType,
+      recordTable: 'WorkOrderTypes'
     },
     user,
     connectedDatabase

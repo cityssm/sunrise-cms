@@ -56,28 +56,28 @@ export default function updateContract(
     .prepare(
       `update Contracts
         set contractTypeId = ?,
-        burialSiteId = ?,
-        contractStartDate = ?,
-        contractEndDate = ?,
-        funeralHomeId = ?,
-        funeralDirectorName = ?,
-        funeralDate = ?,
-        funeralTime = ?,
-        directionOfArrival = ?,
-        committalTypeId = ?,
-        purchaserName = ?,
-        purchaserAddress1 = ?,
-        purchaserAddress2 = ?,
-        purchaserCity = ?,
-        purchaserProvince = ?,
-        purchaserPostalCode = ?,
-        purchaserPhoneNumber = ?,
-        purchaserEmail = ?,
-        purchaserRelationship = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          burialSiteId = ?,
+          contractStartDate = ?,
+          contractEndDate = ?,
+          funeralHomeId = ?,
+          funeralDirectorName = ?,
+          funeralDate = ?,
+          funeralTime = ?,
+          directionOfArrival = ?,
+          committalTypeId = ?,
+          purchaserName = ?,
+          purchaserAddress1 = ?,
+          purchaserAddress2 = ?,
+          purchaserCity = ?,
+          purchaserProvince = ?,
+          purchaserPostalCode = ?,
+          purchaserPhoneNumber = ?,
+          purchaserEmail = ?,
+          purchaserRelationship = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where contractId = ?
-        and recordDelete_timeMillis is null`
+          and recordDelete_timeMillis is null`
     )
     .run(
       updateForm.contractTypeId,

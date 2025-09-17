@@ -5,8 +5,8 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 export default function updateContractAttachment(
   contractAttachmentId: number | string,
   attachment: {
-    attachmentTitle?: string
     attachmentDetails?: string
+    attachmentTitle?: string
   },
   user: User,
   connectedDatabase?: sqlite.Database
@@ -19,11 +19,11 @@ export default function updateContractAttachment(
     .prepare(
       `update ContractAttachments
         set attachmentTitle = ?,
-        attachmentDetails = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          attachmentDetails = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where contractAttachmentId = ?
-        and recordDelete_timeMillis is null`
+          and recordDelete_timeMillis is null`
     )
     .run(
       attachment.attachmentTitle ?? '',

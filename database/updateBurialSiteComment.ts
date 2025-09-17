@@ -26,12 +26,12 @@ export default function updateBurialSiteComment(
     .prepare(
       `update BurialSiteComments
         set commentDate = ?,
-        commentTime = ?,
-        comment = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          commentTime = ?,
+          comment = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and burialSiteCommentId = ?`
+          and burialSiteCommentId = ?`
     )
     .run(
       dateStringToInteger(commentForm.commentDateString),

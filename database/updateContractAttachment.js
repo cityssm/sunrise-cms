@@ -6,11 +6,11 @@ export default function updateContractAttachment(contractAttachmentId, attachmen
     const result = database
         .prepare(`update ContractAttachments
         set attachmentTitle = ?,
-        attachmentDetails = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          attachmentDetails = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where contractAttachmentId = ?
-        and recordDelete_timeMillis is null`)
+          and recordDelete_timeMillis is null`)
         .run(attachment.attachmentTitle ?? '', attachment.attachmentDetails ?? '', user.userName, rightNowMillis, contractAttachmentId);
     if (connectedDatabase === undefined) {
         database.close();

@@ -32,29 +32,29 @@ function updateRecord(record, user, connectedDatabase) {
 }
 export function updateBurialSiteStatus(burialSiteStatusId, burialSiteStatus, user, connectedDatabase) {
     return updateRecord({
-        recordTable: 'BurialSiteStatuses',
         recordId: burialSiteStatusId,
-        recordName: burialSiteStatus
+        recordName: burialSiteStatus,
+        recordTable: 'BurialSiteStatuses'
     }, user, connectedDatabase);
 }
 export function updateCommittalType(committalTypeId, committalType, user, connectedDatabase) {
     return updateRecord({
-        recordTable: 'CommittalTypes',
         recordId: committalTypeId,
-        recordName: committalType
+        recordName: committalType,
+        recordTable: 'CommittalTypes'
     }, user, connectedDatabase);
 }
 export function updateWorkOrderMilestoneType(workOrderMilestoneTypeId, workOrderMilestoneType, user, connectedDatabase) {
     return updateRecord({
-        recordTable: 'WorkOrderMilestoneTypes',
         recordId: workOrderMilestoneTypeId,
-        recordName: workOrderMilestoneType
+        recordName: workOrderMilestoneType,
+        recordTable: 'WorkOrderMilestoneTypes'
     }, user, connectedDatabase);
 }
 export function updateWorkOrderType(workOrderTypeId, workOrderType, user, connectedDatabase) {
     return updateRecord({
-        recordTable: 'WorkOrderTypes',
         recordId: workOrderTypeId,
-        recordName: workOrderType
+        recordName: workOrderType,
+        recordTable: 'WorkOrderTypes'
     }, user, connectedDatabase);
 }

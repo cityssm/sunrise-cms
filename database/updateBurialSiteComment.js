@@ -6,12 +6,12 @@ export default function updateBurialSiteComment(commentForm, user, connectedData
     const result = database
         .prepare(`update BurialSiteComments
         set commentDate = ?,
-        commentTime = ?,
-        comment = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          commentTime = ?,
+          comment = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and burialSiteCommentId = ?`)
+          and burialSiteCommentId = ?`)
         .run(dateStringToInteger(commentForm.commentDateString), timeStringToInteger(commentForm.commentTimeString), commentForm.comment, user.userName, Date.now(), commentForm.burialSiteCommentId);
     if (connectedDatabase === undefined) {
         database.close();

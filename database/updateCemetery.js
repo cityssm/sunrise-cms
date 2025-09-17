@@ -14,22 +14,22 @@ export default function updateCemetery(updateForm, user, connectedDatabase) {
     const result = database
         .prepare(`update Cemeteries
         set cemeteryName = ?,
-        cemeteryKey = ?,
-        cemeteryDescription = ?,
-        cemeterySvg = ?,
-        cemeteryLatitude = ?,
-        cemeteryLongitude = ?,
-        cemeteryAddress1 = ?,
-        cemeteryAddress2 = ?,
-        cemeteryCity = ?,
-        cemeteryProvince = ?,
-        cemeteryPostalCode = ?,
-        cemeteryPhoneNumber = ?,
-        parentCemeteryId = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          cemeteryKey = ?,
+          cemeteryDescription = ?,
+          cemeterySvg = ?,
+          cemeteryLatitude = ?,
+          cemeteryLongitude = ?,
+          cemeteryAddress1 = ?,
+          cemeteryAddress2 = ?,
+          cemeteryCity = ?,
+          cemeteryProvince = ?,
+          cemeteryPostalCode = ?,
+          cemeteryPhoneNumber = ?,
+          parentCemeteryId = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where cemeteryId = ?
-        and recordDelete_timeMillis is null`)
+          and recordDelete_timeMillis is null`)
         .run(updateForm.cemeteryName, updateForm.cemeteryKey, updateForm.cemeteryDescription, updateForm.cemeterySvg, updateForm.cemeteryLatitude === ''
         ? undefined
         : updateForm.cemeteryLatitude, updateForm.cemeteryLongitude === ''

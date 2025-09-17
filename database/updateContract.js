@@ -9,28 +9,28 @@ export default function updateContract(updateForm, user, connectedDatabase) {
     const result = database
         .prepare(`update Contracts
         set contractTypeId = ?,
-        burialSiteId = ?,
-        contractStartDate = ?,
-        contractEndDate = ?,
-        funeralHomeId = ?,
-        funeralDirectorName = ?,
-        funeralDate = ?,
-        funeralTime = ?,
-        directionOfArrival = ?,
-        committalTypeId = ?,
-        purchaserName = ?,
-        purchaserAddress1 = ?,
-        purchaserAddress2 = ?,
-        purchaserCity = ?,
-        purchaserProvince = ?,
-        purchaserPostalCode = ?,
-        purchaserPhoneNumber = ?,
-        purchaserEmail = ?,
-        purchaserRelationship = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          burialSiteId = ?,
+          contractStartDate = ?,
+          contractEndDate = ?,
+          funeralHomeId = ?,
+          funeralDirectorName = ?,
+          funeralDate = ?,
+          funeralTime = ?,
+          directionOfArrival = ?,
+          committalTypeId = ?,
+          purchaserName = ?,
+          purchaserAddress1 = ?,
+          purchaserAddress2 = ?,
+          purchaserCity = ?,
+          purchaserProvince = ?,
+          purchaserPostalCode = ?,
+          purchaserPhoneNumber = ?,
+          purchaserEmail = ?,
+          purchaserRelationship = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where contractId = ?
-        and recordDelete_timeMillis is null`)
+          and recordDelete_timeMillis is null`)
         .run(updateForm.contractTypeId, updateForm.burialSiteId === '' ? undefined : updateForm.burialSiteId, dateStringToInteger(updateForm.contractStartDateString), updateForm.contractEndDateString === ''
         ? undefined
         : dateStringToInteger(updateForm.contractEndDateString), updateForm.funeralHomeId === '' ? undefined : updateForm.funeralHomeId, updateForm.funeralDirectorName, updateForm.funeralDateString === ''

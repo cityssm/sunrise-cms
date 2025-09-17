@@ -13,11 +13,11 @@ export default function reopenWorkOrderMilestone(
     .prepare(
       `update WorkOrderMilestones
         set workOrderMilestoneCompletionDate = null,
-        workOrderMilestoneCompletionTime = null,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          workOrderMilestoneCompletionTime = null,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where workOrderMilestoneId = ?
-        and workOrderMilestoneCompletionDate is not null`
+          and workOrderMilestoneCompletionDate is not null`
     )
     .run(user.userName, Date.now(), workOrderMilestoneId)
 

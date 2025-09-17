@@ -57,8 +57,8 @@ export default function updateBurialSite(
       `select burialSiteId
         from BurialSites
         where burialSiteName = ?
-        and burialSiteId <> ?
-        and recordDelete_timeMillis is null`
+          and burialSiteId <> ?
+          and recordDelete_timeMillis is null`
     )
     .pluck()
     .get(burialSiteName, updateForm.burialSiteId) as number | undefined
