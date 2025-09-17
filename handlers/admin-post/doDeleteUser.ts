@@ -3,13 +3,16 @@ import type { Request, Response } from 'express'
 import deleteUser from '../../database/deleteUser.js'
 import getUsers from '../../database/getUsers.js'
 
-export default function handler(request: Request, response: Response): void {
-  const { userName } = request.body as { userName: string }
+export default function handler(
+  request: Request<unknown, unknown, { userName: string }>,
+  response: Response
+): void {
+  const userName = request.body.userName
 
   if (!userName) {
     response.status(400).json({
-      success: false,
-      message: 'User name is required'
+      message: 'User name is required',
+      success: false
     })
     return
   }
@@ -20,20 +23,20 @@ export default function handler(request: Request, response: Response): void {
     if (success) {
       const users = getUsers()
       response.json({
-        success: true,
         message: 'User deleted successfully',
+        success: true,
         users
       })
     } else {
       response.status(404).json({
-        success: false,
-        message: 'User not found'
+        message: 'User not found',
+        success: false
       })
     }
   } catch (error) {
     response.status(500).json({
-      success: false,
-      message: error instanceof Error ? error.message : 'Failed to delete user'
+      message: error instanceof Error ? error.message : 'Failed to delete user',
+      success: false
     })
   }
 }

@@ -9,10 +9,10 @@ export default function handler(request, response) {
     let database;
     try {
         database = sqlite(sunriseDB);
-        const success = deleteRecord('Fees', request.body.feeId, request.session.user);
+        const success = deleteRecord('Fees', request.body.feeId, request.session.user, database);
         const feeCategories = getFeeCategories({}, {
             includeFees: true
-        });
+        }, database);
         response.json({
             success,
             feeCategories

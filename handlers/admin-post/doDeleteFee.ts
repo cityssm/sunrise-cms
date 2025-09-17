@@ -21,14 +21,16 @@ export default function handler(
     const success = deleteRecord(
       'Fees',
       request.body.feeId,
-      request.session.user as User
+      request.session.user as User,
+      database
     )
 
     const feeCategories = getFeeCategories(
       {},
       {
         includeFees: true
-      }
+      },
+      database
     )
 
     response.json({

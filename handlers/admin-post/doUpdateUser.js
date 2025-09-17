@@ -4,29 +4,29 @@ export default function handler(request, response) {
     try {
         const success = updateUser({
             userName,
-            isActive: isActive === '1',
             canUpdateCemeteries: canUpdateCemeteries === '1',
             canUpdateContracts: canUpdateContracts === '1',
             canUpdateWorkOrders: canUpdateWorkOrders === '1',
             isAdmin: isAdmin === '1',
+            isActive: isActive === '1'
         }, request.session.user);
         if (success) {
             response.json({
-                success: true,
-                message: 'User updated successfully'
+                message: 'User updated successfully',
+                success: true
             });
         }
         else {
             response.status(404).json({
-                success: false,
-                message: 'User not found'
+                message: 'User not found',
+                success: false
             });
         }
     }
     catch (error) {
         response.status(500).json({
-            success: false,
-            message: error instanceof Error ? error.message : 'Failed to update user'
+            message: error instanceof Error ? error.message : 'Failed to update user',
+            success: false
         });
     }
 }
