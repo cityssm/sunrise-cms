@@ -1,5 +1,5 @@
 import assert from 'node:assert';
-import { describe, it } from 'node:test';
+import { after, describe, it } from 'node:test';
 import sqlite from 'better-sqlite3';
 import getContract from '../database/getContract.js';
 import getContractAttachment from '../database/getContractAttachment.js';
