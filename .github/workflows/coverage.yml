@@ -77,4 +77,4 @@ jobs:
         run: cp ./data/testing.config.js ./data/config.js
         
       - name: Run Test
-        run: cross-env NODE_ENV=dev DEBUG=sunrise:* TEST_DATABASES=true node --test --test-concurrency 1
+        run: node --test --test-concurrency 1
