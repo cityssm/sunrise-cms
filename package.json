@@ -32,7 +32,7 @@
     "test:startup": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true STARTUP_TEST=true node ./index.js"
   },
   "dependencies": {
-    "@cacheable/node-cache": "^1.7.0",
+    "@cacheable/node-cache": "^1.7.1",
     "@cityssm/authentication-helper": "^0.6.1",
     "@cityssm/bulma-js": "^1.0.0-rc.3",
     "@cityssm/bulma-webapp-js": "^2.0.0-beta",
@@ -58,7 +58,7 @@
     "cookie-parser": "^1.4.7",
     "cross-env": "^10.0.0",
     "csrf-csrf": "^4.0.3",
-    "debug": "^4.4.1",
+    "debug": "^4.4.3",
     "ejs": "^3.1.10",
     "exit-hook": "^4.0.0",
     "express": "^5.1.0",
@@ -88,7 +88,7 @@
     "@types/http-errors": "^2.0.5",
     "@types/leaflet": "^1.9.20",
     "@types/mssql": "^9.1.8",
-    "@types/node": "^24.3.1",
+    "@types/node": "^24.5.1",
     "@types/node-schedule": "^2.1.8",
     "@types/node-windows": "^0.1.6",
     "@types/papaparse": "^5.3.16",
