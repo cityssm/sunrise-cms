@@ -71,7 +71,7 @@ jobs:
       - name: Install Application
         run: |
           npm ci
-          npm install -g cross-env c8 cypress@15
+          npm install -g cypress@15
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
