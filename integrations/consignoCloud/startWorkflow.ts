@@ -6,8 +6,8 @@ import {
   utilities as consignoCloudUtilities
 } from '@cityssm/consigno-cloud-api'
 import {
-  CreateWorkflowStatus,
-  PDFAPolicy
+  CreateWorkflowStatuses,
+  PDFAPolicies
 } from '@cityssm/consigno-cloud-api/lookups.js'
 import type { DateString } from '@cityssm/utils-datetime'
 
@@ -59,8 +59,8 @@ export default async function startConsignoCloudWorkflow(
     name: form.workflowTitle,
 
     expiresOn: form.workflowExpiresOn,
-    pdfaPolicy: PDFAPolicy.Preferred,
-    status: CreateWorkflowStatus.Create,
+    pdfaPolicy: PDFAPolicies.Preferred,
+    status: CreateWorkflowStatuses.Create,
 
     documents: [],
 

@@ -1,3 +1,4 @@
+import { formatPhoneNumber } from '@cityssm/consigno-cloud-api/utilities.js'
 import type { Request, Response } from 'express'
 import { parseFullName } from 'parse-full-name'
 
@@ -71,15 +72,9 @@ export default async function handler(
     purchaserLastName = ''
   }
 
-  let phoneNumber = contract.purchaserPhoneNumber
-
-  // remove any non-numeric characters
-  phoneNumber = phoneNumber.replaceAll(/\D/g, '')
-
-  // add a leading plus sign if the phone number is 10 digits
-  if (phoneNumber.length === 10) {
-    phoneNumber = `+1${phoneNumber}`
-  }
+  const { phone: signerPhone } = formatPhoneNumber(
+    contract.purchaserPhoneNumber
+  )
 
   /*
    * Validate Available Prints
@@ -97,7 +92,10 @@ export default async function handler(
   for (const printName of contractPrints) {
     const printConfig = getPrintConfig(printName)
 
-    if (printName.startsWith('pdf/') && printConfig?.consignoCloud !== undefined) {
+    if (
+      printName.startsWith('pdf/') &&
+      printConfig?.consignoCloud !== undefined
+    ) {
       consignoCloudPrints.push({
         printName,
         printTitle: printConfig.title
@@ -139,11 +137,10 @@ export default async function handler(
 
     consignoCloudPrints,
 
-
     signerFirstName: purchaserFirstName,
     signerLastName: purchaserLastName,
 
     signerEmail: contract.purchaserEmail,
-    signerPhone: phoneNumber
+    signerPhone
   })
 }

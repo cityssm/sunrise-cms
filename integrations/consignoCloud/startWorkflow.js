@@ -1,5 +1,5 @@
 import { ConsignoCloudAPI, utilities as consignoCloudUtilities } from '@cityssm/consigno-cloud-api';
-import { CreateWorkflowStatus, PDFAPolicy } from '@cityssm/consigno-cloud-api/lookups.js';
+import { CreateWorkflowStatuses, PDFAPolicies } from '@cityssm/consigno-cloud-api/lookups.js';
 import addContractComment from '../../database/addContractComment.js';
 import updateConsignoCloudMetadata from '../../database/updateConsignoCloudMetadata.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
@@ -17,8 +17,8 @@ export default async function startConsignoCloudWorkflow(form, user) {
     const workflowDefinition = {
         name: form.workflowTitle,
         expiresOn: form.workflowExpiresOn,
-        pdfaPolicy: PDFAPolicy.Preferred,
-        status: CreateWorkflowStatus.Create,
+        pdfaPolicy: PDFAPolicies.Preferred,
+        status: CreateWorkflowStatuses.Create,
         documents: [],
         actions: [
             {

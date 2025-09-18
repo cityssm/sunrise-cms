@@ -4,7 +4,7 @@ import {
   ConsignoCloudAPI,
   ConsignoCloudError
 } from '@cityssm/consigno-cloud-api'
-import { WorkflowStatus } from '@cityssm/consigno-cloud-api/lookups.js'
+import { WorkflowStatuses } from '@cityssm/consigno-cloud-api/lookups.js'
 import Debug from 'debug'
 
 import addContractAttachment from '../../database/addContractAttachment.js'
@@ -98,7 +98,7 @@ export default async function pollWorkflow(
 
       addContractComment(
         {
-          comment: `ConsignO Cloud workflow status updated to "${WorkflowStatus[workflow.metadata.workflowStatus]}"`,
+          comment: `ConsignO Cloud workflow status updated to "${WorkflowStatuses[workflow.metadata.workflowStatus]}"`,
           contractId: workflow.contractId
         },
         user
@@ -109,7 +109,8 @@ export default async function pollWorkflow(
      * If the workflow is completed successfully, download the documents
      */
 
-    const workflowStatusString = WorkflowStatus[currentWorkflow.response.status]
+    const workflowStatusString =
+      WorkflowStatuses[currentWorkflow.response.status]
 
     if (workflowStatusString === 'Completed') {
       debug(
