@@ -9,9 +9,13 @@ export default function handler(
   request: Request<unknown, unknown, { userName?: string }>,
   response: Response
 ): void {
-  const userName = request.body.userName?.trim() ?? ''
+  let userName = request.body.userName ?? ''
+  
+  if (typeof userName === 'string') {
+    userName = userName.trim()
+  }
 
-  if (userName === '') {
+  if (typeof userName !== 'string' || userName === '') {
     response.status(400).json({
       message: 'User name is required',
       success: false

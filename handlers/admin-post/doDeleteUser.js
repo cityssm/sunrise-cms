@@ -3,8 +3,11 @@ import deleteUser from '../../database/deleteUser.js';
 import getUsers from '../../database/getUsers.js';
 import { sunriseDB } from '../../helpers/database.helpers.js';
 export default function handler(request, response) {
-    const userName = request.body.userName?.trim() ?? '';
-    if (userName === '') {
+    let userName = request.body.userName ?? '';
+    if (typeof userName === 'string') {
+        userName = userName.trim();
+    }
+    if (typeof userName !== 'string' || userName === '') {
         response.status(400).json({
             message: 'User name is required',
             success: false
