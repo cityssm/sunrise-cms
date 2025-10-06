@@ -7,12 +7,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const limitElement = document.querySelector('#searchFilter--limit');
     const offsetElement = document.querySelector('#searchFilter--offset');
     function getContractTimeHtml(contract) {
-        if (contract.contractIsFuture === 1) {
+        if (contract.contractIsFuture) {
             return `<span title="Future Contract">
           <i class="fa-solid fa-fast-forward" aria-label="Future Contract"></i>
           </span>`;
         }
-        else if (contract.contractIsActive === 1) {
+        else if (contract.contractIsActive) {
             return `<span title="Current Contract">
           <i class="fa-solid fa-play" aria-label="Current Contract"></i>
           </span>`;

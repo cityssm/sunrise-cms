@@ -1,5 +1,6 @@
 import {
   dateIntegerToString,
+  dateToInteger,
   timeIntegerToPeriodString,
   timeIntegerToString
 } from '@cityssm/utils-datetime'
@@ -43,9 +44,6 @@ export default async function getContract(
           c.contractStartDate, userFn_dateIntegerToString(c.contractStartDate) as contractStartDateString,
           c.contractEndDate, userFn_dateIntegerToString(c.contractEndDate) as contractEndDateString,
 
-          (c.contractEndDate is null or c.contractEndDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsActive,
-          (c.contractStartDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsFuture,
-          
           c.purchaserName, c.purchaserAddress1, c.purchaserAddress2,
           c.purchaserCity, c.purchaserProvince, c.purchaserPostalCode,
           c.purchaserPhoneNumber, c.purchaserEmail, c.purchaserRelationship,
@@ -82,6 +80,15 @@ export default async function getContract(
     .get(contractId) as Contract | undefined
 
   if (contract !== undefined) {
+
+    const currentDateInteger = dateToInteger(new Date())
+
+    contract.contractIsActive = contract.contractEndDate === null ||
+        (contract.contractEndDate ?? 0) > currentDateInteger
+
+      contract.contractIsFuture =
+        contract.contractStartDate > currentDateInteger
+
     contract.contractFields = getContractFields(contractId, database)
 
     contract.contractInterments = getContractInterments(contractId, database)

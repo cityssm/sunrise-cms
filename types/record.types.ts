@@ -174,8 +174,8 @@ export interface Contract extends Record {
   contractEndDate?: number | null
   contractEndDateString?: '' | DateString
 
-  contractIsActive: 0 | 1
-  contractIsFuture: 0 | 1
+  contractIsActive: boolean
+  contractIsFuture: boolean
 
   purchaserName: string
 

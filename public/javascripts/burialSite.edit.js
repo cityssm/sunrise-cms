@@ -422,7 +422,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     document
         .querySelector('#burialSite--contractsToggle')
         ?.addEventListener('click', () => {
-        const tableRowElements = document.querySelectorAll('#burialSite--contractsTbody tr[data-is-active="0"]');
+        const tableRowElements = document.querySelectorAll('#burialSite--contractsTbody tr[data-is-active="false"]');
         for (const tableRowElement of tableRowElements) {
             tableRowElement.classList.toggle('is-hidden');
         }

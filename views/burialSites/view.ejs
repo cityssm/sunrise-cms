@@ -324,7 +324,7 @@
         </thead>
         <tbody id="burialSite--contractsTbody">
           <% for (const contract of burialSite.contracts) { %>
-            <tr data-is-active="<%= contract.contractIsActive === 1 %>" class="<%= contract.contractIsActive ? "" : "is-hidden" %>">
+            <tr data-is-active="<%= contract.contractIsActive %>" class="<%= contract.contractIsActive ? "" : "is-hidden" %>">
               <td class="has-text-centered">
                 <% if (contract.contractIsFuture) { %>
                   <i class="fa-solid fa-fast-forward" title="Future Contract"></i>

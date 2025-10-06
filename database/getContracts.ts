@@ -120,9 +120,6 @@ export default async function getContracts(
 
             c.contractStartDate, c.contractEndDate,
 
-            (c.contractEndDate is null or c.contractEndDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsActive,
-            (c.contractStartDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsFuture,
-
             c.purchaserName, c.purchaserAddress1, c.purchaserAddress2,
             c.purchaserCity, c.purchaserProvince, c.purchaserPostalCode,
             c.purchaserPhoneNumber, c.purchaserEmail, c.purchaserRelationship,
@@ -161,6 +158,8 @@ export default async function getContracts(
       count = contracts.length
     }
 
+    const currentDateInteger = dateToInteger(new Date())
+
     for (const contract of contracts) {
       /*
        * Format dates and times
@@ -182,6 +181,12 @@ export default async function getContracts(
       contract.funeralTimePeriodString = timeIntegerToPeriodString(
         contract.funeralTime as number
       )
+
+      contract.contractIsActive = contract.contractEndDate === null ||
+        (contract.contractEndDate ?? 0) > currentDateInteger
+
+      contract.contractIsFuture =
+        contract.contractStartDate > currentDateInteger
 
       /*
        * Print
