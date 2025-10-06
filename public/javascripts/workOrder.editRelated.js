@@ -117,11 +117,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const hasBurialSiteRecord = contract.burialSiteId &&
                 workOrderBurialSites.some((burialSite) => contract.burialSiteId === burialSite.burialSiteId);
             let contractIcon = '<i class="fa-solid fa-stop" title="Previous Contract"></i>';
-            if (contract.contractIsFuture === 1) {
+            if (contract.contractIsFuture) {
                 contractIcon =
                     '<i class="fa-solid fa-fast-forward" title="Future Contract"></i>';
             }
-            else if (contract.contractIsActive === 1) {
+            else if (contract.contractIsActive) {
                 contractIcon =
                     '<i class="fa-solid fa-play" title="Current Contract"></i>';
             }
