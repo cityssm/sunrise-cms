@@ -16,9 +16,15 @@ import type { Sunrise } from './types.js'
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+  contractTypes: ContractType[]
+  burialSiteTypes: BurialSiteType[]
+  feeCategories: FeeCategory[]
+  taxPercentageDefault: number
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const feeCategoriesContainerElement = document.querySelector(
     '#container--feeCategories'
@@ -27,8 +33,7 @@ declare const exports: Record<string, unknown>
   const feeCategoryContainerClassName = 'container--feeCategory'
   const feeCategoryContainerSelector = `.${feeCategoryContainerClassName}`
 
-  let feeCategories = exports.feeCategories as FeeCategory[]
-  delete exports.feeCategories
+  let feeCategories = exports.feeCategories
 
   type ResponseJSON =
     | {
@@ -562,7 +567,7 @@ declare const exports: Record<string, unknown>
           '#feeAdd--contractTypeId'
         ) as HTMLSelectElement
 
-        for (const contractType of exports.contractTypes as ContractType[]) {
+        for (const contractType of exports.contractTypes) {
           const optionElement = document.createElement('option')
           optionElement.value = contractType.contractTypeId.toString()
           optionElement.textContent = contractType.contractType
@@ -573,7 +578,7 @@ declare const exports: Record<string, unknown>
           '#feeAdd--burialSiteTypeId'
         ) as HTMLSelectElement
 
-        for (const burialSiteType of exports.burialSiteTypes as BurialSiteType[]) {
+        for (const burialSiteType of exports.burialSiteTypes) {
           const optionElement = document.createElement('option')
           optionElement.value = burialSiteType.burialSiteTypeId.toString()
           optionElement.textContent = burialSiteType.burialSiteType
@@ -584,7 +589,7 @@ declare const exports: Record<string, unknown>
           modalElement.querySelector(
             '#feeAdd--taxPercentage'
           ) as HTMLInputElement
-        ).value = (exports.taxPercentageDefault as number).toString()
+        ).value = exports.taxPercentageDefault.toString()
 
         sunrise.populateAliases(modalElement)
       },

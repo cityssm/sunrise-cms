@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
     let contractFees = exports.contractFees;
-    delete exports.contractFees;
     const contractFeesContainerElement = document.querySelector('#container--contractFees');
     function getFeeGrandTotal() {
         let feeGrandTotal = 0;
@@ -379,7 +378,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     });
     let contractTransactions = exports.contractTransactions;
-    delete exports.contractTransactions;
     const contractTransactionsContainerElement = document.querySelector('#container--contractTransactions');
     function getTransactionGrandTotal() {
         let transactionGrandTotal = 0;

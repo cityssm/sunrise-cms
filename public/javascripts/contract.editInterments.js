@@ -3,11 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const contractId = document.querySelector('#contract--contractId').value;
     let contractInterments = exports.contractInterments;
-    delete exports.contractInterments;
     const deathAgePeriods = exports.deathAgePeriods;
-    delete exports.deathAgePeriods;
     const intermentContainerTypes = exports.intermentContainerTypes;
-    delete exports.intermentContainerTypes;
     function initializeDeathAgeCalculator(fieldPrefix) {
         const birthDateStringElement = document.querySelector(`#${fieldPrefix}--birthDateString`);
         const deathDateStringElement = document.querySelector(`#${fieldPrefix}--deathDateString`);

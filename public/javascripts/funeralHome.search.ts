@@ -6,11 +6,15 @@ import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 
-declare const exports: Record<string, unknown>
-;(() => {
-  const sunrise = exports.sunrise as Sunrise
+declare const exports: {
+  sunrise: Sunrise
 
-  const funeralHomes = exports.funeralHomes as FuneralHome[]
+  funeralHomes: FuneralHome[]
+}
+;(() => {
+  const sunrise = exports.sunrise
+
+  const funeralHomes = exports.funeralHomes
 
   const searchFilterElement = document.querySelector(
     '#searchFilter--funeralHome'

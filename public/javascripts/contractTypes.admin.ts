@@ -14,7 +14,13 @@ import type { Sunrise } from './types.js'
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+
+  allContractTypeFields: ContractTypeField[]
+  contractTypes: ContractType[]
+  contractTypePrintTitles: Record<string, string>
+}
 
 type ResponseJSON =
   | {
@@ -30,7 +36,7 @@ type ResponseJSON =
       contractTypes: ContractType[]
     }
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const contractTypesContainerElement = document.querySelector(
     '#container--contractTypes'
@@ -40,12 +46,9 @@ type ResponseJSON =
     '#container--contractTypePrints'
   ) as HTMLElement
 
-  let contractTypes = exports.contractTypes as ContractType[]
-  delete exports.contractTypes
+  let contractTypes = exports.contractTypes
 
-  let allContractTypeFields =
-    exports.allContractTypeFields as ContractTypeField[]
-  delete exports.allContractTypeFields
+  let allContractTypeFields = exports.allContractTypeFields
 
   const expandedContractTypes = new Set<number>()
 
@@ -748,9 +751,7 @@ type ResponseJSON =
         const printTitle =
           printEJS === '*'
             ? '(All Available Prints)'
-            : ((exports.contractTypePrintTitles as string[])[
-                printEJS
-              ] as string)
+            : exports.contractTypePrintTitles[printEJS]
 
         let printIconClass = 'fa-star'
 

@@ -57,7 +57,7 @@ declare const exports: {
         `<tr>
           <td>
             <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
-              ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
+              ${cityssm.escapeHTML(burialSite.burialSiteName)}
             </a>
           </td><td>
           ${

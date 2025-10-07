@@ -504,7 +504,7 @@ declare const exports: {
             // eslint-disable-next-line no-unsanitized/property
             panelBlockElement.innerHTML = `<div class="columns">
               <div class="column">
-                ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}<br />
+                ${cityssm.escapeHTML(burialSite.burialSiteName)}<br />
                 <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
               </div>
               <div class="column">

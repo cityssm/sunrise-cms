@@ -8,7 +8,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const feeCategoryContainerClassName = 'container--feeCategory';
     const feeCategoryContainerSelector = `.${feeCategoryContainerClassName}`;
     let feeCategories = exports.feeCategories;
-    delete exports.feeCategories;
     function getFeeCategory(feeCategoryId) {
         return feeCategories.find((currentFeeCategory) => currentFeeCategory.feeCategoryId === feeCategoryId);
     }

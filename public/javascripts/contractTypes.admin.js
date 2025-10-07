@@ -7,9 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const contractTypesContainerElement = document.querySelector('#container--contractTypes');
     const contractTypePrintsContainerElement = document.querySelector('#container--contractTypePrints');
     let contractTypes = exports.contractTypes;
-    delete exports.contractTypes;
     let allContractTypeFields = exports.allContractTypeFields;
-    delete exports.allContractTypeFields;
     const expandedContractTypes = new Set();
     function toggleContractTypeFields(clickEvent) {
         const toggleButtonElement = clickEvent.currentTarget;

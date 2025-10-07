@@ -7,16 +7,20 @@ import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-declare const exports: Record<string, unknown>
+
+declare const exports: {
+  sunrise: Sunrise
+
+  contractComments: ContractComment[]
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
   ).value
 
-  let contractComments = exports.contractComments as ContractComment[]
-  delete exports.contractComments
+  let contractComments = exports.contractComments
 
   function openEditContractComment(clickEvent: Event): void {
     const contractCommentId = Number.parseInt(

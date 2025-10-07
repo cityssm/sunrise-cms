@@ -49,8 +49,8 @@ export default async function handler(request, response) {
     }
     if (consignoCloudPrints.length === 0) {
         response.json({
-            success: false,
-            errorMessage: 'No prints available for Consigno Cloud.'
+            errorMessage: 'No prints available for Consigno Cloud.',
+            success: false
         });
         return;
     }
@@ -60,8 +60,8 @@ export default async function handler(request, response) {
     const contractMetadata = getContractMetadataByContractId(request.body.contractId, 'consignoCloud.');
     if (Object.keys(contractMetadata).length > 0) {
         response.json({
-            success: false,
-            errorMessage: 'Contract already has an active Consigno Cloud process.'
+            errorMessage: 'Contract already has an active Consigno Cloud process.',
+            success: false
         });
         return;
     }

@@ -89,6 +89,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const burialSiteId = clickEvent.currentTarget.dataset.burialSiteId ?? '';
         addBurialSite(burialSiteId);
     }
+    // eslint-disable-next-line complexity
     function renderRelatedContracts() {
         const contractsContainerElement = document.querySelector('#container--contracts');
         document.querySelector(".tabs a[href='#relatedTab--contracts'] .tag").textContent = workOrderContracts.length.toString();
@@ -114,7 +115,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const rowElement = document.createElement('tr');
             rowElement.className = 'container--contract';
             rowElement.dataset.contractId = contract.contractId.toString();
-            const hasBurialSiteRecord = contract.burialSiteId &&
+            const hasBurialSiteRecord = (contract.burialSiteId ?? '') !== '' &&
                 workOrderBurialSites.some((burialSite) => contract.burialSiteId === burialSite.burialSiteId);
             let contractIcon = '<i class="fa-solid fa-stop" title="Previous Contract"></i>';
             if (contract.contractIsFuture) {

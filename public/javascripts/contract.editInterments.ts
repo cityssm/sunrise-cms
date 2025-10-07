@@ -8,21 +8,22 @@ import type {
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-declare const exports: Record<string, unknown>
+
+declare const exports: {
+  contractInterments: ContractInterment[]
+  deathAgePeriods: string[]
+  intermentContainerTypes: IntermentContainerType[]
+}
 ;(() => {
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
   ).value
 
-  let contractInterments = exports.contractInterments as ContractInterment[]
-  delete exports.contractInterments
+  let contractInterments = exports.contractInterments
 
-  const deathAgePeriods = exports.deathAgePeriods as string[]
-  delete exports.deathAgePeriods
+  const deathAgePeriods = exports.deathAgePeriods
 
-  const intermentContainerTypes =
-    exports.intermentContainerTypes as IntermentContainerType[]
-  delete exports.intermentContainerTypes
+  const intermentContainerTypes = exports.intermentContainerTypes
 
   function initializeDeathAgeCalculator(
     fieldPrefix: 'contractIntermentAdd' | 'contractIntermentEdit'
@@ -460,7 +461,7 @@ declare const exports: Record<string, unknown>
           formElement,
           (responseJSON: {
             success: boolean
-            
+
             contractInterments: ContractInterment[]
           }) => {
             if (responseJSON.success) {

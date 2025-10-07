@@ -16,16 +16,20 @@ import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+
+  contractFees: ContractFee[]
+  contractTransactions: ContractTransaction[]
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
   ).value
 
-  let contractFees = exports.contractFees as ContractFee[]
-  delete exports.contractFees
+  let contractFees = exports.contractFees
 
   const contractFeesContainerElement = document.querySelector(
     '#container--contractFees'
@@ -595,9 +599,7 @@ declare const exports: Record<string, unknown>
     })
   })
 
-  let contractTransactions =
-    exports.contractTransactions as ContractTransaction[]
-  delete exports.contractTransactions
+  let contractTransactions = exports.contractTransactions
 
   const contractTransactionsContainerElement = document.querySelector(
     '#container--contractTransactions'

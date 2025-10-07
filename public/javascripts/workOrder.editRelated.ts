@@ -164,6 +164,7 @@ declare const exports: {
     addBurialSite(burialSiteId)
   }
 
+  // eslint-disable-next-line complexity
   function renderRelatedContracts(): void {
     const contractsContainerElement = document.querySelector(
       '#container--contracts'
@@ -202,7 +203,7 @@ declare const exports: {
       rowElement.dataset.contractId = contract.contractId.toString()
 
       const hasBurialSiteRecord =
-        contract.burialSiteId &&
+        (contract.burialSiteId ?? '') !== '' &&
         workOrderBurialSites.some(
           (burialSite) => contract.burialSiteId === burialSite.burialSiteId
         )

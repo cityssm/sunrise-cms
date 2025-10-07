@@ -4,7 +4,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
     let contractComments = exports.contractComments;
-    delete exports.contractComments;
     function openEditContractComment(clickEvent) {
         const contractCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
             .contractCommentId ?? '', 10);
