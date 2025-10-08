@@ -8,16 +8,19 @@ import type { Sunrise } from './types.js'
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+
+  workOrderComments: WorkOrderComment[]
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const workOrderId = (
     document.querySelector('#workOrderEdit--workOrderId') as HTMLInputElement
   ).value
 
-  let workOrderComments = exports.workOrderComments as WorkOrderComment[]
-  delete exports.workOrderComments
+  let workOrderComments = exports.workOrderComments
 
   function openEditWorkOrderComment(clickEvent: Event): void {
     const workOrderCommentId = Number.parseInt(

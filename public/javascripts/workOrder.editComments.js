@@ -4,7 +4,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const sunrise = exports.sunrise;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     let workOrderComments = exports.workOrderComments;
-    delete exports.workOrderComments;
     function openEditWorkOrderComment(clickEvent) {
         const workOrderCommentId = Number.parseInt(clickEvent.currentTarget.closest('tr')?.dataset
             .workOrderCommentId ?? '', 10);

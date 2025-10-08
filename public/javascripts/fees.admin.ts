@@ -937,7 +937,7 @@ declare const exports: {
           '#feeEdit--contractTypeId'
         ) as HTMLSelectElement
 
-        for (const contractType of exports.contractTypes as ContractType[]) {
+        for (const contractType of exports.contractTypes) {
           const optionElement = document.createElement('option')
           optionElement.value = contractType.contractTypeId.toString()
           optionElement.textContent = contractType.contractType
@@ -953,7 +953,7 @@ declare const exports: {
           '#feeEdit--burialSiteTypeId'
         ) as HTMLSelectElement
 
-        for (const burialSiteType of exports.burialSiteTypes as BurialSiteType[]) {
+        for (const burialSiteType of exports.burialSiteTypes) {
           const optionElement = document.createElement('option')
           optionElement.value = burialSiteType.burialSiteTypeId.toString()
           optionElement.textContent = burialSiteType.burialSiteType

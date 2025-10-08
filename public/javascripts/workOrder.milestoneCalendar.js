@@ -28,7 +28,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const tableBodyElement = tableElement.querySelector('tbody');
         if (calendarDate.getDay() !== 0) {
             const emptyRow = document.createElement('tr');
-            for (let dayOfWeek = 0; dayOfWeek < calendarDate.getDay(); dayOfWeek++) {
+            for (let dayOfWeek = 0; dayOfWeek < calendarDate.getDay(); dayOfWeek += 1) {
                 const emptyCell = document.createElement('td');
                 emptyCell.className = 'has-background-white-ter';
                 emptyCell.innerHTML = '&nbsp;';

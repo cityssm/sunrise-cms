@@ -1,8 +1,10 @@
 import type { Sunrise } from './types.js'
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const workOrderTypeIdsElement = document.querySelector(
     '#icsFilters--workOrderTypeIds'

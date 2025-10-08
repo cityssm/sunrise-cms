@@ -8,8 +8,12 @@ declare const L: typeof Leaflet
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown> & {
+declare const exports: {
   aliases: Record<string, string>
+
+  dynamicsGPIntegrationIsEnabled: boolean
+
+  sunrise?: Sunrise
 }
 ;(() => {
   /*

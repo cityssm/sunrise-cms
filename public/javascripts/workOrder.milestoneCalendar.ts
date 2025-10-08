@@ -6,9 +6,11 @@ import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const workOrderSearchFiltersFormElement = document.querySelector(
     '#form--searchFilters'
@@ -59,7 +61,11 @@ declare const exports: Record<string, unknown>
     if (calendarDate.getDay() !== 0) {
       const emptyRow = document.createElement('tr')
 
-      for (let dayOfWeek = 0; dayOfWeek < calendarDate.getDay(); dayOfWeek++) {
+      for (
+        let dayOfWeek = 0;
+        dayOfWeek < calendarDate.getDay();
+        dayOfWeek += 1
+      ) {
         const emptyCell = document.createElement('td')
         emptyCell.className = 'has-background-white-ter'
         emptyCell.innerHTML = '&nbsp;'
