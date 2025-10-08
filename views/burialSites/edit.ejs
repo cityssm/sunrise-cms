@@ -12,7 +12,8 @@
     <% if (!isCreate) { %>
       <li>
         <a href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>"
-          <%- enableKeyboardShortcuts ? ' accesskey="v" ' : '' %>>
+          accesskey="<%= enableKeyboardShortcuts ? 'v' : '' %>"
+        >
           <%= burialSite.burialSiteName %>
         </a>
       </li>
@@ -107,9 +108,7 @@
                 <div class="control is-expanded">
                   <div class="select is-fullwidth">
                     <select
-                      <% if (!isCreate) { %>
-                        class="is-readonly"
-                      <% } %>
+                      class="<%= (isCreate ? '' : 'is-readonly') %>"
                       id="burialSite--cemeteryId" name="cemeteryId">
                       <option value="" <%= (!isCreate && burialSite.cemeteryId ? " disabled" : "") %>>
                         (No Cemetery Selected)

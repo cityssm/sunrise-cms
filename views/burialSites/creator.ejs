@@ -122,7 +122,8 @@
                       maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
                       placeholder="<%= segment.label ?? '' %>"
                       aria-label="<%= segment.label ?? '' %>"
-                      <%= (segment.isRequired ?? false) ? ' required' : '' %> />
+                      <%- (segment.isRequired ?? false) ? ' required' : '' %>
+                    />
                   </div>
                   <% if ((segment.suffix ?? '') !== '') { %>
                     <p class="control">

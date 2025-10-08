@@ -25,7 +25,13 @@
         </nav>
       </div>
       <div class="column is-narrow has-text-right">
-        <a class="has-text-info-dark is-size-7" href="https://cityssm.github.io/sunrise-cms/docs/contractTypeManagement.html" title="Help Documentation" rel="noopener noreferrer" target="_blank">
+        <a
+          class="has-text-info-dark is-size-7"
+          href="https://cityssm.github.io/sunrise-cms/docs/contractTypeManagement.html"
+          title="Help Documentation"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           <span class="icon is-small"><i class="fa-regular fa-circle-question"></i></span>
           <span>Help</span>
         </a>
@@ -39,8 +45,12 @@
         </h1>
       </div>
       <div class="column has-text-right is-narrow is-hidden-print">
-        <button class="button is-success" id="button--addContractType" type="button"
-          <%- enableKeyboardShortcuts ? ' accesskey="n" ' : '' %>>
+        <button
+          class="button is-success"
+          id="button--addContractType"
+          type="button"
+          accesskey="<%- enableKeyboardShortcuts ? 'n' : '' %>"
+        >
           <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
           <span>Add Contract Type</span>
         </button>
@@ -77,11 +87,11 @@
               <h2 class="title is-6">Available Prints</h2>
               <ul class="fa-ul">
                 <% for (const [printEJS, printTitle] of Object.entries(contractTypePrintTitles)) { %>
-                  <% const printIconClass = printEJS.startsWith("pdf/") ? "fa-file-pdf" : "fa-file" %>
-                  <li>
-                    <span class="fa-li"><i class="fa-solid <%= printIconClass %>"></i></span>
-                    <%= printTitle %>
-                  </li>
+                <% const printIconClass = printEJS.startsWith("pdf/") ? "fa-file-pdf" : "fa-file" %>
+                <li>
+                  <span class="fa-li"><i class="fa-solid <%= printIconClass %>"></i></span>
+                  <%= printTitle %>
+                </li>
                 <% } %>
               </ul>
             </div>

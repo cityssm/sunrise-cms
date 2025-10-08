@@ -25,7 +25,13 @@
         </nav>
       </div>
       <div class="column is-narrow has-text-right">
-        <a class="has-text-info-dark is-size-7" href="https://cityssm.github.io/sunrise-cms/docs/userManagement.html" title="Help Documentation" rel="noopener noreferrer" target="_blank">
+        <a
+          class="has-text-info-dark is-size-7"
+          href="https://cityssm.github.io/sunrise-cms/docs/userManagement.html"
+          title="Help Documentation"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           <span class="icon is-small"><i class="fa-regular fa-circle-question"></i></span>
           <span>Help</span>
         </a>
@@ -62,15 +68,15 @@
             <p>Users defined in config:</p>
             <ul>
               <% const allConfigUsers = [...new Set([
-                  ...configUsers.canLogin,
-                  ...configUsers.canUpdate,
-                  ...configUsers.canUpdateCemeteries,
-                  ...configUsers.canUpdateContracts,
-                  ...configUsers.canUpdateWorkOrders,
-                  ...configUsers.isAdmin
+              ...configUsers.canLogin,
+              ...configUsers.canUpdate,
+              ...configUsers.canUpdateCemeteries,
+              ...configUsers.canUpdateContracts,
+              ...configUsers.canUpdateWorkOrders,
+              ...configUsers.isAdmin
               ])]; %>
               <% for(const userName of allConfigUsers) { %>
-                <li><%= userName %></li>
+              <li><%= userName %></li>
               <% } %>
             </ul>
           </div>

@@ -25,7 +25,13 @@
         </nav>
       </div>
       <div class="column is-narrow has-text-right">
-        <a class="has-text-info-dark is-size-7" href="https://cityssm.github.io/sunrise-cms/docs/databaseManagement.html" title="Help Documentation" rel="noopener noreferrer" target="_blank">
+        <a
+          class="has-text-info-dark is-size-7"
+          href="https://cityssm.github.io/sunrise-cms/docs/databaseManagement.html"
+          title="Help Documentation"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           <span class="icon is-small"><i class="fa-regular fa-circle-question"></i></span>
           <span>Help</span>
         </a>
@@ -49,22 +55,22 @@
               <div class="level-right">
                 <div class="level-item">
                   <% if (configFunctions.getConfigProperty('settings.databaseBackup.taskIsEnabled')) { %>
-                    <span class="tag is-success">
-                      <span class="icon">
-                        <i class="fa-solid fa-check"></i>
-                      </span>
-                      <span>
-                        Scheduled
-                        (<%= configFunctions.getConfigProperty('settings.databaseBackup.backupHour') %>:00)
-                      </span>
+                  <span class="tag is-success">
+                    <span class="icon">
+                      <i class="fa-solid fa-check"></i>
                     </span>
+                    <span>
+                      Scheduled
+                      (<%= configFunctions.getConfigProperty('settings.databaseBackup.backupHour') %>:00)
+                    </span>
+                  </span>
                   <% } else { %>
-                    <span class="tag is-danger">
-                      <span class="icon">
-                        <i class="fa-solid fa-times"></i>
-                      </span>
-                      <span>Disabled</span>
+                  <span class="tag is-danger">
+                    <span class="icon">
+                      <i class="fa-solid fa-times"></i>
                     </span>
+                    <span>Disabled</span>
+                  </span>
                   <% } %>
                 </div>
               </div>
@@ -87,15 +93,20 @@
                   <strong>Last Backup Time:</strong><br />
                   <span id="database--lastBackup">
                     <% if (lastBackupDateString === '') { %>
-                      No backups have been made.
+                    No backups have been made.
                     <% } else { %>
-                      <%= lastBackupDateString %> at <%= lastBackupTimePeriodString %>
+                    <%= lastBackupDateString %> at <%= lastBackupTimePeriodString %>
                     <% } %>
                   </span>
                 </p>
               </div>
               <div class="column is-narrow has-text-right">
-                <button class="button is-success" id="button--backupDatabase" data-cy="backup" type="button">
+                <button
+                  class="button is-success"
+                  id="button--backupDatabase"
+                  data-cy="backup"
+                  type="button"
+                >
                   <span class="icon"><i class="fa-solid fa-save"></i></span>
                   <span>Backup Database</span>
                 </button>
@@ -126,7 +137,12 @@
             </div>
           </div>
           <div class="panel-block is-block has-text-right">
-            <button class="button is-warning" id="button--cleanupDatabase" data-cy="cleanup" type="button">
+            <button
+              class="button is-warning"
+              id="button--cleanupDatabase"
+              data-cy="cleanup"
+              type="button"
+            >
               <span class="icon"><i class="fa-solid fa-broom"></i></span>
               <span>Cleanup Database</span>
             </button>

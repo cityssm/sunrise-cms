@@ -71,7 +71,7 @@
   </div>
   
   <p class="has-text-right">
-    <button id="button--exportUpdateLog" class="button is-info" type="button">
+    <button class="button is-info" id="button--exportUpdateLog" type="button">
       <span class="icon is-small"><i class="fa-solid fa-download"></i></span>
       <span>Export CSV</span>
     </button>
@@ -79,21 +79,21 @@
 </div>
 
 <table
-  id="table--updateLog"
   class="table is-striped is-hoverable is-fullwidth is-hidden"
+  id="table--updateLog"
 >
   <thead>
     <tr>
       <th class="has-width-1">Type</th>
       <th>Record</th>
       <th>Description</th>
-      <th id="header--updated" data-sort="recordUpdate_timeMillis" class="is-clickable">
+      <th class="is-clickable" id="header--updated" data-sort="recordUpdate_timeMillis">
         <span>Updated</span>
         <span class="icon is-small ml-1">
           <i class="fa-solid fa-sort-down"></i>
         </span>
       </th>
-      <th id="header--created" data-sort="recordCreate_timeMillis" class="is-clickable">
+      <th class="is-clickable" id="header--created" data-sort="recordCreate_timeMillis">
         <span>Created</span>
         <span class="icon is-small ml-1">
           <i class="fa-solid fa-sort"></i>
@@ -106,8 +106,8 @@
 
 <button
   class="button is-fullwidth mt-4 is-hidden"
-  type="button"
   id="button--updateLogLoadMore"
+  type="button"
 >
   <span class="icon is-small"><i class="fa-solid fa-arrow-down"></i></span>
   <span>Load More</span>
