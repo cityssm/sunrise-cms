@@ -407,8 +407,7 @@ declare const exports: {
    * Settings
    */
 
-  const dynamicsGPIntegrationIsEnabled =
-    exports.dynamicsGPIntegrationIsEnabled as boolean
+  const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled
 
   /*
    * Declare sunrise

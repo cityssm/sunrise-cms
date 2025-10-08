@@ -646,7 +646,7 @@ type ResponseJSON =
         ) as HTMLSelectElement
 
         for (const [printEJS, printTitle] of Object.entries(
-          exports.contractTypePrintTitles as Record<string, string>
+          exports.contractTypePrintTitles
         )) {
           const optionElement = document.createElement('option')
           optionElement.value = printEJS
