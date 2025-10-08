@@ -5,8 +5,8 @@
       <h3 class="modal-card-title">Upload Attachment</h3>
       <button
         class="delete is-close-modal-button"
-        aria-label="close"
         type="button"
+        aria-label="close"
       ></button>
     </header>
     <section class="modal-card-body">
@@ -25,13 +25,15 @@
               id="contractAttachmentUpload--file"
               name="file"
               type="file"
-              required
               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.txt,.csv,.xls,.xlsx"
+              required
             />
           </div>
           <p class="help">
-            Maximum file size: <span id="contractAttachmentUpload--maxAttachmentFileSize">-</span> MB.
-            Supported formats: PDF, Word documents, images, text files, spreadsheets.
+            Maximum file size:
+            <span id="contractAttachmentUpload--maxAttachmentFileSize">-</span>
+            MB. Supported formats: PDF, Word documents, images, text files,
+            spreadsheets.
           </p>
         </div>
         <div class="field">
@@ -50,7 +52,10 @@
           </div>
         </div>
         <div class="field">
-          <label class="label" for="contractAttachmentUpload--attachmentDetails">
+          <label
+            class="label"
+            for="contractAttachmentUpload--attachmentDetails"
+          >
             Details (optional)
           </label>
           <div class="control">
@@ -75,7 +80,9 @@
           <span class="icon"><i class="fa-solid fa-upload"></i></span>
           <span>Upload</span>
         </button>
-        <button class="button is-close-modal-button" type="button">Cancel</button>
+        <button class="button is-close-modal-button" type="button">
+          Cancel
+        </button>
       </div>
     </footer>
   </div>

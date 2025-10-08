@@ -1,154 +1,188 @@
 <!DOCTYPE html>
+<!-- eslint-disable-next-line html/require-closing-tags -->
 <html class="has-navbar-fixed-top is-fullwidth" data-theme="light" lang="en">
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="csrf-token" content="<%= csrfToken %>" />
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content="<%= csrfToken %>" />
 
-  <title>
-    <%= headTitle %>:
-    <%= configFunctions.getConfigProperty("application.applicationName") %>
-  </title>
+    <title>
+      <%= headTitle %>:
+      <%= configFunctions.getConfigProperty("application.applicationName") %>
+    </title>
 
-  <link rel="icon" href="<%= urlPrefix + configFunctions.getConfigProperty("application.logoUrl") %>" />
+    <link href="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>" rel="icon" />
 
-  <link rel="stylesheet" href="<%= urlPrefix %>/lib/cityssm-bulma-sticky-table/bulma-with-sticky-table.css" />
-  <link rel="stylesheet" href="<%= urlPrefix %>/lib/cityssm-fa-glow/fa-glow.min.css" />
-  <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/sunrise.css" />
-  <link rel="stylesheet" href="<%= urlPrefix %>/lib/leaflet/leaflet.css" />
-</head>
+    <link href="<%= urlPrefix %>/lib/cityssm-bulma-sticky-table/bulma-with-sticky-table.css" rel="stylesheet" />
+    <link href="<%= urlPrefix %>/lib/cityssm-fa-glow/fa-glow.min.css" rel="stylesheet" />
+    <link href="<%= urlPrefix %>/stylesheets/sunrise.css" rel="stylesheet" />
+    <link href="<%= urlPrefix %>/lib/leaflet/leaflet.css" rel="stylesheet" />
+  </head>
 
-<body>
-  <nav class="navbar is-light is-fixed-top" id="cityssm-theme--navbar" role="navigation"
-    aria-label="main navigation">
-    <div class="container">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="<%= urlPrefix %>/dashboard"
-          <%- enableKeyboardShortcuts ? ' accesskey="0" ' : '' %>>
-          <img
-            src="<%= urlPrefix + configFunctions.getConfigProperty("application.logoUrl") %>"
-            alt=""
-            height="28"
-            width="28" />
-          <strong><%= configFunctions.getConfigProperty("application.applicationName") %></strong>
-        </a>
-        <a class="navbar-burger burger is-hidden-print" role="button" aria-label="menu" aria-expanded="false">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-
-      <div class="navbar-menu">
-        <div class="navbar-start">
-          <a class="navbar-item" href="<%= urlPrefix %>/workOrders"
-            <%- enableKeyboardShortcuts ? ' accesskey="1" ' : '' %>>
-            <span class="icon">
-              <i class="fa-solid fa-hard-hat"></i>
-            </span>
-            <span>Work Orders</span>
+  <!-- eslint-disable-next-line html/require-closing-tags -->
+  <body>
+    <nav
+      class="navbar is-light is-fixed-top"
+      id="cityssm-theme--navbar"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div class="container">
+        <div class="navbar-brand">
+          <a class="navbar-item"
+            href="<%= urlPrefix %>/dashboard"
+            accesskey="<%= enableKeyboardShortcuts ? '0' : '' %>"
+          >
+            <img
+              src="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>"
+              alt=""
+              height="28"
+              width="28"
+            />
+            <strong><%= configFunctions.getConfigProperty("application.applicationName") %></strong>
           </a>
-
-          <a class="navbar-item" href="<%= urlPrefix %>/contracts"
-            <%- enableKeyboardShortcuts ? ' accesskey="2" ' : '' %>>
-            <span class="icon">
-              <i class="fa-solid fa-file-contract"></i>
-            </span>
-            <span>Contracts</span>
+          <a
+            class="navbar-burger burger is-hidden-print"
+            role="button"
+            aria-label="menu"
+            aria-expanded="false"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
           </a>
-            
-          <div class="navbar-item has-dropdown">
-            <a class="navbar-link" href="#">
-              <span>More</span>
-            </a>
-            <div class="navbar-dropdown">
-              <a class="navbar-item" href="<%= urlPrefix %>/funeralHomes">
-                <span class="icon">
-                  <i class="fa-solid fa-place-of-worship"></i>
-                </span>
-                <span>Funeral Homes</span>
-              </a>
-              <a class="navbar-item" href="<%= urlPrefix %>/burialSites"
-                <%- enableKeyboardShortcuts ? ' accesskey="3" ' : '' %>>
-                <span class="icon">
-                  <i class="fa-solid fa-map-pin"></i>
-                </span>
-                <span>Burial Sites</span>
-              </a>
-              <a class="navbar-item" href="<%= urlPrefix %>/cemeteries"
-                <%- enableKeyboardShortcuts ? ' accesskey="4" ' : '' %>>
-                <span class="icon">
-                  <i class="fa-regular fa-map"></i>
-                </span>
-                <span>Cemeteries</span>
-              </a>
-              <hr class="navbar-divider" />
-              <a class="navbar-item" href="<%= urlPrefix %>/reports">
-                <span class="icon">
-                  <i class="fa-solid fa-file"></i>
-                </span>
-                <span>Reports</span>
-              </a>
-              <hr class="navbar-divider" />
-              <a class="navbar-item" href="https://cityssm.github.io/sunrise-cms/docs"
-                target="_blank"
-                <%- enableKeyboardShortcuts ? ' accesskey="h" ' : '' %>
-                rel="noopener noreferrer">
-                <span class="icon">
-                  <i class="fa-solid fa-question-circle"></i>
-                </span>
-                <span>Help</span>
-              </a>
-            </div>
-          </div>
         </div>
 
-        <div class="navbar-end">
-          <a class="navbar-item" id="navbar--quickSearch" href="#"
-            <%- enableKeyboardShortcuts ? ' accesskey="s" ' : '' %>>
-            <span class="icon">
-              <i class="fa-solid fa-search"></i>
-            </span>
-            <span>Quick Search</span>
-          </a>
-          <div class="navbar-item has-dropdown">
-            <a class="navbar-link" href="#">
+        <div class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item" href="<%= urlPrefix %>/workOrders"
+              accesskey="<%= enableKeyboardShortcuts ? '1' : '' %>"
+            >
               <span class="icon">
-                <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-hard-hat"></i>
               </span>
-              <span><%=user.userName %></span>
+              <span>Work Orders</span>
             </a>
-            <div class="navbar-dropdown is-right">
-              <a class="navbar-item" href="<%= urlPrefix %>/dashboard/userSettings"
-                <%- enableKeyboardShortcuts ? ' accesskey="u" ' : '' %>>
-                <span class="icon">
-                  <i class="fa-solid fa-cog"></i>
-                </span>
-                <span>User Settings</span>
+
+            <a class="navbar-item" href="<%= urlPrefix %>/contracts"
+              accesskey="<%= enableKeyboardShortcuts ? '2' : '' %>"
+            >
+              <span class="icon">
+                <i class="fa-solid fa-file-contract"></i>
+              </span>
+              <span>Contracts</span>
+            </a>
+              
+            <div class="navbar-item has-dropdown">
+              <a class="navbar-link" href="#">
+                <span>More</span>
               </a>
-              <a class="navbar-item" id="cityssm-theme--logout-button" role="button" href="#"
-                <%- enableKeyboardShortcuts ? ' accesskey="x" ' : '' %>>
-                <span class="icon">
-                  <i class="fa-solid fa-sign-out-alt"></i>
-                </span>
-                <span>Log Out</span>
-              </a>
+              <div class="navbar-dropdown">
+                <a class="navbar-item" href="<%= urlPrefix %>/funeralHomes">
+                  <span class="icon">
+                    <i class="fa-solid fa-place-of-worship"></i>
+                  </span>
+                  <span>Funeral Homes</span>
+                </a>
+                <a class="navbar-item" href="<%= urlPrefix %>/burialSites"
+                  accesskey="<%= enableKeyboardShortcuts ? '3' : '' %>"
+                >
+                  <span class="icon">
+                    <i class="fa-solid fa-map-pin"></i>
+                  </span>
+                  <span>Burial Sites</span>
+                </a>
+                <a class="navbar-item" href="<%= urlPrefix %>/cemeteries"
+                  accesskey="<%= enableKeyboardShortcuts ? '4' : '' %>"
+                >
+                  <span class="icon">
+                    <i class="fa-regular fa-map"></i>
+                  </span>
+                  <span>Cemeteries</span>
+                </a>
+                <hr class="navbar-divider" />
+                <a class="navbar-item" href="<%= urlPrefix %>/reports">
+                  <span class="icon">
+                    <i class="fa-solid fa-file"></i>
+                  </span>
+                  <span>Reports</span>
+                </a>
+                <hr class="navbar-divider" />
+                <a
+                  class="navbar-item"
+                  href="https://cityssm.github.io/sunrise-cms/docs"
+                  accesskey="<%= enableKeyboardShortcuts ? 'h' : '' %>"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <span class="icon">
+                    <i class="fa-solid fa-question-circle"></i>
+                  </span>
+                  <span>Help</span>
+                </a>
+              </div>
             </div>
           </div>
 
+          <div class="navbar-end">
+            <a
+              class="navbar-item"
+              id="navbar--quickSearch"
+              href="#"
+              accesskey="<%= enableKeyboardShortcuts ? 's' : '' %>"
+            >
+              <span class="icon">
+                <i class="fa-solid fa-search"></i>
+              </span>
+              <span>Quick Search</span>
+            </a>
+            <div class="navbar-item has-dropdown">
+              <a class="navbar-link" href="#">
+                <span class="icon">
+                  <i class="fa-solid fa-user"></i>
+                </span>
+                <span><%=user.userName %></span>
+              </a>
+              <div class="navbar-dropdown is-right">
+                <a class="navbar-item" href="<%= urlPrefix %>/dashboard/userSettings"
+                  accesskey="<%= enableKeyboardShortcuts ? 'u' : '' %>"
+                >
+                  <span class="icon">
+                    <i class="fa-solid fa-cog"></i>
+                  </span>
+                  <span>User Settings</span>
+                </a>
+                <a
+                  class="navbar-item"
+                  id="cityssm-theme--logout-button"
+                  href="#"
+                  role="button"
+                  accesskey="<%= enableKeyboardShortcuts ? 'x' : '' %>"
+                >
+                  <span class="icon">
+                    <i class="fa-solid fa-sign-out-alt"></i>
+                  </span>
+                  <span>Log Out</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
-  <main class="container pt-2 px-3 mr-auto"
-    data-session-keep-alive-millis="<%= configFunctions.keepAliveMillis %>"
-    data-url-prefix="<%= urlPrefix %>"
-    data-can-update-cemeteries="<%= user.userProperties.canUpdateCemeteries ? 'true' : 'false' %>"
-    data-can-update-contracts="<%= user.userProperties.canUpdateContracts ? 'true' : 'false' %>"
-    data-can-update-work-orders="<%= user.userProperties.canUpdateWorkOrders ? 'true' : 'false' %>"
-    data-is-admin="<%= user.userProperties.isAdmin ? 'true' : 'false' %>"
-    data-api-key="<%= user.userSettings.apiKey %>"
-    style="min-height: calc(100vh - var(--bulma-navbar-height));">
+    <!-- eslint-disable-next-line html/require-closing-tags -->
+    <main
+      class="container pt-2 px-3 mr-auto"
+      data-session-keep-alive-millis="<%= configFunctions.keepAliveMillis %>"
+      data-url-prefix="<%= urlPrefix %>"
+      data-can-update-cemeteries="<%= user.userProperties.canUpdateCemeteries ? 'true' : 'false' %>"
+      data-can-update-contracts="<%= user.userProperties.canUpdateContracts ? 'true' : 'false' %>"
+      data-can-update-work-orders="<%= user.userProperties.canUpdateWorkOrders ? 'true' : 'false' %>"
+      data-is-admin="<%= user.userProperties.isAdmin ? 'true' : 'false' %>"
+      data-api-key="<%= user.userSettings.apiKey %>"
+      style="min-height: calc(100vh - var(--bulma-navbar-height));"
+    >

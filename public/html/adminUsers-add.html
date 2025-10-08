@@ -3,7 +3,11 @@
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">Add User</p>
-      <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
+      <button
+        class="delete is-close-modal-button"
+        type="button"
+        aria-label="close"
+      ></button>
     </header>
     <section class="modal-card-body">
       <form id="form--addUser">
@@ -12,7 +16,10 @@
             <label class="label" for="userName">Username</label>
             <div class="field has-addons">
               <div class="control">
-                <span class="button is-static has-text-grey-dark" id="span--domain"></span>
+                <span
+                  class="button is-static has-text-grey-dark"
+                  id="span--domain"
+                ></span>
               </div>
               <div class="control is-expanded">
                 <input
@@ -30,25 +37,25 @@
               <label class="label">Permissions</label>
               <div class="control">
                 <label class="checkbox">
-                  <input type="checkbox" name="canUpdateCemeteries" value="1" />
+                  <input name="canUpdateCemeteries" type="checkbox" value="1" />
                   Can Update Cemeteries
                 </label>
               </div>
               <div class="control">
                 <label class="checkbox">
-                  <input type="checkbox" name="canUpdateContracts" value="1" />
+                  <input name="canUpdateContracts" type="checkbox" value="1" />
                   Can Update Contracts
                 </label>
               </div>
               <div class="control">
                 <label class="checkbox">
-                  <input type="checkbox" name="canUpdateWorkOrders" value="1" />
+                  <input name="canUpdateWorkOrders" type="checkbox" value="1" />
                   Can Update Work Orders
                 </label>
               </div>
               <div class="control">
                 <label class="checkbox">
-                  <input type="checkbox" name="isAdmin" value="1" />
+                  <input name="isAdmin" type="checkbox" value="1" />
                   Administrator
                 </label>
               </div>
@@ -59,10 +66,12 @@
     </section>
     <footer class="modal-card-foot is-justify-content-right">
       <div class="buttons">
-        <button class="button is-primary" form="form--addUser" type="submit">
+        <button class="button is-primary" type="submit" form="form--addUser">
           Add User
         </button>
-        <button class="button is-close-modal-button" type="button">Cancel</button>
+        <button class="button is-close-modal-button" type="button">
+          Cancel
+        </button>
       </div>
     </footer>
   </div>

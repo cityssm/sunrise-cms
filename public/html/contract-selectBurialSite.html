@@ -2,13 +2,11 @@
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <h3 class="modal-card-title">
-        Select a Burial Site
-      </h3>
+      <h3 class="modal-card-title">Select a Burial Site</h3>
       <button
         class="delete is-close-modal-button"
-        aria-label="close"
         type="button"
+        aria-label="close"
       ></button>
     </header>
     <section class="modal-card-body">
@@ -64,14 +62,16 @@
           </div>
           <div id="resultsContainer--burialSiteSelect"></div>
         </div>
-        <div id="tab--burialSiteCreate" class="is-hidden">
+        <div class="is-hidden" id="tab--burialSiteCreate">
           <form id="form--burialSiteCreate">
             <label class="label" for="burialSiteCreate--burialSiteNameSegment1">
               New Burial Site Name
             </label>
 
             <div class="field">
-              <label class="label" for="burialSiteCreate--cemeteryId">Cemetery</label>
+              <label class="label" for="burialSiteCreate--cemeteryId">
+                Cemetery
+              </label>
               <div class="control">
                 <div class="select is-fullwidth">
                   <select id="burialSiteCreate--cemeteryId" name="cemeteryId">
@@ -84,10 +84,16 @@
             <div class="columns">
               <div class="column">
                 <div class="field">
-                  <label class="label" for="burialSiteCreate--burialSiteTypeId">Burial Site Type</label>
+                  <label class="label" for="burialSiteCreate--burialSiteTypeId">
+                    Burial Site Type
+                  </label>
                   <div class="control">
                     <div class="select is-fullwidth">
-                      <select id="burialSiteCreate--burialSiteTypeId" name="burialSiteTypeId" required>
+                      <select
+                        id="burialSiteCreate--burialSiteTypeId"
+                        name="burialSiteTypeId"
+                        required
+                      >
                         <option value="">(Select a Type)</option>
                       </select>
                     </div>
@@ -96,10 +102,18 @@
               </div>
               <div class="column">
                 <div class="field">
-                  <label class="label" for="burialSiteCreate--burialSiteStatusId">Burial Site Status</label>
+                  <label
+                    class="label"
+                    for="burialSiteCreate--burialSiteStatusId"
+                  >
+                    Burial Site Status
+                  </label>
                   <div class="control">
                     <div class="select is-fullwidth">
-                      <select id="burialSiteCreate--burialSiteStatusId" name="burialSiteStatusId">
+                      <select
+                        id="burialSiteCreate--burialSiteStatusId"
+                        name="burialSiteStatusId"
+                      >
                         <option value="">(No Status)</option>
                       </select>
                     </div>

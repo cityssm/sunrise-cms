@@ -1,51 +1,51 @@
 <!DOCTYPE html>
 <html class="has-background-grey" lang="en">
 
-<head>  
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <head>  
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-  <title>
-    Error:
-    <%= configFunctions.getConfigProperty("application.applicationName") %>
-  </title>
+    <title>
+      Error:
+      <%= configFunctions.getConfigProperty("application.applicationName") %>
+    </title>
 
-  <link rel="icon" href="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>" />
+    <link href="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>" rel="icon" />
 
-  <link rel="stylesheet" href="<%= urlPrefix %>/lib/cityssm-bulma-sticky-table/bulma-with-sticky-table.css" />
-  <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/sunrise.css" />
-</head>
+    <link href="<%= urlPrefix %>/lib/cityssm-bulma-sticky-table/bulma-with-sticky-table.css" rel="stylesheet" />
+    <link href="<%= urlPrefix %>/stylesheets/sunrise.css" rel="stylesheet" />
+  </head>
 
-<body>
-  <div class="columns is-centered">
-    <div class="column is-half-widescreen is-two-thirds-desktop is-three-quarters-tablet">
-      <main class="message is-danger mx-3 my-6">
-        
-        <div class="message-body">
-          <h1 class="title is-3 has-text-centered">
-            <%= message %>
-            <% if (error.status !== undefined) { %>
+  <body>
+    <div class="columns is-centered">
+      <div class="column is-half-widescreen is-two-thirds-desktop is-three-quarters-tablet">
+        <main class="message is-danger mx-3 my-6">
+          
+          <div class="message-body">
+            <h1 class="title is-3 has-text-centered">
+              <%= message %>
+              <% if (error.status !== undefined) { %>
               <br />
               <small><%= error.status %></small>
+              <% } %>
+            </h1>
+            <% if (error.stack !== undefined) { %>
+              <pre tabindex="0"><%= error.stack %></pre>
             <% } %>
-          </h1>
-          <% if (error.stack !== undefined) { %>
-            <pre tabindex="0"><%= error.stack %></pre>
-          <% } %>
 
-          <p class="has-text-centered mt-4">
-            <a href="<%= urlPrefix %>/login" class="button is-link">
-              <span class="icon">
-                <i class="fas fa-sign-in-alt"></i>
-              </span>
-              <span>Return to Login</span>
-            </a>
-          </p>
-        </div>
-      </main>
+            <p class="has-text-centered mt-4">
+              <a class="button is-link" href="<%= urlPrefix %>/login">
+                <span class="icon">
+                  <i class="fas fa-sign-in-alt"></i>
+                </span>
+                <span>Return to Login</span>
+              </a>
+            </p>
+          </div>
+        </main>
+      </div>
     </div>
-  </div>
 
-  <script src="<%= urlPrefix %>/lib/fa/js/all.min.js" defer></script>
-</body>
+    <script src="<%= urlPrefix %>/lib/fa/js/all.min.js" defer></script>
+  </body>
 </html>

@@ -1,116 +1,144 @@
 <!DOCTYPE html>
-<html class="has-background-grey" id="is-login-page" data-theme="light" lang="en"
-  style="background-image:url('<%= urlPrefix + configFunctions.getConfigProperty('application.backgroundUrl') %>')">
+<% const backgroundImageUrl = urlPrefix + configFunctions.getConfigProperty('application.backgroundUrl') %>
+<html
+  class="has-background-grey"
+  id="is-login-page"
+  data-theme="light"
+  style="background-image:url('<%= backgroundImageUrl %>')"
+  lang="en"
+>
 
-<head>
-  <title>
-    Login:
-    <%= configFunctions.getConfigProperty("application.applicationName") %>
-  </title>
+  <head>
+    <title>
+      Login:
+      <%= configFunctions.getConfigProperty("application.applicationName") %>
+    </title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-  <link rel="icon" href="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>" />
+    <link href="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>" rel="icon" />
 
-  <link rel="stylesheet" href="<%= urlPrefix %>/lib/cityssm-bulma-sticky-table/bulma-with-sticky-table.css" />
-  <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/sunrise.css" />
-</head>
+    <link href="<%= urlPrefix %>/lib/cityssm-bulma-sticky-table/bulma-with-sticky-table.css" rel="stylesheet" />
+    <link href="<%= urlPrefix %>/stylesheets/sunrise.css" rel="stylesheet" />
+  </head>
 
-<body>
-  <div class="columns is-vcentered is-centered mx-0 my-0" style="min-height:100vh">
-    <div class="column is-half-widescreen is-two-thirds-desktop is-three-quarters-tablet">
-      <main class="box mx-3 my-3 py-5">
-        <div class="columns is-vcentered">
-          <div class="column has-text-centered">
-            <img src="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>"
-              alt="" style="max-height:400px" />
-          </div>
-          <div class="column">
-            <h1 class="title is-3 has-text-centered">
-              <%= configFunctions.getConfigProperty("application.applicationName") %>
-            </h1>
-            <form id="form--login" method="post" action="<%= urlPrefix %>/login">
-              <input name="redirect" type="hidden" value="<%= redirect %>" />
+  <body>
+    <div class="columns is-vcentered is-centered mx-0 my-0" style="min-height:100vh">
+      <div class="column is-half-widescreen is-two-thirds-desktop is-three-quarters-tablet">
+        <main class="box mx-3 my-3 py-5">
+          <div class="columns is-vcentered">
+            <div class="column has-text-centered">
+              <img src="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>"
+                alt="" style="max-height:400px" />
+            </div>
+            <div class="column">
+              <h1 class="title is-3 has-text-centered">
+                <%= configFunctions.getConfigProperty("application.applicationName") %>
+              </h1>
+              <form id="form--login" action="<%= urlPrefix %>/login" method="post">
+                <input name="redirect" type="hidden" value="<%= redirect %>" />
 
-              <div class="field has-addons">
-                <div class="control">
-                  <span class="button is-static has-text-grey-dark">
-                    <%= configFunctions.getConfigProperty("login.domain") %>\
-                  </span>
+                <div class="field has-addons">
+                  <div class="control">
+                    <span class="button is-static has-text-grey-dark">
+                      <%= configFunctions.getConfigProperty("login.domain") %>\
+                    </span>
+                  </div>
+                  <div class="control is-expanded">
+                    <input
+                      class="input"
+                      id="login--userName"
+                      name="userName"
+                      type="text"
+                      value="<%= userName %>"
+                      aria-label="User Name"
+                      placeholder="User Name"
+                      autofocus
+                      required
+                    />
+                  </div>
                 </div>
-                <div class="control is-expanded">
-                  <input class="input" id="login--userName" name="userName" type="text"
-                    placeholder="User Name" value="<%= userName %>" aria-label="User Name"
-                    autofocus required />
+                <div class="field">
+                  <label class="is-sr-only" for="login--password">Password</label>
+                  <div class="control has-icons-left" title="Password">
+                    <input
+                      class="input"
+                      id="login--password"
+                      name="password"
+                      type="password"
+                      placeholder="Password"
+                      required
+                    />
+                    <span class="icon is-small is-left">
+                      <i class="fa-solid fa-key"></i>
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div class="field">
-                <label class="is-sr-only" for="login--password">Password</label>
-                <div class="control has-icons-left" title="Password">
-                  <input class="input" id="login--password" name="password" type="password"
-                    placeholder="Password" required />
-                  <span class="icon is-small is-left">
-                    <i class="fa-solid fa-key"></i>
-                  </span>
-                </div>
-              </div>
-              <% if (useTestDatabases) { %>
+                <% if (useTestDatabases) { %>
                 <div class="message is-small is-warning">
                   <p class="message-body has-text-centered">
                     Testing databases in use!
                   </p>
                 </div>
-              <% } %>
-              <div class="level is-mobile">
-                <div class="level-left has-text-danger">
-                  <% if (message !== "") { %>
+                <% } %>
+                <div class="level is-mobile">
+                  <div class="level-left has-text-danger">
+                    <% if (message !== "") { %>
                     <span class="icon">
                       <i class="fa-solid fa-exclamation-triangle"></i>
                     </span>
                     <span><%= message %></span>
-                  <% } %>
+                    <% } %>
+                  </div>
+                  <div class="level-right has-text-right">
+                    <button class="button is-primary" type="submit">
+                      <span class="icon">
+                        <i class="fa-solid fa-sign-in-alt"></i>
+                      </span>
+                      <span>Log In</span>
+                    </button>
+                  </div>
                 </div>
-                <div class="level-right has-text-right">
-                  <button class="button is-primary" type="submit">
-                    <span class="icon">
-                      <i class="fa-solid fa-sign-in-alt"></i>
-                    </span>
-                    <span>Log In</span>
-                  </button>
-                </div>
-              </div>
-            </form>
-            <hr />
-            <p class="has-text-right has-text-grey-dark is-size-7">
-              <a class="has-text-grey-dark" href="https://cityssm.github.io/sunrise-cms/docs" target="_blank"
-                rel="nofollow noreferrer"
-                <%- enableKeyboardShortcuts ? ' accesskey="h" ' : '' %>>
-                <span class="icon is-small">
-                  <i class="fa-solid fa-question-circle"></i>
-                </span>
-                <span>Help</span>
-              </a>
-              <a class="has-text-grey-dark ml-4" href="https://github.com/cityssm/sunrise-cms" target="_blank"
-                rel="noreferrer">
-                <span class="icon is-small">
-                  <i class="fa-brands fa-github"></i>
-                </span>
-                <span>GitHub</span>
-              </a>
-            </p>
+              </form>
+              <hr />
+              <p class="has-text-right has-text-grey-dark is-size-7">
+                <a
+                  class="has-text-grey-dark"
+                  href="https://cityssm.github.io/sunrise-cms/docs"
+                  accesskey="<%= enableKeyboardShortcuts ? 'h' : '' %>"
+                  rel="nofollow noreferrer"
+                  target="_blank"
+                >
+                  <span class="icon is-small">
+                    <i class="fa-solid fa-question-circle"></i>
+                  </span>
+                  <span>Help</span>
+                </a>
+                <a
+                  class="has-text-grey-dark ml-4"
+                  href="https://github.com/cityssm/sunrise-cms"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <span class="icon is-small">
+                    <i class="fa-brands fa-github"></i>
+                  </span>
+                  <span>GitHub</span>
+                </a>
+              </p>
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
-  </div>
 
-  <script src="<%= urlPrefix %>/lib/fa/js/all.min.js" defer></script>
-  <script>
-    try {
-      window.localStorage.clear();
-    } catch (e) { }
-  </script>
-</body>
+    <script src="<%= urlPrefix %>/lib/fa/js/all.min.js" defer></script>
+    <script>
+      try {
+        window.localStorage.clear();
+      } catch (e) { }
+    </script>
+  </body>
 
 </html>

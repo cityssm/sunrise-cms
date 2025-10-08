@@ -5,16 +5,16 @@
       <h3 class="modal-card-title">Send to ConsignO Cloud</h3>
       <button
         class="delete is-close-modal-button"
-        aria-label="close"
         type="button"
+        aria-label="close"
       ></button>
     </header>
     <section class="modal-card-body">
       <div class="message is-info">
         <p class="message-body">
-          This will start the ConsignO Cloud workflow for this contract.
-          The contract will be sent to the ConsignO Cloud, and you will be
-          able to manage it from there.
+          This will start the ConsignO Cloud workflow for this contract. The
+          contract will be sent to the ConsignO Cloud, and you will be able to
+          manage it from there.
         </p>
       </div>
       <div id="consignoCloudTab--loading">
@@ -25,19 +25,25 @@
       </div>
       <div class="is-hidden" id="consignoCloudTab--form">
         <form id="form--consignoCloudStart">
-          <input id="consignoCloudStart--contractId" name="contractId" type="hidden" />
+          <input
+            id="consignoCloudStart--contractId"
+            name="contractId"
+            type="hidden"
+          />
 
           <div class="columns">
             <div class="column">
               <h4 class="title is-5">Workflow Details</h4>
 
               <div class="field">
-                <label class="label" for="consignoCloudStart--workflowTitle">Workflow Title</label>
+                <label class="label" for="consignoCloudStart--workflowTitle">
+                  Workflow Title
+                </label>
                 <div class="control">
                   <input
+                    class="input"
                     id="consignoCloudStart--workflowTitle"
                     name="workflowTitle"
-                    class="input"
                     type="text"
                     placeholder="Enter a title for the workflow"
                     required
@@ -46,12 +52,17 @@
               </div>
 
               <div class="field">
-                <label class="label" for="consignoCloudStart--workflowExpiresOn">Expiry Date</label>
+                <label
+                  class="label"
+                  for="consignoCloudStart--workflowExpiresOn"
+                >
+                  Expiry Date
+                </label>
                 <div class="control">
                   <input
+                    class="input"
                     id="consignoCloudStart--workflowExpiresOn"
                     name="workflowExpiresOn"
-                    class="input"
                     type="date"
                     placeholder="Enter a title for the print"
                     required
@@ -64,31 +75,42 @@
             </div>
             <div class="column">
               <h4 class="title is-5">Set Up Signer</h4>
-              <label class="label" for="consignoCloudStart--signerFirstName">Signer First Name</label>
+              <label class="label" for="consignoCloudStart--signerFirstName">
+                Signer First Name
+              </label>
               <div class="field has-addons">
                 <div class="control is-expanded">
                   <input
+                    class="input"
                     id="consignoCloudStart--signerFirstName"
                     name="signerFirstName"
-                    class="input"
                     type="text"
                     placeholder="Enter the first name of the signer"
                     required
                   />
                 </div>
                 <div class="control">
-                  <button class="button" id="consignoCloudStart--swapNames" title="Swap Names" type="button">
-                    <span class="icon"><i class="fa-solid fa-up-down"></i></span>
+                  <button
+                    class="button"
+                    id="consignoCloudStart--swapNames"
+                    type="button"
+                    title="Swap Names"
+                  >
+                    <span class="icon">
+                      <i class="fa-solid fa-up-down"></i>
+                    </span>
                   </button>
                 </div>
               </div>
               <div class="field">
-                <label class="label" for="consignoCloudStart--signerLastName">Signer Last Name</label>
+                <label class="label" for="consignoCloudStart--signerLastName">
+                  Signer Last Name
+                </label>
                 <div class="control">
                   <input
+                    class="input"
                     id="consignoCloudStart--signerLastName"
                     name="signerLastName"
-                    class="input"
                     type="text"
                     placeholder="Enter the last name of the signer"
                     required
@@ -96,24 +118,28 @@
                 </div>
               </div>
               <div class="field">
-                <label class="label" for="consignoCloudStart--signerEmail">Email</label>
+                <label class="label" for="consignoCloudStart--signerEmail">
+                  Email
+                </label>
                 <div class="control">
                   <input
+                    class="input"
                     id="consignoCloudStart--signerEmail"
                     name="signerEmail"
-                    class="input"
                     type="email"
                     required
                   />
                 </div>
               </div>
-              <label class="label" for="consignoCloudStart--signerPhone">Phone Number</label>
+              <label class="label" for="consignoCloudStart--signerPhone">
+                Phone Number
+              </label>
               <div class="field has-addons">
                 <div class="control is-expanded">
                   <input
+                    class="input"
                     id="consignoCloudStart--signerPhone"
                     name="signerPhone"
-                    class="input"
                     type="tel"
                     pattern="^\+1\d{10}$"
                     required
@@ -128,9 +154,7 @@
                   </div>
                 </div>
               </div>
-              <p class="help">
-                Formatted as +1XXXXXXXXXX.
-              </p>
+              <p class="help">Formatted as +1XXXXXXXXXX.</p>
             </div>
           </div>
         </form>
@@ -146,7 +170,9 @@
           <span class="icon"><i class="fa-solid fa-play"></i></span>
           <span>Initialize ConsignO Cloud Workflow</span>
         </button>
-        <button class="button is-close-modal-button" type="button">Cancel</button>
+        <button class="button is-close-modal-button" type="button">
+          Cancel
+        </button>
       </div>
     </footer>
   </div>

@@ -2,7 +2,7 @@
   <h2 class="menu-label is-hidden-touch">Work Orders</h2>
   <ul class="menu-list">
     <%
-      const isWorkOrderSearch = headTitle === 'Work Order Search';
+    const isWorkOrderSearch = headTitle === 'Work Order Search';
     %>
     <li>
       <a
@@ -18,18 +18,18 @@
         </div>
       </a>
       <% if (isWorkOrderSearch && user.userProperties.canUpdateWorkOrders) { %>
-        <ul>
-          <li>
-            <a
-              href="<%= urlPrefix %>/workOrders/new"
-              title="Create New Work Order"
-              <%- enableKeyboardShortcuts ? ' accesskey="n" ' : '' %>
-            >
-              <span class="is-hidden-touch">Create New Work Order</span>
-              <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
-            </a>
-          </li>
-        </ul>
+      <ul>
+        <li>
+          <a
+            href="<%= urlPrefix %>/workOrders/new"
+            title="Create New Work Order"
+            accesskey="<%= enableKeyboardShortcuts ? 'n' : '' %>"
+          >
+            <span class="is-hidden-touch">Create New Work Order</span>
+            <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
+          </a>
+        </li>
+      </ul>
       <% } %>
     </li>
     <li>
@@ -71,9 +71,9 @@
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
-            <span class="icon"
-              ><i class="fa-solid fa-envelope-open-text"></i
-            ></span>
+            <span class="icon">
+              <i class="fa-solid fa-envelope-open-text"></i>
+            </span>
           </div>
           <div class="column is-hidden-touch">iCalendar Integration</div>
         </div>
@@ -101,9 +101,9 @@
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
-            <span class="icon"
-              ><i class="fa-solid fa-circle-question"></i
-            ></span>
+            <span class="icon">
+              <i class="fa-solid fa-circle-question"></i>
+            </span>
           </div>
           <div class="column is-hidden-touch">Help</div>
         </div>

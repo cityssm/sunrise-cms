@@ -1,12 +1,12 @@
 <div class="modal" role="dialog">
   <div class="modal-background"></div>
-  <div class="modal-card" style="width:1000px">
+  <div class="modal-card" style="width: 1000px">
     <header class="modal-card-head">
       <h3 class="modal-card-title">Edit Milestone</h3>
       <button
         class="delete is-close-modal-button"
-        aria-label="close"
         type="button"
+        aria-label="close"
       ></button>
     </header>
     <section class="modal-card-body">
@@ -25,11 +25,14 @@
               type="hidden"
               value=""
             />
-    
+
             <div class="field">
-              <label class="label" for="milestoneEdit--workOrderMilestoneTypeId"
-                >Milestone Type</label
+              <label
+                class="label"
+                for="milestoneEdit--workOrderMilestoneTypeId"
               >
+                Milestone Type
+              </label>
               <div class="control">
                 <div class="select is-fullwidth">
                   <select
@@ -47,8 +50,9 @@
                   <label
                     class="label"
                     for="milestoneEdit--workOrderMilestoneDateString"
-                    >Milestone Date</label
                   >
+                    Milestone Date
+                  </label>
                   <div class="control has-icons-left">
                     <input
                       class="input"
@@ -68,8 +72,9 @@
                   <label
                     class="label"
                     for="milestoneEdit--workOrderMilestoneTimeString"
-                    >Milestone Time</label
                   >
+                    Milestone Time
+                  </label>
                   <div class="control has-icons-left">
                     <input
                       class="input"
@@ -84,13 +89,17 @@
                 </div>
               </div>
             </div>
-            <p class="has-text-warning-dark is-size-7" id="milestoneEdit--workOrderMilestoneDateTimeMessage"></p>
+            <p
+              class="has-text-warning-dark is-size-7"
+              id="milestoneEdit--workOrderMilestoneDateTimeMessage"
+            ></p>
             <div class="field mt-2">
               <label
                 class="label"
                 for="milestoneEdit--workOrderMilestoneDescription"
-                >Description</label
               >
+                Description
+              </label>
               <div class="control">
                 <textarea
                   class="textarea"
@@ -102,10 +111,11 @@
           </form>
         </div>
         <div class="column">
-          <div class="panel is-info" id="milestoneEdit--conflictingMilestonesPanel">
-            <h4 class="panel-heading">
-              Potentially Conflicting Milestones
-            </h4>
+          <div
+            class="panel is-info"
+            id="milestoneEdit--conflictingMilestonesPanel"
+          >
+            <h4 class="panel-heading">Potentially Conflicting Milestones</h4>
           </div>
         </div>
       </div>
@@ -120,7 +130,9 @@
           <span class="icon"><i class="fa-solid fa-save"></i></span>
           <span>Update Milestone</span>
         </button>
-        <button class="button is-close-modal-button" type="button">Cancel</button>
+        <button class="button is-close-modal-button" type="button">
+          Cancel
+        </button>
       </div>
     </footer>
   </div>
