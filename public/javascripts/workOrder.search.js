@@ -59,12 +59,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
             // eslint-disable-next-line no-unsanitized/method
             resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr class="avoid-page-break ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0 ? 'has-background-warning-light' : ''}">
           <td>
-            <a class="has-text-weight-bold" href="${sunrise.getWorkOrderUrl(workOrder.workOrderId)}">
-              ${workOrder.workOrderNumber?.trim() === ''
+            <div class="columns is-mobile is-vcentered mb-0">
+              <div class="column pb-0">
+                <a class="has-text-weight-bold" href="${sunrise.getWorkOrderUrl(workOrder.workOrderId)}">
+                  ${workOrder.workOrderNumber?.trim() === ''
                 ? '(No Number)'
                 : cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
-            </a>
-          </td><td>
+                </a>
+              </div>
+              <div class="column is-narrow pb-0">
+                ${workOrder.workOrderMilestoneCount === 0
+                ? ''
+                : `<span class="tag" title="Progress">
+                        ${(workOrder.workOrderMilestoneCompletionCount ?? '').toString()}
+                          /
+                          ${(workOrder.workOrderMilestoneCount ?? '').toString()}
+                        </span>`}
+              </div>
+            </div>
             ${hasWorkOrderTypeFilter
                 ? `${cityssm.escapeHTML(workOrder.workOrderType ?? '')}<br />`
                 : ''}
@@ -85,17 +97,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 <span class="fa-li">
                   <i class="fa-solid fa-stop" aria-label="${sunrise.escapedAliases.WorkOrderCloseDate}"></i>
                 </span>
-                ${workOrder.workOrderCloseDate
-                ? workOrder.workOrderCloseDateString
-                : `<span class="has-text-grey">(No ${sunrise.escapedAliases.WorkOrderCloseDate})</span>`}
+                ${workOrder.workOrderCloseDate === null
+                ? `<span class="has-text-grey">(No ${sunrise.escapedAliases.WorkOrderCloseDate})</span>`
+                : workOrder.workOrderCloseDateString}
               </li>
             </ul>
-          </td><td>
-            ${workOrder.workOrderMilestoneCount === 0
-                ? '-'
-                : `${(workOrder.workOrderMilestoneCompletionCount ?? '').toString()}
-                  /
-                  ${(workOrder.workOrderMilestoneCount ?? '').toString()}`}
           </td>
           ${workOrderPrints.length > 0
                 ? `<td>
@@ -110,11 +116,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
       <thead><tr>
-      <th>Work Order Number</th>
-      <th>Description</th>
+      <th>Work Order</th>
       <th>Related</th>
       <th>Date</th>
-      <th title="Completed / Total Milestones">Progress</th>
       ${workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : ''}
       </tr></thead>
       <table>`;
