@@ -1,9 +1,8 @@
-import {
+import configWebApp, {
   type ConfigObject,
-  configWebApp,
-  cspellWords,
   defineConfig
 } from 'eslint-config-cityssm'
+import { cspellWords } from 'eslint-config-cityssm/exports'
 
 export const config: ConfigObject[] = defineConfig(configWebApp, {
   files: ['**/*.ts'],

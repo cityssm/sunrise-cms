@@ -1,4 +1,5 @@
-import { configWebApp, cspellWords, defineConfig } from 'eslint-config-cityssm';
+import configWebApp, { defineConfig } from 'eslint-config-cityssm';
+import { cspellWords } from 'eslint-config-cityssm/exports';
 export const config = defineConfig(configWebApp, {
     files: ['**/*.ts'],
     languageOptions: {

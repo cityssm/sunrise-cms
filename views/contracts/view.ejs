@@ -28,23 +28,23 @@
     </h1>
   </div>
   <% if (contract.contractEndDate) { %>
-    <div class="column is-narrow has-text-right">
-      <span class="tag is-warning is-medium">
-        <span class="icon">
-          <i class="fa-solid fa-stop"></i>
-        </span>
-        <span>Finalized</span>
+  <div class="column is-narrow has-text-right">
+    <span class="tag is-warning is-medium">
+      <span class="icon">
+        <i class="fa-solid fa-stop"></i>
       </span>
-    </div>
+      <span>Finalized</span>
+    </span>
+  </div>
   <% } else if (contract.contractIsFuture) { %>
-    <div class="column is-narrow has-text-right">
-      <span class="tag is-info is-medium">
-        <span class="icon">
-          <i class="fa-solid fa-fast-forward"></i>
-        </span>
-        <span>Future</span>
+  <div class="column is-narrow has-text-right">
+    <span class="tag is-info is-medium">
+      <span class="icon">
+        <i class="fa-solid fa-fast-forward"></i>
       </span>
-    </div>
+      <span>Future</span>
+    </span>
+  </div>
   <% } %>
 </div>
 
@@ -83,13 +83,13 @@
         <div class="dropdown-menu">
           <div class="dropdown-content has-text-left">
             <% for (const printName of contractTypePrints) { %>
-              <% const printConfig = printFunctions.getPrintConfig(printName); %>
-              <% if (printConfig) { %>
-                <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?contractId=<%= contract.contractId %>" target="_blank">
-                  <span class="icon"><i class="fa-solid fa-print"></i></span>
-                  <span><%= printConfig.title %></span>
-                </a>
-              <% } %>
+            <% const printConfig = printFunctions.getPrintConfig(printName); %>
+            <% if (printConfig) { %>
+            <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?contractId=<%= contract.contractId %>" target="_blank">
+              <span class="icon"><i class="fa-solid fa-print"></i></span>
+              <span><%= printConfig.title %></span>
+            </a>
+            <% } %>
             <% } %>
           </div>
         </div>
@@ -124,11 +124,11 @@
         <p class="mb-2">
           <strong>Burial Site</strong><br />
           <% if (contract.burialSiteId) { %>
-            <a class="<%= contract.burialSiteIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/burialSites/<%= contract.burialSiteId %>">
-              <%= contract.burialSiteName %>
-            </a>
+          <a class="<%= contract.burialSiteIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/burialSites/<%= contract.burialSiteId %>">
+            <%= contract.burialSiteName %>
+          </a>
           <% } else { %>
-            <span class="has-text-grey">(No Burial Site)</span>
+          <span class="has-text-grey">(No Burial Site)</span>
           <% } %>
         </p>
         <p>
@@ -363,8 +363,12 @@
           </div>
           <div class="level-right">
             <div class="level-item">
-              <a class="button is-small is-hidden-print has-text-weight-normal"
-                href="<%= urlPrefix %>/reports/contractInterments-byContractId/?contractId=<%= contract.contractId %>"  target="_blank" download>
+              <a
+                class="button is-small is-hidden-print has-text-weight-normal"
+                href="<%= urlPrefix %>/reports/contractInterments-byContractId/?contractId=<%= contract.contractId %>"
+                download
+                target="_blank"
+              >
                 <span class="icon is-small"><i class="fa-solid fa-download"></i></span>
                 <span>Export</span>
               </a>

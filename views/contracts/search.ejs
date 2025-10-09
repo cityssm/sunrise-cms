@@ -136,11 +136,14 @@
             <div class="control has-icons-left">
               <div class="select is-fullwidth">
                 <select id="searchFilter--cemeteryId" name="cemeteryId">
-                  <option value="">(All Cemeteries)</option>
+                  <option value ="">(All Cemeteries)</option>
                   <% for (const cemetery of cemeteries) { %>
-                    <option value="<%= cemetery.cemeteryId %>" <%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>>
-                      <%= cemetery.cemeteryName || "(No Name)" %>
-                    </option>
+                  <option
+                    value="<%= cemetery.cemeteryId %>"
+                    _<%= (cemetery.cemeteryId.toString() === cemeteryId) ? ' selected' : '' %>
+                  >
+                    <%= cemetery.cemeteryName || '(No Name)' %>
+                  </option>
                   <% } %>
                 </select>
               </div>

@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <title><%= headTitle %></title>
     <style>
@@ -11,45 +12,45 @@
     <h2 class="mb-0">Comments</h2>
 
     <% if (workOrder.workOrderComments.length === 0) { %>
-      <p>There are no comments associated with this work order.</p>
+    <p>There are no comments associated with this work order.</p>
     <% } else { %>
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Author</th>
-            <th>Comment Time</th>
-            <th>Comment</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (const comment of workOrder.workOrderComments) { %>
-            <tr>
-              <td><%= comment.recordUpdate_userName %></td>
-              <td><%= comment.commentDateString %> <%= comment.commentTimePeriodString %></td>
-              <td><%= comment.comment %></td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Author</th>
+          <th>Comment Time</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const comment of workOrder.workOrderComments) { %>
+        <tr>
+          <td><%= comment.recordUpdate_userName %></td>
+          <td><%= comment.commentDateString %> <%= comment.commentTimePeriodString %></td>
+          <td><%= comment.comment %></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
     <% } %>
           
     <p style="position: absolute; bottom: 5px; left: 20px;">
       <%
-        const barcodeData = barcodeFunctions.generateBarcodeSvg(workOrder.workOrderNumber, {
-          format: 'CODE128',
-          width: 2,
-          height: 50,
-          margin: 0,
-          displayValue: false
-        })
+      const barcodeData = barcodeFunctions.generateBarcodeSvg(workOrder.workOrderNumber, {
+        format: 'CODE128',
+        width: 2,
+        height: 50,
+        margin: 0,
+        displayValue: false
+      })
       %>
       <%- barcodeData %>
     </p>
 
     <p class="has-text-right is-italic is-8pt" style="position: absolute; bottom: 15px; right: 20px;">
       <%
-        const recordCreateDate = new Date(workOrder.recordCreate_timeMillis);
-        const currentDate = new Date();
+      const recordCreateDate = new Date(workOrder.recordCreate_timeMillis);
+      const currentDate = new Date();
       %>
       Work order created <%= dateTimeFunctions.dateToString(recordCreateDate) %> at <%= dateTimeFunctions.dateToTimePeriodString(recordCreateDate) %>.
       Printed <%= dateTimeFunctions.dateToString(currentDate) %> at <%= dateTimeFunctions.dateToTimePeriodString(currentDate) %>.<br />

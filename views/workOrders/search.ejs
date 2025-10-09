@@ -18,17 +18,22 @@
     </nav>
 
     <% if (error !== undefined) { %>
-      <div class="notification is-danger is-light">
-        <button class="delete" aria-label="delete"></button>
-        <p>
-          <strong>Work Order Error</strong><br />
-          <%= error %>
-        </p>
-      </div>
+    <div class="notification is-danger is-light">
+      <button class="delete" aria-label="delete"></button>
+      <p>
+        <strong>Work Order Error</strong><br />
+        <%= error %>
+      </p>
+    </div>
     <% } %>
 
     <form id="form--searchFilters">
-      <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
+      <input
+        id="searchFilter--offset"
+        name="offset"
+        type="hidden"
+        value="0"
+      />
 
       <div class="columns is-vcentered is-mobile">
         <div class="column">
@@ -59,24 +64,26 @@
         <div class="panel-block is-block">
           <div class="columns">
             <% if (workOrderTypes.length > 1) { %>
-              <div class="column">
-                <div class="field">
-                  <label class="label" for="searchFilter--workOrderTypeId">Work Order Type</label>
-                  <div class="control has-icons-left">
-                    <div class="select is-fullwidth">
-                      <select id="searchFilter--workOrderTypeId" name="workOrderTypeId">
-                        <option value="">(All Work Order Types)</option>
-                        <% for (const workOrderType of workOrderTypes) { %>
-                          <option value="<%= workOrderType.workOrderTypeId %>"><%= workOrderType.workOrderType || "(No Name)" %></option>
-                        <% } %>
-                      </select>
-                    </div>
-                    <span class="icon is-small is-left">
-                      <i class="fa-solid fa-search"></i>
-                    </span>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--workOrderTypeId">Work Order Type</label>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--workOrderTypeId" name="workOrderTypeId">
+                      <option value="">(All Work Order Types)</option>
+                      <% for (const workOrderType of workOrderTypes) { %>
+                      <option value="<%= workOrderType.workOrderTypeId %>">
+                        <%= workOrderType.workOrderType || "(No Name)" %>
+                      </option>
+                      <% } %>
+                    </select>
                   </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
                 </div>
               </div>
+            </div>
             <% } %>
             <div class="column">
               <div class="field">
@@ -84,8 +91,18 @@
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
                     <select id="searchFilter--workOrderOpenStatus" name="workOrderOpenStatus">
-                      <option value="" <%= (workOrderOpenDateString ? " selected" : "") %>>(All Statuses)</option>
-                      <option value="open" <%= (workOrderOpenDateString ? "" : " selected") %>>Open</option>
+                      <option
+                        value=""
+                        _<%= (workOrderOpenDateString ? " selected" : "") %>
+                      >
+                        (All Statuses)
+                      </option>
+                      <option
+                        value="open"
+                        _<%= (workOrderOpenDateString ? "" : " selected") %>
+                      >
+                        Open
+                      </option>
                       <option value="closed">Closed</option>
                     </select>
                   </div>
@@ -99,7 +116,14 @@
               <div class="field">
                 <label class="label" for="searchFilter--workOrderOpenDateString"><%= settingFunctions.getSettingValue("aliases.workOrderOpenDate") %></label>
                 <div class="control is-expanded has-icons-left">
-                  <input class="input" id="searchFilter--workOrderOpenDateString" name="workOrderOpenDateString" type="date" value="<%= workOrderOpenDateString %>" max="<%= dateTimeFunctions.dateToString(new Date()) %>" />
+                  <input
+                    class="input"
+                    id="searchFilter--workOrderOpenDateString"
+                    name="workOrderOpenDateString"
+                    type="date"
+                    value="<%= workOrderOpenDateString %>"
+                    max="<%= dateTimeFunctions.dateToString(new Date()) %>"
+                  />
                   <span class="icon is-small is-left">
                     <i class="fa-solid fa-calendar"></i>
                   </span>
@@ -122,7 +146,7 @@
                     <select id="searchFilter--cemeteryId" name="cemeteryId">
                       <option value="">(All Cemeteries)</option>
                       <% for (const cemetery of cemeteries) { %>
-                        <option value="<%= cemetery.cemeteryId %>"><%= cemetery.cemeteryName || "(No Name)" %></option>
+                      <option value="<%= cemetery.cemeteryId %>"><%= cemetery.cemeteryName || "(No Name)" %></option>
                       <% } %>
                     </select>
                   </div>
@@ -136,7 +160,12 @@
               <div class="field">
                 <label class="label" for="searchFilter--burialSiteName">Burial Site Name</label>
                 <div class="control is-expanded has-icons-left">
-                  <input class="input" id="searchFilter--burialSiteName" name="burialSiteName" type="text" />
+                  <input
+                    class="input"
+                    id="searchFilter--burialSiteName"
+                    name="burialSiteName"
+                    type="text"
+                  />
                   <span class="icon is-small is-left">
                     <i class="fa-solid fa-search"></i>
                   </span>
@@ -155,7 +184,12 @@
               <div class="field">
                 <label class="label" for="searchFilter--deceasedName">Recipient / Deceased Name</label>
                 <div class="control is-expanded has-icons-left">
-                  <input class="input" id="searchFilter--deceasedName" name="deceasedName" type="text" />
+                  <input
+                    class="input"
+                    id="searchFilter--deceasedName"
+                    name="deceasedName"
+                    type="text"
+                  />
                   <span class="icon is-small is-left">
                     <i class="fa-solid fa-search"></i>
                   </span>
@@ -170,7 +204,7 @@
                     <select id="searchFilter--funeralHomeId" name="funeralHomeId">
                       <option value="">(All Funeral Homes)</option>
                       <% for (const funeralHome of funeralHomes) { %>
-                        <option value="<%= funeralHome.funeralHomeId %>"><%= funeralHome.funeralHomeName || "(No Name)" %></option>
+                      <option value="<%= funeralHome.funeralHomeId %>"><%= funeralHome.funeralHomeName || "(No Name)" %></option>
                       <% } %>
                     </select>
                   </div>

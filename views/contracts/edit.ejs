@@ -138,12 +138,12 @@
             <div class="control is-expanded">
               <div class="select is-fullwidth">
                 <select
-                  <% if (!isCreate) { %>
-                    class="is-readonly" 
-                  <% } %>
-                  id="contract--contractTypeId" name="contractTypeId"
+                  class="<%= isCreate ? '' : 'is-readonly' %>"
+                  id="contract--contractTypeId"
+                  name="contractTypeId"
                   required
-                  <%= (isCreate ? " autofocus" : "") %>>
+                  _<%= (isCreate ? ' autofocus' : '') %>
+                >
                   <% if (isCreate) { %>
                     <option value="" data-is-preneed="false">(Select a Type)</option>
                   <% } %>
@@ -155,7 +155,7 @@
                       }
                     %>
                     <option value="<%= contractType.contractTypeId %>"
-                      <%- (contractType.isPreneed ? ' data-is-preneed="true"' : ' data-is-preneed="false"') %>
+                      data-is-preneed="<%= contractType.isPreneed ? 'true' : 'false' %>"
                       <%= (contract.contractTypeId === contractType.contractTypeId ? ' selected' : '') %>
                       <%= (!isCreate && contract.contractTypeId !== contractType.contractTypeId ? " disabled" : "") %>>
                       <%= contractType.contractType %>
@@ -163,7 +163,7 @@
                   <% } %>
                   <% if (contract.contractTypeId && !typeIsFound) { %>
                     <option value="<%= contract.contractTypeId %>"
-                      <%- (contract.isPreneed ? ' data-is-preneed="true"' : ' data-is-preneed="false"') %>
+                      data-is-preneed="<%= contract.isPreneed ? 'true' : 'false' %>"
                       selected>
                       <%= contract.contractType %>
                     </option>

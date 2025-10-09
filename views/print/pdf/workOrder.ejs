@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <title><%= headTitle %></title>
     <style>
@@ -9,124 +10,123 @@
     <%- include('_workOrder-header.ejs'); %>
     
     <% if (workOrder.workOrderBurialSites.length > 0) { %>
-      <h2 class="mb-0">Burial Sites</h2>
+    <h2 class="mb-0">Burial Sites</h2>
 
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Burial Site</th>
-            <th>Cemetery</th>
-            <th>Burial Site Type</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (const burialSite of workOrder.workOrderBurialSites) { %>
-            <tr>
-              <td><%= burialSite.burialSiteName %></td>
-              <td><%= burialSite.cemeteryName %></td>
-              <td><%= burialSite.burialSiteType %></td>
-              <td><%= burialSite.burialSiteStatus %></td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Burial Site</th>
+          <th>Cemetery</th>
+          <th>Burial Site Type</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const burialSite of workOrder.workOrderBurialSites) { %>
+        <tr>
+          <td><%= burialSite.burialSiteName %></td>
+          <td><%= burialSite.cemeteryName %></td>
+          <td><%= burialSite.burialSiteType %></td>
+          <td><%= burialSite.burialSiteStatus %></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
     <% } %>
 
     <% if (workOrder.workOrderContracts.length > 0) { %>
-      <h2 class="mb-0">Contracts</h2>
+    <h2 class="mb-0">Contracts</h2>
 
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Contract Type</th>
-            <th>Burial Site</th>
-            <th>Contract Date</th>
-            <th>End Date</th>
-            <th>Interments</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (const contract of workOrder.workOrderContracts) { %>
-            <tr>
-              <td><%= contract.contractType %></td>
-              <td><%= contract.burialSiteName %></td>
-              <td><%= contract.contractStartDateString %></td>
-              <td><%= contract.contractEndDateString %></td>
-              <td>
-                <% for (const interment of contract.contractInterments) { %>
-                  <%= interment.deceasedName %>
-                  <br />
-                <% } %>
-              </td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Contract Type</th>
+          <th>Burial Site</th>
+          <th>Contract Date</th>
+          <th>End Date</th>
+          <th>Interments</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const contract of workOrder.workOrderContracts) { %>
+        <tr>
+          <td><%= contract.contractType %></td>
+          <td><%= contract.burialSiteName %></td>
+          <td><%= contract.contractStartDateString %></td>
+          <td><%= contract.contractEndDateString %></td>
+          <td>
+            <% for (const interment of contract.contractInterments) { %>
+            <%= interment.deceasedName %><br />
+            <% } %>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
     <% } %>
 
     <% if (workOrder.workOrderMilestones.length > 0) { %>
-      <h2 class="mb-0">Milestones</h2>
+    <h2 class="mb-0">Milestones</h2>
 
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th class="is-width-1"></th>
-            <th>Milestone Description</th>
-            <th>Due Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (const milestone of workOrder.workOrderMilestones) { %>
-            <tr>
-              <td class="is-width-1">
-                <% if (milestone.workOrderMilestoneCompletionDate) { %>
-                  <span class="checkbox is-checked"></span>
-                <% } else { %>
-                  <span class="checkbox"></span>
-                <% } %>
-              </td>
-              <td>
-                <% if (milestone.workOrderMilestoneTypeId) { %>
-                  <strong><%= milestone.workOrderMilestoneType %></strong><br />
-                <% } %>
-                <%= milestone.workOrderMilestoneDescription %>
-              </td>
-              <td>
-                <% if (milestone.workOrderMilestoneDate === 0) { %>
-                  (No Set Date)
-                <% } else { %>
-                  <%= milestone.workOrderMilestoneDateString %>
-                <% } %>
-                <% if (milestone.workOrderMilestoneTime) { %>
-                  <%= milestone.workOrderMilestoneTimePeriodString %>
-                <% } %>
-              </td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="is-width-1"></th>
+          <th>Milestone Description</th>
+          <th>Due Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const milestone of workOrder.workOrderMilestones) { %>
+        <tr>
+          <td class="is-width-1">
+            <% if (milestone.workOrderMilestoneCompletionDate) { %>
+            <span class="checkbox is-checked"></span>
+            <% } else { %>
+            <span class="checkbox"></span>
+            <% } %>
+          </td>
+          <td>
+            <% if (milestone.workOrderMilestoneTypeId) { %>
+            <strong><%= milestone.workOrderMilestoneType %></strong><br />
+            <% } %>
+            <%= milestone.workOrderMilestoneDescription %>
+          </td>
+          <td>
+            <% if (milestone.workOrderMilestoneDate === 0) { %>
+            (No Set Date)
+            <% } else { %>
+            <%= milestone.workOrderMilestoneDateString %>
+            <% } %>
+            <% if (milestone.workOrderMilestoneTime) { %>
+            <%= milestone.workOrderMilestoneTimePeriodString %>
+            <% } %>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
     <% } %>
 
     <h2 class="mb-0">Notes</h2>
 
     <p style="position: absolute; bottom: 5px; left: 20px;">
       <%
-        const barcodeData = barcodeFunctions.generateBarcodeSvg(workOrder.workOrderNumber, {
-          format: 'CODE128',
-          width: 2,
-          height: 50,
-          margin: 0,
-          displayValue: false
-        })
+      const barcodeData = barcodeFunctions.generateBarcodeSvg(workOrder.workOrderNumber, {
+        format: 'CODE128',
+        width: 2,
+        height: 50,
+        margin: 0,
+        displayValue: false
+      })
       %>
       <%- barcodeData %>
     </p>
 
     <p class="has-text-right is-italic is-8pt" style="position: absolute; bottom: 15px; right: 20px;">
       <%
-        const recordCreateDate = new Date(workOrder.recordCreate_timeMillis);
-        const currentDate = new Date();
+      const recordCreateDate = new Date(workOrder.recordCreate_timeMillis);
+      const currentDate = new Date();
       %>
       Work order created <%= dateTimeFunctions.dateToString(recordCreateDate) %> at <%= dateTimeFunctions.dateToTimePeriodString(recordCreateDate) %>.
       Printed <%= dateTimeFunctions.dateToString(currentDate) %> at <%= dateTimeFunctions.dateToTimePeriodString(currentDate) %>.<br />

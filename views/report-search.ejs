@@ -1,3 +1,4 @@
+<!-- eslint-disable html/no-multiple-h1 -->
 <%- include('_header'); -%>
 
 <div class="columns is-mobile">
@@ -126,7 +127,7 @@
         <h1 class="title is-1">Contract Reports</h1>
 
         <div class="panel">
-          <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/contracts-current-byCemeteryId">
+          <form class="panel-block align-items-flex-start" action="<%= urlPrefix %>/reports/contracts-current-byCemeteryId" method="get">
             <div class="has-text-centered my-2 ml-2 mr-3">
               <span class="icon has-text-info">
                 <i class="fa-solid fa-2x fa-file"></i>
@@ -147,9 +148,9 @@
                   <div class="select is-small is-fullwidth">
                     <select id="contracts-current-byCemeteryId--cemeteryId" name="cemeteryId">
                       <% for (const cemetery of cemeteries) { %>
-                        <option value="<%= cemetery.cemeteryId %>">
-                          <%= cemetery.cemeteryName || "(No Name)" %>
-                        </option>
+                      <option value="<%= cemetery.cemeteryId %>">
+                        <%= cemetery.cemeteryName || "(No Name)" %>
+                      </option>
                       <% } %>
                     </select>
                   </div>
@@ -162,34 +163,38 @@
               </div>
             </div>
           </form>
-          <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/contractTransactions-byTransactionDateString">
-              <div class="has-text-centered my-2 ml-2 mr-3">
-                  <span class="icon has-text-info">
-                      <i class="fa-solid fa-2x fa-file"></i>
-                  </span><br />
-                  <span class="tag is-info">CSV</span>
-              </div>
-              <div>
-                <h2 class="title is-5 mb-0">Transactions by Date</h2>
-                <div class="field has-addons mt-2">
-                  <div class="control">
-                    <label class="button is-small is-static" for="contractTransactions-byTransactionDateString--transactionDateString">
-                      Transaction Date
-                    </label>
-                  </div>
-                  <div class="control is-expanded">
-                    <input class="input is-small" id="contractTransactions-byTransactionDateString--transactionDateString" name="transactionDateString"
-                      type="date"
-                      value="<%= dateTimeFunctions.dateToString(new Date()) %>"
-                      required />
-                  </div>
-                  <div class="control">
-                    <button class="button is-small is-primary" type="submit">
-                      Export
-                    </button>
-                  </div>
+          <form class="panel-block align-items-flex-start" action="<%= urlPrefix %>/reports/contractTransactions-byTransactionDateString" method="get">
+            <div class="has-text-centered my-2 ml-2 mr-3">
+              <span class="icon has-text-info">
+                <i class="fa-solid fa-2x fa-file"></i>
+              </span><br />
+              <span class="tag is-info">CSV</span>
+            </div>
+            <div>
+              <h2 class="title is-5 mb-0">Transactions by Date</h2>
+              <div class="field has-addons mt-2">
+                <div class="control">
+                  <label class="button is-small is-static" for="contractTransactions-byTransactionDateString--transactionDateString">
+                    Transaction Date
+                  </label>
+                </div>
+                <div class="control is-expanded">
+                  <input
+                    class="input is-small"
+                    id="contractTransactions-byTransactionDateString--transactionDateString"
+                    name="transactionDateString"
+                    type="date"
+                    value="<%= dateTimeFunctions.dateToString(new Date()) %>"
+                    required
+                  />
+                </div>
+                <div class="control">
+                  <button class="button is-small is-primary" type="submit">
+                    Export
+                  </button>
                 </div>
               </div>
+            </div>
           </form>
         </div>
       </div>
@@ -216,7 +221,7 @@
         <h2 class="title is-3">Burial Site Reports</h2>
 
         <div class="panel">
-          <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byCemeteryId">
+          <form class="panel-block align-items-flex-start" action="<%= urlPrefix %>/reports/burialSites-byCemeteryId" method="get">
             <div class="has-text-centered my-2 ml-2 mr-3">
               <span class="icon has-text-info">
                 <i class="fa-solid fa-2x fa-file"></i>
@@ -237,9 +242,9 @@
                   <div class="select is-small is-fullwidth">
                     <select id="burialSites-byCemeteryId--cemeteryId" name="cemeteryId">
                       <% for (const cemetery of cemeteries) { %>
-                        <option value="<%= cemetery.cemeteryId %>">
-                          <%= cemetery.cemeteryName || "(No Name)" %>
-                        </option>
+                      <option value="<%= cemetery.cemeteryId %>">
+                        <%= cemetery.cemeteryName || "(No Name)" %>
+                      </option>
                       <% } %>
                     </select>
                   </div>
@@ -252,7 +257,7 @@
               </div>
             </div>
           </form>
-          <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteTypeId">
+          <form class="panel-block align-items-flex-start" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteTypeId" method="get">
             <div class="has-text-centered my-2 ml-2 mr-3">
               <span class="icon has-text-info">
                 <i class="fa-solid fa-2x fa-file"></i>
@@ -271,9 +276,9 @@
                   <div class="select is-small is-fullwidth">
                     <select id="burialSites-byBurialSiteTypeId--burialSiteTypeId" name="burialSiteTypeId">
                       <% for (const burialSiteType of burialSiteTypes) { %>
-                        <option value="<%= burialSiteType.burialSiteTypeId %>">
-                          <%= burialSiteType.burialSiteType %>
-                        </option>
+                      <option value="<%= burialSiteType.burialSiteTypeId %>">
+                        <%= burialSiteType.burialSiteType %>
+                      </option>
                       <% } %>
                     </select>
                   </div>
@@ -286,7 +291,7 @@
               </div>
             </div>
           </form>
-          <form class="panel-block align-items-flex-start" method="get" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteStatusId">
+          <form class="panel-block align-items-flex-start" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteStatusId" method="get">
             <div class="has-text-centered my-2 ml-2 mr-3">
               <span class="icon has-text-info">
                 <i class="fa-solid fa-2x fa-file"></i>
@@ -305,9 +310,9 @@
                   <div class="select is-small is-fullwidth">
                     <select id="burialSites-byBurialSiteStatusId--burialSiteStatusId" name="burialSiteStatusId">
                       <% for (const burialSiteStatus of burialSiteStatuses) { %>
-                        <option value="<%= burialSiteStatus.burialSiteStatusId %>">
-                          <%= burialSiteStatus.burialSiteStatus %>
-                        </option>
+                      <option value="<%= burialSiteStatus.burialSiteStatusId %>">
+                        <%= burialSiteStatus.burialSiteStatus %>
+                      </option>
                       <% } %>
                     </select>
                   </div>

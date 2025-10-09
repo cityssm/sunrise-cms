@@ -4,8 +4,8 @@
   </h2>
   <ul class="menu-list">
     <%
-      const isContractSearch = headTitle === 'Contract Search';
-      const isFuneralHomeSearch = headTitle === 'Funeral Home Search';
+    const isContractSearch = headTitle === 'Contract Search';
+    const isFuneralHomeSearch = headTitle === 'Funeral Home Search';
     %>
     <li>
       <a class="<%= (isContractSearch ? 'is-active' : '') %>"
@@ -19,17 +19,17 @@
         </div>
       </a>
       <% if (isContractSearch && user.userProperties.canUpdateContracts) { %>
-        <ul>
-          <li>
-            <a
-              href="<%= urlPrefix %>/contracts/new"
-              title="Create New Contract"
-            >
-              <span class="is-hidden-touch">Create New Contract</span>
-              <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
-            </a>
-          </li>
-        </ul>
+      <ul>
+        <li>
+          <a
+            href="<%= urlPrefix %>/contracts/new"
+            title="Create New Contract"
+          >
+            <span class="is-hidden-touch">Create New Contract</span>
+            <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
+          </a>
+        </li>
+      </ul>
       <% } %>
     </li>
     <li>
@@ -44,48 +44,48 @@
         </div>
       </a>
       <% if (isFuneralHomeSearch && user.userProperties.canUpdateContracts) { %>
-        <ul>
-          <li>
-            <a
-              href="<%= urlPrefix %>/funeralHomes/new"
-              title="Create New Funeral Home"
-            >
-              <span class="is-hidden-touch">Create New Funeral Home</span>
-              <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
-            </a>
-          </li>
-        </ul>
+      <ul>
+        <li>
+          <a
+            href="<%= urlPrefix %>/funeralHomes/new"
+            title="Create New Funeral Home"
+          >
+            <span class="is-hidden-touch">Create New Funeral Home</span>
+            <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
+          </a>
+        </li>
+      </ul>
       <% } %>
     </li>
   </ul>
   <% if (user.userProperties.isAdmin) { %>
-    <h2 class="menu-label is-hidden-touch">
-      Administrator Tools
-    </h2>
-    <ul class="menu-list is-hidden-touch">
-      <li>
-        <a href="<%= urlPrefix %>/admin/contractTypes"
-          title="Contract Type Maintenance">
-          <div class="columns is-mobile is-1">
-            <div class="column is-narrow">
-              <span class="icon"><i class="fa-solid fa-gear"></i></span>
-            </div>
-            <div class="column is-hidden-touch">Contract Type Maintenance</div>
+  <h2 class="menu-label is-hidden-touch">
+    Administrator Tools
+  </h2>
+  <ul class="menu-list is-hidden-touch">
+    <li>
+      <a href="<%= urlPrefix %>/admin/contractTypes"
+        title="Contract Type Maintenance">
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-gear"></i></span>
           </div>
-        </a>
-      </li>
-      <li>
-        <a href="<%= urlPrefix %>/admin/fees"
-          title="Fee Maintenance">
-          <div class="columns is-mobile is-1">
-            <div class="column is-narrow">
-              <span class="icon"><i class="fa-solid fa-gear"></i></span>
-            </div>
-            <div class="column is-hidden-touch">Fee Maintenance</div>
+          <div class="column is-hidden-touch">Contract Type Maintenance</div>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="<%= urlPrefix %>/admin/fees"
+        title="Fee Maintenance">
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-gear"></i></span>
           </div>
-        </a>
-      </li>
-    </ul>
+          <div class="column is-hidden-touch">Fee Maintenance</div>
+        </div>
+      </a>
+    </li>
+  </ul>
   <% } %>
   <h2 class="menu-label is-hidden-touch">
     Reports
@@ -102,7 +102,12 @@
       </a>
     </li>
     <li>
-      <a href="https://cityssm.github.io/sunrise-cms/docs/contracts.html" title="Help Documentation" rel="noopener noreferrer" target="_blank">
+      <a
+        href="https://cityssm.github.io/sunrise-cms/docs/contracts.html"
+        title="Help Documentation"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-circle-question"></i></span>

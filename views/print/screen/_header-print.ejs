@@ -1,26 +1,36 @@
 <!DOCTYPE html>
+<!-- eslint-disable-next-line html/require-closing-tags -->
 <html class="has-background-dark m-0 p-0" lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <title>
-    <%= headTitle %>: <%= configFunctions.getConfigProperty("application.applicationName") %>
-  </title>
-
-  <link rel="icon" href="<%= urlPrefix %>/images/favicon.png" />
-
-  <link rel="stylesheet" href="<%= urlPrefix %>/lib/bulma/bulma.min.css" />
-  <link rel="stylesheet" href="<%= urlPrefix %>/stylesheets/sunrise.css" />
-  <link rel="stylesheet" href="<%= urlPrefix %>/lib/fa/css/all.min.css" />
-</head>
-
-<body class="m-0 p-0" style="min-height:100vh;">
-  <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-    <button class="button is-circle is-primary" title="Print" type="button" onclick="window.print()" autofocus>
-      <i class="fa-solid fa-print"></i>
-      <span class="is-sr-only">Print</span>
-    </button>
-  </div>
-  <main class="container is-page">
+  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <title>
+      <%= headTitle %>: <%= configFunctions.getConfigProperty("application.applicationName") %>
+    </title>
+    
+    <link href="<%= urlPrefix %>/images/favicon.png" rel="icon" />
+    
+    <link href="<%= urlPrefix %>/lib/bulma/bulma.min.css" rel="stylesheet" />
+    <link href="<%= urlPrefix %>/stylesheets/sunrise.css" rel="stylesheet" />
+    <link href="<%= urlPrefix %>/lib/fa/css/all.min.css" rel="stylesheet" />
+  </head>
+  
+  <!-- eslint-disable-next-line html/require-closing-tags -->
+  <body class="m-0 p-0" style="min-height:100vh;">
+    <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+      <button
+        class="button is-circle is-primary"
+        type="button"
+        title="Print"
+        onclick="window.print()"
+        autofocus
+      >
+        <i class="fa-solid fa-print"></i>
+        <span class="is-sr-only">Print</span>
+      </button>
+    </div>
+    
+    <!-- eslint-disable-next-line html/require-closing-tags -->
+    <main class="container is-page">

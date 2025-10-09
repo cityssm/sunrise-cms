@@ -45,11 +45,16 @@
             </label>
             <div class="control mt-2">
               <div class="select is-multiple is-fullwidth">
-                <select id="icsFilters--workOrderTypeIds" multiple size="<%= Math.min(Math.max(workOrderTypes.length, workOrderMilestoneTypes.length), 6) %>" disabled>
+                <select
+                  id="icsFilters--workOrderTypeIds"
+                  disabled
+                  multiple
+                  size="<%= Math.min(Math.max(workOrderTypes.length, workOrderMilestoneTypes.length), 6) %>"
+                >
                   <% for (const workOrderType of workOrderTypes) { %>
-                    <option value="<%= workOrderType.workOrderTypeId %>" selected>
-                      <%= workOrderType.workOrderType %>
-                    </option>
+                  <option value="<%= workOrderType.workOrderTypeId %>" selected>
+                    <%= workOrderType.workOrderType %>
+                  </option>
                   <% } %>
                 </select>
               </div>
@@ -63,11 +68,16 @@
             </label>
             <div class="control mt-2">
               <div class="select is-multiple is-fullwidth">
-                <select id="icsFilters--workOrderMilestoneTypeIds" multiple size="<%= Math.min(Math.max(workOrderTypes.length, workOrderMilestoneTypes.length), 6) %>" disabled>
+                <select
+                  id="icsFilters--workOrderMilestoneTypeIds"
+                  disabled
+                  multiple
+                  size="<%= Math.min(Math.max(workOrderTypes.length, workOrderMilestoneTypes.length), 6) %>"
+                >
                   <% for (const workOrderMilestoneType of workOrderMilestoneTypes) { %>
-                    <option value="<%= workOrderMilestoneType.workOrderMilestoneTypeId %>" selected>
-                      <%= workOrderMilestoneType.workOrderMilestoneType %>
-                    </option>
+                  <option value="<%= workOrderMilestoneType.workOrderMilestoneTypeId %>" selected>
+                    <%= workOrderMilestoneType.workOrderMilestoneType %>
+                  </option>
                   <% } %>
                 </select>
               </div>
@@ -79,10 +89,14 @@
         <div class="field">
           <label class="label" for="icsFilters--calendarURL">ICS Calendar Link</label>
           <div class="control">
-            <textarea class="textarea"
-              id="icsFilters--calendarURL" name="calendarURL"
+            <textarea
+              class="textarea"
+              id="icsFilters--calendarURL"
+              name="calendarURL"
               data-application-url="<%= applicationUrl %>"
-              style="cursor:text" readonly></textarea>
+              style="cursor:text"
+              readonly
+            ></textarea>
           </div>
         </div>
       </div>

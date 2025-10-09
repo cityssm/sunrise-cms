@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2021",
+    "target": "es2023",
     "module": "CommonJS",
     "isolatedModules": false,
     "declaration": true,
