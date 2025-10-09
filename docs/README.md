@@ -26,9 +26,6 @@ Assign work associated with burial sites and contracts.
 [**Reports**](./reports.md)<br />
 Export a variety of data in the flexible CSV format.
 
-[**Keyboard Shortcuts**](./shortcuts.md)<br />
-Jump around Sunrise CMS with ninja-like speed.
-
 ## 💼 Application Administrator Documentation
 
 [**Fee Management**](./feeManagement.md)<br />

@@ -34,33 +34,32 @@
   <div class="column is-narrow has-text-right">
     <div class="buttons is-right">
       <a class="button is-link is-outlined"
-        title="Previous Cemetery"
         href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>/previous"
-        <%- enableKeyboardShortcuts ? ' accesskey="," ' : '' %>>
+        title="Previous Cemetery"
+      >
         <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
         <span class="is-sr-only">Previous Cemetery</span>
       </a>
       <a class="button is-link"
-        title="Next Cemetery"
         href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>/next"
-        <%- enableKeyboardShortcuts ? ' accesskey="." ' : '' %>>
+        title="Next Cemetery"
+      >
         <span>Next</span>
         <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
       </a>
       <% if (user.userProperties.canUpdateCemeteries) { %>
-        <div class="level-item">
-          <a class="button is-primary"
-            href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>/edit"
-            <%- enableKeyboardShortcuts ? ' accesskey="e" ' : '' %>>
-            <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
-            <span>
-              Edit
-              <span class="is-hidden-mobile">Cemetery</span>
-            </span>
-          </a>
-        </div>
-      <% } %>
+      <div class="level-item">
+        <a class="button is-primary"
+          href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>/edit"
+        >
+          <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
+          <span>
+            Edit
+            <span class="is-hidden-mobile">Cemetery</span>
+          </span>
+        </a>
       </div>
+      <% } %>
     </div>
   </div>
 </div>
@@ -70,51 +69,51 @@
     <div class="columns">
       <div class="column">
         <% if (cemetery.cemeteryDescription && cemetery.cemeteryDescription !== "") { %>
-          <p class="mb-2">
-            <strong>Description</strong><br />
-            <%= cemetery.cemeteryDescription %>
-          </p>
+        <p class="mb-2">
+          <strong>Description</strong><br />
+          <%= cemetery.cemeteryDescription %>
+        </p>
         <% } %>
         <p class="mb-2">
           <strong>Address</strong><br />
           <% if (cemetery.cemeteryAddress1 !== "") { %>
-            <%= cemetery.cemeteryAddress1 %><br />
+          <%= cemetery.cemeteryAddress1 %><br />
           <% } %>
           <% if (cemetery.cemeteryAddress2 !== "") { %>
-            <%= cemetery.cemeteryAddress2 %><br />
+          <%= cemetery.cemeteryAddress2 %><br />
           <% } %>
           <%= cemetery.cemeteryCity %>, <%= cemetery.cemeteryProvince %><br />
           <%= cemetery.cemeteryPostalCode %>
         </p>
         <% if (cemetery.cemeteryPhoneNumber !== "") { %>
-          <p>
-            <strong>Phone Number</strong><br />
-            <%= cemetery.cemeteryPhoneNumber %>
-          </p>
+        <p>
+          <strong>Phone Number</strong><br />
+          <%= cemetery.cemeteryPhoneNumber %>
+        </p>
         <% } %>
       </div>
       <% if (cemetery.parentCemeteryId !== null) { %>
-        <div class="column">
-          <strong>Parent Cemetery</strong><br />
-          <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.parentCemeteryId %>">
-            <span class="icon"><i class="fa-regular fa-map"></i></span>
-            <%= (cemetery.parentCemeteryName ?? '') === '' ? "(No Name)" : cemetery.parentCemeteryName %>
-          </a>
-        </div>
+      <div class="column">
+        <strong>Parent Cemetery</strong><br />
+        <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.parentCemeteryId %>">
+          <span class="icon"><i class="fa-regular fa-map"></i></span>
+          <%= (cemetery.parentCemeteryName ?? '') === '' ? "(No Name)" : cemetery.parentCemeteryName %>
+        </a>
+      </div>
       <% } else if (cemetery.childCemeteries.length > 0) { %>
-        <div class="column">
-          <strong>Child Cemeteries</strong><br />
-          <ul>
-            <% for (const childCemetery of cemetery.childCemeteries) { %>
-              <li>
-                <a href="<%= urlPrefix %>/cemeteries/<%= childCemetery.cemeteryId %>">
-                  <span class="icon"><i class="fa-regular fa-map"></i></span>
-                  <%= (childCemetery.cemeteryName ?? '') === '' ? "(No Name)" : childCemetery.cemeteryName %>
-                </a>
-              </li>
-            <% } %>
-          </ul>
-        </div>
+      <div class="column">
+        <strong>Child Cemeteries</strong><br />
+        <ul>
+          <% for (const childCemetery of cemetery.childCemeteries) { %>
+          <li>
+            <a href="<%= urlPrefix %>/cemeteries/<%= childCemetery.cemeteryId %>">
+              <span class="icon"><i class="fa-regular fa-map"></i></span>
+              <%= (childCemetery.cemeteryName ?? '') === '' ? "(No Name)" : childCemetery.cemeteryName %>
+            </a>
+          </li>
+          <% } %>
+        </ul>
+      </div>
       <% } %>
     </div>
   </div>
@@ -138,6 +137,7 @@
         </div>
       </div>
       <div class="panel-block is-block">
+        <!-- eslint-disable html/no-duplicate-id -->
         <% if (cemetery.cemeteryLatitude && cemetery.cemeteryLongitude) { %>
           <div id="cemetery--leaflet" data-latitude="<%= cemetery.cemeteryLatitude %>" data-longitude="<%= cemetery.cemeteryLongitude %>" style="height:300px"></div>
         <% } else if (cemetery.parentCemeteryLatitude && cemetery.parentCemeteryLongitude) { %>

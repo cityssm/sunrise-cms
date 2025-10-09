@@ -153,7 +153,6 @@ app.use((request, response, next) => {
     };
     response.locals.dataLists = dataLists;
     response.locals.urlPrefix = urlPrefix;
-    response.locals.enableKeyboardShortcuts = configFunctions.getConfigProperty('settings.enableKeyboardShortcuts');
     next();
 });
 /*

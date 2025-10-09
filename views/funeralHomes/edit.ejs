@@ -11,8 +11,7 @@
     </li>
     <% if (!isCreate) { %>
       <li>
-        <a href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>"
-          <%- enableKeyboardShortcuts ? ' accesskey="v" ' : '' %>>
+        <a href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>">
           <%= funeralHome.funeralHomeName || "(No Name)" %>
         </a>
       </li>
@@ -92,14 +91,17 @@
           <div class="field">
             <label class="label" for="funeralHome--funeralHomeName">Funeral Home Name</label>
             <div class="control">
-              <input class="input" id="funeralHome--funeralHomeName" name="funeralHomeName"
+              <input
+                class="input"
+                id="funeralHome--funeralHomeName"
+                name="funeralHomeName"
                 type="text"
                 value="<%= funeralHome.funeralHomeName %>"
                 maxlength="200"
                 autocomplete="off"
                 required
-                <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %>
-                <%= (isCreate ? " autofocus" : "") %> />
+                _<%= (isCreate ? ' autofocus' : '') %>
+              />
             </div>
           </div>
           <div class="field">

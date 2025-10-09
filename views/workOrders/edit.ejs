@@ -16,8 +16,7 @@
       </li>
     <% } else { %>
       <li>
-        <a href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>"
-          <%- enableKeyboardShortcuts ? ' accesskey="v" ' : '' %>>
+        <a href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
           Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
         </a>
       </li>

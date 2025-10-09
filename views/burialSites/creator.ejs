@@ -58,7 +58,7 @@
         <div class="box">
           <form id="form--burialSiteCreator">
             <%
-              const burialSiteNameSegments = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments')
+            const burialSiteNameSegments = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments')
             %>
             <div class="field">
               <label class="label" for="burialSiteCreator--cemeteryId">
@@ -69,9 +69,9 @@
                   <select id="burialSiteCreator--cemeteryId" name="cemeteryId">
                     <option value="">(No Cemetery Selected)</option>
                     <% for (const cemetery of cemeteries) { %>
-                      <option data-cemetery-key="<%= cemetery.cemeteryKey %>" value="<%= cemetery.cemeteryId %>">
-                        <%= cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName %>
-                      </option>
+                    <option data-cemetery-key="<%= cemetery.cemeteryKey %>" value="<%= cemetery.cemeteryId %>">
+                      <%= cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName %>
+                    </option>
                     <% } %>
                   </select>
                 </div>
@@ -83,56 +83,58 @@
             </label>
             <div class="field has-addons">
               <% if (burialSiteNameSegments.includeCemeteryKey ?? false) { %>
-                <p class="control">
-                  <span class="button is-static">
-                    <span id="burialSiteCreator--cemeteryKey_from">&nbsp;</span>
-                    <% if ((burialSiteNameSegments.separator ?? '') !== '') { %>
-                      <%= burialSiteNameSegments.separator %>
-                    <% } %>
-                  </span>
-                </p>
+              <p class="control">
+                <span class="button is-static">
+                  <span id="burialSiteCreator--cemeteryKey_from">&nbsp;</span>
+                  <% if ((burialSiteNameSegments.separator ?? '') !== '') { %>
+                  <%= burialSiteNameSegments.separator %>
+                  <% } %>
+                </span>
+              </p>
               <% } %>
               <% for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) { %>
-                <%
-                  const segmentIndexString = segmentIndex.toString();
-                  const segment = burialSiteNameSegments.segments[segmentIndexString];
-                %>
-                <% if (segment?.isAvailable ?? false) { %>
-                  <% if (segmentIndex !== 1 && (burialSiteNameSegments.separator ?? '') !== '') { %>
-                    <p class="control">
-                      <span class="button is-static">
-                        <%= burialSiteNameSegments.separator %>
-                      </span>
-                    </p>
-                  <% } %>
-                  <% if ((segment.prefix ?? '') !== '') { %>
-                    <p class="control">
-                      <span class="button is-static">
-                        <%= segment.prefix %>
-                      </span>
-                    </p>
-                  <% } %>
-                  <div class="control is-expanded"
-                    title="<%= segment.label ?? '' %>">
-    
-                    <input class="input" id="burialSiteCreator--burialSiteNameSegment<%= segmentIndexString %>_from"
-                      name="burialSiteNameSegment<%= segmentIndexString %>_from"
-                      type="text"
-                      minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>" 
-                      maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
-                      placeholder="<%= segment.label ?? '' %>"
-                      aria-label="<%= segment.label ?? '' %>"
-                      <%- (segment.isRequired ?? false) ? ' required' : '' %>
-                    />
-                  </div>
-                  <% if ((segment.suffix ?? '') !== '') { %>
-                    <p class="control">
-                      <span class="button is-static">
-                        <%= segment.suffix %>
-                      </span>
-                    </p>
-                  <% } %>
-                <% } %>
+              <%
+              const segmentIndexString = segmentIndex.toString();
+              const segment = burialSiteNameSegments.segments[segmentIndexString];
+              %>
+              <% if (segment?.isAvailable ?? false) { %>
+              <% if (segmentIndex !== 1 && (burialSiteNameSegments.separator ?? '') !== '') { %>
+              <p class="control">
+                <span class="button is-static">
+                  <%= burialSiteNameSegments.separator %>
+                </span>
+              </p>
+              <% } %>
+              <% if ((segment.prefix ?? '') !== '') { %>
+              <p class="control">
+                <span class="button is-static">
+                  <%= segment.prefix %>
+                </span>
+              </p>
+              <% } %>
+              <div class="control is-expanded"
+                title="<%= segment.label ?? '' %>">
+
+                <input
+                  class="input"
+                  id="burialSiteCreator--burialSiteNameSegment<%= segmentIndexString %>_from"
+                  name="burialSiteNameSegment<%= segmentIndexString %>_from"
+                  type="text"
+                  minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>" 
+                  maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
+                  aria-label="<%= segment.label ?? '' %>"
+                  placeholder="<%= segment.label ?? '' %>"
+                  _<%- (segment.isRequired ?? false) ? ' required' : '' %>
+                />
+              </div>
+              <% if ((segment.suffix ?? '') !== '') { %>
+              <p class="control">
+                <span class="button is-static">
+                  <%= segment.suffix %>
+                </span>
+              </p>
+              <% } %>
+              <% } %>
               <% } %>
             </div>
     
@@ -141,54 +143,57 @@
             </label>
             <div class="field has-addons">
               <% if (burialSiteNameSegments.includeCemeteryKey ?? false) { %>
-                <p class="control">
-                  <span class="button is-static">
-                    <span id="burialSiteCreator--cemeteryKey_to">&nbsp;</span>
-                    <% if ((burialSiteNameSegments.separator ?? '') !== '') { %>
-                      <%= burialSiteNameSegments.separator %>
-                    <% } %>
-                  </span>
-                </p>
+              <p class="control">
+                <span class="button is-static">
+                  <span id="burialSiteCreator--cemeteryKey_to">&nbsp;</span>
+                  <% if ((burialSiteNameSegments.separator ?? '') !== '') { %>
+                  <%= burialSiteNameSegments.separator %>
+                  <% } %>
+                </span>
+              </p>
               <% } %>
               <% for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) { %>
-                <%
-                  const segmentIndexString = segmentIndex.toString();
-                  const segment = burialSiteNameSegments.segments[segmentIndexString];
-                %>
-                <% if (segment?.isAvailable ?? false) { %>
-                  <% if (segmentIndex !== 1 && (burialSiteNameSegments.separator ?? '') !== '') { %>
-                    <p class="control">
-                      <span class="button is-static">
-                        <%= burialSiteNameSegments.separator %>
-                      </span>
-                    </p>
-                  <% } %>
-                  <% if ((segment.prefix ?? '') !== '') { %>
-                    <p class="control">
-                      <span class="button is-static">
-                        <%= segment.prefix %>
-                      </span>
-                    </p>
-                  <% } %>
-                  <div class="control is-expanded"
-                    title="<%= segment.label ?? '' %>">
-    
-                    <input class="input" id="burialSiteCreator--burialSiteNameSegment<%= segmentIndexString %>_to"
-                      name="burialSiteNameSegment<%= segmentIndexString %>_to"
-                      type="text"
-                      minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>" 
-                      maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
-                      placeholder="<%= segment.label ?? '' %>"
-                      aria-label="<%= segment.label ?? '' %>" />
-                  </div>
-                  <% if ((segment.suffix ?? '') !== '') { %>
-                    <p class="control">
-                      <span class="button is-static">
-                        <%= segment.suffix %>
-                      </span>
-                    </p>
-                  <% } %>
-                <% } %>
+              <%
+              const segmentIndexString = segmentIndex.toString();
+              const segment = burialSiteNameSegments.segments[segmentIndexString];
+              %>
+              <% if (segment?.isAvailable ?? false) { %>
+              <% if (segmentIndex !== 1 && (burialSiteNameSegments.separator ?? '') !== '') { %>
+              <p class="control">
+                <span class="button is-static">
+                  <%= burialSiteNameSegments.separator %>
+                </span>
+              </p>
+              <% } %>
+              <% if ((segment.prefix ?? '') !== '') { %>
+              <p class="control">
+                <span class="button is-static">
+                  <%= segment.prefix %>
+                </span>
+              </p>
+              <% } %>
+              <div class="control is-expanded"
+                title="<%= segment.label ?? '' %>">
+
+                <input
+                  class="input"
+                  id="burialSiteCreator--burialSiteNameSegment<%= segmentIndexString %>_to"
+                  name="burialSiteNameSegment<%= segmentIndexString %>_to"
+                  type="text"
+                  minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>" 
+                  maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
+                  aria-label="<%= segment.label ?? '' %>"
+                  placeholder="<%= segment.label ?? '' %>"
+                />
+              </div>
+              <% if ((segment.suffix ?? '') !== '') { %>
+              <p class="control">
+                <span class="button is-static">
+                  <%= segment.suffix %>
+                </span>
+              </p>
+              <% } %>
+              <% } %>
               <% } %>
             </div>
     
@@ -201,7 +206,7 @@
           </form>
         </div>
       </div>
-      <div id="tabContent--burialSitePreview" class="is-hidden">
+      <div class="is-hidden" id="tabContent--burialSitePreview">
         <div class="columns">
           <div class="column is-5">
             <div class="box">
@@ -214,9 +219,9 @@
                     <select id="burialSitePreview--burialSiteTypeId" name="burialSiteTypeId" required>
                       <option value="">(Select a Type)</option>
                       <% for (const burialSiteType of burialSiteTypes) { %>
-                        <option value="<%= burialSiteType.burialSiteTypeId %>">
-                          <%= burialSiteType.burialSiteType === '' ? '(No Name)' : burialSiteType.burialSiteType %>
-                        </option>
+                      <option value="<%= burialSiteType.burialSiteTypeId %>">
+                        <%= burialSiteType.burialSiteType === '' ? '(No Name)' : burialSiteType.burialSiteType %>
+                      </option>
                       <% } %>
                     </select>
                   </div>
@@ -231,9 +236,9 @@
                     <select id="burialSitePreview--burialSiteStatusId" name="burialSiteStatusId" required>
                       <option value="">(Select a Status)</option>
                       <% for (const burialSiteStatus of burialSiteStatuses) { %>
-                        <option value="<%= burialSiteStatus.burialSiteStatusId %>">
-                          <%= burialSiteStatus.burialSiteStatus === '' ? '(No Name)' : burialSiteStatus.burialSiteStatus %>
-                        </option>
+                      <option value="<%= burialSiteStatus.burialSiteStatusId %>">
+                        <%= burialSiteStatus.burialSiteStatus === '' ? '(No Name)' : burialSiteStatus.burialSiteStatus %>
+                      </option>
                       <% } %>
                     </select>
                   </div>
@@ -247,7 +252,7 @@
                 <div class="level is-mobile">
                   <div class="level-left">
                     <div class="level-item">
-                      <button class="button is-small is-toggle-button" title="Toggle" type="button">
+                      <button class="button is-small is-toggle-button" type="button" title="Toggle">
                         <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                       </button>
                     </div>
@@ -277,7 +282,7 @@
                 <div class="level is-mobile">
                   <div class="level-left">
                     <div class="level-item">
-                      <button class="button is-small is-toggle-button" title="Toggle" type="button">
+                      <button class="button is-small is-toggle-button" type="button" title="Toggle">
                         <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                       </button>
                     </div>

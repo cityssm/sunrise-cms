@@ -18,13 +18,13 @@
     </nav>
 
     <% if (error !== undefined) { %>
-      <div class="notification is-danger is-light">
-        <button class="delete" aria-label="delete"></button>
-        <p>
-          <strong>Cemetery Error</strong><br />
-          <%= error %>
-        </p>
-      </div>
+    <div class="notification is-danger is-light">
+      <button class="delete" aria-label="delete"></button>
+      <p>
+        <strong>Cemetery Error</strong><br />
+        <%= error %>
+      </p>
+    </div>
     <% } %>
 
     <div class="columns is-vcentered">
@@ -34,7 +34,12 @@
         </h1>
       </div>
       <div class="column has-text-right is-narrow is-hidden-print">
-        <a class="button" href="<%= urlPrefix %>/reports/cemeteries-formatted" target="_blank" download>
+        <a
+          class="button"
+          href="<%= urlPrefix %>/reports/cemeteries-formatted"
+          download
+          target="_blank"
+        >
           <span class="icon is-small"><i class="fa-solid fa-download"></i></span>
           <span>Export</span>
         </a>
@@ -45,9 +50,12 @@
       <form id="form--searchFilters">
         <div class="field">
           <div class="control has-icons-left">
-            <input class="input" id="searchFilter--cemetery" type="text"
+            <input
+              class="input"
+              id="searchFilter--cemetery"
+              type="text"
               placeholder="Search cemetery name, description, and address"
-              <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %> />
+            />
             <span class="icon is-small is-left">
               <i class="fa-solid fa-search"></i>
             </span>

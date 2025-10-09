@@ -13,8 +13,7 @@
     </li>
     <% if (!isCreate) { %>
     <li>
-      <a href="<%= urlPrefix %>/contracts/<%= contract.contractId %>"
-        <%- enableKeyboardShortcuts ? ' accesskey="v" ' : '' %>>
+      <a href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
         Contract #<%= contract.contractId %>: <%= contract.burialSiteName || ("(No Burial Site)") %>
       </a>
     </li>
@@ -143,7 +142,7 @@
                     class="is-readonly" 
                   <% } %>
                   id="contract--contractTypeId" name="contractTypeId"
-                  required accesskey="f"
+                  required
                   <%= (isCreate ? " autofocus" : "") %>>
                   <% if (isCreate) { %>
                     <option value="" data-is-preneed="false">(Select a Type)</option>

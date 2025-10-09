@@ -58,53 +58,54 @@
   <div class="column is-narrow has-text-right">
     <div class="buttons is-right">
       <a class="button is-link is-outlined"
-        title="Previous Contract"
         href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/previous"
-        <%- enableKeyboardShortcuts ? ' accesskey="," ' : '' %>>
+        title="Previous Contract"
+      >
         <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
         <span class="is-sr-only">Previous Contract</span>
       </a>
       <a class="button is-link"
-        title="Next Contract"
         href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/next"
-        <%- enableKeyboardShortcuts ? ' accesskey="." ' : '' %>>
+        title="Next Contract"
+      >
         <span>Next</span>
         <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
       </a>
       <% if (contractTypePrints.length > 0) { %>
-        <div class="dropdown is-right is-up">
-          <div class="dropdown-trigger">
-            <button class="button" type="button" aria-label="Print">
-              <span class="icon"><i class="fa-solid fa-print"></i></span>
-              <span class="is-hidden-touch">Print</span>
-              <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
-            </a>
-          </div>
-          <div class="dropdown-menu">
-            <div class="dropdown-content has-text-left">
-              <% for (const printName of contractTypePrints) { %>
-                <% const printConfig = printFunctions.getPrintConfig(printName); %>
-                <% if (printConfig) { %>
-                  <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?contractId=<%= contract.contractId %>" target="_blank">
-                    <span class="icon"><i class="fa-solid fa-print"></i></span>
-                    <span><%= printConfig.title %></span>
-                  </a>
-                <% } %>
+      <div class="dropdown is-right is-up">
+        <div class="dropdown-trigger">
+          <button class="button" type="button" aria-label="Print">
+            <span class="icon"><i class="fa-solid fa-print"></i></span>
+            <span class="is-hidden-touch">Print</span>
+            <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
+          </button>
+        </div>
+        <div class="dropdown-menu">
+          <div class="dropdown-content has-text-left">
+            <% for (const printName of contractTypePrints) { %>
+              <% const printConfig = printFunctions.getPrintConfig(printName); %>
+              <% if (printConfig) { %>
+                <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?contractId=<%= contract.contractId %>" target="_blank">
+                  <span class="icon"><i class="fa-solid fa-print"></i></span>
+                  <span><%= printConfig.title %></span>
+                </a>
               <% } %>
-            </div>
+            <% } %>
           </div>
         </div>
+      </div>
       <% } %>
       <% if (user.userProperties.canUpdateContracts) { %>
-        <a class="button <%= (contract.contractEndDate ? "is-warning" : "is-primary") %>"
-          href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/edit"
-          <%- enableKeyboardShortcuts ? ' accesskey="e" ' : '' %>>
-          <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
-          <span>
-            Edit
-            <span class="is-hidden-mobile">Contract</span>
-          </span>
-        </a>
+      <a
+        class="button <%= (contract.contractEndDate ? 'is-warning' : 'is-primary') %>"
+        href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/edit"
+      >
+        <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
+        <span>
+          Edit
+          <span class="is-hidden-mobile">Contract</span>
+        </span>
+      </a>
       <% } %>
     </div>
   </div>

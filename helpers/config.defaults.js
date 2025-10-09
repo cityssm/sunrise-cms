@@ -28,7 +28,6 @@ export const configDefaultValues = {
     'users.isAdmin': ['administrator'],
     'users.testing': [],
     'settings.customizationsPath': '.',
-    'settings.enableKeyboardShortcuts': true,
     'settings.latitudeMax': 90,
     'settings.latitudeMin': -90,
     'settings.longitudeMax': 180,

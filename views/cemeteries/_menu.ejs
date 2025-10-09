@@ -4,11 +4,12 @@
   </h2>
   <ul class="menu-list">
     <%
-      const isCemeterySearch = headTitle === "Cemetery Search";
-      const isBurialSiteSearch = headTitle === "Burial Site Search";
+    const isCemeterySearch = headTitle === "Cemetery Search";
+    const isBurialSiteSearch = headTitle === "Burial Site Search";
     %>
     <li>
-      <a class="<%= (isCemeterySearch ? "is-active" : "") %>"
+      <a
+        class="<%= (isCemeterySearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/cemeteries"
         title="Cemetery Search">
         <div class="columns is-mobile is-1">
@@ -19,24 +20,25 @@
         </div>
       </a>
       <% if (isCemeterySearch && user.userProperties.canUpdateCemeteries) { %>
-        <ul>
-          <li>
-            <a
-              href="<%= urlPrefix %>/cemeteries/new"
-              title="Create New Cemetery"
-              <%- enableKeyboardShortcuts ? ' accesskey="n" ' : '' %>
-            >
-              <span class="is-hidden-touch">Create New Cemetery</span>
-              <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
-            </a>
-          </li>
-        </ul>
+      <ul>
+        <li>
+          <a
+            href="<%= urlPrefix %>/cemeteries/new"
+            title="Create New Cemetery"
+          >
+            <span class="is-hidden-touch">Create New Cemetery</span>
+            <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
+          </a>
+        </li>
+      </ul>
       <% } %>
     </li>
     <li>
-      <a class="<%= (isBurialSiteSearch ? "is-active" : "") %>"
+      <a
+        class="<%= (isBurialSiteSearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/burialSites"
-        title="Burial Site Search">
+        title="Burial Site Search"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-map-pin"></i></span>
@@ -45,69 +47,68 @@
         </div>
       </a>
       <% if (isBurialSiteSearch && user.userProperties.canUpdateCemeteries) { %>
-        <ul>
-          <li>
-            <a
-              href="<%= urlPrefix %>/burialSites/new"
-              title="Create New Burial Site"
-              <%- enableKeyboardShortcuts ? ' accesskey="n" ' : '' %>
-            >
-              <span class="is-hidden-touch">Create New Burial Site</span>
-              <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
-            </a>
-          </li>
-        </ul>
+      <ul>
+        <li>
+          <a
+            href="<%= urlPrefix %>/burialSites/new"
+            title="Create New Burial Site"
+          >
+            <span class="is-hidden-touch">Create New Burial Site</span>
+            <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
+          </a>
+        </li>
+      </ul>
       <% } %>
     </li>
   </ul>
   <% if (user.userProperties.canUpdateCemeteries) { %>
-    <h2 class="menu-label is-hidden-touch">
-      Creator Tools
-    </h2>
-    <ul class="menu-list">
-      <li>
-        <a class="<%= (headTitle === "Burial Site Range Creator" ? "is-active" : "") %>"
-          href="<%= urlPrefix %>/burialSites/creator"
-          title="Burial Site Range Creator">
-          <div class="columns is-mobile is-1">
-            <div class="column is-narrow">
-              <span class="icon"><i class="fa-solid fa-folder-plus"></i></span>
-            </div>
-            <div class="column is-hidden-touch">Burial Site Range Creator</div>
+  <h2 class="menu-label is-hidden-touch">
+    Creator Tools
+  </h2>
+  <ul class="menu-list">
+    <li>
+      <a class="<%= (headTitle === "Burial Site Range Creator" ? "is-active" : "") %>"
+        href="<%= urlPrefix %>/burialSites/creator"
+        title="Burial Site Range Creator">
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-folder-plus"></i></span>
           </div>
-        </a>
-      </li>
-      <li>
-        <a class="<%= (headTitle === "GPS Coordinate Capture" ? "is-active" : "") %>"
-          href="<%= urlPrefix %>/burialSites/gpsCapture"
-          title="GPS Coordinate Capture">
-          <div class="columns is-mobile is-1">
-            <div class="column is-narrow">
-              <span class="icon"><i class="fa-solid fa-crosshairs"></i></span>
-            </div>
-            <div class="column is-hidden-touch">GPS Coordinate Capture</div>
+          <div class="column is-hidden-touch">Burial Site Range Creator</div>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a class="<%= (headTitle === "GPS Coordinate Capture" ? "is-active" : "") %>"
+        href="<%= urlPrefix %>/burialSites/gpsCapture"
+        title="GPS Coordinate Capture">
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-crosshairs"></i></span>
           </div>
-        </a>
-      </li>
-    </ul>
+          <div class="column is-hidden-touch">GPS Coordinate Capture</div>
+        </div>
+      </a>
+    </li>
+  </ul>
   <% } %>
   <% if (user.userProperties.isAdmin) { %>
-    <h2 class="menu-label is-hidden-touch">
-      Administrator Tools
-    </h2>
-    <ul class="menu-list is-hidden-touch">
-      <li>
-        <a href="<%= urlPrefix %>/admin/burialSiteTypes"
-          title="Burial Site Type Maintenance">
-          <div class="columns is-mobile is-1">
-            <div class="column is-narrow">
-              <span class="icon"><i class="fa-solid fa-gear"></i></span>
-            </div>
-            <div class="column is-hidden-touch">Burial Site Type Maintenance</div>
+  <h2 class="menu-label is-hidden-touch">
+    Administrator Tools
+  </h2>
+  <ul class="menu-list is-hidden-touch">
+    <li>
+      <a href="<%= urlPrefix %>/admin/burialSiteTypes"
+        title="Burial Site Type Maintenance">
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-gear"></i></span>
           </div>
-        </a>
-      </li>
-    </ul>
+          <div class="column is-hidden-touch">Burial Site Type Maintenance</div>
+        </div>
+      </a>
+    </li>
+  </ul>
   <% } %>
   <h2 class="menu-label is-hidden-touch">
     Reports
@@ -124,7 +125,12 @@
       </a>
     </li>
     <li>
-      <a href="https://cityssm.github.io/sunrise-cms/docs/cemeteries.html" title="Help Documentation" rel="noopener noreferrer" target="_blank">
+      <a 
+        href="https://cityssm.github.io/sunrise-cms/docs/cemeteries.html"
+        title="Help Documentation"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-circle-question"></i></span>

@@ -64,8 +64,7 @@
                   <label class="label" for="searchFilter--workOrderTypeId">Work Order Type</label>
                   <div class="control has-icons-left">
                     <div class="select is-fullwidth">
-                      <select id="searchFilter--workOrderTypeId" name="workOrderTypeId"
-                        <%- enableKeyboardShortcuts ? ' accesskey="f" ' : '' %>>
+                      <select id="searchFilter--workOrderTypeId" name="workOrderTypeId">
                         <option value="">(All Work Order Types)</option>
                         <% for (const workOrderType of workOrderTypes) { %>
                           <option value="<%= workOrderType.workOrderTypeId %>"><%= workOrderType.workOrderType || "(No Name)" %></option>
@@ -84,8 +83,7 @@
                 <label class="label" for="searchFilter--workOrderOpenStatus">Open Status</label>
                 <div class="control has-icons-left">
                   <div class="select is-fullwidth">
-                    <select id="searchFilter--workOrderOpenStatus" name="workOrderOpenStatus"
-                      <%- enableKeyboardShortcuts && workOrderTypes.length <= 1 ? ' accesskey="f" ' : '' %>>
+                    <select id="searchFilter--workOrderOpenStatus" name="workOrderOpenStatus">
                       <option value="" <%= (workOrderOpenDateString ? " selected" : "") %>>(All Statuses)</option>
                       <option value="open" <%= (workOrderOpenDateString ? "" : " selected") %>>Open</option>
                       <option value="closed">Closed</option>

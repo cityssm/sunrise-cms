@@ -11,9 +11,7 @@
     </li>
     <% if (!isCreate) { %>
       <li>
-        <a href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>"
-          accesskey="<%= enableKeyboardShortcuts ? 'v' : '' %>"
-        >
+        <a href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>">
           <%= burialSite.burialSiteName %>
         </a>
       </li>
@@ -110,7 +108,9 @@
                     <select
                       class="<%= (isCreate ? '' : 'is-readonly') %>"
                       id="burialSite--cemeteryId" name="cemeteryId">
-                      <option value="" <%= (!isCreate && burialSite.cemeteryId ? " disabled" : "") %>>
+                      <option value=""
+                        _<%= (!isCreate && burialSite.cemeteryId ? " disabled" : "") %>
+                      >
                         (No Cemetery Selected)
                       </option>
                       <% let cemeteryIsFound = false; %>
@@ -120,10 +120,12 @@
                             cemeteryIsFound = true;
                           }
                         %>
-                        <option value="<%= cemetery.cemeteryId %>"
+                        <option
+                          value="<%= cemetery.cemeteryId %>"
                           data-cemetery-key="<%= cemetery.cemeteryKey %>"
                           <%= (burialSite.cemeteryId === cemetery.cemeteryId ? " selected" : "") %>
-                          <%= (!isCreate && burialSite.cemeteryId !== cemetery.cemeteryId ? " disabled" : "") %>>
+                          <%= (!isCreate && burialSite.cemeteryId !== cemetery.cemeteryId ? " disabled" : "") %>
+                        >
                           <%= cemetery.cemeteryName || "(No Name)"  %>
                         </option>
                       <% } %>
@@ -245,7 +247,6 @@
                     placeholder="<%= segment.label ?? '' %>"
                     aria-label="<%= segment.label ?? '' %>"
                     <%= (segment.isRequired ?? false) ? ' required' : '' %>
-                    <%= segmentIndex === 1 && enableKeyboardShortcuts ? ' accesskey="f"' : '' %>
                     <%= (isCreate && segmentIndex === 1 ? " autofocus" : "") %> />
                 </div>
                 <% if ((segment.suffix ?? '') !== '') { %>

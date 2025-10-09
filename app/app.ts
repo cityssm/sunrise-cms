@@ -249,10 +249,6 @@ app.use((request, response, next) => {
 
   response.locals.urlPrefix = urlPrefix
 
-  response.locals.enableKeyboardShortcuts = configFunctions.getConfigProperty(
-    'settings.enableKeyboardShortcuts'
-  )
-
   next()
 })
 

@@ -48,14 +48,14 @@
         <a class="button is-link is-outlined"
           title="Previous Funeral Home"
           href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/previous"
-          <%- enableKeyboardShortcuts ? ' accesskey="," ' : '' %>>
+        >
           <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
           <span class="is-sr-only">Previous Funeral Home</span>
         </a>
         <a class="button is-link"
-          title="Next Cemetery"
+          title="Next Funeral Home"
           href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/next"
-          <%- enableKeyboardShortcuts ? ' accesskey="." ' : '' %>>
+        >
           <span>Next</span>
           <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
         </a>
@@ -70,7 +70,7 @@
       <% } else if (!funeralHomeIsDeleted && user.userProperties.canUpdateContracts) { %>
         <a class="button is-primary"
           href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/edit"
-          <%- enableKeyboardShortcuts ? ' accesskey="e" ' : '' %>>
+        >
           <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
           <span>
             Edit

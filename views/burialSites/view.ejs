@@ -23,17 +23,18 @@
 
 <% const burialSiteIsDeleted = burialSite.recordDelete_timeMillis !== null; %>
 <% if (burialSiteIsDeleted) { %>
-  <div class="message is-danger">
-    <div class="message-header">
-      <p>Burial Site Deleted</p>
-    </div>
-    <div class="message-body">
-      <p>This burial site has been deleted. It is no longer available for use.</p>
-      <% if (!user.userProperties.isAdmin) { %>
-        <p>To restore this burial site, please contact your system administrator.</p>
-      <% } %>
-    </div>
+<div class="message is-danger">
+  <div class="message-header">
+    <p>Burial Site Deleted</p>
   </div>
+  <div class="message-body">
+    <p>This burial site has been deleted. It is no longer available for use.</p>
+
+    <% if (!user.userProperties.isAdmin) { %>
+    <p>To restore this burial site, please contact your system administrator.</p>
+    <% } %>
+  </div>
+</div>
 <% } %>
 
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
@@ -44,40 +45,43 @@
   </div>
   <div class="column is-narrow has-text-right">
     <% if (burialSiteIsDeleted && user.userProperties.isAdmin) { %>
-      <button class="button is-danger is-restore-burial-site-button"
-        data-burial-site-id="<%= burialSite.burialSiteId %>"
-        type="button">
-        <span class="icon"><i class="fa-solid fa-undo"></i></span>
-        <span>Restore Burial Site</span>
+    <button class="button is-danger is-restore-burial-site-button"
+      data-burial-site-id="<%= burialSite.burialSiteId %>"
+      type="button"
+    >
+      <span class="icon"><i class="fa-solid fa-undo"></i></span>
+      <span>Restore Burial Site</span>
     </button>
     <% } else if (!burialSiteIsDeleted) { %>
-      <div class="buttons is-right">
-        <a class="button is-link is-outlined"
-          title="Previous Burial Site"
-          href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/previous"
-          <%- enableKeyboardShortcuts ? ' accesskey="," ' : '' %>>
-          <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
-          <span class="is-sr-only">Previous Burial Site</span>
-        </a>
-        <a class="button is-link"
-          title="Next Burial Site"
-          href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/next"
-          <%- enableKeyboardShortcuts ? ' accesskey="." ' : '' %>>
-          <span>Next</span>
-          <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
-        </a>
-        <% if (user.userProperties.canUpdateCemeteries) { %>
-          <a class="button is-primary"
-            href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/edit"
-            <%- enableKeyboardShortcuts ? ' accesskey="e" ' : '' %>>
-            <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
-            <span>
-              Edit
-              <span class="is-hidden-mobile">Burial Site</span>
-            </span>
-          </a>
-        <% } %>
-      </div>
+    <div class="buttons is-right">
+      <a
+        class="button is-link is-outlined"
+        href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/previous"
+        title="Previous Burial Site"
+      >
+        <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
+        <span class="is-sr-only">Previous Burial Site</span>
+      </a>
+      <a
+        class="button is-link"
+        href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/next"
+        title="Next Burial Site"
+      >
+        <span>Next</span>
+        <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <% if (user.userProperties.canUpdateCemeteries) { %>
+      <a class="button is-primary"
+        href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>/edit"
+      >
+        <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
+        <span>
+          Edit
+          <span class="is-hidden-mobile">Burial Site</span>
+        </span>
+      </a>
+      <% } %>
+    </div>
     <% } %>
   </div>
 </div>
@@ -89,11 +93,11 @@
         <p class="mb-2">
           <strong>Cemetery</strong><br />
           <% if (burialSite.cemeteryId === null) { %>
-            <span class="has-text-grey">(No Cemetery)</span>
+          <span class="has-text-grey">(No Cemetery)</span>
           <% } else { %>
-            <a href="<%= urlPrefix %>/cemeteries/<%= burialSite.cemeteryId %>">
-              <%= burialSite.cemeteryName || "(No Name)" %>
-            </a>
+          <a href="<%= urlPrefix %>/cemeteries/<%= burialSite.cemeteryId %>">
+            <%= burialSite.cemeteryName || "(No Name)" %>
+          </a>
           <% } %>
         </p>
         <p>
@@ -104,13 +108,13 @@
       <div class="column">
         <p class="mb-2">
           <%
-            const bodyCapacity = burialSite.bodyCapacity ?? 
-              burialSite.bodyCapacityMax ??
-              settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault')
+          const bodyCapacity = burialSite.bodyCapacity ?? 
+            burialSite.bodyCapacityMax ??
+            settingFunctions.getSettingValue('burialSiteTypes.bodyCapacityMaxDefault')
 
-            const crematedCapacity = burialSite.crematedCapacity ??
-              burialSite.crematedCapacityMax ??
-              settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault')
+          const crematedCapacity = burialSite.crematedCapacity ??
+            burialSite.crematedCapacityMax ??
+            settingFunctions.getSettingValue('burialSiteTypes.crematedCapacityMaxDefault')
           %>
           <strong>Capacity</strong><br />
           <%= bodyCapacity %> bodies,
@@ -119,25 +123,25 @@
         <p>
           <strong>Status</strong><br />
           <% if (burialSite.burialSiteStatusId === null) { %>
-            <span class="has-text-grey">(No Status)</span>
+          <span class="has-text-grey">(No Status)</span>
           <% } else { %>
-            <%= burialSite.burialSiteStatus %>
+          <%= burialSite.burialSiteStatus %>
           <% } %>
         </p>
       </div>
       <% if (burialSite.burialSiteFields.length > 0) { %>
-        <div class="column">
-          <% for (const burialSiteField of burialSite.burialSiteFields) { %>
-            <p class="mb-2">
-              <strong><%= burialSiteField.burialSiteTypeField %></strong><br />
-              <% if (burialSiteField.fieldValue) { %>
-                <%= burialSiteField.fieldValue %>
-              <% } else { %>
-                <span class="has-text-grey">(No Value)</span>
-              <% } %>
-            </p>
+      <div class="column">
+        <% for (const burialSiteField of burialSite.burialSiteFields) { %>
+        <p class="mb-2">
+          <strong><%= burialSiteField.burialSiteTypeField %></strong><br />
+          <% if (burialSiteField.fieldValue) { %>
+          <%= burialSiteField.fieldValue %>
+          <% } else { %>
+          <span class="has-text-grey">(No Value)</span>
           <% } %>
-        </div>
+        </p>
+        <% } %>
+      </div>
       <% } %>
     </div>
   </div>
@@ -161,22 +165,33 @@
         </div>
       </div>
       <div class="panel-block is-block">
+        <!-- eslint-disable html/no-duplicate-id -->
         <% if (burialSite.burialSiteLatitude && burialSite.burialSiteLongitude) { %>
-          <div id="burialSite--leaflet" data-latitude="<%= burialSite.burialSiteLatitude %>" data-longitude="<%= burialSite.burialSiteLongitude %>" style="height:300px"></div>
+        <div
+          id="burialSite--leaflet"
+          data-latitude="<%= burialSite.burialSiteLatitude %>"
+          data-longitude="<%= burialSite.burialSiteLongitude %>"
+          style="height:300px"
+        ></div>
         <% } else if (burialSite.cemeteryLatitude && burialSite.cemeteryLongitude) { %>
-          <div class="message is-info">
-            <p class="message-body">
-              <strong>Coordinates not available for this burial site.</strong><br />
-              Coordinates for the cemetery are shown instead.
-            </p>
-          </div>
-          <div id="burialSite--leaflet" data-latitude="<%= burialSite.cemeteryLatitude %>" data-longitude="<%= burialSite.cemeteryLongitude %>" style="height:300px"></div>
+        <div class="message is-info">
+          <p class="message-body">
+            <strong>Coordinates not available for this burial site.</strong><br />
+            Coordinates for the cemetery are shown instead.
+          </p>
+        </div>
+        <div
+          id="burialSite--leaflet"
+          data-latitude="<%= burialSite.cemeteryLatitude %>"
+          data-longitude="<%= burialSite.cemeteryLongitude %>"
+          style="height:300px"
+        ></div>
         <% } else { %>
-          <div class="message is-info">
-            <p class="message-body">
-              There are no geographic coordinates associated with this burial site.
-            </p>
-          </div>
+        <div class="message is-info">
+          <p class="message-body">
+            There are no geographic coordinates associated with this burial site.
+          </p>
+        </div>
         <% } %>
       </div>
     </div>
@@ -200,18 +215,18 @@
       </div>
       <div class="panel-block is-block">
         <% if (burialSite.burialSiteImage) { %>
-          <div class="image">
-            <img src="<%= urlPrefix %>/public-internal/images/burialSites/<%= burialSite.burialSiteImage %>" alt="Burial Site" />
-          </div>
+        <div class="image">
+          <img src="<%= urlPrefix %>/public-internal/images/burialSites/<%= burialSite.burialSiteImage %>" alt="Burial Site" />
+        </div>
         <% } else if (burialSite.cemeterySvg) { %>
-          <% const imageURL = urlPrefix + "/public-internal/images/cemeteries/" + burialSite.cemeterySvg %>
-          <div class="image" id="burialSite--cemeterySvg" data-cemetery-svg-id="<%= burialSite.cemeterySvgId %>">
-            <%- include('../../' + configFunctions.getConfigProperty('settings.customizationsPath') + '/public-internal/images/cemeteries/' + burialSite.cemeterySvg); -%>
-          </div>
+        <% const imageURL = urlPrefix + "/public-internal/images/cemeteries/" + burialSite.cemeterySvg %>
+        <div class="image" id="burialSite--cemeterySvg" data-cemetery-svg-id="<%= burialSite.cemeterySvgId %>">
+          <%- include('../../' + configFunctions.getConfigProperty('settings.customizationsPath') + '/public-internal/images/cemeteries/' + burialSite.cemeterySvg); -%>
+        </div>
         <% } else { %>
-          <div class="message is-info">
-            <p class="message-body">There are no images associated with this burial site.</p>
-          </div>
+        <div class="message is-info">
+          <p class="message-body">There are no images associated with this burial site.</p>
+        </div>
         <% } %> 
       </div>
     </div>
@@ -220,45 +235,45 @@
 
 
 <% if (burialSite.burialSiteComments.length > 0) { %>
-  <div class="panel">
-    <h2 class="panel-heading">Comments</h2>
-    <div class="panel-block is-block">
-      <table class="table is-fullwidth is-striped is-hoverable">
-        <thead>
-          <tr>
-            <th>Author</th>
-            <th>Comment Date</th>
-            <th>Comment</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (const burialSiteComment of burialSite.burialSiteComments) { %>
-            <tr>
-              <td><%= burialSiteComment.recordCreate_userName %></td>
-              <td>
-                <%= burialSiteComment.commentDateString %>
-                <%= (burialSiteComment.commentTime === 0 ? "" : burialSiteComment.commentTimePeriodString) %>
-              </td>
-              <td><%= burialSiteComment.comment %></td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
+<div class="panel">
+  <h2 class="panel-heading">Comments</h2>
+  <div class="panel-block is-block">
+    <table class="table is-fullwidth is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Author</th>
+          <th>Comment Date</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const burialSiteComment of burialSite.burialSiteComments) { %>
+        <tr>
+          <td><%= burialSiteComment.recordCreate_userName %></td>
+          <td>
+            <%= burialSiteComment.commentDateString %>
+            <%= (burialSiteComment.commentTime === 0 ? "" : burialSiteComment.commentTimePeriodString) %>
+          </td>
+          <td><%= burialSiteComment.comment %></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
   </div>
+</div>
 <% } %>
 
 <%
-  let activeCount = 0
-  let pastCount = 0
+let activeCount = 0
+let pastCount = 0
 
-  for (const contract of burialSite.contracts) {
-    if (contract.contractEndDate && contract.contractEndDate < dateTimeFunctions.dateToInteger(new Date())) {
-      pastCount++
-    } else {
-      activeCount++
-    }
+for (const contract of burialSite.contracts) {
+  if (contract.contractEndDate && contract.contractEndDate < dateTimeFunctions.dateToInteger(new Date())) {
+    pastCount++
+  } else {
+    activeCount++
   }
+}
 %>
 <div class="panel">
   <div class="panel-heading">
@@ -270,25 +285,25 @@
         <div class="level-item">
           <div class="tags">
             <% if (activeCount > 0) { %>
-              <span class="tag is-success">
-                <span class="icon is-small">
-                  <i class="fa-solid fa-play"></i>
-                </span>
-                <span>
-                  <%= activeCount %>
-                  Active
-                </span>
+            <span class="tag is-success">
+              <span class="icon is-small">
+                <i class="fa-solid fa-play"></i>
               </span>
+              <span>
+                <%= activeCount %>
+                Active
+              </span>
+            </span>
             <% } %>
             <% if (pastCount > 0) { %>
-              <span class="tag">
-                <span class="icon is-small">
-                  <i class="fa-solid fa-stop"></i>
-                </span>
-                <span>
-                  <%= pastCount %> Past
-                </span>
+            <span class="tag">
+              <span class="icon is-small">
+                <i class="fa-solid fa-stop"></i>
               </span>
+              <span>
+                <%= pastCount %> Past
+              </span>
+            </span>
             <% } %>
           </div>
         </div>
@@ -306,71 +321,74 @@
   </div>
   <div class="panel-block is-block">
     <% if (burialSite.contracts.length === 0) { %>
-      <div class="message is-info">
-        <p class="message-body">
-          There are no contracts asscociated with this burial site.
-        </p>
-      </div>
+    <div class="message is-info">
+      <p class="message-body">
+        There are no contracts associated with this burial site.
+      </p>
+    </div>
     <% } else { %>
-      <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
-        <thead>
-          <tr>
-            <th class="has-width-1">&nbsp;</th>
-            <th>Contract Type</th>
-            <th>Contract Date</th>
-            <th>End Date</th>
-            <th>Interments</th>
-          </tr>
-        </thead>
-        <tbody id="burialSite--contractsTbody">
-          <% for (const contract of burialSite.contracts) { %>
-            <tr data-is-active="<%= contract.contractIsActive %>" class="<%= contract.contractIsActive ? "" : "is-hidden" %>">
-              <td class="has-text-centered">
-                <% if (contract.contractIsFuture) { %>
-                  <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
-                <% } else if (contract.contractIsActive) { %>
-                  <i class="fa-solid fa-play" title="Current Contract"></i>
-                <% } else { %>
-                  <i class="fa-solid fa-stop" title="Previous Contract"></i>
-                <% } %>
-              </td>
-              <td>
-                <a class="has-text-weight-bold"
-                  href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
-                  <%= contract.contractType %>
-                </a><br />
-                <span class="is-size-7">#<%= contract.contractId %></span>
-              </td>
-              <td><%= contract.contractStartDateString %></td>
-              <td>
-                <% if (contract.contractEndDate) { %>
-                  <%= contract.contractEndDateString %>
-                <% } else { %>
-                  <span class="has-text-grey">(No End Date)</span>
-                <% } %>
-              </td>
-              <td>
-                <% if (contract.contractInterments.length === 0) { %>
-                  <span class="has-text-grey">(No Interments)</span>
-                <% } else { %>
-                  <% for (const interment of contract.contractInterments) { %>
-                    <div class="columns">
-                      <div class="column">
-                        <%= interment.deceasedName %>
-                      </div>
-                      <% if (interment.intermentContainerType) { %>
-                        <div class="column">
-                          <span class="tag"><%= interment.intermentContainerType %></span>
-                        </div>
-                      <% } %>
-                    </div>
-                  <% } %>
-                <% } %>
-              </td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
+    <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+      <thead>
+        <tr>
+          <th class="has-width-1">&nbsp;</th>
+          <th>Contract Type</th>
+          <th>Contract Date</th>
+          <th>End Date</th>
+          <th>Interments</th>
+        </tr>
+      </thead>
+      <tbody id="burialSite--contractsTbody">
+        <% for (const contract of burialSite.contracts) { %>
+        <tr
+          class="<%= contract.contractIsActive ? '' : 'is-hidden' %>"
+          data-is-active="<%= contract.contractIsActive %>"
+        >
+          <td class="has-text-centered">
+            <% if (contract.contractIsFuture) { %>
+            <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
+            <% } else if (contract.contractIsActive) { %>
+            <i class="fa-solid fa-play" title="Current Contract"></i>
+            <% } else { %>
+            <i class="fa-solid fa-stop" title="Previous Contract"></i>
+            <% } %>
+          </td>
+          <td>
+            <a class="has-text-weight-bold"
+              href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
+              <%= contract.contractType %>
+            </a><br />
+            <span class="is-size-7">#<%= contract.contractId %></span>
+          </td>
+          <td><%= contract.contractStartDateString %></td>
+          <td>
+            <% if (contract.contractEndDate) { %>
+            <%= contract.contractEndDateString %>
+            <% } else { %>
+            <span class="has-text-grey">(No End Date)</span>
+            <% } %>
+          </td>
+          <td>
+            <% if (contract.contractInterments.length === 0) { %>
+            <span class="has-text-grey">(No Interments)</span>
+            <% } else { %>
+            <% for (const interment of contract.contractInterments) { %>
+            <div class="columns">
+              <div class="column">
+                <%= interment.deceasedName %>
+              </div>
+              <% if (interment.intermentContainerType) { %>
+              <div class="column">
+                <span class="tag"><%= interment.intermentContainerType %></span>
+              </div>
+              <% } %>
+            </div>
+            <% } %>
+            <% } %>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
     <% } %>
   </div>
 </div>

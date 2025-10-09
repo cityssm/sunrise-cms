@@ -45,8 +45,6 @@ export interface Config {
         isAdmin?: string[];
     };
     settings: {
-        /** Whether keyboard shortcuts are enabled */
-        enableKeyboardShortcuts?: boolean;
         /** The maximum latitude */
         latitudeMax?: number;
         /** The minimum latitude */

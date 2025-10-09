@@ -32,7 +32,6 @@
         <div class="navbar-brand">
           <a class="navbar-item"
             href="<%= urlPrefix %>/dashboard"
-            accesskey="<%= enableKeyboardShortcuts ? '0' : '' %>"
           >
             <img
               src="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>"
@@ -57,18 +56,14 @@
 
         <div class="navbar-menu">
           <div class="navbar-start">
-            <a class="navbar-item" href="<%= urlPrefix %>/workOrders"
-              accesskey="<%= enableKeyboardShortcuts ? '1' : '' %>"
-            >
+            <a class="navbar-item" href="<%= urlPrefix %>/workOrders">
               <span class="icon">
                 <i class="fa-solid fa-hard-hat"></i>
               </span>
               <span>Work Orders</span>
             </a>
 
-            <a class="navbar-item" href="<%= urlPrefix %>/contracts"
-              accesskey="<%= enableKeyboardShortcuts ? '2' : '' %>"
-            >
+            <a class="navbar-item" href="<%= urlPrefix %>/contracts">
               <span class="icon">
                 <i class="fa-solid fa-file-contract"></i>
               </span>
@@ -87,7 +82,6 @@
                   <span>Funeral Homes</span>
                 </a>
                 <a class="navbar-item" href="<%= urlPrefix %>/burialSites"
-                  accesskey="<%= enableKeyboardShortcuts ? '3' : '' %>"
                 >
                   <span class="icon">
                     <i class="fa-solid fa-map-pin"></i>
@@ -95,7 +89,6 @@
                   <span>Burial Sites</span>
                 </a>
                 <a class="navbar-item" href="<%= urlPrefix %>/cemeteries"
-                  accesskey="<%= enableKeyboardShortcuts ? '4' : '' %>"
                 >
                   <span class="icon">
                     <i class="fa-regular fa-map"></i>
@@ -113,7 +106,6 @@
                 <a
                   class="navbar-item"
                   href="https://cityssm.github.io/sunrise-cms/docs"
-                  accesskey="<%= enableKeyboardShortcuts ? 'h' : '' %>"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -131,7 +123,6 @@
               class="navbar-item"
               id="navbar--quickSearch"
               href="#"
-              accesskey="<%= enableKeyboardShortcuts ? 's' : '' %>"
             >
               <span class="icon">
                 <i class="fa-solid fa-search"></i>
@@ -147,7 +138,6 @@
               </a>
               <div class="navbar-dropdown is-right">
                 <a class="navbar-item" href="<%= urlPrefix %>/dashboard/userSettings"
-                  accesskey="<%= enableKeyboardShortcuts ? 'u' : '' %>"
                 >
                   <span class="icon">
                     <i class="fa-solid fa-cog"></i>
@@ -159,7 +149,6 @@
                   id="cityssm-theme--logout-button"
                   href="#"
                   role="button"
-                  accesskey="<%= enableKeyboardShortcuts ? 'x' : '' %>"
                 >
                   <span class="icon">
                     <i class="fa-solid fa-sign-out-alt"></i>

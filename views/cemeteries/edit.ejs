@@ -11,8 +11,7 @@
     </li>
     <% if (!isCreate) { %>
       <li>
-        <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>"
-          <%- enableKeyboardShortcuts ? ' accesskey="v" ' : '' %>>
+        <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>">
           <%= cemetery.cemeteryName || "(No Name)" %>
         </a>
       </li>
@@ -97,7 +96,6 @@
                 maxlength="200"
                 autocomplete="off"
                 required
-                accesskey="f"
                 <%= (isCreate ? " autofocus" : "") %> />
               <span class="icon is-small is-right">
                 <i class="fa-solid fa-asterisk"></i>

@@ -67,7 +67,6 @@ export const configDefaultValues = {
   'users.testing': [] as string[],
 
   'settings.customizationsPath': '.',
-  'settings.enableKeyboardShortcuts': true,
 
   'settings.latitudeMax': 90,
   'settings.latitudeMin': -90,
@@ -115,6 +114,7 @@ export const configDefaultValues = {
     | 'inline',
 
   'settings.databaseBackup.taskIsEnabled': false,
+  
   'settings.databaseBackup.backupHour': 2,
   'settings.databaseBackup.deleteAgeDays': 0,
 
