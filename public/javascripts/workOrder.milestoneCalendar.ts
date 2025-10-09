@@ -1,4 +1,4 @@
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { WorkOrder, WorkOrderMilestone } from '../../types/record.types.js'
 

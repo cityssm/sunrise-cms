@@ -1,7 +1,5 @@
-"use strict";
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const feeCategoriesContainerElement = document.querySelector('#container--feeCategories');
@@ -423,7 +421,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const feeContainerElement = clickEvent.currentTarget.closest('.container--fee');
         const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10);
         const feeCategoryId = Number.parseInt(feeContainerElement.closest(feeCategoryContainerSelector)
-            .dataset.feeCategoryId ?? '');
+            .dataset.feeCategoryId ?? '', 10);
         const feeCategory = getFeeCategory(feeCategoryId);
         const fee = getFee(feeCategory, feeId);
         let editCloseModalFunction;
@@ -468,7 +466,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const feeContainerElement = clickEvent.currentTarget.closest('.container--fee');
         const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10);
         const feeCategoryId = Number.parseInt(feeContainerElement.closest(feeCategoryContainerSelector)
-            .dataset.feeCategoryId ?? '');
+            .dataset.feeCategoryId ?? '', 10);
         const feeCategory = getFeeCategory(feeCategoryId);
         const fee = getFee(feeCategory, feeId);
         let editCloseModalFunction;

@@ -1,7 +1,5 @@
-"use strict";
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;

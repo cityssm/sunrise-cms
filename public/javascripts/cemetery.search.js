@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const cemeteries = exports.cemeteries;
@@ -15,8 +13,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         if (cemetery.cemeteryCity !== '' || cemetery.cemeteryProvince !== '') {
             addressHTML += `<span class="is-size-7">
-              ${cityssm.escapeHTML(cemetery.cemeteryCity)}, ${cityssm.escapeHTML(cemetery.cemeteryProvince)}
-              </span>`;
+        ${cityssm.escapeHTML(cemetery.cemeteryCity)}, ${cityssm.escapeHTML(cemetery.cemeteryProvince)}
+        </span>`;
         }
         return addressHTML;
     }

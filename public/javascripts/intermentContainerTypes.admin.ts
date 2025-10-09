@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { IntermentContainerType } from '../../types/record.types.js'
 

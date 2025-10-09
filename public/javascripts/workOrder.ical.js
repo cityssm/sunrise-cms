@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const workOrderTypeIdsElement = document.querySelector('#icsFilters--workOrderTypeIds');

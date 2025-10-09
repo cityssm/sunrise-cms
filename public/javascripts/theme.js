@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     function doLogout() {
         const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';

@@ -1,4 +1,4 @@
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { Cemetery } from '../../types/record.types.js'
 
@@ -37,8 +37,8 @@ declare const exports: {
 
     if (cemetery.cemeteryCity !== '' || cemetery.cemeteryProvince !== '') {
       addressHTML += `<span class="is-size-7">
-              ${cityssm.escapeHTML(cemetery.cemeteryCity)}, ${cityssm.escapeHTML(cemetery.cemeteryProvince)}
-              </span>`
+        ${cityssm.escapeHTML(cemetery.cemeteryCity)}, ${cityssm.escapeHTML(cemetery.cemeteryProvince)}
+        </span>`
     }
 
     return addressHTML

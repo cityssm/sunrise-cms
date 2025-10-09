@@ -1,7 +1,5 @@
-"use strict";
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable no-secrets/no-secrets */
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;

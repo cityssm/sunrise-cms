@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "target": "es2023",
-    "module": "CommonJS",
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "isolatedModules": false,
     "declaration": true,
     "noImplicitAny": false,

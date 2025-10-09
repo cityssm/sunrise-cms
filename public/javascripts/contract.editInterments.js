@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const contractId = document.querySelector('#contract--contractId').value;
     let contractInterments = exports.contractInterments;

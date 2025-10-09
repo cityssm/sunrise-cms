@@ -2,7 +2,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type {
   BurialSiteType,
@@ -684,7 +684,8 @@ declare const exports: {
     const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10)
     const feeCategoryId = Number.parseInt(
       (feeContainerElement.closest(feeCategoryContainerSelector) as HTMLElement)
-        .dataset.feeCategoryId ?? ''
+        .dataset.feeCategoryId ?? '',
+      10
     )
 
     const feeCategory = getFeeCategory(feeCategoryId)
@@ -764,7 +765,8 @@ declare const exports: {
     const feeId = Number.parseInt(feeContainerElement.dataset.feeId ?? '', 10)
     const feeCategoryId = Number.parseInt(
       (feeContainerElement.closest(feeCategoryContainerSelector) as HTMLElement)
-        .dataset.feeCategoryId ?? ''
+        .dataset.feeCategoryId ?? '',
+      10
     )
 
     const feeCategory = getFeeCategory(feeCategoryId)
