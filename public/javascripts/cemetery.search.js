@@ -39,7 +39,6 @@
         return featuresHTML;
     }
     function renderResults() {
-        // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Cemeteries...');
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement('tbody');

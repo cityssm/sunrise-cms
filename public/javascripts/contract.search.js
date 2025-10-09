@@ -83,7 +83,7 @@
                 </a>`}<br />
         <span class="is-size-7">${cityssm.escapeHTML(contract.cemeteryName ?? '')}</span>
       </td><td>
-        ${contract.contractStartDateString}
+        ${cityssm.escapeHTML(contract.contractStartDateString)}
       </td><td>
         ${contract.contractEndDate === null &&
             contract.contractEndDateString === undefined

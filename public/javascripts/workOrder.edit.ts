@@ -16,6 +16,7 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
+
   workOrderMilestones?: WorkOrderMilestone[]
   workOrderMilestoneTypes?: WorkOrderMilestoneType[]
   workOrderWorkDayRanges?: Record<
@@ -237,7 +238,6 @@ declare const exports: {
     // Clear panel-block elements
     clearPanelBlockElements(targetPanelElement)
 
-    // eslint-disable-next-line no-unsanitized/method
     targetPanelElement.insertAdjacentHTML(
       'beforeend',
       `<div class="panel-block is-block">

@@ -63,7 +63,7 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Relationship',
+              title: 'Error Deleting Contract Relationship',
 
               message: responseJSON.errorMessage ?? ''
             })
@@ -229,28 +229,31 @@ declare const exports: {
           <span class="is-size-7">#${cityssm.escapeHTML(contract.contractId.toString())}</span>
         </td>`
 
-      if (contract.burialSiteId) {
+      if (
+        contract.burialSiteId === null ||
+        contract.burialSiteId === undefined
+      ) {
+        rowElement.insertAdjacentHTML(
+          'beforeend',
+          '<td><span class="has-text-grey">(No Burial Site)</span></td>'
+        )
+      } else {
         // eslint-disable-next-line no-unsanitized/method
         rowElement.insertAdjacentHTML(
           'beforeend',
           `<td>
-          ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
-          ${
-            hasBurialSiteRecord
-              ? ''
-              : ` <button class="button is-small is-light is-success button--addBurialSite"
-                    data-burial-site-id="${contract.burialSiteId.toString()}"
-                    title="Add Burial Site"
-                    type="button">
-                  <span class="icon"><i class="fa-solid fa-plus"></i></span>
-                  </button>`
-          }
-        </td>`
-        )
-      } else {
-        rowElement.insertAdjacentHTML(
-          'beforeend',
-          '<td><span class="has-text-grey">(No Burial Site)</span></td>'
+            ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
+            ${
+              hasBurialSiteRecord
+                ? ''
+                : ` <button class="button is-small is-light is-success button--addBurialSite"
+                      data-burial-site-id="${contract.burialSiteId.toString()}"
+                      title="Add Burial Site"
+                      type="button">
+                    <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                    </button>`
+            }
+            </td>`
         )
       }
 
@@ -290,9 +293,10 @@ declare const exports: {
           ${contract.contractStartDateString}
         </td><td>
           ${
-            contract.contractEndDate
-              ? contract.contractEndDateString
-              : '<span class="has-text-grey">(No End Date)</span>'
+            contract.contractEndDate === null ||
+            contract.contractEndDate === undefined
+              ? '<span class="has-text-grey">(No End Date)</span>'
+              : contract.contractEndDateString
           }
         </td><td>
           <ul class="fa-ul ml-5">
@@ -397,14 +401,21 @@ declare const exports: {
           burialSiteStatusElement.append(optionElement)
         }
 
-        if (!statusFound && burialSite.burialSiteStatusId) {
+        if (
+          !statusFound &&
+          burialSite.burialSiteStatusId !== undefined &&
+          burialSite.burialSiteStatusId !== null
+        ) {
           const optionElement = document.createElement('option')
           optionElement.value = burialSite.burialSiteStatusId.toString()
           optionElement.textContent = burialSite.burialSiteStatus ?? ''
           burialSiteStatusElement.append(optionElement)
         }
 
-        if (burialSite.burialSiteStatusId) {
+        if (
+          burialSite.burialSiteStatusId !== undefined &&
+          burialSite.burialSiteStatusId !== null
+        ) {
           burialSiteStatusElement.value =
             burialSite.burialSiteStatusId.toString()
         }
@@ -459,7 +470,7 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Relationship',
+              title: 'Error Deleting Burial Site Relationship',
 
               message: responseJSON.errorMessage ?? ''
             })
@@ -529,9 +540,10 @@ declare const exports: {
           ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
         </td><td>
           ${
-            burialSite.burialSiteStatusId
-              ? cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
-              : '<span class="has-text-grey">(No Status)</span>'
+            burialSite.burialSiteStatusId === undefined ||
+            burialSite.burialSiteStatusId === null
+              ? '<span class="has-text-grey">(No Status)</span>'
+              : cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
           }
         </td><td class="has-text-right">
           <button class="button is-small mb-1 is-light is-info button--editBurialSiteStatus" title="Update Status" type="button">
@@ -569,7 +581,7 @@ declare const exports: {
     const contractId = rowElement.dataset.contractId ?? ''
 
     addContract(contractId, (success) => {
-      if (success) {
+      if (success ?? false) {
         rowElement.remove()
       }
     })
@@ -668,9 +680,10 @@ declare const exports: {
                   ${contract.contractStartDateString}
                 </td><td>
                   ${
-                    contract.contractEndDate
-                      ? contract.contractEndDateString
-                      : '<span class="has-text-grey">(No End Date)</span>'
+                    contract.contractEndDate === null ||
+                    contract.contractEndDate === undefined
+                      ? '<span class="has-text-grey">(No End Date)</span>'
+                      : contract.contractEndDateString
                   }
                 </td>
                 <td>${intermentsHtml}</td>`

@@ -8,6 +8,7 @@ declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
 declare const L: typeof Leaflet
+
 declare const exports: {
   sunrise: Sunrise
 }

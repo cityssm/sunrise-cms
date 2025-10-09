@@ -9,6 +9,7 @@ export default function handler(_request, response) {
     for (const printEJS of contractTypePrints) {
         const printConfig = getPrintConfig(printEJS);
         if (printConfig !== undefined) {
+            // eslint-disable-next-line security/detect-object-injection
             contractTypePrintTitles[printEJS] = printConfig.title;
         }
     }

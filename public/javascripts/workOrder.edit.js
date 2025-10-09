@@ -141,7 +141,6 @@
     function refreshConflictingMilestones(workOrderMilestoneDateString, targetPanelElement) {
         // Clear panel-block elements
         clearPanelBlockElements(targetPanelElement);
-        // eslint-disable-next-line no-unsanitized/method
         targetPanelElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
       ${sunrise.getLoadingParagraphHTML('Loading conflicting milestones...')}
       </div>`);

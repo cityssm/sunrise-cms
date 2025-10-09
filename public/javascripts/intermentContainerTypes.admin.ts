@@ -5,14 +5,14 @@ import type { IntermentContainerType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
+declare const cityssm: cityssmGlobal
+declare const bulmaJS: BulmaJS
+
 declare const exports: {
   sunrise: Sunrise
 
   intermentContainerTypes?: IntermentContainerType[]
 }
-
-declare const cityssm: cityssmGlobal
-declare const bulmaJS: BulmaJS
 ;(() => {
   const sunrise = exports.sunrise
 

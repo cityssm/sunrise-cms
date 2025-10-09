@@ -3,6 +3,7 @@ import type Leaflet from 'leaflet'
 import type { Sunrise } from './types.js'
 
 declare const L: typeof Leaflet
+
 declare const exports: {
   sunrise: Sunrise
 }

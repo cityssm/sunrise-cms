@@ -5,14 +5,14 @@ import type { BurialSiteStatus } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
+declare const cityssm: cityssmGlobal
+declare const bulmaJS: BulmaJS
+
 declare const exports: {
   sunrise: Sunrise
 
   burialSiteStatuses?: BurialSiteStatus[]
 }
-
-declare const cityssm: cityssmGlobal
-declare const bulmaJS: BulmaJS
 ;(() => {
   const sunrise = exports.sunrise
 

@@ -72,7 +72,6 @@ declare const exports: {
   }
 
   function renderResults(): void {
-    // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
       'Loading Cemeteries...'
     )

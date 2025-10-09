@@ -10,9 +10,8 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   aliases: Record<string, string>
-
   dynamicsGPIntegrationIsEnabled: boolean
-
+  
   sunrise?: Sunrise
 }
 ;(() => {

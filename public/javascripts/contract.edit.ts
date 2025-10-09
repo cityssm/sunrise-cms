@@ -16,6 +16,7 @@ import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+
 declare const exports: {
   sunrise: Sunrise
 
@@ -468,7 +469,6 @@ declare const exports: {
     }
 
     function searchBurialSites(): void {
-      // eslint-disable-next-line no-unsanitized/property
       burialSiteSelectResultsElement.innerHTML =
         sunrise.getLoadingParagraphHTML('Searching...')
 

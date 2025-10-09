@@ -280,7 +280,6 @@
             renderSelectedBurialSiteAndClose(selectedBurialSiteElement.dataset.burialSiteId ?? '', selectedBurialSiteElement.dataset.burialSiteName ?? '');
         }
         function searchBurialSites() {
-            // eslint-disable-next-line no-unsanitized/property
             burialSiteSelectResultsElement.innerHTML =
                 sunrise.getLoadingParagraphHTML('Searching...');
             cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, burialSiteSelectFormElement, (rawResponseJSON) => {

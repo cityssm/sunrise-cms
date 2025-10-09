@@ -13,6 +13,7 @@ import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+
 declare const exports: {
   sunrise: Sunrise
 

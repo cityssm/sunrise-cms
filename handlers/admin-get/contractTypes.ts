@@ -13,12 +13,13 @@ export default function handler(_request: Request, response: Response): void {
 
   const contractTypePrints = getConfigProperty('settings.contracts.prints')
 
-  const contractTypePrintTitles = {}
+  const contractTypePrintTitles: Record<string, string> = {}
 
   for (const printEJS of contractTypePrints) {
     const printConfig = getPrintConfig(printEJS)
 
     if (printConfig !== undefined) {
+      // eslint-disable-next-line security/detect-object-injection
       contractTypePrintTitles[printEJS] = printConfig.title
     }
   }

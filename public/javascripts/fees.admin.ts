@@ -18,8 +18,9 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
-  contractTypes: ContractType[]
+
   burialSiteTypes: BurialSiteType[]
+  contractTypes: ContractType[]
   feeCategories: FeeCategory[]
   taxPercentageDefault: number
 }
