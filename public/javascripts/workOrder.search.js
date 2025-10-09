@@ -120,7 +120,6 @@
       ${workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : ''}
       </tr></thead>
       <table>`;
-        // eslint-disable-next-line no-unsanitized/method
         searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Number.parseInt(limitElement.value, 10), responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector('table')
@@ -133,7 +132,6 @@
             ?.addEventListener('click', nextAndGetWorkOrders);
     }
     function getWorkOrders() {
-        // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Work Orders...');
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doSearchWorkOrders`, searchFilterFormElement, renderWorkOrders);
     }

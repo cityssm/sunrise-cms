@@ -226,7 +226,7 @@ declare const exports: {
           <a class="has-text-weight-bold" href="${sunrise.getContractUrl(contract.contractId)}">
             ${cityssm.escapeHTML(contract.contractType)}
           </a><br />
-          <span class="is-size-7">#${contract.contractId}</span>
+          <span class="is-size-7">#${cityssm.escapeHTML(contract.contractId.toString())}</span>
         </td>`
 
       if (contract.burialSiteId) {
@@ -409,12 +409,11 @@ declare const exports: {
             burialSite.burialSiteStatusId.toString()
         }
 
-        // eslint-disable-next-line no-unsanitized/method
         modalElement
           .querySelector('form')
           ?.insertAdjacentHTML(
             'beforeend',
-            `<input name="workOrderId" type="hidden" value="${workOrderId}" />`
+            `<input name="workOrderId" type="hidden" value="${cityssm.escapeHTML(workOrderId)}" />`
           )
       },
       onshown(modalElement, closeModalFunction) {
@@ -587,7 +586,6 @@ declare const exports: {
       function doSearch(event?: Event): void {
         event?.preventDefault()
 
-        // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML =
           sunrise.getLoadingParagraphHTML('Searching...')
 
@@ -770,7 +768,6 @@ declare const exports: {
       function doSearch(event?: Event): void {
         event?.preventDefault()
 
-        // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML =
           sunrise.getLoadingParagraphHTML('Searching...')
 

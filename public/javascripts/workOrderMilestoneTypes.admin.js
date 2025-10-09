@@ -104,7 +104,6 @@
             tableRowElement.dataset.workOrderMilestoneTypeId =
                 workOrderMilestoneType.workOrderMilestoneTypeId.toString();
             /* eslint-disable no-secrets/no-secrets */
-            // eslint-disable-next-line no-unsanitized/property
             tableRowElement.innerHTML = `<td>
           <form>
             <input name="workOrderMilestoneTypeId" type="hidden"

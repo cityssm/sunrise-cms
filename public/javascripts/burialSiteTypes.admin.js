@@ -278,7 +278,6 @@
                 }
                 panelBlockElement.dataset.burialSiteTypeFieldId =
                     burialSiteTypeField.burialSiteTypeFieldId.toString();
-                // eslint-disable-next-line no-unsanitized/property
                 panelBlockElement.innerHTML = `<div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
@@ -287,7 +286,7 @@
               </a>
             </div>
             <div class="level-item">
-              <span class="tag">${burialSiteTypeField.fieldType}</span>
+              <span class="tag">${cityssm.escapeHTML(burialSiteTypeField.fieldType)}</span>
             </div>
           </div>
           <div class="level-right is-hidden-print">
@@ -322,7 +321,7 @@
                 burialSiteType.burialSiteTypeId.toString();
             /*
              * Body Capacity Tag
-              */
+             */
             let bodyCapacityMax = burialSiteType.bodyCapacityMax?.toString() ?? 'unlimited';
             if (bodyCapacityMax === '0') {
                 bodyCapacityMax = 'none';

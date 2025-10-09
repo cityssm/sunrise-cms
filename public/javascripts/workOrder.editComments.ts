@@ -200,16 +200,15 @@ declare const exports: {
       tableRowElement.dataset.workOrderCommentId =
         workOrderComment.workOrderCommentId?.toString()
 
-      // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = `<td>
           ${cityssm.escapeHTML(workOrderComment.recordCreate_userName ?? '')}
         </td><td>
-          ${workOrderComment.commentDateString}
-          ${
+          ${cityssm.escapeHTML(workOrderComment.commentDateString ?? '')}
+          ${cityssm.escapeHTML(
             workOrderComment.commentTime === 0
               ? ''
-              : workOrderComment.commentTimePeriodString
-          }
+              : workOrderComment.commentTimePeriodString ?? ''
+          )}
         </td><td>
           ${cityssm.escapeHTML(workOrderComment.comment ?? '')}
         </td><td class="is-hidden-print">

@@ -542,7 +542,7 @@ declare const exports: {
               <div class="level-item">
                 <h2>
                   <a class="has-text-white"
-                    href="${sunrise.urlPrefix}/workOrders/${workOrder.workOrderId}${canUpdateThisWorkOrder ? '/edit' : ''}"
+                    href="${sunrise.getWorkOrderUrl(workOrder.workOrderId, canUpdateThisWorkOrder)}"
                     title="Open Work Order #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}"
                     target="_blank">
                     #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
@@ -616,7 +616,6 @@ declare const exports: {
   }
 
   function getWorkdayReport(): void {
-    // eslint-disable-next-line no-unsanitized/property
     workdayContainer.innerHTML = sunrise.getLoadingParagraphHTML(
       'Loading workday report...'
     )

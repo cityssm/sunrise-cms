@@ -103,10 +103,11 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.burialSiteStatusId =
                 burialSiteStatus.burialSiteStatusId.toString();
-            // eslint-disable-next-line no-unsanitized/property
             tableRowElement.innerHTML = `<td>
         <form>
-          <input name="burialSiteStatusId" type="hidden" value="${burialSiteStatus.burialSiteStatusId.toString()}" />
+          <input name="burialSiteStatusId" type="hidden"
+            value="${cityssm.escapeHTML(burialSiteStatus.burialSiteStatusId.toString())}"
+          />
           <div class="field has-addons">
             <div class="control is-expanded">
               <input class="input" name="burialSiteStatus" type="text"

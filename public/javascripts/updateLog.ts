@@ -162,7 +162,7 @@ declare const exports: {
       // no default
     }
 
-    return { recordTypeHTML, recordUrl: recordUrl }
+    return { recordTypeHTML, recordUrl }
   }
 
   function renderUpdateLog(updateLog: RecordUpdateLog[]): void {

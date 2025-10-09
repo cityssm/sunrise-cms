@@ -76,11 +76,10 @@ interface GetBurialSiteNamesByRangeResult {
     const panelBlockElement = document.createElement('div')
     panelBlockElement.className = 'panel-block is-burial-site-block'
 
-    // eslint-disable-next-line no-unsanitized/property
     panelBlockElement.innerHTML = `<div class="columns is-vcentered is-mobile">
       <div class="column is-narrow">
         <a class="button is-small is-primary" title="View Burial Site"
-          href="${sunrise.urlPrefix}/burialSites/${burialSiteId}" target="_blank">
+          href="${sunrise.getBurialSiteUrl(burialSiteId)}" target="_blank">
           <span class="icon"><i class="fa-solid fa-eye"></i></span>
         </a>
       </div>

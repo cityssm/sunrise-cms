@@ -292,11 +292,10 @@
           </div>
           <div class="panel mb-5"></div>`;
                 if (feeCategory.isGroupedFee) {
-                    // eslint-disable-next-line no-unsanitized/method
                     categoryContainerElement
                         .querySelector('.columns')
                         ?.insertAdjacentHTML('beforeend', `<div class="column is-narrow has-text-right">
-                  <button class="button is-small is-success" type="button" data-fee-category-id="${feeCategory.feeCategoryId}">
+                  <button class="button is-small is-success" type="button" data-fee-category-id="${cityssm.escapeHTML(feeCategory.feeCategoryId.toString())}">
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                     <span>Add Fee Group</span>
                   </button>
@@ -473,11 +472,10 @@
           </div>`;
             return;
         }
-        // eslint-disable-next-line no-unsanitized/property
         contractTransactionsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
         <thead><tr>
           <th class="has-width-1">Date</th>
-          <th>${sunrise.escapedAliases.ExternalReceiptNumber}</th>
+          <th>${cityssm.escapeHTML(sunrise.escapedAliases.ExternalReceiptNumber)}</th>
           <th class="has-text-right has-width-1">Amount</th>
           <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
         </tr></thead>

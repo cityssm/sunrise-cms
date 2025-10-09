@@ -562,7 +562,6 @@ type ResponseJSON =
         panelBlockElement.dataset.contractTypeFieldId =
           contractTypeField.contractTypeFieldId.toString()
 
-        // eslint-disable-next-line no-unsanitized/property
         panelBlockElement.innerHTML = `<div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">

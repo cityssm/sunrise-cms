@@ -50,7 +50,6 @@
       <th>Status</th>
       </tr></thead>
       <table>`;
-        // eslint-disable-next-line no-unsanitized/method
         searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Number.parseInt(limitElement.value, 10), responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector('table')
@@ -63,7 +62,6 @@
             ?.addEventListener('click', nextAndGetBurialSites);
     }
     function getBurialSites() {
-        // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Burial Sites...');
         cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, searchFilterFormElement, renderBurialSites);
     }

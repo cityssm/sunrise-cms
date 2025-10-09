@@ -4,6 +4,25 @@ import configWebApp, {
 } from 'eslint-config-cityssm'
 import { cspellWords } from 'eslint-config-cityssm/exports'
 
+/* eslint-disable no-secrets/no-secrets */
+
+const escapedMethods = [
+  'cityssm.escapeHTML',
+  
+  'sunrise.getLoadingParagraphHTML',
+  'sunrise.getMoveUpDownButtonFieldHTML',
+  'sunrise.getSearchResultsPagerHTML',
+  
+  'sunrise.getBurialSiteUrl',
+  'sunrise.getContractUrl',
+  'sunrise.getFuneralHomeUrl',
+  'sunrise.getWorkOrderUrl',
+  
+  'buildFuneralHomeAddressHTML'
+]
+
+/* eslint-enable no-secrets/no-secrets */
+
 export const config: ConfigObject[] = defineConfig(configWebApp, {
   files: ['**/*.ts'],
   languageOptions: {
@@ -35,7 +54,25 @@ export const config: ConfigObject[] = defineConfig(configWebApp, {
         }
       }
     ],
-    '@typescript-eslint/no-unsafe-type-assertion': 'off'
+    '@typescript-eslint/no-unsafe-type-assertion': 'off',
+
+    'no-unsanitized/method': [
+      'error',
+      {
+        escape: {
+          methods: escapedMethods
+        }
+      }
+    ],
+
+    'no-unsanitized/property': [
+      'error',
+      {
+        escape: {
+          methods: escapedMethods
+        }
+      }
+    ]
   }
 })
 

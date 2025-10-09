@@ -277,7 +277,6 @@ declare const exports: {
       event.preventDefault()
     }
 
-    // eslint-disable-next-line no-unsanitized/property
     milestoneCalendarContainerElement.innerHTML =
       sunrise.getLoadingParagraphHTML('Loading Milestones...')
 

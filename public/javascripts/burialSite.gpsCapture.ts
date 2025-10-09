@@ -222,8 +222,8 @@ interface GPSPosition {
           ) as HTMLElement
 
           // eslint-disable-next-line no-unsanitized/property
-          coordsElement.innerHTML = `<strong>Lat:</strong> ${currentPosition?.latitude.toFixed(coordinatePrecision)}<br>
-            <strong>Lng:</strong> ${currentPosition?.longitude.toFixed(coordinatePrecision)}<br>
+          coordsElement.innerHTML = `<strong>Lat:</strong> ${currentPosition?.latitude.toFixed(coordinatePrecision)}<br />
+            <strong>Lng:</strong> ${currentPosition?.longitude.toFixed(coordinatePrecision)}<br />
             <span class="has-text-success">
               <small>Just captured (±${Math.round(currentPosition?.accuracy ?? 0)}m)</small>
             </span>`

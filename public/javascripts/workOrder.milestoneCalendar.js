@@ -177,7 +177,6 @@
         if (event !== undefined) {
             event.preventDefault();
         }
-        // eslint-disable-next-line no-unsanitized/property
         milestoneCalendarContainerElement.innerHTML =
             sunrise.getLoadingParagraphHTML('Loading Milestones...');
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`, workOrderSearchFiltersFormElement, (responseJSON) => {

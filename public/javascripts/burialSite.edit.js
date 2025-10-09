@@ -168,8 +168,10 @@
                         // eslint-disable-next-line no-unsanitized/property
                         ;
                         fieldElement.querySelector('.control').innerHTML = `<div class="select is-fullwidth">
-                  <select id="${fieldId}" name="${fieldName}"><option value="">(Not Set)</option></select>
-                  </div>`;
+                  <select id="${fieldId}" name="${fieldName}">
+                    <option value="">(Not Set)</option>
+                  </select>
+                </div>`;
                         const selectElement = fieldElement.querySelector('select');
                         selectElement.required = burialSiteTypeField.isRequired;
                         const optionValues = burialSiteTypeField.fieldValues.split('\n');
@@ -342,14 +344,13 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.burialSiteCommentId =
                 burialSiteComment.burialSiteCommentId?.toString();
-            // eslint-disable-next-line no-unsanitized/property
             tableRowElement.innerHTML = `<td>
           ${cityssm.escapeHTML(burialSiteComment.recordCreate_userName ?? '')}
         </td><td>
-          ${burialSiteComment.commentDateString}
-          ${burialSiteComment.commentTime === 0
+          ${cityssm.escapeHTML(burialSiteComment.commentDateString ?? '')}
+          ${cityssm.escapeHTML(burialSiteComment.commentTime === 0
                 ? ''
-                : ` ${burialSiteComment.commentTimePeriodString}`}
+                : ` ${burialSiteComment.commentTimePeriodString}`)}
         </td><td>
           ${cityssm.escapeHTML(burialSiteComment.comment ?? '')}
         </td><td class="is-hidden-print">

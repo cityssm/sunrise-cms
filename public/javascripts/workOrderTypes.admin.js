@@ -101,10 +101,11 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.workOrderTypeId =
                 workOrderType.workOrderTypeId.toString();
-            // eslint-disable-next-line no-unsanitized/property
             tableRowElement.innerHTML = `<td>
         <form>
-          <input name="workOrderTypeId" type="hidden" value="${workOrderType.workOrderTypeId.toString()}" />
+          <input name="workOrderTypeId" type="hidden"
+            value="${cityssm.escapeHTML(workOrderType.workOrderTypeId.toString())}"
+          />
           <div class="field has-addons">
             <div class="control is-expanded">
               <input class="input" name="workOrderType" type="text"

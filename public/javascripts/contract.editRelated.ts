@@ -128,7 +128,7 @@ declare const exports: {
       // eslint-disable-next-line no-unsanitized/property
       contractRowElement.innerHTML = `<td>
           <a class="has-text-weight-bold"
-            href="${sunrise.urlPrefix}/contracts/${relatedContract.contractId}">
+            href="${sunrise.getContractUrl(relatedContract.contractId)}">
             ${cityssm.escapeHTML(relatedContract.contractType)}
           </a><br />
           <span class="is-size-7">#${relatedContract.contractId}</span>
@@ -218,7 +218,6 @@ declare const exports: {
           '#resultsContainer--relatedContractSelect'
         ) as HTMLDivElement
 
-        // eslint-disable-next-line no-unsanitized/property
         containerElement.innerHTML = sunrise.getLoadingParagraphHTML(
           'Loading Contracts...'
         )

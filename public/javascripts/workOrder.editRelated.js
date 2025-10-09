@@ -131,7 +131,7 @@
           <a class="has-text-weight-bold" href="${sunrise.getContractUrl(contract.contractId)}">
             ${cityssm.escapeHTML(contract.contractType)}
           </a><br />
-          <span class="is-size-7">#${contract.contractId}</span>
+          <span class="is-size-7">#${cityssm.escapeHTML(contract.contractId.toString())}</span>
         </td>`;
             if (contract.burialSiteId) {
                 // eslint-disable-next-line no-unsanitized/method
@@ -249,10 +249,9 @@
                     burialSiteStatusElement.value =
                         burialSite.burialSiteStatusId.toString();
                 }
-                // eslint-disable-next-line no-unsanitized/method
                 modalElement
                     .querySelector('form')
-                    ?.insertAdjacentHTML('beforeend', `<input name="workOrderId" type="hidden" value="${workOrderId}" />`);
+                    ?.insertAdjacentHTML('beforeend', `<input name="workOrderId" type="hidden" value="${cityssm.escapeHTML(workOrderId)}" />`);
             },
             onshown(modalElement, closeModalFunction) {
                 editCloseModalFunction = closeModalFunction;
@@ -373,7 +372,6 @@
         let searchResultsContainerElement;
         function doSearch(event) {
             event?.preventDefault();
-            // eslint-disable-next-line no-unsanitized/property
             searchResultsContainerElement.innerHTML =
                 sunrise.getLoadingParagraphHTML('Searching...');
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doSearchContracts`, searchFormElement, (rawResponseJSON) => {
@@ -484,7 +482,6 @@
         let searchResultsContainerElement;
         function doSearch(event) {
             event?.preventDefault();
-            // eslint-disable-next-line no-unsanitized/property
             searchResultsContainerElement.innerHTML =
                 sunrise.getLoadingParagraphHTML('Searching...');
             cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, searchFormElement, (rawResponseJSON) => {

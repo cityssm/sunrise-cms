@@ -201,7 +201,6 @@ declare const exports: {
       .querySelector('table')
       ?.append(resultsTbodyElement)
 
-    // eslint-disable-next-line no-unsanitized/method
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
       sunrise.getSearchResultsPagerHTML(
@@ -221,7 +220,6 @@ declare const exports: {
   }
 
   function getContracts(): void {
-    // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
       'Loading Contracts...'
     )

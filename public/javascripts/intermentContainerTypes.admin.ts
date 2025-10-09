@@ -183,7 +183,9 @@ declare const bulmaJS: BulmaJS
       // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = `<td>
         <form id="${formId}">
-          <input name="intermentContainerTypeId" type="hidden" value="${intermentContainerType.intermentContainerTypeId.toString()}" />
+          <input name="intermentContainerTypeId" type="hidden"
+            value="${intermentContainerType.intermentContainerTypeId.toString()}"
+          />
           <div class="field">
             <div class="control">
               <input class="input" name="intermentContainerType" type="text"

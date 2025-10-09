@@ -23,7 +23,6 @@
         return addressHTML;
     }
     function renderResults() {
-        // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Funeral Homes...');
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement('tbody');
@@ -48,7 +47,6 @@
                 continue;
             }
             searchResultCount += 1;
-            // eslint-disable-next-line no-unsanitized/method
             searchResultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
           <td>
             <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeUrl(funeralHome.funeralHomeId)}">
@@ -61,7 +59,7 @@
           </td><td>
             ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
           </td><td class="has-text-right">
-            ${funeralHome.upcomingFuneralCount ?? 0}
+            ${cityssm.escapeHTML((funeralHome.upcomingFuneralCount ?? 0).toString())}
           </td>
           </tr>`);
         }

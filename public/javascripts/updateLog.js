@@ -101,7 +101,7 @@
             // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
             // no default
         }
-        return { recordTypeHTML, recordUrl: recordUrl };
+        return { recordTypeHTML, recordUrl };
     }
     function renderUpdateLog(updateLog) {
         const tableBodyElement = updateLogTableElement.querySelector('tbody');

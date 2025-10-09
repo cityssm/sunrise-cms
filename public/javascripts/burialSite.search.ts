@@ -95,7 +95,6 @@ declare const exports: {
       </tr></thead>
       <table>`
 
-    // eslint-disable-next-line no-unsanitized/method
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',
       sunrise.getSearchResultsPagerHTML(
@@ -119,7 +118,6 @@ declare const exports: {
   }
 
   function getBurialSites(): void {
-    // eslint-disable-next-line no-unsanitized/property
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
       'Loading Burial Sites...'
     )
