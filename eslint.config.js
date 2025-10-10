@@ -10,6 +10,7 @@ const escapedMethods = [
     'sunrise.getContractUrl',
     'sunrise.getFuneralHomeUrl',
     'sunrise.getWorkOrderUrl',
+    'buildBurialSiteHTML',
     'buildFuneralHomeAddressHTML'
 ];
 /* eslint-enable no-secrets/no-secrets */

@@ -177,25 +177,31 @@ declare const exports: {
     ).textContent = workOrderContracts.length.toString()
 
     if (workOrderContracts.length === 0) {
-      contractsContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no contracts associated with this work order.</p>
-        </div>`
+      contractsContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no contracts associated with this work order.</p>
+        </div>
+      `
 
       return
     }
 
-    contractsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-      <thead><tr>
-        <th class="has-width-1"></th>
-        <th>Contract Type</th>
-        <th>Burial Site</th>
-        <th>Contract Date</th>
-        <th>End Date</th>
-        <th>Contacts</th>
-        <th class="has-width-1"></th>
-      </tr></thead>
-      <tbody></tbody>
-      </table>`
+    contractsContainerElement.innerHTML = /*html*/ `
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th class="has-width-1"></th>
+            <th>Contract Type</th>
+            <th>Burial Site</th>
+            <th>Contract Date</th>
+            <th>End Date</th>
+            <th>Contacts</th>
+            <th class="has-width-1"></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    `
 
     for (const contract of workOrderContracts) {
       const rowElement = document.createElement('tr')
@@ -220,14 +226,17 @@ declare const exports: {
       }
 
       // eslint-disable-next-line no-unsanitized/property
-      rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
-        ${contractIcon}
-        </td><td>
+      rowElement.innerHTML = /*html*/ `
+        <td class="is-width-1 has-text-centered">
+          ${contractIcon}
+        </td>
+        <td>
           <a class="has-text-weight-bold" href="${sunrise.getContractUrl(contract.contractId)}">
             ${cityssm.escapeHTML(contract.contractType)}
           </a><br />
           <span class="is-size-7">#${cityssm.escapeHTML(contract.contractId.toString())}</span>
-        </td>`
+        </td>
+      `
 
       if (
         contract.burialSiteId === null ||
@@ -241,72 +250,93 @@ declare const exports: {
         // eslint-disable-next-line no-unsanitized/method
         rowElement.insertAdjacentHTML(
           'beforeend',
-          `<td>
-            ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
-            ${
-              hasBurialSiteRecord
-                ? ''
-                : ` <button class="button is-small is-light is-success button--addBurialSite"
+          /*html*/ `
+            <td>
+              ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
+              ${
+                hasBurialSiteRecord
+                  ? ''
+                  : /*html*/ `
+                    <button
+                      class="button is-small is-light is-success button--addBurialSite"
                       data-burial-site-id="${contract.burialSiteId.toString()}"
+                      type="button"
                       title="Add Burial Site"
-                      type="button">
-                    <span class="icon"><i class="fa-solid fa-plus"></i></span>
-                    </button>`
-            }
-            </td>`
+                    >
+                      <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                    </button>
+                  `
+              }
+            </td>
+          `
         )
       }
 
       let contactsHtml = ''
 
       for (const interment of contract.contractInterments ?? []) {
-        contactsHtml += `<li title="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
-          <span class="fa-li">
-            <i class="fa-solid fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
-          </span>
-          ${cityssm.escapeHTML(interment.deceasedName ?? '')}
-          </li>`
+        contactsHtml += /*html*/ `
+          <li title="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
+            <span class="fa-li">
+              <i class="fa-solid fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
+            </span>
+            ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+          </li>
+        `
       }
 
       if (contract.purchaserName !== '') {
-        contactsHtml += `<li title="Purchaser">
-          <span class="fa-li">
-            <i class="fa-solid fa-hand-holding-dollar" aria-label="Purchaser"></i>
-          </span>
-          ${cityssm.escapeHTML(contract.purchaserName)}
-          </li>`
+        contactsHtml += /*html*/ `
+          <li title="Purchaser">
+            <span class="fa-li">
+              <i class="fa-solid fa-hand-holding-dollar" aria-label="Purchaser"></i>
+            </span>
+            ${cityssm.escapeHTML(contract.purchaserName)}
+          </li>
+        `
       }
 
       if (contract.funeralHomeName !== null) {
-        contactsHtml += `<li title="Funeral Home">
-          <span class="fa-li">
-            <i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i>
-          </span>
-          ${cityssm.escapeHTML(contract.funeralHomeName)}
-          </li>`
+        contactsHtml += /*html*/ `
+          <li title="Funeral Home">
+            <span class="fa-li">
+              <i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i>
+            </span>
+            ${cityssm.escapeHTML(contract.funeralHomeName)}
+          </li>
+        `
       }
 
       // eslint-disable-next-line no-unsanitized/method
       rowElement.insertAdjacentHTML(
         'beforeend',
-        `<td>
-          ${contract.contractStartDateString}
-        </td><td>
-          ${
-            contract.contractEndDate === null ||
-            contract.contractEndDate === undefined
-              ? '<span class="has-text-grey">(No End Date)</span>'
-              : contract.contractEndDateString
-          }
-        </td><td>
-          <ul class="fa-ul ml-5">
-          ${contactsHtml}
-          </ul>
-        </td><td>
-          <button class="button is-small is-light is-danger button--deleteContract" title="Delete Relationship" type="button">
-            <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
-          </button>
-        </td>`
+        /*html*/ `
+          <td>
+            ${contract.contractStartDateString}
+          </td>
+          <td>
+            ${
+              contract.contractEndDate === null ||
+              contract.contractEndDate === undefined
+                ? '<span class="has-text-grey">(No End Date)</span>'
+                : contract.contractEndDateString
+            }
+          </td>
+          <td>
+            <ul class="fa-ul ml-5">
+              ${contactsHtml}
+            </ul>
+          </td>
+          <td>
+            <button
+              class="button is-small is-light is-danger button--deleteContract"
+              type="button"
+              title="Delete Relationship"
+            >
+              <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+            </button>
+          </td>
+        `
       )
 
       rowElement
@@ -420,12 +450,15 @@ declare const exports: {
             burialSite.burialSiteStatusId.toString()
         }
 
-        modalElement
-          .querySelector('form')
-          ?.insertAdjacentHTML(
-            'beforeend',
-            `<input name="workOrderId" type="hidden" value="${cityssm.escapeHTML(workOrderId)}" />`
-          )
+        modalElement.querySelector('form')?.insertAdjacentHTML(
+          'beforeend',
+          /*html*/ `
+            <input
+              name="workOrderId"
+              type="hidden"
+              value="${cityssm.escapeHTML(workOrderId)}" />
+          `
+        )
       },
       onshown(modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
@@ -505,23 +538,29 @@ declare const exports: {
     ).textContent = workOrderBurialSites.length.toString()
 
     if (workOrderBurialSites.length === 0) {
-      burialSitesContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no burial sites associated with this work order.</p>
-        </div>`
+      burialSitesContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no burial sites associated with this work order.</p>
+        </div>
+      `
 
       return
     }
 
-    burialSitesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-      <thead><tr>
-        <th>Burial Site</th>
-        <th>Cemetery</th>
-        <th>Burial Site Type</th>
-        <th>Status</th>
-        <th class="has-width-1"></th>
-      </tr></thead>
-      <tbody></tbody>
-      </table>`
+    burialSitesContainerElement.innerHTML = /*html*/ `
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Burial Site</th>
+            <th>Cemetery</th>
+            <th>Burial Site Type</th>
+            <th>Status</th>
+            <th class="has-width-1"></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    `
 
     for (const burialSite of workOrderBurialSites) {
       const rowElement = document.createElement('tr')
@@ -530,29 +569,43 @@ declare const exports: {
       rowElement.dataset.burialSiteId = burialSite.burialSiteId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      rowElement.innerHTML = `<td>
+      rowElement.innerHTML = /*html*/ `
+        <td>
           <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
             ${cityssm.escapeHTML(burialSite.burialSiteName)}
           </a>
-        </td><td>
+        </td>
+        <td>
           ${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}
-        </td><td>
+        </td>
+        <td>
           ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
-        </td><td>
+        </td>
+        <td>
           ${
             burialSite.burialSiteStatusId === undefined ||
             burialSite.burialSiteStatusId === null
               ? '<span class="has-text-grey">(No Status)</span>'
               : cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
           }
-        </td><td class="has-text-right">
-          <button class="button is-small mb-1 is-light is-info button--editBurialSiteStatus" title="Update Status" type="button">
+        </td>
+        <td class="has-text-right">
+          <button
+            class="button is-small mb-1 is-light is-info button--editBurialSiteStatus"
+            type="button"
+            title="Update Status"
+          >
             <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
           </button>
-          <button class="button is-small is-light is-danger button--deleteBurialSite" title="Delete Relationship" type="button">
+          <button
+            class="button is-small is-light is-danger button--deleteBurialSite"
+            type="button"
+            title="Delete Relationship"
+          >
             <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
           </button>
-        </td>`
+        </td>
+      `
 
       rowElement
         .querySelector('.button--editBurialSiteStatus')
@@ -610,43 +663,55 @@ declare const exports: {
             }
 
             if (responseJSON.contracts.length === 0) {
-              searchResultsContainerElement.innerHTML = `<div class="message is-info">
-                <p class="message-body">There are no records that meet the search criteria.</p>
-                </div>`
+              searchResultsContainerElement.innerHTML = /*html*/ `
+                <div class="message is-info">
+                  <p class="message-body">There are no records that meet the search criteria.</p>
+                </div>
+              `
 
               return
             }
 
-            searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-              <thead><tr>
-                <th class="has-width-1"></th>
-                <th>Contract Type</th>
-                <th>Burial Site</th>
-                <th>Contract Date</th>
-                <th>End Date</th>
-                <th>Interments</th>
-              </tr></thead>
-              <tbody></tbody>
-              </table>`
+            searchResultsContainerElement.innerHTML = /*html*/ `
+              <table class="table is-fullwidth is-striped is-hoverable">
+                <thead>
+                  <tr>
+                    <th class="has-width-1"></th>
+                    <th>Contract Type</th>
+                    <th>Burial Site</th>
+                    <th>Contract Date</th>
+                    <th>End Date</th>
+                    <th>Interments</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            `
 
             for (const contract of responseJSON.contracts) {
               const rowElement = document.createElement('tr')
               rowElement.className = 'container--contract'
               rowElement.dataset.contractId = contract.contractId.toString()
 
-              rowElement.innerHTML = `<td class="has-text-centered">
-                  <button class="button is-small is-success button--addContract" title="Add" type="button">
+              rowElement.innerHTML = /*html*/ `
+                <td class="has-text-centered">
+                  <button class="button is-small is-success button--addContract" type="button" title="Add">
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                   </button>
                 </td>
                 <td class="has-text-weight-bold">
                   ${cityssm.escapeHTML(contract.contractType)}
-                </td>`
+                </td>
+              `
 
               if (contract.burialSiteId) {
                 rowElement.insertAdjacentHTML(
                   'beforeend',
-                  `<td>${cityssm.escapeHTML(contract.burialSiteName ?? '')}</td>`
+                  /*html*/ `
+                    <td>
+                      ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
+                    </td>
+                  `
                 )
               } else {
                 rowElement.insertAdjacentHTML(
@@ -662,9 +727,11 @@ declare const exports: {
 
               const intermentsHtml =
                 intermentCount === 0
-                  ? `<span class="has-text-grey">
+                  ? /*html*/ `
+                    <span class="has-text-grey">
                       (No ${cityssm.escapeHTML(recipientOrDeceased)})
-                      </span>`
+                    </span>
+                  `
                   : cityssm.escapeHTML(
                       contract.contractInterments?.[0].deceasedName ?? ''
                     ) +
@@ -676,17 +743,20 @@ declare const exports: {
               // eslint-disable-next-line no-unsanitized/method
               rowElement.insertAdjacentHTML(
                 'beforeend',
-                `<td>
-                  ${contract.contractStartDateString}
-                </td><td>
-                  ${
-                    contract.contractEndDate === null ||
-                    contract.contractEndDate === undefined
-                      ? '<span class="has-text-grey">(No End Date)</span>'
-                      : contract.contractEndDateString
-                  }
-                </td>
-                <td>${intermentsHtml}</td>`
+                /*html*/ `
+                  <td>
+                    ${contract.contractStartDateString}
+                  </td>
+                  <td>
+                    ${
+                      contract.contractEndDate === null ||
+                      contract.contractEndDate === undefined
+                        ? '<span class="has-text-grey">(No End Date)</span>'
+                        : contract.contractEndDateString
+                    }
+                  </td>
+                  <td>${intermentsHtml}</td>
+                `
               )
 
               rowElement
@@ -793,23 +863,29 @@ declare const exports: {
             }
 
             if (responseJSON.burialSites.length === 0) {
-              searchResultsContainerElement.innerHTML = `<div class="message is-info">
-                <p class="message-body">There are no records that meet the search criteria.</p>
-                </div>`
+              searchResultsContainerElement.innerHTML = /*html*/ `
+                <div class="message is-info">
+                  <p class="message-body">There are no records that meet the search criteria.</p>
+                </div>
+              `
 
               return
             }
 
-            searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-              <thead><tr>
-                <th class="has-width-1"></th>
-                <th>Burial Site</th>
-                <th>Cemetery</th>
-                <th>Burial Site Type</th>
-                <th>Status</th>
-              </tr></thead>
-              <tbody></tbody>
-              </table>`
+            searchResultsContainerElement.innerHTML = /*html*/ `
+              <table class="table is-fullwidth is-striped is-hoverable">
+                <thead>
+                  <tr>
+                    <th class="has-width-1"></th>
+                    <th>Burial Site</th>
+                    <th>Cemetery</th>
+                    <th>Burial Site Type</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            `
 
             for (const burialSite of responseJSON.burialSites) {
               const rowElement = document.createElement('tr')
@@ -817,19 +893,25 @@ declare const exports: {
               rowElement.dataset.burialSiteId =
                 burialSite.burialSiteId.toString()
 
-              rowElement.innerHTML = `<td class="has-text-centered">
-                  <button class="button is-small is-success button--addBurialSite" title="Add" type="button">
+              rowElement.innerHTML = /*html*/ `
+                <td class="has-text-centered">
+                  <button class="button is-small is-success button--addBurialSite" type="button" title="Add">
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                   </button>
-                </td><td class="has-text-weight-bold">
+                </td>
+                <td class="has-text-weight-bold">
                   ${cityssm.escapeHTML(burialSite.burialSiteName)}
-                </td><td>
+                </td>
+                <td>
                   ${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}
-                </td><td>
+                </td>
+                <td>
                   ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
-                </td><td>
+                </td>
+                <td>
                   ${cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')}
-                </td>`
+                </td>
+              `
 
               rowElement
                 .querySelector('.button--addBurialSite')

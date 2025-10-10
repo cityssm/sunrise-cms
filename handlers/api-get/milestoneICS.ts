@@ -72,21 +72,28 @@ function buildEventDescriptionHTML_occupancies(
   if ((milestone.workOrderContracts ?? []).length > 0) {
     const urlRoot = getApplicationUrl(request)
 
-    descriptionHTML = `<h2>
-      Related Contracts
+    /* eslint-disable html/require-closing-tags */
+
+    descriptionHTML = /*html*/ `
+      <h2>
+        Related Contracts
       </h2>
       <table border="1">
-      <thead><tr>
-      <th>Contract Type</th>
-      <th>Burial Site</th>
-      <th>Start Date</th>
-      <th>End Date</th>
-      <th>Interments</th>
-      </tr></thead>
-      <tbody>`
+        <thead>
+          <tr>
+            <th>Contract Type</th>
+            <th>Burial Site</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Interments</th>
+          </tr>
+        </thead>
+        <tbody>
+    `
 
     for (const contract of milestone.workOrderContracts ?? []) {
-      descriptionHTML += `<tr>
+      descriptionHTML += /*html*/ `
+        <tr>
           <td>
             <a href="${urlRoot}/contracts/${contract.contractId}">
               ${escapeHTML(contract.contractType)}
@@ -105,7 +112,8 @@ function buildEventDescriptionHTML_occupancies(
                 : '(No End Date)'
             }
           </td>
-          <td>`
+          <td>
+      `
 
       for (const interment of contract.contractInterments ?? []) {
         descriptionHTML += `${escapeHTML(interment.deceasedName ?? '')}<br />`
@@ -115,6 +123,8 @@ function buildEventDescriptionHTML_occupancies(
     }
 
     descriptionHTML += '</tbody></table>'
+
+    /* eslint-enable html/require-closing-tags */
   }
 
   return descriptionHTML
@@ -130,31 +140,42 @@ function buildEventDescriptionHTML_lots(
   if ((milestone.workOrderBurialSites ?? []).length > 0) {
     const urlRoot = getApplicationUrl(request)
 
-    descriptionHTML += `<h2>
-      Related Burial Sites
+    /* eslint-disable html/require-closing-tags */
+    
+    descriptionHTML += /*html*/ `
+      <h2>
+        Related Burial Sites
       </h2>
-      <table border="1"><thead><tr>
-      <th>Burial Site</th>
-      <th>Cemetery</th>
-      <th>Burial Site Type</th>
-      <th>Status</th>
-      </tr></thead>
-      <tbody>`
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Burial Site</th>
+            <th>Cemetery</th>
+            <th>Burial Site Type</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+    `
 
     for (const burialSite of milestone.workOrderBurialSites ?? []) {
-      descriptionHTML += `<tr>
-        <td>
-          <a href="${urlRoot}/burialSites/${burialSite.burialSiteId.toString()}">
-            ${escapeHTML(burialSite.burialSiteName)}
-          </a>
-        </td>
-        <td>${escapeHTML(burialSite.cemeteryName ?? '')}</td>
-        <td>${escapeHTML(burialSite.burialSiteType ?? '')}</td>
-        <td>${escapeHTML(burialSite.burialSiteStatus ?? '')}</td>
-        </tr>`
+      descriptionHTML += /*html*/ `
+        <tr>
+          <td>
+            <a href="${urlRoot}/burialSites/${burialSite.burialSiteId.toString()}">
+              ${escapeHTML(burialSite.burialSiteName)}
+            </a>
+          </td>
+          <td>${escapeHTML(burialSite.cemeteryName ?? '')}</td>
+          <td>${escapeHTML(burialSite.burialSiteType ?? '')}</td>
+          <td>${escapeHTML(burialSite.burialSiteStatus ?? '')}</td>
+        </tr>
+      `
     }
 
     descriptionHTML += '</tbody></table>'
+
+    /* eslint-enable html/require-closing-tags */
   }
 
   return descriptionHTML
@@ -178,10 +199,12 @@ function buildEventDescriptionHTML_prints(
       const printConfig = getPrintConfig(printName)
 
       if (printConfig) {
-        descriptionHTML += `<p>
-          ${escapeHTML(printConfig.title)}<br />
-          ${urlRoot}/print/${printName}/?workOrderId=${milestone.workOrderId.toString()}
-          </p>`
+        descriptionHTML += /*html*/ `
+          <p>
+            ${escapeHTML(printConfig.title)}<br />
+            ${urlRoot}/print/${printName}/?workOrderId=${milestone.workOrderId.toString()}
+          </p>
+        `
       }
     }
   }
@@ -195,11 +218,13 @@ function buildEventDescriptionHTML(
 ): string {
   const workOrderUrl = getWorkOrderUrl(request, milestone.workOrderId)
 
-  let descriptionHTML = `<h1>Milestone Description</h1>
+  let descriptionHTML = /*html*/ `
+    <h1>Milestone Description</h1>
     <p>${escapeHTML(milestone.workOrderMilestoneDescription)}</p>
     <h2>Work Order #${milestone.workOrderNumber ?? ''}</h2>
     <p>${escapeHTML(milestone.workOrderDescription ?? '')}</p>
-    <p>${workOrderUrl}</p>`
+    <p>${workOrderUrl}</p>
+  `
 
   descriptionHTML += buildEventDescriptionHTML_occupancies(request, milestone)
   descriptionHTML += buildEventDescriptionHTML_lots(request, milestone)

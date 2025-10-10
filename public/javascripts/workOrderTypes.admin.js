@@ -91,9 +91,15 @@
     function renderWorkOrderTypes() {
         const containerElement = document.querySelector('#container--workOrderTypes');
         if (workOrderTypes.length === 0) {
-            containerElement.innerHTML = `<tr><td colspan="2">
-          <div class="message is-warning"><p class="message-body">There are no active work order types.</p></div>
-          </td></tr>`;
+            containerElement.innerHTML = /*html*/ `
+        <tr>
+          <td colspan="2">
+            <div class="message is-warning">
+              <p class="message-body">There are no active work order types.</p>
+            </div>
+          </td>
+        </tr>
+      `;
             return;
         }
         containerElement.innerHTML = '';
@@ -101,37 +107,52 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.workOrderTypeId =
                 workOrderType.workOrderTypeId.toString();
-            tableRowElement.innerHTML = `<td>
-        <form>
-          <input name="workOrderTypeId" type="hidden"
-            value="${cityssm.escapeHTML(workOrderType.workOrderTypeId.toString())}"
-          />
-          <div class="field has-addons">
-            <div class="control is-expanded">
-              <input class="input" name="workOrderType" type="text"
-                value="${cityssm.escapeHTML(workOrderType.workOrderType ?? '')}"
-                maxlength="100" aria-label="Work Order Type" required />
+            tableRowElement.innerHTML = /*html*/ `
+        <td>
+          <form>
+            <input
+              name="workOrderTypeId"
+              type="hidden"
+              value="${cityssm.escapeHTML(workOrderType.workOrderTypeId.toString())}"
+            />
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input
+                  class="input"
+                  name="workOrderType"
+                  type="text"
+                  value="${cityssm.escapeHTML(workOrderType.workOrderType ?? '')}"
+                  maxlength="100"
+                  aria-label="Work Order Type"
+                  required
+                />
+              </div>
+              <div class="control">
+                <button
+                  class="button is-success"
+                  type="submit"
+                  aria-label="Save"
+                >
+                  <span class="icon"><i class="fa-solid fa-save"></i></span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </td>
+        <td class="is-nowrap">
+          <div class="field is-grouped">
+            <div class="control">
+              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveWorkOrderTypeUp', 'button--moveWorkOrderTypeDown', false)}
             </div>
             <div class="control">
-              <button class="button is-success" type="submit" aria-label="Save">
-                <span class="icon"><i class="fa-solid fa-save"></i></span>
+              <button class="button is-danger is-light button--deleteWorkOrderType"
+                type="button" title="Delete Work Order Type">
+                <span class="icon"><i class="fa-solid fa-trash"></i></span>
               </button>
             </div>
           </div>
-        </form>
-      </td><td class="is-nowrap">
-        <div class="field is-grouped">
-          <div class="control">
-            ${sunrise.getMoveUpDownButtonFieldHTML('button--moveWorkOrderTypeUp', 'button--moveWorkOrderTypeDown', false)}
-          </div>
-          <div class="control">
-            <button class="button is-danger is-light button--deleteWorkOrderType"
-              title="Delete Work Order Type" type="button">
-              <span class="icon"><i class="fa-solid fa-trash"></i></span>
-            </button>
-          </div>
-        </div>
-      </td>`;
+        </td>
+      `;
             tableRowElement
                 .querySelector('form')
                 ?.addEventListener('submit', updateWorkOrderType);

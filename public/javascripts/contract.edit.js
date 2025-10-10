@@ -136,9 +136,11 @@
                     : 'Deceased';
             }
             if (contractTypeIdElement.value === '') {
-                contractFieldsContainerElement.innerHTML = `<div class="message is-info">
-          <p class="message-body">Select the contract type to load the available fields.</p>
-          </div>`;
+                contractFieldsContainerElement.innerHTML = /*html*/ `
+          <div class="message is-info">
+            <p class="message-body">Select the contract type to load the available fields.</p>
+          </div>
+        `;
                 return;
             }
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetContractTypeFields`, {
@@ -146,9 +148,11 @@
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.contractTypeFields.length === 0) {
-                    contractFieldsContainerElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">There are no additional fields for this contract type.</p>
-              </div>`;
+                    contractFieldsContainerElement.innerHTML = /*html*/ `
+              <div class="message is-info">
+                <p class="message-body">There are no additional fields for this contract type.</p>
+              </div>
+            `;
                     return;
                 }
                 contractFieldsContainerElement.innerHTML = '';
@@ -159,16 +163,21 @@
                     const fieldId = `contract--${fieldName}`;
                     const fieldElement = document.createElement('div');
                     fieldElement.className = 'field';
-                    fieldElement.innerHTML = `<label class="label" for="${cityssm.escapeHTML(fieldId)}"></label><div class="control"></div>`;
+                    fieldElement.innerHTML = /*html*/ `
+              <label class="label" for="${cityssm.escapeHTML(fieldId)}"></label>
+              <div class="control"></div>
+            `;
                     fieldElement.querySelector('label').textContent = contractTypeField.contractTypeField;
                     if (contractTypeField.fieldType === 'select' ||
                         (contractTypeField.fieldValues ?? '') !== '') {
                         ;
-                        fieldElement.querySelector('.control').innerHTML = `<div class="select is-fullwidth">
+                        fieldElement.querySelector('.control').innerHTML = /*html*/ `
+                <div class="select is-fullwidth">
                   <select id="${cityssm.escapeHTML(fieldId)}" name="${cityssm.escapeHTML(fieldName)}">
-                  <option value="">(Not Set)</option>
+                    <option value="">(Not Set)</option>
                   </select>
-                  </div>`;
+                </div>
+              `;
                         const selectElement = fieldElement.querySelector('select');
                         selectElement.required = contractTypeField.isRequired;
                         const optionValues = contractTypeField.fieldValues.split('\n');
@@ -198,8 +207,12 @@
                 }
                 contractFieldsContainerElement.insertAdjacentHTML('beforeend', 
                 // eslint-disable-next-line no-secrets/no-secrets
-                `<input name="contractTypeFieldIds" type="hidden"
-              value="${cityssm.escapeHTML(contractTypeFieldIds.slice(1))}" />`);
+                /*html*/ `
+              <input
+                name="contractTypeFieldIds"
+                type="hidden"
+                value="${cityssm.escapeHTML(contractTypeFieldIds.slice(1))}" />
+            `);
             });
         });
     }
@@ -285,9 +298,11 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, burialSiteSelectFormElement, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.count === 0) {
-                    burialSiteSelectResultsElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">No results.</p>
-              </div>`;
+                    burialSiteSelectResultsElement.innerHTML = /*html*/ `
+              <div class="message is-info">
+                <p class="message-body">No results.</p>
+              </div>
+            `;
                     return;
                 }
                 const panelElement = document.createElement('div');
@@ -300,18 +315,20 @@
                         burialSite.burialSiteId.toString();
                     panelBlockElement.dataset.burialSiteName = burialSite.burialSiteName;
                     // eslint-disable-next-line no-unsanitized/property
-                    panelBlockElement.innerHTML = `<div class="columns">
-              <div class="column">
-                ${cityssm.escapeHTML(burialSite.burialSiteName)}<br />
-                <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
+                    panelBlockElement.innerHTML = /*html*/ `
+              <div class="columns">
+                <div class="column">
+                  ${cityssm.escapeHTML(burialSite.burialSiteName)}<br />
+                  <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
+                </div>
+                <div class="column">
+                  ${cityssm.escapeHTML(burialSite.burialSiteStatus)}<br />
+                  <span class="is-size-7">
+                    ${(burialSite.contractCount ?? 0) > 0 ? 'Has Current Contract' : ''}
+                  </span>
+                </div>
               </div>
-              <div class="column">
-                ${cityssm.escapeHTML(burialSite.burialSiteStatus)}<br />
-                <span class="is-size-7">
-                  ${(burialSite.contractCount ?? 0) > 0 ? 'Has Current Contract' : ''}
-                </span>
-              </div>
-              </div>`;
+            `;
                     panelBlockElement.addEventListener('click', selectExistingBurialSite);
                     panelElement.append(panelBlockElement);
                 }

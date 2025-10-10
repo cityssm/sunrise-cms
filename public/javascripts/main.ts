@@ -11,7 +11,7 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   aliases: Record<string, string>
   dynamicsGPIntegrationIsEnabled: boolean
-  
+
   sunrise?: Sunrise
 }
 ;(() => {
@@ -258,29 +258,39 @@ declare const exports: {
     downButtonClassNames: string,
     isSmall = true
   ): string {
-    return `<div class="field has-addons">
-      <div class="control">
-      <button
-          class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
-          title="Move Up" data-direction="up" type="button">
-        <span class="icon"><i class="fa-solid fa-arrow-up"></i></span>
-      </button>
+    return /*html*/ `
+      <div class="field has-addons">
+        <div class="control">
+          <button
+            class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
+            data-direction="up"
+            type="button"
+            title="Move Up"
+          >
+            <span class="icon"><i class="fa-solid fa-arrow-up"></i></span>
+          </button>
+        </div>
+        <div class="control">
+          <button
+            class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
+            data-direction="down"
+            type="button"
+            title="Move Down"
+          >
+            <span class="icon"><i class="fa-solid fa-arrow-down"></i></span>
+          </button>
+        </div>
       </div>
-      <div class="control">
-      <button
-          class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
-          title="Move Down" data-direction="down" type="button">
-        <span class="icon"><i class="fa-solid fa-arrow-down"></i></span>
-      </button>
-      </div>
-      </div>`
+    `
   }
 
   function getLoadingParagraphHTML(captionText = 'Loading...'): string {
-    return `<p class="has-text-centered has-text-grey">
-      <i class="fa-solid fa-5x fa-circle-notch fa-spin"></i><br />
-      ${cityssm.escapeHTML(captionText)}
-      </p>`
+    return /*html*/ `
+      <p class="has-text-centered has-text-grey">
+        <i class="fa-solid fa-5x fa-circle-notch fa-spin"></i><br />
+        ${cityssm.escapeHTML(captionText)}
+      </p>
+    `
   }
 
   function getSearchResultsPagerHTML(
@@ -288,39 +298,55 @@ declare const exports: {
     offset: number,
     count: number
   ): string {
-    return `<div class="level">
-      <div class="level-left">
-        <div class="level-item has-text-weight-bold">
-          Displaying
-          ${(offset + 1).toString()}
-          to
-          ${Math.min(count, limit + offset).toString()}
-          of
-          ${count.toString()}
+    return /*html*/ `
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item has-text-weight-bold">
+            Displaying
+            ${(offset + 1).toString()}
+            to
+            ${Math.min(count, limit + offset).toString()}
+            of
+            ${count.toString()}
+          </div>
+        </div>
+        <div class="level-right is-hidden-print">
+          ${
+            offset > 0
+              ? /*html*/ `
+                <div class="level-item">
+                  <button
+                    class="button is-rounded is-link is-outlined"
+                    data-page="previous"
+                    type="button"
+                    title="Previous"
+                  >
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </button>
+                </div>
+              `
+              : ''
+          }
+          ${
+            limit + offset < count
+              ? /*html*/ `
+                <div class="level-item">
+                  <button
+                    class="button is-rounded is-link"
+                    data-page="next"
+                    type="button"
+                    title="Next"
+                  >
+                    <span>Next</span>
+                    <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
+                  </button>
+                </div>
+              `
+              : ''
+          }
         </div>
       </div>
-      <div class="level-right is-hidden-print">
-        ${
-          offset > 0
-            ? `<div class="level-item">
-                <button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">
-                  <i class="fa-solid fa-arrow-left"></i>
-                </button>
-                </div>`
-            : ''
-        }
-        ${
-          limit + offset < count
-            ? `<div class="level-item">
-                <button class="button is-rounded is-link" data-page="next" type="button" title="Next">
-                  <span>Next</span>
-                  <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
-                </button>
-                </div>`
-            : ''
-        }
-      </div>
-      </div>`
+    `
   }
 
   /*

@@ -156,11 +156,15 @@ declare const exports: {
     ) as HTMLTableSectionElement
 
     if (committalTypes.length === 0) {
-      containerElement.innerHTML = `<tr><td colspan="2">
-          <div class="message is-warning">
-            <p class="message-body">There are no active committal types.</p>
-          </div>
-          </td></tr>`
+      containerElement.innerHTML = /*html*/ `
+        <tr>
+          <td colspan="2">
+            <div class="message is-warning">
+              <p class="message-body">There are no active committal types.</p>
+            </div>
+          </td>
+        </tr>
+      `
 
       return
     }
@@ -174,38 +178,51 @@ declare const exports: {
         committalType.committalTypeId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      tableRowElement.innerHTML = `<td>
-        <form>
-          <input name="committalTypeId" type="hidden" value="${committalType.committalTypeId.toString()}" />
-          <div class="field has-addons">
-            <div class="control is-expanded">
-              <input class="input" name="committalType" type="text"
-                value="${cityssm.escapeHTML(committalType.committalType)}"
-                aria-label="Committal Type" maxlength="100" required />
+      tableRowElement.innerHTML = /*html*/ `
+        <td>
+          <form>
+            <input name="committalTypeId" type="hidden" value="${committalType.committalTypeId.toString()}" />
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input
+                  class="input"
+                  name="committalType"
+                  type="text"
+                  value="${cityssm.escapeHTML(committalType.committalType)}"
+                  maxlength="100"
+                  aria-label="Committal Type"
+                  required
+                />
+              </div>
+              <div class="control">
+                <button class="button is-success" type="submit" aria-label="Save">
+                  <span class="icon"><i class="fa-solid fa-save"></i></span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </td>
+        <td class="is-nowrap">
+          <div class="field is-grouped">
+            <div class="control">
+              ${sunrise.getMoveUpDownButtonFieldHTML(
+                'button--moveCommittalTypeUp',
+                'button--moveCommittalTypeDown',
+                false
+              )}
             </div>
             <div class="control">
-              <button class="button is-success" type="submit" aria-label="Save">
-                <span class="icon"><i class="fa-solid fa-save"></i></span>
+              <button
+                class="button is-danger is-light button--deleteCommittalType"
+                type="button"
+                title="Delete Type"
+              >
+                <span class="icon"><i class="fa-solid fa-trash"></i></span>
               </button>
             </div>
           </div>
-        </form>
-      </td><td class="is-nowrap">
-        <div class="field is-grouped">
-          <div class="control">
-            ${sunrise.getMoveUpDownButtonFieldHTML(
-              'button--moveCommittalTypeUp',
-              'button--moveCommittalTypeDown',
-              false
-            )}
-          </div>
-          <div class="control">
-            <button class="button is-danger is-light button--deleteCommittalType" title="Delete Type" type="button">
-              <span class="icon"><i class="fa-solid fa-trash"></i></span>
-            </button>
-          </div>
-        </div>
-      </td>`
+        </td>
+      `
 
       tableRowElement
         .querySelector('form')

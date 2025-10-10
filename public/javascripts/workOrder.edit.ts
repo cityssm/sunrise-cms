@@ -240,9 +240,11 @@ declare const exports: {
 
     targetPanelElement.insertAdjacentHTML(
       'beforeend',
-      `<div class="panel-block is-block">
-      ${sunrise.getLoadingParagraphHTML('Loading conflicting milestones...')}
-      </div>`
+      /*html*/ `
+        <div class="panel-block is-block">
+          ${sunrise.getLoadingParagraphHTML('Loading conflicting milestones...')}
+        </div>
+      `
     )
 
     cityssm.postJSON(
@@ -267,34 +269,38 @@ declare const exports: {
         for (const milestone of conflictingWorkOrderMilestones) {
           targetPanelElement.insertAdjacentHTML(
             'beforeend',
-            `<div class="panel-block is-block">
-              <div class="columns">
-                <div class="column is-5">
-                  ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === null ? 'No Time' : milestone.workOrderMilestoneTimePeriodString ?? '')}<br />
-                  <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
-                </div>
-                <div class="column">
-                  ${cityssm.escapeHTML(milestone.workOrderNumber ?? '')}<br />
-                  <span class="is-size-7">
-                    ${cityssm.escapeHTML(milestone.workOrderDescription ?? '')}
-                  </span>
+            /*html*/ `
+              <div class="panel-block is-block">
+                <div class="columns">
+                  <div class="column is-5">
+                    ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === null ? 'No Time' : milestone.workOrderMilestoneTimePeriodString ?? '')}<br />
+                    <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
+                  </div>
+                  <div class="column">
+                    ${cityssm.escapeHTML(milestone.workOrderNumber ?? '')}<br />
+                    <span class="is-size-7">
+                      ${cityssm.escapeHTML(milestone.workOrderDescription ?? '')}
+                    </span>
+                  </div>
                 </div>
               </div>
-              </div>`
+            `
           )
         }
 
         if (conflictingWorkOrderMilestones.length === 0) {
           targetPanelElement.insertAdjacentHTML(
             'beforeend',
-            `<div class="panel-block is-block">
-              <div class="message is-info">
-                <p class="message-body">
-                  There are no milestones on other work orders scheduled for
-                  ${cityssm.escapeHTML(workOrderMilestoneDateString)}.
-                </p>
+            /*html*/ `
+              <div class="panel-block is-block">
+                <div class="message is-info">
+                  <p class="message-body">
+                    There are no milestones on other work orders scheduled for
+                    ${cityssm.escapeHTML(workOrderMilestoneDateString)}.
+                  </p>
+                </div>
               </div>
-              </div>`
+            `
           )
         }
       }
@@ -685,66 +691,85 @@ declare const exports: {
         milestone.workOrderMilestoneId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      panelBlockElement.innerHTML = `<div class="columns is-mobile">
-        <div class="column is-narrow">
-          ${
-            milestone.workOrderMilestoneCompletionDate
-              ? `<span class="button is-static"
-                  title="Completed ${milestone.workOrderMilestoneCompletionDateString}">
-                  <span class="icon is-small"><i class="fa-solid fa-check"></i></span>
-                  </span>`
-              : `<button class="button button--completeMilestone" title="Incomplete" type="button">
-                  <span class="icon is-small"><i class="fa-regular fa-square"></i></span>
-                  </button>`
-          }
-        </div><div class="column">
-          ${
-            milestone.workOrderMilestoneTypeId
-              ? `<strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong><br />`
-              : ''
-          }
-          ${
-            milestone.workOrderMilestoneDate === 0
-              ? '<span class="has-text-grey">(No Set Date)</span>'
-              : milestone.workOrderMilestoneDateString
-          }
-          ${
-            milestone.workOrderMilestoneTime === null
-              ? ''
-              : ` ${milestone.workOrderMilestoneTimePeriodString}`
-          }<br />
-          <span class="is-size-7">
-            ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}
-          </span>
-        </div><div class="column is-narrow">
-          <div class="dropdown is-right">
-            <div class="dropdown-trigger">
-              <button class="button is-small" title="Options" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-ellipsis-v"></i></span>
-              </button>
-            </div>
-            <div class="dropdown-menu">
-              <div class="dropdown-content">
-                ${
-                  milestone.workOrderMilestoneCompletionDate
-                    ? `<a class="dropdown-item button--reopenMilestone" href="#">
-                        <span class="icon"><i class="fa-solid fa-times"></i></span>
-                        <span>Reopen Milestone</span>
-                        </a>`
-                    : `<a class="dropdown-item button--editMilestone" href="#">
-                        <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
-                        <span>Edit Milestone</span>
-                        </a>`
-                }
-                <hr class="dropdown-divider" />
-                <a class="dropdown-item button--deleteMilestone" href="#">
-                  <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
-                  <span>Delete Milestone</span>
-                </a>
+      panelBlockElement.innerHTML = /*html*/ `
+        <div class="columns is-mobile">
+          <div class="column is-narrow">
+            ${
+              milestone.workOrderMilestoneCompletionDate
+                ? /*html*/ `
+                  <span
+                    class="button is-static"
+                    title="Completed ${milestone.workOrderMilestoneCompletionDateString}"
+                  >
+                    <span class="icon is-small"><i class="fa-solid fa-check"></i></span>
+                  </span>
+                `
+                : /*html*/ `
+                  <button class="button button--completeMilestone" title="Incomplete" type="button">
+                    <span class="icon is-small"><i class="fa-regular fa-square"></i></span>
+                  </button>
+                `
+            }
+          </div>
+          <div class="column">
+            ${
+              milestone.workOrderMilestoneTypeId
+                ? /*html*/ `
+                  <strong>
+                    ${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}
+                  </strong><br />
+                `
+                : ''
+            }
+            ${
+              milestone.workOrderMilestoneDate === 0
+                ? '<span class="has-text-grey">(No Set Date)</span>'
+                : milestone.workOrderMilestoneDateString
+            }
+            ${
+              milestone.workOrderMilestoneTime === null
+                ? ''
+                : ` ${milestone.workOrderMilestoneTimePeriodString}`
+            }<br />
+            <span class="is-size-7">
+              ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}
+            </span>
+          </div>
+          <div class="column is-narrow">
+            <div class="dropdown is-right">
+              <div class="dropdown-trigger">
+                <button class="button is-small" type="button" title="Options">
+                  <span class="icon is-small"><i class="fa-solid fa-ellipsis-v"></i></span>
+                </button>
+              </div>
+              <div class="dropdown-menu">
+                <div class="dropdown-content">
+                  ${
+                    milestone.workOrderMilestoneCompletionDate
+                      ? /*html*/ `
+                        <a class="dropdown-item button--reopenMilestone" href="#">
+                          <span class="icon"><i class="fa-solid fa-times"></i></span>
+                          <span>Reopen Milestone</span>
+                        </a>
+                      `
+                      : /*html*/ `
+                        <a class="dropdown-item button--editMilestone" href="#">
+                          <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
+                          <span>Edit Milestone</span>
+                        </a>
+                      `
+                  }
+                  <hr class="dropdown-divider" />
+                  <a class="dropdown-item button--deleteMilestone" href="#">
+                    <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
+                    <span>Delete Milestone</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div></div>`
+        </div>
+      `
 
       panelBlockElement
         .querySelector('.button--reopenMilestone')
@@ -768,11 +793,13 @@ declare const exports: {
     if (workOrderMilestones.length === 0) {
       milestonesPanelElement.insertAdjacentHTML(
         'beforeend',
-        `<div class="panel-block is-block">
-          <div class="message is-info">
-            <p class="message-body">There are no milestones on this work order.</p>
+        /*html*/ `
+          <div class="panel-block is-block">
+            <div class="message is-info">
+              <p class="message-body">There are no milestones on this work order.</p>
+            </div>
           </div>
-        </div>`
+        `
       )
     }
 

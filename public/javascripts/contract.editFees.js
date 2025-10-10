@@ -92,36 +92,47 @@
     // eslint-disable-next-line complexity
     function renderContractFees() {
         if (contractFees.length === 0) {
-            contractFeesContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no fees associated with this contract.</p>
-        </div>`;
+            contractFeesContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no fees associated with this contract.</p>
+        </div>
+      `;
             renderContractTransactions();
             return;
         }
-        contractFeesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-      <thead><tr>
-        <th>Fee</th>
-        <th><span class="is-sr-only">Unit Cost</span></th>
-        <th class="has-width-1"><span class="is-sr-only">&times;</span></th>
-        <th class="has-width-1"><span class="is-sr-only">Quantity</span></th>
-        <th class="has-width-1"><span class="is-sr-only">equals</span></th>
-        <th class="has-width-1 has-text-right">Total</th>
-        <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
-      </tr></thead>
-      <tbody></tbody>
-      <tfoot><tr>
-        <th colspan="5">Subtotal</th>
-        <td class="has-text-weight-bold has-text-right" id="contractFees--feeAmountTotal"></td>
-        <td class="is-hidden-print"></td>
-      </tr><tr>
-        <th colspan="5">Tax</th>
-        <td class="has-text-right" id="contractFees--taxAmountTotal"></td>
-        <td class="is-hidden-print"></td>
-      </tr><tr>
-        <th colspan="5">Grand Total</th>
-        <td class="has-text-weight-bold has-text-right" id="contractFees--grandTotal"></td>
-        <td class="is-hidden-print"></td>
-      </tr></tfoot></table>`;
+        contractFeesContainerElement.innerHTML = /*html*/ `
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Fee</th>
+            <th><span class="is-sr-only">Unit Cost</span></th>
+            <th class="has-width-1"><span class="is-sr-only">&times;</span></th>
+            <th class="has-width-1"><span class="is-sr-only">Quantity</span></th>
+            <th class="has-width-1"><span class="is-sr-only">equals</span></th>
+            <th class="has-width-1 has-text-right">Total</th>
+            <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <th colspan="5">Subtotal</th>
+            <td class="has-text-weight-bold has-text-right" id="contractFees--feeAmountTotal"></td>
+            <td class="is-hidden-print"></td>
+          </tr>
+          <tr>
+            <th colspan="5">Tax</th>
+            <td class="has-text-right" id="contractFees--taxAmountTotal"></td>
+            <td class="is-hidden-print"></td>
+          </tr>
+          <tr>
+            <th colspan="5">Grand Total</th>
+            <td class="has-text-weight-bold has-text-right" id="contractFees--grandTotal"></td>
+            <td class="is-hidden-print"></td>
+          </tr>
+        </tfoot>
+      </table>
+    `;
         let feeAmountTotal = 0;
         let taxAmountTotal = 0;
         for (const contractFee of contractFees) {
@@ -131,34 +142,40 @@
             tableRowElement.dataset.includeQuantity =
                 contractFee.includeQuantity ?? false ? '1' : '0';
             // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = `<td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
+            tableRowElement.innerHTML = /*html*/ `
+        <td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
           ${cityssm.escapeHTML(contractFee.feeName ?? '')}<br />
           <span class="tag">${cityssm.escapeHTML(contractFee.feeCategory ?? '')}</span>
-          </td>
-          ${contractFee.quantity === 1
+        </td>
+        ${contractFee.quantity === 1
                 ? ''
-                : `<td class="has-text-right">
-                  $${contractFee.feeAmount?.toFixed(2)}
-                  </td>
-                  <td>&times;</td>
-                  <td class="has-text-right">${contractFee.quantity?.toString()}</td>
-                  <td>=</td>`}
-          <td class="has-text-right">
-            $${((contractFee.feeAmount ?? 0) * (contractFee.quantity ?? 0)).toFixed(2)}
-          </td>
-          <td class="is-hidden-print">
+                : /*html */ `
+              <td class="has-text-right">
+              $${contractFee.feeAmount?.toFixed(2)}
+              </td>
+              <td>&times;</td>
+              <td class="has-text-right">${contractFee.quantity?.toString()}</td>
+              <td>=</td>
+            `}
+        <td class="has-text-right">
+          $${((contractFee.feeAmount ?? 0) * (contractFee.quantity ?? 0)).toFixed(2)}
+        </td>
+        <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-          ${contractFee.includeQuantity ?? false
-                ? `<button class="button is-primary button--editQuantity">
-                  <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
-                  <span>Edit</span>
-                  </button>`
+            ${contractFee.includeQuantity ?? false
+                ? /*html*/ `
+                  <button class="button is-primary button--editQuantity">
+                    <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
+                    <span>Edit</span>
+                  </button>
+                `
                 : ''}
-          <button class="button is-danger is-light button--delete" title="Delete Fee" type="button">
-            <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
-          </button>
+            <button class="button is-danger is-light button--delete" type="button" title="Delete Fee">
+              <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+            </button>
           </div>
-          </td>`;
+        </td>
+      `;
             tableRowElement
                 .querySelector('.button--editQuantity')
                 ?.addEventListener('click', editContractFeeQuantity);
@@ -283,23 +300,32 @@
                 categoryContainerElement.className = 'container--feeCategory';
                 categoryContainerElement.dataset.feeCategoryId =
                     feeCategory.feeCategoryId.toString();
-                categoryContainerElement.innerHTML = `<div class="columns is-vcentered">
-          <div class="column">
-            <h4 class="title is-5">
-            ${cityssm.escapeHTML(feeCategory.feeCategory)}
-            </h4>
+                categoryContainerElement.innerHTML = /*html*/ `
+          <div class="columns is-vcentered">
+            <div class="column">
+              <h4 class="title is-5">
+                ${cityssm.escapeHTML(feeCategory.feeCategory)}
+              </h4>
+            </div>
           </div>
-          </div>
-          <div class="panel mb-5"></div>`;
+          <div class="panel mb-5"></div>
+        `;
                 if (feeCategory.isGroupedFee) {
                     categoryContainerElement
                         .querySelector('.columns')
-                        ?.insertAdjacentHTML('beforeend', `<div class="column is-narrow has-text-right">
-                  <button class="button is-small is-success" type="button" data-fee-category-id="${cityssm.escapeHTML(feeCategory.feeCategoryId.toString())}">
+                        ?.insertAdjacentHTML('beforeend', 
+                    /*html*/ `
+                <div class="column is-narrow has-text-right">
+                  <button
+                    class="button is-small is-success"
+                    data-fee-category-id="${cityssm.escapeHTML(feeCategory.feeCategoryId.toString())}"
+                    type="button"
+                  >
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                     <span>Add Fee Group</span>
                   </button>
-                </div>`);
+                </div>
+              `);
                     categoryContainerElement
                         .querySelector('button')
                         ?.addEventListener('click', doAddFeeCategory);
@@ -328,12 +354,14 @@
                     panelBlockElement.dataset.feeCategoryId =
                         feeCategory.feeCategoryId.toString();
                     // eslint-disable-next-line no-unsanitized/property
-                    panelBlockElement.innerHTML = `<strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
-              <small>
+                    panelBlockElement.innerHTML = /*html*/ `
+            <strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
+            <small>
               ${cityssm
                         .escapeHTML(fee.feeDescription ?? '')
                         .replaceAll('\n', '<br />')}
-              </small>`;
+            </small>
+          `;
                     if (!feeCategory.isGroupedFee) {
                         ;
                         panelBlockElement.href = '#';
@@ -467,25 +495,33 @@
     function renderContractTransactions() {
         if (contractTransactions.length === 0) {
             // eslint-disable-next-line no-unsanitized/property
-            contractTransactionsContainerElement.innerHTML = `<div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
+            contractTransactionsContainerElement.innerHTML = /*html*/ `
+        <div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
           <p class="message-body">There are no transactions associated with this contract.</p>
-          </div>`;
+        </div>
+      `;
             return;
         }
-        contractTransactionsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-        <thead><tr>
-          <th class="has-width-1">Date</th>
-          <th>${cityssm.escapeHTML(sunrise.escapedAliases.ExternalReceiptNumber)}</th>
-          <th class="has-text-right has-width-1">Amount</th>
-          <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
-        </tr></thead>
+        contractTransactionsContainerElement.innerHTML = /*html*/ `
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th class="has-width-1">Date</th>
+            <th>${cityssm.escapeHTML(sunrise.escapedAliases.ExternalReceiptNumber)}</th>
+            <th class="has-text-right has-width-1">Amount</th>
+            <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
+          </tr>
+        </thead>
         <tbody></tbody>
-        <tfoot><tr>
-          <th colspan="2">Transaction Total</th>
-          <td class="has-text-weight-bold has-text-right" id="contractTransactions--grandTotal"></td>
-          <td class="is-hidden-print"></td>
-        </tr></tfoot>
-        </table>`;
+        <tfoot>
+          <tr>
+            <th colspan="2">Transaction Total</th>
+            <td class="has-text-weight-bold has-text-right" id="contractTransactions--grandTotal"></td>
+            <td class="is-hidden-print"></td>
+          </tr>
+        </tfoot>
+      </table>
+    `;
         let transactionGrandTotal = 0;
         for (const contractTransaction of contractTransactions) {
             transactionGrandTotal += contractTransaction.transactionAmount;
@@ -517,9 +553,10 @@
                 externalReceiptNumberHTML += '<br />';
             }
             // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = `<td>
-        ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
-        ${(contractTransaction.isInvoiced ?? 0) === 0
+            tableRowElement.innerHTML = /*html*/ `
+        <td>
+          ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
+          ${(contractTransaction.isInvoiced ?? 0) === 0
                 ? ''
                 : '<br /><span class="tag is-info">Invoiced</span>'}
         </td>
@@ -532,14 +569,15 @@
         </td>
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-            <button class="button is-primary button--edit" title="Edit Transaction" type="button">
+            <button class="button is-primary button--edit" type="button" title="Edit Transaction">
               <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
             </button>
-            <button class="button is-danger is-light button--delete" title="Delete Transaction" type="button">
+            <button class="button is-danger is-light button--delete" type="button" title="Delete Transaction">
               <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>
-        </td>`;
+        </td>
+      `;
             tableRowElement
                 .querySelector('.button--edit')
                 ?.addEventListener('click', editContractTransaction);
@@ -557,21 +595,25 @@
             const difference = feeGrandTotal - transactionGrandTotal;
             const differenceClassName = difference < 0 ? 'is-danger' : 'is-warning';
             // eslint-disable-next-line no-unsanitized/method
-            contractTransactionsContainerElement.insertAdjacentHTML('afterbegin', `<div class="message ${differenceClassName}">
-          <div class="message-body">
-            <div class="level">
-              <div class="level-left">
-                <div class="level-item">
-                  ${difference < 0 ? 'Overpayment' : 'Outstanding Balance'}
+            contractTransactionsContainerElement.insertAdjacentHTML('afterbegin', 
+            /*html*/ `
+          <div class="message ${differenceClassName}">
+            <div class="message-body">
+              <div class="level">
+                <div class="level-left">
+                  <div class="level-item">
+                    ${difference < 0 ? 'Overpayment' : 'Outstanding Balance'}
+                  </div>
                 </div>
-              </div>
-              <div class="level-right">
-                <div class="level-item">
-                  $${cityssm.escapeHTML(Math.abs(difference).toFixed(2))}
+                <div class="level-right">
+                  <div class="level-item">
+                    $${cityssm.escapeHTML(Math.abs(difference).toFixed(2))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div></div>`);
+          </div>
+        `);
         }
     }
     const addTransactionButtonElement = document.querySelector('#button--addTransaction');

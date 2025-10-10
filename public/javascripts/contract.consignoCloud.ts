@@ -109,10 +109,15 @@ declare const exports: {
           const printElement = document.createElement('label')
           printElement.className = 'panel-block'
 
-          printElement.innerHTML = `<input type="checkbox"
-            name="printNames"
-            value="${cityssm.escapeHTML(print.printName)}" checked />
-              ${cityssm.escapeHTML(print.printTitle)}`
+          printElement.innerHTML = /*html*/ `
+            <input
+              name="printNames"
+              type="checkbox"
+              value="${cityssm.escapeHTML(print.printName)}"
+              checked
+            />
+            ${cityssm.escapeHTML(print.printTitle)}
+          `
 
           printsContainerElement.append(printElement)
         }

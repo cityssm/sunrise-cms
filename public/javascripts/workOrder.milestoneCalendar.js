@@ -11,7 +11,8 @@
         const tableElement = document.createElement('table');
         tableElement.className =
             'table is-fullwidth is-bordered is-narrow is-fixed is-size-7';
-        tableElement.innerHTML = `<thead>
+        tableElement.innerHTML = /*html*/ `
+      <thead>
         <tr class="is-info">
           <th><abbr title="Sunday">Sun</abbr></th>
           <th><abbr title="Monday">Mon</abbr></th>
@@ -22,7 +23,8 @@
           <th><abbr title="Saturday">Sat</abbr></th>
         </tr>
       </thead>
-      <tbody></tbody>`;
+      <tbody></tbody>
+    `;
         const tableBodyElement = tableElement.querySelector('tbody');
         if (calendarDate.getDay() !== 0) {
             const emptyRow = document.createElement('tr');
@@ -39,9 +41,11 @@
             dateCell.dataset.dateString = cityssm.dateToString(calendarDate);
             dateCell.style.height = '3rem';
             // eslint-disable-next-line no-unsanitized/property
-            dateCell.innerHTML = `<a href="${sunrise.urlPrefix}/workOrders/workday/?workdayDateString=${cityssm.dateToString(calendarDate)}">
-        ${calendarDate.getDate().toString()}
-        </a>`;
+            dateCell.innerHTML = /*html*/ `
+        <a href="${sunrise.urlPrefix}/workOrders/workday/?workdayDateString=${cityssm.dateToString(calendarDate)}">
+          ${calendarDate.getDate().toString()}
+        </a>
+      `;
             if (calendarDate.getDay() === 0) {
                 const newRow = document.createElement('tr');
                 newRow.append(dateCell);
@@ -73,18 +77,20 @@
             workOrder.workOrderCloseDate === null ? '0' : '1';
         workOrderElement.href = sunrise.getWorkOrderUrl(workOrder.workOrderId);
         // eslint-disable-next-line no-unsanitized/property
-        workOrderElement.innerHTML = `<div class="columns m-0 is-gapless is-mobile">
-      <div class="column has-text-weight-semibold">
-        #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
-      </div>
-      <div class="column is-narrow">
-        <span class="icon is-small">
-          ${workOrder.workOrderCloseDate === null
+        workOrderElement.innerHTML = /*html*/ `
+      <div class="columns m-0 is-gapless is-mobile">
+        <div class="column has-text-weight-semibold">
+          #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
+        </div>
+        <div class="column is-narrow">
+          <span class="icon is-small">
+            ${workOrder.workOrderCloseDate === null
             ? '<i class="fa-solid fa-play" title="Open"></i>'
             : '<i class="fa-solid fa-stop" title="Closed"></i>'}
-        </span>
+          </span>
+        </div>
       </div>
-      </div>`;
+    `;
         // Add burial sites and interred names
         const burialSiteNames = new Set();
         const deceasedNames = new Set();
@@ -101,39 +107,47 @@
             if (burialSiteName === '') {
                 continue;
             }
-            workOrderElement.insertAdjacentHTML('beforeend', `<div class="columns m-0 is-gapless is-mobile">
-          <div class="column is-narrow">
-            <span class="icon is-small">
-              <i class="fa-solid fa-map-pin"></i>
-            </span>
+            workOrderElement.insertAdjacentHTML('beforeend', 
+            /*html*/ `
+          <div class="columns m-0 is-gapless is-mobile">
+            <div class="column is-narrow">
+              <span class="icon is-small">
+                <i class="fa-solid fa-map-pin"></i>
+              </span>
+            </div>
+            <div class="column">
+              ${cityssm.escapeHTML(burialSiteName)}
+            </div>
           </div>
-          <div class="column">
-            ${cityssm.escapeHTML(burialSiteName)}
-          </div>
-        </div>`);
+        `);
         }
         for (const deceasedName of deceasedNames) {
             if (deceasedName === '') {
                 continue;
             }
-            workOrderElement.insertAdjacentHTML('beforeend', `<div class="columns m-0 is-gapless is-mobile">
-          <div class="column is-narrow">
-            <span class="icon is-small">
-              <i class="fa-solid fa-user"></i>
-            </span>
+            workOrderElement.insertAdjacentHTML('beforeend', 
+            /*html*/ `
+          <div class="columns m-0 is-gapless is-mobile">
+            <div class="column is-narrow">
+              <span class="icon is-small">
+                <i class="fa-solid fa-user"></i>
+              </span>
+            </div>
+            <div class="column">
+              ${cityssm.escapeHTML(deceasedName)}
+            </div>
           </div>
-          <div class="column">
-            ${cityssm.escapeHTML(deceasedName)}
-          </div>
-        </div>`);
+        `);
         }
         return workOrderElement;
     }
     function renderMilestones(workOrderMilestones) {
         if (workOrderMilestones.length === 0) {
-            milestoneCalendarContainerElement.innerHTML = `<div class="message is-info">
+            milestoneCalendarContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
           <p class="message-body">No Milestones Found</p>
-          </div>`;
+        </div>
+      `;
             return;
         }
         renderBlankCalendar(workOrderMilestones[0].workOrderMilestoneDateString ?? '');
@@ -148,23 +162,31 @@
                 calendarDateCell.append(workOrderElement);
             }
             // eslint-disable-next-line no-unsanitized/method
-            workOrderElement.insertAdjacentHTML('beforeend', `<div class="columns m-0 is-gapless is-mobile container--workOrderMilestone"
-          data-is-complete="${workOrderMilestone.workOrderMilestoneCompletionDate === null ? '0' : '1'}">
-          <div class="column is-narrow">
-            <span class="icon is-small">
-            ${workOrderMilestone.workOrderMilestoneCompletionDate === null
+            workOrderElement.insertAdjacentHTML('beforeend', 
+            /*html*/ `
+          <div
+            class="columns m-0 is-gapless is-mobile container--workOrderMilestone"
+            data-is-complete="${workOrderMilestone.workOrderMilestoneCompletionDate === null ? '0' : '1'}"
+          >
+            <div class="column is-narrow">
+              <span class="icon is-small">
+                ${workOrderMilestone.workOrderMilestoneCompletionDate === null
                 ? '<i class="fa-regular fa-square" title="Not Completed"></i>'
                 : '<i class="fa-solid fa-check" title="Completed"></i>'}
-            </span>
+              </span>
+            </div>
+            <div class="column">
+              ${cityssm.escapeHTML(workOrderMilestone.workOrderMilestoneType ?? '(No Type)')}
+            </div>
           </div>
-          <div class="column">
-            ${cityssm.escapeHTML(workOrderMilestone.workOrderMilestoneType ?? '(No Type)')}
-          </div>
-          </div>`);
+        `);
             if (workOrderMilestone.workOrderMilestoneTime !== null) {
-                workOrderElement.insertAdjacentHTML('beforeend', `<p class="is-italic has-text-right">
+                workOrderElement.insertAdjacentHTML('beforeend', 
+                /*html*/ `
+            <p class="is-italic has-text-right">
               ${cityssm.escapeHTML(workOrderMilestone.workOrderMilestoneTimePeriodString ?? '')}
-            </p>`);
+            </p>
+          `);
             }
             if (workOrderMilestone.workOrderMilestoneCompletionDate === null &&
                 (workOrderMilestone.workOrderMilestoneDateString ?? '') <

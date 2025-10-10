@@ -216,9 +216,11 @@ declare const exports: {
 
     burialSiteTypeIdElement.addEventListener('change', () => {
       if (burialSiteTypeIdElement.value === '') {
-        burialSiteFieldsContainerElement.innerHTML = `<div class="message is-info">
-          <p class="message-body">Select the burial site type to load the available fields.</p>
-          </div>`
+        burialSiteFieldsContainerElement.innerHTML = /*html*/ `
+          <div class="message is-info">
+            <p class="message-body">Select the burial site type to load the available fields.</p>
+          </div>
+        `
 
         return
       }
@@ -234,11 +236,13 @@ declare const exports: {
           }
 
           if (responseJSON.burialSiteTypeFields.length === 0) {
-            burialSiteFieldsContainerElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">
-                There are no additional fields for this burial site type.
-              </p>
-              </div>`
+            burialSiteFieldsContainerElement.innerHTML = /*html*/ `
+              <div class="message is-info">
+                <p class="message-body">
+                  There are no additional fields for this burial site type.
+                </p>
+              </div>
+            `
 
             return
           }
@@ -258,8 +262,10 @@ declare const exports: {
             fieldElement.className = 'field'
 
             // eslint-disable-next-line no-unsanitized/property
-            fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label>
-              <div class="control"></div>`
+            fieldElement.innerHTML = /*html*/ `
+              <label class="label" for="${fieldId}"></label>
+              <div class="control"></div>
+            `
             ;(
               fieldElement.querySelector('label') as HTMLLabelElement
             ).textContent = burialSiteTypeField.burialSiteTypeField as string
@@ -288,11 +294,13 @@ declare const exports: {
               // eslint-disable-next-line no-unsanitized/property
               ;(
                 fieldElement.querySelector('.control') as HTMLElement
-              ).innerHTML = `<div class="select is-fullwidth">
+              ).innerHTML = /*html*/ `
+                <div class="select is-fullwidth">
                   <select id="${fieldId}" name="${fieldName}">
                     <option value="">(Not Set)</option>
                   </select>
-                </div>`
+                </div>
+              `
 
               const selectElement = fieldElement.querySelector(
                 'select'
@@ -318,8 +326,10 @@ declare const exports: {
           burialSiteFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
             // eslint-disable-next-line no-secrets/no-secrets
-            `<input name="burialSiteTypeFieldIds" type="hidden"
-              value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />`
+            /*html*/ `
+              <input name="burialSiteTypeFieldIds" type="hidden"
+                value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />
+            `
           )
         }
       )
@@ -539,49 +549,60 @@ declare const exports: {
     ) as HTMLElement
 
     if (burialSiteComments.length === 0) {
-      containerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no comments to display.</p>
-        </div>`
+      containerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no comments to display.</p>
+        </div>
+      `
       return
     }
 
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-fullwidth is-striped is-hoverable'
-    tableElement.innerHTML = `<thead><tr>
-      <th>Author</th>
-      <th>Comment Date</th>
-      <th>Comment</th>
-      <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-      </tr></thead>
-      <tbody></tbody>`
+    tableElement.innerHTML = /*html*/ `
+      <thead>
+        <tr>
+          <th>Author</th>
+          <th>Comment Date</th>
+          <th>Comment</th>
+          <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `
 
     for (const burialSiteComment of burialSiteComments) {
       const tableRowElement = document.createElement('tr')
       tableRowElement.dataset.burialSiteCommentId =
         burialSiteComment.burialSiteCommentId?.toString()
 
-      tableRowElement.innerHTML = `<td>
+      tableRowElement.innerHTML = /*html*/ `
+        <td>
           ${cityssm.escapeHTML(burialSiteComment.recordCreate_userName ?? '')}
-        </td><td>
+        </td>
+        <td>
           ${cityssm.escapeHTML(burialSiteComment.commentDateString ?? '')}
           ${cityssm.escapeHTML(
             burialSiteComment.commentTime === 0
               ? ''
               : ` ${burialSiteComment.commentTimePeriodString}`
           )}
-        </td><td>
+        </td>
+        <td>
           ${cityssm.escapeHTML(burialSiteComment.comment ?? '')}
-        </td><td class="is-hidden-print">
+        </td>
+        <td class="is-hidden-print">
           <div class="buttons are-small is-justify-content-end">
             <button class="button is-primary button--edit" type="button">
               <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
               <span>Edit</span>
             </button>
-            <button class="button is-light is-danger button--delete" title="Delete Comment" type="button">
+            <button class="button is-light is-danger button--delete" type="button" title="Delete Comment">
               <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>
-        </td>`
+        </td>
+      `
 
       tableRowElement
         .querySelector('.button--edit')

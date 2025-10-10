@@ -51,50 +51,61 @@ declare const exports: {
 
     switch (logEntry.recordType) {
       case 'burialSite': {
-        recordTypeHTML = `<span title="Burial Site">
-          <i class="fa-solid fa-2x fa-map-pin"></i>
-          </span>`
+        recordTypeHTML = /*html*/ `
+          <span title="Burial Site">
+            <i class="fa-solid fa-2x fa-map-pin"></i>
+          </span>
+        `
 
         recordUrl = sunrise.getBurialSiteUrl(logEntry.recordId)
 
         break
       }
       case 'burialSiteComment': {
-        recordTypeHTML = `<span title="Burial Site Comment">
-          <span class="fa-layers fa-2x fa-fw">
-            <i class="fa-solid fa-map-pin" data-fa-transform="left-4"></i>
-            <i class="fa-solid fa-comment" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
+        recordTypeHTML = /*html*/ `
+          <span title="Burial Site Comment">
+            <span class="fa-layers fa-2x fa-fw">
+              <i class="fa-solid fa-map-pin" data-fa-transform="left-4"></i>
+              <i class="fa-solid fa-comment" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
+            </span>
           </span>
-          </span>`
+        `
 
         recordUrl = sunrise.getBurialSiteUrl(logEntry.recordId)
 
         break
       }
       case 'comments': {
-        recordTypeHTML = `<span title="Comment">
-          <i class="fa-solid fa-2x fa-comments"></i>
-          </span>`
+        recordTypeHTML = /*html*/ `
+          <span title="Comment">
+            <i class="fa-solid fa-2x fa-comments"></i>
+          </span>
+        `
 
         recordUrl = '#'
 
         break
       }
       case 'contract': {
-        recordTypeHTML = `<span title="Contract">
-          <i class="fa-solid fa-2x fa-file-contract"></i>
-          </span>`
+        recordTypeHTML = /*html*/ `
+          <span title="Contract">
+            <i class="fa-solid fa-2x fa-file-contract"></i>
+          </span>
+        `
 
         recordUrl = sunrise.getContractUrl(logEntry.recordId)
 
         break
       }
       case 'contractComment': {
-        recordTypeHTML = `<span title="Contract Comment">
-          <span class="fa-layers fa-2x fa-fw">
-            <i class="fa-solid fa-file-contract"></i>
-            <i class="fa-solid fa-comment" data-fa-glow="10" data-fa-transform="shrink-6 down-5 right-4"></i>
-          </span>`
+        recordTypeHTML = /*html*/ `
+          <span title="Contract Comment">
+            <span class="fa-layers fa-2x fa-fw">
+              <i class="fa-solid fa-file-contract"></i>
+              <i class="fa-solid fa-comment" data-fa-glow="10" data-fa-transform="shrink-6 down-5 right-4"></i>
+            </span>
+          </span>
+        `
 
         recordUrl = sunrise.getContractUrl(logEntry.recordId)
 
@@ -102,21 +113,25 @@ declare const exports: {
       }
 
       case 'contractFee': {
-        recordTypeHTML = `<span title="Contract Fee">
-          <span class="fa-layers fa-2x fa-fw">
-            <i class="fa-solid fa-file-contract"></i>
-            <i class="fa-solid fa-dollar-sign" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
+        recordTypeHTML = /*html*/ `
+          <span title="Contract Fee">
+            <span class="fa-layers fa-2x fa-fw">
+              <i class="fa-solid fa-file-contract"></i>
+              <i class="fa-solid fa-dollar-sign" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
+            </span>
           </span>
-          </span>`
+        `
 
         recordUrl = sunrise.getContractUrl(logEntry.recordId)
 
         break
       }
       case 'contractTransactions': {
-        recordTypeHTML = `<span title="Contract Transaction">
-          <i class="fa-solid fa-2x fa-money-bill-1"></i>
-          </span>`
+        recordTypeHTML = /*html*/ `
+          <span title="Contract Transaction">
+            <i class="fa-solid fa-2x fa-money-bill-1"></i>
+          </span>
+        `
 
         recordUrl = sunrise.getContractUrl(logEntry.recordId)
 
@@ -124,34 +139,39 @@ declare const exports: {
       }
 
       case 'workOrder': {
-        recordTypeHTML = `<span title="Work Order">
+        recordTypeHTML = /*html*/ `
+          <span title="Work Order">
             <i class="fa-solid fa-2x fa-hard-hat"></i>
-          </span>`
+          </span>
+        `
 
         recordUrl = sunrise.getWorkOrderUrl(logEntry.recordId)
 
         break
       }
       case 'workOrderComment': {
-        recordTypeHTML = `<span title="Work Order Comment">
-          <span class="fa-layers fa-2x fa-fw">
-            <i class="fa-solid fa-hard-hat"></i>
-            <i class="fa-solid fa-comment" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
+        recordTypeHTML = /*html*/ `
+          <span title="Work Order Comment">
+            <span class="fa-layers fa-2x fa-fw">
+              <i class="fa-solid fa-hard-hat"></i>
+              <i class="fa-solid fa-comment" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
+            </span>
           </span>
-          </span>`
+        `
 
         recordUrl = sunrise.getWorkOrderUrl(logEntry.recordId)
 
         break
       }
       case 'workOrderMilestone': {
-        recordTypeHTML = `<span title="Work Order Milestone">
+        recordTypeHTML = /*html*/ `
+          <span title="Work Order Milestone">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-hard-hat"></i>
               <i class="fa-solid fa-clock" data-fa-glow="10" data-fa-transform="shrink-6 down-4 right-4"></i>
             </span>
-
-          </span>`
+          </span>
+        `
 
         recordUrl = sunrise.getWorkOrderUrl(logEntry.recordId)
 
@@ -179,7 +199,8 @@ declare const exports: {
       const logEntryCreateDate = new Date(logEntry.recordCreate_timeMillis)
 
       // eslint-disable-next-line no-unsanitized/property
-      rowElement.innerHTML = `<td class="has-text-centered">${recordTypeHTML}</td>
+      rowElement.innerHTML = /*html*/ `
+        <td class="has-text-centered">${recordTypeHTML}</td>
         <td>
           <a href="${recordUrl}" title="Open Record" target="_blank">${logEntry.displayRecordId}</a>
         </td>
@@ -209,7 +230,8 @@ declare const exports: {
             </span>
             <span>${logEntry.recordCreate_userName}</span>
           </span>
-        </td>`
+        </td>
+      `
 
       tableBodyElement.append(rowElement)
     }
@@ -307,7 +329,9 @@ declare const exports: {
 
       if (iconContainerElement !== null) {
         // eslint-disable-next-line no-unsanitized/property
-        iconContainerElement.innerHTML = `<i class="fa-solid fa-sort-${sortDirection === 'desc' ? 'down' : 'up'}"></i>`
+        iconContainerElement.innerHTML = /*html*/ `
+          <i class="fa-solid fa-sort-${sortDirection === 'desc' ? 'down' : 'up'}"></i>
+        `
       }
     })
   }

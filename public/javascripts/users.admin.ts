@@ -126,48 +126,68 @@ declare const exports: {
     rowElement.dataset.userName = user.userName
 
     // eslint-disable-next-line no-unsanitized/property
-    rowElement.innerHTML = `<th>${cityssm.escapeHTML(user.userName)}</th>
+    rowElement.innerHTML = /*html*/ `
+      <th>${cityssm.escapeHTML(user.userName)}</th>
       <td class="has-text-centered">
-        <button class="button is-small permission-toggle ${user.isActive ? activePermissionClass : inactivePermissionClass}"
+        <button
+          class="button is-small permission-toggle ${user.isActive ? activePermissionClass : inactivePermissionClass}"
+          data-permission="isActive"
+          data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Active Status"
-          data-permission="isActive" data-user-name="${cityssm.escapeHTML(user.userName)}">
+        >
           ${user.isActive ? 'Yes' : 'No'}
         </button>
       </td>
       <td class="has-text-centered">
-        <button class="button is-small permission-toggle ${user.canUpdateCemeteries ? activePermissionClass : inactivePermissionClass}"
+        <button
+          class="button is-small permission-toggle ${user.canUpdateCemeteries ? activePermissionClass : inactivePermissionClass}"
+          data-permission="canUpdateCemeteries"
+          data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Can Update Cemeteries"
-          data-permission="canUpdateCemeteries" data-user-name="${cityssm.escapeHTML(user.userName)}">
+        >
           ${user.canUpdateCemeteries ? 'Yes' : 'No'}
         </button>
       </td>
       <td class="has-text-centered">
-        <button class="button is-small permission-toggle ${user.canUpdateContracts ? activePermissionClass : inactivePermissionClass}"
+        <button
+          class="button is-small permission-toggle ${user.canUpdateContracts ? activePermissionClass : inactivePermissionClass}"
+          data-permission="canUpdateContracts"
+          data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Can Update Contracts"
-          data-permission="canUpdateContracts" data-user-name="${cityssm.escapeHTML(user.userName)}">
+        >
           ${user.canUpdateContracts ? 'Yes' : 'No'}
         </button>
       </td>
       <td class="has-text-centered">
-        <button class="button is-small permission-toggle ${user.canUpdateWorkOrders ? activePermissionClass : inactivePermissionClass}"
+        <button
+          class="button is-small permission-toggle ${user.canUpdateWorkOrders ? activePermissionClass : inactivePermissionClass}"
+          data-permission="canUpdateWorkOrders"
+          data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Can Update Work Orders"
-          data-permission="canUpdateWorkOrders" data-user-name="${cityssm.escapeHTML(user.userName)}">
+        >
           ${user.canUpdateWorkOrders ? 'Yes' : 'No'}
         </button>
       </td>
       <td class="has-text-centered">
-        <button class="button is-small permission-toggle ${user.isAdmin ? activePermissionClass : inactivePermissionClass}"
+        <button
+          class="button is-small permission-toggle ${user.isAdmin ? activePermissionClass : inactivePermissionClass}"
+          data-permission="isAdmin"
+          data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Is Admin"
-          data-permission="isAdmin" data-user-name="${cityssm.escapeHTML(user.userName)}">
+        >
           ${user.isAdmin ? 'Yes' : 'No'}
         </button>
       </td>
       <td class="has-text-centered">
-        <button class="button is-small is-danger delete-user" title="Delete User"
-          data-user-name="${cityssm.escapeHTML(user.userName)}">
+        <button
+          class="button is-small is-danger delete-user"
+          data-user-name="${cityssm.escapeHTML(user.userName)}"
+          title="Delete User"
+        >
           Delete
         </button>
-      </td>`
+      </td>
+    `
 
     return rowElement
   }
@@ -181,18 +201,20 @@ declare const exports: {
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-fullwidth is-striped is-hoverable'
 
-    tableElement.innerHTML = `<thead>
-      <tr>
-        <th>User Name</th>
-        <th class="has-text-centered">Can Login</th>
-        <th class="has-text-centered">Can Update<br /> Cemeteries</th>
-        <th class="has-text-centered">Can Update<br /> Contracts</th>
-        <th class="has-text-centered">Can Update<br /> Work Orders</th>
-        <th class="has-text-centered">Is Admin</th>
-        <th class="has-text-centered"></th>
-      </tr>
+    tableElement.innerHTML = /*html*/ `
+      <thead>
+        <tr>
+          <th>User Name</th>
+          <th class="has-text-centered">Can Login</th>
+          <th class="has-text-centered">Can Update<br /> Cemeteries</th>
+          <th class="has-text-centered">Can Update<br /> Contracts</th>
+          <th class="has-text-centered">Can Update<br /> Work Orders</th>
+          <th class="has-text-centered">Is Admin</th>
+          <th class="has-text-centered"></th>
+        </tr>
       </thead>
-      <tbody></tbody>`
+      <tbody></tbody>
+    `
 
     for (const user of users) {
       const rowElement = buildUserRowElement(user)

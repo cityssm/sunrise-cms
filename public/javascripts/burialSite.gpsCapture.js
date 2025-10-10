@@ -69,18 +69,22 @@
         const cemeteryId = formData.get('cemeteryId');
         // Cemetery is required
         if (cemeteryId === null) {
-            burialSitesContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">Select a cemetery to view burial sites.</p>
-      </div>`;
+            burialSitesContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">Select a cemetery to view burial sites.</p>
+        </div>
+      `;
             return;
         }
         // Show loading message
-        burialSitesContainerElement.innerHTML = `<div class="message is-info">
-      <p class="message-body">
-        <span class="icon"><i class="fa-solid fa-spinner fa-pulse"></i></span>
-        Searching burial sites...
-      </p>
-    </div>`;
+        burialSitesContainerElement.innerHTML = /*html*/ `
+      <div class="message is-info">
+        <p class="message-body">
+          <span class="icon"><i class="fa-solid fa-spinner fa-pulse"></i></span>
+          Searching burial sites...
+        </p>
+      </div>
+    `;
         const searchData = {
             burialSiteName: formData.get('burialSiteName'),
             cemeteryId,
@@ -93,9 +97,13 @@
                 renderBurialSites();
             }
             else {
-                burialSitesContainerElement.innerHTML = `<div class="message is-danger">
-            <p class="message-body">${cityssm.escapeHTML(responseJSON.errorMessage ?? 'Failed to search burial sites.')}</p>
-          </div>`;
+                burialSitesContainerElement.innerHTML = /*html*/ `
+            <div class="message is-danger">
+              <p class="message-body">
+                ${cityssm.escapeHTML(responseJSON.errorMessage ?? 'Failed to search burial sites.')}
+              </p>
+            </div>
+          `;
             }
         });
     }
@@ -112,8 +120,12 @@
         const captureButton = document.querySelector(`#capture-${burialSiteId}`);
         const originalText = captureButton.innerHTML;
         captureButton.disabled = true;
-        captureButton.innerHTML =
-            '<span class="icon"><i class="fa-solid fa-spinner fa-pulse"></i></span><span>Capturing...</span>';
+        captureButton.innerHTML = /* html */ `
+      <span class="icon">
+        <i class="fa-solid fa-spinner fa-pulse"></i>
+      </span>
+      <span>Capturing...</span>
+    `;
         // Update burial site with current GPS coordinates
         const updateData = {
             burialSiteId,
@@ -124,18 +136,24 @@
             const responseJSON = rawResponseJSON;
             captureButton.disabled = false;
             if (responseJSON.success) {
-                captureButton.innerHTML =
-                    '<span class="icon"><i class="fa-solid fa-check"></i></span><span>Captured!</span>';
+                captureButton.innerHTML = /*html*/ `
+            <span class="icon">
+              <i class="fa-solid fa-check"></i>
+            </span>
+            <span>Captured!</span>
+          `;
                 captureButton.classList.add('is-success');
                 captureButton.classList.remove('is-primary');
                 // Update the displayed coordinates
                 const coordsElement = document.querySelector(`#coords-${burialSiteId}`);
                 // eslint-disable-next-line no-unsanitized/property
-                coordsElement.innerHTML = `<strong>Lat:</strong> ${currentPosition?.latitude.toFixed(coordinatePrecision)}<br />
+                coordsElement.innerHTML = /*html*/ `
+            <strong>Lat:</strong> ${currentPosition?.latitude.toFixed(coordinatePrecision)}<br />
             <strong>Lng:</strong> ${currentPosition?.longitude.toFixed(coordinatePrecision)}<br />
             <span class="has-text-success">
               <small>Just captured (±${Math.round(currentPosition?.accuracy ?? 0)}m)</small>
-            </span>`;
+            </span>
+          `;
                 // Update the burial site data in memory
                 const siteIndex = allBurialSites.findIndex((site) => site.burialSiteId === burialSiteId);
                 if (siteIndex !== -1) {
@@ -164,60 +182,69 @@
     // Render the filtered burial sites
     function renderBurialSites() {
         if (allBurialSites.length === 0) {
-            burialSitesContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">No burial sites match the current filters.</p>
-      </div>`;
+            burialSitesContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">No burial sites match the current filters.</p>
+        </div>
+      `;
             return;
         }
         let html = '<div class="columns is-multiline">';
         for (const site of allBurialSites) {
             const hasCoords = site.burialSiteLatitude !== null && site.burialSiteLongitude !== null;
             const coordsHtml = hasCoords
-                ? `<strong>Latitude:</strong> ${site.burialSiteLatitude?.toFixed(coordinatePrecision)}<br>
-           <strong>Longitude:</strong> ${site.burialSiteLongitude?.toFixed(coordinatePrecision)}`
+                ? /*html*/ `
+          <strong>Latitude:</strong> ${site.burialSiteLatitude?.toFixed(coordinatePrecision)}<br />
+          <strong>Longitude:</strong> ${site.burialSiteLongitude?.toFixed(coordinatePrecision)}
+        `
                 : '<span class="has-text-grey">No coordinates</span>';
             // Build interment names display
             let intermentNamesHtml = '';
             if (site.deceasedNames !== undefined && site.deceasedNames.length > 0) {
                 const names = site.deceasedNames.slice(0, maxDeceasedNames);
-                intermentNamesHtml = `<div class="is-size-7 has-text-grey-dark mt-2">
-          <span class="icon-text">
-            <span class="icon is-small">
-              <i class="fa-solid fa-users"></i>
+                intermentNamesHtml = /*html*/ `
+          <div class="is-size-7 has-text-grey-dark mt-2">
+            <span class="icon-text">
+              <span class="icon is-small">
+                <i class="fa-solid fa-users"></i>
+              </span>
+              <span>${cityssm.escapeHTML(names.join(', '))}${site.deceasedNames.length > maxDeceasedNames ? ` +${site.deceasedNames.length - maxDeceasedNames} more` : ''}</span>
             </span>
-            <span>${cityssm.escapeHTML(names.join(', '))}${site.deceasedNames.length > maxDeceasedNames ? ` +${site.deceasedNames.length - maxDeceasedNames} more` : ''}</span>
-          </span>
-        </div>`;
-            }
-            html += `<div class="column is-one-third-desktop is-half-tablet">
-        <div class="card">
-          <div class="card-content">
-            <div class="content">
-              <p class="title is-6">
-                <a href="${sunrise.getBurialSiteUrl(site.burialSiteId)}" target="_blank">
-                  ${cityssm.escapeHTML(site.burialSiteName === '' ? 'Unnamed Site' : site.burialSiteName)}
-                </a>
-              </p>
-              <p class="subtitle is-7">
-                ${cityssm.escapeHTML(site.cemeteryName ?? 'No Cemetery')} - 
-                ${cityssm.escapeHTML(site.burialSiteType ?? 'No Type')}
-              </p>
-              <div id="coords-${site.burialSiteId}" class="is-size-7">
-                ${coordsHtml}
-              </div>
-              ${intermentNamesHtml}
-            </div>
           </div>
-          <footer class="card-footer">
-            <button class="card-footer-item button is-primary is-small" 
-                    id="capture-${site.burialSiteId}"
-                    data-burial-site-id="${site.burialSiteId}">
-              <span class="icon"><i class="fa-solid fa-crosshairs"></i></span>
-              <span>Capture GPS</span>
-            </button>
-          </footer>
+        `;
+            }
+            html += /*html*/ `
+        <div class="column is-one-third-desktop is-half-tablet">
+          <div class="card">
+            <div class="card-content">
+              <div class="content">
+                <p class="title is-6">
+                  <a href="${sunrise.getBurialSiteUrl(site.burialSiteId)}" target="_blank">
+                    ${cityssm.escapeHTML(site.burialSiteName === '' ? 'Unnamed Site' : site.burialSiteName)}
+                  </a>
+                </p>
+                <p class="subtitle is-7">
+                  ${cityssm.escapeHTML(site.cemeteryName ?? 'No Cemetery')} - 
+                  ${cityssm.escapeHTML(site.burialSiteType ?? 'No Type')}
+                </p>
+                <div class="is-size-7" id="coords-${site.burialSiteId}">
+                  ${coordsHtml}
+                </div>
+                ${intermentNamesHtml}
+              </div>
+            </div>
+            <footer class="card-footer">
+              <button class="card-footer-item button is-primary is-small" 
+                id="capture-${site.burialSiteId}"
+                data-burial-site-id="${site.burialSiteId}"
+              >
+                <span class="icon"><i class="fa-solid fa-crosshairs"></i></span>
+                <span>Capture GPS</span>
+              </button>
+            </footer>
+          </div>
         </div>
-      </div>`;
+      `;
         }
         html += '</div>';
         // eslint-disable-next-line no-unsanitized/property

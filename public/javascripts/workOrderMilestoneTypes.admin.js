@@ -91,11 +91,15 @@
     function renderWorkOrderMilestoneTypes() {
         const containerElement = document.querySelector('#container--workOrderMilestoneTypes');
         if (workOrderMilestoneTypes.length === 0) {
-            containerElement.innerHTML = `<tr><td colspan="2">
-          <div class="message is-warning">
-            <p class="message-body">There are no active work order milestone types.</p>
-          </div>
-          </td></tr>`;
+            containerElement.innerHTML = /*html*/ `
+        <tr>
+          <td colspan="2">
+            <div class="message is-warning">
+              <p class="message-body">There are no active work order milestone types.</p>
+            </div>
+          </td>
+        </tr>
+      `;
             return;
         }
         containerElement.innerHTML = '';
@@ -104,17 +108,22 @@
             tableRowElement.dataset.workOrderMilestoneTypeId =
                 workOrderMilestoneType.workOrderMilestoneTypeId.toString();
             /* eslint-disable no-secrets/no-secrets */
-            tableRowElement.innerHTML = `<td>
+            tableRowElement.innerHTML = /*html*/ `
+        <td>
           <form>
             <input name="workOrderMilestoneTypeId" type="hidden"
               value="${cityssm.escapeHTML(workOrderMilestoneType.workOrderMilestoneTypeId.toString())}" />
             <div class="field has-addons">
               <div class="control is-expanded">
-                <input class="input"
-                  name="workOrderMilestoneType" type="text"
+                <input
+                  class="input"
+                  name="workOrderMilestoneType"
+                  type="text"
                   value="${cityssm.escapeHTML(workOrderMilestoneType.workOrderMilestoneType)}"
                   maxlength="100"
-                  aria-label="Work Order Milestone Type" required />
+                  aria-label="Work Order Milestone Type"
+                  required
+                />
               </div>
               <div class="control">
                 <button class="button is-success" type="submit" aria-label="Save">
@@ -123,18 +132,24 @@
               </div>
             </div>
           </form>
-        </td><td class="is-nowrap">
+        </td>
+        <td class="is-nowrap">
           <div class="field is-grouped">
             <div class="control">
               ${sunrise.getMoveUpDownButtonFieldHTML('button--moveWorkOrderMilestoneTypeUp', 'button--moveWorkOrderMilestoneTypeDown', false)}
             </div>
             <div class="control">
-              <button class="button is-danger is-light button--deleteWorkOrderMilestoneType" title="Delete Milestone Type" type="button">
+              <button
+                class="button is-danger is-light button--deleteWorkOrderMilestoneType"
+                type="button"
+                title="Delete Milestone Type"
+              >
                 <span class="icon"><i class="fa-solid fa-trash"></i></span>
               </button>
             </div>
           </div>
-        </td>`;
+        </td>
+      `;
             /* eslint-enable no-secrets/no-secrets */
             tableRowElement
                 .querySelector('form')

@@ -27,16 +27,19 @@ declare const exports: {
 
   function renderAttachments(attachments: ContractAttachment[]): void {
     if (attachments.length === 0) {
-      attachmentsContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">No attachments have been uploaded.</p>
-        </div>`
+      attachmentsContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">No attachments have been uploaded.</p>
+        </div>
+      `
       return
     }
 
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-striped is-hoverable is-fullwidth'
 
-    tableElement.innerHTML = `<thead>
+    tableElement.innerHTML = /*html*/ `
+      <thead>
         <tr>
           <th>Title</th>
           <th>Details</th>
@@ -44,7 +47,8 @@ declare const exports: {
           <th class="has-text-right">Actions</th>
         </tr>
       </thead>
-      <tbody></tbody>`
+      <tbody></tbody>
+    `
 
     for (const attachment of attachments) {
       const contractAttachmentId = attachment.contractAttachmentId.toString()
@@ -53,12 +57,14 @@ declare const exports: {
       const rowElement = document.createElement('tr')
 
       // eslint-disable-next-line no-unsanitized/property
-      rowElement.innerHTML = `
+      rowElement.innerHTML = /*html*/ `
         <td>
-          <a href="${sunrise.urlPrefix}/contracts/attachment/${cityssm.escapeHTML(contractAttachmentId)}"
+          <a
             class="has-text-weight-bold"
+            href="${sunrise.urlPrefix}/contracts/attachment/${cityssm.escapeHTML(contractAttachmentId)}"
+            download
             target="_blank"
-            download>
+          >
             ${cityssm.escapeHTML(attachment.attachmentTitle === '' ? attachment.fileName : attachment.attachmentTitle)}
           </a><br />
           <small class="has-text-grey">${cityssm.escapeHTML(attachment.fileName)}</small>
@@ -72,18 +78,22 @@ declare const exports: {
         </td>
         <td class="has-text-right">
           <div class="buttons is-right">
-            <button class="button is-small is-primary" 
-              title="Edit Attachment"
+            <button
+              class="button is-small is-primary" 
               data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
-              data-cy="edit-attachment">
+              data-cy="edit-attachment"
+              title="Edit Attachment"
+            >
               <span class="icon is-small">
                 <i class="fa-solid fa-pencil-alt"></i>
               </span>
             </button>
-            <button class="button is-small is-danger" 
-              title="Delete Attachment"
+            <button
+              class="button is-small is-danger" 
               data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
-              data-cy="delete-attachment">
+              data-cy="delete-attachment"
+              title="Delete Attachment"
+            >
               <span class="icon is-small">
                 <i class="fa-solid fa-trash"></i>
               </span>

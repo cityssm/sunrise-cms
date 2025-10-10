@@ -18,6 +18,7 @@ const escapedMethods = [
   'sunrise.getFuneralHomeUrl',
   'sunrise.getWorkOrderUrl',
   
+  'buildBurialSiteHTML',
   'buildFuneralHomeAddressHTML'
 ]
 

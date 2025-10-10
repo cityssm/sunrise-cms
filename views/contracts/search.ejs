@@ -73,13 +73,17 @@
 
                         for (const contractType of contractTypes) {
                           if (contractType.isPreneed) {
-                            preneedHtml += `<option value="${contractType.contractTypeId}">
-                              ${contractType.contractType}
-                              </option>`
+                            preneedHtml += `
+                              <option value="${contractType.contractTypeId}">
+                                ${contractType.contractType}
+                              </option>
+                            `
                           } else {
-                            atNeedHtml += `<option value="${contractType.contractTypeId}">
-                              ${contractType.contractType}
-                              </option>`
+                            atNeedHtml += `
+                              <option value="${contractType.contractTypeId}">
+                                ${contractType.contractType}
+                              </option>
+                            `
                           }
                         }
                       %>

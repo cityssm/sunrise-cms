@@ -237,9 +237,11 @@ declare const exports: {
       }
 
       if (contractTypeIdElement.value === '') {
-        contractFieldsContainerElement.innerHTML = `<div class="message is-info">
-          <p class="message-body">Select the contract type to load the available fields.</p>
-          </div>`
+        contractFieldsContainerElement.innerHTML = /*html*/ `
+          <div class="message is-info">
+            <p class="message-body">Select the contract type to load the available fields.</p>
+          </div>
+        `
 
         return
       }
@@ -255,9 +257,11 @@ declare const exports: {
           }
 
           if (responseJSON.contractTypeFields.length === 0) {
-            contractFieldsContainerElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">There are no additional fields for this contract type.</p>
-              </div>`
+            contractFieldsContainerElement.innerHTML = /*html*/ `
+              <div class="message is-info">
+                <p class="message-body">There are no additional fields for this contract type.</p>
+              </div>
+            `
 
             return
           }
@@ -275,7 +279,10 @@ declare const exports: {
 
             const fieldElement = document.createElement('div')
             fieldElement.className = 'field'
-            fieldElement.innerHTML = `<label class="label" for="${cityssm.escapeHTML(fieldId)}"></label><div class="control"></div>`
+            fieldElement.innerHTML = /*html*/ `
+              <label class="label" for="${cityssm.escapeHTML(fieldId)}"></label>
+              <div class="control"></div>
+            `
             ;(
               fieldElement.querySelector('label') as HTMLLabelElement
             ).textContent = contractTypeField.contractTypeField as string
@@ -286,11 +293,13 @@ declare const exports: {
             ) {
               ;(
                 fieldElement.querySelector('.control') as HTMLElement
-              ).innerHTML = `<div class="select is-fullwidth">
+              ).innerHTML = /*html*/ `
+                <div class="select is-fullwidth">
                   <select id="${cityssm.escapeHTML(fieldId)}" name="${cityssm.escapeHTML(fieldName)}">
-                  <option value="">(Not Set)</option>
+                    <option value="">(Not Set)</option>
                   </select>
-                  </div>`
+                </div>
+              `
 
               const selectElement = fieldElement.querySelector(
                 'select'
@@ -340,8 +349,12 @@ declare const exports: {
           contractFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
             // eslint-disable-next-line no-secrets/no-secrets
-            `<input name="contractTypeFieldIds" type="hidden"
-              value="${cityssm.escapeHTML(contractTypeFieldIds.slice(1))}" />`
+            /*html*/ `
+              <input
+                name="contractTypeFieldIds"
+                type="hidden"
+                value="${cityssm.escapeHTML(contractTypeFieldIds.slice(1))}" />
+            `
           )
         }
       )
@@ -482,9 +495,11 @@ declare const exports: {
           }
 
           if (responseJSON.count === 0) {
-            burialSiteSelectResultsElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">No results.</p>
-              </div>`
+            burialSiteSelectResultsElement.innerHTML = /*html*/ `
+              <div class="message is-info">
+                <p class="message-body">No results.</p>
+              </div>
+            `
 
             return
           }
@@ -502,18 +517,20 @@ declare const exports: {
             panelBlockElement.dataset.burialSiteName = burialSite.burialSiteName
 
             // eslint-disable-next-line no-unsanitized/property
-            panelBlockElement.innerHTML = `<div class="columns">
-              <div class="column">
-                ${cityssm.escapeHTML(burialSite.burialSiteName)}<br />
-                <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
+            panelBlockElement.innerHTML = /*html*/ `
+              <div class="columns">
+                <div class="column">
+                  ${cityssm.escapeHTML(burialSite.burialSiteName)}<br />
+                  <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
+                </div>
+                <div class="column">
+                  ${cityssm.escapeHTML(burialSite.burialSiteStatus as string)}<br />
+                  <span class="is-size-7">
+                    ${(burialSite.contractCount ?? 0) > 0 ? 'Has Current Contract' : ''}
+                  </span>
+                </div>
               </div>
-              <div class="column">
-                ${cityssm.escapeHTML(burialSite.burialSiteStatus as string)}<br />
-                <span class="is-size-7">
-                  ${(burialSite.contractCount ?? 0) > 0 ? 'Has Current Contract' : ''}
-                </span>
-              </div>
-              </div>`
+            `
 
             panelBlockElement.addEventListener(
               'click',
@@ -810,7 +827,7 @@ declare const exports: {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          
+
           funeralDirectorNames: string[]
         }
 

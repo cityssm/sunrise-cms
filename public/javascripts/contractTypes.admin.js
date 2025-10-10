@@ -272,11 +272,16 @@
     function renderContractTypeFields(panelElement, contractTypeId, contractTypeFields) {
         if (contractTypeFields.length === 0) {
             // eslint-disable-next-line no-unsanitized/method
-            panelElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block ${!contractTypeId || expandedContractTypes.has(contractTypeId)
+            panelElement.insertAdjacentHTML('beforeend', 
+            /*html*/ `
+          <div class="panel-block is-block ${!contractTypeId || expandedContractTypes.has(contractTypeId)
                 ? ''
                 : ' is-hidden'}">
-        <div class="message is-info"><p class="message-body">There are no additional fields.</p></div>
-        </div>`);
+            <div class="message is-info">
+              <p class="message-body">There are no additional fields.</p>
+            </div>
+          </div>
+        `);
         }
         else {
             for (const contractTypeField of contractTypeFields) {
@@ -288,20 +293,22 @@
                 }
                 panelBlockElement.dataset.contractTypeFieldId =
                     contractTypeField.contractTypeFieldId.toString();
-                panelBlockElement.innerHTML = `<div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <a class="has-text-weight-bold button--editContractTypeField" href="#">
-                ${cityssm.escapeHTML(contractTypeField.contractTypeField ?? '')}
-              </a>
+                panelBlockElement.innerHTML = /*html*/ `
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <a class="has-text-weight-bold button--editContractTypeField" href="#">
+                  ${cityssm.escapeHTML(contractTypeField.contractTypeField ?? '')}
+                </a>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveContractTypeFieldUp', 'button--moveContractTypeFieldDown')}
+              </div>
             </div>
           </div>
-          <div class="level-right">
-            <div class="level-item">
-              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveContractTypeFieldUp', 'button--moveContractTypeFieldDown')}
-            </div>
-          </div>
-          </div>`;
+        `;
                 panelBlockElement
                     .querySelector('.button--editContractTypeField')
                     ?.addEventListener('click', openEditContractTypeFieldByClick);
@@ -379,11 +386,14 @@
     }
     function renderContractTypePrints(panelElement, contractTypeId, contractTypePrints) {
         if (contractTypePrints.length === 0) {
-            panelElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
-          <div class="message is-info">
-            <p class="message-body">There are no prints associated with this record.</p>
+            panelElement.insertAdjacentHTML('beforeend', 
+            /*html*/ `
+          <div class="panel-block is-block">
+            <div class="message is-info">
+              <p class="message-body">There are no prints associated with this record.</p>
+            </div>
           </div>
-          </div>`);
+        `);
         }
         else {
             for (const printEJS of contractTypePrints) {
@@ -402,26 +412,32 @@
                     printIconClass = 'fa-file';
                 }
                 // eslint-disable-next-line no-unsanitized/property
-                panelBlockElement.innerHTML = `<div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <i class="fa-solid ${printIconClass}"></i>
+                panelBlockElement.innerHTML = /*html*/ `
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <i class="fa-solid ${printIconClass}"></i>
+              </div>
+              <div class="level-item">
+                ${cityssm.escapeHTML(printTitle || printEJS)}
+              </div>
             </div>
-            <div class="level-item">
-              ${cityssm.escapeHTML(printTitle || printEJS)}
+            <div class="level-right is-hidden-print">
+              <div class="level-item">
+                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveContractTypePrintUp', 'button--moveContractTypePrintDown')}
+              </div>
+              <div class="level-item">
+                <button
+                  class="button is-small is-danger button--deleteContractTypePrint"
+                  type="button"
+                  title="Delete"
+                >
+                  <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+                </button>
+              </div>
             </div>
           </div>
-          <div class="level-right is-hidden-print">
-            <div class="level-item">
-              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveContractTypePrintUp', 'button--moveContractTypePrintDown')}
-            </div>
-            <div class="level-item">
-              <button class="button is-small is-danger button--deleteContractTypePrint" title="Delete" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
-              </button>
-            </div>
-          </div>
-          </div>`;
+        `;
                 panelBlockElement.querySelector('.button--moveContractTypePrintUp').addEventListener('click', moveContractTypePrint);
                 panelBlockElement.querySelector('.button--moveContractTypePrintDown').addEventListener('click', moveContractTypePrint);
                 panelBlockElement
@@ -435,37 +451,45 @@
      * Both
      */
     function renderContractTypes() {
-        contractTypesContainerElement.innerHTML = `<div class="panel container--contractType" id="container--allContractTypeFields" data-contract-type-id="">
-      <div class="panel-heading">
-        <div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <h2 class="title is-5 has-text-white">(All Contract Types)</h2>
+        contractTypesContainerElement.innerHTML = /*html*/ `
+      <div class="panel container--contractType" id="container--allContractTypeFields" data-contract-type-id="">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="title is-5 has-text-white">(All Contract Types)</h2>
+              </div>
             </div>
-          </div>
-          <div class="level-right is-hidden-print">
-            <div class="level-item">
-              <button class="button is-success is-small button--addContractTypeField" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-                <span>Add Field</span>
-              </button>
+            <div class="level-right is-hidden-print">
+              <div class="level-item">
+                <button class="button is-success is-small button--addContractTypeField" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                  <span>Add Field</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      </div>`;
+    `;
         contractTypePrintsContainerElement.innerHTML = '';
         renderContractTypeFields(contractTypesContainerElement.querySelector('#container--allContractTypeFields'), undefined, allContractTypeFields);
         contractTypesContainerElement
             .querySelector('.button--addContractTypeField')
             ?.addEventListener('click', openAddContractTypeField);
         if (contractTypes.length === 0) {
-            contractTypesContainerElement.insertAdjacentHTML('afterbegin', `<div class="message is-warning>
-          <p class="message-body">There are no active contract types.</p>
-          </div>`);
-            contractTypePrintsContainerElement.insertAdjacentHTML('afterbegin', `<div class="message is-warning>
-          <p class="message-body">There are no active contract types.</p>
-          </div>`);
+            contractTypesContainerElement.insertAdjacentHTML('afterbegin', 
+            /*html*/ `
+          <div class="message is-warning">
+            <p class="message-body">There are no active contract types.</p>
+          </div>
+        `);
+            contractTypePrintsContainerElement.insertAdjacentHTML('afterbegin', 
+            /*html*/ `
+          <div class="message is-warning">
+            <p class="message-body">There are no active contract types.</p>
+          </div>
+        `);
             return;
         }
         for (const contractType of contractTypes) {
@@ -477,52 +501,56 @@
             contractTypeContainer.dataset.contractTypeId =
                 contractType.contractTypeId.toString();
             // eslint-disable-next-line no-unsanitized/property
-            contractTypeContainer.innerHTML = `<div class="panel-heading">
-        <div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <button class="button is-small button--toggleContractTypeFields" title="Toggle Fields" type="button">
-                <span class="icon">
-                  ${expandedContractTypes.has(contractType.contractTypeId)
+            contractTypeContainer.innerHTML = /*html*/ `
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <button class="button is-small button--toggleContractTypeFields" title="Toggle Fields" type="button">
+                  <span class="icon">
+                    ${expandedContractTypes.has(contractType.contractTypeId)
                 ? '<i class="fa-solid fa-minus"></i>'
                 : '<i class="fa-solid fa-plus"></i>'}
-                </span>
-              </button>
-            </div>
-            <div class="level-item">
-              <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
-            </div>
-            ${contractType.isPreneed
-                ? `<div class="level-item">
-                    <span class="tag is-info">Preneed</span>
-                    </div>`
+                  </span>
+                </button>
+              </div>
+              <div class="level-item">
+                <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
+              </div>
+              ${contractType.isPreneed
+                ? /*html*/ `
+                    <div class="level-item">
+                      <span class="tag is-info">Preneed</span>
+                    </div>
+                  `
                 : ''}
-          </div>
-          <div class="level-right is-hidden-print">
-            <div class="level-item">
-              <button class="button is-danger is-small button--deleteContractType" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
-                <span>Delete</span>
-              </button>
             </div>
-            <div class="level-item">
-              <button class="button is-primary is-small button--editContractType" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
-                <span>Edit Contract Type</span>
-              </button>
-            </div>
-            <div class="level-item">
-              <button class="button is-success is-small button--addContractTypeField" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-                <span>Add Field</span>
-              </button>
-            </div>
-            <div class="level-item">
-              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveContractTypeUp', 'button--moveContractTypeDown')}
+            <div class="level-right is-hidden-print">
+              <div class="level-item">
+                <button class="button is-danger is-small button--deleteContractType" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+                  <span>Delete</span>
+                </button>
+              </div>
+              <div class="level-item">
+                <button class="button is-primary is-small button--editContractType" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
+                  <span>Edit Contract Type</span>
+                </button>
+              </div>
+              <div class="level-item">
+                <button class="button is-success is-small button--addContractTypeField" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                  <span>Add Field</span>
+                </button>
+              </div>
+              <div class="level-item">
+                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveContractTypeUp', 'button--moveContractTypeDown')}
+              </div>
             </div>
           </div>
         </div>
-        </div>`;
+      `;
             renderContractTypeFields(contractTypeContainer, contractType.contractTypeId, contractType.contractTypeFields ?? []);
             contractTypeContainer
                 .querySelector('.button--toggleContractTypeFields')
@@ -547,23 +575,25 @@
                 'panel container--contractTypePrintList';
             contractTypePrintContainer.dataset.contractTypeId =
                 contractType.contractTypeId.toString();
-            contractTypePrintContainer.innerHTML = `<div class="panel-heading">
-        <div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
+            contractTypePrintContainer.innerHTML = /*html*/ `
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
+              </div>
             </div>
-          </div>
-          <div class="level-right is-hidden-print">
-            <div class="level-item">
-              <button class="button is-success is-small button--addContractTypePrint" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-                <span>Add Print</span>
-              </button>
+            <div class="level-right is-hidden-print">
+              <div class="level-item">
+                <button class="button is-success is-small button--addContractTypePrint" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                  <span>Add Print</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-        </div>`;
+      `;
             renderContractTypePrints(contractTypePrintContainer, contractType.contractTypeId, contractType.contractTypePrints ?? []);
             contractTypePrintContainer
                 .querySelector('.button--addContractTypePrint')

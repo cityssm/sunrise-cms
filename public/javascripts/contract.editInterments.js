@@ -1,3 +1,5 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable max-lines */
 (() => {
     const contractId = document.querySelector('#contract--contractId').value;
     let contractInterments = exports.contractInterments;
@@ -199,81 +201,90 @@
     function renderContractInterments() {
         const containerElement = document.querySelector('#container--contractInterments');
         if (contractInterments.length === 0) {
-            containerElement.innerHTML = `<div class="message is-info">
+            containerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
           <p class="message-body">There are no interments associated with this record.</p>
-          </div>`;
+        </div>
+      `;
             return;
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = `<thead><tr>
-        <th>Name</th>
-        <th>Details</th>
-        <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-        </tr></thead>
-        <tbody></tbody>`;
+        tableElement.innerHTML = /*html*/ `
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Details</th>
+          <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
         for (const interment of contractInterments) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.intermentNumber =
                 interment.intermentNumber?.toString();
             // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = `<td>
-            ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
-            <span class="is-size-7">
+            tableRowElement.innerHTML = /*html*/ `
+        <td>
+          ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
+          <span class="is-size-7">
             ${cityssm.escapeHTML(interment.deceasedAddress1 ?? '')}<br />
             ${interment.deceasedAddress2 === '' ? '' : `${cityssm.escapeHTML(interment.deceasedAddress2 ?? '')}<br />`}
             ${cityssm.escapeHTML(interment.deceasedCity ?? '')}, ${cityssm.escapeHTML(interment.deceasedProvince ?? '')}<br />
             ${cityssm.escapeHTML(interment.deceasedPostalCode ?? '')}
-            </span>
-          </td>
-          <td>
-            <div class="columns mb-0">
-              <div class="column">
-                <strong>Birth:</strong>
-              </div>
-              <div class="column">
-                ${cityssm.escapeHTML((interment.birthDateString ?? '') === ''
+          </span>
+        </td>
+        <td>
+          <div class="columns mb-0">
+            <div class="column">
+              <strong>Birth:</strong>
+            </div>
+            <div class="column">
+              ${cityssm.escapeHTML((interment.birthDateString ?? '') === ''
                 ? '(No Birth Date)'
                 : interment.birthDateString ?? '')}<br />
-                ${cityssm.escapeHTML(interment.birthPlace ?? '(No Birth Place)')}
-              </div>
+              ${cityssm.escapeHTML(interment.birthPlace ?? '(No Birth Place)')}
             </div>
-            <div class="columns mb-0">
-              <div class="column">
-                <strong>Death:</strong>
-              </div>
-              <div class="column">
-                ${cityssm.escapeHTML(interment.deathDateString ?? '(No Death Date)')}<br />
-                ${cityssm.escapeHTML(interment.deathPlace ?? '(No Death Place)')}
-              </div>
+          </div>
+          <div class="columns mb-0">
+            <div class="column">
+              <strong>Death:</strong>
             </div>
-            <div class="columns mb-0">
-              <div class="column">
-                <strong>Age:</strong>
-              </div>
-              <div class="column">
-                ${cityssm.escapeHTML((interment.deathAge ?? '') === '' ? '(No Age)' : interment.deathAge?.toString() ?? '')}
-                ${cityssm.escapeHTML(interment.deathAgePeriod ?? '')}
-              </div>
+            <div class="column">
+              ${cityssm.escapeHTML(interment.deathDateString ?? '(No Death Date)')}<br />
+              ${cityssm.escapeHTML(interment.deathPlace ?? '(No Death Place)')}
             </div>
-            <div class="columns">
-              <div class="column">
-                <strong>Container:</strong>
-              </div>
-              <div class="column">
-                ${cityssm.escapeHTML(interment.intermentContainerType ?? '(No Container Type)')}
-              </div>
+          </div>
+          <div class="columns mb-0">
+            <div class="column">
+              <strong>Age:</strong>
             </div>
-          </td>
-          <td class="is-hidden-print has-text-right">
-            <button class="button is-small is-info button--edit mb-1" type="button" title="Edit Interment">
-              <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
-              <span>Edit</span>
-            </button><br />
-            <button class="button is-small is-danger button--delete" type="button" title="Remove Interment">
-              <span class="icon"><i class="fa-solid fa-trash"></i></span>
-            </button>
-          </td>`;
+            <div class="column">
+              ${cityssm.escapeHTML((interment.deathAge ?? '') === '' ? '(No Age)' : interment.deathAge?.toString() ?? '')}
+              ${cityssm.escapeHTML(interment.deathAgePeriod ?? '')}
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <strong>Container:</strong>
+            </div>
+            <div class="column">
+              ${cityssm.escapeHTML(interment.intermentContainerType ?? '(No Container Type)')}
+            </div>
+          </div>
+        </td>
+        <td class="is-hidden-print has-text-right">
+          <button class="button is-small is-info button--edit mb-1" type="button" title="Edit Interment">
+            <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
+            <span>Edit</span>
+          </button>
+          <br />
+          <button class="button is-small is-danger button--delete" type="button" title="Remove Interment">
+            <span class="icon"><i class="fa-solid fa-trash"></i></span>
+          </button>
+        </td>
+      `;
             tableRowElement
                 .querySelector('.button--edit')
                 ?.addEventListener('click', openEditContractInterment);

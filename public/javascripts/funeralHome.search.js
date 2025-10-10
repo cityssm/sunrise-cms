@@ -47,38 +47,50 @@
                 continue;
             }
             searchResultCount += 1;
-            searchResultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
-          <td>
-            <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeUrl(funeralHome.funeralHomeId)}">
-              ${cityssm.escapeHTML(funeralHome.funeralHomeName === ''
+            searchResultsTbodyElement.insertAdjacentHTML('beforeend', 
+            /*html*/ `
+          <tr>
+            <td>
+              <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeUrl(funeralHome.funeralHomeId)}">
+                ${cityssm.escapeHTML(funeralHome.funeralHomeName === ''
                 ? '(No Name)'
                 : funeralHome.funeralHomeName)}
-            </a>
-          </td><td>
-            ${buildFuneralHomeAddressHTML(funeralHome)}
-          </td><td>
-            ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
-          </td><td class="has-text-right">
-            ${cityssm.escapeHTML((funeralHome.upcomingFuneralCount ?? 0).toString())}
-          </td>
-          </tr>`);
+              </a>
+            </td>
+            <td>
+              ${buildFuneralHomeAddressHTML(funeralHome)}
+            </td>
+            <td>
+              ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
+            </td>
+            <td class="has-text-right">
+              ${cityssm.escapeHTML((funeralHome.upcomingFuneralCount ?? 0).toString())}
+            </td>
+          </tr>
+        `);
         }
         searchResultsContainerElement.innerHTML = '';
         if (searchResultCount === 0) {
-            searchResultsContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no funeral homes that meet the search criteria.</p>
-        </div>`;
+            searchResultsContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no funeral homes that meet the search criteria.</p>
+        </div>
+      `;
         }
         else {
             const searchResultsTableElement = document.createElement('table');
             searchResultsTableElement.className =
                 'table is-fullwidth is-striped is-hoverable has-sticky-header';
-            searchResultsTableElement.innerHTML = `<thead><tr>
-        <th>Funeral Home</th>
-        <th>Address</th>
-        <th>Phone Number</th>
-        <th class="has-text-right">Upcoming Funerals</th>
-        </tr></thead>`;
+            searchResultsTableElement.innerHTML = /*html*/ `
+        <thead>
+          <tr>
+            <th>Funeral Home</th>
+            <th>Address</th>
+            <th>Phone Number</th>
+            <th class="has-text-right">Upcoming Funerals</th>
+          </tr>
+        </thead>
+      `;
             searchResultsTableElement.append(searchResultsTbodyElement);
             searchResultsContainerElement.append(searchResultsTableElement);
         }

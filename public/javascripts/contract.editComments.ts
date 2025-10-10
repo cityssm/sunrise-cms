@@ -183,50 +183,58 @@ declare const exports: {
     ) as HTMLElement
 
     if (contractComments.length === 0) {
-      containerElement.innerHTML = `<div class="message is-info">
+      containerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
           <p class="message-body">There are no comments associated with this record.</p>
-          </div>`
+        </div>
+      `
       return
     }
 
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-fullwidth is-striped is-hoverable'
-    tableElement.innerHTML = `<thead><tr>
-        <th>Author</th>
-        <th>Comment Date</th>
-        <th>Comment</th>
-        <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-        </tr></thead>
-        <tbody></tbody>`
+    tableElement.innerHTML = /*html*/ `
+      <thead>
+        <tr>
+          <th>Author</th>
+          <th>Comment Date</th>
+          <th>Comment</th>
+          <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `
 
     for (const contractComment of contractComments) {
       const tableRowElement = document.createElement('tr')
       tableRowElement.dataset.contractCommentId =
         contractComment.contractCommentId.toString()
 
-      tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
-          <td>
-            ${cityssm.escapeHTML(contractComment.commentDateString)}
-            <span class="is-nowrap">
-              ${cityssm.escapeHTML(
-                contractComment.commentTime === 0
-                  ? ''
-                  : contractComment.commentTimePeriodString
-              )}
-            </span>
-          </td>
-          <td>${cityssm.escapeHTML(contractComment.comment)}</td>
-          <td class="is-hidden-print">
-            <div class="buttons are-small is-justify-content-end">
+      tableRowElement.innerHTML = /*html*/ `
+        <td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
+        <td>
+          ${cityssm.escapeHTML(contractComment.commentDateString)}
+          <span class="is-nowrap">
+            ${cityssm.escapeHTML(
+              contractComment.commentTime === 0
+                ? ''
+                : contractComment.commentTimePeriodString
+            )}
+          </span>
+        </td>
+        <td>${cityssm.escapeHTML(contractComment.comment)}</td>
+        <td class="is-hidden-print">
+          <div class="buttons are-small is-justify-content-end">
             <button class="button is-primary button--edit" type="button">
               <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
               <span>Edit</span>
             </button>
-            <button class="button is-light is-danger button--delete" title="Delete Comment" type="button">
+            <button class="button is-light is-danger button--delete" type="button" title="Delete Comment">
               <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
             </button>
-            </div>
-          </td>`
+          </div>
+        </td>
+      `
 
       tableRowElement
         .querySelector('.button--edit')
@@ -276,7 +284,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Adding Comment',
 
-                message: responseJSON.errorMessage ?? '',
+                message: responseJSON.errorMessage ?? ''
               })
             }
           }
@@ -306,7 +314,7 @@ declare const exports: {
 
           addCloseModalFunction = closeModalFunction
         },
-        
+
         onremoved() {
           bulmaJS.toggleHtmlClipped()
           ;(

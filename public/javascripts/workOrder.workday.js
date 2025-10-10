@@ -148,13 +148,15 @@
         });
     }
     function buildBurialSiteHTML(burialSite) {
-        return `<li>
-      <span class="fa-li"><i class="fa-solid fa-map-pin"></i></span>
-      <a href="${sunrise.urlPrefix}/burialSites/${burialSite.burialSiteId}" target="_blank">
-        ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
-      </a><br />
-      <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
-      </li>`;
+        return /*html*/ `
+      <li>
+        <span class="fa-li"><i class="fa-solid fa-map-pin"></i></span>
+        <a href="${sunrise.urlPrefix}/burialSites/${burialSite.burialSiteId}" target="_blank">
+          ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
+        </a><br />
+        <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
+      </li>
+    `;
     }
     function buildMilestoneElement(milestone, options) {
         const milestoneElement = document.createElement('div');
@@ -164,47 +166,59 @@
             ? 'fa-solid fa-check'
             : 'fa-regular fa-square';
         const milestoneCheckHTML = options.canUpdateThisWorkOrder
-            ? `<button class="button button--toggle-milestone"
-            data-work-order-milestone-id="${milestone.workOrderMilestoneId}
-            title="Toggle Milestone Completion"
-            aria-checked="${milestoneIsCompleted ? 'true' : 'false'}"
-            type="button">
-              <span class="icon is-small">
-                <i class="${milestoneCheckIcon}"></i>
-              </span>
-            </button>`
-            : `<span class="icon is-small">
+            ? /*html*/ `
+        <button
+          class="button button--toggle-milestone"
+          data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
+          type="button"
+          title="Toggle Milestone Completion"
+          aria-checked="${milestoneIsCompleted ? 'true' : 'false'}"
+        >
+          <span class="icon is-small">
             <i class="${milestoneCheckIcon}"></i>
-          </span>`;
+          </span>
+        </button>
+      `
+            : /*html*/ `
+        <span class="icon is-small">
+          <i class="${milestoneCheckIcon}"></i>
+        </span>
+      `;
         const milestoneTimeString = milestone.workOrderMilestoneTime === null
             ? 'No Set Time'
             : milestone.workOrderMilestoneTimePeriodString;
         const milestoneTimeHTML = options.canUpdateThisWorkOrder && !milestoneIsCompleted
-            ? `<button class="button button--edit-milestone-time"
-              data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
-              data-work-order-milestone-time-string="${milestone.workOrderMilestoneTime === null ? '' : milestone.workOrderMilestoneTimeString}"
-              title="Edit Milestone Time"
-              type="button">
-                ${milestoneTimeString}
-              </button>`
+            ? /*html*/ `
+          <button
+            class="button button--edit-milestone-time"
+            data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
+            data-work-order-milestone-time-string="${milestone.workOrderMilestoneTime === null ? '' : milestone.workOrderMilestoneTimeString}"
+            type="button"
+            title="Edit Milestone Time"
+          >
+            ${milestoneTimeString}
+          </button>
+        `
             : milestoneTimeString;
         // eslint-disable-next-line no-unsanitized/property
-        milestoneElement.innerHTML = `<div class="columns is-mobile">
-          <div class="column is-narrow">
-            ${milestoneCheckHTML}
-          </div>
-          <div class="column">
-            <div class="columns is-mobile mb-0">
-              <div class="column">
-                <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
-              </div>
-              <div class="column is-narrow">
-                ${milestoneTimeHTML}
-              </div>
+        milestoneElement.innerHTML = /*html*/ `
+      <div class="columns is-mobile">
+        <div class="column is-narrow">
+          ${milestoneCheckHTML}
+        </div>
+        <div class="column">
+          <div class="columns is-mobile mb-0">
+            <div class="column">
+              <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
             </div>
-            <p>${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}</p>
+            <div class="column is-narrow">
+              ${milestoneTimeHTML}
+            </div>
           </div>
-        </div>`;
+          <p>${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}</p>
+        </div>
+      </div>
+    `;
         if (options.canUpdateThisWorkOrder) {
             milestoneElement
                 .querySelector('.button--toggle-milestone')
@@ -224,46 +238,50 @@
             if (contract.funeralHomeId !== null &&
                 !usedFuneralHomeIds.has(contract.funeralHomeId)) {
                 usedFuneralHomeIds.add(contract.funeralHomeId);
-                // eslint-disable-next-line no-unsanitized/method
-                workOrderElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
-            <div class="columns is-mobile">
-              <div class="column is-narrow">
-                <span class="icon"><i class="fa-solid fa-place-of-worship"></i></span>
-              </div>
-              <div class="column">
-                <div class="columns is-mobile mb-0">
-                  <div class="column">
-                    <a href="${sunrise.urlPrefix}/funeralHomes/${cityssm.escapeHTML(contract.funeralHomeId.toString())}" target="_blank">
-                      ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}
-                    </a>
-                  </div>
-                  <div class="column is-narrow">
-                    ${cityssm.escapeHTML(contract.funeralDateString ?? '')}
-                    ${cityssm.escapeHTML(contract.funeralTimePeriodString ?? '')}
-                  </div>
+                workOrderElement.insertAdjacentHTML('beforeend', 
+                /*html*/ `
+            <div class="panel-block is-block">
+              <div class="columns is-mobile">
+                <div class="column is-narrow">
+                  <span class="icon"><i class="fa-solid fa-place-of-worship"></i></span>
                 </div>
-                <p>
-                  <strong>Direction of Arrival:</strong> ${cityssm.escapeHTML(contract.directionOfArrival ?? '')}<br />
-                  <strong>Committal Type:</strong> ${cityssm.escapeHTML(contract.committalType ?? '')}
-                </p>
+                <div class="column">
+                  <div class="columns is-mobile mb-0">
+                    <div class="column">
+                      <a href="${sunrise.getFuneralHomeUrl(contract.funeralHomeId)}" target="_blank">
+                        ${cityssm.escapeHTML(contract.funeralHomeName ?? '')}
+                      </a>
+                    </div>
+                    <div class="column is-narrow">
+                      ${cityssm.escapeHTML(contract.funeralDateString ?? '')}
+                      ${cityssm.escapeHTML(contract.funeralTimePeriodString ?? '')}
+                    </div>
+                  </div>
+                  <p>
+                    <strong>Direction of Arrival:</strong> ${cityssm.escapeHTML(contract.directionOfArrival ?? '')}<br />
+                    <strong>Committal Type:</strong> ${cityssm.escapeHTML(contract.committalType ?? '')}
+                  </p>
+                </div>
               </div>
-            </div>`);
+            </div>
+          `);
             }
             for (const interment of contract.contractInterments ?? []) {
-                // eslint-disable-next-line no-unsanitized/method
-                contactContainerElement.insertAdjacentHTML('beforeend', `<li>
+                contactContainerElement.insertAdjacentHTML('beforeend', 
+                /*html*/ `
+            <li>
               <span class="fa-li"><i class="fa-solid fa-user"></i></span>
               ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
-              <a class="is-size-7" href="${sunrise.urlPrefix}/contracts/${cityssm.escapeHTML(contract.contractId.toString())}" target="_blank">
-              Contract #${cityssm.escapeHTML(contract.contractId.toString())}
+              <a class="is-size-7" href="${sunrise.getContractUrl(contract.contractId)}" target="_blank">
+                Contract #${cityssm.escapeHTML(contract.contractId.toString())}
               </a>
-              </li>`);
+            </li>
+          `);
             }
             if (contract.burialSiteId !== undefined &&
                 contract.burialSiteId !== null &&
                 !usedBurialSiteIds.has(contract.burialSiteId)) {
                 usedBurialSiteIds.add(contract.burialSiteId);
-                // eslint-disable-next-line no-unsanitized/method
                 burialSitesContainerElement.insertAdjacentHTML('beforeend', buildBurialSiteHTML(contract));
             }
         }
@@ -271,7 +289,6 @@
             if (usedBurialSiteIds.has(burialSite.burialSiteId)) {
                 continue;
             }
-            // eslint-disable-next-line no-unsanitized/method
             burialSitesContainerElement.insertAdjacentHTML('beforeend', buildBurialSiteHTML(burialSite));
         }
     }
@@ -291,23 +308,29 @@
             workOrderElement.append(milestoneElement);
         }
         if (!includesMilestones) {
-            workOrderElement.insertAdjacentHTML('beforeend', `<div class="panel-block is-block">
+            workOrderElement.insertAdjacentHTML('beforeend', 
+            /*html*/ `
+          <div class="panel-block is-block">
             <p class="has-text-grey">No individual milestones for this work order.</p>
-          </div>`);
+          </div>
+        `);
         }
         if (!includesIncompleteMilestones && options.canUpdateThisWorkOrder) {
             workOrderElement
                 .querySelector('.panel-heading .level-right')
-                ?.insertAdjacentHTML('beforeend', `<div class="level-item is-hidden-print">
-            <button class="button is-small button--close-work-order"
-              data-work-order-id="${cityssm.escapeHTML(workOrder.workOrderId.toString())}"
-              type="button">
-              <span class="icon is-small">
-                <i class="fa-solid fa-stop-circle"></i>
-              </span>
-              <span>Close Work Order</span>
-            </button>
-            </div>`);
+                ?.insertAdjacentHTML('beforeend', 
+            /*html*/ `
+            <div class="level-item is-hidden-print">
+              <button class="button is-small button--close-work-order"
+                data-work-order-id="${cityssm.escapeHTML(workOrder.workOrderId.toString())}"
+                type="button">
+                <span class="icon is-small">
+                  <i class="fa-solid fa-stop-circle"></i>
+                </span>
+                <span>Close Work Order</span>
+              </button>
+            </div>
+          `);
             workOrderElement
                 .querySelector('.button--close-work-order')
                 ?.addEventListener('click', closeWorkOrder);
@@ -333,22 +356,27 @@
                 progressTagClassName = 'is-warning';
             }
             // eslint-disable-next-line no-unsanitized/property
-            workOrderElement.innerHTML = `<div class="panel-heading p-3">
+            workOrderElement.innerHTML = /*html*/ `
+        <div class="panel-heading p-3">
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
                 <h2>
-                  <a class="has-text-white"
+                  <a
+                    class="has-text-white"
                     href="${sunrise.getWorkOrderUrl(workOrder.workOrderId, canUpdateThisWorkOrder)}"
                     title="Open Work Order #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}"
-                    target="_blank">
+                    target="_blank"
+                  >
                     #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
                   </a>
                   ${workOrderIsClosed
-                ? `<span class="tag is-info">
+                ? /*html*/ `
+                        <span class="tag is-info">
                           <span class="icon is-small"><i class="fa-solid fa-stop"></i></span>
                           <span>Closed</span>
-                          </span>`
+                        </span>
+                      `
                 : ''}
                 </h2>
               </div>
@@ -369,16 +397,19 @@
           <p>${cityssm.escapeHTML((workOrder.workOrderDescription ?? '') === '' ? workOrder.workOrderType ?? '' : workOrder.workOrderDescription ?? '')}</p>
           ${(workOrder.workOrderContracts ?? []).length > 0 ||
                 (workOrder.workOrderBurialSites ?? []).length > 0
-                ? `<div class="columns">
+                ? /*html*/ `
+                <div class="columns">
                   <div class="column">
                     <ul class="fa-ul list--contacts"></ul>
                   </div>
                   <div class="column column--burialSites">
                     <ul class="fa-ul list--burialSites"></ul>
                   </div>
-                </div>`
+                </div>
+              `
                 : ''}
-        </div>`;
+        </div>
+      `;
             /*
              * Contracts
              */
@@ -393,9 +424,12 @@
             workdayContainer.append(workOrderElement);
         }
         if (workOrders.length === 0) {
-            workdayContainer.insertAdjacentHTML('beforeend', `<div class="message is-info">
+            workdayContainer.insertAdjacentHTML('beforeend', 
+            /*html*/ `
+          <div class="message is-info">
             <p class="message-body">No work orders for this workday.</p>
-          </div>`);
+          </div>
+        `);
         }
     }
     function getWorkdayReport() {

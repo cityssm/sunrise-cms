@@ -41,26 +41,30 @@
     function renderRelatedContracts() {
         relatedContractsContainer.innerHTML = '';
         if (relatedContracts.length === 0) {
-            relatedContractsContainer.innerHTML = `<div class="message is-info">
+            relatedContractsContainer.innerHTML = /*html*/ `
+        <div class="message is-info">
           <div class="message-body">
             There are no contracts related to this contract.
           </div>
-          </div>`;
+        </div>
+      `;
             return;
         }
         const contractsTableElement = document.createElement('table');
         contractsTableElement.className =
             'table is-striped is-fullwidth is-hoverable';
-        contractsTableElement.innerHTML = `<thead>
-      <tr>
-        <th>Contract Type</th>
-        <th>Contract Date</th>
-        <th>End Date</th>
-        <th>Interments</th>
-        <th></th>
-      </tr>
+        contractsTableElement.innerHTML = /*html*/ `
+      <thead>
+        <tr>
+          <th>Contract Type</th>
+          <th>Contract Date</th>
+          <th>End Date</th>
+          <th>Interments</th>
+          <th></th>
+        </tr>
       </thead>
-      <tbody></tbody>`;
+      <tbody></tbody>
+    `;
         const contractsTbodyElement = contractsTableElement.querySelector('tbody');
         for (const relatedContract of relatedContracts) {
             let intermentsHTML = '';
@@ -76,7 +80,8 @@
             contractRowElement.dataset.contractId =
                 relatedContract.contractId.toString();
             // eslint-disable-next-line no-unsanitized/property
-            contractRowElement.innerHTML = `<td>
+            contractRowElement.innerHTML = /*html*/ `
+        <td>
           <a class="has-text-weight-bold"
             href="${sunrise.getContractUrl(relatedContract.contractId)}">
             ${cityssm.escapeHTML(relatedContract.contractType)}
@@ -91,14 +96,17 @@
         </td>
         <td>${intermentsHTML}</td>
         <td>
-          <button class="button is-danger is-light is-small"
+          <button
+            class="button is-danger is-light is-small"
+            type="button"
             title="Remove Related Contract"
-            type="button">
+          >
             <span class="icon is-small">
               <i class="fa-solid fa-trash"></i>
             </span>
           </button>
-        </td>`;
+        </td>
+      `;
             contractRowElement
                 .querySelector('button')
                 ?.addEventListener('click', deleteRelatedContract);
@@ -159,26 +167,28 @@
                     anchorElement.className = 'panel-block is-block is-size-7';
                     anchorElement.dataset.contractId = contract.contractId.toString();
                     // eslint-disable-next-line no-unsanitized/property
-                    anchorElement.innerHTML = `<div class="columns">
-                <div class="column is-narrow">
-                  <i class="fa-solid fa-plus"></i>
-                </div>
-                <div class="column">
-                  ${cityssm.escapeHTML(contract.contractType)}<br />
-                  #${cityssm.escapeHTML(contract.contractId.toString())}
-                </div>
-                <div class="column">
-                  ${cityssm.escapeHTML(contract.contractStartDateString)}
-                </div>
-                <div class="column">
-                  ${contract.contractEndDateString
+                    anchorElement.innerHTML = /*html*/ `
+                <div class="columns">
+                  <div class="column is-narrow">
+                    <i class="fa-solid fa-plus"></i>
+                  </div>
+                  <div class="column">
+                    ${cityssm.escapeHTML(contract.contractType)}<br />
+                    #${cityssm.escapeHTML(contract.contractId.toString())}
+                  </div>
+                  <div class="column">
+                    ${cityssm.escapeHTML(contract.contractStartDateString)}
+                  </div>
+                  <div class="column">
+                    ${contract.contractEndDateString
                         ? cityssm.escapeHTML(contract.contractEndDateString)
                         : '<span class="has-text-grey">(No End Date)</span>'}
+                  </div>
+                  <div class="column">
+                    ${intermentsHTML}
+                  </div>
                 </div>
-                <div class="column">
-                  ${intermentsHTML}
-                </div>
-                </div>`;
+              `;
                     anchorElement.addEventListener('click', selectContract);
                     containerElement.querySelector('.panel')?.append(anchorElement);
                 }

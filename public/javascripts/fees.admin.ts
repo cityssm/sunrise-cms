@@ -73,72 +73,82 @@ declare const exports: {
     }
 
     if ((fee.contractTypeId ?? -1) !== -1) {
-      tagsHTML += ` <span class="tag" title="Contract Type Filter">
+      tagsHTML += /*html*/ `
+        <span class="tag" title="Contract Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
-        </span>`
+        </span>
+      `
     }
 
     if ((fee.burialSiteTypeId ?? -1) !== -1) {
-      tagsHTML += ` <span class="tag" title="Burial Site Type Filter">
+      tagsHTML += /*html*/ `
+        <span class="tag" title="Burial Site Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.burialSiteType ?? '')}</span>
-        </span>`
+        </span>
+      `
     }
 
     // eslint-disable-next-line no-unsanitized/property
-    panelBlockElement.innerHTML = `<div class="columns">
-      <div class="column is-half">
-        <p>
-          <a class="has-text-weight-bold a--editFee" href="#">
-            ${cityssm.escapeHTML(fee.feeName ?? '')}
-          </a><br />
-          <small>
-            ${cityssm
-              .escapeHTML(fee.feeDescription ?? '')
-              .replaceAll('\n', '<br />')}
-          </small>
-        </p>
-        <p class="tags">${tagsHTML}</p>
-      </div>
-      <div class="column">
-        <div class="columns is-mobile">
-          <div class="column has-text-centered">
-            ${
-              fee.feeFunction
-                ? `${cityssm.escapeHTML(fee.feeFunction)}<br />
-                    <small>Fee Function</small>`
-                : `<a class="a--editFeeAmount" href="#">
-                    $${(fee.feeAmount ?? 0).toFixed(2)}<br />
-                    <small>Fee</small>
-                    </a>`
-            }
-          </div>
-          <div class="column has-text-centered">
-            ${
-              fee.taxPercentage
-                ? `${fee.taxPercentage.toString()}%`
-                : `$${(fee.taxAmount ?? 0).toFixed(2)}`
-            }<br />
-            <small>Tax</small>
-          </div>
-          <div class="column has-text-centered">
-            ${
-              fee.includeQuantity
-                ? `${cityssm.escapeHTML(fee.quantityUnit ?? '')}<br />
-                    <small>Quantity</small>`
-                : ''
-            }
+    panelBlockElement.innerHTML = /*html*/ `
+      <div class="columns">
+        <div class="column is-half">
+          <p>
+            <a class="has-text-weight-bold a--editFee" href="#">
+              ${cityssm.escapeHTML(fee.feeName ?? '')}
+            </a><br />
+            <small>
+              ${cityssm
+                .escapeHTML(fee.feeDescription ?? '')
+                .replaceAll('\n', '<br />')}
+            </small>
+          </p>
+          <p class="tags">${tagsHTML}</p>
+        </div>
+        <div class="column">
+          <div class="columns is-mobile">
+            <div class="column has-text-centered">
+              ${
+                fee.feeFunction
+                  ? /*html*/ `
+                    ${cityssm.escapeHTML(fee.feeFunction)}<br />
+                    <small>Fee Function</small>
+                  `
+                  : /*html*/ `
+                    <a class="a--editFeeAmount" href="#">
+                      $${(fee.feeAmount ?? 0).toFixed(2)}<br />
+                      <small>Fee</small>
+                    </a>
+                  `
+              }
+            </div>
+            <div class="column has-text-centered">
+              ${
+                fee.taxPercentage
+                  ? `${fee.taxPercentage.toString()}%`
+                  : `$${(fee.taxAmount ?? 0).toFixed(2)}`
+              }<br />
+              <small>Tax</small>
+            </div>
+            <div class="column has-text-centered">
+              ${
+                fee.includeQuantity
+                  ? `${cityssm.escapeHTML(fee.quantityUnit ?? '')}<br />
+                <small>Quantity</small>`
+                  : ''
+              }
+            </div>
           </div>
         </div>
+        <div class="column is-narrow is-hidden-print">
+          ${sunrise.getMoveUpDownButtonFieldHTML(
+            'button--moveFeeUp',
+            'button--moveFeeDown'
+          )}
+        </div>
       </div>
-      <div class="column is-narrow is-hidden-print">
-        ${sunrise.getMoveUpDownButtonFieldHTML(
-          'button--moveFeeUp',
-          'button--moveFeeDown'
-        )}
-      </div>
-      </div>`
+    `
 
     panelBlockElement
       .querySelector('.a--editFee')
@@ -166,15 +176,17 @@ declare const exports: {
     if (feeCategory.fees.length === 0) {
       feeCategoryContainerElement.insertAdjacentHTML(
         'beforeend',
-        `<div class="panel-block is-block">
-          <div class="message is-info">
-            <p class="message-body">
-              There are no fees in the
-              "${cityssm.escapeHTML(feeCategory.feeCategory)}"
-              category.
-            </p>
+        /*html*/ `
+          <div class="panel-block is-block">
+            <div class="message is-info">
+              <p class="message-body">
+                There are no fees in the
+                "${cityssm.escapeHTML(feeCategory.feeCategory)}"
+                category.
+              </p>
+            </div>
           </div>
-          </div>`
+        `
       )
 
       feeCategoryContainerElement
@@ -189,9 +201,11 @@ declare const exports: {
 
   function renderFeeCategories(): void {
     if (feeCategories.length === 0) {
-      feeCategoriesContainerElement.innerHTML = `<div class="message is-warning">
-        <p class="message-body">There are no available fees.</p>
-        </div>`
+      feeCategoriesContainerElement.innerHTML = /*html*/ `
+        <div class="message is-warning">
+          <p class="message-body">There are no available fees.</p>
+        </div>
+      `
 
       return
     }
@@ -207,57 +221,62 @@ declare const exports: {
         feeCategory.feeCategoryId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      feeCategoryContainerElement.innerHTML = `<div class="panel-heading">
-        <div class="columns is-vcentered">
-          <div class="column">
-            <h2 class="title is-5 has-text-white">
-              ${cityssm.escapeHTML(feeCategory.feeCategory)}
-            </h2>
-            ${
-              feeCategory.isGroupedFee
-                ? '<span class="tag">Grouped Fee</span>'
-                : ''
-            }
-          </div>
-          <div class="column is-narrow is-hidden-print">
-            <div class="field is-grouped is-justify-content-end">
-            ${
-              feeCategory.fees.length === 0
-                ? `<div class="control">
-                    <button class="button is-small is-danger button--deleteFeeCategory" type="button">
-                    <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
-                    <span>Delete Category</span>
-                    </button>
-                    </div>`
-                : ''
-            }
-            <div class="control">
-              <button class="button is-small is-primary button--editFeeCategory" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
-                <span>
+      feeCategoryContainerElement.innerHTML = /*html*/ `
+        <div class="panel-heading">
+          <div class="columns is-vcentered">
+            <div class="column">
+              <h2 class="title is-5 has-text-white">
+                ${cityssm.escapeHTML(feeCategory.feeCategory)}
+              </h2>
+              ${
+                feeCategory.isGroupedFee
+                  ? '<span class="tag">Grouped Fee</span>'
+                  : ''
+              }
+            </div>
+            <div class="column is-narrow is-hidden-print">
+              <div class="field is-grouped is-justify-content-end">
                 ${
-                  feeCategory.isGroupedFee
-                    ? 'Edit Grouped Fee'
-                    : 'Edit Category'
+                  feeCategory.fees.length === 0
+                    ? /*html*/ `
+                      <div class="control">
+                        <button class="button is-small is-danger button--deleteFeeCategory" type="button">
+                          <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+                          <span>Delete Category</span>
+                        </button>
+                      </div>
+                    `
+                    : ''
                 }
-                </span>
-              </button>
-            </div>
-            <div class="control">
-              <button class="button is-small is-success button--addFee" data-cy="addFee" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-                <span>Add Fee</span>
-              </button>
-            </div>
-            <div class="control">
-              ${sunrise.getMoveUpDownButtonFieldHTML(
-                'button--moveFeeCategoryUp',
-                'button--moveFeeCategoryDown'
-              )}
+                <div class="control">
+                  <button class="button is-small is-primary button--editFeeCategory" type="button">
+                    <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
+                    <span>
+                      ${
+                        feeCategory.isGroupedFee
+                          ? 'Edit Grouped Fee'
+                          : 'Edit Category'
+                      }
+                    </span>
+                  </button>
+                </div>
+                <div class="control">
+                  <button class="button is-small is-success button--addFee" data-cy="addFee" type="button">
+                    <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                    <span>Add Fee</span>
+                  </button>
+                </div>
+                <div class="control">
+                  ${sunrise.getMoveUpDownButtonFieldHTML(
+                    'button--moveFeeCategoryUp',
+                    'button--moveFeeCategoryDown'
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        </div>`
+      `
 
       renderFees(feeCategoryContainerElement, feeCategory)
 

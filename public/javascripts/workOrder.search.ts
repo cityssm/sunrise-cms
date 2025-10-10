@@ -39,7 +39,8 @@ declare const exports: {
     let relatedHTML = ''
 
     for (const burialSite of workOrder.workOrderBurialSites ?? []) {
-      relatedHTML += `<li title="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
+      relatedHTML += /*html*/ `
+        <li title="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
             <i class="fa-solid fa-map-pin"
               aria-label="Burial Site"></i>
@@ -49,12 +50,14 @@ declare const exports: {
               ? '(No Burial Site Name)'
               : burialSite.burialSiteName
           )}
-        </li>`
+        </li>
+      `
     }
 
     for (const contract of workOrder.workOrderContracts ?? []) {
       for (const interment of contract.contractInterments ?? []) {
-        relatedHTML += `<li
+        relatedHTML += /*html*/ `
+          <li
             title="${cityssm.escapeHTML(
               contract.isPreneed ? 'Recipient' : 'Deceased'
             )}">
@@ -62,21 +65,28 @@ declare const exports: {
               <i class="fa-solid fa-user"></i>
             </span>
             ${cityssm.escapeHTML(interment.deceasedName ?? '')}
-          </li>`
+          </li>
+        `
       }
 
       if (contract.funeralHomeName !== null) {
-        relatedHTML += `<li title="Funeral Home">
+        relatedHTML += /*html*/ `
+          <li title="Funeral Home">
             <span class="fa-li">
               <i class="fa-solid fa-place-of-worship"></i>
             </span>
             ${cityssm.escapeHTML(contract.funeralHomeName)}
-          </li>`
+          </li>
+        `
       }
     }
 
     if (relatedHTML !== '') {
-      relatedHTML = `<ul class="fa-ul ml-5 is-size-7">${relatedHTML}</ul>`
+      relatedHTML = /*html*/ `
+        <ul class="fa-ul ml-5 is-size-7">
+          ${relatedHTML}
+        </ul>
+      `
     }
 
     return relatedHTML
@@ -90,9 +100,11 @@ declare const exports: {
     }
 
     if (responseJSON.workOrders.length === 0) {
-      searchResultsContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no work orders that meet the search criteria.</p>
-        </div>`
+      searchResultsContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no work orders that meet the search criteria.</p>
+        </div>
+      `
 
       return
     }
@@ -105,85 +117,106 @@ declare const exports: {
       // eslint-disable-next-line no-unsanitized/method
       resultsTbodyElement.insertAdjacentHTML(
         'beforeend',
-        `<tr class="avoid-page-break ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0 ? 'has-background-warning-light' : ''}">
-          <td>
-            <div class="columns is-mobile is-vcentered mb-0">
-              <div class="column pb-0">
-                <a class="has-text-weight-bold" href="${sunrise.getWorkOrderUrl(workOrder.workOrderId)}">
+        /*html*/ `
+          <tr class="avoid-page-break ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0 ? 'has-background-warning-light' : ''}">
+            <td>
+              <div class="columns is-mobile is-vcentered mb-0">
+                <div class="column pb-0">
+                  <a class="has-text-weight-bold" href="${sunrise.getWorkOrderUrl(workOrder.workOrderId)}">
+                    ${
+                      workOrder.workOrderNumber?.trim() === ''
+                        ? '(No Number)'
+                        : cityssm.escapeHTML(workOrder.workOrderNumber ?? '')
+                    }
+                  </a>
+                </div>
+                <div class="column is-narrow pb-0">
                   ${
-                    workOrder.workOrderNumber?.trim() === ''
-                      ? '(No Number)'
-                      : cityssm.escapeHTML(workOrder.workOrderNumber ?? '')
-                  }
-                </a>
-              </div>
-              <div class="column is-narrow pb-0">
-                ${
-                  workOrder.workOrderMilestoneCount === 0
-                    ? ''
-                    : `<span class="tag" title="Progress">
-                        ${(
-                            workOrder.workOrderMilestoneCompletionCount ?? ''
+                    workOrder.workOrderMilestoneCount === 0
+                      ? ''
+                      : /*html*/ `
+                        <span class="tag" title="Progress">
+                          ${(
+                            workOrder.workOrderMilestoneCompletionCount ??
+                            ''
                           ).toString()}
                           /
                           ${(workOrder.workOrderMilestoneCount ?? '').toString()}
-                        </span>`
-                }
+                        </span>
+                      `
+                  }
+                </div>
               </div>
-            </div>
+              ${
+                hasWorkOrderTypeFilter
+                  ? `${cityssm.escapeHTML(workOrder.workOrderType ?? '')}<br />`
+                  : ''
+              }
+              <span class="is-size-7">
+                ${cityssm.escapeHTML(workOrder.workOrderDescription ?? '')}
+              </span>
+            </td>
+            <td>
+              ${relatedHTML}
+            </td>
+            <td>
+              <ul class="fa-ul ml-5 is-size-7">
+                <li title="${sunrise.escapedAliases.WorkOrderOpenDate}">
+                  <span class="fa-li">
+                    <i class="fa-solid fa-play" aria-label="${sunrise.escapedAliases.WorkOrderOpenDate}"></i>
+                  </span>
+                  ${workOrder.workOrderOpenDateString}
+                </li>
+                <li title="${sunrise.escapedAliases.WorkOrderCloseDate}">
+                  <span class="fa-li">
+                    <i class="fa-solid fa-stop" aria-label="${sunrise.escapedAliases.WorkOrderCloseDate}"></i>
+                  </span>
+                  ${
+                    workOrder.workOrderCloseDate === null
+                      ? /*html*/ `
+                        <span class="has-text-grey">
+                          (No ${sunrise.escapedAliases.WorkOrderCloseDate})
+                        </span>
+                      `
+                      : workOrder.workOrderCloseDateString
+                  }
+                </li>
+              </ul>
+            </td>
             ${
-              hasWorkOrderTypeFilter
-                ? `${cityssm.escapeHTML(workOrder.workOrderType ?? '')}<br />`
+              workOrderPrints.length > 0
+                ? /*html*/ `
+                  <td>
+                    <a
+                      class="button is-small"
+                      href="${sunrise.urlPrefix}/print/${workOrderPrints[0]}/?workOrderId=${workOrder.workOrderId.toString()}"
+                      title="Print"
+                      target="_blank"
+                    >
+                      <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
+                    </a>
+                  </td>
+                `
                 : ''
             }
-            <span class="is-size-7">
-              ${cityssm.escapeHTML(workOrder.workOrderDescription ?? '')}
-            </span>
-          </td><td>
-            ${relatedHTML}
-          </td><td>
-            <ul class="fa-ul ml-5 is-size-7">
-              <li title="${sunrise.escapedAliases.WorkOrderOpenDate}">
-                <span class="fa-li">
-                  <i class="fa-solid fa-play" aria-label="${sunrise.escapedAliases.WorkOrderOpenDate}"></i>
-                </span>
-                ${workOrder.workOrderOpenDateString}
-              </li>
-              <li title="${sunrise.escapedAliases.WorkOrderCloseDate}">
-                <span class="fa-li">
-                  <i class="fa-solid fa-stop" aria-label="${sunrise.escapedAliases.WorkOrderCloseDate}"></i>
-                </span>
-                ${
-                  workOrder.workOrderCloseDate === null
-                    ? `<span class="has-text-grey">(No ${sunrise.escapedAliases.WorkOrderCloseDate})</span>`
-                    : workOrder.workOrderCloseDateString
-                }
-              </li>
-            </ul>
-          </td>
-          ${
-            workOrderPrints.length > 0
-              ? `<td>
-                  <a class="button is-small" title="Print"
-                    href="${sunrise.urlPrefix}/print/${workOrderPrints[0]}/?workOrderId=${workOrder.workOrderId.toString()}"
-                    target="_blank">
-                    <span class="icon"><i class="fa-solid fa-print" aria-label="Print"></i></span>
-                  </a>
-                  </td>`
-              : ''
-          }</tr>`
+          </tr>
+        `
       )
     }
 
     // eslint-disable-next-line no-unsanitized/property
-    searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
-      <thead><tr>
-      <th>Work Order</th>
-      <th>Related</th>
-      <th>Date</th>
-      ${workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : ''}
-      </tr></thead>
-      <table>`
+    searchResultsContainerElement.innerHTML = /*html*/ `
+      <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+        <thead>
+          <tr>
+            <th>Work Order</th>
+            <th>Related</th>
+            <th>Date</th>
+            ${workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : ''}
+          </tr>
+        </thead>
+      </table>
+    `
 
     searchResultsContainerElement.insertAdjacentHTML(
       'beforeend',

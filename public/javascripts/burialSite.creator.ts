@@ -76,17 +76,23 @@ interface GetBurialSiteNamesByRangeResult {
     const panelBlockElement = document.createElement('div')
     panelBlockElement.className = 'panel-block is-burial-site-block'
 
-    panelBlockElement.innerHTML = `<div class="columns is-vcentered is-mobile">
-      <div class="column is-narrow">
-        <a class="button is-small is-primary" title="View Burial Site"
-          href="${sunrise.getBurialSiteUrl(burialSiteId)}" target="_blank">
-          <span class="icon"><i class="fa-solid fa-eye"></i></span>
-        </a>
+    panelBlockElement.innerHTML = /*html*/ `
+      <div class="columns is-vcentered is-mobile">
+        <div class="column is-narrow">
+          <a
+            class="button is-small is-primary"
+            href="${sunrise.getBurialSiteUrl(burialSiteId)}"
+            title="View Burial Site"
+            target="_blank"
+          >
+            <span class="icon"><i class="fa-solid fa-eye"></i></span>
+          </a>
+        </div>
+        <div class="column">
+          ${cityssm.escapeHTML(burialSiteName)}
+        </div>
       </div>
-      <div class="column">
-        ${cityssm.escapeHTML(burialSiteName)}
-      </div>
-      </div>`
+    `
 
     return panelBlockElement
   }
@@ -224,16 +230,18 @@ interface GetBurialSiteNamesByRangeResult {
         panelBlockElement.dataset.burialSiteNameSegment5 =
           burialSiteName.burialSiteNameSegment5
 
-        panelBlockElement.innerHTML = `<div class="columns is-vcentered is-mobile">
-          <div class="column is-narrow">
-            <button class="button is-small is-success" title="Create Burial Site" type="button">
-              <span class="icon"><i class="fa-solid fa-plus"></i></span>
-            </button>
+        panelBlockElement.innerHTML = /*html*/ `
+          <div class="columns is-vcentered is-mobile">
+            <div class="column is-narrow">
+              <button class="button is-small is-success" type="button" title="Create Burial Site">
+                <span class="icon"><i class="fa-solid fa-plus"></i></span>
+              </button>
+            </div>
+            <div class="column">
+              ${cityssm.escapeHTML(burialSiteName.burialSiteName)}
+            </div>
           </div>
-          <div class="column">
-            ${cityssm.escapeHTML(burialSiteName.burialSiteName)}
-          </div>
-          </div>`
+        `
 
         panelBlockElement
           .querySelector('button')
@@ -295,7 +303,6 @@ interface GetBurialSiteNamesByRangeResult {
   )
 
   if (cemeteryKeyFromSpanElement !== null) {
-
     const cemeteryKeyToSpanElement = document.querySelector(
       '#burialSiteCreator--cemeteryKey_to'
     ) as HTMLSpanElement

@@ -7,9 +7,11 @@
     function renderBurialSites(rawResponseJSON) {
         const responseJSON = rawResponseJSON;
         if (responseJSON.burialSites.length === 0) {
-            searchResultsContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no burial sites that meet the search criteria.</p>
-        </div>`;
+            searchResultsContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no burial sites that meet the search criteria.</p>
+        </div>
+      `;
             return;
         }
         const resultsTbodyElement = document.createElement('tbody');
@@ -18,38 +20,50 @@
                 ? '<span class="has-text-grey">(No Name)</span>'
                 : cityssm.escapeHTML(burialSite.cemeteryName ?? '');
             // eslint-disable-next-line no-unsanitized/method
-            resultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
-          <td>
-            <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
-              ${cityssm.escapeHTML(burialSite.burialSiteName)}
-            </a>
-          </td><td>
-          ${burialSite.cemeteryId === null
+            resultsTbodyElement.insertAdjacentHTML('beforeend', 
+            /*html*/ `
+          <tr>
+            <td>
+              <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
+                ${cityssm.escapeHTML(burialSite.burialSiteName)}
+              </a>
+            </td>
+            <td>
+              ${burialSite.cemeteryId === null
                 ? '<span class="has-text-grey">(No Cemetery)</span>'
-                : `<a href="${sunrise.getCemeteryUrl(burialSite.cemeteryId)}">
-                  ${cemeteryNameHtml}
-                  </a>`}
-          </td><td>
-            ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
-          </td><td>
-            ${burialSite.burialSiteStatusId === null ||
+                : /*html*/ `
+                    <a href="${sunrise.getCemeteryUrl(burialSite.cemeteryId)}">
+                      ${cemeteryNameHtml}
+                    </a>
+                  `}
+            </td>
+            <td>
+              ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
+            </td>
+            <td>
+              ${burialSite.burialSiteStatusId === null ||
                 burialSite.burialSiteStatusId === undefined
                 ? '<span class="has-text-grey-dark">(No Status)</span>'
                 : cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')}<br />
-            ${(burialSite.contractCount ?? 0) > 0
+              ${(burialSite.contractCount ?? 0) > 0
                 ? '<span class="is-size-7">Has Current Contracts</span>'
                 : ''}
-          </td>
-          </tr>`);
+            </td>
+          </tr>
+        `);
         }
-        searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
-      <thead><tr>
-      <th>Burial Site</th>
-      <th>Cemetery</th>
-      <th>Burial Site Type</th>
-      <th>Status</th>
-      </tr></thead>
-      <table>`;
+        searchResultsContainerElement.innerHTML = /*html*/ `
+      <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+        <thead>
+          <tr>
+            <th>Burial Site</th>
+            <th>Cemetery</th>
+            <th>Burial Site Type</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+      </table>
+    `;
         searchResultsContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(Number.parseInt(limitElement.value, 10), responseJSON.offset, responseJSON.count));
         searchResultsContainerElement
             .querySelector('table')
