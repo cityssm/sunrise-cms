@@ -360,8 +360,8 @@
             ? 'doMoveContractTypePrintUp'
             : 'doMoveContractTypePrintDown'}`, {
             contractTypeId,
-            printEJS,
-            moveToEnd: clickEvent.shiftKey ? '1' : '0'
+            moveToEnd: clickEvent.shiftKey ? '1' : '0',
+            printEJS
         }, contractTypeResponseHandler);
     }
     function deleteContractTypePrint(clickEvent) {

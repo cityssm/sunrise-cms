@@ -1,5 +1,7 @@
+import eslintCspell from '@cspell/eslint-plugin';
 import configWebApp, { defineConfig } from 'eslint-config-cityssm';
 import { cspellWords } from 'eslint-config-cityssm/exports';
+import eslintPluginNoUnsanitized from 'eslint-plugin-no-unsanitized';
 /* eslint-disable no-secrets/no-secrets */
 const escapedMethods = [
     'cityssm.escapeHTML',
@@ -20,6 +22,10 @@ export const config = defineConfig(configWebApp, {
         parserOptions: {
             project: ['./tsconfig.json', './public/javascripts/tsconfig.json']
         }
+    },
+    plugins: {
+        '@cspell': eslintCspell,
+        'no-unsanitized': eslintPluginNoUnsanitized
     },
     rules: {
         '@cspell/spellchecker': [

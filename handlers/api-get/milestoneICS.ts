@@ -1,4 +1,5 @@
 /* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
+/* eslint-disable html/use-baseline */
 
 import type { Request, Response } from 'express'
 import ical, {

@@ -18,8 +18,8 @@ declare const exports: {
   sunrise: Sunrise
 
   allContractTypeFields: ContractTypeField[]
-  contractTypes: ContractType[]
   contractTypePrintTitles: Record<string, string>
+  contractTypes: ContractType[]
 }
 
 type ResponseJSON =
@@ -686,8 +686,8 @@ type ResponseJSON =
       }`,
       {
         contractTypeId,
-        printEJS,
-        moveToEnd: clickEvent.shiftKey ? '1' : '0'
+        moveToEnd: clickEvent.shiftKey ? '1' : '0',
+        printEJS
       },
       contractTypeResponseHandler
     )
@@ -902,9 +902,7 @@ type ResponseJSON =
                 <button class="button is-small button--toggleContractTypeFields" title="Toggle Fields" type="button">
                   <span class="icon">
                     ${
-                      expandedContractTypes.has(
-                        contractType.contractTypeId
-                      )
+                      expandedContractTypes.has(contractType.contractTypeId)
                         ? '<i class="fa-solid fa-minus"></i>'
                         : '<i class="fa-solid fa-plus"></i>'
                     }

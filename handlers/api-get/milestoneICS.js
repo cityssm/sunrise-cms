@@ -1,4 +1,5 @@
 /* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
+/* eslint-disable html/use-baseline */
 import ical, { ICalEventStatus } from 'ical-generator';
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
 import { getApplicationUrl } from '../../helpers/application.helpers.js';

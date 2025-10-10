@@ -423,7 +423,8 @@ declare const exports: {
           '<option value="">(No Direction)</option>'
 
         for (const direction of exports.directionsOfArrival) {
-          // eslint-disable-next-line security/detect-object-injection
+          /* eslint-disable security/detect-object-injection */
+
           if (responseJSON.directionsOfArrival[direction] !== undefined) {
             const optionElement = document.createElement('option')
 
@@ -440,6 +441,8 @@ declare const exports: {
 
             directionOfArrivalElement.append(optionElement)
           }
+
+          /* eslint-enable security/detect-object-injection */
         }
       }
     )
