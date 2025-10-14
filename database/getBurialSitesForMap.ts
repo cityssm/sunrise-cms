@@ -5,11 +5,12 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface BurialSiteMapContract {
   contractId: number
-  contractNumber?: string
   contractType: string
   isPreneed: number
+
   contractStartDate: number
   contractEndDate: number | null
+
   deceasedNames: string[]
 }
 
@@ -55,7 +56,6 @@ export default function getBurialSitesForMap(
     .prepare(
       `select c.contractId,
         c.burialSiteId,
-        c.contractNumber,
         c.contractStartDate,
         c.contractEndDate,
         t.contractType,
@@ -67,13 +67,12 @@ export default function getBurialSitesForMap(
       where c.recordDelete_timeMillis is null
         and c.burialSiteId in (select burialSiteId from BurialSites where cemeteryId = ?)
         and (c.contractEndDate is null or c.contractEndDate >= ?)
-      group by c.contractId, c.burialSiteId, c.contractNumber, c.contractStartDate, c.contractEndDate, t.contractType, t.isPreneed
+      group by c.contractId, c.burialSiteId, c.contractStartDate, c.contractEndDate, t.contractType, t.isPreneed
       order by c.contractStartDate`
     )
     .all(cemeteryId, currentDate) as Array<{
       contractId: number
       burialSiteId: number
-      contractNumber: string
       contractStartDate: number
       contractEndDate: number | null
       contractType: string
@@ -91,7 +90,6 @@ export default function getBurialSitesForMap(
     
     contractsByBurialSite.get(contract.burialSiteId)!.push({
       contractId: contract.contractId,
-      contractNumber: contract.contractNumber,
       contractType: contract.contractType,
       isPreneed: contract.isPreneed,
       contractStartDate: contract.contractStartDate,

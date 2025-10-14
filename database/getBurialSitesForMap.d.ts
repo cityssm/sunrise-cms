@@ -1,7 +1,6 @@
 import sqlite from 'better-sqlite3';
 export interface BurialSiteMapContract {
     contractId: number;
-    contractNumber?: string;
     contractType: string;
     isPreneed: number;
     contractStartDate: number;

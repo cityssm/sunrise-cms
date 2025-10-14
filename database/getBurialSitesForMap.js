@@ -24,7 +24,6 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
     const contracts = database
         .prepare(`select c.contractId,
         c.burialSiteId,
-        c.contractNumber,
         c.contractStartDate,
         c.contractEndDate,
         t.contractType,
@@ -36,7 +35,7 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
       where c.recordDelete_timeMillis is null
         and c.burialSiteId in (select burialSiteId from BurialSites where cemeteryId = ?)
         and (c.contractEndDate is null or c.contractEndDate >= ?)
-      group by c.contractId, c.burialSiteId, c.contractNumber, c.contractStartDate, c.contractEndDate, t.contractType, t.isPreneed
+      group by c.contractId, c.burialSiteId, c.contractStartDate, c.contractEndDate, t.contractType, t.isPreneed
       order by c.contractStartDate`)
         .all(cemeteryId, currentDate);
     // Group contracts by burial site
@@ -47,7 +46,6 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
         }
         contractsByBurialSite.get(contract.burialSiteId).push({
             contractId: contract.contractId,
-            contractNumber: contract.contractNumber,
             contractType: contract.contractType,
             isPreneed: contract.isPreneed,
             contractStartDate: contract.contractStartDate,
