@@ -60,6 +60,20 @@
       </ul>
       <% } %>
     </li>
+    <li>
+      <a
+        class="<%= (headTitle === 'Burial Site Map (Beta)' ? 'is-active' : '') %>"
+        href="<%= urlPrefix %>/burialSites/map"
+        title="Burial Site Map (Beta)"
+      >
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-map-location-dot"></i></span>
+          </div>
+          <div class="column is-hidden-touch">Burial Site Map (Beta)</div>
+        </div>
+      </a>
+    </li>
   </ul>
   <% if (user.userProperties.canUpdateCemeteries) { %>
   <h2 class="menu-label is-hidden-touch">
