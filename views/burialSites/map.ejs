@@ -66,7 +66,7 @@
 <%- include('../_footerA'); -%>
 
 <script>
-  exports.initialCemeteryId = <%= cemeteryId === '' ? 'null' : cemeteryId %>;
+  exports.cemeteryId = <%- JSON.stringify(cemeteryId === '' ? 'null' : cemeteryId) %>;
 </script>
 <script src="<%= urlPrefix %>/javascripts/burialSite.map.js"></script>
 
