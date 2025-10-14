@@ -10,16 +10,16 @@ import eslintPluginNoUnsanitized from 'eslint-plugin-no-unsanitized'
 
 const escapedMethods = [
   'cityssm.escapeHTML',
-  
+
   'sunrise.getLoadingParagraphHTML',
   'sunrise.getMoveUpDownButtonFieldHTML',
   'sunrise.getSearchResultsPagerHTML',
-  
+
   'sunrise.getBurialSiteUrl',
   'sunrise.getContractUrl',
   'sunrise.getFuneralHomeUrl',
   'sunrise.getWorkOrderUrl',
-  
+
   'buildBurialSiteHTML',
   'buildFuneralHomeAddressHTML'
 ]
@@ -35,6 +35,8 @@ export const config: ConfigObject[] = defineConfig(configWebApp, {
   },
   plugins: {
     '@cspell': eslintCspell,
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     'no-unsanitized': eslintPluginNoUnsanitized
   },
   rules: {

@@ -25,6 +25,7 @@ export const config = defineConfig(configWebApp, {
     },
     plugins: {
         '@cspell': eslintCspell,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         'no-unsanitized': eslintPluginNoUnsanitized
     },
     rules: {
