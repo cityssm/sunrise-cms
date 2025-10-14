@@ -16,4 +16,10 @@ export interface BurialSiteForMap {
     cemeteryName: string | null;
     contracts: BurialSiteMapContract[];
 }
-export default function getBurialSitesForMap(cemeteryId: number | string, connectedDatabase?: sqlite.Database): BurialSiteForMap[];
+export interface BurialSiteMapResult {
+    burialSites: BurialSiteForMap[];
+    totalBurialSites: number;
+    cemeteryLatitude: number | null;
+    cemeteryLongitude: number | null;
+}
+export default function getBurialSitesForMap(cemeteryId: number | string, connectedDatabase?: sqlite.Database): BurialSiteMapResult;

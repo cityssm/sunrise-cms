@@ -149,7 +149,7 @@ declare const exports: {
   }
 
   // Render burial sites on the map
-  function renderMap() {
+  function renderMap(cemeteryLatitude?: number | null, cemeteryLongitude?: number | null) {
     if (markersLayer === null) {
       return
     }
@@ -158,10 +158,6 @@ declare const exports: {
     markersLayer.clearLayers()
 
     const filteredSites = filterBurialSites()
-
-    if (filteredSites.length === 0) {
-      return
-    }
 
     // Get current date for contract status checks
     const currentDate = Math.floor(Date.now() / 86_400_000) // Date as integer (days since epoch)
@@ -194,12 +190,16 @@ declare const exports: {
       marker.addTo(markersLayer)
     }
 
-    // Fit map to show all markers
+    // Fit map to show all markers, or center on cemetery if no markers
     if (bounds.length > 0) {
       leafletMap.fitBounds(bounds, {
         padding: [50, 50],
         maxZoom: 16
       })
+    } else if (cemeteryLatitude !== null && cemeteryLatitude !== undefined && 
+               cemeteryLongitude !== null && cemeteryLongitude !== undefined) {
+      // No burial sites with coordinates, center on cemetery
+      leafletMap.setView([cemeteryLatitude, cemeteryLongitude], 15)
     }
   }
 
@@ -226,12 +226,11 @@ declare const exports: {
 
           // Update stats
           const mappedCount = allBurialSites.length
+          const totalCount = responseJSON.totalBurialSites || 0
           statsMappedElement.textContent = mappedCount.toString()
+          statsTotalElement.textContent = totalCount.toString()
 
-          // For now, we'll show the mapped count as total since we only fetch sites with coordinates
-          statsTotalElement.textContent = mappedCount.toString()
-
-          renderMap()
+          renderMap(responseJSON.cemeteryLatitude, responseJSON.cemeteryLongitude)
         } else {
           cityssm.alertModal(
             'Error Loading Burial Sites',
@@ -255,6 +254,7 @@ declare const exports: {
   deceasedNameFilterElement.addEventListener('input', () => {
     clearTimeout(deceasedNameTimeout)
     deceasedNameTimeout = setTimeout(() => {
+      // When filtering, don't pass cemetery coordinates as we want to keep the current view
       renderMap()
     }, 300)
   })

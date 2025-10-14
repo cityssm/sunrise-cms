@@ -17,10 +17,10 @@ export default function handler(
     return
   }
 
-  const burialSites = getBurialSitesForMap(cemeteryId)
+  const result = getBurialSitesForMap(cemeteryId)
 
   response.json({
-    burialSites,
+    ...result,
     success: true
   })
 }

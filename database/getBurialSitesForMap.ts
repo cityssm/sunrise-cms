@@ -24,13 +24,36 @@ export interface BurialSiteForMap {
   contracts: BurialSiteMapContract[]
 }
 
+export interface BurialSiteMapResult {
+  burialSites: BurialSiteForMap[]
+  totalBurialSites: number
+  cemeteryLatitude: number | null
+  cemeteryLongitude: number | null
+}
+
 export default function getBurialSitesForMap(
   cemeteryId: number | string,
   connectedDatabase?: sqlite.Database
-): BurialSiteForMap[] {
+): BurialSiteMapResult {
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
   
   const currentDate = dateToInteger(new Date())
+
+  // Get cemetery info and total burial site count
+  const cemeteryInfo = database
+    .prepare(
+      `select 
+        c.cemeteryLatitude,
+        c.cemeteryLongitude,
+        (select count(*) from BurialSites where cemeteryId = ? and recordDelete_timeMillis is null) as totalBurialSites
+      from Cemeteries c
+      where c.cemeteryId = ?`
+    )
+    .get(cemeteryId, cemeteryId) as {
+      cemeteryLatitude: number | null
+      cemeteryLongitude: number | null
+      totalBurialSites: number
+    } | undefined
 
   // Get all burial sites with coordinates for the cemetery
   const burialSites = database
@@ -103,5 +126,10 @@ export default function getBurialSitesForMap(
     site.contracts = contractsByBurialSite.get(site.burialSiteId) ?? []
   }
 
-  return burialSites
+  return {
+    burialSites,
+    totalBurialSites: cemeteryInfo?.totalBurialSites ?? 0,
+    cemeteryLatitude: cemeteryInfo?.cemeteryLatitude ?? null,
+    cemeteryLongitude: cemeteryInfo?.cemeteryLongitude ?? null
+  }
 }

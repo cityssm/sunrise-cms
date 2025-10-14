@@ -4,6 +4,15 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const currentDate = dateToInteger(new Date());
+    // Get cemetery info and total burial site count
+    const cemeteryInfo = database
+        .prepare(`select 
+        c.cemeteryLatitude,
+        c.cemeteryLongitude,
+        (select count(*) from BurialSites where cemeteryId = ? and recordDelete_timeMillis is null) as totalBurialSites
+      from Cemeteries c
+      where c.cemeteryId = ?`)
+        .get(cemeteryId, cemeteryId);
     // Get all burial sites with coordinates for the cemetery
     const burialSites = database
         .prepare(`select b.burialSiteId,
@@ -57,5 +66,10 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
     for (const site of burialSites) {
         site.contracts = contractsByBurialSite.get(site.burialSiteId) ?? [];
     }
-    return burialSites;
+    return {
+        burialSites,
+        totalBurialSites: cemeteryInfo?.totalBurialSites ?? 0,
+        cemeteryLatitude: cemeteryInfo?.cemeteryLatitude ?? null,
+        cemeteryLongitude: cemeteryInfo?.cemeteryLongitude ?? null
+    };
 }

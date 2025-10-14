@@ -1,3 +1,3 @@
-export declare const app: import("express-serve-static-core").Express;
+export declare const app: any;
 export default app;
 export { shutdown as shutdownAbuseCheck } from '@cityssm/express-abuse-points';

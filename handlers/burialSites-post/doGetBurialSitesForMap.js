@@ -9,9 +9,9 @@ export default function handler(request, response) {
         });
         return;
     }
-    const burialSites = getBurialSitesForMap(cemeteryId);
+    const result = getBurialSitesForMap(cemeteryId);
     response.json({
-        burialSites,
+        ...result,
         success: true
     });
 }
