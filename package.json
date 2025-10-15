@@ -44,7 +44,7 @@
     "@cityssm/fill-block-range": "^0.3.0",
     "@cityssm/jsbarcode-svg": "^0.1.1",
     "@cityssm/ntfy-publish": "^1.1.0",
-    "@cityssm/pdf-puppeteer": "^6.3.2",
+    "@cityssm/pdf-puppeteer": "^6.4.0",
     "@cityssm/scheduled-task": "^0.3.0",
     "@cityssm/to-millis": "^1.0.1",
     "@cityssm/utils-datetime": "^1.3.0",
