@@ -2,6 +2,7 @@ import { Router } from 'express';
 import handler_creator from '../handlers/burialSites-get/creator.js';
 import handler_edit from '../handlers/burialSites-get/edit.js';
 import handler_gpsCapture from '../handlers/burialSites-get/gpsCapture.js';
+import handler_map from '../handlers/burialSites-get/map.js';
 import handler_new from '../handlers/burialSites-get/new.js';
 import handler_next from '../handlers/burialSites-get/next.js';
 import handler_previous from '../handlers/burialSites-get/previous.js';
@@ -12,6 +13,7 @@ import handler_doCreateBurialSite from '../handlers/burialSites-post/doCreateBur
 import handler_doDeleteBurialSite from '../handlers/burialSites-post/doDeleteBurialSite.js';
 import handler_doDeleteBurialSiteComment from '../handlers/burialSites-post/doDeleteBurialSiteComment.js';
 import handler_doGetBurialSiteNamesByRange from '../handlers/burialSites-post/doGetBurialSiteNamesByRange.js';
+import handler_doGetBurialSitesForMap from '../handlers/burialSites-post/doGetBurialSitesForMap.js';
 import handler_doGetBurialSiteTypeFields from '../handlers/burialSites-post/doGetBurialSiteTypeFields.js';
 import handler_doRestoreBurialSite from '../handlers/burialSites-post/doRestoreBurialSite.js';
 import handler_doSearchBurialSites from '../handlers/burialSites-post/doSearchBurialSites.js';
@@ -34,6 +36,12 @@ router
     .get('/gpsCapture', updateCemeteriesGetHandler, handler_gpsCapture)
     .post('/doSearchBurialSitesForGPS', updateCemeteriesPostHandler, handler_doSearchBurialSitesForGps)
     .post('/doUpdateBurialSiteLatitudeLongitude', updateCemeteriesPostHandler, handler_doUpdateBurialSiteLatitudeLongitude);
+/*
+ * Burial Site Map
+ */
+router
+    .get('/map', handler_map)
+    .post('/doGetBurialSitesForMap', handler_doGetBurialSitesForMap);
 /*
  * Burial Site Creator
  */
