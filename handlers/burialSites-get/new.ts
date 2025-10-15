@@ -49,6 +49,7 @@ export default async function handler(
     if (cemetery !== undefined) {
       burialSite.cemeteryId = cemetery.cemeteryId as number
       burialSite.cemeteryName = cemetery.cemeteryName
+      burialSite.cemeteryKey = cemetery.cemeteryKey
     }
   }
 

@@ -29,6 +29,7 @@ export default async function handler(request, response) {
         if (cemetery !== undefined) {
             burialSite.cemeteryId = cemetery.cemeteryId;
             burialSite.cemeteryName = cemetery.cemeteryName;
+            burialSite.cemeteryKey = cemetery.cemeteryKey;
         }
     }
     const burialSiteImages = await getBurialSiteImages();
