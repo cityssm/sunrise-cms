@@ -50,7 +50,8 @@ export default function getBurialSitesForMap(
         c.cemeteryLongitude,
         (select count(*) from BurialSites where cemeteryId = ? and recordDelete_timeMillis is null) as totalBurialSites
       from Cemeteries c
-      where c.cemeteryId = ?`
+      where c.cemeteryId = ?
+        and c.recordDelete_timeMillis is null`
     )
     .get(cemeteryId, cemeteryId) as {
       cemeteryLatitude: number | null
@@ -132,7 +133,11 @@ export default function getBurialSitesForMap(
   return {
     burialSites,
     totalBurialSites: cemeteryInfo?.totalBurialSites ?? 0,
+
+    // eslint-disable-next-line unicorn/no-null
     cemeteryLatitude: cemeteryInfo?.cemeteryLatitude ?? null,
+    
+    // eslint-disable-next-line unicorn/no-null
     cemeteryLongitude: cemeteryInfo?.cemeteryLongitude ?? null
   }
 }

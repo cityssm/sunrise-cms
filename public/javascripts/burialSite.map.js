@@ -13,8 +13,8 @@
     function initializeMap() {
         if (leafletMap === undefined) {
             leafletMap = new L.Map(mapElement, {
-                scrollWheelZoom: true,
                 center: [exports.centerLatitude, exports.centerLongitude],
+                scrollWheelZoom: true,
                 zoom: 11
             });
             new L.TileLayer(sunrise.leafletConstants.tileLayerUrl, {
@@ -55,6 +55,7 @@
     // Create popup content for a burial site
     function createPopupContent(site) {
         const siteUrl = sunrise.getBurialSiteUrl(site.burialSiteId);
+        /* eslint-disable html/require-closing-tags */
         let html = /* html */ `
       <div class="content is-small">
         <p class="has-text-weight-bold mb-2">
@@ -65,22 +66,24 @@
     `;
         if (site.contracts.length > 0) {
             html += /* html */ `
-          <p class="mb-1">
-            <strong>Active/Future Contracts:</strong>
-          </p>
-          <ul class="mb-0">
-        `;
+        <p class="mb-1">
+          <strong>Active/Future Contracts:</strong>
+        </p>
+        <ul class="mb-0">
+      `;
             for (const contract of site.contracts) {
                 const contractUrl = sunrise.getContractUrl(contract.contractId);
                 const deceasedText = contract.deceasedNames.length > 0
                     ? ' - ' + cityssm.escapeHTML(contract.deceasedNames.join(', '))
                     : '';
-                html += `<li class="is-size-7">
-          <a href="${contractUrl}" target="_blank">
-            ${cityssm.escapeHTML(contract.contractId)}
-          </a>
-          - ${cityssm.escapeHTML(contract.contractType)}${deceasedText}
-        </li>`;
+                html += /* html */ `
+          <li class="is-size-7">
+            <a href="${contractUrl}" target="_blank">
+              ${cityssm.escapeHTML(contract.contractId.toString())}
+            </a>
+            - ${cityssm.escapeHTML(contract.contractType)}${deceasedText}
+          </li>
+        `;
             }
             html += '</ul>';
         }
@@ -88,6 +91,7 @@
             html += '<p class="is-size-7 has-text-grey-light">No active contracts</p>';
         }
         html += '</div>';
+        /* eslint-enable html/require-closing-tags */
         return html;
     }
     // Filter burial sites by deceased name
@@ -106,6 +110,7 @@
                 if (contract.deceasedNames.length === 0) {
                     return false;
                 }
+                // eslint-disable-next-line max-nested-callbacks
                 return contract.deceasedNames.some((name) => name.toLowerCase().includes(deceasedNameFilter));
             });
         });
@@ -126,11 +131,14 @@
                 site.burialSiteLongitude === null) {
                 continue;
             }
-            const coords = [site.burialSiteLatitude, site.burialSiteLongitude];
+            const coords = [
+                site.burialSiteLatitude,
+                site.burialSiteLongitude
+            ];
             bounds.push(coords);
-            const color = getMarkerColor(site.contracts || [], currentDate);
+            const color = getMarkerColor(site.contracts, currentDate);
             const marker = new L.CircleMarker(coords, {
-                radius: 8,
+                radius: 6,
                 fillColor: color,
                 color: '#000',
                 weight: 1,
@@ -143,8 +151,8 @@
         // Fit map to show all markers, or center on cemetery if no markers
         if (bounds.length > 0) {
             leafletMap.fitBounds(bounds, {
-                padding: [50, 50],
-                maxZoom: 16
+                maxZoom: 16,
+                padding: [50, 50]
             });
         }
         else if (cemeteryLatitude !== null &&
@@ -173,7 +181,7 @@
                 allBurialSites = responseJSON.burialSites;
                 // Update stats
                 const mappedCount = allBurialSites.length;
-                const totalCount = responseJSON.totalBurialSites || 0;
+                const totalCount = responseJSON.totalBurialSites;
                 statsMappedElement.textContent = mappedCount.toString();
                 statsTotalElement.textContent = totalCount.toString();
                 renderMap(responseJSON.cemeteryLatitude, responseJSON.cemeteryLongitude);

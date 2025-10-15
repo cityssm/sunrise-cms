@@ -52,8 +52,8 @@ declare const exports: {
   function initializeMap(): void {
     if (leafletMap === undefined) {
       leafletMap = new L.Map(mapElement, {
-        scrollWheelZoom: true,
         center: [exports.centerLatitude, exports.centerLongitude],
+        scrollWheelZoom: true,
         zoom: 11
       })
 
@@ -67,7 +67,10 @@ declare const exports: {
   }
 
   // Determine marker color based on contract status
-  function getMarkerColor(contracts: BurialSiteMapContract[], currentDate: number): 'green' | 'red' | 'yellow' {
+  function getMarkerColor(
+    contracts: BurialSiteMapContract[],
+    currentDate: number
+  ): 'green' | 'red' | 'yellow' {
     if (contracts.length === 0) {
       return 'green' // No active contracts
     }
@@ -105,6 +108,8 @@ declare const exports: {
   function createPopupContent(site: BurialSiteForMap): string {
     const siteUrl = sunrise.getBurialSiteUrl(site.burialSiteId)
 
+    /* eslint-disable html/require-closing-tags */
+    
     let html = /* html */ `
       <div class="content is-small">
         <p class="has-text-weight-bold mb-2">
@@ -116,25 +121,28 @@ declare const exports: {
 
     if (site.contracts.length > 0) {
       html += /* html */ `
-          <p class="mb-1">
-            <strong>Active/Future Contracts:</strong>
-          </p>
-          <ul class="mb-0">
-        `
+        <p class="mb-1">
+          <strong>Active/Future Contracts:</strong>
+        </p>
+        <ul class="mb-0">
+      `
 
       for (const contract of site.contracts) {
         const contractUrl = sunrise.getContractUrl(contract.contractId)
+
         const deceasedText =
           contract.deceasedNames.length > 0
             ? ' - ' + cityssm.escapeHTML(contract.deceasedNames.join(', '))
             : ''
 
-        html += `<li class="is-size-7">
-          <a href="${contractUrl}" target="_blank">
-            ${cityssm.escapeHTML(contract.contractId)}
-          </a>
-          - ${cityssm.escapeHTML(contract.contractType)}${deceasedText}
-        </li>`
+        html += /* html */ `
+          <li class="is-size-7">
+            <a href="${contractUrl}" target="_blank">
+              ${cityssm.escapeHTML(contract.contractId.toString())}
+            </a>
+            - ${cityssm.escapeHTML(contract.contractType)}${deceasedText}
+          </li>
+        `
       }
 
       html += '</ul>'
@@ -143,6 +151,8 @@ declare const exports: {
     }
 
     html += '</div>'
+
+    /* eslint-enable html/require-closing-tags */
 
     return html
   }
@@ -167,6 +177,7 @@ declare const exports: {
           return false
         }
 
+        // eslint-disable-next-line max-nested-callbacks
         return contract.deceasedNames.some((name) =>
           name.toLowerCase().includes(deceasedNameFilter)
         )
@@ -189,9 +200,12 @@ declare const exports: {
     const filteredSites = filterBurialSites()
 
     // Get current date for contract status checks
-    const currentDate = Number.parseInt(cityssm.dateToString(new Date()).replaceAll('-', ''), 10)
+    const currentDate = Number.parseInt(
+      cityssm.dateToString(new Date()).replaceAll('-', ''),
+      10
+    )
 
-    const bounds = []
+    const bounds: Array<[number, number]> = []
 
     for (const site of filteredSites) {
       if (
@@ -201,13 +215,16 @@ declare const exports: {
         continue
       }
 
-      const coords = [site.burialSiteLatitude, site.burialSiteLongitude]
+      const coords: [number, number] = [
+        site.burialSiteLatitude,
+        site.burialSiteLongitude
+      ]
       bounds.push(coords)
 
-      const color = getMarkerColor(site.contracts || [], currentDate)
+      const color = getMarkerColor(site.contracts, currentDate)
 
       const marker = new L.CircleMarker(coords, {
-        radius: 8,
+        radius: 6,
         fillColor: color,
         color: '#000',
         weight: 1,
@@ -222,8 +239,8 @@ declare const exports: {
     // Fit map to show all markers, or center on cemetery if no markers
     if (bounds.length > 0) {
       leafletMap.fitBounds(bounds, {
-        padding: [50, 50],
-        maxZoom: 16
+        maxZoom: 16,
+        padding: [50, 50]
       })
     } else if (
       cemeteryLatitude !== null &&
@@ -260,6 +277,7 @@ declare const exports: {
         const responseJSON =
           rawResponseJSON as unknown as BurialSiteMapResult & {
             success: boolean
+
             errorMessage?: string
           }
 
@@ -268,7 +286,8 @@ declare const exports: {
 
           // Update stats
           const mappedCount = allBurialSites.length
-          const totalCount = responseJSON.totalBurialSites || 0
+          const totalCount = responseJSON.totalBurialSites
+
           statsMappedElement.textContent = mappedCount.toString()
           statsTotalElement.textContent = totalCount.toString()
 

@@ -30,8 +30,11 @@
           <select id="filter--cemeteryId" name="cemeteryId">
             <option value="">Select Cemetery...</option>
             <% for (const cemetery of cemeteries) { %>
-            <option value="<%= cemetery.cemeteryId %>" <%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>>
-              <%= cemetery.cemeteryName || "(No Name)" %>
+            <option
+              value="<%= cemetery.cemeteryId %>"
+              _<%= (cemetery.cemeteryId.toString() === cemeteryId) ? ' selected' : '' %>
+            >
+              <%= cemetery.cemeteryName || '(No Name)' %>
             </option>
             <% } %>
           </select>
@@ -57,7 +60,10 @@
     <div class="field">
       <label class="label is-small">&nbsp;</label>
       <div id="map--stats" class="content is-small">
-        <p class="mb-0"><strong>Sites with coordinates:</strong> <span id="stats--mapped">0</span> / <span id="stats--total">0</span></p>
+        <p class="mb-0">
+          <strong>Sites with coordinates:</strong>
+          <span id="stats--mapped">0</span> / <span id="stats--total">0</span>
+        </p>
       </div>
     </div>
   </div>

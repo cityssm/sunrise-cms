@@ -11,7 +11,8 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
         c.cemeteryLongitude,
         (select count(*) from BurialSites where cemeteryId = ? and recordDelete_timeMillis is null) as totalBurialSites
       from Cemeteries c
-      where c.cemeteryId = ?`)
+      where c.cemeteryId = ?
+        and c.recordDelete_timeMillis is null`)
         .get(cemeteryId, cemeteryId);
     // Get all burial sites with coordinates for the cemetery
     const burialSites = database
@@ -69,7 +70,9 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
     return {
         burialSites,
         totalBurialSites: cemeteryInfo?.totalBurialSites ?? 0,
+        // eslint-disable-next-line unicorn/no-null
         cemeteryLatitude: cemeteryInfo?.cemeteryLatitude ?? null,
+        // eslint-disable-next-line unicorn/no-null
         cemeteryLongitude: cemeteryInfo?.cemeteryLongitude ?? null
     };
 }

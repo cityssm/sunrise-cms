@@ -108,7 +108,8 @@
                   <select id="searchFilter--cemeteryId" name="cemeteryId">
                     <option value="">(All Cemeteries)</option>
                     <% for (const cemetery of cemeteries) { %>
-                    <option value="<%= cemetery.cemeteryId %>"
+                    <option
+                      value="<%= cemetery.cemeteryId %>"
                       _<%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>
                     >
                       <%= cemetery.cemeteryName || "(No Name)" %>
@@ -130,7 +131,8 @@
                   <select id="searchFilter--burialSiteStatusId" name="burialSiteStatusId">
                     <option value="">(All Statuses)</option>
                     <% for (const burialSiteStatus of burialSiteStatuses) { %>
-                    <option value="<%= burialSiteStatus.burialSiteStatusId %>"
+                    <option
+                      value="<%= burialSiteStatus.burialSiteStatusId %>"
                       _<%= (burialSiteStatus.burialSiteStatusId.toString() === burialSiteStatusId) ? " selected" : "" %>
                     >
                       <%= burialSiteStatus.burialSiteStatus %>
