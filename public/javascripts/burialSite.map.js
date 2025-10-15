@@ -7,11 +7,11 @@
     const statsMappedElement = document.querySelector('#stats--mapped');
     const statsTotalElement = document.querySelector('#stats--total');
     let allBurialSites = [];
-    let leafletMap = null;
-    let markersLayer = null;
+    let leafletMap;
+    let markersLayer;
     // Initialize Leaflet map
     function initializeMap() {
-        if (leafletMap === null) {
+        if (leafletMap === undefined) {
             leafletMap = new L.Map(mapElement, {
                 scrollWheelZoom: true,
                 center: [43.6532, -79.3832], // Default center (Toronto)
@@ -55,18 +55,24 @@
     // Create popup content for a burial site
     function createPopupContent(site) {
         const siteUrl = sunrise.getBurialSiteUrl(site.burialSiteId);
-        let html = `<div class="content is-small">
-      <p class="has-text-weight-bold mb-2">
-        <a href="${siteUrl}" target="_blank" rel="noopener">
-          ${cityssm.escapeHTML(site.burialSiteName || 'Unnamed Site')}
-        </a>
-      </p>`;
-        if (site.contracts && site.contracts.length > 0) {
-            html +=
-                '<p class="mb-1"><strong>Active/Future Contracts:</strong></p><ul class="mb-0">';
+        let html = /* html */ `
+      <div class="content is-small">
+        <p class="has-text-weight-bold mb-2">
+          <a href="${siteUrl}" target="_blank">
+            ${cityssm.escapeHTML(site.burialSiteName === '' ? 'Unnamed Site' : site.burialSiteName)}
+          </a>
+        </p>
+    `;
+        if (site.contracts.length > 0) {
+            html += /* html */ `
+          <p class="mb-1">
+            <strong>Active/Future Contracts:</strong>
+          </p>
+          <ul class="mb-0">
+        `;
             for (const contract of site.contracts) {
                 const contractUrl = sunrise.getContractUrl(contract.contractId);
-                const deceasedText = contract.deceasedNames && contract.deceasedNames.length > 0
+                const deceasedText = contract.deceasedNames.length > 0
                     ? ' - ' + cityssm.escapeHTML(contract.deceasedNames.join(', '))
                     : '';
                 html += `<li class="is-size-7">
@@ -93,11 +99,11 @@
             return allBurialSites;
         }
         return allBurialSites.filter((site) => {
-            if (!site.contracts || site.contracts.length === 0) {
+            if (site.contracts.length === 0) {
                 return false;
             }
             return site.contracts.some((contract) => {
-                if (!contract.deceasedNames || contract.deceasedNames.length === 0) {
+                if (contract.deceasedNames.length === 0) {
                     return false;
                 }
                 return contract.deceasedNames.some((name) => name.toLowerCase().includes(deceasedNameFilter));
@@ -105,16 +111,13 @@
         });
     }
     // Render burial sites on the map
-    function renderMap() {
-        if (markersLayer === null) {
+    function renderMap(cemeteryLatitude, cemeteryLongitude) {
+        if (markersLayer === undefined || leafletMap === undefined) {
             return;
         }
         // Clear existing markers
         markersLayer.clearLayers();
         const filteredSites = filterBurialSites();
-        if (filteredSites.length === 0) {
-            return;
-        }
         // Get current date for contract status checks
         const currentDate = Math.floor(Date.now() / 86_400_000); // Date as integer (days since epoch)
         const bounds = [];
@@ -137,12 +140,19 @@
             marker.bindPopup(createPopupContent(site));
             marker.addTo(markersLayer);
         }
-        // Fit map to show all markers
+        // Fit map to show all markers, or center on cemetery if no markers
         if (bounds.length > 0) {
             leafletMap.fitBounds(bounds, {
                 padding: [50, 50],
                 maxZoom: 16
             });
+        }
+        else if (cemeteryLatitude !== null &&
+            cemeteryLatitude !== undefined &&
+            cemeteryLongitude !== null &&
+            cemeteryLongitude !== undefined) {
+            // No burial sites with coordinates, center on cemetery
+            leafletMap.setView([cemeteryLatitude, cemeteryLongitude], 15);
         }
     }
     // Load burial sites for selected cemetery
@@ -150,26 +160,31 @@
         const cemeteryId = cemeterySelectElement.value;
         if (cemeteryId === '') {
             allBurialSites = [];
-            if (markersLayer !== null) {
+            if (markersLayer !== undefined) {
                 markersLayer.clearLayers();
             }
             statsMappedElement.textContent = '0';
             statsTotalElement.textContent = '0';
             return;
         }
-        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doGetBurialSitesForMap`, { cemeteryId }, (responseJSON) => {
+        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doGetBurialSitesForMap`, { cemeteryId }, (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
-                allBurialSites = responseJSON.burialSites || [];
+                allBurialSites = responseJSON.burialSites;
                 // Update stats
                 const mappedCount = allBurialSites.length;
+                const totalCount = responseJSON.totalBurialSites || 0;
                 statsMappedElement.textContent = mappedCount.toString();
-                // For now, we'll show the mapped count as total since we only fetch sites with coordinates
-                statsTotalElement.textContent = mappedCount.toString();
-                renderMap();
+                statsTotalElement.textContent = totalCount.toString();
+                renderMap(responseJSON.cemeteryLatitude, responseJSON.cemeteryLongitude);
             }
             else {
-                cityssm.alertModal('Error Loading Burial Sites', responseJSON.errorMessage ||
-                    'An error occurred while loading burial sites.', 'OK', 'danger');
+                bulmaJS.alert({
+                    contextualColorName: 'danger',
+                    title: 'Error Loading Burial Sites',
+                    message: responseJSON.errorMessage ??
+                        'An error occurred while loading burial sites. Please try again.'
+                });
             }
         });
     }
@@ -181,6 +196,7 @@
     deceasedNameFilterElement.addEventListener('input', () => {
         clearTimeout(deceasedNameTimeout);
         deceasedNameTimeout = setTimeout(() => {
+            // When filtering, don't pass cemetery coordinates as we want to keep the current view
             renderMap();
         }, 300);
     });

@@ -2,6 +2,11 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type Leaflet from 'leaflet'
 
+import type {
+  BurialSiteForMap,
+  BurialSiteMapResult
+} from '../../database/getBurialSitesForMap.js'
+
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
@@ -11,27 +16,37 @@ declare const L: typeof Leaflet
 
 declare const exports: {
   sunrise: Sunrise
-}
 
+  cemeteryId: string | null
+}
 ;(() => {
   const sunrise = exports.sunrise
   const initialCemeteryId = exports.cemeteryId
 
   const mapElement = document.querySelector('#map--burialSites') as HTMLElement
-  const cemeterySelectElement = document.querySelector('#filter--cemeteryId')
+
+  const cemeterySelectElement = document.querySelector(
+    '#filter--cemeteryId'
+  ) as HTMLSelectElement
   const deceasedNameFilterElement = document.querySelector(
     '#filter--deceasedName'
-  )
-  const statsMappedElement = document.querySelector('#stats--mapped') as HTMLElement
-  const statsTotalElement = document.querySelector('#stats--total') as HTMLElement
+  ) as HTMLInputElement
 
-  let allBurialSites = []
-  let leafletMap = null
-  let markersLayer = null
+  const statsMappedElement = document.querySelector(
+    '#stats--mapped'
+  ) as HTMLElement
+  const statsTotalElement = document.querySelector(
+    '#stats--total'
+  ) as HTMLElement
+
+  let allBurialSites: BurialSiteMapResult['burialSites'] = []
+
+  let leafletMap: L.Map | undefined
+  let markersLayer: L.LayerGroup | undefined
 
   // Initialize Leaflet map
-  function initializeMap() {
-    if (leafletMap === null) {
+  function initializeMap(): void {
+    if (leafletMap === undefined) {
       leafletMap = new L.Map(mapElement, {
         scrollWheelZoom: true,
         center: [43.6532, -79.3832], // Default center (Toronto)
@@ -83,24 +98,30 @@ declare const exports: {
   }
 
   // Create popup content for a burial site
-  function createPopupContent(site) {
+  function createPopupContent(site: BurialSiteForMap): string {
     const siteUrl = sunrise.getBurialSiteUrl(site.burialSiteId)
 
-    let html = `<div class="content is-small">
-      <p class="has-text-weight-bold mb-2">
-        <a href="${siteUrl}" target="_blank" rel="noopener">
-          ${cityssm.escapeHTML(site.burialSiteName || 'Unnamed Site')}
-        </a>
-      </p>`
+    let html = /* html */ `
+      <div class="content is-small">
+        <p class="has-text-weight-bold mb-2">
+          <a href="${siteUrl}" target="_blank">
+            ${cityssm.escapeHTML(site.burialSiteName === '' ? 'Unnamed Site' : site.burialSiteName)}
+          </a>
+        </p>
+    `
 
-    if (site.contracts && site.contracts.length > 0) {
-      html +=
-        '<p class="mb-1"><strong>Active/Future Contracts:</strong></p><ul class="mb-0">'
+    if (site.contracts.length > 0) {
+      html += /* html */ `
+          <p class="mb-1">
+            <strong>Active/Future Contracts:</strong>
+          </p>
+          <ul class="mb-0">
+        `
 
       for (const contract of site.contracts) {
         const contractUrl = sunrise.getContractUrl(contract.contractId)
         const deceasedText =
-          contract.deceasedNames && contract.deceasedNames.length > 0
+          contract.deceasedNames.length > 0
             ? ' - ' + cityssm.escapeHTML(contract.deceasedNames.join(', '))
             : ''
 
@@ -118,11 +139,12 @@ declare const exports: {
     }
 
     html += '</div>'
+
     return html
   }
 
   // Filter burial sites by deceased name
-  function filterBurialSites() {
+  function filterBurialSites(): BurialSiteForMap[] {
     const deceasedNameFilter = deceasedNameFilterElement.value
       .toLowerCase()
       .trim()
@@ -132,12 +154,12 @@ declare const exports: {
     }
 
     return allBurialSites.filter((site) => {
-      if (!site.contracts || site.contracts.length === 0) {
+      if (site.contracts.length === 0) {
         return false
       }
 
       return site.contracts.some((contract) => {
-        if (!contract.deceasedNames || contract.deceasedNames.length === 0) {
+        if (contract.deceasedNames.length === 0) {
           return false
         }
 
@@ -149,8 +171,11 @@ declare const exports: {
   }
 
   // Render burial sites on the map
-  function renderMap(cemeteryLatitude?: number | null, cemeteryLongitude?: number | null) {
-    if (markersLayer === null) {
+  function renderMap(
+    cemeteryLatitude?: number | null,
+    cemeteryLongitude?: number | null
+  ): void {
+    if (markersLayer === undefined || leafletMap === undefined) {
       return
     }
 
@@ -196,33 +221,46 @@ declare const exports: {
         padding: [50, 50],
         maxZoom: 16
       })
-    } else if (cemeteryLatitude !== null && cemeteryLatitude !== undefined && 
-               cemeteryLongitude !== null && cemeteryLongitude !== undefined) {
+    } else if (
+      cemeteryLatitude !== null &&
+      cemeteryLatitude !== undefined &&
+      cemeteryLongitude !== null &&
+      cemeteryLongitude !== undefined
+    ) {
       // No burial sites with coordinates, center on cemetery
       leafletMap.setView([cemeteryLatitude, cemeteryLongitude], 15)
     }
   }
 
   // Load burial sites for selected cemetery
-  function loadBurialSites() {
+  function loadBurialSites(): void {
     const cemeteryId = cemeterySelectElement.value
 
     if (cemeteryId === '') {
       allBurialSites = []
-      if (markersLayer !== null) {
+
+      if (markersLayer !== undefined) {
         markersLayer.clearLayers()
       }
+
       statsMappedElement.textContent = '0'
       statsTotalElement.textContent = '0'
+
       return
     }
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/burialSites/doGetBurialSitesForMap`,
       { cemeteryId },
-      (responseJSON) => {
+      (rawResponseJSON) => {
+        const responseJSON =
+          rawResponseJSON as unknown as BurialSiteMapResult & {
+            success: boolean
+            errorMessage?: string
+          }
+
         if (responseJSON.success) {
-          allBurialSites = responseJSON.burialSites || []
+          allBurialSites = responseJSON.burialSites
 
           // Update stats
           const mappedCount = allBurialSites.length
@@ -230,15 +268,19 @@ declare const exports: {
           statsMappedElement.textContent = mappedCount.toString()
           statsTotalElement.textContent = totalCount.toString()
 
-          renderMap(responseJSON.cemeteryLatitude, responseJSON.cemeteryLongitude)
-        } else {
-          cityssm.alertModal(
-            'Error Loading Burial Sites',
-            responseJSON.errorMessage ||
-              'An error occurred while loading burial sites.',
-            'OK',
-            'danger'
+          renderMap(
+            responseJSON.cemeteryLatitude,
+            responseJSON.cemeteryLongitude
           )
+        } else {
+          bulmaJS.alert({
+            contextualColorName: 'danger',
+            title: 'Error Loading Burial Sites',
+
+            message:
+              responseJSON.errorMessage ??
+              'An error occurred while loading burial sites. Please try again.'
+          })
         }
       }
     )
@@ -250,7 +292,8 @@ declare const exports: {
   // Event listeners
   cemeterySelectElement.addEventListener('change', loadBurialSites)
 
-  let deceasedNameTimeout
+  let deceasedNameTimeout: NodeJS.Timeout
+
   deceasedNameFilterElement.addEventListener('input', () => {
     clearTimeout(deceasedNameTimeout)
     deceasedNameTimeout = setTimeout(() => {

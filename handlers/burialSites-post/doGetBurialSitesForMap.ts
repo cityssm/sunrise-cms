@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import getBurialSitesForMap from '../../database/getBurialSitesForMap.js'
 
 export default function handler(
-  request: Request<unknown, unknown, { cemeteryId: number | string }>,
+  request: Request<unknown, unknown, { cemeteryId?: number | string }>,
   response: Response
 ): void {
   const { cemeteryId } = request.body
@@ -17,7 +17,7 @@ export default function handler(
     return
   }
 
-  const result = getBurialSitesForMap(cemeteryId)
+  const result = getBurialSitesForMap(cemeteryId ?? '')
 
   response.json({
     ...result,

@@ -17,8 +17,10 @@ export interface BurialSiteMapContract {
 export interface BurialSiteForMap {
   burialSiteId: number
   burialSiteName: string
+
   burialSiteLatitude: number | null
   burialSiteLongitude: number | null
+  
   cemeteryId: number | null
   cemeteryName: string | null
   contracts: BurialSiteMapContract[]
@@ -27,6 +29,7 @@ export interface BurialSiteForMap {
 export interface BurialSiteMapResult {
   burialSites: BurialSiteForMap[]
   totalBurialSites: number
+
   cemeteryLatitude: number | null
   cemeteryLongitude: number | null
 }
