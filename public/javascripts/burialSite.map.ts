@@ -18,6 +18,9 @@ declare const exports: {
   sunrise: Sunrise
 
   cemeteryId: string | null
+
+  centerLatitude: number
+  centerLongitude: number
 }
 ;(() => {
   const sunrise = exports.sunrise
@@ -49,8 +52,8 @@ declare const exports: {
     if (leafletMap === undefined) {
       leafletMap = new L.Map(mapElement, {
         scrollWheelZoom: true,
-        center: [43.6532, -79.3832], // Default center (Toronto)
-        zoom: 13
+        center: [exports.centerLatitude, exports.centerLongitude],
+        zoom: 11
       })
 
       new L.TileLayer(sunrise.leafletConstants.tileLayerUrl, {

@@ -67,6 +67,9 @@
 
 <script>
   exports.cemeteryId = <%- JSON.stringify(cemeteryId === '' ? 'null' : cemeteryId) %>;
+
+  exports.centerLatitude = <%- (JSON.stringify((configFunctions.getConfigProperty('settings.latitudeMin') + configFunctions.getConfigProperty('settings.latitudeMax')) / 2)) %>;
+  exports.centerLongitude = <%- (JSON.stringify((configFunctions.getConfigProperty('settings.longitudeMin') + configFunctions.getConfigProperty('settings.longitudeMax')) / 2)) %>;
 </script>
 <script src="<%= urlPrefix %>/javascripts/burialSite.map.js"></script>
 
