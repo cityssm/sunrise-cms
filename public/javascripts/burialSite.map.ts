@@ -4,6 +4,7 @@ import type Leaflet from 'leaflet'
 
 import type {
   BurialSiteForMap,
+  BurialSiteMapContract,
   BurialSiteMapResult
 } from '../../database/getBurialSitesForMap.js'
 
@@ -66,7 +67,7 @@ declare const exports: {
   }
 
   // Determine marker color based on contract status
-  function getMarkerColor(contracts, currentDate): 'green' | 'red' | 'yellow' {
+  function getMarkerColor(contracts: BurialSiteMapContract[], currentDate: number): 'green' | 'red' | 'yellow' {
     if (contracts.length === 0) {
       return 'green' // No active contracts
     }
@@ -81,7 +82,7 @@ declare const exports: {
       if (!isFuture) {
         allAreFuture = false
 
-        if (contract.isPreneed === 1) {
+        if (contract.isPreneed) {
           hasActivePreneed = true
         } else {
           hasActiveNonPreneed = true
@@ -188,7 +189,7 @@ declare const exports: {
     const filteredSites = filterBurialSites()
 
     // Get current date for contract status checks
-    const currentDate = Math.floor(Date.now() / 86_400_000) // Date as integer (days since epoch)
+    const currentDate = Number.parseInt(cityssm.dateToString(new Date()).replaceAll('-', ''), 10)
 
     const bounds = []
 

@@ -36,7 +36,7 @@
             const isFuture = contract.contractStartDate > currentDate;
             if (!isFuture) {
                 allAreFuture = false;
-                if (contract.isPreneed === 1) {
+                if (contract.isPreneed) {
                     hasActivePreneed = true;
                 }
                 else {
@@ -119,7 +119,7 @@
         markersLayer.clearLayers();
         const filteredSites = filterBurialSites();
         // Get current date for contract status checks
-        const currentDate = Math.floor(Date.now() / 86_400_000); // Date as integer (days since epoch)
+        const currentDate = Number.parseInt(cityssm.dateToString(new Date()).replaceAll('-', ''), 10);
         const bounds = [];
         for (const site of filteredSites) {
             if (site.burialSiteLatitude === null ||

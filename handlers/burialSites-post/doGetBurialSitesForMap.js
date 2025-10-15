@@ -9,7 +9,7 @@ export default function handler(request, response) {
         });
         return;
     }
-    const result = getBurialSitesForMap(cemeteryId);
+    const result = getBurialSitesForMap(cemeteryId ?? '');
     response.json({
         ...result,
         success: true
