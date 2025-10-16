@@ -86,49 +86,47 @@ describe('Contracts - Update', () => {
       .should('contain', '/edit')
 
     cy.fixture('contract.json').then((contractData: Contract) => {
-      const inputPrefix = "input[name='"
-
-      cy.get(inputPrefix + "purchaserName']").should(
+      cy.get("input[name='purchaserName']").should(
         'have.value',
         contractData.purchaserName
       )
 
-      cy.get(inputPrefix + "purchaserAddress1']").should(
+      cy.get("input[name='purchaserAddress1']").should(
         'have.value',
         contractData.purchaserAddress1
       )
 
-      cy.get(inputPrefix + "purchaserAddress2']").should(
+      cy.get("input[name='purchaserAddress2']").should(
         'have.value',
         contractData.purchaserAddress2
       )
 
-      cy.get(inputPrefix + "purchaserCity']").should(
+      cy.get("input[name='purchaserCity']").should(
         'have.value',
         contractData.purchaserCity
       )
 
-      cy.get(inputPrefix + "purchaserProvince']").should(
+      cy.get("input[name='purchaserProvince']").should(
         'have.value',
         contractData.purchaserProvince
       )
 
-      cy.get(inputPrefix + "purchaserPostalCode']").should(
+      cy.get("input[name='purchaserPostalCode']").should(
         'have.value',
         contractData.purchaserPostalCode
       )
 
-      cy.get(inputPrefix + "purchaserPhoneNumber']").should(
+      cy.get("input[name='purchaserPhoneNumber']").should(
         'have.value',
         contractData.purchaserPhoneNumber
       )
 
-      cy.get(inputPrefix + "purchaserEmail']").should(
+      cy.get("input[name='purchaserEmail']").should(
         'have.value',
         contractData.purchaserEmail
       )
 
-      cy.get(inputPrefix + "purchaserRelationship']").should(
+      cy.get("input[name='purchaserRelationship']").should(
         'have.value',
         contractData.purchaserRelationship
       )
