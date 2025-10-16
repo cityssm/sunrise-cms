@@ -377,6 +377,100 @@
             }
         });
     }
+    function buildMilestoneElement(milestone) {
+        const currentDateString = cityssm.dateToString(new Date());
+        const panelBlockElement = document.createElement('div');
+        panelBlockElement.className = 'panel-block is-block container--milestone';
+        if (milestone.workOrderMilestoneCompletionDate === null &&
+            (milestone.workOrderMilestoneDateString ?? '') < currentDateString) {
+            panelBlockElement.classList.add('has-background-warning-light');
+        }
+        panelBlockElement.dataset.workOrderMilestoneId =
+            milestone.workOrderMilestoneId.toString();
+        // eslint-disable-next-line no-unsanitized/property
+        panelBlockElement.innerHTML = /*html*/ `
+      <div class="columns is-mobile">
+        <div class="column is-narrow">
+          ${milestone.workOrderMilestoneCompletionDate
+            ? /*html*/ `
+                <span
+                  class="button is-static"
+                  title="Completed ${cityssm.escapeHTML(milestone.workOrderMilestoneCompletionDateString ?? '')}"
+                >
+                  <span class="icon is-small"><i class="fa-solid fa-check"></i></span>
+                </span>
+              `
+            : /*html*/ `
+                <button class="button button--completeMilestone" type="button" title="Incomplete">
+                  <span class="icon is-small"><i class="fa-regular fa-square"></i></span>
+                </button>
+              `}
+        </div>
+        <div class="column">
+          ${milestone.workOrderMilestoneTypeId
+            ? /*html*/ `
+                <strong>
+                  ${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}
+                </strong><br />
+              `
+            : ''}
+          ${milestone.workOrderMilestoneDate === 0
+            ? '<span class="has-text-grey">(No Set Date)</span>'
+            : milestone.workOrderMilestoneDateString}
+          ${milestone.workOrderMilestoneTime === null
+            ? ''
+            : ` ${milestone.workOrderMilestoneTimePeriodString}`}<br />
+          <span class="is-size-7">
+            ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}
+          </span>
+        </div>
+        <div class="column is-narrow">
+          <div class="dropdown is-right">
+            <div class="dropdown-trigger">
+              <button class="button is-small" type="button" title="Options">
+                <span class="icon is-small"><i class="fa-solid fa-ellipsis-v"></i></span>
+              </button>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-content">
+                ${milestone.workOrderMilestoneCompletionDate
+            ? /*html*/ `
+                      <a class="dropdown-item button--reopenMilestone" href="#">
+                        <span class="icon"><i class="fa-solid fa-times"></i></span>
+                        <span>Reopen Milestone</span>
+                      </a>
+                    `
+            : /*html*/ `
+                      <a class="dropdown-item button--editMilestone" href="#">
+                        <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
+                        <span>Edit Milestone</span>
+                      </a>
+                    `}
+                <hr class="dropdown-divider" />
+                <a class="dropdown-item button--deleteMilestone" href="#">
+                  <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
+                  <span>Delete Milestone</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+        panelBlockElement
+            .querySelector('.button--reopenMilestone')
+            ?.addEventListener('click', reopenMilestone);
+        panelBlockElement
+            .querySelector('.button--editMilestone')
+            ?.addEventListener('click', editMilestone);
+        panelBlockElement
+            .querySelector('.button--completeMilestone')
+            ?.addEventListener('click', completeMilestone);
+        panelBlockElement
+            .querySelector('.button--deleteMilestone')
+            ?.addEventListener('click', deleteMilestone);
+        return panelBlockElement;
+    }
     function renderMilestones() {
         // Clear milestones panel
         const milestonesPanelElement = document.querySelector('#panel--milestones');
@@ -384,98 +478,8 @@
         for (const panelBlockToDelete of panelBlockElementsToDelete) {
             panelBlockToDelete.remove();
         }
-        const currentDateString = cityssm.dateToString(new Date());
         for (const milestone of workOrderMilestones) {
-            const panelBlockElement = document.createElement('div');
-            panelBlockElement.className = 'panel-block is-block container--milestone';
-            if (milestone.workOrderMilestoneCompletionDate === null &&
-                (milestone.workOrderMilestoneDateString ?? '') < currentDateString) {
-                panelBlockElement.classList.add('has-background-warning-light');
-            }
-            panelBlockElement.dataset.workOrderMilestoneId =
-                milestone.workOrderMilestoneId.toString();
-            // eslint-disable-next-line no-unsanitized/property
-            panelBlockElement.innerHTML = /*html*/ `
-        <div class="columns is-mobile">
-          <div class="column is-narrow">
-            ${milestone.workOrderMilestoneCompletionDate
-                ? /*html*/ `
-                  <span
-                    class="button is-static"
-                    title="Completed ${milestone.workOrderMilestoneCompletionDateString}"
-                  >
-                    <span class="icon is-small"><i class="fa-solid fa-check"></i></span>
-                  </span>
-                `
-                : /*html*/ `
-                  <button class="button button--completeMilestone" title="Incomplete" type="button">
-                    <span class="icon is-small"><i class="fa-regular fa-square"></i></span>
-                  </button>
-                `}
-          </div>
-          <div class="column">
-            ${milestone.workOrderMilestoneTypeId
-                ? /*html*/ `
-                  <strong>
-                    ${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}
-                  </strong><br />
-                `
-                : ''}
-            ${milestone.workOrderMilestoneDate === 0
-                ? '<span class="has-text-grey">(No Set Date)</span>'
-                : milestone.workOrderMilestoneDateString}
-            ${milestone.workOrderMilestoneTime === null
-                ? ''
-                : ` ${milestone.workOrderMilestoneTimePeriodString}`}<br />
-            <span class="is-size-7">
-              ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}
-            </span>
-          </div>
-          <div class="column is-narrow">
-            <div class="dropdown is-right">
-              <div class="dropdown-trigger">
-                <button class="button is-small" type="button" title="Options">
-                  <span class="icon is-small"><i class="fa-solid fa-ellipsis-v"></i></span>
-                </button>
-              </div>
-              <div class="dropdown-menu">
-                <div class="dropdown-content">
-                  ${milestone.workOrderMilestoneCompletionDate
-                ? /*html*/ `
-                        <a class="dropdown-item button--reopenMilestone" href="#">
-                          <span class="icon"><i class="fa-solid fa-times"></i></span>
-                          <span>Reopen Milestone</span>
-                        </a>
-                      `
-                : /*html*/ `
-                        <a class="dropdown-item button--editMilestone" href="#">
-                          <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
-                          <span>Edit Milestone</span>
-                        </a>
-                      `}
-                  <hr class="dropdown-divider" />
-                  <a class="dropdown-item button--deleteMilestone" href="#">
-                    <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
-                    <span>Delete Milestone</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-            panelBlockElement
-                .querySelector('.button--reopenMilestone')
-                ?.addEventListener('click', reopenMilestone);
-            panelBlockElement
-                .querySelector('.button--editMilestone')
-                ?.addEventListener('click', editMilestone);
-            panelBlockElement
-                .querySelector('.button--completeMilestone')
-                ?.addEventListener('click', completeMilestone);
-            panelBlockElement
-                .querySelector('.button--deleteMilestone')
-                ?.addEventListener('click', deleteMilestone);
+            const panelBlockElement = buildMilestoneElement(milestone);
             milestonesPanelElement.append(panelBlockElement);
         }
         if (workOrderMilestones.length === 0) {
