@@ -64,7 +64,7 @@ declare const exports: {
 
     if (contract.purchaserName !== '') {
       contactsHTML += /*html*/ `
-        <li class="has-text-grey" title="Purchaser">
+        <li class="has-text-grey-dark" title="Purchaser">
           <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar"></i></span>
           ${cityssm.escapeHTML(contract.purchaserName)}
         </li>
@@ -73,7 +73,7 @@ declare const exports: {
 
     if (contract.funeralHomeName !== null && contract.funeralHomeName !== '') {
       contactsHTML += /*html*/ `
-        <li class="has-text-grey" title="Funeral Home">
+        <li class="has-text-grey-dark" title="Funeral Home">
           <span class="fa-li"><i class="fa-solid fa-place-of-worship"></i></span>
           ${cityssm.escapeHTML(contract.funeralHomeName)}
         </li>
