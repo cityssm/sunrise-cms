@@ -17,6 +17,9 @@ jobs:
           node-version: 22
           cache: 'npm'
 
+      - name: Install Dependencies
+        run: npm ci
+
       - name: Install Cypress
         run: npm install -g cypress@15
 
