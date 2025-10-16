@@ -476,16 +476,17 @@
                   ${cityssm.escapeHTML(contract.contractType)}
                 </td>
               `;
-                    if (contract.burialSiteId) {
+                    if (contract.burialSiteId === null ||
+                        contract.burialSiteId === undefined) {
+                        rowElement.insertAdjacentHTML('beforeend', '<td><span class="has-text-grey">(No Burial Site)</span></td>');
+                    }
+                    else {
                         rowElement.insertAdjacentHTML('beforeend', 
                         /*html*/ `
                     <td>
                       ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
                     </td>
                   `);
-                    }
-                    else {
-                        rowElement.insertAdjacentHTML('beforeend', '<td><span class="has-text-grey">(No Burial Site)</span></td>');
                     }
                     const intermentCount = contract.contractInterments?.length ?? 0;
                     const recipientOrDeceased = contract.isPreneed

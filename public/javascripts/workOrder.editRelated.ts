@@ -705,7 +705,15 @@ declare const exports: {
                 </td>
               `
 
-              if (contract.burialSiteId) {
+              if (
+                contract.burialSiteId === null ||
+                contract.burialSiteId === undefined
+              ) {
+                rowElement.insertAdjacentHTML(
+                  'beforeend',
+                  '<td><span class="has-text-grey">(No Burial Site)</span></td>'
+                )
+              } else {
                 rowElement.insertAdjacentHTML(
                   'beforeend',
                   /*html*/ `
@@ -713,11 +721,6 @@ declare const exports: {
                       ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
                     </td>
                   `
-                )
-              } else {
-                rowElement.insertAdjacentHTML(
-                  'beforeend',
-                  '<td><span class="has-text-grey">(No Burial Site)</span></td>'
                 )
               }
 
