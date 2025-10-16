@@ -52,7 +52,7 @@ declare const exports: {
     if (cemetery.parentCemeteryId !== null) {
       featuresHTML += /*html*/ `
         <span class="icon" title="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
-          <i class="fa-solid fa-turn-up" role="img"></i>
+          <i class="fa-solid fa-turn-up" alt="Has Parent Cemetery" role="img"></i>
         </span>
       `
     }
@@ -63,7 +63,7 @@ declare const exports: {
     ) {
       featuresHTML += /*html*/ `
         <span class="icon" title="Geographic Coordinates">
-          <i class="fa-solid fa-map-marker-alt" role="img"></i>
+          <i class="fa-solid fa-map-marker-alt" alt="Has Geographic Coordinates" role="img"></i>
         </span>
       `
     }
@@ -71,7 +71,7 @@ declare const exports: {
     if (cemetery.cemeterySvg !== '') {
       featuresHTML += /*html*/ `
         <span class="icon" title="Image">
-          <i class="fa-solid fa-image" role="img"></i>
+          <i class="fa-solid fa-image" alt="Has Image" role="img"></i>
         </span>
       `
     }
