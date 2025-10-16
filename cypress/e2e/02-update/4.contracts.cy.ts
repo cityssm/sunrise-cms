@@ -31,51 +31,47 @@ describe('Contracts - Update', () => {
       .eq(1)
       .invoke('val')
       .then((contractTypeId) => {
-        cy.get("select[name='contractTypeId']").select(
-          contractTypeId as string
-        )
+        cy.get("select[name='contractTypeId']").select(contractTypeId as string)
       })
 
     // Select the first available burial site
     cy.get("input[name='burialSiteId']").should('exist')
 
     cy.fixture('contract.json').then((contractData: Contract) => {
-      const inputPrefix = "input[name='"
-
       // Fill in purchaser information
-      cy.get(inputPrefix + "purchaserName']")
+      cy.get("input[name='purchaserName']")
         .clear()
         .type(contractData.purchaserName)
 
-      cy.get(inputPrefix + "purchaserAddress1']")
+      cy.get("input[name='purchaserAddress1']")
         .clear()
         .type(contractData.purchaserAddress1)
 
-      cy.get(inputPrefix + "purchaserAddress2']")
+      cy.get("input[name='purchaserAddress2']")
         .clear()
         .type(contractData.purchaserAddress2)
 
-      cy.get(inputPrefix + "purchaserCity']")
+      cy.get("input[name='purchaserCity']")
         .clear()
         .type(contractData.purchaserCity)
 
-      cy.get(inputPrefix + "purchaserProvince']")
+      cy.get("input[name='purchaserProvince']")
         .clear()
         .type(contractData.purchaserProvince)
 
-      cy.get(inputPrefix + "purchaserPostalCode']")
+      cy.get("input[name='purchaserPostalCode']")
         .clear()
         .type(contractData.purchaserPostalCode)
 
-      cy.get(inputPrefix + "purchaserPhoneNumber']")
+      cy.get("input[name='purchaserPhoneNumber']")
         .clear()
         .type(contractData.purchaserPhoneNumber)
 
-      cy.get(inputPrefix + "purchaserEmail']")
+      cy.get("input[name='purchaserEmail']")
         .clear()
         .type(contractData.purchaserEmail)
 
-      cy.get(inputPrefix + "purchaserRelationship']")
+      cy.get("input[name='purchaserRelationship']")
         .clear()
         .type(contractData.purchaserRelationship)
     })
