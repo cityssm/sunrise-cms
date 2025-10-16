@@ -32,6 +32,41 @@ Be nice! 😉
 For all other bug reports, feature requests, or enhancements,
 open an issue and use the closest template.
 
+## Financial Contributions
+
+**The City of Sault Ste. Marie does not accept financial contributions for its freely available open source work.**
+
+However, Sunrise CMS relies on several packages that do accept donations.
+Some of the main ones:
+
+- [Leaflet](https://github.com/sponsors/Leaflet)
+  - The mapping engine.
+
+- [Bulma](https://bulma.io/become-a-bulma-sponsor/)
+  - The CSS framework used by Sunrise CMS.
+
+- [OpenStreetMap](https://welcome.openstreetmap.org/about-osm-community/donate-to-osm/)
+  - The database of map tiles used by Sunrise CMS.
+
+- [Joshua Wise](https://github.com/sponsors/JoshuaWise)
+  - Maintainer of better-sqlite3, the database package used by Sunrise CMS.
+
+- [Sindre Sorhus](https://github.com/sponsors/sindresorhus)
+  - Developer of many packages used by Sunrise CMS.
+
+- [Express](https://opencollective.com/express)
+  - The framework Sunrise CMS is built on.
+
+- [Node.js](https://github.com/sponsors/nodejs)
+  - The platform Sunrise CMS runs on.
+
+To see all of the packages used by Sunrise CMS that accept donations,
+run the following command in the Sunrise CMS directory.
+
+```bash
+npm fund
+```
+
 ## Thanks Again
 
 We are a very small team with big aspirations and limited resources.
