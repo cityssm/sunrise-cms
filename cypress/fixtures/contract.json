@@ -1,0 +1,11 @@
+{
+  "purchaserName": "Test Purchaser",
+  "purchaserAddress1": "123 Test Street",
+  "purchaserAddress2": "Suite 100",
+  "purchaserCity": "Sault Ste. Marie",
+  "purchaserProvince": "ON",
+  "purchaserPostalCode": "P6A 1X1",
+  "purchaserPhoneNumber": "705-123-4567",
+  "purchaserEmail": "test@example.com",
+  "purchaserRelationship": "Family"
+}
