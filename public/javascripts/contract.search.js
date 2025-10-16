@@ -154,7 +154,9 @@
       <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
         <thead>
           <tr>
-            <th class="has-width-1"></th>
+            <th class="has-width-1">
+              <span class="is-sr-only">Contract Time</span>
+            </th>
             <th>Contract Type</th>
             <th>Burial Site</th>
             <th>Contract Date</th>
