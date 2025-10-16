@@ -30,7 +30,8 @@ export const config: ConfigObject[] = defineConfig(configWebApp, {
   files: ['**/*.ts'],
   languageOptions: {
     parserOptions: {
-      project: ['./tsconfig.json', './public/javascripts/tsconfig.json']
+      project: ['./tsconfig.json', './public/javascripts/tsconfig.json'],
+      projectService: true
     }
   },
   plugins: {

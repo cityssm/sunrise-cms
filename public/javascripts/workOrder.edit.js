@@ -280,8 +280,8 @@
         const dateValue = new Date(`${dateValueString}T00:00:00`);
         const timeRange = exports.workOrderWorkDayRanges?.[dateValue.getDay()] === undefined
             ? {
-                startHour: 0,
-                endHour: 24
+                endHour: 24,
+                startHour: 0
             }
             : exports.workOrderWorkDayRanges[dateValue.getDay()];
         const setHourString = workOrderMilestoneTimeStringElement.value;

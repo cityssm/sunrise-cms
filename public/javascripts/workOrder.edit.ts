@@ -475,8 +475,8 @@ declare const exports: {
     const timeRange =
       exports.workOrderWorkDayRanges?.[dateValue.getDay()] === undefined
         ? {
-            startHour: 0,
-            endHour: 24
+            endHour: 24,
+            startHour: 0
           }
         : exports.workOrderWorkDayRanges[dateValue.getDay()]
 

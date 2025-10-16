@@ -164,7 +164,149 @@ declare const exports: {
     addBurialSite(burialSiteId)
   }
 
-  // eslint-disable-next-line complexity
+  function buildRelatedContractElement(contract: Contract): HTMLElement {
+    const rowElement = document.createElement('tr')
+    rowElement.className = 'container--contract'
+    rowElement.dataset.contractId = contract.contractId.toString()
+
+    const hasBurialSiteRecord =
+      (contract.burialSiteId ?? '') !== '' &&
+      workOrderBurialSites.some(
+        (burialSite) => contract.burialSiteId === burialSite.burialSiteId
+      )
+
+    let contractIcon =
+      '<i class="fa-solid fa-stop" title="Previous Contract"></i>'
+
+    if (contract.contractIsFuture) {
+      contractIcon =
+        '<i class="fa-solid fa-fast-forward" title="Future Contract"></i>'
+    } else if (contract.contractIsActive) {
+      contractIcon = '<i class="fa-solid fa-play" title="Current Contract"></i>'
+    }
+
+    // eslint-disable-next-line no-unsanitized/property
+    rowElement.innerHTML = /*html*/ `
+      <td class="is-width-1 has-text-centered">
+        ${contractIcon}
+      </td>
+      <td>
+        <a class="has-text-weight-bold" href="${sunrise.getContractUrl(contract.contractId)}">
+          ${cityssm.escapeHTML(contract.contractType)}
+        </a><br />
+        <span class="is-size-7">#${cityssm.escapeHTML(contract.contractId.toString())}</span>
+      </td>
+    `
+
+    if (contract.burialSiteId === null || contract.burialSiteId === undefined) {
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        '<td><span class="has-text-grey">(No Burial Site)</span></td>'
+      )
+    } else {
+      // eslint-disable-next-line no-unsanitized/method
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        /*html*/ `
+          <td>
+            ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
+            ${
+              hasBurialSiteRecord
+                ? ''
+                : /*html*/ `
+                  <button
+                    class="button is-small is-light is-success button--addBurialSite"
+                    data-burial-site-id="${contract.burialSiteId.toString()}"
+                    type="button"
+                    title="Add Burial Site"
+                  >
+                    <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                  </button>
+                `
+            }
+          </td>
+        `
+      )
+    }
+
+    let contactsHtml = ''
+
+    for (const interment of contract.contractInterments ?? []) {
+      contactsHtml += /*html*/ `
+        <li title="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
+          <span class="fa-li">
+            <i class="fa-solid fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
+          </span>
+          ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+        </li>
+      `
+    }
+
+    if (contract.purchaserName !== '') {
+      contactsHtml += /*html*/ `
+        <li title="Purchaser">
+          <span class="fa-li">
+            <i class="fa-solid fa-hand-holding-dollar" aria-label="Purchaser"></i>
+          </span>
+          ${cityssm.escapeHTML(contract.purchaserName)}
+        </li>
+      `
+    }
+
+    if (contract.funeralHomeName !== null) {
+      contactsHtml += /*html*/ `
+        <li title="Funeral Home">
+          <span class="fa-li">
+            <i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i>
+          </span>
+          ${cityssm.escapeHTML(contract.funeralHomeName)}
+        </li>
+      `
+    }
+
+    // eslint-disable-next-line no-unsanitized/method
+    rowElement.insertAdjacentHTML(
+      'beforeend',
+      /*html*/ `
+        <td>
+          ${contract.contractStartDateString}
+        </td>
+        <td>
+          ${
+            contract.contractEndDate === null ||
+            contract.contractEndDate === undefined
+              ? '<span class="has-text-grey">(No End Date)</span>'
+              : contract.contractEndDateString
+          }
+        </td>
+        <td>
+          <ul class="fa-ul ml-5">
+            ${contactsHtml}
+          </ul>
+        </td>
+        <td>
+          <button
+            class="button is-small is-light is-danger button--deleteContract"
+            type="button"
+            title="Delete Relationship"
+          >
+            <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+          </button>
+        </td>
+      `
+    )
+
+    rowElement
+      .querySelector('.button--addBurialSite')
+      ?.addEventListener('click', addBurialSiteFromContract)
+
+    rowElement
+      .querySelector('.button--deleteContract')
+      ?.addEventListener('click', deleteContract)
+
+    return rowElement
+  }
+
   function renderRelatedContracts(): void {
     const contractsContainerElement = document.querySelector(
       '#container--contracts'
@@ -204,148 +346,7 @@ declare const exports: {
     `
 
     for (const contract of workOrderContracts) {
-      const rowElement = document.createElement('tr')
-      rowElement.className = 'container--contract'
-      rowElement.dataset.contractId = contract.contractId.toString()
-
-      const hasBurialSiteRecord =
-        (contract.burialSiteId ?? '') !== '' &&
-        workOrderBurialSites.some(
-          (burialSite) => contract.burialSiteId === burialSite.burialSiteId
-        )
-
-      let contractIcon =
-        '<i class="fa-solid fa-stop" title="Previous Contract"></i>'
-
-      if (contract.contractIsFuture) {
-        contractIcon =
-          '<i class="fa-solid fa-fast-forward" title="Future Contract"></i>'
-      } else if (contract.contractIsActive) {
-        contractIcon =
-          '<i class="fa-solid fa-play" title="Current Contract"></i>'
-      }
-
-      // eslint-disable-next-line no-unsanitized/property
-      rowElement.innerHTML = /*html*/ `
-        <td class="is-width-1 has-text-centered">
-          ${contractIcon}
-        </td>
-        <td>
-          <a class="has-text-weight-bold" href="${sunrise.getContractUrl(contract.contractId)}">
-            ${cityssm.escapeHTML(contract.contractType)}
-          </a><br />
-          <span class="is-size-7">#${cityssm.escapeHTML(contract.contractId.toString())}</span>
-        </td>
-      `
-
-      if (
-        contract.burialSiteId === null ||
-        contract.burialSiteId === undefined
-      ) {
-        rowElement.insertAdjacentHTML(
-          'beforeend',
-          '<td><span class="has-text-grey">(No Burial Site)</span></td>'
-        )
-      } else {
-        // eslint-disable-next-line no-unsanitized/method
-        rowElement.insertAdjacentHTML(
-          'beforeend',
-          /*html*/ `
-            <td>
-              ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
-              ${
-                hasBurialSiteRecord
-                  ? ''
-                  : /*html*/ `
-                    <button
-                      class="button is-small is-light is-success button--addBurialSite"
-                      data-burial-site-id="${contract.burialSiteId.toString()}"
-                      type="button"
-                      title="Add Burial Site"
-                    >
-                      <span class="icon"><i class="fa-solid fa-plus"></i></span>
-                    </button>
-                  `
-              }
-            </td>
-          `
-        )
-      }
-
-      let contactsHtml = ''
-
-      for (const interment of contract.contractInterments ?? []) {
-        contactsHtml += /*html*/ `
-          <li title="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
-            <span class="fa-li">
-              <i class="fa-solid fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
-            </span>
-            ${cityssm.escapeHTML(interment.deceasedName ?? '')}
-          </li>
-        `
-      }
-
-      if (contract.purchaserName !== '') {
-        contactsHtml += /*html*/ `
-          <li title="Purchaser">
-            <span class="fa-li">
-              <i class="fa-solid fa-hand-holding-dollar" aria-label="Purchaser"></i>
-            </span>
-            ${cityssm.escapeHTML(contract.purchaserName)}
-          </li>
-        `
-      }
-
-      if (contract.funeralHomeName !== null) {
-        contactsHtml += /*html*/ `
-          <li title="Funeral Home">
-            <span class="fa-li">
-              <i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i>
-            </span>
-            ${cityssm.escapeHTML(contract.funeralHomeName)}
-          </li>
-        `
-      }
-
-      // eslint-disable-next-line no-unsanitized/method
-      rowElement.insertAdjacentHTML(
-        'beforeend',
-        /*html*/ `
-          <td>
-            ${contract.contractStartDateString}
-          </td>
-          <td>
-            ${
-              contract.contractEndDate === null ||
-              contract.contractEndDate === undefined
-                ? '<span class="has-text-grey">(No End Date)</span>'
-                : contract.contractEndDateString
-            }
-          </td>
-          <td>
-            <ul class="fa-ul ml-5">
-              ${contactsHtml}
-            </ul>
-          </td>
-          <td>
-            <button
-              class="button is-small is-light is-danger button--deleteContract"
-              type="button"
-              title="Delete Relationship"
-            >
-              <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
-            </button>
-          </td>
-        `
-      )
-
-      rowElement
-        .querySelector('.button--addBurialSite')
-        ?.addEventListener('click', addBurialSiteFromContract)
-
-      rowElement
-        .querySelector('.button--deleteContract')
-        ?.addEventListener('click', deleteContract)
+      const rowElement = buildRelatedContractElement(contract)
 
       contractsContainerElement.querySelector('tbody')?.append(rowElement)
     }
