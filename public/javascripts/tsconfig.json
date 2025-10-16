@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2021",
-    "module": "CommonJS",
+    "target": "es2023",
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "isolatedModules": false,
     "declaration": true,
     "noImplicitAny": false,
     "removeComments": false,
     "allowUnreachableCode": false,
     "skipLibCheck": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "esModuleInterop": true
   },
   "compileOnSave": true,
   "buildOnSave": true,

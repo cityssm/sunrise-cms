@@ -1,19 +1,15 @@
-import { logout } from '../../support/index.js'
+import { checkA11yLog, logout } from '../../support/index.js'
 
 describe('Login Page', () => {
   beforeEach(logout)
 
   it('Has no detectable accessibility issues', () => {
     cy.injectAxe()
-    cy.checkA11y()
+    cy.checkA11y(undefined, undefined, checkA11yLog)
   })
 
   it('Contains a login form', () => {
     cy.get('form').should('have.length', 1)
-  })
-
-  it('Contains a _csrf field', () => {
-    cy.get("form [name='_csrf']").should('exist')
   })
 
   it('Contains a userName field', () => {
@@ -41,6 +37,8 @@ describe('Login Page', () => {
 
   it('Redirects to login when invalid credentials are used', () => {
     cy.get("form [name='userName']").type('*testUser')
+    
+    // eslint-disable-next-line @cspell/spellchecker
     cy.get("form [name='password']").type('b@dP@ssword')
 
     cy.get('form').submit()

@@ -1,0 +1,76 @@
+<%- include('../_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('_menu'); -%>
+  </div>
+  <div class="column">
+    <div class="columns is-vcentered is-mobile">
+      <div class="column">
+        <nav class="breadcrumb">
+          <ul>
+            <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+            <li>
+              <a href="#">
+                <span class="icon is-small"><i class="fa-solid fa-cog"></i></span>
+                <span>Administrator Tools</span>
+              </a>
+            </li>
+            <li class="is-active">
+              <a href="#" aria-current="page">
+                Fee Management
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="column is-narrow has-text-right">
+        <a
+          class="has-text-info-dark is-size-7"
+          href="https://cityssm.github.io/sunrise-cms/docs/feeManagement.html"
+          title="Help Documentation"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <span class="icon is-small"><i class="fa-regular fa-circle-question"></i></span>
+          <span>Help</span>
+        </a>
+      </div>
+    </div>
+    
+    <div class="columns is-vcentered">
+      <div class="column">
+        <h1 class="title is-1">
+          Fee Management
+        </h1>
+      </div>
+      <div class="column has-text-right is-narrow is-hidden-print">
+        <button
+          class="button is-success"
+          id="button--addFeeCategory"
+          data-cy="addFeeCategory"
+          type="button"
+        >
+          <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+          <span>Add Fee Category</span>
+        </button>
+      </div>
+    </div>
+    
+    <div id="container--feeCategories"></div>
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script>
+  exports.feeCategories = <%- JSON.stringify(feeCategories) %>;
+  exports.contractTypes = <%- JSON.stringify(contractTypes) %>;
+  exports.burialSiteTypes = <%- JSON.stringify(burialSiteTypes) %>;
+
+  exports.taxPercentageDefault = <%= configFunctions.getConfigProperty("settings.fees.taxPercentageDefault") %>;
+</script>
+
+<script src="<%= urlPrefix %>/javascripts/fees.admin.js"></script>
+
+<%- include('../_footerB'); -%>

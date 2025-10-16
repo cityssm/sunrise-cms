@@ -11,15 +11,15 @@ export default function getContractFees(
 
   const fees = database
     .prepare(
-      `select o.contractId, o.feeId,
+      `select cf.contractId, cf.feeId,
         c.feeCategory, f.feeName,
-        f.includeQuantity, o.feeAmount, o.taxAmount, o.quantity, f.quantityUnit
-        from ContractFees o
-        left join Fees f on o.feeId = f.feeId
+        f.includeQuantity, cf.feeAmount, cf.taxAmount, cf.quantity, f.quantityUnit
+        from ContractFees cf
+        left join Fees f on cf.feeId = f.feeId
         left join FeeCategories c on f.feeCategoryId = c.feeCategoryId
-        where o.recordDelete_timeMillis is null
-        and o.contractId = ?
-        order by o.recordCreate_timeMillis`
+        where cf.recordDelete_timeMillis is null
+        and cf.contractId = ?
+        order by cf.recordCreate_timeMillis`
     )
     .all(contractId) as ContractFee[]
 

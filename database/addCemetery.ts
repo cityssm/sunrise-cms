@@ -27,9 +27,10 @@ export type AddCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
 
 export default function addCemetery(
   addForm: AddCemeteryForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): number {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -70,7 +71,9 @@ export default function addCemetery(
 
   updateCemeteryDirectionsOfArrival(cemeteryId, addForm, database)
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return cemeteryId
 }

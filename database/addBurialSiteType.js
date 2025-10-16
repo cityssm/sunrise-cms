@@ -1,8 +1,8 @@
 import sqlite from 'better-sqlite3';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function addBurialSiteType(addForm, user) {
-    const database = sqlite(sunriseDB);
+export default function addBurialSiteType(addForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`insert into BurialSiteTypes (
@@ -14,7 +14,9 @@ export default function addBurialSiteType(addForm, user) {
         .run(addForm.burialSiteType, addForm.bodyCapacityMax === '' ? undefined : addForm.bodyCapacityMax, addForm.crematedCapacityMax === ''
         ? undefined
         : addForm.crematedCapacityMax, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     clearCacheByTableName('BurialSiteTypes');
     return result.lastInsertRowid;
 }

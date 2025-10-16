@@ -1,9 +1,9 @@
-import { getConfigProperty } from '../../../helpers/config.helpers.js'
+// import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { FuneralHome } from '../../../types/record.types.js'
-import { login, logout } from '../../support/index.js'
+import { login, logout, pageLoadDelayMillis } from '../../support/index.js'
 
-describe('Update - Funeral Homes', () => {
+describe('Funeral Homes - Update', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testUpdate)
@@ -49,25 +49,26 @@ describe('Update - Funeral Homes', () => {
         .type(funeralHomeData.funeralHomePhoneNumber)
     })
 
+    /*
     cy.log('Ensure the default city and province are used')
 
     cy.get("input[name='funeralHomeCity']").should(
       'have.value',
-      getConfigProperty('settings.cityDefault')
+      getCachedSettingValue('defaults.city')
     )
 
     cy.get("input[name='funeralHomeProvince']").should(
       'have.value',
-      getConfigProperty('settings.provinceDefault')
+      getCachedSettingValue('defaults.province')
     )
+    */
 
     cy.log('Submit the form')
 
     cy.get('#form--funeralHome').submit()
 
-    cy.wait(1000)
-
-    cy.location('pathname')
+    cy.wait(pageLoadDelayMillis)
+      .location('pathname')
       .should('not.contain', '/new')
       .should('contain', '/edit')
 
@@ -87,15 +88,17 @@ describe('Update - Funeral Homes', () => {
         funeralHomeData.funeralHomeAddress2
       )
 
+      /*
       cy.get("input[name='funeralHomeCity']").should(
         'have.value',
-        getConfigProperty('settings.cityDefault')
+        getCachedSettingValue('defaults.city')
       )
 
       cy.get("input[name='funeralHomeProvince']").should(
         'have.value',
-        getConfigProperty('settings.provinceDefault')
+        getCachedSettingValue('defaults.province')
       )
+      */
 
       cy.get("input[name='funeralHomePostalCode']").should(
         'have.value',

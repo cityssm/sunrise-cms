@@ -1,12 +1,11 @@
 import sqlite from 'better-sqlite3';
 import Debug from 'debug';
-import { sunriseDB } from '../helpers/database.helpers.js';
+import { backupFolder, sunriseDB } from '../helpers/database.helpers.js';
 const debug = Debug('sunrise:database:backupDatabase');
-const backupFolder = 'data/backups';
-export async function backupDatabase() {
+export async function backupDatabase(connectedDatabase) {
     const databasePathSplit = sunriseDB.split(/[/\\]/);
     const backupDatabasePath = `${backupFolder}/${databasePathSplit.at(-1)}.${Date.now().toString()}`;
-    const database = sqlite(sunriseDB);
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     try {
         const result = await database.backup(backupDatabasePath);
         if (result.remainingPages === 0) {
@@ -23,6 +22,8 @@ export async function backupDatabase() {
         return false;
     }
     finally {
-        database.close();
+        if (connectedDatabase === undefined) {
+            database.close();
+        }
     }
 }

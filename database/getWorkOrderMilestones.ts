@@ -8,7 +8,7 @@ import {
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
-import { getConfigProperty } from '../helpers/config.helpers.js'
+import { getCachedSettingValue } from '../helpers/cache/settings.cache.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 import type { WorkOrderMilestone } from '../types/record.types.js'
 
@@ -26,7 +26,13 @@ export interface WorkOrderMilestoneFilters {
     | 'notBlank'
     | 'recent'
     | 'upcomingMissed'
+    | 'yearMonth'
+
   workOrderMilestoneDateString?: '' | DateString
+
+  workOrderMilestoneYear?: number | string
+
+  workOrderMilestoneMonth?: number | string
 }
 
 interface WorkOrderMilestoneOptions {
@@ -62,17 +68,20 @@ export default async function getWorkOrderMilestones(
       orderByClause = ` order by
         m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime,
         m.workOrderMilestoneDate,
-        case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end,
+        ifnull(m.workOrderMilestoneTime, 9999),
         t.orderNumber, m.workOrderMilestoneId`
       break
     }
 
     case 'date': {
       orderByClause = ` order by m.workOrderMilestoneDate,
-        case when m.workOrderMilestoneTime = 0 then 9999 else m.workOrderMilestoneTime end,
+        ifnull(m.workOrderMilestoneTime, 9999),
         t.orderNumber, m.workOrderId, m.workOrderMilestoneId`
       break
     }
+
+    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
+    // no default
   }
 
   // Query
@@ -160,6 +169,13 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
   sqlParameters: unknown[]
   sqlWhereClause: string
 } {
+  const recentBeforeDays = Number.parseInt(
+    getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays')
+  )
+  const recentAfterDays = Number.parseInt(
+    getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays')
+  )
+
   let sqlWhereClause =
     ' where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null'
   const sqlParameters: unknown[] = []
@@ -172,24 +188,11 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
   const date = new Date()
   const currentDateNumber = dateToInteger(date)
 
-  date.setDate(
-    date.getDate() -
-      getConfigProperty(
-        'settings.workOrders.workOrderMilestoneDateRecentBeforeDays'
-      )
-  )
+  date.setDate(date.getDate() - recentBeforeDays)
 
   const recentBeforeDateNumber = dateToInteger(date)
 
-  date.setDate(
-    date.getDate() +
-      getConfigProperty(
-        'settings.workOrders.workOrderMilestoneDateRecentBeforeDays'
-      ) +
-      getConfigProperty(
-        'settings.workOrders.workOrderMilestoneDateRecentAfterDays'
-      )
-  )
+  date.setDate(date.getDate() + recentBeforeDays + recentAfterDays)
 
   const recentAfterDateNumber = dateToInteger(date)
 
@@ -215,6 +218,30 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
       sqlWhereClause +=
         ' and (m.workOrderMilestoneCompletionDate is null or m.workOrderMilestoneDate >= ?)'
       sqlParameters.push(currentDateNumber)
+      break
+    }
+
+    case 'yearMonth': {
+      const yearNumber =
+        typeof filters.workOrderMilestoneYear === 'string'
+          ? Number.parseInt(filters.workOrderMilestoneYear)
+          : filters.workOrderMilestoneYear ?? new Date().getFullYear()
+
+      const monthNumber =
+        typeof filters.workOrderMilestoneMonth === 'string'
+          ? Number.parseInt(filters.workOrderMilestoneMonth)
+          : filters.workOrderMilestoneMonth ?? new Date().getMonth() + 1
+
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      const yearMonth = yearNumber * 10_000 + monthNumber * 100
+
+      sqlWhereClause += ' and m.workOrderMilestoneDate between ? and ?'
+      sqlParameters.push(yearMonth, yearMonth + 100)
+      break
+    }
+
+    default: {
+      // no default
       break
     }
   }

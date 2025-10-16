@@ -3,7 +3,7 @@ export interface Sunrise {
     urlPrefix: string;
     highlightMap: (mapContainerElement: HTMLElement, mapKey: string, contextualClass: 'danger' | 'success') => void;
     leafletConstants: {
-        tileLayerURL: string;
+        tileLayerUrl: string;
         defaultZoom: number;
         maxZoom: number;
         attribution: string;
@@ -24,17 +24,16 @@ export interface Sunrise {
         workOrderOpenDate: string;
     };
     dynamicsGPIntegrationIsEnabled: boolean;
-    getRandomColor: (seedString: string) => string;
     clearUnsavedChanges: () => void;
     hasUnsavedChanges: () => boolean;
     setUnsavedChanges: () => void;
     getLoadingParagraphHTML: (captionText?: string) => string;
     getMoveUpDownButtonFieldHTML: (upButtonClassNames: string, downButtonClassNames: string, isSmall?: boolean) => string;
     getSearchResultsPagerHTML: (limit: number, offset: number, count: number) => string;
-    getBurialSiteURL: (burialSiteId?: number | string, edit?: boolean, time?: boolean) => string;
-    getCemeteryURL: (cemeteryId?: number | string, edit?: boolean, time?: boolean) => string;
-    getContractURL: (contractId?: number | string, edit?: boolean, time?: boolean) => string;
-    getFuneralHomeURL: (funeralHomeId?: number | string, edit?: boolean, time?: boolean) => string;
-    getWorkOrderURL: (workOrderId?: number | string, edit?: boolean, time?: boolean) => string;
+    getBurialSiteUrl: (burialSiteId?: number | string, edit?: boolean, time?: boolean) => string;
+    getCemeteryUrl: (cemeteryId?: number | string, edit?: boolean, time?: boolean) => string;
+    getContractUrl: (contractId?: number | string, edit?: boolean, time?: boolean) => string;
+    getFuneralHomeUrl: (funeralHomeId?: number | string, edit?: boolean, time?: boolean) => string;
+    getWorkOrderUrl: (workOrderId?: number | string, edit?: boolean, time?: boolean) => string;
     initializeMinDateUpdate: (minDateElement: HTMLInputElement, valueDateElement: HTMLInputElement) => void;
 }

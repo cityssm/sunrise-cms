@@ -5,22 +5,46 @@
       <h3 class="modal-card-title">Add Related Contract</h3>
       <button
         class="delete is-close-modal-button"
-        aria-label="close"
         type="button"
+        aria-label="close"
       ></button>
     </header>
     <section class="modal-card-body">
       <div class="box">
         <form id="form--relatedContractSelect">
-          <input id="relatedContractSelect--limit" name="limit" type="hidden" value="100" />
-          <input id="relatedContractSelect--offset" name="offset" type="hidden" value="0" />
-          <input id="relatedContractSelect--notContractId" name="notContractId" type="hidden" />
-          <input id="relatedContractSelect--notRelatedContractId" name="notRelatedContractId" type="hidden" />
-          <label class="label" for="relatedContractSelect--burialSiteName">Burial Site</label>
+          <input
+            id="relatedContractSelect--limit"
+            name="limit"
+            type="hidden"
+            value="100"
+          />
+          <input
+            id="relatedContractSelect--offset"
+            name="offset"
+            type="hidden"
+            value="0"
+          />
+          <input
+            id="relatedContractSelect--notContractId"
+            name="notContractId"
+            type="hidden"
+          />
+          <input
+            id="relatedContractSelect--notRelatedContractId"
+            name="notRelatedContractId"
+            type="hidden"
+          />
+          <label class="label" for="relatedContractSelect--burialSiteName">
+            Burial Site
+          </label>
           <div class="field has-addons">
             <div class="control has-icons-left">
               <div class="select">
-                <select id="relatedContractSelect--burialSiteNameSearchType" name="burialSiteNameSearchType" aria-label="Burial Site Filter Type">
+                <select
+                  id="relatedContractSelect--burialSiteNameSearchType"
+                  name="burialSiteNameSearchType"
+                  aria-label="Burial Site Filter Type"
+                >
                   <option value="">contains</option>
                   <option value="startsWith">starts with</option>
                   <option value="endsWith">ends with</option>
@@ -31,7 +55,11 @@
               </span>
             </div>
             <div class="control is-expanded">
-              <input class="input" id="relatedContractSelect--burialSiteName" name="burialSiteName" />
+              <input
+                class="input"
+                id="relatedContractSelect--burialSiteName"
+                name="burialSiteName"
+              />
             </div>
           </div>
         </form>

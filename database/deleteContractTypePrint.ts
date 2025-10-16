@@ -6,9 +6,10 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 export default function deleteContractTypePrint(
   contractTypeId: number | string,
   printEJS: string,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -20,8 +21,9 @@ export default function deleteContractTypePrint(
     )
     .run(user.userName, Date.now(), contractTypeId, printEJS)
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
   clearCacheByTableName('ContractTypePrints')
 
   return result.changes > 0

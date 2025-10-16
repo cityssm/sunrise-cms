@@ -4,7 +4,7 @@ import {
   moveRecordDown,
   moveRecordDownToBottom
 } from '../../database/moveRecord.js'
-import { getIntermentContainerTypes } from '../../helpers/cache.helpers.js'
+import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js'
 
 export default function handler(
   request: Request<
@@ -25,7 +25,7 @@ export default function handler(
           request.body.intermentContainerTypeId
         )
 
-  const intermentContainerTypes = getIntermentContainerTypes()
+  const intermentContainerTypes = getCachedIntermentContainerTypes()
 
   response.json({
     success,

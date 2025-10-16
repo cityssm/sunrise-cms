@@ -2,12 +2,12 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DynamicsGPDocument } from '../../integrations/dynamicsGp/types.js'
 import type {
   ContractFee,
   ContractTransaction,
-  DynamicsGPDocument,
   Fee,
   FeeCategory
 } from '../../types/record.types.js'
@@ -16,16 +16,21 @@ import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-declare const exports: Record<string, unknown>
+
+declare const exports: {
+  sunrise: Sunrise
+
+  contractFees: ContractFee[]
+  contractTransactions: ContractTransaction[]
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
   ).value
 
-  let contractFees = exports.contractFees as ContractFee[]
-  delete exports.contractFees
+  let contractFees = exports.contractFees
 
   const contractFeesContainerElement = document.querySelector(
     '#container--contractFees'
@@ -157,7 +162,7 @@ declare const exports: Record<string, unknown>
               contextualColorName: 'danger',
               title: 'Error Deleting Fee',
 
-              message: responseJSON.errorMessage ?? '',
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -180,39 +185,50 @@ declare const exports: Record<string, unknown>
   // eslint-disable-next-line complexity
   function renderContractFees(): void {
     if (contractFees.length === 0) {
-      contractFeesContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no fees associated with this contract.</p>
-        </div>`
+      contractFeesContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no fees associated with this contract.</p>
+        </div>
+      `
 
       renderContractTransactions()
 
       return
     }
 
-    contractFeesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-      <thead><tr>
-        <th>Fee</th>
-        <th><span class="is-sr-only">Unit Cost</span></th>
-        <th class="has-width-1"><span class="is-sr-only">&times;</span></th>
-        <th class="has-width-1"><span class="is-sr-only">Quantity</span></th>
-        <th class="has-width-1"><span class="is-sr-only">equals</span></th>
-        <th class="has-width-1 has-text-right">Total</th>
-        <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
-      </tr></thead>
-      <tbody></tbody>
-      <tfoot><tr>
-        <th colspan="5">Subtotal</th>
-        <td class="has-text-weight-bold has-text-right" id="contractFees--feeAmountTotal"></td>
-        <td class="is-hidden-print"></td>
-      </tr><tr>
-        <th colspan="5">Tax</th>
-        <td class="has-text-right" id="contractFees--taxAmountTotal"></td>
-        <td class="is-hidden-print"></td>
-      </tr><tr>
-        <th colspan="5">Grand Total</th>
-        <td class="has-text-weight-bold has-text-right" id="contractFees--grandTotal"></td>
-        <td class="is-hidden-print"></td>
-      </tr></tfoot></table>`
+    contractFeesContainerElement.innerHTML = /*html*/ `
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Fee</th>
+            <th><span class="is-sr-only">Unit Cost</span></th>
+            <th class="has-width-1"><span class="is-sr-only">&times;</span></th>
+            <th class="has-width-1"><span class="is-sr-only">Quantity</span></th>
+            <th class="has-width-1"><span class="is-sr-only">equals</span></th>
+            <th class="has-width-1 has-text-right">Total</th>
+            <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <th colspan="5">Subtotal</th>
+            <td class="has-text-weight-bold has-text-right" id="contractFees--feeAmountTotal"></td>
+            <td class="is-hidden-print"></td>
+          </tr>
+          <tr>
+            <th colspan="5">Tax</th>
+            <td class="has-text-right" id="contractFees--taxAmountTotal"></td>
+            <td class="is-hidden-print"></td>
+          </tr>
+          <tr>
+            <th colspan="5">Grand Total</th>
+            <td class="has-text-weight-bold has-text-right" id="contractFees--grandTotal"></td>
+            <td class="is-hidden-print"></td>
+          </tr>
+        </tfoot>
+      </table>
+    `
 
     let feeAmountTotal = 0
     let taxAmountTotal = 0
@@ -225,38 +241,44 @@ declare const exports: Record<string, unknown>
         contractFee.includeQuantity ?? false ? '1' : '0'
 
       // eslint-disable-next-line no-unsanitized/property
-      tableRowElement.innerHTML = `<td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
+      tableRowElement.innerHTML = /*html*/ `
+        <td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
           ${cityssm.escapeHTML(contractFee.feeName ?? '')}<br />
           <span class="tag">${cityssm.escapeHTML(contractFee.feeCategory ?? '')}</span>
-          </td>
-          ${
-            contractFee.quantity === 1
-              ? ''
-              : `<td class="has-text-right">
-                  $${contractFee.feeAmount?.toFixed(2)}
-                  </td>
-                  <td>&times;</td>
-                  <td class="has-text-right">${contractFee.quantity?.toString()}</td>
-                  <td>=</td>`
-          }
-          <td class="has-text-right">
-            $${((contractFee.feeAmount ?? 0) * (contractFee.quantity ?? 0)).toFixed(2)}
-          </td>
-          <td class="is-hidden-print">
+        </td>
+        ${
+          contractFee.quantity === 1
+            ? ''
+            : /*html */ `
+              <td class="has-text-right">
+              $${contractFee.feeAmount?.toFixed(2)}
+              </td>
+              <td>&times;</td>
+              <td class="has-text-right">${contractFee.quantity?.toString()}</td>
+              <td>=</td>
+            `
+        }
+        <td class="has-text-right">
+          $${((contractFee.feeAmount ?? 0) * (contractFee.quantity ?? 0)).toFixed(2)}
+        </td>
+        <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-          ${
-            contractFee.includeQuantity ?? false
-              ? `<button class="button is-primary button--editQuantity">
-                  <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
-                  <span>Edit</span>
-                  </button>`
-              : ''
-          }
-          <button class="button is-danger is-light button--delete" data-tooltip="Delete Fee" type="button">
-            <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
-          </button>
+            ${
+              contractFee.includeQuantity ?? false
+                ? /*html*/ `
+                  <button class="button is-primary button--editQuantity">
+                    <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
+                    <span>Edit</span>
+                  </button>
+                `
+                : ''
+            }
+            <button class="button is-danger is-light button--delete" type="button" title="Delete Fee">
+              <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+            </button>
           </div>
-          </td>`
+        </td>
+      `
 
       tableRowElement
         .querySelector('.button--editQuantity')
@@ -304,7 +326,7 @@ declare const exports: Record<string, unknown>
     if (sunrise.hasUnsavedChanges()) {
       bulmaJS.alert({
         contextualColorName: 'warning',
-        message: 'Please save all unsaved changes before adding fees.',
+        message: 'Please save all unsaved changes before adding fees.'
       })
       return
     }
@@ -341,14 +363,14 @@ declare const exports: Record<string, unknown>
 
             bulmaJS.alert({
               contextualColorName: 'success',
-              message: 'Fee Group Added Successfully',
+              message: 'Fee Group Added Successfully'
             })
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
               title: 'Error Adding Fee',
 
-              message: responseJSON.errorMessage ?? '',
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -379,7 +401,7 @@ declare const exports: Record<string, unknown>
               contextualColorName: 'danger',
               title: 'Error Adding Fee',
 
-              message: responseJSON.errorMessage ?? '',
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -462,27 +484,34 @@ declare const exports: Record<string, unknown>
         categoryContainerElement.dataset.feeCategoryId =
           feeCategory.feeCategoryId.toString()
 
-        categoryContainerElement.innerHTML = `<div class="columns is-vcentered">
-        <div class="column">
-          <h4 class="title is-5">
-          ${cityssm.escapeHTML(feeCategory.feeCategory)}
-          </h4>
-        </div>
-        </div>
-        <div class="panel mb-5"></div>`
+        categoryContainerElement.innerHTML = /*html*/ `
+          <div class="columns is-vcentered">
+            <div class="column">
+              <h4 class="title is-5">
+                ${cityssm.escapeHTML(feeCategory.feeCategory)}
+              </h4>
+            </div>
+          </div>
+          <div class="panel mb-5"></div>
+        `
 
         if (feeCategory.isGroupedFee) {
-          // eslint-disable-next-line no-unsanitized/method
           categoryContainerElement
             .querySelector('.columns')
             ?.insertAdjacentHTML(
               'beforeend',
-              `<div class="column is-narrow has-text-right">
-                  <button class="button is-small is-success" type="button" data-fee-category-id="${feeCategory.feeCategoryId}">
+              /*html*/ `
+                <div class="column is-narrow has-text-right">
+                  <button
+                    class="button is-small is-success"
+                    data-fee-category-id="${cityssm.escapeHTML(feeCategory.feeCategoryId.toString())}"
+                    type="button"
+                  >
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                     <span>Add Fee Group</span>
                   </button>
-                  </div>`
+                </div>
+              `
             )
 
           categoryContainerElement
@@ -529,12 +558,14 @@ declare const exports: Record<string, unknown>
             feeCategory.feeCategoryId.toString()
 
           // eslint-disable-next-line no-unsanitized/property
-          panelBlockElement.innerHTML = `<strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
-              <small>
+          panelBlockElement.innerHTML = /*html*/ `
+            <strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
+            <small>
               ${cityssm
                 .escapeHTML(fee.feeDescription ?? '')
                 .replaceAll('\n', '<br />')}
-              </small>`
+            </small>
+          `
 
           if (!feeCategory.isGroupedFee) {
             ;(panelBlockElement as HTMLAnchorElement).href = '#'
@@ -595,9 +626,7 @@ declare const exports: Record<string, unknown>
     })
   })
 
-  let contractTransactions =
-    exports.contractTransactions as ContractTransaction[]
-  delete exports.contractTransactions
+  let contractTransactions = exports.contractTransactions
 
   const contractTransactionsContainerElement = document.querySelector(
     '#container--contractTransactions'
@@ -648,7 +677,7 @@ declare const exports: Record<string, unknown>
               contextualColorName: 'danger',
               title: 'Error Updating Transaction',
 
-              message: 'Please try again.',
+              message: 'Please try again.'
             })
           }
         }
@@ -751,7 +780,7 @@ declare const exports: Record<string, unknown>
               contextualColorName: 'danger',
               title: 'Error Deleting Transaction',
 
-              message: responseJSON.errorMessage ?? '',
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -765,7 +794,7 @@ declare const exports: Record<string, unknown>
       message: 'Are you sure you want to delete this transaction?',
       okButton: {
         callbackFunction: doDelete,
-        text: 'Yes, Delete Transaction',
+        text: 'Yes, Delete Transaction'
       }
     })
   }
@@ -773,28 +802,35 @@ declare const exports: Record<string, unknown>
   function renderContractTransactions(): void {
     if (contractTransactions.length === 0) {
       // eslint-disable-next-line no-unsanitized/property
-      contractTransactionsContainerElement.innerHTML = `<div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
+      contractTransactionsContainerElement.innerHTML = /*html*/ `
+        <div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
           <p class="message-body">There are no transactions associated with this contract.</p>
-          </div>`
+        </div>
+      `
 
       return
     }
 
-    // eslint-disable-next-line no-unsanitized/property
-    contractTransactionsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-        <thead><tr>
-          <th class="has-width-1">Date</th>
-          <th>${sunrise.escapedAliases.ExternalReceiptNumber}</th>
-          <th class="has-text-right has-width-1">Amount</th>
-          <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
-        </tr></thead>
+    contractTransactionsContainerElement.innerHTML = /*html*/ `
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th class="has-width-1">Date</th>
+            <th>${cityssm.escapeHTML(sunrise.escapedAliases.ExternalReceiptNumber)}</th>
+            <th class="has-text-right has-width-1">Amount</th>
+            <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Options</span></th>
+          </tr>
+        </thead>
         <tbody></tbody>
-        <tfoot><tr>
-          <th colspan="2">Transaction Total</th>
-          <td class="has-text-weight-bold has-text-right" id="contractTransactions--grandTotal"></td>
-          <td class="is-hidden-print"></td>
-        </tr></tfoot>
-        </table>`
+        <tfoot>
+          <tr>
+            <th colspan="2">Transaction Total</th>
+            <td class="has-text-weight-bold has-text-right" id="contractTransactions--grandTotal"></td>
+            <td class="is-hidden-print"></td>
+          </tr>
+        </tfoot>
+      </table>
+    `
 
     let transactionGrandTotal = 0
 
@@ -815,23 +851,21 @@ declare const exports: Record<string, unknown>
 
         if (sunrise.dynamicsGPIntegrationIsEnabled) {
           if (contractTransaction.dynamicsGPDocument === undefined) {
-            externalReceiptNumberHTML += ` <span data-tooltip="No Matching Document Found">
-                <i class="fa-solid fa-times-circle has-text-danger" aria-label="No Matching Document Found"></i>
-                </span>`
+            externalReceiptNumberHTML += ` <span title="No Matching Document Found">
+                <i class="fa-solid fa-times-circle has-text-danger"></i>
+              </span>`
           } else if (
             contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) ===
             contractTransaction.transactionAmount.toFixed(2)
           ) {
-            externalReceiptNumberHTML += ` <span data-tooltip="Matching Document Found">
-                <i class="fa-solid fa-check-circle has-text-success" aria-label="Matching Document Found"></i>
-                </span>`
+            externalReceiptNumberHTML += ` <span title="Matching Document Found">
+                <i class="fa-solid fa-check-circle has-text-success"></i>
+              </span>`
           } else {
-            externalReceiptNumberHTML += ` <span data-tooltip="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
+            externalReceiptNumberHTML += ` <span title="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
               2
             )}">
-            <i class="fa-solid fa-check-circle has-text-warning" aria-label="Matching Document: $${contractTransaction.dynamicsGPDocument.documentTotal.toFixed(
-              2
-            )}"></i>
+            <i class="fa-solid fa-check-circle has-text-warning"></i>
             </span>`
           }
         }
@@ -840,13 +874,14 @@ declare const exports: Record<string, unknown>
       }
 
       // eslint-disable-next-line no-unsanitized/property
-      tableRowElement.innerHTML = `<td>
-        ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
-        ${
-          (contractTransaction.isInvoiced ?? 0) === 0
-            ? ''
-            : '<br /><span class="tag is-info">Invoiced</span>'
-        }
+      tableRowElement.innerHTML = /*html*/ `
+        <td>
+          ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
+          ${
+            (contractTransaction.isInvoiced ?? 0) === 0
+              ? ''
+              : '<br /><span class="tag is-info">Invoiced</span>'
+          }
         </td>
         <td>
           ${externalReceiptNumberHTML}
@@ -857,14 +892,15 @@ declare const exports: Record<string, unknown>
         </td>
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-            <button class="button is-primary button--edit" data-tooltip="Edit Transaction" type="button">
+            <button class="button is-primary button--edit" type="button" title="Edit Transaction">
               <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
             </button>
-            <button class="button is-danger is-light button--delete" data-tooltip="Delete Transaction" type="button">
+            <button class="button is-danger is-light button--delete" type="button" title="Delete Transaction">
               <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>
-        </td>`
+        </td>
+      `
 
       tableRowElement
         .querySelector('.button--edit')
@@ -894,21 +930,24 @@ declare const exports: Record<string, unknown>
       // eslint-disable-next-line no-unsanitized/method
       contractTransactionsContainerElement.insertAdjacentHTML(
         'afterbegin',
-        `<div class="message ${differenceClassName}">
+        /*html*/ `
+          <div class="message ${differenceClassName}">
             <div class="message-body">
-            <div class="level">
-              <div class="level-left">
-                <div class="level-item">
-                  ${difference < 0 ? 'Overpayment' : 'Outstanding Balance'}
+              <div class="level">
+                <div class="level-left">
+                  <div class="level-item">
+                    ${difference < 0 ? 'Overpayment' : 'Outstanding Balance'}
+                  </div>
                 </div>
-              </div>
-              <div class="level-right">
-                <div class="level-item">
-                  $${cityssm.escapeHTML(Math.abs(difference).toFixed(2))}
+                <div class="level-right">
+                  <div class="level-item">
+                    $${cityssm.escapeHTML(Math.abs(difference).toFixed(2))}
+                  </div>
                 </div>
               </div>
             </div>
-            </div></div>`
+          </div>
+        `
       )
     }
   }
@@ -965,8 +1004,7 @@ declare const exports: Record<string, unknown>
 
       if (externalReceiptNumber === '') {
         helpTextElement.innerHTML = '&nbsp;'
-        iconElement.innerHTML =
-          '<i class="fa-solid fa-minus"></i>'
+        iconElement.innerHTML = '<i class="fa-solid fa-minus"></i>'
         return
       }
 
@@ -978,6 +1016,7 @@ declare const exports: Record<string, unknown>
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
+
             dynamicsGPDocument?: DynamicsGPDocument
           }
 
@@ -986,15 +1025,13 @@ declare const exports: Record<string, unknown>
             responseJSON.dynamicsGPDocument === undefined
           ) {
             helpTextElement.textContent = 'No Matching Document Found'
-            iconElement.innerHTML =
-              '<i class="fa-solid fa-times-circle"></i>'
+            iconElement.innerHTML = '<i class="fa-solid fa-times-circle"></i>'
           } else if (
             transactionAmountElement.valueAsNumber ===
             responseJSON.dynamicsGPDocument.documentTotal
           ) {
             helpTextElement.textContent = 'Matching Document Found'
-            iconElement.innerHTML =
-              '<i class="fa-solid fa-check-circle"></i>'
+            iconElement.innerHTML = '<i class="fa-solid fa-check-circle"></i>'
           } else {
             helpTextElement.textContent = `Matching Document: $${responseJSON.dynamicsGPDocument.documentTotal.toFixed(2)}`
             iconElement.innerHTML =
@@ -1011,7 +1048,7 @@ declare const exports: Record<string, unknown>
           modalElement.querySelector(
             '#contractTransactionAdd--contractId'
           ) as HTMLInputElement
-        ).value = contractId.toString()
+        ).value = contractId
 
         const feeGrandTotal = getFeeGrandTotal()
         const transactionGrandTotal = getTransactionGrandTotal()
@@ -1076,6 +1113,7 @@ declare const exports: Record<string, unknown>
           .querySelector('form')
           ?.addEventListener('submit', doAddTransaction)
       },
+
       onremoved() {
         bulmaJS.toggleHtmlClipped()
         addTransactionButtonElement.focus()

@@ -43,22 +43,22 @@ export default function getFees(
     .prepare(
       `select f.feeId, f.feeCategoryId,
         f.feeName, f.feeDescription, f.feeAccount,
-        f.contractTypeId, o.contractType,
+        f.contractTypeId, ct.contractType,
         f.burialSiteTypeId, l.burialSiteType,
         ifnull(f.feeAmount, 0) as feeAmount,
         f.feeFunction,
         f.taxAmount, f.taxPercentage,
         f.includeQuantity, f.quantityUnit,
         f.isRequired, f.orderNumber,
-        ifnull(lo.contractFeeCount, 0) as contractFeeCount
+        ifnull(cf.contractFeeCount, 0) as contractFeeCount
         from Fees f
         left join (
           select feeId, count(contractId) as contractFeeCount
           from ContractFees
           where recordDelete_timeMillis is null
           group by feeId
-        ) lo on f.feeId = lo.feeId
-        left join ContractTypes o on f.contractTypeId = o.contractTypeId
+        ) cf on f.feeId = cf.feeId
+        left join ContractTypes ct on f.contractTypeId = ct.contractTypeId
         left join BurialSiteTypes l on f.burialSiteTypeId = l.burialSiteTypeId
         ${sqlWhereClause}
         order by f.orderNumber, f.feeName`

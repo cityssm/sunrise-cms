@@ -2,18 +2,21 @@
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <h3 class="modal-card-title">
-        Edit Burial Site Status
-      </h3>
+      <h3 class="modal-card-title">Edit Burial Site Status</h3>
       <button
         class="delete is-close-modal-button"
-        aria-label="close"
         type="button"
+        aria-label="close"
       ></button>
     </header>
     <section class="modal-card-body">
       <form id="form--burialSiteStatusEdit">
-        <input id="burialSiteStatusEdit--burialSiteId" name="burialSiteId" type="hidden" value="" />
+        <input
+          id="burialSiteStatusEdit--burialSiteId"
+          name="burialSiteId"
+          type="hidden"
+          value=""
+        />
 
         <div class="field">
           <label class="label" for="burialSiteStatusEdit--burialSiteName">
@@ -28,10 +31,15 @@
           </div>
         </div>
         <div class="field">
-          <label class="label" for="burialSiteStatusEdit--burialSiteStatusId">Status</label>
+          <label class="label" for="burialSiteStatusEdit--burialSiteStatusId">
+            Status
+          </label>
           <div class="control">
             <div class="select is-fullwidth">
-              <select id="burialSiteStatusEdit--burialSiteStatusId" name="burialSiteStatusId">
+              <select
+                id="burialSiteStatusEdit--burialSiteStatusId"
+                name="burialSiteStatusId"
+              >
                 <option value="">(No Status)</option>
               </select>
             </div>
@@ -49,7 +57,9 @@
           <span class="icon"><i class="fa-solid fa-save"></i></span>
           <span>Update Status</span>
         </button>
-        <button class="button is-close-modal-button" type="button">Cancel</button>
+        <button class="button is-close-modal-button" type="button">
+          Cancel
+        </button>
       </div>
     </footer>
   </div>

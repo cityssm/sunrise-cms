@@ -1,7 +1,7 @@
 import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function addContractComment(commentForm, user) {
+export default function addContractComment(commentForm, user, connectedDatabase) {
     const rightNow = new Date();
     let commentDate = 0;
     let commentTime = 0;
@@ -13,7 +13,7 @@ export default function addContractComment(commentForm, user) {
         commentDate = dateStringToInteger(commentForm.commentDateString);
         commentTime = timeStringToInteger(commentForm.commentTimeString);
     }
-    const database = sqlite(sunriseDB);
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
         .prepare(`insert into ContractComments (
         contractId,
@@ -23,6 +23,8 @@ export default function addContractComment(commentForm, user) {
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?)`)
         .run(commentForm.contractId, commentDate, commentTime ?? 0, commentForm.comment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return result.lastInsertRowid;
 }

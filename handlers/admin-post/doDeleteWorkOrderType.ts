@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { deleteRecord } from '../../database/deleteRecord.js'
-import { getWorkOrderTypes } from '../../helpers/cache.helpers.js'
+import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 
 export default function handler(
   request: Request<unknown, unknown, { workOrderTypeId: string }>,
@@ -13,7 +13,7 @@ export default function handler(
     request.session.user as User
   )
 
-  const workOrderTypes = getWorkOrderTypes()
+  const workOrderTypes = getCachedWorkOrderTypes()
 
   response.json({
     success,

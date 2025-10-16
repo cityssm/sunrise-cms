@@ -2,7 +2,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type {
   BurialSite,
@@ -16,6 +16,7 @@ import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+
 declare const exports: {
   sunrise: Sunrise
 
@@ -75,22 +76,23 @@ declare const exports: {
           clearUnsavedChanges()
 
           if (isCreate || refreshAfterSave) {
-            globalThis.location.href = sunrise.getContractURL(
+            globalThis.location.href = sunrise.getContractUrl(
               responseJSON.contractId,
               true,
               true
             )
           } else {
             bulmaJS.alert({
-              message: 'Contract Updated Successfully',
-              contextualColorName: 'success'
+              contextualColorName: 'success',
+              message: 'Contract Updated Successfully'
             })
           }
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Saving Contract',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -112,22 +114,24 @@ declare const exports: {
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
           success: boolean
-          errorMessage?: string
+
           contractId?: number
+          errorMessage?: string
         }
 
         if (responseJSON.success) {
           clearUnsavedChanges()
 
-          globalThis.location.href = sunrise.getContractURL(
+          globalThis.location.href = sunrise.getContractUrl(
             responseJSON.contractId,
             true
           )
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Copying Record',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -141,18 +145,21 @@ declare const exports: {
 
       if (sunrise.hasUnsavedChanges()) {
         bulmaJS.alert({
+          contextualColorName: 'warning',
           title: 'Unsaved Changes',
-          message: 'Please save all unsaved changes before continuing.',
-          contextualColorName: 'warning'
+
+          message: 'Please save all unsaved changes before continuing.'
         })
       } else {
         bulmaJS.confirm({
-          title: 'Copy Contract Record as New',
-          message: 'Are you sure you want to copy this record to a new record?',
           contextualColorName: 'info',
+          title: 'Copy Contract Record as New',
+
+          message: 'Are you sure you want to copy this record to a new record?',
+
           okButton: {
-            text: 'Yes, Copy',
-            callbackFunction: doCopy
+            callbackFunction: doCopy,
+            text: 'Yes, Copy'
           }
         })
       }
@@ -172,17 +179,19 @@ declare const exports: {
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
               success: boolean
+
               errorMessage?: string
             }
 
             if (responseJSON.success) {
               clearUnsavedChanges()
-              globalThis.location.href = sunrise.getContractURL()
+              globalThis.location.href = sunrise.getContractUrl()
             } else {
               bulmaJS.alert({
+                contextualColorName: 'danger',
                 title: 'Error Deleting Record',
-                message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
+
+                message: responseJSON.errorMessage ?? ''
               })
             }
           }
@@ -190,12 +199,14 @@ declare const exports: {
       }
 
       bulmaJS.confirm({
-        title: 'Delete Contract Record',
-        message: 'Are you sure you want to delete this record?',
         contextualColorName: 'warning',
+        title: 'Delete Contract Record',
+
+        message: 'Are you sure you want to delete this record?',
+
         okButton: {
-          text: 'Yes, Delete',
-          callbackFunction: doDelete
+          callbackFunction: doDelete,
+          text: 'Yes, Delete'
         }
       })
     })
@@ -226,9 +237,11 @@ declare const exports: {
       }
 
       if (contractTypeIdElement.value === '') {
-        contractFieldsContainerElement.innerHTML = `<div class="message is-info">
-          <p class="message-body">Select the contract type to load the available fields.</p>
-          </div>`
+        contractFieldsContainerElement.innerHTML = /*html*/ `
+          <div class="message is-info">
+            <p class="message-body">Select the contract type to load the available fields.</p>
+          </div>
+        `
 
         return
       }
@@ -244,9 +257,11 @@ declare const exports: {
           }
 
           if (responseJSON.contractTypeFields.length === 0) {
-            contractFieldsContainerElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">There are no additional fields for this contract type.</p>
-              </div>`
+            contractFieldsContainerElement.innerHTML = /*html*/ `
+              <div class="message is-info">
+                <p class="message-body">There are no additional fields for this contract type.</p>
+              </div>
+            `
 
             return
           }
@@ -264,7 +279,10 @@ declare const exports: {
 
             const fieldElement = document.createElement('div')
             fieldElement.className = 'field'
-            fieldElement.innerHTML = `<label class="label" for="${cityssm.escapeHTML(fieldId)}"></label><div class="control"></div>`
+            fieldElement.innerHTML = /*html*/ `
+              <label class="label" for="${cityssm.escapeHTML(fieldId)}"></label>
+              <div class="control"></div>
+            `
             ;(
               fieldElement.querySelector('label') as HTMLLabelElement
             ).textContent = contractTypeField.contractTypeField as string
@@ -275,11 +293,13 @@ declare const exports: {
             ) {
               ;(
                 fieldElement.querySelector('.control') as HTMLElement
-              ).innerHTML = `<div class="select is-fullwidth">
+              ).innerHTML = /*html*/ `
+                <div class="select is-fullwidth">
                   <select id="${cityssm.escapeHTML(fieldId)}" name="${cityssm.escapeHTML(fieldName)}">
-                  <option value="">(Not Set)</option>
+                    <option value="">(Not Set)</option>
                   </select>
-                  </div>`
+                </div>
+              `
 
               const selectElement = fieldElement.querySelector(
                 'select'
@@ -329,8 +349,12 @@ declare const exports: {
           contractFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
             // eslint-disable-next-line no-secrets/no-secrets
-            `<input name="contractTypeFieldIds" type="hidden"
-              value="${cityssm.escapeHTML(contractTypeFieldIds.slice(1))}" />`
+            /*html*/ `
+              <input
+                name="contractTypeFieldIds"
+                type="hidden"
+                value="${cityssm.escapeHTML(contractTypeFieldIds.slice(1))}" />
+            `
           )
         }
       )
@@ -399,7 +423,8 @@ declare const exports: {
           '<option value="">(No Direction)</option>'
 
         for (const direction of exports.directionsOfArrival) {
-          // eslint-disable-next-line security/detect-object-injection
+          /* eslint-disable security/detect-object-injection */
+
           if (responseJSON.directionsOfArrival[direction] !== undefined) {
             const optionElement = document.createElement('option')
 
@@ -416,6 +441,8 @@ declare const exports: {
 
             directionOfArrivalElement.append(optionElement)
           }
+
+          /* eslint-enable security/detect-object-injection */
         }
       }
     )
@@ -458,7 +485,6 @@ declare const exports: {
     }
 
     function searchBurialSites(): void {
-      // eslint-disable-next-line no-unsanitized/property
       burialSiteSelectResultsElement.innerHTML =
         sunrise.getLoadingParagraphHTML('Searching...')
 
@@ -467,14 +493,16 @@ declare const exports: {
         burialSiteSelectFormElement,
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
-            count: number
             burialSites: BurialSite[]
+            count: number
           }
 
           if (responseJSON.count === 0) {
-            burialSiteSelectResultsElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">No results.</p>
-              </div>`
+            burialSiteSelectResultsElement.innerHTML = /*html*/ `
+              <div class="message is-info">
+                <p class="message-body">No results.</p>
+              </div>
+            `
 
             return
           }
@@ -492,18 +520,20 @@ declare const exports: {
             panelBlockElement.dataset.burialSiteName = burialSite.burialSiteName
 
             // eslint-disable-next-line no-unsanitized/property
-            panelBlockElement.innerHTML = `<div class="columns">
-              <div class="column">
-                ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}<br />
-                <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
+            panelBlockElement.innerHTML = /*html*/ `
+              <div class="columns">
+                <div class="column">
+                  ${cityssm.escapeHTML(burialSite.burialSiteName)}<br />
+                  <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
+                </div>
+                <div class="column">
+                  ${cityssm.escapeHTML(burialSite.burialSiteStatus as string)}<br />
+                  <span class="is-size-7">
+                    ${(burialSite.contractCount ?? 0) > 0 ? 'Has Current Contract' : ''}
+                  </span>
+                </div>
               </div>
-              <div class="column">
-                ${cityssm.escapeHTML(burialSite.burialSiteStatus as string)}<br />
-                <span class="is-size-7">
-                  ${(burialSite.contractCount ?? 0) > 0 ? 'Has Current Contract' : ''}
-                </span>
-              </div>
-              </div>`
+            `
 
             panelBlockElement.addEventListener(
               'click',
@@ -528,10 +558,10 @@ declare const exports: {
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
-            errorMessage?: string
 
             burialSiteId?: number
             burialSiteName?: string
+            errorMessage?: string
           }
 
           if (responseJSON.success) {
@@ -543,9 +573,10 @@ declare const exports: {
             )
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Creating Burial Site',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -692,8 +723,8 @@ declare const exports: {
 
       if (burialSiteId === '') {
         bulmaJS.alert({
-          message: 'No burial site selected.',
-          contextualColorName: 'info'
+          contextualColorName: 'info',
+          message: 'No burial site selected.'
         })
       } else {
         window.open(`${sunrise.urlPrefix}/burialSites/${burialSiteId}`)
@@ -705,8 +736,8 @@ declare const exports: {
     ?.addEventListener('click', () => {
       if (burialSiteNameElement.disabled) {
         bulmaJS.alert({
-          message: 'You need to unlock the field before clearing it.',
-          contextualColorName: 'info'
+          contextualColorName: 'info',
+          message: 'You need to unlock the field before clearing it.'
         })
       } else {
         burialSiteNameElement.value = '(No Burial Site)'
@@ -773,6 +804,45 @@ declare const exports: {
       })
   }
 
+  const funeralHomeSelect = document.querySelector('#contract--funeralHomeId')
+
+  const funeralDirectorDatalist = document.querySelector(
+    '#datalist--funeralDirectors'
+  )
+
+  // Handle funeral home selection change
+  funeralHomeSelect?.addEventListener('change', (event) => {
+    const funeralHomeId = (event.currentTarget as HTMLSelectElement).value
+
+    // Clear existing suggestions
+    funeralDirectorDatalist?.replaceChildren()
+
+    if (funeralHomeId === '') {
+      return
+    }
+
+    // Make AJAX request to get suggestions
+    cityssm.postJSON(
+      `${sunrise.urlPrefix}/contracts/doGetFuneralDirectors`,
+      {
+        funeralHomeId
+      },
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          success: boolean
+
+          funeralDirectorNames: string[]
+        }
+
+        for (const funeralDirectorName of responseJSON.funeralDirectorNames) {
+          const option = document.createElement('option')
+          option.value = funeralDirectorName
+          funeralDirectorDatalist?.append(option)
+        }
+      }
+    )
+  })
+
   /*
    * Deceased
    */
@@ -827,7 +897,8 @@ declare const exports: {
       '#button--calculateDeathAge'
     ) as HTMLButtonElement
 
-    function toggleDeathAgeCalculatorButton(): void {
+    // Avoid potential hoisting issues
+    const toggleDeathAgeCalculatorButton = (): void => {
       if (
         birthDateStringElement.value === '' ||
         deathDateStringElement.value === ''

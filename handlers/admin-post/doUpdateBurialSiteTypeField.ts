@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import updateBurialSiteTypeField, {
   type UpdateBurialSiteTypeFieldForm
 } from '../../database/updateBurialSiteTypeField.js'
-import { getBurialSiteTypes } from '../../helpers/cache.helpers.js'
+import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
 
 export default function handler(request: Request, response: Response): void {
   const success = updateBurialSiteTypeField(
@@ -11,7 +11,7 @@ export default function handler(request: Request, response: Response): void {
     request.session.user as User
   )
 
-  const burialSiteTypes = getBurialSiteTypes()
+  const burialSiteTypes = getCachedBurialSiteTypes()
 
   response.json({
     success,

@@ -1,8 +1,9 @@
 import { type DateString, type TimeString } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
 export interface UpdateForm {
     comment: string;
     commentDateString: DateString;
     commentTimeString: TimeString;
     contractCommentId: number | string;
 }
-export default function updateContractComment(commentForm: UpdateForm, user: User): boolean;
+export default function updateContractComment(commentForm: UpdateForm, user: User, connectedDatabase?: sqlite.Database): boolean;

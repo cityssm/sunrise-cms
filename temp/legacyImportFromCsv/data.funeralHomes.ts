@@ -1,6 +1,8 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @cspell/spellchecker */
 
+import type sqlite from 'better-sqlite3'
+
 import addFuneralHome from '../../database/addFuneralHome.js'
 import type { FuneralHome } from '../../types/record.types.js'
 
@@ -131,7 +133,8 @@ const funeralHomeKeyToId = new Map<string, number>()
 
 export function getFuneralHomeIdByKey(
   funeralHomeKey: string,
-  user: User
+  user: User,
+  database: sqlite.Database
 ): number {
   if (funeralHomeKeyToId.has(funeralHomeKey)) {
     return funeralHomeKeyToId.get(funeralHomeKey) as number
@@ -150,7 +153,8 @@ export function getFuneralHomeIdByKey(
 
       funeralHomePhoneNumber: ''
     },
-    user
+    user,
+    database
   )
 
   funeralHomeKeyToId.set(funeralHomeKey, funeralHomeId)

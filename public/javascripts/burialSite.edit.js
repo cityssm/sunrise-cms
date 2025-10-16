@@ -1,7 +1,5 @@
-"use strict";
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const burialSiteId = document.querySelector('#burialSite--burialSiteId').value;
@@ -28,7 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
-                    globalThis.location.href = sunrise.getBurialSiteURL(responseJSON.burialSiteId, true, true);
+                    globalThis.location.href = sunrise.getBurialSiteUrl(responseJSON.burialSiteId, true, true);
                 }
                 else {
                     bulmaJS.alert({
@@ -63,7 +61,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     clearUnsavedChanges();
-                    globalThis.location.href = sunrise.getBurialSiteURL();
+                    globalThis.location.href = sunrise.getBurialSiteUrl();
                 }
                 else {
                     bulmaJS.alert({
@@ -84,6 +82,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
+    // Cemetery
+    const cemeteryKeySpanElement = document.querySelector('#burialSite--cemeteryKey');
+    if (cemeteryKeySpanElement !== null) {
+        document
+            .querySelector('#burialSite--cemeteryId')
+            ?.addEventListener('change', (changeEvent) => {
+            const cemeterySelectElement = changeEvent.currentTarget;
+            const cemeteryKey = cemeterySelectElement.selectedOptions[0].dataset.cemeteryKey ?? '';
+            cemeteryKeySpanElement.innerHTML = cityssm.escapeHTML(cemeteryKey);
+        });
+    }
     // Burial Site Type
     const burialSiteTypeIdElement = document.querySelector('#burialSite--burialSiteTypeId');
     function updateCapacities() {
@@ -112,9 +121,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const burialSiteFieldsContainerElement = document.querySelector('#container--burialSiteFields');
         burialSiteTypeIdElement.addEventListener('change', () => {
             if (burialSiteTypeIdElement.value === '') {
-                burialSiteFieldsContainerElement.innerHTML = `<div class="message is-info">
-          <p class="message-body">Select the burial site type to load the available fields.</p>
-          </div>`;
+                burialSiteFieldsContainerElement.innerHTML = /*html*/ `
+          <div class="message is-info">
+            <p class="message-body">Select the burial site type to load the available fields.</p>
+          </div>
+        `;
                 return;
             }
             cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doGetBurialSiteTypeFields`, {
@@ -122,11 +133,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.burialSiteTypeFields.length === 0) {
-                    burialSiteFieldsContainerElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">
-                There are no additional fields for this burial site type.
-              </p>
-              </div>`;
+                    burialSiteFieldsContainerElement.innerHTML = /*html*/ `
+              <div class="message is-info">
+                <p class="message-body">
+                  There are no additional fields for this burial site type.
+                </p>
+              </div>
+            `;
                     return;
                 }
                 burialSiteFieldsContainerElement.innerHTML = '';
@@ -138,10 +151,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const fieldElement = document.createElement('div');
                     fieldElement.className = 'field';
                     // eslint-disable-next-line no-unsanitized/property
-                    fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label>
-              <div class="control"></div>`;
+                    fieldElement.innerHTML = /*html*/ `
+              <label class="label" for="${fieldId}"></label>
+              <div class="control"></div>
+            `;
                     fieldElement.querySelector('label').textContent = burialSiteTypeField.burialSiteTypeField;
-                    if (burialSiteTypeField.fieldValues === '') {
+                    if ((burialSiteTypeField.fieldValues ?? '') === '') {
                         const inputElement = document.createElement('input');
                         inputElement.className = 'input';
                         inputElement.id = fieldId;
@@ -158,9 +173,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     else {
                         // eslint-disable-next-line no-unsanitized/property
                         ;
-                        fieldElement.querySelector('.control').innerHTML = `<div class="select is-fullwidth">
-                  <select id="${fieldId}" name="${fieldName}"><option value="">(Not Set)</option></select>
-                  </div>`;
+                        fieldElement.querySelector('.control').innerHTML = /*html*/ `
+                <div class="select is-fullwidth">
+                  <select id="${fieldId}" name="${fieldName}">
+                    <option value="">(Not Set)</option>
+                  </select>
+                </div>
+              `;
                         const selectElement = fieldElement.querySelector('select');
                         selectElement.required = burialSiteTypeField.isRequired;
                         const optionValues = burialSiteTypeField.fieldValues.split('\n');
@@ -175,8 +194,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 burialSiteFieldsContainerElement.insertAdjacentHTML('beforeend', 
                 // eslint-disable-next-line no-secrets/no-secrets
-                `<input name="burialSiteTypeFieldIds" type="hidden"
-              value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />`);
+                /*html*/ `
+              <input name="burialSiteTypeFieldIds" type="hidden"
+                value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />
+            `);
             });
         });
     }
@@ -262,7 +283,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     burialSiteComment.commentDateString ?? '';
                 const currentDateString = cityssm.dateToString(new Date());
                 commentDateStringElement.max =
-                    burialSiteComment.commentDateString <= currentDateString
+                    // eslint-disable-next-line unicorn/prefer-math-min-max
+                    (burialSiteComment.commentDateString ?? '') <= currentDateString
                         ? currentDateString
                         : burialSiteComment.commentDateString ?? '';
                 modalElement.querySelector('#burialSiteCommentEdit--commentTimeString').value = burialSiteComment.commentTimeString ?? '';
@@ -314,45 +336,55 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function renderBurialSiteComments() {
         const containerElement = document.querySelector('#container--burialSiteComments');
         if (burialSiteComments.length === 0) {
-            containerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no comments to display.</p>
-        </div>`;
+            containerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no comments to display.</p>
+        </div>
+      `;
             return;
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = `<thead><tr>
-      <th>Author</th>
-      <th>Comment Date</th>
-      <th>Comment</th>
-      <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-      </tr></thead>
-      <tbody></tbody>`;
+        tableElement.innerHTML = /*html*/ `
+      <thead>
+        <tr>
+          <th>Author</th>
+          <th>Comment Date</th>
+          <th>Comment</th>
+          <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
         for (const burialSiteComment of burialSiteComments) {
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.burialSiteCommentId =
                 burialSiteComment.burialSiteCommentId?.toString();
-            // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = `<td>
+            tableRowElement.innerHTML = /*html*/ `
+        <td>
           ${cityssm.escapeHTML(burialSiteComment.recordCreate_userName ?? '')}
-        </td><td>
-          ${burialSiteComment.commentDateString}
-          ${burialSiteComment.commentTime === 0
+        </td>
+        <td>
+          ${cityssm.escapeHTML(burialSiteComment.commentDateString ?? '')}
+          ${cityssm.escapeHTML(burialSiteComment.commentTime === 0
                 ? ''
-                : ` ${burialSiteComment.commentTimePeriodString}`}
-        </td><td>
+                : ` ${burialSiteComment.commentTimePeriodString}`)}
+        </td>
+        <td>
           ${cityssm.escapeHTML(burialSiteComment.comment ?? '')}
-        </td><td class="is-hidden-print">
+        </td>
+        <td class="is-hidden-print">
           <div class="buttons are-small is-justify-content-end">
             <button class="button is-primary button--edit" type="button">
               <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
               <span>Edit</span>
             </button>
-            <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
-              <i class="fa-solid fa-trash"></i>
+            <button class="button is-light is-danger button--delete" type="button" title="Delete Comment">
+              <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>
-        </td>`;
+        </td>
+      `;
             tableRowElement
                 .querySelector('.button--edit')
                 ?.addEventListener('click', openEditBurialSiteComment);

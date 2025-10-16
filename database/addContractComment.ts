@@ -20,7 +20,8 @@ export interface AddContractCommentForm {
 
 export default function addContractComment(
   commentForm: AddContractCommentForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): number {
   const rightNow = new Date()
 
@@ -39,7 +40,7 @@ export default function addContractComment(
     )
   }
 
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -62,7 +63,9 @@ export default function addContractComment(
       rightNow.getTime()
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return result.lastInsertRowid as number
 }

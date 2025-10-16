@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const cemeteryId = document.querySelector('#cemetery--cemeteryId').value;
@@ -42,7 +40,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
-                    globalThis.location.href = sunrise.getCemeteryURL(responseJSON.cemeteryId, true);
+                    globalThis.location.href = sunrise.getCemeteryUrl(responseJSON.cemeteryId, true);
                 }
                 else {
                     bulmaJS.alert({
@@ -75,7 +73,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    globalThis.location.href = sunrise.getCemeteryURL();
+                    globalThis.location.href = sunrise.getCemeteryUrl();
                 }
                 else {
                     bulmaJS.alert({

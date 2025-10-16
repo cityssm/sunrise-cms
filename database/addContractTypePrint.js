@@ -1,8 +1,8 @@
 import sqlite from 'better-sqlite3';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function addContractTypePrint(addForm, user) {
-    const database = sqlite(sunriseDB);
+export default function addContractTypePrint(addForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     let result = database
         .prepare(`update ContractTypePrints
@@ -22,7 +22,9 @@ export default function addContractTypePrint(addForm, user) {
           values (?, ?, ?, ?, ?, ?, ?)`)
             .run(addForm.contractTypeId, addForm.printEJS, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     clearCacheByTableName('ContractTypePrints');
     return result.changes > 0;
 }

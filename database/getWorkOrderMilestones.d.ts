@@ -5,8 +5,10 @@ export interface WorkOrderMilestoneFilters {
     workOrderId?: number | string;
     workOrderMilestoneTypeIds?: string;
     workOrderTypeIds?: string;
-    workOrderMilestoneDateFilter?: 'blank' | 'date' | 'notBlank' | 'recent' | 'upcomingMissed';
+    workOrderMilestoneDateFilter?: 'blank' | 'date' | 'notBlank' | 'recent' | 'upcomingMissed' | 'yearMonth';
     workOrderMilestoneDateString?: '' | DateString;
+    workOrderMilestoneYear?: number | string;
+    workOrderMilestoneMonth?: number | string;
 }
 interface WorkOrderMilestoneOptions {
     includeWorkOrders?: boolean;

@@ -23,11 +23,10 @@
     )
 
     for (const tabContainerElement of tabContainerElements) {
-      if (tabContainerElement.id === selectedTabContainerId) {
-        tabContainerElement.classList.remove('is-hidden')
-      } else {
-        tabContainerElement.classList.add('is-hidden')
-      }
+      tabContainerElement.classList.toggle(
+        'is-hidden',
+        tabContainerElement.id !== selectedTabContainerId
+      )
     }
   }
 

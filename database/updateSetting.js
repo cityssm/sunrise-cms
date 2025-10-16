@@ -1,8 +1,8 @@
 import sqlite from 'better-sqlite3';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function updateSetting(updateForm) {
-    const database = sqlite(sunriseDB);
+export default function updateSetting(updateForm, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     let result = database
         .prepare(`update SunriseSettings
         set settingValue = ?,
@@ -13,10 +13,12 @@ export default function updateSetting(updateForm) {
     if (result.changes <= 0) {
         result = database
             .prepare(`insert into SunriseSettings (settingKey, settingValue, recordUpdate_timeMillis)
-         values (?, ?, ?)`)
+          values (?, ?, ?)`)
             .run(updateForm.settingKey, updateForm.settingValue, Date.now());
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     if (result.changes > 0) {
         clearCacheByTableName('SunriseSettings');
     }

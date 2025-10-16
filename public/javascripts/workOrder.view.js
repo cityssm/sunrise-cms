@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     document
@@ -13,7 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
-                    globalThis.location.href = sunrise.getWorkOrderURL(workOrderId, true, true);
+                    globalThis.location.href = sunrise.getWorkOrderUrl(workOrderId, true, true);
                 }
                 else {
                     bulmaJS.alert({

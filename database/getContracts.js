@@ -1,9 +1,9 @@
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToPeriodString, timeIntegerToString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
-import { getContractTypeById } from '../helpers/cache.helpers.js';
+import { getCachedContractTypeById } from '../helpers/cache/contractTypes.cache.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sanitizeLimit, sanitizeOffset, sunriseDB } from '../helpers/database.helpers.js';
-import { getBurialSiteNameWhereClause, getContractTimeWhereClause, getDeceasedNameWhereClause } from '../helpers/functions.sqlFilters.js';
+import { getBurialSiteNameWhereClause, getContractTimeWhereClause, getDeceasedNameWhereClause, getPurchaserNameWhereClause } from '../helpers/functions.sqlFilters.js';
 import getContractFees from './getContractFees.js';
 import getContractInterments from './getContractInterments.js';
 import getContractTransactions from './getContractTransactions.js';
@@ -12,9 +12,6 @@ const validOrderByStrings = [
 ];
 export default async function getContracts(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
-    database.function('userFn_dateIntegerToString', dateIntegerToString);
-    database.function('userFn_timeIntegerToString', timeIntegerToString);
-    database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     let count = typeof options.limit === 'string'
         ? Number.parseInt(options.limit, 10)
@@ -24,8 +21,8 @@ export default async function getContracts(filters, options, connectedDatabase) 
         count = database
             .prepare(`select count(*) as recordCount
           from Contracts c
-          left join BurialSites l on c.burialSiteId = l.burialSiteId
-          left join Cemeteries m on l.cemeteryId = m.cemeteryId
+          left join BurialSites b on c.burialSiteId = b.burialSiteId
+          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
           ${sqlWhereClause}`)
             .pluck()
             .get(sqlParameters);
@@ -39,26 +36,18 @@ export default async function getContracts(filters, options, connectedDatabase) 
         contracts = database
             .prepare(`select c.contractId,
             c.contractTypeId, t.contractType, t.isPreneed,
-            c.burialSiteId, lt.burialSiteType, l.burialSiteName,
-            case when l.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
-            l.cemeteryId, m.cemeteryName,
+            c.burialSiteId, lt.burialSiteType, b.burialSiteName,
+            case when b.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
+            b.cemeteryId, cem.cemeteryName,
 
-            c.contractStartDate, userFn_dateIntegerToString(c.contractStartDate) as contractStartDateString,
-            c.contractEndDate, userFn_dateIntegerToString(c.contractEndDate) as contractEndDateString,
-
-            (c.contractEndDate is null or c.contractEndDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsActive,
-            (c.contractStartDate > cast(strftime('%Y%m%d', date()) as integer)) as contractIsFuture,
+            c.contractStartDate, c.contractEndDate,
 
             c.purchaserName, c.purchaserAddress1, c.purchaserAddress2,
             c.purchaserCity, c.purchaserProvince, c.purchaserPostalCode,
             c.purchaserPhoneNumber, c.purchaserEmail, c.purchaserRelationship,
             c.funeralHomeId, c.funeralDirectorName, f.funeralHomeName,
 
-            c.funeralDate, userFn_dateIntegerToString(c.funeralDate) as funeralDateString,
-            
-            c.funeralTime,
-            userFn_timeIntegerToString(c.funeralTime) as funeralTimeString,
-            userFn_timeIntegerToPeriodString(c.funeralTime) as funeralTimePeriodString,
+            c.funeralDate, c.funeralTime,
 
             c.directionOfArrival,
             c.committalTypeId, cm.committalType
@@ -66,33 +55,44 @@ export default async function getContracts(filters, options, connectedDatabase) 
           from Contracts c
           left join ContractTypes t on c.contractTypeId = t.contractTypeId
           left join CommittalTypes cm on c.committalTypeId = cm.committalTypeId
-          left join BurialSites l on c.burialSiteId = l.burialSiteId
-          left join BurialSiteTypes lt on l.burialSiteTypeId = lt.burialSiteTypeId
-          left join Cemeteries m on l.cemeteryId = m.cemeteryId
+          left join BurialSites b on c.burialSiteId = b.burialSiteId
+          left join BurialSiteTypes lt on b.burialSiteTypeId = lt.burialSiteTypeId
+          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
           left join FuneralHomes f on c.funeralHomeId = f.funeralHomeId
           ${sqlWhereClause}
           ${options.orderBy !== undefined &&
             validOrderByStrings.includes(options.orderBy)
             ? ` order by ${options.orderBy}`
             : ` order by c.contractStartDate desc, ifnull(c.contractEndDate, 99999999) desc,
-                  l.burialSiteNameSegment1,
-                  l.burialSiteNameSegment2,
-                  l.burialSiteNameSegment3,
-                  l.burialSiteNameSegment4,
-                  l.burialSiteNameSegment5,
+                  b.burialSiteNameSegment1,
+                  b.burialSiteNameSegment2,
+                  b.burialSiteNameSegment3,
+                  b.burialSiteNameSegment4,
+                  b.burialSiteNameSegment5,
                   c.burialSiteId, c.contractId desc`}
           ${sqlLimitClause}`)
             .all(sqlParameters);
         if (!isLimited) {
             count = contracts.length;
         }
+        const currentDateInteger = dateToInteger(new Date());
         for (const contract of contracts) {
-            const contractType = getContractTypeById(contract.contractTypeId);
-            if (contractType !== undefined) {
-                contract.printEJS = (contractType.contractTypePrints ?? []).includes('*')
-                    ? getConfigProperty('settings.contracts.prints')[0]
-                    : (contractType.contractTypePrints ?? [])[0];
-            }
+            /*
+             * Format dates and times
+             */
+            contract.contractStartDateString = dateIntegerToString(contract.contractStartDate);
+            contract.contractEndDateString = dateIntegerToString(contract.contractEndDate ?? 0);
+            contract.funeralDateString = dateIntegerToString(contract.funeralDate ?? 0);
+            contract.funeralTimeString = timeIntegerToString(contract.funeralTime);
+            contract.funeralTimePeriodString = timeIntegerToPeriodString(contract.funeralTime);
+            contract.contractIsActive = contract.contractEndDate === null ||
+                (contract.contractEndDate ?? 0) > currentDateInteger;
+            contract.contractIsFuture =
+                contract.contractStartDate > currentDateInteger;
+            /*
+             * Print
+             */
+            addPrint(contract);
             await addInclusions(contract, options, database);
         }
     }
@@ -103,6 +103,15 @@ export default async function getContracts(filters, options, connectedDatabase) 
         contracts,
         count
     };
+}
+function addPrint(contract) {
+    const contractType = getCachedContractTypeById(contract.contractTypeId);
+    if (contractType !== undefined) {
+        contract.printEJS = (contractType.contractTypePrints ?? []).includes('*')
+            ? getConfigProperty('settings.contracts.prints')[0]
+            : (contractType.contractTypePrints ?? [])[0];
+    }
+    return contract;
 }
 async function addInclusions(contract, options, database) {
     if (options.includeFees) {
@@ -120,17 +129,31 @@ async function addInclusions(contract, options, database) {
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where c.recordDelete_timeMillis is null';
     const sqlParameters = [];
+    /*
+     * Burial Site
+     */
     if ((filters.burialSiteId ?? '') !== '') {
         sqlWhereClause += ' and c.burialSiteId = ?';
         sqlParameters.push(filters.burialSiteId);
     }
-    const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'l');
+    const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'b');
     sqlWhereClause += burialSiteNameFilters.sqlWhereClause;
     sqlParameters.push(...burialSiteNameFilters.sqlParameters);
-    const deceasedNameFilters = getDeceasedNameWhereClause(filters.deceasedName, 'c');
+    /*
+     * Purchaser Name
+     */
+    const purchaserNameFilters = getPurchaserNameWhereClause(filters.purchaserName, 'c');
+    if (purchaserNameFilters.sqlParameters.length > 0) {
+        sqlWhereClause += purchaserNameFilters.sqlWhereClause;
+        sqlParameters.push(...purchaserNameFilters.sqlParameters);
+    }
+    /*
+     * Deceased Name
+     */
+    const deceasedNameFilters = getDeceasedNameWhereClause(filters.deceasedName, 'ci');
     if (deceasedNameFilters.sqlParameters.length > 0) {
         sqlWhereClause += ` and c.contractId in (
-        select contractId from ContractInterments c
+        select contractId from ContractInterments ci
         where recordDelete_timeMillis is null
         ${deceasedNameFilters.sqlWhereClause})`;
         sqlParameters.push(...deceasedNameFilters.sqlParameters);
@@ -154,11 +177,11 @@ function buildWhereClause(filters) {
         sqlParameters.push(dateStringToInteger(filters.contractEffectiveDateString), dateStringToInteger(filters.contractEffectiveDateString));
     }
     if ((filters.cemeteryId ?? '') !== '') {
-        sqlWhereClause += ' and (m.cemeteryId = ? or m.parentCemeteryId = ?)';
+        sqlWhereClause += ' and (cem.cemeteryId = ? or cem.parentCemeteryId = ?)';
         sqlParameters.push(filters.cemeteryId, filters.cemeteryId);
     }
     if ((filters.burialSiteTypeId ?? '') !== '') {
-        sqlWhereClause += ' and l.burialSiteTypeId = ?';
+        sqlWhereClause += ' and b.burialSiteTypeId = ?';
         sqlParameters.push(filters.burialSiteTypeId);
     }
     if ((filters.funeralHomeId ?? '') !== '') {

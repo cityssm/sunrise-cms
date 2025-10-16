@@ -122,6 +122,8 @@ process.on('message', (message) => {
                 clearNextPreviousBurialSiteIdCache(message.burialSiteId, false);
                 break;
             }
+            // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
+            // no default
         }
     }
 });

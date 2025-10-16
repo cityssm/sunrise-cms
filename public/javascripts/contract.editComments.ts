@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { ContractComment } from '../../types/record.types.js'
 
@@ -7,16 +7,20 @@ import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-declare const exports: Record<string, unknown>
+
+declare const exports: {
+  sunrise: Sunrise
+
+  contractComments: ContractComment[]
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const contractId = (
     document.querySelector('#contract--contractId') as HTMLInputElement
   ).value
 
-  let contractComments = exports.contractComments as ContractComment[]
-  delete exports.contractComments
+  let contractComments = exports.contractComments
 
   function openEditContractComment(clickEvent: Event): void {
     const contractCommentId = Number.parseInt(
@@ -41,8 +45,9 @@ declare const exports: Record<string, unknown>
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
-            errorMessage?: string
+
             contractComments?: ContractComment[]
+            errorMessage?: string
           }
 
           if (responseJSON.success) {
@@ -140,8 +145,9 @@ declare const exports: Record<string, unknown>
         (rawResponseJSON) => {
           const responseJSON = rawResponseJSON as {
             success: boolean
-            errorMessage?: string
+
             contractComments: ContractComment[]
+            errorMessage?: string
           }
 
           if (responseJSON.success) {
@@ -177,50 +183,58 @@ declare const exports: Record<string, unknown>
     ) as HTMLElement
 
     if (contractComments.length === 0) {
-      containerElement.innerHTML = `<div class="message is-info">
+      containerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
           <p class="message-body">There are no comments associated with this record.</p>
-          </div>`
+        </div>
+      `
       return
     }
 
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-fullwidth is-striped is-hoverable'
-    tableElement.innerHTML = `<thead><tr>
-        <th>Author</th>
-        <th>Comment Date</th>
-        <th>Comment</th>
-        <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-        </tr></thead>
-        <tbody></tbody>`
+    tableElement.innerHTML = /*html*/ `
+      <thead>
+        <tr>
+          <th>Author</th>
+          <th>Comment Date</th>
+          <th>Comment</th>
+          <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `
 
     for (const contractComment of contractComments) {
       const tableRowElement = document.createElement('tr')
       tableRowElement.dataset.contractCommentId =
         contractComment.contractCommentId.toString()
 
-      tableRowElement.innerHTML = `<td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
-          <td>
-            ${cityssm.escapeHTML(contractComment.commentDateString)}
-            <span class="is-nowrap">
-              ${cityssm.escapeHTML(
-                contractComment.commentTime === 0
-                  ? ''
-                  : contractComment.commentTimePeriodString
-              )}
-            </span>
-          </td>
-          <td>${cityssm.escapeHTML(contractComment.comment)}</td>
-          <td class="is-hidden-print">
-            <div class="buttons are-small is-justify-content-end">
+      tableRowElement.innerHTML = /*html*/ `
+        <td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
+        <td>
+          ${cityssm.escapeHTML(contractComment.commentDateString)}
+          <span class="is-nowrap">
+            ${cityssm.escapeHTML(
+              contractComment.commentTime === 0
+                ? ''
+                : contractComment.commentTimePeriodString
+            )}
+          </span>
+        </td>
+        <td>${cityssm.escapeHTML(contractComment.comment)}</td>
+        <td class="is-hidden-print">
+          <div class="buttons are-small is-justify-content-end">
             <button class="button is-primary button--edit" type="button">
               <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
               <span>Edit</span>
             </button>
-            <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
+            <button class="button is-light is-danger button--delete" type="button" title="Delete Comment">
               <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
             </button>
-            </div>
-          </td>`
+          </div>
+        </td>
+      `
 
       tableRowElement
         .querySelector('.button--edit')
@@ -252,8 +266,9 @@ declare const exports: Record<string, unknown>
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
               success: boolean
-              errorMessage?: string
+
               contractComments: ContractComment[]
+              errorMessage?: string
             }
 
             if (responseJSON.success) {
@@ -269,7 +284,7 @@ declare const exports: Record<string, unknown>
                 contextualColorName: 'danger',
                 title: 'Error Adding Comment',
 
-                message: responseJSON.errorMessage ?? '',
+                message: responseJSON.errorMessage ?? ''
               })
             }
           }
@@ -299,7 +314,7 @@ declare const exports: Record<string, unknown>
 
           addCloseModalFunction = closeModalFunction
         },
-        
+
         onremoved() {
           bulmaJS.toggleHtmlClipped()
           ;(

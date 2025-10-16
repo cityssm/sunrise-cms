@@ -13,6 +13,7 @@ type RecordTable =
   | 'BurialSiteTypeFields'
   | 'BurialSiteTypes'
   | 'CommittalTypes'
+  | 'ContractAttachments'
   | 'ContractComments'
   | 'ContractTypeFields'
   | 'ContractTypes'
@@ -31,6 +32,7 @@ const recordIdColumns = new Map<RecordTable, string>([
   ['BurialSiteTypeFields', 'burialSiteTypeFieldId'],
   ['BurialSiteTypes', 'burialSiteTypeId'],
   ['CommittalTypes', 'committalTypeId'],
+  ['ContractAttachments', 'contractAttachmentId'],
   ['ContractComments', 'contractCommentId'],
   ['ContractTypeFields', 'contractTypeFieldId'],
   ['ContractTypes', 'contractTypeId'],
@@ -61,9 +63,10 @@ const relatedTables = new Map<RecordTable, string[]>([
 export function deleteRecord(
   recordTable: RecordTable,
   recordId: number | string,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -89,7 +92,9 @@ export function deleteRecord(
       .run(user.userName, rightNowMillis, recordId)
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   // Clear cache for tables that are cached
   if (cacheTableNames.includes(recordTable as CacheTableNames)) {

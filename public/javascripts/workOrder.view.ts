@@ -1,14 +1,16 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   document
     .querySelector('#button--reopenWorkOrder')
@@ -30,7 +32,7 @@ declare const exports: Record<string, unknown>
             }
 
             if (responseJSON.success) {
-              globalThis.location.href = sunrise.getWorkOrderURL(
+              globalThis.location.href = sunrise.getWorkOrderUrl(
                 workOrderId,
                 true,
                 true

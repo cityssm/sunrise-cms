@@ -1,16 +1,40 @@
 import type { Request, Response } from 'express'
 
-import { getWorkOrderTypes } from '../../helpers/cache.helpers.js'
+import getCemeteries from '../../database/getCemeteries.js'
+import getFuneralHomes from '../../database/getFuneralHomes.js';
+import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 
-export default function handler(request: Request, response: Response): void {
-  const workOrderOpenDateString = request.query.workOrderOpenDateString
+export default function handler(
+  request: Request<
+    unknown,
+    unknown,
+    unknown,
+    { error?: string; workOrderOpenDateString?: string }
+  >,
+  response: Response
+): void {
+  let error = request.query.error
 
-  const workOrderTypes = getWorkOrderTypes()
+  if (error === 'workOrderIdNotFound') {
+    error = 'Work Order ID not found.'
+  } else if (error === 'workOrderNumberNotFound') {
+    error = 'Work Order Number not found.'
+  }
 
-  response.render('workOrder-search', {
+  const cemeteries = getCemeteries()
+  const funeralHomes = getFuneralHomes()
+
+  const workOrderTypes = getCachedWorkOrderTypes()
+
+  response.render('workOrders/search', {
     headTitle: 'Work Order Search',
 
-    workOrderOpenDateString,
-    workOrderTypes
+    cemeteries,
+    funeralHomes,
+    workOrderTypes,
+
+    workOrderOpenDateString: request.query.workOrderOpenDateString ?? '',
+
+    error
   })
 }

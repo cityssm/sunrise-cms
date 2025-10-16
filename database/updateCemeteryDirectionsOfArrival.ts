@@ -1,19 +1,17 @@
 import type sqlite from 'better-sqlite3'
 
-import { directionsOfArrival } from '../data/dataLists.js'
+import { directionsOfArrival } from '../helpers/dataLists.js'
+
+type DirectionOfArrivalDescriptionKey =
+  `directionOfArrivalDescription_${(typeof directionsOfArrival)[number]}`
+
+type DirectionOfArrivalKey =
+  `directionOfArrival_${(typeof directionsOfArrival)[number]}`
 
 export type UpdateCemeteryDirectionsOfArrivalForm = Partial<
-  Record<
-    `directionOfArrival_${(typeof directionsOfArrival)[number]}`,
-    (typeof directionsOfArrival)[number]
-  >
+  Record<DirectionOfArrivalDescriptionKey, string>
 > &
-  Partial<
-    Record<
-      `directionOfArrivalDescription_${(typeof directionsOfArrival)[number]}`,
-      string
-    >
-  >
+  Partial<Record<DirectionOfArrivalKey, (typeof directionsOfArrival)[number]>>
 
 export default function updateCemeteryDirectionsOfArrival(
   cemeteryId: number | string,
@@ -44,8 +42,6 @@ export default function updateCemeteryDirectionsOfArrival(
       updateCount += 1
     }
   }
-
-  database.close()
 
   return updateCount
 }

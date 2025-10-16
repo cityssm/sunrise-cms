@@ -41,7 +41,8 @@ export default async function getWorkOrder(
 }
 
 export async function getWorkOrderByWorkOrderNumber(
-  workOrderNumber: string
+  workOrderNumber: string,
+  connectedDatabase?: sqlite.Database
 ): Promise<WorkOrder | undefined> {
   return await _getWorkOrder(
     `${baseSQL} and w.workOrderNumber = ?`,
@@ -50,7 +51,8 @@ export async function getWorkOrderByWorkOrderNumber(
       includeBurialSites: true,
       includeComments: true,
       includeMilestones: true
-    }
+    },
+    connectedDatabase
   )
 }
 

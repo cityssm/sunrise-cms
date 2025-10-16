@@ -1,0 +1,78 @@
+<%- include('../_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('_menu'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            <span class="icon is-small"><i class="fa-regular fa-map"></i></span>
+            <span>Cemeteries</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <% if (error !== undefined) { %>
+    <div class="notification is-danger is-light">
+      <button class="delete" aria-label="delete"></button>
+      <p>
+        <strong>Cemetery Error</strong><br />
+        <%= error %>
+      </p>
+    </div>
+    <% } %>
+
+    <div class="columns is-vcentered">
+      <div class="column">
+        <h1 class="title is-1">
+          Find a Cemetery
+        </h1>
+      </div>
+      <div class="column has-text-right is-narrow is-hidden-print">
+        <a
+          class="button"
+          href="<%= urlPrefix %>/reports/cemeteries-formatted"
+          download
+          target="_blank"
+        >
+          <span class="icon is-small"><i class="fa-solid fa-download"></i></span>
+          <span>Export</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="box">
+      <form id="form--searchFilters">
+        <div class="field">
+          <div class="control has-icons-left">
+            <input
+              class="input"
+              id="searchFilter--cemetery"
+              type="text"
+              placeholder="Search cemetery name, description, and address"
+            />
+            <span class="icon is-small is-left">
+              <i class="fa-solid fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div id="container--searchResults"></div>
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script>
+  exports.cemeteries = <%- JSON.stringify(cemeteries) %>;
+</script>
+<script src="<%= urlPrefix %>/javascripts/cemetery.search.js"></script>
+
+<%- include('../_footerB'); -%>

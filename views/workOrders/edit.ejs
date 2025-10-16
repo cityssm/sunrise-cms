@@ -1,0 +1,368 @@
+<%- include('../_header'); -%>
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li>
+      <a href="<%= urlPrefix %>/workOrders">
+        <span class="icon is-small"><i class="fa-solid fa-hard-hat"></i></span>
+        <span>Work Orders</span>
+      </a>
+    </li>
+    <% if (isCreate) { %>
+      <li class="is-active">
+        <a href="#" aria-current="page">
+          Create a New Work Order
+        </a>
+      </li>
+    <% } else { %>
+      <li>
+        <a href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
+          Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
+        </a>
+      </li>
+      <li class="is-active">
+        <a href="#" aria-current="page">
+          Update Work Order
+        </a>
+      </li>
+    <% } %>
+  </ul>
+</nav>
+
+<% if (isCreate) { %>
+  <h1 class="title is-1">
+    Create a New Work Order
+  </h1>
+<% } else { %>
+  <h1 class="title is-1">
+    Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
+  </h1>
+<% } %>
+
+<div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
+  <div class="column is-narrow">
+    <% if (!isCreate) { %>
+      <span class="has-text-weight-bold">
+        Work Order
+        #<%= workOrder.workOrderNumber || "(No Number)" %>
+      </span>
+    <% } %>
+  </div>
+  <div class="column has-text-right">
+    <div class="buttons is-right">
+      <% if (!isCreate && configFunctions.getConfigProperty("settings.workOrders.prints").length > 0) { %>
+        <div class="dropdown is-right is-up">
+          <div class="dropdown-trigger">
+            <button class="button" data-cy="print" type="button" aria-label="Print">
+              <span class="icon"><i class="fa-solid fa-print"></i></span>
+              <span class="is-hidden-touch">Print</span>
+              <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
+            </button>
+          </div>
+          <div class="dropdown-menu">
+            <div class="dropdown-content has-text-left">
+              <% for (const printName of configFunctions.getConfigProperty("settings.workOrders.prints")) { %>
+                <% const printConfig = printFunctions.getPrintConfig(printName); %>
+                <% if (printConfig) { %>
+                  <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
+                    <span class="icon"><i class="fa-solid fa-print"></i></span>
+                    <span><%= printConfig.title %></span>
+                  </a>
+                <% } %>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% } %>
+      <% if (isCreate) { %>
+        <a class="button is-danger is-light" href="<%= urlPrefix %>/workOrders">
+          Cancel
+        </a>
+      <% } else { %>
+        <div class="dropdown is-right is-up">
+          <div class="dropdown-trigger">
+            <button class="button" type="button">
+              <span>
+                <span class="is-hidden-touch">More</span>
+                Options
+              </span>
+              <span class="icon is-small"><i class="fa-solid fa-angle-up"></i></span>
+            </button>
+          </div>
+          <div class="dropdown-menu">
+            <div class="dropdown-content has-text-left">
+              <a class="dropdown-item" id="button--deleteWorkOrder" href="#">
+                <span class="icon">
+                  <i class="fa-solid fa-trash has-text-danger"></i>
+                </span>
+                <span>Delete Work Order</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      <% } %>
+      <button class="button is-primary is-light" type="submit" form="form--workOrderEdit">
+        <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
+        <span>
+          <%= (isCreate ? "Create" : "Update") %>
+          <span class="is-hidden-mobile">Work Order</span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="columns is-multiline">
+  <div class="column">
+    <form id="form--workOrderEdit">
+      <input id="workOrderEdit--workOrderId" name="workOrderId" type="hidden" value="<%= workOrder.workOrderId %>" />
+      <div class="panel">
+        <div class="panel-block is-block">
+          <div class="columns">
+            <div class="column">
+              <label class="label" for="workOrderEdit--workOrderNumber">Work Order Number</label>
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input class="input <%= (isCreate ? '' : ' is-readonly') %>"
+                    id="workOrderEdit--workOrderNumber" name="workOrderNumber" type="text"
+                    value="<%= workOrder.workOrderNumber %>" maxlength="50" readonly
+                    <%= (isCreate ? "" : " required") %> />
+                </div>
+                <div class="control">
+                  <button class="button is-unlock-field-button" title="Unlock Field" type="button">
+                    <span class="icon"><i class="fa-solid fa-unlock"></i></span>
+                  </button>
+                </div>
+              </div>
+              <% if (isCreate) { %>
+                <p class="help">Leave work order number blank to autopopulate.</p>
+              <% } %>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="workOrderEdit--workOrderTypeId">Work Order Type</label>
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="workOrderEdit--workOrderTypeId" name="workOrderTypeId" required <%= (isCreate ? " autofocus" : "") %>>
+                      <% if (isCreate && workOrderTypes.length > 1) { %>
+                        <option value="">(Select Type)</option>
+                      <% } %>
+                      <% for (const workOrderType of workOrderTypes) { %>
+                        <option value="<%= workOrderType.workOrderTypeId %>" <%= (workOrder.workOrderTypeId === workOrderType.workOrderTypeId ? " selected" : "") %>>
+                          <%= workOrderType.workOrderType %>
+                        </option>
+                      <% } %>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="workOrderEdit--workOrderDescription">Description</label>
+            <div class="control">
+              <textarea class="textarea" id="workOrderEdit--workOrderDescription" name="workOrderDescription"><%= workOrder.workOrderDescription %></textarea>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="workOrderEdit--workOrderOpenDateString"><%= settingFunctions.getSettingValue("aliases.workOrderOpenDate") %></label>
+                <div class="control has-icons-left">
+                  <%
+                    const currentDateString = dateTimeFunctions.dateToString(new Date());
+                  %>
+                  <input class="input" id="workOrderEdit--workOrderOpenDateString" name="workOrderOpenDateString" type="date" 
+                    value="<%= workOrder.workOrderOpenDateString %>"
+                    max="<%= workOrder.workOrderOpenDateString > currentDateString ? workOrder.workOrderOpenDateString : currentDateString %>"
+                    required />
+                  <span class="icon is-left">
+                    <i class="fa-solid fa-calendar"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <label class="label" for="workOrderEdit--workOrderCloseDateString"><%= settingFunctions.getSettingValue("aliases.workOrderCloseDate") %></label>
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input class="input" id="workOrderEdit--workOrderCloseDateString" name="workOrderCloseDateString" type="date" value="<%= workOrder.workOrderCloseDateString %>" disabled readonly />
+                </div>
+                <% if (!isCreate) { %>
+                  <div class="control">
+                    <button class="button is-light is-success" id="button--closeWorkOrder" type="button">
+                      <span class="icon is-small"><i class="fa-solid fa-stop-circle"></i></span>
+                      <span>
+                        Close
+                      </span>
+                    </button>
+                  </div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    
+    <% if (!isCreate) { %>
+      <div class="panel mt-4">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="title is-5 has-text-weight-bold has-text-white">Related Contracts</h2>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <div class="dropdown is-right">
+                  <div class="dropdown-trigger">
+                    <button class="button is-success is-small" type="button">
+                      <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                      <span>Add</span>
+                      <span class="icon is-small"><i class="fa-solid fa-angle-down"></i></span>
+                    </button>
+                  </div>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-content has-text-weight-normal">
+                      <a class="dropdown-item" id="button--addContract" href="#">
+                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                        <span>Add a Related Contract</span>
+                      </a>
+                      <a class="dropdown-item" id="button--addBurialSite" href="#">
+                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                        <span>Add a Related Burial Site</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <%
+            const tabToSelect = (workOrder.workOrderContracts.length > 0 || workOrder.workOrderBurialSites.length === 0 ? "contracts" : "burialSites");
+          %>
+          <div class="tabs is-boxed">
+            <ul role="presentation">
+              <li class="<%= (tabToSelect === 'contracts' ? 'is-active' : '') %>" role="presentation">
+                <a href="#relatedTab--contracts">
+                  <span>Contracts</span>
+                  <span class="ml-2 tag"></span>
+                </a>
+              </li>
+              <li class="<%= (tabToSelect === 'burialSites' ? 'is-active' : '') %>" role="presentation">
+                <a href="#relatedTab--burialSites">
+                  <span>Burial Sites</span>
+                  <span class="ml-2 tag"></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-container">
+            <div class="<%= (tabToSelect === 'contracts' ? '' : 'is-hidden') %>" id="relatedTab--contracts">
+              <div id="container--contracts"></div>
+            </div>
+            <div class="<%= (tabToSelect === 'burialSites' ? '' : 'is-hidden') %>" id="relatedTab--burialSites">
+              <div id="container--burialSites"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <% if (!isCreate) { %>
+    <div class="column is-full-tablet is-full-desktop is-4-widescreen">
+      <div class="panel" id="panel--milestones">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="title is-5 has-text-white has-text-weight-bold">Milestones</h2>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <button class="button is-small is-success" id="button--addMilestone" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                  <span>Add Milestone</span>
+                </button>
+              </div>
+              <div class="level-item">
+                <div class="dropdown is-right has-text-weight-normal">
+                  <div class="dropdown-trigger">
+                    <button class="button is-small" title="Milestone Options" type="button" aria-label="Options">
+                      <span class="icon is-small"><i class="fa-solid fa-ellipsis-v"></i></span>
+                    </button>
+                  </div>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-content">
+                      <a class="dropdown-item" href="<%= urlPrefix %>/api/<%= user.userProperties.apiKey %>/milestoneICS/?workOrderId=<%= workOrder.workOrderId %>">
+                        <span class="icon"><i class="fa-solid fa-calendar"></i></span>
+                        <span>Download iCalendar</span>
+                      </a>
+                      <a class="dropdown-item" href="<%= urlPrefix %>/reports/workOrderMilestones-byWorkOrderId/?workOrderId=<%= workOrder.workOrderId %>" target="_blank" download>
+                        <span class="icon"><i class="fa-solid fa-download"></i></span>
+                        <span>Export as CSV</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<% if (!isCreate) { %>
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="has-text-weight-bold is-size-5">
+              Comments
+            </h2>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <button class="button is-small is-success" id="workOrderComments--add" type="button">
+              <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+              <span>Add a Comment</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-block is-block" id="container--workOrderComments"></div>
+  </div>
+<% } %>
+
+<%- include('../_footerA'); -%>
+
+<% if (!isCreate) { %>
+<script>
+    exports.workOrderComments = <%- JSON.stringify(workOrder.workOrderComments) %>;
+    exports.workOrderBurialSites = <%- JSON.stringify(workOrder.workOrderBurialSites) %>;
+    exports.workOrderContracts = <%- JSON.stringify(workOrder.workOrderContracts) %>;
+    exports.workOrderMilestones = <%- JSON.stringify(workOrder.workOrderMilestones) %>;
+    
+    exports.burialSiteStatuses = <%- JSON.stringify(burialSiteStatuses) %>;
+    exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
+    exports.workOrderWorkDayRanges = <%- JSON.stringify(workOrderWorkDayRanges) %>;
+</script>
+<% } %>
+<script src="<%= urlPrefix %>/javascripts/workOrder.edit.js"></script>
+<% if (!isCreate) { %>
+  <script src="<%= urlPrefix %>/javascripts/workOrder.editRelated.js"></script>
+  <script src="<%= urlPrefix %>/javascripts/workOrder.editComments.js"></script>
+<% } %>
+
+<%- include('../_footerB'); -%>

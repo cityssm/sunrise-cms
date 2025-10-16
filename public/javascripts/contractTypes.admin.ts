@@ -2,7 +2,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type {
   ContractType,
@@ -14,7 +14,13 @@ import type { Sunrise } from './types.js'
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+
+  allContractTypeFields: ContractTypeField[]
+  contractTypePrintTitles: Record<string, string>
+  contractTypes: ContractType[]
+}
 
 type ResponseJSON =
   | {
@@ -30,7 +36,7 @@ type ResponseJSON =
       contractTypes: ContractType[]
     }
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const contractTypesContainerElement = document.querySelector(
     '#container--contractTypes'
@@ -40,12 +46,9 @@ type ResponseJSON =
     '#container--contractTypePrints'
   ) as HTMLElement
 
-  let contractTypes = exports.contractTypes as ContractType[]
-  delete exports.contractTypes
+  let contractTypes = exports.contractTypes
 
-  let allContractTypeFields =
-    exports.allContractTypeFields as ContractTypeField[]
-  delete exports.allContractTypeFields
+  let allContractTypeFields = exports.allContractTypeFields
 
   const expandedContractTypes = new Set<number>()
 
@@ -69,8 +72,8 @@ type ResponseJSON =
 
     // eslint-disable-next-line no-unsanitized/property
     toggleButtonElement.innerHTML = expandedContractTypes.has(contractTypeId)
-      ? '<i class="fa-solid fa-minus"></i>'
-      : '<i class="fa-solid fa-plus"></i>'
+      ? '<span class="icon"><i class="fa-solid fa-minus"></i></span>'
+      : '<span class="icon"><i class="fa-solid fa-plus"></i></span>'
 
     const panelBlockElements =
       contractTypeElement.querySelectorAll('.panel-block')
@@ -538,13 +541,17 @@ type ResponseJSON =
       // eslint-disable-next-line no-unsanitized/method
       panelElement.insertAdjacentHTML(
         'beforeend',
-        `<div class="panel-block is-block ${
-          !contractTypeId || expandedContractTypes.has(contractTypeId)
-            ? ''
-            : ' is-hidden'
-        }">
-        <div class="message is-info"><p class="message-body">There are no additional fields.</p></div>
-        </div>`
+        /*html*/ `
+          <div class="panel-block is-block ${
+            !contractTypeId || expandedContractTypes.has(contractTypeId)
+              ? ''
+              : ' is-hidden'
+          }">
+            <div class="message is-info">
+              <p class="message-body">There are no additional fields.</p>
+            </div>
+          </div>
+        `
       )
     } else {
       for (const contractTypeField of contractTypeFields) {
@@ -559,24 +566,25 @@ type ResponseJSON =
         panelBlockElement.dataset.contractTypeFieldId =
           contractTypeField.contractTypeFieldId.toString()
 
-        // eslint-disable-next-line no-unsanitized/property
-        panelBlockElement.innerHTML = `<div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <a class="has-text-weight-bold button--editContractTypeField" href="#">
-                ${cityssm.escapeHTML(contractTypeField.contractTypeField ?? '')}
-              </a>
+        panelBlockElement.innerHTML = /*html*/ `
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <a class="has-text-weight-bold button--editContractTypeField" href="#">
+                  ${cityssm.escapeHTML(contractTypeField.contractTypeField ?? '')}
+                </a>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                ${sunrise.getMoveUpDownButtonFieldHTML(
+                  'button--moveContractTypeFieldUp',
+                  'button--moveContractTypeFieldDown'
+                )}
+              </div>
             </div>
           </div>
-          <div class="level-right">
-            <div class="level-item">
-              ${sunrise.getMoveUpDownButtonFieldHTML(
-                'button--moveContractTypeFieldUp',
-                'button--moveContractTypeFieldDown'
-              )}
-            </div>
-          </div>
-          </div>`
+        `
 
         panelBlockElement
           .querySelector('.button--editContractTypeField')
@@ -643,7 +651,7 @@ type ResponseJSON =
         ) as HTMLSelectElement
 
         for (const [printEJS, printTitle] of Object.entries(
-          exports.contractTypePrintTitles as Record<string, string>
+          exports.contractTypePrintTitles
         )) {
           const optionElement = document.createElement('option')
           optionElement.value = printEJS
@@ -678,8 +686,8 @@ type ResponseJSON =
       }`,
       {
         contractTypeId,
-        printEJS,
-        moveToEnd: clickEvent.shiftKey ? '1' : '0'
+        moveToEnd: clickEvent.shiftKey ? '1' : '0',
+        printEJS
       },
       contractTypeResponseHandler
     )
@@ -731,11 +739,13 @@ type ResponseJSON =
     if (contractTypePrints.length === 0) {
       panelElement.insertAdjacentHTML(
         'beforeend',
-        `<div class="panel-block is-block">
-          <div class="message is-info">
-            <p class="message-body">There are no prints associated with this record.</p>
+        /*html*/ `
+          <div class="panel-block is-block">
+            <div class="message is-info">
+              <p class="message-body">There are no prints associated with this record.</p>
+            </div>
           </div>
-          </div>`
+        `
       )
     } else {
       for (const printEJS of contractTypePrints) {
@@ -748,9 +758,7 @@ type ResponseJSON =
         const printTitle =
           printEJS === '*'
             ? '(All Available Prints)'
-            : ((exports.contractTypePrintTitles as string[])[
-                printEJS
-              ] as string)
+            : exports.contractTypePrintTitles[printEJS]
 
         let printIconClass = 'fa-star'
 
@@ -761,29 +769,35 @@ type ResponseJSON =
         }
 
         // eslint-disable-next-line no-unsanitized/property
-        panelBlockElement.innerHTML = `<div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <i class="fa-solid ${printIconClass}"></i>
+        panelBlockElement.innerHTML = /*html*/ `
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <i class="fa-solid ${printIconClass}"></i>
+              </div>
+              <div class="level-item">
+                ${cityssm.escapeHTML(printTitle || printEJS)}
+              </div>
             </div>
-            <div class="level-item">
-              ${cityssm.escapeHTML(printTitle || printEJS)}
+            <div class="level-right is-hidden-print">
+              <div class="level-item">
+                ${sunrise.getMoveUpDownButtonFieldHTML(
+                  'button--moveContractTypePrintUp',
+                  'button--moveContractTypePrintDown'
+                )}
+              </div>
+              <div class="level-item">
+                <button
+                  class="button is-small is-danger button--deleteContractTypePrint"
+                  type="button"
+                  title="Delete"
+                >
+                  <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+                </button>
+              </div>
             </div>
           </div>
-          <div class="level-right is-hidden-print">
-            <div class="level-item">
-              ${sunrise.getMoveUpDownButtonFieldHTML(
-                'button--moveContractTypePrintUp',
-                'button--moveContractTypePrintDown'
-              )}
-            </div>
-            <div class="level-item">
-              <button class="button is-small is-danger button--deleteContractTypePrint" data-tooltip="Delete" type="button" aria-label="Delete Print">
-                <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
-              </button>
-            </div>
-          </div>
-          </div>`
+        `
         ;(
           panelBlockElement.querySelector(
             '.button--moveContractTypePrintUp'
@@ -809,25 +823,27 @@ type ResponseJSON =
    */
 
   function renderContractTypes(): void {
-    contractTypesContainerElement.innerHTML = `<div class="panel container--contractType" id="container--allContractTypeFields" data-contract-type-id="">
-      <div class="panel-heading">
-        <div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <h2 class="title is-5 has-text-white">(All Contract Types)</h2>
+    contractTypesContainerElement.innerHTML = /*html*/ `
+      <div class="panel container--contractType" id="container--allContractTypeFields" data-contract-type-id="">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="title is-5 has-text-white">(All Contract Types)</h2>
+              </div>
             </div>
-          </div>
-          <div class="level-right is-hidden-print">
-            <div class="level-item">
-              <button class="button is-success is-small button--addContractTypeField" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-                <span>Add Field</span>
-              </button>
+            <div class="level-right is-hidden-print">
+              <div class="level-item">
+                <button class="button is-success is-small button--addContractTypeField" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                  <span>Add Field</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      </div>`
+    `
 
     contractTypePrintsContainerElement.innerHTML = ''
 
@@ -846,16 +862,20 @@ type ResponseJSON =
     if (contractTypes.length === 0) {
       contractTypesContainerElement.insertAdjacentHTML(
         'afterbegin',
-        `<div class="message is-warning>
-          <p class="message-body">There are no active contract types.</p>
-          </div>`
+        /*html*/ `
+          <div class="message is-warning">
+            <p class="message-body">There are no active contract types.</p>
+          </div>
+        `
       )
 
       contractTypePrintsContainerElement.insertAdjacentHTML(
         'afterbegin',
-        `<div class="message is-warning>
-          <p class="message-body">There are no active contract types.</p>
-          </div>`
+        /*html*/ `
+          <div class="message is-warning">
+            <p class="message-body">There are no active contract types.</p>
+          </div>
+        `
       )
 
       return
@@ -874,57 +894,63 @@ type ResponseJSON =
         contractType.contractTypeId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      contractTypeContainer.innerHTML = `<div class="panel-heading">
-        <div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <button class="button is-small button--toggleContractTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
-                ${
-                  expandedContractTypes.has(contractType.contractTypeId)
-                    ? '<i class="fa-solid fa-minus"></i>'
-                    : '<i class="fa-solid fa-plus"></i>'
-                }
-              </button>
+      contractTypeContainer.innerHTML = /*html*/ `
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <button class="button is-small button--toggleContractTypeFields" title="Toggle Fields" type="button">
+                  <span class="icon">
+                    ${
+                      expandedContractTypes.has(contractType.contractTypeId)
+                        ? '<i class="fa-solid fa-minus"></i>'
+                        : '<i class="fa-solid fa-plus"></i>'
+                    }
+                  </span>
+                </button>
+              </div>
+              <div class="level-item">
+                <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
+              </div>
+              ${
+                contractType.isPreneed
+                  ? /*html*/ `
+                    <div class="level-item">
+                      <span class="tag is-info">Preneed</span>
+                    </div>
+                  `
+                  : ''
+              }
             </div>
-            <div class="level-item">
-              <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
-            </div>
-            ${
-              contractType.isPreneed
-                ? `<div class="level-item">
-                    <span class="tag is-info">Preneed</span>
-                    </div>`
-                : ''
-            }
-          </div>
-          <div class="level-right is-hidden-print">
-            <div class="level-item">
-              <button class="button is-danger is-small button--deleteContractType" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
-                <span>Delete</span>
-              </button>
-            </div>
-            <div class="level-item">
-              <button class="button is-primary is-small button--editContractType" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
-                <span>Edit Contract Type</span>
-              </button>
-            </div>
-            <div class="level-item">
-              <button class="button is-success is-small button--addContractTypeField" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-                <span>Add Field</span>
-              </button>
-            </div>
-            <div class="level-item">
-              ${sunrise.getMoveUpDownButtonFieldHTML(
-                'button--moveContractTypeUp',
-                'button--moveContractTypeDown'
-              )}
+            <div class="level-right is-hidden-print">
+              <div class="level-item">
+                <button class="button is-danger is-small button--deleteContractType" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+                  <span>Delete</span>
+                </button>
+              </div>
+              <div class="level-item">
+                <button class="button is-primary is-small button--editContractType" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
+                  <span>Edit Contract Type</span>
+                </button>
+              </div>
+              <div class="level-item">
+                <button class="button is-success is-small button--addContractTypeField" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                  <span>Add Field</span>
+                </button>
+              </div>
+              <div class="level-item">
+                ${sunrise.getMoveUpDownButtonFieldHTML(
+                  'button--moveContractTypeUp',
+                  'button--moveContractTypeDown'
+                )}
+              </div>
             </div>
           </div>
         </div>
-        </div>`
+      `
 
       renderContractTypeFields(
         contractTypeContainer,
@@ -972,23 +998,25 @@ type ResponseJSON =
       contractTypePrintContainer.dataset.contractTypeId =
         contractType.contractTypeId.toString()
 
-      contractTypePrintContainer.innerHTML = `<div class="panel-heading">
-        <div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
+      contractTypePrintContainer.innerHTML = /*html*/ `
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
+              </div>
             </div>
-          </div>
-          <div class="level-right is-hidden-print">
-            <div class="level-item">
-              <button class="button is-success is-small button--addContractTypePrint" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-                <span>Add Print</span>
-              </button>
+            <div class="level-right is-hidden-print">
+              <div class="level-item">
+                <button class="button is-success is-small button--addContractTypePrint" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                  <span>Add Print</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-        </div>`
+      `
 
       renderContractTypePrints(
         contractTypePrintContainer,
@@ -1024,9 +1052,10 @@ type ResponseJSON =
               renderContractTypes()
             } else {
               bulmaJS.alert({
+                contextualColorName: 'danger',
                 title: 'Error Adding Contract Type',
-                message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
+
+                message: responseJSON.errorMessage ?? ''
               })
             }
           }
@@ -1049,6 +1078,7 @@ type ResponseJSON =
 
           bulmaJS.toggleHtmlClipped()
         },
+
         onremoved() {
           bulmaJS.toggleHtmlClipped()
         }

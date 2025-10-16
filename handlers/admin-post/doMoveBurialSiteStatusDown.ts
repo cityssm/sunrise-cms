@@ -4,7 +4,7 @@ import {
   moveRecordDown,
   moveRecordDownToBottom
 } from '../../database/moveRecord.js'
-import { getBurialSiteStatuses } from '../../helpers/cache.helpers.js'
+import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
 
 export default function handler(
   request: Request<
@@ -22,7 +22,7 @@ export default function handler(
         )
       : moveRecordDown('BurialSiteStatuses', request.body.burialSiteStatusId)
 
-  const burialSiteStatuses = getBurialSiteStatuses()
+  const burialSiteStatuses = getCachedBurialSiteStatuses()
 
   response.json({
     success,

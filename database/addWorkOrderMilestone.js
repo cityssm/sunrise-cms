@@ -1,9 +1,9 @@
-import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
+import { dateStringToInteger, dateToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function addWorkOrderMilestone(milestoneForm, user) {
+export default function addWorkOrderMilestone(milestoneForm, user, connectedDatabase) {
     const rightNowMillis = Date.now();
-    const database = sqlite(sunriseDB);
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
         .prepare(`insert into WorkOrderMilestones (
         workOrderId, workOrderMilestoneTypeId,
@@ -16,14 +16,16 @@ export default function addWorkOrderMilestone(milestoneForm, user) {
         .run(milestoneForm.workOrderId, milestoneForm.workOrderMilestoneTypeId === ''
         ? undefined
         : milestoneForm.workOrderMilestoneTypeId, milestoneForm.workOrderMilestoneDateString === ''
-        ? 0
+        ? dateToInteger(new Date())
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString), (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
-        ? 0
+        ? undefined
         : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), milestoneForm.workOrderMilestoneDescription, (milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''
         ? undefined
         : dateStringToInteger(milestoneForm.workOrderMilestoneCompletionDateString), (milestoneForm.workOrderMilestoneCompletionTimeString ?? '') === ''
         ? undefined
         : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString), user.userName, rightNowMillis, user.userName, rightNowMillis);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return result.lastInsertRowid;
 }

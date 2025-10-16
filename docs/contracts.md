@@ -13,7 +13,11 @@ and at-need burial site interments.
 
 **End Date**<br />
 When set, the end date is considered the date the contract no longer applies.
-In the case of a preneed contract, an end date should be applied when the recipient passes
-and is interred in the burial site.
-In the case of an at-need contract, the end date should remain empty as long as the deceased
-is interred in the burial site.
+In the case of a preneed contract, an end date should be applied when
+the recipient passes and is interred in the burial site.
+In the case of an at-need contract, the end date should remain empty as long
+as the deceased is interred in the burial site.
+
+## Related
+
+- [Contract Type Management](./contractTypeManagement.md)

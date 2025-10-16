@@ -1,0 +1,88 @@
+<%- include('../_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li><a href="<%= urlPrefix %>/burialSites">Burial Sites</a></li>
+    <li class="is-active">
+      <a href="#" aria-current="page">
+        <span class="icon is-small"><i class="fa-solid fa-map-location-dot"></i></span>
+        <span>Burial Site Map</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<h1 class="title is-1">
+  Burial Site Map (Beta)
+</h1>
+
+<!-- Map Container -->
+<div id="map--burialSites" style="height: calc(100vh - 350px); min-height: 400px; width: 100%;"></div>
+
+<!-- Fixed Toolbar -->
+<div class="columns is-vcentered p-3 is-fixed-bottom has-background-white has-shadow is-hidden-print">
+  <div class="column">
+    <div class="field">
+      <label class="label is-small" for="filter--cemeteryId">Cemetery</label>
+      <div class="control has-icons-left">
+        <div class="select is-fullwidth">
+          <select id="filter--cemeteryId" name="cemeteryId">
+            <option value="">Select Cemetery...</option>
+            <% for (const cemetery of cemeteries) { %>
+            <option
+              value="<%= cemetery.cemeteryId %>"
+              _<% if (cemetery.cemeteryId.toString() === cemeteryId) { %> selected <% } %>
+            >
+              <%= cemetery.cemeteryName || '(No Name)' %>
+            </option>
+            <% } %>
+          </select>
+        </div>
+        <span class="icon is-small is-left">
+          <i class="fa-solid fa-building"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="field">
+      <label class="label is-small" for="filter--deceasedName">Deceased Name Filter</label>
+      <div class="control has-icons-left">
+        <input
+          class="input"
+          id="filter--deceasedName"
+          name="deceasedName"
+          type="text"
+          placeholder="Filter by deceased name..."
+        />
+        <span class="icon is-small is-left">
+          <i class="fa-solid fa-user"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="column is-narrow">
+    <div class="field">
+      <label class="label is-small">&nbsp;</label>
+      <div class="content is-small" id="map--stats">
+        <p class="mb-0">
+          <strong>Sites with coordinates:</strong>
+          <span id="stats--mapped">0</span> / <span id="stats--total">0</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script>
+  exports.cemeteryId = <%- JSON.stringify(cemeteryId === '' ? 'null' : cemeteryId) %>;
+
+  exports.centerLatitude = <%- (JSON.stringify((configFunctions.getConfigProperty('settings.latitudeMin') + configFunctions.getConfigProperty('settings.latitudeMax')) / 2)) %>;
+  exports.centerLongitude = <%- (JSON.stringify((configFunctions.getConfigProperty('settings.longitudeMin') + configFunctions.getConfigProperty('settings.longitudeMax')) / 2)) %>;
+</script>
+<script src="<%= urlPrefix %>/javascripts/burialSite.map.js"></script>
+
+<%- include('../_footerB'); -%>

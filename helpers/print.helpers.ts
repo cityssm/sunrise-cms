@@ -1,6 +1,7 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable security/detect-object-injection */
 
+import generateBarcodeSvg from '@cityssm/jsbarcode-svg'
 import * as dateTimeFunctions from '@cityssm/utils-datetime'
 import type { PrintConfig } from 'sunrise-cms-customizations'
 
@@ -9,6 +10,7 @@ import getContract from '../database/getContract.js'
 import getWorkOrder from '../database/getWorkOrder.js'
 import type { BurialSite, Contract, WorkOrder } from '../types/record.types.js'
 
+import { getCachedSettingValue } from './cache/settings.cache.js'
 import * as configFunctions from './config.helpers.js'
 import * as contractFunctions from './contracts.helpers.js'
 import { getCustomizationPdfPrintConfigs } from './customizations.helpers.js'
@@ -20,12 +22,19 @@ interface ReportData {
   contract?: Contract
   workOrder?: WorkOrder
 
-  configFunctions: unknown
-  contractFunctions: unknown
-  dateTimeFunctions: unknown
+  configFunctions: typeof configFunctions
+  contractFunctions: typeof contractFunctions
+  dateTimeFunctions: typeof dateTimeFunctions
+  settingFunctions: {
+    getSettingValue: typeof getCachedSettingValue
+  }
+
+  barcodeFunctions: {
+    generateBarcodeSvg: typeof generateBarcodeSvg
+  }
 }
 
-interface PrintConfigWithPath extends PrintConfig {
+export interface PrintConfigWithPath extends PrintConfig {
   path: string
 }
 
@@ -42,6 +51,7 @@ export function getScreenPrintConfig(
   return screenPrintConfigs[printName]
 }
 
+// Included PDF print configs
 const pdfPrintConfigs: Record<string, PrintConfigWithPath> = {
   workOrder: {
     path: 'views/print/pdf/workOrder.ejs',
@@ -57,6 +67,7 @@ const pdfPrintConfigs: Record<string, PrintConfigWithPath> = {
   }
 }
 
+// Add customizations PDF print configs
 for (const [printName, printConfig] of Object.entries(
   getCustomizationPdfPrintConfigs()
 )) {
@@ -74,7 +85,7 @@ export function getPdfPrintConfig(
 
 export function getPrintConfig(
   screenOrPdfPrintName: string
-): PrintConfig | undefined {
+): PrintConfig | PrintConfigWithPath | undefined {
   const printNameSplit = screenOrPdfPrintName.split('/')
 
   switch (printNameSplit[0]) {
@@ -84,6 +95,7 @@ export function getPrintConfig(
     case 'screen': {
       return getScreenPrintConfig(printNameSplit[1])
     }
+    // no default
   }
 
   return undefined
@@ -98,7 +110,14 @@ export async function getReportData(
 
     configFunctions,
     contractFunctions,
-    dateTimeFunctions
+    dateTimeFunctions,
+    settingFunctions: {
+      getSettingValue: getCachedSettingValue
+    },
+
+    barcodeFunctions: {
+      generateBarcodeSvg
+    }
   }
 
   if (
@@ -116,7 +135,8 @@ export async function getReportData(
 
   if (
     printConfig.params.includes('workOrderId') &&
-    typeof requestQuery.workOrderId === 'string'
+    (typeof requestQuery.workOrderId === 'number' ||
+      typeof requestQuery.workOrderId === 'string')
   ) {
     reportData.workOrder = await getWorkOrder(requestQuery.workOrderId, {
       includeBurialSites: true,

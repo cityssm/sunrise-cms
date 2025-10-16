@@ -1,3 +1,5 @@
+import sqlite from 'better-sqlite3'
+import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import getBurialSiteDirectionsOfArrival, {
@@ -5,82 +7,129 @@ import getBurialSiteDirectionsOfArrival, {
 } from '../../database/getBurialSiteDirectionsOfArrival.js'
 import getCemeteries from '../../database/getCemeteries.js'
 import getContract from '../../database/getContract.js'
+import getFuneralDirectorNamesByFuneralHomeId from '../../database/getFuneralDirectorNamesByFuneralHomeId.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
-import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { DEBUG_NAMESPACE } from '../../debug.config.js'
+import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
+import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
+import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js'
 import {
-  getBurialSiteStatuses,
-  getBurialSiteTypes,
-  getCommittalTypes,
-  getContractTypePrintsById,
-  getContractTypes,
-  getIntermentContainerTypes,
-  getWorkOrderTypes
-} from '../../helpers/cache.helpers.js'
+  getCachedContractTypePrintsById,
+  getCachedContractTypes
+} from '../../helpers/cache/contractTypes.cache.js'
+import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js'
+import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js'
+import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
+import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { sunriseDB } from '../../helpers/database.helpers.js'
+import { userCanUpdateWorkOrders } from '../../helpers/user.helpers.js'
+import { userHasConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js'
+
+const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:edit`)
 
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const contract = await getContract(request.params.contractId)
+  let database: sqlite.Database | undefined
 
-  if (contract === undefined) {
-    response.redirect(
-      `${getConfigProperty(
-        'reverseProxy.urlPrefix'
-      )}/contracts/?error=contractIdNotFound`
+  try {
+    database = sqlite(sunriseDB, { readonly: true })
+
+    const contract = await getContract(request.params.contractId, database)
+
+    if (contract === undefined) {
+      response.redirect(
+        `${getConfigProperty(
+          'reverseProxy.urlPrefix'
+        )}/contracts/?error=contractIdNotFound`
+      )
+      return
+    }
+
+    const contractTypePrints = getCachedContractTypePrintsById(
+      contract.contractTypeId
     )
-    return
+
+    const consignoCloudAccess = userHasConsignoCloudAccess(request.session.user)
+
+    /*
+     * Contract Drop Lists
+     */
+
+    const contractTypes = getCachedContractTypes()
+    const funeralHomes = getFuneralHomes(database)
+    const committalTypes = getCachedCommittalTypes()
+    const intermentContainerTypes = getCachedIntermentContainerTypes()
+
+    /*
+     * Burial Site Drop Lists
+     */
+
+    const burialSiteStatuses = getCachedBurialSiteStatuses()
+    const burialSiteTypes = getCachedBurialSiteTypes()
+    const cemeteries = getCemeteries(undefined, database)
+
+    const burialSiteDirectionsOfArrival =
+      contract.burialSiteId === undefined || contract.burialSiteId === null
+        ? defaultDirectionsOfArrival
+        : getBurialSiteDirectionsOfArrival(contract.burialSiteId, database)
+
+    /*
+     * Funeral Director Suggestions
+     */
+
+    const funeralDirectorNames =
+      contract.funeralHomeId === null
+        ? []
+        : getFuneralDirectorNamesByFuneralHomeId(
+            contract.funeralHomeId,
+            database
+          )
+
+    /*
+     * Work Order Drop Lists
+     */
+
+    const canUpdateWorkOrders = userCanUpdateWorkOrders(request)
+
+    const workOrderTypes = canUpdateWorkOrders ? getCachedWorkOrderTypes() : []
+    const workOrderMilestoneTypes = canUpdateWorkOrders
+      ? getCachedWorkOrderMilestoneTypes()
+      : []
+
+    response.render('contracts/edit', {
+      headTitle: 'Contract Update',
+
+      contract,
+
+      contractTypePrints,
+      userHasConsignoCloudAccess: consignoCloudAccess,
+
+      committalTypes,
+      contractTypes,
+      funeralHomes,
+      intermentContainerTypes,
+
+      burialSiteStatuses,
+      burialSiteTypes,
+      cemeteries,
+
+      burialSiteDirectionsOfArrival,
+
+      funeralDirectorNames,
+
+      workOrderMilestoneTypes,
+      workOrderTypes,
+
+      isCreate: false
+    })
+  } catch (error) {
+    debug(error)
+    response
+      .status(500)
+      .json({ errorMessage: 'Database error', success: false })
+  } finally {
+    database?.close()
   }
-
-  const contractTypePrints = getContractTypePrintsById(contract.contractTypeId)
-
-  /*
-   * Contract Drop Lists
-   */
-
-  const contractTypes = getContractTypes()
-  const funeralHomes = getFuneralHomes()
-  const committalTypes = getCommittalTypes()
-  const intermentContainerTypes = getIntermentContainerTypes()
-
-  /*
-   * Burial Site Drop Lists
-   */
-
-  const burialSiteStatuses = getBurialSiteStatuses()
-  const burialSiteTypes = getBurialSiteTypes()
-  const cemeteries = getCemeteries()
-
-  const burialSiteDirectionsOfArrival =
-    contract.burialSiteId === undefined
-      ? defaultDirectionsOfArrival
-      : getBurialSiteDirectionsOfArrival(contract.burialSiteId)
-
-  /*
-   * Work Order Drop Lists
-   */
-
-  const workOrderTypes = getWorkOrderTypes()
-
-  response.render('contract-edit', {
-    headTitle: 'Contract Update',
-
-    contract,
-
-    committalTypes,
-    contractTypePrints,
-    contractTypes,
-    funeralHomes,
-    intermentContainerTypes,
-
-    burialSiteStatuses,
-    burialSiteTypes,
-    cemeteries,
-
-    burialSiteDirectionsOfArrival,
-
-    workOrderTypes,
-
-    isCreate: false
-  })
 }

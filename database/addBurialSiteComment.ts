@@ -10,9 +10,10 @@ export interface AddBurialSiteCommentForm {
 
 export default function addBurialSiteComment(
   commentForm: AddBurialSiteCommentForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): number {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNow = new Date()
 
@@ -36,7 +37,9 @@ export default function addBurialSiteComment(
       rightNow.getTime()
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return result.lastInsertRowid as number
 }

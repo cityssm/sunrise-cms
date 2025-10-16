@@ -1,3 +1,4 @@
+import sqlite from 'better-sqlite3';
 import { type UpdateCemeteryDirectionsOfArrivalForm } from './updateCemeteryDirectionsOfArrival.js';
 export type AddCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
     cemeteryDescription: string;
@@ -14,4 +15,4 @@ export type AddCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
     cemeteryProvince: string;
     cemeteryPhoneNumber: string;
 };
-export default function addCemetery(addForm: AddCemeteryForm, user: User): number;
+export default function addCemetery(addForm: AddCemeteryForm, user: User, connectedDatabase?: sqlite.Database): number;

@@ -1,0 +1,323 @@
+<%- include('../_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('../cemeteries/_menu'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li>
+          <a href="<%= urlPrefix %>/burialSites">
+            <span class="icon is-small"><i class="fa-solid fa-map-pin"></i></span>
+            <span>Burial Sites</span>
+          </a>
+        </li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            Burial Site Range Creator
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <h1 class="title is-1">
+      Burial Site Range Creator
+    </h1>
+
+    <div class="tabs is-boxed">
+      <ul role="presentation">
+        <li class="is-active" role="presentation">
+          <a href="#tabContent--burialSiteCreator">
+            <span class="tag is-info is-rounded">1</span>
+            <span class="ml-2">Define Ranges</span>
+          </a>
+        </li>
+        <li role="presentation">
+          <a id="tab--burialSitePreview" href="#tabContent--burialSitePreview">
+            <span class="tag is-info is-rounded">2</span>
+            <span class="ml-2">Preview Burial Sites</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <div id="tabContent--burialSiteCreator">
+        <div class="message is-info">
+          <div class="message-body">
+            <p>
+              The Burial Site Range Creator allows you to create a range of burial sites based on the name segments and cemetery selected.
+            </p>
+            <p>
+              The burial site names will be generated based on the segments defined in the settings.
+            </p>
+          </div>
+        </div>
+        <div class="box">
+          <form id="form--burialSiteCreator">
+            <%
+            const burialSiteNameSegments = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments')
+            %>
+            <div class="field">
+              <label class="label" for="burialSiteCreator--cemeteryId">
+                Cemetery
+              </label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="burialSiteCreator--cemeteryId" name="cemeteryId">
+                    <option value="">(No Cemetery Selected)</option>
+                    <% for (const cemetery of cemeteries) { %>
+                    <option data-cemetery-key="<%= cemetery.cemeteryKey %>" value="<%= cemetery.cemeteryId %>">
+                      <%= cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName %>
+                    </option>
+                    <% } %>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <label class="label" for="burialSiteCreator--burialSiteNameSegment1_from">
+              From Burial Site Name
+            </label>
+            <div class="field has-addons">
+              <% if (burialSiteNameSegments.includeCemeteryKey ?? false) { %>
+              <p class="control">
+                <span class="button is-static">
+                  <span id="burialSiteCreator--cemeteryKey_from">&nbsp;</span>
+                  <% if ((burialSiteNameSegments.separator ?? '') !== '') { %>
+                  <%= burialSiteNameSegments.separator %>
+                  <% } %>
+                </span>
+              </p>
+              <% } %>
+              <% for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) { %>
+              <%
+              const segmentIndexString = segmentIndex.toString();
+              const segment = burialSiteNameSegments.segments[segmentIndexString];
+              %>
+              <% if (segment?.isAvailable ?? false) { %>
+              <% if (segmentIndex !== 1 && (burialSiteNameSegments.separator ?? '') !== '') { %>
+              <p class="control">
+                <span class="button is-static">
+                  <%= burialSiteNameSegments.separator %>
+                </span>
+              </p>
+              <% } %>
+              <% if ((segment.prefix ?? '') !== '') { %>
+              <p class="control">
+                <span class="button is-static">
+                  <%= segment.prefix %>
+                </span>
+              </p>
+              <% } %>
+              <div class="control is-expanded"
+                title="<%= segment.label ?? '' %>">
+
+                <input
+                  class="input"
+                  id="burialSiteCreator--burialSiteNameSegment<%= segmentIndexString %>_from"
+                  name="burialSiteNameSegment<%= segmentIndexString %>_from"
+                  type="text"
+                  minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>" 
+                  maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
+                  aria-label="<%= segment.label ?? '' %>"
+                  placeholder="<%= segment.label ?? '' %>"
+                  _<%- (segment.isRequired ?? false) ? ' required' : '' %>
+                />
+              </div>
+              <% if ((segment.suffix ?? '') !== '') { %>
+              <p class="control">
+                <span class="button is-static">
+                  <%= segment.suffix %>
+                </span>
+              </p>
+              <% } %>
+              <% } %>
+              <% } %>
+            </div>
+    
+            <label class="label" for="burialSiteCreator--burialSiteNameSegment1_to">
+              To Burial Site Name
+            </label>
+            <div class="field has-addons">
+              <% if (burialSiteNameSegments.includeCemeteryKey ?? false) { %>
+              <p class="control">
+                <span class="button is-static">
+                  <span id="burialSiteCreator--cemeteryKey_to">&nbsp;</span>
+                  <% if ((burialSiteNameSegments.separator ?? '') !== '') { %>
+                  <%= burialSiteNameSegments.separator %>
+                  <% } %>
+                </span>
+              </p>
+              <% } %>
+              <% for (let segmentIndex = 1; segmentIndex <= 5; segmentIndex += 1) { %>
+              <%
+              const segmentIndexString = segmentIndex.toString();
+              const segment = burialSiteNameSegments.segments[segmentIndexString];
+              %>
+              <% if (segment?.isAvailable ?? false) { %>
+              <% if (segmentIndex !== 1 && (burialSiteNameSegments.separator ?? '') !== '') { %>
+              <p class="control">
+                <span class="button is-static">
+                  <%= burialSiteNameSegments.separator %>
+                </span>
+              </p>
+              <% } %>
+              <% if ((segment.prefix ?? '') !== '') { %>
+              <p class="control">
+                <span class="button is-static">
+                  <%= segment.prefix %>
+                </span>
+              </p>
+              <% } %>
+              <div class="control is-expanded"
+                title="<%= segment.label ?? '' %>">
+
+                <input
+                  class="input"
+                  id="burialSiteCreator--burialSiteNameSegment<%= segmentIndexString %>_to"
+                  name="burialSiteNameSegment<%= segmentIndexString %>_to"
+                  type="text"
+                  minlength="<%= Math.max(Math.min(segment.minLength ?? 1, 20), 1) %>" 
+                  maxlength="<%= Math.max(Math.min(segment.maxLength ?? 20, 20), 1) %>"
+                  aria-label="<%= segment.label ?? '' %>"
+                  placeholder="<%= segment.label ?? '' %>"
+                />
+              </div>
+              <% if ((segment.suffix ?? '') !== '') { %>
+              <p class="control">
+                <span class="button is-static">
+                  <%= segment.suffix %>
+                </span>
+              </p>
+              <% } %>
+              <% } %>
+              <% } %>
+            </div>
+    
+            <p class="has-text-right">
+              <button class="button is-primary" id="burialSiteCreator--submit" type="submit">
+                <span class="icon is-small"><i class="fa-solid fa-eye"></i></span>
+                <span>Preview Burial Sites</span>
+              </button>
+            </p>
+          </form>
+        </div>
+      </div>
+      <div class="is-hidden" id="tabContent--burialSitePreview">
+        <div class="columns">
+          <div class="column is-5">
+            <div class="box">
+              <div class="field">
+                <label class="label" for="burialSitePreview--burialSiteTypeId">
+                  Burial Site Type
+                </label>
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="burialSitePreview--burialSiteTypeId" name="burialSiteTypeId" required>
+                      <option value="">(Select a Type)</option>
+                      <% for (const burialSiteType of burialSiteTypes) { %>
+                      <option value="<%= burialSiteType.burialSiteTypeId %>">
+                        <%= burialSiteType.burialSiteType === '' ? '(No Name)' : burialSiteType.burialSiteType %>
+                      </option>
+                      <% } %>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="burialSitePreview--burialSiteStatusId">
+                  Burial Site Status
+                </label>
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="burialSitePreview--burialSiteStatusId" name="burialSiteStatusId" required>
+                      <option value="">(Select a Status)</option>
+                      <% for (const burialSiteStatus of burialSiteStatuses) { %>
+                      <option value="<%= burialSiteStatus.burialSiteStatusId %>">
+                        <%= burialSiteStatus.burialSiteStatus === '' ? '(No Name)' : burialSiteStatus.burialSiteStatus %>
+                      </option>
+                      <% } %>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="panel" id="panel--burialSitePreview_existing">
+              <div class="panel-heading">
+                <div class="level is-mobile">
+                  <div class="level-left">
+                    <div class="level-item">
+                      <button class="button is-small is-toggle-button" type="button" title="Toggle">
+                        <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                      </button>
+                    </div>
+                    <div class="level-item">
+                      <h2 class="title is-5 has-text-white">
+                        Existing Burial Sites
+                      </h2>
+                    </div>
+                  </div>
+                  <div class="level-right">
+                    <div class="level-item">
+                      <span class="tag is-info">0</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-block is-block">
+                <div class="message is-info is-small">
+                  <p class="message-body">
+                    The burial sites listed below already exist.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="panel" id="panel--burialSitePreview_new">
+              <div class="panel-heading">
+                <div class="level is-mobile">
+                  <div class="level-left">
+                    <div class="level-item">
+                      <button class="button is-small is-toggle-button" type="button" title="Toggle">
+                        <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                      </button>
+                    </div>
+                    <div class="level-item">
+                      <h2 class="title is-5 has-text-white">
+                        New Burial Sites
+                      </h2>
+                    </div>
+                  </div>
+                  <div class="level-right">
+                    <div class="level-item">
+                      <span class="tag is-info">0</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-block is-block">
+                <div class="message is-info is-small">
+                  <p class="message-body">
+                    The burial sites listed below do not exist and can be created.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/burialSite.creator.js"></script>
+
+<%- include('../_footerB'); -%>

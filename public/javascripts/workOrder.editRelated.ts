@@ -2,7 +2,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type {
   BurialSite,
@@ -63,7 +63,7 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Relationship',
+              title: 'Error Deleting Contract Relationship',
 
               message: responseJSON.errorMessage ?? ''
             })
@@ -164,6 +164,149 @@ declare const exports: {
     addBurialSite(burialSiteId)
   }
 
+  function buildRelatedContractElement(contract: Contract): HTMLElement {
+    const rowElement = document.createElement('tr')
+    rowElement.className = 'container--contract'
+    rowElement.dataset.contractId = contract.contractId.toString()
+
+    const hasBurialSiteRecord =
+      (contract.burialSiteId ?? '') !== '' &&
+      workOrderBurialSites.some(
+        (burialSite) => contract.burialSiteId === burialSite.burialSiteId
+      )
+
+    let contractIcon =
+      '<i class="fa-solid fa-stop" title="Previous Contract"></i>'
+
+    if (contract.contractIsFuture) {
+      contractIcon =
+        '<i class="fa-solid fa-fast-forward" title="Future Contract"></i>'
+    } else if (contract.contractIsActive) {
+      contractIcon = '<i class="fa-solid fa-play" title="Current Contract"></i>'
+    }
+
+    // eslint-disable-next-line no-unsanitized/property
+    rowElement.innerHTML = /*html*/ `
+      <td class="is-width-1 has-text-centered">
+        ${contractIcon}
+      </td>
+      <td>
+        <a class="has-text-weight-bold" href="${sunrise.getContractUrl(contract.contractId)}">
+          ${cityssm.escapeHTML(contract.contractType)}
+        </a><br />
+        <span class="is-size-7">#${cityssm.escapeHTML(contract.contractId.toString())}</span>
+      </td>
+    `
+
+    if (contract.burialSiteId === null || contract.burialSiteId === undefined) {
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        '<td><span class="has-text-grey">(No Burial Site)</span></td>'
+      )
+    } else {
+      // eslint-disable-next-line no-unsanitized/method
+      rowElement.insertAdjacentHTML(
+        'beforeend',
+        /*html*/ `
+          <td>
+            ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
+            ${
+              hasBurialSiteRecord
+                ? ''
+                : /*html*/ `
+                  <button
+                    class="button is-small is-light is-success button--addBurialSite"
+                    data-burial-site-id="${contract.burialSiteId.toString()}"
+                    type="button"
+                    title="Add Burial Site"
+                  >
+                    <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                  </button>
+                `
+            }
+          </td>
+        `
+      )
+    }
+
+    let contactsHtml = ''
+
+    for (const interment of contract.contractInterments ?? []) {
+      contactsHtml += /*html*/ `
+        <li title="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
+          <span class="fa-li">
+            <i class="fa-solid fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
+          </span>
+          ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+        </li>
+      `
+    }
+
+    if (contract.purchaserName !== '') {
+      contactsHtml += /*html*/ `
+        <li title="Purchaser">
+          <span class="fa-li">
+            <i class="fa-solid fa-hand-holding-dollar" aria-label="Purchaser"></i>
+          </span>
+          ${cityssm.escapeHTML(contract.purchaserName)}
+        </li>
+      `
+    }
+
+    if (contract.funeralHomeName !== null) {
+      contactsHtml += /*html*/ `
+        <li title="Funeral Home">
+          <span class="fa-li">
+            <i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i>
+          </span>
+          ${cityssm.escapeHTML(contract.funeralHomeName)}
+        </li>
+      `
+    }
+
+    // eslint-disable-next-line no-unsanitized/method
+    rowElement.insertAdjacentHTML(
+      'beforeend',
+      /*html*/ `
+        <td>
+          ${contract.contractStartDateString}
+        </td>
+        <td>
+          ${
+            contract.contractEndDate === null ||
+            contract.contractEndDate === undefined
+              ? '<span class="has-text-grey">(No End Date)</span>'
+              : contract.contractEndDateString
+          }
+        </td>
+        <td>
+          <ul class="fa-ul ml-5">
+            ${contactsHtml}
+          </ul>
+        </td>
+        <td>
+          <button
+            class="button is-small is-light is-danger button--deleteContract"
+            type="button"
+            title="Delete Relationship"
+          >
+            <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+          </button>
+        </td>
+      `
+    )
+
+    rowElement
+      .querySelector('.button--addBurialSite')
+      ?.addEventListener('click', addBurialSiteFromContract)
+
+    rowElement
+      .querySelector('.button--deleteContract')
+      ?.addEventListener('click', deleteContract)
+
+    return rowElement
+  }
+
   function renderRelatedContracts(): void {
     const contractsContainerElement = document.querySelector(
       '#container--contracts'
@@ -176,142 +319,34 @@ declare const exports: {
     ).textContent = workOrderContracts.length.toString()
 
     if (workOrderContracts.length === 0) {
-      contractsContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no contracts associated with this work order.</p>
-        </div>`
+      contractsContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no contracts associated with this work order.</p>
+        </div>
+      `
 
       return
     }
 
-    contractsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-      <thead><tr>
-        <th class="has-width-1"></th>
-        <th>Contract Type</th>
-        <th>Burial Site</th>
-        <th>Contract Date</th>
-        <th>End Date</th>
-        <th>Contacts</th>
-        <th class="has-width-1"></th>
-      </tr></thead>
-      <tbody></tbody>
-      </table>`
+    contractsContainerElement.innerHTML = /*html*/ `
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th class="has-width-1"></th>
+            <th>Contract Type</th>
+            <th>Burial Site</th>
+            <th>Contract Date</th>
+            <th>End Date</th>
+            <th>Contacts</th>
+            <th class="has-width-1"></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    `
 
     for (const contract of workOrderContracts) {
-      const rowElement = document.createElement('tr')
-      rowElement.className = 'container--contract'
-      rowElement.dataset.contractId = contract.contractId.toString()
-
-      const hasBurialSiteRecord =
-        contract.burialSiteId &&
-        workOrderBurialSites.some(
-          (burialSite) => contract.burialSiteId === burialSite.burialSiteId
-        )
-
-      let contractIcon = '<i class="fa-solid fa-stop" title="Previous Contract"></i>'
-
-      if (contract.contractIsFuture === 1) {
-        contractIcon =
-          '<i class="fa-solid fa-fast-forward" title="Future Contract"></i>'
-      } else if (contract.contractIsActive === 1) {
-        contractIcon = '<i class="fa-solid fa-play" title="Current Contract"></i>'
-      }
-
-      // eslint-disable-next-line no-unsanitized/property
-      rowElement.innerHTML = `<td class="is-width-1 has-text-centered">
-        ${contractIcon}
-        </td><td>
-          <a class="has-text-weight-bold" href="${sunrise.getContractURL(contract.contractId)}">
-            ${cityssm.escapeHTML(contract.contractType)}
-          </a><br />
-          <span class="is-size-7">#${contract.contractId}</span>
-        </td>`
-
-      if (contract.burialSiteId) {
-        // eslint-disable-next-line no-unsanitized/method
-        rowElement.insertAdjacentHTML(
-          'beforeend',
-          `<td>
-          ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
-          ${
-            hasBurialSiteRecord
-              ? ''
-              : ` <button class="button is-small is-light is-success button--addBurialSite"
-                    data-burial-site-id="${contract.burialSiteId.toString()}"
-                    data-tooltip="Add Burial Site"
-                    aria-label="Add Burial Site" type="button">
-                  <i class="fa-solid fa-plus"></i>
-                  </button>`
-          }
-        </td>`
-        )
-      } else {
-        rowElement.insertAdjacentHTML(
-          'beforeend',
-          '<td><span class="has-text-grey">(No Burial Site)</span></td>'
-        )
-      }
-
-      let contactsHtml = ''
-
-      for (const interment of contract.contractInterments ?? []) {
-        contactsHtml += `<li class="has-tooltip-left"
-          data-tooltip="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
-          <span class="fa-li">
-            <i class="fa-solid fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
-          </span>
-          ${cityssm.escapeHTML(interment.deceasedName ?? '')}
-          </li>`
-      }
-
-      if (contract.purchaserName !== '') {
-        contactsHtml += `<li class="has-tooltip-left"
-          data-tooltip="Purchaser">
-          <span class="fa-li">
-            <i class="fa-solid fa-hand-holding-dollar" aria-label="Purchaser"></i>
-          </span>
-          ${cityssm.escapeHTML(contract.purchaserName)}
-          </li>`
-      }
-
-      if (contract.funeralHomeName !== null) {
-        contactsHtml += `<li class="has-tooltip-left"
-          data-tooltip="Funeral Home">
-          <span class="fa-li">
-            <i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i>
-          </span>
-          ${cityssm.escapeHTML(contract.funeralHomeName)}
-          </li>`
-      }
-
-      // eslint-disable-next-line no-unsanitized/method
-      rowElement.insertAdjacentHTML(
-        'beforeend',
-        `<td>
-          ${contract.contractStartDateString}
-        </td><td>
-          ${
-            contract.contractEndDate
-              ? contract.contractEndDateString
-              : '<span class="has-text-grey">(No End Date)</span>'
-          }
-        </td><td>
-          <ul class="fa-ul ml-5">
-          ${contactsHtml}
-          </ul>
-        </td><td>
-          <button class="button is-small is-light is-danger button--deleteContract" data-tooltip="Delete Relationship" type="button">
-            <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
-          </button>
-        </td>`
-      )
-
-      rowElement
-        .querySelector('.button--addBurialSite')
-        ?.addEventListener('click', addBurialSiteFromContract)
-
-      rowElement
-        .querySelector('.button--deleteContract')
-        ?.addEventListener('click', deleteContract)
+      const rowElement = buildRelatedContractElement(contract)
 
       contractsContainerElement.querySelector('tbody')?.append(rowElement)
     }
@@ -374,7 +409,7 @@ declare const exports: {
           modalElement.querySelector(
             '#burialSiteStatusEdit--burialSiteName'
           ) as HTMLInputElement
-        ).value = burialSite.burialSiteName ?? ''
+        ).value = burialSite.burialSiteName
 
         const burialSiteStatusElement = modalElement.querySelector(
           '#burialSiteStatusEdit--burialSiteStatusId'
@@ -397,25 +432,34 @@ declare const exports: {
           burialSiteStatusElement.append(optionElement)
         }
 
-        if (!statusFound && burialSite.burialSiteStatusId) {
+        if (
+          !statusFound &&
+          burialSite.burialSiteStatusId !== undefined &&
+          burialSite.burialSiteStatusId !== null
+        ) {
           const optionElement = document.createElement('option')
           optionElement.value = burialSite.burialSiteStatusId.toString()
           optionElement.textContent = burialSite.burialSiteStatus ?? ''
           burialSiteStatusElement.append(optionElement)
         }
 
-        if (burialSite.burialSiteStatusId) {
+        if (
+          burialSite.burialSiteStatusId !== undefined &&
+          burialSite.burialSiteStatusId !== null
+        ) {
           burialSiteStatusElement.value =
             burialSite.burialSiteStatusId.toString()
         }
 
-        // eslint-disable-next-line no-unsanitized/method
-        modalElement
-          .querySelector('form')
-          ?.insertAdjacentHTML(
-            'beforeend',
-            `<input name="workOrderId" type="hidden" value="${workOrderId}" />`
-          )
+        modalElement.querySelector('form')?.insertAdjacentHTML(
+          'beforeend',
+          /*html*/ `
+            <input
+              name="workOrderId"
+              type="hidden"
+              value="${cityssm.escapeHTML(workOrderId)}" />
+          `
+        )
       },
       onshown(modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
@@ -460,7 +504,7 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Relationship',
+              title: 'Error Deleting Burial Site Relationship',
 
               message: responseJSON.errorMessage ?? ''
             })
@@ -495,23 +539,29 @@ declare const exports: {
     ).textContent = workOrderBurialSites.length.toString()
 
     if (workOrderBurialSites.length === 0) {
-      burialSitesContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no burial sites associated with this work order.</p>
-        </div>`
+      burialSitesContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no burial sites associated with this work order.</p>
+        </div>
+      `
 
       return
     }
 
-    burialSitesContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-      <thead><tr>
-        <th>Burial Site</th>
-        <th>Cemetery</th>
-        <th>Burial Site Type</th>
-        <th>Status</th>
-        <th class="has-width-1"></th>
-      </tr></thead>
-      <tbody></tbody>
-      </table>`
+    burialSitesContainerElement.innerHTML = /*html*/ `
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Burial Site</th>
+            <th>Cemetery</th>
+            <th>Burial Site Type</th>
+            <th>Status</th>
+            <th class="has-width-1"></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    `
 
     for (const burialSite of workOrderBurialSites) {
       const rowElement = document.createElement('tr')
@@ -520,28 +570,43 @@ declare const exports: {
       rowElement.dataset.burialSiteId = burialSite.burialSiteId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      rowElement.innerHTML = `<td>
-          <a class="has-text-weight-bold" href="${sunrise.getBurialSiteURL(burialSite.burialSiteId)}">
-            ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
+      rowElement.innerHTML = /*html*/ `
+        <td>
+          <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
+            ${cityssm.escapeHTML(burialSite.burialSiteName)}
           </a>
-        </td><td>
+        </td>
+        <td>
           ${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}
-        </td><td>
+        </td>
+        <td>
           ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
-        </td><td>
+        </td>
+        <td>
           ${
-            burialSite.burialSiteStatusId
-              ? cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
-              : '<span class="has-text-grey">(No Status)</span>'
+            burialSite.burialSiteStatusId === undefined ||
+            burialSite.burialSiteStatusId === null
+              ? '<span class="has-text-grey">(No Status)</span>'
+              : cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')
           }
-        </td><td class="has-text-right">
-          <button class="button is-small mb-1 is-light is-info button--editBurialSiteStatus" data-tooltip="Update Status" type="button">
+        </td>
+        <td class="has-text-right">
+          <button
+            class="button is-small mb-1 is-light is-info button--editBurialSiteStatus"
+            type="button"
+            title="Update Status"
+          >
             <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
           </button>
-          <button class="button is-small is-light is-danger button--deleteBurialSite" data-tooltip="Delete Relationship" type="button">
+          <button
+            class="button is-small is-light is-danger button--deleteBurialSite"
+            type="button"
+            title="Delete Relationship"
+          >
             <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
           </button>
-        </td>`
+        </td>
+      `
 
       rowElement
         .querySelector('.button--editBurialSiteStatus')
@@ -570,7 +635,7 @@ declare const exports: {
     const contractId = rowElement.dataset.contractId ?? ''
 
     addContract(contractId, (success) => {
-      if (success) {
+      if (success ?? false) {
         rowElement.remove()
       }
     })
@@ -587,7 +652,6 @@ declare const exports: {
       function doSearch(event?: Event): void {
         event?.preventDefault()
 
-        // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML =
           sunrise.getLoadingParagraphHTML('Searching...')
 
@@ -600,80 +664,103 @@ declare const exports: {
             }
 
             if (responseJSON.contracts.length === 0) {
-              searchResultsContainerElement.innerHTML = `<div class="message is-info">
-                <p class="message-body">There are no records that meet the search criteria.</p>
-                </div>`
+              searchResultsContainerElement.innerHTML = /*html*/ `
+                <div class="message is-info">
+                  <p class="message-body">There are no records that meet the search criteria.</p>
+                </div>
+              `
 
               return
             }
 
-            searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-              <thead><tr>
-                <th class="has-width-1"></th>
-                <th>Contract Type</th>
-                <th>Burial Site</th>
-                <th>Contract Date</th>
-                <th>End Date</th>
-                <th>Interments</th>
-              </tr></thead>
-              <tbody></tbody>
-              </table>`
+            searchResultsContainerElement.innerHTML = /*html*/ `
+              <table class="table is-fullwidth is-striped is-hoverable">
+                <thead>
+                  <tr>
+                    <th class="has-width-1"></th>
+                    <th>Contract Type</th>
+                    <th>Burial Site</th>
+                    <th>Contract Date</th>
+                    <th>End Date</th>
+                    <th>Interments</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            `
 
             for (const contract of responseJSON.contracts) {
               const rowElement = document.createElement('tr')
               rowElement.className = 'container--contract'
               rowElement.dataset.contractId = contract.contractId.toString()
 
-              rowElement.innerHTML = `<td class="has-text-centered">
-                  <button class="button is-small is-success button--addContract" data-tooltip="Add" type="button" aria-label="Add">
+              rowElement.innerHTML = /*html*/ `
+                <td class="has-text-centered">
+                  <button class="button is-small is-success button--addContract" type="button" title="Add">
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                   </button>
                 </td>
                 <td class="has-text-weight-bold">
                   ${cityssm.escapeHTML(contract.contractType)}
-                </td>`
+                </td>
+              `
 
-              if (contract.burialSiteId) {
-                rowElement.insertAdjacentHTML(
-                  'beforeend',
-                  `<td>${cityssm.escapeHTML(contract.burialSiteName ?? '')}</td>`
-                )
-              } else {
+              if (
+                contract.burialSiteId === null ||
+                contract.burialSiteId === undefined
+              ) {
                 rowElement.insertAdjacentHTML(
                   'beforeend',
                   '<td><span class="has-text-grey">(No Burial Site)</span></td>'
                 )
+              } else {
+                rowElement.insertAdjacentHTML(
+                  'beforeend',
+                  /*html*/ `
+                    <td>
+                      ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
+                    </td>
+                  `
+                )
               }
+
+              const intermentCount = contract.contractInterments?.length ?? 0
+              const recipientOrDeceased = contract.isPreneed
+                ? 'Recipients'
+                : 'Deceased'
+
+              const intermentsHtml =
+                intermentCount === 0
+                  ? /*html*/ `
+                    <span class="has-text-grey">
+                      (No ${cityssm.escapeHTML(recipientOrDeceased)})
+                    </span>
+                  `
+                  : cityssm.escapeHTML(
+                      contract.contractInterments?.[0].deceasedName ?? ''
+                    ) +
+                    // eslint-disable-next-line sonarjs/no-nested-conditional
+                    (intermentCount > 1
+                      ? ` plus ${(intermentCount - 1).toString()}`
+                      : '')
 
               // eslint-disable-next-line no-unsanitized/method
               rowElement.insertAdjacentHTML(
                 'beforeend',
-                `<td>
-                  ${contract.contractStartDateString}
-                </td><td>
-                  ${
-                    contract.contractEndDate
-                      ? contract.contractEndDateString
-                      : '<span class="has-text-grey">(No End Date)</span>'
-                  }
-                </td><td>
-                  ${
-                    (contract.contractInterments ?? []).length === 0
-                      ? `<span class="has-text-grey">
-                          (No ${cityssm.escapeHTML(
-                            contract.isPreneed ? 'Recipients' : 'Deceased'
-                          )})
-                          </span>`
-                      : cityssm.escapeHTML(
-                          contract.contractInterments![0].deceasedName ?? ''
-                        ) +
-                        (contract.contractInterments!.length > 1
-                          ? ` plus
-                              ${(
-                                contract.contractInterments!.length - 1
-                              ).toString()}`
-                          : '')
-                  }</td>`
+                /*html*/ `
+                  <td>
+                    ${contract.contractStartDateString}
+                  </td>
+                  <td>
+                    ${
+                      contract.contractEndDate === null ||
+                      contract.contractEndDate === undefined
+                        ? '<span class="has-text-grey">(No End Date)</span>'
+                        : contract.contractEndDateString
+                    }
+                  </td>
+                  <td>${intermentsHtml}</td>
+                `
               )
 
               rowElement
@@ -768,7 +855,6 @@ declare const exports: {
       function doSearch(event?: Event): void {
         event?.preventDefault()
 
-        // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML =
           sunrise.getLoadingParagraphHTML('Searching...')
 
@@ -781,23 +867,29 @@ declare const exports: {
             }
 
             if (responseJSON.burialSites.length === 0) {
-              searchResultsContainerElement.innerHTML = `<div class="message is-info">
-                <p class="message-body">There are no records that meet the search criteria.</p>
-                </div>`
+              searchResultsContainerElement.innerHTML = /*html*/ `
+                <div class="message is-info">
+                  <p class="message-body">There are no records that meet the search criteria.</p>
+                </div>
+              `
 
               return
             }
 
-            searchResultsContainerElement.innerHTML = `<table class="table is-fullwidth is-striped is-hoverable">
-              <thead><tr>
-                <th class="has-width-1"></th>
-                <th>Burial Site</th>
-                <th>Cemetery</th>
-                <th>Burial Site Type</th>
-                <th>Status</th>
-              </tr></thead>
-              <tbody></tbody>
-              </table>`
+            searchResultsContainerElement.innerHTML = /*html*/ `
+              <table class="table is-fullwidth is-striped is-hoverable">
+                <thead>
+                  <tr>
+                    <th class="has-width-1"></th>
+                    <th>Burial Site</th>
+                    <th>Cemetery</th>
+                    <th>Burial Site Type</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            `
 
             for (const burialSite of responseJSON.burialSites) {
               const rowElement = document.createElement('tr')
@@ -805,19 +897,25 @@ declare const exports: {
               rowElement.dataset.burialSiteId =
                 burialSite.burialSiteId.toString()
 
-              rowElement.innerHTML = `<td class="has-text-centered">
-                  <button class="button is-small is-success button--addBurialSite" data-tooltip="Add" type="button" aria-label="Add">
+              rowElement.innerHTML = /*html*/ `
+                <td class="has-text-centered">
+                  <button class="button is-small is-success button--addBurialSite" type="button" title="Add">
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
                   </button>
-                </td><td class="has-text-weight-bold">
-                  ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}
-                </td><td>
+                </td>
+                <td class="has-text-weight-bold">
+                  ${cityssm.escapeHTML(burialSite.burialSiteName)}
+                </td>
+                <td>
                   ${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}
-                </td><td>
+                </td>
+                <td>
                   ${cityssm.escapeHTML(burialSite.burialSiteType ?? '')}
-                </td><td>
+                </td>
+                <td>
                   ${cityssm.escapeHTML(burialSite.burialSiteStatus ?? '')}
-                </td>`
+                </td>
+              `
 
               rowElement
                 .querySelector('.button--addBurialSite')

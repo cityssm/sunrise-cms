@@ -1,12 +1,28 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const funeralHomes = exports.funeralHomes;
     const searchFilterElement = document.querySelector('#searchFilter--funeralHome');
+    const hasUpcomingFuneralsFilterElement = document.querySelector('#searchFilter--hasUpcomingFunerals');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
+    function buildFuneralHomeAddressHTML(funeralHome) {
+        let addressHTML = '';
+        if (funeralHome.funeralHomeAddress1 !== '') {
+            addressHTML += `${cityssm.escapeHTML(funeralHome.funeralHomeAddress1)}<br />`;
+        }
+        if (funeralHome.funeralHomeAddress2 !== '') {
+            addressHTML += `${cityssm.escapeHTML(funeralHome.funeralHomeAddress2)}<br />`;
+        }
+        if (funeralHome.funeralHomeCity !== '' ||
+            funeralHome.funeralHomeProvince !== '') {
+            addressHTML += `${cityssm.escapeHTML(funeralHome.funeralHomeCity)},
+        ${cityssm.escapeHTML(funeralHome.funeralHomeProvince)}<br />`;
+        }
+        if (funeralHome.funeralHomePostalCode !== '') {
+            addressHTML += cityssm.escapeHTML(funeralHome.funeralHomePostalCode);
+        }
+        return addressHTML;
+    }
     function renderResults() {
-        // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Funeral Homes...');
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement('tbody');
@@ -15,6 +31,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             .toLowerCase()
             .split(' ');
         for (const funeralHome of funeralHomes) {
+            if (hasUpcomingFuneralsFilterElement.checked &&
+                (funeralHome.upcomingFuneralCount ?? 0) === 0) {
+                continue;
+            }
             const searchString = `${funeralHome.funeralHomeName} ${funeralHome.funeralHomeAddress1} ${funeralHome.funeralHomeAddress2}`.toLowerCase();
             let showRecord = true;
             for (const filterStringPiece of filterStringSplit) {
@@ -27,54 +47,56 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 continue;
             }
             searchResultCount += 1;
-            // eslint-disable-next-line no-unsanitized/method
-            searchResultsTbodyElement.insertAdjacentHTML('beforeend', `<tr>
-          <td>
-            <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeURL(funeralHome.funeralHomeId)}">
-              ${cityssm.escapeHTML(funeralHome.funeralHomeName === ''
+            searchResultsTbodyElement.insertAdjacentHTML('beforeend', 
+            /*html*/ `
+          <tr>
+            <td>
+              <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeUrl(funeralHome.funeralHomeId)}">
+                ${cityssm.escapeHTML(funeralHome.funeralHomeName === ''
                 ? '(No Name)'
                 : funeralHome.funeralHomeName)}
-            </a>
-          </td><td>
-            ${funeralHome.funeralHomeAddress1 === ''
-                ? ''
-                : `${cityssm.escapeHTML(funeralHome.funeralHomeAddress1)}<br />`}
-            ${funeralHome.funeralHomeAddress2 === ''
-                ? ''
-                : `${cityssm.escapeHTML(funeralHome.funeralHomeAddress2)}<br />`}
-            ${funeralHome.funeralHomeCity !== '' ||
-                funeralHome.funeralHomeProvince !== ''
-                ? `${cityssm.escapeHTML(funeralHome.funeralHomeCity)},
-                    ${cityssm.escapeHTML(funeralHome.funeralHomeProvince)}<br />`
-                : ''}
-            ${funeralHome.funeralHomePostalCode === ''
-                ? ''
-                : cityssm.escapeHTML(funeralHome.funeralHomePostalCode)}
-          </td><td>
-            ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
-          </td>
-          </tr>`);
+              </a>
+            </td>
+            <td>
+              ${buildFuneralHomeAddressHTML(funeralHome)}
+            </td>
+            <td>
+              ${cityssm.escapeHTML(funeralHome.funeralHomePhoneNumber)}
+            </td>
+            <td class="has-text-right">
+              ${cityssm.escapeHTML((funeralHome.upcomingFuneralCount ?? 0).toString())}
+            </td>
+          </tr>
+        `);
         }
         searchResultsContainerElement.innerHTML = '';
         if (searchResultCount === 0) {
-            searchResultsContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no funeral homes that meet the search criteria.</p>
-        </div>`;
+            searchResultsContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no funeral homes that meet the search criteria.</p>
+        </div>
+      `;
         }
         else {
             const searchResultsTableElement = document.createElement('table');
             searchResultsTableElement.className =
                 'table is-fullwidth is-striped is-hoverable has-sticky-header';
-            searchResultsTableElement.innerHTML = `<thead><tr>
-        <th>Funeral Home</th>
-        <th>Address</th>
-        <th>Phone Number</th>
-        </tr></thead>`;
+            searchResultsTableElement.innerHTML = /*html*/ `
+        <thead>
+          <tr>
+            <th>Funeral Home</th>
+            <th>Address</th>
+            <th>Phone Number</th>
+            <th class="has-text-right">Upcoming Funerals</th>
+          </tr>
+        </thead>
+      `;
             searchResultsTableElement.append(searchResultsTbodyElement);
             searchResultsContainerElement.append(searchResultsTableElement);
         }
     }
     searchFilterElement.addEventListener('keyup', renderResults);
+    hasUpcomingFuneralsFilterElement.addEventListener('change', renderResults);
     document
         .querySelector('#form--searchFilters')
         ?.addEventListener('submit', (formEvent) => {

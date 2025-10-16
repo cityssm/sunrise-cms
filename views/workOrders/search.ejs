@@ -1,0 +1,234 @@
+<%- include('../_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('_menu'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            <span class="icon is-small"><i class="fa-solid fa-hard-hat"></i></span>
+            <span>Work Orders</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <% if (error !== undefined) { %>
+    <div class="notification is-danger is-light">
+      <button class="delete" aria-label="delete"></button>
+      <p>
+        <strong>Work Order Error</strong><br />
+        <%= error %>
+      </p>
+    </div>
+    <% } %>
+
+    <form id="form--searchFilters">
+      <input
+        id="searchFilter--offset"
+        name="offset"
+        type="hidden"
+        value="0"
+      />
+
+      <div class="columns is-vcentered is-mobile">
+        <div class="column">
+          <h1 class="title is-1">
+            Work Order Search
+          </h1>
+        </div>
+        <div class="column has-text-right is-narrow">
+          <div class="field has-addons">
+            <div class="control">
+              <label class="button is-small is-static has-text-grey-dark" for="searchFilter--limit">Results</label>
+            </div>
+            <div class="control">
+              <div class="select is-small is-fullwidth">
+                <select id="searchFilter--limit" name="limit" aria-label="Results per page">
+                  <option value="50" selected>50</option>
+                  <option value="100">100</option>
+                  <option value="250">250</option>
+                  <option value="500">500</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-block is-block">
+          <div class="columns">
+            <% if (workOrderTypes.length > 1) { %>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--workOrderTypeId">Work Order Type</label>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--workOrderTypeId" name="workOrderTypeId">
+                      <option value="">(All Work Order Types)</option>
+                      <% for (const workOrderType of workOrderTypes) { %>
+                      <option value="<%= workOrderType.workOrderTypeId %>">
+                        <%= workOrderType.workOrderType || "(No Name)" %>
+                      </option>
+                      <% } %>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <% } %>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--workOrderOpenStatus">Open Status</label>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--workOrderOpenStatus" name="workOrderOpenStatus">
+                      <option
+                        value=""
+                        _<%= (workOrderOpenDateString ? " selected" : "") %>
+                      >
+                        (All Statuses)
+                      </option>
+                      <option
+                        value="open"
+                        _<%= (workOrderOpenDateString ? "" : " selected") %>
+                      >
+                        Open
+                      </option>
+                      <option value="closed">Closed</option>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>  
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--workOrderOpenDateString"><%= settingFunctions.getSettingValue("aliases.workOrderOpenDate") %></label>
+                <div class="control is-expanded has-icons-left">
+                  <input
+                    class="input"
+                    id="searchFilter--workOrderOpenDateString"
+                    name="workOrderOpenDateString"
+                    type="date"
+                    value="<%= workOrderOpenDateString %>"
+                    max="<%= dateTimeFunctions.dateToString(new Date()) %>"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-calendar"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="panel-block has-background-light filter-block-toggle" href="#">
+          <span class="icon"><i class="fa-solid fa-caret-right"></i></span>
+          Related Location Filters
+        </a>
+        <div class="panel-block is-block is-hidden">
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--cemeteryId">Cemetery</label>
+                <div class="control is-expanded has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--cemeteryId" name="cemeteryId">
+                      <option value="">(All Cemeteries)</option>
+                      <% for (const cemetery of cemeteries) { %>
+                      <option value="<%= cemetery.cemeteryId %>"><%= cemetery.cemeteryName || "(No Name)" %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--burialSiteName">Burial Site Name</label>
+                <div class="control is-expanded has-icons-left">
+                  <input
+                    class="input"
+                    id="searchFilter--burialSiteName"
+                    name="burialSiteName"
+                    type="text"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="panel-block has-background-light filter-block-toggle" href="#">
+          <span class="icon"><i class="fa-solid fa-caret-right"></i></span>
+          Related Contact Filters
+        </a>
+        <div class="panel-block is-block is-hidden">
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--deceasedName">Recipient / Deceased Name</label>
+                <div class="control is-expanded has-icons-left">
+                  <input
+                    class="input"
+                    id="searchFilter--deceasedName"
+                    name="deceasedName"
+                    type="text"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--funeralHomeId">Funeral Home</label>
+                <div class="control is-expanded has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--funeralHomeId" name="funeralHomeId">
+                      <option value="">(All Funeral Homes)</option>
+                      <% for (const funeralHome of funeralHomes) { %>
+                      <option value="<%= funeralHome.funeralHomeId %>"><%= funeralHome.funeralHomeName || "(No Name)" %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="mt-5" id="container--searchResults"></div>
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script>
+  exports.workOrderPrints = <%- JSON.stringify(configFunctions.getConfigProperty("settings.workOrders.prints")) %>;
+</script>
+<script src="<%= urlPrefix %>/javascripts/workOrder.search.js"></script>
+<script src="<%= urlPrefix %>/javascripts/search.js"></script>
+
+<%- include('../_footerB'); -%>

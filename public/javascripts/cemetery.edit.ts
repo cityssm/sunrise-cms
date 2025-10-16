@@ -1,14 +1,16 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const cemeteryId = (
     document.querySelector('#cemetery--cemeteryId') as HTMLInputElement
@@ -69,16 +71,17 @@ declare const exports: Record<string, unknown>
       cemeteryForm,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
-          success: boolean
-          cemeteryId?: number
           errorMessage?: string
+          success: boolean
+
+          cemeteryId?: number
         }
 
         if (responseJSON.success) {
           clearUnsavedChanges()
 
           if (isCreate) {
-            globalThis.location.href = sunrise.getCemeteryURL(
+            globalThis.location.href = sunrise.getCemeteryUrl(
               responseJSON.cemeteryId,
               true
             )
@@ -122,12 +125,12 @@ declare const exports: Record<string, unknown>
           },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
-              success: boolean
               errorMessage?: string
+              success: boolean
             }
 
             if (responseJSON.success) {
-              globalThis.location.href = sunrise.getCemeteryURL()
+              globalThis.location.href = sunrise.getCemeteryUrl()
             } else {
               bulmaJS.alert({
                 contextualColorName: 'danger',

@@ -5,16 +5,17 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface UpdateForm {
   contractTypeId: number | string
-  
+
   contractType: string
   isPreneed?: string
 }
 
 export default function updateContractType(
   updateForm: UpdateForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -36,8 +37,10 @@ export default function updateContractType(
       updateForm.contractTypeId
     )
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
+  
   clearCacheByTableName('ContractTypes')
 
   return result.changes > 0

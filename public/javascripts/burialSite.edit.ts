@@ -2,7 +2,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type {
   BurialSiteComment,
@@ -69,7 +69,7 @@ declare const exports: {
           clearUnsavedChanges()
 
           if (isCreate || refreshAfterSave) {
-            globalThis.location.href = sunrise.getBurialSiteURL(
+            globalThis.location.href = sunrise.getBurialSiteUrl(
               responseJSON.burialSiteId,
               true,
               true
@@ -121,7 +121,7 @@ declare const exports: {
 
             if (responseJSON.success) {
               clearUnsavedChanges()
-              globalThis.location.href = sunrise.getBurialSiteURL()
+              globalThis.location.href = sunrise.getBurialSiteUrl()
             } else {
               bulmaJS.alert({
                 contextualColorName: 'danger',
@@ -146,6 +146,26 @@ declare const exports: {
         }
       })
     })
+
+  // Cemetery
+
+  const cemeteryKeySpanElement = document.querySelector(
+    '#burialSite--cemeteryKey'
+  )
+
+  if (cemeteryKeySpanElement !== null) {
+    document
+      .querySelector('#burialSite--cemeteryId')
+      ?.addEventListener('change', (changeEvent) => {
+        const cemeterySelectElement =
+          changeEvent.currentTarget as HTMLSelectElement
+
+        const cemeteryKey =
+          cemeterySelectElement.selectedOptions[0].dataset.cemeteryKey ?? ''
+
+        cemeteryKeySpanElement.innerHTML = cityssm.escapeHTML(cemeteryKey)
+      })
+  }
 
   // Burial Site Type
 
@@ -196,9 +216,11 @@ declare const exports: {
 
     burialSiteTypeIdElement.addEventListener('change', () => {
       if (burialSiteTypeIdElement.value === '') {
-        burialSiteFieldsContainerElement.innerHTML = `<div class="message is-info">
-          <p class="message-body">Select the burial site type to load the available fields.</p>
-          </div>`
+        burialSiteFieldsContainerElement.innerHTML = /*html*/ `
+          <div class="message is-info">
+            <p class="message-body">Select the burial site type to load the available fields.</p>
+          </div>
+        `
 
         return
       }
@@ -214,11 +236,13 @@ declare const exports: {
           }
 
           if (responseJSON.burialSiteTypeFields.length === 0) {
-            burialSiteFieldsContainerElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">
-                There are no additional fields for this burial site type.
-              </p>
-              </div>`
+            burialSiteFieldsContainerElement.innerHTML = /*html*/ `
+              <div class="message is-info">
+                <p class="message-body">
+                  There are no additional fields for this burial site type.
+                </p>
+              </div>
+            `
 
             return
           }
@@ -238,13 +262,15 @@ declare const exports: {
             fieldElement.className = 'field'
 
             // eslint-disable-next-line no-unsanitized/property
-            fieldElement.innerHTML = `<label class="label" for="${fieldId}"></label>
-              <div class="control"></div>`
+            fieldElement.innerHTML = /*html*/ `
+              <label class="label" for="${fieldId}"></label>
+              <div class="control"></div>
+            `
             ;(
               fieldElement.querySelector('label') as HTMLLabelElement
             ).textContent = burialSiteTypeField.burialSiteTypeField as string
 
-            if (burialSiteTypeField.fieldValues === '') {
+            if ((burialSiteTypeField.fieldValues ?? '') === '') {
               const inputElement = document.createElement('input')
 
               inputElement.className = 'input'
@@ -268,9 +294,13 @@ declare const exports: {
               // eslint-disable-next-line no-unsanitized/property
               ;(
                 fieldElement.querySelector('.control') as HTMLElement
-              ).innerHTML = `<div class="select is-fullwidth">
-                  <select id="${fieldId}" name="${fieldName}"><option value="">(Not Set)</option></select>
-                  </div>`
+              ).innerHTML = /*html*/ `
+                <div class="select is-fullwidth">
+                  <select id="${fieldId}" name="${fieldName}">
+                    <option value="">(Not Set)</option>
+                  </select>
+                </div>
+              `
 
               const selectElement = fieldElement.querySelector(
                 'select'
@@ -296,8 +326,10 @@ declare const exports: {
           burialSiteFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
             // eslint-disable-next-line no-secrets/no-secrets
-            `<input name="burialSiteTypeFieldIds" type="hidden"
-              value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />`
+            /*html*/ `
+              <input name="burialSiteTypeFieldIds" type="hidden"
+                value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />
+            `
           )
         }
       )
@@ -432,7 +464,8 @@ declare const exports: {
         const currentDateString = cityssm.dateToString(new Date())
 
         commentDateStringElement.max =
-          burialSiteComment.commentDateString! <= currentDateString
+          // eslint-disable-next-line unicorn/prefer-math-min-max
+          (burialSiteComment.commentDateString ?? '') <= currentDateString
             ? currentDateString
             : burialSiteComment.commentDateString ?? ''
         ;(
@@ -516,50 +549,60 @@ declare const exports: {
     ) as HTMLElement
 
     if (burialSiteComments.length === 0) {
-      containerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no comments to display.</p>
-        </div>`
+      containerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no comments to display.</p>
+        </div>
+      `
       return
     }
 
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-fullwidth is-striped is-hoverable'
-    tableElement.innerHTML = `<thead><tr>
-      <th>Author</th>
-      <th>Comment Date</th>
-      <th>Comment</th>
-      <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
-      </tr></thead>
-      <tbody></tbody>`
+    tableElement.innerHTML = /*html*/ `
+      <thead>
+        <tr>
+          <th>Author</th>
+          <th>Comment Date</th>
+          <th>Comment</th>
+          <th class="is-hidden-print"><span class="is-sr-only">Options</span></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `
 
     for (const burialSiteComment of burialSiteComments) {
       const tableRowElement = document.createElement('tr')
       tableRowElement.dataset.burialSiteCommentId =
         burialSiteComment.burialSiteCommentId?.toString()
 
-      // eslint-disable-next-line no-unsanitized/property
-      tableRowElement.innerHTML = `<td>
+      tableRowElement.innerHTML = /*html*/ `
+        <td>
           ${cityssm.escapeHTML(burialSiteComment.recordCreate_userName ?? '')}
-        </td><td>
-          ${burialSiteComment.commentDateString}
-          ${
+        </td>
+        <td>
+          ${cityssm.escapeHTML(burialSiteComment.commentDateString ?? '')}
+          ${cityssm.escapeHTML(
             burialSiteComment.commentTime === 0
               ? ''
               : ` ${burialSiteComment.commentTimePeriodString}`
-          }
-        </td><td>
+          )}
+        </td>
+        <td>
           ${cityssm.escapeHTML(burialSiteComment.comment ?? '')}
-        </td><td class="is-hidden-print">
+        </td>
+        <td class="is-hidden-print">
           <div class="buttons are-small is-justify-content-end">
             <button class="button is-primary button--edit" type="button">
               <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
               <span>Edit</span>
             </button>
-            <button class="button is-light is-danger button--delete" data-tooltip="Delete Comment" type="button" aria-label="Delete">
-              <i class="fa-solid fa-trash"></i>
+            <button class="button is-light is-danger button--delete" type="button" title="Delete Comment">
+              <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
             </button>
           </div>
-        </td>`
+        </td>
+      `
 
       tableRowElement
         .querySelector('.button--edit')

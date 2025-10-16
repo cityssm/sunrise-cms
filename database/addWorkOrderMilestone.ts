@@ -2,6 +2,7 @@ import {
   type DateString,
   type TimeString,
   dateStringToInteger,
+  dateToInteger,
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
@@ -23,11 +24,12 @@ export interface AddWorkOrderMilestoneForm {
 
 export default function addWorkOrderMilestone(
   milestoneForm: AddWorkOrderMilestoneForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): number {
   const rightNowMillis = Date.now()
 
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -46,10 +48,10 @@ export default function addWorkOrderMilestone(
         ? undefined
         : milestoneForm.workOrderMilestoneTypeId,
       milestoneForm.workOrderMilestoneDateString === ''
-        ? 0
+        ? dateToInteger(new Date())
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
       (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
-        ? 0
+        ? undefined
         : timeStringToInteger(
             milestoneForm.workOrderMilestoneTimeString as TimeString
           ),
@@ -70,7 +72,9 @@ export default function addWorkOrderMilestone(
       rightNowMillis
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return result.lastInsertRowid as number
 }

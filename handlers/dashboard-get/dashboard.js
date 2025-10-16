@@ -1,16 +1,13 @@
-import { dateToString } from '@cityssm/utils-datetime';
-import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js';
-export default async function handler(_request, response) {
-    const currentDateString = dateToString(new Date());
-    const workOrderMilestones = await getWorkOrderMilestones({
-        workOrderMilestoneDateFilter: 'date',
-        workOrderMilestoneDateString: currentDateString
-    }, {
-        includeWorkOrders: true,
-        orderBy: 'completion'
-    });
-    response.render('dashboard', {
+export default function handler(request, response) {
+    let error = request.query.error;
+    if (error === 'accessDenied') {
+        error = 'Access Denied.';
+    }
+    else if (error === 'printConfigNotFound') {
+        error = 'Print configuration not found.';
+    }
+    response.render('dashboard/dashboard', {
         headTitle: 'Dashboard',
-        workOrderMilestones
+        error
     });
 }

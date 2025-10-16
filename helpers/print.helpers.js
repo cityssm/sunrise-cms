@@ -1,9 +1,11 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable security/detect-object-injection */
+import generateBarcodeSvg from '@cityssm/jsbarcode-svg';
 import * as dateTimeFunctions from '@cityssm/utils-datetime';
 import getBurialSite from '../database/getBurialSite.js';
 import getContract from '../database/getContract.js';
 import getWorkOrder from '../database/getWorkOrder.js';
+import { getCachedSettingValue } from './cache/settings.cache.js';
 import * as configFunctions from './config.helpers.js';
 import * as contractFunctions from './contracts.helpers.js';
 import { getCustomizationPdfPrintConfigs } from './customizations.helpers.js';
@@ -16,6 +18,7 @@ const screenPrintConfigs = {
 export function getScreenPrintConfig(printName) {
     return screenPrintConfigs[printName];
 }
+// Included PDF print configs
 const pdfPrintConfigs = {
     workOrder: {
         path: 'views/print/pdf/workOrder.ejs',
@@ -28,6 +31,7 @@ const pdfPrintConfigs = {
         title: 'Work Order Field Sheet - Comment Log'
     }
 };
+// Add customizations PDF print configs
 for (const [printName, printConfig] of Object.entries(getCustomizationPdfPrintConfigs())) {
     pdfPrintConfigs[printName] = {
         ...printConfig,
@@ -46,6 +50,7 @@ export function getPrintConfig(screenOrPdfPrintName) {
         case 'screen': {
             return getScreenPrintConfig(printNameSplit[1]);
         }
+        // no default
     }
     return undefined;
 }
@@ -54,7 +59,13 @@ export async function getReportData(printConfig, requestQuery) {
         headTitle: printConfig.title,
         configFunctions,
         contractFunctions,
-        dateTimeFunctions
+        dateTimeFunctions,
+        settingFunctions: {
+            getSettingValue: getCachedSettingValue
+        },
+        barcodeFunctions: {
+            generateBarcodeSvg
+        }
     };
     if (printConfig.params.includes('contractId') &&
         typeof requestQuery.contractId === 'string') {
@@ -65,7 +76,8 @@ export async function getReportData(printConfig, requestQuery) {
         reportData.contract = contract;
     }
     if (printConfig.params.includes('workOrderId') &&
-        typeof requestQuery.workOrderId === 'string') {
+        (typeof requestQuery.workOrderId === 'number' ||
+            typeof requestQuery.workOrderId === 'string')) {
         reportData.workOrder = await getWorkOrder(requestQuery.workOrderId, {
             includeBurialSites: true,
             includeComments: true,

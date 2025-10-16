@@ -5,24 +5,24 @@ export default function getContractInterments(contractId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const interments = database
-        .prepare(`select o.contractId, o.intermentNumber,
-        o.deceasedName,
-        o.deceasedAddress1, o.deceasedAddress2, o.deceasedCity, o.deceasedProvince, o.deceasedPostalCode,
+        .prepare(`select ci.contractId, ci.intermentNumber,
+        ci.deceasedName,
+        ci.deceasedAddress1, ci.deceasedAddress2, ci.deceasedCity, ci.deceasedProvince, ci.deceasedPostalCode,
         
-        o.birthDate, userFn_dateIntegerToString(o.birthDate) as birthDateString,
-        o.birthPlace,
-        o.deathDate, userFn_dateIntegerToString(o.deathDate) as deathDateString,
-        o.deathPlace,
-        o.deathAge, o.deathAgePeriod,
+        ci.birthDate, userFn_dateIntegerToString(ci.birthDate) as birthDateString,
+        ci.birthPlace,
+        ci.deathDate, userFn_dateIntegerToString(ci.deathDate) as deathDateString,
+        ci.deathPlace,
+        ci.deathAge, ci.deathAgePeriod,
         
-        o.intermentContainerTypeId, t.intermentContainerType, t.isCremationType
+        ci.intermentContainerTypeId, t.intermentContainerType, t.isCremationType
 
-        from ContractInterments o
-        left join IntermentContainerTypes t on o.intermentContainerTypeId = t.intermentContainerTypeId
+        from ContractInterments ci
+        left join IntermentContainerTypes t on ci.intermentContainerTypeId = t.intermentContainerTypeId
 
-        where o.recordDelete_timeMillis is null
-        and o.contractId = ?
-        order by t.orderNumber, o.deceasedName, o.intermentNumber`)
+        where ci.recordDelete_timeMillis is null
+        and ci.contractId = ?
+        order by t.orderNumber, ci.deceasedName, ci.intermentNumber`)
         .all(contractId);
     if (connectedDatabase === undefined) {
         database.close();

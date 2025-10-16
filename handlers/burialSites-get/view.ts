@@ -13,7 +13,7 @@ export default async function handler(
 ): Promise<void> {
   const burialSite = await getBurialSite(
     request.params.burialSiteId,
-    request.session.user?.userProperties?.canUpdate
+    request.session.user?.userProperties.canUpdateCemeteries
   )
 
   if (burialSite === undefined) {
@@ -25,7 +25,7 @@ export default async function handler(
 
   const burialSiteIsDeleted = burialSite.recordDelete_timeMillis !== null
 
-  response.render('burialSite-view', {
+  response.render('burialSites/view', {
     headTitle: burialSite.burialSiteName,
 
     burialSite

@@ -4,7 +4,7 @@ import {
   moveRecordDown,
   moveRecordDownToBottom
 } from '../../database/moveRecord.js'
-import { getWorkOrderTypes } from '../../helpers/cache.helpers.js'
+import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 
 export default function handler(
   request: Request<
@@ -19,7 +19,7 @@ export default function handler(
       ? moveRecordDownToBottom('WorkOrderTypes', request.body.workOrderTypeId)
       : moveRecordDown('WorkOrderTypes', request.body.workOrderTypeId)
 
-  const workOrderTypes = getWorkOrderTypes()
+  const workOrderTypes = getCachedWorkOrderTypes()
 
   response.json({
     success,

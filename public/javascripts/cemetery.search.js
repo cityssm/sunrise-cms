@@ -1,12 +1,52 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const cemeteries = exports.cemeteries;
     const searchFilterElement = document.querySelector('#searchFilter--cemetery');
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
+    function buildCemeteryAddressHTML(cemetery) {
+        let addressHTML = '';
+        if (cemetery.cemeteryAddress1 !== '') {
+            addressHTML += `${cityssm.escapeHTML(cemetery.cemeteryAddress1)}<br />`;
+        }
+        if (cemetery.cemeteryAddress2 !== '') {
+            addressHTML += `${cityssm.escapeHTML(cemetery.cemeteryAddress2)}<br />`;
+        }
+        if (cemetery.cemeteryCity !== '' || cemetery.cemeteryProvince !== '') {
+            addressHTML += /*html*/ `
+        <span class="is-size-7">
+          ${cityssm.escapeHTML(cemetery.cemeteryCity)}, ${cityssm.escapeHTML(cemetery.cemeteryProvince)}
+        </span>
+      `;
+        }
+        return addressHTML;
+    }
+    function buildCemeteryFeaturesHTML(cemetery) {
+        let featuresHTML = '';
+        if (cemetery.parentCemeteryId !== null) {
+            featuresHTML += /*html*/ `
+        <span class="icon" title="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
+          <i class="fa-solid fa-turn-up" role="img"></i>
+        </span>
+      `;
+        }
+        if (typeof cemetery.cemeteryLatitude === 'number' &&
+            typeof cemetery.cemeteryLongitude === 'number') {
+            featuresHTML += /*html*/ `
+        <span class="icon" title="Geographic Coordinates">
+          <i class="fa-solid fa-map-marker-alt" role="img"></i>
+        </span>
+      `;
+        }
+        if (cemetery.cemeterySvg !== '') {
+            featuresHTML += /*html*/ `
+        <span class="icon" title="Image">
+          <i class="fa-solid fa-image" role="img"></i>
+        </span>
+      `;
+        }
+        return featuresHTML;
+    }
     function renderResults() {
-        // eslint-disable-next-line no-unsanitized/property
         searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Cemeteries...');
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement('tbody');
@@ -36,77 +76,67 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             searchResultCount += 1;
             // eslint-disable-next-line no-unsanitized/method
-            searchResultsTbodyElement.insertAdjacentHTML('beforeend', `<tr style="page-break-inside: avoid;">
-          <td>
-            <a class="has-text-weight-bold" href="${sunrise.getCemeteryURL(cemetery.cemeteryId)}">
-              ${cityssm.escapeHTML(cemetery.cemeteryName === ''
-                ? '(No Name)'
-                : cemetery.cemeteryName)}
-              ${cemetery.cemeteryName === ''
-                ? `<span class="icon is-small has-text-danger">
-                      <i class="fa-solid fa-exclamation-triangle"></i>
-                      </span>`
-                : ''}
-              ${cemetery.cemeteryKey === ''
+            searchResultsTbodyElement.insertAdjacentHTML('beforeend', 
+            /*html*/ `
+          <tr style="page-break-inside: avoid;">
+            <td>
+              <a class="has-text-weight-bold" href="${sunrise.getCemeteryUrl(cemetery.cemeteryId)}">
+                ${cemetery.cemeteryName === ''
+                ? `(No Name) <span class="icon is-small has-text-danger">
+                        <i class="fa-solid fa-exclamation-triangle"></i>
+                        </span>`
+                : cityssm.escapeHTML(cemetery.cemeteryName)}
+                ${cemetery.cemeteryKey === ''
                 ? ''
-                : `<span class="tag">${cityssm.escapeHTML(cemetery.cemeteryKey)}</span>`}
-            </a>
-            <br />
-            <span class="is-size-7">
-              ${cityssm.escapeHTML(cemetery.cemeteryDescription)}
-            </span>
-          </td><td>
-            ${cemetery.cemeteryAddress1 === ''
-                ? ''
-                : `${cityssm.escapeHTML(cemetery.cemeteryAddress1)}<br />`}
-            ${cemetery.cemeteryAddress2 === ''
-                ? ''
-                : `${cityssm.escapeHTML(cemetery.cemeteryAddress2)}<br />`}
-            ${cemetery.cemeteryCity !== '' || cemetery.cemeteryProvince !== ''
-                ? `<span class="is-size-7">
-                    ${cityssm.escapeHTML(cemetery.cemeteryCity)}, ${cityssm.escapeHTML(cemetery.cemeteryProvince)}
-                    </span>`
-                : ''}
-          </td><td>
-            ${cityssm.escapeHTML(cemetery.cemeteryPhoneNumber)}
-          </td><td class="has-text-centered">
-            ${cemetery.parentCemeteryId === null
-                ? ''
-                : `<span class="icon" data-tooltip="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
-                    <i class="fa-solid fa-turn-up" role="img" aria-label="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}"></i>
-                    </span>`}
-            ${cemetery.cemeteryLatitude && cemetery.cemeteryLongitude
-                ? `<span class="icon" data-tooltip="Geographic Coordinates">
-                    <i class="fa-solid fa-map-marker-alt" role="img" aria-label="Geographic Coordinates"></i>
-                    </span>`
-                : ''}
-            ${(cemetery.cemeterySvg ?? '') === ''
-                ? ''
-                : `<span class="icon" data-tooltip="Image">
-                    <i class="fa-solid fa-image" role="img" aria-label="Image"></i>
-                    </span>`}
-          </td><td class="has-text-right">
-            <a href="${sunrise.urlPrefix}/burialSites?cemeteryId=${cemetery.cemeteryId}">${cemetery.burialSiteCount}</a>
-          </td>
-          </tr>`);
+                : /*html*/ `
+                      <span class="tag">
+                        ${cityssm.escapeHTML(cemetery.cemeteryKey)}
+                      </span>
+                    `}
+              </a>
+              <br />
+              <span class="is-size-7">
+                ${cityssm.escapeHTML(cemetery.cemeteryDescription)}
+              </span>
+            </td>
+            <td>
+              ${buildCemeteryAddressHTML(cemetery)}
+            </td>
+            <td>
+              ${cityssm.escapeHTML(cemetery.cemeteryPhoneNumber)}
+            </td>
+            <td class="has-text-centered">
+              ${buildCemeteryFeaturesHTML(cemetery)}
+            </td>
+            <td class="has-text-right">
+              <a href="${sunrise.urlPrefix}/burialSites?cemeteryId=${cemetery.cemeteryId}">${cemetery.burialSiteCount}</a>
+            </td>
+          </tr>
+        `);
         }
         searchResultsContainerElement.innerHTML = '';
         if (searchResultCount === 0) {
-            searchResultsContainerElement.innerHTML = `<div class="message is-info">
-        <p class="message-body">There are no cemeteries that meet the search criteria.</p>
-        </div>`;
+            searchResultsContainerElement.innerHTML = /*html*/ `
+        <div class="message is-info">
+          <p class="message-body">There are no cemeteries that meet the search criteria.</p>
+        </div>
+      `;
         }
         else {
             const searchResultsTableElement = document.createElement('table');
             searchResultsTableElement.className =
                 'table is-fullwidth is-striped is-hoverable has-sticky-header';
-            searchResultsTableElement.innerHTML = `<thead><tr>
-        <th>Cemetery</th>
-        <th>Address</th>
-        <th>Phone Number</th>
-        <th class="has-text-centered">Features</th>
-        <th class="has-text-right">Burial Sites</th>
-        </tr></thead>`;
+            searchResultsTableElement.innerHTML = /*html*/ `
+        <thead>
+          <tr>
+            <th>Cemetery</th>
+            <th>Address</th>
+            <th>Phone Number</th>
+            <th class="has-text-centered">Features</th>
+            <th class="has-text-right">Burial Sites</th>
+          </tr>
+        </thead>
+      `;
             searchResultsTableElement.append(searchResultsTbodyElement);
             searchResultsContainerElement.append(searchResultsTableElement);
         }

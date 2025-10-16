@@ -1,5 +1,5 @@
 import sqlite from 'better-sqlite3';
-import type { directionsOfArrival } from '../data/dataLists.js';
+import type { directionsOfArrival } from '../helpers/dataLists.js';
 export declare const defaultDirectionsOfArrival: {
     E: string;
     N: string;

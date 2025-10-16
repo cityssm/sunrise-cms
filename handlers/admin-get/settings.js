@@ -1,7 +1,7 @@
-import { getSettings } from '../../helpers/cache.helpers.js';
+import { getCachedSettings } from '../../helpers/cache/settings.cache.js';
 export default function handler(_request, response) {
-    const settings = getSettings();
-    response.render('admin-settings', {
+    const settings = getCachedSettings();
+    response.render('admin/settings', {
         headTitle: 'Settings Management',
         settings
     });

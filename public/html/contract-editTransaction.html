@@ -5,8 +5,8 @@
       <h3 class="modal-card-title">Edit Transaction</h3>
       <button
         class="delete is-close-modal-button"
-        aria-label="close"
         type="button"
+        aria-label="close"
       ></button>
     </header>
     <section class="modal-card-body">
@@ -30,8 +30,9 @@
               <label
                 class="label"
                 for="contractTransactionEdit--transactionAmount"
-                >Transaction Amount</label
               >
+                Transaction Amount
+              </label>
               <div class="control has-icons-left">
                 <input
                   class="input has-text-right"
@@ -49,12 +50,15 @@
           </div>
           <div class="column">
             <div class="field">
-              <label class="label" for="contractTransactionEdit--isInvoiced"
-                >Payment Type</label
-              >
+              <label class="label" for="contractTransactionEdit--isInvoiced">
+                Payment Type
+              </label>
               <div class="control">
                 <div class="select is-fullwidth">
-                  <select id="contractTransactionEdit--isInvoiced" name="isInvoiced">
+                  <select
+                    id="contractTransactionEdit--isInvoiced"
+                    name="isInvoiced"
+                  >
                     <option value="0">Payment Taken</option>
                     <option value="1">Invoiced</option>
                   </select>
@@ -82,9 +86,9 @@
           </div>
         </div>
         <div class="field">
-          <label class="label" for="contractTransactionEdit--transactionNote"
-            >Note</label
-          >
+          <label class="label" for="contractTransactionEdit--transactionNote">
+            Note
+          </label>
           <div class="control">
             <textarea
               class="textarea"
@@ -99,8 +103,9 @@
               <label
                 class="label"
                 for="contractTransactionEdit--transactionDateString"
-                >Transaction Date</label
               >
+                Transaction Date
+              </label>
               <div class="control has-icons-left">
                 <input
                   class="input"
@@ -120,8 +125,9 @@
               <label
                 class="label"
                 for="contractTransactionEdit--transactionTimeString"
-                >Transaction Time</label
               >
+                Transaction Time
+              </label>
               <div class="control has-icons-left">
                 <input
                   class="input"
@@ -149,7 +155,9 @@
           <span class="icon"><i class="fa-solid fa-save"></i></span>
           <span>Update Transaction</span>
         </button>
-        <button class="button is-close-modal-button" type="button">Cancel</button>
+        <button class="button is-close-modal-button" type="button">
+          Cancel
+        </button>
       </div>
     </footer>
   </div>

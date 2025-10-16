@@ -1,35 +1,39 @@
 import type { DateString, TimeString } from '@cityssm/utils-datetime';
-import type { directionsOfArrival } from '../data/dataLists.js';
+import type { directionsOfArrival } from '../helpers/dataLists.js';
+import type { DynamicsGPDocument } from '../integrations/dynamicsGp/types.js';
+import type { MetadataKey } from './contractMetadata.types.js';
 import type { SettingKey } from './setting.types.js';
 export interface BurialSite extends Record {
     burialSiteId: number;
-    burialSiteName?: string;
-    burialSiteNameSegment1?: string;
-    burialSiteNameSegment2?: string;
-    burialSiteNameSegment3?: string;
-    burialSiteNameSegment4?: string;
-    burialSiteNameSegment5?: string;
-    burialSiteType?: string;
+    burialSiteName: string;
+    burialSiteNameSegment1: string;
+    burialSiteNameSegment2: string;
+    burialSiteNameSegment3: string;
+    burialSiteNameSegment4: string;
+    burialSiteNameSegment5: string;
+    burialSiteType: string | null;
     burialSiteTypeId?: number;
     bodyCapacity: number | null;
     bodyCapacityMax?: number | null;
     crematedCapacity: number | null;
     crematedCapacityMax?: number | null;
     cemetery?: Cemetery;
-    cemeteryId?: number | null;
-    cemeteryName?: string;
+    cemeteryId: number | null;
+    cemeteryKey?: string;
+    cemeteryName: string | null;
     cemeterySvg?: string;
     cemeterySvgId?: string;
-    cemeteryLatitude?: number;
-    cemeteryLongitude?: number;
+    cemeteryLatitude?: number | null;
+    cemeteryLongitude?: number | null;
     burialSiteImage?: string;
-    burialSiteLatitude?: number;
-    burialSiteLongitude?: number;
+    burialSiteLatitude: number | null;
+    burialSiteLongitude: number | null;
     burialSiteStatus?: string;
     burialSiteStatusId?: number | null;
     burialSiteFields?: BurialSiteField[];
     contractCount?: number;
     contracts?: Contract[];
+    deceasedNames?: string[];
     burialSiteComments?: BurialSiteComment[];
 }
 export interface BurialSiteComment extends Record {
@@ -65,7 +69,7 @@ export interface BurialSiteTypeField extends Record {
     burialSiteType: BurialSiteType;
     burialSiteTypeId?: number;
     fieldType: string;
-    fieldValues?: string;
+    fieldValues?: string | null;
     isRequired?: boolean;
     maxLength?: number;
     minLength?: number;
@@ -82,9 +86,9 @@ export interface Cemetery extends Record {
     parentCemeteryLatitude?: number | null;
     parentCemeteryLongitude?: number | null;
     parentCemeterySvg?: string | null;
-    cemeteryLatitude?: number;
-    cemeteryLongitude?: number;
-    cemeterySvg?: string;
+    cemeteryLatitude: number | null;
+    cemeteryLongitude: number | null;
+    cemeterySvg: string;
     cemeteryAddress1: string;
     cemeteryAddress2: string;
     cemeteryCity: string;
@@ -107,7 +111,7 @@ export interface Contract extends Record {
     contractTypeId: number;
     isPreneed: boolean;
     printEJS?: string;
-    burialSiteId?: number;
+    burialSiteId?: number | null;
     burialSiteIsActive?: 0 | 1;
     burialSiteName?: string;
     burialSiteType?: string;
@@ -115,11 +119,11 @@ export interface Contract extends Record {
     cemeteryId?: number;
     cemeteryName?: string;
     contractStartDate: number;
-    contractStartDateString: string;
-    contractEndDate?: number;
-    contractEndDateString?: string;
-    contractIsActive: 0 | 1;
-    contractIsFuture: 0 | 1;
+    contractStartDateString: '' | DateString;
+    contractEndDate?: number | null;
+    contractEndDateString?: '' | DateString;
+    contractIsActive: boolean;
+    contractIsFuture: boolean;
     purchaserName: string;
     purchaserAddress1: string;
     purchaserAddress2: string;
@@ -140,7 +144,7 @@ export interface Contract extends Record {
     funeralHomePostalCode?: string;
     funeralHomeProvince?: string;
     funeralDate?: number;
-    funeralDateString?: DateString;
+    funeralDateString?: '' | DateString;
     funeralTime?: number;
     funeralTimePeriodString?: string;
     funeralTimeString?: TimeString;
@@ -148,6 +152,7 @@ export interface Contract extends Record {
     committalTypeId?: number;
     directionOfArrival?: string;
     directionOfArrivalDescription?: string;
+    contractAttachments?: ContractAttachment[];
     contractComments?: ContractComment[];
     contractFees?: ContractFee[];
     contractFields?: ContractField[];
@@ -206,8 +211,8 @@ export interface ContractTransaction extends Record {
     transactionTime?: number;
     transactionTimeString?: string;
     dynamicsGPDocument?: DynamicsGPDocument;
-    isInvoiced?: 0 | 1;
     externalReceiptNumber?: string;
+    isInvoiced?: 0 | 1;
     transactionAmount: number;
     transactionNote?: string;
 }
@@ -231,12 +236,18 @@ export interface ContractTypeField {
     pattern?: string;
     orderNumber?: number;
 }
-export interface DynamicsGPDocument {
-    documentType: 'Cash Receipt' | 'Invoice';
-    documentDate: Date;
-    documentDescription: string[];
-    documentNumber: string;
-    documentTotal: number;
+export interface ContractMetadata extends Record {
+    contractId: number;
+    metadataKey: MetadataKey;
+    metadataValue: string;
+}
+export interface ContractAttachment extends Record {
+    contractAttachmentId: number;
+    contractId?: number;
+    attachmentDetails: string;
+    attachmentTitle: string;
+    fileName: string;
+    filePath?: string;
 }
 export interface Fee extends Record {
     feeId: number;
@@ -276,6 +287,7 @@ export interface FuneralHome extends Record {
     funeralHomePostalCode: string;
     funeralHomeProvince: string;
     funeralHomePhoneNumber: string;
+    upcomingFuneralCount?: number;
 }
 export interface IntermentContainerType extends Record {
     intermentContainerTypeId: number;
@@ -304,11 +316,12 @@ export interface WorkOrder extends Record {
     workOrderNumber?: string;
     workOrderOpenDate?: number;
     workOrderOpenDateString?: string;
-    workOrderCloseDate?: number;
+    workOrderCloseDate?: number | null;
     workOrderCloseDateString?: string;
     workOrderMilestoneCount?: number;
     workOrderMilestones?: WorkOrderMilestone[];
     workOrderMilestoneCompletionCount?: number;
+    workOrderMilestoneOverdueCount?: number;
     workOrderComments?: WorkOrderComment[];
     workOrderBurialSiteCount?: number;
     workOrderBurialSites?: BurialSite[];
@@ -325,16 +338,16 @@ export interface WorkOrderComment extends Record {
     comment?: string;
 }
 export interface WorkOrderMilestone extends Record, WorkOrder {
-    workOrderMilestoneId?: number;
+    workOrderMilestoneId: number;
     workOrderMilestoneType?: string;
     workOrderMilestoneTypeId?: number;
-    workOrderMilestoneDate?: number;
+    workOrderMilestoneDate: number;
     workOrderMilestoneDateString?: string;
-    workOrderMilestoneTime?: number;
+    workOrderMilestoneTime?: number | null;
     workOrderMilestoneTimePeriodString?: string;
     workOrderMilestoneTimeString?: string;
-    workOrderMilestoneDescription?: string;
-    workOrderMilestoneCompletionDate?: number;
+    workOrderMilestoneDescription: string;
+    workOrderMilestoneCompletionDate?: number | null;
     workOrderMilestoneCompletionDateString?: string;
     workOrderMilestoneCompletionTime?: number;
     workOrderMilestoneCompletionTimePeriodString?: string;
@@ -353,7 +366,15 @@ export interface WorkOrderType extends Record {
 }
 export interface Setting {
     settingKey: SettingKey;
-    settingValue: string | null;
     previousSettingValue: string | null;
+    settingValue: string | null;
     recordUpdate_timeMillis: number;
+}
+export interface DatabaseUser extends Record {
+    userName: string;
+    isActive: boolean;
+    canUpdateCemeteries: boolean;
+    canUpdateContracts: boolean;
+    canUpdateWorkOrders: boolean;
+    isAdmin: boolean;
 }

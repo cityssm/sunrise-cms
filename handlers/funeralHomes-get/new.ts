@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import type { FuneralHome } from '../../types/record.types.js'
 
 export default function handler(_request: Request, response: Response): void {
@@ -9,14 +9,14 @@ export default function handler(_request: Request, response: Response): void {
 
     funeralHomeAddress1: '',
     funeralHomeAddress2: '',
-    funeralHomeCity: getConfigProperty('settings.cityDefault'),
+    funeralHomeCity: getCachedSettingValue('defaults.city'),
     funeralHomePostalCode: '',
-    funeralHomeProvince: getConfigProperty('settings.provinceDefault'),
+    funeralHomeProvince: getCachedSettingValue('defaults.province'),
 
     funeralHomePhoneNumber: ''
   }
 
-  response.render('funeralHome-edit', {
+  response.render('funeralHomes/edit', {
     headTitle: 'Create a Funeral Home',
 
     funeralHome,

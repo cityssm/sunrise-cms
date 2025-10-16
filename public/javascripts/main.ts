@@ -1,34 +1,18 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
-import type * as Leaflet from 'leaflet'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type Leaflet from 'leaflet'
 
 import type { Sunrise } from './types.js'
-
-type RandomColorHue =
-  | 'blue'
-  | 'green'
-  | 'monochrome'
-  | 'orange'
-  | 'pink'
-  | 'purple'
-  | 'red'
-  | 'yellow'
-type RandomColorLuminosity = 'bright' | 'dark' | 'light'
 
 declare const L: typeof Leaflet
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown> & {
+declare const exports: {
   aliases: Record<string, string>
-  randomColor: (options?: {
-    alpha?: number
-    count?: number
-    format?: 'hex' | 'hsl' | 'hsla' | 'hslArray' | 'rgb' | 'rgba' | 'rgbArray'
-    hue?: RandomColorHue
-    luminosity?: RandomColorLuminosity
-    seed?: number | string
-  }) => string
+  dynamicsGPIntegrationIsEnabled: boolean
+
+  sunrise?: Sunrise
 }
 ;(() => {
   /*
@@ -97,7 +81,7 @@ declare const exports: Record<string, unknown> & {
   const coordinatePrecision = 8
 
   const leafletConstants = {
-    tileLayerURL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 
     defaultZoom: 15,
     maxZoom: 19,
@@ -128,10 +112,9 @@ declare const exports: Record<string, unknown> & {
           '.leaflet-map'
         ) as HTMLElement
 
-        // eslint-disable-next-line unicorn/no-array-callback-reference
-        const map = L.map(mapContainerElement)
+        const map = new L.Map(mapContainerElement)
 
-        L.tileLayer(sunrise.leafletConstants.tileLayerURL, {
+        new L.TileLayer(sunrise.leafletConstants.tileLayerUrl, {
           attribution: sunrise.leafletConstants.attribution,
           maxZoom: sunrise.leafletConstants.maxZoom
         }).addTo(map)
@@ -139,7 +122,7 @@ declare const exports: Record<string, unknown> & {
         if (!Number.isNaN(latitude) && !Number.isNaN(longitude)) {
           const mapCoordinates: Leaflet.LatLngTuple = [latitude, longitude]
           map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom)
-          currentMarker = L.marker(mapCoordinates).addTo(map)
+          currentMarker = new L.Marker(mapCoordinates).addTo(map)
         } else {
           const middleLatitude =
             (Number.parseFloat(options.latitudeElement.min) +
@@ -164,7 +147,7 @@ declare const exports: Record<string, unknown> & {
             currentMarker.remove()
           }
 
-          currentMarker = L.marker(mapCoordinates).addTo(map)
+          currentMarker = new L.Marker(mapCoordinates).addTo(map)
         })
 
         modalElement
@@ -267,43 +250,6 @@ declare const exports: Record<string, unknown> & {
   })
 
   /*
-   * Colors
-   */
-
-  const hues = [
-    'red',
-    'green',
-    'orange',
-    'blue',
-    'pink',
-    'yellow',
-    'purple'
-  ] as RandomColorHue[]
-  const luminosity = ['bright', 'light', 'dark'] as RandomColorLuminosity[]
-
-  function getRandomColor(seedString: string): string {
-    let actualSeedString = seedString
-
-    if (actualSeedString.length < 2) {
-      actualSeedString += 'a1'
-    }
-
-    return exports.randomColor({
-      hue: hues[
-        (actualSeedString.codePointAt(actualSeedString.length - 1) as number) %
-          hues.length
-      ],
-      luminosity:
-        luminosity[
-          (actualSeedString.codePointAt(
-            actualSeedString.length - 2
-          ) as number) % luminosity.length
-        ],
-      seed: actualSeedString + actualSeedString
-    })
-  }
-
-  /*
    * Bulma Snippets
    */
 
@@ -312,29 +258,39 @@ declare const exports: Record<string, unknown> & {
     downButtonClassNames: string,
     isSmall = true
   ): string {
-    return `<div class="field has-addons">
-      <div class="control">
-      <button
-          class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
-          data-tooltip="Move Up" data-direction="up" type="button" aria-label="Move Up">
-        <span class="icon"><i class="fa-solid fa-arrow-up"></i></span>
-      </button>
+    return /*html*/ `
+      <div class="field has-addons">
+        <div class="control">
+          <button
+            class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
+            data-direction="up"
+            type="button"
+            title="Move Up"
+          >
+            <span class="icon"><i class="fa-solid fa-arrow-up"></i></span>
+          </button>
+        </div>
+        <div class="control">
+          <button
+            class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
+            data-direction="down"
+            type="button"
+            title="Move Down"
+          >
+            <span class="icon"><i class="fa-solid fa-arrow-down"></i></span>
+          </button>
+        </div>
       </div>
-      <div class="control">
-      <button
-          class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
-          data-tooltip="Move Down" data-direction="down" type="button" aria-label="Move Down">
-        <span class="icon"><i class="fa-solid fa-arrow-down"></i></span>
-      </button>
-      </div>
-      </div>`
+    `
   }
 
   function getLoadingParagraphHTML(captionText = 'Loading...'): string {
-    return `<p class="has-text-centered has-text-grey">
-      <i class="fa-solid fa-5x fa-circle-notch fa-spin"></i><br />
-      ${cityssm.escapeHTML(captionText)}
-      </p>`
+    return /*html*/ `
+      <p class="has-text-centered has-text-grey">
+        <i class="fa-solid fa-5x fa-circle-notch fa-spin"></i><br />
+        ${cityssm.escapeHTML(captionText)}
+      </p>
+    `
   }
 
   function getSearchResultsPagerHTML(
@@ -342,39 +298,55 @@ declare const exports: Record<string, unknown> & {
     offset: number,
     count: number
   ): string {
-    return `<div class="level">
-      <div class="level-left">
-        <div class="level-item has-text-weight-bold">
-          Displaying
-          ${(offset + 1).toString()}
-          to
-          ${Math.min(count, limit + offset).toString()}
-          of
-          ${count.toString()}
+    return /*html*/ `
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item has-text-weight-bold">
+            Displaying
+            ${(offset + 1).toString()}
+            to
+            ${Math.min(count, limit + offset).toString()}
+            of
+            ${count.toString()}
+          </div>
+        </div>
+        <div class="level-right is-hidden-print">
+          ${
+            offset > 0
+              ? /*html*/ `
+                <div class="level-item">
+                  <button
+                    class="button is-rounded is-link is-outlined"
+                    data-page="previous"
+                    type="button"
+                    title="Previous"
+                  >
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </button>
+                </div>
+              `
+              : ''
+          }
+          ${
+            limit + offset < count
+              ? /*html*/ `
+                <div class="level-item">
+                  <button
+                    class="button is-rounded is-link"
+                    data-page="next"
+                    type="button"
+                    title="Next"
+                  >
+                    <span>Next</span>
+                    <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
+                  </button>
+                </div>
+              `
+              : ''
+          }
         </div>
       </div>
-      <div class="level-right is-hidden-print">
-        ${
-          offset > 0
-            ? `<div class="level-item">
-                <button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">
-                  <i class="fa-solid fa-arrow-left"></i>
-                </button>
-                </div>`
-            : ''
-        }
-        ${
-          limit + offset < count
-            ? `<div class="level-item">
-                <button class="button is-rounded is-link" data-page="next" type="button" title="Next">
-                  <span>Next</span>
-                  <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
-                </button>
-                </div>`
-            : ''
-        }
-      </div>
-      </div>`
+    `
   }
 
   /*
@@ -383,7 +355,7 @@ declare const exports: Record<string, unknown> & {
 
   const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
 
-  function getRecordURL(
+  function getRecordUrl(
     recordTypePlural:
       | 'burialSites'
       | 'cemeteries'
@@ -395,53 +367,50 @@ declare const exports: Record<string, unknown> & {
     time: boolean
   ): string {
     return (
-      urlPrefix +
-      '/' +
-      recordTypePlural +
-      (recordId ? `/${recordId.toString()}` : '') +
-      (recordId && edit ? '/edit' : '') +
+      `${urlPrefix}/${recordTypePlural}/${recordId.toString()}` +
+      (recordId !== '' && edit ? '/edit' : '') +
       (time ? `/?t=${Date.now().toString()}` : '')
     )
   }
 
-  function getCemeteryURL(
+  function getCemeteryUrl(
     cemeteryId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('cemeteries', cemeteryId, edit, time)
+    return getRecordUrl('cemeteries', cemeteryId, edit, time)
   }
 
-  function getFuneralHomeURL(
+  function getFuneralHomeUrl(
     funeralHomeId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('funeralHomes', funeralHomeId, edit, time)
+    return getRecordUrl('funeralHomes', funeralHomeId, edit, time)
   }
 
-  function getBurialSiteURL(
+  function getBurialSiteUrl(
     burialSiteId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('burialSites', burialSiteId, edit, time)
+    return getRecordUrl('burialSites', burialSiteId, edit, time)
   }
 
-  function getContractURL(
+  function getContractUrl(
     contractId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('contracts', contractId, edit, time)
+    return getRecordUrl('contracts', contractId, edit, time)
   }
 
-  function getWorkOrderURL(
+  function getWorkOrderUrl(
     workOrderId: number | string = '',
     edit = false,
     time = false
   ): string {
-    return getRecordURL('workOrders', workOrderId, edit, time)
+    return getRecordUrl('workOrders', workOrderId, edit, time)
   }
 
   /*
@@ -463,8 +432,7 @@ declare const exports: Record<string, unknown> & {
    * Settings
    */
 
-  const dynamicsGPIntegrationIsEnabled =
-    exports.dynamicsGPIntegrationIsEnabled as boolean
+  const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled
 
   /*
    * Declare sunrise
@@ -484,8 +452,6 @@ declare const exports: Record<string, unknown> & {
     escapedAliases,
     populateAliases,
 
-    getRandomColor,
-
     clearUnsavedChanges,
     hasUnsavedChanges,
     setUnsavedChanges,
@@ -494,11 +460,11 @@ declare const exports: Record<string, unknown> & {
     getMoveUpDownButtonFieldHTML,
     getSearchResultsPagerHTML,
 
-    getBurialSiteURL,
-    getCemeteryURL,
-    getContractURL,
-    getFuneralHomeURL,
-    getWorkOrderURL,
+    getBurialSiteUrl,
+    getCemeteryUrl,
+    getContractUrl,
+    getFuneralHomeUrl,
+    getWorkOrderUrl,
 
     initializeMinDateUpdate
   }

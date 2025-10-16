@@ -1,8 +1,8 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export function deleteContract(contractId, user) {
-    const database = sqlite(sunriseDB);
+export function deleteContract(contractId, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     /*
      * Ensure no active work orders reference the contract
      */
@@ -16,7 +16,9 @@ export function deleteContract(contractId, user) {
         .pluck()
         .get(contractId, currentDateInteger);
     if (activeWorkOrder !== undefined) {
-        database.close();
+        if (connectedDatabase === undefined) {
+            database.close();
+        }
         return false;
     }
     /*
@@ -32,6 +34,8 @@ export function deleteContract(contractId, user) {
             and recordDelete_timeMillis is null`)
             .run(user.userName, rightNowMillis, contractId);
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return true;
 }

@@ -10,6 +10,7 @@ import Debug from 'debug'
 import { DEBUG_NAMESPACE } from '../debug.config.js'
 
 import { getConfigProperty } from './config.helpers.js'
+import { useTestDatabases } from './database.helpers.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:helpers:authentication`)
 
@@ -44,27 +45,39 @@ if (authenticationConfig === undefined) {
     }
     // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
     default: {
-      debug('Unknown `login.authentication`.')
+      debug("Unknown 'login.authentication' type")
     }
   }
 }
 
 export async function authenticate(
-  userName: string | undefined,
-  password: string | undefined
+  userName: string,
+  passwordPlain: string
 ): Promise<boolean> {
-  if (
-    authenticator === undefined ||
-    (userName ?? '') === '' ||
-    (password ?? '') === ''
-  ) {
+  if (userName === '' || passwordPlain === '') {
     return false
   }
 
-  return await authenticator.authenticate(
-    `${domain}\\${userName}`,
-    password ?? ''
-  )
+  let isAuthenticated = false
+
+  if (userName.startsWith('*')) {
+    // Test user
+
+    if (useTestDatabases && userName === passwordPlain) {
+      isAuthenticated = getConfigProperty('users.testing').includes(userName)
+
+      if (isAuthenticated) {
+        debug(`Authenticated testing user: ${userName}`)
+      }
+    }
+  } else if (authenticator !== undefined) {
+    isAuthenticated = await authenticator.authenticate(
+      `${domain}\\${userName}`,
+      passwordPlain
+    )
+  }
+
+  return isAuthenticated
 }
 
 /* eslint-disable @cspell/spellchecker */
@@ -74,6 +87,7 @@ const safeRedirects = new Set([
   '/admin/cleanup',
   '/admin/contracttypes',
   '/admin/fees',
+  '/admin/settings',
   '/admin/tables',
   '/burialsites',
   '/burialsites/new',
@@ -81,27 +95,30 @@ const safeRedirects = new Set([
   '/cemeteries/new',
   '/contracts',
   '/contracts/new',
+  '/dashboard',
+  '/dashboard/updatelog',
   '/reports',
   '/workorders',
   '/workorders/milestonecalendar',
   '/workorders/new',
-  '/workorders/outlook'
+  '/workorders/outlook',
+  '/workorders/workday'
 ])
 
 /* eslint-enable @cspell/spellchecker */
 
 const recordUrl =
-  /^\/(?:cemeteries|burialsites|contracts|workorders)\/\d+(?:\/edit)?$/
+  /^\/(?:cemeteries|burialsites|contracts|funeralHomes|workorders)\/\d+(?:\/edit)?$/
 
 const printUrl = /^\/print\/(?:pdf|screen)\/[\d/=?A-Za-z-]+$/
 
-export function getSafeRedirectURL(possibleRedirectURL = ''): string {
+export function getSafeRedirectUrl(possibleRedirectUrl = ''): string {
   const urlPrefix = getConfigProperty('reverseProxy.urlPrefix')
 
-  if (typeof possibleRedirectURL === 'string') {
-    const urlToCheck = possibleRedirectURL.startsWith(urlPrefix)
-      ? possibleRedirectURL.slice(urlPrefix.length)
-      : possibleRedirectURL
+  if (typeof possibleRedirectUrl === 'string') {
+    const urlToCheck = possibleRedirectUrl.startsWith(urlPrefix)
+      ? possibleRedirectUrl.slice(urlPrefix.length)
+      : possibleRedirectUrl
 
     const urlToCheckLowerCase = urlToCheck.toLowerCase()
 

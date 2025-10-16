@@ -1,4 +1,5 @@
 import { type DateString, type TimeString } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
 export interface UpdateContractForm {
     contractId: number | string;
     burialSiteId: number | string;
@@ -23,4 +24,4 @@ export interface UpdateContractForm {
     [fieldValue_contractTypeFieldId: `fieldValue_${string}`]: unknown;
     contractTypeFieldIds?: string;
 }
-export default function updateContract(updateForm: UpdateContractForm, user: User): boolean;
+export default function updateContract(updateForm: UpdateContractForm, user: User, connectedDatabase?: sqlite.Database): boolean;

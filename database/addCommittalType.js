@@ -1,8 +1,8 @@
 import sqlite from 'better-sqlite3';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function addCommittalType(addForm, user) {
-    const database = sqlite(sunriseDB);
+export default function addCommittalType(addForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
         .prepare(`insert into CommittalTypes (
@@ -11,7 +11,9 @@ export default function addCommittalType(addForm, user) {
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?)`)
         .run(addForm.committalType, addForm.committalTypeKey ?? '', addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     clearCacheByTableName('CommittalTypes');
     return result.lastInsertRowid;
 }

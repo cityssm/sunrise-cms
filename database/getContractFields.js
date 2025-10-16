@@ -1,18 +1,18 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function getContractField(contractId, connectedDatabase) {
+export default function getContractFields(contractId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const fields = database
-        .prepare(`select o.contractId, o.contractTypeFieldId,
-        o.fieldValue, f.contractTypeField, f.fieldType, f.fieldValues,
+        .prepare(`select cf.contractId, cf.contractTypeFieldId,
+        cf.fieldValue, f.contractTypeField, f.fieldType, f.fieldValues,
         f.isRequired, f.pattern, f.minLength, f.maxLength,
         f.orderNumber, t.orderNumber as contractTypeOrderNumber
-        from ContractFields o
-        left join ContractTypeFields f on o.contractTypeFieldId = f.contractTypeFieldId
+        from ContractFields cf
+        left join ContractTypeFields f on cf.contractTypeFieldId = f.contractTypeFieldId
         left join ContractTypes t on f.contractTypeId = t.contractTypeId
-        where o.recordDelete_timeMillis is null
-        and o.contractId = ?
-        
+        where cf.recordDelete_timeMillis is null
+        and cf.contractId = ?
+
         union
         
         select ? as contractId, f.contractTypeFieldId,

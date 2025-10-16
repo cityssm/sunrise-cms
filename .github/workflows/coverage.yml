@@ -5,29 +5,30 @@ on: [workflow_dispatch, push, pull_request]
 permissions: read-all
 
 jobs:
-  Coverage:
+  Ubuntu:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        node: [ 20, 22, 23 ]
+        node: [ 22, 24 ]
     env:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
       DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
-    name: Node ${{ matrix.node }}
+    name: Ubuntu - Node ${{ matrix.node }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node }}
+          cache: 'npm'
 
       - name: Install Application
         run: |
-          npm uninstall puppeteer
           npm ci
-          npm install -g mocha c8 cypress@14
+          npm install -g c8 cypress@15
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
@@ -41,7 +42,7 @@ jobs:
           CYPRESS_VERIFY_TIMEOUT: 600000
 
       - name: Run Coverage Testing
-        run: c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit
+        run: npm run coverage
 
       - name: Codecov
         if: ${{ github.event_name != 'pull_request' && env.CODECOV_TOKEN != '' && matrix.node == 22 }}
@@ -50,11 +51,58 @@ jobs:
           chmod +x codecov
           ./codecov -t ${CODECOV_TOKEN}
 
-      - name: DeepSource
-        if: ${{ github.event_name != 'pull_request' && env.DEEPSOURCE_DSN != '' && matrix.node == 22 }}
+  Windows:
+    runs-on: windows-2025
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [ 20, 22 ]
+
+    name: Windows - Node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v5
+      
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+
+      - name: Install Application
         run: |
-          # Install deepsource CLI
-          curl https://deepsource.io/cli | sh
-    
-          # From the root directory, run the report coverage command
-          ./bin/deepsource report --analyzer test-coverage --key javascript --value-file ./coverage/lcov.info
+          npm ci
+          npm install -g cypress@15
+
+      - name: Copy Test Config
+        run: cp ./data/testing.config.js ./data/config.js
+        
+      - name: Run Test
+        run: node --test --test-concurrency 1
+
+  Mac:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [ 22, 24 ]
+
+    name: MacOS - Node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v5
+      
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+
+      - name: Install Application
+        run: |
+          npm ci
+          npm install -g cypress@15
+
+      - name: Copy Test Config
+        run: cp ./data/testing.config.js ./data/config.js
+        
+      - name: Run Test
+        run: node --test --test-concurrency 1

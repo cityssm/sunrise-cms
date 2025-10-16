@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     /*
      * Map
@@ -10,16 +8,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const mapLatitude = Number.parseFloat(mapContainerElement.dataset.latitude ?? '');
         const mapLongitude = Number.parseFloat(mapContainerElement.dataset.longitude ?? '');
         const mapCoordinates = [mapLatitude, mapLongitude];
-        // eslint-disable-next-line unicorn/no-array-callback-reference, unicorn/no-array-method-this-argument
-        const map = L.map(mapContainerElement, {
+        const map = new L.Map(mapContainerElement, {
             scrollWheelZoom: false
         });
         map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom);
-        L.tileLayer(sunrise.leafletConstants.tileLayerURL, {
+        new L.TileLayer(sunrise.leafletConstants.tileLayerUrl, {
             attribution: sunrise.leafletConstants.attribution,
             maxZoom: sunrise.leafletConstants.maxZoom
         }).addTo(map);
-        L.marker(mapCoordinates).addTo(map);
+        new L.Marker(mapCoordinates).addTo(map);
     }
     /*
      * Image

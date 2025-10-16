@@ -5,12 +5,16 @@ import {
   timeStringToInteger
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
+import Debug from 'debug'
 
+import { DEBUG_NAMESPACE } from '../debug.config.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addContractInterment from './addContractInterment.js'
 import addFuneralHome from './addFuneralHome.js'
 import addOrUpdateContractField from './addOrUpdateContractField.js'
+
+const debug = Debug(`${DEBUG_NAMESPACE}:addContract`)
 
 export interface AddContractForm {
   burialSiteId: number | string
@@ -28,14 +32,14 @@ export interface AddContractForm {
   funeralHomeId?: '' | 'new' | `${number}` | number
   funeralTimeString?: '' | TimeString
 
-  // Optional on create
-  funeralHomeName?: string
   funeralHomeAddress1?: string
   funeralHomeAddress2?: string
   funeralHomeCity?: string
-  funeralHomeProvince?: string
-  funeralHomePostalCode?: string
+  // Optional on create
+  funeralHomeName?: string
   funeralHomePhoneNumber?: string
+  funeralHomePostalCode?: string
+  funeralHomeProvince?: string
 
   purchaserAddress1?: string
   purchaserAddress2?: string
@@ -96,9 +100,10 @@ export default function addContract(
     addForm.contractStartDateString as DateString
   )
 
-  const result = database
-    .prepare(
-      `insert into Contracts (
+  try {
+    const result = database
+      .prepare(
+        `insert into Contracts (
         contractTypeId, burialSiteId,
         contractStartDate, contractEndDate,
         purchaserName, purchaserAddress1, purchaserAddress2,
@@ -110,76 +115,84 @@ export default function addContract(
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
-    .run(
-      addForm.contractTypeId,
-      addForm.burialSiteId === '' ? undefined : addForm.burialSiteId,
-      contractStartDate,
-      addForm.contractEndDateString === ''
-        ? undefined
-        : dateStringToInteger(addForm.contractEndDateString as DateString),
-      addForm.purchaserName ?? '',
-      addForm.purchaserAddress1 ?? '',
-      addForm.purchaserAddress2 ?? '',
-      addForm.purchaserCity ?? '',
-      addForm.purchaserProvince ?? '',
-      addForm.purchaserPostalCode ?? '',
-      addForm.purchaserPhoneNumber ?? '',
-      addForm.purchaserEmail ?? '',
-      addForm.purchaserRelationship ?? '',
-      funeralHomeId === '' ? undefined : funeralHomeId,
-      addForm.funeralDirectorName ?? '',
-      addForm.funeralDateString === ''
-        ? undefined
-        : dateStringToInteger(addForm.funeralDateString as DateString),
-      addForm.funeralTimeString === ''
-        ? undefined
-        : timeStringToInteger(addForm.funeralTimeString as TimeString),
-      addForm.directionOfArrival ?? '',
-      addForm.committalTypeId === '' ? undefined : addForm.committalTypeId,
-      user.userName,
-      rightNowMillis,
-      user.userName,
-      rightNowMillis
-    )
-
-  const contractId = result.lastInsertRowid as number
-
-  /*
-   * Add contract fields
-   */
-
-  const contractTypeFieldIds = (addForm.contractTypeFieldIds ?? '').split(',')
-
-  for (const contractTypeFieldId of contractTypeFieldIds) {
-    const fieldValue = addForm[`fieldValue_${contractTypeFieldId}`] as
-      | string
-      | undefined
-
-    if ((fieldValue ?? '') !== '') {
-      addOrUpdateContractField(
-        {
-          contractId,
-          contractTypeFieldId,
-          fieldValue: fieldValue ?? ''
-        },
-        user,
-        database
       )
+      .run(
+        addForm.contractTypeId,
+        addForm.burialSiteId === '' ? undefined : addForm.burialSiteId,
+        contractStartDate,
+        addForm.contractEndDateString === ''
+          ? undefined
+          : dateStringToInteger(addForm.contractEndDateString),
+        addForm.purchaserName ?? '',
+        addForm.purchaserAddress1 ?? '',
+        addForm.purchaserAddress2 ?? '',
+        addForm.purchaserCity ?? '',
+        addForm.purchaserProvince ?? '',
+        addForm.purchaserPostalCode ?? '',
+        addForm.purchaserPhoneNumber ?? '',
+        addForm.purchaserEmail ?? '',
+        addForm.purchaserRelationship ?? '',
+        funeralHomeId === '' ? undefined : funeralHomeId,
+        addForm.funeralDirectorName ?? '',
+        addForm.funeralDateString === ''
+          ? undefined
+          : dateStringToInteger(addForm.funeralDateString as DateString),
+        addForm.funeralTimeString === ''
+          ? undefined
+          : timeStringToInteger(addForm.funeralTimeString as TimeString),
+        addForm.directionOfArrival ?? '',
+        addForm.committalTypeId === '' ? undefined : addForm.committalTypeId,
+        user.userName,
+        rightNowMillis,
+        user.userName,
+        rightNowMillis
+      )
+
+    const contractId = result.lastInsertRowid as number
+
+    /*
+     * Add contract fields
+     */
+
+    const contractTypeFieldIds = (addForm.contractTypeFieldIds ?? '').split(',')
+
+    for (const contractTypeFieldId of contractTypeFieldIds) {
+      const fieldValue = addForm[`fieldValue_${contractTypeFieldId}`] as
+        | string
+        | undefined
+
+      if ((fieldValue ?? '') !== '') {
+        addOrUpdateContractField(
+          {
+            contractId,
+            contractTypeFieldId,
+            fieldValue: fieldValue ?? ''
+          },
+          user,
+          database
+        )
+      }
+    }
+
+    /*
+     * Add deceased information
+     */
+
+    if ((addForm.deceasedName ?? '') !== '') {
+      addContractInterment({ ...addForm, contractId }, user, database)
+    }
+
+    
+    return contractId
+  } catch (error) {
+    debug('Error adding contract:', error)
+    debug('Add Form:', addForm)
+
+    throw error
+  } finally {
+    
+    if (connectedDatabase === undefined) {
+      database.close()
     }
   }
-
-  /*
-   * Add deceased information
-   */
-
-  if ((addForm.deceasedName ?? '') !== '') {
-    addContractInterment({ ...addForm, contractId }, user, database)
-  }
-
-  if (connectedDatabase === undefined) {
-    database.close()
-  }
-
-  return contractId
 }

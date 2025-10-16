@@ -1,0 +1,266 @@
+<%- include('../_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('_menu'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            <span class="icon is-small">
+              <i class="fa-solid fa-file-contract"></i>
+            </span>
+            <span>Contracts</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <% if (error !== undefined) { %>
+      <div class="notification is-danger is-light">
+        <button class="delete" aria-label="delete"></button>
+        <p>
+          <strong>Contract Error</strong><br />
+          <%= error %>
+        </p>
+      </div>
+    <% } %>
+
+    <form id="form--searchFilters">
+      <input id="searchFilter--offset" name="offset" type="hidden" value="0" />
+
+      <div class="columns is-vcentered is-mobile">
+        <div class="column">
+          <h1 class="title is-1">
+            Find a Contract
+          </h1>
+        </div>
+        <div class="column has-text-right is-narrow">
+          <div class="field has-addons">
+            <div class="control">
+              <label class="button is-small is-static has-text-grey-dark" for="searchFilter--limit">Results</label>
+            </div>
+            <div class="control">
+              <div class="select is-small is-fullwidth">
+                <select id="searchFilter--limit" name="limit" aria-label="Results per page">
+                  <option value="50" selected>50</option>
+                  <option value="100">100</option>
+                  <option value="250">250</option>
+                  <option value="500">500</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="panel">
+        <div class="panel-block is-block">
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--contractTypeId">Contract Type</label>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--contractTypeId" name="contractTypeId">
+                      <option value="">(All Contract Types)</option>
+                      <%
+                        let preneedHtml = ''
+                        let atNeedHtml = ''
+
+                        for (const contractType of contractTypes) {
+                          if (contractType.isPreneed) {
+                            preneedHtml += `
+                              <option value="${contractType.contractTypeId}">
+                                ${contractType.contractType}
+                              </option>
+                            `
+                          } else {
+                            atNeedHtml += `
+                              <option value="${contractType.contractTypeId}">
+                                ${contractType.contractType}
+                              </option>
+                            `
+                          }
+                        }
+                      %>
+                      <% if (preneedHtml !== '') { %>
+                        <optgroup label="Preneed Contract Types">
+                          <%- preneedHtml %>
+                        </optgroup>
+                      <% } %>
+                      <% if (atNeedHtml !== '') { %>
+                        <optgroup label="At Need Contract Types">
+                          <%- atNeedHtml %>
+                        </optgroup>
+                      <% } %>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--contractTime">Contract Time</label>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--contractTime" name="contractTime">
+                      <option value="">(All Times)</option>
+                      <option value="current" selected>Current</option>
+                      <option value="past">Past</option>
+                      <option value="future">Future</option>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <%
+          const hideLocationFilters = (cemeteryId ?? '') === ''
+        %>
+        <a class="panel-block has-background-light filter-block-toggle" data-cy="location-filters-toggle" href="#">
+          <span class="panel-icon">
+            <i class="fa-solid fa-caret-right <%= hideLocationFilters ? '' : 'fa-rotate-90' %>"></i>
+          </span>
+          Location Filters
+        </a>
+        <div class="panel-block is-block <%= hideLocationFilters ? 'is-hidden' : '' %>">
+          <div class="field">
+            <label class="label" for="searchFilter--cemeteryId">Cemetery</label>
+            <div class="control has-icons-left">
+              <div class="select is-fullwidth">
+                <select id="searchFilter--cemeteryId" name="cemeteryId">
+                  <option value ="">(All Cemeteries)</option>
+                  <% for (const cemetery of cemeteries) { %>
+                  <option
+                    value="<%= cemetery.cemeteryId %>"
+                    _<%= (cemetery.cemeteryId.toString() === cemeteryId) ? ' selected' : '' %>
+                  >
+                    <%= cemetery.cemeteryName || '(No Name)' %>
+                  </option>
+                  <% } %>
+                </select>
+              </div>
+              <span class="icon is-small is-left">
+                <i class="fa-solid fa-search"></i>
+              </span>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <label class="label" for="searchFilter--burialSiteName">Burial Site</label>
+              <div class="field has-addons">
+                <div class="control has-icons-left">
+                  <div class="select">
+                    <select id="selectFilter--burialSiteNameSearchType" name="burialSiteNameSearchType" aria-label="Burial Site Filter Type">
+                      <option value="">contains</option>
+                      <option value="startsWith">starts with</option>
+                      <option value="endsWith">ends with</option>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+                <div class="control is-expanded">
+                  <input class="input" id="searchFilter--burialSiteName" name="burialSiteName" type="text" />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--burialSiteTypeId">Burial Site Type</label>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--burialSiteTypeId" name="burialSiteTypeId">
+                      <option value="">(All Burial Site Types)</option>
+                      <% for (const burialSiteType of burialSiteTypes) { %>
+                        <option value="<%= burialSiteType.burialSiteTypeId %>"><%= burialSiteType.burialSiteType %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <%
+          const hideContactFilters = (deceasedName ?? '') === ''
+        %>
+        <a class="panel-block has-background-light filter-block-toggle" data-cy="contact-filters-toggle" href="#">
+          <span class="panel-icon">
+            <i class="fa-solid fa-caret-right <%= hideContactFilters ? '' : 'fa-rotate-90' %>"></i>
+          </span>
+          Contact Filters
+        </a>
+        <div class="panel-block is-block <%= hideContactFilters ? 'is-hidden' : '' %>">
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--purchaserName">Purchaser Name</label>
+                <div class="control has-icons-left">
+                  <input class="input" id="searchFilter--purchaserName" name="purchaserName"
+                    type="text" />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--deceasedName">Recipient / Deceased Name</label>
+                <div class="control has-icons-left">
+                  <input class="input" id="searchFilter--deceasedName" name="deceasedName"
+                    type="text"
+                    value="<%= deceasedName %>" />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="searchFilter--funeralHomeId">Funeral Home</label>
+            <div class="control has-icons-left">
+              <div class="select is-fullwidth">
+                <select id="searchFilter--funeralHomeId" name="funeralHomeId">
+                  <option value="">(All Funeral Homes)</option>
+                  <% for (const funeralHome of funeralHomes) { %>
+                    <option value="<%= funeralHome.funeralHomeId %>"><%= funeralHome.funeralHomeName %></option>
+                  <% } %>
+                </select>
+              </div>
+              <span class="icon is-small is-left">
+                <i class="fa-solid fa-search"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="mt-5" id="container--searchResults"></div>
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/contract.search.js"></script>
+<script src="<%= urlPrefix %>/javascripts/search.js"></script>
+
+<%- include('../_footerB'); -%>

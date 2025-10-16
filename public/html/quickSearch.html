@@ -5,27 +5,84 @@
       <h3 class="modal-card-title">Quick Search</h3>
       <button
         class="delete is-close-modal-button"
-        aria-label="close"
         type="button"
+        aria-label="close"
       ></button>
     </header>
     <section class="modal-card-body">
-      <h4 class="title is-4">Contracts</h4>
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h4 class="title is-4">Contracts</h4>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <a class="button is-link is-light" id="quickSearch--contractsLink" href="#">
+              <span class="icon is-small"><i class="fa-solid fa-search"></i></span>
+              <span>Contract Search</span>
+            </a>
+          </div>
+        </div>
+      </div>
       <form id="form--quickSearchContract">
+        <div class="field has-addons">
+          <div class="control">
+            <div class="select">
+              <select id="quickSearchContract--searchField" name="searchField" aria-label="Contract Search Field">
+                <option value="contractId">Contract ID</option>
+                <option value="deceasedName">Deceased Name</option>
+              </select>
+            </div>
+          </div>
+          <div class="control is-expanded">
+            <input
+              class="input"
+              id="quickSearchContract--searchValue"
+              name="searchValue"
+              type="text"
+              aria-label="Contract Search Value"
+              required
+            />
+          </div>
+          <div class="control">
+            <button class="button is-primary" type="submit">Go To</button>
+          </div>
+        </div>
+      </form>
+
+      <hr />
+
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h4 class="title is-4">Work Orders</h4>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <a class="button is-link is-light" id="quickSearch--workOrdersLink" href="#">
+              <span class="icon is-small"><i class="fa-solid fa-search"></i></span>
+              <span>Work Order Search</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <form id="form--quickSearchWorkOrder">
         <div class="field has-addons">
           <div class="control">
             <label
               class="button is-static"
-              for="quickSearchContract--contractId"
+              for="quickSearchWorkOrder--workOrderNumber"
             >
-              Contract #
+              Work Order #
             </label>
           </div>
           <div class="control is-expanded">
             <input
               class="input"
-              id="quickSearchContract--contractId"
-              name="contractId"
+              id="quickSearchWorkOrder--workOrderNumber"
+              name="workOrderNumber"
               type="text"
               required
             />

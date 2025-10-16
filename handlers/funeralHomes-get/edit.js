@@ -6,7 +6,7 @@ export default function handler(request, response) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/funeralHomes/?error=funeralHomeIdNotFound`);
         return;
     }
-    response.render('funeralHome-edit', {
+    response.render('funeralHomes/edit', {
         headTitle: funeralHome.funeralHomeName,
         funeralHome,
         isCreate: false

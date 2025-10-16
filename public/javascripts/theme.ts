@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
@@ -38,8 +38,7 @@ declare const bulmaJS: BulmaJS
  * KEEP ALIVE
  */
 ;(() => {
-  const urlPrefix =
-    document.querySelector('main')?.getAttribute('data-url-prefix') ?? ''
+  const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
 
   const keepAliveMillis =
     document.querySelector('main')?.dataset.sessionKeepAliveMillis
@@ -90,15 +89,47 @@ declare const bulmaJS: BulmaJS
  * QUICK SEARCH
  */
 ;(() => {
-  const urlPrefix =
-    document.querySelector('main')?.getAttribute('data-url-prefix') ?? ''
+  const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? ''
 
   function doContractQuickSearch(formEvent: Event): void {
     formEvent.preventDefault()
 
-    const contractIdElement = document.querySelector('#quickSearchContract--contractId') as HTMLInputElement
+    const contractField = (
+      document.querySelector(
+        '#quickSearchContract--searchField'
+      ) as HTMLSelectElement
+    ).value
 
-    globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(contractIdElement.value)}`
+    const searchValue = (
+      document.querySelector(
+        '#quickSearchContract--searchValue'
+      ) as HTMLInputElement
+    ).value
+
+    if (contractField === 'deceasedName') {
+      globalThis.location.href = `${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValue)}`
+    } else if (contractField === 'contractId' && /^\d+$/.test(searchValue)) {
+      globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(searchValue)}`
+    } else {
+      bulmaJS.alert({
+        contextualColorName: 'danger',
+        title: 'Invalid Search',
+
+        message: 'Please enter a valid search value.'
+      })
+    }
+  }
+
+  function doWorkOrderQuickSearch(formEvent: Event): void {
+    formEvent.preventDefault()
+
+    const workOrderNumber = (
+      document.querySelector(
+        '#quickSearchWorkOrder--workOrderNumber'
+      ) as HTMLInputElement
+    ).value
+
+    globalThis.location.href = `${urlPrefix}/workOrders/byWorkOrderNumber/${encodeURIComponent(workOrderNumber)}`
   }
 
   document
@@ -107,17 +138,35 @@ declare const bulmaJS: BulmaJS
       clickEvent.preventDefault()
 
       cityssm.openHtmlModal('quickSearch', {
+        onshow(modalElement) {
+          ;(
+            modalElement.querySelector(
+              '#quickSearch--contractsLink'
+            ) as HTMLAnchorElement
+          ).href = `${urlPrefix}/contracts`
+          ;(
+            modalElement.querySelector(
+              '#quickSearch--workOrdersLink'
+            ) as HTMLAnchorElement
+          ).href = `${urlPrefix}/workOrders`
+        },
         onshown(modalElement) {
           bulmaJS.toggleHtmlClipped()
 
           modalElement.querySelector('input')?.focus()
 
-          modalElement.querySelector('#form--quickSearchContract')?.addEventListener('submit', doContractQuickSearch)
+          modalElement
+            .querySelector('#form--quickSearchContract')
+            ?.addEventListener('submit', doContractQuickSearch)
+
+          modalElement
+            .querySelector('#form--quickSearchWorkOrder')
+            ?.addEventListener('submit', doWorkOrderQuickSearch)
         },
 
         onremoved() {
           bulmaJS.toggleHtmlClipped()
-        },
+        }
       })
     })
 })()

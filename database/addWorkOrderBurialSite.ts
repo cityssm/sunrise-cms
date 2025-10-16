@@ -8,10 +8,11 @@ export interface AddForm {
 }
 
 export default function addWorkOrderBurialSite(
-  workOrderLotForm: AddForm,
-  user: User
+  workOrderBurialSiteForm: AddForm,
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -23,7 +24,7 @@ export default function addWorkOrderBurialSite(
         and burialSiteId = ?`
     )
     .pluck()
-    .get(workOrderLotForm.workOrderId, workOrderLotForm.burialSiteId) as
+    .get(workOrderBurialSiteForm.workOrderId, workOrderBurialSiteForm.burialSiteId) as
     | number
     | null
     | undefined
@@ -38,8 +39,8 @@ export default function addWorkOrderBurialSite(
           values (?, ?, ?, ?, ?, ?)`
       )
       .run(
-        workOrderLotForm.workOrderId,
-        workOrderLotForm.burialSiteId,
+        workOrderBurialSiteForm.workOrderId,
+        workOrderBurialSiteForm.burialSiteId,
         user.userName,
         rightNowMillis,
         user.userName,
@@ -63,12 +64,14 @@ export default function addWorkOrderBurialSite(
         rightNowMillis,
         user.userName,
         rightNowMillis,
-        workOrderLotForm.workOrderId,
-        workOrderLotForm.burialSiteId
+        workOrderBurialSiteForm.workOrderId,
+        workOrderBurialSiteForm.burialSiteId
       )
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return true
 }

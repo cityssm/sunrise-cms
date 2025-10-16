@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     let intermentContainerTypes = exports.intermentContainerTypes;
@@ -83,9 +81,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Moving Interment Container Type',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -93,11 +91,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function renderIntermentContainerTypes() {
         const containerElement = document.querySelector('#container--intermentContainerTypes');
         if (intermentContainerTypes.length === 0) {
-            containerElement.innerHTML = `<tr><td colspan="2">
-          <div class="message is-warning">
-            <p class="message-body">There are no active interment container types.</p>
-          </div>
-          </td></tr>`;
+            containerElement.innerHTML = /*html*/ `
+        <tr>
+          <td colspan="2">
+            <div class="message is-warning">
+              <p class="message-body">There are no active interment container types.</p>
+            </div>
+          </td>
+        </tr>
+      `;
             return;
         }
         containerElement.innerHTML = '';
@@ -107,44 +109,62 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 intermentContainerType.intermentContainerTypeId.toString();
             const formId = `form--updateIntermentContainerType_${intermentContainerType.intermentContainerTypeId.toString()}`;
             // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = `<td>
-        <form id="${formId}">
-          <input name="intermentContainerTypeId" type="hidden" value="${intermentContainerType.intermentContainerTypeId.toString()}" />
-          <div class="field">
+            tableRowElement.innerHTML = /*html*/ `
+        <td>
+          <form id="${formId}">
+            <input name="intermentContainerTypeId" type="hidden"
+              value="${intermentContainerType.intermentContainerTypeId.toString()}"
+            />
+            <div class="field">
+              <div class="control">
+                <input
+                  class="input"
+                  name="intermentContainerType"
+                  type="text"
+                  value="${cityssm.escapeHTML(intermentContainerType.intermentContainerType)}"
+                  maxlength="100"
+                  aria-label="Interment Container Type"
+                  required
+                />
+              </div>
+            </div>
+          </form>
+        </td>
+        <td>
+          <div class="select is-fullwidth">
+            <select name="isCremationType" aria-label="Is Cremated" form="${formId}">
+              <option value="0" ${intermentContainerType.isCremationType ? '' : 'selected'}>No</option>
+              <option value="1" ${intermentContainerType.isCremationType ? 'selected' : ''}>Yes</option>
+            </select>
+          </div>
+        </td>
+        <td class="is-nowrap">
+          <div class="field is-grouped">
             <div class="control">
-              <input class="input" name="intermentContainerType" type="text"
-                value="${cityssm.escapeHTML(intermentContainerType.intermentContainerType)}"
-                aria-label="Interment Container Type" maxlength="100" required />
+              <button
+                class="button is-success"
+                type="submit"
+                aria-label="Save"
+                form="${formId}"
+              >
+                <span class="icon"><i class="fa-solid fa-save"></i></span>
+              </button>
+            </div>
+            <div class="control">
+              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveIntermentContainerTypeUp', 'button--moveIntermentContainerTypeDown', false)}
+            </div>
+            <div class="control">
+              <button
+                class="button is-danger is-light button--deleteIntermentContainerType"
+                type="button"
+                title="Delete Type"
+              >
+                <span class="icon"><i class="fa-solid fa-trash"></i></span>
+              </button>
             </div>
           </div>
-        </form>
-      </td>
-      <td>
-        <div class="select is-fullwidth">
-          <select name="isCremationType" form="${formId}" aria-label="Is Cremated">
-            <option value="0" ${intermentContainerType.isCremationType ? '' : 'selected'}>No</option>
-            <option value="1" ${intermentContainerType.isCremationType ? 'selected' : ''}>Yes</option>
-          </select>
-        </div>
-      </td>
-      <td class="is-nowrap">
-        <div class="field is-grouped">
-          <div class="control">
-            <button class="button is-success" type="submit" form="${formId}" aria-label="Save">
-              <span class="icon"><i class="fa-solid fa-save"></i></span>
-            </button>
-          </div>
-          <div class="control">
-            ${sunrise.getMoveUpDownButtonFieldHTML('button--moveIntermentContainerTypeUp', 'button--moveIntermentContainerTypeDown', false)}
-          </div>
-          <div class="control">
-            <button class="button is-danger is-light button--deleteIntermentContainerType"
-              data-tooltip="Delete Type" type="button" aria-label="Delete Type">
-              <span class="icon"><i class="fa-solid fa-trash"></i></span>
-            </button>
-          </div>
-        </div>
-      </td>`;
+        </td>
+      `;
             tableRowElement
                 .querySelector('form')
                 ?.addEventListener('submit', updateIntermentContainerType);

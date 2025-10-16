@@ -1,0 +1,366 @@
+<%- include('../_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('_menu'); -%>
+  </div>
+  <div class="column">
+    <div class="columns is-vcentered is-mobile">
+      <div class="column">
+        <nav class="breadcrumb">
+          <ul>
+            <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+            <li>
+              <a href="#">
+                <span class="icon is-small"><i class="fa-solid fa-cog"></i></span>
+                <span>Administrator Tools</span>
+              </a>
+            </li>
+            <li class="is-active">
+              <a href="#" aria-current="page">
+                Config Table Management
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="column is-narrow has-text-right">
+        <a
+          class="has-text-info-dark is-size-7"
+          href="https://cityssm.github.io/sunrise-cms/docs/configTableManagement.html"
+          title="Help Documentation"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <span class="icon is-small"><i class="fa-regular fa-circle-question"></i></span>
+          <span>Help</span>
+        </a>
+      </div>
+    </div>
+    
+    <h1 class="title is-1">
+      Config Table Management
+    </h1>
+
+    <div class="message is-warning">
+      <div class="message-body">
+        <strong>Never change the meaning of the values in these tables.</strong><br />
+        When in doubt, create a new value instead of changing an existing one.
+      </div>
+    </div>
+    
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="columns is-vcentered is-mobile">
+          <div class="column is-narrow">
+            <button class="button is-small is-toggle-button" type="button" title="Toggle Work Order Types">
+              <span class="icon">
+                <i class="fa-solid fa-plus"></i>
+              </span>
+            </button>
+          </div>
+          <div class="column">
+            <h2 class="title is-5 has-text-white">Work Order Types</h2>
+          </div>
+          <div class="column is-narrow">
+            <i class="fa-solid fa-hard-hat"></i>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-hidden">
+        <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+          <thead>
+            <tr>
+              <th>Work Order Type</th>
+              <th class="has-text-centered has-width-1">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2">
+                <form id="form--addWorkOrderType">
+                  <div class="field has-addons">
+                    <div class="control is-expanded">
+                      <input
+                        class="input"
+                        name="workOrderType"
+                        type="text"
+                        maxlength="100"
+                        placeholder="New Work Order Type"
+                        required
+                      />
+                    </div>
+                    <div class="control">
+                      <button class="button is-success" type="submit" title="Add Work Order Type">
+                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+          <tbody id="container--workOrderTypes"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="columns is-vcentered is-mobile">
+          <div class="column is-narrow">
+            <button class="button is-small is-toggle-button" type="button" title="Toggle Work Order Milestone Types">
+              <span class="icon">
+                <i class="fa-solid fa-plus"></i>
+              </span>
+            </button>
+          </div>
+          <div class="column">
+            <h2 class="title is-5 has-text-white">Work Order Milestone Types</h2>
+          </div>
+          <div class="column is-narrow">
+            <i class="fa-solid fa-hard-hat"></i>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-block is-hidden">
+        <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+          <thead>
+            <tr>
+              <th>Work Order Milestone Type</th>
+              <th class="has-text-centered has-width-1">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2">
+                <form id="form--addWorkOrderMilestoneType">
+                  <div class="field has-addons">
+                    <div class="control is-expanded">
+                      <input
+                        class="input"
+                        name="workOrderMilestoneType"
+                        type="text"
+                        maxlength="100"
+                        placeholder="New Milestone Type"
+                        required
+                      />
+                    </div>
+                    <div class="control">
+                      <button class="button is-success" type="submit" title="Add Work Order Milestone Type">
+                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+          <tbody id="container--workOrderMilestoneTypes"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="columns is-vcentered is-mobile">
+          <div class="column is-narrow">
+            <button class="button is-small is-toggle-button" type="button" title="Toggle Committal Types">
+              <span class="icon">
+                <i class="fa-solid fa-plus"></i>
+              </span>
+            </button>
+          </div>
+          <div class="column">
+            <h2 class="title is-5 has-text-white">Committal Types</h2>
+          </div>
+          <div class="column is-narrow">
+            <i class="fa-solid fa-file-contract"></i>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-block is-hidden">
+        <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+          <thead>
+            <tr>
+              <th>Committal Type</th>
+              <th class="has-text-centered has-width-1">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2">
+                <form id="form--addCommittalType">
+                  <div class="field has-addons">
+                    <div class="control is-expanded">
+                      <input
+                        class="input"
+                        name="committalType"
+                        type="text"
+                        maxlength="100"
+                        placeholder="New Committal Type"
+                        required
+                      />
+                    </div>
+                    <div class="control">
+                      <button class="button is-success" type="submit" title="Add Type">
+                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+          <tbody id="container--committalTypes"></tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="columns is-vcentered is-mobile">
+          <div class="column is-narrow">
+            <button class="button is-small is-toggle-button" type="button" title="Toggle Interment Container Types">
+              <span class="icon">
+                <i class="fa-solid fa-plus"></i>
+              </span>
+            </button>
+          </div>
+          <div class="column">
+            <h2 class="title is-5 has-text-white">Interment Container Types</h2>
+          </div>
+          <div class="column is-narrow">
+            <i class="fa-solid fa-file-contract"></i>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-block is-hidden">
+        <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+          <thead>
+            <tr>
+              <th>Interment Container Type</th>
+              <th>Is Cremated</th>
+              <th class="has-text-centered has-width-1">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <form id="form--addIntermentContainerType">
+                  <div class="field">
+                    <div class="control">
+                      <input
+                        class="input"
+                        name="intermentContainerType"
+                        type="text"
+                        maxlength="100"
+                        placeholder="New Interment Container Type"
+                        required
+                      />
+                    </div>
+                  </div>
+                </form>
+              </td>
+              <td>
+                <div class="select is-fullwidth">
+                  <select name="isCremationType" aria-label="Is Cremated" form="form--addIntermentContainerType">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                  </select>
+                </div>
+              </td>
+              <td>
+                <button
+                  class="button is-success"
+                  type="submit"
+                  title="Add Type"
+                  form="form--addIntermentContainerType"
+                >
+                  <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody id="container--intermentContainerTypes"></tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="columns is-vcentered is-mobile">
+          <div class="column is-narrow">
+            <button class="button is-small is-toggle-button" type="button" title="Toggle Burial Site Statuses">
+              <span class="icon">
+                <i class="fa-solid fa-plus"></i>
+              </span>
+            </button>
+          </div>
+          <div class="column">
+            <h2 class="title is-5 has-text-white">Burial Site Statuses</h2>
+          </div>
+          <div class="column is-narrow">
+            <i class="fa-solid fa-map-pin"></i>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-block is-hidden">
+        <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+          <thead>
+            <tr>
+              <th>Burial Site Status</th>
+              <th class="has-text-centered has-width-1">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2">
+                <form id="form--addBurialSiteStatus">
+                  <div class="field has-addons">
+                    <div class="control is-expanded">
+                      <input
+                        class="input"
+                        name="burialSiteStatus"
+                        type="text"
+                        maxlength="100"
+                        placeholder="New Burial Site Status"
+                        required
+                      />
+                    </div>
+                    <div class="control">
+                      <button class="button is-success" type="submit" title="Add Status">
+                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+          <tbody id="container--burialSiteStatuses"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script>
+  exports.burialSiteStatuses = <%- JSON.stringify(burialSiteStatuses) %>;
+  exports.committalTypes = <%- JSON.stringify(committalTypes) %>;
+  exports.intermentContainerTypes = <%- JSON.stringify(intermentContainerTypes) %>;
+  exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
+  exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
+</script>
+
+<script src="<%= urlPrefix %>/javascripts/tables.admin.js"></script>
+
+<script src="<%= urlPrefix %>/javascripts/burialSiteStatuses.admin.js"></script>
+<script src="<%= urlPrefix %>/javascripts/committalTypes.admin.js"></script>
+<script src="<%= urlPrefix %>/javascripts/intermentContainerTypes.admin.js"></script>
+<script src="<%= urlPrefix %>/javascripts/workOrderMilestoneTypes.admin.js"></script>
+<script src="<%= urlPrefix %>/javascripts/workOrderTypes.admin.js"></script>
+
+<%- include('../_footerB'); -%>

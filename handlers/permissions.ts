@@ -3,10 +3,11 @@ import type { NextFunction, Request, Response } from 'express'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import {
   apiKeyIsValid,
-  userCanUpdate,
+  userCanUpdateCemeteries,
+  userCanUpdateContracts,
   userCanUpdateWorkOrders,
   userIsAdmin
-} from '../helpers/functions.user.js'
+} from '../helpers/user.helpers.js'
 
 const urlPrefix = getConfigProperty('reverseProxy.urlPrefix')
 
@@ -17,7 +18,7 @@ const forbiddenJSON = {
   success: false
 }
 
-const forbiddenRedirectURL = `${urlPrefix}/dashboard/?error=accessDenied`
+const forbiddenRedirectUrl = `${urlPrefix}/dashboard/?error=accessDenied`
 
 export function adminGetHandler(
   request: Request,
@@ -29,7 +30,7 @@ export function adminGetHandler(
     return
   }
 
-  response.redirect(forbiddenRedirectURL)
+  response.redirect(forbiddenRedirectUrl)
 }
 
 export function adminPostHandler(
@@ -45,37 +46,63 @@ export function adminPostHandler(
   response.status(forbiddenStatus).json(forbiddenJSON)
 }
 
-export async function apiGetHandler(
+export function apiGetHandler(
   request: Request,
   response: Response,
   next: NextFunction
-): Promise<void> {
-  if (await apiKeyIsValid(request)) {
+): void {
+  if (apiKeyIsValid(request)) {
     next()
   } else {
     response.redirect(`${urlPrefix}/login`)
   }
 }
 
-export function updateGetHandler(
+export function updateCemeteriesGetHandler(
   request: Request,
   response: Response,
   next: NextFunction
 ): void {
-  if (userCanUpdate(request)) {
+  if (userCanUpdateCemeteries(request)) {
     next()
     return
   }
 
-  response.redirect(forbiddenRedirectURL)
+  response.redirect(forbiddenRedirectUrl)
 }
 
-export function updatePostHandler(
+export function updateCemeteriesPostHandler(
   request: Request,
   response: Response,
   next: NextFunction
 ): void {
-  if (userCanUpdate(request)) {
+  if (userCanUpdateCemeteries(request)) {
+    next()
+    return
+  }
+
+  response.status(forbiddenStatus).json(forbiddenJSON)
+}
+
+export function updateContractsGetHandler(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): void {
+  if (userCanUpdateContracts(request)) {
+    next()
+    return
+  }
+
+  response.redirect(forbiddenRedirectUrl)
+}
+
+export function updateContractsPostHandler(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): void {
+  if (userCanUpdateContracts(request)) {
     next()
     return
   }
@@ -93,7 +120,7 @@ export function updateWorkOrdersGetHandler(
     return
   }
 
-  response.redirect(forbiddenRedirectURL)
+  response.redirect(forbiddenRedirectUrl)
 }
 
 export function updateWorkOrdersPostHandler(

@@ -1,0 +1,80 @@
+<%- include('../_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('../contracts/_menu'); -%>
+  </div>
+  <div class="column">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li class="is-active">
+          <a href="#" aria-current="page">
+            <span class="icon is-small"><i class="fa-solid fa-place-of-worship"></i></span>
+            <span>Funeral Homes</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <% if (error !== undefined) { %>
+      <div class="notification is-danger is-light">
+        <button class="delete" aria-label="delete"></button>
+        <p>
+          <strong>Funeral Home Error</strong><br />
+          <%= error %>
+        </p>
+      </div>
+    <% } %>
+
+    <div class="columns is-vcentered">
+      <div class="column">
+        <h1 class="title is-1">
+          Find a Funeral Home
+        </h1>
+      </div>
+      <div class="column has-text-right is-narrow is-hidden-print">
+        <a class="button" href="<%= urlPrefix %>/reports/funeralHomes-formatted" target="_blank" download>
+          <span class="icon is-small"><i class="fa-solid fa-download"></i></span>
+          <span>Export</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="box">
+      <form id="form--searchFilters">
+        <div class="columns is-vcentered">
+          <div class="column">
+            <div class="field">
+              <div class="control has-icons-left">
+                <input class="input" id="searchFilter--funeralHome" type="text"
+                  placeholder="Search funeral home name and address"
+                />
+                <span class="icon is-small is-left">
+                  <i class="fa-solid fa-search"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="column is-narrow">
+            <label class="checkbox">
+              <input id="searchFilter--hasUpcomingFunerals" type="checkbox" />
+              Only show funeral homes with upcoming funerals
+            </label>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div id="container--searchResults"></div>
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script>
+  exports.funeralHomes = <%- JSON.stringify(funeralHomes) %>;
+</script>
+<script src="<%= urlPrefix %>/javascripts/funeralHome.search.js"></script>
+
+<%- include('../_footerB'); -%>

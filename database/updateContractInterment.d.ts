@@ -1,4 +1,5 @@
 import { type DateString } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
 export interface UpdateForm {
     contractId: number | string;
     intermentNumber: number | string;
@@ -16,4 +17,4 @@ export interface UpdateForm {
     deathAgePeriod: string;
     intermentContainerTypeId: number | string;
 }
-export default function updateContractInterment(contractForm: UpdateForm, user: User): boolean;
+export default function updateContractInterment(contractForm: UpdateForm, user: User, connectedDatabase?: sqlite.Database): boolean;

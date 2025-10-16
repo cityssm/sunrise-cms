@@ -1,0 +1,160 @@
+<%- include('../_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+    <%- include('_menu'); -%>
+  </div>
+  <div class="column">
+    <div class="columns is-vcentered is-mobile">
+      <div class="column">
+        <nav class="breadcrumb">
+          <ul>
+            <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+            <li>
+              <a href="#">
+                <span class="icon is-small"><i class="fa-solid fa-cog"></i></span>
+                <span>Administrator Tools</span>
+              </a>
+            </li>
+            <li class="is-active">
+              <a href="#" aria-current="page">
+                Database Maintenance
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="column is-narrow has-text-right">
+        <a
+          class="has-text-info-dark is-size-7"
+          href="https://cityssm.github.io/sunrise-cms/docs/databaseManagement.html"
+          title="Help Documentation"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <span class="icon is-small"><i class="fa-regular fa-circle-question"></i></span>
+          <span>Help</span>
+        </a>
+      </div>
+    </div>
+    
+    <h1 class="title is-1">
+      Database Maintenance
+    </h1>
+      
+    <div class="columns">
+      <div class="column">
+        <div class="panel is-info">
+          <div class="panel-heading">
+            <div class="level is-mobile">
+              <div class="level-left">
+                <div class="level-item">
+                  <span>Database Backup</span>
+                </div>
+              </div>
+              <div class="level-right">
+                <div class="level-item">
+                  <% if (configFunctions.getConfigProperty('settings.databaseBackup.taskIsEnabled')) { %>
+                  <span class="tag is-success">
+                    <span class="icon">
+                      <i class="fa-solid fa-check"></i>
+                    </span>
+                    <span>
+                      Scheduled
+                      (<%= configFunctions.getConfigProperty('settings.databaseBackup.backupHour') %>:00)
+                    </span>
+                  </span>
+                  <% } else { %>
+                  <span class="tag is-danger">
+                    <span class="icon">
+                      <i class="fa-solid fa-times"></i>
+                    </span>
+                    <span>Disabled</span>
+                  </span>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-block is-block">
+            <div class="message is-info">
+              <div class="message-body">
+                <p>
+                  Before making significant changes to the records in the database,
+                  it is a good idea to back up first!
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="panel-block is-block">
+            <div class="columns is-vcentered">
+              <div class="column">
+                <p>
+                  <strong>Last Backup Time:</strong><br />
+                  <span id="database--lastBackup">
+                    <% if (lastBackupDateString === '') { %>
+                    No backups have been made.
+                    <% } else { %>
+                    <%= lastBackupDateString %> at <%= lastBackupTimePeriodString %>
+                    <% } %>
+                  </span>
+                </p>
+              </div>
+              <div class="column is-narrow has-text-right">
+                <button
+                  class="button is-success"
+                  id="button--backupDatabase"
+                  data-cy="backup"
+                  type="button"
+                >
+                  <span class="icon"><i class="fa-solid fa-save"></i></span>
+                  <span>Backup Database</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>    
+      </div>
+      <div class="column">
+        <div class="panel is-warning">
+          <h2 class="panel-heading">
+            Database Cleanup
+          </h2>
+          <div class="panel-block is-block">
+            <div class="message is-warning">
+              <div class="message-body">
+                <p>
+                  When records are deleted in this application, they are not removed entirely.
+                  This gives systems administrators the ability to recover deleted records.
+                  This also can leave a small amount of garbage behind in the database.
+                </p>
+                <p class="mt-2">
+                  This process permanently deletes records that have already been deleted over
+                  <%= configFunctions.getConfigProperty("settings.adminCleanup.recordDeleteAgeDays") %> days ago.
+                  Note that no active records will be affected by the cleanup process.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="panel-block is-block has-text-right">
+            <button
+              class="button is-warning"
+              id="button--cleanupDatabase"
+              data-cy="cleanup"
+              type="button"
+            >
+              <span class="icon"><i class="fa-solid fa-broom"></i></span>
+              <span>Cleanup Database</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/database.admin.js"></script>
+
+<%- include('../_footerB'); -%>

@@ -1,0 +1,78 @@
+<div class="modal" id="modal--addUser">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Add User</p>
+      <button
+        class="delete is-close-modal-button"
+        type="button"
+        aria-label="close"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--addUser">
+        <div class="columns">
+          <div class="column">
+            <label class="label" for="userName">Username</label>
+            <div class="field has-addons">
+              <div class="control">
+                <span
+                  class="button is-static has-text-grey-dark"
+                  id="span--domain"
+                ></span>
+              </div>
+              <div class="control is-expanded">
+                <input
+                  class="input"
+                  id="userName"
+                  name="userName"
+                  type="text"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Permissions</label>
+              <div class="control">
+                <label class="checkbox">
+                  <input name="canUpdateCemeteries" type="checkbox" value="1" />
+                  Can Update Cemeteries
+                </label>
+              </div>
+              <div class="control">
+                <label class="checkbox">
+                  <input name="canUpdateContracts" type="checkbox" value="1" />
+                  Can Update Contracts
+                </label>
+              </div>
+              <div class="control">
+                <label class="checkbox">
+                  <input name="canUpdateWorkOrders" type="checkbox" value="1" />
+                  Can Update Work Orders
+                </label>
+              </div>
+              <div class="control">
+                <label class="checkbox">
+                  <input name="isAdmin" type="checkbox" value="1" />
+                  Administrator
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <div class="buttons">
+        <button class="button is-primary" type="submit" form="form--addUser">
+          Add User
+        </button>
+        <button class="button is-close-modal-button" type="button">
+          Cancel
+        </button>
+      </div>
+    </footer>
+  </div>
+</div>

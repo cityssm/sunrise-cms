@@ -1,4 +1,6 @@
-export interface UpdateBurialSiteForm {
+import sqlite from 'better-sqlite3';
+import type { BurialSiteFieldsForm } from './addOrUpdateBurialSiteFields.js';
+export interface UpdateBurialSiteForm extends BurialSiteFieldsForm {
     burialSiteId: number | string;
     burialSiteNameSegment1?: string;
     burialSiteNameSegment2?: string;
@@ -14,8 +16,6 @@ export interface UpdateBurialSiteForm {
     cemeterySvgId: string;
     burialSiteLatitude: string;
     burialSiteLongitude: string;
-    [fieldValue_burialSiteTypeFieldId: string]: unknown;
-    burialSiteTypeFieldIds?: string;
 }
 /**
  * Updates a burial site.
@@ -25,4 +25,5 @@ export interface UpdateBurialSiteForm {
  * @throws If an active burial site with the same name already exists.
  */
 export default function updateBurialSite(updateForm: UpdateBurialSiteForm, user: User): boolean;
-export declare function updateBurialSiteStatus(burialSiteId: number | string, burialSiteStatusId: number | string, user: User): boolean;
+export declare function updateBurialSiteStatus(burialSiteId: number | string, burialSiteStatusId: number | string, user: User, connectedDatabase?: sqlite.Database): boolean;
+export declare function updateBurialSiteLatitudeLongitude(burialSiteId: number | string, burialSiteLatitude: string, burialSiteLongitude: string, user: User): boolean;

@@ -1,33 +1,55 @@
+import sqlite from 'better-sqlite3'
+import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import deleteRelatedContract, {
   type DeleteRelatedContractForm
 } from '../../database/deleteRelatedContract.js'
 import getContracts from '../../database/getContracts.js'
+import { DEBUG_NAMESPACE } from '../../debug.config.js'
+import { sunriseDB } from '../../helpers/database.helpers.js'
+
+const debug = Debug(
+  `${DEBUG_NAMESPACE}:handlers:contracts:doDeleteRelatedContract`
+)
 
 export default async function handler(
   request: Request<unknown, unknown, DeleteRelatedContractForm>,
   response: Response
 ): Promise<void> {
-  deleteRelatedContract(request.body)
+  let database: sqlite.Database | undefined
 
-  const relatedContracts = await getContracts(
-    {
-      relatedContractId: request.body.contractId
-    },
-    {
-      limit: -1,
-      offset: 0,
+  try {
+    database = sqlite(sunriseDB)
 
-      includeFees: false,
-      includeInterments: true,
-      includeTransactions: false
-    }
-  )
+    deleteRelatedContract(request.body, database)
 
-  response.json({
-    success: true,
+    const relatedContracts = await getContracts(
+      {
+        relatedContractId: request.body.contractId
+      },
+      {
+        limit: -1,
+        offset: 0,
 
-    relatedContracts: relatedContracts.contracts
-  })
+        includeFees: false,
+        includeInterments: true,
+        includeTransactions: false
+      },
+      database
+    )
+
+    response.json({
+      success: true,
+
+      relatedContracts: relatedContracts.contracts
+    })
+  } catch (error) {
+    debug(error)
+    response
+      .status(500)
+      .json({ errorMessage: 'Database error', success: false })
+  } finally {
+    database?.close()
+  }
 }

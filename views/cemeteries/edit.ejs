@@ -1,0 +1,392 @@
+<%- include('../_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li>
+      <a href="<%= urlPrefix %>/cemeteries">
+        <span class="icon is-small"><i class="fa-regular fa-map"></i></span>
+        <span>Cemeteries</span>
+      </a>
+    </li>
+    <% if (!isCreate) { %>
+      <li>
+        <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>">
+          <%= cemetery.cemeteryName || "(No Name)" %>
+        </a>
+      </li>
+    <% } %>
+    <li class="is-active">
+      <a href="#" aria-current="page">
+        <% if (isCreate) { %>
+          Create a New Cemetery
+        <% } else { %>
+          Update
+        <% } %>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<h1 class="title is-1">
+  <% if (isCreate) { %>
+    Create a New Cemetery
+  <% } else { %>
+    Update Cemetery
+  <% } %>
+</h1>
+
+<div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
+  <div class="column">
+    <% if (!isCreate) { %>
+      <span class="has-text-weight-bold">
+        <%= cemetery.cemeteryName || "(No Name)" %>
+      </span>
+    <% } %>
+  </div>
+  <div class="column is-narrow has-text-right">
+    <div class="buttons is-right">
+      <% if (isCreate) { %>
+        <a class="button is-danger is-light" href="<%= urlPrefix %>/cemeteries">
+          Cancel
+        </a>
+      <% } else { %>
+        <div class="dropdown is-right is-up" data-cy="dropdown--moreOptions">
+          <div class="dropdown-trigger">
+            <button class="button" type="button">
+              <span>More Options</span>
+              <span class="icon is-small">
+                <i class="fa-solid fa-angle-up"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu">
+            <div class="dropdown-content">
+              <a class="dropdown-item" id="button--deleteCemetery" href="#">
+                <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
+                <span>Delete Cemetery</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      <% } %>
+      <button class="button is-primary is-light" type="submit" form="form--cemetery">
+        <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
+        <span>
+          <%= (isCreate ? "Create": "Update") %>
+          <span class="is-hidden-mobile">Cemetery</span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<form id="form--cemetery">
+  <input id="cemetery--cemeteryId" name="cemeteryId" type="hidden" value="<%= cemetery.cemeteryId %>" />
+
+  <div class="columns">
+    <div class="column">
+      <div class="panel">
+        <div class="panel-block is-block">
+          <div class="field">
+            <label class="label" for="cemetery--cemeteryName">Cemetery Name</label>
+            <div class="control has-icons-right">
+              <input class="input" id="cemetery--cemeteryName" name="cemeteryName" type="text"
+                value="<%= cemetery.cemeteryName %>"
+                maxlength="200"
+                autocomplete="off"
+                required
+                <%= (isCreate ? " autofocus" : "") %> />
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
+            </div>
+          </div>
+          <%
+            const cemeteryKeyIsRequired = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments.includeCemeteryKey');
+          %>
+          <div class="field">
+            <label class="label" for="cemetery--cemeteryKey">Cemetery Key</label>
+            <div class="control has-icons-right">
+              <input class="input" id="cemetery--cemeteryKey" name="cemeteryKey" type="text"
+                value="<%= cemetery.cemeteryKey %>"
+                maxlength="20"
+                autocomplete="off"
+                <%= cemeteryKeyIsRequired ? ' required' : '' %> />
+              <% if (cemeteryKeyIsRequired) { %>
+                <span class="icon is-small is-right">
+                  <i class="fa-solid fa-asterisk"></i>
+                </span>
+              <% } %>
+              <% if (cemeteryKeyIsRequired) { %>
+                <p class="help">
+                  The cemetery key is prepended to the burial site names.
+                </p>
+              <% } %>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="cemetery--cemeteryDescription">Cemetery Description</label>
+            <div class="control">
+              <textarea class="textarea" id="cemetery--cemeteryDescription" name="cemeteryDescription"><%= cemetery.cemeteryDescription %></textarea>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="cemetery--parentCemeteryId">Parent Cemetery</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="cemetery--parentCemeteryId" name="parentCemeteryId" <%= (cemetery.childCemeteries.length > 0 ? 'disabled' : '') %>>
+                  <option value="">(No Parent Cemetery)</option>
+                  <% for (const parentCemetery of cemeteries) { %>
+                    <%
+                      if (parentCemetery.cemeteryId === cemetery.cemeteryId || parentCemetery.parentCemeteryId !== null) {
+                        // Skip the current cemetery and any cemeteries that are already a parent
+                        continue;
+                      }
+                    %>
+                    <option value="<%= parentCemetery.cemeteryId %>" <%= (cemetery.parentCemeteryId === parentCemetery.cemeteryId) ? " selected" : "" %>>
+                      <%= parentCemetery.cemeteryName === '' ? '(No Name)' : parentCemetery.cemeteryName %>
+                    </option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="title is-5 has-text-weight-bold has-text-white">Address</h2>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <i class="fa-solid fa-location-arrow"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <div class="field">
+            <label class="label" for="cemetery--cemeteryAddress1">Address</label>
+            <div class="control">
+              <input class="input" id="cemetery--cemeteryAddress1" name="cemeteryAddress1" type="text"
+                value="<%= cemetery.cemeteryAddress1 %>"
+                maxlength="50"
+                autocomplete="off"
+                placeholder="Line 1" />
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <input class="input" id="cemetery--cemeteryAddress2" name="cemeteryAddress2" type="text"
+                value="<%= cemetery.cemeteryAddress2 %>"
+                maxlength="50"
+                autocomplete="off"
+                placeholder="Line 2" aria-label="Address Line 2" />
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-8">
+              <div class="field">
+                <label class="label" for="cemetery--cemeteryCity">City</label>
+                <div class="control">
+                  <input class="input" id="cemetery--cemeteryCity" name="cemeteryCity" value="<%= cemetery.cemeteryCity %>" maxlength="20" />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="cemetery--cemeteryProvince">Province</label>
+                <div class="control">
+                  <input class="input" id="cemetery--cemeteryProvince" name="cemeteryProvince"
+                    type="text"
+                    value="<%= cemetery.cemeteryProvince %>"
+                    maxlength="2" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="cemetery--cemeteryPostalCode">Postal Code</label>
+                <div class="control">
+                  <input class="input" id="cemetery--cemeteryPostalCode" name="cemeteryPostalCode"
+                    type="text"
+                    value="<%= cemetery.cemeteryPostalCode %>"
+                    minlength="5"
+                    maxlength="7"
+                    pattern="^[A-Z\d \-]+$"
+                    autocomplete="off" />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="cemetery--cemeteryPhoneNumber">Phone Number</label>
+                <div class="control">
+                  <input class="input" id="cemetery--cemeteryPhoneNumber" name="cemeteryPhoneNumber"
+                    value="<%= cemetery.cemeteryPhoneNumber %>"
+                    maxlength="30"
+                    autocomplete="off" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="title is-5 has-text-weight-bold has-text-white">Geographic Location</h2>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <button class="button is-small" id="button--selectCoordinate" type="button">
+                  <span class="icon"><i class="fa-solid fa-map-marked-alt"></i></span>
+                  <span>Select Coordinate</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <div class="field">
+            <label class="label" for="cemetery--cemeteryLatitude">Latitude</label>
+            <div class="control">
+              <input class="input" id="cemetery--cemeteryLatitude" name="cemeteryLatitude" type="number"
+                min="<%= configFunctions.getConfigProperty('settings.latitudeMin') %>"
+                max="<%= configFunctions.getConfigProperty('settings.latitudeMax') %>"
+                step="0.00000001" value="<%= cemetery.cemeteryLatitude %>" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="cemetery--cemeteryLongitude">Longitude</label>
+            <div class="control">
+              <input class="input" id="cemetery--cemeteryLongitude" name="cemeteryLongitude" type="number"
+                min="<%= configFunctions.getConfigProperty('settings.longitudeMin') %>"
+                max="<%= configFunctions.getConfigProperty('settings.longitudeMax') %>"
+                step="0.00000001" value="<%= cemetery.cemeteryLongitude %>" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="title is-5 has-text-weight-bold has-text-white">Image</h2>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <i class="fa-solid fa-image"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <div class="field">
+            <label class="label" for="cemetery--cemeterySvg">SVG File</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="cemetery--cemeterySvg" name="cemeterySvg">
+                  <option value="">(Select a File)</option>
+                  <% for (const cemeterySVG of cemeterySVGs) { %>
+                    <option value="<%= cemeterySVG %>" <%= (cemetery.cemeterySvg === cemeterySVG) ? " selected" : "" %>>
+                      <%= cemeterySVG %>
+                    </option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <h2 class="title is-5 has-text-weight-bold has-text-white">Directions of Arrival</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block is-block">
+          <table class="table is-fullwidth is-striped is-hoverable">
+            <thead>
+              <tr>
+                <th class="has-width-1">
+                  <span class="is-sr-only">Selected</span>
+                </th>
+                <th>Direction</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (const direction of dataLists.directionsOfArrival) { %>
+                <%
+                  const directionIsSelected = cemetery.directionsOfArrival[direction] || false;
+                %>
+                <tr>
+                  <td class="is-vcentered">
+                    <div class="control">
+                      <input id="cemetery--directionOfArrival_<%= direction %>" name="directionOfArrival_<%= direction %>"
+                        type="checkbox" value="<%= direction %>"
+                        <%= directionIsSelected ? " checked" : "" %> />
+                    </div>
+                  </td>
+                  <td class="is-vcentered">
+                    <label for="cemetery--directionOfArrival_<%= direction %>">
+                      <span><%= direction %></span>
+                    </label>
+                  </td>
+                  <td>
+                    <div class="control">
+                      <input class="input" id="cemetery--directionOfArrivalDescription_<%= direction %>"
+                        name="directionOfArrivalDescription_<%= direction %>"
+                        type="text"
+                        value="<%= cemetery.directionsOfArrival[direction] || "" %>"
+                        maxlength="100"
+                        placeholder="Description"
+                        <%= directionIsSelected ? "" : "disabled" %>
+                        />
+                    </div>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<% if (!isCreate) { %>
+  <%- include('./_viewEdit-burialSiteSummaries', {
+    includeCreateButton: true
+  }); -%>
+<% } %>
+
+<%- include('../_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/cemetery.edit.js"></script>
+
+<%- include('../_footerB'); -%>

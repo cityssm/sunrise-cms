@@ -1,8 +1,8 @@
 import { dateStringToInteger, dateToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function closeWorkOrder(workOrderForm, user) {
-    const database = sqlite(sunriseDB);
+export default function closeWorkOrder(workOrderForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNow = new Date();
     const result = database
         .prepare(`update WorkOrders
@@ -13,6 +13,8 @@ export default function closeWorkOrder(workOrderForm, user) {
         .run(workOrderForm.workOrderCloseDateString
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
         : dateToInteger(new Date()), user.userName, rightNow.getTime(), workOrderForm.workOrderId);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return result.changes > 0;
 }

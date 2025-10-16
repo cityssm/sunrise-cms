@@ -1,3 +1,4 @@
+import assert from 'node:assert'
 import { describe, it } from 'node:test'
 
 import * as sqlFilterFunctions from '../helpers/functions.sqlFilters.js'
@@ -115,12 +116,12 @@ await describe('functions.sqlFilters', async () => {
     await it('returns filter', () => {
       const filter = sqlFilterFunctions.getDeceasedNameWhereClause(
         'TEST1 TEST2',
-        'o'
+        'ci'
       )
 
       assert.strictEqual(
         filter.sqlWhereClause,
-        ' and instr(lower(o.deceasedName), ?) and instr(lower(o.deceasedName), ?)'
+        ' and instr(lower(ci.deceasedName), ?) and instr(lower(ci.deceasedName), ?)'
       )
 
       assert.ok(filter.sqlParameters.length === 2)

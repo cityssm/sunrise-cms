@@ -2,13 +2,13 @@ import getBurialSite from '../../database/getBurialSite.js';
 import { getNextBurialSiteId, getPreviousBurialSiteId } from '../../helpers/burialSites.helpers.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 export default async function handler(request, response) {
-    const burialSite = await getBurialSite(request.params.burialSiteId, request.session.user?.userProperties?.canUpdate);
+    const burialSite = await getBurialSite(request.params.burialSiteId, request.session.user?.userProperties.canUpdateCemeteries);
     if (burialSite === undefined) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/burialSites/?error=burialSiteIdNotFound`);
         return;
     }
     const burialSiteIsDeleted = burialSite.recordDelete_timeMillis !== null;
-    response.render('burialSite-view', {
+    response.render('burialSites/view', {
         headTitle: burialSite.burialSiteName,
         burialSite
     });

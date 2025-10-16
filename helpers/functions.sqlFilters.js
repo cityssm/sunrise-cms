@@ -1,5 +1,5 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
-export function getBurialSiteNameWhereClause(burialSiteName = '', burialSiteNameSearchType = '', burialSitesTableAlias = 'l') {
+export function getBurialSiteNameWhereClause(burialSiteName = '', burialSiteNameSearchType = '', burialSitesTableAlias = 'b') {
     let sqlWhereClause = '';
     const sqlParameters = [];
     if (burialSiteName !== '') {
@@ -18,7 +18,8 @@ export function getBurialSiteNameWhereClause(burialSiteName = '', burialSiteName
                 const usedPieces = new Set();
                 const burialSiteNamePieces = burialSiteName.toLowerCase().split(' ');
                 for (const burialSiteNamePiece of burialSiteNamePieces) {
-                    if (burialSiteNamePiece === '' || usedPieces.has(burialSiteNamePiece)) {
+                    if (burialSiteNamePiece === '' ||
+                        usedPieces.has(burialSiteNamePiece)) {
                         continue;
                     }
                     usedPieces.add(burialSiteNamePiece);
@@ -37,7 +38,6 @@ export function getContractTimeWhereClause(contractTime, contractsTableAlias = '
     let sqlWhereClause = '';
     const sqlParameters = [];
     const currentDateString = dateToInteger(new Date());
-    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
     switch (contractTime ?? '') {
         case 'current': {
             sqlWhereClause += ` and ${contractsTableAlias}.contractStartDate <= ?
@@ -46,15 +46,17 @@ export function getContractTimeWhereClause(contractTime, contractsTableAlias = '
             break;
         }
         case 'future': {
-            sqlWhereClause +=
-                ` and ${contractsTableAlias}.contractStartDate > ?`;
+            sqlWhereClause += ` and ${contractsTableAlias}.contractStartDate > ?`;
             sqlParameters.push(currentDateString);
             break;
         }
         case 'past': {
-            sqlWhereClause +=
-                ` and ${contractsTableAlias}.contractEndDate < ?`;
+            sqlWhereClause += ` and ${contractsTableAlias}.contractEndDate < ?`;
             sqlParameters.push(currentDateString);
+            break;
+        }
+        default: {
+            // no default
             break;
         }
     }
@@ -63,7 +65,7 @@ export function getContractTimeWhereClause(contractTime, contractsTableAlias = '
         sqlWhereClause
     };
 }
-export function getDeceasedNameWhereClause(deceasedName = '', tableAlias = 'o') {
+export function getDeceasedNameWhereClause(deceasedName = '', tableAlias = 'ci') {
     let sqlWhereClause = '';
     const sqlParameters = [];
     const usedPieces = new Set();
@@ -74,6 +76,24 @@ export function getDeceasedNameWhereClause(deceasedName = '', tableAlias = 'o') 
         }
         usedPieces.add(namePiece);
         sqlWhereClause += ` and instr(lower(${tableAlias}.deceasedName), ?)`;
+        sqlParameters.push(namePiece);
+    }
+    return {
+        sqlParameters,
+        sqlWhereClause
+    };
+}
+export function getPurchaserNameWhereClause(purchaserName = '', tableAlias = 'c') {
+    let sqlWhereClause = '';
+    const sqlParameters = [];
+    const usedPieces = new Set();
+    const purchaserNamePieces = purchaserName.toLowerCase().split(' ');
+    for (const namePiece of purchaserNamePieces) {
+        if (namePiece === '' || usedPieces.has(namePiece)) {
+            continue;
+        }
+        usedPieces.add(namePiece);
+        sqlWhereClause += ` and instr(lower(${tableAlias}.purchaserName), ?)`;
         sqlParameters.push(namePiece);
     }
     return {

@@ -25,9 +25,10 @@ export interface AddTransactionForm {
 
 export default function addContractTransaction(
   contractTransactionForm: AddTransactionForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): number {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   let transactionIndex = 0
 
@@ -89,7 +90,9 @@ export default function addContractTransaction(
       rightNow.getTime()
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return transactionIndex
 }

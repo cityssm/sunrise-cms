@@ -3,11 +3,13 @@ import sqlite from 'better-sqlite3'
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-import addOrUpdateBurialSiteField from './addOrUpdateBurialSiteField.js'
+import addOrUpdateBurialSiteFields, {
+  type BurialSiteFieldsForm
+} from './addOrUpdateBurialSiteFields.js'
 import getCemetery from './getCemetery.js'
 import { purgeBurialSite } from './purgeBurialSite.js'
 
-export interface AddBurialSiteForm {
+export interface AddBurialSiteForm extends BurialSiteFieldsForm {
   burialSiteNameSegment1?: string
   burialSiteNameSegment2?: string
   burialSiteNameSegment3?: string
@@ -26,28 +28,26 @@ export interface AddBurialSiteForm {
 
   burialSiteLatitude?: string
   burialSiteLongitude?: string
-
-  burialSiteTypeFieldIds?: string
-
-  [fieldValue_burialSiteTypeFieldId: string]: unknown
 }
 
 /**
  * Creates a new burial site.
  * @param burialSiteForm - The new burial site's information
  * @param user - The user making the request
+ * @param connectedDatabase - An optional database connection
  * @returns The new burial site's id.
  * @throws If an active burial site with the same name already exists.
  */
 // eslint-disable-next-line complexity
 export default function addBurialSite(
   burialSiteForm: AddBurialSiteForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): { burialSiteId: number; burialSiteName: string } {
   let database: sqlite.Database | undefined
 
   try {
-    database = sqlite(sunriseDB)
+    database = connectedDatabase ?? sqlite(sunriseDB)
 
     const rightNowMillis = Date.now()
 
@@ -82,7 +82,10 @@ export default function addBurialSite(
           `An active burial site with the name "${burialSiteName}" already exists.`
         )
       } else {
-        const success = purgeBurialSite(existingBurialSite.burialSiteId, database)
+        const success = purgeBurialSite(
+          existingBurialSite.burialSiteId,
+          database
+        )
 
         if (!success) {
           throw new Error(
@@ -152,33 +155,20 @@ export default function addBurialSite(
 
     const burialSiteId = result.lastInsertRowid as number
 
-    const burialSiteTypeFieldIds = (
-      burialSiteForm.burialSiteTypeFieldIds ?? ''
-    ).split(',')
-
-    for (const burialSiteTypeFieldId of burialSiteTypeFieldIds) {
-      const fieldValue = burialSiteForm[
-        `burialSiteFieldValue_${burialSiteTypeFieldId}`
-      ] as string | undefined
-
-      if ((fieldValue ?? '') !== '') {
-        addOrUpdateBurialSiteField(
-          {
-            burialSiteId,
-            burialSiteTypeFieldId,
-            fieldValue: fieldValue ?? ''
-          },
-          user,
-          database
-        )
-      }
-    }
+    addOrUpdateBurialSiteFields(
+      { burialSiteId, fieldForm: burialSiteForm },
+      true,
+      user,
+      database
+    )
 
     return {
       burialSiteId,
       burialSiteName
     }
   } finally {
-    database?.close()
+    if (connectedDatabase === undefined) {
+      database?.close()
+    }
   }
 }

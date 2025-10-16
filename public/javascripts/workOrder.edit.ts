@@ -2,7 +2,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type {
   WorkOrderMilestone,
@@ -16,6 +16,7 @@ declare const bulmaJS: BulmaJS
 
 declare const exports: {
   sunrise: Sunrise
+
   workOrderMilestones?: WorkOrderMilestone[]
   workOrderMilestoneTypes?: WorkOrderMilestoneType[]
   workOrderWorkDayRanges?: Record<
@@ -31,6 +32,10 @@ declare const exports: {
   ).value
 
   const isCreate = workOrderId === ''
+
+  if (!isCreate && !/^\d+$/.test(workOrderId)) {
+    globalThis.location.href = `${sunrise.urlPrefix}/workOrders`
+  }
 
   const workOrderFormElement = document.querySelector(
     '#form--workOrderEdit'
@@ -70,7 +75,7 @@ declare const exports: {
           clearUnsavedChanges()
 
           if (isCreate) {
-            globalThis.location.href = sunrise.getWorkOrderURL(
+            globalThis.location.href = sunrise.getWorkOrderUrl(
               responseJSON.workOrderId,
               true
             )
@@ -112,19 +117,23 @@ declare const exports: {
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
+          errorMessage?: string
           success: boolean
 
-          errorMessage?: string
+          workOrderId?: number
         }
 
         if (responseJSON.success) {
           clearUnsavedChanges()
-          globalThis.location.href = sunrise.getWorkOrderURL(workOrderId)
+          globalThis.location.href = sunrise.getWorkOrderUrl(
+            responseJSON.workOrderId
+          )
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Closing Work Order',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -139,8 +148,8 @@ declare const exports: {
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
-          success: boolean
           errorMessage?: string
+          success: boolean
         }
 
         if (responseJSON.success) {
@@ -164,7 +173,7 @@ declare const exports: {
     .querySelector('#button--closeWorkOrder')
     ?.addEventListener('click', () => {
       const hasOpenMilestones = workOrderMilestones.some(
-        (milestone) => !milestone.workOrderMilestoneCompletionDate
+        (milestone) => milestone.workOrderMilestoneCompletionDate === null
       )
 
       if (hasOpenMilestones) {
@@ -175,20 +184,6 @@ declare const exports: {
           message: `You cannot close a work order with outstanding milestones.
             Either complete the outstanding milestones, or remove them from the work order.`
         })
-
-        /*
-          // Disable closing work orders with open milestones
-          bulmaJS.confirm({
-            title: "Close Work Order with Outstanding Milestones",
-            message:
-              "Are you sure you want to close this work order with outstanding milestones?",
-            contextualColorName: "danger",
-            okButton: {
-              text: "Yes, Close Work Order",
-              callbackFunction: doClose
-            }
-          });
-      */
       } else {
         bulmaJS.confirm({
           contextualColorName: sunrise.hasUnsavedChanges() ? 'warning' : 'info',
@@ -243,12 +238,13 @@ declare const exports: {
     // Clear panel-block elements
     clearPanelBlockElements(targetPanelElement)
 
-    // eslint-disable-next-line no-unsanitized/method
     targetPanelElement.insertAdjacentHTML(
       'beforeend',
-      `<div class="panel-block is-block">
-      ${sunrise.getLoadingParagraphHTML('Loading conflicting milestones...')}
-      </div>`
+      /*html*/ `
+        <div class="panel-block is-block">
+          ${sunrise.getLoadingParagraphHTML('Loading conflicting milestones...')}
+        </div>
+      `
     )
 
     cityssm.postJSON(
@@ -262,44 +258,49 @@ declare const exports: {
           workOrderMilestones: WorkOrderMilestone[]
         }
 
-        const workOrderMilestones = responseJSON.workOrderMilestones.filter(
-          (possibleMilestone) =>
-            possibleMilestone.workOrderId.toString() !== workOrderId
-        )
+        const conflictingWorkOrderMilestones =
+          responseJSON.workOrderMilestones.filter(
+            (possibleMilestone) =>
+              possibleMilestone.workOrderId.toString() !== workOrderId
+          )
 
         clearPanelBlockElements(targetPanelElement)
 
-        for (const milestone of workOrderMilestones) {
+        for (const milestone of conflictingWorkOrderMilestones) {
           targetPanelElement.insertAdjacentHTML(
             'beforeend',
-            `<div class="panel-block is-block">
-              <div class="columns">
-                <div class="column is-5">
-                  ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === 0 ? 'No Time' : milestone.workOrderMilestoneTimePeriodString ?? '')}<br />
-                  <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
-                </div>
-                <div class="column">
-                  ${cityssm.escapeHTML(milestone.workOrderNumber ?? '')}<br />
-                  <span class="is-size-7">
-                    ${cityssm.escapeHTML(milestone.workOrderDescription ?? '')}
-                  </span>
+            /*html*/ `
+              <div class="panel-block is-block">
+                <div class="columns">
+                  <div class="column is-5">
+                    ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === null ? 'No Time' : milestone.workOrderMilestoneTimePeriodString ?? '')}<br />
+                    <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
+                  </div>
+                  <div class="column">
+                    ${cityssm.escapeHTML(milestone.workOrderNumber ?? '')}<br />
+                    <span class="is-size-7">
+                      ${cityssm.escapeHTML(milestone.workOrderDescription ?? '')}
+                    </span>
+                  </div>
                 </div>
               </div>
-              </div>`
+            `
           )
         }
 
-        if (workOrderMilestones.length === 0) {
+        if (conflictingWorkOrderMilestones.length === 0) {
           targetPanelElement.insertAdjacentHTML(
             'beforeend',
-            `<div class="panel-block is-block">
-              <div class="message is-info">
-                <p class="message-body">
-                  There are no milestones on other work orders scheduled for
-                  ${cityssm.escapeHTML(workOrderMilestoneDateString)}.
-                </p>
+            /*html*/ `
+              <div class="panel-block is-block">
+                <div class="message is-info">
+                  <p class="message-body">
+                    There are no milestones on other work orders scheduled for
+                    ${cityssm.escapeHTML(workOrderMilestoneDateString)}.
+                  </p>
+                </div>
               </div>
-              </div>`
+            `
           )
         }
       }
@@ -308,8 +309,9 @@ declare const exports: {
 
   function processMilestoneResponse(rawResponseJSON: unknown): void {
     const responseJSON = rawResponseJSON as {
-      success: boolean
       errorMessage?: string
+      success: boolean
+
       workOrderMilestones: WorkOrderMilestone[]
     }
 
@@ -318,9 +320,10 @@ declare const exports: {
       renderMilestones()
     } else {
       bulmaJS.alert({
+        contextualColorName: 'danger',
         title: 'Error Reopening Milestone',
-        message: responseJSON.errorMessage ?? '',
-        contextualColorName: 'danger'
+
+        message: responseJSON.errorMessage ?? ''
       })
     }
   }
@@ -356,7 +359,9 @@ declare const exports: {
     }
 
     bulmaJS.confirm({
+      contextualColorName: 'warning',
       title: 'Complete Milestone',
+
       message: `Are you sure you want to complete this milestone?
         ${
           workOrderMilestone.workOrderMilestoneDateString !== undefined &&
@@ -366,10 +371,9 @@ declare const exports: {
             : ''
         }`,
       messageIsHtml: true,
-      contextualColorName: 'warning',
       okButton: {
-        text: 'Yes, Complete Milestone',
-        callbackFunction: doComplete
+        callbackFunction: doComplete,
+        text: 'Yes, Complete Milestone'
       }
     })
   }
@@ -421,8 +425,8 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderMilestone`,
         {
-          workOrderMilestoneId,
-          workOrderId
+          workOrderId,
+          workOrderMilestoneId
         },
         processMilestoneResponse
       )
@@ -431,10 +435,11 @@ declare const exports: {
     bulmaJS.confirm({
       contextualColorName: 'warning',
       title: 'Delete Milestone',
+
       message: 'Are you sure you want to delete this milestone?',
       okButton: {
-        text: 'Yes, Delete Milestone',
-        callbackFunction: doDeleteMilestone
+        callbackFunction: doDeleteMilestone,
+        text: 'Yes, Delete Milestone'
       }
     })
   }
@@ -465,13 +470,13 @@ declare const exports: {
       return
     }
 
-    const dateValue = new Date(dateValueString + 'T00:00:00')
+    const dateValue = new Date(`${dateValueString}T00:00:00`)
 
     const timeRange =
       exports.workOrderWorkDayRanges?.[dateValue.getDay()] === undefined
         ? {
-            startHour: 0,
-            endHour: 24
+            endHour: 24,
+            startHour: 0
           }
         : exports.workOrderWorkDayRanges[dateValue.getDay()]
 
@@ -549,7 +554,7 @@ declare const exports: {
           modalElement.querySelector(
             '#milestoneEdit--workOrderMilestoneId'
           ) as HTMLInputElement
-        ).value = workOrderMilestone.workOrderMilestoneId?.toString() ?? ''
+        ).value = workOrderMilestone.workOrderMilestoneId.toString()
 
         const milestoneTypeElement = modalElement.querySelector(
           '#milestoneEdit--workOrderMilestoneTypeId'
@@ -624,7 +629,7 @@ declare const exports: {
           modalElement.querySelector(
             '#milestoneEdit--workOrderMilestoneDescription'
           ) as HTMLTextAreaElement
-        ).value = workOrderMilestone.workOrderMilestoneDescription ?? ''
+        ).value = workOrderMilestone.workOrderMilestoneDescription
       },
       onshown(modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
@@ -656,6 +661,122 @@ declare const exports: {
     })
   }
 
+  function buildMilestoneElement(milestone: WorkOrderMilestone): HTMLElement {
+    const currentDateString = cityssm.dateToString(new Date())
+
+    const panelBlockElement = document.createElement('div')
+    panelBlockElement.className = 'panel-block is-block container--milestone'
+
+    if (
+      milestone.workOrderMilestoneCompletionDate === null &&
+      (milestone.workOrderMilestoneDateString ?? '') < currentDateString
+    ) {
+      panelBlockElement.classList.add('has-background-warning-light')
+    }
+
+    panelBlockElement.dataset.workOrderMilestoneId =
+      milestone.workOrderMilestoneId.toString()
+
+    // eslint-disable-next-line no-unsanitized/property
+    panelBlockElement.innerHTML = /*html*/ `
+      <div class="columns is-mobile">
+        <div class="column is-narrow">
+          ${
+            milestone.workOrderMilestoneCompletionDate
+              ? /*html*/ `
+                <span
+                  class="button is-static"
+                  title="Completed ${cityssm.escapeHTML(milestone.workOrderMilestoneCompletionDateString ?? '')}"
+                >
+                  <span class="icon is-small"><i class="fa-solid fa-check"></i></span>
+                </span>
+              `
+              : /*html*/ `
+                <button class="button button--completeMilestone" type="button" title="Incomplete">
+                  <span class="icon is-small"><i class="fa-regular fa-square"></i></span>
+                </button>
+              `
+          }
+        </div>
+        <div class="column">
+          ${
+            milestone.workOrderMilestoneTypeId
+              ? /*html*/ `
+                <strong>
+                  ${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}
+                </strong><br />
+              `
+              : ''
+          }
+          ${
+            milestone.workOrderMilestoneDate === 0
+              ? '<span class="has-text-grey">(No Set Date)</span>'
+              : milestone.workOrderMilestoneDateString
+          }
+          ${
+            milestone.workOrderMilestoneTime === null
+              ? ''
+              : ` ${milestone.workOrderMilestoneTimePeriodString}`
+          }<br />
+          <span class="is-size-7">
+            ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription)}
+          </span>
+        </div>
+        <div class="column is-narrow">
+          <div class="dropdown is-right">
+            <div class="dropdown-trigger">
+              <button class="button is-small" type="button" title="Options">
+                <span class="icon is-small"><i class="fa-solid fa-ellipsis-v"></i></span>
+              </button>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-content">
+                ${
+                  milestone.workOrderMilestoneCompletionDate
+                    ? /*html*/ `
+                      <a class="dropdown-item button--reopenMilestone" href="#">
+                        <span class="icon"><i class="fa-solid fa-times"></i></span>
+                        <span>Reopen Milestone</span>
+                      </a>
+                    `
+                    : /*html*/ `
+                      <a class="dropdown-item button--editMilestone" href="#">
+                        <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
+                        <span>Edit Milestone</span>
+                      </a>
+                    `
+                }
+                <hr class="dropdown-divider" />
+                <a class="dropdown-item button--deleteMilestone" href="#">
+                  <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
+                  <span>Delete Milestone</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+
+    panelBlockElement
+      .querySelector('.button--reopenMilestone')
+      ?.addEventListener('click', reopenMilestone)
+
+    panelBlockElement
+      .querySelector('.button--editMilestone')
+      ?.addEventListener('click', editMilestone)
+
+    panelBlockElement
+      .querySelector('.button--completeMilestone')
+      ?.addEventListener('click', completeMilestone)
+
+    panelBlockElement
+      .querySelector('.button--deleteMilestone')
+      ?.addEventListener('click', deleteMilestone)
+
+    return panelBlockElement
+  }
+
   function renderMilestones(): void {
     // Clear milestones panel
     const milestonesPanelElement = document.querySelector(
@@ -670,90 +791,7 @@ declare const exports: {
     }
 
     for (const milestone of workOrderMilestones) {
-      const panelBlockElement = document.createElement('div')
-      panelBlockElement.className = 'panel-block is-block container--milestone'
-
-      panelBlockElement.dataset.workOrderMilestoneId =
-        milestone.workOrderMilestoneId?.toString()
-
-      // eslint-disable-next-line no-unsanitized/property
-      panelBlockElement.innerHTML = `<div class="columns is-mobile">
-        <div class="column is-narrow">
-          ${
-            milestone.workOrderMilestoneCompletionDate
-              ? `<span class="button is-static"
-                  data-tooltip="Completed ${milestone.workOrderMilestoneCompletionDateString}"
-                  aria-label="Completed ${milestone.workOrderMilestoneCompletionDateString}">
-                  <span class="icon is-small"><i class="fa-solid fa-check"></i></span>
-                  </span>`
-              : `<button class="button button--completeMilestone" data-tooltip="Incomplete" type="button" aria-label="Incomplete">
-                  <span class="icon is-small"><i class="fa-regular fa-square"></i></span>
-                  </button>`
-          }
-        </div><div class="column">
-          ${
-            milestone.workOrderMilestoneTypeId
-              ? `<strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong><br />`
-              : ''
-          }
-          ${
-            milestone.workOrderMilestoneDate === 0
-              ? '<span class="has-text-grey">(No Set Date)</span>'
-              : milestone.workOrderMilestoneDateString
-          }
-          ${
-            milestone.workOrderMilestoneTime
-              ? ` ${milestone.workOrderMilestoneTimePeriodString}`
-              : ''
-          }<br />
-          <span class="is-size-7">
-            ${cityssm.escapeHTML(milestone.workOrderMilestoneDescription ?? '')}
-          </span>
-        </div><div class="column is-narrow">
-          <div class="dropdown is-right">
-            <div class="dropdown-trigger">
-              <button class="button is-small" data-tooltip="Options" type="button" aria-label="Options">
-                <span class="icon is-small"><i class="fa-solid fa-ellipsis-v"></i></span>
-              </button>
-            </div>
-            <div class="dropdown-menu">
-              <div class="dropdown-content">
-                ${
-                  milestone.workOrderMilestoneCompletionDate
-                    ? `<a class="dropdown-item button--reopenMilestone" href="#">
-                        <span class="icon is-small"><i class="fa-solid fa-times"></i></span>
-                        <span>Reopen Milestone</span>
-                        </a>`
-                    : `<a class="dropdown-item button--editMilestone" href="#">
-                        <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
-                        <span>Edit Milestone</span>
-                        </a>`
-                }
-                <hr class="dropdown-divider" />
-                <a class="dropdown-item button--deleteMilestone" href="#">
-                  <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
-                  <span>Delete Milestone</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div></div>`
-
-      panelBlockElement
-        .querySelector('.button--reopenMilestone')
-        ?.addEventListener('click', reopenMilestone)
-
-      panelBlockElement
-        .querySelector('.button--editMilestone')
-        ?.addEventListener('click', editMilestone)
-
-      panelBlockElement
-        .querySelector('.button--completeMilestone')
-        ?.addEventListener('click', completeMilestone)
-
-      panelBlockElement
-        .querySelector('.button--deleteMilestone')
-        ?.addEventListener('click', deleteMilestone)
+      const panelBlockElement = buildMilestoneElement(milestone)
 
       milestonesPanelElement.append(panelBlockElement)
     }
@@ -761,11 +799,13 @@ declare const exports: {
     if (workOrderMilestones.length === 0) {
       milestonesPanelElement.insertAdjacentHTML(
         'beforeend',
-        `<div class="panel-block is-block">
-          <div class="message is-info">
-            <p class="message-body">There are no milestones on this work order.</p>
+        /*html*/ `
+          <div class="panel-block is-block">
+            <div class="message is-info">
+              <p class="message-body">There are no milestones on this work order.</p>
+            </div>
           </div>
-        </div>`
+        `
       )
     }
 
@@ -808,7 +848,7 @@ declare const exports: {
       }
 
       function doAddFormSubmit(submitEvent?: SubmitEvent): void {
-        if (submitEvent) {
+        if (submitEvent !== undefined) {
           submitEvent.preventDefault()
         }
 
@@ -829,7 +869,7 @@ declare const exports: {
 
             okButton: {
               callbackFunction: _doAdd,
-              text: 'Yes, Create a Past Milestone',
+              text: 'Yes, Create a Past Milestone'
             }
           })
         } else {

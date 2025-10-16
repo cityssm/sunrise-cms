@@ -5,9 +5,9 @@ import {
   moveContractTypePrintUpToTop
 } from '../../database/moveContractTypePrintUp.js'
 import {
-  getAllContractTypeFields,
-  getContractTypes
-} from '../../helpers/cache.helpers.js'
+  getAllCachedContractTypeFields,
+  getCachedContractTypes
+} from '../../helpers/cache/contractTypes.cache.js'
 
 export default function handler(
   request: Request<
@@ -28,8 +28,8 @@ export default function handler(
           request.body.printEJS
         )
 
-  const contractTypes = getContractTypes()
-  const allContractTypeFields = getAllContractTypeFields()
+  const contractTypes = getCachedContractTypes()
+  const allContractTypeFields = getAllCachedContractTypeFields()
 
   response.json({
     success,

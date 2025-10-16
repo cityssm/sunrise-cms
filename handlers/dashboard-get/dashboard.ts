@@ -1,27 +1,20 @@
-import { dateToString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
-import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js'
-
-export default async function handler(
-  _request: Request,
+export default function handler(
+  request: Request<unknown, unknown, unknown, { error?: string }>,
   response: Response
-): Promise<void> {
-  const currentDateString = dateToString(new Date())
+): void {
+  let error = request.query.error
 
-  const workOrderMilestones = await getWorkOrderMilestones(
-    {
-      workOrderMilestoneDateFilter: 'date',
-      workOrderMilestoneDateString: currentDateString
-    },
-    {
-      includeWorkOrders: true,
-      orderBy: 'completion'
-    }
-  )
+  if (error === 'accessDenied') {
+    error = 'Access Denied.'
+  } else if (error === 'printConfigNotFound') {
+    error = 'Print configuration not found.'
+  }
 
-  response.render('dashboard', {
+  response.render('dashboard/dashboard', {
     headTitle: 'Dashboard',
-    workOrderMilestones
+
+    error
   })
 }

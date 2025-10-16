@@ -1,14 +1,16 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   const funeralHomeId = (
     document.querySelector('#funeralHome--funeralHomeId') as HTMLInputElement
@@ -41,30 +43,32 @@ declare const exports: Record<string, unknown>
       funeralHomeForm,
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
-          success: boolean
-          funeralHomeId?: number
           errorMessage?: string
+          success: boolean
+
+          funeralHomeId?: number
         }
 
         if (responseJSON.success) {
           clearUnsavedChanges()
 
           if (isCreate) {
-            globalThis.location.href = sunrise.getFuneralHomeURL(
+            globalThis.location.href = sunrise.getFuneralHomeUrl(
               responseJSON.funeralHomeId,
               true
             )
           } else {
             bulmaJS.alert({
-              message: "Funeral Home Updated Successfully",
-              contextualColorName: 'success'
+              contextualColorName: 'success',
+              message: 'Funeral Home Updated Successfully'
             })
           }
         } else {
           bulmaJS.alert({
-            title: "Error Updating Funeral Home",
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+            contextualColorName: 'danger',
+            title: 'Error Updating Funeral Home',
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -93,17 +97,18 @@ declare const exports: Record<string, unknown>
           },
           (rawResponseJSON) => {
             const responseJSON = rawResponseJSON as {
-              success: boolean
               errorMessage?: string
+              success: boolean
             }
 
             if (responseJSON.success) {
-              globalThis.location.href = sunrise.getFuneralHomeURL()
+              globalThis.location.href = sunrise.getFuneralHomeUrl()
             } else {
               bulmaJS.alert({
-                title: "Error Deleting Funeral Home",
-                message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
+                contextualColorName: 'danger',
+                title: 'Error Deleting Funeral Home',
+
+                message: responseJSON.errorMessage ?? ''
               })
             }
           }
@@ -111,12 +116,13 @@ declare const exports: Record<string, unknown>
       }
 
       bulmaJS.confirm({
-        title: "Delete Funeral Home",
-        message: "Are you sure you want to delete this funeral home?",
         contextualColorName: 'warning',
+        title: 'Delete Funeral Home',
+
+        message: 'Are you sure you want to delete this funeral home?',
         okButton: {
-          text: "Yes, Delete Funeral Home",
-          callbackFunction: doDelete
+          callbackFunction: doDelete,
+          text: 'Yes, Delete Funeral Home'
         }
       })
     })

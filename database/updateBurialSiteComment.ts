@@ -17,20 +17,21 @@ export interface UpdateBurialSiteCommentForm {
 
 export default function updateBurialSiteComment(
   commentForm: UpdateBurialSiteCommentForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
       `update BurialSiteComments
         set commentDate = ?,
-        commentTime = ?,
-        comment = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          commentTime = ?,
+          comment = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
-        and burialSiteCommentId = ?`
+          and burialSiteCommentId = ?`
     )
     .run(
       dateStringToInteger(commentForm.commentDateString),
@@ -41,7 +42,9 @@ export default function updateBurialSiteComment(
       commentForm.burialSiteCommentId
     )
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
+  
   return result.changes > 0
 }

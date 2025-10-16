@@ -6,9 +6,10 @@ import type { IntermentContainerType } from '../types/record.types.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getIntermentContainerTypes(
-  includeDeleted = false
+  includeDeleted = false,
+  connectedDatabase: sqlite.Database | undefined = undefined
 ): IntermentContainerType[] {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const updateOrderNumbers = !database.readonly && !includeDeleted
 
@@ -41,7 +42,9 @@ export default function getIntermentContainerTypes(
     }
   }
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return containerTypes
 }

@@ -10,9 +10,14 @@ import { sunriseDB as databasePath } from '../helpers/database.helpers.js'
 import addBurialSiteType from './addBurialSiteType.js'
 import addCommittalType from './addCommittalType.js'
 import addContractType from './addContractType.js'
+import addContractTypeField from './addContractTypeField.js'
 import addFeeCategory from './addFeeCategory.js'
 import addIntermentContainerType from './addIntermentContainerType.js'
-import addRecord from './addRecord.js'
+import {
+  addBurialSiteStatus,
+  addWorkOrderMilestoneType,
+  addWorkOrderType
+} from './addRecord.js'
 import getBurialSiteStatuses from './getBurialSiteStatuses.js'
 import getBurialSiteTypes from './getBurialSiteTypes.js'
 import getCommittalTypes from './getCommittalTypes.js'
@@ -22,7 +27,7 @@ import getIntermentContainerTypes from './getIntermentContainerTypes.js'
 import getWorkOrderMilestoneTypes from './getWorkOrderMilestoneTypes.js'
 import getWorkOrderTypes from './getWorkOrderTypes.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:database/initializeDatabase`)
+const debug = Debug(`${DEBUG_NAMESPACE}:database:initializeDatabase`)
 
 const recordColumns = `recordCreate_userName varchar(30) not null,
   recordCreate_timeMillis integer not null,
@@ -270,6 +275,24 @@ const createStatements = [
     foreign key (contractId) references Contracts (contractId),
     foreign key (contractTypeFieldId) references ContractTypeFields (contractTypeFieldId)) without rowid`,
 
+  `create table if not exists ContractMetadata (
+    contractId integer not null,
+    metadataKey varchar(100) not null,
+    metadataValue text not null,
+    ${recordColumns},
+    primary key (contractId, metadataKey),
+    foreign key (contractId) references Contracts (contractId)) without rowid`,
+
+  `create table if not exists ContractAttachments (
+    contractAttachmentId integer not null primary key autoincrement,
+    contractId integer not null,
+    attachmentTitle varchar(100) not null,
+    attachmentDetails text,
+    fileName varchar(100) not null,
+    filePath varchar(500) not null,
+    ${recordColumns},
+    foreign key (contractId) references Contracts (contractId))`,
+
   `create table if not exists ContractComments (
     contractCommentId integer not null primary key autoincrement,
     contractId integer not null,
@@ -457,7 +480,7 @@ const createStatements = [
     workOrderId integer not null,
     workOrderMilestoneTypeId integer,
     workOrderMilestoneDate integer not null check (workOrderMilestoneDate >= 0),
-    workOrderMilestoneTime integer not null check (workOrderMilestoneTime >= 0),
+    workOrderMilestoneTime integer check (workOrderMilestoneTime >= 0),
     workOrderMilestoneDescription text not null,
     workOrderMilestoneCompletionDate integer check (workOrderMilestoneCompletionDate > 0),
     workOrderMilestoneCompletionTime integer check (workOrderMilestoneCompletionTime >= 0),
@@ -469,29 +492,54 @@ const createStatements = [
    * Settings
    */
 
-  `CREATE TABLE SunriseSettings (
+  `CREATE TABLE if not exists SunriseSettings (
     settingKey varchar(100) not null primary key,
     settingValue varchar(500),
     previousSettingValue varchar(500),
-    recordUpdate_timeMillis integer not null)`
+    recordUpdate_timeMillis integer not null)`,
+
+  `CREATE TABLE if not exists UserSettings (
+    userName varchar(30) not null,
+    settingKey varchar(100) not null,
+    settingValue varchar(500),
+    previousSettingValue varchar(500),
+    recordUpdate_timeMillis integer not null,
+    primary key (userName, settingKey)) without rowid`,
+
+  /*
+   * Users
+   */
+
+  `CREATE TABLE if not exists Users (
+    userName varchar(30) not null primary key,
+    isActive bit not null default 1,
+    canUpdateCemeteries bit not null default 0,
+    canUpdateContracts bit not null default 0,
+    canUpdateWorkOrders bit not null default 0,
+    isAdmin bit not null default 0,
+    ${recordColumns}) without rowid`
 ]
 
 const initializingUser: User = {
   userName: 'databaseInit',
   userProperties: {
-    apiKey: '',
-    canUpdate: true,
+    canUpdateCemeteries: true,
+    canUpdateContracts: true,
     canUpdateWorkOrders: true,
     isAdmin: true
-  }
+  },
+  userSettings: {}
 }
 
-export function initializeDatabase(): boolean {
-  const sunriseDB = sqlite(databasePath)
+export function initializeDatabase(
+  connectedDatabase?: sqlite.Database
+): boolean {
+  const sunriseDB = connectedDatabase ?? sqlite(databasePath)
+  sunriseDB.pragma('journal_mode = WAL')
 
   const row = sunriseDB
     .prepare(
-      "select name from sqlite_master where type = 'table' and name = 'SunriseSettings'"
+      "select name from sqlite_master where type = 'table' and name = 'Users'"
     )
     .get()
 
@@ -505,21 +553,27 @@ export function initializeDatabase(): boolean {
     sunriseDB.prepare(sql).run()
   }
 
-  sunriseDB.close()
+  debug(`Finished creating tables in ${databasePath}`)
+
+  if (connectedDatabase === undefined) {
+    sunriseDB.close()
+  }
 
   initializeData()
 
   return true
 }
 
-export function initializeData(): void {
+export function initializeData(connectedDatabase?: sqlite.Database): void {
   debug('Initializing data...')
 
   // Burial Site Types
 
-  const burialSiteTypes = getBurialSiteTypes()
+  const burialSiteTypes = getBurialSiteTypes(false, connectedDatabase)
 
   if (burialSiteTypes.length <= 0) {
+    debug('No burial site types found, adding default types.')
+
     addBurialSiteType(
       {
         burialSiteType: 'In-Ground Grave',
@@ -528,7 +582,8 @@ export function initializeData(): void {
         crematedCapacityMax: 6,
         orderNumber: 1
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addBurialSiteType(
@@ -539,7 +594,8 @@ export function initializeData(): void {
         crematedCapacityMax: '',
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addBurialSiteType(
@@ -550,7 +606,8 @@ export function initializeData(): void {
         crematedCapacityMax: 0,
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addBurialSiteType(
@@ -561,7 +618,8 @@ export function initializeData(): void {
         crematedCapacityMax: 1,
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addBurialSiteType(
@@ -572,7 +630,8 @@ export function initializeData(): void {
         crematedCapacityMax: 1,
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addBurialSiteType(
@@ -583,40 +642,60 @@ export function initializeData(): void {
         crematedCapacityMax: 1,
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
   }
 
   // Burial Site Statuses
 
-  const burialSiteStatuses = getBurialSiteStatuses()
+  const burialSiteStatuses = getBurialSiteStatuses(false, connectedDatabase)
 
   if (burialSiteStatuses.length <= 0) {
-    addRecord('BurialSiteStatuses', 'Available', 1, initializingUser)
-    addRecord('BurialSiteStatuses', 'Reserved', 2, initializingUser)
-    addRecord('BurialSiteStatuses', 'Occupied', 3, initializingUser)
+    debug('No burial site statuses found, adding default statuses.')
+
+    addBurialSiteStatus('Available', 1, initializingUser, connectedDatabase)
+    addBurialSiteStatus('Reserved', 2, initializingUser, connectedDatabase)
+    addBurialSiteStatus('Occupied', 3, initializingUser, connectedDatabase)
   }
 
   // Contract Types
 
-  const contractTypes = getContractTypes()
+  const contractTypes = getContractTypes(false, connectedDatabase)
 
   if (contractTypes.length <= 0) {
+    debug('No contract types found, adding default types.')
+
     addContractType(
       {
         contractType: 'Preneed',
         isPreneed: '1',
         orderNumber: 1
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
-    addContractType(
+    const intermentContractTypeId = addContractType(
       {
         contractType: 'Interment',
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
+    )
+
+    addContractTypeField(
+      {
+        contractTypeId: intermentContractTypeId,
+
+        contractTypeField: 'Interment Depth',
+        fieldType: 'select',
+        fieldValues: 'Single\nDouble',
+        isRequired: ''
+      },
+      initializingUser,
+      connectedDatabase
     )
 
     addContractType(
@@ -624,22 +703,29 @@ export function initializeData(): void {
         contractType: 'Cremation',
         orderNumber: 3
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
   }
 
   // Interment Container Types
 
-  const intermentContainerTypes = getIntermentContainerTypes()
+  const intermentContainerTypes = getIntermentContainerTypes(
+    false,
+    connectedDatabase
+  )
 
   if (intermentContainerTypes.length <= 0) {
+    debug('No interment container types found, adding default types.')
+
     addIntermentContainerType(
       {
         intermentContainerType: 'No Shell',
         intermentContainerTypeKey: 'NS',
         orderNumber: 1
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -648,7 +734,8 @@ export function initializeData(): void {
         intermentContainerTypeKey: 'CL',
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -657,7 +744,8 @@ export function initializeData(): void {
         intermentContainerTypeKey: 'UV',
         orderNumber: 3
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -666,7 +754,8 @@ export function initializeData(): void {
         intermentContainerTypeKey: 'CV',
         orderNumber: 4
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -675,7 +764,8 @@ export function initializeData(): void {
         intermentContainerTypeKey: 'WS',
         orderNumber: 5
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -684,7 +774,8 @@ export function initializeData(): void {
         intermentContainerTypeKey: 'SV',
         orderNumber: 6
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -693,7 +784,8 @@ export function initializeData(): void {
         intermentContainerTypeKey: 'SH',
         orderNumber: 7
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addIntermentContainerType(
@@ -703,22 +795,26 @@ export function initializeData(): void {
         isCremationType: '1',
         orderNumber: 7
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
   }
 
   // Committal Types
 
-  const committalTypes = getCommittalTypes()
+  const committalTypes = getCommittalTypes(false, connectedDatabase)
 
   if (committalTypes.length <= 0) {
+    debug('No committal types found, adding default types.')
+
     addCommittalType(
       {
         committalType: 'Graveside',
         committalTypeKey: 'GS',
         orderNumber: 1
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addCommittalType(
@@ -727,7 +823,8 @@ export function initializeData(): void {
         committalTypeKey: 'CS',
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addCommittalType(
@@ -736,7 +833,8 @@ export function initializeData(): void {
         committalTypeKey: 'CH',
         orderNumber: 3
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
   }
 
@@ -744,15 +842,18 @@ export function initializeData(): void {
    * Fee Categories
    */
 
-  const feeCategories = getFeeCategories({}, {})
+  const feeCategories = getFeeCategories({}, {}, connectedDatabase)
 
   if (feeCategories.length <= 0) {
+    debug('No fee categories found, adding default categories.')
+
     addFeeCategory(
       {
         feeCategory: 'Interment Rights',
         orderNumber: 1
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addFeeCategory(
@@ -760,7 +861,8 @@ export function initializeData(): void {
         feeCategory: 'Cremation Services',
         orderNumber: 2
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addFeeCategory(
@@ -768,7 +870,8 @@ export function initializeData(): void {
         feeCategory: 'Burial Charges',
         orderNumber: 3
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addFeeCategory(
@@ -776,7 +879,8 @@ export function initializeData(): void {
         feeCategory: 'Disinterment of Human Remains',
         orderNumber: 4
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
 
     addFeeCategory(
@@ -784,26 +888,47 @@ export function initializeData(): void {
         feeCategory: 'Additional Services',
         orderNumber: 5
       },
-      initializingUser
+      initializingUser,
+      connectedDatabase
     )
   }
 
   // Work Order Types
 
-  const workOrderTypes = getWorkOrderTypes()
+  const workOrderTypes = getWorkOrderTypes(connectedDatabase)
 
   if (workOrderTypes.length <= 0) {
-    addRecord('WorkOrderTypes', 'Cemetery Work Order', 1, initializingUser)
+    debug('No work order types found, adding default types.')
+    addWorkOrderType(
+      'Cemetery Work Order',
+      1,
+      initializingUser,
+      connectedDatabase
+    )
   }
 
   // Work Order Milestone Types
 
-  const workOrderMilestoneTypes = getWorkOrderMilestoneTypes()
+  const workOrderMilestoneTypes = getWorkOrderMilestoneTypes(
+    false,
+    connectedDatabase
+  )
 
   if (workOrderMilestoneTypes.length <= 0) {
-    addRecord('WorkOrderMilestoneTypes', 'Funeral', 1, initializingUser)
-    addRecord('WorkOrderMilestoneTypes', 'Arrival', 2, initializingUser)
-    addRecord('WorkOrderMilestoneTypes', 'Cremation', 3, initializingUser)
-    addRecord('WorkOrderMilestoneTypes', 'Interment', 4, initializingUser)
+    debug('No work order milestone types found, adding default types.')
+    addWorkOrderMilestoneType('Funeral', 1, initializingUser, connectedDatabase)
+    addWorkOrderMilestoneType('Arrival', 2, initializingUser, connectedDatabase)
+    addWorkOrderMilestoneType(
+      'Cremation',
+      3,
+      initializingUser,
+      connectedDatabase
+    )
+    addWorkOrderMilestoneType(
+      'Interment',
+      4,
+      initializingUser,
+      connectedDatabase
+    )
   }
 }

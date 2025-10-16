@@ -15,3 +15,14 @@ export const login = (userName) => {
     cy.get('.navbar').should('have.length', 1);
 };
 export const ajaxDelayMillis = 800;
+export const pageLoadDelayMillis = 1200;
+export const pdfGenerationDelayMillis = 10_000;
+export function checkA11yLog(violations) {
+    if (violations.length > 0) {
+        cy.log('Accessibility violations found:');
+        for (const violation of violations) {
+            cy.log(`- ${violation.id}: ${violation.description}`);
+            cy.log(`  Context: ${JSON.stringify(violation.nodes)}`);
+        }
+    }
+}

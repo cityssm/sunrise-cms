@@ -104,7 +104,7 @@ const funeralHomes = [
     }
 ];
 const funeralHomeKeyToId = new Map();
-export function getFuneralHomeIdByKey(funeralHomeKey, user) {
+export function getFuneralHomeIdByKey(funeralHomeKey, user, database) {
     if (funeralHomeKeyToId.has(funeralHomeKey)) {
         return funeralHomeKeyToId.get(funeralHomeKey);
     }
@@ -117,7 +117,7 @@ export function getFuneralHomeIdByKey(funeralHomeKey, user) {
         funeralHomePostalCode: '',
         funeralHomeProvince: '',
         funeralHomePhoneNumber: ''
-    }, user);
+    }, user, database);
     funeralHomeKeyToId.set(funeralHomeKey, funeralHomeId);
     return funeralHomeId;
 }

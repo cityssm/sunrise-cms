@@ -22,7 +22,7 @@ export default async function handler(
     return
   }
 
-  response.render('workOrder-view', {
+  response.render('workOrders/view', {
     headTitle: `Work Order #${workOrder.workOrderNumber}`,
     workOrder
   })

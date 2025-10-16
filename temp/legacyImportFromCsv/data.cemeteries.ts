@@ -1,6 +1,8 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable no-console */
 
+import type sqlite from 'better-sqlite3'
+
 import addCemetery, {
   type AddCemeteryForm
 } from '../../database/addCemetery.js'
@@ -316,7 +318,8 @@ const cemeteryCache = new Map<string, number>()
 
 export function getCemeteryIdByKey(
   cemeteryKeyToSearch: string | undefined,
-  user: User
+  user: User,
+  database: sqlite.Database
 ): number {
   /*
     if (masterRow.CM_CEMETERY === "HS" &&
@@ -333,7 +336,7 @@ export function getCemeteryIdByKey(
 
   console.log(`Cemetery cache miss: ${cemeteryKey}`)
 
-  const cemetery = getCemeteryByKey(cemeteryKey)
+  const cemetery = getCemeteryByKey(cemeteryKey, database)
 
   console.log(`Cemetery found: ${cemeteryKey}`)
 
@@ -364,7 +367,7 @@ export function getCemeteryIdByKey(
       parentCemeteryId: ''
     }
 
-    const cemeteryId = addCemetery(addForm, user)
+    const cemeteryId = addCemetery(addForm, user, database)
 
     cemeteryCache.set(cemeteryKey, cemeteryId)
   } else {

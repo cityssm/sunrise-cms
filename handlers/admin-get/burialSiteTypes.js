@@ -1,7 +1,7 @@
-import { getBurialSiteTypes } from '../../helpers/cache.helpers.js';
+import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js';
 export default function handler(_request, response) {
-    const burialSiteTypes = getBurialSiteTypes();
-    response.render('admin-burialSiteTypes', {
+    const burialSiteTypes = getCachedBurialSiteTypes();
+    response.render('admin/burialSiteTypes', {
         headTitle: "Burial Site Type Management",
         burialSiteTypes
     });

@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function addWorkOrderBurialSite(workOrderLotForm, user) {
-    const database = sqlite(sunriseDB);
+export default function addWorkOrderBurialSite(workOrderBurialSiteForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const recordDeleteTimeMillis = database
         .prepare(`select recordDelete_timeMillis
@@ -9,7 +9,7 @@ export default function addWorkOrderBurialSite(workOrderLotForm, user) {
         where workOrderId = ?
         and burialSiteId = ?`)
         .pluck()
-        .get(workOrderLotForm.workOrderId, workOrderLotForm.burialSiteId);
+        .get(workOrderBurialSiteForm.workOrderId, workOrderBurialSiteForm.burialSiteId);
     if (recordDeleteTimeMillis === undefined) {
         database
             .prepare(`insert into WorkOrderBurialSites (
@@ -17,7 +17,7 @@ export default function addWorkOrderBurialSite(workOrderLotForm, user) {
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
           values (?, ?, ?, ?, ?, ?)`)
-            .run(workOrderLotForm.workOrderId, workOrderLotForm.burialSiteId, user.userName, rightNowMillis, user.userName, rightNowMillis);
+            .run(workOrderBurialSiteForm.workOrderId, workOrderBurialSiteForm.burialSiteId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
     else if (recordDeleteTimeMillis !== null) {
         database
@@ -30,8 +30,10 @@ export default function addWorkOrderBurialSite(workOrderLotForm, user) {
             recordDelete_timeMillis = null
           where workOrderId = ?
             and burialSiteId = ?`)
-            .run(user.userName, rightNowMillis, user.userName, rightNowMillis, workOrderLotForm.workOrderId, workOrderLotForm.burialSiteId);
+            .run(user.userName, rightNowMillis, user.userName, rightNowMillis, workOrderBurialSiteForm.workOrderId, workOrderBurialSiteForm.burialSiteId);
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return true;
 }

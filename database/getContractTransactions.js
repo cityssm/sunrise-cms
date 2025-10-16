@@ -2,8 +2,8 @@ import { dateIntegerToString, timeIntegerToString } from '@cityssm/utils-datetim
 import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
-import { getDynamicsGPDocument } from '../helpers/dynamicsGp.helpers.js';
-export default async function GetContractTransactions(contractId, options, connectedDatabase) {
+import { getDynamicsGPDocument } from '../integrations/dynamicsGp/helpers.js';
+export default async function getContractTransactions(contractId, options, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     database.function('userFn_timeIntegerToString', timeIntegerToString);
@@ -21,7 +21,7 @@ export default async function GetContractTransactions(contractId, options, conne
         database.close();
     }
     if (options.includeIntegrations &&
-        getConfigProperty('settings.dynamicsGP.integrationIsEnabled')) {
+        getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) {
         for (const transaction of contractTransactions) {
             if ((transaction.externalReceiptNumber ?? '') !== '') {
                 const gpDocument = await getDynamicsGPDocument(transaction.externalReceiptNumber ?? '');

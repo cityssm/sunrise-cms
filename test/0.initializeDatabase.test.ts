@@ -6,6 +6,7 @@ import getBurialSiteTypes from '../database/getBurialSiteTypes.js'
 import { initializeDatabase } from '../database/initializeDatabase.js'
 import {
   sunriseDB as databasePath,
+  sunriseDBTesting,
   useTestDatabases
 } from '../helpers/database.helpers.js'
 
@@ -15,13 +16,25 @@ await describe('Initialize Database', async () => {
       assert.fail('Test database must be used!')
     }
 
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
-    await fs.unlink(databasePath)
+    assert.strictEqual(
+      databasePath,
+      sunriseDBTesting,
+      'Database path does not match the testing database'
+    )
+
+    try {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      await fs.unlink(databasePath)
+      assert.ok(true, 'Deleted existing database file')
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log('Error deleting existing database file:', error)
+    }
 
     const success = initializeDatabase()
 
-    assert.ok(success)
+    assert.ok(success, 'Database initialization failed')
 
-    assert.ok(getBurialSiteTypes().length > 0)
+    assert.ok(getBurialSiteTypes().length > 0, 'No burial site types found')
   })
 })

@@ -1,0 +1,95 @@
+<div class="modal" role="dialog">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h3 class="modal-card-title">Update Milestone Time</h3>
+      <button
+        class="delete is-close-modal-button"
+        type="button"
+        aria-label="close"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--workOrderMilestoneUpdate">
+        <input
+          id="workOrderMilestoneUpdate--workdayDateString"
+          name="workdayDateString"
+          type="hidden"
+        />
+
+        <input
+          id="workOrderMilestoneUpdate--workOrderMilestoneId"
+          name="workOrderMilestoneId"
+          type="hidden"
+          value=""
+        />
+
+        <div class="columns">
+          <div class="column">
+            <label
+              class="label"
+              for="workOrderMilestoneUpdate--workOrderMilestoneDateString"
+            >
+              Milestone Date
+            </label>
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input
+                  class="input"
+                  id="workOrderMilestoneUpdate--workOrderMilestoneDateString"
+                  name="workOrderMilestoneDateString"
+                  type="date"
+                  readonly
+                  required
+                />
+              </div>
+              <div class="control">
+                <button
+                  class="button is-unlock-button"
+                  type="button"
+                  title="Unlock Date"
+                >
+                  <span class="icon"><i class="fa-solid fa-unlock"></i></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label
+                class="label"
+                for="workOrderMilestoneUpdate--workOrderMilestoneTimeString"
+              >
+                Milestone Time
+              </label>
+              <div class="control">
+                <input
+                  class="input"
+                  id="workOrderMilestoneUpdate--workOrderMilestoneTimeString"
+                  name="workOrderMilestoneTimeString"
+                  type="time"
+                  step="900"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <div class="buttons">
+        <button
+          class="button is-success"
+          type="submit"
+          form="form--workOrderMilestoneUpdate"
+        >
+          <span class="icon"><i class="fa-solid fa-save"></i></span>
+          <span>Update Milestone Time</span>
+        </button>
+        <button class="button is-close-modal-button" type="button">
+          Cancel
+        </button>
+      </div>
+    </footer>
+  </div>
+</div>

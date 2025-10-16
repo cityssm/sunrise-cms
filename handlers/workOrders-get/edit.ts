@@ -1,11 +1,9 @@
 import type { Request, Response } from 'express'
 
 import getWorkOrder from '../../database/getWorkOrder.js'
-import {
-  getBurialSiteStatuses,
-  getWorkOrderMilestoneTypes,
-  getWorkOrderTypes
-} from '../../helpers/cache.helpers.js'
+import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
+import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js'
+import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getWorkOrderWorkDayRanges } from '../../helpers/settings.helpers.js'
 
@@ -37,15 +35,15 @@ export default async function handler(
     return
   }
 
-  const workOrderTypes = getWorkOrderTypes()
+  const workOrderTypes = getCachedWorkOrderTypes()
 
-  const workOrderMilestoneTypes = getWorkOrderMilestoneTypes()
+  const workOrderMilestoneTypes = getCachedWorkOrderMilestoneTypes()
 
-  const burialSiteStatuses = getBurialSiteStatuses()
+  const burialSiteStatuses = getCachedBurialSiteStatuses()
 
   const workOrderWorkDayRanges = getWorkOrderWorkDayRanges()
 
-  response.render('workOrder-edit', {
+  response.render('workOrders/edit', {
     headTitle: `Work Order #${workOrder.workOrderNumber}`,
 
     workOrder,

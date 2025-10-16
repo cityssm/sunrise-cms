@@ -17,12 +17,12 @@ const baseSQL = `select w.workOrderId,
 export default async function getWorkOrder(workOrderId, options, connectedDatabase) {
     return await _getWorkOrder(`${baseSQL} and w.workOrderId = ?`, workOrderId, options, connectedDatabase);
 }
-export async function getWorkOrderByWorkOrderNumber(workOrderNumber) {
+export async function getWorkOrderByWorkOrderNumber(workOrderNumber, connectedDatabase) {
     return await _getWorkOrder(`${baseSQL} and w.workOrderNumber = ?`, workOrderNumber, {
         includeBurialSites: true,
         includeComments: true,
         includeMilestones: true
-    });
+    }, connectedDatabase);
 }
 async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connectedDatabase) {
     const database = connectedDatabase ?? (sqlite(sunriseDB));

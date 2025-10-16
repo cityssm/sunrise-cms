@@ -19,8 +19,12 @@ export interface UpdateFeeForm {
   isRequired: '' | '1'
 }
 
-export default function updateFee(feeForm: UpdateFeeForm, user: User): boolean {
-  const database = sqlite(sunriseDB)
+export default function updateFee(
+  feeForm: UpdateFeeForm,
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -64,8 +68,10 @@ export default function updateFee(feeForm: UpdateFeeForm, user: User): boolean {
       feeForm.feeId
     )
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
+  
   return result.changes > 0
 }
 
@@ -76,9 +82,10 @@ export interface UpdateFeeAmountForm {
 
 export function updateFeeAmount(
   feeAmountForm: UpdateFeeAmountForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -96,7 +103,8 @@ export function updateFeeAmount(
       feeAmountForm.feeId
     )
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
   return result.changes > 0
 }

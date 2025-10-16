@@ -1,10 +1,14 @@
 .nyc_output/
 bin/daemon/
 coverage/
+daemon/
 
 cypress/downloads/
 cypress/screenshots/
 cypress/videos/
+
+data/attachments/*
+!data/attachments/README.md
 
 data/backups/*
 !data/backups/README.md
@@ -15,6 +19,8 @@ node_modules/
 
 data/*.db
 data/*.db-journal
+data/*.db-shm
+data/*.db-wal
 data/apiKeys.json
 
 data/config.d.ts
@@ -28,3 +34,4 @@ temp/config.*
 temp/*.csv
 
 megalinter-reports/
+temp_build/

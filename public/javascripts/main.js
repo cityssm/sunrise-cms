@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     /*
      * Unsaved Changes
@@ -47,7 +45,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
      */
     const coordinatePrecision = 8;
     const leafletConstants = {
-        tileLayerURL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         defaultZoom: 15,
         maxZoom: 19,
         attribution: '© OpenStreetMap'
@@ -63,16 +61,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                  * Set up the Leaflet map
                  */
                 const mapContainerElement = modalElement.querySelector('.leaflet-map');
-                // eslint-disable-next-line unicorn/no-array-callback-reference
-                const map = L.map(mapContainerElement);
-                L.tileLayer(sunrise.leafletConstants.tileLayerURL, {
+                const map = new L.Map(mapContainerElement);
+                new L.TileLayer(sunrise.leafletConstants.tileLayerUrl, {
                     attribution: sunrise.leafletConstants.attribution,
                     maxZoom: sunrise.leafletConstants.maxZoom
                 }).addTo(map);
                 if (!Number.isNaN(latitude) && !Number.isNaN(longitude)) {
                     const mapCoordinates = [latitude, longitude];
                     map.setView(mapCoordinates, sunrise.leafletConstants.defaultZoom);
-                    currentMarker = L.marker(mapCoordinates).addTo(map);
+                    currentMarker = new L.Marker(mapCoordinates).addTo(map);
                 }
                 else {
                     const middleLatitude = (Number.parseFloat(options.latitudeElement.min) +
@@ -92,7 +89,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     if (currentMarker !== undefined) {
                         currentMarker.remove();
                     }
-                    currentMarker = L.marker(mapCoordinates).addTo(map);
+                    currentMarker = new L.Marker(mapCoordinates).addTo(map);
                 });
                 modalElement
                     .querySelector('.is-update-button')
@@ -161,114 +158,112 @@ Object.defineProperty(exports, "__esModule", { value: true });
         workOrderCloseDate: cityssm.escapeHTML(exports.aliases.workOrderCloseDate.toLowerCase())
     });
     /*
-     * Colors
-     */
-    const hues = [
-        'red',
-        'green',
-        'orange',
-        'blue',
-        'pink',
-        'yellow',
-        'purple'
-    ];
-    const luminosity = ['bright', 'light', 'dark'];
-    function getRandomColor(seedString) {
-        let actualSeedString = seedString;
-        if (actualSeedString.length < 2) {
-            actualSeedString += 'a1';
-        }
-        return exports.randomColor({
-            hue: hues[actualSeedString.codePointAt(actualSeedString.length - 1) %
-                hues.length],
-            luminosity: luminosity[actualSeedString.codePointAt(actualSeedString.length - 2) % luminosity.length],
-            seed: actualSeedString + actualSeedString
-        });
-    }
-    /*
      * Bulma Snippets
      */
     function getMoveUpDownButtonFieldHTML(upButtonClassNames, downButtonClassNames, isSmall = true) {
-        return `<div class="field has-addons">
-      <div class="control">
-      <button
-          class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
-          data-tooltip="Move Up" data-direction="up" type="button" aria-label="Move Up">
-        <span class="icon"><i class="fa-solid fa-arrow-up"></i></span>
-      </button>
-      </div>
-      <div class="control">
-      <button
-          class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
-          data-tooltip="Move Down" data-direction="down" type="button" aria-label="Move Down">
-        <span class="icon"><i class="fa-solid fa-arrow-down"></i></span>
-      </button>
-      </div>
-      </div>`;
-    }
-    function getLoadingParagraphHTML(captionText = 'Loading...') {
-        return `<p class="has-text-centered has-text-grey">
-      <i class="fa-solid fa-5x fa-circle-notch fa-spin"></i><br />
-      ${cityssm.escapeHTML(captionText)}
-      </p>`;
-    }
-    function getSearchResultsPagerHTML(limit, offset, count) {
-        return `<div class="level">
-      <div class="level-left">
-        <div class="level-item has-text-weight-bold">
-          Displaying
-          ${(offset + 1).toString()}
-          to
-          ${Math.min(count, limit + offset).toString()}
-          of
-          ${count.toString()}
+        return /*html*/ `
+      <div class="field has-addons">
+        <div class="control">
+          <button
+            class="button ${isSmall ? 'is-small' : ''} ${upButtonClassNames}"
+            data-direction="up"
+            type="button"
+            title="Move Up"
+          >
+            <span class="icon"><i class="fa-solid fa-arrow-up"></i></span>
+          </button>
+        </div>
+        <div class="control">
+          <button
+            class="button ${isSmall ? 'is-small' : ''} ${downButtonClassNames}"
+            data-direction="down"
+            type="button"
+            title="Move Down"
+          >
+            <span class="icon"><i class="fa-solid fa-arrow-down"></i></span>
+          </button>
         </div>
       </div>
-      <div class="level-right is-hidden-print">
-        ${offset > 0
-            ? `<div class="level-item">
-                <button class="button is-rounded is-link is-outlined" data-page="previous" type="button" title="Previous">
-                  <i class="fa-solid fa-arrow-left"></i>
-                </button>
-                </div>`
+    `;
+    }
+    function getLoadingParagraphHTML(captionText = 'Loading...') {
+        return /*html*/ `
+      <p class="has-text-centered has-text-grey">
+        <i class="fa-solid fa-5x fa-circle-notch fa-spin"></i><br />
+        ${cityssm.escapeHTML(captionText)}
+      </p>
+    `;
+    }
+    function getSearchResultsPagerHTML(limit, offset, count) {
+        return /*html*/ `
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item has-text-weight-bold">
+            Displaying
+            ${(offset + 1).toString()}
+            to
+            ${Math.min(count, limit + offset).toString()}
+            of
+            ${count.toString()}
+          </div>
+        </div>
+        <div class="level-right is-hidden-print">
+          ${offset > 0
+            ? /*html*/ `
+                <div class="level-item">
+                  <button
+                    class="button is-rounded is-link is-outlined"
+                    data-page="previous"
+                    type="button"
+                    title="Previous"
+                  >
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </button>
+                </div>
+              `
             : ''}
-        ${limit + offset < count
-            ? `<div class="level-item">
-                <button class="button is-rounded is-link" data-page="next" type="button" title="Next">
-                  <span>Next</span>
-                  <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
-                </button>
-                </div>`
+          ${limit + offset < count
+            ? /*html*/ `
+                <div class="level-item">
+                  <button
+                    class="button is-rounded is-link"
+                    data-page="next"
+                    type="button"
+                    title="Next"
+                  >
+                    <span>Next</span>
+                    <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
+                  </button>
+                </div>
+              `
             : ''}
+        </div>
       </div>
-      </div>`;
+    `;
     }
     /*
      * URLs
      */
     const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
-    function getRecordURL(recordTypePlural, recordId, edit, time) {
-        return (urlPrefix +
-            '/' +
-            recordTypePlural +
-            (recordId ? `/${recordId.toString()}` : '') +
-            (recordId && edit ? '/edit' : '') +
+    function getRecordUrl(recordTypePlural, recordId, edit, time) {
+        return (`${urlPrefix}/${recordTypePlural}/${recordId.toString()}` +
+            (recordId !== '' && edit ? '/edit' : '') +
             (time ? `/?t=${Date.now().toString()}` : ''));
     }
-    function getCemeteryURL(cemeteryId = '', edit = false, time = false) {
-        return getRecordURL('cemeteries', cemeteryId, edit, time);
+    function getCemeteryUrl(cemeteryId = '', edit = false, time = false) {
+        return getRecordUrl('cemeteries', cemeteryId, edit, time);
     }
-    function getFuneralHomeURL(funeralHomeId = '', edit = false, time = false) {
-        return getRecordURL('funeralHomes', funeralHomeId, edit, time);
+    function getFuneralHomeUrl(funeralHomeId = '', edit = false, time = false) {
+        return getRecordUrl('funeralHomes', funeralHomeId, edit, time);
     }
-    function getBurialSiteURL(burialSiteId = '', edit = false, time = false) {
-        return getRecordURL('burialSites', burialSiteId, edit, time);
+    function getBurialSiteUrl(burialSiteId = '', edit = false, time = false) {
+        return getRecordUrl('burialSites', burialSiteId, edit, time);
     }
-    function getContractURL(contractId = '', edit = false, time = false) {
-        return getRecordURL('contracts', contractId, edit, time);
+    function getContractUrl(contractId = '', edit = false, time = false) {
+        return getRecordUrl('contracts', contractId, edit, time);
     }
-    function getWorkOrderURL(workOrderId = '', edit = false, time = false) {
-        return getRecordURL('workOrders', workOrderId, edit, time);
+    function getWorkOrderUrl(workOrderId = '', edit = false, time = false) {
+        return getRecordUrl('workOrders', workOrderId, edit, time);
     }
     /*
      * Date Fields
@@ -296,18 +291,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
         initializeUnlockFieldButtons,
         escapedAliases,
         populateAliases,
-        getRandomColor,
         clearUnsavedChanges,
         hasUnsavedChanges,
         setUnsavedChanges,
         getLoadingParagraphHTML,
         getMoveUpDownButtonFieldHTML,
         getSearchResultsPagerHTML,
-        getBurialSiteURL,
-        getCemeteryURL,
-        getContractURL,
-        getFuneralHomeURL,
-        getWorkOrderURL,
+        getBurialSiteUrl,
+        getCemeteryUrl,
+        getContractUrl,
+        getFuneralHomeUrl,
+        getWorkOrderUrl,
         initializeMinDateUpdate
     };
     exports.sunrise = sunrise;

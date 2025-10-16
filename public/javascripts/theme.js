@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     function doLogout() {
         const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
@@ -22,7 +20,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     });
 })();
 (() => {
-    const urlPrefix = document.querySelector('main')?.getAttribute('data-url-prefix') ?? '';
+    const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
     const keepAliveMillis = document.querySelector('main')?.dataset.sessionKeepAliveMillis;
     let keepAliveInterval;
     function doKeepAlive() {
@@ -51,25 +49,53 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
 })();
 (() => {
-    const urlPrefix = document.querySelector('main')?.getAttribute('data-url-prefix') ?? '';
+    const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
     function doContractQuickSearch(formEvent) {
         formEvent.preventDefault();
-        const contractIdElement = document.querySelector('#quickSearchContract--contractId');
-        globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(contractIdElement.value)}`;
+        const contractField = document.querySelector('#quickSearchContract--searchField').value;
+        const searchValue = document.querySelector('#quickSearchContract--searchValue').value;
+        if (contractField === 'deceasedName') {
+            globalThis.location.href = `${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValue)}`;
+        }
+        else if (contractField === 'contractId' && /^\d+$/.test(searchValue)) {
+            globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(searchValue)}`;
+        }
+        else {
+            bulmaJS.alert({
+                contextualColorName: 'danger',
+                title: 'Invalid Search',
+                message: 'Please enter a valid search value.'
+            });
+        }
+    }
+    function doWorkOrderQuickSearch(formEvent) {
+        formEvent.preventDefault();
+        const workOrderNumber = document.querySelector('#quickSearchWorkOrder--workOrderNumber').value;
+        globalThis.location.href = `${urlPrefix}/workOrders/byWorkOrderNumber/${encodeURIComponent(workOrderNumber)}`;
     }
     document
         .querySelector('#navbar--quickSearch')
         ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         cityssm.openHtmlModal('quickSearch', {
+            onshow(modalElement) {
+                ;
+                modalElement.querySelector('#quickSearch--contractsLink').href = `${urlPrefix}/contracts`;
+                modalElement.querySelector('#quickSearch--workOrdersLink').href = `${urlPrefix}/workOrders`;
+            },
             onshown(modalElement) {
                 bulmaJS.toggleHtmlClipped();
                 modalElement.querySelector('input')?.focus();
-                modalElement.querySelector('#form--quickSearchContract')?.addEventListener('submit', doContractQuickSearch);
+                modalElement
+                    .querySelector('#form--quickSearchContract')
+                    ?.addEventListener('submit', doContractQuickSearch);
+                modalElement
+                    .querySelector('#form--quickSearchWorkOrder')
+                    ?.addEventListener('submit', doWorkOrderQuickSearch);
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();
-            },
+            }
         });
     });
 })();

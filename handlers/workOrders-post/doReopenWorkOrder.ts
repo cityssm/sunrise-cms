@@ -7,7 +7,7 @@ export default function handler(
   response: Response
 ): void {
   const success = reopenWorkOrder(
-    request.body.workOrderId as string,
+    request.body.workOrderId,
     request.session.user as User
   )
 

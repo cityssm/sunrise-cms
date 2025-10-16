@@ -7,9 +7,10 @@ import getBurialSiteTypeFields from './getBurialSiteTypeFields.js'
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getBurialSiteTypes(
-  includeDeleted = false
+  includeDeleted = false,
+  connectedDatabase: sqlite.Database | undefined = undefined
 ): BurialSiteType[] {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const updateOrderNumbers = !includeDeleted
 
@@ -29,7 +30,10 @@ export default function getBurialSiteTypes(
   for (const burialSiteType of burialSiteTypes) {
     expectedOrderNumber += 1
 
-    if (updateOrderNumbers && burialSiteType.orderNumber !== expectedOrderNumber) {
+    if (
+      updateOrderNumbers &&
+      burialSiteType.orderNumber !== expectedOrderNumber
+    ) {
       updateRecordOrderNumber(
         'BurialSiteTypes',
         burialSiteType.burialSiteTypeId,
@@ -46,7 +50,8 @@ export default function getBurialSiteTypes(
     )
   }
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
   return burialSiteTypes
 }

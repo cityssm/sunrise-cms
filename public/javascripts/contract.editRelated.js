@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
@@ -43,26 +41,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
     function renderRelatedContracts() {
         relatedContractsContainer.innerHTML = '';
         if (relatedContracts.length === 0) {
-            relatedContractsContainer.innerHTML = `<div class="message is-info">
+            relatedContractsContainer.innerHTML = /*html*/ `
+        <div class="message is-info">
           <div class="message-body">
             There are no contracts related to this contract.
           </div>
-          </div>`;
+        </div>
+      `;
             return;
         }
         const contractsTableElement = document.createElement('table');
         contractsTableElement.className =
             'table is-striped is-fullwidth is-hoverable';
-        contractsTableElement.innerHTML = `<thead>
-      <tr>
-        <th>Contract Type</th>
-        <th>Contract Date</th>
-        <th>End Date</th>
-        <th>Interments</th>
-        <th></th>
-      </tr>
+        contractsTableElement.innerHTML = /*html*/ `
+      <thead>
+        <tr>
+          <th>Contract Type</th>
+          <th>Contract Date</th>
+          <th>End Date</th>
+          <th>Interments</th>
+          <th></th>
+        </tr>
       </thead>
-      <tbody></tbody>`;
+      <tbody></tbody>
+    `;
         const contractsTbodyElement = contractsTableElement.querySelector('tbody');
         for (const relatedContract of relatedContracts) {
             let intermentsHTML = '';
@@ -78,9 +80,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
             contractRowElement.dataset.contractId =
                 relatedContract.contractId.toString();
             // eslint-disable-next-line no-unsanitized/property
-            contractRowElement.innerHTML = `<td>
+            contractRowElement.innerHTML = /*html*/ `
+        <td>
           <a class="has-text-weight-bold"
-            href="${sunrise.urlPrefix}/contracts/${relatedContract.contractId}">
+            href="${sunrise.getContractUrl(relatedContract.contractId)}">
             ${cityssm.escapeHTML(relatedContract.contractType)}
           </a><br />
           <span class="is-size-7">#${relatedContract.contractId}</span>
@@ -93,15 +96,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
         </td>
         <td>${intermentsHTML}</td>
         <td>
-          <button class="button is-danger is-light is-small has-tooltip-left"
-            data-tooltip="Remove Related Contract"
-            aria-label="Remove Related Contract"
-            type="button">
+          <button
+            class="button is-danger is-light is-small"
+            type="button"
+            title="Remove Related Contract"
+          >
             <span class="icon is-small">
               <i class="fa-solid fa-trash"></i>
             </span>
           </button>
-        </td>`;
+        </td>
+      `;
             contractRowElement
                 .querySelector('button')
                 ?.addEventListener('click', deleteRelatedContract);
@@ -142,9 +147,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         function loadContracts(formEvent) {
             formEvent?.preventDefault();
+            const containerElement = modalElement?.querySelector('#resultsContainer--relatedContractSelect');
+            containerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Contracts...');
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`, formElement, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
-                const containerElement = modalElement?.querySelector('#resultsContainer--relatedContractSelect');
                 containerElement.innerHTML = '<div class="panel"></div>';
                 for (const contract of responseJSON.contracts) {
                     let intermentsHTML = '';
@@ -161,26 +167,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     anchorElement.className = 'panel-block is-block is-size-7';
                     anchorElement.dataset.contractId = contract.contractId.toString();
                     // eslint-disable-next-line no-unsanitized/property
-                    anchorElement.innerHTML = `<div class="columns">
-                <div class="column is-narrow">
-                  <i class="fa-solid fa-plus"></i>
-                </div>
-                <div class="column">
-                  ${cityssm.escapeHTML(contract.contractType)}<br />
-                  #${cityssm.escapeHTML(contract.contractId.toString())}
-                </div>
-                <div class="column">
-                  ${cityssm.escapeHTML(contract.contractStartDateString)}
-                </div>
-                <div class="column">
-                  ${contract.contractEndDateString
+                    anchorElement.innerHTML = /*html*/ `
+                <div class="columns">
+                  <div class="column is-narrow">
+                    <i class="fa-solid fa-plus"></i>
+                  </div>
+                  <div class="column">
+                    ${cityssm.escapeHTML(contract.contractType)}<br />
+                    #${cityssm.escapeHTML(contract.contractId.toString())}
+                  </div>
+                  <div class="column">
+                    ${cityssm.escapeHTML(contract.contractStartDateString)}
+                  </div>
+                  <div class="column">
+                    ${contract.contractEndDateString
                         ? cityssm.escapeHTML(contract.contractEndDateString)
                         : '<span class="has-text-grey">(No End Date)</span>'}
+                  </div>
+                  <div class="column">
+                    ${intermentsHTML}
+                  </div>
                 </div>
-                <div class="column">
-                  ${intermentsHTML}
-                </div>
-                </div>`;
+              `;
                     anchorElement.addEventListener('click', selectContract);
                     containerElement.querySelector('.panel')?.append(anchorElement);
                 }
@@ -190,14 +198,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
             onshow(_modalElement) {
                 modalElement = _modalElement;
                 formElement = modalElement.querySelector('form');
-                formElement.querySelector('#relatedContractSelect--notContractId').value = contractId.toString();
-                formElement.querySelector('#relatedContractSelect--notRelatedContractId').value = contractId.toString();
-                formElement.querySelector('#relatedContractSelect--burialSiteName').value = document.querySelector('#contract--burialSiteName').value;
+                formElement.querySelector('#relatedContractSelect--notContractId').value = contractId;
+                formElement.querySelector('#relatedContractSelect--notRelatedContractId').value = contractId;
+                const burialSiteNameElement = formElement.querySelector('#relatedContractSelect--burialSiteName');
+                burialSiteNameElement.value = document.querySelector('#contract--burialSiteName').value;
+                burialSiteNameElement.addEventListener('change', loadContracts);
                 loadContracts();
             },
             onshown(_modalElement, _closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 closeModalFunction = _closeModalFunction;
+                _modalElement
+                    .querySelector('#relatedContractSelect--burialSiteNameSearchType')
+                    ?.addEventListener('change', loadContracts);
                 formElement?.addEventListener('submit', loadContracts);
             },
             onremoved() {

@@ -1,14 +1,16 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 
-declare const exports: Record<string, unknown>
+declare const exports: {
+  sunrise: Sunrise
+}
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   function doBackup(): void {
     cityssm.postJSON(
@@ -34,6 +36,8 @@ declare const exports: Record<string, unknown>
               To request a copy of the backup, contact your application administrator.`,
             messageIsHtml: true
           })
+
+          ;(document.querySelector('#database--lastBackup') as HTMLElement).textContent = 'Right now'
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',

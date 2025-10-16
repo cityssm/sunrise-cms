@@ -1,5 +1,5 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { WorkOrderMilestoneType } from '../../types/record.types.js'
 
@@ -14,7 +14,7 @@ declare const exports: {
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 ;(() => {
-  const sunrise = exports.sunrise as Sunrise
+  const sunrise = exports.sunrise
 
   let workOrderMilestoneTypes =
     exports.workOrderMilestoneTypes as WorkOrderMilestoneType[]
@@ -23,10 +23,12 @@ declare const bulmaJS: BulmaJS
   type WorkOrderMilestoneTypeResponseJSON =
     | {
         success: false
+
         errorMessage?: string
       }
     | {
         success: true
+
         workOrderMilestoneTypes: WorkOrderMilestoneType[]
       }
 
@@ -44,14 +46,15 @@ declare const bulmaJS: BulmaJS
           workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes
 
           bulmaJS.alert({
-            message: 'Work Order Milestone Type Updated Successfully',
-            contextualColorName: 'success'
+            contextualColorName: 'success',
+            message: 'Work Order Milestone Type Updated Successfully'
           })
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Updating Work Order Milestone Type',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -86,14 +89,15 @@ declare const bulmaJS: BulmaJS
             }
 
             bulmaJS.alert({
-              message: 'Work Order Milestone Type Deleted Successfully',
-              contextualColorName: 'success'
+              contextualColorName: 'success',
+              message: 'Work Order Milestone Type Deleted Successfully'
             })
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Deleting Work Order Milestone Type',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }
@@ -101,14 +105,15 @@ declare const bulmaJS: BulmaJS
     }
 
     bulmaJS.confirm({
+      contextualColorName: 'warning',
       title: 'Delete Work Order Milestone Type',
+
       message: `Are you sure you want to delete this work order milestone type?<br />
           Note that no work orders will be removed.`,
       messageIsHtml: true,
-      contextualColorName: 'warning',
       okButton: {
-        text: 'Yes, Delete Work Order Milestone Type',
-        callbackFunction: doDelete
+        callbackFunction: doDelete,
+        text: 'Yes, Delete Work Order Milestone Type'
       }
     })
   }
@@ -129,6 +134,7 @@ declare const bulmaJS: BulmaJS
       }`,
       {
         workOrderMilestoneTypeId,
+
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
       (rawResponseJSON) => {
@@ -140,9 +146,10 @@ declare const bulmaJS: BulmaJS
           renderWorkOrderMilestoneTypes()
         } else {
           bulmaJS.alert({
+            contextualColorName: 'danger',
             title: 'Error Moving Work Order Milestone Type',
-            message: responseJSON.errorMessage ?? '',
-            contextualColorName: 'danger'
+
+            message: responseJSON.errorMessage ?? ''
           })
         }
       }
@@ -155,11 +162,15 @@ declare const bulmaJS: BulmaJS
     ) as HTMLTableSectionElement
 
     if (workOrderMilestoneTypes.length === 0) {
-      containerElement.innerHTML = `<tr><td colspan="2">
-          <div class="message is-warning">
-            <p class="message-body">There are no active work order milestone types.</p>
-          </div>
-          </td></tr>`
+      containerElement.innerHTML = /*html*/ `
+        <tr>
+          <td colspan="2">
+            <div class="message is-warning">
+              <p class="message-body">There are no active work order milestone types.</p>
+            </div>
+          </td>
+        </tr>
+      `
 
       return
     }
@@ -172,42 +183,56 @@ declare const bulmaJS: BulmaJS
       tableRowElement.dataset.workOrderMilestoneTypeId =
         workOrderMilestoneType.workOrderMilestoneTypeId.toString()
 
-      // eslint-disable-next-line no-unsanitized/property, no-secrets/no-secrets
-      tableRowElement.innerHTML = `<td>
-        <form>
-          <input name="workOrderMilestoneTypeId" type="hidden"
-            value="${workOrderMilestoneType.workOrderMilestoneTypeId.toString()}" />
-          <div class="field has-addons">
-            <div class="control is-expanded">
-              <input class="input"
-                name="workOrderMilestoneType" type="text"
-                value="${cityssm.escapeHTML(workOrderMilestoneType.workOrderMilestoneType)}"
-                maxlength="100"
-                aria-label="Work Order Milestone Type" required />
+      /* eslint-disable no-secrets/no-secrets */
+
+      tableRowElement.innerHTML = /*html*/ `
+        <td>
+          <form>
+            <input name="workOrderMilestoneTypeId" type="hidden"
+              value="${cityssm.escapeHTML(workOrderMilestoneType.workOrderMilestoneTypeId.toString())}" />
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input
+                  class="input"
+                  name="workOrderMilestoneType"
+                  type="text"
+                  value="${cityssm.escapeHTML(workOrderMilestoneType.workOrderMilestoneType)}"
+                  maxlength="100"
+                  aria-label="Work Order Milestone Type"
+                  required
+                />
+              </div>
+              <div class="control">
+                <button class="button is-success" type="submit" aria-label="Save">
+                  <span class="icon"><i class="fa-solid fa-save"></i></span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </td>
+        <td class="is-nowrap">
+          <div class="field is-grouped">
+            <div class="control">
+              ${sunrise.getMoveUpDownButtonFieldHTML(
+                'button--moveWorkOrderMilestoneTypeUp',
+                'button--moveWorkOrderMilestoneTypeDown',
+                false
+              )}
             </div>
             <div class="control">
-              <button class="button is-success" type="submit" aria-label="Save">
-                <span class="icon"><i class="fa-solid fa-save"></i></span>
+              <button
+                class="button is-danger is-light button--deleteWorkOrderMilestoneType"
+                type="button"
+                title="Delete Milestone Type"
+              >
+                <span class="icon"><i class="fa-solid fa-trash"></i></span>
               </button>
             </div>
           </div>
-        </form>
-      </td><td class="is-nowrap">
-        <div class="field is-grouped">
-          <div class="control">
-            ${sunrise.getMoveUpDownButtonFieldHTML(
-              'button--moveWorkOrderMilestoneTypeUp',
-              'button--moveWorkOrderMilestoneTypeDown',
-              false
-            )}
-          </div>
-          <div class="control">
-            <button class="button is-danger is-light button--deleteWorkOrderMilestoneType" data-tooltip="Delete Milestone Type" type="button" aria-label="Delete Milestone Type">
-              <span class="icon"><i class="fa-solid fa-trash"></i></span>
-            </button>
-          </div>
-        </div>
-      </td>`
+        </td>
+      `
+
+      /* eslint-enable no-secrets/no-secrets */
 
       tableRowElement
         .querySelector('form')
@@ -250,9 +275,10 @@ declare const bulmaJS: BulmaJS
             formElement.querySelector('input')?.focus()
           } else {
             bulmaJS.alert({
+              contextualColorName: 'danger',
               title: 'Error Adding Work Order Milestone Type',
-              message: responseJSON.errorMessage ?? '',
-              contextualColorName: 'danger'
+
+              message: responseJSON.errorMessage ?? ''
             })
           }
         }

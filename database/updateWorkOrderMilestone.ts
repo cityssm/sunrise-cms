@@ -19,9 +19,10 @@ export interface UpdateWorkOrderMilestoneForm {
 
 export default function updateWorkOrderMilestone(
   milestoneForm: UpdateWorkOrderMilestoneForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
@@ -42,7 +43,7 @@ export default function updateWorkOrderMilestone(
         ? 0
         : dateStringToInteger(milestoneForm.workOrderMilestoneDateString),
       (milestoneForm.workOrderMilestoneTimeString ?? '') === ''
-        ? 0
+        ? undefined
         : timeStringToInteger(
             milestoneForm.workOrderMilestoneTimeString as TimeString
           ),
@@ -53,7 +54,9 @@ export default function updateWorkOrderMilestone(
       milestoneForm.workOrderMilestoneId
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return result.changes > 0
 }

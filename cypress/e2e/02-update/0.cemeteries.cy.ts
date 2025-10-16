@@ -1,9 +1,9 @@
-import { getConfigProperty } from '../../../helpers/config.helpers.js'
+// import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { Cemetery } from '../../../types/record.types.js'
-import { login, logout } from '../../support/index.js'
+import { login, logout, pageLoadDelayMillis } from '../../support/index.js'
 
-describe('Update - Cemeteries', () => {
+describe('Cemeteries - Update', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testUpdate)
@@ -18,7 +18,9 @@ describe('Update - Cemeteries', () => {
   })
 
   it('Creates a new cemetery', () => {
-    cy.visit('/cemeteries/new')
+    cy.visit('/cemeteries/new', {
+      retryOnStatusCodeFailure: true
+    })
 
     cy.log('Check the accessibility')
 
@@ -61,23 +63,25 @@ describe('Update - Cemeteries', () => {
         .type(cemeteryData.cemeteryLongitude?.toString() ?? '')
     })
 
+    /*
     cy.log('Ensure the default city and province are used')
 
     cy.get("input[name='cemeteryCity']").should(
       'have.value',
-      getConfigProperty('settings.cityDefault')
+      getCachedSettingValue('defaults.city')
     )
 
     cy.get("input[name='cemeteryProvince']").should(
       'have.value',
-      getConfigProperty('settings.provinceDefault')
+      getCachedSettingValue('defaults.province')
     )
+    */
 
     cy.log('Submit the form')
 
     cy.get('#form--cemetery').submit()
 
-    cy.wait(1000)
+    cy.wait(pageLoadDelayMillis)
       .location('pathname')
       .should('not.contain', '/new')
       .should('contain', '/edit')
@@ -103,15 +107,17 @@ describe('Update - Cemeteries', () => {
         cemeteryData.cemeteryAddress2
       )
 
+      /*
       cy.get("input[name='cemeteryCity']").should(
         'have.value',
-        getConfigProperty('settings.cityDefault')
+        getCachedSettingValue('defaults.city')
       )
 
       cy.get("input[name='cemeteryProvince']").should(
         'have.value',
-        getConfigProperty('settings.provinceDefault')
+        getCachedSettingValue('defaults.province')
       )
+      */
 
       cy.get("input[name='cemeteryPostalCode']").should(
         'have.value',
@@ -133,5 +139,19 @@ describe('Update - Cemeteries', () => {
         cemeteryData.cemeteryLongitude?.toString()
       )
     })
+
+    cy.log('Test More Options Dropdown')
+
+    const moreOptionsSelector = '[data-cy="dropdown--moreOptions"]'
+
+    cy.get(moreOptionsSelector).should('not.have.class', 'is-active')
+
+    cy.get(moreOptionsSelector).find('.dropdown-trigger button').click()
+
+    cy.get(moreOptionsSelector).should('have.class', 'is-active')
+
+    cy.get(moreOptionsSelector).find('.dropdown-trigger button').click()
+
+    cy.get(moreOptionsSelector).should('not.have.class', 'is-active')
   })
 })

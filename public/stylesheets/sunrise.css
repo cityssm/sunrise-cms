@@ -17,6 +17,27 @@
 }
 
 /*
+ * Modals
+ */
+
+.modal-card {
+  max-width: 100%;
+}
+
+.modal-card.has-width-900 {
+  width: 900px;
+}
+
+/*
+ * Panels
+ */
+
+.panel-block:first-child {
+  border-start-start-radius: var(--bulma-panel-radius);
+  border-start-end-radius: var(--bulma-panel-radius);
+}
+
+/*
  * Tables
  */
 
@@ -187,6 +208,10 @@ span.button.is-static {
   }
 }
 
+.input:read-only {
+  background-color: var(--bulma-input-disabled-background-color);
+}
+
 .select option:disabled {
   display: none;
 }
@@ -235,4 +260,31 @@ span.button.is-static {
 
 .avoid-page-break {
   page-break-inside: avoid;
+}
+
+/*
+ * Milestone Calendar
+ */
+
+#container--milestoneCalendar:has(.container--workOrder:hover)
+  .container--workOrder {
+  opacity: 0.4;
+}
+
+#container--milestoneCalendar .container--workOrder:hover {
+  opacity: 1 !important;
+}
+
+/* Open Work Orders with All Completed Milestones */
+#container--milestoneCalendar
+  .container--workOrder[data-is-complete='0']:not(
+    :has(> .container--workOrderMilestone[data-is-complete='0'])
+  ) {
+  background-color: var(--bulma-warning-light);
+}
+
+/* Fix hover effect when hovering on a label */
+.control.has-icons-left .select:has(select:hover) ~ .icon,
+.control.has-icons-right .select:has(select:hover) ~ .icon {
+  color: var(--bulma-input-icon-hover-color)
 }

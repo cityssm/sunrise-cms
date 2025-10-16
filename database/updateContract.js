@@ -4,33 +4,33 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
 import deleteContractField from './deleteContractField.js';
 // eslint-disable-next-line complexity
-export default function updateContract(updateForm, user) {
-    const database = sqlite(sunriseDB);
+export default function updateContract(updateForm, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
         .prepare(`update Contracts
         set contractTypeId = ?,
-        burialSiteId = ?,
-        contractStartDate = ?,
-        contractEndDate = ?,
-        funeralHomeId = ?,
-        funeralDirectorName = ?,
-        funeralDate = ?,
-        funeralTime = ?,
-        directionOfArrival = ?,
-        committalTypeId = ?,
-        purchaserName = ?,
-        purchaserAddress1 = ?,
-        purchaserAddress2 = ?,
-        purchaserCity = ?,
-        purchaserProvince = ?,
-        purchaserPostalCode = ?,
-        purchaserPhoneNumber = ?,
-        purchaserEmail = ?,
-        purchaserRelationship = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          burialSiteId = ?,
+          contractStartDate = ?,
+          contractEndDate = ?,
+          funeralHomeId = ?,
+          funeralDirectorName = ?,
+          funeralDate = ?,
+          funeralTime = ?,
+          directionOfArrival = ?,
+          committalTypeId = ?,
+          purchaserName = ?,
+          purchaserAddress1 = ?,
+          purchaserAddress2 = ?,
+          purchaserCity = ?,
+          purchaserProvince = ?,
+          purchaserPostalCode = ?,
+          purchaserPhoneNumber = ?,
+          purchaserEmail = ?,
+          purchaserRelationship = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where contractId = ?
-        and recordDelete_timeMillis is null`)
+          and recordDelete_timeMillis is null`)
         .run(updateForm.contractTypeId, updateForm.burialSiteId === '' ? undefined : updateForm.burialSiteId, dateStringToInteger(updateForm.contractStartDateString), updateForm.contractEndDateString === ''
         ? undefined
         : dateStringToInteger(updateForm.contractEndDateString), updateForm.funeralHomeId === '' ? undefined : updateForm.funeralHomeId, updateForm.funeralDirectorName, updateForm.funeralDateString === ''
@@ -53,6 +53,8 @@ export default function updateContract(updateForm, user) {
                 }, user, database);
         }
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return result.changes > 0;
 }

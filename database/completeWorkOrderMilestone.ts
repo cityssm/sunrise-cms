@@ -19,11 +19,12 @@ export interface CompleteWorkOrderMilestoneForm {
 
 export default function completeWorkOrderMilestone(
   milestoneForm: CompleteWorkOrderMilestoneForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): boolean {
   const rightNow = new Date()
 
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const completionDate =
     (milestoneForm.workOrderMilestoneCompletionDateString ?? '') === ''
@@ -56,7 +57,9 @@ export default function completeWorkOrderMilestone(
       milestoneForm.workOrderMilestoneId
     )
 
-  database.close()
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
 
   return result.changes > 0
 }

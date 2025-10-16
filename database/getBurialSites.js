@@ -11,15 +11,15 @@ export default function getBurialSites(filters, options, connectedDatabase) {
     if (isLimited) {
         count = database
             .prepare(`select count(*) as recordCount
-          from BurialSites l
-          left join Cemeteries m on l.cemeteryId = m.cemeteryId
+          from BurialSites b
+          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
           left join (
             select burialSiteId, count(contractId) as contractCount from Contracts
             where recordDelete_timeMillis is null
             and contractStartDate <= ${currentDate.toString()}
             and (contractEndDate is null or contractEndDate >= ${currentDate.toString()})
             group by burialSiteId
-          ) o on l.burialSiteId = o.burialSiteId
+          ) c on b.burialSiteId = c.burialSiteId
           ${sqlWhereClause}`)
             .pluck()
             .get(sqlParameters);
@@ -35,24 +35,25 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           offset ${sanitizeOffset(options.offset)}`
             : '';
         burialSites = database
-            .prepare(`select l.burialSiteId,
-          l.burialSiteNameSegment1,
-          l.burialSiteNameSegment2,
-          l.burialSiteNameSegment3,
-          l.burialSiteNameSegment4,
-          l.burialSiteNameSegment5,
-          l.burialSiteName,
+            .prepare(`select b.burialSiteId,
+          b.burialSiteNameSegment1,
+          b.burialSiteNameSegment2,
+          b.burialSiteNameSegment3,
+          b.burialSiteNameSegment4,
+          b.burialSiteNameSegment5,
+          b.burialSiteName,
           t.burialSiteType,
-          l.bodyCapacity, l.crematedCapacity,
-          l.cemeteryId, m.cemeteryName, l.cemeterySvgId,
-          l.burialSiteStatusId, s.burialSiteStatus
+          b.bodyCapacity, b.crematedCapacity,
+          b.cemeteryId, cem.cemeteryName, b.cemeterySvgId,
+          b.burialSiteStatusId, s.burialSiteStatus,
+          b.burialSiteLatitude, b.burialSiteLongitude
           ${includeContractCount
-            ? ', ifnull(o.contractCount, 0) as contractCount'
+            ? ', ifnull(c.contractCount, 0) as contractCount'
             : ''}
-          from BurialSites l
-          left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
-          left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
-          left join Cemeteries m on l.cemeteryId = m.cemeteryId
+          from BurialSites b
+          left join BurialSiteTypes t on b.burialSiteTypeId = t.burialSiteTypeId
+          left join BurialSiteStatuses s on b.burialSiteStatusId = s.burialSiteStatusId
+          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
           ${includeContractCount
             ? `left join (
                   select burialSiteId, count(contractId) as contractCount
@@ -60,11 +61,11 @@ export default function getBurialSites(filters, options, connectedDatabase) {
                   where recordDelete_timeMillis is null
                   and contractStartDate <= ?
                   and (contractEndDate is null or contractEndDate >= ?)
-                  group by burialSiteId) o on l.burialSiteId = o.burialSiteId`
+                  group by burialSiteId) c on b.burialSiteId = c.burialSiteId`
             : ''}
           ${sqlWhereClause}
-          order by l.burialSiteName,
-            l.burialSiteId
+          order by b.burialSiteName,
+            b.burialSiteId
           ${sqlLimitClause}`)
             .all(sqlParameters);
         if (options.limit === -1) {
@@ -80,21 +81,21 @@ export default function getBurialSites(filters, options, connectedDatabase) {
     };
 }
 function buildWhereClause(filters, includeDeleted) {
-    let sqlWhereClause = ` where ${includeDeleted ? ' 1 = 1' : ' l.recordDelete_timeMillis is null'}`;
+    let sqlWhereClause = ` where ${includeDeleted ? ' 1 = 1' : ' b.recordDelete_timeMillis is null'}`;
     const sqlParameters = [];
-    const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'l');
+    const burialSiteNameFilters = getBurialSiteNameWhereClause(filters.burialSiteName, filters.burialSiteNameSearchType ?? '', 'b');
     sqlWhereClause += burialSiteNameFilters.sqlWhereClause;
     sqlParameters.push(...burialSiteNameFilters.sqlParameters);
     if ((filters.cemeteryId ?? '') !== '') {
-        sqlWhereClause += ' and (m.cemeteryId = ? or m.parentCemeteryId = ?)';
+        sqlWhereClause += ' and (cem.cemeteryId = ? or cem.parentCemeteryId = ?)';
         sqlParameters.push(filters.cemeteryId, filters.cemeteryId);
     }
     if ((filters.burialSiteTypeId ?? '') !== '') {
-        sqlWhereClause += ' and l.burialSiteTypeId = ?';
+        sqlWhereClause += ' and b.burialSiteTypeId = ?';
         sqlParameters.push(filters.burialSiteTypeId);
     }
     if ((filters.burialSiteStatusId ?? '') !== '') {
-        sqlWhereClause += ' and l.burialSiteStatusId = ?';
+        sqlWhereClause += ' and b.burialSiteStatusId = ?';
         sqlParameters.push(filters.burialSiteStatusId);
     }
     if ((filters.contractStatus ?? '') !== '') {
@@ -107,8 +108,14 @@ function buildWhereClause(filters, includeDeleted) {
     }
     if ((filters.workOrderId ?? '') !== '') {
         sqlWhereClause +=
-            ' and l.burialSiteId in (select burialSiteId from WorkOrderBurialSites where recordDelete_timeMillis is null and workOrderId = ?)';
+            ' and b.burialSiteId in (select burialSiteId from WorkOrderBurialSites where recordDelete_timeMillis is null and workOrderId = ?)';
         sqlParameters.push(filters.workOrderId);
+    }
+    if ((filters.hasCoordinates ?? '') === 'yes') {
+        sqlWhereClause += ' and (b.burialSiteLatitude is not null and b.burialSiteLongitude is not null)';
+    }
+    if ((filters.hasCoordinates ?? '') === 'no') {
+        sqlWhereClause += ' and (b.burialSiteLatitude is null or b.burialSiteLongitude is null)';
     }
     return {
         sqlParameters,

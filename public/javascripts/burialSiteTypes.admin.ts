@@ -2,7 +2,7 @@
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type {
   BurialSiteType,
@@ -69,8 +69,8 @@ type ResponseJSON =
     toggleButtonElement.innerHTML = expandedBurialSiteTypes.has(
       burialSiteTypeId
     )
-      ? '<i class="fa-solid fa-minus"></i>'
-      : '<i class="fa-solid fa-plus"></i>'
+      ? '<span class="icon"><i class="fa-solid fa-minus"></i></span>'
+      : '<span class="icon"><i class="fa-solid fa-plus"></i></span>'
 
     const panelBlockElements =
       burialSiteTypeElement.querySelectorAll('.panel-block')
@@ -87,9 +87,10 @@ type ResponseJSON =
       renderBurialSiteTypes()
     } else {
       bulmaJS.alert({
+        contextualColorName: 'danger',
         title: 'Error Updating Burial Site Type',
-        message: responseJSON.errorMessage ?? '',
-        contextualColorName: 'danger'
+
+        message: responseJSON.errorMessage ?? ''
       })
     }
   }
@@ -115,11 +116,13 @@ type ResponseJSON =
     }
 
     bulmaJS.confirm({
-      title: 'Delete Burial Site Type',
-      message: 'Are you sure you want to delete this burial site type?',
       contextualColorName: 'warning',
+      title: 'Delete Burial Site Type',
+
+      message: 'Are you sure you want to delete this burial site type?',
       okButton: {
         text: 'Yes, Delete Burial Site Type',
+
         callbackFunction: doDelete
       }
     })
@@ -378,12 +381,14 @@ type ResponseJSON =
 
     function confirmDoDelete(): void {
       bulmaJS.confirm({
+        contextualColorName: 'warning',
         title: 'Delete Field',
+
         message: `Are you sure you want to delete this field? 
             Note that historical records that make use of this field will not be affected.`,
-        contextualColorName: 'warning',
         okButton: {
           text: 'Yes, Delete Field',
+
           callbackFunction: doDelete
         }
       })
@@ -523,10 +528,14 @@ type ResponseJSON =
       // eslint-disable-next-line no-unsanitized/method
       panelElement.insertAdjacentHTML(
         'beforeend',
-        `<div class="panel-block is-block
-          ${expandedBurialSiteTypes.has(burialSiteTypeId) ? '' : ' is-hidden'}">
-          <div class="message is-info"><p class="message-body">There are no additional fields.</p></div>
-          </div>`
+        /*html*/ `
+          <div class="panel-block is-block
+            ${expandedBurialSiteTypes.has(burialSiteTypeId) ? '' : ' is-hidden'}">
+            <div class="message is-info">
+              <p class="message-body">There are no additional fields.</p>
+            </div>
+          </div>
+        `
       )
     } else {
       for (const burialSiteTypeField of burialSiteTypeFields) {
@@ -541,25 +550,29 @@ type ResponseJSON =
         panelBlockElement.dataset.burialSiteTypeFieldId =
           burialSiteTypeField.burialSiteTypeFieldId.toString()
 
-        // eslint-disable-next-line no-unsanitized/property
-        panelBlockElement.innerHTML = `<div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <a class="has-text-weight-bold button--editBurialSiteTypeField" href="#">
-                ${cityssm.escapeHTML(burialSiteTypeField.burialSiteTypeField ?? '')}
-              </a>
+        panelBlockElement.innerHTML = /*html*/ `
+          <div class="level is-mobile">
+            <div class="level-left">
+              <div class="level-item">
+                <a class="has-text-weight-bold button--editBurialSiteTypeField" href="#">
+                  ${cityssm.escapeHTML(burialSiteTypeField.burialSiteTypeField ?? '')}
+                </a>
+              </div>
+              <div class="level-item">
+                <span class="tag">${cityssm.escapeHTML(burialSiteTypeField.fieldType)}</span>
+              </div>
+            </div>
+            <div class="level-right is-hidden-print">
+              <div class="level-item">
+                ${sunrise.getMoveUpDownButtonFieldHTML(
+                  'button--moveBurialSiteTypeFieldUp',
+                  // eslint-disable-next-line no-secrets/no-secrets
+                  'button--moveBurialSiteTypeFieldDown'
+                )}
+              </div>
             </div>
           </div>
-          <div class="level-right is-hidden-print">
-            <div class="level-item">
-              ${sunrise.getMoveUpDownButtonFieldHTML(
-                'button--moveBurialSiteTypeFieldUp',
-                // eslint-disable-next-line no-secrets/no-secrets
-                'button--moveBurialSiteTypeFieldDown'
-              )}
-            </div>
-          </div>
-          </div>`
+        `
 
         panelBlockElement
           .querySelector('.button--editBurialSiteTypeField')
@@ -586,9 +599,11 @@ type ResponseJSON =
     if (burialSiteTypes.length === 0) {
       containerElement.insertAdjacentHTML(
         'afterbegin',
-        `<div class="message is-warning">
-          <p class="message-body">There are no active burial site types.</p>
-          </div>`
+        /*html*/ `
+          <div class="message is-warning">
+            <p class="message-body">There are no active burial site types.</p>
+          </div>
+        `
       )
 
       return
@@ -602,73 +617,122 @@ type ResponseJSON =
       burialSiteTypeContainer.dataset.burialSiteTypeId =
         burialSiteType.burialSiteTypeId.toString()
 
+      /*
+       * Body Capacity Tag
+       */
+
+      let bodyCapacityMax =
+        burialSiteType.bodyCapacityMax?.toString() ?? 'unlimited'
+
+      if (bodyCapacityMax === '0') {
+        bodyCapacityMax = 'none'
+      }
+
+      let bodyCapacityTagClass = 'is-info'
+
+      if (bodyCapacityMax === 'none') {
+        bodyCapacityTagClass = 'is-danger'
+      } else if (bodyCapacityMax === 'unlimited') {
+        bodyCapacityTagClass = 'is-success'
+      }
+
+      const bodiesTagHtml = /*html*/ `
+        <div class="control">
+          <div class="tags has-addons">
+            <span class="tag is-dark">Bodies</span>
+            <span class="tag ${bodyCapacityTagClass}">
+              ${cityssm.escapeHTML(bodyCapacityMax)}
+            </span>
+          </div>
+        </div>
+      `
+
+      /*
+       * Cremains Capacity Tag
+       */
+
+      let crematedCapacityMax =
+        burialSiteType.crematedCapacityMax?.toString() ?? 'unlimited'
+
+      if (crematedCapacityMax === '0') {
+        crematedCapacityMax = 'none'
+      }
+
+      let crematedCapacityTagClass = 'is-info'
+
+      if (crematedCapacityMax === 'none') {
+        crematedCapacityTagClass = 'is-danger'
+      } else if (crematedCapacityMax === 'unlimited') {
+        crematedCapacityTagClass = 'is-success'
+      }
+
+      const crematedTagHtml = /*html*/ `
+        <div class="control">
+          <div class="tags has-addons">
+            <span class="tag is-dark">Cremains</span>
+            <span class="tag ${crematedCapacityTagClass}">
+              ${cityssm.escapeHTML(crematedCapacityMax)}
+            </span>
+          </div>
+        </div>
+      `
+
       // eslint-disable-next-line no-unsanitized/property
-      burialSiteTypeContainer.innerHTML = `<div class="panel-heading">
-        <div class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <button class="button is-small button--toggleBurialSiteTypeFields" data-tooltip="Toggle Fields" type="button" aria-label="Toggle Fields">
-              ${
-                expandedBurialSiteTypes.has(burialSiteType.burialSiteTypeId)
-                  ? '<i class="fa-solid fa-minus"></i>'
-                  : '<i class="fa-solid fa-plus"></i>'
-              }
+      burialSiteTypeContainer.innerHTML = /*html*/ `
+        <div class="panel-heading">
+          <div class="columns is-vcentered">
+            <div class="column is-narrow">
+              <button
+                class="button is-small button--toggleBurialSiteTypeFields"
+                type="button"
+                title="Toggle Fields"
+              >
+                <span class="icon">
+                  ${
+                    expandedBurialSiteTypes.has(burialSiteType.burialSiteTypeId)
+                      ? '<i class="fa-solid fa-minus"></i>'
+                      : '<i class="fa-solid fa-plus"></i>'
+                  }
+                </span>
               </button>
             </div>
-            <div class="level-item">
-              <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(burialSiteType.burialSiteType)}</h2>
+            <div class="column is-narrow">
+              <h2 class="title is-5 has-text-white">
+                ${cityssm.escapeHTML(burialSiteType.burialSiteType)}
+              </h2>
             </div>
-            <div class="level-item">
-              <div class="tags">
-                ${
-                  burialSiteType.bodyCapacityMax === null
-                    ? ''
-                    : `<span class="tag is-info">
-                        Bodies: ${cityssm.escapeHTML(
-                          burialSiteType.bodyCapacityMax.toString()
-                        )}
-                        </span>`
-                }
-                ${
-                  burialSiteType.crematedCapacityMax === null
-                    ? ''
-                    : `<span class="tag is-info">
-                        Cremains: ${cityssm.escapeHTML(
-                          burialSiteType.crematedCapacityMax.toString()
-                        )}
-                        </span>`
-                }
+            <div class="column">
+              <div class="field is-grouped is-grouped-multiline">
+                ${bodiesTagHtml}
+                ${crematedTagHtml}
+              </div>
+            </div>
+            <div class="column is-narrow is-hidden-print">
+              <div class="buttons">
+                <button class="button is-danger is-small button--deleteBurialSiteType" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
+                  <span>Delete</span>
+                </button>
+
+                <button class="button is-primary is-small button--editBurialSiteType" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
+                  <span>Edit <span class="is-hidden-desktop-only is-hidden-tablet-only">Burial Site Type</span></span>
+                </button>
+
+                <button class="button is-success is-small button--addBurialSiteTypeField" type="button">
+                  <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+                  <span>Add Field</span>
+                </button>
+
+                ${sunrise.getMoveUpDownButtonFieldHTML(
+                  'button--moveBurialSiteTypeUp',
+                  'button--moveBurialSiteTypeDown'
+                )}
               </div>
             </div>
           </div>
-          <div class="level-right is-hidden-print">
-            <div class="level-item">
-              <button class="button is-danger is-small button--deleteBurialSiteType" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>
-                <span>Delete</span>
-              </button>
-            </div>
-            <div class="level-item">
-              <button class="button is-primary is-small button--editBurialSiteType" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
-                <span>Edit Burial Site Type</span>
-              </button>
-            </div>
-            <div class="level-item">
-              <button class="button is-success is-small button--addBurialSiteTypeField" type="button">
-                <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-                <span>Add Field</span>
-              </button>
-            </div>
-            <div class="level-item">
-              ${sunrise.getMoveUpDownButtonFieldHTML(
-                'button--moveBurialSiteTypeUp',
-                'button--moveBurialSiteTypeDown'
-              )}
-            </div>
-          </div>
         </div>
-        </div>`
+      `
 
       renderBurialSiteTypeFields(
         burialSiteTypeContainer,
@@ -726,9 +790,10 @@ type ResponseJSON =
               renderBurialSiteTypes()
             } else {
               bulmaJS.alert({
+                contextualColorName: 'danger',
                 title: 'Error Adding Burial Site Type',
-                message: responseJSON.errorMessage ?? '',
-                contextualColorName: 'danger'
+
+                message: responseJSON.errorMessage ?? ''
               })
             }
           }

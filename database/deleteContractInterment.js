@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function deleteContractInterment(contractId, intermentNumber, user) {
-    const database = sqlite(sunriseDB);
+export default function deleteContractInterment(contractId, intermentNumber, user, connectedDatabase) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
         .prepare(`update ContractInterments
         set recordDelete_userName = ?,
@@ -9,6 +9,8 @@ export default function deleteContractInterment(contractId, intermentNumber, use
         where contractId = ?
         and intermentNumber = ?`)
         .run(user.userName, Date.now(), contractId, intermentNumber);
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return result.changes > 0;
 }

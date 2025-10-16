@@ -5,7 +5,17 @@
       <strong>
         <%= configFunctions.getConfigProperty("application.applicationName") %>
       </strong><br />
-      <span class="is-size-7">Build <%= buildNumber %></span>
+      <span class="is-size-7">
+        Build
+        <a
+          class="has-text-grey-dark"
+          href="https://github.com/cityssm/sunrise-cms/releases/tag/v<%= buildNumber %>"
+          rel="noreferrer"
+          target="_blank"
+        >
+          v<%= buildNumber %>
+        </a>
+      </span>
     </div>
   </div>
 </footer>
@@ -16,14 +26,13 @@
     workOrderOpenDate: "<%= settingFunctions.getSettingValue('aliases.workOrderOpenDate') %>",
     workOrderCloseDate: "<%= settingFunctions.getSettingValue('aliases.workOrderCloseDate') %>"
   };
-  exports.dynamicsGPIntegrationIsEnabled = <%= configFunctions.getConfigProperty('settings.dynamicsGP.integrationIsEnabled') %>;
+  exports.dynamicsGPIntegrationIsEnabled = <%= configFunctions.getConfigProperty('integrations.dynamicsGP.integrationIsEnabled') %>;
 </script>
 <script src="<%= urlPrefix %>/lib/cityssm-bulma-js/bulma-js.js"></script>
-<script src="<%= urlPrefix %>/lib/cityssm-bulma-webapp-js/cityssm.min.js"></script>
-<script src="<%= urlPrefix %>/lib/leaflet/leaflet.js"></script>
-<script src="<%= urlPrefix %>/lib/randomcolor/randomColor.js"></script>
+<script src="<%= urlPrefix %>/lib/cityssm-bulma-webapp-js/cityssm.js"></script>
+<script src="<%= urlPrefix %>/lib/leaflet/leaflet-global.js"></script>
 <script>
-  cityssm.htmlModalFolder ="<%= urlPrefix %>/html/";
+  cityssm.htmlModalFolder = "<%= urlPrefix %>/html/";
   bulmaJS.init();
 </script>
 <script src="<%= urlPrefix %>/lib/fa/js/all.min.js" defer></script>

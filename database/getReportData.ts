@@ -31,10 +31,12 @@ const simpleReports: Record<`${string}-all` | `${string}-formatted`, string> = {
     order by cemeteryName`,
 
   'committalTypes-all': 'select * from CommittalTypes',
+  'contractAttachments-all': 'select * from ContractAttachments',
   'contractComments-all': 'select * from ContractComments',
   'contractFees-all': 'select * from ContractFees',
   'contractFields-all': 'select * from ContractFields',
   'contractInterments-all': 'select * from ContractInterments',
+  'contractMetadata-all': 'select * from ContractMetadata',
   'contracts-all': 'select * from Contracts',
   'contractTransactions-all': 'select * from ContractTransactions',
   'contractTypeFields-all': 'select * from ContractTypeFields',
@@ -65,7 +67,8 @@ const simpleReports: Record<`${string}-all` | `${string}-formatted`, string> = {
 
 export default function getReportData(
   reportName: string,
-  reportParameters: ReportParameters = {}
+  reportParameters: ReportParameters = {},
+  connectedDatabase: sqlite.Database | undefined = undefined
 ): unknown[] | undefined {
   let sql = ''
   const sqlParameters: unknown[] = []
@@ -145,19 +148,19 @@ export default function getReportData(
       }
 
       case 'contracts-current-byCemeteryId': {
-        sql = `select o.contractId,
-          l.burialSiteName,
-          m.cemeteryName,
-          ot.contractType,
-          o.contractStartDate,
-          o.contractEndDate
-          from Contracts o
-          left join ContractTypes ot on o.contractTypeId = ot.contractTypeId
-          left join BurialSites l on o.burialSiteId = l.burialSiteId
-          left join Cemeteries m on l.cemeteryId = m.cemeteryId
-          where o.recordDelete_timeMillis is null
-          and (o.contractEndDate is null or o.contractEndDate >= ?)
-          and l.cemeteryId = ?`
+        sql = `select c.contractId,
+          b.burialSiteName,
+          cem.cemeteryName,
+          ct.contractType,
+          c.contractStartDate,
+          c.contractEndDate
+          from Contracts c
+          left join ContractTypes ct on c.contractTypeId = ct.contractTypeId
+          left join BurialSites b on c.burialSiteId = b.burialSiteId
+          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
+          where c.recordDelete_timeMillis is null
+          and (c.contractEndDate is null or c.contractEndDate >= ?)
+          and b.cemeteryId = ?`
 
         sqlParameters.push(
           dateToInteger(new Date()),
@@ -227,17 +230,19 @@ export default function getReportData(
       }
     }
   } else {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, security/detect-object-injection
     sql = simpleReports[reportName]
   }
 
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
   database.function('userFn_timeIntegerToString', timeIntegerToString)
 
   const rows = database.prepare(sql).all(sqlParameters)
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
   return rows
 }

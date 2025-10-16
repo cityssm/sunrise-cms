@@ -1,8 +1,8 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
-export default function getCommittalTypes(includeDeleted = false) {
-    const database = sqlite(sunriseDB);
+export default function getCommittalTypes(includeDeleted = false, connectedDatabase = undefined) {
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !database.readonly && !includeDeleted;
     const committalTypes = database
         .prepare(`select committalTypeId, committalTypeKey, committalType, orderNumber
@@ -20,6 +20,8 @@ export default function getCommittalTypes(includeDeleted = false) {
             }
         }
     }
-    database.close();
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
     return committalTypes;
 }

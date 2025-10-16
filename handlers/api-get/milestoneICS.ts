@@ -1,11 +1,17 @@
 /* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
+/* eslint-disable html/use-baseline */
 
 import type { Request, Response } from 'express'
-import ical, { type ICalEventData, ICalEventStatus } from 'ical-generator'
+import ical, {
+  type ICalCalendar,
+  type ICalEventData,
+  ICalEventStatus
+} from 'ical-generator'
 
 import getWorkOrderMilestones, {
   type WorkOrderMilestoneFilters
 } from '../../database/getWorkOrderMilestones.js'
+import { getApplicationUrl } from '../../helpers/application.helpers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { getPrintConfig } from '../../helpers/print.helpers.js'
 import type { WorkOrderMilestone } from '../../types/record.types.js'
@@ -22,26 +28,15 @@ function escapeHTML(stringToEscape: string): string {
   )
 }
 
-function getUrlRoot(request: Request): string {
-  return `http://${request.hostname}${
-    getConfigProperty('application.httpPort') === 80
-      ? ''
-      : `:${getConfigProperty('application.httpPort')}`
-  }${getConfigProperty('reverseProxy.urlPrefix')}`
-}
-
-function getWorkOrderUrl(
-  request: Request,
-  milestone: WorkOrderMilestone
-): string {
-  return `${getUrlRoot(request)}/workOrders/${milestone.workOrderId}`
+function getWorkOrderUrl(request: Request, workOrderId?: number): string {
+  return `${getApplicationUrl(request)}/workOrders/${workOrderId}`
 }
 
 function buildEventSummary(milestone: WorkOrderMilestone): string {
   let summary =
     (milestone.workOrderMilestoneCompletionDate ? '✔ ' : '') +
     ((milestone.workOrderMilestoneTypeId ?? -1) === -1
-      ? milestone.workOrderMilestoneDescription ?? ''
+      ? milestone.workOrderMilestoneDescription
       : milestone.workOrderMilestoneType ?? ''
     ).trim()
 
@@ -76,26 +71,33 @@ function buildEventDescriptionHTML_occupancies(
   let descriptionHTML = ''
 
   if ((milestone.workOrderContracts ?? []).length > 0) {
-    const urlRoot = getUrlRoot(request)
+    const urlRoot = getApplicationUrl(request)
 
-    descriptionHTML = `<h2>
-      Related Contracts
+    /* eslint-disable html/require-closing-tags */
+
+    descriptionHTML = /*html*/ `
+      <h2>
+        Related Contracts
       </h2>
       <table border="1">
-      <thead><tr>
-      <th>Contract Type</th>
-      <th>Burial Site</th>
-      <th>Start Date</th>
-      <th>End Date</th>
-      <th>Interments</th>
-      </tr></thead>
-      <tbody>`
+        <thead>
+          <tr>
+            <th>Contract Type</th>
+            <th>Burial Site</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Interments</th>
+          </tr>
+        </thead>
+        <tbody>
+    `
 
     for (const contract of milestone.workOrderContracts ?? []) {
-      descriptionHTML += `<tr>
+      descriptionHTML += /*html*/ `
+        <tr>
           <td>
             <a href="${urlRoot}/contracts/${contract.contractId}">
-              ${escapeHTML(contract.contractType ?? '')}
+              ${escapeHTML(contract.contractType)}
             </a>
           </td>
           <td>
@@ -111,7 +113,8 @@ function buildEventDescriptionHTML_occupancies(
                 : '(No End Date)'
             }
           </td>
-          <td>`
+          <td>
+      `
 
       for (const interment of contract.contractInterments ?? []) {
         descriptionHTML += `${escapeHTML(interment.deceasedName ?? '')}<br />`
@@ -121,6 +124,8 @@ function buildEventDescriptionHTML_occupancies(
     }
 
     descriptionHTML += '</tbody></table>'
+
+    /* eslint-enable html/require-closing-tags */
   }
 
   return descriptionHTML
@@ -134,33 +139,44 @@ function buildEventDescriptionHTML_lots(
   let descriptionHTML = ''
 
   if ((milestone.workOrderBurialSites ?? []).length > 0) {
-    const urlRoot = getUrlRoot(request)
+    const urlRoot = getApplicationUrl(request)
 
-    descriptionHTML += `<h2>
-      Related Burial Sites
+    /* eslint-disable html/require-closing-tags */
+    
+    descriptionHTML += /*html*/ `
+      <h2>
+        Related Burial Sites
       </h2>
-      <table border="1"><thead><tr>
-      <th>Burial Site</th>
-      <th>Cemetery</th>
-      <th>Burial Site Type</th>
-      <th>Status</th>
-      </tr></thead>
-      <tbody>`
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Burial Site</th>
+            <th>Cemetery</th>
+            <th>Burial Site Type</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+    `
 
     for (const burialSite of milestone.workOrderBurialSites ?? []) {
-      descriptionHTML += `<tr>
-        <td>
-          <a href="${urlRoot}/burialSites/${burialSite.burialSiteId.toString()}">
-            ${escapeHTML(burialSite.burialSiteName ?? '')}
-          </a>
-        </td>
-        <td>${escapeHTML(burialSite.cemeteryName ?? '')}</td>
-        <td>${escapeHTML(burialSite.burialSiteType ?? '')}</td>
-        <td>${escapeHTML(burialSite.burialSiteStatus ?? '')}</td>
-        </tr>`
+      descriptionHTML += /*html*/ `
+        <tr>
+          <td>
+            <a href="${urlRoot}/burialSites/${burialSite.burialSiteId.toString()}">
+              ${escapeHTML(burialSite.burialSiteName)}
+            </a>
+          </td>
+          <td>${escapeHTML(burialSite.cemeteryName ?? '')}</td>
+          <td>${escapeHTML(burialSite.burialSiteType ?? '')}</td>
+          <td>${escapeHTML(burialSite.burialSiteStatus ?? '')}</td>
+        </tr>
+      `
     }
 
     descriptionHTML += '</tbody></table>'
+
+    /* eslint-enable html/require-closing-tags */
   }
 
   return descriptionHTML
@@ -176,7 +192,7 @@ function buildEventDescriptionHTML_prints(
   const prints = getConfigProperty('settings.workOrders.prints')
 
   if (prints.length > 0) {
-    const urlRoot = getUrlRoot(request)
+    const urlRoot = getApplicationUrl(request)
 
     descriptionHTML += '<h2>Prints</h2>'
 
@@ -184,10 +200,12 @@ function buildEventDescriptionHTML_prints(
       const printConfig = getPrintConfig(printName)
 
       if (printConfig) {
-        descriptionHTML += `<p>
-          ${escapeHTML(printConfig.title)}<br />
-          ${urlRoot}/print/${printName}/?workOrderId=${milestone.workOrderId.toString()}
-          </p>`
+        descriptionHTML += /*html*/ `
+          <p>
+            ${escapeHTML(printConfig.title)}<br />
+            ${urlRoot}/print/${printName}/?workOrderId=${milestone.workOrderId.toString()}
+          </p>
+        `
       }
     }
   }
@@ -199,13 +217,15 @@ function buildEventDescriptionHTML(
   request: Request,
   milestone: WorkOrderMilestone
 ): string {
-  const workOrderUrl = getWorkOrderUrl(request, milestone)
+  const workOrderUrl = getWorkOrderUrl(request, milestone.workOrderId)
 
-  let descriptionHTML = `<h1>Milestone Description</h1>
-    <p>${escapeHTML(milestone.workOrderMilestoneDescription ?? '')}</p>
+  let descriptionHTML = /*html*/ `
+    <h1>Milestone Description</h1>
+    <p>${escapeHTML(milestone.workOrderMilestoneDescription)}</p>
     <h2>Work Order #${milestone.workOrderNumber ?? ''}</h2>
     <p>${escapeHTML(milestone.workOrderDescription ?? '')}</p>
-    <p>${workOrderUrl}</p>`
+    <p>${workOrderUrl}</p>
+  `
 
   descriptionHTML += buildEventDescriptionHTML_occupancies(request, milestone)
   descriptionHTML += buildEventDescriptionHTML_lots(request, milestone)
@@ -236,25 +256,138 @@ function buildEventLocation(milestone: WorkOrderMilestone): string {
 
   if ((milestone.workOrderBurialSites ?? []).length > 0) {
     for (const burialSite of milestone.workOrderBurialSites ?? []) {
-      burialSiteNames.push(`${burialSite.cemeteryName ?? ''}: ${burialSite.burialSiteName ?? ''}`)
+      burialSiteNames.push(
+        `${burialSite.cemeteryName ?? ''}: ${burialSite.burialSiteName}`
+      )
     }
   }
   return burialSiteNames.join(', ')
 }
 
-// eslint-disable-next-line complexity
+function createCalendarEventFormMilestone(
+  request: Request,
+  calendar: ICalCalendar,
+  milestone: WorkOrderMilestone
+): void {
+  const milestoneTimePieces =
+    `${milestone.workOrderMilestoneDateString} ${milestone.workOrderMilestoneTimeString}`.split(
+      timeStringSplitRegex
+    )
+
+  const milestoneDate = new Date(
+    Number.parseInt(milestoneTimePieces[0], 10),
+    Number.parseInt(milestoneTimePieces[1], 10) - 1,
+    Number.parseInt(milestoneTimePieces[2], 10),
+    Number.parseInt(milestoneTimePieces[3], 10),
+    Number.parseInt(milestoneTimePieces[4], 10)
+  )
+
+  const milestoneEndDate = new Date(milestoneDate)
+  milestoneEndDate.setHours(milestoneEndDate.getHours() + 1)
+
+  // Build summary (title in Outlook)
+  const summary = buildEventSummary(milestone)
+
+  // Build URL
+  const workOrderUrl = getWorkOrderUrl(request, milestone.workOrderId)
+
+  const isAllDayEvent =
+    milestone.workOrderMilestoneTime === null ||
+    milestone.workOrderMilestoneTime === undefined
+
+  // Create event
+  const eventData: ICalEventData = {
+    created: new Date(milestone.recordCreate_timeMillis ?? 0),
+    stamp: new Date(milestone.recordCreate_timeMillis ?? 0),
+
+    lastModified: new Date(
+      Math.max(
+        milestone.recordUpdate_timeMillis ?? 0,
+        milestone.workOrderRecordUpdate_timeMillis ?? 0
+      )
+    ),
+
+    start: milestoneDate,
+    summary,
+
+    allDay: isAllDayEvent,
+
+    url: workOrderUrl
+  }
+
+  if (!isAllDayEvent) {
+    eventData.end = milestoneEndDate
+  }
+
+  const calendarEvent = calendar.createEvent(eventData)
+
+  // Build description
+  const descriptionHTML = buildEventDescriptionHTML(request, milestone)
+
+  calendarEvent.description({
+    html: descriptionHTML,
+    plain: workOrderUrl
+  })
+
+  // Set status
+  if (milestone.workOrderMilestoneCompletionDate) {
+    calendarEvent.status(ICalEventStatus.CONFIRMED)
+  }
+
+  // Add categories
+  const categories = buildEventCategoryList(milestone)
+  for (const category of categories) {
+    calendarEvent.createCategory({
+      name: category
+    })
+  }
+
+  // Set location
+  const location = buildEventLocation(milestone)
+  calendarEvent.location(location)
+
+  // Set organizer / attendees
+  if ((milestone.workOrderContracts ?? []).length > 0) {
+    let organizerSet = false
+    for (const contract of milestone.workOrderContracts ?? []) {
+      for (const interment of contract.contractInterments ?? []) {
+        if (organizerSet) {
+          calendarEvent.createAttendee({
+            email: getConfigProperty(
+              'settings.workOrders.calendarEmailAddress'
+            ),
+            name: interment.deceasedName ?? ''
+          })
+        } else {
+          calendarEvent.organizer({
+            email: getConfigProperty(
+              'settings.workOrders.calendarEmailAddress'
+            ),
+            name: interment.deceasedName ?? ''
+          })
+          organizerSet = true
+        }
+      }
+    }
+  } else {
+    calendarEvent.organizer({
+      email: getConfigProperty('settings.workOrders.calendarEmailAddress'),
+      name: milestone.recordCreate_userName ?? ''
+    })
+  }
+}
+
 export default async function handler(
   request: Request,
   response: Response
 ): Promise<void> {
-  const urlRoot = getUrlRoot(request)
-
   /*
    * Get work order milestones
    */
   const workOrderMilestoneFilters: WorkOrderMilestoneFilters = {
-    workOrderTypeIds: request.query.workOrderTypeIds as string,
-    workOrderMilestoneTypeIds: request.query.workOrderMilestoneTypeIds as string
+    workOrderMilestoneTypeIds: request.query
+      .workOrderMilestoneTypeIds as string,
+    workOrderTypeIds: request.query.workOrderTypeIds as string
   }
 
   if (request.query.workOrderId) {
@@ -277,14 +410,12 @@ export default async function handler(
    */
   const calendar = ical({
     name: 'Work Order Milestone Calendar',
-    url: `${urlRoot}/workOrders`
+    url: getWorkOrderUrl(request)
   })
 
   if (request.query.workOrderId && workOrderMilestones.length > 0) {
     calendar.name(`Work Order #${workOrderMilestones[0].workOrderNumber}`)
-    calendar.url(
-      `${urlRoot}/workOrders/${workOrderMilestones[0].workOrderId.toString()}`
-    )
+    calendar.url(getWorkOrderUrl(request, workOrderMilestones[0].workOrderId))
   }
 
   calendar.prodId({
@@ -296,109 +427,11 @@ export default async function handler(
    * Loop through milestones
    */
   for (const milestone of workOrderMilestones) {
-    const milestoneTimePieces =
-      `${milestone.workOrderMilestoneDateString} ${milestone.workOrderMilestoneTimeString}`.split(
-        timeStringSplitRegex
-      )
-
-    const milestoneDate = new Date(
-      Number.parseInt(milestoneTimePieces[0], 10),
-      Number.parseInt(milestoneTimePieces[1], 10) - 1,
-      Number.parseInt(milestoneTimePieces[2], 10),
-      Number.parseInt(milestoneTimePieces[3], 10),
-      Number.parseInt(milestoneTimePieces[4], 10)
-    )
-
-    const milestoneEndDate = new Date(milestoneDate)
-    milestoneEndDate.setHours(milestoneEndDate.getHours() + 1)
-
-    // Build summary (title in Outlook)
-    const summary = buildEventSummary(milestone)
-
-    // Build URL
-    const workOrderUrl = getWorkOrderUrl(request, milestone)
-
-    // Create event
-    const eventData: ICalEventData = {
-      start: milestoneDate,
-      created: new Date(milestone.recordCreate_timeMillis ?? 0),
-      stamp: new Date(milestone.recordCreate_timeMillis ?? 0),
-      lastModified: new Date(
-        Math.max(
-          milestone.recordUpdate_timeMillis ?? 0,
-          milestone.workOrderRecordUpdate_timeMillis ?? 0
-        )
-      ),
-      allDay: !milestone.workOrderMilestoneTime,
-      summary,
-      url: workOrderUrl
-    }
-
-    if (!eventData.allDay) {
-      eventData.end = milestoneEndDate
-    }
-
-    const calendarEvent = calendar.createEvent(eventData)
-
-    // Build description
-    const descriptionHTML = buildEventDescriptionHTML(request, milestone)
-
-    calendarEvent.description({
-      plain: workOrderUrl,
-      html: descriptionHTML
-    })
-
-    // Set status
-    if (milestone.workOrderMilestoneCompletionDate) {
-      calendarEvent.status(ICalEventStatus.CONFIRMED)
-    }
-
-    // Add categories
-    const categories = buildEventCategoryList(milestone)
-    for (const category of categories) {
-      calendarEvent.createCategory({
-        name: category
-      })
-    }
-
-    // Set location
-    const location = buildEventLocation(milestone)
-    calendarEvent.location(location)
-
-    // Set organizer / attendees
-    if ((milestone.workOrderContracts ?? []).length > 0) {
-      let organizerSet = false
-      for (const contract of milestone.workOrderContracts ?? []) {
-        for (const interment of contract.contractInterments ?? []) {
-          if (organizerSet) {
-            calendarEvent.createAttendee({
-              name: interment.deceasedName ?? '',
-              email: getConfigProperty(
-                'settings.workOrders.calendarEmailAddress'
-              )
-            })
-          } else {
-            calendarEvent.organizer({
-              name: interment.deceasedName ?? '',
-              email: getConfigProperty(
-                'settings.workOrders.calendarEmailAddress'
-              )
-            })
-            organizerSet = true
-          }
-        }
-      }
-    } else {
-      calendarEvent.organizer({
-        name: milestone.recordCreate_userName ?? '',
-        email: getConfigProperty('settings.workOrders.calendarEmailAddress')
-      })
-    }
+    createCalendarEventFormMilestone(request, calendar, milestone)
   }
 
-  response.setHeader('Content-Disposition', 'inline; filename=calendar.ics')
-
-  response.setHeader('Content-Type', 'text/calendar; charset=utf-8')
-
-  response.send(calendar.toString())
+  response
+    .setHeader('Content-Disposition', 'inline; filename=calendar.ics')
+    .setHeader('Content-Type', 'text/calendar; charset=utf-8')
+    .send(calendar.toString())
 }

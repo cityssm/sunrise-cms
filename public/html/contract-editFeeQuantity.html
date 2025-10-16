@@ -5,17 +5,21 @@
       <h3 class="modal-card-title">Edit Quantity</h3>
       <button
         class="delete is-close-modal-button"
-        aria-label="close"
         type="button"
+        aria-label="close"
       ></button>
     </header>
     <section class="modal-card-body">
       <form id="form--contractFeeQuantity">
-        <input id="contractFeeQuantity--contractId" name="contractId" type="hidden" />
+        <input
+          id="contractFeeQuantity--contractId"
+          name="contractId"
+          type="hidden"
+        />
         <input id="contractFeeQuantity--feeId" name="feeId" type="hidden" />
-        <label class="label" for="contractFeeQuantity--quantity"
-          >Quantity</label
-        >
+        <label class="label" for="contractFeeQuantity--quantity">
+          Quantity
+        </label>
         <div class="field has-addons">
           <div class="control is-expanded">
             <input
@@ -27,8 +31,8 @@
               min="1"
               max="1000"
               step="1"
-              required
               onwheel="return false"
+              required
             />
           </div>
           <div class="control">
@@ -50,7 +54,9 @@
           <span class="icon"><i class="fa-solid fa-save"></i></span>
           <span>Update Quantity</span>
         </button>
-        <button class="button is-close-modal-button" type="button">Cancel</button>
+        <button class="button is-close-modal-button" type="button">
+          Cancel
+        </button>
       </div>
     </footer>
   </div>

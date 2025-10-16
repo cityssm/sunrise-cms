@@ -1,4 +1,5 @@
 import { type DateString } from '@cityssm/utils-datetime';
+import sqlite from 'better-sqlite3';
 export interface UpdateWorkOrderForm {
     workOrderId: string;
     workOrderNumber: string;
@@ -6,4 +7,4 @@ export interface UpdateWorkOrderForm {
     workOrderOpenDateString: DateString;
     workOrderTypeId: string;
 }
-export default function updateWorkOrder(workOrderForm: UpdateWorkOrderForm, user: User): boolean;
+export default function updateWorkOrder(workOrderForm: UpdateWorkOrderForm, user: User, connectedDatabase?: sqlite.Database): boolean;

@@ -10,6 +10,7 @@ export interface AddContractTypeFieldForm {
 
   fieldType?: string
   fieldValues?: string
+  /** '' = not required */
   isRequired?: string
   maxLength?: number | string
   minLength?: number | string
@@ -20,9 +21,10 @@ export interface AddContractTypeFieldForm {
 
 export default function addContractTypeField(
   addForm: AddContractTypeFieldForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): number {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
 
@@ -54,8 +56,9 @@ export default function addContractTypeField(
       rightNowMillis
     )
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
   clearCacheByTableName('ContractTypeFields')
 
   return result.lastInsertRowid as number

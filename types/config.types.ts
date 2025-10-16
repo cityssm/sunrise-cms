@@ -4,17 +4,31 @@ import type {
   FunctionAuthenticatorConfiguration,
   PlainTextAuthenticatorConfiguration
 } from '@cityssm/authentication-helper'
+import type { ConsignoCloudAPIConfig } from '@cityssm/consigno-cloud-api'
 import type { config as MSSQLConfig } from 'mssql'
+
+import type { NtfyTopic } from '../integrations/ntfy/types.js'
 
 export interface Config {
   application: ConfigApplication
 
   session: ConfigSession
 
+  /** Reverse Proxy Configuration */
   reverseProxy: {
+    /** Disable Compression */
     disableCompression?: boolean
+
+    /** Disable ETag */
     disableEtag?: boolean
+
+    /** Disable Rate Limiting */
     disableRateLimit?: boolean
+
+    /** Is traffic forwarded by a reverse proxy */
+    trafficIsForwarded?: boolean
+
+    /** URL Prefix, should start with a slash, but have no trailing slash */
     urlPrefix?: string
   }
 
@@ -39,24 +53,29 @@ export interface Config {
     domain: string
   }
 
+  /** Users - Can also be defined in the database */
   users: {
     testing?: Array<`*${string}`>
 
     canLogin?: string[]
+
     canUpdate?: string[]
+
+    canUpdateCemeteries?: string[]
+    canUpdateContracts?: string[]
     canUpdateWorkOrders?: string[]
+
     isAdmin?: string[]
   }
 
   settings: {
-    cityDefault?: string
-    provinceDefault?: string
-
-    enableKeyboardShortcuts?: boolean
-
+    /** The maximum latitude */
     latitudeMax?: number
+    /** The minimum latitude */
     latitudeMin?: number
+    /** The maximum longitude */
     longitudeMax?: number
+    /** The minimum longitude */
     longitudeMin?: number
 
     customizationsPath?: string
@@ -67,11 +86,6 @@ export interface Config {
 
     cemeteries: {
       refreshImageChanges?: boolean
-    }
-
-    burialSiteTypes: {
-      bodyCapacityMaxDefault?: number
-      crematedCapacityMaxDefault?: number
     }
 
     burialSites: {
@@ -88,8 +102,6 @@ export interface Config {
     workOrders: {
       calendarEmailAddress?: string
       prints?: string[]
-      workOrderMilestoneDateRecentAfterDays?: number
-      workOrderMilestoneDateRecentBeforeDays?: number
       workOrderNumberLength?: number
     }
 
@@ -102,6 +114,15 @@ export interface Config {
       contentDisposition?: 'attachment' | 'inline'
     }
 
+    databaseBackup: {
+      taskIsEnabled: boolean
+
+      backupHour?: number
+      deleteAgeDays?: number
+    }
+  }
+
+  integrations: {
     dynamicsGP?: {
       integrationIsEnabled: boolean
       mssqlConfig?: MSSQLConfig
@@ -110,6 +131,16 @@ export interface Config {
       itemNumbers?: string[]
       lookupOrder?: DynamicsGPLookup[]
       trialBalanceCodes?: string[]
+    }
+
+    consignoCloud?: Partial<ConsignoCloudAPIConfig> & {
+      integrationIsEnabled: boolean
+    }
+
+    ntfy?: {
+      integrationIsEnabled: boolean
+      server?: string
+      topics?: Partial<Record<NtfyTopic, string>>
     }
   }
 }
@@ -123,24 +154,30 @@ interface ConfigApplication {
   applicationName?: string
   httpPort?: number
 
-  backgroundURL?: string
-  logoURL?: string
+  /** The base, public facing URL of the application, including the protocol (http or https), and any URL prefixes */
+  applicationUrl?: string
 
+  backgroundUrl?: string
+  logoUrl?: string
+
+  /** The maximum number of concurrent processes */
   maximumProcesses?: number
-  ntfyStartup?: ConfigNtfyStartup
-  useTestDatabases?: boolean
-}
 
-export interface ConfigNtfyStartup {
-  server?: string
-  topic: string
+  /** Use test databases */
+  useTestDatabases?: boolean
+
+  attachmentsPath?: string
+
+  /** In megabytes */
+  maxAttachmentFileSize?: number
 }
 
 interface ConfigSession {
   cookieName?: string
-  doKeepAlive?: boolean
   maxAgeMillis?: number
   secret?: string
+
+  doKeepAlive?: boolean
 }
 
 export interface ConfigBurialSiteNameSegments {

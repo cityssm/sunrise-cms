@@ -12,7 +12,7 @@ interface WhereClauseReturn {
 export function getBurialSiteNameWhereClause(
   burialSiteName = '',
   burialSiteNameSearchType: BurialSiteNameSearchType = '',
-  burialSitesTableAlias = 'l'
+  burialSitesTableAlias = 'b'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
   const sqlParameters: unknown[] = []
@@ -35,7 +35,10 @@ export function getBurialSiteNameWhereClause(
         const burialSiteNamePieces = burialSiteName.toLowerCase().split(' ')
 
         for (const burialSiteNamePiece of burialSiteNamePieces) {
-          if (burialSiteNamePiece === '' || usedPieces.has(burialSiteNamePiece)) {
+          if (
+            burialSiteNamePiece === '' ||
+            usedPieces.has(burialSiteNamePiece)
+          ) {
             continue
           }
 
@@ -63,7 +66,6 @@ export function getContractTimeWhereClause(
 
   const currentDateString = dateToInteger(new Date())
 
-  // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
   switch (contractTime ?? '') {
     case 'current': {
       sqlWhereClause += ` and ${contractsTableAlias}.contractStartDate <= ?
@@ -73,16 +75,19 @@ export function getContractTimeWhereClause(
     }
 
     case 'future': {
-      sqlWhereClause +=
-        ` and ${contractsTableAlias}.contractStartDate > ?`
+      sqlWhereClause += ` and ${contractsTableAlias}.contractStartDate > ?`
       sqlParameters.push(currentDateString)
       break
     }
 
     case 'past': {
-      sqlWhereClause +=
-        ` and ${contractsTableAlias}.contractEndDate < ?`
+      sqlWhereClause += ` and ${contractsTableAlias}.contractEndDate < ?`
       sqlParameters.push(currentDateString)
+      break
+    }
+
+    default: {
+      // no default
       break
     }
   }
@@ -95,7 +100,7 @@ export function getContractTimeWhereClause(
 
 export function getDeceasedNameWhereClause(
   deceasedName = '',
-  tableAlias = 'o'
+  tableAlias = 'ci'
 ): WhereClauseReturn {
   let sqlWhereClause = ''
   const sqlParameters: unknown[] = []
@@ -111,6 +116,33 @@ export function getDeceasedNameWhereClause(
     usedPieces.add(namePiece)
 
     sqlWhereClause += ` and instr(lower(${tableAlias}.deceasedName), ?)`
+    sqlParameters.push(namePiece)
+  }
+
+  return {
+    sqlParameters,
+    sqlWhereClause
+  }
+}
+
+export function getPurchaserNameWhereClause(
+  purchaserName = '',
+  tableAlias = 'c'
+): WhereClauseReturn {
+  let sqlWhereClause = ''
+  const sqlParameters: unknown[] = []
+
+  const usedPieces = new Set<string>()
+
+  const purchaserNamePieces = purchaserName.toLowerCase().split(' ')
+  for (const namePiece of purchaserNamePieces) {
+    if (namePiece === '' || usedPieces.has(namePiece)) {
+      continue
+    }
+
+    usedPieces.add(namePiece)
+
+    sqlWhereClause += ` and instr(lower(${tableAlias}.purchaserName), ?)`
     sqlParameters.push(namePiece)
   }
 

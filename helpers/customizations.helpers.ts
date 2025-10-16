@@ -11,7 +11,7 @@ import { DEBUG_NAMESPACE } from '../debug.config.js'
 
 import { getConfigProperty } from './config.helpers.js'
 
-const debug = Debug(`${DEBUG_NAMESPACE}:customizations`)
+const debug = Debug(`${DEBUG_NAMESPACE}:helpers:customizations`)
 
 const customizationsPath = getConfigProperty('settings.customizationsPath')
 
@@ -29,7 +29,7 @@ if (customizationsPath !== '.') {
 }
 
 export function getCustomizationPdfPrintConfigs(): Record<string, PrintConfig> {
-  if (customizationsConfig?.prints?.pdf) {
+  if (customizationsConfig?.prints?.pdf !== undefined) {
     return customizationsConfig.prints.pdf
   }
 

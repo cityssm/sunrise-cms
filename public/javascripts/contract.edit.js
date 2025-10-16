@@ -1,7 +1,5 @@
-"use strict";
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
@@ -30,20 +28,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
-                    globalThis.location.href = sunrise.getContractURL(responseJSON.contractId, true, true);
+                    globalThis.location.href = sunrise.getContractUrl(responseJSON.contractId, true, true);
                 }
                 else {
                     bulmaJS.alert({
-                        message: 'Contract Updated Successfully',
-                        contextualColorName: 'success'
+                        contextualColorName: 'success',
+                        message: 'Contract Updated Successfully'
                     });
                 }
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Saving Contract',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -59,13 +57,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const responseJSON = rawResponseJSON;
             if (responseJSON.success) {
                 clearUnsavedChanges();
-                globalThis.location.href = sunrise.getContractURL(responseJSON.contractId, true);
+                globalThis.location.href = sunrise.getContractUrl(responseJSON.contractId, true);
             }
             else {
                 bulmaJS.alert({
+                    contextualColorName: 'danger',
                     title: 'Error Copying Record',
-                    message: responseJSON.errorMessage ?? '',
-                    contextualColorName: 'danger'
+                    message: responseJSON.errorMessage ?? ''
                 });
             }
         });
@@ -76,19 +74,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
         clickEvent.preventDefault();
         if (sunrise.hasUnsavedChanges()) {
             bulmaJS.alert({
+                contextualColorName: 'warning',
                 title: 'Unsaved Changes',
-                message: 'Please save all unsaved changes before continuing.',
-                contextualColorName: 'warning'
+                message: 'Please save all unsaved changes before continuing.'
             });
         }
         else {
             bulmaJS.confirm({
+                contextualColorName: 'info',
                 title: 'Copy Contract Record as New',
                 message: 'Are you sure you want to copy this record to a new record?',
-                contextualColorName: 'info',
                 okButton: {
-                    text: 'Yes, Copy',
-                    callbackFunction: doCopy
+                    callbackFunction: doCopy,
+                    text: 'Yes, Copy'
                 }
             });
         }
@@ -104,24 +102,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     clearUnsavedChanges();
-                    globalThis.location.href = sunrise.getContractURL();
+                    globalThis.location.href = sunrise.getContractUrl();
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Deleting Record',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
         }
         bulmaJS.confirm({
+            contextualColorName: 'warning',
             title: 'Delete Contract Record',
             message: 'Are you sure you want to delete this record?',
-            contextualColorName: 'warning',
             okButton: {
-                text: 'Yes, Delete',
-                callbackFunction: doDelete
+                callbackFunction: doDelete,
+                text: 'Yes, Delete'
             }
         });
     });
@@ -138,9 +136,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     : 'Deceased';
             }
             if (contractTypeIdElement.value === '') {
-                contractFieldsContainerElement.innerHTML = `<div class="message is-info">
-          <p class="message-body">Select the contract type to load the available fields.</p>
-          </div>`;
+                contractFieldsContainerElement.innerHTML = /*html*/ `
+          <div class="message is-info">
+            <p class="message-body">Select the contract type to load the available fields.</p>
+          </div>
+        `;
                 return;
             }
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetContractTypeFields`, {
@@ -148,9 +148,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.contractTypeFields.length === 0) {
-                    contractFieldsContainerElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">There are no additional fields for this contract type.</p>
-              </div>`;
+                    contractFieldsContainerElement.innerHTML = /*html*/ `
+              <div class="message is-info">
+                <p class="message-body">There are no additional fields for this contract type.</p>
+              </div>
+            `;
                     return;
                 }
                 contractFieldsContainerElement.innerHTML = '';
@@ -161,16 +163,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const fieldId = `contract--${fieldName}`;
                     const fieldElement = document.createElement('div');
                     fieldElement.className = 'field';
-                    fieldElement.innerHTML = `<label class="label" for="${cityssm.escapeHTML(fieldId)}"></label><div class="control"></div>`;
+                    fieldElement.innerHTML = /*html*/ `
+              <label class="label" for="${cityssm.escapeHTML(fieldId)}"></label>
+              <div class="control"></div>
+            `;
                     fieldElement.querySelector('label').textContent = contractTypeField.contractTypeField;
                     if (contractTypeField.fieldType === 'select' ||
                         (contractTypeField.fieldValues ?? '') !== '') {
                         ;
-                        fieldElement.querySelector('.control').innerHTML = `<div class="select is-fullwidth">
+                        fieldElement.querySelector('.control').innerHTML = /*html*/ `
+                <div class="select is-fullwidth">
                   <select id="${cityssm.escapeHTML(fieldId)}" name="${cityssm.escapeHTML(fieldName)}">
-                  <option value="">(Not Set)</option>
+                    <option value="">(Not Set)</option>
                   </select>
-                  </div>`;
+                </div>
+              `;
                         const selectElement = fieldElement.querySelector('select');
                         selectElement.required = contractTypeField.isRequired;
                         const optionValues = contractTypeField.fieldValues.split('\n');
@@ -200,8 +207,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 contractFieldsContainerElement.insertAdjacentHTML('beforeend', 
                 // eslint-disable-next-line no-secrets/no-secrets
-                `<input name="contractTypeFieldIds" type="hidden"
-              value="${cityssm.escapeHTML(contractTypeFieldIds.slice(1))}" />`);
+                /*html*/ `
+              <input
+                name="contractTypeFieldIds"
+                type="hidden"
+                value="${cityssm.escapeHTML(contractTypeFieldIds.slice(1))}" />
+            `);
             });
         });
     }
@@ -245,7 +256,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             directionOfArrivalElement.innerHTML =
                 '<option value="">(No Direction)</option>';
             for (const direction of exports.directionsOfArrival) {
-                // eslint-disable-next-line security/detect-object-injection
+                /* eslint-disable security/detect-object-injection */
                 if (responseJSON.directionsOfArrival[direction] !== undefined) {
                     const optionElement = document.createElement('option');
                     optionElement.value = direction;
@@ -259,6 +270,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                     directionOfArrivalElement.append(optionElement);
                 }
+                /* eslint-enable security/detect-object-injection */
             }
         });
     }
@@ -282,15 +294,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
             renderSelectedBurialSiteAndClose(selectedBurialSiteElement.dataset.burialSiteId ?? '', selectedBurialSiteElement.dataset.burialSiteName ?? '');
         }
         function searchBurialSites() {
-            // eslint-disable-next-line no-unsanitized/property
             burialSiteSelectResultsElement.innerHTML =
                 sunrise.getLoadingParagraphHTML('Searching...');
             cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, burialSiteSelectFormElement, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.count === 0) {
-                    burialSiteSelectResultsElement.innerHTML = `<div class="message is-info">
-              <p class="message-body">No results.</p>
-              </div>`;
+                    burialSiteSelectResultsElement.innerHTML = /*html*/ `
+              <div class="message is-info">
+                <p class="message-body">No results.</p>
+              </div>
+            `;
                     return;
                 }
                 const panelElement = document.createElement('div');
@@ -303,18 +316,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         burialSite.burialSiteId.toString();
                     panelBlockElement.dataset.burialSiteName = burialSite.burialSiteName;
                     // eslint-disable-next-line no-unsanitized/property
-                    panelBlockElement.innerHTML = `<div class="columns">
-              <div class="column">
-                ${cityssm.escapeHTML(burialSite.burialSiteName ?? '')}<br />
-                <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
+                    panelBlockElement.innerHTML = /*html*/ `
+              <div class="columns">
+                <div class="column">
+                  ${cityssm.escapeHTML(burialSite.burialSiteName)}<br />
+                  <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
+                </div>
+                <div class="column">
+                  ${cityssm.escapeHTML(burialSite.burialSiteStatus)}<br />
+                  <span class="is-size-7">
+                    ${(burialSite.contractCount ?? 0) > 0 ? 'Has Current Contract' : ''}
+                  </span>
+                </div>
               </div>
-              <div class="column">
-                ${cityssm.escapeHTML(burialSite.burialSiteStatus)}<br />
-                <span class="is-size-7">
-                  ${(burialSite.contractCount ?? 0) > 0 ? 'Has Current Contract' : ''}
-                </span>
-              </div>
-              </div>`;
+            `;
                     panelBlockElement.addEventListener('click', selectExistingBurialSite);
                     panelElement.append(panelBlockElement);
                 }
@@ -332,9 +347,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
+                        contextualColorName: 'danger',
                         title: 'Error Creating Burial Site',
-                        message: responseJSON.errorMessage ?? '',
-                        contextualColorName: 'danger'
+                        message: responseJSON.errorMessage ?? ''
                     });
                 }
             });
@@ -411,8 +426,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const burialSiteId = document.querySelector('#contract--burialSiteId').value;
         if (burialSiteId === '') {
             bulmaJS.alert({
-                message: 'No burial site selected.',
-                contextualColorName: 'info'
+                contextualColorName: 'info',
+                message: 'No burial site selected.'
             });
         }
         else {
@@ -424,8 +439,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         ?.addEventListener('click', () => {
         if (burialSiteNameElement.disabled) {
             bulmaJS.alert({
-                message: 'You need to unlock the field before clearing it.',
-                contextualColorName: 'info'
+                contextualColorName: 'info',
+                message: 'You need to unlock the field before clearing it.'
             });
         }
         else {
@@ -467,6 +482,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ?.classList.toggle('is-hidden', funeralHomeId !== 'new');
         });
     }
+    const funeralHomeSelect = document.querySelector('#contract--funeralHomeId');
+    const funeralDirectorDatalist = document.querySelector('#datalist--funeralDirectors');
+    // Handle funeral home selection change
+    funeralHomeSelect?.addEventListener('change', (event) => {
+        const funeralHomeId = event.currentTarget.value;
+        // Clear existing suggestions
+        funeralDirectorDatalist?.replaceChildren();
+        if (funeralHomeId === '') {
+            return;
+        }
+        // Make AJAX request to get suggestions
+        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetFuneralDirectors`, {
+            funeralHomeId
+        }, (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON;
+            for (const funeralDirectorName of responseJSON.funeralDirectorNames) {
+                const option = document.createElement('option');
+                option.value = funeralDirectorName;
+                funeralDirectorDatalist?.append(option);
+            }
+        });
+    });
     /*
      * Deceased
      */
@@ -494,7 +531,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         sunrise.initializeMinDateUpdate(birthDateStringElement, deathDateStringElement);
         sunrise.initializeMinDateUpdate(deathDateStringElement, document.querySelector('#contract--funeralDateString'));
         const calculateDeathAgeButtonElement = document.querySelector('#button--calculateDeathAge');
-        function toggleDeathAgeCalculatorButton() {
+        // Avoid potential hoisting issues
+        const toggleDeathAgeCalculatorButton = () => {
             if (birthDateStringElement.value === '' ||
                 deathDateStringElement.value === '') {
                 calculateDeathAgeButtonElement.setAttribute('disabled', 'disabled');
@@ -502,7 +540,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else {
                 calculateDeathAgeButtonElement.removeAttribute('disabled');
             }
-        }
+        };
         birthDateStringElement.addEventListener('change', toggleDeathAgeCalculatorButton);
         deathDateStringElement.addEventListener('change', toggleDeathAgeCalculatorButton);
         calculateDeathAgeButtonElement.addEventListener('click', (clickEvent) => {

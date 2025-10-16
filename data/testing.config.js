@@ -1,4 +1,4 @@
-import { config as cemeteryConfig } from './ssm.ontario.config.js';
+import { config as cemeteryConfig } from './partialConfigs/ontario.partialConfig.js';
 export const config = { ...cemeteryConfig };
 config.application.useTestDatabases = true;
 config.login = {
@@ -20,9 +20,34 @@ config.session.doKeepAlive = true;
 config.users = {
     canLogin: ['*testView', '*testUpdate', '*testAdmin'],
     canUpdate: ['*testUpdate'],
-    canUpdateWorkOrders: ['*testUpdate'],
     isAdmin: ['*testAdmin'],
     testing: ['*testView', '*testUpdate', '*testAdmin']
 };
-config.settings.dynamicsGP.integrationIsEnabled = false;
+config.settings.burialSites.burialSiteNameSegments = {
+    includeCemeteryKey: true,
+    separator: '-',
+    segments: {
+        1: {
+            isAvailable: true,
+            isRequired: false,
+            label: 'Range',
+            maxLength: 4,
+            minLength: 1
+        },
+        2: {
+            isAvailable: true,
+            isRequired: false,
+            label: 'Lot',
+            maxLength: 4,
+            minLength: 1
+        },
+        3: {
+            isAvailable: true,
+            isRequired: true,
+            label: 'Grave',
+            maxLength: 4,
+            minLength: 1
+        }
+    }
+};
 export default config;

@@ -47,36 +47,37 @@ export interface UpdateContractForm {
 // eslint-disable-next-line complexity
 export default function updateContract(
   updateForm: UpdateContractForm,
-  user: User
+  user: User,
+  connectedDatabase?: sqlite.Database
 ): boolean {
-  const database = sqlite(sunriseDB)
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
     .prepare(
       `update Contracts
         set contractTypeId = ?,
-        burialSiteId = ?,
-        contractStartDate = ?,
-        contractEndDate = ?,
-        funeralHomeId = ?,
-        funeralDirectorName = ?,
-        funeralDate = ?,
-        funeralTime = ?,
-        directionOfArrival = ?,
-        committalTypeId = ?,
-        purchaserName = ?,
-        purchaserAddress1 = ?,
-        purchaserAddress2 = ?,
-        purchaserCity = ?,
-        purchaserProvince = ?,
-        purchaserPostalCode = ?,
-        purchaserPhoneNumber = ?,
-        purchaserEmail = ?,
-        purchaserRelationship = ?,
-        recordUpdate_userName = ?,
-        recordUpdate_timeMillis = ?
+          burialSiteId = ?,
+          contractStartDate = ?,
+          contractEndDate = ?,
+          funeralHomeId = ?,
+          funeralDirectorName = ?,
+          funeralDate = ?,
+          funeralTime = ?,
+          directionOfArrival = ?,
+          committalTypeId = ?,
+          purchaserName = ?,
+          purchaserAddress1 = ?,
+          purchaserAddress2 = ?,
+          purchaserCity = ?,
+          purchaserProvince = ?,
+          purchaserPostalCode = ?,
+          purchaserPhoneNumber = ?,
+          purchaserEmail = ?,
+          purchaserRelationship = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
         where contractId = ?
-        and recordDelete_timeMillis is null`
+          and recordDelete_timeMillis is null`
     )
     .run(
       updateForm.contractTypeId,
@@ -141,7 +142,9 @@ export default function updateContract(
     }
   }
 
-  database.close()
-
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
+  
   return result.changes > 0
 }
