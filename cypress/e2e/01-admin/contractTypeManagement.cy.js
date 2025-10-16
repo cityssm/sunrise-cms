@@ -1,6 +1,7 @@
 import { testAdmin } from '../../../test/_globals.js';
-import { login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, login, logout } from '../../support/index.js';
 describe('Admin - Contract Type Management', () => {
+    const contractTypeTitleSelector = '.container--contractType .panel-heading .title';
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
@@ -11,5 +12,33 @@ describe('Admin - Contract Type Management', () => {
     it('Has no detectable accessibility issues', () => {
         cy.injectAxe();
         cy.checkA11y();
+    });
+    it('Adds a new contract type', () => {
+        cy.get('#button--addContractType').click();
+        cy.get('.modal').should('be.visible');
+        cy.injectAxe();
+        cy.checkA11y();
+        cy.fixture('contractType.json').then((contractType) => {
+            cy.get(".modal input[name='contractType']").type(contractType.contractType);
+            cy.get(".modal button[type='submit']").click();
+            cy.wait(ajaxDelayMillis);
+            cy.get(contractTypeTitleSelector).should('contain.text', contractType.contractType);
+        });
+    });
+    it('Removes a contract type', () => {
+        cy.fixture('contractType.json').then((contractType) => {
+            // Find and click the delete button for our test contract type
+            cy.get(contractTypeTitleSelector)
+                .contains(contractType.contractType)
+                .parents('.container--contractType')
+                .find('.button--deleteContractType')
+                .click();
+            // Confirm the deletion in the modal
+            cy.get('.modal').should('be.visible');
+            cy.get('.modal').contains('Yes, Delete Contract Type').click();
+            cy.wait(ajaxDelayMillis);
+            // Verify the contract type is removed
+            cy.get(contractTypeTitleSelector).should('not.contain.text', contractType.contractType);
+        });
     });
 });
