@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'development') {
   Debug.enable(DEBUG_ENABLE_NAMESPACES)
 }
 
-const debug = Debug(`${DEBUG_NAMESPACE}:puppeteerSetup`)
+const debug = Debug(`${DEBUG_NAMESPACE}:tasks:puppeteerSetup`)
 
 const browser = getConfigProperty('settings.printPdf.browser')
 

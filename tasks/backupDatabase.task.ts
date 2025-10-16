@@ -53,7 +53,7 @@ async function cleanupOldBackups(): Promise<void> {
           // eslint-disable-next-line security/detect-non-literal-fs-filename
           await fs.unlink(filePath)
           debug(`Deleted old backup file: ${file}`)
-          deletedCount++
+          deletedCount += 1
         }
       } catch (error) {
         debug(`Error processing backup file ${file}:`, error)
