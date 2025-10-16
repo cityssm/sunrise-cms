@@ -27,33 +27,32 @@ describe('Contracts - Update', () => {
         // Select the first available burial site
         cy.get("input[name='burialSiteId']").should('exist');
         cy.fixture('contract.json').then((contractData) => {
-            const inputPrefix = "input[name='";
             // Fill in purchaser information
-            cy.get(inputPrefix + "purchaserName']")
+            cy.get("input[name='purchaserName']")
                 .clear()
                 .type(contractData.purchaserName);
-            cy.get(inputPrefix + "purchaserAddress1']")
+            cy.get("input[name='purchaserAddress1']")
                 .clear()
                 .type(contractData.purchaserAddress1);
-            cy.get(inputPrefix + "purchaserAddress2']")
+            cy.get("input[name='purchaserAddress2']")
                 .clear()
                 .type(contractData.purchaserAddress2);
-            cy.get(inputPrefix + "purchaserCity']")
+            cy.get("input[name='purchaserCity']")
                 .clear()
                 .type(contractData.purchaserCity);
-            cy.get(inputPrefix + "purchaserProvince']")
+            cy.get("input[name='purchaserProvince']")
                 .clear()
                 .type(contractData.purchaserProvince);
-            cy.get(inputPrefix + "purchaserPostalCode']")
+            cy.get("input[name='purchaserPostalCode']")
                 .clear()
                 .type(contractData.purchaserPostalCode);
-            cy.get(inputPrefix + "purchaserPhoneNumber']")
+            cy.get("input[name='purchaserPhoneNumber']")
                 .clear()
                 .type(contractData.purchaserPhoneNumber);
-            cy.get(inputPrefix + "purchaserEmail']")
+            cy.get("input[name='purchaserEmail']")
                 .clear()
                 .type(contractData.purchaserEmail);
-            cy.get(inputPrefix + "purchaserRelationship']")
+            cy.get("input[name='purchaserRelationship']")
                 .clear()
                 .type(contractData.purchaserRelationship);
         });
@@ -64,16 +63,15 @@ describe('Contracts - Update', () => {
             .should('not.contain', '/new')
             .should('contain', '/edit');
         cy.fixture('contract.json').then((contractData) => {
-            const inputPrefix = "input[name='";
-            cy.get(inputPrefix + "purchaserName']").should('have.value', contractData.purchaserName);
-            cy.get(inputPrefix + "purchaserAddress1']").should('have.value', contractData.purchaserAddress1);
-            cy.get(inputPrefix + "purchaserAddress2']").should('have.value', contractData.purchaserAddress2);
-            cy.get(inputPrefix + "purchaserCity']").should('have.value', contractData.purchaserCity);
-            cy.get(inputPrefix + "purchaserProvince']").should('have.value', contractData.purchaserProvince);
-            cy.get(inputPrefix + "purchaserPostalCode']").should('have.value', contractData.purchaserPostalCode);
-            cy.get(inputPrefix + "purchaserPhoneNumber']").should('have.value', contractData.purchaserPhoneNumber);
-            cy.get(inputPrefix + "purchaserEmail']").should('have.value', contractData.purchaserEmail);
-            cy.get(inputPrefix + "purchaserRelationship']").should('have.value', contractData.purchaserRelationship);
+            cy.get("input[name='purchaserName']").should('have.value', contractData.purchaserName);
+            cy.get("input[name='purchaserAddress1']").should('have.value', contractData.purchaserAddress1);
+            cy.get("input[name='purchaserAddress2']").should('have.value', contractData.purchaserAddress2);
+            cy.get("input[name='purchaserCity']").should('have.value', contractData.purchaserCity);
+            cy.get("input[name='purchaserProvince']").should('have.value', contractData.purchaserProvince);
+            cy.get("input[name='purchaserPostalCode']").should('have.value', contractData.purchaserPostalCode);
+            cy.get("input[name='purchaserPhoneNumber']").should('have.value', contractData.purchaserPhoneNumber);
+            cy.get("input[name='purchaserEmail']").should('have.value', contractData.purchaserEmail);
+            cy.get("input[name='purchaserRelationship']").should('have.value', contractData.purchaserRelationship);
         });
     });
 });
