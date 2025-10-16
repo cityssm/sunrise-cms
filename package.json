@@ -86,7 +86,7 @@
     "@types/http-errors": "^2.0.5",
     "@types/leaflet": "^1.9.21",
     "@types/mssql": "^9.1.8",
-    "@types/node": "^24.7.2",
+    "@types/node": "^24.8.0",
     "@types/node-schedule": "^2.1.8",
     "@types/node-windows": "^0.1.6",
     "@types/papaparse": "^5.3.16",
