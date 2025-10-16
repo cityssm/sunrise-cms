@@ -1,0 +1,16 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+.github
+*.md
+temp
+test
+cypress
+.vscode
+.prettierignore
+.markdownlint.json
+.deepsource.toml
+coverage
+.nyc_output
+*.log
