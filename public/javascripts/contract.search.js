@@ -90,7 +90,7 @@
       </td>
       <td>
         ${(contract.burialSiteId ?? -1) === -1
-            ? '<span class="has-text-grey">(No Burial Site)</span>'
+            ? '<span class="has-text-grey-dark">(No Burial Site)</span>'
             : /*html*/ `
               <a class="${burialSiteLinkClass}"
                 href="${sunrise.getBurialSiteUrl(contract.burialSiteId ?? '')}"
