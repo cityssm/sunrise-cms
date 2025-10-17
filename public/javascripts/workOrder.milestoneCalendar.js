@@ -66,7 +66,6 @@
                 finalRow.append(emptyCell);
             }
         }
-        milestoneCalendarContainerElement.innerHTML = '';
         milestoneCalendarContainerElement.append(tableElement);
     }
     function buildWorkOrderElement(workOrder) {
@@ -142,15 +141,22 @@
         return workOrderElement;
     }
     function renderMilestones(workOrderMilestones) {
+        milestoneCalendarContainerElement.innerHTML = '';
         if (workOrderMilestones.length === 0) {
             milestoneCalendarContainerElement.innerHTML = /*html*/ `
         <div class="message is-info">
           <p class="message-body">No Milestones Found</p>
         </div>
       `;
-            return;
+            // return
         }
-        renderBlankCalendar(workOrderMilestones[0].workOrderMilestoneDateString ?? '');
+        let dateString = workOrderMilestones[0]?.workOrderMilestoneDateString;
+        dateString ??=
+            workOrderMilestoneYearElement.value.padStart(4, '0') +
+                '-' +
+                workOrderMilestoneMonthElement.value.padStart(2, '0') +
+                '-01';
+        renderBlankCalendar(dateString);
         const currentDateString = cityssm.dateToString(new Date());
         // Render the milestones
         for (const workOrderMilestone of workOrderMilestones) {
