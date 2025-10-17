@@ -12,42 +12,33 @@ describe('Work Orders - Workday Report', () => {
   const workdayUrl = '/workOrders/workday'
   const dateSpanSelector = '#workdayDateStringSpan'
 
-  it('Has no detectable accessibility issues', () => {
+  it('Should page between days', () => {
     cy.visit(workdayUrl)
     cy.location('pathname').should('equal', workdayUrl)
 
     cy.injectAxe()
     cy.checkA11y()
-  })
-
-  it('Should page between days', () => {
-    cy.visit(workdayUrl)
-    cy.location('pathname').should('equal', workdayUrl)
 
     // Get the initial date string
-    cy.get(dateSpanSelector)
-      .invoke('text')
-      .as('initialDateString')
+    cy.get(dateSpanSelector).invoke('text').as('initialDateString')
 
-    // Click the next day button
-    cy.get('#button--workdayNextDay').click()
-    cy.wait(ajaxDelayMillis)
-
-    // Verify the date has changed
+    // Verify the date changes when clicking next day
     cy.get('@initialDateString').then((initialDateString) => {
+      // Click the next day button
+      cy.get('#button--workdayNextDay').click()
+      cy.wait(ajaxDelayMillis)
+
       cy.get(dateSpanSelector)
         .invoke('text')
         .should('not.equal', initialDateString)
-    })
 
-    // Click the previous day button twice to go before the initial date
-    cy.get('#button--workdayPreviousDay').click()
-    cy.wait(ajaxDelayMillis)
-    cy.get('#button--workdayPreviousDay').click()
-    cy.wait(ajaxDelayMillis)
+      // Click the previous day button twice to go before the initial date
+      cy.get('#button--workdayPreviousDay').click()
+      cy.wait(ajaxDelayMillis)
+      cy.get('#button--workdayPreviousDay').click()
+      cy.wait(ajaxDelayMillis)
 
-    // Verify we're on a different date than the initial
-    cy.get('@initialDateString').then((initialDateString) => {
+      // Verify we're on a different date than the initial
       cy.get(dateSpanSelector)
         .invoke('text')
         .should('not.equal', initialDateString)
