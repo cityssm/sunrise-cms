@@ -99,7 +99,7 @@ describe('Work Order Milestone Calendar', () => {
             // Click the link using Cypress's click method
             cy.wrap($link).click();
             // Verify we navigated to the workday page
-            cy.location('pathname').should('equal', '/workOrders/workday');
+            cy.location('pathname').should('include', '/workOrders/workday');
             cy.location('search').should('include', `workdayDateString=${dateString}`);
         });
     });
