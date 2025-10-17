@@ -36,10 +36,8 @@ describe('Admin - Contract Type Management', () => {
             cy.injectAxe();
             cy.checkA11y();
             // Update the contract type name
-            const updatedName = contractType.contractType + ' Updated';
-            cy.get(".modal input[name='contractType']")
-                .clear()
-                .type(updatedName);
+            const updatedName = `${contractType.contractType} Updated`;
+            cy.get(".modal input[name='contractType']").clear().type(updatedName);
             cy.get(".modal button[type='submit']").click();
             cy.wait(ajaxDelayMillis);
             // Verify the contract type is updated
@@ -50,7 +48,7 @@ describe('Admin - Contract Type Management', () => {
     });
     it('Removes a contract type', () => {
         cy.fixture('contractType.json').then((contractType) => {
-            const nameToDelete = contractType.contractType + ' Updated';
+            const nameToDelete = `${contractType.contractType} Updated`;
             // Find and click the delete button for our test contract type
             cy.get(contractTypeTitleSelector)
                 .contains(nameToDelete)

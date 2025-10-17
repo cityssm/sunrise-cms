@@ -14,7 +14,7 @@ describe('Admin - Contract Type Management', () => {
   })
 
   afterEach(logout)
-  
+
   it('Adds a new contract type', () => {
     cy.injectAxe()
     cy.checkA11y()
@@ -58,20 +58,16 @@ describe('Admin - Contract Type Management', () => {
       cy.checkA11y()
 
       // Update the contract type name
-      const updatedName = contractType.contractType + ' Updated'
-      cy.get(".modal input[name='contractType']")
-        .clear()
-        .type(updatedName)
+      const updatedName = `${contractType.contractType} Updated`
+
+      cy.get(".modal input[name='contractType']").clear().type(updatedName)
 
       cy.get(".modal button[type='submit']").click()
 
       cy.wait(ajaxDelayMillis)
 
       // Verify the contract type is updated
-      cy.get(contractTypeTitleSelector).should(
-        'contain.text',
-        updatedName
-      )
+      cy.get(contractTypeTitleSelector).should('contain.text', updatedName)
 
       // Update the fixture to use updated name for delete test
       contractType.contractType = updatedName
@@ -80,8 +76,8 @@ describe('Admin - Contract Type Management', () => {
 
   it('Removes a contract type', () => {
     cy.fixture('contractType.json').then((contractType: ContractType) => {
-      const nameToDelete = contractType.contractType + ' Updated'
-      
+      const nameToDelete = `${contractType.contractType} Updated`
+
       // Find and click the delete button for our test contract type
       cy.get(contractTypeTitleSelector)
         .contains(nameToDelete)
@@ -97,10 +93,7 @@ describe('Admin - Contract Type Management', () => {
       cy.wait(ajaxDelayMillis)
 
       // Verify the contract type is removed
-      cy.get(contractTypeTitleSelector).should(
-        'not.contain.text',
-        nameToDelete
-      )
+      cy.get(contractTypeTitleSelector).should('not.contain.text', nameToDelete)
     })
   })
 })
