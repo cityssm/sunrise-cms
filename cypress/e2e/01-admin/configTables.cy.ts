@@ -1,5 +1,5 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable max-nested-callbacks */
+/* eslint-disable max-nested-callbacks, no-secrets/no-secrets */
 
 import { testAdmin } from '../../../test/_globals.js'
 import { ajaxDelayMillis, login, logout } from '../../support/index.js'
@@ -83,7 +83,9 @@ describe('Admin - Config Table Management', () => {
 
         // Confirm deletion in modal
         cy.get('.modal').should('be.visible')
-        cy.get('.modal button[data-cy="ok"]').contains('Delete Work Order Type').click()
+        cy.get('.modal button[data-cy="ok"]')
+          .contains('Delete Work Order Type')
+          .click()
 
         cy.wait(ajaxDelayMillis)
         cy.get('.modal button[data-cy="ok"]').click()
@@ -92,6 +94,81 @@ describe('Admin - Config Table Management', () => {
         cy.get(
           '#container--workOrderTypes tr:first input[name="workOrderType"]'
         ).should('not.have.value', configTables.workOrderTypeUpdated)
+      })
+    })
+  })
+
+  describe('Work Order Milestone Types', () => {
+    beforeEach(() => {
+      // Expand the Work Order Milestone Types panel
+      cy.contains('h2', 'Work Order Milestone Types')
+        .parents('.panel')
+        .find('.is-toggle-button')
+        .click()
+    })
+
+    it('Adds a new work order milestone type', () => {
+      cy.fixture('configTables.json').then((configTables) => {
+        cy.get(
+          '#form--addWorkOrderMilestoneType input[name="workOrderMilestoneType"]'
+        ).type(configTables.workOrderMilestoneType)
+
+        cy.get('#form--addWorkOrderMilestoneType button[type="submit"]').click()
+
+        cy.wait(ajaxDelayMillis)
+
+        cy.get(
+          '#container--workOrderMilestoneTypes tr:first input[name="workOrderMilestoneType"]'
+        ).should('have.value', configTables.workOrderMilestoneType)
+      })
+    })
+
+    it('Updates a work order milestone type', () => {
+      cy.fixture('configTables.json').then((configTables) => {
+        // Find the work order milestone type row and update it
+        cy.get(
+          '#container--workOrderMilestoneTypes tr:first input[name="workOrderMilestoneType"]'
+        )
+          .should('have.value', configTables.workOrderMilestoneType)
+          .clear()
+          .type(configTables.workOrderMilestoneTypeUpdated)
+          .parents('tr')
+          .find('button[type="submit"]')
+          .click()
+
+        cy.wait(ajaxDelayMillis)
+
+        // Verify update was successful by checking for updated text
+        cy.get(
+          '#container--workOrderMilestoneTypes tr:first input[name="workOrderMilestoneType"]'
+        ).should('have.value', configTables.workOrderMilestoneTypeUpdated)
+      })
+    })
+
+    it('Deletes a work order milestone type', () => {
+      cy.fixture('configTables.json').then((configTables) => {
+        // Find and click the delete button
+        cy.get(
+          '#container--workOrderMilestoneTypes tr:first input[name="workOrderMilestoneType"]'
+        )
+          .should('have.value', configTables.workOrderMilestoneTypeUpdated)
+          .parents('tr')
+          .find('.button--deleteWorkOrderMilestoneType')
+          .click()
+
+        // Confirm deletion in modal
+        cy.get('.modal').should('be.visible')
+        cy.get('.modal button[data-cy="ok"]')
+          .contains('Delete Work Order Milestone Type')
+          .click()
+
+        cy.wait(ajaxDelayMillis)
+        cy.get('.modal button[data-cy="ok"]').click()
+
+        // Verify the work order milestone type was deleted
+        cy.get(
+          '#container--workOrderMilestoneTypes tr:first input[name="workOrderMilestoneType"]'
+        ).should('not.have.value', configTables.workOrderMilestoneTypeUpdated)
       })
     })
   })
@@ -183,34 +260,37 @@ describe('Admin - Config Table Management', () => {
 
         cy.wait(ajaxDelayMillis)
 
-        cy.get('#container--committalTypes tr:first input[name="committalType"]').should(
-          'have.value',
-          configTables.committalType
-        )
+        cy.get(
+          '#container--committalTypes tr:first input[name="committalType"]'
+        ).should('have.value', configTables.committalType)
       })
     })
 
     it('Updates a committal type', () => {
       cy.fixture('configTables.json').then((configTables) => {
-        cy.get('#container--committalTypes tr:first input[name="committalType"]')
+        cy.get(
+          '#container--committalTypes tr:first input[name="committalType"]'
+        )
           .should('have.value', configTables.committalType)
           .clear()
           .type(configTables.committalTypeUpdated)
           .parents('tr')
-          .find('button[type="submit"]').click()
+          .find('button[type="submit"]')
+          .click()
 
         cy.wait(ajaxDelayMillis)
 
-        cy.get('#container--committalTypes tr:first input[name="committalType"]').should(
-          'have.value',
-          configTables.committalTypeUpdated
-        )
+        cy.get(
+          '#container--committalTypes tr:first input[name="committalType"]'
+        ).should('have.value', configTables.committalTypeUpdated)
       })
     })
 
     it('Deletes a committal type', () => {
       cy.fixture('configTables.json').then((configTables) => {
-        cy.get('#container--committalTypes tr:first input[name="committalType"]')
+        cy.get(
+          '#container--committalTypes tr:first input[name="committalType"]'
+        )
           .should('have.value', configTables.committalTypeUpdated)
           .parents('tr')
           .find('.button--deleteCommittalType')
@@ -222,10 +302,9 @@ describe('Admin - Config Table Management', () => {
         cy.wait(ajaxDelayMillis)
         cy.get('.modal button[data-cy="ok"]').click()
 
-        cy.get('#container--committalTypes tr:first input[name="committalType"]').should(
-          'not.have.value',
-          configTables.committalTypeUpdated
-        )
+        cy.get(
+          '#container--committalTypes tr:first input[name="committalType"]'
+        ).should('not.have.value', configTables.committalTypeUpdated)
       })
     })
   })
@@ -245,38 +324,43 @@ describe('Admin - Config Table Management', () => {
           '#form--addIntermentContainerType input[name="intermentContainerType"]'
         ).type(configTables.intermentContainerType)
 
-        cy.get('button[form="form--addIntermentContainerType"][type="submit"]').click()
+        cy.get(
+          'button[form="form--addIntermentContainerType"][type="submit"]'
+        ).click()
 
         cy.wait(ajaxDelayMillis)
 
-        cy.get('#container--intermentContainerTypes tr:first input[name="intermentContainerType"]').should(
-          'have.value',
-          configTables.intermentContainerType
-        )
+        cy.get(
+          '#container--intermentContainerTypes tr:first input[name="intermentContainerType"]'
+        ).should('have.value', configTables.intermentContainerType)
       })
     })
 
     it('Updates an interment container type', () => {
       cy.fixture('configTables.json').then((configTables) => {
-        cy.get('#container--intermentContainerTypes tr:first input[name="intermentContainerType"]')
+        cy.get(
+          '#container--intermentContainerTypes tr:first input[name="intermentContainerType"]'
+        )
           .should('have.value', configTables.intermentContainerType)
           .clear()
           .type(configTables.intermentContainerTypeUpdated)
           .parents('tr')
-          .find('button[type="submit"]').click()
+          .find('button[type="submit"]')
+          .click()
 
-            cy.wait(ajaxDelayMillis)
+        cy.wait(ajaxDelayMillis)
 
-        cy.get('#container--intermentContainerTypes tr:first input[name="intermentContainerType"]').should(
-          'have.value',
-          configTables.intermentContainerTypeUpdated
-        )
+        cy.get(
+          '#container--intermentContainerTypes tr:first input[name="intermentContainerType"]'
+        ).should('have.value', configTables.intermentContainerTypeUpdated)
       })
     })
 
     it('Deletes an interment container type', () => {
       cy.fixture('configTables.json').then((configTables) => {
-        cy.get('#container--intermentContainerTypes tr:first input[name="intermentContainerType"]')
+        cy.get(
+          '#container--intermentContainerTypes tr:first input[name="intermentContainerType"]'
+        )
           .should('have.value', configTables.intermentContainerTypeUpdated)
           .parents('tr')
           .find('.button--deleteIntermentContainerType')
@@ -288,10 +372,9 @@ describe('Admin - Config Table Management', () => {
         cy.wait(ajaxDelayMillis)
         cy.get('.modal button[data-cy="ok"]').click()
 
-        cy.get('#container--intermentContainerTypes tr:first input[name="intermentContainerType"]').should(
-          'not.have.value',
-          configTables.intermentContainerTypeUpdated
-        )
+        cy.get(
+          '#container--intermentContainerTypes tr:first input[name="intermentContainerType"]'
+        ).should('not.have.value', configTables.intermentContainerTypeUpdated)
       })
     })
   })
