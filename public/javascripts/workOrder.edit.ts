@@ -615,7 +615,10 @@ declare const exports: {
           '#milestoneEdit--workOrderMilestoneTimeString'
         ) as HTMLInputElement
 
-        if (workOrderMilestone.workOrderMilestoneTime) {
+        if (
+          workOrderMilestone.workOrderMilestoneTime !== null &&
+          workOrderMilestone.workOrderMilestoneTime !== undefined
+        ) {
           workOrderMilestoneTimeStringElement.value =
             workOrderMilestone.workOrderMilestoneTimeString ?? ''
         }
@@ -682,8 +685,14 @@ declare const exports: {
       <div class="columns is-mobile">
         <div class="column is-narrow">
           ${
-            milestone.workOrderMilestoneCompletionDate
+            milestone.workOrderMilestoneCompletionDate === null ||
+            milestone.workOrderMilestoneCompletionDate === undefined
               ? /*html*/ `
+                <button class="button button--completeMilestone" type="button" title="Incomplete">
+                  <span class="icon is-small"><i class="fa-regular fa-square"></i></span>
+                </button>
+              `
+              : /*html*/ `
                 <span
                   class="button is-static"
                   title="Completed ${cityssm.escapeHTML(milestone.workOrderMilestoneCompletionDateString ?? '')}"
@@ -691,22 +700,18 @@ declare const exports: {
                   <span class="icon is-small"><i class="fa-solid fa-check"></i></span>
                 </span>
               `
-              : /*html*/ `
-                <button class="button button--completeMilestone" type="button" title="Incomplete">
-                  <span class="icon is-small"><i class="fa-regular fa-square"></i></span>
-                </button>
-              `
           }
         </div>
         <div class="column">
           ${
-            milestone.workOrderMilestoneTypeId
-              ? /*html*/ `
+            milestone.workOrderMilestoneTypeId === null ||
+            milestone.workOrderMilestoneTypeId === undefined
+              ? ''
+              : /*html*/ `
                 <strong>
                   ${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}
                 </strong><br />
               `
-              : ''
           }
           ${
             milestone.workOrderMilestoneDate === 0
