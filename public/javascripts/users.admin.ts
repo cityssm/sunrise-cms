@@ -210,7 +210,9 @@ declare const exports: {
           <th class="has-text-centered">Can Update<br /> Contracts</th>
           <th class="has-text-centered">Can Update<br /> Work Orders</th>
           <th class="has-text-centered">Is Admin</th>
-          <th class="has-text-centered"></th>
+          <th class="has-text-centered">
+            <span class="is-sr-only">Delete User</span>
+          </th>
         </tr>
       </thead>
       <tbody></tbody>
