@@ -1,0 +1,12 @@
+{
+  "workOrderType": "Cypress Test - Work Order Type",
+  "workOrderTypeUpdated": "Cypress Test - Work Order Type Updated",
+  "workOrderMilestoneType": "Cypress Test - Milestone Type",
+  "workOrderMilestoneTypeUpdated": "Cypress Test - Milestone Type Updated",
+  "burialSiteStatus": "Cypress Test - Burial Site Status",
+  "burialSiteStatusUpdated": "Cypress Test - Burial Site Status Updated",
+  "committalType": "Cypress Test - Committal Type",
+  "committalTypeUpdated": "Cypress Test - Committal Type Updated",
+  "intermentContainerType": "Cypress Test - Container Type",
+  "intermentContainerTypeUpdated": "Cypress Test - Container Type Updated"
+}
