@@ -96,8 +96,8 @@ describe('Work Order Milestone Calendar', () => {
             expect(href).to.include('workdayDateString=');
             // Extract the date string from the link's parent td element
             const dateString = $link.closest('td').attr('data-date-string');
-            // Click the link
-            $link[0].click();
+            // Click the link using Cypress's click method
+            cy.wrap($link).click();
             // Verify we navigated to the workday page
             cy.location('pathname').should('equal', '/workOrders/workday');
             cy.location('search').should('include', `workdayDateString=${dateString}`);
