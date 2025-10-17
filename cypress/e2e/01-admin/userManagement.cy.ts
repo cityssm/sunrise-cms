@@ -78,7 +78,7 @@ describe('Admin - User Management', () => {
       cy.wait(ajaxDelayMillis)
 
       // Verify the user is removed
-      cy.get('table tbody tr').should('not.contain.text', user.userName)
+      cy.get('#container--users').should('not.contain.text', user.userName)
     })
   })
 })

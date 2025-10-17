@@ -55,7 +55,7 @@ describe('Admin - User Management', () => {
             cy.get('.modal button[data-cy="ok"]').contains('Delete User').click();
             cy.wait(ajaxDelayMillis);
             // Verify the user is removed
-            cy.get('table tbody tr').should('not.contain.text', user.userName);
+            cy.get('#container--users').should('not.contain.text', user.userName);
         });
     });
 });
