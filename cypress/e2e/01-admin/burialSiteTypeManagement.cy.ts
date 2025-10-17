@@ -68,9 +68,10 @@ describe('Admin - Burial Site Type Management', () => {
       cy.checkA11y()
 
       // Update the burial site type name
+      const updatedName = burialSiteType.burialSiteType + ' Updated'
       cy.get(".modal input[name='burialSiteType']")
         .clear()
-        .type(burialSiteType.burialSiteTypeUpdated ?? '')
+        .type(updatedName)
 
       cy.get(".modal button[type='submit']").click()
 
@@ -79,16 +80,18 @@ describe('Admin - Burial Site Type Management', () => {
       // Verify the burial site type is updated
       cy.get(burialSiteTypeTitleSelector).should(
         'contain.text',
-        burialSiteType.burialSiteTypeUpdated
+        updatedName
       )
     })
   })
 
   it('Removes a burial site type', () => {
     cy.fixture('burialSiteType.json').then((burialSiteType: BurialSiteType) => {
+      const nameToDelete = burialSiteType.burialSiteType + ' Updated'
+      
       // Find and click the delete button for our test burial site type
       cy.get(burialSiteTypeTitleSelector)
-        .contains(burialSiteType.burialSiteTypeUpdated ?? burialSiteType.burialSiteType)
+        .contains(nameToDelete)
         .parents('.container--burialSiteType')
         .find('.button--deleteBurialSiteType')
         .click()
@@ -103,7 +106,7 @@ describe('Admin - Burial Site Type Management', () => {
       // Verify the burial site type is removed
       cy.get(burialSiteTypeTitleSelector).should(
         'not.contain.text',
-        burialSiteType.burialSiteTypeUpdated ?? burialSiteType.burialSiteType
+        nameToDelete
       )
     })
   })
