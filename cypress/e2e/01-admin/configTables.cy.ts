@@ -1,3 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable max-nested-callbacks */
+
 import { testAdmin } from '../../../test/_globals.js'
 import { ajaxDelayMillis, login, logout } from '../../support/index.js'
 
@@ -15,19 +18,21 @@ describe('Admin - Config Table Management', () => {
     cy.get('button.is-toggle-button').each(($expandButton) => {
       cy.wrap($expandButton).click({ force: true })
     })
-    
+
     cy.injectAxe()
     cy.checkA11y()
   })
 
   describe('Work Order Types', () => {
-    it('Adds a new work order type', () => {
+    beforeEach(() => {
       // Expand the Work Order Types panel
       cy.contains('h2', 'Work Order Types')
         .parents('.panel')
         .find('.is-toggle-button')
         .click()
+    })
 
+    it('Adds a new work order type', () => {
       cy.fixture('configTables.json').then((configTables) => {
         cy.get('#form--addWorkOrderType input[name="workOrderType"]').type(
           configTables.workOrderType
@@ -37,135 +42,138 @@ describe('Admin - Config Table Management', () => {
 
         cy.wait(ajaxDelayMillis)
 
-        cy.get('#container--workOrderTypes').should(
-          'contain.text',
-          configTables.workOrderType
-        )
+        cy.get(
+          '#container--workOrderTypes tr:first input[name="workOrderType"]'
+        ).should('have.value', configTables.workOrderType)
       })
     })
 
     it('Updates a work order type', () => {
       cy.fixture('configTables.json').then((configTables) => {
         // Find the work order type row and update it
-        cy.get('#container--workOrderTypes tr')
-          .contains(configTables.workOrderType)
+        cy.get(
+          '#container--workOrderTypes tr:first input[name="workOrderType"]'
+        )
+          .should('have.value', configTables.workOrderType)
+          .clear()
+          .type(configTables.workOrderTypeUpdated)
           .parents('tr')
-          .within(() => {
-            cy.get('input[name="workOrderType"]')
-              .clear()
-              .type(configTables.workOrderTypeUpdated)
+          .find('button[type="submit"]')
+          .click()
 
-            cy.get('button[type="submit"]').click()
-
-            cy.wait(ajaxDelayMillis)
-          })
+        cy.wait(ajaxDelayMillis)
 
         // Verify update was successful by checking for updated text
-        cy.get('#container--workOrderTypes').should(
-          'contain.text',
-          configTables.workOrderTypeUpdated
-        )
+        cy.get(
+          '#container--workOrderTypes tr:first input[name="workOrderType"]'
+        ).should('have.value', configTables.workOrderTypeUpdated)
       })
     })
 
     it('Deletes a work order type', () => {
       cy.fixture('configTables.json').then((configTables) => {
         // Find and click the delete button
-        cy.get('#container--workOrderTypes tr')
-          .contains(configTables.workOrderTypeUpdated)
+        cy.get(
+          '#container--workOrderTypes tr:first input[name="workOrderType"]'
+        )
+          .should('have.value', configTables.workOrderTypeUpdated)
           .parents('tr')
           .find('.button--deleteWorkOrderType')
           .click()
 
         // Confirm deletion in modal
         cy.get('.modal').should('be.visible')
-        cy.get('.modal').contains('Delete Work Order Type').click()
+        cy.get('.modal button[data-cy="ok"]').contains('Delete Work Order Type').click()
 
         cy.wait(ajaxDelayMillis)
+        cy.get('.modal button[data-cy="ok"]').click()
 
         // Verify the work order type was deleted
-        cy.get('#container--workOrderTypes').should(
-          'not.contain.text',
-          configTables.workOrderTypeUpdated
-        )
+        cy.get(
+          '#container--workOrderTypes tr:first input[name="workOrderType"]'
+        ).should('not.have.value', configTables.workOrderTypeUpdated)
       })
     })
   })
 
   describe('Burial Site Statuses', () => {
-    it('Adds a new burial site status', () => {
+    beforeEach(() => {
       // Expand the Burial Site Statuses panel
       cy.contains('h2', 'Burial Site Statuses')
         .parents('.panel')
         .find('.is-toggle-button')
         .click()
+    })
 
+    it('Adds a new burial site status', () => {
       cy.fixture('configTables.json').then((configTables) => {
-        cy.get('#form--addBurialSiteStatus input[name="burialSiteStatus"]').type(
-          configTables.burialSiteStatus
-        )
+        cy.get(
+          '#form--addBurialSiteStatus input[name="burialSiteStatus"]'
+        ).type(configTables.burialSiteStatus)
 
         cy.get('#form--addBurialSiteStatus button[type="submit"]').click()
 
         cy.wait(ajaxDelayMillis)
 
-        cy.get('#container--burialSiteStatuses').should(
-          'contain.text',
-          configTables.burialSiteStatus
-        )
+        cy.get(
+          '#container--burialSiteStatuses tr:first input[name="burialSiteStatus"]'
+        ).should('have.value', configTables.burialSiteStatus)
       })
     })
 
     it('Updates a burial site status', () => {
       cy.fixture('configTables.json').then((configTables) => {
-        cy.get('#container--burialSiteStatuses tr')
-          .contains(configTables.burialSiteStatus)
-          .parents('tr')
-          .within(() => {
-            cy.get('input[name="burialSiteStatus"]')
-              .clear()
-              .type(configTables.burialSiteStatusUpdated)
-
-            cy.get('button[type="submit"]').click()
-
-            cy.wait(ajaxDelayMillis)
-          })
-
-        cy.get('#container--burialSiteStatuses').should(
-          'contain.text',
-          configTables.burialSiteStatusUpdated
+        cy.get(
+          '#container--burialSiteStatuses tr:first input[name="burialSiteStatus"]'
         )
+          .should('have.value', configTables.burialSiteStatus)
+          .clear()
+          .type(configTables.burialSiteStatusUpdated)
+          .parents('tr')
+          .find('button[type="submit"]')
+          .click()
+
+        cy.wait(ajaxDelayMillis)
+
+        cy.get(
+          '#container--burialSiteStatuses tr:first input[name="burialSiteStatus"]'
+        ).should('have.value', configTables.burialSiteStatusUpdated)
       })
     })
 
     it('Deletes a burial site status', () => {
       cy.fixture('configTables.json').then((configTables) => {
-        cy.get('#container--burialSiteStatuses tr')
-          .contains(configTables.burialSiteStatusUpdated)
+        cy.get(
+          '#container--burialSiteStatuses tr:first input[name="burialSiteStatus"]'
+        )
+          .should('have.value', configTables.burialSiteStatusUpdated)
           .parents('tr')
           .find('.button--deleteBurialSiteStatus')
           .click()
 
         cy.get('.modal').should('be.visible')
-        cy.get('.modal').contains('Delete Burial Site Status').click()
+        cy.get('.modal button[data-cy="ok"]').contains('Delete Status').click()
 
         cy.wait(ajaxDelayMillis)
+        cy.get('.modal button[data-cy="ok"]').click()
 
-        cy.get('#container--burialSiteStatuses').should(
-          'not.contain.text',
-          configTables.burialSiteStatusUpdated
-        )
+        cy.get(
+          '#container--burialSiteStatuses tr:first input[name="burialSiteStatus"]'
+        ).should('not.have.value', configTables.burialSiteStatusUpdated)
       })
     })
   })
 
   describe('Committal Types', () => {
-    it('Adds a new committal type', () => {
+    beforeEach(() => {
+      // Expand the Committal Types panel
       cy.contains('h2', 'Committal Types')
         .parents('.panel')
         .find('.is-toggle-button')
         .click()
+    })
 
+    it('Adds a new committal type', () => {
       cy.fixture('configTables.json').then((configTables) => {
         cy.get('#form--addCommittalType input[name="committalType"]').type(
           configTables.committalType
@@ -175,8 +183,8 @@ describe('Admin - Config Table Management', () => {
 
         cy.wait(ajaxDelayMillis)
 
-        cy.get('#container--committalTypes').should(
-          'contain.text',
+        cy.get('#container--committalTypes tr:first input[name="committalType"]').should(
+          'have.value',
           configTables.committalType
         )
       })
@@ -184,21 +192,17 @@ describe('Admin - Config Table Management', () => {
 
     it('Updates a committal type', () => {
       cy.fixture('configTables.json').then((configTables) => {
-        cy.get('#container--committalTypes tr')
-          .contains(configTables.committalType)
+        cy.get('#container--committalTypes tr:first input[name="committalType"]')
+          .should('have.value', configTables.committalType)
+          .clear()
+          .type(configTables.committalTypeUpdated)
           .parents('tr')
-          .within(() => {
-            cy.get('input[name="committalType"]')
-              .clear()
-              .type(configTables.committalTypeUpdated)
+          .find('button[type="submit"]').click()
 
-            cy.get('button[type="submit"]').click()
+        cy.wait(ajaxDelayMillis)
 
-            cy.wait(ajaxDelayMillis)
-          })
-
-        cy.get('#container--committalTypes').should(
-          'contain.text',
+        cy.get('#container--committalTypes tr:first input[name="committalType"]').should(
+          'have.value',
           configTables.committalTypeUpdated
         )
       })
@@ -206,19 +210,20 @@ describe('Admin - Config Table Management', () => {
 
     it('Deletes a committal type', () => {
       cy.fixture('configTables.json').then((configTables) => {
-        cy.get('#container--committalTypes tr')
-          .contains(configTables.committalTypeUpdated)
+        cy.get('#container--committalTypes tr:first input[name="committalType"]')
+          .should('have.value', configTables.committalTypeUpdated)
           .parents('tr')
           .find('.button--deleteCommittalType')
           .click()
 
         cy.get('.modal').should('be.visible')
-        cy.get('.modal').contains('Delete Committal Type').click()
+        cy.get('.modal button[data-cy="ok"]').contains('Delete Type').click()
 
         cy.wait(ajaxDelayMillis)
+        cy.get('.modal button[data-cy="ok"]').click()
 
-        cy.get('#container--committalTypes').should(
-          'not.contain.text',
+        cy.get('#container--committalTypes tr:first input[name="committalType"]').should(
+          'not.have.value',
           configTables.committalTypeUpdated
         )
       })
@@ -226,23 +231,26 @@ describe('Admin - Config Table Management', () => {
   })
 
   describe('Interment Container Types', () => {
-    it('Adds a new interment container type', () => {
+    beforeEach(() => {
+      // Expand the Interment Container Types panel
       cy.contains('h2', 'Interment Container Types')
         .parents('.panel')
         .find('.is-toggle-button')
         .click()
+    })
 
+    it('Adds a new interment container type', () => {
       cy.fixture('configTables.json').then((configTables) => {
-        cy.get('#form--addIntermentContainerType input[name="intermentContainerType"]').type(
-          configTables.intermentContainerType
-        )
+        cy.get(
+          '#form--addIntermentContainerType input[name="intermentContainerType"]'
+        ).type(configTables.intermentContainerType)
 
-        cy.get('#form--addIntermentContainerType button[type="submit"]').click()
+        cy.get('button[form="form--addIntermentContainerType"][type="submit"]').click()
 
         cy.wait(ajaxDelayMillis)
 
-        cy.get('#container--intermentContainerTypes').should(
-          'contain.text',
+        cy.get('#container--intermentContainerTypes tr:first input[name="intermentContainerType"]').should(
+          'have.value',
           configTables.intermentContainerType
         )
       })
@@ -250,21 +258,17 @@ describe('Admin - Config Table Management', () => {
 
     it('Updates an interment container type', () => {
       cy.fixture('configTables.json').then((configTables) => {
-        cy.get('#container--intermentContainerTypes tr')
-          .contains(configTables.intermentContainerType)
+        cy.get('#container--intermentContainerTypes tr:first input[name="intermentContainerType"]')
+          .should('have.value', configTables.intermentContainerType)
+          .clear()
+          .type(configTables.intermentContainerTypeUpdated)
           .parents('tr')
-          .within(() => {
-            cy.get('input[name="intermentContainerType"]')
-              .clear()
-              .type(configTables.intermentContainerTypeUpdated)
-
-            cy.get('button[type="submit"]').click()
+          .find('button[type="submit"]').click()
 
             cy.wait(ajaxDelayMillis)
-          })
 
-        cy.get('#container--intermentContainerTypes').should(
-          'contain.text',
+        cy.get('#container--intermentContainerTypes tr:first input[name="intermentContainerType"]').should(
+          'have.value',
           configTables.intermentContainerTypeUpdated
         )
       })
@@ -272,19 +276,20 @@ describe('Admin - Config Table Management', () => {
 
     it('Deletes an interment container type', () => {
       cy.fixture('configTables.json').then((configTables) => {
-        cy.get('#container--intermentContainerTypes tr')
-          .contains(configTables.intermentContainerTypeUpdated)
+        cy.get('#container--intermentContainerTypes tr:first input[name="intermentContainerType"]')
+          .should('have.value', configTables.intermentContainerTypeUpdated)
           .parents('tr')
           .find('.button--deleteIntermentContainerType')
           .click()
 
         cy.get('.modal').should('be.visible')
-        cy.get('.modal').contains('Delete Interment Container Type').click()
+        cy.get('.modal button[data-cy="ok"]').contains('Delete Type').click()
 
         cy.wait(ajaxDelayMillis)
+        cy.get('.modal button[data-cy="ok"]').click()
 
-        cy.get('#container--intermentContainerTypes').should(
-          'not.contain.text',
+        cy.get('#container--intermentContainerTypes tr:first input[name="intermentContainerType"]').should(
+          'not.have.value',
           configTables.intermentContainerTypeUpdated
         )
       })
