@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [ 22, 24 ]
+        node: [22, 24]
     env:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
@@ -32,7 +32,7 @@ jobs:
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
-        
+
       - name: Test Application Startup
         run: npm run test:startup
 
@@ -45,7 +45,7 @@ jobs:
         run: npm run coverage
 
       - name: Codecov
-        if: ${{ github.event_name != 'pull_request' && env.CODECOV_TOKEN != '' && matrix.node == 22 }}
+        if: ${{ (success() || failure()) && github.event_name != 'pull_request' && env.CODECOV_TOKEN != '' && matrix.node == 22 }}
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
@@ -56,12 +56,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [ 20, 22 ]
+        node: [20, 22]
 
     name: Windows - Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v5
-      
+
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
@@ -75,7 +75,7 @@ jobs:
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
-        
+
       - name: Run Test
         run: node --test --test-concurrency 1
 
@@ -84,12 +84,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [ 22, 24 ]
+        node: [22, 24]
 
     name: MacOS - Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v5
-      
+
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
@@ -103,6 +103,6 @@ jobs:
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
-        
+
       - name: Run Test
         run: node --test --test-concurrency 1
