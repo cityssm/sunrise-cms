@@ -299,6 +299,7 @@ declare const exports: {
           data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
           type="button"
           title="Toggle Milestone Completion"
+          role="checkbox"
           aria-checked="${milestoneIsCompleted ? 'true' : 'false'}"
         >
           <span class="icon is-small">
