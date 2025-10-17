@@ -9,11 +9,9 @@ describe('Admin - Contract Type Management', () => {
         cy.location('pathname').should('equal', '/admin/contractTypes');
     });
     afterEach(logout);
-    it('Has no detectable accessibility issues', () => {
+    it('Adds a new contract type', () => {
         cy.injectAxe();
         cy.checkA11y();
-    });
-    it('Adds a new contract type', () => {
         cy.get('#button--addContractType').click();
         cy.get('.modal').should('be.visible');
         cy.injectAxe();
