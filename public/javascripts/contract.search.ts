@@ -159,7 +159,7 @@ declare const exports: {
         ${
           contract.contractEndDate === null &&
           contract.contractEndDateString === undefined
-            ? '<span class="has-text-grey">(No End Date)</span>'
+            ? '<span class="has-text-grey-dark">(No End Date)</span>'
             : contract.contractEndDateString
         }
       </td>

@@ -25,7 +25,7 @@
         if (cemetery.parentCemeteryId !== null) {
             featuresHTML += /*html*/ `
         <span class="icon" title="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
-          <i class="fa-solid fa-turn-up" alt="Has Parent Cemetery" role="img"></i>
+          <i class="fa-solid fa-turn-up" role="img" aria-label="Has Parent Cemetery"></i>
         </span>
       `;
         }
@@ -33,14 +33,14 @@
             typeof cemetery.cemeteryLongitude === 'number') {
             featuresHTML += /*html*/ `
         <span class="icon" title="Geographic Coordinates">
-          <i class="fa-solid fa-map-marker-alt" alt="Has Geographic Coordinates" role="img"></i>
+          <i class="fa-solid fa-map-marker-alt" role="img" aria-label="Has Geographic Coordinates"></i>
         </span>
       `;
         }
         if (cemetery.cemeterySvg !== '') {
             featuresHTML += /*html*/ `
         <span class="icon" title="Image">
-          <i class="fa-solid fa-image" alt="Has Image" role="img"></i>
+          <i class="fa-solid fa-image" role="img" aria-label="Has Image"></i>
         </span>
       `;
         }
