@@ -1,3 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable max-nested-callbacks */
+
 import { testAdmin } from '../../../test/_globals.js'
 import type { DatabaseUser } from '../../../types/record.types.js'
 import { ajaxDelayMillis, login, logout } from '../../support/index.js'
@@ -70,7 +73,7 @@ describe('Admin - User Management', () => {
       // Confirm the deletion in the modal
       cy.get('.modal').should('be.visible')
 
-      cy.get('.modal').contains('Delete User').click()
+      cy.get('.modal button[data-cy="ok"]').contains('Delete User').click()
 
       cy.wait(ajaxDelayMillis)
 
