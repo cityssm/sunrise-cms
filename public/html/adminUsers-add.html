@@ -1,14 +1,19 @@
-<div class="modal" id="modal--addUser">
+<div
+  class="modal"
+  id="modal--addUser"
+  role="dialog"
+  aria-label="Add User"
+>
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <div class="modal-card-head">
       <p class="modal-card-title">Add User</p>
       <button
         class="delete is-close-modal-button"
         type="button"
         aria-label="close"
       ></button>
-    </header>
+    </div>
     <section class="modal-card-body">
       <form id="form--addUser">
         <div class="columns">
@@ -64,7 +69,7 @@
         </div>
       </form>
     </section>
-    <footer class="modal-card-foot is-justify-content-right">
+    <div class="modal-card-foot is-justify-content-right">
       <div class="buttons">
         <button class="button is-primary" type="submit" form="form--addUser">
           Add User
@@ -73,6 +78,6 @@
           Cancel
         </button>
       </div>
-    </footer>
+    </div>
   </div>
 </div>

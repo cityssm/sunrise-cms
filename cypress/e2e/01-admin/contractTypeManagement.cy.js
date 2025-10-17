@@ -23,11 +23,35 @@ describe('Admin - Contract Type Management', () => {
             cy.get(contractTypeTitleSelector).should('contain.text', contractType.contractType);
         });
     });
-    it('Removes a contract type', () => {
+    it('Updates a contract type', () => {
         cy.fixture('contractType.json').then((contractType) => {
-            // Find and click the delete button for our test contract type
+            // Find and click the edit button for our test contract type
             cy.get(contractTypeTitleSelector)
                 .contains(contractType.contractType)
+                .parents('.container--contractType')
+                .find('.button--editContractType')
+                .click();
+            // Modal should be visible
+            cy.get('.modal').should('be.visible');
+            cy.injectAxe();
+            cy.checkA11y();
+            // Update the contract type name
+            const updatedName = `${contractType.contractType} Updated`;
+            cy.get(".modal input[name='contractType']").clear().type(updatedName);
+            cy.get(".modal button[type='submit']").click();
+            cy.wait(ajaxDelayMillis);
+            // Verify the contract type is updated
+            cy.get(contractTypeTitleSelector).should('contain.text', updatedName);
+            // Update the fixture to use updated name for delete test
+            contractType.contractType = updatedName;
+        });
+    });
+    it('Removes a contract type', () => {
+        cy.fixture('contractType.json').then((contractType) => {
+            const nameToDelete = `${contractType.contractType} Updated`;
+            // Find and click the delete button for our test contract type
+            cy.get(contractTypeTitleSelector)
+                .contains(nameToDelete)
                 .parents('.container--contractType')
                 .find('.button--deleteContractType')
                 .click();
@@ -36,7 +60,7 @@ describe('Admin - Contract Type Management', () => {
             cy.get('.modal').contains('Yes, Delete Contract Type').click();
             cy.wait(ajaxDelayMillis);
             // Verify the contract type is removed
-            cy.get(contractTypeTitleSelector).should('not.contain.text', contractType.contractType);
+            cy.get(contractTypeTitleSelector).should('not.contain.text', nameToDelete);
         });
     });
 });
