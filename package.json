@@ -91,7 +91,7 @@
     "@types/node-windows": "^0.1.6",
     "@types/papaparse": "^5.3.16",
     "@types/parse-full-name": "^1.2.5",
-    "@types/session-file-store": "^1.2.5",
+    "@types/session-file-store": "^1.2.6",
     "axe-core": "^4.11.0",
     "cypress": "^15.4.0",
     "cypress-axe": "^1.7.0",
