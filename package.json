@@ -78,7 +78,7 @@
     "@cityssm/is-pdf": "^2.0.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/compression": "^1.8.1",
-    "@types/cookie-parser": "^1.4.9",
+    "@types/cookie-parser": "^1.4.10",
     "@types/debug": "^4.1.12",
     "@types/ejs": "^3.1.5",
     "@types/express": "^5.0.3",
