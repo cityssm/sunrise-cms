@@ -1,6 +1,5 @@
 import eslintCspell from '@cspell/eslint-plugin'
 import configWebApp, {
-  type ConfigObject,
   defineConfig
 } from 'eslint-config-cityssm'
 import { cspellWords } from 'eslint-config-cityssm/exports'
@@ -26,11 +25,10 @@ const escapedMethods = [
 
 /* eslint-enable no-secrets/no-secrets */
 
-export const config: ConfigObject[] = defineConfig(configWebApp, {
+export const config = defineConfig(configWebApp, {
   files: ['**/*.ts'],
   languageOptions: {
     parserOptions: {
-      project: ['./tsconfig.json', './public/javascripts/tsconfig.json'],
       projectService: true
     }
   },

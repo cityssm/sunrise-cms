@@ -4,13 +4,14 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface UpdateUserForm {
   userName: string
-  displayName?: string
-  password?: string
+
+  isActive: boolean
+
   canUpdateCemeteries: boolean
   canUpdateContracts: boolean
   canUpdateWorkOrders: boolean
+
   isAdmin: boolean
-  isActive: boolean
 }
 
 export default function updateUser(

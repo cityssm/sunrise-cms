@@ -20,7 +20,6 @@ export const config = defineConfig(configWebApp, {
     files: ['**/*.ts'],
     languageOptions: {
         parserOptions: {
-            project: ['./tsconfig.json', './public/javascripts/tsconfig.json'],
             projectService: true
         }
     },
