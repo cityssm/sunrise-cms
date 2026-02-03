@@ -36,7 +36,7 @@ export interface AddBurialSiteForm extends BurialSiteFieldsForm {
  * @param user - The user making the request
  * @param connectedDatabase - An optional database connection
  * @returns The new burial site's id.
- * @throws If an active burial site with the same name already exists.
+ * @throws {Error} If an active burial site with the same name already exists.
  */
 // eslint-disable-next-line complexity
 export default function addBurialSite(
