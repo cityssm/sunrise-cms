@@ -18,8 +18,7 @@ export default function addOrUpdateBurialSiteField(
   const rightNowMillis = Date.now()
 
   let result = database
-    .prepare(
-      `update BurialSiteFields
+    .prepare(/* sql */ `update BurialSiteFields
         set fieldValue = ?,
           recordUpdate_userName = ?,
           recordUpdate_timeMillis = ?,
@@ -38,8 +37,7 @@ export default function addOrUpdateBurialSiteField(
 
   if (result.changes === 0) {
     result = database
-      .prepare(
-        `insert into BurialSiteFields (
+      .prepare(/* sql */ `insert into BurialSiteFields (
           burialSiteId, burialSiteTypeFieldId, fieldValue,
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)

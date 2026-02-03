@@ -15,8 +15,7 @@ export default function getBurialSiteTypes(
   const updateOrderNumbers = !includeDeleted
 
   const burialSiteTypes = database
-    .prepare(
-      `select burialSiteTypeId, burialSiteType,
+    .prepare(/* sql */ `select burialSiteTypeId, burialSiteType,
         bodyCapacityMax, crematedCapacityMax,
         orderNumber
         from BurialSiteTypes

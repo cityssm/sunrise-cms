@@ -11,8 +11,7 @@ export default function getApiKeys(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const databaseSettings = database
-    .prepare(
-      `select s.userName, s.settingValue
+    .prepare(/* sql */ `select s.userName, s.settingValue
         from UserSettings s
         where s.settingKey = 'apiKey'`
     )

@@ -12,8 +12,7 @@ export function restoreFuneralHome(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `update FuneralHomes
+    .prepare(/* sql */ `update FuneralHomes
         set recordDelete_userName = null,
           recordDelete_timeMillis = null,
           recordUpdate_userName = ?,

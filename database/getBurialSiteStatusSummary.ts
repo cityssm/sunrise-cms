@@ -26,8 +26,7 @@ export default function getBurialSiteStatusSummary(
   }
 
   const statuses = database
-    .prepare(
-      `select s.burialSiteStatusId, s.burialSiteStatus,
+    .prepare(/* sql */ `select s.burialSiteStatusId, s.burialSiteStatus,
         count(l.burialSiteId) as burialSiteCount
         from BurialSites l
         left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId

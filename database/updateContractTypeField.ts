@@ -23,8 +23,7 @@ export default function updateContractTypeField(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update ContractTypeFields
+    .prepare(/* sql */ `update ContractTypeFields
         set contractTypeField = ?,
           isRequired = ?,
           fieldType = ?,

@@ -14,8 +14,7 @@ export default function getContractMetadataByContractId(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const result = database
-    .prepare(
-      `select metadataKey, metadataValue
+    .prepare(/* sql */ `select metadataKey, metadataValue
         from ContractMetadata
         where recordDelete_timeMillis is null
         and contractId = ?

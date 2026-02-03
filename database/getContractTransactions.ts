@@ -22,8 +22,7 @@ export default async function getContractTransactions(
   database.function('userFn_timeIntegerToString', timeIntegerToString)
 
   const contractTransactions = database
-    .prepare(
-      `select contractId, transactionIndex,
+    .prepare(/* sql */ `select contractId, transactionIndex,
           transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString,
           transactionTime, userFn_timeIntegerToString(transactionTime) as transactionTimeString,
           transactionAmount, externalReceiptNumber, isInvoiced, transactionNote

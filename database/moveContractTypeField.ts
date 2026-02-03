@@ -13,8 +13,7 @@ export function moveContractTypeFieldDown(
   const currentField = getCurrentField(contractTypeFieldId, database)
 
   database
-    .prepare(
-      `update ContractTypeFields
+    .prepare(/* sql */ `update ContractTypeFields
         set orderNumber = orderNumber - 1
         where recordDelete_timeMillis is null
         ${
@@ -55,8 +54,7 @@ export function moveContractTypeFieldDownToBottom(
 
   const maxOrderNumber: number = (
     database
-      .prepare(
-        `select max(orderNumber) as maxOrderNumber
+      .prepare(/* sql */ `select max(orderNumber) as maxOrderNumber
           from ContractTypeFields
           where recordDelete_timeMillis is null
           ${
@@ -79,8 +77,7 @@ export function moveContractTypeFieldDownToBottom(
     contractTypeParameters.push(currentField.orderNumber)
 
     database
-      .prepare(
-        `update ContractTypeFields set orderNumber = orderNumber - 1
+      .prepare(/* sql */ `update ContractTypeFields set orderNumber = orderNumber - 1
           where recordDelete_timeMillis is null
           ${
             currentField.contractTypeId === undefined
@@ -112,8 +109,7 @@ export function moveContractTypeFieldUp(
   }
 
   database
-    .prepare(
-      `update ContractTypeFields
+    .prepare(/* sql */ `update ContractTypeFields
         set orderNumber = orderNumber + 1
         where recordDelete_timeMillis is null
         ${
@@ -163,8 +159,7 @@ export function moveContractTypeFieldUpToTop(
     contractTypeParameters.push(currentField.orderNumber)
 
     database
-      .prepare(
-        `update ContractTypeFields
+      .prepare(/* sql */ `update ContractTypeFields
           set orderNumber = orderNumber + 1
           where recordDelete_timeMillis is null
           ${
@@ -188,8 +183,7 @@ function getCurrentField(
   connectedDatabase: sqlite.Database
 ): { contractTypeId?: number; orderNumber: number } {
   return connectedDatabase
-    .prepare(
-      `select contractTypeId, orderNumber
+    .prepare(/* sql */ `select contractTypeId, orderNumber
         from ContractTypeFields
         where contractTypeFieldId = ?`
     )

@@ -10,8 +10,7 @@ export default function getUser(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const user = database
-    .prepare(
-      `select userName, isActive,
+    .prepare(/* sql */ `select userName, isActive,
           canUpdateCemeteries, canUpdateContracts, canUpdateWorkOrders, isAdmin,
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis

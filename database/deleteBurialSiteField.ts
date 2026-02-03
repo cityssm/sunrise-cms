@@ -11,8 +11,7 @@ export default function deleteBurialSiteField(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update BurialSiteFields
+    .prepare(/* sql */ `update BurialSiteFields
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where burialSiteId = ?

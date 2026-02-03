@@ -22,8 +22,7 @@ export default function getBurialSiteComments(
   )
 
   const comments = database
-    .prepare(
-      `select burialSiteCommentId,
+    .prepare(/* sql */ `select burialSiteCommentId,
         commentDate, userFn_dateIntegerToString(commentDate) as commentDateString,
         commentTime,
         userFn_timeIntegerToString(commentTime) as commentTimeString,

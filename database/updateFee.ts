@@ -27,8 +27,7 @@ export default function updateFee(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update Fees
+    .prepare(/* sql */ `update Fees
         set feeCategoryId = ?,
           feeName = ?,
           feeDescription = ?,
@@ -88,8 +87,7 @@ export function updateFeeAmount(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update Fees
+    .prepare(/* sql */ `update Fees
         set feeAmount = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?

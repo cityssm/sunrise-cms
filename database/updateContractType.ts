@@ -20,8 +20,7 @@ export default function updateContractType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `update ContractTypes
+    .prepare(/* sql */ `update ContractTypes
         set contractType = ?,
           isPreneed = ?,
           recordUpdate_userName = ?,

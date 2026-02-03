@@ -17,8 +17,7 @@ export default function addWorkOrderBurialSite(
   const rightNowMillis = Date.now()
 
   const recordDeleteTimeMillis = database
-    .prepare(
-      `select recordDelete_timeMillis
+    .prepare(/* sql */ `select recordDelete_timeMillis
         from WorkOrderBurialSites
         where workOrderId = ?
         and burialSiteId = ?`
@@ -31,8 +30,7 @@ export default function addWorkOrderBurialSite(
 
   if (recordDeleteTimeMillis === undefined) {
     database
-      .prepare(
-        `insert into WorkOrderBurialSites (
+      .prepare(/* sql */ `insert into WorkOrderBurialSites (
           workOrderId, burialSiteId,
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
@@ -48,8 +46,7 @@ export default function addWorkOrderBurialSite(
       )
   } else if (recordDeleteTimeMillis !== null) {
     database
-      .prepare(
-        `update WorkOrderBurialSites
+      .prepare(/* sql */ `update WorkOrderBurialSites
           set recordCreate_userName = ?,
             recordCreate_timeMillis = ?,
             recordUpdate_userName = ?,

@@ -110,8 +110,7 @@ export default function getBurialSiteNamesByRange(
     })
 
     const burialSiteId = database
-      .prepare(
-        `select burialSiteId
+      .prepare(/* sql */ `select burialSiteId
           from BurialSites
           where burialSiteName = ?
           and recordDelete_timeMillis is null`

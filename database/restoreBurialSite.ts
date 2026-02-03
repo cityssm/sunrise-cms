@@ -12,8 +12,7 @@ export function restoreBurialSite(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `update BurialSites
+    .prepare(/* sql */ `update BurialSites
         set recordDelete_userName = null,
           recordDelete_timeMillis = null,
           recordUpdate_userName = ?,

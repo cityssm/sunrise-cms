@@ -9,8 +9,7 @@ export default function getNextCemeteryId(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const result = database
-    .prepare(
-      `select cemeteryId
+    .prepare(/* sql */ `select cemeteryId
         from Cemeteries
         where recordDelete_timeMillis is null
         and cemeteryName > (select cemeteryName from Cemeteries where cemeteryId = ?)

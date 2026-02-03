@@ -23,8 +23,7 @@ export default function updateContractComment(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update ContractComments
+    .prepare(/* sql */ `update ContractComments
         set commentDate = ?,
           commentTime = ?,
           comment = ?,

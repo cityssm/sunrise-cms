@@ -10,8 +10,7 @@ export default function getContractFields(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const fields = database
-    .prepare(
-      `select cf.contractId, cf.contractTypeFieldId,
+    .prepare(/* sql */ `select cf.contractId, cf.contractTypeFieldId,
         cf.fieldValue, f.contractTypeField, f.fieldType, f.fieldValues,
         f.isRequired, f.pattern, f.minLength, f.maxLength,
         f.orderNumber, t.orderNumber as contractTypeOrderNumber

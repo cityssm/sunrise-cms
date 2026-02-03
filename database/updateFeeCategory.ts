@@ -17,8 +17,7 @@ export default function updateFeeCategory(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update FeeCategories
+    .prepare(/* sql */ `update FeeCategories
         set feeCategory = ?,
           isGroupedFee = ?,
           recordUpdate_userName = ?,

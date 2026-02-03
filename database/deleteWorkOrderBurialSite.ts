@@ -11,8 +11,7 @@ export default function deleteWorkOrderBurialSite(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update WorkOrderBurialSites
+    .prepare(/* sql */ `update WorkOrderBurialSites
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where workOrderId = ?

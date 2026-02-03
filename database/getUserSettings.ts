@@ -12,8 +12,7 @@ export default function getUserSettings(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const databaseSettings = database
-    .prepare(
-      `select s.settingKey, s.settingValue
+    .prepare(/* sql */ `select s.settingKey, s.settingValue
         from UserSettings s
         where s.userName = ?`
     )

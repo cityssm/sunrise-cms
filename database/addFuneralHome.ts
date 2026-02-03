@@ -25,8 +25,7 @@ export default function addFuneralHome(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into FuneralHomes (
+    .prepare(/* sql */ `insert into FuneralHomes (
         funeralHomeName, funeralHomeKey, funeralHomeAddress1, funeralHomeAddress2,
         funeralHomeCity, funeralHomeProvince, funeralHomePostalCode, funeralHomePhoneNumber,
         recordCreate_userName, recordCreate_timeMillis,

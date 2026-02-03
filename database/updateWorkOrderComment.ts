@@ -24,8 +24,7 @@ export default function updateWorkOrderComment(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update WorkOrderComments
+    .prepare(/* sql */ `update WorkOrderComments
         set commentDate = ?,
           commentTime = ?,
           comment = ?,

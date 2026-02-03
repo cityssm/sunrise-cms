@@ -26,8 +26,7 @@ export function moveContractTypePrintUp(
   }
 
   database
-    .prepare(
-      `update ContractTypePrints
+    .prepare(/* sql */ `update ContractTypePrints
         set orderNumber = orderNumber + 1
         where recordDelete_timeMillis is null
           and contractTypeId = ?
@@ -67,8 +66,7 @@ export function moveContractTypePrintUpToTop(
 
   if (currentOrderNumber > 0) {
     database
-      .prepare(
-        `update ContractTypePrints
+      .prepare(/* sql */ `update ContractTypePrints
           set orderNumber = -1
           where contractTypeId = ?
           and printEJS = ?`
@@ -76,8 +74,7 @@ export function moveContractTypePrintUpToTop(
       .run(contractTypeId, printEJS)
 
     database
-      .prepare(
-        `update ContractTypePrints
+      .prepare(/* sql */ `update ContractTypePrints
           set orderNumber = orderNumber + 1
           where recordDelete_timeMillis is null
           and contractTypeId = ?

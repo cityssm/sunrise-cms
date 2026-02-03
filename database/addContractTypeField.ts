@@ -29,8 +29,7 @@ export default function addContractTypeField(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into ContractTypeFields (
+    .prepare(/* sql */ `insert into ContractTypeFields (
         contractTypeId, contractTypeField, fieldType,
         fieldValues, isRequired, pattern,
         minLength, maxLength,

@@ -34,8 +34,7 @@ export default function updateContractInterment(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const results = database
-    .prepare(
-      `update ContractInterments
+    .prepare(/* sql */ `update ContractInterments
         set deceasedName = ?,
           deceasedAddress1 = ?,
           deceasedAddress2 = ?,

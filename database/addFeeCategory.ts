@@ -18,8 +18,7 @@ export default function addFeeCategory(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into FeeCategories (
+    .prepare(/* sql */ `insert into FeeCategories (
         feeCategory,
         isGroupedFee, orderNumber,
         recordCreate_userName, recordCreate_timeMillis,

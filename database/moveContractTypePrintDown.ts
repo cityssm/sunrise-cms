@@ -19,8 +19,7 @@ export function moveContractTypePrintDown(
   ).orderNumber
 
   database
-    .prepare(
-      `update ContractTypePrints
+    .prepare(/* sql */ `update ContractTypePrints
         set orderNumber = orderNumber - 1
         where recordDelete_timeMillis is null
         and contractTypeId = ?
@@ -59,8 +58,7 @@ export function moveContractTypePrintDownToBottom(
 
   const maxOrderNumber: number = (
     database
-      .prepare(
-        `select max(orderNumber) as maxOrderNumber
+      .prepare(/* sql */ `select max(orderNumber) as maxOrderNumber
         from ContractTypePrints
         where recordDelete_timeMillis is null
         and contractTypeId = ?`
@@ -70,8 +68,7 @@ export function moveContractTypePrintDownToBottom(
 
   if (currentOrderNumber !== maxOrderNumber) {
     database
-      .prepare(
-        `update ContractTypePrints
+      .prepare(/* sql */ `update ContractTypePrints
           set orderNumber = ? + 1
           where contractTypeId = ?
           and printEJS = ?`
@@ -79,8 +76,7 @@ export function moveContractTypePrintDownToBottom(
       .run(maxOrderNumber, contractTypeId, printEJS)
 
     database
-      .prepare(
-        `update ContractTypePrints
+      .prepare(/* sql */ `update ContractTypePrints
           set orderNumber = orderNumber - 1
           where recordDelete_timeMillis is null
           and contractTypeId = ?

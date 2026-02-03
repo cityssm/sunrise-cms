@@ -42,8 +42,7 @@ async function _getBurialSite(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const burialSite = database
-    .prepare(
-      `select b.burialSiteId,
+    .prepare(/* sql */ `select b.burialSiteId,
         b.burialSiteTypeId, t.burialSiteType,
         b.burialSiteNameSegment1,
         b.burialSiteNameSegment2,

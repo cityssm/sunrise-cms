@@ -16,8 +16,7 @@ export default function updateContractAttachment(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `update ContractAttachments
+    .prepare(/* sql */ `update ContractAttachments
         set attachmentTitle = ?,
           attachmentDetails = ?,
           recordUpdate_userName = ?,

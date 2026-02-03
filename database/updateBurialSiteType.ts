@@ -22,8 +22,7 @@ export default function updateBurialSiteType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `update BurialSiteTypes
+    .prepare(/* sql */ `update BurialSiteTypes
         set burialSiteType = ?,
           bodyCapacityMax = ?,
           crematedCapacityMax = ?,

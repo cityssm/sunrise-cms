@@ -26,8 +26,7 @@ export default function getBurialSiteTypeSummary(
   }
 
   const burialSiteTypes = database
-    .prepare(
-      `select t.burialSiteTypeId, t.burialSiteType,
+    .prepare(/* sql */ `select t.burialSiteTypeId, t.burialSiteType,
         count(l.burialSiteId) as burialSiteCount
         from BurialSites l
         left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId

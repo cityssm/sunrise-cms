@@ -22,8 +22,7 @@ export default function getBurialSiteDeceasedNames(burialSiteIds: number[]): Bur
     
     // Get deceased names for burial sites with active contracts
     const rows = database
-      .prepare(
-        `SELECT c.burialSiteId, ci.deceasedName
+      .prepare(/* sql */ `SELECT c.burialSiteId, ci.deceasedName
          FROM Contracts c
          INNER JOIN ContractInterments ci ON c.contractId = ci.contractId
          WHERE c.recordDelete_timeMillis IS NULL

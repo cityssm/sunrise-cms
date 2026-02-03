@@ -22,8 +22,7 @@ export default function getWorkOrderComments(
   )
 
   const workOrderComments = database
-    .prepare(
-      `select workOrderCommentId,
+    .prepare(/* sql */ `select workOrderCommentId,
         commentDate, userFn_dateIntegerToString(commentDate) as commentDateString,
         commentTime,
         userFn_timeIntegerToString(commentTime) as commentTimeString,

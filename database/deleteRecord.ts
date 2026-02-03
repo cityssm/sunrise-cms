@@ -71,8 +71,7 @@ export function deleteRecord(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `update ${recordTable}
+    .prepare(/* sql */ `update ${recordTable}
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where ${recordIdColumns.get(recordTable)} = ?
@@ -82,8 +81,7 @@ export function deleteRecord(
 
   for (const relatedTable of relatedTables.get(recordTable) ?? []) {
     database
-      .prepare(
-        `update ${relatedTable}
+      .prepare(/* sql */ `update ${relatedTable}
           set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
           where ${recordIdColumns.get(recordTable)} = ?

@@ -18,8 +18,7 @@ export default function getCemeteries(
   }
 
   const cemeteries = database
-    .prepare(
-      `select cem.cemeteryId, cem.cemeteryName, cem.cemeteryKey, cem.cemeteryDescription,
+    .prepare(/* sql */ `select cem.cemeteryId, cem.cemeteryName, cem.cemeteryKey, cem.cemeteryDescription,
           cem.cemeteryLatitude, cem.cemeteryLongitude, cem.cemeterySvg,
           cem.cemeteryAddress1, cem.cemeteryAddress2,
           cem.cemeteryCity, cem.cemeteryProvince, cem.cemeteryPostalCode,

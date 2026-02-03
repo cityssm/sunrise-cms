@@ -14,8 +14,7 @@ export default function getBurialSiteTypeFields(
   const updateOrderNumbers = !database.readonly
 
   const typeFields = database
-    .prepare(
-      `select burialSiteTypeFieldId,
+    .prepare(/* sql */ `select burialSiteTypeFieldId,
         burialSiteTypeField, fieldType, fieldValues,
         isRequired, pattern, minLength, maxLength, orderNumber
         from BurialSiteTypeFields

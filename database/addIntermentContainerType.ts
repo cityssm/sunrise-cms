@@ -20,8 +20,7 @@ export default function addIntermentContainerType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into IntermentContainerTypes (
+    .prepare(/* sql */ `insert into IntermentContainerTypes (
         intermentContainerType, intermentContainerTypeKey, isCremationType, orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)

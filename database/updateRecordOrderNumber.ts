@@ -34,8 +34,7 @@ export function updateRecordOrderNumber(
   connectedDatabase: sqlite.Database
 ): boolean {
   const result = connectedDatabase
-    .prepare(
-      `update ${recordTable}
+    .prepare(/* sql */ `update ${recordTable}
         set orderNumber = ?
         where recordDelete_timeMillis is null
         and ${recordIdColumns.get(recordTable)} = ?`

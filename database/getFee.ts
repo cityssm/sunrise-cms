@@ -10,8 +10,7 @@ export default function getFee(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const fee = database
-    .prepare(
-      `select f.feeId,
+    .prepare(/* sql */ `select f.feeId,
         f.feeCategoryId, c.feeCategory,
         f.feeName, f.feeDescription, f.feeAccount,
         f.contractTypeId, ct.contractType,

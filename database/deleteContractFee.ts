@@ -11,8 +11,7 @@ export default function deleteContractFee(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update ContractFees
+    .prepare(/* sql */ `update ContractFees
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where contractId = ?

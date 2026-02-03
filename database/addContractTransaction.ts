@@ -33,8 +33,7 @@ export default function addContractTransaction(
   let transactionIndex = 0
 
   const maxIndexResult = database
-    .prepare(
-      `select transactionIndex
+    .prepare(/* sql */ `select transactionIndex
         from ContractTransactions
         where contractId = ?
         order by transactionIndex desc
@@ -65,8 +64,7 @@ export default function addContractTransaction(
         )
 
   database
-    .prepare(
-      `insert into ContractTransactions (
+    .prepare(/* sql */ `insert into ContractTransactions (
         contractId, transactionIndex,
         transactionDate, transactionTime,
         transactionAmount, isInvoiced,
