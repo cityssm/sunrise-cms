@@ -48,7 +48,7 @@ export default async function getWorkOrderMilestones(filters, options, connected
     m.workOrderMilestoneCompletionTime,
     userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString,
     userFn_timeIntegerToPeriodString(ifnull(m.workOrderMilestoneCompletionTime, 0)) as workOrderMilestoneCompletionTimePeriodString,
-    ${options.includeWorkOrders ?? false
+    ${(options.includeWorkOrders ?? false)
         ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,
             w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
             w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
@@ -77,6 +77,7 @@ export default async function getWorkOrderMilestones(filters, options, connected
                 includeContractCount: false
             }, database);
             workOrderMilestone.workOrderBurialSites = burialSites.burialSites;
+            // eslint-disable-next-line no-await-in-loop
             const contracts = await getContracts({
                 workOrderId: workOrderMilestone.workOrderId
             }, {
@@ -95,8 +96,8 @@ export default async function getWorkOrderMilestones(filters, options, connected
     return workOrderMilestones;
 }
 function buildWhereClause(filters) {
-    const recentBeforeDays = Number.parseInt(getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays'));
-    const recentAfterDays = Number.parseInt(getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays'));
+    const recentBeforeDays = Number.parseInt(getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays'), 10);
+    const recentAfterDays = Number.parseInt(getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays'), 10);
     let sqlWhereClause = ' where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null';
     const sqlParameters = [];
     if ((filters.workOrderId ?? '') !== '') {
@@ -132,11 +133,11 @@ function buildWhereClause(filters) {
         }
         case 'yearMonth': {
             const yearNumber = typeof filters.workOrderMilestoneYear === 'string'
-                ? Number.parseInt(filters.workOrderMilestoneYear)
-                : filters.workOrderMilestoneYear ?? new Date().getFullYear();
+                ? Number.parseInt(filters.workOrderMilestoneYear, 10)
+                : (filters.workOrderMilestoneYear ?? new Date().getFullYear());
             const monthNumber = typeof filters.workOrderMilestoneMonth === 'string'
-                ? Number.parseInt(filters.workOrderMilestoneMonth)
-                : filters.workOrderMilestoneMonth ?? new Date().getMonth() + 1;
+                ? Number.parseInt(filters.workOrderMilestoneMonth, 10)
+                : (filters.workOrderMilestoneMonth ?? new Date().getMonth() + 1);
             // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             const yearMonth = yearNumber * 10_000 + monthNumber * 100;
             sqlWhereClause += ' and m.workOrderMilestoneDate between ? and ?';

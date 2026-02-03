@@ -91,12 +91,14 @@ export default async function getContracts(
 
   if (isLimited) {
     count = database
-      .prepare(/* sql */ `select count(*) as recordCount
-          from Contracts c
-          left join BurialSites b on c.burialSiteId = b.burialSiteId
-          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
-          ${sqlWhereClause}`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          count(*) AS recordCount
+        FROM
+          Contracts c
+          LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId ${sqlWhereClause}
+      `)
       .pluck()
       .get(sqlParameters) as number
   }

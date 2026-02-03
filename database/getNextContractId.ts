@@ -9,19 +9,25 @@ export default function getNextContractId(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const result = database
-    .prepare(/* sql */ `select contractId
-        from Contracts
-        where recordDelete_timeMillis is null
-        and contractId > ?
-        order by contractId
-        limit 1`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        contractId
+      FROM
+        Contracts
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractId > ?
+      ORDER BY
+        contractId
+      LIMIT
+        1
+    `)
     .pluck()
     .get(contractId) as number | undefined
 
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return result
 }

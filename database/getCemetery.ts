@@ -28,33 +28,64 @@ function _getCemetery(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const cemetery = database
-    .prepare(/* sql */ `select cem.cemeteryId, cem.cemeteryName, cem.cemeteryKey, cem.cemeteryDescription,
-        cem.cemeteryLatitude, cem.cemeteryLongitude, cem.cemeterySvg,
-        cem.cemeteryAddress1, cem.cemeteryAddress2, cem.cemeteryCity, cem.cemeteryProvince, cem.cemeteryPostalCode,
+    .prepare(/* sql */ `
+      SELECT
+        cem.cemeteryId,
+        cem.cemeteryName,
+        cem.cemeteryKey,
+        cem.cemeteryDescription,
+        cem.cemeteryLatitude,
+        cem.cemeteryLongitude,
+        cem.cemeterySvg,
+        cem.cemeteryAddress1,
+        cem.cemeteryAddress2,
+        cem.cemeteryCity,
+        cem.cemeteryProvince,
+        cem.cemeteryPostalCode,
         cem.cemeteryPhoneNumber,
-
-        p.cemeteryId as parentCemeteryId, p.cemeteryName as parentCemeteryName,
-        p.cemeteryLatitude as parentCemeteryLatitude, p.cemeteryLongitude as parentCemeteryLongitude,
-        p.cemeterySvg as parentCemeterySvg,
-
-        cem.recordCreate_userName, cem.recordCreate_timeMillis,
-        cem.recordUpdate_userName, cem.recordUpdate_timeMillis,
-        cem.recordDelete_userName, cem.recordDelete_timeMillis,
-        count(b.burialSiteId) as burialSiteCount
-        from Cemeteries cem
-        left join Cemeteries p on cem.parentCemeteryId = p.cemeteryId and p.recordDelete_timeMillis is null
-        left join BurialSites b on cem.cemeteryId = b.cemeteryId and b.recordDelete_timeMillis is null
-        where cem.${keyColumn} = ?
-          and cem.recordDelete_timeMillis is null
-        group by cem.cemeteryId, cem.cemeteryName, cem.cemeteryDescription,
-          cem.cemeteryLatitude, cem.cemeteryLongitude, cem.cemeterySvg,
-          cem.cemeteryAddress1, cem.cemeteryAddress2, cem.cemeteryCity, cem.cemeteryProvince, cem.cemeteryPostalCode,
-          cem.cemeteryPhoneNumber,
-          p.cemeteryId, p.cemeteryName,
-          cem.recordCreate_userName, cem.recordCreate_timeMillis,
-          cem.recordUpdate_userName, cem.recordUpdate_timeMillis,
-          cem.recordDelete_userName, cem.recordDelete_timeMillis`
-    )
+        p.cemeteryId AS parentCemeteryId,
+        p.cemeteryName AS parentCemeteryName,
+        p.cemeteryLatitude AS parentCemeteryLatitude,
+        p.cemeteryLongitude AS parentCemeteryLongitude,
+        p.cemeterySvg AS parentCemeterySvg,
+        cem.recordCreate_userName,
+        cem.recordCreate_timeMillis,
+        cem.recordUpdate_userName,
+        cem.recordUpdate_timeMillis,
+        cem.recordDelete_userName,
+        cem.recordDelete_timeMillis,
+        count(b.burialSiteId) AS burialSiteCount
+      FROM
+        Cemeteries cem
+        LEFT JOIN Cemeteries p ON cem.parentCemeteryId = p.cemeteryId
+        AND p.recordDelete_timeMillis IS NULL
+        LEFT JOIN BurialSites b ON cem.cemeteryId = b.cemeteryId
+        AND b.recordDelete_timeMillis IS NULL
+      WHERE
+        cem.${keyColumn} = ?
+        AND cem.recordDelete_timeMillis IS NULL
+      GROUP BY
+        cem.cemeteryId,
+        cem.cemeteryName,
+        cem.cemeteryDescription,
+        cem.cemeteryLatitude,
+        cem.cemeteryLongitude,
+        cem.cemeterySvg,
+        cem.cemeteryAddress1,
+        cem.cemeteryAddress2,
+        cem.cemeteryCity,
+        cem.cemeteryProvince,
+        cem.cemeteryPostalCode,
+        cem.cemeteryPhoneNumber,
+        p.cemeteryId,
+        p.cemeteryName,
+        cem.recordCreate_userName,
+        cem.recordCreate_timeMillis,
+        cem.recordUpdate_userName,
+        cem.recordUpdate_timeMillis,
+        cem.recordDelete_userName,
+        cem.recordDelete_timeMillis
+    `)
     .get(cemeteryIdOrKey) as Cemetery | undefined
 
   if (cemetery !== undefined) {

@@ -1,5 +1,3 @@
-
-
 import { dateIntegerToString } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
@@ -62,7 +60,7 @@ async function _getWorkOrder(
   options: WorkOrderOptions,
   connectedDatabase?: sqlite.Database
 ): Promise<WorkOrder | undefined> {
-  const database = connectedDatabase ?? (sqlite(sunriseDB))
+  const database = connectedDatabase ?? sqlite(sunriseDB)
 
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 

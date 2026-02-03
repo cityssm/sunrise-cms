@@ -10,30 +10,71 @@ export default function getContractFields(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const fields = database
-    .prepare(/* sql */ `select cf.contractId, cf.contractTypeFieldId,
-        cf.fieldValue, f.contractTypeField, f.fieldType, f.fieldValues,
-        f.isRequired, f.pattern, f.minLength, f.maxLength,
-        f.orderNumber, t.orderNumber as contractTypeOrderNumber
-        from ContractFields cf
-        left join ContractTypeFields f on cf.contractTypeFieldId = f.contractTypeFieldId
-        left join ContractTypes t on f.contractTypeId = t.contractTypeId
-        where cf.recordDelete_timeMillis is null
-        and cf.contractId = ?
-
-        union
-        
-        select ? as contractId, f.contractTypeFieldId,
-        '' as fieldValue, f.contractTypeField, f.fieldType, f.fieldValues,
-        f.isRequired, f.pattern, f.minLength, f.maxLength,
-        f.orderNumber, t.orderNumber as contractTypeOrderNumber
-        from ContractTypeFields f
-        left join ContractTypes t on f.contractTypeId = t.contractTypeId
-        where f.recordDelete_timeMillis is null and (
-          f.contractTypeId is null
-          or f.contractTypeId in (select contractTypeId from Contracts where contractId = ?))
-        and f.contractTypeFieldId not in (select contractTypeFieldId from ContractFields where contractId = ? and recordDelete_timeMillis is null)
-        order by contractTypeOrderNumber, f.orderNumber, f.contractTypeField`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        cf.contractId,
+        cf.contractTypeFieldId,
+        cf.fieldValue,
+        f.contractTypeField,
+        f.fieldType,
+        f.fieldValues,
+        f.isRequired,
+        f.pattern,
+        f.minLength,
+        f.maxLength,
+        f.orderNumber,
+        t.orderNumber AS contractTypeOrderNumber
+      FROM
+        ContractFields cf
+        LEFT JOIN ContractTypeFields f ON cf.contractTypeFieldId = f.contractTypeFieldId
+        LEFT JOIN ContractTypes t ON f.contractTypeId = t.contractTypeId
+      WHERE
+        cf.recordDelete_timeMillis IS NULL
+        AND cf.contractId = ?
+      UNION
+      SELECT
+        ? AS contractId,
+        f.contractTypeFieldId,
+        '' AS fieldValue,
+        f.contractTypeField,
+        f.fieldType,
+        f.fieldValues,
+        f.isRequired,
+        f.pattern,
+        f.minLength,
+        f.maxLength,
+        f.orderNumber,
+        t.orderNumber AS contractTypeOrderNumber
+      FROM
+        ContractTypeFields f
+        LEFT JOIN ContractTypes t ON f.contractTypeId = t.contractTypeId
+      WHERE
+        f.recordDelete_timeMillis IS NULL
+        AND (
+          f.contractTypeId IS NULL
+          OR f.contractTypeId IN (
+            SELECT
+              contractTypeId
+            FROM
+              Contracts
+            WHERE
+              contractId = ?
+          )
+        )
+        AND f.contractTypeFieldId NOT IN (
+          SELECT
+            contractTypeFieldId
+          FROM
+            ContractFields
+          WHERE
+            contractId = ?
+            AND recordDelete_timeMillis IS NULL
+        )
+      ORDER BY
+        contractTypeOrderNumber,
+        f.orderNumber,
+        f.contractTypeField
+    `)
     .all(contractId, contractId, contractId, contractId) as ContractField[]
 
   if (connectedDatabase === undefined) {

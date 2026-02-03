@@ -4,10 +4,19 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export default function getWorkOrderTypes(connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const workOrderTypes = database
-        .prepare(/* sql */ `select workOrderTypeId, workOrderType, orderNumber
-        from WorkOrderTypes
-        where recordDelete_timeMillis is null
-        order by orderNumber, workOrderType`)
+        .prepare(/* sql */ `
+      SELECT
+        workOrderTypeId,
+        workOrderType,
+        orderNumber
+      FROM
+        WorkOrderTypes
+      WHERE
+        recordDelete_timeMillis IS NULL
+      ORDER BY
+        orderNumber,
+        workOrderType
+    `)
         .all();
     let expectedOrderNumber = 0;
     for (const workOrderType of workOrderTypes) {

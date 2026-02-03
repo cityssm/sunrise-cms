@@ -12,35 +12,47 @@ export async function getBurialSiteByBurialSiteName(burialSiteName, includeDelet
 async function _getBurialSite(keyColumn, burialSiteIdOrName, includeDeleted = false, connectedDatabase = undefined) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const burialSite = database
-        .prepare(/* sql */ `select b.burialSiteId,
-        b.burialSiteTypeId, t.burialSiteType,
+        .prepare(/* sql */ `
+      SELECT
+        b.burialSiteId,
+        b.burialSiteTypeId,
+        t.burialSiteType,
         b.burialSiteNameSegment1,
         b.burialSiteNameSegment2,
         b.burialSiteNameSegment3,
         b.burialSiteNameSegment4,
         b.burialSiteNameSegment5,
         b.burialSiteName,
-        b.burialSiteStatusId, s.burialSiteStatus,
-
-        b.bodyCapacity, b.crematedCapacity,
-        t.bodyCapacityMax, t.crematedCapacityMax,
-
-        b.cemeteryId, c.cemeteryName, c.cemeteryKey,
-        c.cemeteryLatitude, c.cemeteryLongitude,
-        c.cemeterySvg, b.cemeterySvgId, b.burialSiteImage,
-        b.burialSiteLatitude, b.burialSiteLongitude,
-
-        b.recordDelete_userName, b.recordDelete_timeMillis
-
-        from BurialSites b
-        left join BurialSiteTypes t on b.burialSiteTypeId = t.burialSiteTypeId
-        left join BurialSiteStatuses s on b.burialSiteStatusId = s.burialSiteStatusId
-        left join Cemeteries c on b.cemeteryId = c.cemeteryId
-
-        where b.${keyColumn} = ?
-        ${includeDeleted ? '' : ' and b.recordDelete_timeMillis is null '}
-        
-        order by b.burialSiteId`)
+        b.burialSiteStatusId,
+        s.burialSiteStatus,
+        b.bodyCapacity,
+        b.crematedCapacity,
+        t.bodyCapacityMax,
+        t.crematedCapacityMax,
+        b.cemeteryId,
+        c.cemeteryName,
+        c.cemeteryKey,
+        c.cemeteryLatitude,
+        c.cemeteryLongitude,
+        c.cemeterySvg,
+        b.cemeterySvgId,
+        b.burialSiteImage,
+        b.burialSiteLatitude,
+        b.burialSiteLongitude,
+        b.recordDelete_userName,
+        b.recordDelete_timeMillis
+      FROM
+        BurialSites b
+        LEFT JOIN BurialSiteTypes t ON b.burialSiteTypeId = t.burialSiteTypeId
+        LEFT JOIN BurialSiteStatuses s ON b.burialSiteStatusId = s.burialSiteStatusId
+        LEFT JOIN Cemeteries c ON b.cemeteryId = c.cemeteryId
+      WHERE
+        b.${keyColumn} = ? ${includeDeleted
+        ? ''
+        : ' and b.recordDelete_timeMillis is null '}
+      ORDER BY
+        b.burialSiteId
+    `)
         .get(burialSiteIdOrName);
     if (burialSite !== undefined) {
         const contracts = await getContracts({

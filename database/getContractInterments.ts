@@ -13,25 +13,38 @@ export default function getContractInterments(
   database.function('userFn_dateIntegerToString', dateIntegerToString)
 
   const interments = database
-    .prepare(/* sql */ `select ci.contractId, ci.intermentNumber,
+    .prepare(/* sql */ `
+      SELECT
+        ci.contractId,
+        ci.intermentNumber,
         ci.deceasedName,
-        ci.deceasedAddress1, ci.deceasedAddress2, ci.deceasedCity, ci.deceasedProvince, ci.deceasedPostalCode,
-        
-        ci.birthDate, userFn_dateIntegerToString(ci.birthDate) as birthDateString,
+        ci.deceasedAddress1,
+        ci.deceasedAddress2,
+        ci.deceasedCity,
+        ci.deceasedProvince,
+        ci.deceasedPostalCode,
+        ci.birthDate,
+        userFn_dateIntegerToString (ci.birthDate) AS birthDateString,
         ci.birthPlace,
-        ci.deathDate, userFn_dateIntegerToString(ci.deathDate) as deathDateString,
+        ci.deathDate,
+        userFn_dateIntegerToString (ci.deathDate) AS deathDateString,
         ci.deathPlace,
-        ci.deathAge, ci.deathAgePeriod,
-        
-        ci.intermentContainerTypeId, t.intermentContainerType, t.isCremationType
-
-        from ContractInterments ci
-        left join IntermentContainerTypes t on ci.intermentContainerTypeId = t.intermentContainerTypeId
-
-        where ci.recordDelete_timeMillis is null
-        and ci.contractId = ?
-        order by t.orderNumber, ci.deceasedName, ci.intermentNumber`
-    )
+        ci.deathAge,
+        ci.deathAgePeriod,
+        ci.intermentContainerTypeId,
+        t.intermentContainerType,
+        t.isCremationType
+      FROM
+        ContractInterments ci
+        LEFT JOIN IntermentContainerTypes t ON ci.intermentContainerTypeId = t.intermentContainerTypeId
+      WHERE
+        ci.recordDelete_timeMillis IS NULL
+        AND ci.contractId = ?
+      ORDER BY
+        t.orderNumber,
+        ci.deceasedName,
+        ci.intermentNumber
+    `)
     .all(contractId) as ContractInterment[]
 
   if (connectedDatabase === undefined) {

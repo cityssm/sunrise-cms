@@ -9,13 +9,21 @@ export default function getBurialSiteTypeSummary(filters, connectedDatabase) {
         sqlParameters.push(filters.cemeteryId);
     }
     const burialSiteTypes = database
-        .prepare(/* sql */ `select t.burialSiteTypeId, t.burialSiteType,
-        count(l.burialSiteId) as burialSiteCount
-        from BurialSites l
-        left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
-        ${sqlWhereClause}
-        group by t.burialSiteTypeId, t.burialSiteType, t.orderNumber
-        order by t.orderNumber`)
+        .prepare(/* sql */ `
+      SELECT
+        t.burialSiteTypeId,
+        t.burialSiteType,
+        count(l.burialSiteId) AS burialSiteCount
+      FROM
+        BurialSites l
+        LEFT JOIN BurialSiteTypes t ON l.burialSiteTypeId = t.burialSiteTypeId ${sqlWhereClause}
+      GROUP BY
+        t.burialSiteTypeId,
+        t.burialSiteType,
+        t.orderNumber
+      ORDER BY
+        t.orderNumber
+    `)
         .all(sqlParameters);
     if (connectedDatabase === undefined) {
         database.close();

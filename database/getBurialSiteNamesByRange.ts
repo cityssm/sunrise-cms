@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
 import fillBlockRange, {
@@ -52,7 +51,11 @@ export default function getBurialSiteNamesByRange(
   const segmentRanges: string[][] = []
 
   try {
-    for (let segmentIndex = 1; segmentIndex <= segmentCount; segmentIndex++) {
+    for (
+      let segmentIndex = 1;
+      segmentIndex <= segmentCount;
+      segmentIndex += 1
+    ) {
       segmentRanges.push([''])
 
       const segmentFrom = rangeForm[
@@ -110,11 +113,15 @@ export default function getBurialSiteNamesByRange(
     })
 
     const burialSiteId = database
-      .prepare(/* sql */ `select burialSiteId
-          from BurialSites
-          where burialSiteName = ?
-          and recordDelete_timeMillis is null`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          burialSiteId
+        FROM
+          BurialSites
+        WHERE
+          burialSiteName = ?
+          AND recordDelete_timeMillis IS NULL
+      `)
       .pluck()
       .get(burialSiteName) as number | undefined
 

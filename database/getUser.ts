@@ -10,14 +10,24 @@ export default function getUser(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const user = database
-    .prepare(/* sql */ `select userName, isActive,
-          canUpdateCemeteries, canUpdateContracts, canUpdateWorkOrders, isAdmin,
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis
-        from Users
-        where userName = ?
-          and recordDelete_timeMillis is null`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        userName,
+        isActive,
+        canUpdateCemeteries,
+        canUpdateContracts,
+        canUpdateWorkOrders,
+        isAdmin,
+        recordCreate_userName,
+        recordCreate_timeMillis,
+        recordUpdate_userName,
+        recordUpdate_timeMillis
+      FROM
+        Users
+      WHERE
+        userName = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
     .get(userName) as DatabaseUser | undefined
 
   if (connectedDatabase === undefined) {

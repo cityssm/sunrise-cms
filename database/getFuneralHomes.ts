@@ -12,20 +12,39 @@ export default function getFuneralHomes(
   const currentDateNumber = dateToInteger(new Date())
 
   const funeralHomes = database
-    .prepare(/* sql */ `select f.funeralHomeId, f.funeralHomeKey, f.funeralHomeName,
-        f.funeralHomeAddress1, f.funeralHomeAddress2,
-        f.funeralHomeCity, f.funeralHomeProvince, f.funeralHomePostalCode, f.funeralHomePhoneNumber,
-		    count(c.contractId) as upcomingFuneralCount
-        from FuneralHomes f
-		    left join Contracts c on f.funeralHomeId = c.funeralHomeId
-          and c.recordDelete_timeMillis is null
-          and c.funeralDate >= ?
-        where f.recordDelete_timeMillis is null
-		    group by f.funeralHomeId, f.funeralHomeKey, f.funeralHomeName,
-          f.funeralHomeAddress1, f.funeralHomeAddress2,
-          f.funeralHomeCity, f.funeralHomeProvince, f.funeralHomePostalCode, f.funeralHomePhoneNumber
-        order by f.funeralHomeName, f.funeralHomeId`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        f.funeralHomeId,
+        f.funeralHomeKey,
+        f.funeralHomeName,
+        f.funeralHomeAddress1,
+        f.funeralHomeAddress2,
+        f.funeralHomeCity,
+        f.funeralHomeProvince,
+        f.funeralHomePostalCode,
+        f.funeralHomePhoneNumber,
+        count(c.contractId) AS upcomingFuneralCount
+      FROM
+        FuneralHomes f
+        LEFT JOIN Contracts c ON f.funeralHomeId = c.funeralHomeId
+        AND c.recordDelete_timeMillis IS NULL
+        AND c.funeralDate >= ?
+      WHERE
+        f.recordDelete_timeMillis IS NULL
+      GROUP BY
+        f.funeralHomeId,
+        f.funeralHomeKey,
+        f.funeralHomeName,
+        f.funeralHomeAddress1,
+        f.funeralHomeAddress2,
+        f.funeralHomeCity,
+        f.funeralHomeProvince,
+        f.funeralHomePostalCode,
+        f.funeralHomePhoneNumber
+      ORDER BY
+        f.funeralHomeName,
+        f.funeralHomeId
+    `)
     .all([currentDateNumber]) as FuneralHome[]
 
   if (connectedDatabase === undefined) {

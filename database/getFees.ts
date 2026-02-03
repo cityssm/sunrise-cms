@@ -40,28 +40,45 @@ export default function getFees(
   }
 
   const fees = database
-    .prepare(/* sql */ `select f.feeId, f.feeCategoryId,
-        f.feeName, f.feeDescription, f.feeAccount,
-        f.contractTypeId, ct.contractType,
-        f.burialSiteTypeId, l.burialSiteType,
-        ifnull(f.feeAmount, 0) as feeAmount,
+    .prepare(/* sql */ `
+      SELECT
+        f.feeId,
+        f.feeCategoryId,
+        f.feeName,
+        f.feeDescription,
+        f.feeAccount,
+        f.contractTypeId,
+        ct.contractType,
+        f.burialSiteTypeId,
+        l.burialSiteType,
+        ifnull(f.feeAmount, 0) AS feeAmount,
         f.feeFunction,
-        f.taxAmount, f.taxPercentage,
-        f.includeQuantity, f.quantityUnit,
-        f.isRequired, f.orderNumber,
-        ifnull(cf.contractFeeCount, 0) as contractFeeCount
-        from Fees f
-        left join (
-          select feeId, count(contractId) as contractFeeCount
-          from ContractFees
-          where recordDelete_timeMillis is null
-          group by feeId
-        ) cf on f.feeId = cf.feeId
-        left join ContractTypes ct on f.contractTypeId = ct.contractTypeId
-        left join BurialSiteTypes l on f.burialSiteTypeId = l.burialSiteTypeId
-        ${sqlWhereClause}
-        order by f.orderNumber, f.feeName`
-    )
+        f.taxAmount,
+        f.taxPercentage,
+        f.includeQuantity,
+        f.quantityUnit,
+        f.isRequired,
+        f.orderNumber,
+        ifnull(cf.contractFeeCount, 0) AS contractFeeCount
+      FROM
+        Fees f
+        LEFT JOIN (
+          SELECT
+            feeId,
+            count(contractId) AS contractFeeCount
+          FROM
+            ContractFees
+          WHERE
+            recordDelete_timeMillis IS NULL
+          GROUP BY
+            feeId
+        ) cf ON f.feeId = cf.feeId
+        LEFT JOIN ContractTypes ct ON f.contractTypeId = ct.contractTypeId
+        LEFT JOIN BurialSiteTypes l ON f.burialSiteTypeId = l.burialSiteTypeId ${sqlWhereClause}
+      ORDER BY
+        f.orderNumber,
+        f.feeName
+    `)
     .all(sqlParameters) as Fee[]
 
   if (updateOrderNumbers) {

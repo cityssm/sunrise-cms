@@ -9,19 +9,32 @@ export default function getNextFuneralHomeId(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const result = database
-    .prepare(/* sql */ `select funeralHomeId
-        from FuneralHomes
-        where recordDelete_timeMillis is null
-        and funeralHomeName > (select funeralHomeName from FuneralHomes where funeralHomeId = ?)
-        order by funeralHomeName
-        limit 1`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        funeralHomeId
+      FROM
+        FuneralHomes
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND funeralHomeName > (
+          SELECT
+            funeralHomeName
+          FROM
+            FuneralHomes
+          WHERE
+            funeralHomeId = ?
+        )
+      ORDER BY
+        funeralHomeName
+      LIMIT
+        1
+    `)
     .pluck()
     .get(funeralHomeId) as number | undefined
 
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return result
 }

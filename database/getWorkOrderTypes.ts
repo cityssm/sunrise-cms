@@ -11,11 +11,19 @@ export default function getWorkOrderTypes(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const workOrderTypes = database
-    .prepare(/* sql */ `select workOrderTypeId, workOrderType, orderNumber
-        from WorkOrderTypes
-        where recordDelete_timeMillis is null
-        order by orderNumber, workOrderType`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        workOrderTypeId,
+        workOrderType,
+        orderNumber
+      FROM
+        WorkOrderTypes
+      WHERE
+        recordDelete_timeMillis IS NULL
+      ORDER BY
+        orderNumber,
+        workOrderType
+    `)
     .all() as WorkOrderType[]
 
   let expectedOrderNumber = 0

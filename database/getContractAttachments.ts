@@ -10,14 +10,21 @@ export default function getContractAttachments(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const attachments = database
-    .prepare(/* sql */ `select contractAttachmentId,
-          attachmentTitle, attachmentDetails,
-          fileName, recordCreate_timeMillis
-        from ContractAttachments
-        where recordDelete_timeMillis is null
-          and contractId = ?
-        order by contractAttachmentId`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        contractAttachmentId,
+        attachmentTitle,
+        attachmentDetails,
+        fileName,
+        recordCreate_timeMillis
+      FROM
+        ContractAttachments
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractId = ?
+      ORDER BY
+        contractAttachmentId
+    `)
     .all(contractId) as ContractAttachment[]
 
   if (connectedDatabase === undefined) {

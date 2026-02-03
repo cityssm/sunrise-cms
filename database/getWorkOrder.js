@@ -25,7 +25,7 @@ export async function getWorkOrderByWorkOrderNumber(workOrderNumber, connectedDa
     }, connectedDatabase);
 }
 async function _getWorkOrder(sql, workOrderIdOrWorkOrderNumber, options, connectedDatabase) {
-    const database = connectedDatabase ?? (sqlite(sunriseDB));
+    const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const workOrder = database.prepare(sql).get(workOrderIdOrWorkOrderNumber);
     if (workOrder !== undefined) {

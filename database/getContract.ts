@@ -32,61 +32,80 @@ export default async function getContract(
   )
 
   const contract = database
-    .prepare(/* sql */ `select c.contractId,
-          c.contractTypeId, t.contractType, t.isPreneed,
-
-          c.burialSiteId, b.burialSiteName, b.burialSiteTypeId,
-          case when b.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
-          
-          b.cemeteryId, cem.cemeteryName,
-          
-          c.contractStartDate, userFn_dateIntegerToString(c.contractStartDate) as contractStartDateString,
-          c.contractEndDate, userFn_dateIntegerToString(c.contractEndDate) as contractEndDateString,
-
-          c.purchaserName, c.purchaserAddress1, c.purchaserAddress2,
-          c.purchaserCity, c.purchaserProvince, c.purchaserPostalCode,
-          c.purchaserPhoneNumber, c.purchaserEmail, c.purchaserRelationship,
-
-          c.funeralHomeId, c.funeralDirectorName, f.funeralHomeKey,
-          f.funeralHomeName, f.funeralHomeAddress1, f.funeralHomeAddress2,
-          f.funeralHomeCity, f.funeralHomeProvince, f.funeralHomePostalCode,
-          case when f.recordDelete_timeMillis is null then 1 else 0 end as funeralHomeIsActive,
-
-          c.funeralDate, userFn_dateIntegerToString(c.funeralDate) as funeralDateString,
-
-          c.funeralTime,
-          userFn_timeIntegerToString(c.funeralTime) as funeralTimeString,
-          userFn_timeIntegerToPeriodString(c.funeralTime) as funeralTimePeriodString,
-          
-          c.directionOfArrival, d.directionOfArrivalDescription,
-          c.committalTypeId, ct.committalType,
-
-          c.recordUpdate_timeMillis
-          
-        from Contracts c
-        left join ContractTypes t on c.contractTypeId = t.contractTypeId
-        left join FuneralHomes f on c.funeralHomeId = f.funeralHomeId
-        left join CommittalTypes ct on c.committalTypeId = ct.committalTypeId
-        left join BurialSites b on c.burialSiteId = b.burialSiteId
-        left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
-        left join CemeteryDirectionsOfArrival d
-          on b.cemeteryId = d.cemeteryId
-          and c.directionOfArrival = d.directionOfArrival
-
-        where c.recordDelete_timeMillis is null
-          and c.contractId = ?`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        c.contractId,
+        c.contractTypeId,
+        t.contractType,
+        t.isPreneed,
+        c.burialSiteId,
+        b.burialSiteName,
+        b.burialSiteTypeId,
+        CASE
+          WHEN b.recordDelete_timeMillis IS NULL THEN 1
+          ELSE 0
+        END AS burialSiteIsActive,
+        b.cemeteryId,
+        cem.cemeteryName,
+        c.contractStartDate,
+        userFn_dateIntegerToString (c.contractStartDate) AS contractStartDateString,
+        c.contractEndDate,
+        userFn_dateIntegerToString (c.contractEndDate) AS contractEndDateString,
+        c.purchaserName,
+        c.purchaserAddress1,
+        c.purchaserAddress2,
+        c.purchaserCity,
+        c.purchaserProvince,
+        c.purchaserPostalCode,
+        c.purchaserPhoneNumber,
+        c.purchaserEmail,
+        c.purchaserRelationship,
+        c.funeralHomeId,
+        c.funeralDirectorName,
+        f.funeralHomeKey,
+        f.funeralHomeName,
+        f.funeralHomeAddress1,
+        f.funeralHomeAddress2,
+        f.funeralHomeCity,
+        f.funeralHomeProvince,
+        f.funeralHomePostalCode,
+        CASE
+          WHEN f.recordDelete_timeMillis IS NULL THEN 1
+          ELSE 0
+        END AS funeralHomeIsActive,
+        c.funeralDate,
+        userFn_dateIntegerToString (c.funeralDate) AS funeralDateString,
+        c.funeralTime,
+        userFn_timeIntegerToString (c.funeralTime) AS funeralTimeString,
+        userFn_timeIntegerToPeriodString (c.funeralTime) AS funeralTimePeriodString,
+        c.directionOfArrival,
+        d.directionOfArrivalDescription,
+        c.committalTypeId,
+        ct.committalType,
+        c.recordUpdate_timeMillis
+      FROM
+        Contracts c
+        LEFT JOIN ContractTypes t ON c.contractTypeId = t.contractTypeId
+        LEFT JOIN FuneralHomes f ON c.funeralHomeId = f.funeralHomeId
+        LEFT JOIN CommittalTypes ct ON c.committalTypeId = ct.committalTypeId
+        LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
+        LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+        LEFT JOIN CemeteryDirectionsOfArrival d ON b.cemeteryId = d.cemeteryId
+        AND c.directionOfArrival = d.directionOfArrival
+      WHERE
+        c.recordDelete_timeMillis IS NULL
+        AND c.contractId = ?
+    `)
     .get(contractId) as Contract | undefined
 
   if (contract !== undefined) {
-
     const currentDateInteger = dateToInteger(new Date())
 
-    contract.contractIsActive = contract.contractEndDate === null ||
-        (contract.contractEndDate ?? 0) > currentDateInteger
+    contract.contractIsActive =
+      contract.contractEndDate === null ||
+      (contract.contractEndDate ?? 0) > currentDateInteger
 
-      contract.contractIsFuture =
-        contract.contractStartDate > currentDateInteger
+    contract.contractIsFuture = contract.contractStartDate > currentDateInteger
 
     contract.contractFields = getContractFields(contractId, database)
 

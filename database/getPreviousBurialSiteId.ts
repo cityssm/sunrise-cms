@@ -9,18 +9,32 @@ export default function getPreviousBurialSiteId(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const result = database
-    .prepare(/* sql */ `select burialSiteId from BurialSites
-        where recordDelete_timeMillis is null
-        and burialSiteName < (select burialSiteName from BurialSites where burialSiteId = ?)
-        order by burialSiteName desc
-        limit 1`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        burialSiteId
+      FROM
+        BurialSites
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND burialSiteName < (
+          SELECT
+            burialSiteName
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+        )
+      ORDER BY
+        burialSiteName DESC
+      LIMIT
+        1
+    `)
     .pluck()
     .get(burialSiteId) as number | undefined
 
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return result
 }

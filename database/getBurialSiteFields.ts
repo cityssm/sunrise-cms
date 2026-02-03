@@ -10,33 +10,71 @@ export default function getBurialSiteFields(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const burialSiteFields = database
-    .prepare(/* sql */ `select l.burialSiteId, l.burialSiteTypeFieldId,
-          l.fieldValue,
-          f.burialSiteTypeField, f.fieldType, f.fieldValues,
-          f.isRequired, f.pattern, f.minLength, f.maxLength,
-          f.orderNumber, t.orderNumber as burialSiteTypeOrderNumber
-        from BurialSiteFields l
-        left join BurialSiteTypeFields f on l.burialSiteTypeFieldId = f.burialSiteTypeFieldId
-        left join BurialSiteTypes t on f.burialSiteTypeId = t.burialSiteTypeId
-        where l.recordDelete_timeMillis is null
-          and l.burialSiteId = ?
-    
-        union
-    
-        select ? as burialSiteId, f.burialSiteTypeFieldId,
-          '' as fieldValue,
-          f.burialSiteTypeField, f.fieldType, f.fieldValues,
-          f.isRequired, f.pattern, f.minLength, f.maxLength,
-          f.orderNumber, t.orderNumber as burialSiteTypeOrderNumber
-        from BurialSiteTypeFields f
-        left join BurialSiteTypes t on f.burialSiteTypeId = t.burialSiteTypeId
-        where f.recordDelete_timeMillis is null
-          and (
-            f.burialSiteTypeId is null
-            or f.burialSiteTypeId in (select burialSiteTypeId from BurialSites where burialSiteId = ?))
-          and f.burialSiteTypeFieldId not in (select burialSiteTypeFieldId from BurialSiteFields where burialSiteId = ? and recordDelete_timeMillis is null)
-        order by burialSiteTypeOrderNumber, f.orderNumber, f.burialSiteTypeField`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        l.burialSiteId,
+        l.burialSiteTypeFieldId,
+        l.fieldValue,
+        f.burialSiteTypeField,
+        f.fieldType,
+        f.fieldValues,
+        f.isRequired,
+        f.pattern,
+        f.minLength,
+        f.maxLength,
+        f.orderNumber,
+        t.orderNumber AS burialSiteTypeOrderNumber
+      FROM
+        BurialSiteFields l
+        LEFT JOIN BurialSiteTypeFields f ON l.burialSiteTypeFieldId = f.burialSiteTypeFieldId
+        LEFT JOIN BurialSiteTypes t ON f.burialSiteTypeId = t.burialSiteTypeId
+      WHERE
+        l.recordDelete_timeMillis IS NULL
+        AND l.burialSiteId = ?
+      UNION
+      SELECT
+        ? AS burialSiteId,
+        f.burialSiteTypeFieldId,
+        '' AS fieldValue,
+        f.burialSiteTypeField,
+        f.fieldType,
+        f.fieldValues,
+        f.isRequired,
+        f.pattern,
+        f.minLength,
+        f.maxLength,
+        f.orderNumber,
+        t.orderNumber AS burialSiteTypeOrderNumber
+      FROM
+        BurialSiteTypeFields f
+        LEFT JOIN BurialSiteTypes t ON f.burialSiteTypeId = t.burialSiteTypeId
+      WHERE
+        f.recordDelete_timeMillis IS NULL
+        AND (
+          f.burialSiteTypeId IS NULL
+          OR f.burialSiteTypeId IN (
+            SELECT
+              burialSiteTypeId
+            FROM
+              BurialSites
+            WHERE
+              burialSiteId = ?
+          )
+        )
+        AND f.burialSiteTypeFieldId NOT IN (
+          SELECT
+            burialSiteTypeFieldId
+          FROM
+            BurialSiteFields
+          WHERE
+            burialSiteId = ?
+            AND recordDelete_timeMillis IS NULL
+        )
+      ORDER BY
+        burialSiteTypeOrderNumber,
+        f.orderNumber,
+        f.burialSiteTypeField
+    `)
     .all(
       burialSiteId,
       burialSiteId,

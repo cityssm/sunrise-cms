@@ -10,22 +10,35 @@ export default function getFee(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const fee = database
-    .prepare(/* sql */ `select f.feeId,
-        f.feeCategoryId, c.feeCategory,
-        f.feeName, f.feeDescription, f.feeAccount,
-        f.contractTypeId, ct.contractType,
-        f.burialSiteTypeId, l.burialSiteType,
-        ifnull(f.feeAmount, 0) as feeAmount, f.feeFunction,
-        f.taxAmount, f.taxPercentage,
-        f.includeQuantity, f.quantityUnit,
-        f.isRequired, f.orderNumber
-        from Fees f
-        left join FeeCategories c on f.feeCategoryId = c.feeCategoryId
-        left join ContractTypes ct on f.contractTypeId = ct.contractTypeId
-        left join BurialSiteTypes l on f.burialSiteTypeId = l.burialSiteTypeId
-        where f.recordDelete_timeMillis is null
-        and f.feeId = ?`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        f.feeId,
+        f.feeCategoryId,
+        c.feeCategory,
+        f.feeName,
+        f.feeDescription,
+        f.feeAccount,
+        f.contractTypeId,
+        ct.contractType,
+        f.burialSiteTypeId,
+        l.burialSiteType,
+        ifnull(f.feeAmount, 0) AS feeAmount,
+        f.feeFunction,
+        f.taxAmount,
+        f.taxPercentage,
+        f.includeQuantity,
+        f.quantityUnit,
+        f.isRequired,
+        f.orderNumber
+      FROM
+        Fees f
+        LEFT JOIN FeeCategories c ON f.feeCategoryId = c.feeCategoryId
+        LEFT JOIN ContractTypes ct ON f.contractTypeId = ct.contractTypeId
+        LEFT JOIN BurialSiteTypes l ON f.burialSiteTypeId = l.burialSiteTypeId
+      WHERE
+        f.recordDelete_timeMillis IS NULL
+        AND f.feeId = ?
+    `)
     .get(feeId) as Fee | undefined
 
   if (connectedDatabase === undefined) {

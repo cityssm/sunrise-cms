@@ -13,10 +13,15 @@ export default function getSettings(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const databaseSettings = database
-    .prepare(/* sql */ `select s.settingKey, s.settingValue, s.previousSettingValue,
+    .prepare(/* sql */ `
+      SELECT
+        s.settingKey,
+        s.settingValue,
+        s.previousSettingValue,
         s.recordUpdate_timeMillis
-        from SunriseSettings s`
-    )
+      FROM
+        SunriseSettings s
+    `)
     .all() as Setting[]
 
   const settings: Array<Partial<Setting> & SettingProperties> = [

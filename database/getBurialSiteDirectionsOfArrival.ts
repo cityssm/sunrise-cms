@@ -19,13 +19,18 @@ export default function getBurialSiteDirectionsOfArrival(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const directionsList = database
-    .prepare(/* sql */ `select c.parentCemeteryId,
-        d.directionOfArrival, d.directionOfArrivalDescription
-        from BurialSites b
-        left join Cemeteries c on b.cemeteryId = c.cemeteryId
-        left join CemeteryDirectionsOfArrival d on c.cemeteryId = d.cemeteryId
-        where b.burialSiteId = ?`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        c.parentCemeteryId,
+        d.directionOfArrival,
+        d.directionOfArrivalDescription
+      FROM
+        BurialSites b
+        LEFT JOIN Cemeteries c ON b.cemeteryId = c.cemeteryId
+        LEFT JOIN CemeteryDirectionsOfArrival d ON c.cemeteryId = d.cemeteryId
+      WHERE
+        b.burialSiteId = ?
+    `)
     .all(burialSiteId) as Array<{
     directionOfArrival: (typeof directionsOfArrival)[number] | null
     directionOfArrivalDescription: string | null
@@ -45,7 +50,10 @@ export default function getBurialSiteDirectionsOfArrival(
       directionsList[0].parentCemeteryId,
       connectedDatabase
     )
-  } else if (directionsList.length > 0 && directionsList[0].directionOfArrival !== null) {
+  } else if (
+    directionsList.length > 0 &&
+    directionsList[0].directionOfArrival !== null
+  ) {
     for (const direction of directionsList) {
       directions[direction.directionOfArrival as string] =
         direction.directionOfArrivalDescription ?? ''

@@ -7,17 +7,27 @@ export default function getWorkOrderComments(workOrderId, connectedDatabase) {
     database.function('userFn_timeIntegerToString', timeIntegerToString);
     database.function('userFn_timeIntegerToPeriodString', timeIntegerToPeriodString);
     const workOrderComments = database
-        .prepare(/* sql */ `select workOrderCommentId,
-        commentDate, userFn_dateIntegerToString(commentDate) as commentDateString,
+        .prepare(/* sql */ `
+      SELECT
+        workOrderCommentId,
+        commentDate,
+        userFn_dateIntegerToString (commentDate) AS commentDateString,
         commentTime,
-        userFn_timeIntegerToString(commentTime) as commentTimeString,
-        userFn_timeIntegerToPeriodString(commentTime) as commentTimePeriodString,
+        userFn_timeIntegerToString (commentTime) AS commentTimeString,
+        userFn_timeIntegerToPeriodString (commentTime) AS commentTimePeriodString,
         comment,
-        recordCreate_userName, recordUpdate_userName
-        from WorkOrderComments
-        where recordDelete_timeMillis is null
-        and workOrderId = ?
-        order by commentDate desc, commentTime desc, workOrderCommentId desc`)
+        recordCreate_userName,
+        recordUpdate_userName
+      FROM
+        WorkOrderComments
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND workOrderId = ?
+      ORDER BY
+        commentDate DESC,
+        commentTime DESC,
+        workOrderCommentId DESC
+    `)
         .all(workOrderId);
     if (connectedDatabase === undefined) {
         database.close();

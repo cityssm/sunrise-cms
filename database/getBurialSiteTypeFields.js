@@ -5,13 +5,26 @@ export default function getBurialSiteTypeFields(burialSiteTypeId, connectedDatab
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !database.readonly;
     const typeFields = database
-        .prepare(/* sql */ `select burialSiteTypeFieldId,
-        burialSiteTypeField, fieldType, fieldValues,
-        isRequired, pattern, minLength, maxLength, orderNumber
-        from BurialSiteTypeFields
-        where recordDelete_timeMillis is null
-        and burialSiteTypeId = ?
-        order by orderNumber, burialSiteTypeField`)
+        .prepare(/* sql */ `
+      SELECT
+        burialSiteTypeFieldId,
+        burialSiteTypeField,
+        fieldType,
+        fieldValues,
+        isRequired,
+        pattern,
+        minLength,
+        maxLength,
+        orderNumber
+      FROM
+        BurialSiteTypeFields
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND burialSiteTypeId = ?
+      ORDER BY
+        orderNumber,
+        burialSiteTypeField
+    `)
         .all(burialSiteTypeId);
     if (updateOrderNumbers) {
         let expectedOrderNumber = 0;

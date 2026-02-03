@@ -15,13 +15,21 @@ export default function getBurialSiteTypes(
   const updateOrderNumbers = !includeDeleted
 
   const burialSiteTypes = database
-    .prepare(/* sql */ `select burialSiteTypeId, burialSiteType,
-        bodyCapacityMax, crematedCapacityMax,
+    .prepare(/* sql */ `
+      SELECT
+        burialSiteTypeId,
+        burialSiteType,
+        bodyCapacityMax,
+        crematedCapacityMax,
         orderNumber
-        from BurialSiteTypes
-        ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '}
-        order by orderNumber, burialSiteType`
-    )
+      FROM
+        BurialSiteTypes ${includeDeleted
+          ? ''
+          : ' where recordDelete_timeMillis is null '}
+      ORDER BY
+        orderNumber,
+        burialSiteType
+    `)
     .all() as BurialSiteType[]
 
   let expectedOrderNumber = -1

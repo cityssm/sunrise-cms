@@ -12,16 +12,27 @@ export default function getBurialSiteDeceasedNames(burialSiteIds) {
         const placeholders = burialSiteIds.map(() => '?').join(',');
         // Get deceased names for burial sites with active contracts
         const rows = database
-            .prepare(/* sql */ `SELECT c.burialSiteId, ci.deceasedName
-         FROM Contracts c
-         INNER JOIN ContractInterments ci ON c.contractId = ci.contractId
-         WHERE c.recordDelete_timeMillis IS NULL
-         AND ci.recordDelete_timeMillis IS NULL
-         AND c.burialSiteId IS NOT NULL
-         AND c.burialSiteId IN (${placeholders})
-         AND c.contractStartDate <= ?
-         AND (c.contractEndDate IS NULL OR c.contractEndDate >= ?)
-         ORDER BY c.burialSiteId, ci.deceasedName`)
+            .prepare(/* sql */ `
+        SELECT
+          c.burialSiteId,
+          ci.deceasedName
+        FROM
+          Contracts c
+          INNER JOIN ContractInterments ci ON c.contractId = ci.contractId
+        WHERE
+          c.recordDelete_timeMillis IS NULL
+          AND ci.recordDelete_timeMillis IS NULL
+          AND c.burialSiteId IS NOT NULL
+          AND c.burialSiteId IN (${placeholders})
+          AND c.contractStartDate <= ?
+          AND (
+            c.contractEndDate IS NULL
+            OR c.contractEndDate >= ?
+          )
+        ORDER BY
+          c.burialSiteId,
+          ci.deceasedName
+      `)
             .all(...burialSiteIds, currentDate, currentDate);
         // Group deceased names by burial site
         const intermentMap = new Map();

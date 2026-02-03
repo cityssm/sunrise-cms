@@ -22,15 +22,28 @@ export default async function getContractTransactions(
   database.function('userFn_timeIntegerToString', timeIntegerToString)
 
   const contractTransactions = database
-    .prepare(/* sql */ `select contractId, transactionIndex,
-          transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString,
-          transactionTime, userFn_timeIntegerToString(transactionTime) as transactionTimeString,
-          transactionAmount, externalReceiptNumber, isInvoiced, transactionNote
-        from ContractTransactions
-        where recordDelete_timeMillis is null
-          and contractId = ?
-        order by transactionDate, transactionTime, transactionIndex`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        contractId,
+        transactionIndex,
+        transactionDate,
+        userFn_dateIntegerToString (transactionDate) AS transactionDateString,
+        transactionTime,
+        userFn_timeIntegerToString (transactionTime) AS transactionTimeString,
+        transactionAmount,
+        externalReceiptNumber,
+        isInvoiced,
+        transactionNote
+      FROM
+        ContractTransactions
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractId = ?
+      ORDER BY
+        transactionDate,
+        transactionTime,
+        transactionIndex
+    `)
     .all(contractId) as ContractTransaction[]
 
   if (connectedDatabase === undefined) {

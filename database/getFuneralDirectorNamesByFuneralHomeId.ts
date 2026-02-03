@@ -11,16 +11,24 @@ export default function getFuneralDirectorNamesByFuneralHomeId(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const funeralDirectors = database
-    .prepare(/* sql */ `select funeralDirectorName
-       from Contracts
-       where recordDelete_timeMillis is null
-         and funeralHomeId = ?
-         and funeralDirectorName is not null
-         and trim(funeralDirectorName) != ''
-       group by funeralDirectorName
-       order by count(*) desc, funeralDirectorName
-       limit ${limit}`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        funeralDirectorName
+      FROM
+        Contracts
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND funeralHomeId = ?
+        AND funeralDirectorName IS NOT NULL
+        AND trim(funeralDirectorName) != ''
+      GROUP BY
+        funeralDirectorName
+      ORDER BY
+        count(*) DESC,
+        funeralDirectorName
+      LIMIT
+        ${limit}
+    `)
     .pluck()
     .all(funeralHomeId) as string[]
 

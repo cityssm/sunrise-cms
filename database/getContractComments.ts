@@ -22,18 +22,27 @@ export default function getContractComments(
   )
 
   const comments = database
-    .prepare(/* sql */ `select contractCommentId,
-        commentDate, userFn_dateIntegerToString(commentDate) as commentDateString,
+    .prepare(/* sql */ `
+      SELECT
+        contractCommentId,
+        commentDate,
+        userFn_dateIntegerToString (commentDate) AS commentDateString,
         commentTime,
-        userFn_timeIntegerToString(commentTime) as commentTimeString,
-        userFn_timeIntegerToPeriodString(commentTime) as commentTimePeriodString,
+        userFn_timeIntegerToString (commentTime) AS commentTimeString,
+        userFn_timeIntegerToPeriodString (commentTime) AS commentTimePeriodString,
         comment,
-        recordCreate_userName, recordUpdate_userName
-        from ContractComments
-        where recordDelete_timeMillis is null
-        and contractId = ?
-        order by commentDate desc, commentTime desc, contractCommentId desc`
-    )
+        recordCreate_userName,
+        recordUpdate_userName
+      FROM
+        ContractComments
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractId = ?
+      ORDER BY
+        commentDate DESC,
+        commentTime DESC,
+        contractCommentId DESC
+    `)
     .all(contractId) as ContractComment[]
 
   if (connectedDatabase === undefined) {

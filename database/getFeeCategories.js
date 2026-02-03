@@ -24,10 +24,18 @@ export default function getFeeCategories(filters, options, connectedDatabase) {
         sqlParameters.push(filters.feeCategoryId);
     }
     const feeCategories = database
-        .prepare(/* sql */ `select feeCategoryId, feeCategory, isGroupedFee, orderNumber
-        from FeeCategories
-        ${sqlWhereClause}
-        order by orderNumber, feeCategory`)
+        .prepare(/* sql */ `
+      SELECT
+        feeCategoryId,
+        feeCategory,
+        isGroupedFee,
+        orderNumber
+      FROM
+        FeeCategories ${sqlWhereClause}
+      ORDER BY
+        orderNumber,
+        feeCategory
+    `)
         .all(sqlParameters);
     if (options.includeFees ?? false) {
         let expectedOrderNumber = 0;

@@ -38,15 +38,29 @@ function _getFuneralHome(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const funeralHome = database
-    .prepare(/* sql */ `select funeralHomeId, funeralHomeKey, funeralHomeName,
-        funeralHomeAddress1, funeralHomeAddress2,
-        funeralHomeCity, funeralHomeProvince, funeralHomePostalCode, funeralHomePhoneNumber,
-        recordDelete_userName, recordDelete_timeMillis
-        from FuneralHomes f
-        where f.${keyColumn} = ?
-        ${includeDeleted ? '' : ' and f.recordDelete_timeMillis is null '}
-        order by f.funeralHomeName, f.funeralHomeId`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        funeralHomeId,
+        funeralHomeKey,
+        funeralHomeName,
+        funeralHomeAddress1,
+        funeralHomeAddress2,
+        funeralHomeCity,
+        funeralHomeProvince,
+        funeralHomePostalCode,
+        funeralHomePhoneNumber,
+        recordDelete_userName,
+        recordDelete_timeMillis
+      FROM
+        FuneralHomes f
+      WHERE
+        f.${keyColumn} = ? ${includeDeleted
+          ? ''
+          : ' and f.recordDelete_timeMillis is null '}
+      ORDER BY
+        f.funeralHomeName,
+        f.funeralHomeId
+    `)
     .get(funeralHomeIdOrKey) as FuneralHome | undefined
 
   if (connectedDatabase === undefined) {

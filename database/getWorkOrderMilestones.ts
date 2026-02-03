@@ -100,7 +100,7 @@ export default async function getWorkOrderMilestones(
     userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString,
     userFn_timeIntegerToPeriodString(ifnull(m.workOrderMilestoneCompletionTime, 0)) as workOrderMilestoneCompletionTimePeriodString,
     ${
-      options.includeWorkOrders ?? false
+      (options.includeWorkOrders ?? false)
         ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,
             w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
             w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
@@ -139,6 +139,7 @@ export default async function getWorkOrderMilestones(
 
       workOrderMilestone.workOrderBurialSites = burialSites.burialSites
 
+      // eslint-disable-next-line no-await-in-loop
       const contracts = await getContracts(
         {
           workOrderId: workOrderMilestone.workOrderId
@@ -170,10 +171,13 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
   sqlWhereClause: string
 } {
   const recentBeforeDays = Number.parseInt(
-    getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays')
+    getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays'),
+    10
   )
+
   const recentAfterDays = Number.parseInt(
-    getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays')
+    getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays'),
+    10
   )
 
   let sqlWhereClause =
@@ -224,13 +228,13 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
     case 'yearMonth': {
       const yearNumber =
         typeof filters.workOrderMilestoneYear === 'string'
-          ? Number.parseInt(filters.workOrderMilestoneYear)
-          : filters.workOrderMilestoneYear ?? new Date().getFullYear()
+          ? Number.parseInt(filters.workOrderMilestoneYear, 10)
+          : (filters.workOrderMilestoneYear ?? new Date().getFullYear())
 
       const monthNumber =
         typeof filters.workOrderMilestoneMonth === 'string'
-          ? Number.parseInt(filters.workOrderMilestoneMonth)
-          : filters.workOrderMilestoneMonth ?? new Date().getMonth() + 1
+          ? Number.parseInt(filters.workOrderMilestoneMonth, 10)
+          : (filters.workOrderMilestoneMonth ?? new Date().getMonth() + 1)
 
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       const yearMonth = yearNumber * 10_000 + monthNumber * 100

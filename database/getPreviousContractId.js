@@ -3,12 +3,19 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getPreviousContractId(contractId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const result = database
-        .prepare(/* sql */ `select contractId
-        from Contracts
-        where recordDelete_timeMillis is null
-        and contractId < ?
-        order by contractId desc
-        limit 1`)
+        .prepare(/* sql */ `
+      SELECT
+        contractId
+      FROM
+        Contracts
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractId < ?
+      ORDER BY
+        contractId DESC
+      LIMIT
+        1
+    `)
         .pluck()
         .get(contractId);
     if (connectedDatabase === undefined) {

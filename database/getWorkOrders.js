@@ -11,9 +11,12 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     const count = database
-        .prepare(/* sql */ `select count(*) as recordCount
-        from WorkOrders w
-        ${sqlWhereClause}`)
+        .prepare(/* sql */ `
+      SELECT
+        count(*) AS recordCount
+      FROM
+        WorkOrders w ${sqlWhereClause}
+    `)
         .pluck()
         .get(sqlParameters);
     let workOrders = [];
@@ -23,35 +26,63 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
             : ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`;
         const currentDateNumber = dateToInteger(new Date());
         workOrders = database
-            .prepare(/* sql */ `select w.workOrderId,
-          w.workOrderTypeId, t.workOrderType,
-          w.workOrderNumber, w.workOrderDescription,
-          w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
-          w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
-          ifnull(m.workOrderMilestoneCount, 0) as workOrderMilestoneCount,
-          ifnull(m.workOrderMilestoneCompletionCount, 0) as workOrderMilestoneCompletionCount,
-          ifnull(m.workOrderMilestoneOverdueCount, 0) as workOrderMilestoneOverdueCount,
-          ifnull(l.workOrderBurialSiteCount, 0) as workOrderBurialSiteCount
-
-          from WorkOrders w
-          left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
-          left join (
-            select workOrderId,
-            count(workOrderMilestoneId) as workOrderMilestoneCount,
-            sum(case when workOrderMilestoneCompletionDate is null then 0 else 1 end) as workOrderMilestoneCompletionCount,
-            sum(case when workOrderMilestoneDate < ${currentDateNumber} and workOrderMilestoneCompletionDate is null then 1 else 0 end) as workOrderMilestoneOverdueCount
-            from WorkOrderMilestones
-            where recordDelete_timeMillis is null
-            group by workOrderId) m on w.workOrderId = m.workOrderId
-          left join (
-            select workOrderId, count(burialSiteId) as workOrderBurialSiteCount
-            from WorkOrderBurialSites
-            where recordDelete_timeMillis is null
-            group by workOrderId) l on w.workOrderId = l.workOrderId
-            
-          ${sqlWhereClause}
-          order by w.workOrderOpenDate desc, w.workOrderNumber desc
-          ${sqlLimitClause}`)
+            .prepare(/* sql */ `
+        SELECT
+          w.workOrderId,
+          w.workOrderTypeId,
+          t.workOrderType,
+          w.workOrderNumber,
+          w.workOrderDescription,
+          w.workOrderOpenDate,
+          userFn_dateIntegerToString (w.workOrderOpenDate) AS workOrderOpenDateString,
+          w.workOrderCloseDate,
+          userFn_dateIntegerToString (w.workOrderCloseDate) AS workOrderCloseDateString,
+          ifnull(m.workOrderMilestoneCount, 0) AS workOrderMilestoneCount,
+          ifnull(m.workOrderMilestoneCompletionCount, 0) AS workOrderMilestoneCompletionCount,
+          ifnull(m.workOrderMilestoneOverdueCount, 0) AS workOrderMilestoneOverdueCount,
+          ifnull(l.workOrderBurialSiteCount, 0) AS workOrderBurialSiteCount
+        FROM
+          WorkOrders w
+          LEFT JOIN WorkOrderTypes t ON w.workOrderTypeId = t.workOrderTypeId
+          LEFT JOIN (
+            SELECT
+              workOrderId,
+              count(workOrderMilestoneId) AS workOrderMilestoneCount,
+              sum(
+                CASE
+                  WHEN workOrderMilestoneCompletionDate IS NULL THEN 0
+                  ELSE 1
+                END
+              ) AS workOrderMilestoneCompletionCount,
+              sum(
+                CASE
+                  WHEN workOrderMilestoneDate < ${currentDateNumber}
+                  AND workOrderMilestoneCompletionDate IS NULL THEN 1
+                  ELSE 0
+                END
+              ) AS workOrderMilestoneOverdueCount
+            FROM
+              WorkOrderMilestones
+            WHERE
+              recordDelete_timeMillis IS NULL
+            GROUP BY
+              workOrderId
+          ) m ON w.workOrderId = m.workOrderId
+          LEFT JOIN (
+            SELECT
+              workOrderId,
+              count(burialSiteId) AS workOrderBurialSiteCount
+            FROM
+              WorkOrderBurialSites
+            WHERE
+              recordDelete_timeMillis IS NULL
+            GROUP BY
+              workOrderId
+          ) l ON w.workOrderId = l.workOrderId ${sqlWhereClause}
+        ORDER BY
+          w.workOrderOpenDate DESC,
+          w.workOrderNumber DESC ${sqlLimitClause}
+      `)
             .all(sqlParameters);
     }
     const hasInclusions = (options.includeComments ?? false) ||

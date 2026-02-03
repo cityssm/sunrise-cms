@@ -15,12 +15,20 @@ export default function getContractTypePrints(contractTypeId, connectedDatabase)
     // eslint-disable-next-line no-secrets/no-secrets
     'userFn_configContainsPrintEJS', userFunction_configContainsPrintEJS);
     const results = database
-        .prepare(/* sql */ `select printEJS, orderNumber
-        from ContractTypePrints
-        where recordDelete_timeMillis is null
-        and contractTypeId = ?
-        and userFn_configContainsPrintEJS(printEJS) = 1
-        order by orderNumber, printEJS`)
+        .prepare(/* sql */ `
+      SELECT
+        printEJS,
+        orderNumber
+      FROM
+        ContractTypePrints
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractTypeId = ?
+        AND userFn_configContainsPrintEJS (printEJS) = 1
+      ORDER BY
+        orderNumber,
+        printEJS
+    `)
         .all(contractTypeId);
     let expectedOrderNumber = -1;
     const prints = [];
@@ -28,10 +36,14 @@ export default function getContractTypePrints(contractTypeId, connectedDatabase)
         expectedOrderNumber += 1;
         if (result.orderNumber !== expectedOrderNumber) {
             database
-                .prepare(/* sql */ `update ContractTypePrints
-            set orderNumber = ?
-            where contractTypeId = ?
-            and printEJS = ?`)
+                .prepare(/* sql */ `
+          UPDATE ContractTypePrints
+          SET
+            orderNumber = ?
+          WHERE
+            contractTypeId = ?
+            AND printEJS = ?
+        `)
                 .run(expectedOrderNumber, contractTypeId, result.printEJS);
         }
         prints.push(result.printEJS);

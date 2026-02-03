@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 import fillBlockRange, { calculateCartesianProductLength } from '@cityssm/fill-block-range';
 import sqlite from 'better-sqlite3';
@@ -11,7 +10,7 @@ export const burialSiteNameRangeLimit = 1000;
 export default function getBurialSiteNamesByRange(rangeForm, connectedDatabase) {
     const segmentRanges = [];
     try {
-        for (let segmentIndex = 1; segmentIndex <= segmentCount; segmentIndex++) {
+        for (let segmentIndex = 1; segmentIndex <= segmentCount; segmentIndex += 1) {
             segmentRanges.push(['']);
             const segmentFrom = rangeForm[`burialSiteNameSegment${segmentIndex}_from`];
             let segmentTo = rangeForm[`burialSiteNameSegment${segmentIndex}_to`];
@@ -50,10 +49,15 @@ export default function getBurialSiteNamesByRange(rangeForm, connectedDatabase) 
             burialSiteNameSegment5: burialSiteNameSegmentsArray[4]
         });
         const burialSiteId = database
-            .prepare(/* sql */ `select burialSiteId
-          from BurialSites
-          where burialSiteName = ?
-          and recordDelete_timeMillis is null`)
+            .prepare(/* sql */ `
+        SELECT
+          burialSiteId
+        FROM
+          BurialSites
+        WHERE
+          burialSiteName = ?
+          AND recordDelete_timeMillis IS NULL
+      `)
             .pluck()
             .get(burialSiteName);
         results.push({

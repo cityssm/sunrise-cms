@@ -5,9 +5,15 @@ const loginUsers = getConfigProperty('users.canLogin');
 export default function getApiKeys(connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const databaseSettings = database
-        .prepare(/* sql */ `select s.userName, s.settingValue
-        from UserSettings s
-        where s.settingKey = 'apiKey'`)
+        .prepare(/* sql */ `
+      SELECT
+        s.userName,
+        s.settingValue
+      FROM
+        UserSettings s
+      WHERE
+        s.settingKey = 'apiKey'
+    `)
         .all();
     const apiKeys = {};
     for (const databaseSetting of databaseSettings) {
