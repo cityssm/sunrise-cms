@@ -43,8 +43,7 @@ export default function updateCemetery(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update Cemeteries
+    .prepare(/* sql */ `update Cemeteries
         set cemeteryName = ?,
           cemeteryKey = ?,
           cemeteryDescription = ?,

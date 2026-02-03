@@ -34,8 +34,7 @@ export default function addContractInterment(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const maxIntermentNumber = (database
-    .prepare(
-      `select max(intermentNumber) as maxIntermentNumber
+    .prepare(/* sql */ `select max(intermentNumber) as maxIntermentNumber
         from ContractInterments
         where contractId = ?`
     )
@@ -46,8 +45,7 @@ export default function addContractInterment(
   const rightNowMillis = Date.now()
 
   database
-    .prepare(
-      `insert into ContractInterments
+    .prepare(/* sql */ `insert into ContractInterments
         (contractId, intermentNumber,
           deceasedName, deceasedAddress1, deceasedAddress2, deceasedCity, deceasedProvince, deceasedPostalCode,
           birthDate, birthPlace, deathDate, deathPlace,

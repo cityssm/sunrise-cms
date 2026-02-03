@@ -40,8 +40,7 @@ export function moveRecordDown(
   )
 
   database
-    .prepare(
-      `update ${recordTable}
+    .prepare(/* sql */ `update ${recordTable}
         set orderNumber = orderNumber - 1
         where recordDelete_timeMillis is null
         and orderNumber = ? + 1`
@@ -78,8 +77,7 @@ export function moveRecordDownToBottom(
 
   const maxOrderNumber = (
     database
-      .prepare(
-        `select max(orderNumber) as maxOrderNumber
+      .prepare(/* sql */ `select max(orderNumber) as maxOrderNumber
           from ${recordTable}
           where recordDelete_timeMillis is null`
       )
@@ -90,8 +88,7 @@ export function moveRecordDownToBottom(
     updateRecordOrderNumber(recordTable, recordId, maxOrderNumber + 1, database)
 
     database
-      .prepare(
-        `update ${recordTable}
+      .prepare(/* sql */ `update ${recordTable}
           set orderNumber = orderNumber - 1
           where recordDelete_timeMillis is null
           and orderNumber > ?`
@@ -128,8 +125,7 @@ export function moveRecordUp(
   }
 
   database
-    .prepare(
-      `update ${recordTable}
+    .prepare(/* sql */ `update ${recordTable}
         set orderNumber = orderNumber + 1
         where recordDelete_timeMillis is null
         and orderNumber = ? - 1`
@@ -168,8 +164,7 @@ export function moveRecordUpToTop(
     updateRecordOrderNumber(recordTable, recordId, -1, database)
 
     database
-      .prepare(
-        `update ${recordTable}
+      .prepare(/* sql */ `update ${recordTable}
           set orderNumber = orderNumber + 1
           where recordDelete_timeMillis is null
           and orderNumber < ?`
@@ -192,8 +187,7 @@ function getCurrentOrderNumber(
 ): number {
   const currentOrderNumber: number = (
     database
-      .prepare(
-        `select orderNumber
+      .prepare(/* sql */ `select orderNumber
           from ${recordTable}
           where ${recordIdColumns.get(recordTable)} = ?`
       )

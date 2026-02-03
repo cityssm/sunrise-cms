@@ -17,8 +17,7 @@ export function deleteContract(
   const currentDateInteger = dateToInteger(new Date())
 
   const activeWorkOrder = database
-    .prepare(
-      `select workOrderId
+    .prepare(/* sql */ `select workOrderId
         from WorkOrders
         where recordDelete_timeMillis is null
           and workOrderId in (select workOrderId from WorkOrderContracts where contractId = ? and recordDelete_timeMillis is null)
@@ -42,8 +41,7 @@ export function deleteContract(
 
   for (const tableName of ['Contracts', 'ContractFields', 'ContractComments']) {
     database
-      .prepare(
-        `update ${tableName}
+      .prepare(/* sql */ `update ${tableName}
           set recordDelete_userName = ?,
             recordDelete_timeMillis = ?
           where contractId = ?

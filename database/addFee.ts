@@ -29,8 +29,7 @@ export default function addFee(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into Fees (
+    .prepare(/* sql */ `insert into Fees (
         feeCategoryId,
         feeName, feeDescription, feeAccount,
         contractTypeId, burialSiteTypeId,

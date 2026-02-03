@@ -11,8 +11,7 @@ export default function getFuneralDirectorNamesByFuneralHomeId(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const funeralDirectors = database
-    .prepare(
-      `select funeralDirectorName
+    .prepare(/* sql */ `select funeralDirectorName
        from Contracts
        where recordDelete_timeMillis is null
          and funeralHomeId = ?

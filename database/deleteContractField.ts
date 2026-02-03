@@ -11,8 +11,7 @@ export default function deleteContractField(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update ContractFields
+    .prepare(/* sql */ `update ContractFields
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where contractId = ?

@@ -27,8 +27,7 @@ export default function getContractTypePrints(
   )
 
   const results = database
-    .prepare(
-      `select printEJS, orderNumber
+    .prepare(/* sql */ `select printEJS, orderNumber
         from ContractTypePrints
         where recordDelete_timeMillis is null
         and contractTypeId = ?
@@ -46,8 +45,7 @@ export default function getContractTypePrints(
 
     if (result.orderNumber !== expectedOrderNumber) {
       database
-        .prepare(
-          `update ContractTypePrints
+        .prepare(/* sql */ `update ContractTypePrints
             set orderNumber = ?
             where contractTypeId = ?
             and printEJS = ?`

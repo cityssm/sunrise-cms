@@ -15,8 +15,7 @@ export function moveFeeDown(
   const currentFee = getFee(feeId, database) as Fee
 
   database
-    .prepare(
-      `update Fees
+    .prepare(/* sql */ `update Fees
         set orderNumber = orderNumber - 1
         where recordDelete_timeMillis is null
           and feeCategoryId = ?
@@ -47,8 +46,7 @@ export function moveFeeDownToBottom(
 
   const maxOrderNumber = (
     database
-      .prepare(
-        `select max(orderNumber) as maxOrderNumber
+      .prepare(/* sql */ `select max(orderNumber) as maxOrderNumber
           from Fees
           where recordDelete_timeMillis is null
           and feeCategoryId = ?`
@@ -60,8 +58,7 @@ export function moveFeeDownToBottom(
     updateRecordOrderNumber('Fees', feeId, maxOrderNumber + 1, database)
 
     database
-      .prepare(
-        `update Fees
+      .prepare(/* sql */ `update Fees
           set orderNumber = orderNumber - 1
           where recordDelete_timeMillis is null
             and feeCategoryId = ? and orderNumber > ?`
@@ -91,8 +88,7 @@ export function moveFeeUp(
   }
 
   database
-    .prepare(
-      `update Fees
+    .prepare(/* sql */ `update Fees
         set orderNumber = orderNumber + 1
         where recordDelete_timeMillis is null
           and feeCategoryId = ?
@@ -125,8 +121,7 @@ export function moveFeeUpToTop(
     updateRecordOrderNumber('Fees', feeId, -1, database)
 
     database
-      .prepare(
-        `update Fees
+      .prepare(/* sql */ `update Fees
           set orderNumber = orderNumber + 1
           where recordDelete_timeMillis is null
             and feeCategoryId = ?

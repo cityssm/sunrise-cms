@@ -12,8 +12,7 @@ export default function deleteContractTypePrint(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update ContractTypePrints
+    .prepare(/* sql */ `update ContractTypePrints
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where contractTypeId = ?

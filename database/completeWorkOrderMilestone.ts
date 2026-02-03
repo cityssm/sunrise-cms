@@ -41,8 +41,7 @@ export default function completeWorkOrderMilestone(
         )
 
   const result = database
-    .prepare(
-      `update WorkOrderMilestones
+    .prepare(/* sql */ `update WorkOrderMilestones
         set workOrderMilestoneCompletionDate = ?,
         workOrderMilestoneCompletionTime = ?,
         recordUpdate_userName = ?,

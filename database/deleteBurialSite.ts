@@ -17,8 +17,7 @@ export function deleteBurialSite(
   const currentDateInteger = dateToInteger(new Date())
 
   const activeContract = database
-    .prepare(
-      `select contractId
+    .prepare(/* sql */ `select contractId
         from Contracts
         where burialSiteId = ?
           and recordDelete_timeMillis is null
@@ -41,8 +40,7 @@ export function deleteBurialSite(
   const rightNowMillis = Date.now()
 
   database
-    .prepare(
-      `update BurialSites
+    .prepare(/* sql */ `update BurialSites
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where burialSiteId = ?

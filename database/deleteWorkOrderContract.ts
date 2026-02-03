@@ -11,8 +11,7 @@ export default function deleteWorkOrderContract(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update WorkOrderContracts
+    .prepare(/* sql */ `update WorkOrderContracts
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where workOrderId = ?

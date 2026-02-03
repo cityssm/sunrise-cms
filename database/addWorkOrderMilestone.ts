@@ -32,8 +32,7 @@ export default function addWorkOrderMilestone(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `insert into WorkOrderMilestones (
+    .prepare(/* sql */ `insert into WorkOrderMilestones (
         workOrderId, workOrderMilestoneTypeId,
         workOrderMilestoneDate, workOrderMilestoneTime,
         workOrderMilestoneDescription,

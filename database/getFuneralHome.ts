@@ -38,8 +38,7 @@ function _getFuneralHome(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const funeralHome = database
-    .prepare(
-      `select funeralHomeId, funeralHomeKey, funeralHomeName,
+    .prepare(/* sql */ `select funeralHomeId, funeralHomeKey, funeralHomeName,
         funeralHomeAddress1, funeralHomeAddress2,
         funeralHomeCity, funeralHomeProvince, funeralHomePostalCode, funeralHomePhoneNumber,
         recordDelete_userName, recordDelete_timeMillis

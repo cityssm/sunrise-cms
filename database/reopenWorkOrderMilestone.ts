@@ -10,8 +10,7 @@ export default function reopenWorkOrderMilestone(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update WorkOrderMilestones
+    .prepare(/* sql */ `update WorkOrderMilestones
         set workOrderMilestoneCompletionDate = null,
           workOrderMilestoneCompletionTime = null,
           recordUpdate_userName = ?,

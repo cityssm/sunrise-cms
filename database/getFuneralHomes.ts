@@ -12,8 +12,7 @@ export default function getFuneralHomes(
   const currentDateNumber = dateToInteger(new Date())
 
   const funeralHomes = database
-    .prepare(
-      `select f.funeralHomeId, f.funeralHomeKey, f.funeralHomeName,
+    .prepare(/* sql */ `select f.funeralHomeId, f.funeralHomeKey, f.funeralHomeName,
         f.funeralHomeAddress1, f.funeralHomeAddress2,
         f.funeralHomeCity, f.funeralHomeProvince, f.funeralHomePostalCode, f.funeralHomePhoneNumber,
 		    count(c.contractId) as upcomingFuneralCount

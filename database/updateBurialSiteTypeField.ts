@@ -25,8 +25,7 @@ export default function updateBurialSiteTypeField(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update BurialSiteTypeFields
+    .prepare(/* sql */ `update BurialSiteTypeFields
         set burialSiteTypeField = ?,
           isRequired = ?,
           fieldType = ?,

@@ -19,8 +19,7 @@ export default function updateUserSetting(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   let result = database
-    .prepare(
-      `update UserSettings
+    .prepare(/* sql */ `update UserSettings
         set settingValue = ?,
           previousSettingValue = settingValue,
           recordUpdate_timeMillis = ?
@@ -30,8 +29,7 @@ export default function updateUserSetting(
 
   if (result.changes <= 0) {
     result = database
-      .prepare(
-        `insert into UserSettings (userName, settingKey, settingValue, recordUpdate_timeMillis)
+      .prepare(/* sql */ `insert into UserSettings (userName, settingKey, settingValue, recordUpdate_timeMillis)
           values (?, ?, ?, ?)`
       )
       .run(userName, settingKey, settingValue, Date.now())

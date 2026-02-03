@@ -29,8 +29,7 @@ export default function updateContractTransaction(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update ContractTransactions
+    .prepare(/* sql */ `update ContractTransactions
         set transactionAmount = ?,
           isInvoiced = ?,
           externalReceiptNumber = ?,

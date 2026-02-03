@@ -14,8 +14,7 @@ export default function getCommittalTypes(
   const updateOrderNumbers = !database.readonly && !includeDeleted
 
   const committalTypes = database
-    .prepare(
-      `select committalTypeId, committalTypeKey, committalType, orderNumber
+    .prepare(/* sql */ `select committalTypeId, committalTypeKey, committalType, orderNumber
         from CommittalTypes
         ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '}
         order by orderNumber, committalType, committalTypeId`

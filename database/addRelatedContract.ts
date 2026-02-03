@@ -24,8 +24,7 @@ export default function addRelatedContract(
   )
 
   database
-    .prepare(
-      `insert into RelatedContracts (
+    .prepare(/* sql */ `insert into RelatedContracts (
         contractIdA, contractIdB)
         values (?, ?)`
     )

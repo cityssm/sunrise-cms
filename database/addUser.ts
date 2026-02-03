@@ -19,8 +19,7 @@ function insertNewUser(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into Users (
+    .prepare(/* sql */ `insert into Users (
         userName, isActive,
         canUpdateCemeteries, canUpdateContracts, canUpdateWorkOrders, isAdmin,
         recordCreate_userName, recordCreate_timeMillis,
@@ -51,8 +50,7 @@ function restoreDeletedUser(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `update Users
+    .prepare(/* sql */ `update Users
         set isActive = ?,
         canUpdateCemeteries = ?,
         canUpdateContracts = ?,

@@ -28,8 +28,7 @@ function _getCemetery(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const cemetery = database
-    .prepare(
-      `select cem.cemeteryId, cem.cemeteryName, cem.cemeteryKey, cem.cemeteryDescription,
+    .prepare(/* sql */ `select cem.cemeteryId, cem.cemeteryName, cem.cemeteryKey, cem.cemeteryDescription,
         cem.cemeteryLatitude, cem.cemeteryLongitude, cem.cemeterySvg,
         cem.cemeteryAddress1, cem.cemeteryAddress2, cem.cemeteryCity, cem.cemeteryProvince, cem.cemeteryPostalCode,
         cem.cemeteryPhoneNumber,

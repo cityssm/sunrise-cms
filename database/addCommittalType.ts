@@ -19,8 +19,7 @@ export default function addCommittalType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into CommittalTypes (
+    .prepare(/* sql */ `insert into CommittalTypes (
         committalType, committalTypeKey, orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)

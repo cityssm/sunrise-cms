@@ -23,8 +23,7 @@ export default function closeWorkOrder(
   const rightNow = new Date()
 
   const result = database
-    .prepare(
-      `update WorkOrders
+    .prepare(/* sql */ `update WorkOrders
         set workOrderCloseDate = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?

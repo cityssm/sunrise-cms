@@ -20,8 +20,7 @@ export default function updateWorkOrder(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update WorkOrders
+    .prepare(/* sql */ `update WorkOrders
         set workOrderNumber = ?,
           workOrderTypeId = ?,
           workOrderDescription = ?,

@@ -20,8 +20,7 @@ export default function addContractAttachment(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into ContractAttachments (
+    .prepare(/* sql */ `insert into ContractAttachments (
         contractId, attachmentTitle, attachmentDetails,
         fileName, filePath,
         recordCreate_userName, recordCreate_timeMillis,

@@ -52,8 +52,7 @@ export default function getBurialSites(
 
   if (isLimited) {
     count = database
-      .prepare(
-        `select count(*) as recordCount
+      .prepare(/* sql */ `select count(*) as recordCount
           from BurialSites b
           left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
           left join (
@@ -84,8 +83,7 @@ export default function getBurialSites(
       : ''
 
     burialSites = database
-      .prepare(
-        `select b.burialSiteId,
+      .prepare(/* sql */ `select b.burialSiteId,
           b.burialSiteNameSegment1,
           b.burialSiteNameSegment2,
           b.burialSiteNameSegment3,

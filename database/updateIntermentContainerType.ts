@@ -20,8 +20,7 @@ export default function updateIntermentContainerType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `update IntermentContainerTypes
+    .prepare(/* sql */ `update IntermentContainerTypes
         set intermentContainerType = ?,
           isCremationType = ?,
           recordUpdate_userName = ?, recordUpdate_timeMillis = ?

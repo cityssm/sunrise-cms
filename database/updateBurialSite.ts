@@ -53,8 +53,7 @@ export default function updateBurialSite(
   // Ensure no active burial sites share the same name
 
   const existingBurialSite = database
-    .prepare(
-      `select burialSiteId
+    .prepare(/* sql */ `select burialSiteId
         from BurialSites
         where burialSiteName = ?
           and burialSiteId <> ?
@@ -69,8 +68,7 @@ export default function updateBurialSite(
   }
 
   const result = database
-    .prepare(
-      `update BurialSites
+    .prepare(/* sql */ `update BurialSites
         set burialSiteNameSegment1 = ?,
           burialSiteNameSegment2 = ?,
           burialSiteNameSegment3 = ?,
@@ -151,8 +149,7 @@ export function updateBurialSiteStatus(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `update BurialSites
+    .prepare(/* sql */ `update BurialSites
         set burialSiteStatusId = ?,
           recordUpdate_userName = ?,
           recordUpdate_timeMillis = ?
@@ -182,8 +179,7 @@ export function updateBurialSiteLatitudeLongitude(
   const database = sqlite(sunriseDB)
 
   const result = database
-    .prepare(
-      `update BurialSites
+    .prepare(/* sql */ `update BurialSites
         set burialSiteLatitude = ?,
           burialSiteLongitude = ?,
           recordUpdate_userName = ?,

@@ -52,8 +52,7 @@ export default function getFeeCategories(
   }
 
   const feeCategories = database
-    .prepare(
-      `select feeCategoryId, feeCategory, isGroupedFee, orderNumber
+    .prepare(/* sql */ `select feeCategoryId, feeCategory, isGroupedFee, orderNumber
         from FeeCategories
         ${sqlWhereClause}
         order by orderNumber, feeCategory`

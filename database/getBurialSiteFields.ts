@@ -10,8 +10,7 @@ export default function getBurialSiteFields(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const burialSiteFields = database
-    .prepare(
-      `select l.burialSiteId, l.burialSiteTypeFieldId,
+    .prepare(/* sql */ `select l.burialSiteId, l.burialSiteTypeFieldId,
           l.fieldValue,
           f.burialSiteTypeField, f.fieldType, f.fieldValues,
           f.isRequired, f.pattern, f.minLength, f.maxLength,

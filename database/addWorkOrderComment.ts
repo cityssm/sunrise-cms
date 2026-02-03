@@ -18,8 +18,7 @@ export default function addWorkOrderComment(
   const rightNow = new Date()
 
   const result = database
-    .prepare(
-      `insert into WorkOrderComments (
+    .prepare(/* sql */ `insert into WorkOrderComments (
         workOrderId,
         commentDate, commentTime,
         comment,

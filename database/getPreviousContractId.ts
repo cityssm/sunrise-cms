@@ -9,8 +9,7 @@ export default function getPreviousContractId(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const result = database
-    .prepare(
-      `select contractId
+    .prepare(/* sql */ `select contractId
         from Contracts
         where recordDelete_timeMillis is null
         and contractId < ?

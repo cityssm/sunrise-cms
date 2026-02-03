@@ -28,8 +28,7 @@ function addRecord(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `insert into ${record.recordTable} (
+    .prepare(/* sql */ `insert into ${record.recordTable} (
         ${recordNameColumns.get(record.recordTable)},
         orderNumber,
         recordCreate_userName, recordCreate_timeMillis,

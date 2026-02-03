@@ -32,8 +32,7 @@ export default async function getContract(
   )
 
   const contract = database
-    .prepare(
-      `select c.contractId,
+    .prepare(/* sql */ `select c.contractId,
           c.contractTypeId, t.contractType, t.isPreneed,
 
           c.burialSiteId, b.burialSiteName, b.burialSiteTypeId,

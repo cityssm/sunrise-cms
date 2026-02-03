@@ -102,8 +102,7 @@ export default function addContract(
 
   try {
     const result = database
-      .prepare(
-        `insert into Contracts (
+      .prepare(/* sql */ `insert into Contracts (
         contractTypeId, burialSiteId,
         contractStartDate, contractEndDate,
         purchaserName, purchaserAddress1, purchaserAddress2,

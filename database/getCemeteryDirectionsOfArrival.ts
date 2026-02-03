@@ -10,8 +10,7 @@ export default function getCemeteryDirectionsOfArrival(
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
   const directionsList = database
-    .prepare(
-      `select directionOfArrival, directionOfArrivalDescription
+    .prepare(/* sql */ `select directionOfArrival, directionOfArrivalDescription
         from CemeteryDirectionsOfArrival
         where cemeteryId = ?`
     )

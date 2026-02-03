@@ -12,8 +12,7 @@ export function deleteLocalUser(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(
-      `UPDATE Users SET 
+    .prepare(/* sql */ `UPDATE Users SET 
        recordDelete_userName = ?, recordDelete_timeMillis = ?
        WHERE userName = ? AND recordDelete_timeMillis IS NULL`
     )

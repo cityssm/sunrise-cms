@@ -22,8 +22,7 @@ export default function getContractComments(
   )
 
   const comments = database
-    .prepare(
-      `select contractCommentId,
+    .prepare(/* sql */ `select contractCommentId,
         commentDate, userFn_dateIntegerToString(commentDate) as commentDateString,
         commentTime,
         userFn_timeIntegerToString(commentTime) as commentTimeString,

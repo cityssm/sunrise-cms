@@ -28,8 +28,7 @@ export default function rebuildBurialSiteNames(
 
   const result = database
     .function('buildBurialSiteName', buildBurialSiteNameUserFunction)
-    .prepare(
-      `update BurialSites
+    .prepare(/* sql */ `update BurialSites
         set burialSiteName = buildBurialSiteName(?, burialSiteNameSegment1, burialSiteNameSegment2, burialSiteNameSegment3, burialSiteNameSegment4, burialSiteNameSegment5),
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
