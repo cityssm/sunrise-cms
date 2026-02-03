@@ -31,7 +31,7 @@
         let contactsHTML = '';
         for (const interment of contract.contractInterments ?? []) {
             contactsHTML += /*html*/ `
-        <li title="${contract.isPreneed ? 'Recipient' : 'Deceased'}">
+        <li title="Recipient">
           <span class="fa-li"><i class="fa-solid fa-user"></i></span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
         </li>

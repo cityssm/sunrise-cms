@@ -671,9 +671,7 @@
           </div>
           <div class="field">
             <label class="label" for="contract--purchaserRelationship">
-              Relationship to
-              <span class="is-recipient-or-deceased">
-                <%= (contract.isPreneed ? "Recipient" : "Deceased") %>
+              Relationship to Recipient
               </span>
             </label>
             <div class="control">
@@ -698,8 +696,8 @@
             <div class="level is-mobile">
               <div class="level-left">
                 <div class="level-item">
-                  <h2 class="has-text-weight-bold is-size-5 is-recipient-or-deceased">
-                    <%= (contract.isPreneed ? "Recipient" : "Deceased") %>
+                  <h2 class="has-text-weight-bold is-size-5">
+                    Recipient
                   </h2>
                 </div>
               </div>
@@ -716,8 +714,7 @@
           <div class="panel-block is-block">
             <div class="field">
               <label class="label" for="contract--deceasedName">
-                <span class="is-recipient-or-deceased"><%= (contract.isPreneed ? "Recipient" : "Deceased") %></span>
-                Name
+                Recipient Name
               </label>
               <div class="control has-icons-right">
                 <input class="input" id="contract--deceasedName" name="deceasedName" type="text"
@@ -911,7 +908,7 @@
               <div class="level-left">
                 <div class="level-item">
                   <h2 class="has-text-weight-bold is-size-5">
-                    <%= (contract.isPreneed ? "Recipient" : "Deceased") %>
+                    Recipient
                   </h2>
                 </div>
               </div>
@@ -919,7 +916,7 @@
                 <div class="level-item">
                   <button class="button is-small is-success is-hidden-print" id="button--addInterment" type="button">
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-                    <span>Add Additional <%= (contract.isPreneed ? "Recipient" : "Deceased") %></span>
+                    <span>Add Additional Recipient</span>
                   </button>
                 </div>
               </div>

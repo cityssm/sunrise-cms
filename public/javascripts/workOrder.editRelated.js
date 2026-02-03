@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
 (() => {
     const sunrise = exports.sunrise;
@@ -140,9 +139,9 @@
         let contactsHtml = '';
         for (const interment of contract.contractInterments ?? []) {
             contactsHtml += /*html*/ `
-        <li title="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}">
+        <li title="Recipient">
           <span class="fa-li">
-            <i class="fa-solid fa-user" aria-label="${cityssm.escapeHTML(contract.isPreneed ? 'Recipient' : 'Deceased')}"></i>
+            <i class="fa-solid fa-user" aria-label="Recipient"></i>
           </span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
         </li>
@@ -489,13 +488,10 @@
                   `);
                     }
                     const intermentCount = contract.contractInterments?.length ?? 0;
-                    const recipientOrDeceased = contract.isPreneed
-                        ? 'Recipients'
-                        : 'Deceased';
                     const intermentsHtml = intermentCount === 0
                         ? /*html*/ `
                     <span class="has-text-grey">
-                      (No ${cityssm.escapeHTML(recipientOrDeceased)})
+                      (No Recipients)
                     </span>
                   `
                         : cityssm.escapeHTML(contract.contractInterments?.[0].deceasedName ?? '') +

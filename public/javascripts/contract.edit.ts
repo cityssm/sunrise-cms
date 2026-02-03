@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
@@ -223,19 +222,6 @@ declare const exports: {
     ) as HTMLElement
 
     contractTypeIdElement.addEventListener('change', () => {
-      const recipientOrPreneedElements = document.querySelectorAll(
-        '.is-recipient-or-deceased'
-      )
-
-      const isPreneed =
-        contractTypeIdElement.selectedOptions[0].dataset.isPreneed === 'true'
-
-      for (const recipientOrPreneedElement of recipientOrPreneedElements) {
-        recipientOrPreneedElement.textContent = isPreneed
-          ? 'Recipient'
-          : 'Deceased'
-      }
-
       if (contractTypeIdElement.value === '') {
         contractFieldsContainerElement.innerHTML = /*html*/ `
           <div class="message is-info">

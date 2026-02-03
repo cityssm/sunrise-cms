@@ -111,47 +111,58 @@ export default async function getContracts(
       : ''
 
     contracts = database
-      .prepare(
-        `select c.contractId,
-            c.contractTypeId, t.contractType, t.isPreneed,
-            c.burialSiteId, lt.burialSiteType, b.burialSiteName,
-            case when b.recordDelete_timeMillis is null then 1 else 0 end as burialSiteIsActive,
-            b.cemeteryId, cem.cemeteryName,
-
-            c.contractStartDate, c.contractEndDate,
-
-            c.purchaserName, c.purchaserAddress1, c.purchaserAddress2,
-            c.purchaserCity, c.purchaserProvince, c.purchaserPostalCode,
-            c.purchaserPhoneNumber, c.purchaserEmail, c.purchaserRelationship,
-            c.funeralHomeId, c.funeralDirectorName, f.funeralHomeName,
-
-            c.funeralDate, c.funeralTime,
-
-            c.directionOfArrival,
-            c.committalTypeId, cm.committalType
-            
-          from Contracts c
-          left join ContractTypes t on c.contractTypeId = t.contractTypeId
-          left join CommittalTypes cm on c.committalTypeId = cm.committalTypeId
-          left join BurialSites b on c.burialSiteId = b.burialSiteId
-          left join BurialSiteTypes lt on b.burialSiteTypeId = lt.burialSiteTypeId
-          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
-          left join FuneralHomes f on c.funeralHomeId = f.funeralHomeId
-          ${sqlWhereClause}
-          ${
-            options.orderBy !== undefined &&
-            validOrderByStrings.includes(options.orderBy)
-              ? ` order by ${options.orderBy}`
-              : ` order by c.contractStartDate desc, ifnull(c.contractEndDate, 99999999) desc,
+      .prepare(/* sql */ `
+        SELECT
+          c.contractId,
+          c.contractTypeId,
+          t.contractType,
+          t.isPreneed,
+          c.burialSiteId,
+          lt.burialSiteType,
+          b.burialSiteName,
+          CASE
+            WHEN b.recordDelete_timeMillis IS NULL THEN 1
+            ELSE 0
+          END AS burialSiteIsActive,
+          b.cemeteryId,
+          cem.cemeteryName,
+          c.contractStartDate,
+          c.contractEndDate,
+          c.purchaserName,
+          c.purchaserAddress1,
+          c.purchaserAddress2,
+          c.purchaserCity,
+          c.purchaserProvince,
+          c.purchaserPostalCode,
+          c.purchaserPhoneNumber,
+          c.purchaserEmail,
+          c.purchaserRelationship,
+          c.funeralHomeId,
+          c.funeralDirectorName,
+          f.funeralHomeName,
+          c.funeralDate,
+          c.funeralTime,
+          c.directionOfArrival,
+          c.committalTypeId,
+          cm.committalType
+        FROM
+          Contracts c
+          LEFT JOIN ContractTypes t ON c.contractTypeId = t.contractTypeId
+          LEFT JOIN CommittalTypes cm ON c.committalTypeId = cm.committalTypeId
+          LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
+          LEFT JOIN BurialSiteTypes lt ON b.burialSiteTypeId = lt.burialSiteTypeId
+          LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          LEFT JOIN FuneralHomes f ON c.funeralHomeId = f.funeralHomeId ${sqlWhereClause} ${options.orderBy !==
+            undefined && validOrderByStrings.includes(options.orderBy)
+            ? ` order by ${options.orderBy}`
+            : ` order by c.contractStartDate desc, ifnull(c.contractEndDate, 99999999) desc,
                   b.burialSiteNameSegment1,
                   b.burialSiteNameSegment2,
                   b.burialSiteNameSegment3,
                   b.burialSiteNameSegment4,
                   b.burialSiteNameSegment5,
-                  c.burialSiteId, c.contractId desc`
-          }
-          ${sqlLimitClause}`
-      )
+                  c.burialSiteId, c.contractId desc`} ${sqlLimitClause}
+      `)
       .all(sqlParameters) as Contract[]
 
     if (!isLimited) {
@@ -182,7 +193,8 @@ export default async function getContracts(
         contract.funeralTime as number
       )
 
-      contract.contractIsActive = contract.contractEndDate === null ||
+      contract.contractIsActive =
+        contract.contractEndDate === null ||
         (contract.contractEndDate ?? 0) > currentDateInteger
 
       contract.contractIsFuture =
@@ -194,6 +206,7 @@ export default async function getContracts(
 
       addPrint(contract)
 
+      // eslint-disable-next-line no-await-in-loop
       await addInclusions(contract, options, database)
     }
   }

@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
 (() => {
     const sunrise = exports.sunrise;
@@ -128,13 +127,6 @@
     if (isCreate) {
         const contractFieldsContainerElement = document.querySelector('#container--contractFields');
         contractTypeIdElement.addEventListener('change', () => {
-            const recipientOrPreneedElements = document.querySelectorAll('.is-recipient-or-deceased');
-            const isPreneed = contractTypeIdElement.selectedOptions[0].dataset.isPreneed === 'true';
-            for (const recipientOrPreneedElement of recipientOrPreneedElements) {
-                recipientOrPreneedElement.textContent = isPreneed
-                    ? 'Recipient'
-                    : 'Deceased';
-            }
             if (contractTypeIdElement.value === '') {
                 contractFieldsContainerElement.innerHTML = /*html*/ `
           <div class="message is-info">

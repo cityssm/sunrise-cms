@@ -64,11 +64,15 @@ export default function addBurialSite(
     // Ensure no active burial sites share the same name
 
     const existingBurialSite = database
-      .prepare(
-        `select burialSiteId, recordDelete_timeMillis
-          from BurialSites
-          where burialSiteName = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          burialSiteId,
+          recordDelete_timeMillis
+        FROM
+          BurialSites
+        WHERE
+          burialSiteName = ?
+      `)
       .get(burialSiteName) as
       | {
           burialSiteId: number
@@ -97,25 +101,52 @@ export default function addBurialSite(
     }
 
     const result = database
-      .prepare(
-        `insert into BurialSites (
-          burialSiteNameSegment1,
-          burialSiteNameSegment2,
-          burialSiteNameSegment3,
-          burialSiteNameSegment4,
-          burialSiteNameSegment5,
-          burialSiteName,
-          burialSiteTypeId, burialSiteStatusId,
-          bodyCapacity, crematedCapacity,
-          cemeteryId, cemeterySvgId, burialSiteImage,
-          burialSiteLatitude, burialSiteLongitude,
-  
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis) 
-          values (?, ?, ?, ?, ?,
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-            ?, ?, ?, ?)`
-      )
+      .prepare(/* sql */ `
+        INSERT INTO
+          BurialSites (
+            burialSiteNameSegment1,
+            burialSiteNameSegment2,
+            burialSiteNameSegment3,
+            burialSiteNameSegment4,
+            burialSiteNameSegment5,
+            burialSiteName,
+            burialSiteTypeId,
+            burialSiteStatusId,
+            bodyCapacity,
+            crematedCapacity,
+            cemeteryId,
+            cemeterySvgId,
+            burialSiteImage,
+            burialSiteLatitude,
+            burialSiteLongitude,
+            recordCreate_userName,
+            recordCreate_timeMillis,
+            recordUpdate_userName,
+            recordUpdate_timeMillis
+          )
+        VALUES
+          (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?
+          )
+      `)
       .run(
         burialSiteForm.burialSiteNameSegment1 ?? '',
         burialSiteForm.burialSiteNameSegment2 ?? '',

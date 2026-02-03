@@ -206,16 +206,16 @@
                       </td>
                       <td><%= contract.contractStartDateString %></td>
                       <td>
-                          <% if (contract.contractEndDate) { %>
-                              <%= contract.contractEndDateString %>
-                          <% } else { %>
-                              <span class="has-text-grey">(No End Date)</span>
-                          <% } %>
+                        <% if (contract.contractEndDate) { %>
+                          <%= contract.contractEndDateString %>
+                        <% } else { %>
+                          <span class="has-text-grey">(No End Date)</span>
+                        <% } %>
                       </td>
                       <td>
                         <ul class="fa-ul ml-5">
                           <% for (const interment of contract.contractInterments) { %>
-                            <li title="<%= contract.isPreneed ? 'Recipient' : 'Deceased' %>">
+                            <li title="Recipient">
                               <span class="fa-li"><i class="fa-solid fa-user" aria-label="Recipient"></i></span>
                               <%= interment.deceasedName %>
                             </li>

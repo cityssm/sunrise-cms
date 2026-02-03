@@ -134,9 +134,9 @@
         <p>
           <strong>Cemetery</strong><br />
           <% if (contract.cemeteryId) { %>
-            <a href="<%= urlPrefix %>/cemeteries/<%= contract.cemeteryId %>"><%= contract.cemeteryName %></a>
+          <a href="<%= urlPrefix %>/cemeteries/<%= contract.cemeteryId %>"><%= contract.cemeteryName %></a>
           <% } else { %>
-            <span class="has-text-grey">(No Cemetery)</span>
+          <span class="has-text-grey">(No Cemetery)</span>
           <% } %>
         </p>
       </div>
@@ -148,140 +148,140 @@
         <p>
           <strong>End Date</strong><br />
           <% if (contract.contractEndDateString === "") { %>
-              <span class="has-text-grey">(No End Date)</span>
+          <span class="has-text-grey">(No End Date)</span>
           <% } else { %>
-              <%= contract.contractEndDateString %>
+          <%= contract.contractEndDateString %>
           <% } %>
         </p>
       </div>
       <% if (contract.contractFields.length > 0) { %>
-        <div class="column">
-          <% for (const contractField of contract.contractFields) { %>
-            <p class="mb-2">
-              <strong><%= contractField.contractTypeField %></strong><br />
-              <% if (contractField.fieldValue) { %>
-                <%= contractField.fieldValue %>
-              <% } else { %>
-                <span class="has-text-grey">(No Value)</span>
-              <% } %>
-            </p>
+      <div class="column">
+        <% for (const contractField of contract.contractFields) { %>
+        <p class="mb-2">
+          <strong><%= contractField.contractTypeField %></strong><br />
+          <% if (contractField.fieldValue) { %>
+          <%= contractField.fieldValue %>
+          <% } else { %>
+          <span class="has-text-grey">(No Value)</span>
           <% } %>
-        </div>
+        </p>
+        <% } %>
+      </div>
       <% } %>
     </div>
   </div>
 </div>
 
 <%
-  const displayFuneralPanel = 
-    (contract.funeralHomeName !== null) ||
-    (contract.funeralDirectorName !== '') ||
-    (contract.funeralDateString !== '') ||
-    (contract.directionOfArrival !== '') ||
-    (contract.committalType !== null);
+const displayFuneralPanel = 
+  (contract.funeralHomeName !== null) ||
+  (contract.funeralDirectorName !== '') ||
+  (contract.funeralDateString !== '') ||
+  (contract.directionOfArrival !== '') ||
+  (contract.committalType !== null);
 %>
 
 <% if (displayFuneralPanel) { %>
-  <div class="panel">
-    <div class="panel-heading">
-      <div class="level is-mobile">
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="has-text-weight-bold">Funeral</h2>
-          </div>
-        </div>
-        <div class="level-right">
-          <div class="level-item">
-            <i class="fa-solid fa-place-of-worship"></i>
-          </div>
+<div class="panel">
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="has-text-weight-bold">Funeral</h2>
         </div>
       </div>
-    </div>
-    <div class="panel-block is-block">
-      <div class="columns">
-        <div class="column">
-          <p>
-            <strong>Funeral Home</strong><br />
-            <% if (contract.funeralHomeName === null) { %>
-              <span class="has-text-grey">(No Funeral Home)</span>
-            <% } else { %>
-              <a class="<%= contract.funeralHomeIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/funeralHomes/<%= contract.funeralHomeId %>">
-                <%= contract.funeralHomeName %>
-              </a>
-            <% } %><br />
-            <span class="is-size-7">
-              <% if (contract.funeralHomeAddress1) { %>
-                <%= contract.funeralHomeAddress1 %><br />
-              <% } %>
-              <% if (contract.funeralHomeAddress2) { %>
-                <%= contract.funeralHomeAddress2 %><br />
-              <% } %>
-              <% if (contract.funeralHomeCity) { %>
-                <%= contract.funeralHomeCity %>, 
-              <% } %>
-              <%= contract.funeralHomeProvince %><br />
-              <%= contract.funeralHomePostalCode %>
-            </span>
-          </p>
-        </div>
-        <div class="column">
-          <% if ((contract.funeralHomePhoneNumber ?? '') !== '') { %>
-            <p class="mb-2">
-              <strong>Phone</strong><br />
-              <%= contract.funeralHomePhoneNumber %>
-            </p>
-          <% } %>
-          <% if ((contract.funeralHomeEmail ?? '') !== '') { %>
-            <p class="mb-2">
-              <strong>Email</strong><br />
-              <%= contract.funeralHomeEmail %>
-            </p>
-          <% } %>
-          <p>
-            <strong>Funeral Director's Name</strong><br />
-            <% if (contract.funeralDirectorName === '') { %>
-              <span class="has-text-grey">(No Funeral Director's Name)</span>
-            <% } else { %>
-              <%= contract.funeralDirectorName %>
-            <% } %>
-          </p>
-        </div>
-        <div class="column">
-          <div class="columns">
-            <div class="column">
-              <p>
-                <strong>Service Date</strong><br />
-                <%= contract.funeralDateString %>
-              </p>
-            </div>
-            <div class="column">
-              <p>
-                <strong>Service Time</strong><br />
-                <%= contract.funeralTimePeriodString %>
-              </p>
-            </div>
-          </div>
-          <p>
-            <strong>Direction of Arrival</strong><br />
-            <% if ((contract.directionOfArrival ?? '') === '') { %>
-              <span class="has-text-grey">(No Direction of Arrival)</span>
-            <% } else { %>
-              <%= contract.directionOfArrivalDescription %>
-              <span class="tag"><%= contract.directionOfArrival %></span>
-            <% } %>
-          </p>
-          <p class="mt-2">
-            <strong>Committal Type</strong><br />
-            <% if (contract.committalType === null) { %>
-              <span class="has-text-grey">(No Committal Type)</span>
-            <% } else { %>
-              <%= contract.committalType %>
-            <% } %>
-          </p>
+      <div class="level-right">
+        <div class="level-item">
+          <i class="fa-solid fa-place-of-worship"></i>
         </div>
       </div>
     </div>
   </div>
+  <div class="panel-block is-block">
+    <div class="columns">
+      <div class="column">
+        <p>
+          <strong>Funeral Home</strong><br />
+          <% if (contract.funeralHomeName === null) { %>
+            <span class="has-text-grey">(No Funeral Home)</span>
+          <% } else { %>
+            <a class="<%= contract.funeralHomeIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/funeralHomes/<%= contract.funeralHomeId %>">
+              <%= contract.funeralHomeName %>
+            </a>
+          <% } %><br />
+          <span class="is-size-7">
+            <% if (contract.funeralHomeAddress1) { %>
+              <%= contract.funeralHomeAddress1 %><br />
+            <% } %>
+            <% if (contract.funeralHomeAddress2) { %>
+              <%= contract.funeralHomeAddress2 %><br />
+            <% } %>
+            <% if (contract.funeralHomeCity) { %>
+              <%= contract.funeralHomeCity %>, 
+            <% } %>
+            <%= contract.funeralHomeProvince %><br />
+            <%= contract.funeralHomePostalCode %>
+          </span>
+        </p>
+      </div>
+      <div class="column">
+        <% if ((contract.funeralHomePhoneNumber ?? '') !== '') { %>
+          <p class="mb-2">
+            <strong>Phone</strong><br />
+            <%= contract.funeralHomePhoneNumber %>
+          </p>
+        <% } %>
+        <% if ((contract.funeralHomeEmail ?? '') !== '') { %>
+          <p class="mb-2">
+            <strong>Email</strong><br />
+            <%= contract.funeralHomeEmail %>
+          </p>
+        <% } %>
+        <p>
+          <strong>Funeral Director's Name</strong><br />
+          <% if (contract.funeralDirectorName === '') { %>
+            <span class="has-text-grey">(No Funeral Director's Name)</span>
+          <% } else { %>
+            <%= contract.funeralDirectorName %>
+          <% } %>
+        </p>
+      </div>
+      <div class="column">
+        <div class="columns">
+          <div class="column">
+            <p>
+              <strong>Service Date</strong><br />
+              <%= contract.funeralDateString %>
+            </p>
+          </div>
+          <div class="column">
+            <p>
+              <strong>Service Time</strong><br />
+              <%= contract.funeralTimePeriodString %>
+            </p>
+          </div>
+        </div>
+        <p>
+          <strong>Direction of Arrival</strong><br />
+          <% if ((contract.directionOfArrival ?? '') === '') { %>
+            <span class="has-text-grey">(No Direction of Arrival)</span>
+          <% } else { %>
+            <%= contract.directionOfArrivalDescription %>
+            <span class="tag"><%= contract.directionOfArrival %></span>
+          <% } %>
+        </p>
+        <p class="mt-2">
+          <strong>Committal Type</strong><br />
+          <% if (contract.committalType === null) { %>
+            <span class="has-text-grey">(No Committal Type)</span>
+          <% } else { %>
+            <%= contract.committalType %>
+          <% } %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 <% } %>
 
 <div class="columns">
@@ -327,21 +327,20 @@
           </div>
           <div class="column">
             <% if ((contract.purchaserPhoneNumber ?? '') !== '') { %>
-              <p class="mb-2">
-                <strong>Phone</strong><br />
-                <%= contract.purchaserPhoneNumber %>
-              </p>
+            <p class="mb-2">
+              <strong>Phone</strong><br />
+              <%= contract.purchaserPhoneNumber %>
+            </p>
             <% } %>
             <% if ((contract.purchaserEmail ?? '') !== '') { %>
-              <p class="mb-2">
-                <strong>Email</strong><br />
-                <%= contract.purchaserEmail %>
-              </p>
+            <p class="mb-2">
+              <strong>Email</strong><br />
+              <%= contract.purchaserEmail %>
+            </p>
             <% } %>
             <p>
               <strong>
-                Relationship to
-                <%= (contract.isPreneed ? "Recipient" : "Deceased") %>
+                Relationship to Recipient
               </strong><br />
               <%= contract.purchaserRelationship %>
             </p>
@@ -357,7 +356,7 @@
           <div class="level-left">
             <div class="level-item">
               <h2 class="has-text-weight-bold is-size-5">
-                <%= (contract.isPreneed ? "Recipient" : "Deceased") %>
+                Recipient
               </h2>
             </div>
           </div>
@@ -380,14 +379,14 @@
         <% if (contract.contractInterments.length === 0) { %>
           <div class="message is-warning">
             <p class="message-body">
-              There are no interments associated with this record.
+              There are no recipients associated with this record.
             </p>
           </div>
         <% } else { %>
           <table class="table is-fullwidth is-striped is-hoverable is-fixed">
             <thead>
               <tr>
-                <th><%= (contract.isPreneed ? "Recipient" : "Deceased") %></th>
+                <th>Recipient</th>
                 <th>Details</th>
               </tr>
             </thead>
@@ -484,11 +483,11 @@
       </div>
       <div class="panel-block is-block">
         <% if (contract.contractFees.length === 0) { %>
-          <div class="message is-info">
-            <p class="message-body">
-              There are no fees applied to this contract.
-            </p>
-          </div>
+        <div class="message is-info">
+          <p class="message-body">
+            There are no fees applied to this contract.
+          </p>
+        </div>
         <% } else { %>
           <%
             let feeAmountTotal = 0;

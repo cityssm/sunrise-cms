@@ -56,11 +56,9 @@ declare const exports: {
 
     for (const contract of workOrder.workOrderContracts ?? []) {
       for (const interment of contract.contractInterments ?? []) {
-        relatedHTML += /*html*/ `
+        relatedHTML += /* html */ `
           <li
-            title="${cityssm.escapeHTML(
-              contract.isPreneed ? 'Recipient' : 'Deceased'
-            )}">
+            title="Recipient">
             <span class="fa-li">
               <i class="fa-solid fa-user"></i>
             </span>
@@ -70,7 +68,7 @@ declare const exports: {
       }
 
       if (contract.funeralHomeName !== null) {
-        relatedHTML += /*html*/ `
+        relatedHTML += /* html */ `
           <li title="Funeral Home">
             <span class="fa-li">
               <i class="fa-solid fa-place-of-worship"></i>
@@ -137,8 +135,7 @@ declare const exports: {
                       : /*html*/ `
                         <span class="tag" title="Progress">
                           ${(
-                            workOrder.workOrderMilestoneCompletionCount ??
-                            ''
+                            workOrder.workOrderMilestoneCompletionCount ?? ''
                           ).toString()}
                           /
                           ${(workOrder.workOrderMilestoneCount ?? '').toString()}
