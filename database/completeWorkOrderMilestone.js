@@ -11,12 +11,16 @@ export default function completeWorkOrderMilestone(milestoneForm, user, connecte
         ? dateToTimeInteger(rightNow)
         : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString);
     const result = database
-        .prepare(/* sql */ `update WorkOrderMilestones
-        set workOrderMilestoneCompletionDate = ?,
+        .prepare(/* sql */ `
+      UPDATE WorkOrderMilestones
+      SET
+        workOrderMilestoneCompletionDate = ?,
         workOrderMilestoneCompletionTime = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
-        where workOrderMilestoneId = ?`)
+      WHERE
+        workOrderMilestoneId = ?
+    `)
         .run(completionDate, completionTime, user.userName, rightNow.getTime(), milestoneForm.workOrderMilestoneId);
     if (connectedDatabase === undefined) {
         database.close();

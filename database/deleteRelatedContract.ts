@@ -14,10 +14,18 @@ export default function deleteRelatedContract(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   database
-    .prepare(/* sql */ `delete from RelatedContracts
-        where (contractIdA = ? and contractIdB = ?)
-          or (contractIdA = ? and contractIdB = ?)`
-    )
+    .prepare(/* sql */ `
+      DELETE FROM RelatedContracts
+      WHERE
+        (
+          contractIdA = ?
+          AND contractIdB = ?
+        )
+        OR (
+          contractIdA = ?
+          AND contractIdB = ?
+        )
+    `)
     .run(
       relatedContractForm.contractId,
       relatedContractForm.relatedContractId,

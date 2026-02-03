@@ -8,12 +8,27 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
      */
     const currentDateInteger = dateToInteger(new Date());
     const activeContract = database
-        .prepare(/* sql */ `select contractId
-        from Contracts
-        where burialSiteId in (
-          select burialSiteId from BurialSites where recordDelete_timeMillis is null and cemeteryId = ?)
-        and recordDelete_timeMillis is null
-        and (contractEndDate is null or contractEndDate >= ?)`)
+        .prepare(/* sql */ `
+      SELECT
+        contractId
+      FROM
+        Contracts
+      WHERE
+        burialSiteId IN (
+          SELECT
+            burialSiteId
+          FROM
+            BurialSites
+          WHERE
+            recordDelete_timeMillis IS NULL
+            AND cemeteryId = ?
+        )
+        AND recordDelete_timeMillis IS NULL
+        AND (
+          contractEndDate IS NULL
+          OR contractEndDate >= ?
+        )
+    `)
         .pluck()
         .get(cemeteryId, currentDateInteger);
     if (activeContract !== undefined) {
@@ -27,45 +42,81 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
      */
     const rightNowMillis = Date.now();
     database
-        .prepare(/* sql */ `update Cemeteries
-        set recordDelete_userName = ?,
+        .prepare(/* sql */ `
+      UPDATE Cemeteries
+      SET
+        recordDelete_userName = ?,
         recordDelete_timeMillis = ?
-        where cemeteryId = ?
-        and recordDelete_timeMillis is null`)
+      WHERE
+        cemeteryId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
         .run(user.userName, rightNowMillis, cemeteryId);
     /*
      * Delete burial sites, fields, and comments
      */
     const deletedBurialSites = database
-        .prepare(/* sql */ `update BurialSites
-        set recordDelete_userName = ?,
+        .prepare(/* sql */ `
+      UPDATE BurialSites
+      SET
+        recordDelete_userName = ?,
         recordDelete_timeMillis = ?
-        where cemeteryId = ?
-        and recordDelete_timeMillis is null`)
+      WHERE
+        cemeteryId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
         .run(user.userName, rightNowMillis, cemeteryId).changes;
     database
-        .prepare(/* sql */ `update BurialSiteFields
-        set recordDelete_userName = ?,
+        .prepare(/* sql */ `
+      UPDATE BurialSiteFields
+      SET
+        recordDelete_userName = ?,
         recordDelete_timeMillis = ?
-        where burialSiteId in (
-          select burialSiteId from BurialSites where cemeteryId = ?)
-        and recordDelete_timeMillis is null`)
+      WHERE
+        burialSiteId IN (
+          SELECT
+            burialSiteId
+          FROM
+            BurialSites
+          WHERE
+            cemeteryId = ?
+        )
+        AND recordDelete_timeMillis IS NULL
+    `)
         .run(user.userName, rightNowMillis, cemeteryId);
     database
-        .prepare(/* sql */ `update BurialSiteComments
-        set recordDelete_userName = ?,
+        .prepare(/* sql */ `
+      UPDATE BurialSiteComments
+      SET
+        recordDelete_userName = ?,
         recordDelete_timeMillis = ?
-        where burialSiteId in (
-          select burialSiteId from BurialSites where cemeteryId = ?)
-        and recordDelete_timeMillis is null`)
+      WHERE
+        burialSiteId IN (
+          SELECT
+            burialSiteId
+          FROM
+            BurialSites
+          WHERE
+            cemeteryId = ?
+        )
+        AND recordDelete_timeMillis IS NULL
+    `)
         .run(user.userName, rightNowMillis, cemeteryId);
     if (deletedBurialSites === 0) {
         const purgeTables = ['CemeteryDirectionsOfArrival', 'Cemeteries'];
         for (const tableName of purgeTables) {
             database
-                .prepare(/* sql */ `delete from ${tableName}
-            where cemeteryId = ?
-            and cemeteryId not in (select cemeteryId from BurialSites)`)
+                .prepare(/* sql */ `
+          DELETE FROM ${tableName}
+          WHERE
+            cemeteryId = ?
+            AND cemeteryId NOT IN (
+              SELECT
+                cemeteryId
+              FROM
+                BurialSites
+            )
+        `)
                 .run(cemeteryId);
         }
     }

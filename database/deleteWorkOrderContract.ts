@@ -11,12 +11,15 @@ export default function deleteWorkOrderContract(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update WorkOrderContracts
-        set recordDelete_userName = ?,
+    .prepare(/* sql */ `
+      UPDATE WorkOrderContracts
+      SET
+        recordDelete_userName = ?,
         recordDelete_timeMillis = ?
-        where workOrderId = ?
-        and contractId = ?`
-    )
+      WHERE
+        workOrderId = ?
+        AND contractId = ?
+    `)
     .run(user.userName, Date.now(), workOrderId, contractId)
 
   if (connectedDatabase === undefined) {

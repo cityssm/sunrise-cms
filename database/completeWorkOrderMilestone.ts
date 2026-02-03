@@ -41,13 +41,16 @@ export default function completeWorkOrderMilestone(
         )
 
   const result = database
-    .prepare(/* sql */ `update WorkOrderMilestones
-        set workOrderMilestoneCompletionDate = ?,
+    .prepare(/* sql */ `
+      UPDATE WorkOrderMilestones
+      SET
+        workOrderMilestoneCompletionDate = ?,
         workOrderMilestoneCompletionTime = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
-        where workOrderMilestoneId = ?`
-    )
+      WHERE
+        workOrderMilestoneId = ?
+    `)
     .run(
       completionDate,
       completionTime,

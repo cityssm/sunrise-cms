@@ -5,11 +5,15 @@ export default function closeWorkOrder(workOrderForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNow = new Date();
     const result = database
-        .prepare(/* sql */ `update WorkOrders
-        set workOrderCloseDate = ?,
+        .prepare(/* sql */ `
+      UPDATE WorkOrders
+      SET
+        workOrderCloseDate = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
-        where workOrderId = ?`)
+      WHERE
+        workOrderId = ?
+    `)
         .run(workOrderForm.workOrderCloseDateString
         ? dateStringToInteger(workOrderForm.workOrderCloseDateString)
         : dateToInteger(new Date()), user.userName, rightNow.getTime(), workOrderForm.workOrderId);

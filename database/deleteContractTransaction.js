@@ -3,11 +3,15 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function deleteContractTransaction(contractId, transactionIndex, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(/* sql */ `update ContractTransactions
-        set recordDelete_userName = ?,
+        .prepare(/* sql */ `
+      UPDATE ContractTransactions
+      SET
+        recordDelete_userName = ?,
         recordDelete_timeMillis = ?
-        where contractId = ?
-        and transactionIndex = ?`)
+      WHERE
+        contractId = ?
+        AND transactionIndex = ?
+    `)
         .run(user.userName, Date.now(), contractId, transactionIndex);
     if (connectedDatabase === undefined) {
         database.close();

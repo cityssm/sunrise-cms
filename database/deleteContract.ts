@@ -17,12 +17,27 @@ export function deleteContract(
   const currentDateInteger = dateToInteger(new Date())
 
   const activeWorkOrder = database
-    .prepare(/* sql */ `select workOrderId
-        from WorkOrders
-        where recordDelete_timeMillis is null
-          and workOrderId in (select workOrderId from WorkOrderContracts where contractId = ? and recordDelete_timeMillis is null)
-          and (workOrderCloseDate is null or workOrderCloseDate >= ?)`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        workOrderId
+      FROM
+        WorkOrders
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderContracts
+          WHERE
+            contractId = ?
+            AND recordDelete_timeMillis IS NULL
+        )
+        AND (
+          workOrderCloseDate IS NULL
+          OR workOrderCloseDate >= ?
+        )
+    `)
     .pluck()
     .get(contractId, currentDateInteger) as number | undefined
 
@@ -41,12 +56,15 @@ export function deleteContract(
 
   for (const tableName of ['Contracts', 'ContractFields', 'ContractComments']) {
     database
-      .prepare(/* sql */ `update ${tableName}
-          set recordDelete_userName = ?,
-            recordDelete_timeMillis = ?
-          where contractId = ?
-            and recordDelete_timeMillis is null`
-      )
+      .prepare(/* sql */ `
+        UPDATE ${tableName}
+        SET
+          recordDelete_userName = ?,
+          recordDelete_timeMillis = ?
+        WHERE
+          contractId = ?
+          AND recordDelete_timeMillis IS NULL
+      `)
       .run(user.userName, rightNowMillis, contractId)
   }
 

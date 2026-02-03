@@ -11,12 +11,15 @@ export default function deleteContractInterment(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update ContractInterments
-        set recordDelete_userName = ?,
+    .prepare(/* sql */ `
+      UPDATE ContractInterments
+      SET
+        recordDelete_userName = ?,
         recordDelete_timeMillis = ?
-        where contractId = ?
-        and intermentNumber = ?`
-    )
+      WHERE
+        contractId = ?
+        AND intermentNumber = ?
+    `)
     .run(user.userName, Date.now(), contractId, intermentNumber)
 
   if (connectedDatabase === undefined) {

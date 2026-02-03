@@ -11,12 +11,15 @@ export default function deleteBurialSiteField(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update BurialSiteFields
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where burialSiteId = ?
-          and burialSiteTypeFieldId = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE BurialSiteFields
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        burialSiteId = ?
+        AND burialSiteTypeFieldId = ?
+    `)
     .run(user.userName, Date.now(), burialSiteId, burialSiteTypeFieldId)
 
   if (connectedDatabase === undefined) {

@@ -12,12 +12,15 @@ export default function deleteContractMetadata(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   database
-    .prepare(/* sql */ `update ContractMetadata
-        set recordDelete_userName = ?,
-          recordDelete_timeMillis = ?
-        where contractId = ?
-          and metadataKey = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE ContractMetadata
+      SET
+        recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+      WHERE
+        contractId = ?
+        AND metadataKey = ?
+    `)
     .run(user.userName, Date.now(), contractId, metadataKey)
 
   if (connectedDatabase === undefined) {

@@ -9,12 +9,20 @@ export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase
      */
     const currentDateInteger = dateToInteger(new Date());
     const activeContract = database
-        .prepare(/* sql */ `select contractId
-        from Contracts
-        where funeralHomeId = ?
-        and recordDelete_timeMillis is null
-        and (contractEndDate is null or contractEndDate >= ?)
-        and funeralDate >= ?`)
+        .prepare(/* sql */ `
+      SELECT
+        contractId
+      FROM
+        Contracts
+      WHERE
+        funeralHomeId = ?
+        AND recordDelete_timeMillis IS NULL
+        AND (
+          contractEndDate IS NULL
+          OR contractEndDate >= ?
+        )
+        AND funeralDate >= ?
+    `)
         .pluck()
         .get(funeralHomeId, currentDateInteger, currentDateInteger);
     if (activeContract !== undefined) {
@@ -28,11 +36,15 @@ export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase
      */
     const rightNowMillis = Date.now();
     database
-        .prepare(/* sql */ `update FuneralHomes
-        set recordDelete_userName = ?,
+        .prepare(/* sql */ `
+      UPDATE FuneralHomes
+      SET
+        recordDelete_userName = ?,
         recordDelete_timeMillis = ?
-        where funeralHomeId = ?
-        and recordDelete_timeMillis is null`)
+      WHERE
+        funeralHomeId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
         .run(user.userName, rightNowMillis, funeralHomeId);
     if (connectedDatabase === undefined) {
         database.close();
