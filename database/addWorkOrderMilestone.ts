@@ -32,15 +32,24 @@ export default function addWorkOrderMilestone(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `insert into WorkOrderMilestones (
-        workOrderId, workOrderMilestoneTypeId,
-        workOrderMilestoneDate, workOrderMilestoneTime,
-        workOrderMilestoneDescription,
-        workOrderMilestoneCompletionDate, workOrderMilestoneCompletionTime,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        WorkOrderMilestones (
+          workOrderId,
+          workOrderMilestoneTypeId,
+          workOrderMilestoneDate,
+          workOrderMilestoneTime,
+          workOrderMilestoneDescription,
+          workOrderMilestoneCompletionDate,
+          workOrderMilestoneCompletionTime,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       milestoneForm.workOrderId,
       milestoneForm.workOrderMilestoneTypeId === ''

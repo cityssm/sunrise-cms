@@ -5,11 +5,18 @@ export default function addContractTransaction(contractTransactionForm, user, co
     const database = connectedDatabase ?? sqlite(sunriseDB);
     let transactionIndex = 0;
     const maxIndexResult = database
-        .prepare(/* sql */ `select transactionIndex
-        from ContractTransactions
-        where contractId = ?
-        order by transactionIndex desc
-        limit 1`)
+        .prepare(/* sql */ `
+      SELECT
+        transactionIndex
+      FROM
+        ContractTransactions
+      WHERE
+        contractId = ?
+      ORDER BY
+        transactionIndex DESC
+      LIMIT
+        1
+    `)
         .get(contractTransactionForm.contractId);
     if (maxIndexResult !== undefined) {
         transactionIndex = maxIndexResult.transactionIndex + 1;
@@ -22,14 +29,25 @@ export default function addContractTransaction(contractTransactionForm, user, co
         ? dateToTimeInteger(rightNow)
         : timeStringToInteger(contractTransactionForm.transactionTimeString);
     database
-        .prepare(/* sql */ `insert into ContractTransactions (
-        contractId, transactionIndex,
-        transactionDate, transactionTime,
-        transactionAmount, isInvoiced,
-        externalReceiptNumber, transactionNote,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+        .prepare(/* sql */ `
+      INSERT INTO
+        ContractTransactions (
+          contractId,
+          transactionIndex,
+          transactionDate,
+          transactionTime,
+          transactionAmount,
+          isInvoiced,
+          externalReceiptNumber,
+          transactionNote,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
         .run(contractTransactionForm.contractId, transactionIndex, transactionDate, transactionTime, contractTransactionForm.transactionAmount, contractTransactionForm.isInvoiced ?? 0, contractTransactionForm.externalReceiptNumber, contractTransactionForm.transactionNote, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     if (connectedDatabase === undefined) {
         database.close();

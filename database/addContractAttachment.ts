@@ -20,13 +20,22 @@ export default function addContractAttachment(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `insert into ContractAttachments (
-        contractId, attachmentTitle, attachmentDetails,
-        fileName, filePath,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        ContractAttachments (
+          contractId,
+          attachmentTitle,
+          attachmentDetails,
+          fileName,
+          filePath,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       attachment.contractId,
       attachment.attachmentTitle ?? attachment.fileName,

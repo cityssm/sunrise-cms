@@ -35,17 +35,30 @@ export default function addCemetery(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `insert into Cemeteries (
-        cemeteryName, cemeteryKey, cemeteryDescription,
-        cemeterySvg, cemeteryLatitude, cemeteryLongitude,
-        cemeteryAddress1, cemeteryAddress2,
-        cemeteryCity, cemeteryProvince, cemeteryPostalCode,
-        cemeteryPhoneNumber,
-        parentCemeteryId,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        Cemeteries (
+          cemeteryName,
+          cemeteryKey,
+          cemeteryDescription,
+          cemeterySvg,
+          cemeteryLatitude,
+          cemeteryLongitude,
+          cemeteryAddress1,
+          cemeteryAddress2,
+          cemeteryCity,
+          cemeteryProvince,
+          cemeteryPostalCode,
+          cemeteryPhoneNumber,
+          parentCemeteryId,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       addForm.cemeteryName,
       addForm.cemeteryKey,

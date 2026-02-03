@@ -7,6 +7,7 @@ export default async function addContractFeeCategory(addFeeCategoryForm, user, c
     const feeCategory = getFeeCategory(addFeeCategoryForm.feeCategoryId, database);
     let addedFeeCount = 0;
     for (const fee of feeCategory?.fees ?? []) {
+        // eslint-disable-next-line no-await-in-loop
         const success = await addContractFee({
             contractId: addFeeCategoryForm.contractId,
             feeId: fee.feeId,

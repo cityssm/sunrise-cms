@@ -19,12 +19,20 @@ export default function addCommittalType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `insert into CommittalTypes (
-        committalType, committalTypeKey, orderNumber,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        CommittalTypes (
+          committalType,
+          committalTypeKey,
+          orderNumber,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       addForm.committalType,
       addForm.committalTypeKey ?? '',

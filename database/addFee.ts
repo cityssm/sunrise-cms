@@ -29,18 +29,50 @@ export default function addFee(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `insert into Fees (
-        feeCategoryId,
-        feeName, feeDescription, feeAccount,
-        contractTypeId, burialSiteTypeId,
-        feeAmount, feeFunction,
-        taxAmount, taxPercentage,
-        includeQuantity, quantityUnit,
-        isRequired, orderNumber,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        Fees (
+          feeCategoryId,
+          feeName,
+          feeDescription,
+          feeAccount,
+          contractTypeId,
+          burialSiteTypeId,
+          feeAmount,
+          feeFunction,
+          taxAmount,
+          taxPercentage,
+          includeQuantity,
+          quantityUnit,
+          isRequired,
+          orderNumber,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?
+        )
+    `)
     .run(
       feeForm.feeCategoryId,
       feeForm.feeName,

@@ -18,14 +18,21 @@ export default function addWorkOrderComment(
   const rightNow = new Date()
 
   const result = database
-    .prepare(/* sql */ `insert into WorkOrderComments (
-        workOrderId,
-        commentDate, commentTime,
-        comment,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        WorkOrderComments (
+          workOrderId,
+          commentDate,
+          commentTime,
+          comment,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       workOrderCommentForm.workOrderId,
       dateToInteger(rightNow),

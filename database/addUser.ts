@@ -19,13 +19,23 @@ function insertNewUser(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `insert into Users (
-        userName, isActive,
-        canUpdateCemeteries, canUpdateContracts, canUpdateWorkOrders, isAdmin,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis
-      ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        Users (
+          userName,
+          isActive,
+          canUpdateCemeteries,
+          canUpdateContracts,
+          canUpdateWorkOrders,
+          isAdmin,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       options.userName,
       1,
@@ -50,18 +60,21 @@ function restoreDeletedUser(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `update Users
-        set isActive = ?,
+    .prepare(/* sql */ `
+      UPDATE Users
+      SET
+        isActive = ?,
         canUpdateCemeteries = ?,
         canUpdateContracts = ?,
         canUpdateWorkOrders = ?,
         isAdmin = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?,
-        recordDelete_userName = null,
-        recordDelete_timeMillis = null
-      where userName = ?`
-    )
+        recordDelete_userName = NULL,
+        recordDelete_timeMillis = NULL
+      WHERE
+        userName = ?
+    `)
     .run(
       1,
       options.canUpdateCemeteries ? 1 : 0,

@@ -22,13 +22,21 @@ export default function addBurialSiteType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `insert into BurialSiteTypes (
-        burialSiteType, bodyCapacityMax, crematedCapacityMax,
-        orderNumber,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        BurialSiteTypes (
+          burialSiteType,
+          bodyCapacityMax,
+          crematedCapacityMax,
+          orderNumber,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       addForm.burialSiteType,
       addForm.bodyCapacityMax === '' ? undefined : addForm.bodyCapacityMax,

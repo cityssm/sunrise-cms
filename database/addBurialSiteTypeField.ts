@@ -29,16 +29,26 @@ export default function addBurialSiteTypeField(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `insert into BurialSiteTypeFields (
-        burialSiteTypeId, burialSiteTypeField,
-        fieldType, fieldValues,
-        isRequired, pattern,
-        minLength, maxLength,
-        orderNumber,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        BurialSiteTypeFields (
+          burialSiteTypeId,
+          burialSiteTypeField,
+          fieldType,
+          fieldValues,
+          isRequired,
+          pattern,
+          minLength,
+          maxLength,
+          orderNumber,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       addForm.burialSiteTypeId,
       addForm.burialSiteTypeField,

@@ -4,22 +4,35 @@ export default function addOrUpdateContractField(fieldForm, user, connectedDatab
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     let result = database
-        .prepare(/* sql */ `update ContractFields
-        set fieldValue = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?,
-          recordDelete_userName = null,
-          recordDelete_timeMillis = null
-        where contractId = ?
-          and contractTypeFieldId = ?`)
+        .prepare(/* sql */ `
+      UPDATE ContractFields
+      SET
+        fieldValue = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?,
+        recordDelete_userName = NULL,
+        recordDelete_timeMillis = NULL
+      WHERE
+        contractId = ?
+        AND contractTypeFieldId = ?
+    `)
         .run(fieldForm.fieldValue, user.userName, rightNowMillis, fieldForm.contractId, fieldForm.contractTypeFieldId);
     if (result.changes === 0) {
         result = database
-            .prepare(/* sql */ `insert into ContractFields (
-          contractId, contractTypeFieldId, fieldValue,
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis)
-          values (?, ?, ?, ?, ?, ?, ?)`)
+            .prepare(/* sql */ `
+        INSERT INTO
+          ContractFields (
+            contractId,
+            contractTypeFieldId,
+            fieldValue,
+            recordCreate_userName,
+            recordCreate_timeMillis,
+            recordUpdate_userName,
+            recordUpdate_timeMillis
+          )
+        VALUES
+          (?, ?, ?, ?, ?, ?, ?)
+      `)
             .run(fieldForm.contractId, fieldForm.contractTypeFieldId, fieldForm.fieldValue, user.userName, rightNowMillis, user.userName, rightNowMillis);
     }
     if (connectedDatabase === undefined) {

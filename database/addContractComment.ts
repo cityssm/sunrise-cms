@@ -25,16 +25,14 @@ export default function addContractComment(
 ): number {
   const rightNow = new Date()
 
-  let commentDate = 0
-  let commentTime: number | undefined = 0
+  let commentDate: number
+  let commentTime: number | undefined
 
   if (commentForm.commentDateString === undefined) {
     commentDate = dateToInteger(rightNow)
     commentTime = dateToTimeInteger(rightNow)
   } else {
-    commentDate = dateStringToInteger(
-      commentForm.commentDateString
-    )
+    commentDate = dateStringToInteger(commentForm.commentDateString)
     commentTime = timeStringToInteger(
       commentForm.commentTimeString as TimeString
     )
@@ -43,14 +41,21 @@ export default function addContractComment(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `insert into ContractComments (
-        contractId,
-        commentDate, commentTime,
-        comment,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        ContractComments (
+          contractId,
+          commentDate,
+          commentTime,
+          comment,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       commentForm.contractId,
       commentDate,

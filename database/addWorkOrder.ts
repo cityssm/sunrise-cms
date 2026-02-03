@@ -29,7 +29,7 @@ export interface AddWorkOrderForm {
   [workOrderMilestoneDateString: `workOrderMilestoneDateString_${number}`]:
     | DateString
     | undefined
-    
+
   [workOrderMilestoneTimeString: `workOrderMilestoneTimeString_${number}`]:
     | ''
     | TimeString
@@ -56,13 +56,22 @@ export default function addWorkOrder(
   }
 
   const result = database
-    .prepare(/* sql */ `insert into WorkOrders (
-        workOrderTypeId, workOrderNumber, workOrderDescription,
-        workOrderOpenDate, workOrderCloseDate,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
+    .prepare(/* sql */ `
+      INSERT INTO
+        WorkOrders (
+          workOrderTypeId,
+          workOrderNumber,
+          workOrderDescription,
+          workOrderOpenDate,
+          workOrderCloseDate,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
     .run(
       workOrderForm.workOrderTypeId,
       workOrderNumber,

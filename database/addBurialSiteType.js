@@ -5,12 +5,21 @@ export default function addBurialSiteType(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `insert into BurialSiteTypes (
-        burialSiteType, bodyCapacityMax, crematedCapacityMax,
-        orderNumber,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?)`)
+        .prepare(/* sql */ `
+      INSERT INTO
+        BurialSiteTypes (
+          burialSiteType,
+          bodyCapacityMax,
+          crematedCapacityMax,
+          orderNumber,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?)
+    `)
         .run(addForm.burialSiteType, addForm.bodyCapacityMax === '' ? undefined : addForm.bodyCapacityMax, addForm.crematedCapacityMax === ''
         ? undefined
         : addForm.crematedCapacityMax, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);

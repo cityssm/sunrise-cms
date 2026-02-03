@@ -3,29 +3,44 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 function insertNewUser(options, user, database) {
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `insert into Users (
-        userName, isActive,
-        canUpdateCemeteries, canUpdateContracts, canUpdateWorkOrders, isAdmin,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis
-      ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+        .prepare(/* sql */ `
+      INSERT INTO
+        Users (
+          userName,
+          isActive,
+          canUpdateCemeteries,
+          canUpdateContracts,
+          canUpdateWorkOrders,
+          isAdmin,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
         .run(options.userName, 1, options.canUpdateCemeteries ? 1 : 0, options.canUpdateContracts ? 1 : 0, options.canUpdateWorkOrders ? 1 : 0, options.isAdmin ? 1 : 0, user.userName, rightNowMillis, user.userName, rightNowMillis);
     return result.changes > 0;
 }
 function restoreDeletedUser(options, user, database) {
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `update Users
-        set isActive = ?,
+        .prepare(/* sql */ `
+      UPDATE Users
+      SET
+        isActive = ?,
         canUpdateCemeteries = ?,
         canUpdateContracts = ?,
         canUpdateWorkOrders = ?,
         isAdmin = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?,
-        recordDelete_userName = null,
-        recordDelete_timeMillis = null
-      where userName = ?`)
+        recordDelete_userName = NULL,
+        recordDelete_timeMillis = NULL
+      WHERE
+        userName = ?
+    `)
         .run(1, options.canUpdateCemeteries ? 1 : 0, options.canUpdateContracts ? 1 : 0, options.canUpdateWorkOrders ? 1 : 0, options.isAdmin ? 1 : 0, user.userName, rightNowMillis, options.userName);
     return result.changes > 0;
 }

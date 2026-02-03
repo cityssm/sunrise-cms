@@ -26,18 +26,60 @@ export default function addContract(addForm, user, connectedDatabase) {
     const contractStartDate = dateStringToInteger(addForm.contractStartDateString);
     try {
         const result = database
-            .prepare(/* sql */ `insert into Contracts (
-        contractTypeId, burialSiteId,
-        contractStartDate, contractEndDate,
-        purchaserName, purchaserAddress1, purchaserAddress2,
-        purchaserCity, purchaserProvince, purchaserPostalCode,
-        purchaserPhoneNumber, purchaserEmail, purchaserRelationship,
-        funeralHomeId, funeralDirectorName,
-        funeralDate, funeralTime,
-        directionOfArrival, committalTypeId,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+            .prepare(/* sql */ `
+        INSERT INTO
+          Contracts (
+            contractTypeId,
+            burialSiteId,
+            contractStartDate,
+            contractEndDate,
+            purchaserName,
+            purchaserAddress1,
+            purchaserAddress2,
+            purchaserCity,
+            purchaserProvince,
+            purchaserPostalCode,
+            purchaserPhoneNumber,
+            purchaserEmail,
+            purchaserRelationship,
+            funeralHomeId,
+            funeralDirectorName,
+            funeralDate,
+            funeralTime,
+            directionOfArrival,
+            committalTypeId,
+            recordCreate_userName,
+            recordCreate_timeMillis,
+            recordUpdate_userName,
+            recordUpdate_timeMillis
+          )
+        VALUES
+          (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?
+          )
+      `)
             .run(addForm.contractTypeId, addForm.burialSiteId === '' ? undefined : addForm.burialSiteId, contractStartDate, addForm.contractEndDateString === ''
             ? undefined
             : dateStringToInteger(addForm.contractEndDateString), addForm.purchaserName ?? '', addForm.purchaserAddress1 ?? '', addForm.purchaserAddress2 ?? '', addForm.purchaserCity ?? '', addForm.purchaserProvince ?? '', addForm.purchaserPostalCode ?? '', addForm.purchaserPhoneNumber ?? '', addForm.purchaserEmail ?? '', addForm.purchaserRelationship ?? '', funeralHomeId === '' ? undefined : funeralHomeId, addForm.funeralDirectorName ?? '', addForm.funeralDateString === ''

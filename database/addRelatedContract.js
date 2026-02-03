@@ -5,9 +5,12 @@ export default function addRelatedContract(relatedContractForm, connectedDatabas
     const contractId = Number.parseInt(relatedContractForm.contractId.toString(), 10);
     const relatedContractId = Number.parseInt(relatedContractForm.relatedContractId.toString(), 10);
     database
-        .prepare(/* sql */ `insert into RelatedContracts (
-        contractIdA, contractIdB)
-        values (?, ?)`)
+        .prepare(/* sql */ `
+      INSERT INTO
+        RelatedContracts (contractIdA, contractIdB)
+      VALUES
+        (?, ?)
+    `)
         .run(Math.min(contractId, relatedContractId), Math.max(contractId, relatedContractId));
     if (connectedDatabase === undefined) {
         database.close();

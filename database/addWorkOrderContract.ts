@@ -17,22 +17,33 @@ export default function addWorkOrderContract(
   const rightNowMillis = Date.now()
 
   const recordDeleteTimeMillis: number | null | undefined = database
-    .prepare(/* sql */ `select recordDelete_timeMillis
-        from WorkOrderContracts
-        where workOrderId = ?
-        and contractId = ?`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        recordDelete_timeMillis
+      FROM
+        WorkOrderContracts
+      WHERE
+        workOrderId = ?
+        AND contractId = ?
+    `)
     .pluck()
     .get(addForm.workOrderId, addForm.contractId) as number | null | undefined
 
   if (recordDeleteTimeMillis === undefined) {
     database
-      .prepare(/* sql */ `insert into WorkOrderContracts (
-          workOrderId, contractId,
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis)
-          values (?, ?, ?, ?, ?, ?)`
-      )
+      .prepare(/* sql */ `
+        INSERT INTO
+          WorkOrderContracts (
+            workOrderId,
+            contractId,
+            recordCreate_userName,
+            recordCreate_timeMillis,
+            recordUpdate_userName,
+            recordUpdate_timeMillis
+          )
+        VALUES
+          (?, ?, ?, ?, ?, ?)
+      `)
       .run(
         addForm.workOrderId,
         addForm.contractId,
@@ -43,16 +54,19 @@ export default function addWorkOrderContract(
       )
   } else if (recordDeleteTimeMillis !== null) {
     database
-      .prepare(/* sql */ `update WorkOrderContracts
-          set recordCreate_userName = ?,
-            recordCreate_timeMillis = ?,
-            recordUpdate_userName = ?,
-            recordUpdate_timeMillis = ?,
-            recordDelete_userName = null,
-            recordDelete_timeMillis = null
-          where workOrderId = ?
-            and contractId = ?`
-      )
+      .prepare(/* sql */ `
+        UPDATE WorkOrderContracts
+        SET
+          recordCreate_userName = ?,
+          recordCreate_timeMillis = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?,
+          recordDelete_userName = NULL,
+          recordDelete_timeMillis = NULL
+        WHERE
+          workOrderId = ?
+          AND contractId = ?
+      `)
       .run(
         user.userName,
         rightNowMillis,

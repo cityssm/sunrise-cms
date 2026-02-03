@@ -5,11 +5,20 @@ export default function addCommittalType(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `insert into CommittalTypes (
-        committalType, committalTypeKey, orderNumber,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?)`)
+        .prepare(/* sql */ `
+      INSERT INTO
+        CommittalTypes (
+          committalType,
+          committalTypeKey,
+          orderNumber,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?)
+    `)
         .run(addForm.committalType, addForm.committalTypeKey ?? '', addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (connectedDatabase === undefined) {
         database.close();

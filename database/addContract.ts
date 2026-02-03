@@ -102,19 +102,60 @@ export default function addContract(
 
   try {
     const result = database
-      .prepare(/* sql */ `insert into Contracts (
-        contractTypeId, burialSiteId,
-        contractStartDate, contractEndDate,
-        purchaserName, purchaserAddress1, purchaserAddress2,
-        purchaserCity, purchaserProvince, purchaserPostalCode,
-        purchaserPhoneNumber, purchaserEmail, purchaserRelationship,
-        funeralHomeId, funeralDirectorName,
-        funeralDate, funeralTime,
-        directionOfArrival, committalTypeId,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-      )
+      .prepare(/* sql */ `
+        INSERT INTO
+          Contracts (
+            contractTypeId,
+            burialSiteId,
+            contractStartDate,
+            contractEndDate,
+            purchaserName,
+            purchaserAddress1,
+            purchaserAddress2,
+            purchaserCity,
+            purchaserProvince,
+            purchaserPostalCode,
+            purchaserPhoneNumber,
+            purchaserEmail,
+            purchaserRelationship,
+            funeralHomeId,
+            funeralDirectorName,
+            funeralDate,
+            funeralTime,
+            directionOfArrival,
+            committalTypeId,
+            recordCreate_userName,
+            recordCreate_timeMillis,
+            recordUpdate_userName,
+            recordUpdate_timeMillis
+          )
+        VALUES
+          (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?
+          )
+      `)
       .run(
         addForm.contractTypeId,
         addForm.burialSiteId === '' ? undefined : addForm.burialSiteId,
@@ -181,7 +222,6 @@ export default function addContract(
       addContractInterment({ ...addForm, contractId }, user, database)
     }
 
-    
     return contractId
   } catch (error) {
     debug('Error adding contract:', error)
@@ -189,7 +229,6 @@ export default function addContract(
 
     throw error
   } finally {
-    
     if (connectedDatabase === undefined) {
       database.close()
     }

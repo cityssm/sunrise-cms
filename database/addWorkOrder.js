@@ -13,12 +13,22 @@ export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
         workOrderNumber = getNextWorkOrderNumber(database);
     }
     const result = database
-        .prepare(/* sql */ `insert into WorkOrders (
-        workOrderTypeId, workOrderNumber, workOrderDescription,
-        workOrderOpenDate, workOrderCloseDate,
-        recordCreate_userName, recordCreate_timeMillis,
-        recordUpdate_userName, recordUpdate_timeMillis)
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+        .prepare(/* sql */ `
+      INSERT INTO
+        WorkOrders (
+          workOrderTypeId,
+          workOrderNumber,
+          workOrderDescription,
+          workOrderOpenDate,
+          workOrderCloseDate,
+          recordCreate_userName,
+          recordCreate_timeMillis,
+          recordUpdate_userName,
+          recordUpdate_timeMillis
+        )
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
         .run(workOrderForm.workOrderTypeId, workOrderNumber, workOrderForm.workOrderDescription, (workOrderForm.workOrderOpenDateString ?? '') === ''
         ? dateToInteger(rightNow)
         : dateStringToInteger(workOrderForm.workOrderOpenDateString), (workOrderForm.workOrderCloseDateString ?? '') === ''

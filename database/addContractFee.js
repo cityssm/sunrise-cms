@@ -32,29 +32,43 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
     try {
         // Check if record already exists
         const record = database
-            .prepare(/* sql */ `select feeAmount, taxAmount, recordDelete_timeMillis
-          from ContractFees
-          where contractId = ?
-          and feeId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          feeAmount,
+          taxAmount,
+          recordDelete_timeMillis
+        FROM
+          ContractFees
+        WHERE
+          contractId = ?
+          AND feeId = ?
+      `)
             .get(addFeeForm.contractId, addFeeForm.feeId);
         if (record !== undefined) {
             if (record.recordDelete_timeMillis !== null) {
                 database
-                    .prepare(/* sql */ `delete from ContractFees
-              where recordDelete_timeMillis is not null
-              and contractId = ?
-              and feeId = ?`)
+                    .prepare(/* sql */ `
+            DELETE FROM ContractFees
+            WHERE
+              recordDelete_timeMillis IS NOT NULL
+              AND contractId = ?
+              AND feeId = ?
+          `)
                     .run(addFeeForm.contractId, addFeeForm.feeId);
             }
             else if (record.feeAmount === feeAmount &&
                 record.taxAmount === taxAmount) {
                 database
-                    .prepare(/* sql */ `update ContractFees
-              set quantity = quantity + ?,
+                    .prepare(/* sql */ `
+            UPDATE ContractFees
+            SET
+              quantity = quantity + ?,
               recordUpdate_userName = ?,
               recordUpdate_timeMillis = ?
-              where contractId = ?
-              and feeId = ?`)
+            WHERE
+              contractId = ?
+              AND feeId = ?
+          `)
                     .run(addFeeForm.quantity, user.userName, rightNowMillis, addFeeForm.contractId, addFeeForm.feeId);
                 return true;
             }
@@ -63,26 +77,40 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                     ? Number.parseFloat(addFeeForm.quantity)
                     : addFeeForm.quantity;
                 database
-                    .prepare(/* sql */ `update ContractFees
-              set feeAmount = (feeAmount * quantity) + ?,
+                    .prepare(/* sql */ `
+            UPDATE ContractFees
+            SET
+              feeAmount = (feeAmount * quantity) + ?,
               taxAmount = (taxAmount * quantity) + ?,
               quantity = 1,
               recordUpdate_userName = ?,
               recordUpdate_timeMillis = ?
-              where contractId = ?
-              and feeId = ?`)
+            WHERE
+              contractId = ?
+              AND feeId = ?
+          `)
                     .run(feeAmount * quantity, taxAmount * quantity, user.userName, rightNowMillis, addFeeForm.contractId, addFeeForm.feeId);
                 return true;
             }
         }
         // Create new record
         const result = database
-            .prepare(/* sql */ `insert into ContractFees (
-          contractId, feeId,
-          quantity, feeAmount, taxAmount,
-          recordCreate_userName, recordCreate_timeMillis,
-          recordUpdate_userName, recordUpdate_timeMillis)
-          values (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+            .prepare(/* sql */ `
+        INSERT INTO
+          ContractFees (
+            contractId,
+            feeId,
+            quantity,
+            feeAmount,
+            taxAmount,
+            recordCreate_userName,
+            recordCreate_timeMillis,
+            recordUpdate_userName,
+            recordUpdate_timeMillis
+          )
+        VALUES
+          (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `)
             .run(addFeeForm.contractId, addFeeForm.feeId, addFeeForm.quantity, feeAmount, taxAmount, user.userName, rightNowMillis, user.userName, rightNowMillis);
         return result.changes > 0;
     }
