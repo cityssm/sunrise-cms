@@ -4,7 +4,7 @@ import { updateApiKeyUserSetting } from './updateUserSetting.js';
 export default function getUserSettings(userName, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const databaseSettings = database
-        .prepare(`select s.settingKey, s.settingValue
+        .prepare(/* sql */ `select s.settingKey, s.settingValue
         from UserSettings s
         where s.userName = ?`)
         .all(userName);

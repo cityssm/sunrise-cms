@@ -5,7 +5,7 @@ export default function closeWorkOrder(workOrderForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNow = new Date();
     const result = database
-        .prepare(`update WorkOrders
+        .prepare(/* sql */ `update WorkOrders
         set workOrderCloseDate = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?

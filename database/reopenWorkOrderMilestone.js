@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function reopenWorkOrderMilestone(workOrderMilestoneId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(`update WorkOrderMilestones
+        .prepare(/* sql */ `update WorkOrderMilestones
         set workOrderMilestoneCompletionDate = null,
           workOrderMilestoneCompletionTime = null,
           recordUpdate_userName = ?,

@@ -4,7 +4,7 @@ export default function updateFuneralHome(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`update FuneralHomes
+        .prepare(/* sql */ `update FuneralHomes
         set funeralHomeName = ?,
           funeralHomeAddress1 = ?, funeralHomeAddress2 = ?,
           funeralHomeCity = ?, funeralHomeProvince = ?, funeralHomePostalCode = ?,

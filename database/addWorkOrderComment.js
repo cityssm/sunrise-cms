@@ -5,7 +5,7 @@ export default function addWorkOrderComment(workOrderCommentForm, user, connecte
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNow = new Date();
     const result = database
-        .prepare(`insert into WorkOrderComments (
+        .prepare(/* sql */ `insert into WorkOrderComments (
         workOrderId,
         commentDate, commentTime,
         comment,

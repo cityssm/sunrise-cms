@@ -208,7 +208,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
         sortDirection = 'desc';
     }
     const result = database
-        .prepare(`select recordType, updateType, displayRecordId, recordId, recordDescription,
+        .prepare(/* sql */ `select recordType, updateType, displayRecordId, recordId, recordDescription,
         recordUpdate_timeMillis, recordUpdate_userName, recordCreate_timeMillis, recordCreate_userName
         from (${recordTableSql.join(' union all ')})
 

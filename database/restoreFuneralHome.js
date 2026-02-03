@@ -4,7 +4,7 @@ export function restoreFuneralHome(funeralHomeId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`update FuneralHomes
+        .prepare(/* sql */ `update FuneralHomes
         set recordDelete_userName = null,
           recordDelete_timeMillis = null,
           recordUpdate_userName = ?,

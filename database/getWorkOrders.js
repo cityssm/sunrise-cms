@@ -11,7 +11,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const { sqlParameters, sqlWhereClause } = buildWhereClause(filters);
     const count = database
-        .prepare(`select count(*) as recordCount
+        .prepare(/* sql */ `select count(*) as recordCount
         from WorkOrders w
         ${sqlWhereClause}`)
         .pluck()
@@ -23,7 +23,7 @@ export async function getWorkOrders(filters, options, connectedDatabase) {
             : ` limit ${sanitizeLimit(options.limit)} offset ${sanitizeOffset(options.offset)}`;
         const currentDateNumber = dateToInteger(new Date());
         workOrders = database
-            .prepare(`select w.workOrderId,
+            .prepare(/* sql */ `select w.workOrderId,
           w.workOrderTypeId, t.workOrderType,
           w.workOrderNumber, w.workOrderDescription,
           w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,

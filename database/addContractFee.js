@@ -32,7 +32,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
     try {
         // Check if record already exists
         const record = database
-            .prepare(`select feeAmount, taxAmount, recordDelete_timeMillis
+            .prepare(/* sql */ `select feeAmount, taxAmount, recordDelete_timeMillis
           from ContractFees
           where contractId = ?
           and feeId = ?`)
@@ -40,7 +40,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
         if (record !== undefined) {
             if (record.recordDelete_timeMillis !== null) {
                 database
-                    .prepare(`delete from ContractFees
+                    .prepare(/* sql */ `delete from ContractFees
               where recordDelete_timeMillis is not null
               and contractId = ?
               and feeId = ?`)
@@ -49,7 +49,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
             else if (record.feeAmount === feeAmount &&
                 record.taxAmount === taxAmount) {
                 database
-                    .prepare(`update ContractFees
+                    .prepare(/* sql */ `update ContractFees
               set quantity = quantity + ?,
               recordUpdate_userName = ?,
               recordUpdate_timeMillis = ?
@@ -63,7 +63,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                     ? Number.parseFloat(addFeeForm.quantity)
                     : addFeeForm.quantity;
                 database
-                    .prepare(`update ContractFees
+                    .prepare(/* sql */ `update ContractFees
               set feeAmount = (feeAmount * quantity) + ?,
               taxAmount = (taxAmount * quantity) + ?,
               quantity = 1,
@@ -77,7 +77,7 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
         }
         // Create new record
         const result = database
-            .prepare(`insert into ContractFees (
+            .prepare(/* sql */ `insert into ContractFees (
           contractId, feeId,
           quantity, feeAmount, taxAmount,
           recordCreate_userName, recordCreate_timeMillis,

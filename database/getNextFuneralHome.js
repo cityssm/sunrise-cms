@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getNextFuneralHomeId(funeralHomeId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const result = database
-        .prepare(`select funeralHomeId
+        .prepare(/* sql */ `select funeralHomeId
         from FuneralHomes
         where recordDelete_timeMillis is null
         and funeralHomeName > (select funeralHomeName from FuneralHomes where funeralHomeId = ?)

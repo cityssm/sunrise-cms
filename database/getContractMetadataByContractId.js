@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getContractMetadataByContractId(contractId, startsWith = '', connectedDatabase = undefined) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const result = database
-        .prepare(`select metadataKey, metadataValue
+        .prepare(/* sql */ `select metadataKey, metadataValue
         from ContractMetadata
         where recordDelete_timeMillis is null
         and contractId = ?

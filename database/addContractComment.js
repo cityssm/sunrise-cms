@@ -15,7 +15,7 @@ export default function addContractComment(commentForm, user, connectedDatabase)
     }
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(`insert into ContractComments (
+        .prepare(/* sql */ `insert into ContractComments (
         contractId,
         commentDate, commentTime,
         comment,

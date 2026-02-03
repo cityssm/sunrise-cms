@@ -4,7 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function updateBurialSiteTypeField(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(`update BurialSiteTypeFields
+        .prepare(/* sql */ `update BurialSiteTypeFields
         set burialSiteTypeField = ?,
           isRequired = ?,
           fieldType = ?,

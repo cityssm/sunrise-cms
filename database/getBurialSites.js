@@ -10,7 +10,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
     const isLimited = options.limit !== -1;
     if (isLimited) {
         count = database
-            .prepare(`select count(*) as recordCount
+            .prepare(/* sql */ `select count(*) as recordCount
           from BurialSites b
           left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
           left join (
@@ -35,7 +35,7 @@ export default function getBurialSites(filters, options, connectedDatabase) {
           offset ${sanitizeOffset(options.offset)}`
             : '';
         burialSites = database
-            .prepare(`select b.burialSiteId,
+            .prepare(/* sql */ `select b.burialSiteId,
           b.burialSiteNameSegment1,
           b.burialSiteNameSegment2,
           b.burialSiteNameSegment3,

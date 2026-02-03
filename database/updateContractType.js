@@ -5,7 +5,7 @@ export default function updateContractType(updateForm, user, connectedDatabase) 
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`update ContractTypes
+        .prepare(/* sql */ `update ContractTypes
         set contractType = ?,
           isPreneed = ?,
           recordUpdate_userName = ?,

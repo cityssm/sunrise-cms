@@ -7,7 +7,7 @@ import deleteContractField from './deleteContractField.js';
 export default function updateContract(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(`update Contracts
+        .prepare(/* sql */ `update Contracts
         set contractTypeId = ?,
           burialSiteId = ?,
           contractStartDate = ?,

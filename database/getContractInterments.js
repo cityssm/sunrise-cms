@@ -5,7 +5,7 @@ export default function getContractInterments(contractId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     database.function('userFn_dateIntegerToString', dateIntegerToString);
     const interments = database
-        .prepare(`select ci.contractId, ci.intermentNumber,
+        .prepare(/* sql */ `select ci.contractId, ci.intermentNumber,
         ci.deceasedName,
         ci.deceasedAddress1, ci.deceasedAddress2, ci.deceasedCity, ci.deceasedProvince, ci.deceasedPostalCode,
         

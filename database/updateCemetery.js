@@ -12,7 +12,7 @@ import updateCemeteryDirectionsOfArrival from './updateCemeteryDirectionsOfArriv
 export default function updateCemetery(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(`update Cemeteries
+        .prepare(/* sql */ `update Cemeteries
         set cemeteryName = ?,
           cemeteryKey = ?,
           cemeteryDescription = ?,

@@ -8,7 +8,7 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
      */
     const currentDateInteger = dateToInteger(new Date());
     const activeContract = database
-        .prepare(`select contractId
+        .prepare(/* sql */ `select contractId
         from Contracts
         where burialSiteId in (
           select burialSiteId from BurialSites where recordDelete_timeMillis is null and cemeteryId = ?)
@@ -27,7 +27,7 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
      */
     const rightNowMillis = Date.now();
     database
-        .prepare(`update Cemeteries
+        .prepare(/* sql */ `update Cemeteries
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where cemeteryId = ?
@@ -37,14 +37,14 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
      * Delete burial sites, fields, and comments
      */
     const deletedBurialSites = database
-        .prepare(`update BurialSites
+        .prepare(/* sql */ `update BurialSites
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where cemeteryId = ?
         and recordDelete_timeMillis is null`)
         .run(user.userName, rightNowMillis, cemeteryId).changes;
     database
-        .prepare(`update BurialSiteFields
+        .prepare(/* sql */ `update BurialSiteFields
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where burialSiteId in (
@@ -52,7 +52,7 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
         and recordDelete_timeMillis is null`)
         .run(user.userName, rightNowMillis, cemeteryId);
     database
-        .prepare(`update BurialSiteComments
+        .prepare(/* sql */ `update BurialSiteComments
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where burialSiteId in (
@@ -63,7 +63,7 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
         const purgeTables = ['CemeteryDirectionsOfArrival', 'Cemeteries'];
         for (const tableName of purgeTables) {
             database
-                .prepare(`delete from ${tableName}
+                .prepare(/* sql */ `delete from ${tableName}
             where cemeteryId = ?
             and cemeteryId not in (select cemeteryId from BurialSites)`)
                 .run(cemeteryId);

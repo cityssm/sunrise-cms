@@ -35,7 +35,7 @@ export default async function copyContract(oldContractId, user, connectedDatabas
     const rightNowMillis = Date.now();
     for (const field of oldContract.contractFields ?? []) {
         database
-            .prepare(`insert into ContractFields (
+            .prepare(/* sql */ `insert into ContractFields (
           contractId, contractTypeFieldId, fieldValue,
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)

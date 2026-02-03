@@ -4,7 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function updateContractInterment(contractForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const results = database
-        .prepare(`update ContractInterments
+        .prepare(/* sql */ `update ContractInterments
         set deceasedName = ?,
           deceasedAddress1 = ?,
           deceasedAddress2 = ?,

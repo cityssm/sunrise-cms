@@ -5,7 +5,7 @@ export default function addContractType(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`insert into ContractTypes (
+        .prepare(/* sql */ `insert into ContractTypes (
         contractType, isPreneed, orderNumber,
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)

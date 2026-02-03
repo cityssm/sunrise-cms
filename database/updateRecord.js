@@ -17,7 +17,7 @@ function updateRecord(record, user, connectedDatabase) {
         throw new Error(`Invalid record table: ${record.recordTable}`);
     }
     const result = database
-        .prepare(`update ${record.recordTable}
+        .prepare(/* sql */ `update ${record.recordTable}
         set ${columnNames[0]} = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?

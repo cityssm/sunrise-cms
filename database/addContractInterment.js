@@ -5,7 +5,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function addContractInterment(contractForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const maxIntermentNumber = (database
-        .prepare(`select max(intermentNumber) as maxIntermentNumber
+        .prepare(/* sql */ `select max(intermentNumber) as maxIntermentNumber
         from ContractInterments
         where contractId = ?`)
         .pluck()
@@ -13,7 +13,7 @@ export default function addContractInterment(contractForm, user, connectedDataba
     const newIntermentNumber = maxIntermentNumber + 1;
     const rightNowMillis = Date.now();
     database
-        .prepare(`insert into ContractInterments
+        .prepare(/* sql */ `insert into ContractInterments
         (contractId, intermentNumber,
           deceasedName, deceasedAddress1, deceasedAddress2, deceasedCity, deceasedProvince, deceasedPostalCode,
           birthDate, birthPlace, deathDate, deathPlace,

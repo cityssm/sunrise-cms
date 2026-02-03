@@ -5,7 +5,7 @@ export default function addBurialSiteComment(commentForm, user, connectedDatabas
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNow = new Date();
     const result = database
-        .prepare(`insert into BurialSiteComments (
+        .prepare(/* sql */ `insert into BurialSiteComments (
         burialSiteId,
         commentDate, commentTime, comment,
         recordCreate_userName, recordCreate_timeMillis,

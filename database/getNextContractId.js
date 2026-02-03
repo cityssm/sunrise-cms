@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getNextContractId(contractId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const result = database
-        .prepare(`select contractId
+        .prepare(/* sql */ `select contractId
         from Contracts
         where recordDelete_timeMillis is null
         and contractId > ?

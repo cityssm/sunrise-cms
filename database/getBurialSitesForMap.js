@@ -6,7 +6,7 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
     const currentDate = dateToInteger(new Date());
     // Get cemetery info and total burial site count
     const cemeteryInfo = database
-        .prepare(`select 
+        .prepare(/* sql */ `select 
         c.cemeteryLatitude,
         c.cemeteryLongitude,
         (select count(*) from BurialSites where cemeteryId = ? and recordDelete_timeMillis is null) as totalBurialSites
@@ -16,7 +16,7 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
         .get(cemeteryId, cemeteryId);
     // Get all burial sites with coordinates for the cemetery
     const burialSites = database
-        .prepare(`select b.burialSiteId,
+        .prepare(/* sql */ `select b.burialSiteId,
         b.burialSiteName,
         b.burialSiteLatitude,
         b.burialSiteLongitude,
@@ -32,7 +32,7 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
         .all(cemeteryId);
     // Get active and future contracts for these burial sites
     const contracts = database
-        .prepare(`select c.contractId,
+        .prepare(/* sql */ `select c.contractId,
         c.burialSiteId,
         c.contractStartDate,
         c.contractEndDate,

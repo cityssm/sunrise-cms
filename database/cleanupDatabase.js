@@ -20,7 +20,7 @@ function cleanupWorkOrders(user, database) {
      * Work Order Comments
      */
     inactivatedRecordCount += database
-        .prepare(`update WorkOrderComments
+        .prepare(/* sql */ `update WorkOrderComments
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
@@ -34,7 +34,7 @@ function cleanupWorkOrders(user, database) {
      * Work Order Contracts
      */
     inactivatedRecordCount += database
-        .prepare(`update WorkOrderContracts
+        .prepare(/* sql */ `update WorkOrderContracts
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
@@ -48,7 +48,7 @@ function cleanupWorkOrders(user, database) {
      * Work Order Burial Sites
      */
     inactivatedRecordCount += database
-        .prepare(`update WorkOrderBurialSites
+        .prepare(/* sql */ `update WorkOrderBurialSites
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
@@ -62,7 +62,7 @@ function cleanupWorkOrders(user, database) {
      * Work Order Milestones
      */
     inactivatedRecordCount += database
-        .prepare(`update WorkOrderMilestones
+        .prepare(/* sql */ `update WorkOrderMilestones
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
@@ -76,7 +76,7 @@ function cleanupWorkOrders(user, database) {
      * Work Orders
      */
     purgedRecordCount += database
-        .prepare(`delete from WorkOrders
+        .prepare(/* sql */ `delete from WorkOrders
         where recordDelete_timeMillis <= ?
           and workOrderId not in (select workOrderId from WorkOrderComments)
           and workOrderId not in (select workOrderId from WorkOrderContracts)
@@ -87,7 +87,7 @@ function cleanupWorkOrders(user, database) {
      * Work Order Milestone Types
      */
     purgedRecordCount += database
-        .prepare(`delete from WorkOrderMilestoneTypes
+        .prepare(/* sql */ `delete from WorkOrderMilestoneTypes
         where recordDelete_timeMillis <= ?
           and workOrderMilestoneTypeId not in (
             select workOrderMilestoneTypeId from WorkOrderMilestones)`)
@@ -96,7 +96,7 @@ function cleanupWorkOrders(user, database) {
      * Work Order Types
      */
     purgedRecordCount += database
-        .prepare(`delete from WorkOrderTypes
+        .prepare(/* sql */ `delete from WorkOrderTypes
         where recordDelete_timeMillis <= ?
           and workOrderTypeId not in (select workOrderTypeId from WorkOrders)`)
         .run(recordDeleteTimeMillisMin).changes;
@@ -111,14 +111,14 @@ async function cleanupContracts(user, database) {
      * Contract Attachments
      */
     inactivatedRecordCount += database
-        .prepare(`update ContractAttachments
+        .prepare(/* sql */ `update ContractAttachments
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
           and contractId in (select contractId from Contracts where recordDelete_timeMillis is not null)`)
         .run(user.userName, rightNowMillis).changes;
     const attachmentsToPurge = database
-        .prepare(`select contractAttachmentId, fileName, filePath
+        .prepare(/* sql */ `select contractAttachmentId, fileName, filePath
         from ContractAttachments
         where recordDelete_timeMillis <= ?`)
         .all(recordDeleteTimeMillisMin);
@@ -142,7 +142,7 @@ async function cleanupContracts(user, database) {
      * Contract Metadata
      */
     inactivatedRecordCount += database
-        .prepare(`update ContractMetadata
+        .prepare(/* sql */ `update ContractMetadata
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
@@ -155,7 +155,7 @@ async function cleanupContracts(user, database) {
      * Contract Comments
      */
     inactivatedRecordCount += database
-        .prepare(`update ContractComments
+        .prepare(/* sql */ `update ContractComments
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
@@ -169,7 +169,7 @@ async function cleanupContracts(user, database) {
      * Contract Fields
      */
     inactivatedRecordCount += database
-        .prepare(`update ContractFields
+        .prepare(/* sql */ `update ContractFields
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
@@ -192,7 +192,7 @@ async function cleanupContracts(user, database) {
      * Related Contracts
      */
     purgedRecordCount += database
-        .prepare(`delete from RelatedContracts
+        .prepare(/* sql */ `delete from RelatedContracts
         where contractIdA in (select contractId from Contracts where recordDelete_timeMillis <= ?)
           or contractIdB in (select contractId from Contracts where recordDelete_timeMillis <= ?)`)
         .run(recordDeleteTimeMillisMin, recordDeleteTimeMillisMin).changes;
@@ -200,7 +200,7 @@ async function cleanupContracts(user, database) {
      * Contracts
      */
     purgedRecordCount += database
-        .prepare(`delete from Contracts
+        .prepare(/* sql */ `delete from Contracts
         where recordDelete_timeMillis <= ?
           and contractId not in (select contractId from ContractAttachments)
           and contractId not in (select contractId from ContractComments)
@@ -217,14 +217,14 @@ async function cleanupContracts(user, database) {
      * Fees
      */
     inactivatedRecordCount += database
-        .prepare(`update Fees
+        .prepare(/* sql */ `update Fees
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
           and feeCategoryId in (select feeCategoryId from FeeCategories where recordDelete_timeMillis is not null)`)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
-        .prepare(`delete from Fees
+        .prepare(/* sql */ `delete from Fees
         where recordDelete_timeMillis <= ?
           and feeId not in (select feeId from ContractFees)`)
         .run(recordDeleteTimeMillisMin).changes;
@@ -232,7 +232,7 @@ async function cleanupContracts(user, database) {
      * Fee Categories
      */
     purgedRecordCount += database
-        .prepare(`delete from FeeCategories
+        .prepare(/* sql */ `delete from FeeCategories
         where recordDelete_timeMillis <= ?
           and feeCategoryId not in (select feeCategoryId from Fees)`)
         .run(recordDeleteTimeMillisMin).changes;
@@ -240,14 +240,14 @@ async function cleanupContracts(user, database) {
      * Contract Type Fields
      */
     inactivatedRecordCount += database
-        .prepare(`update ContractTypeFields
+        .prepare(/* sql */ `update ContractTypeFields
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
           and contractTypeId in (select contractTypeId from ContractTypes where recordDelete_timeMillis is not null)`)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
-        .prepare(`delete from ContractTypeFields
+        .prepare(/* sql */ `delete from ContractTypeFields
         where recordDelete_timeMillis <= ?
           and contractTypeFieldId not in (select contractTypeFieldId from ContractFields)`)
         .run(recordDeleteTimeMillisMin).changes;
@@ -255,7 +255,7 @@ async function cleanupContracts(user, database) {
      * Contract Type Prints
      */
     inactivatedRecordCount += database
-        .prepare(`update ContractTypePrints
+        .prepare(/* sql */ `update ContractTypePrints
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
@@ -268,7 +268,7 @@ async function cleanupContracts(user, database) {
      * Contract Types
      */
     purgedRecordCount += database
-        .prepare(`delete from ContractTypes
+        .prepare(/* sql */ `delete from ContractTypes
         where recordDelete_timeMillis <= ?
           and contractTypeId not in (select contractTypeId from ContractTypeFields)
           and contractTypeId not in (select contractTypeId from ContractTypePrints)
@@ -286,7 +286,7 @@ function cleanupBurialSites(user, database) {
      * Burial Site Comments
      */
     inactivatedRecordCount += database
-        .prepare(`update BurialSiteComments
+        .prepare(/* sql */ `update BurialSiteComments
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
@@ -299,7 +299,7 @@ function cleanupBurialSites(user, database) {
      * Burial Site Fields
      */
     inactivatedRecordCount += database
-        .prepare(`update BurialSiteFields
+        .prepare(/* sql */ `update BurialSiteFields
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
@@ -312,14 +312,14 @@ function cleanupBurialSites(user, database) {
      * Burial Sites
      */
     inactivatedRecordCount += database
-        .prepare(`update BurialSites
+        .prepare(/* sql */ `update BurialSites
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
           and cemeteryId in (select cemeteryId from Cemeteries where recordDelete_timeMillis is not null)`)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
-        .prepare(`delete from BurialSites
+        .prepare(/* sql */ `delete from BurialSites
         where recordDelete_timeMillis <= ?
           and burialSiteId not in (select burialSiteId from BurialSiteComments)
           and burialSiteId not in (select burialSiteId from BurialSiteFields)
@@ -330,7 +330,7 @@ function cleanupBurialSites(user, database) {
      * Burial Site Statuses
      */
     purgedRecordCount += database
-        .prepare(`delete from BurialSiteStatuses
+        .prepare(/* sql */ `delete from BurialSiteStatuses
         where recordDelete_timeMillis <= ?
           and burialSiteStatusId not in (select burialSiteStatusId from BurialSites)`)
         .run(recordDeleteTimeMillisMin).changes;
@@ -338,14 +338,14 @@ function cleanupBurialSites(user, database) {
      * Burial Site Type Fields
      */
     inactivatedRecordCount += database
-        .prepare(`update BurialSiteTypeFields
+        .prepare(/* sql */ `update BurialSiteTypeFields
         set recordDelete_userName = ?,
           recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
           and burialSiteTypeId in (select burialSiteTypeId from BurialSiteTypes where recordDelete_timeMillis is not null)`)
         .run(user.userName, rightNowMillis).changes;
     purgedRecordCount += database
-        .prepare(`delete from BurialSiteTypeFields
+        .prepare(/* sql */ `delete from BurialSiteTypeFields
         where recordDelete_timeMillis <= ?
           and burialSiteTypeFieldId not in (select burialSiteTypeFieldId from BurialSiteFields)`)
         .run(recordDeleteTimeMillisMin).changes;
@@ -353,7 +353,7 @@ function cleanupBurialSites(user, database) {
      * Burial Site Types
      */
     purgedRecordCount += database
-        .prepare(`delete from BurialSiteTypes
+        .prepare(/* sql */ `delete from BurialSiteTypes
         where recordDelete_timeMillis <= ?
           and burialSiteTypeId not in (select burialSiteTypeId from BurialSites)`)
         .run(recordDeleteTimeMillisMin).changes;
@@ -367,11 +367,11 @@ function cleanupCemeteries(user, database) {
      * Cemeteries
      */
     purgedRecordCount += database
-        .prepare(`delete from CemeteryDirectionsOfArrival
+        .prepare(/* sql */ `delete from CemeteryDirectionsOfArrival
         where cemeteryId in (select cemeteryId from Cemeteries where recordDelete_timeMillis <= ?)`)
         .run(recordDeleteTimeMillisMin).changes;
     purgedRecordCount += database
-        .prepare(`delete from Cemeteries
+        .prepare(/* sql */ `delete from Cemeteries
         where recordDelete_timeMillis <= ?
           and cemeteryId not in (select cemeteryId from CemeteryDirectionsOfArrival)
           and cemeteryId not in (select cemeteryId from BurialSites where cemeteryId is not null)`)

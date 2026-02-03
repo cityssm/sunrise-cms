@@ -4,7 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function updateBurialSiteComment(commentForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(`update BurialSiteComments
+        .prepare(/* sql */ `update BurialSiteComments
         set commentDate = ?,
           commentTime = ?,
           comment = ?,

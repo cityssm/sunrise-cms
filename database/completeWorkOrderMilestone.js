@@ -11,7 +11,7 @@ export default function completeWorkOrderMilestone(milestoneForm, user, connecte
         ? dateToTimeInteger(rightNow)
         : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString);
     const result = database
-        .prepare(`update WorkOrderMilestones
+        .prepare(/* sql */ `update WorkOrderMilestones
         set workOrderMilestoneCompletionDate = ?,
         workOrderMilestoneCompletionTime = ?,
         recordUpdate_userName = ?,

@@ -18,7 +18,7 @@ export default function updateBurialSite(updateForm, user) {
     const burialSiteName = buildBurialSiteName(cemetery?.cemeteryKey, updateForm);
     // Ensure no active burial sites share the same name
     const existingBurialSite = database
-        .prepare(`select burialSiteId
+        .prepare(/* sql */ `select burialSiteId
         from BurialSites
         where burialSiteName = ?
           and burialSiteId <> ?
@@ -30,7 +30,7 @@ export default function updateBurialSite(updateForm, user) {
         throw new Error('An active burial site with that name already exists.');
     }
     const result = database
-        .prepare(`update BurialSites
+        .prepare(/* sql */ `update BurialSites
         set burialSiteNameSegment1 = ?,
           burialSiteNameSegment2 = ?,
           burialSiteNameSegment3 = ?,
@@ -72,7 +72,7 @@ export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, c
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`update BurialSites
+        .prepare(/* sql */ `update BurialSites
         set burialSiteStatusId = ?,
           recordUpdate_userName = ?,
           recordUpdate_timeMillis = ?
@@ -87,7 +87,7 @@ export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, c
 export function updateBurialSiteLatitudeLongitude(burialSiteId, burialSiteLatitude, burialSiteLongitude, user) {
     const database = sqlite(sunriseDB);
     const result = database
-        .prepare(`update BurialSites
+        .prepare(/* sql */ `update BurialSites
         set burialSiteLatitude = ?,
           burialSiteLongitude = ?,
           recordUpdate_userName = ?,

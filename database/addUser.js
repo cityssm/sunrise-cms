@@ -3,7 +3,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 function insertNewUser(options, user, database) {
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`insert into Users (
+        .prepare(/* sql */ `insert into Users (
         userName, isActive,
         canUpdateCemeteries, canUpdateContracts, canUpdateWorkOrders, isAdmin,
         recordCreate_userName, recordCreate_timeMillis,
@@ -15,7 +15,7 @@ function insertNewUser(options, user, database) {
 function restoreDeletedUser(options, user, database) {
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`update Users
+        .prepare(/* sql */ `update Users
         set isActive = ?,
         canUpdateCemeteries = ?,
         canUpdateContracts = ?,

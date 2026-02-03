@@ -13,7 +13,7 @@ export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
         workOrderNumber = getNextWorkOrderNumber(database);
     }
     const result = database
-        .prepare(`insert into WorkOrders (
+        .prepare(/* sql */ `insert into WorkOrders (
         workOrderTypeId, workOrderNumber, workOrderDescription,
         workOrderOpenDate, workOrderCloseDate,
         recordCreate_userName, recordCreate_timeMillis,

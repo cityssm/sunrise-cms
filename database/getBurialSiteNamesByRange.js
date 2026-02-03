@@ -50,7 +50,7 @@ export default function getBurialSiteNamesByRange(rangeForm, connectedDatabase) 
             burialSiteNameSegment5: burialSiteNameSegmentsArray[4]
         });
         const burialSiteId = database
-            .prepare(`select burialSiteId
+            .prepare(/* sql */ `select burialSiteId
           from BurialSites
           where burialSiteName = ?
           and recordDelete_timeMillis is null`)

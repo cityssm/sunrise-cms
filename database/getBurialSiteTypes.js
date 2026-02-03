@@ -6,7 +6,7 @@ export default function getBurialSiteTypes(includeDeleted = false, connectedData
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !includeDeleted;
     const burialSiteTypes = database
-        .prepare(`select burialSiteTypeId, burialSiteType,
+        .prepare(/* sql */ `select burialSiteTypeId, burialSiteType,
         bodyCapacityMax, crematedCapacityMax,
         orderNumber
         from BurialSiteTypes

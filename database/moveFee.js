@@ -6,7 +6,7 @@ export function moveFeeDown(feeId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentFee = getFee(feeId, database);
     database
-        .prepare(`update Fees
+        .prepare(/* sql */ `update Fees
         set orderNumber = orderNumber - 1
         where recordDelete_timeMillis is null
           and feeCategoryId = ?
@@ -22,7 +22,7 @@ export function moveFeeDownToBottom(feeId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentFee = getFee(feeId, database);
     const maxOrderNumber = database
-        .prepare(`select max(orderNumber) as maxOrderNumber
+        .prepare(/* sql */ `select max(orderNumber) as maxOrderNumber
           from Fees
           where recordDelete_timeMillis is null
           and feeCategoryId = ?`)
@@ -30,7 +30,7 @@ export function moveFeeDownToBottom(feeId, connectedDatabase) {
     if (currentFee.orderNumber !== maxOrderNumber) {
         updateRecordOrderNumber('Fees', feeId, maxOrderNumber + 1, database);
         database
-            .prepare(`update Fees
+            .prepare(/* sql */ `update Fees
           set orderNumber = orderNumber - 1
           where recordDelete_timeMillis is null
             and feeCategoryId = ? and orderNumber > ?`)
@@ -51,7 +51,7 @@ export function moveFeeUp(feeId, connectedDatabase) {
         return true;
     }
     database
-        .prepare(`update Fees
+        .prepare(/* sql */ `update Fees
         set orderNumber = orderNumber + 1
         where recordDelete_timeMillis is null
           and feeCategoryId = ?
@@ -69,7 +69,7 @@ export function moveFeeUpToTop(feeId, connectedDatabase) {
     if (currentFee.orderNumber > 0) {
         updateRecordOrderNumber('Fees', feeId, -1, database);
         database
-            .prepare(`update Fees
+            .prepare(/* sql */ `update Fees
           set orderNumber = orderNumber + 1
           where recordDelete_timeMillis is null
             and feeCategoryId = ?

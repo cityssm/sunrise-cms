@@ -9,7 +9,7 @@ export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase
      */
     const currentDateInteger = dateToInteger(new Date());
     const activeContract = database
-        .prepare(`select contractId
+        .prepare(/* sql */ `select contractId
         from Contracts
         where funeralHomeId = ?
         and recordDelete_timeMillis is null
@@ -28,7 +28,7 @@ export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase
      */
     const rightNowMillis = Date.now();
     database
-        .prepare(`update FuneralHomes
+        .prepare(/* sql */ `update FuneralHomes
         set recordDelete_userName = ?,
         recordDelete_timeMillis = ?
         where funeralHomeId = ?

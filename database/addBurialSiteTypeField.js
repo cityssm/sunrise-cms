@@ -5,7 +5,7 @@ export default function addBurialSiteTypeField(addForm, user, connectedDatabase)
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`insert into BurialSiteTypeFields (
+        .prepare(/* sql */ `insert into BurialSiteTypeFields (
         burialSiteTypeId, burialSiteTypeField,
         fieldType, fieldValues,
         isRequired, pattern,

@@ -4,7 +4,7 @@ export default function addWorkOrderContract(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const recordDeleteTimeMillis = database
-        .prepare(`select recordDelete_timeMillis
+        .prepare(/* sql */ `select recordDelete_timeMillis
         from WorkOrderContracts
         where workOrderId = ?
         and contractId = ?`)
@@ -12,7 +12,7 @@ export default function addWorkOrderContract(addForm, user, connectedDatabase) {
         .get(addForm.workOrderId, addForm.contractId);
     if (recordDeleteTimeMillis === undefined) {
         database
-            .prepare(`insert into WorkOrderContracts (
+            .prepare(/* sql */ `insert into WorkOrderContracts (
           workOrderId, contractId,
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
@@ -21,7 +21,7 @@ export default function addWorkOrderContract(addForm, user, connectedDatabase) {
     }
     else if (recordDeleteTimeMillis !== null) {
         database
-            .prepare(`update WorkOrderContracts
+            .prepare(/* sql */ `update WorkOrderContracts
           set recordCreate_userName = ?,
             recordCreate_timeMillis = ?,
             recordUpdate_userName = ?,

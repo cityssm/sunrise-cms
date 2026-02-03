@@ -9,7 +9,7 @@ export default function getBurialSiteTypeSummary(filters, connectedDatabase) {
         sqlParameters.push(filters.cemeteryId);
     }
     const burialSiteTypes = database
-        .prepare(`select t.burialSiteTypeId, t.burialSiteType,
+        .prepare(/* sql */ `select t.burialSiteTypeId, t.burialSiteType,
         count(l.burialSiteId) as burialSiteCount
         from BurialSites l
         left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId

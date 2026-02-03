@@ -6,7 +6,7 @@ export function moveBurialSiteTypeFieldDown(burialSiteTypeFieldId) {
     const database = sqlite(sunriseDB);
     const currentField = getCurrentField(burialSiteTypeFieldId, database);
     database
-        .prepare(`update BurialSiteTypeFields
+        .prepare(/* sql */ `update BurialSiteTypeFields
         set orderNumber = orderNumber - 1
         where recordDelete_timeMillis is null
         and burialSiteTypeId = ? and orderNumber = ? + 1`)
@@ -20,7 +20,7 @@ export function moveBurialSiteTypeFieldDownToBottom(burialSiteTypeFieldId) {
     const database = sqlite(sunriseDB);
     const currentField = getCurrentField(burialSiteTypeFieldId, database);
     const maxOrderNumber = database
-        .prepare(`select max(orderNumber) as maxOrderNumber
+        .prepare(/* sql */ `select max(orderNumber) as maxOrderNumber
           from BurialSiteTypeFields
           where recordDelete_timeMillis is null
           and burialSiteTypeId = ?`)
@@ -28,7 +28,7 @@ export function moveBurialSiteTypeFieldDownToBottom(burialSiteTypeFieldId) {
     if (currentField.orderNumber !== maxOrderNumber) {
         updateRecordOrderNumber('BurialSiteTypeFields', burialSiteTypeFieldId, maxOrderNumber + 1, database);
         database
-            .prepare(`update BurialSiteTypeFields
+            .prepare(/* sql */ `update BurialSiteTypeFields
           set orderNumber = orderNumber - 1
           where recordDelete_timeMillis is null
           and burialSiteTypeId = ?
@@ -47,7 +47,7 @@ export function moveBurialSiteTypeFieldUp(burialSiteTypeFieldId) {
         return true;
     }
     database
-        .prepare(`update BurialSiteTypeFields
+        .prepare(/* sql */ `update BurialSiteTypeFields
         set orderNumber = orderNumber + 1
         where recordDelete_timeMillis is null
         and burialSiteTypeId = ?
@@ -64,7 +64,7 @@ export function moveBurialSiteTypeFieldUpToTop(burialSiteTypeFieldId) {
     if (currentField.orderNumber > 0) {
         updateRecordOrderNumber('BurialSiteTypeFields', burialSiteTypeFieldId, -1, database);
         database
-            .prepare(`update BurialSiteTypeFields
+            .prepare(/* sql */ `update BurialSiteTypeFields
           set orderNumber = orderNumber + 1
           where recordDelete_timeMillis is null
           and burialSiteTypeId = ?

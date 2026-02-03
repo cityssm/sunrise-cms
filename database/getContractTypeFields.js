@@ -9,7 +9,7 @@ export default function getContractTypeFields(contractTypeId, connectedDatabase)
         sqlParameters.push(contractTypeId);
     }
     const contractTypeFields = database
-        .prepare(`select contractTypeFieldId, contractTypeField, fieldType,
+        .prepare(/* sql */ `select contractTypeFieldId, contractTypeField, fieldType,
         fieldValues, isRequired, pattern, minLength, maxLength, orderNumber
         from ContractTypeFields
         where recordDelete_timeMillis is null

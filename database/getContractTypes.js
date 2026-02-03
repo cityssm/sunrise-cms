@@ -7,7 +7,7 @@ export default function getContractTypes(includeDeleted = false, connectedDataba
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !includeDeleted;
     const contractTypes = database
-        .prepare(`select contractTypeId, contractType, isPreneed, orderNumber
+        .prepare(/* sql */ `select contractTypeId, contractType, isPreneed, orderNumber
         from ContractTypes
         ${includeDeleted ? '' : ' where recordDelete_timeMillis is null '} 
         order by orderNumber, contractType, contractTypeId`)

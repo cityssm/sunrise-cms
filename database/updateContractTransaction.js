@@ -4,7 +4,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function updateContractTransaction(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(`update ContractTransactions
+        .prepare(/* sql */ `update ContractTransactions
         set transactionAmount = ?,
           isInvoiced = ?,
           externalReceiptNumber = ?,

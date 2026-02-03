@@ -5,7 +5,7 @@ export default function addCemetery(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`insert into Cemeteries (
+        .prepare(/* sql */ `insert into Cemeteries (
         cemeteryName, cemeteryKey, cemeteryDescription,
         cemeterySvg, cemeteryLatitude, cemeteryLongitude,
         cemeteryAddress1, cemeteryAddress2,

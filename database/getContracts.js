@@ -19,7 +19,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
     const isLimited = options.limit !== -1;
     if (isLimited) {
         count = database
-            .prepare(`select count(*) as recordCount
+            .prepare(/* sql */ `select count(*) as recordCount
           from Contracts c
           left join BurialSites b on c.burialSiteId = b.burialSiteId
           left join Cemeteries cem on b.cemeteryId = cem.cemeteryId

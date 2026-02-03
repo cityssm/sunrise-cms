@@ -5,7 +5,7 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(`update BurialSiteTypes
+        .prepare(/* sql */ `update BurialSiteTypes
         set burialSiteType = ?,
           bodyCapacityMax = ?,
           crematedCapacityMax = ?,

@@ -17,7 +17,7 @@ const burialSiteTables = [
 export function purgeBurialSite(burialSiteId, database) {
     // Do not purge burial sites on active contracts
     const activeContract = database
-        .prepare(`select contractId
+        .prepare(/* sql */ `select contractId
         from Contracts
         where burialSiteId = ?
           and recordDelete_timeMillis is null`)
@@ -28,7 +28,7 @@ export function purgeBurialSite(burialSiteId, database) {
     }
     // Do not purge burial sites on active work orders
     const activeWorkOrder = database
-        .prepare(`select workOrderId
+        .prepare(/* sql */ `select workOrderId
         from WorkOrders
         where workOrderId in (select workOrderId from WorkOrderBurialSites where burialSiteId = ? and recordDelete_timeMillis is null)
           and recordDelete_timeMillis is null`)
@@ -40,7 +40,7 @@ export function purgeBurialSite(burialSiteId, database) {
     // Purge the burial site
     for (const tableName of burialSiteTables) {
         database
-            .prepare(`delete from ${tableName}
+            .prepare(/* sql */ `delete from ${tableName}
           where burialSiteId = ?
           and burialSiteId in (${isDeletedSqlStatement})`)
             .run(burialSiteId);

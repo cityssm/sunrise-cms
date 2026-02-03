@@ -17,7 +17,7 @@ export default function getFees(feeCategoryId, additionalFilters, connectedDatab
         sqlParameters.push(additionalFilters.burialSiteTypeId);
     }
     const fees = database
-        .prepare(`select f.feeId, f.feeCategoryId,
+        .prepare(/* sql */ `select f.feeId, f.feeCategoryId,
         f.feeName, f.feeDescription, f.feeAccount,
         f.contractTypeId, ct.contractType,
         f.burialSiteTypeId, l.burialSiteType,

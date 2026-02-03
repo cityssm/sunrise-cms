@@ -13,7 +13,7 @@ const recordIdColumns = new Map([
 ]);
 export function updateRecordOrderNumber(recordTable, recordId, orderNumber, connectedDatabase) {
     const result = connectedDatabase
-        .prepare(`update ${recordTable}
+        .prepare(/* sql */ `update ${recordTable}
         set orderNumber = ?
         where recordDelete_timeMillis is null
         and ${recordIdColumns.get(recordTable)} = ?`)

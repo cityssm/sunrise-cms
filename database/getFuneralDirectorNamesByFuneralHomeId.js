@@ -4,7 +4,7 @@ const limit = 20;
 export default function getFuneralDirectorNamesByFuneralHomeId(funeralHomeId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const funeralDirectors = database
-        .prepare(`select funeralDirectorName
+        .prepare(/* sql */ `select funeralDirectorName
        from Contracts
        where recordDelete_timeMillis is null
          and funeralHomeId = ?

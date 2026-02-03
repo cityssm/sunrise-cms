@@ -24,7 +24,7 @@ export default function getFeeCategories(filters, options, connectedDatabase) {
         sqlParameters.push(filters.feeCategoryId);
     }
     const feeCategories = database
-        .prepare(`select feeCategoryId, feeCategory, isGroupedFee, orderNumber
+        .prepare(/* sql */ `select feeCategoryId, feeCategory, isGroupedFee, orderNumber
         from FeeCategories
         ${sqlWhereClause}
         order by orderNumber, feeCategory`)
