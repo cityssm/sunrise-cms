@@ -32,7 +32,7 @@ export async function generatePdf(
 
   debug('Rendering:', printConfig.path)
 
-  let renderedHtml = ''
+  let renderedHtml: string
 
   try {
     renderedHtml = await ejs.renderFile(printConfig.path, reportData)

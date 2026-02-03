@@ -18,7 +18,7 @@ exitHook(() => {
 export async function generatePdf(printConfig, parameters) {
     const reportData = await getReportData(printConfig, parameters);
     debug('Rendering:', printConfig.path);
-    let renderedHtml = '';
+    let renderedHtml;
     try {
         renderedHtml = await ejs.renderFile(printConfig.path, reportData);
     }
