@@ -25,19 +25,22 @@ export default function updateBurialSiteTypeField(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update BurialSiteTypeFields
-        set burialSiteTypeField = ?,
-          isRequired = ?,
-          fieldType = ?,
-          minLength = ?,
-          maxLength = ?,
-          pattern = ?,
-          fieldValues = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where burialSiteTypeFieldId = ?
-          and recordDelete_timeMillis is null`
-    )
+    .prepare(/* sql */ `
+      UPDATE BurialSiteTypeFields
+      SET
+        burialSiteTypeField = ?,
+        isRequired = ?,
+        fieldType = ?,
+        minLength = ?,
+        maxLength = ?,
+        pattern = ?,
+        fieldValues = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        burialSiteTypeFieldId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
     .run(
       updateForm.burialSiteTypeField,
       Number.parseInt(updateForm.isRequired, 10),
@@ -54,7 +57,7 @@ export default function updateBurialSiteTypeField(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   clearCacheByTableName('BurialSiteTypeFields')
 
   return result.changes > 0

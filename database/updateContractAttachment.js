@@ -4,13 +4,17 @@ export default function updateContractAttachment(contractAttachmentId, attachmen
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `update ContractAttachments
-        set attachmentTitle = ?,
-          attachmentDetails = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where contractAttachmentId = ?
-          and recordDelete_timeMillis is null`)
+        .prepare(/* sql */ `
+      UPDATE ContractAttachments
+      SET
+        attachmentTitle = ?,
+        attachmentDetails = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        contractAttachmentId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
         .run(attachment.attachmentTitle ?? '', attachment.attachmentDetails ?? '', user.userName, rightNowMillis, contractAttachmentId);
     if (connectedDatabase === undefined) {
         database.close();

@@ -4,17 +4,36 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export function moveContractTypePrintDown(contractTypeId, printEJS, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = database
-        .prepare('select orderNumber from ContractTypePrints where contractTypeId = ? and printEJS = ?')
+        .prepare(/* sql */ `
+        SELECT
+          orderNumber
+        FROM
+          ContractTypePrints
+        WHERE
+          contractTypeId = ?
+          AND printEJS = ?
+      `)
         .get(contractTypeId, printEJS).orderNumber;
     database
-        .prepare(/* sql */ `update ContractTypePrints
-        set orderNumber = orderNumber - 1
-        where recordDelete_timeMillis is null
-        and contractTypeId = ?
-        and orderNumber = ? + 1`)
+        .prepare(/* sql */ `
+      UPDATE ContractTypePrints
+      SET
+        orderNumber = orderNumber - 1
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractTypeId = ?
+        AND orderNumber = ? + 1
+    `)
         .run(contractTypeId, currentOrderNumber);
     const result = database
-        .prepare('update ContractTypePrints set orderNumber = ? + 1 where contractTypeId = ? and printEJS = ?')
+        .prepare(/* sql */ `
+      UPDATE ContractTypePrints
+      SET
+        orderNumber = ? + 1
+      WHERE
+        contractTypeId = ?
+        AND printEJS = ?
+    `)
         .run(currentOrderNumber, contractTypeId, printEJS);
     if (connectedDatabase === undefined) {
         database.close();
@@ -25,27 +44,48 @@ export function moveContractTypePrintDown(contractTypeId, printEJS, connectedDat
 export function moveContractTypePrintDownToBottom(contractTypeId, printEJS, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const currentOrderNumber = database
-        .prepare('select orderNumber from ContractTypePrints where contractTypeId = ? and printEJS = ?')
+        .prepare(/* sql */ `
+        SELECT
+          orderNumber
+        FROM
+          ContractTypePrints
+        WHERE
+          contractTypeId = ?
+          AND printEJS = ?
+      `)
         .get(contractTypeId, printEJS).orderNumber;
     const maxOrderNumber = database
-        .prepare(/* sql */ `select max(orderNumber) as maxOrderNumber
-        from ContractTypePrints
-        where recordDelete_timeMillis is null
-        and contractTypeId = ?`)
+        .prepare(/* sql */ `
+        SELECT
+          max(orderNumber) AS maxOrderNumber
+        FROM
+          ContractTypePrints
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND contractTypeId = ?
+      `)
         .get(contractTypeId).maxOrderNumber;
     if (currentOrderNumber !== maxOrderNumber) {
         database
-            .prepare(/* sql */ `update ContractTypePrints
-          set orderNumber = ? + 1
-          where contractTypeId = ?
-          and printEJS = ?`)
+            .prepare(/* sql */ `
+        UPDATE ContractTypePrints
+        SET
+          orderNumber = ? + 1
+        WHERE
+          contractTypeId = ?
+          AND printEJS = ?
+      `)
             .run(maxOrderNumber, contractTypeId, printEJS);
         database
-            .prepare(/* sql */ `update ContractTypePrints
-          set orderNumber = orderNumber - 1
-          where recordDelete_timeMillis is null
-          and contractTypeId = ?
-          and orderNumber > ?`)
+            .prepare(/* sql */ `
+        UPDATE ContractTypePrints
+        SET
+          orderNumber = orderNumber - 1
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND contractTypeId = ?
+          AND orderNumber > ?
+      `)
             .run(contractTypeId, currentOrderNumber);
     }
     if (connectedDatabase === undefined) {

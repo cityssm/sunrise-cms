@@ -13,10 +13,14 @@ const recordIdColumns = new Map([
 ]);
 export function updateRecordOrderNumber(recordTable, recordId, orderNumber, connectedDatabase) {
     const result = connectedDatabase
-        .prepare(/* sql */ `update ${recordTable}
-        set orderNumber = ?
-        where recordDelete_timeMillis is null
-        and ${recordIdColumns.get(recordTable)} = ?`)
+        .prepare(/* sql */ `
+      UPDATE ${recordTable}
+      SET
+        orderNumber = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND ${recordIdColumns.get(recordTable)} = ?
+    `)
         .run(orderNumber, recordId);
     return result.changes > 0;
 }

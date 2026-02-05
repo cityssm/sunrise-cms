@@ -4,25 +4,29 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function updateContractInterment(contractForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const results = database
-        .prepare(/* sql */ `update ContractInterments
-        set deceasedName = ?,
-          deceasedAddress1 = ?,
-          deceasedAddress2 = ?,
-          deceasedCity = ?,
-          deceasedProvince = ?,
-          deceasedPostalCode = ?,
-          birthDate = ?,
-          birthPlace = ?,
-          deathDate = ?,
-          deathPlace = ?,
-          deathAge = ?,
-          deathAgePeriod = ?,
-          intermentContainerTypeId = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and contractId = ?
-          and intermentNumber = ?`)
+        .prepare(/* sql */ `
+      UPDATE ContractInterments
+      SET
+        deceasedName = ?,
+        deceasedAddress1 = ?,
+        deceasedAddress2 = ?,
+        deceasedCity = ?,
+        deceasedProvince = ?,
+        deceasedPostalCode = ?,
+        birthDate = ?,
+        birthPlace = ?,
+        deathDate = ?,
+        deathPlace = ?,
+        deathAge = ?,
+        deathAgePeriod = ?,
+        intermentContainerTypeId = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractId = ?
+        AND intermentNumber = ?
+    `)
         .run(contractForm.deceasedName, contractForm.deceasedAddress1, contractForm.deceasedAddress2, contractForm.deceasedCity, contractForm.deceasedProvince, contractForm.deceasedPostalCode.toUpperCase(), contractForm.birthDateString === ''
         ? undefined
         : dateStringToInteger(contractForm.birthDateString), contractForm.birthPlace, contractForm.deathDateString === ''

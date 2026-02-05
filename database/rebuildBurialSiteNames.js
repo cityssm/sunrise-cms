@@ -16,12 +16,23 @@ export default function rebuildBurialSiteNames(cemeteryId, user, connectedDataba
     }
     const result = database
         .function('buildBurialSiteName', buildBurialSiteNameUserFunction)
-        .prepare(/* sql */ `update BurialSites
-        set burialSiteName = buildBurialSiteName(?, burialSiteNameSegment1, burialSiteNameSegment2, burialSiteNameSegment3, burialSiteNameSegment4, burialSiteNameSegment5),
+        .prepare(/* sql */ `
+      UPDATE BurialSites
+      SET
+        burialSiteName = buildBurialSiteName (
+          ?,
+          burialSiteNameSegment1,
+          burialSiteNameSegment2,
+          burialSiteNameSegment3,
+          burialSiteNameSegment4,
+          burialSiteNameSegment5
+        ),
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
-        where cemeteryId = ?
-        and recordDelete_timeMillis is null`)
+      WHERE
+        cemeteryId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
         .run(cemetery.cemeteryKey, user.userName, Date.now(), cemeteryId);
     if (connectedDatabase === undefined) {
         database.close();

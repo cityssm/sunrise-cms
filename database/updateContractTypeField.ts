@@ -23,19 +23,22 @@ export default function updateContractTypeField(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update ContractTypeFields
-        set contractTypeField = ?,
-          isRequired = ?,
-          fieldType = ?,
-          minLength = ?,
-          maxLength = ?,
-          pattern = ?,
-          fieldValues = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where contractTypeFieldId = ?
-          and recordDelete_timeMillis is null`
-    )
+    .prepare(/* sql */ `
+      UPDATE ContractTypeFields
+      SET
+        contractTypeField = ?,
+        isRequired = ?,
+        fieldType = ?,
+        minLength = ?,
+        maxLength = ?,
+        pattern = ?,
+        fieldValues = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        contractTypeFieldId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
     .run(
       updateForm.contractTypeField,
       Number.parseInt(updateForm.isRequired, 10),
@@ -52,7 +55,7 @@ export default function updateContractTypeField(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   clearCacheByTableName('ContractTypeFields')
 
   return result.changes > 0

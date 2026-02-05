@@ -20,13 +20,17 @@ export default function updateIntermentContainerType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `update IntermentContainerTypes
-        set intermentContainerType = ?,
-          isCremationType = ?,
-          recordUpdate_userName = ?, recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and intermentContainerTypeId = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE IntermentContainerTypes
+      SET
+        intermentContainerType = ?,
+        isCremationType = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND intermentContainerTypeId = ?
+    `)
     .run(
       updateForm.intermentContainerType,
       updateForm.isCremationType,
@@ -38,7 +42,7 @@ export default function updateIntermentContainerType(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   clearCacheByTableName('IntermentContainerTypes')
 
   return result.changes > 0

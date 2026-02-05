@@ -24,24 +24,28 @@ export interface ContractTransactionUpdateForm {
 
 export default function updateContractTransaction(
   updateForm: ContractTransactionUpdateForm,
-  user: User
-, connectedDatabase?: sqlite.Database): boolean {
+  user: User,
+  connectedDatabase?: sqlite.Database
+): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update ContractTransactions
-        set transactionAmount = ?,
-          isInvoiced = ?,
-          externalReceiptNumber = ?,
-          transactionNote = ?,
-          transactionDate = ?,
-          transactionTime = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and contractId = ?
-          and transactionIndex = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE ContractTransactions
+      SET
+        transactionAmount = ?,
+        isInvoiced = ?,
+        externalReceiptNumber = ?,
+        transactionNote = ?,
+        transactionDate = ?,
+        transactionTime = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractId = ?
+        AND transactionIndex = ?
+    `)
     .run(
       updateForm.transactionAmount,
       updateForm.isInvoiced ?? 0,
@@ -56,11 +60,7 @@ export default function updateContractTransaction(
     )
 
   if (connectedDatabase === undefined) {
-
-
     database.close()
-
-
   }
   return result.changes > 0
 }

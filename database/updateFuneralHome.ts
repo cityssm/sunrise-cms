@@ -25,15 +25,22 @@ export default function updateFuneralHome(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `update FuneralHomes
-        set funeralHomeName = ?,
-          funeralHomeAddress1 = ?, funeralHomeAddress2 = ?,
-          funeralHomeCity = ?, funeralHomeProvince = ?, funeralHomePostalCode = ?,
-          funeralHomePhoneNumber = ?,
-          recordUpdate_userName = ?, recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and funeralHomeId = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE FuneralHomes
+      SET
+        funeralHomeName = ?,
+        funeralHomeAddress1 = ?,
+        funeralHomeAddress2 = ?,
+        funeralHomeCity = ?,
+        funeralHomeProvince = ?,
+        funeralHomePostalCode = ?,
+        funeralHomePhoneNumber = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND funeralHomeId = ?
+    `)
     .run(
       updateForm.funeralHomeName,
       updateForm.funeralHomeAddress1,

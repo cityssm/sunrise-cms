@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-magic-numbers, max-lines, no-secrets/no-secrets */
 import sqlite from 'better-sqlite3';
 import Debug from 'debug';
@@ -30,425 +29,536 @@ const createStatements = [
     /*
      * Burial Site Types
      */
-    `create table if not exists BurialSiteTypes (
-    burialSiteTypeId integer not null primary key autoincrement,
-    burialSiteType varchar(100) not null,
-    bodyCapacityMax smallint,
-    crematedCapacityMax smallint,
-    orderNumber smallint not null default 0,
-    ${recordColumns})`,
-    `create index if not exists idx_BurialSiteTypes_orderNumber
-    on BurialSiteTypes (orderNumber, burialSiteType)`,
-    `create table if not exists BurialSiteTypeFields (
-    burialSiteTypeFieldId integer not null primary key autoincrement,
-    burialSiteTypeId integer not null,
-    burialSiteTypeField varchar(100) not null,
-    fieldType varchar(15) not null default 'text',
-    fieldValues text,
-    isRequired bit not null default 0,
-    pattern varchar(100),
-    minLength smallint not null default 1 check (minLength >= 0),
-    maxLength smallint not null default 100 check (maxLength >= 0),
-    orderNumber smallint not null default 0,
-    ${recordColumns},
-    foreign key (burialSiteTypeId) references BurialSiteTypes (burialSiteTypeId))`,
-    `create index if not exists idx_BurialSiteTypeFields_orderNumber
-    on BurialSiteTypeFields (burialSiteTypeId, orderNumber, burialSiteTypeField)`,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS BurialSiteTypes (
+      burialSiteTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      burialSiteType VARCHAR(100) NOT NULL,
+      bodyCapacityMax smallint,
+      crematedCapacityMax smallint,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns}
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_BurialSiteTypes_orderNumber ON BurialSiteTypes (orderNumber, burialSiteType)
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS BurialSiteTypeFields (
+      burialSiteTypeFieldId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      burialSiteTypeId INTEGER NOT NULL,
+      burialSiteTypeField VARCHAR(100) NOT NULL,
+      fieldType VARCHAR(15) NOT NULL DEFAULT 'text',
+      fieldValues TEXT,
+      isRequired bit NOT NULL DEFAULT 0,
+      pattern VARCHAR(100),
+      minLength smallint NOT NULL DEFAULT 1 CHECK (minLength >= 0),
+      maxLength smallint NOT NULL DEFAULT 100 CHECK (maxLength >= 0),
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns},
+      FOREIGN KEY (burialSiteTypeId) REFERENCES BurialSiteTypes (burialSiteTypeId)
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_BurialSiteTypeFields_orderNumber ON BurialSiteTypeFields (
+      burialSiteTypeId,
+      orderNumber,
+      burialSiteTypeField
+    )
+  `,
     /*
      * Burial Site Statuses
      */
-    `create table if not exists BurialSiteStatuses (
-    burialSiteStatusId integer not null primary key autoincrement,
-    burialSiteStatus varchar(100) not null,
-    orderNumber smallint not null default 0,
-    ${recordColumns})`,
-    `create index if not exists idx_BurialSiteStatuses_orderNumber
-    on BurialSiteStatuses (orderNumber, burialSiteStatus)`,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS BurialSiteStatuses (
+      burialSiteStatusId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      burialSiteStatus VARCHAR(100) NOT NULL,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns}
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_BurialSiteStatuses_orderNumber ON BurialSiteStatuses (orderNumber, burialSiteStatus)
+  `,
     /*
      * Cemeteries
      */
-    `create table if not exists Cemeteries (
-    cemeteryId integer not null primary key autoincrement,
-    cemeteryName varchar(200) not null,
-    cemeteryKey varchar(20) not null,
-    cemeteryDescription text,
-    cemeteryLatitude decimal(10, 8)
-      check (cemeteryLatitude between -90 and 90),
-    cemeteryLongitude decimal(11, 8)
-      check (cemeteryLongitude between -180 and 180),
-    cemeterySvg varchar(50),
-    cemeteryAddress1 varchar(50),
-    cemeteryAddress2 varchar(50),
-    cemeteryCity varchar(20),
-    cemeteryProvince varchar(2),
-    cemeteryPostalCode varchar(7),
-    cemeteryPhoneNumber varchar(30),
-    parentCemeteryId integer,
-    ${recordColumns},
-    foreign key (parentCemeteryId) references Cemeteries (cemeteryId))`,
-    `create table if not exists CemeteryDirectionsOfArrival (
-    cemeteryId integer not null,
-    directionOfArrival varchar(2) not null,
-    directionOfArrivalDescription varchar(100) not null,
-    primary key (cemeteryId, directionOfArrival),
-    foreign key (cemeteryId) references Cemeteries (cemeteryId)) without rowid`,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS Cemeteries (
+      cemeteryId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      cemeteryName VARCHAR(200) NOT NULL,
+      cemeteryKey VARCHAR(20) NOT NULL,
+      cemeteryDescription TEXT,
+      cemeteryLatitude DECIMAL(10, 8) CHECK (cemeteryLatitude BETWEEN -90 AND 90),
+      cemeteryLongitude DECIMAL(11, 8) CHECK (cemeteryLongitude BETWEEN -180 AND 180),
+      cemeterySvg VARCHAR(50),
+      cemeteryAddress1 VARCHAR(50),
+      cemeteryAddress2 VARCHAR(50),
+      cemeteryCity VARCHAR(20),
+      cemeteryProvince VARCHAR(2),
+      cemeteryPostalCode VARCHAR(7),
+      cemeteryPhoneNumber VARCHAR(30),
+      parentCemeteryId INTEGER,
+      ${recordColumns},
+      FOREIGN KEY (parentCemeteryId) REFERENCES Cemeteries (cemeteryId)
+    )
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS CemeteryDirectionsOfArrival (
+      cemeteryId INTEGER NOT NULL,
+      directionOfArrival VARCHAR(2) NOT NULL,
+      directionOfArrivalDescription VARCHAR(100) NOT NULL,
+      PRIMARY KEY (cemeteryId, directionOfArrival),
+      FOREIGN KEY (cemeteryId) REFERENCES Cemeteries (cemeteryId)
+    ) WITHOUT rowid
+  `,
     /*
      * Burial Sites
      */
-    `create table if not exists BurialSites (
-    burialSiteId integer not null primary key autoincrement,
-    burialSiteTypeId integer not null,
-
-    burialSiteNameSegment1 varchar(20) not null,
-    burialSiteNameSegment2 varchar(20) not null,
-    burialSiteNameSegment3 varchar(20) not null,
-    burialSiteNameSegment4 varchar(20) not null,
-    burialSiteNameSegment5 varchar(20) not null,
-    burialSiteName varchar(200) not null,
-
-    bodyCapacity smallint,
-    crematedCapacity smallint,
-
-    cemeteryId integer,
-    cemeterySvgId varchar(100),
-    burialSiteImage varchar(100) not null default '',
-
-    burialSiteLatitude decimal(10, 8)
-      check (burialSiteLatitude between -90 and 90),
-    burialSiteLongitude decimal(11, 8)
-      check (burialSiteLongitude between -180 and 180),
-    burialSiteStatusId integer,
-    ${recordColumns},
-    foreign key (burialSiteTypeId) references BurialSiteTypes (burialSiteTypeId),
-    foreign key (cemeteryId) references Cemeteries (cemeteryId),
-    foreign key (burialSiteStatusId) references BurialSiteStatuses (burialSiteStatusId),
-    unique (cemeteryId, burialSiteNameSegment1, burialSiteNameSegment2, burialSiteNameSegment3, burialSiteNameSegment4, burialSiteNameSegment5))`,
-    `create table if not exists BurialSiteFields (
-    burialSiteId integer not null,
-    burialSiteTypeFieldId integer not null,
-    fieldValue text not null,
-    ${recordColumns},
-    primary key (burialSiteId, burialSiteTypeFieldId),
-    foreign key (burialSiteId) references BurialSites (burialSiteId),
-    foreign key (burialSiteTypeFieldId) references BurialSiteTypeFields (burialSiteTypeFieldId)) without rowid`,
-    `create table if not exists BurialSiteComments (
-    burialSiteCommentId integer not null primary key autoincrement,
-    burialSiteId integer not null,
-    commentDate integer not null check (commentDate > 0),
-    commentTime integer not null check (commentTime >= 0),
-    comment text not null,
-    ${recordColumns},
-    foreign key (burialSiteId) references BurialSites (burialSiteId))`,
-    `create index if not exists idx_BurialSiteComments_datetime
-    on BurialSiteComments (burialSiteId, commentDate, commentTime)`,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS BurialSites (
+      burialSiteId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      burialSiteTypeId INTEGER NOT NULL,
+      burialSiteNameSegment1 VARCHAR(20) NOT NULL,
+      burialSiteNameSegment2 VARCHAR(20) NOT NULL,
+      burialSiteNameSegment3 VARCHAR(20) NOT NULL,
+      burialSiteNameSegment4 VARCHAR(20) NOT NULL,
+      burialSiteNameSegment5 VARCHAR(20) NOT NULL,
+      burialSiteName VARCHAR(200) NOT NULL,
+      bodyCapacity smallint,
+      crematedCapacity smallint,
+      cemeteryId INTEGER,
+      cemeterySvgId VARCHAR(100),
+      burialSiteImage VARCHAR(100) NOT NULL DEFAULT '',
+      burialSiteLatitude DECIMAL(10, 8) CHECK (burialSiteLatitude BETWEEN -90 AND 90),
+      burialSiteLongitude DECIMAL(11, 8) CHECK (burialSiteLongitude BETWEEN -180 AND 180),
+      burialSiteStatusId INTEGER,
+      ${recordColumns},
+      FOREIGN KEY (burialSiteTypeId) REFERENCES BurialSiteTypes (burialSiteTypeId),
+      FOREIGN KEY (cemeteryId) REFERENCES Cemeteries (cemeteryId),
+      FOREIGN KEY (burialSiteStatusId) REFERENCES BurialSiteStatuses (burialSiteStatusId),
+      UNIQUE (
+        cemeteryId,
+        burialSiteNameSegment1,
+        burialSiteNameSegment2,
+        burialSiteNameSegment3,
+        burialSiteNameSegment4,
+        burialSiteNameSegment5
+      )
+    )
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS BurialSiteFields (
+      burialSiteId INTEGER NOT NULL,
+      burialSiteTypeFieldId INTEGER NOT NULL,
+      fieldValue TEXT NOT NULL,
+      ${recordColumns},
+      PRIMARY KEY (burialSiteId, burialSiteTypeFieldId),
+      FOREIGN KEY (burialSiteId) REFERENCES BurialSites (burialSiteId),
+      FOREIGN KEY (burialSiteTypeFieldId) REFERENCES BurialSiteTypeFields (burialSiteTypeFieldId)
+    ) WITHOUT rowid
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS BurialSiteComments (
+      burialSiteCommentId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      burialSiteId INTEGER NOT NULL,
+      commentDate INTEGER NOT NULL CHECK (commentDate > 0),
+      commentTime INTEGER NOT NULL CHECK (commentTime >= 0),
+      comment TEXT NOT NULL,
+      ${recordColumns},
+      FOREIGN KEY (burialSiteId) REFERENCES BurialSites (burialSiteId)
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_BurialSiteComments_datetime ON BurialSiteComments (burialSiteId, commentDate, commentTime)
+  `,
     /*
      * Funeral Homes
      */
-    `create table if not exists FuneralHomes (
-    funeralHomeId integer not null primary key autoincrement,
-    funeralHomeName varchar(200) not null,
-    funeralHomeKey varchar(20) not null default '',
-    funeralHomeAddress1 varchar(50),
-    funeralHomeAddress2 varchar(50),
-    funeralHomeCity varchar(20),
-    funeralHomeProvince varchar(2),
-    funeralHomePostalCode varchar(7),
-    funeralHomePhoneNumber varchar(30),
-    ${recordColumns})`,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS FuneralHomes (
+      funeralHomeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      funeralHomeName VARCHAR(200) NOT NULL,
+      funeralHomeKey VARCHAR(20) NOT NULL DEFAULT '',
+      funeralHomeAddress1 VARCHAR(50),
+      funeralHomeAddress2 VARCHAR(50),
+      funeralHomeCity VARCHAR(20),
+      funeralHomeProvince VARCHAR(2),
+      funeralHomePostalCode VARCHAR(7),
+      funeralHomePhoneNumber VARCHAR(30),
+      ${recordColumns}
+    )
+  `,
     /*
      * Contracts
      */
-    `create table if not exists ContractTypes (
-    contractTypeId integer not null primary key autoincrement,
-    contractType varchar(100) not null,
-    isPreneed bit not null default 0,
-    orderNumber smallint not null default 0,
-    ${recordColumns})`,
-    `create index if not exists idx_ContractTypes_orderNumber
-    on ContractTypes (orderNumber, contractType)`,
-    `create table if not exists ContractTypeFields (
-    contractTypeFieldId integer not null primary key autoincrement,
-    contractTypeId integer,
-    contractTypeField varchar(100) not null,
-    fieldType varchar(15) not null default 'text',
-    fieldValues text,
-    isRequired bit not null default 0,
-    pattern varchar(100),
-    minLength smallint not null default 1 check (minLength >= 0),
-    maxLength smallint not null default 100 check (maxLength >= 0),
-    orderNumber smallint not null default 0,
-    ${recordColumns},
-    foreign key (contractTypeId) references ContractTypes (contractTypeId))`,
-    `create index if not exists idx_ContractTypeFields_orderNumber
-    on ContractTypeFields (contractTypeId, orderNumber, contractTypeField)`,
-    `create table if not exists ContractTypePrints (
-    contractTypeId integer not null,
-    printEJS varchar(100) not null,
-    orderNumber smallint not null default 0,
-    ${recordColumns},
-    primary key (contractTypeId, printEJS),
-    foreign key (contractTypeId) references ContractTypes (contractTypeId))`,
-    `create index if not exists idx_ContractTypePrints_orderNumber
-    on ContractTypePrints (contractTypeId, orderNumber, printEJS)`,
-    `create table if not exists CommittalTypes (
-    committalTypeId integer not null primary key autoincrement,
-    committalTypeKey varchar(20) not null default '',
-    committalType varchar(100) not null,
-    orderNumber smallint not null default 0,
-    ${recordColumns})`,
-    `create index if not exists idx_CommittalType_orderNumber
-    on CommittalTypes (orderNumber, committalType)`,
-    `create table if not exists Contracts (
-    contractId integer not null primary key autoincrement,
-    contractTypeId integer not null,
-    burialSiteId integer,
-    contractStartDate integer not null check (contractStartDate > 0),
-    contractEndDate integer check (contractEndDate > 0),
-
-    purchaserName varchar(100) not null,
-    purchaserAddress1 varchar(50),
-    purchaserAddress2 varchar(50),
-    purchaserCity varchar(20),
-    purchaserProvince varchar(2),
-    purchaserPostalCode varchar(7),
-    purchaserPhoneNumber varchar(30),
-    purchaserEmail varchar(100),
-    purchaserRelationship varchar(50),
-
-    funeralHomeId integer,
-    funeralDirectorName varchar(100),
-    funeralDate integer check (funeralDate > 0),
-    funeralTime integer check (funeralTime >= 0),
-    committalTypeId integer,
-    directionOfArrival varchar(2),
-
-    ${recordColumns},
-
-    foreign key (burialSiteId) references BurialSites (burialSiteId),
-    foreign key (contractTypeId) references ContractTypes (contractTypeId),
-    foreign key (funeralHomeId) references FuneralHomes (funeralHomeId),
-    foreign key (committalTypeId) references CommittalTypes (committalTypeId))`,
-    `create table if not exists ContractFields (
-    contractId integer not null,
-    contractTypeFieldId integer not null,
-    fieldValue text not null,
-    ${recordColumns},
-    primary key (contractId, contractTypeFieldId),
-    foreign key (contractId) references Contracts (contractId),
-    foreign key (contractTypeFieldId) references ContractTypeFields (contractTypeFieldId)) without rowid`,
-    `create table if not exists ContractMetadata (
-    contractId integer not null,
-    metadataKey varchar(100) not null,
-    metadataValue text not null,
-    ${recordColumns},
-    primary key (contractId, metadataKey),
-    foreign key (contractId) references Contracts (contractId)) without rowid`,
-    `create table if not exists ContractAttachments (
-    contractAttachmentId integer not null primary key autoincrement,
-    contractId integer not null,
-    attachmentTitle varchar(100) not null,
-    attachmentDetails text,
-    fileName varchar(100) not null,
-    filePath varchar(500) not null,
-    ${recordColumns},
-    foreign key (contractId) references Contracts (contractId))`,
-    `create table if not exists ContractComments (
-    contractCommentId integer not null primary key autoincrement,
-    contractId integer not null,
-    commentDate integer not null check (commentDate > 0),
-    commentTime integer not null check (commentTime >= 0),
-    comment text not null,
-    ${recordColumns},
-    foreign key (contractId) references Contracts (contractId))`,
-    `create index if not exists idx_ContractComments_datetime
-    on ContractComments (contractId, commentDate, commentTime)`,
-    `create table if not exists RelatedContracts (
-    contractIdA integer not null,
-    contractIdB integer not null check (contractIdA < contractIdB),
-    primary key (contractIdA, contractIdB),
-    foreign key (contractIdA) references Contracts (contractId),
-    foreign key (contractIdB) references Contracts (contractId)) without rowid`,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS ContractTypes (
+      contractTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      contractType VARCHAR(100) NOT NULL,
+      isPreneed bit NOT NULL DEFAULT 0,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns}
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_ContractTypes_orderNumber ON ContractTypes (orderNumber, contractType)
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS ContractTypeFields (
+      contractTypeFieldId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      contractTypeId INTEGER,
+      contractTypeField VARCHAR(100) NOT NULL,
+      fieldType VARCHAR(15) NOT NULL DEFAULT 'text',
+      fieldValues TEXT,
+      isRequired bit NOT NULL DEFAULT 0,
+      pattern VARCHAR(100),
+      minLength smallint NOT NULL DEFAULT 1 CHECK (minLength >= 0),
+      maxLength smallint NOT NULL DEFAULT 100 CHECK (maxLength >= 0),
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns},
+      FOREIGN KEY (contractTypeId) REFERENCES ContractTypes (contractTypeId)
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_ContractTypeFields_orderNumber ON ContractTypeFields (contractTypeId, orderNumber, contractTypeField)
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS ContractTypePrints (
+      contractTypeId INTEGER NOT NULL,
+      printEJS VARCHAR(100) NOT NULL,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns},
+      PRIMARY KEY (contractTypeId, printEJS),
+      FOREIGN KEY (contractTypeId) REFERENCES ContractTypes (contractTypeId)
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_ContractTypePrints_orderNumber ON ContractTypePrints (contractTypeId, orderNumber, printEJS)
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS CommittalTypes (
+      committalTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      committalTypeKey VARCHAR(20) NOT NULL DEFAULT '',
+      committalType VARCHAR(100) NOT NULL,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns}
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_CommittalType_orderNumber ON CommittalTypes (orderNumber, committalType)
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS Contracts (
+      contractId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      contractTypeId INTEGER NOT NULL,
+      burialSiteId INTEGER,
+      contractStartDate INTEGER NOT NULL CHECK (contractStartDate > 0),
+      contractEndDate INTEGER CHECK (contractEndDate > 0),
+      purchaserName VARCHAR(100) NOT NULL,
+      purchaserAddress1 VARCHAR(50),
+      purchaserAddress2 VARCHAR(50),
+      purchaserCity VARCHAR(20),
+      purchaserProvince VARCHAR(2),
+      purchaserPostalCode VARCHAR(7),
+      purchaserPhoneNumber VARCHAR(30),
+      purchaserEmail VARCHAR(100),
+      purchaserRelationship VARCHAR(50),
+      funeralHomeId INTEGER,
+      funeralDirectorName VARCHAR(100),
+      funeralDate INTEGER CHECK (funeralDate > 0),
+      funeralTime INTEGER CHECK (funeralTime >= 0),
+      committalTypeId INTEGER,
+      directionOfArrival VARCHAR(2),
+      ${recordColumns},
+      FOREIGN KEY (burialSiteId) REFERENCES BurialSites (burialSiteId),
+      FOREIGN KEY (contractTypeId) REFERENCES ContractTypes (contractTypeId),
+      FOREIGN KEY (funeralHomeId) REFERENCES FuneralHomes (funeralHomeId),
+      FOREIGN KEY (committalTypeId) REFERENCES CommittalTypes (committalTypeId)
+    )
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS ContractFields (
+      contractId INTEGER NOT NULL,
+      contractTypeFieldId INTEGER NOT NULL,
+      fieldValue TEXT NOT NULL,
+      ${recordColumns},
+      PRIMARY KEY (contractId, contractTypeFieldId),
+      FOREIGN KEY (contractId) REFERENCES Contracts (contractId),
+      FOREIGN KEY (contractTypeFieldId) REFERENCES ContractTypeFields (contractTypeFieldId)
+    ) WITHOUT rowid
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS ContractMetadata (
+      contractId INTEGER NOT NULL,
+      metadataKey VARCHAR(100) NOT NULL,
+      metadataValue TEXT NOT NULL,
+      ${recordColumns},
+      PRIMARY KEY (contractId, metadataKey),
+      FOREIGN KEY (contractId) REFERENCES Contracts (contractId)
+    ) WITHOUT rowid
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS ContractAttachments (
+      contractAttachmentId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      contractId INTEGER NOT NULL,
+      attachmentTitle VARCHAR(100) NOT NULL,
+      attachmentDetails TEXT,
+      fileName VARCHAR(100) NOT NULL,
+      filePath VARCHAR(500) NOT NULL,
+      ${recordColumns},
+      FOREIGN KEY (contractId) REFERENCES Contracts (contractId)
+    )
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS ContractComments (
+      contractCommentId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      contractId INTEGER NOT NULL,
+      commentDate INTEGER NOT NULL CHECK (commentDate > 0),
+      commentTime INTEGER NOT NULL CHECK (commentTime >= 0),
+      comment TEXT NOT NULL,
+      ${recordColumns},
+      FOREIGN KEY (contractId) REFERENCES Contracts (contractId)
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_ContractComments_datetime ON ContractComments (contractId, commentDate, commentTime)
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS RelatedContracts (
+      contractIdA INTEGER NOT NULL,
+      contractIdB INTEGER NOT NULL CHECK (contractIdA < contractIdB),
+      PRIMARY KEY (contractIdA, contractIdB),
+      FOREIGN KEY (contractIdA) REFERENCES Contracts (contractId),
+      FOREIGN KEY (contractIdB) REFERENCES Contracts (contractId)
+    ) WITHOUT rowid
+  `,
     /*
      * Interments
      */
-    `create table if not exists IntermentContainerTypes (
-    intermentContainerTypeId integer not null primary key autoincrement,
-    intermentContainerType varchar(100) not null,
-    intermentContainerTypeKey varchar(20) not null default '',
-    isCremationType bit not null default 0,
-    orderNumber smallint not null default 0,
-    ${recordColumns})`,
-    `create index if not exists idx_IntermentContainerTypes_orderNumber
-    on IntermentContainerTypes (orderNumber, intermentContainerType)`,
-    `create table if not exists ContractInterments (
-    contractId integer not null,
-    intermentNumber integer not null,
-    
-    deceasedName varchar(200) not null,
-    isCremated bit not null default 0,
-
-    deceasedAddress1 varchar(50),
-    deceasedAddress2 varchar(50),
-    deceasedCity varchar(20),
-    deceasedProvince varchar(2),
-    deceasedPostalCode varchar(7),
-
-    birthDate integer,
-    birthPlace varchar(100),
-
-    deathDate integer,
-    deathPlace varchar(100),
-    deathAge integer,
-    deathAgePeriod varchar(10),
-
-    intermentContainerTypeId integer,
-
-    ${recordColumns},
-    primary key (contractId, intermentNumber),
-    foreign key (contractId) references Contracts (contractId),
-    foreign key (intermentContainerTypeId) references IntermentContainerTypes (intermentContainerTypeId)) without rowid`,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS IntermentContainerTypes (
+      intermentContainerTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      intermentContainerType VARCHAR(100) NOT NULL,
+      intermentContainerTypeKey VARCHAR(20) NOT NULL DEFAULT '',
+      isCremationType bit NOT NULL DEFAULT 0,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns}
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_IntermentContainerTypes_orderNumber ON IntermentContainerTypes (orderNumber, intermentContainerType)
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS ContractInterments (
+      contractId INTEGER NOT NULL,
+      intermentNumber INTEGER NOT NULL,
+      deceasedName VARCHAR(200) NOT NULL,
+      isCremated bit NOT NULL DEFAULT 0,
+      deceasedAddress1 VARCHAR(50),
+      deceasedAddress2 VARCHAR(50),
+      deceasedCity VARCHAR(20),
+      deceasedProvince VARCHAR(2),
+      deceasedPostalCode VARCHAR(7),
+      birthDate INTEGER,
+      birthPlace VARCHAR(100),
+      deathDate INTEGER,
+      deathPlace VARCHAR(100),
+      deathAge INTEGER,
+      deathAgePeriod VARCHAR(10),
+      intermentContainerTypeId INTEGER,
+      ${recordColumns},
+      PRIMARY KEY (contractId, intermentNumber),
+      FOREIGN KEY (contractId) REFERENCES Contracts (contractId),
+      FOREIGN KEY (intermentContainerTypeId) REFERENCES IntermentContainerTypes (intermentContainerTypeId)
+    ) WITHOUT rowid
+  `,
     /*
      * Fees and Transactions
      */
-    `create table if not exists FeeCategories (
-    feeCategoryId integer not null primary key autoincrement,
-    feeCategory varchar(100) not null,
-    isGroupedFee bit not null default 0,
-    orderNumber smallint not null default 0,
-    ${recordColumns})`,
-    `create table if not exists Fees (
-    feeId integer not null primary key autoincrement,
-    feeCategoryId integer not null,
-    feeName varchar(100) not null,
-    feeDescription text,
-    feeAccount varchar(20),
-
-    contractTypeId integer,
-    burialSiteTypeId integer,
-
-    includeQuantity boolean not null default 0,
-    quantityUnit varchar(30),
-    feeAmount decimal(8, 2),
-    feeFunction varchar(100),
-    taxAmount decimal(6, 2),
-    taxPercentage decimal(5, 2),
-    isRequired bit not null default 0,
-    orderNumber smallint not null default 0,
-    ${recordColumns},
-    foreign key (feeCategoryId) references FeeCategories (feeCategoryId),
-    foreign key (contractTypeId) references ContractTypes (contractTypeId),
-    foreign key (burialSiteTypeId) references BurialSiteTypes (burialSiteTypeId))`,
-    'create index if not exists idx_Fees_orderNumber on Fees (orderNumber, feeName)',
-    `create table if not exists ContractFees (
-    contractId integer not null,
-    feeId integer not null,
-    quantity decimal(4, 1) not null default 1,
-    feeAmount decimal(8, 2) not null,
-    taxAmount decimal(8, 2) not null,
-    ${recordColumns},
-    primary key (contractId, feeId),
-    foreign key (contractId) references Contracts (contractId),
-    foreign key (feeId) references Fees (feeId)) without rowid`,
-    `create table if not exists ContractTransactions (
-    contractId integer not null,
-    transactionIndex integer not null,
-    transactionDate integer not null check (transactionDate > 0),
-    transactionTime integer not null check (transactionTime >= 0),
-    transactionAmount decimal(8, 2) not null,
-    isInvoiced bit not null default 0,
-    externalReceiptNumber varchar(100),
-    transactionNote text,
-    ${recordColumns},
-    primary key (contractId, transactionIndex),
-    foreign key (contractId) references Contracts (contractId)) without rowid`,
-    `create index if not exists idx_ContractTransactions_orderNumber
-    on ContractTransactions (contractId, transactionDate, transactionTime)`,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS FeeCategories (
+      feeCategoryId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      feeCategory VARCHAR(100) NOT NULL,
+      isGroupedFee bit NOT NULL DEFAULT 0,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns}
+    )
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS Fees (
+      feeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      feeCategoryId INTEGER NOT NULL,
+      feeName VARCHAR(100) NOT NULL,
+      feeDescription TEXT,
+      feeAccount VARCHAR(20),
+      contractTypeId INTEGER,
+      burialSiteTypeId INTEGER,
+      includeQuantity boolean NOT NULL DEFAULT 0,
+      quantityUnit VARCHAR(30),
+      feeAmount DECIMAL(8, 2),
+      feeFunction VARCHAR(100),
+      taxAmount DECIMAL(6, 2),
+      taxPercentage DECIMAL(5, 2),
+      isRequired bit NOT NULL DEFAULT 0,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns},
+      FOREIGN KEY (feeCategoryId) REFERENCES FeeCategories (feeCategoryId),
+      FOREIGN KEY (contractTypeId) REFERENCES ContractTypes (contractTypeId),
+      FOREIGN KEY (burialSiteTypeId) REFERENCES BurialSiteTypes (burialSiteTypeId)
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_Fees_orderNumber ON Fees (orderNumber, feeName)
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS ContractFees (
+      contractId INTEGER NOT NULL,
+      feeId INTEGER NOT NULL,
+      quantity DECIMAL(4, 1) NOT NULL DEFAULT 1,
+      feeAmount DECIMAL(8, 2) NOT NULL,
+      taxAmount DECIMAL(8, 2) NOT NULL,
+      ${recordColumns},
+      PRIMARY KEY (contractId, feeId),
+      FOREIGN KEY (contractId) REFERENCES Contracts (contractId),
+      FOREIGN KEY (feeId) REFERENCES Fees (feeId)
+    ) WITHOUT rowid
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS ContractTransactions (
+      contractId INTEGER NOT NULL,
+      transactionIndex INTEGER NOT NULL,
+      transactionDate INTEGER NOT NULL CHECK (transactionDate > 0),
+      transactionTime INTEGER NOT NULL CHECK (transactionTime >= 0),
+      transactionAmount DECIMAL(8, 2) NOT NULL,
+      isInvoiced bit NOT NULL DEFAULT 0,
+      externalReceiptNumber VARCHAR(100),
+      transactionNote TEXT,
+      ${recordColumns},
+      PRIMARY KEY (contractId, transactionIndex),
+      FOREIGN KEY (contractId) REFERENCES Contracts (contractId)
+    ) WITHOUT rowid
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_ContractTransactions_orderNumber ON ContractTransactions (contractId, transactionDate, transactionTime)
+  `,
     /*
      * Work Orders
      */
-    `create table if not exists WorkOrderTypes (
-    workOrderTypeId integer not null primary key autoincrement,
-    workOrderType varchar(100) not null,
-    orderNumber smallint not null default 0,
-    ${recordColumns})`,
-    `create index if not exists idx_WorkOrderTypes_orderNumber
-    on WorkOrderTypes (orderNumber, workOrderType)`,
-    `create table if not exists WorkOrders (
-    workOrderId integer not null primary key autoincrement,
-    workOrderTypeId integer not null,
-    workOrderNumber varchar(50) not null,
-    workOrderDescription text,
-    workOrderOpenDate integer check (workOrderOpenDate > 0),
-    workOrderCloseDate integer check (workOrderCloseDate > 0),
-    ${recordColumns},
-    foreign key (workOrderTypeId) references WorkOrderTypes (workOrderTypeId))`,
-    `create table if not exists WorkOrderBurialSites (
-    workOrderId integer not null,
-    burialSiteId integer not null,
-    ${recordColumns},
-    primary key (workOrderId, burialSiteId),
-    foreign key (workOrderId) references WorkOrders (workOrderId),
-    foreign key (burialSiteId) references BurialSites (burialSiteId)) without rowid`,
-    `create table if not exists WorkOrderContracts (
-    workOrderId integer not null,
-    contractId integer not null,
-    ${recordColumns},
-    primary key (workOrderId, contractId),
-    foreign key (workOrderId) references WorkOrders (workOrderId),
-    foreign key (contractId) references Contracts (contractId)) without rowid`,
-    `create table if not exists WorkOrderComments (
-    workOrderCommentId integer not null primary key autoincrement,
-    workOrderId integer not null,
-    commentDate integer not null check (commentDate > 0),
-    commentTime integer not null check (commentTime >= 0),
-    comment text not null,
-    ${recordColumns},
-    foreign key (workOrderId) references WorkOrders (workOrderId))`,
-    `create index if not exists idx_WorkOrderComments_datetime
-    on WorkOrderComments (workOrderId, commentDate, commentTime)`,
-    `create table if not exists WorkOrderMilestoneTypes (
-    workOrderMilestoneTypeId integer not null primary key autoincrement,
-    workOrderMilestoneType varchar(100) not null,
-    orderNumber smallint not null default 0,
-    ${recordColumns})`,
-    `create table if not exists WorkOrderMilestones (
-    workOrderMilestoneId integer not null primary key autoincrement,
-    workOrderId integer not null,
-    workOrderMilestoneTypeId integer,
-    workOrderMilestoneDate integer not null check (workOrderMilestoneDate >= 0),
-    workOrderMilestoneTime integer check (workOrderMilestoneTime >= 0),
-    workOrderMilestoneDescription text not null,
-    workOrderMilestoneCompletionDate integer check (workOrderMilestoneCompletionDate > 0),
-    workOrderMilestoneCompletionTime integer check (workOrderMilestoneCompletionTime >= 0),
-    ${recordColumns},
-    foreign key (workOrderId) references WorkOrders (workOrderId),
-    foreign key (workOrderMilestoneTypeId) references WorkOrderMilestoneTypes (workOrderMilestoneTypeId))`,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS WorkOrderTypes (
+      workOrderTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      workOrderType VARCHAR(100) NOT NULL,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns}
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_WorkOrderTypes_orderNumber ON WorkOrderTypes (orderNumber, workOrderType)
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS WorkOrders (
+      workOrderId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      workOrderTypeId INTEGER NOT NULL,
+      workOrderNumber VARCHAR(50) NOT NULL,
+      workOrderDescription TEXT,
+      workOrderOpenDate INTEGER CHECK (workOrderOpenDate > 0),
+      workOrderCloseDate INTEGER CHECK (workOrderCloseDate > 0),
+      ${recordColumns},
+      FOREIGN KEY (workOrderTypeId) REFERENCES WorkOrderTypes (workOrderTypeId)
+    )
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS WorkOrderBurialSites (
+      workOrderId INTEGER NOT NULL,
+      burialSiteId INTEGER NOT NULL,
+      ${recordColumns},
+      PRIMARY KEY (workOrderId, burialSiteId),
+      FOREIGN KEY (workOrderId) REFERENCES WorkOrders (workOrderId),
+      FOREIGN KEY (burialSiteId) REFERENCES BurialSites (burialSiteId)
+    ) WITHOUT rowid
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS WorkOrderContracts (
+      workOrderId INTEGER NOT NULL,
+      contractId INTEGER NOT NULL,
+      ${recordColumns},
+      PRIMARY KEY (workOrderId, contractId),
+      FOREIGN KEY (workOrderId) REFERENCES WorkOrders (workOrderId),
+      FOREIGN KEY (contractId) REFERENCES Contracts (contractId)
+    ) WITHOUT rowid
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS WorkOrderComments (
+      workOrderCommentId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      workOrderId INTEGER NOT NULL,
+      commentDate INTEGER NOT NULL CHECK (commentDate > 0),
+      commentTime INTEGER NOT NULL CHECK (commentTime >= 0),
+      comment TEXT NOT NULL,
+      ${recordColumns},
+      FOREIGN KEY (workOrderId) REFERENCES WorkOrders (workOrderId)
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_WorkOrderComments_datetime ON WorkOrderComments (workOrderId, commentDate, commentTime)
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS WorkOrderMilestoneTypes (
+      workOrderMilestoneTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      workOrderMilestoneType VARCHAR(100) NOT NULL,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns}
+    )
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS WorkOrderMilestones (
+      workOrderMilestoneId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      workOrderId INTEGER NOT NULL,
+      workOrderMilestoneTypeId INTEGER,
+      workOrderMilestoneDate INTEGER NOT NULL CHECK (workOrderMilestoneDate >= 0),
+      workOrderMilestoneTime INTEGER CHECK (workOrderMilestoneTime >= 0),
+      workOrderMilestoneDescription TEXT NOT NULL,
+      workOrderMilestoneCompletionDate INTEGER CHECK (workOrderMilestoneCompletionDate > 0),
+      workOrderMilestoneCompletionTime INTEGER CHECK (workOrderMilestoneCompletionTime >= 0),
+      ${recordColumns},
+      FOREIGN KEY (workOrderId) REFERENCES WorkOrders (workOrderId),
+      FOREIGN KEY (workOrderMilestoneTypeId) REFERENCES WorkOrderMilestoneTypes (workOrderMilestoneTypeId)
+    )
+  `,
     /*
      * Settings
      */
-    `CREATE TABLE if not exists SunriseSettings (
-    settingKey varchar(100) not null primary key,
-    settingValue varchar(500),
-    previousSettingValue varchar(500),
-    recordUpdate_timeMillis integer not null)`,
-    `CREATE TABLE if not exists UserSettings (
-    userName varchar(30) not null,
-    settingKey varchar(100) not null,
-    settingValue varchar(500),
-    previousSettingValue varchar(500),
-    recordUpdate_timeMillis integer not null,
-    primary key (userName, settingKey)) without rowid`,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS SunriseSettings (
+      settingKey VARCHAR(100) NOT NULL PRIMARY KEY,
+      settingValue VARCHAR(500),
+      previousSettingValue VARCHAR(500),
+      recordUpdate_timeMillis INTEGER NOT NULL
+    )
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS UserSettings (
+      userName VARCHAR(30) NOT NULL,
+      settingKey VARCHAR(100) NOT NULL,
+      settingValue VARCHAR(500),
+      previousSettingValue VARCHAR(500),
+      recordUpdate_timeMillis INTEGER NOT NULL,
+      PRIMARY KEY (userName, settingKey)
+    ) WITHOUT rowid
+  `,
     /*
      * Users
      */
-    `CREATE TABLE if not exists Users (
-    userName varchar(30) not null primary key,
-    isActive bit not null default 1,
-    canUpdateCemeteries bit not null default 0,
-    canUpdateContracts bit not null default 0,
-    canUpdateWorkOrders bit not null default 0,
-    isAdmin bit not null default 0,
-    ${recordColumns}) without rowid`
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS Users (
+      userName VARCHAR(30) NOT NULL PRIMARY KEY,
+      isActive bit NOT NULL DEFAULT 1,
+      canUpdateCemeteries bit NOT NULL DEFAULT 0,
+      canUpdateContracts bit NOT NULL DEFAULT 0,
+      canUpdateWorkOrders bit NOT NULL DEFAULT 0,
+      isAdmin bit NOT NULL DEFAULT 0,
+      ${recordColumns}
+    ) WITHOUT rowid
+  `
 ];
 const initializingUser = {
     userName: 'databaseInit',

@@ -17,14 +17,17 @@ export default function updateFeeCategory(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update FeeCategories
-        set feeCategory = ?,
-          isGroupedFee = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and feeCategoryId = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE FeeCategories
+      SET
+        feeCategory = ?,
+        isGroupedFee = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND feeCategoryId = ?
+    `)
     .run(
       feeCategoryForm.feeCategory,
       (feeCategoryForm.isGroupedFee ?? '') === '1' ? 1 : 0,

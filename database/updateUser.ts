@@ -23,10 +23,17 @@ export default function updateUser(
 
   const rightNowMillis = Date.now()
 
-  let query = `UPDATE Users SET 
-    isActive = ?,
-    canUpdateCemeteries = ?, canUpdateContracts = ?, canUpdateWorkOrders = ?, isAdmin = ?,
-    recordUpdate_userName = ?, recordUpdate_timeMillis = ?`
+  let query = /* sql */ `
+    UPDATE Users
+    SET
+      isActive = ?,
+      canUpdateCemeteries = ?,
+      canUpdateContracts = ?,
+      canUpdateWorkOrders = ?,
+      isAdmin = ?,
+      recordUpdate_userName = ?,
+      recordUpdate_timeMillis = ?
+  `
 
   const parameters = [
     updateForm.isActive ? 1 : 0,

@@ -16,14 +16,17 @@ export default function updateContractFeeQuantity(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update ContractFees
-        set quantity = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and contractId = ?
-          and feeId = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE ContractFees
+      SET
+        quantity = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractId = ?
+        AND feeId = ?
+    `)
     .run(
       feeQuantityForm.quantity,
       user.userName,
@@ -35,6 +38,6 @@ export default function updateContractFeeQuantity(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return result.changes > 0
 }

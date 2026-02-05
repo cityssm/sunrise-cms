@@ -53,31 +53,34 @@ export default function updateContract(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update Contracts
-        set contractTypeId = ?,
-          burialSiteId = ?,
-          contractStartDate = ?,
-          contractEndDate = ?,
-          funeralHomeId = ?,
-          funeralDirectorName = ?,
-          funeralDate = ?,
-          funeralTime = ?,
-          directionOfArrival = ?,
-          committalTypeId = ?,
-          purchaserName = ?,
-          purchaserAddress1 = ?,
-          purchaserAddress2 = ?,
-          purchaserCity = ?,
-          purchaserProvince = ?,
-          purchaserPostalCode = ?,
-          purchaserPhoneNumber = ?,
-          purchaserEmail = ?,
-          purchaserRelationship = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where contractId = ?
-          and recordDelete_timeMillis is null`
-    )
+    .prepare(/* sql */ `
+      UPDATE Contracts
+      SET
+        contractTypeId = ?,
+        burialSiteId = ?,
+        contractStartDate = ?,
+        contractEndDate = ?,
+        funeralHomeId = ?,
+        funeralDirectorName = ?,
+        funeralDate = ?,
+        funeralTime = ?,
+        directionOfArrival = ?,
+        committalTypeId = ?,
+        purchaserName = ?,
+        purchaserAddress1 = ?,
+        purchaserAddress2 = ?,
+        purchaserCity = ?,
+        purchaserProvince = ?,
+        purchaserPostalCode = ?,
+        purchaserPhoneNumber = ?,
+        purchaserEmail = ?,
+        purchaserRelationship = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        contractId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
     .run(
       updateForm.contractTypeId,
       updateForm.burialSiteId === '' ? undefined : updateForm.burialSiteId,
@@ -144,6 +147,6 @@ export default function updateContract(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return result.changes > 0
 }

@@ -34,26 +34,29 @@ export default function updateContractInterment(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const results = database
-    .prepare(/* sql */ `update ContractInterments
-        set deceasedName = ?,
-          deceasedAddress1 = ?,
-          deceasedAddress2 = ?,
-          deceasedCity = ?,
-          deceasedProvince = ?,
-          deceasedPostalCode = ?,
-          birthDate = ?,
-          birthPlace = ?,
-          deathDate = ?,
-          deathPlace = ?,
-          deathAge = ?,
-          deathAgePeriod = ?,
-          intermentContainerTypeId = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and contractId = ?
-          and intermentNumber = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE ContractInterments
+      SET
+        deceasedName = ?,
+        deceasedAddress1 = ?,
+        deceasedAddress2 = ?,
+        deceasedCity = ?,
+        deceasedProvince = ?,
+        deceasedPostalCode = ?,
+        birthDate = ?,
+        birthPlace = ?,
+        deathDate = ?,
+        deathPlace = ?,
+        deathAge = ?,
+        deathAgePeriod = ?,
+        intermentContainerTypeId = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractId = ?
+        AND intermentNumber = ?
+    `)
     .run(
       contractForm.deceasedName,
       contractForm.deceasedAddress1,

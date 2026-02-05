@@ -43,25 +43,28 @@ export default function updateCemetery(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update Cemeteries
-        set cemeteryName = ?,
-          cemeteryKey = ?,
-          cemeteryDescription = ?,
-          cemeterySvg = ?,
-          cemeteryLatitude = ?,
-          cemeteryLongitude = ?,
-          cemeteryAddress1 = ?,
-          cemeteryAddress2 = ?,
-          cemeteryCity = ?,
-          cemeteryProvince = ?,
-          cemeteryPostalCode = ?,
-          cemeteryPhoneNumber = ?,
-          parentCemeteryId = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where cemeteryId = ?
-          and recordDelete_timeMillis is null`
-    )
+    .prepare(/* sql */ `
+      UPDATE Cemeteries
+      SET
+        cemeteryName = ?,
+        cemeteryKey = ?,
+        cemeteryDescription = ?,
+        cemeterySvg = ?,
+        cemeteryLatitude = ?,
+        cemeteryLongitude = ?,
+        cemeteryAddress1 = ?,
+        cemeteryAddress2 = ?,
+        cemeteryCity = ?,
+        cemeteryProvince = ?,
+        cemeteryPostalCode = ?,
+        cemeteryPhoneNumber = ?,
+        parentCemeteryId = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        cemeteryId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
     .run(
       updateForm.cemeteryName,
       updateForm.cemeteryKey,
@@ -92,6 +95,6 @@ export default function updateCemetery(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return result.changes > 0
 }

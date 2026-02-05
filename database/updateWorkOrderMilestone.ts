@@ -25,15 +25,18 @@ export default function updateWorkOrderMilestone(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update WorkOrderMilestones
-        set workOrderMilestoneTypeId = ?,
-          workOrderMilestoneDate = ?,
-          workOrderMilestoneTime = ?,
-          workOrderMilestoneDescription = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where workOrderMilestoneId = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE WorkOrderMilestones
+      SET
+        workOrderMilestoneTypeId = ?,
+        workOrderMilestoneDate = ?,
+        workOrderMilestoneTime = ?,
+        workOrderMilestoneDescription = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        workOrderMilestoneId = ?
+    `)
     .run(
       milestoneForm.workOrderMilestoneTypeId === ''
         ? undefined

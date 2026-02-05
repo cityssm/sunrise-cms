@@ -20,14 +20,17 @@ export default function updateContractType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `update ContractTypes
-        set contractType = ?,
-          isPreneed = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and contractTypeId = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE ContractTypes
+      SET
+        contractType = ?,
+        isPreneed = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractTypeId = ?
+    `)
     .run(
       updateForm.contractType,
       updateForm.isPreneed === undefined ? 0 : 1,
@@ -39,7 +42,7 @@ export default function updateContractType(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   clearCacheByTableName('ContractTypes')
 
   return result.changes > 0

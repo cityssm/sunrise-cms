@@ -4,13 +4,17 @@ export function restoreFuneralHome(funeralHomeId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `update FuneralHomes
-        set recordDelete_userName = null,
-          recordDelete_timeMillis = null,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where funeralHomeId = ?
-          and recordDelete_timeMillis is not null`)
+        .prepare(/* sql */ `
+      UPDATE FuneralHomes
+      SET
+        recordDelete_userName = NULL,
+        recordDelete_timeMillis = NULL,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        funeralHomeId = ?
+        AND recordDelete_timeMillis IS NOT NULL
+    `)
         .run(user.userName, rightNowMillis, funeralHomeId);
     if (connectedDatabase === undefined) {
         database.close();

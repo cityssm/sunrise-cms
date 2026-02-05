@@ -19,9 +19,11 @@ export default function updateCemeteryDirectionsOfArrival(
   database: sqlite.Database
 ): number {
   database
-    .prepare(/* sql */ `delete from CemeteryDirectionsOfArrival
-        where cemeteryId = ?`
-    )
+    .prepare(/* sql */ `
+      DELETE FROM CemeteryDirectionsOfArrival
+      WHERE
+        cemeteryId = ?
+    `)
     .run(cemeteryId)
 
   let updateCount = 0
@@ -31,10 +33,16 @@ export default function updateCemeteryDirectionsOfArrival(
 
     if (directionDescriptionName in updateForm) {
       database
-        .prepare(/* sql */ `insert into CemeteryDirectionsOfArrival (
-            cemeteryId, directionOfArrival, directionOfArrivalDescription)
-            values (?, ?, ?)`
-        )
+        .prepare(/* sql */ `
+          INSERT INTO
+            CemeteryDirectionsOfArrival (
+              cemeteryId,
+              directionOfArrival,
+              directionOfArrivalDescription
+            )
+          VALUES
+            (?, ?, ?)
+        `)
         .run(cemeteryId, direction, updateForm[directionDescriptionName] ?? '')
 
       updateCount += 1

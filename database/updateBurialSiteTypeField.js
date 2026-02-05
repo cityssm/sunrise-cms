@@ -4,18 +4,22 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function updateBurialSiteTypeField(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(/* sql */ `update BurialSiteTypeFields
-        set burialSiteTypeField = ?,
-          isRequired = ?,
-          fieldType = ?,
-          minLength = ?,
-          maxLength = ?,
-          pattern = ?,
-          fieldValues = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where burialSiteTypeFieldId = ?
-          and recordDelete_timeMillis is null`)
+        .prepare(/* sql */ `
+      UPDATE BurialSiteTypeFields
+      SET
+        burialSiteTypeField = ?,
+        isRequired = ?,
+        fieldType = ?,
+        minLength = ?,
+        maxLength = ?,
+        pattern = ?,
+        fieldValues = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        burialSiteTypeFieldId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
         .run(updateForm.burialSiteTypeField, Number.parseInt(updateForm.isRequired, 10), updateForm.fieldType ?? 'text', updateForm.minLength ?? 0, updateForm.maxLength ?? 100, updateForm.pattern ?? '', updateForm.fieldValues, user.userName, Date.now(), updateForm.burialSiteTypeFieldId);
     if (connectedDatabase === undefined) {
         database.close();

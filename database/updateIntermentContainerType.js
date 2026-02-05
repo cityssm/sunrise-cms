@@ -5,12 +5,17 @@ export default function updateIntermentContainerType(updateForm, user, connected
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `update IntermentContainerTypes
-        set intermentContainerType = ?,
-          isCremationType = ?,
-          recordUpdate_userName = ?, recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and intermentContainerTypeId = ?`)
+        .prepare(/* sql */ `
+      UPDATE IntermentContainerTypes
+      SET
+        intermentContainerType = ?,
+        isCremationType = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND intermentContainerTypeId = ?
+    `)
         .run(updateForm.intermentContainerType, updateForm.isCremationType, user.userName, rightNowMillis, updateForm.intermentContainerTypeId);
     if (connectedDatabase === undefined) {
         database.close();

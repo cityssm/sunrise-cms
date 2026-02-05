@@ -18,11 +18,16 @@ export default function updateBurialSite(updateForm, user) {
     const burialSiteName = buildBurialSiteName(cemetery?.cemeteryKey, updateForm);
     // Ensure no active burial sites share the same name
     const existingBurialSite = database
-        .prepare(/* sql */ `select burialSiteId
-        from BurialSites
-        where burialSiteName = ?
-          and burialSiteId <> ?
-          and recordDelete_timeMillis is null`)
+        .prepare(/* sql */ `
+      SELECT
+        burialSiteId
+      FROM
+        BurialSites
+      WHERE
+        burialSiteName = ?
+        AND burialSiteId <> ?
+        AND recordDelete_timeMillis IS NULL
+    `)
         .pluck()
         .get(burialSiteName, updateForm.burialSiteId);
     if (existingBurialSite !== undefined) {
@@ -30,26 +35,30 @@ export default function updateBurialSite(updateForm, user) {
         throw new Error('An active burial site with that name already exists.');
     }
     const result = database
-        .prepare(/* sql */ `update BurialSites
-        set burialSiteNameSegment1 = ?,
-          burialSiteNameSegment2 = ?,
-          burialSiteNameSegment3 = ?,
-          burialSiteNameSegment4 = ?,
-          burialSiteNameSegment5 = ?,
-          burialSiteName = ?,
-          burialSiteTypeId = ?,
-          burialSiteStatusId = ?,
-          bodyCapacity = ?,
-          crematedCapacity = ?,
-          cemeteryId = ?,
-          cemeterySvgId = ?,
-          burialSiteImage = ?,
-          burialSiteLatitude = ?,
-          burialSiteLongitude = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where burialSiteId = ?
-          and recordDelete_timeMillis is null`)
+        .prepare(/* sql */ `
+      UPDATE BurialSites
+      SET
+        burialSiteNameSegment1 = ?,
+        burialSiteNameSegment2 = ?,
+        burialSiteNameSegment3 = ?,
+        burialSiteNameSegment4 = ?,
+        burialSiteNameSegment5 = ?,
+        burialSiteName = ?,
+        burialSiteTypeId = ?,
+        burialSiteStatusId = ?,
+        bodyCapacity = ?,
+        crematedCapacity = ?,
+        cemeteryId = ?,
+        cemeterySvgId = ?,
+        burialSiteImage = ?,
+        burialSiteLatitude = ?,
+        burialSiteLongitude = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        burialSiteId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
         .run(updateForm.burialSiteNameSegment1 ?? '', updateForm.burialSiteNameSegment2 ?? '', updateForm.burialSiteNameSegment3 ?? '', updateForm.burialSiteNameSegment4 ?? '', updateForm.burialSiteNameSegment5 ?? '', burialSiteName, updateForm.burialSiteTypeId, updateForm.burialSiteStatusId === ''
         ? undefined
         : updateForm.burialSiteStatusId, updateForm.bodyCapacity === '' ? undefined : updateForm.bodyCapacity, updateForm.crematedCapacity === ''
@@ -72,12 +81,16 @@ export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, c
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `update BurialSites
-        set burialSiteStatusId = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where burialSiteId = ?
-          and recordDelete_timeMillis is null`)
+        .prepare(/* sql */ `
+      UPDATE BurialSites
+      SET
+        burialSiteStatusId = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        burialSiteId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
         .run(burialSiteStatusId === '' ? undefined : burialSiteStatusId, user.userName, rightNowMillis, burialSiteId);
     if (connectedDatabase === undefined) {
         database.close();
@@ -87,13 +100,17 @@ export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, c
 export function updateBurialSiteLatitudeLongitude(burialSiteId, burialSiteLatitude, burialSiteLongitude, user) {
     const database = sqlite(sunriseDB);
     const result = database
-        .prepare(/* sql */ `update BurialSites
-        set burialSiteLatitude = ?,
-          burialSiteLongitude = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where burialSiteId = ?
-          and recordDelete_timeMillis is null`)
+        .prepare(/* sql */ `
+      UPDATE BurialSites
+      SET
+        burialSiteLatitude = ?,
+        burialSiteLongitude = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        burialSiteId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
         .run(burialSiteLatitude === '' ? undefined : burialSiteLatitude, burialSiteLongitude === '' ? undefined : burialSiteLongitude, user.userName, Date.now(), burialSiteId);
     database.close();
     return result.changes > 0;

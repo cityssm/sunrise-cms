@@ -15,26 +15,32 @@ export default function updateSetting(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   let result = database
-    .prepare(/* sql */ `update SunriseSettings
-        set settingValue = ?,
-          previousSettingValue = settingValue,
-          recordUpdate_timeMillis = ?
-        where settingKey = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE SunriseSettings
+      SET
+        settingValue = ?,
+        previousSettingValue = settingValue,
+        recordUpdate_timeMillis = ?
+      WHERE
+        settingKey = ?
+    `)
     .run(updateForm.settingValue, Date.now(), updateForm.settingKey)
 
   if (result.changes <= 0) {
     result = database
-      .prepare(/* sql */ `insert into SunriseSettings (settingKey, settingValue, recordUpdate_timeMillis)
-          values (?, ?, ?)`
-      )
+      .prepare(/* sql */ `
+        INSERT INTO
+          SunriseSettings (settingKey, settingValue, recordUpdate_timeMillis)
+        VALUES
+          (?, ?, ?)
+      `)
       .run(updateForm.settingKey, updateForm.settingValue, Date.now())
   }
 
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   if (result.changes > 0) {
     clearCacheByTableName('SunriseSettings')
   }

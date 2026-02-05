@@ -22,14 +22,18 @@ export default function updateBurialSiteType(
   const rightNowMillis = Date.now()
 
   const result = database
-    .prepare(/* sql */ `update BurialSiteTypes
-        set burialSiteType = ?,
-          bodyCapacityMax = ?,
-          crematedCapacityMax = ?,
-          recordUpdate_userName = ?, recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and burialSiteTypeId = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE BurialSiteTypes
+      SET
+        burialSiteType = ?,
+        bodyCapacityMax = ?,
+        crematedCapacityMax = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND burialSiteTypeId = ?
+    `)
     .run(
       updateForm.burialSiteType,
       updateForm.bodyCapacityMax === ''
@@ -47,7 +51,7 @@ export default function updateBurialSiteType(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   clearCacheByTableName('BurialSiteTypes')
 
   return result.changes > 0

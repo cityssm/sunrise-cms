@@ -3,13 +3,17 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function reopenWorkOrderMilestone(workOrderMilestoneId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(/* sql */ `update WorkOrderMilestones
-        set workOrderMilestoneCompletionDate = null,
-          workOrderMilestoneCompletionTime = null,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where workOrderMilestoneId = ?
-          and workOrderMilestoneCompletionDate is not null`)
+        .prepare(/* sql */ `
+      UPDATE WorkOrderMilestones
+      SET
+        workOrderMilestoneCompletionDate = NULL,
+        workOrderMilestoneCompletionTime = NULL,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        workOrderMilestoneId = ?
+        AND workOrderMilestoneCompletionDate IS NOT NULL
+    `)
         .run(user.userName, Date.now(), workOrderMilestoneId);
     if (connectedDatabase === undefined) {
         database.close();

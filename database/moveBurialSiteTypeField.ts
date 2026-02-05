@@ -13,11 +13,15 @@ export function moveBurialSiteTypeFieldDown(
   const currentField = getCurrentField(burialSiteTypeFieldId, database)
 
   database
-    .prepare(/* sql */ `update BurialSiteTypeFields
-        set orderNumber = orderNumber - 1
-        where recordDelete_timeMillis is null
-        and burialSiteTypeId = ? and orderNumber = ? + 1`
-    )
+    .prepare(/* sql */ `
+      UPDATE BurialSiteTypeFields
+      SET
+        orderNumber = orderNumber - 1
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND burialSiteTypeId = ?
+        AND orderNumber = ? + 1
+    `)
     .run(currentField.burialSiteTypeId, currentField.orderNumber)
 
   const success = updateRecordOrderNumber(
@@ -43,11 +47,15 @@ export function moveBurialSiteTypeFieldDownToBottom(
 
   const maxOrderNumber = (
     database
-      .prepare(/* sql */ `select max(orderNumber) as maxOrderNumber
-          from BurialSiteTypeFields
-          where recordDelete_timeMillis is null
-          and burialSiteTypeId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          max(orderNumber) AS maxOrderNumber
+        FROM
+          BurialSiteTypeFields
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND burialSiteTypeId = ?
+      `)
       .get(currentField.burialSiteTypeId) as { maxOrderNumber: number }
   ).maxOrderNumber
 
@@ -60,12 +68,15 @@ export function moveBurialSiteTypeFieldDownToBottom(
     )
 
     database
-      .prepare(/* sql */ `update BurialSiteTypeFields
-          set orderNumber = orderNumber - 1
-          where recordDelete_timeMillis is null
-          and burialSiteTypeId = ?
-          and orderNumber > ?`
-      )
+      .prepare(/* sql */ `
+        UPDATE BurialSiteTypeFields
+        SET
+          orderNumber = orderNumber - 1
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND burialSiteTypeId = ?
+          AND orderNumber > ?
+      `)
       .run(currentField.burialSiteTypeId, currentField.orderNumber)
   }
 
@@ -89,12 +100,15 @@ export function moveBurialSiteTypeFieldUp(
   }
 
   database
-    .prepare(/* sql */ `update BurialSiteTypeFields
-        set orderNumber = orderNumber + 1
-        where recordDelete_timeMillis is null
-        and burialSiteTypeId = ?
-        and orderNumber = ? - 1`
-    )
+    .prepare(/* sql */ `
+      UPDATE BurialSiteTypeFields
+      SET
+        orderNumber = orderNumber + 1
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND burialSiteTypeId = ?
+        AND orderNumber = ? - 1
+    `)
     .run(currentField.burialSiteTypeId, currentField.orderNumber)
 
   const success = updateRecordOrderNumber(
@@ -127,12 +141,15 @@ export function moveBurialSiteTypeFieldUpToTop(
     )
 
     database
-      .prepare(/* sql */ `update BurialSiteTypeFields
-          set orderNumber = orderNumber + 1
-          where recordDelete_timeMillis is null
-          and burialSiteTypeId = ?
-          and orderNumber < ?`
-      )
+      .prepare(/* sql */ `
+        UPDATE BurialSiteTypeFields
+        SET
+          orderNumber = orderNumber + 1
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND burialSiteTypeId = ?
+          AND orderNumber < ?
+      `)
       .run(currentField.burialSiteTypeId, currentField.orderNumber)
   }
 

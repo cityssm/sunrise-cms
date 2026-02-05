@@ -6,13 +6,17 @@ export function moveContractTypeFieldDown(contractTypeFieldId) {
     const database = sqlite(sunriseDB);
     const currentField = getCurrentField(contractTypeFieldId, database);
     database
-        .prepare(/* sql */ `update ContractTypeFields
-        set orderNumber = orderNumber - 1
-        where recordDelete_timeMillis is null
-        ${currentField.contractTypeId === undefined
+        .prepare(/* sql */ `
+      UPDATE ContractTypeFields
+      SET
+        orderNumber = orderNumber - 1
+      WHERE
+        recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
+        undefined
         ? ' and contractTypeId is null'
         : ` and contractTypeId = '${currentField.contractTypeId.toString()}'`}
-        and orderNumber = ? + 1`)
+        AND orderNumber = ? + 1
+    `)
         .run(currentField.orderNumber);
     const success = updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, currentField.orderNumber + 1, database);
     database.close();
@@ -27,23 +31,33 @@ export function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
         contractTypeParameters.push(currentField.contractTypeId);
     }
     const maxOrderNumber = database
-        .prepare(/* sql */ `select max(orderNumber) as maxOrderNumber
-          from ContractTypeFields
-          where recordDelete_timeMillis is null
-          ${currentField.contractTypeId === undefined
+        .prepare(/* sql */ `
+        SELECT
+          max(orderNumber) AS maxOrderNumber
+        FROM
+          ContractTypeFields
+        WHERE
+          recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
+        undefined
         ? ' and contractTypeId is null'
-        : ' and contractTypeId = ?'}`)
+        : ' and contractTypeId = ?'}
+      `)
         .get(contractTypeParameters).maxOrderNumber;
     if (currentField.orderNumber !== maxOrderNumber) {
         updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, maxOrderNumber + 1, database);
         contractTypeParameters.push(currentField.orderNumber);
         database
-            .prepare(/* sql */ `update ContractTypeFields set orderNumber = orderNumber - 1
-          where recordDelete_timeMillis is null
-          ${currentField.contractTypeId === undefined
+            .prepare(/* sql */ `
+        UPDATE ContractTypeFields
+        SET
+          orderNumber = orderNumber - 1
+        WHERE
+          recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
+            undefined
             ? ' and contractTypeId is null'
             : ' and contractTypeId = ?'}
-          and orderNumber > ?`)
+          AND orderNumber > ?
+      `)
             .run(contractTypeParameters);
     }
     database.close();
@@ -58,13 +72,17 @@ export function moveContractTypeFieldUp(contractTypeFieldId) {
         return true;
     }
     database
-        .prepare(/* sql */ `update ContractTypeFields
-        set orderNumber = orderNumber + 1
-        where recordDelete_timeMillis is null
-        ${currentField.contractTypeId === undefined
+        .prepare(/* sql */ `
+      UPDATE ContractTypeFields
+      SET
+        orderNumber = orderNumber + 1
+      WHERE
+        recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
+        undefined
         ? ' and contractTypeId is null'
         : ` and contractTypeId = '${currentField.contractTypeId.toString()}'`}
-        and orderNumber = ? - 1`)
+        AND orderNumber = ? - 1
+    `)
         .run(currentField.orderNumber);
     const success = updateRecordOrderNumber('ContractTypeFields', contractTypeFieldId, currentField.orderNumber - 1, database);
     database.close();
@@ -82,12 +100,16 @@ export function moveContractTypeFieldUpToTop(contractTypeFieldId) {
         }
         contractTypeParameters.push(currentField.orderNumber);
         database
-            .prepare(/* sql */ `update ContractTypeFields
-          set orderNumber = orderNumber + 1
-          where recordDelete_timeMillis is null
-          ${currentField.contractTypeId
+            .prepare(/* sql */ `
+        UPDATE ContractTypeFields
+        SET
+          orderNumber = orderNumber + 1
+        WHERE
+          recordDelete_timeMillis IS NULL ${currentField.contractTypeId
             ? ' and contractTypeId = ?'
-            : ' and contractTypeId is null'} and orderNumber < ?`)
+            : ' and contractTypeId is null'}
+          AND orderNumber < ?
+      `)
             .run(contractTypeParameters);
     }
     database.close();
@@ -96,8 +118,14 @@ export function moveContractTypeFieldUpToTop(contractTypeFieldId) {
 }
 function getCurrentField(contractTypeFieldId, connectedDatabase) {
     return connectedDatabase
-        .prepare(/* sql */ `select contractTypeId, orderNumber
-        from ContractTypeFields
-        where contractTypeFieldId = ?`)
+        .prepare(/* sql */ `
+      SELECT
+        contractTypeId,
+        orderNumber
+      FROM
+        ContractTypeFields
+      WHERE
+        contractTypeFieldId = ?
+    `)
         .get(contractTypeFieldId);
 }

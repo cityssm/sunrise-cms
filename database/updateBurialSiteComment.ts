@@ -23,15 +23,18 @@ export default function updateBurialSiteComment(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update BurialSiteComments
-        set commentDate = ?,
-          commentTime = ?,
-          comment = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and burialSiteCommentId = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE BurialSiteComments
+      SET
+        commentDate = ?,
+        commentTime = ?,
+        comment = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND burialSiteCommentId = ?
+    `)
     .run(
       dateStringToInteger(commentForm.commentDateString),
       timeStringToInteger(commentForm.commentTimeString),
@@ -44,6 +47,6 @@ export default function updateBurialSiteComment(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return result.changes > 0
 }

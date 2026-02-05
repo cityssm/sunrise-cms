@@ -20,16 +20,19 @@ export default function updateWorkOrder(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update WorkOrders
-        set workOrderNumber = ?,
-          workOrderTypeId = ?,
-          workOrderDescription = ?,
-          workOrderOpenDate = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where workOrderId = ?
-          and recordDelete_timeMillis is null`
-    )
+    .prepare(/* sql */ `
+      UPDATE WorkOrders
+      SET
+        workOrderNumber = ?,
+        workOrderTypeId = ?,
+        workOrderDescription = ?,
+        workOrderOpenDate = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        workOrderId = ?
+        AND recordDelete_timeMillis IS NULL
+    `)
     .run(
       workOrderForm.workOrderNumber,
       workOrderForm.workOrderTypeId,
@@ -43,6 +46,6 @@ export default function updateWorkOrder(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return result.changes > 0
 }

@@ -17,12 +17,16 @@ function updateRecord(record, user, connectedDatabase) {
         throw new Error(`Invalid record table: ${record.recordTable}`);
     }
     const result = database
-        .prepare(/* sql */ `update ${record.recordTable}
-        set ${columnNames[0]} = ?,
+        .prepare(/* sql */ `
+      UPDATE ${record.recordTable}
+      SET
+        ${columnNames[0]} = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-        and ${columnNames[1]} = ?`)
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND ${columnNames[1]} = ?
+    `)
         .run(record.recordName, user.userName, Date.now(), record.recordId);
     if (connectedDatabase === undefined) {
         database.close();

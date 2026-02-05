@@ -4,14 +4,18 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 export default function updateBurialSiteComment(commentForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
-        .prepare(/* sql */ `update BurialSiteComments
-        set commentDate = ?,
-          commentTime = ?,
-          comment = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and burialSiteCommentId = ?`)
+        .prepare(/* sql */ `
+      UPDATE BurialSiteComments
+      SET
+        commentDate = ?,
+        commentTime = ?,
+        comment = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND burialSiteCommentId = ?
+    `)
         .run(dateStringToInteger(commentForm.commentDateString), timeStringToInteger(commentForm.commentTimeString), commentForm.comment, user.userName, Date.now(), commentForm.burialSiteCommentId);
     if (connectedDatabase === undefined) {
         database.close();

@@ -10,13 +10,16 @@ export default function reopenWorkOrder(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update WorkOrders
-        set workOrderCloseDate = null,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where workOrderId = ?
-          and workOrderCloseDate is not null`
-    )
+    .prepare(/* sql */ `
+      UPDATE WorkOrders
+      SET
+        workOrderCloseDate = NULL,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        workOrderId = ?
+        AND workOrderCloseDate IS NOT NULL
+    `)
     .run(user.userName, Date.now(), workOrderId)
 
   if (connectedDatabase === undefined) {

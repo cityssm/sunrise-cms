@@ -24,13 +24,16 @@ export function updateWorkOrderMilestoneTime(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update WorkOrderMilestones
-        set workOrderMilestoneDate = ?,
-          workOrderMilestoneTime = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where workOrderMilestoneId = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE WorkOrderMilestones
+      SET
+        workOrderMilestoneDate = ?,
+        workOrderMilestoneTime = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        workOrderMilestoneId = ?
+    `)
     .run(
       milestoneForm.workOrderMilestoneDateString === ''
         ? dateToInteger(new Date())
@@ -49,6 +52,6 @@ export function updateWorkOrderMilestoneTime(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return result.changes > 0
 }

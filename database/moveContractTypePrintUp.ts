@@ -12,9 +12,15 @@ export function moveContractTypePrintUp(
 
   const currentOrderNumber = (
     database
-      .prepare(
-        'select orderNumber from ContractTypePrints where contractTypeId = ? and printEJS = ?'
-      )
+      .prepare(/* sql */ `
+        SELECT
+          orderNumber
+        FROM
+          ContractTypePrints
+        WHERE
+          contractTypeId = ?
+          AND printEJS = ?
+      `)
       .get(contractTypeId, printEJS) as { orderNumber: number }
   ).orderNumber
 
@@ -26,24 +32,32 @@ export function moveContractTypePrintUp(
   }
 
   database
-    .prepare(/* sql */ `update ContractTypePrints
-        set orderNumber = orderNumber + 1
-        where recordDelete_timeMillis is null
-          and contractTypeId = ?
-          and orderNumber = ? - 1`
-    )
+    .prepare(/* sql */ `
+      UPDATE ContractTypePrints
+      SET
+        orderNumber = orderNumber + 1
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractTypeId = ?
+        AND orderNumber = ? - 1
+    `)
     .run(contractTypeId, currentOrderNumber)
 
   const result = database
-    .prepare(
-      'update ContractTypePrints set orderNumber = ? - 1 where contractTypeId = ? and printEJS = ?'
-    )
+    .prepare(/* sql */ `
+      UPDATE ContractTypePrints
+      SET
+        orderNumber = ? - 1
+      WHERE
+        contractTypeId = ?
+        AND printEJS = ?
+    `)
     .run(currentOrderNumber, contractTypeId, printEJS)
 
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   clearCacheByTableName('ContractTypePrints')
 
   return result.changes > 0
@@ -58,28 +72,40 @@ export function moveContractTypePrintUpToTop(
 
   const currentOrderNumber = (
     database
-      .prepare(
-        'select orderNumber from ContractTypePrints where contractTypeId = ? and printEJS = ?'
-      )
+      .prepare(/* sql */ `
+        SELECT
+          orderNumber
+        FROM
+          ContractTypePrints
+        WHERE
+          contractTypeId = ?
+          AND printEJS = ?
+      `)
       .get(contractTypeId, printEJS) as { orderNumber: number }
   ).orderNumber
 
   if (currentOrderNumber > 0) {
     database
-      .prepare(/* sql */ `update ContractTypePrints
-          set orderNumber = -1
-          where contractTypeId = ?
-          and printEJS = ?`
-      )
+      .prepare(/* sql */ `
+        UPDATE ContractTypePrints
+        SET
+          orderNumber = -1
+        WHERE
+          contractTypeId = ?
+          AND printEJS = ?
+      `)
       .run(contractTypeId, printEJS)
 
     database
-      .prepare(/* sql */ `update ContractTypePrints
-          set orderNumber = orderNumber + 1
-          where recordDelete_timeMillis is null
-          and contractTypeId = ?
-          and orderNumber < ?`
-      )
+      .prepare(/* sql */ `
+        UPDATE ContractTypePrints
+        SET
+          orderNumber = orderNumber + 1
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND contractTypeId = ?
+          AND orderNumber < ?
+      `)
       .run(contractTypeId, currentOrderNumber)
   }
 

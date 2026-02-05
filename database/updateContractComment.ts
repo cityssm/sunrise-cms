@@ -23,15 +23,18 @@ export default function updateContractComment(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update ContractComments
-        set commentDate = ?,
-          commentTime = ?,
-          comment = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and contractCommentId = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE ContractComments
+      SET
+        commentDate = ?,
+        commentTime = ?,
+        comment = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND contractCommentId = ?
+    `)
     .run(
       dateStringToInteger(commentForm.commentDateString),
       timeStringToInteger(commentForm.commentTimeString),

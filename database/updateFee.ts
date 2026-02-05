@@ -27,25 +27,28 @@ export default function updateFee(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update Fees
-        set feeCategoryId = ?,
-          feeName = ?,
-          feeDescription = ?,
-          feeAccount = ?,
-          contractTypeId = ?,
-          burialSiteTypeId = ?,
-          feeAmount = ?,
-          feeFunction = ?,
-          taxAmount = ?,
-          taxPercentage = ?,
-          includeQuantity = ?,
-          quantityUnit = ?,
-          isRequired = ?,
-          recordUpdate_userName = ?,
-          recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-          and feeId = ?`
-    )
+    .prepare(/* sql */ `
+      UPDATE Fees
+      SET
+        feeCategoryId = ?,
+        feeName = ?,
+        feeDescription = ?,
+        feeAccount = ?,
+        contractTypeId = ?,
+        burialSiteTypeId = ?,
+        feeAmount = ?,
+        feeFunction = ?,
+        taxAmount = ?,
+        taxPercentage = ?,
+        includeQuantity = ?,
+        quantityUnit = ?,
+        isRequired = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND feeId = ?
+    `)
     .run(
       feeForm.feeCategoryId,
       feeForm.feeName,
@@ -70,7 +73,7 @@ export default function updateFee(
   if (connectedDatabase === undefined) {
     database.close()
   }
-  
+
   return result.changes > 0
 }
 
@@ -87,13 +90,16 @@ export function updateFeeAmount(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const result = database
-    .prepare(/* sql */ `update Fees
-        set feeAmount = ?,
+    .prepare(/* sql */ `
+      UPDATE Fees
+      SET
+        feeAmount = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
-        where recordDelete_timeMillis is null
-        and feeId = ?`
-    )
+      WHERE
+        recordDelete_timeMillis IS NULL
+        AND feeId = ?
+    `)
     .run(
       feeAmountForm.feeAmount,
       user.userName,
