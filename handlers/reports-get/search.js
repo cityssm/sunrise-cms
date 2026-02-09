@@ -4,7 +4,7 @@ import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatu
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js';
 export default function handler(request, response) {
     const rightNow = new Date();
-    const reportTab = request.query.tab ?? 'workOrders';
+    const reportTab = request.query.tab ?? 'contracts';
     const cemeteries = getCemeteries();
     const burialSiteTypes = getCachedBurialSiteTypes();
     const burialSiteStatuses = getCachedBurialSiteStatuses();

@@ -16,43 +16,7 @@
 
 <div class="columns">
   <div class="column">
-    <div class="columns">
-      <div class="column">
-        <div class="panel">
-          <a class="panel-block" href="<%= urlPrefix %>/workOrders">
-            <div class="media">
-              <div class="media-left">
-                <i class="fa-solid fa-4x fa-hard-hat"></i>
-              </div>
-              <div class="media-content">
-                <h2 class="title is-4 mb-0 has-text-link">
-                  Work Orders
-                </h2>
-                <p>
-                  View and maintain work orders.
-                </p>
-              </div>
-            </div>
-          </a>
-          <div class="panel-block is-block">
-            <% if (user.userProperties.canUpdateWorkOrders) { %>
-            <a class="button is-fullwidth is-success is-light mb-2" href="<%= urlPrefix %>/workOrders/new">
-              <span class="icon">
-                <i class="fa-solid fa-plus"></i>
-              </span>
-              <span>New Work Order</span>
-            </a>
-            <% } %>
-            <a class="button is-fullwidth is-link is-light" href="<%= urlPrefix %>/workOrders/workday">
-              <span class="icon">
-                <i class="fa-solid fa-calendar-check"></i>
-              </span>
-              <span>Workday Report</span>
-            </a>
-          </div>
-        </div>
-      </div>
-        
+    <div class="columns">       
       <div class="column">
         <div class="panel">
           <a class="panel-block" href="<%= urlPrefix %>/contracts">
@@ -84,6 +48,41 @@
                 <i class="fa-solid fa-place-of-worship"></i>
               </span>
               <span>Funeral Homes</span>
+            </a>
+          </div>
+        </div>
+      </div>
+            <div class="column">
+        <div class="panel">
+          <a class="panel-block" href="<%= urlPrefix %>/workOrders">
+            <div class="media">
+              <div class="media-left">
+                <i class="fa-solid fa-4x fa-hard-hat"></i>
+              </div>
+              <div class="media-content">
+                <h2 class="title is-4 mb-0 has-text-link">
+                  Work Orders
+                </h2>
+                <p>
+                  View and maintain work orders.
+                </p>
+              </div>
+            </div>
+          </a>
+          <div class="panel-block is-block">
+            <% if (user.userProperties.canUpdateWorkOrders) { %>
+            <a class="button is-fullwidth is-success is-light mb-2" href="<%= urlPrefix %>/workOrders/new">
+              <span class="icon">
+                <i class="fa-solid fa-plus"></i>
+              </span>
+              <span>New Work Order</span>
+            </a>
+            <% } %>
+            <a class="button is-fullwidth is-link is-light" href="<%= urlPrefix %>/workOrders/workday">
+              <span class="icon">
+                <i class="fa-solid fa-calendar-check"></i>
+              </span>
+              <span>Workday Report</span>
             </a>
           </div>
         </div>

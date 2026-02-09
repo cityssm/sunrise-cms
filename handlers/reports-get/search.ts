@@ -11,7 +11,7 @@ export default function handler(
 ): void {
   const rightNow = new Date()
 
-  const reportTab = request.query.tab ?? 'workOrders'
+  const reportTab = request.query.tab ?? 'contracts'
 
   const cemeteries = getCemeteries()
   const burialSiteTypes = getCachedBurialSiteTypes()
