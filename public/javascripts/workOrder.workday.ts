@@ -267,7 +267,7 @@ declare const exports: {
   }
 
   function buildBurialSiteHTML(burialSite: BurialSite | Contract): string {
-    return /*html*/ `
+    return /* html */ `
       <li>
         <span class="fa-li"><i class="fa-solid fa-map-pin"></i></span>
         <a href="${sunrise.urlPrefix}/burialSites/${burialSite.burialSiteId}" target="_blank">
@@ -293,7 +293,7 @@ declare const exports: {
       : 'fa-regular fa-square'
 
     const milestoneCheckHTML = options.canUpdateThisWorkOrder
-      ? /*html*/ `
+      ? /* html */ `
         <button
           class="button button--toggle-milestone"
           data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
@@ -307,7 +307,7 @@ declare const exports: {
           </span>
         </button>
       `
-      : /*html*/ `
+      : /* html */ `
         <span class="icon is-small">
           <i class="${milestoneCheckIcon}"></i>
         </span>
@@ -320,7 +320,7 @@ declare const exports: {
 
     const milestoneTimeHTML =
       options.canUpdateThisWorkOrder && !milestoneIsCompleted
-        ? /*html*/ `
+        ? /* html */ `
           <button
             class="button button--edit-milestone-time"
             data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
@@ -334,7 +334,7 @@ declare const exports: {
         : milestoneTimeString
 
     // eslint-disable-next-line no-unsanitized/property
-    milestoneElement.innerHTML = /*html*/ `
+    milestoneElement.innerHTML = /* html */ `
       <div class="columns is-mobile">
         <div class="column is-narrow">
           ${milestoneCheckHTML}
@@ -390,7 +390,7 @@ declare const exports: {
 
         workOrderElement.insertAdjacentHTML(
           'beforeend',
-          /*html*/ `
+          /* html */ `
             <div class="panel-block is-block">
               <div class="columns is-mobile">
                 <div class="column is-narrow">
@@ -422,7 +422,7 @@ declare const exports: {
       for (const interment of contract.contractInterments ?? []) {
         contactContainerElement.insertAdjacentHTML(
           'beforeend',
-          /*html*/ `
+          /* html */ `
             <li>
               <span class="fa-li"><i class="fa-solid fa-user"></i></span>
               ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
@@ -491,7 +491,7 @@ declare const exports: {
     if (!includesMilestones) {
       workOrderElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="panel-block is-block">
             <p class="has-text-grey">No individual milestones for this work order.</p>
           </div>
@@ -504,7 +504,7 @@ declare const exports: {
         .querySelector('.panel-heading .level-right')
         ?.insertAdjacentHTML(
           'beforeend',
-          /*html*/ `
+          /* html */ `
             <div class="level-item is-hidden-print">
               <button class="button is-small button--close-work-order"
                 data-work-order-id="${cityssm.escapeHTML(workOrder.workOrderId.toString())}"
@@ -556,7 +556,7 @@ declare const exports: {
       }
 
       // eslint-disable-next-line no-unsanitized/property
-      workOrderElement.innerHTML = /*html*/ `
+      workOrderElement.innerHTML = /* html */ `
         <div class="panel-heading p-3">
           <div class="level is-mobile">
             <div class="level-left">
@@ -572,7 +572,7 @@ declare const exports: {
                   </a>
                   ${
                     workOrderIsClosed
-                      ? /*html*/ `
+                      ? /* html */ `
                         <span class="tag is-info">
                           <span class="icon is-small"><i class="fa-solid fa-stop"></i></span>
                           <span>Closed</span>
@@ -600,7 +600,7 @@ declare const exports: {
           ${
             (workOrder.workOrderContracts ?? []).length > 0 ||
             (workOrder.workOrderBurialSites ?? []).length > 0
-              ? /*html*/ `
+              ? /* html */ `
                 <div class="columns">
                   <div class="column">
                     <ul class="fa-ul list--contacts"></ul>
@@ -636,7 +636,7 @@ declare const exports: {
     if (workOrders.length === 0) {
       workdayContainer.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="message is-info">
             <p class="message-body">No work orders for this workday.</p>
           </div>

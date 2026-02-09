@@ -73,7 +73,7 @@ declare const exports: {
     }
 
     if ((fee.contractTypeId ?? -1) !== -1) {
-      tagsHTML += /*html*/ `
+      tagsHTML += /* html */ `
         <span class="tag" title="Contract Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.contractType ?? '')}</span>
@@ -82,7 +82,7 @@ declare const exports: {
     }
 
     if ((fee.burialSiteTypeId ?? -1) !== -1) {
-      tagsHTML += /*html*/ `
+      tagsHTML += /* html */ `
         <span class="tag" title="Burial Site Type Filter">
           <span class="icon is-small"><i class="fa-solid fa-filter"></i></span>
           <span>${cityssm.escapeHTML(fee.burialSiteType ?? '')}</span>
@@ -91,7 +91,7 @@ declare const exports: {
     }
 
     // eslint-disable-next-line no-unsanitized/property
-    panelBlockElement.innerHTML = /*html*/ `
+    panelBlockElement.innerHTML = /* html */ `
       <div class="columns">
         <div class="column is-half">
           <p>
@@ -111,11 +111,11 @@ declare const exports: {
             <div class="column has-text-centered">
               ${
                 fee.feeFunction
-                  ? /*html*/ `
+                  ? /* html */ `
                     ${cityssm.escapeHTML(fee.feeFunction)}<br />
                     <small>Fee Function</small>
                   `
-                  : /*html*/ `
+                  : /* html */ `
                     <a class="a--editFeeAmount" href="#">
                       $${(fee.feeAmount ?? 0).toFixed(2)}<br />
                       <small>Fee</small>
@@ -176,7 +176,7 @@ declare const exports: {
     if (feeCategory.fees.length === 0) {
       feeCategoryContainerElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="panel-block is-block">
             <div class="message is-info">
               <p class="message-body">
@@ -201,7 +201,7 @@ declare const exports: {
 
   function renderFeeCategories(): void {
     if (feeCategories.length === 0) {
-      feeCategoriesContainerElement.innerHTML = /*html*/ `
+      feeCategoriesContainerElement.innerHTML = /* html */ `
         <div class="message is-warning">
           <p class="message-body">There are no available fees.</p>
         </div>
@@ -221,7 +221,7 @@ declare const exports: {
         feeCategory.feeCategoryId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      feeCategoryContainerElement.innerHTML = /*html*/ `
+      feeCategoryContainerElement.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="columns is-vcentered">
             <div class="column">
@@ -238,7 +238,7 @@ declare const exports: {
               <div class="field is-grouped is-justify-content-end">
                 ${
                   feeCategory.fees.length === 0
-                    ? /*html*/ `
+                    ? /* html */ `
                       <div class="control">
                         <button class="button is-small is-danger button--deleteFeeCategory" type="button">
                           <span class="icon is-small"><i class="fa-solid fa-trash"></i></span>

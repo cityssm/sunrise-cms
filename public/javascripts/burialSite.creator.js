@@ -26,7 +26,7 @@
     function buildExistingBurialSitePanelBlockElement(burialSiteName, burialSiteId) {
         const panelBlockElement = document.createElement('div');
         panelBlockElement.className = 'panel-block is-burial-site-block';
-        panelBlockElement.innerHTML = /*html*/ `
+        panelBlockElement.innerHTML = /* html */ `
       <div class="columns is-vcentered is-mobile">
         <div class="column is-narrow">
           <a
@@ -128,7 +128,7 @@
                     burialSiteName.burialSiteNameSegment4;
                 panelBlockElement.dataset.burialSiteNameSegment5 =
                     burialSiteName.burialSiteNameSegment5;
-                panelBlockElement.innerHTML = /*html*/ `
+                panelBlockElement.innerHTML = /* html */ `
           <div class="columns is-vcentered is-mobile">
             <div class="column is-narrow">
               <button class="button is-small is-success" type="button" title="Create Burial Site">

@@ -540,7 +540,7 @@ type ResponseJSON =
       // eslint-disable-next-line no-unsanitized/method
       panelElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="panel-block is-block ${
             !contractTypeId || expandedContractTypes.has(contractTypeId)
               ? ''
@@ -565,7 +565,7 @@ type ResponseJSON =
         panelBlockElement.dataset.contractTypeFieldId =
           contractTypeField.contractTypeFieldId.toString()
 
-        panelBlockElement.innerHTML = /*html*/ `
+        panelBlockElement.innerHTML = /* html */ `
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
@@ -738,7 +738,7 @@ type ResponseJSON =
     if (contractTypePrints.length === 0) {
       panelElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="panel-block is-block">
             <div class="message is-info">
               <p class="message-body">There are no prints associated with this record.</p>
@@ -768,7 +768,7 @@ type ResponseJSON =
         }
 
         // eslint-disable-next-line no-unsanitized/property
-        panelBlockElement.innerHTML = /*html*/ `
+        panelBlockElement.innerHTML = /* html */ `
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
@@ -822,7 +822,7 @@ type ResponseJSON =
    */
 
   function renderContractTypes(): void {
-    contractTypesContainerElement.innerHTML = /*html*/ `
+    contractTypesContainerElement.innerHTML = /* html */ `
       <div class="panel container--contractType" id="container--allContractTypeFields" data-contract-type-id="">
         <div class="panel-heading">
           <div class="level is-mobile">
@@ -861,7 +861,7 @@ type ResponseJSON =
     if (contractTypes.length === 0) {
       contractTypesContainerElement.insertAdjacentHTML(
         'afterbegin',
-        /*html*/ `
+        /* html */ `
           <div class="message is-warning">
             <p class="message-body">There are no active contract types.</p>
           </div>
@@ -870,7 +870,7 @@ type ResponseJSON =
 
       contractTypePrintsContainerElement.insertAdjacentHTML(
         'afterbegin',
-        /*html*/ `
+        /* html */ `
           <div class="message is-warning">
             <p class="message-body">There are no active contract types.</p>
           </div>
@@ -893,7 +893,7 @@ type ResponseJSON =
         contractType.contractTypeId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      contractTypeContainer.innerHTML = /*html*/ `
+      contractTypeContainer.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="level is-mobile">
             <div class="level-left">
@@ -913,7 +913,7 @@ type ResponseJSON =
               </div>
               ${
                 contractType.isPreneed
-                  ? /*html*/ `
+                  ? /* html */ `
                     <div class="level-item">
                       <span class="tag is-info">Preneed</span>
                     </div>
@@ -997,7 +997,7 @@ type ResponseJSON =
       contractTypePrintContainer.dataset.contractTypeId =
         contractType.contractTypeId.toString()
 
-      contractTypePrintContainer.innerHTML = /*html*/ `
+      contractTypePrintContainer.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="level is-mobile">
             <div class="level-left">

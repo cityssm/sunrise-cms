@@ -109,7 +109,7 @@ declare const exports: {
           const printElement = document.createElement('label')
           printElement.className = 'panel-block'
 
-          printElement.innerHTML = /*html*/ `
+          printElement.innerHTML = /* html */ `
             <input
               name="printNames"
               type="checkbox"

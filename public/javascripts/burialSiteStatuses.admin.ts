@@ -155,7 +155,7 @@ declare const exports: {
     ) as HTMLTableSectionElement
 
     if (burialSiteStatuses.length === 0) {
-      containerElement.innerHTML = /*html*/ `
+      containerElement.innerHTML = /* html */ `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
@@ -176,7 +176,7 @@ declare const exports: {
       tableRowElement.dataset.burialSiteStatusId =
         burialSiteStatus.burialSiteStatusId.toString()
 
-      tableRowElement.innerHTML = /*html*/ `
+      tableRowElement.innerHTML = /* html */ `
         <td>
           <form>
             <input name="burialSiteStatusId" type="hidden"

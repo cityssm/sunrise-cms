@@ -86,7 +86,7 @@
                     const milestoneElement = document.createElement('div');
                     milestoneElement.className =
                         'panel-block is-block has-background-grey-lighter';
-                    milestoneElement.innerHTML = /*html*/ `
+                    milestoneElement.innerHTML = /* html */ `
               <div class="columns">
                 <div class="column is-narrow">
                   <input

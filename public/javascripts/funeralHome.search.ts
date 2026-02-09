@@ -95,7 +95,7 @@ declare const exports: {
 
       searchResultsTbodyElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <tr>
             <td>
               <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeUrl(funeralHome.funeralHomeId)}">
@@ -123,7 +123,7 @@ declare const exports: {
     searchResultsContainerElement.innerHTML = ''
 
     if (searchResultCount === 0) {
-      searchResultsContainerElement.innerHTML = /*html*/ `
+      searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">There are no funeral homes that meet the search criteria.</p>
         </div>
@@ -134,7 +134,7 @@ declare const exports: {
       searchResultsTableElement.className =
         'table is-fullwidth is-striped is-hoverable has-sticky-header'
 
-      searchResultsTableElement.innerHTML = /*html*/ `
+      searchResultsTableElement.innerHTML = /* html */ `
         <thead>
           <tr>
             <th>Funeral Home</th>

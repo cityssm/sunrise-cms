@@ -7,7 +7,7 @@
     function renderBurialSites(rawResponseJSON) {
         const responseJSON = rawResponseJSON;
         if (responseJSON.burialSites.length === 0) {
-            searchResultsContainerElement.innerHTML = /*html*/ `
+            searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">There are no burial sites that meet the search criteria.</p>
         </div>
@@ -21,7 +21,7 @@
                 : cityssm.escapeHTML(burialSite.cemeteryName ?? '');
             // eslint-disable-next-line no-unsanitized/method
             resultsTbodyElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
+            /* html */ `
           <tr>
             <td>
               <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
@@ -31,7 +31,7 @@
             <td>
               ${burialSite.cemeteryId === null
                 ? '<span class="has-text-grey">(No Cemetery)</span>'
-                : /*html*/ `
+                : /* html */ `
                     <a href="${sunrise.getCemeteryUrl(burialSite.cemeteryId)}">
                       ${cemeteryNameHtml}
                     </a>
@@ -52,7 +52,7 @@
           </tr>
         `);
         }
-        searchResultsContainerElement.innerHTML = /*html*/ `
+        searchResultsContainerElement.innerHTML = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
         <thead>
           <tr>

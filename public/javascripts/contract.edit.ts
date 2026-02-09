@@ -223,7 +223,7 @@ declare const exports: {
 
     contractTypeIdElement.addEventListener('change', () => {
       if (contractTypeIdElement.value === '') {
-        contractFieldsContainerElement.innerHTML = /*html*/ `
+        contractFieldsContainerElement.innerHTML = /* html */ `
           <div class="message is-info">
             <p class="message-body">Select the contract type to load the available fields.</p>
           </div>
@@ -243,7 +243,7 @@ declare const exports: {
           }
 
           if (responseJSON.contractTypeFields.length === 0) {
-            contractFieldsContainerElement.innerHTML = /*html*/ `
+            contractFieldsContainerElement.innerHTML = /* html */ `
               <div class="message is-info">
                 <p class="message-body">There are no additional fields for this contract type.</p>
               </div>
@@ -265,7 +265,7 @@ declare const exports: {
 
             const fieldElement = document.createElement('div')
             fieldElement.className = 'field'
-            fieldElement.innerHTML = /*html*/ `
+            fieldElement.innerHTML = /* html */ `
               <label class="label" for="${cityssm.escapeHTML(fieldId)}"></label>
               <div class="control"></div>
             `
@@ -279,7 +279,7 @@ declare const exports: {
             ) {
               ;(
                 fieldElement.querySelector('.control') as HTMLElement
-              ).innerHTML = /*html*/ `
+              ).innerHTML = /* html */ `
                 <div class="select is-fullwidth">
                   <select id="${cityssm.escapeHTML(fieldId)}" name="${cityssm.escapeHTML(fieldName)}">
                     <option value="">(Not Set)</option>
@@ -335,7 +335,7 @@ declare const exports: {
           contractFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
             // eslint-disable-next-line no-secrets/no-secrets
-            /*html*/ `
+            /* html */ `
               <input
                 name="contractTypeFieldIds"
                 type="hidden"
@@ -484,7 +484,7 @@ declare const exports: {
           }
 
           if (responseJSON.count === 0) {
-            burialSiteSelectResultsElement.innerHTML = /*html*/ `
+            burialSiteSelectResultsElement.innerHTML = /* html */ `
               <div class="message is-info">
                 <p class="message-body">No results.</p>
               </div>
@@ -506,7 +506,7 @@ declare const exports: {
             panelBlockElement.dataset.burialSiteName = burialSite.burialSiteName
 
             // eslint-disable-next-line no-unsanitized/property
-            panelBlockElement.innerHTML = /*html*/ `
+            panelBlockElement.innerHTML = /* html */ `
               <div class="columns">
                 <div class="column">
                   ${cityssm.escapeHTML(burialSite.burialSiteName)}<br />

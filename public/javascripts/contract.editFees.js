@@ -92,7 +92,7 @@
     // eslint-disable-next-line complexity
     function renderContractFees() {
         if (contractFees.length === 0) {
-            contractFeesContainerElement.innerHTML = /*html*/ `
+            contractFeesContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">There are no fees associated with this contract.</p>
         </div>
@@ -100,7 +100,7 @@
             renderContractTransactions();
             return;
         }
-        contractFeesContainerElement.innerHTML = /*html*/ `
+        contractFeesContainerElement.innerHTML = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -142,7 +142,7 @@
             tableRowElement.dataset.includeQuantity =
                 contractFee.includeQuantity ?? false ? '1' : '0';
             // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = /*html*/ `
+            tableRowElement.innerHTML = /* html */ `
         <td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
           ${cityssm.escapeHTML(contractFee.feeName ?? '')}<br />
           <span class="tag">${cityssm.escapeHTML(contractFee.feeCategory ?? '')}</span>
@@ -163,7 +163,7 @@
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
             ${contractFee.includeQuantity ?? false
-                ? /*html*/ `
+                ? /* html */ `
                   <button class="button is-primary button--editQuantity">
                     <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
                     <span>Edit</span>
@@ -300,7 +300,7 @@
                 categoryContainerElement.className = 'container--feeCategory';
                 categoryContainerElement.dataset.feeCategoryId =
                     feeCategory.feeCategoryId.toString();
-                categoryContainerElement.innerHTML = /*html*/ `
+                categoryContainerElement.innerHTML = /* html */ `
           <div class="columns is-vcentered">
             <div class="column">
               <h4 class="title is-5">
@@ -314,7 +314,7 @@
                     categoryContainerElement
                         .querySelector('.columns')
                         ?.insertAdjacentHTML('beforeend', 
-                    /*html*/ `
+                    /* html */ `
                 <div class="column is-narrow has-text-right">
                   <button
                     class="button is-small is-success"
@@ -354,7 +354,7 @@
                     panelBlockElement.dataset.feeCategoryId =
                         feeCategory.feeCategoryId.toString();
                     // eslint-disable-next-line no-unsanitized/property
-                    panelBlockElement.innerHTML = /*html*/ `
+                    panelBlockElement.innerHTML = /* html */ `
             <strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
             <small>
               ${cityssm
@@ -495,14 +495,14 @@
     function renderContractTransactions() {
         if (contractTransactions.length === 0) {
             // eslint-disable-next-line no-unsanitized/property
-            contractTransactionsContainerElement.innerHTML = /*html*/ `
+            contractTransactionsContainerElement.innerHTML = /* html */ `
         <div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
           <p class="message-body">There are no transactions associated with this contract.</p>
         </div>
       `;
             return;
         }
-        contractTransactionsContainerElement.innerHTML = /*html*/ `
+        contractTransactionsContainerElement.innerHTML = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -553,7 +553,7 @@
                 externalReceiptNumberHTML += '<br />';
             }
             // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = /*html*/ `
+            tableRowElement.innerHTML = /* html */ `
         <td>
           ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
           ${(contractTransaction.isInvoiced ?? 0) === 0
@@ -596,7 +596,7 @@
             const differenceClassName = difference < 0 ? 'is-danger' : 'is-warning';
             // eslint-disable-next-line no-unsanitized/method
             contractTransactionsContainerElement.insertAdjacentHTML('afterbegin', 
-            /*html*/ `
+            /* html */ `
           <div class="message ${differenceClassName}">
             <div class="message-body">
               <div class="level">

@@ -91,7 +91,7 @@
     function renderWorkOrderMilestoneTypes() {
         const containerElement = document.querySelector('#container--workOrderMilestoneTypes');
         if (workOrderMilestoneTypes.length === 0) {
-            containerElement.innerHTML = /*html*/ `
+            containerElement.innerHTML = /* html */ `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
@@ -108,7 +108,7 @@
             tableRowElement.dataset.workOrderMilestoneTypeId =
                 workOrderMilestoneType.workOrderMilestoneTypeId.toString();
             /* eslint-disable no-secrets/no-secrets */
-            tableRowElement.innerHTML = /*html*/ `
+            tableRowElement.innerHTML = /* html */ `
         <td>
           <form>
             <input name="workOrderMilestoneTypeId" type="hidden"

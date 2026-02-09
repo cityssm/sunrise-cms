@@ -272,7 +272,7 @@
         if (contractTypeFields.length === 0) {
             // eslint-disable-next-line no-unsanitized/method
             panelElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
+            /* html */ `
           <div class="panel-block is-block ${!contractTypeId || expandedContractTypes.has(contractTypeId)
                 ? ''
                 : ' is-hidden'}">
@@ -292,7 +292,7 @@
                 }
                 panelBlockElement.dataset.contractTypeFieldId =
                     contractTypeField.contractTypeFieldId.toString();
-                panelBlockElement.innerHTML = /*html*/ `
+                panelBlockElement.innerHTML = /* html */ `
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
@@ -386,7 +386,7 @@
     function renderContractTypePrints(panelElement, contractTypeId, contractTypePrints) {
         if (contractTypePrints.length === 0) {
             panelElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
+            /* html */ `
           <div class="panel-block is-block">
             <div class="message is-info">
               <p class="message-body">There are no prints associated with this record.</p>
@@ -411,7 +411,7 @@
                     printIconClass = 'fa-file';
                 }
                 // eslint-disable-next-line no-unsanitized/property
-                panelBlockElement.innerHTML = /*html*/ `
+                panelBlockElement.innerHTML = /* html */ `
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
@@ -450,7 +450,7 @@
      * Both
      */
     function renderContractTypes() {
-        contractTypesContainerElement.innerHTML = /*html*/ `
+        contractTypesContainerElement.innerHTML = /* html */ `
       <div class="panel container--contractType" id="container--allContractTypeFields" data-contract-type-id="">
         <div class="panel-heading">
           <div class="level is-mobile">
@@ -478,13 +478,13 @@
             ?.addEventListener('click', openAddContractTypeField);
         if (contractTypes.length === 0) {
             contractTypesContainerElement.insertAdjacentHTML('afterbegin', 
-            /*html*/ `
+            /* html */ `
           <div class="message is-warning">
             <p class="message-body">There are no active contract types.</p>
           </div>
         `);
             contractTypePrintsContainerElement.insertAdjacentHTML('afterbegin', 
-            /*html*/ `
+            /* html */ `
           <div class="message is-warning">
             <p class="message-body">There are no active contract types.</p>
           </div>
@@ -500,7 +500,7 @@
             contractTypeContainer.dataset.contractTypeId =
                 contractType.contractTypeId.toString();
             // eslint-disable-next-line no-unsanitized/property
-            contractTypeContainer.innerHTML = /*html*/ `
+            contractTypeContainer.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="level is-mobile">
             <div class="level-left">
@@ -517,7 +517,7 @@
                 <h2 class="title is-5 has-text-white">${cityssm.escapeHTML(contractType.contractType)}</h2>
               </div>
               ${contractType.isPreneed
-                ? /*html*/ `
+                ? /* html */ `
                     <div class="level-item">
                       <span class="tag is-info">Preneed</span>
                     </div>
@@ -574,7 +574,7 @@
                 'panel container--contractTypePrintList';
             contractTypePrintContainer.dataset.contractTypeId =
                 contractType.contractTypeId.toString();
-            contractTypePrintContainer.innerHTML = /*html*/ `
+            contractTypePrintContainer.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="level is-mobile">
             <div class="level-left">

@@ -156,7 +156,7 @@ declare const exports: {
     ) as HTMLTableSectionElement
 
     if (committalTypes.length === 0) {
-      containerElement.innerHTML = /*html*/ `
+      containerElement.innerHTML = /* html */ `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
@@ -178,7 +178,7 @@ declare const exports: {
         committalType.committalTypeId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      tableRowElement.innerHTML = /*html*/ `
+      tableRowElement.innerHTML = /* html */ `
         <td>
           <form>
             <input name="committalTypeId" type="hidden" value="${committalType.committalTypeId.toString()}" />

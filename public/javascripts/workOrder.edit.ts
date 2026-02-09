@@ -240,7 +240,7 @@ declare const exports: {
 
     targetPanelElement.insertAdjacentHTML(
       'beforeend',
-      /*html*/ `
+      /* html */ `
         <div class="panel-block is-block">
           ${sunrise.getLoadingParagraphHTML('Loading conflicting milestones...')}
         </div>
@@ -269,7 +269,7 @@ declare const exports: {
         for (const milestone of conflictingWorkOrderMilestones) {
           targetPanelElement.insertAdjacentHTML(
             'beforeend',
-            /*html*/ `
+            /* html */ `
               <div class="panel-block is-block">
                 <div class="columns">
                   <div class="column is-5">
@@ -291,7 +291,7 @@ declare const exports: {
         if (conflictingWorkOrderMilestones.length === 0) {
           targetPanelElement.insertAdjacentHTML(
             'beforeend',
-            /*html*/ `
+            /* html */ `
               <div class="panel-block is-block">
                 <div class="message is-info">
                   <p class="message-body">
@@ -681,18 +681,18 @@ declare const exports: {
       milestone.workOrderMilestoneId.toString()
 
     // eslint-disable-next-line no-unsanitized/property
-    panelBlockElement.innerHTML = /*html*/ `
+    panelBlockElement.innerHTML = /* html */ `
       <div class="columns is-mobile">
         <div class="column is-narrow">
           ${
             milestone.workOrderMilestoneCompletionDate === null ||
             milestone.workOrderMilestoneCompletionDate === undefined
-              ? /*html*/ `
+              ? /* html */ `
                 <button class="button button--completeMilestone" type="button" title="Incomplete">
                   <span class="icon is-small"><i class="fa-regular fa-square"></i></span>
                 </button>
               `
-              : /*html*/ `
+              : /* html */ `
                 <span
                   class="button is-static"
                   title="Completed ${cityssm.escapeHTML(milestone.workOrderMilestoneCompletionDateString ?? '')}"
@@ -707,7 +707,7 @@ declare const exports: {
             milestone.workOrderMilestoneTypeId === null ||
             milestone.workOrderMilestoneTypeId === undefined
               ? ''
-              : /*html*/ `
+              : /* html */ `
                 <strong>
                   ${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}
                 </strong><br />
@@ -738,13 +738,13 @@ declare const exports: {
               <div class="dropdown-content">
                 ${
                   milestone.workOrderMilestoneCompletionDate
-                    ? /*html*/ `
+                    ? /* html */ `
                       <a class="dropdown-item button--reopenMilestone" href="#">
                         <span class="icon"><i class="fa-solid fa-times"></i></span>
                         <span>Reopen Milestone</span>
                       </a>
                     `
-                    : /*html*/ `
+                    : /* html */ `
                       <a class="dropdown-item button--editMilestone" href="#">
                         <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
                         <span>Edit Milestone</span>
@@ -804,7 +804,7 @@ declare const exports: {
     if (workOrderMilestones.length === 0) {
       milestonesPanelElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <div class="panel-block is-block">
             <div class="message is-info">
               <p class="message-body">There are no milestones on this work order.</p>

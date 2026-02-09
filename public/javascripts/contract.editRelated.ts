@@ -84,7 +84,7 @@ declare const exports: {
     relatedContractsContainer.innerHTML = ''
 
     if (relatedContracts.length === 0) {
-      relatedContractsContainer.innerHTML = /*html*/ `
+      relatedContractsContainer.innerHTML = /* html */ `
         <div class="message is-info">
           <div class="message-body">
             There are no contracts related to this contract.
@@ -98,7 +98,7 @@ declare const exports: {
     contractsTableElement.className =
       'table is-striped is-fullwidth is-hoverable'
 
-    contractsTableElement.innerHTML = /*html*/ `
+    contractsTableElement.innerHTML = /* html */ `
       <thead>
         <tr>
           <th>Contract Type</th>
@@ -131,7 +131,7 @@ declare const exports: {
         relatedContract.contractId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
-      contractRowElement.innerHTML = /*html*/ `
+      contractRowElement.innerHTML = /* html */ `
         <td>
           <a class="has-text-weight-bold"
             href="${sunrise.getContractUrl(relatedContract.contractId)}">
@@ -261,7 +261,7 @@ declare const exports: {
               anchorElement.dataset.contractId = contract.contractId.toString()
 
               // eslint-disable-next-line no-unsanitized/property
-              anchorElement.innerHTML = /*html*/ `
+              anchorElement.innerHTML = /* html */ `
                 <div class="columns">
                   <div class="column is-narrow">
                     <i class="fa-solid fa-plus"></i>

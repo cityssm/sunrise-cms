@@ -178,7 +178,7 @@ declare const exports: {
     ) as HTMLElement
 
     if (workOrderComments.length === 0) {
-      containerElement.innerHTML = /*html*/ `
+      containerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">There are no comments to display.</p>
         </div>
@@ -188,7 +188,7 @@ declare const exports: {
 
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-fullwidth is-striped is-hoverable'
-    tableElement.innerHTML = /*html*/ `
+    tableElement.innerHTML = /* html */ `
       <thead>
         <tr>
           <th>Author</th>
@@ -206,7 +206,7 @@ declare const exports: {
       tableRowElement.dataset.workOrderCommentId =
         workOrderComment.workOrderCommentId?.toString()
 
-      tableRowElement.innerHTML = /*html*/ `
+      tableRowElement.innerHTML = /* html */ `
         <td>
           ${cityssm.escapeHTML(workOrderComment.recordCreate_userName ?? '')}
         </td>

@@ -162,7 +162,7 @@ declare const bulmaJS: BulmaJS
     ) as HTMLTableSectionElement
 
     if (workOrderMilestoneTypes.length === 0) {
-      containerElement.innerHTML = /*html*/ `
+      containerElement.innerHTML = /* html */ `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
@@ -185,7 +185,7 @@ declare const bulmaJS: BulmaJS
 
       /* eslint-disable no-secrets/no-secrets */
 
-      tableRowElement.innerHTML = /*html*/ `
+      tableRowElement.innerHTML = /* html */ `
         <td>
           <form>
             <input name="workOrderMilestoneTypeId" type="hidden"

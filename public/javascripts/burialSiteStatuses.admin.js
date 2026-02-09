@@ -91,7 +91,7 @@
     function renderBurialSiteStatuses() {
         const containerElement = document.querySelector('#container--burialSiteStatuses');
         if (burialSiteStatuses.length === 0) {
-            containerElement.innerHTML = /*html*/ `
+            containerElement.innerHTML = /* html */ `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
@@ -107,7 +107,7 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.burialSiteStatusId =
                 burialSiteStatus.burialSiteStatusId.toString();
-            tableRowElement.innerHTML = /*html*/ `
+            tableRowElement.innerHTML = /* html */ `
         <td>
           <form>
             <input name="burialSiteStatusId" type="hidden"

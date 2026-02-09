@@ -41,7 +41,7 @@
     function renderRelatedContracts() {
         relatedContractsContainer.innerHTML = '';
         if (relatedContracts.length === 0) {
-            relatedContractsContainer.innerHTML = /*html*/ `
+            relatedContractsContainer.innerHTML = /* html */ `
         <div class="message is-info">
           <div class="message-body">
             There are no contracts related to this contract.
@@ -53,7 +53,7 @@
         const contractsTableElement = document.createElement('table');
         contractsTableElement.className =
             'table is-striped is-fullwidth is-hoverable';
-        contractsTableElement.innerHTML = /*html*/ `
+        contractsTableElement.innerHTML = /* html */ `
       <thead>
         <tr>
           <th>Contract Type</th>
@@ -80,7 +80,7 @@
             contractRowElement.dataset.contractId =
                 relatedContract.contractId.toString();
             // eslint-disable-next-line no-unsanitized/property
-            contractRowElement.innerHTML = /*html*/ `
+            contractRowElement.innerHTML = /* html */ `
         <td>
           <a class="has-text-weight-bold"
             href="${sunrise.getContractUrl(relatedContract.contractId)}">
@@ -167,7 +167,7 @@
                     anchorElement.className = 'panel-block is-block is-size-7';
                     anchorElement.dataset.contractId = contract.contractId.toString();
                     // eslint-disable-next-line no-unsanitized/property
-                    anchorElement.innerHTML = /*html*/ `
+                    anchorElement.innerHTML = /* html */ `
                 <div class="columns">
                   <div class="column is-narrow">
                     <i class="fa-solid fa-plus"></i>

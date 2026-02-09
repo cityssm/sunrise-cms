@@ -36,7 +36,7 @@ declare const exports: {
     }
 
     if (cemetery.cemeteryCity !== '' || cemetery.cemeteryProvince !== '') {
-      addressHTML += /*html*/ `
+      addressHTML += /* html */ `
         <span class="is-size-7">
           ${cityssm.escapeHTML(cemetery.cemeteryCity)}, ${cityssm.escapeHTML(cemetery.cemeteryProvince)}
         </span>
@@ -50,7 +50,7 @@ declare const exports: {
     let featuresHTML = ''
 
     if (cemetery.parentCemeteryId !== null) {
-      featuresHTML += /*html*/ `
+      featuresHTML += /* html */ `
         <span class="icon" title="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
           <i class="fa-solid fa-turn-up" role="img" aria-label="Has Parent Cemetery"></i>
         </span>
@@ -61,7 +61,7 @@ declare const exports: {
       typeof cemetery.cemeteryLatitude === 'number' &&
       typeof cemetery.cemeteryLongitude === 'number'
     ) {
-      featuresHTML += /*html*/ `
+      featuresHTML += /* html */ `
         <span class="icon" title="Geographic Coordinates">
           <i class="fa-solid fa-map-marker-alt" role="img" aria-label="Has Geographic Coordinates"></i>
         </span>
@@ -69,7 +69,7 @@ declare const exports: {
     }
 
     if (cemetery.cemeterySvg !== '') {
-      featuresHTML += /*html*/ `
+      featuresHTML += /* html */ `
         <span class="icon" title="Image">
           <i class="fa-solid fa-image" role="img" aria-label="Has Image"></i>
         </span>
@@ -121,7 +121,7 @@ declare const exports: {
       // eslint-disable-next-line no-unsanitized/method
       searchResultsTbodyElement.insertAdjacentHTML(
         'beforeend',
-        /*html*/ `
+        /* html */ `
           <tr style="page-break-inside: avoid;">
             <td>
               <a class="has-text-weight-bold" href="${sunrise.getCemeteryUrl(cemetery.cemeteryId)}">
@@ -135,7 +135,7 @@ declare const exports: {
                 ${
                   cemetery.cemeteryKey === ''
                     ? ''
-                    : /*html*/ `
+                    : /* html */ `
                       <span class="tag">
                         ${cityssm.escapeHTML(cemetery.cemeteryKey)}
                       </span>
@@ -167,7 +167,7 @@ declare const exports: {
     searchResultsContainerElement.innerHTML = ''
 
     if (searchResultCount === 0) {
-      searchResultsContainerElement.innerHTML = /*html*/ `
+      searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">There are no cemeteries that meet the search criteria.</p>
         </div>
@@ -178,7 +178,7 @@ declare const exports: {
       searchResultsTableElement.className =
         'table is-fullwidth is-striped is-hoverable has-sticky-header'
 
-      searchResultsTableElement.innerHTML = /*html*/ `
+      searchResultsTableElement.innerHTML = /* html */ `
         <thead>
           <tr>
             <th>Cemetery</th>

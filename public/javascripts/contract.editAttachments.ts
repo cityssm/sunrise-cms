@@ -27,7 +27,7 @@ declare const exports: {
 
   function renderAttachments(attachments: ContractAttachment[]): void {
     if (attachments.length === 0) {
-      attachmentsContainerElement.innerHTML = /*html*/ `
+      attachmentsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">No attachments have been uploaded.</p>
         </div>
@@ -38,7 +38,7 @@ declare const exports: {
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-striped is-hoverable is-fullwidth'
 
-    tableElement.innerHTML = /*html*/ `
+    tableElement.innerHTML = /* html */ `
       <thead>
         <tr>
           <th>Title</th>
@@ -57,7 +57,7 @@ declare const exports: {
       const rowElement = document.createElement('tr')
 
       // eslint-disable-next-line no-unsanitized/property
-      rowElement.innerHTML = /*html*/ `
+      rowElement.innerHTML = /* html */ `
         <td>
           <a
             class="has-text-weight-bold"

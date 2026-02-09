@@ -11,7 +11,7 @@
         const tableElement = document.createElement('table');
         tableElement.className =
             'table is-fullwidth is-bordered is-narrow is-fixed is-size-7';
-        tableElement.innerHTML = /*html*/ `
+        tableElement.innerHTML = /* html */ `
       <thead>
         <tr class="is-info">
           <th><abbr title="Sunday">Sun</abbr></th>
@@ -41,7 +41,7 @@
             dateCell.dataset.dateString = cityssm.dateToString(calendarDate);
             dateCell.style.height = '3rem';
             // eslint-disable-next-line no-unsanitized/property
-            dateCell.innerHTML = /*html*/ `
+            dateCell.innerHTML = /* html */ `
         <a href="${sunrise.urlPrefix}/workOrders/workday/?workdayDateString=${cityssm.dateToString(calendarDate)}">
           ${calendarDate.getDate().toString()}
         </a>
@@ -76,7 +76,7 @@
             workOrder.workOrderCloseDate === null ? '0' : '1';
         workOrderElement.href = sunrise.getWorkOrderUrl(workOrder.workOrderId);
         // eslint-disable-next-line no-unsanitized/property
-        workOrderElement.innerHTML = /*html*/ `
+        workOrderElement.innerHTML = /* html */ `
       <div class="columns m-0 is-gapless is-mobile">
         <div class="column has-text-weight-semibold">
           #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
@@ -107,7 +107,7 @@
                 continue;
             }
             workOrderElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
+            /* html */ `
           <div class="columns m-0 is-gapless is-mobile">
             <div class="column is-narrow">
               <span class="icon is-small">
@@ -125,7 +125,7 @@
                 continue;
             }
             workOrderElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
+            /* html */ `
           <div class="columns m-0 is-gapless is-mobile">
             <div class="column is-narrow">
               <span class="icon is-small">
@@ -143,7 +143,7 @@
     function renderMilestones(workOrderMilestones) {
         milestoneCalendarContainerElement.innerHTML = '';
         if (workOrderMilestones.length === 0) {
-            milestoneCalendarContainerElement.innerHTML = /*html*/ `
+            milestoneCalendarContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">No Milestones Found</p>
         </div>
@@ -169,7 +169,7 @@
             }
             // eslint-disable-next-line no-unsanitized/method
             workOrderElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
+            /* html */ `
           <div
             class="columns m-0 is-gapless is-mobile container--workOrderMilestone"
             data-is-complete="${workOrderMilestone.workOrderMilestoneCompletionDate === null ? '0' : '1'}"
@@ -188,7 +188,7 @@
         `);
             if (workOrderMilestone.workOrderMilestoneTime !== null) {
                 workOrderElement.insertAdjacentHTML('beforeend', 
-                /*html*/ `
+                /* html */ `
             <p class="is-italic has-text-right">
               ${cityssm.escapeHTML(workOrderMilestone.workOrderMilestoneTimePeriodString ?? '')}
             </p>

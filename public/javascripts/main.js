@@ -161,7 +161,7 @@
      * Bulma Snippets
      */
     function getMoveUpDownButtonFieldHTML(upButtonClassNames, downButtonClassNames, isSmall = true) {
-        return /*html*/ `
+        return /* html */ `
       <div class="field has-addons">
         <div class="control">
           <button
@@ -187,7 +187,7 @@
     `;
     }
     function getLoadingParagraphHTML(captionText = 'Loading...') {
-        return /*html*/ `
+        return /* html */ `
       <p class="has-text-centered has-text-grey">
         <i class="fa-solid fa-5x fa-circle-notch fa-spin"></i><br />
         ${cityssm.escapeHTML(captionText)}
@@ -195,7 +195,7 @@
     `;
     }
     function getSearchResultsPagerHTML(limit, offset, count) {
-        return /*html*/ `
+        return /* html */ `
       <div class="level">
         <div class="level-left">
           <div class="level-item has-text-weight-bold">
@@ -209,7 +209,7 @@
         </div>
         <div class="level-right is-hidden-print">
           ${offset > 0
-            ? /*html*/ `
+            ? /* html */ `
                 <div class="level-item">
                   <button
                     class="button is-rounded is-link is-outlined"
@@ -223,7 +223,7 @@
               `
             : ''}
           ${limit + offset < count
-            ? /*html*/ `
+            ? /* html */ `
                 <div class="level-item">
                   <button
                     class="button is-rounded is-link"

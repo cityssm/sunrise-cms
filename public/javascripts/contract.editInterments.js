@@ -201,7 +201,7 @@
     function renderContractInterments() {
         const containerElement = document.querySelector('#container--contractInterments');
         if (contractInterments.length === 0) {
-            containerElement.innerHTML = /*html*/ `
+            containerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">There are no interments associated with this record.</p>
         </div>
@@ -210,7 +210,7 @@
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = /*html*/ `
+        tableElement.innerHTML = /* html */ `
       <thead>
         <tr>
           <th>Name</th>
@@ -225,7 +225,7 @@
             tableRowElement.dataset.intermentNumber =
                 interment.intermentNumber?.toString();
             // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = /*html*/ `
+            tableRowElement.innerHTML = /* html */ `
         <td>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
           <span class="is-size-7">

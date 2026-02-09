@@ -121,7 +121,7 @@
         const burialSiteFieldsContainerElement = document.querySelector('#container--burialSiteFields');
         burialSiteTypeIdElement.addEventListener('change', () => {
             if (burialSiteTypeIdElement.value === '') {
-                burialSiteFieldsContainerElement.innerHTML = /*html*/ `
+                burialSiteFieldsContainerElement.innerHTML = /* html */ `
           <div class="message is-info">
             <p class="message-body">Select the burial site type to load the available fields.</p>
           </div>
@@ -133,7 +133,7 @@
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.burialSiteTypeFields.length === 0) {
-                    burialSiteFieldsContainerElement.innerHTML = /*html*/ `
+                    burialSiteFieldsContainerElement.innerHTML = /* html */ `
               <div class="message is-info">
                 <p class="message-body">
                   There are no additional fields for this burial site type.
@@ -151,7 +151,7 @@
                     const fieldElement = document.createElement('div');
                     fieldElement.className = 'field';
                     // eslint-disable-next-line no-unsanitized/property
-                    fieldElement.innerHTML = /*html*/ `
+                    fieldElement.innerHTML = /* html */ `
               <label class="label" for="${fieldId}"></label>
               <div class="control"></div>
             `;
@@ -173,7 +173,7 @@
                     else {
                         // eslint-disable-next-line no-unsanitized/property
                         ;
-                        fieldElement.querySelector('.control').innerHTML = /*html*/ `
+                        fieldElement.querySelector('.control').innerHTML = /* html */ `
                 <div class="select is-fullwidth">
                   <select id="${fieldId}" name="${fieldName}">
                     <option value="">(Not Set)</option>
@@ -194,7 +194,7 @@
                 }
                 burialSiteFieldsContainerElement.insertAdjacentHTML('beforeend', 
                 // eslint-disable-next-line no-secrets/no-secrets
-                /*html*/ `
+                /* html */ `
               <input name="burialSiteTypeFieldIds" type="hidden"
                 value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />
             `);
@@ -336,7 +336,7 @@
     function renderBurialSiteComments() {
         const containerElement = document.querySelector('#container--burialSiteComments');
         if (burialSiteComments.length === 0) {
-            containerElement.innerHTML = /*html*/ `
+            containerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">There are no comments to display.</p>
         </div>
@@ -345,7 +345,7 @@
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = /*html*/ `
+        tableElement.innerHTML = /* html */ `
       <thead>
         <tr>
           <th>Author</th>
@@ -360,7 +360,7 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.burialSiteCommentId =
                 burialSiteComment.burialSiteCommentId?.toString();
-            tableRowElement.innerHTML = /*html*/ `
+            tableRowElement.innerHTML = /* html */ `
         <td>
           ${cityssm.escapeHTML(burialSiteComment.recordCreate_userName ?? '')}
         </td>

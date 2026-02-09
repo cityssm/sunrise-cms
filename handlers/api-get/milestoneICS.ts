@@ -75,7 +75,7 @@ function buildEventDescriptionHTML_occupancies(
 
     /* eslint-disable html/require-closing-tags */
 
-    descriptionHTML = /*html*/ `
+    descriptionHTML = /* html */ `
       <h2>
         Related Contracts
       </h2>
@@ -93,7 +93,7 @@ function buildEventDescriptionHTML_occupancies(
     `
 
     for (const contract of milestone.workOrderContracts ?? []) {
-      descriptionHTML += /*html*/ `
+      descriptionHTML += /* html */ `
         <tr>
           <td>
             <a href="${urlRoot}/contracts/${contract.contractId}">
@@ -143,7 +143,7 @@ function buildEventDescriptionHTML_lots(
 
     /* eslint-disable html/require-closing-tags */
     
-    descriptionHTML += /*html*/ `
+    descriptionHTML += /* html */ `
       <h2>
         Related Burial Sites
       </h2>
@@ -160,7 +160,7 @@ function buildEventDescriptionHTML_lots(
     `
 
     for (const burialSite of milestone.workOrderBurialSites ?? []) {
-      descriptionHTML += /*html*/ `
+      descriptionHTML += /* html */ `
         <tr>
           <td>
             <a href="${urlRoot}/burialSites/${burialSite.burialSiteId.toString()}">
@@ -200,7 +200,7 @@ function buildEventDescriptionHTML_prints(
       const printConfig = getPrintConfig(printName)
 
       if (printConfig) {
-        descriptionHTML += /*html*/ `
+        descriptionHTML += /* html */ `
           <p>
             ${escapeHTML(printConfig.title)}<br />
             ${urlRoot}/print/${printName}/?workOrderId=${milestone.workOrderId.toString()}
@@ -219,7 +219,7 @@ function buildEventDescriptionHTML(
 ): string {
   const workOrderUrl = getWorkOrderUrl(request, milestone.workOrderId)
 
-  let descriptionHTML = /*html*/ `
+  let descriptionHTML = /* html */ `
     <h1>Milestone Description</h1>
     <p>${escapeHTML(milestone.workOrderMilestoneDescription)}</p>
     <h2>Work Order #${milestone.workOrderNumber ?? ''}</h2>

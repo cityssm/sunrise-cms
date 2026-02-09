@@ -69,7 +69,7 @@
         const cemeteryId = formData.get('cemeteryId');
         // Cemetery is required
         if (cemeteryId === null) {
-            burialSitesContainerElement.innerHTML = /*html*/ `
+            burialSitesContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">Select a cemetery to view burial sites.</p>
         </div>
@@ -77,7 +77,7 @@
             return;
         }
         // Show loading message
-        burialSitesContainerElement.innerHTML = /*html*/ `
+        burialSitesContainerElement.innerHTML = /* html */ `
       <div class="message is-info">
         <p class="message-body">
           <span class="icon"><i class="fa-solid fa-spinner fa-pulse"></i></span>
@@ -97,7 +97,7 @@
                 renderBurialSites();
             }
             else {
-                burialSitesContainerElement.innerHTML = /*html*/ `
+                burialSitesContainerElement.innerHTML = /* html */ `
             <div class="message is-danger">
               <p class="message-body">
                 ${cityssm.escapeHTML(responseJSON.errorMessage ?? 'Failed to search burial sites.')}
@@ -136,7 +136,7 @@
             const responseJSON = rawResponseJSON;
             captureButton.disabled = false;
             if (responseJSON.success) {
-                captureButton.innerHTML = /*html*/ `
+                captureButton.innerHTML = /* html */ `
             <span class="icon">
               <i class="fa-solid fa-check"></i>
             </span>
@@ -147,7 +147,7 @@
                 // Update the displayed coordinates
                 const coordsElement = document.querySelector(`#coords-${burialSiteId}`);
                 // eslint-disable-next-line no-unsanitized/property
-                coordsElement.innerHTML = /*html*/ `
+                coordsElement.innerHTML = /* html */ `
             <strong>Lat:</strong> ${currentPosition?.latitude.toFixed(coordinatePrecision)}<br />
             <strong>Lng:</strong> ${currentPosition?.longitude.toFixed(coordinatePrecision)}<br />
             <span class="has-text-success">
@@ -182,7 +182,7 @@
     // Render the filtered burial sites
     function renderBurialSites() {
         if (allBurialSites.length === 0) {
-            burialSitesContainerElement.innerHTML = /*html*/ `
+            burialSitesContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">No burial sites match the current filters.</p>
         </div>
@@ -193,7 +193,7 @@
         for (const site of allBurialSites) {
             const hasCoords = site.burialSiteLatitude !== null && site.burialSiteLongitude !== null;
             const coordsHtml = hasCoords
-                ? /*html*/ `
+                ? /* html */ `
           <strong>Latitude:</strong> ${site.burialSiteLatitude?.toFixed(coordinatePrecision)}<br />
           <strong>Longitude:</strong> ${site.burialSiteLongitude?.toFixed(coordinatePrecision)}
         `
@@ -202,7 +202,7 @@
             let intermentNamesHtml = '';
             if (site.deceasedNames !== undefined && site.deceasedNames.length > 0) {
                 const names = site.deceasedNames.slice(0, maxDeceasedNames);
-                intermentNamesHtml = /*html*/ `
+                intermentNamesHtml = /* html */ `
           <div class="is-size-7 has-text-grey-dark mt-2">
             <span class="icon-text">
               <span class="icon is-small">
@@ -213,7 +213,7 @@
           </div>
         `;
             }
-            html += /*html*/ `
+            html += /* html */ `
         <div class="column is-one-third-desktop is-half-tablet">
           <div class="card">
             <div class="card-content">

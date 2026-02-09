@@ -161,7 +161,7 @@ declare const exports: {
     ) as HTMLTableSectionElement
 
     if (intermentContainerTypes.length === 0) {
-      containerElement.innerHTML = /*html*/ `
+      containerElement.innerHTML = /* html */ `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
@@ -185,7 +185,7 @@ declare const exports: {
       const formId = `form--updateIntermentContainerType_${intermentContainerType.intermentContainerTypeId.toString()}`
 
       // eslint-disable-next-line no-unsanitized/property
-      tableRowElement.innerHTML = /*html*/ `
+      tableRowElement.innerHTML = /* html */ `
         <td>
           <form id="${formId}">
             <input name="intermentContainerTypeId" type="hidden"

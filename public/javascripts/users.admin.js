@@ -72,7 +72,7 @@
         const rowElement = document.createElement('tr');
         rowElement.dataset.userName = user.userName;
         // eslint-disable-next-line no-unsanitized/property
-        rowElement.innerHTML = /*html*/ `
+        rowElement.innerHTML = /* html */ `
       <th>${cityssm.escapeHTML(user.userName)}</th>
       <td class="has-text-centered">
         <button
@@ -143,7 +143,7 @@
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = /*html*/ `
+        tableElement.innerHTML = /* html */ `
       <thead>
         <tr>
           <th>User Name</th>

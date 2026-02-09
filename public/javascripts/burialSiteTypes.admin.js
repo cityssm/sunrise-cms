@@ -264,7 +264,7 @@
         if (burialSiteTypeFields.length === 0) {
             // eslint-disable-next-line no-unsanitized/method
             panelElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
+            /* html */ `
           <div class="panel-block is-block
             ${expandedBurialSiteTypes.has(burialSiteTypeId) ? '' : ' is-hidden'}">
             <div class="message is-info">
@@ -283,7 +283,7 @@
                 }
                 panelBlockElement.dataset.burialSiteTypeFieldId =
                     burialSiteTypeField.burialSiteTypeFieldId.toString();
-                panelBlockElement.innerHTML = /*html*/ `
+                panelBlockElement.innerHTML = /* html */ `
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
@@ -317,7 +317,7 @@
         containerElement.innerHTML = '';
         if (burialSiteTypes.length === 0) {
             containerElement.insertAdjacentHTML('afterbegin', 
-            /*html*/ `
+            /* html */ `
           <div class="message is-warning">
             <p class="message-body">There are no active burial site types.</p>
           </div>
@@ -343,7 +343,7 @@
             else if (bodyCapacityMax === 'unlimited') {
                 bodyCapacityTagClass = 'is-success';
             }
-            const bodiesTagHtml = /*html*/ `
+            const bodiesTagHtml = /* html */ `
         <div class="control">
           <div class="tags has-addons">
             <span class="tag is-dark">Bodies</span>
@@ -367,7 +367,7 @@
             else if (crematedCapacityMax === 'unlimited') {
                 crematedCapacityTagClass = 'is-success';
             }
-            const crematedTagHtml = /*html*/ `
+            const crematedTagHtml = /* html */ `
         <div class="control">
           <div class="tags has-addons">
             <span class="tag is-dark">Cremains</span>
@@ -378,7 +378,7 @@
         </div>
       `;
             // eslint-disable-next-line no-unsanitized/property
-            burialSiteTypeContainer.innerHTML = /*html*/ `
+            burialSiteTypeContainer.innerHTML = /* html */ `
         <div class="panel-heading">
           <div class="columns is-vcentered">
             <div class="column is-narrow">

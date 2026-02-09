@@ -155,7 +155,7 @@ declare const bulmaJS: BulmaJS
     ) as HTMLTableSectionElement
 
     if (workOrderTypes.length === 0) {
-      containerElement.innerHTML = /*html*/ `
+      containerElement.innerHTML = /* html */ `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
@@ -176,7 +176,7 @@ declare const bulmaJS: BulmaJS
       tableRowElement.dataset.workOrderTypeId =
         workOrderType.workOrderTypeId.toString()
 
-      tableRowElement.innerHTML = /*html*/ `
+      tableRowElement.innerHTML = /* html */ `
         <td>
           <form>
             <input

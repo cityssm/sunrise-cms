@@ -6,21 +6,21 @@
     const offsetElement = document.querySelector('#searchFilter--offset');
     function getContractTimeHtml(contract) {
         if (contract.contractIsFuture) {
-            return /*html*/ `
+            return /* html */ `
         <span title="Future Contract">
           <i class="fa-solid fa-fast-forward" aria-label="Future Contract"></i>
         </span>
       `;
         }
         else if (contract.contractIsActive) {
-            return /*html*/ `
+            return /* html */ `
         <span title="Current Contract">
           <i class="fa-solid fa-play" aria-label="Current Contract"></i>
         </span>
       `;
         }
         else {
-            return /*html*/ `
+            return /* html */ `
         <span title="Past Contract">
           <i class="fa-solid fa-stop" aria-label="Past Contract"></i>
         </span>
@@ -30,7 +30,7 @@
     function getContactsHTML(contract) {
         let contactsHTML = '';
         for (const interment of contract.contractInterments ?? []) {
-            contactsHTML += /*html*/ `
+            contactsHTML += /* html */ `
         <li title="Recipient">
           <span class="fa-li"><i class="fa-solid fa-user"></i></span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
@@ -38,7 +38,7 @@
       `;
         }
         if (contract.purchaserName !== '') {
-            contactsHTML += /*html*/ `
+            contactsHTML += /* html */ `
         <li class="has-text-grey-dark" title="Purchaser">
           <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar"></i></span>
           ${cityssm.escapeHTML(contract.purchaserName)}
@@ -46,7 +46,7 @@
       `;
         }
         if (contract.funeralHomeName !== null && contract.funeralHomeName !== '') {
-            contactsHTML += /*html*/ `
+            contactsHTML += /* html */ `
         <li class="has-text-grey-dark" title="Funeral Home">
           <span class="fa-li"><i class="fa-solid fa-place-of-worship"></i></span>
           ${cityssm.escapeHTML(contract.funeralHomeName)}
@@ -64,7 +64,7 @@
         const transactionTotal = (contract.contractTransactions?.reduce((soFar, currentTransaction) => soFar + currentTransaction.transactionAmount, 0) ?? 0).toFixed(2);
         let feeIconHTML = '';
         if (feeTotal !== '0.00' || transactionTotal !== '0.00') {
-            feeIconHTML = /*html*/ `
+            feeIconHTML = /* html */ `
         <span class="icon"
           title="Total Fees: $${feeTotal}">
           <i class="fa-solid fa-dollar-sign ${feeTotal === transactionTotal
@@ -91,7 +91,7 @@
       <td>
         ${(contract.burialSiteId ?? -1) === -1
             ? '<span class="has-text-grey-dark">(No Burial Site)</span>'
-            : /*html*/ `
+            : /* html */ `
               <a class="${burialSiteLinkClass}"
                 href="${sunrise.getBurialSiteUrl(contract.burialSiteId ?? '')}"
                 title="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
@@ -140,7 +140,7 @@
     function renderContracts(rawResponseJSON) {
         const responseJSON = rawResponseJSON;
         if (responseJSON.contracts.length === 0) {
-            searchResultsContainerElement.innerHTML = /*html*/ `
+            searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">
             There are no contracts that meet the search criteria.

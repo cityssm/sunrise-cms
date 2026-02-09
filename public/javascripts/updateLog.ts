@@ -51,7 +51,7 @@ declare const exports: {
 
     switch (logEntry.recordType) {
       case 'burialSite': {
-        recordTypeHTML = /*html*/ `
+        recordTypeHTML = /* html */ `
           <span title="Burial Site">
             <i class="fa-solid fa-2x fa-map-pin"></i>
           </span>
@@ -62,7 +62,7 @@ declare const exports: {
         break
       }
       case 'burialSiteComment': {
-        recordTypeHTML = /*html*/ `
+        recordTypeHTML = /* html */ `
           <span title="Burial Site Comment">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-map-pin" data-fa-transform="left-4"></i>
@@ -76,7 +76,7 @@ declare const exports: {
         break
       }
       case 'comments': {
-        recordTypeHTML = /*html*/ `
+        recordTypeHTML = /* html */ `
           <span title="Comment">
             <i class="fa-solid fa-2x fa-comments"></i>
           </span>
@@ -87,7 +87,7 @@ declare const exports: {
         break
       }
       case 'contract': {
-        recordTypeHTML = /*html*/ `
+        recordTypeHTML = /* html */ `
           <span title="Contract">
             <i class="fa-solid fa-2x fa-file-contract"></i>
           </span>
@@ -98,7 +98,7 @@ declare const exports: {
         break
       }
       case 'contractComment': {
-        recordTypeHTML = /*html*/ `
+        recordTypeHTML = /* html */ `
           <span title="Contract Comment">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-file-contract"></i>
@@ -113,7 +113,7 @@ declare const exports: {
       }
 
       case 'contractFee': {
-        recordTypeHTML = /*html*/ `
+        recordTypeHTML = /* html */ `
           <span title="Contract Fee">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-file-contract"></i>
@@ -127,7 +127,7 @@ declare const exports: {
         break
       }
       case 'contractTransactions': {
-        recordTypeHTML = /*html*/ `
+        recordTypeHTML = /* html */ `
           <span title="Contract Transaction">
             <i class="fa-solid fa-2x fa-money-bill-1"></i>
           </span>
@@ -139,7 +139,7 @@ declare const exports: {
       }
 
       case 'workOrder': {
-        recordTypeHTML = /*html*/ `
+        recordTypeHTML = /* html */ `
           <span title="Work Order">
             <i class="fa-solid fa-2x fa-hard-hat"></i>
           </span>
@@ -150,7 +150,7 @@ declare const exports: {
         break
       }
       case 'workOrderComment': {
-        recordTypeHTML = /*html*/ `
+        recordTypeHTML = /* html */ `
           <span title="Work Order Comment">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-hard-hat"></i>
@@ -164,7 +164,7 @@ declare const exports: {
         break
       }
       case 'workOrderMilestone': {
-        recordTypeHTML = /*html*/ `
+        recordTypeHTML = /* html */ `
           <span title="Work Order Milestone">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-hard-hat"></i>
@@ -199,7 +199,7 @@ declare const exports: {
       const logEntryCreateDate = new Date(logEntry.recordCreate_timeMillis)
 
       // eslint-disable-next-line no-unsanitized/property
-      rowElement.innerHTML = /*html*/ `
+      rowElement.innerHTML = /* html */ `
         <td class="has-text-centered">${recordTypeHTML}</td>
         <td>
           <a href="${recordUrl}" title="Open Record" target="_blank">${logEntry.displayRecordId}</a>
@@ -329,7 +329,7 @@ declare const exports: {
 
       if (iconContainerElement !== null) {
         // eslint-disable-next-line no-unsanitized/property
-        iconContainerElement.innerHTML = /*html*/ `
+        iconContainerElement.innerHTML = /* html */ `
           <i class="fa-solid fa-sort-${sortDirection === 'desc' ? 'down' : 'up'}"></i>
         `
       }

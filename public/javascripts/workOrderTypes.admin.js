@@ -91,7 +91,7 @@
     function renderWorkOrderTypes() {
         const containerElement = document.querySelector('#container--workOrderTypes');
         if (workOrderTypes.length === 0) {
-            containerElement.innerHTML = /*html*/ `
+            containerElement.innerHTML = /* html */ `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
@@ -107,7 +107,7 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.workOrderTypeId =
                 workOrderType.workOrderTypeId.toString();
-            tableRowElement.innerHTML = /*html*/ `
+            tableRowElement.innerHTML = /* html */ `
         <td>
           <form>
             <input

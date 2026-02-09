@@ -32,19 +32,19 @@ declare const exports: {
 
   function getContractTimeHtml(contract: Contract): string {
     if (contract.contractIsFuture) {
-      return /*html*/ `
+      return /* html */ `
         <span title="Future Contract">
           <i class="fa-solid fa-fast-forward" aria-label="Future Contract"></i>
         </span>
       `
     } else if (contract.contractIsActive) {
-      return /*html*/ `
+      return /* html */ `
         <span title="Current Contract">
           <i class="fa-solid fa-play" aria-label="Current Contract"></i>
         </span>
       `
     } else {
-      return /*html*/ `
+      return /* html */ `
         <span title="Past Contract">
           <i class="fa-solid fa-stop" aria-label="Past Contract"></i>
         </span>
@@ -56,7 +56,7 @@ declare const exports: {
     let contactsHTML = ''
 
     for (const interment of contract.contractInterments ?? []) {
-      contactsHTML += /*html*/ `
+      contactsHTML += /* html */ `
         <li title="Recipient">
           <span class="fa-li"><i class="fa-solid fa-user"></i></span>
           ${cityssm.escapeHTML(interment.deceasedName ?? '')}
@@ -65,7 +65,7 @@ declare const exports: {
     }
 
     if (contract.purchaserName !== '') {
-      contactsHTML += /*html*/ `
+      contactsHTML += /* html */ `
         <li class="has-text-grey-dark" title="Purchaser">
           <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar"></i></span>
           ${cityssm.escapeHTML(contract.purchaserName)}
@@ -74,7 +74,7 @@ declare const exports: {
     }
 
     if (contract.funeralHomeName !== null && contract.funeralHomeName !== '') {
-      contactsHTML += /*html*/ `
+      contactsHTML += /* html */ `
         <li class="has-text-grey-dark" title="Funeral Home">
           <span class="fa-li"><i class="fa-solid fa-place-of-worship"></i></span>
           ${cityssm.escapeHTML(contract.funeralHomeName)}
@@ -109,7 +109,7 @@ declare const exports: {
     let feeIconHTML = ''
 
     if (feeTotal !== '0.00' || transactionTotal !== '0.00') {
-      feeIconHTML = /*html*/ `
+      feeIconHTML = /* html */ `
         <span class="icon"
           title="Total Fees: $${feeTotal}">
           <i class="fa-solid fa-dollar-sign ${
@@ -145,7 +145,7 @@ declare const exports: {
         ${
           (contract.burialSiteId ?? -1) === -1
             ? '<span class="has-text-grey-dark">(No Burial Site)</span>'
-            : /*html*/ `
+            : /* html */ `
               <a class="${burialSiteLinkClass}"
                 href="${sunrise.getBurialSiteUrl(contract.burialSiteId ?? '')}"
                 title="${cityssm.escapeHTML(contract.burialSiteType ?? '')}"
@@ -208,7 +208,7 @@ declare const exports: {
     }
 
     if (responseJSON.contracts.length === 0) {
-      searchResultsContainerElement.innerHTML = /*html*/ `
+      searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">
             There are no contracts that meet the search criteria.

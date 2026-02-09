@@ -216,7 +216,7 @@ declare const exports: {
 
     burialSiteTypeIdElement.addEventListener('change', () => {
       if (burialSiteTypeIdElement.value === '') {
-        burialSiteFieldsContainerElement.innerHTML = /*html*/ `
+        burialSiteFieldsContainerElement.innerHTML = /* html */ `
           <div class="message is-info">
             <p class="message-body">Select the burial site type to load the available fields.</p>
           </div>
@@ -236,7 +236,7 @@ declare const exports: {
           }
 
           if (responseJSON.burialSiteTypeFields.length === 0) {
-            burialSiteFieldsContainerElement.innerHTML = /*html*/ `
+            burialSiteFieldsContainerElement.innerHTML = /* html */ `
               <div class="message is-info">
                 <p class="message-body">
                   There are no additional fields for this burial site type.
@@ -262,7 +262,7 @@ declare const exports: {
             fieldElement.className = 'field'
 
             // eslint-disable-next-line no-unsanitized/property
-            fieldElement.innerHTML = /*html*/ `
+            fieldElement.innerHTML = /* html */ `
               <label class="label" for="${fieldId}"></label>
               <div class="control"></div>
             `
@@ -294,7 +294,7 @@ declare const exports: {
               // eslint-disable-next-line no-unsanitized/property
               ;(
                 fieldElement.querySelector('.control') as HTMLElement
-              ).innerHTML = /*html*/ `
+              ).innerHTML = /* html */ `
                 <div class="select is-fullwidth">
                   <select id="${fieldId}" name="${fieldName}">
                     <option value="">(Not Set)</option>
@@ -326,7 +326,7 @@ declare const exports: {
           burialSiteFieldsContainerElement.insertAdjacentHTML(
             'beforeend',
             // eslint-disable-next-line no-secrets/no-secrets
-            /*html*/ `
+            /* html */ `
               <input name="burialSiteTypeFieldIds" type="hidden"
                 value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />
             `
@@ -549,7 +549,7 @@ declare const exports: {
     ) as HTMLElement
 
     if (burialSiteComments.length === 0) {
-      containerElement.innerHTML = /*html*/ `
+      containerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">There are no comments to display.</p>
         </div>
@@ -559,7 +559,7 @@ declare const exports: {
 
     const tableElement = document.createElement('table')
     tableElement.className = 'table is-fullwidth is-striped is-hoverable'
-    tableElement.innerHTML = /*html*/ `
+    tableElement.innerHTML = /* html */ `
       <thead>
         <tr>
           <th>Author</th>
@@ -576,7 +576,7 @@ declare const exports: {
       tableRowElement.dataset.burialSiteCommentId =
         burialSiteComment.burialSiteCommentId?.toString()
 
-      tableRowElement.innerHTML = /*html*/ `
+      tableRowElement.innerHTML = /* html */ `
         <td>
           ${cityssm.escapeHTML(burialSiteComment.recordCreate_userName ?? '')}
         </td>

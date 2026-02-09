@@ -128,7 +128,7 @@
         const contractFieldsContainerElement = document.querySelector('#container--contractFields');
         contractTypeIdElement.addEventListener('change', () => {
             if (contractTypeIdElement.value === '') {
-                contractFieldsContainerElement.innerHTML = /*html*/ `
+                contractFieldsContainerElement.innerHTML = /* html */ `
           <div class="message is-info">
             <p class="message-body">Select the contract type to load the available fields.</p>
           </div>
@@ -140,7 +140,7 @@
             }, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.contractTypeFields.length === 0) {
-                    contractFieldsContainerElement.innerHTML = /*html*/ `
+                    contractFieldsContainerElement.innerHTML = /* html */ `
               <div class="message is-info">
                 <p class="message-body">There are no additional fields for this contract type.</p>
               </div>
@@ -155,7 +155,7 @@
                     const fieldId = `contract--${fieldName}`;
                     const fieldElement = document.createElement('div');
                     fieldElement.className = 'field';
-                    fieldElement.innerHTML = /*html*/ `
+                    fieldElement.innerHTML = /* html */ `
               <label class="label" for="${cityssm.escapeHTML(fieldId)}"></label>
               <div class="control"></div>
             `;
@@ -163,7 +163,7 @@
                     if (contractTypeField.fieldType === 'select' ||
                         (contractTypeField.fieldValues ?? '') !== '') {
                         ;
-                        fieldElement.querySelector('.control').innerHTML = /*html*/ `
+                        fieldElement.querySelector('.control').innerHTML = /* html */ `
                 <div class="select is-fullwidth">
                   <select id="${cityssm.escapeHTML(fieldId)}" name="${cityssm.escapeHTML(fieldName)}">
                     <option value="">(Not Set)</option>
@@ -199,7 +199,7 @@
                 }
                 contractFieldsContainerElement.insertAdjacentHTML('beforeend', 
                 // eslint-disable-next-line no-secrets/no-secrets
-                /*html*/ `
+                /* html */ `
               <input
                 name="contractTypeFieldIds"
                 type="hidden"
@@ -291,7 +291,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, burialSiteSelectFormElement, (rawResponseJSON) => {
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.count === 0) {
-                    burialSiteSelectResultsElement.innerHTML = /*html*/ `
+                    burialSiteSelectResultsElement.innerHTML = /* html */ `
               <div class="message is-info">
                 <p class="message-body">No results.</p>
               </div>
@@ -308,7 +308,7 @@
                         burialSite.burialSiteId.toString();
                     panelBlockElement.dataset.burialSiteName = burialSite.burialSiteName;
                     // eslint-disable-next-line no-unsanitized/property
-                    panelBlockElement.innerHTML = /*html*/ `
+                    panelBlockElement.innerHTML = /* html */ `
               <div class="columns">
                 <div class="column">
                   ${cityssm.escapeHTML(burialSite.burialSiteName)}<br />

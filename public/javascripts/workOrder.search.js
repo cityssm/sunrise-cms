@@ -9,7 +9,7 @@
     function buildRelatedLiHTML(workOrder) {
         let relatedHTML = '';
         for (const burialSite of workOrder.workOrderBurialSites ?? []) {
-            relatedHTML += /*html*/ `
+            relatedHTML += /* html */ `
         <li title="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
             <i class="fa-solid fa-map-pin"
@@ -45,7 +45,7 @@
             }
         }
         if (relatedHTML !== '') {
-            relatedHTML = /*html*/ `
+            relatedHTML = /* html */ `
         <ul class="fa-ul ml-5 is-size-7">
           ${relatedHTML}
         </ul>
@@ -56,7 +56,7 @@
     function renderWorkOrders(rawResponseJSON) {
         const responseJSON = rawResponseJSON;
         if (responseJSON.workOrders.length === 0) {
-            searchResultsContainerElement.innerHTML = /*html*/ `
+            searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
           <p class="message-body">There are no work orders that meet the search criteria.</p>
         </div>
@@ -68,7 +68,7 @@
             const relatedHTML = buildRelatedLiHTML(workOrder);
             // eslint-disable-next-line no-unsanitized/method
             resultsTbodyElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
+            /* html */ `
           <tr class="avoid-page-break ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0 ? 'has-background-warning-light' : ''}">
             <td>
               <div class="columns is-mobile is-vcentered mb-0">
@@ -82,7 +82,7 @@
                 <div class="column is-narrow pb-0">
                   ${workOrder.workOrderMilestoneCount === 0
                 ? ''
-                : /*html*/ `
+                : /* html */ `
                         <span class="tag" title="Progress">
                           ${(workOrder.workOrderMilestoneCompletionCount ?? '').toString()}
                           /
@@ -114,7 +114,7 @@
                     <i class="fa-solid fa-stop" aria-label="${sunrise.escapedAliases.WorkOrderCloseDate}"></i>
                   </span>
                   ${workOrder.workOrderCloseDate === null
-                ? /*html*/ `
+                ? /* html */ `
                         <span class="has-text-grey">
                           (No ${sunrise.escapedAliases.WorkOrderCloseDate})
                         </span>
@@ -124,7 +124,7 @@
               </ul>
             </td>
             ${workOrderPrints.length > 0
-                ? /*html*/ `
+                ? /* html */ `
                   <td>
                     <a
                       class="button is-small"
@@ -141,7 +141,7 @@
         `);
         }
         // eslint-disable-next-line no-unsanitized/property
-        searchResultsContainerElement.innerHTML = /*html*/ `
+        searchResultsContainerElement.innerHTML = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
         <thead>
           <tr>
