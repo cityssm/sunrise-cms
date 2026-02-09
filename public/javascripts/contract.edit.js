@@ -452,10 +452,10 @@
     sunrise.initializeMinDateUpdate(document.querySelector('#contract--contractStartDateString'), document.querySelector('#contract--contractEndDateString'));
     sunrise.initializeUnlockFieldButtons(formElement);
     /*
-     * Funeral
+     * Services
      */
     document
-        .querySelector('#panelToggle--funeral')
+        .querySelector('#panelToggle--services')
         ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         clickEvent.currentTarget

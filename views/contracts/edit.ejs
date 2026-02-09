@@ -309,7 +309,7 @@
   </div>
 
   <%
-    const showFuneralSection = isCreate || 
+    const showServicesSection = isCreate || 
       (contract.funeralHomeId !== null && contract.funeralHomeId !== "") ||
       (contract.funeralDirectorName !== null && contract.funeralDirectorName !== "") ||
       (contract.funeralDateString !== null && contract.funeralDateString !== "") ||
@@ -323,12 +323,12 @@
         <div class="level-left">
           <div class="level-item">
             <h2 class="has-text-weight-bold">
-              <% if (showFuneralSection) { %>
-                Funeral
+              <% if (showServicesSection) { %>
+                Services
               <% } else { %>
-                <a class="has-text-white" id="panelToggle--funeral" href="#">
+                <a class="has-text-white" id="panelToggle--services" href="#">
                   <span class="icon is-small mr-2"><i class="fa-solid fa-caret-down"></i></span>
-                  Funeral
+                  Services
                 </a>
               <% } %>
             </h2>
@@ -341,7 +341,7 @@
         </div>
       </div>
     </div>
-    <div class="panel-block is-block <%= (showFuneralSection ? "" : " is-hidden") %>">
+    <div class="panel-block is-block <%= (showServicesSection ? "" : " is-hidden") %>">
       <div class="columns">
         <div class="column">
           <div class="field">

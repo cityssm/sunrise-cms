@@ -173,7 +173,7 @@
 </div>
 
 <%
-const displayFuneralPanel = 
+const displayServicesPanel = 
   (contract.funeralHomeName !== null) ||
   (contract.funeralDirectorName !== '') ||
   (contract.funeralDateString !== '') ||
@@ -181,13 +181,13 @@ const displayFuneralPanel =
   (contract.committalType !== null);
 %>
 
-<% if (displayFuneralPanel) { %>
+<% if (displayServicesPanel) { %>
 <div class="panel">
   <div class="panel-heading">
     <div class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
-          <h2 class="has-text-weight-bold">Funeral</h2>
+          <h2 class="has-text-weight-bold">Services</h2>
         </div>
       </div>
       <div class="level-right">

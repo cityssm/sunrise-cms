@@ -764,11 +764,11 @@ declare const exports: {
   sunrise.initializeUnlockFieldButtons(formElement)
 
   /*
-   * Funeral
+   * Services
    */
 
   document
-    .querySelector('#panelToggle--funeral')
+    .querySelector('#panelToggle--services')
     ?.addEventListener('click', (clickEvent) => {
       clickEvent.preventDefault()
       ;(clickEvent.currentTarget as HTMLElement)
