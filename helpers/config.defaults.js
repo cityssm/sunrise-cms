@@ -49,6 +49,7 @@ export const configDefaultValues = {
     'settings.burialSites.burialSiteNameSegments.includeCemeteryKey': false,
     'settings.burialSites.refreshImageChanges': false,
     'settings.contracts.burialSiteIdIsRequired': true,
+    'settings.contracts.contractEndDateIsAvailable': true,
     'settings.contracts.contractEndDateIsRequired': false,
     'settings.contracts.prints': ['screen/contract'],
     'settings.fees.taxPercentageDefault': 0,

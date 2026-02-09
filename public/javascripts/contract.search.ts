@@ -8,6 +8,8 @@ declare const cityssm: cityssmGlobal
 
 declare const exports: {
   sunrise: Sunrise
+
+  contractEndDateIsAvailable: boolean
 }
 ;(() => {
   const sunrise = exports.sunrise
@@ -126,10 +128,12 @@ declare const exports: {
     contractRowElement.className = 'avoid-page-break'
 
     // eslint-disable-next-line no-unsanitized/property
-    contractRowElement.innerHTML = /*html*/ `
-      <td class="has-width-1">
-        ${contractTimeHTML}
-      </td>
+    contractRowElement.innerHTML = /* html */ `
+      ${
+        exports.contractEndDateIsAvailable
+          ? `<td class="has-width-1">${contractTimeHTML}</td>`
+          : ''
+      }
       <td>
         <a class="has-text-weight-bold"
           href="${sunrise.getContractUrl(contract.contractId)}">
@@ -155,14 +159,20 @@ declare const exports: {
       <td>
         ${cityssm.escapeHTML(contract.contractStartDateString)}
       </td>
-      <td>
-        ${
-          contract.contractEndDate === null &&
-          contract.contractEndDateString === undefined
-            ? '<span class="has-text-grey-dark">(No End Date)</span>'
-            : contract.contractEndDateString
-        }
-      </td>
+      ${
+        exports.contractEndDateIsAvailable
+          ? /* html */ `
+            <td>
+              ${
+                contract.contractEndDate === null &&
+                contract.contractEndDateString === undefined
+                  ? '<span class="has-text-grey-dark">(No End Date)</span>'
+                  : contract.contractEndDateString
+              }
+            </td>
+          `
+          : ''
+      }
       <td>
         <ul class="fa-ul ml-5">${contactsHTML}</ul>
       </td>
@@ -216,17 +226,24 @@ declare const exports: {
       resultsTbodyElement.append(contractRowElement)
     }
 
-    searchResultsContainerElement.innerHTML = /*html*/ `
+    // eslint-disable-next-line no-unsanitized/property
+    searchResultsContainerElement.innerHTML = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
         <thead>
           <tr>
-            <th class="has-width-1">
-              <span class="is-sr-only">Contract Time</span>
-            </th>
+            ${
+              exports.contractEndDateIsAvailable
+                ? /* html */ `
+                  <th class="has-width-1">
+                    <span class="is-sr-only">Contract Time</span>
+                  </th>
+                `
+                : ''
+            }
             <th>Contract Type</th>
             <th>Burial Site</th>
             <th>Contract Date</th>
-            <th>End Date</th>
+            ${exports.contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
             <th>Contacts</th>
             <th class="has-width-1"><span class="is-sr-only">Fees and Transactions</span></th>
             <th class="has-width-1 is-hidden-print"><span class="is-sr-only">Print</span></th>

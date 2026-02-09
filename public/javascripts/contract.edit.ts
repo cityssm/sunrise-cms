@@ -738,28 +738,28 @@ declare const exports: {
 
   // Start Date
 
-  document
-    .querySelector('#contract--contractStartDateString')
-    ?.addEventListener('change', () => {
-      const endDateElement = document.querySelector(
-        '#contract--contractEndDateString'
-      ) as HTMLInputElement
+  const endDateElement = document.querySelector(
+    '#contract--contractEndDateString'
+  ) as HTMLInputElement | null
 
-      endDateElement.min = (
-        document.querySelector(
-          '#contract--contractStartDateString'
-        ) as HTMLInputElement
-      ).value
-    })
+  if (endDateElement !== null) {
+    document
+      .querySelector('#contract--contractStartDateString')
+      ?.addEventListener('change', () => {
+        endDateElement.min = (
+          document.querySelector(
+            '#contract--contractStartDateString'
+          ) as HTMLInputElement
+        ).value
+      })
 
-  sunrise.initializeMinDateUpdate(
-    document.querySelector(
-      '#contract--contractStartDateString'
-    ) as HTMLInputElement,
-    document.querySelector(
-      '#contract--contractEndDateString'
-    ) as HTMLInputElement
-  )
+    sunrise.initializeMinDateUpdate(
+      document.querySelector(
+        '#contract--contractStartDateString'
+      ) as HTMLInputElement,
+      endDateElement
+    )
+  }
 
   sunrise.initializeUnlockFieldButtons(formElement)
 

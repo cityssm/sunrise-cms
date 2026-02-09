@@ -218,6 +218,7 @@
               </span>
             </div>
           </div>
+          <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
           <div class="field">
             <label class="label" for="contract--contractEndDateString">End Date</label>
             <div class="control has-icons-left">
@@ -230,6 +231,7 @@
               </span>
             </div>
           </div>
+          <% } %>
         </div>
         <div class="column">
           <div id="container--contractFields">

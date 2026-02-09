@@ -101,10 +101,14 @@
             contractIcon = '<i class="fa-solid fa-play" title="Current Contract"></i>';
         }
         // eslint-disable-next-line no-unsanitized/property
-        rowElement.innerHTML = /*html*/ `
-      <td class="is-width-1 has-text-centered">
-        ${contractIcon}
-      </td>
+        rowElement.innerHTML = /* html */ `
+      ${exports.contractEndDateIsAvailable
+            ? /* html */ `
+            <td class="is-width-1 has-text-centered">
+              ${contractIcon}
+            </td>
+          `
+            : ''}
       <td>
         <a class="has-text-weight-bold" href="${sunrise.getContractUrl(contract.contractId)}">
           ${cityssm.escapeHTML(contract.contractType)}
@@ -118,7 +122,7 @@
         else {
             // eslint-disable-next-line no-unsanitized/method
             rowElement.insertAdjacentHTML('beforeend', 
-            /*html*/ `
+            /* html */ `
           <td>
             ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
             ${hasBurialSiteRecord
@@ -158,7 +162,7 @@
       `;
         }
         if (contract.funeralHomeName !== null) {
-            contactsHtml += /*html*/ `
+            contactsHtml += /* html */ `
         <li title="Funeral Home">
           <span class="fa-li">
             <i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i>
@@ -169,16 +173,20 @@
         }
         // eslint-disable-next-line no-unsanitized/method
         rowElement.insertAdjacentHTML('beforeend', 
-        /*html*/ `
+        /* html */ `
         <td>
           ${contract.contractStartDateString}
         </td>
-        <td>
-          ${contract.contractEndDate === null ||
-            contract.contractEndDate === undefined
-            ? '<span class="has-text-grey">(No End Date)</span>'
-            : contract.contractEndDateString}
-        </td>
+        ${exports.contractEndDateIsAvailable
+            ? /*html*/ `
+          <td>
+            ${contract.contractEndDate === null ||
+                contract.contractEndDate === undefined
+                ? '<span class="has-text-grey">(No End Date)</span>'
+                : contract.contractEndDateString}
+          </td>
+        `
+            : ''}
         <td>
           <ul class="fa-ul ml-5">
             ${contactsHtml}
@@ -213,15 +221,16 @@
       `;
             return;
         }
-        contractsContainerElement.innerHTML = /*html*/ `
+        // eslint-disable-next-line no-unsanitized/property
+        contractsContainerElement.innerHTML = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
-            <th class="has-width-1"></th>
+            ${exports.contractEndDateIsAvailable ? '<th class="has-width-1"></th>' : ''}
             <th>Contract Type</th>
             <th>Burial Site</th>
             <th>Contract Date</th>
-            <th>End Date</th>
+            ${exports.contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
             <th>Contacts</th>
             <th class="has-width-1"></th>
           </tr>
@@ -446,7 +455,8 @@
               `;
                     return;
                 }
-                searchResultsContainerElement.innerHTML = /*html*/ `
+                // eslint-disable-next-line no-unsanitized/property
+                searchResultsContainerElement.innerHTML = /* html */ `
               <table class="table is-fullwidth is-striped is-hoverable">
                 <thead>
                   <tr>
@@ -454,7 +464,7 @@
                     <th>Contract Type</th>
                     <th>Burial Site</th>
                     <th>Contract Date</th>
-                    <th>End Date</th>
+                    ${exports.contractEndDateIsAvailable ? '<th>End Date</th>' : ''}
                     <th>Interments</th>
                   </tr>
                 </thead>
@@ -505,12 +515,16 @@
                   <td>
                     ${contract.contractStartDateString}
                   </td>
-                  <td>
-                    ${contract.contractEndDate === null ||
-                        contract.contractEndDate === undefined
-                        ? '<span class="has-text-grey">(No End Date)</span>'
-                        : contract.contractEndDateString}
-                  </td>
+                  ${exports.contractEndDateIsAvailable
+                        ? /*html*/ `
+                        <td>
+                          ${contract.contractEndDate === null ||
+                            contract.contractEndDate === undefined
+                            ? '<span class="has-text-grey">(No End Date)</span>'
+                            : contract.contractEndDateString}
+                        </td>
+                      `
+                        : ''}
                   <td>${intermentsHtml}</td>
                 `);
                     rowElement

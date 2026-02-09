@@ -95,6 +95,7 @@ export interface Config {
 
     contracts: {
       burialSiteIdIsRequired?: boolean
+      contractEndDateIsAvailable?: boolean
       contractEndDateIsRequired?: boolean
       prints?: string[]
     }

@@ -357,6 +357,8 @@
     exports.burialSiteStatuses = <%- JSON.stringify(burialSiteStatuses) %>;
     exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
     exports.workOrderWorkDayRanges = <%- JSON.stringify(workOrderWorkDayRanges) %>;
+
+    exports.contractEndDateIsAvailable = <%- configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable') %>;
 </script>
 <% } %>
 <script src="<%= urlPrefix %>/javascripts/workOrder.edit.js"></script>

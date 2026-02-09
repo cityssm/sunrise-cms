@@ -145,6 +145,7 @@
           <strong>Contract Date</strong><br />
           <%= contract.contractStartDateString %>
         </p>
+        <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
         <p>
           <strong>End Date</strong><br />
           <% if (contract.contractEndDateString === "") { %>
@@ -153,6 +154,7 @@
           <%= contract.contractEndDateString %>
           <% } %>
         </p>
+        <% } %>
       </div>
       <% if (contract.contractFields.length > 0) { %>
       <div class="column">

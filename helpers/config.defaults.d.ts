@@ -52,6 +52,7 @@ export declare const configDefaultValues: {
     'settings.burialSites.burialSiteNameSegments.includeCemeteryKey': boolean;
     'settings.burialSites.refreshImageChanges': boolean;
     'settings.contracts.burialSiteIdIsRequired': boolean;
+    'settings.contracts.contractEndDateIsAvailable': boolean;
     'settings.contracts.contractEndDateIsRequired': boolean;
     'settings.contracts.prints': string[];
     'settings.fees.taxPercentageDefault': number;

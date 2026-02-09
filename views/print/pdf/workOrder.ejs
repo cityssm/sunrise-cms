@@ -43,7 +43,9 @@
           <th>Contract Type</th>
           <th>Burial Site</th>
           <th>Contract Date</th>
+          <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
           <th>End Date</th>
+          <% } %>
           <th>Interments</th>
         </tr>
       </thead>
@@ -53,7 +55,9 @@
           <td><%= contract.contractType %></td>
           <td><%= contract.burialSiteName %></td>
           <td><%= contract.contractStartDateString %></td>
+          <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
           <td><%= contract.contractEndDateString %></td>
+          <% } %>
           <td>
             <% for (const interment of contract.contractInterments) { %>
             <%= interment.deceasedName %><br />

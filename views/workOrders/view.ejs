@@ -165,79 +165,87 @@
                 </p>
               </div>
             <% } else { %>
-              <table class="table is-fullwidth is-striped is-hoverable">
-                <thead>
-                  <tr>
-                    <th class="has-width-1"></th>
-                    <th>Contract Type</th>
-                    <th>Burial Site</th>
-                    <th>Contract Date</th>
-                    <th>End Date</th>
-                    <th>Contacts</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% for (const contract of workOrder.workOrderContracts) { %>
-                    <tr>
-                      <td class="has-text-centered">
-                        <% if (contract.contractIsFuture) { %>
-                          <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
-                        <% } else if (contract.contractIsActive) { %>
-                          <i class="fa-solid fa-play" title="Current Contract"></i>
-                        <% } else { %>
-                          <i class="fa-solid fa-stop" title="Previous Contract"></i>
-                        <% } %>
-                      </td>
-                      <td>
-                        <a class="has-text-weight-bold"
-                          href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
-                          <%= contract.contractType %>
-                        </a><br />
-                        <span class="is-size-7">
-                          #<%= contract.contractId %>
-                        </span>
-                      </td>
-                      <td>
-                          <% if (contract.burialSiteId) { %>
-                              <%= contract.burialSiteName %>
-                          <% } else { %>
-                              <span class="has-text-grey">(No Burial Site)</span>
-                          <% } %>
-                      </td>
-                      <td><%= contract.contractStartDateString %></td>
-                      <td>
-                        <% if (contract.contractEndDate) { %>
-                          <%= contract.contractEndDateString %>
-                        <% } else { %>
-                          <span class="has-text-grey">(No End Date)</span>
-                        <% } %>
-                      </td>
-                      <td>
-                        <ul class="fa-ul ml-5">
-                          <% for (const interment of contract.contractInterments) { %>
-                            <li title="Recipient">
-                              <span class="fa-li"><i class="fa-solid fa-user" aria-label="Recipient"></i></span>
-                              <%= interment.deceasedName %>
-                            </li>
-                          <% } %>
-                          <% if (contract.purchaserName !== '') { %>
-                            <li title="Purchaser">
-                              <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar" aria-label="Purchase"></i></span>
-                              <%= contract.purchaserName %>
-                            </li>
-                          <% } %>
-                          <% if (contract.funeralHomeName) { %>
-                            <li title="Funeral Home">
-                              <span class="fa-li"><i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i></span>
-                              <%= contract.funeralHomeName %>
-                            </li>
-                          <% } %>
-                        </ul>
-                      </td>
-                    </tr>
+            <table class="table is-fullwidth is-striped is-hoverable">
+              <thead>
+                <tr>
+                  <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
+                  <th class="has-width-1"></th>
                   <% } %>
-                </tbody>
-              </table>
+                  <th>Contract Type</th>
+                  <th>Burial Site</th>
+                  <th>Contract Date</th>
+                  <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
+                  <th>End Date</th>
+                  <% } %>
+                  <th>Contacts</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (const contract of workOrder.workOrderContracts) { %>
+                <tr>
+                  <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
+                  <td class="has-text-centered">
+                    <% if (contract.contractIsFuture) { %>
+                      <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
+                    <% } else if (contract.contractIsActive) { %>
+                      <i class="fa-solid fa-play" title="Current Contract"></i>
+                    <% } else { %>
+                      <i class="fa-solid fa-stop" title="Previous Contract"></i>
+                    <% } %>
+                  </td>
+                  <% } %>
+                  <td>
+                    <a class="has-text-weight-bold"
+                      href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
+                      <%= contract.contractType %>
+                    </a><br />
+                    <span class="is-size-7">
+                      #<%= contract.contractId %>
+                    </span>
+                  </td>
+                  <td>
+                    <% if (contract.burialSiteId) { %>
+                      <%= contract.burialSiteName %>
+                    <% } else { %>
+                      <span class="has-text-grey">(No Burial Site)</span>
+                    <% } %>
+                  </td>
+                  <td><%= contract.contractStartDateString %></td>
+                  <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
+                  <td>
+                    <% if (contract.contractEndDate) { %>
+                      <%= contract.contractEndDateString %>
+                    <% } else { %>
+                      <span class="has-text-grey">(No End Date)</span>
+                    <% } %>
+                  </td>
+                  <% } %>
+                  <td>
+                    <ul class="fa-ul ml-5">
+                      <% for (const interment of contract.contractInterments) { %>
+                        <li title="Recipient">
+                          <span class="fa-li"><i class="fa-solid fa-user" aria-label="Recipient"></i></span>
+                          <%= interment.deceasedName %>
+                        </li>
+                      <% } %>
+                      <% if (contract.purchaserName !== '') { %>
+                        <li title="Purchaser">
+                          <span class="fa-li"><i class="fa-solid fa-hand-holding-dollar" aria-label="Purchase"></i></span>
+                          <%= contract.purchaserName %>
+                        </li>
+                      <% } %>
+                      <% if (contract.funeralHomeName) { %>
+                        <li title="Funeral Home">
+                          <span class="fa-li"><i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i></span>
+                          <%= contract.funeralHomeName %>
+                        </li>
+                      <% } %>
+                    </ul>
+                  </td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
             <% } %>
           </div>
           <div class="<%= (tabToSelect === 'burialSites' ? '' : 'is-hidden') %>" id="relatedTab--burialSites">

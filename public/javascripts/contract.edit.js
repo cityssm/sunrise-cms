@@ -443,13 +443,15 @@
         }
     });
     // Start Date
-    document
-        .querySelector('#contract--contractStartDateString')
-        ?.addEventListener('change', () => {
-        const endDateElement = document.querySelector('#contract--contractEndDateString');
-        endDateElement.min = document.querySelector('#contract--contractStartDateString').value;
-    });
-    sunrise.initializeMinDateUpdate(document.querySelector('#contract--contractStartDateString'), document.querySelector('#contract--contractEndDateString'));
+    const endDateElement = document.querySelector('#contract--contractEndDateString');
+    if (endDateElement !== null) {
+        document
+            .querySelector('#contract--contractStartDateString')
+            ?.addEventListener('change', () => {
+            endDateElement.min = document.querySelector('#contract--contractStartDateString').value;
+        });
+        sunrise.initializeMinDateUpdate(document.querySelector('#contract--contractStartDateString'), endDateElement);
+    }
     sunrise.initializeUnlockFieldButtons(formElement);
     /*
      * Services
