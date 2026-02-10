@@ -188,9 +188,10 @@ app.get(`${urlPrefix}/logout`, (request, response) => {
 /*
  * CSRF PROTECTION
  */
-const { doubleCsrfProtection, // This is the default CSRF protection middleware.
-generateCsrfToken // Use this in your routes to provide a CSRF token.
- } = doubleCsrf({
+const {
+  doubleCsrfProtection, // This is the default CSRF protection middleware.
+  generateCsrfToken // Use this in your routes to provide a CSRF token.
+} = doubleCsrf({
     getSecret: (_request) => getCsrfSecret(), // return a secret for the request
     getSessionIdentifier: (request) => request.session.id // return the requests unique identifier
 });

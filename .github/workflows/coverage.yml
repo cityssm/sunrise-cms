@@ -25,6 +25,12 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: 'npm'
 
+      - name: Set up EditorConfig checker
+        uses: editorconfig-checker/action-editorconfig-checker@v2.1.0
+
+      - name: Run editorconfig-checker
+        run: editorconfig-checker
+
       - name: Install Application
         run: |
           npm ci
