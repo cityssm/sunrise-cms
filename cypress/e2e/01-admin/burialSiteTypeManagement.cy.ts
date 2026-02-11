@@ -70,26 +70,21 @@ describe('Admin - Burial Site Type Management', () => {
       // Update the burial site type name
       const updatedName = `${burialSiteType.burialSiteType} Updated`
 
-      cy.get(".modal input[name='burialSiteType']")
-        .clear()
-        .type(updatedName)
+      cy.get(".modal input[name='burialSiteType']").clear().type(updatedName)
 
       cy.get(".modal button[type='submit']").click()
 
       cy.wait(ajaxDelayMillis)
 
       // Verify the burial site type is updated
-      cy.get(burialSiteTypeTitleSelector).should(
-        'contain.text',
-        updatedName
-      )
+      cy.get(burialSiteTypeTitleSelector).should('contain.text', updatedName)
     })
   })
 
   it('Removes a burial site type', () => {
     cy.fixture('burialSiteType.json').then((burialSiteType: BurialSiteType) => {
       const nameToDelete = `${burialSiteType.burialSiteType} Updated`
-      
+
       // Find and click the delete button for our test burial site type
       cy.get(burialSiteTypeTitleSelector)
         .contains(nameToDelete)

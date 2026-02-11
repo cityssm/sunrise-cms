@@ -331,7 +331,7 @@ interface GPSPosition {
                   </a>
                 </p>
                 <p class="subtitle is-7">
-                  ${cityssm.escapeHTML(site.cemeteryName ?? 'No Cemetery')} - 
+                  ${cityssm.escapeHTML(site.cemeteryName ?? 'No Cemetery')} -
                   ${cityssm.escapeHTML(site.burialSiteType ?? 'No Type')}
                 </p>
                 <div class="is-size-7" id="coords-${site.burialSiteId}">
@@ -341,7 +341,7 @@ interface GPSPosition {
               </div>
             </div>
             <footer class="card-footer">
-              <button class="card-footer-item button is-primary is-small" 
+              <button class="card-footer-item button is-primary is-small"
                 id="capture-${site.burialSiteId}"
                 data-burial-site-id="${site.burialSiteId}"
               >

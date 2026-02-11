@@ -45,9 +45,7 @@ describe('Admin - Burial Site Type Management', () => {
             cy.checkA11y();
             // Update the burial site type name
             const updatedName = `${burialSiteType.burialSiteType} Updated`;
-            cy.get(".modal input[name='burialSiteType']")
-                .clear()
-                .type(updatedName);
+            cy.get(".modal input[name='burialSiteType']").clear().type(updatedName);
             cy.get(".modal button[type='submit']").click();
             cy.wait(ajaxDelayMillis);
             // Verify the burial site type is updated

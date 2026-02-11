@@ -184,12 +184,12 @@ declare const exports: {
     bodyCapacityElement.max =
       bodyCapacityMax === ''
         ? exports.bodyCapacityMaxDefault
-        : bodyCapacityMax ?? ''
+        : (bodyCapacityMax ?? '')
 
     bodyCapacityElement.placeholder =
       bodyCapacityMax === ''
         ? exports.bodyCapacityMaxDefault
-        : bodyCapacityMax ?? ''
+        : (bodyCapacityMax ?? '')
 
     const crematedCapacityMax =
       burialSiteTypeIdElement.selectedOptions[0].dataset.crematedCapacityMax
@@ -201,12 +201,12 @@ declare const exports: {
     crematedCapacityElement.max =
       crematedCapacityMax === ''
         ? exports.crematedCapacityMaxDefault
-        : crematedCapacityMax ?? ''
+        : (crematedCapacityMax ?? '')
 
     crematedCapacityElement.placeholder =
       crematedCapacityMax === ''
         ? exports.crematedCapacityMaxDefault
-        : crematedCapacityMax ?? ''
+        : (crematedCapacityMax ?? '')
   }
 
   if (isCreate) {
@@ -467,7 +467,7 @@ declare const exports: {
           // eslint-disable-next-line unicorn/prefer-math-min-max
           (burialSiteComment.commentDateString ?? '') <= currentDateString
             ? currentDateString
-            : burialSiteComment.commentDateString ?? ''
+            : (burialSiteComment.commentDateString ?? '')
         ;(
           modalElement.querySelector(
             '#burialSiteCommentEdit--commentTimeString'
