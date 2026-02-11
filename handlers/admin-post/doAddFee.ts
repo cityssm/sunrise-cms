@@ -16,7 +16,7 @@ export default function handler(request: Request, response: Response): void {
     database = sqlite(sunriseDB)
 
     const feeId = addFee(
-      request.body as AddFeeForm, 
+      request.body as AddFeeForm,
       request.session.user as User,
       database
     )

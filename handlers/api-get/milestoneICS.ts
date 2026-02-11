@@ -37,7 +37,7 @@ function buildEventSummary(milestone: WorkOrderMilestone): string {
     (milestone.workOrderMilestoneCompletionDate ? '✔ ' : '') +
     ((milestone.workOrderMilestoneTypeId ?? -1) === -1
       ? milestone.workOrderMilestoneDescription
-      : milestone.workOrderMilestoneType ?? ''
+      : (milestone.workOrderMilestoneType ?? '')
     ).trim()
 
   let intermentCount = 0
@@ -142,7 +142,7 @@ function buildEventDescriptionHTML_lots(
     const urlRoot = getApplicationUrl(request)
 
     /* eslint-disable html/require-closing-tags */
-    
+
     descriptionHTML += /* html */ `
       <h2>
         Related Burial Sites

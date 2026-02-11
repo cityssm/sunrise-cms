@@ -34,7 +34,7 @@ export default async function handler(
     response.redirect(
       `${getConfigProperty('reverseProxy.urlPrefix')}/dashboard/?error=printConfigNotFound`
     )
-    
+
     return
   }
 

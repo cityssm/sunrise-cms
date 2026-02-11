@@ -122,7 +122,7 @@
                   value="${cityssm.escapeHTML(burialSiteStatus.burialSiteStatus)}"
                   maxlength="100"
                   aria-label="Burial Site Status"
-                  required 
+                  required
                 />
               </div>
               <div class="control">

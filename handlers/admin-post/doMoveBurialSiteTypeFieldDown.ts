@@ -23,7 +23,7 @@ export default function handler(
 
   response.json({
     success,
-    
+
     burialSiteTypes
   })
 }

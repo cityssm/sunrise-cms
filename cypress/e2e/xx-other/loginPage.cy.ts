@@ -37,7 +37,7 @@ describe('Login Page', () => {
 
   it('Redirects to login when invalid credentials are used', () => {
     cy.get("form [name='userName']").type('*testUser')
-    
+
     // eslint-disable-next-line @cspell/spellchecker
     cy.get("form [name='password']").type('b@dP@ssword')
 

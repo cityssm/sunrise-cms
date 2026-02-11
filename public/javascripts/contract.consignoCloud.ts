@@ -275,7 +275,7 @@ declare const exports: {
           bulmaJS.alert({
             contextualColorName: 'danger',
             title: 'ConsignO Cloud Error',
-            
+
             message: responseJSON.errorMessage
           })
 
@@ -286,7 +286,6 @@ declare const exports: {
   }
 
   function swapSignerNames(event: Event): void {
-
     event.preventDefault()
 
     if (modalElement === undefined) {
@@ -320,7 +319,6 @@ declare const exports: {
     }
 
     cityssm.openHtmlModal('contract-sendToConsignoCloud', {
-
       onshown(_modalElement, _closeModalFunction) {
         modalElement = _modalElement
         closeModalFunction = _closeModalFunction

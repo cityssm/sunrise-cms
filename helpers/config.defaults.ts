@@ -116,7 +116,7 @@ export const configDefaultValues = {
     | 'inline',
 
   'settings.databaseBackup.taskIsEnabled': false,
-  
+
   'settings.databaseBackup.backupHour': 2,
   'settings.databaseBackup.deleteAgeDays': 0,
 
@@ -144,7 +144,9 @@ export const configDefaultValues = {
 
   'integrations.ntfy.integrationIsEnabled': false,
   'integrations.ntfy.server': '',
-  'integrations.ntfy.topics': {} as unknown as Partial<Record<NtfyTopic, string>>,
+  'integrations.ntfy.topics': {} as unknown as Partial<
+    Record<NtfyTopic, string>
+  >
 }
 
 export default configDefaultValues

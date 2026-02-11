@@ -79,7 +79,7 @@ declare const exports: {
         <td class="has-text-right">
           <div class="buttons is-right">
             <button
-              class="button is-small is-primary" 
+              class="button is-small is-primary"
               data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
               data-cy="edit-attachment"
               title="Edit Attachment"
@@ -89,7 +89,7 @@ declare const exports: {
               </span>
             </button>
             <button
-              class="button is-small is-danger" 
+              class="button is-small is-danger"
               data-attachment-id="${cityssm.escapeHTML(contractAttachmentId)}"
               data-cy="delete-attachment"
               title="Delete Attachment"
