@@ -15,8 +15,9 @@ insert_final_newline = true
 insert_final_newline = true
 trim_trailing_whitespace = false
 
-[*.cmd]
+[*.{bat,cmd,ps1}]
 end_of_line = crlf
 
-[*.ps1]
-end_of_line = crlf
+# Compiled JavaScript files should not be edited directly, so we unset the indent_size for them.
+[*.js]
+indent_size = unset
