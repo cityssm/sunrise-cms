@@ -13,7 +13,7 @@ describe('Update Log', () => {
     cy.visit('/dashboard/updateLog')
     cy.location('pathname').should('equal', '/dashboard/updateLog')
     cy.wait(ajaxDelayMillis)
-    
+
     cy.injectAxe()
     cy.checkA11y()
   })

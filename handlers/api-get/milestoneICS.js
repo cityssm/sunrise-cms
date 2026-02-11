@@ -18,7 +18,7 @@ function buildEventSummary(milestone) {
     let summary = (milestone.workOrderMilestoneCompletionDate ? '✔ ' : '') +
         ((milestone.workOrderMilestoneTypeId ?? -1) === -1
             ? milestone.workOrderMilestoneDescription
-            : milestone.workOrderMilestoneType ?? '').trim();
+            : (milestone.workOrderMilestoneType ?? '')).trim();
     let intermentCount = 0;
     for (const contract of milestone.workOrderContracts ?? []) {
         for (const interment of contract.contractInterments ?? []) {

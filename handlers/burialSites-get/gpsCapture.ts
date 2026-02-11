@@ -11,13 +11,12 @@ export default function handler(request: Request, response: Response): void {
 
   response.render('burialSites/gpsCapture', {
     headTitle: 'GPS Coordinate Capture',
-    
+
     burialSiteStatuses,
     burialSiteTypes,
     cemeteries,
-    
+
     cemeteryId: request.query.cemeteryId,
     burialSiteTypeId: request.query.burialSiteTypeId
   })
 }
-

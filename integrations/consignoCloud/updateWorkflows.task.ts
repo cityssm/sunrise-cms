@@ -44,7 +44,7 @@ const scheduledTask = new ScheduledTask(taskName, updateConsignoWorkflows, {
     minute: 0,
     second: 0
   },
-  
+
   minimumIntervalMillis: minutesToMillis(10),
   startTask: true
 })

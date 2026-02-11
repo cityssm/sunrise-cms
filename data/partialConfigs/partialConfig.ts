@@ -11,11 +11,11 @@ export const config: Config = {
     contracts: {},
     fees: {},
     workOrders: {},
-    
+
     printPdf: {},
-    
+
     adminCleanup: {},
-    
+
     databaseBackup: {
       taskIsEnabled: false
     }

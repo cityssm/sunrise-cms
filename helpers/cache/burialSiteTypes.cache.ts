@@ -1,5 +1,5 @@
 import getBurialSiteTypesFromDatabase from '../../database/getBurialSiteTypes.js'
-import type { BurialSiteType } from "../../types/record.types.js"
+import type { BurialSiteType } from '../../types/record.types.js'
 
 let burialSiteTypes: BurialSiteType[] | undefined
 
@@ -13,7 +13,9 @@ export function getCachedBurialSiteTypeById(
   )
 }
 
-export function getCachedBurialSiteTypes(includeDeleted = false): BurialSiteType[] {
+export function getCachedBurialSiteTypes(
+  includeDeleted = false
+): BurialSiteType[] {
   burialSiteTypes ??= getBurialSiteTypesFromDatabase(includeDeleted)
   return burialSiteTypes
 }

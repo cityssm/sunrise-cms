@@ -101,7 +101,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
           else 'update' end as updateType,
         r.burialSiteName as displayRecordId,
         r.burialSiteId as recordId,
-        coalesce(t.burialSiteType, 'Burial Site') || 
+        coalesce(t.burialSiteType, 'Burial Site') ||
         case when s.burialSiteStatus is not null then ' (' || s.burialSiteStatus || ')' else '' end as recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_userName,
@@ -143,7 +143,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
           else 'update' end as updateType,
         r.contractId as displayRecordId,
         r.contractId as recordId,
-        'Contract Comment: ' || substr(r.comment, 1, 100) || 
+        'Contract Comment: ' || substr(r.comment, 1, 100) ||
         case when length(r.comment) > 100 then '...' else '' end as recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_userName,
@@ -163,7 +163,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
           else 'update' end as updateType,
         w.workOrderNumber as displayRecordId,
         r.workOrderId as recordId,
-        'Work Order Comment: ' || substr(r.comment, 1, 100) || 
+        'Work Order Comment: ' || substr(r.comment, 1, 100) ||
         case when length(r.comment) > 100 then '...' else '' end as recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_userName,
@@ -185,7 +185,7 @@ export default function getRecordUpdateLog(filters, options, connectedDatabase) 
           else 'update' end as updateType,
         b.burialSiteName as displayRecordId,
         r.burialSiteId as recordId,
-        'Burial Site Comment: ' || substr(r.comment, 1, 100) || 
+        'Burial Site Comment: ' || substr(r.comment, 1, 100) ||
         case when length(r.comment) > 100 then '...' else '' end as recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_userName,

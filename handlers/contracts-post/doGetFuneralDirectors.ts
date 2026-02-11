@@ -13,7 +13,7 @@ export default function handler(
 
   response.json({
     success: true,
-    
+
     funeralDirectorNames
   })
 }

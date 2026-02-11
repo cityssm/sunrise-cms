@@ -12,7 +12,7 @@ describe('Work Order iCalendar Integration', () => {
   it('Has no detectable accessibility issues', () => {
     cy.visit('/workOrders/ical')
     cy.location('pathname').should('equal', '/workOrders/ical')
-    
+
     cy.injectAxe()
     cy.checkA11y()
   })

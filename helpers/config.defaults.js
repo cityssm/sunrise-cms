@@ -78,6 +78,6 @@ export const configDefaultValues = {
     // Ntfy
     'integrations.ntfy.integrationIsEnabled': false,
     'integrations.ntfy.server': '',
-    'integrations.ntfy.topics': {},
+    'integrations.ntfy.topics': {}
 };
 export default configDefaultValues;

@@ -10,7 +10,7 @@ export default function handler(
   response: Response
 ): void {
   let userName = request.body.userName ?? ''
-  
+
   if (typeof userName === 'string') {
     userName = userName.trim()
   }

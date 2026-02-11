@@ -17,7 +17,7 @@ export default function handler(
 
   response.json({
     success,
-    
+
     burialSiteStatuses
   })
 }

@@ -1,6 +1,9 @@
 import getContractTypeFieldsFromDatabase from '../../database/getContractTypeFields.js'
 import getContractTypesFromDatabase from '../../database/getContractTypes.js'
-import type { ContractType, ContractTypeField } from '../../types/record.types.js'
+import type {
+  ContractType,
+  ContractTypeField
+} from '../../types/record.types.js'
 import { getConfigProperty } from '../config.helpers.js'
 
 let contractTypes: ContractType[] | undefined
@@ -34,7 +37,9 @@ export function getCachedContractTypeById(
   )
 }
 
-export function getCachedContractTypePrintsById(contractTypeId: number): string[] {
+export function getCachedContractTypePrintsById(
+  contractTypeId: number
+): string[] {
   const contractType = getCachedContractTypeById(contractTypeId)
 
   if (

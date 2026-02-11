@@ -109,7 +109,7 @@ declare const exports: {
     const siteUrl = sunrise.getBurialSiteUrl(site.burialSiteId)
 
     /* eslint-disable html/require-closing-tags */
-    
+
     let html = /* html */ `
       <div class="content is-small">
         <p class="has-text-weight-bold mb-2">

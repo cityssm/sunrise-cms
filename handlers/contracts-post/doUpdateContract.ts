@@ -8,14 +8,11 @@ export default function handler(
   request: Request<unknown, unknown, UpdateContractForm>,
   response: Response
 ): void {
-  const success = updateContract(
-    request.body,
-    request.session.user as User
-  )
+  const success = updateContract(request.body, request.session.user as User)
 
   response.json({
     success,
-    
+
     contractId: request.body.contractId
   })
 }

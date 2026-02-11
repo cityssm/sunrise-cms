@@ -114,7 +114,7 @@ export default async function getWorkOrderMilestones(
     left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId
     left join WorkOrders w on m.workOrderId = w.workOrderId
     left join WorkOrderTypes wt on w.workOrderTypeId = wt.workOrderTypeId
-    
+
     ${sqlWhereClause}
     ${orderByClause}`
 

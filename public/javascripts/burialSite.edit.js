@@ -101,21 +101,21 @@
         bodyCapacityElement.max =
             bodyCapacityMax === ''
                 ? exports.bodyCapacityMaxDefault
-                : bodyCapacityMax ?? '';
+                : (bodyCapacityMax ?? '');
         bodyCapacityElement.placeholder =
             bodyCapacityMax === ''
                 ? exports.bodyCapacityMaxDefault
-                : bodyCapacityMax ?? '';
+                : (bodyCapacityMax ?? '');
         const crematedCapacityMax = burialSiteTypeIdElement.selectedOptions[0].dataset.crematedCapacityMax;
         const crematedCapacityElement = document.querySelector('#burialSite--crematedCapacity');
         crematedCapacityElement.max =
             crematedCapacityMax === ''
                 ? exports.crematedCapacityMaxDefault
-                : crematedCapacityMax ?? '';
+                : (crematedCapacityMax ?? '');
         crematedCapacityElement.placeholder =
             crematedCapacityMax === ''
                 ? exports.crematedCapacityMaxDefault
-                : crematedCapacityMax ?? '';
+                : (crematedCapacityMax ?? '');
     }
     if (isCreate) {
         const burialSiteFieldsContainerElement = document.querySelector('#container--burialSiteFields');
@@ -286,7 +286,7 @@
                     // eslint-disable-next-line unicorn/prefer-math-min-max
                     (burialSiteComment.commentDateString ?? '') <= currentDateString
                         ? currentDateString
-                        : burialSiteComment.commentDateString ?? '';
+                        : (burialSiteComment.commentDateString ?? '');
                 modalElement.querySelector('#burialSiteCommentEdit--commentTimeString').value = burialSiteComment.commentTimeString ?? '';
             },
             onshown(modalElement, closeModalFunction) {

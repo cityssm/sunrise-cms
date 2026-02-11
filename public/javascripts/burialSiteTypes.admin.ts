@@ -384,7 +384,7 @@ type ResponseJSON =
         contextualColorName: 'warning',
         title: 'Delete Field',
 
-        message: `Are you sure you want to delete this field? 
+        message: `Are you sure you want to delete this field?
             Note that historical records that make use of this field will not be affected.`,
         okButton: {
           text: 'Yes, Delete Field',
@@ -411,7 +411,7 @@ type ResponseJSON =
           modalElement.querySelector(
             '#burialSiteTypeFieldEdit--isRequired'
           ) as HTMLSelectElement
-        ).value = burialSiteTypeField.isRequired ?? false ? '1' : '0'
+        ).value = (burialSiteTypeField.isRequired ?? false) ? '1' : '0'
 
         fieldTypeElement = modalElement.querySelector(
           '#burialSiteTypeFieldEdit--fieldType'

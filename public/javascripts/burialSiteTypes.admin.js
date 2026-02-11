@@ -196,7 +196,7 @@
             bulmaJS.confirm({
                 contextualColorName: 'warning',
                 title: 'Delete Field',
-                message: `Are you sure you want to delete this field? 
+                message: `Are you sure you want to delete this field?
             Note that historical records that make use of this field will not be affected.`,
                 okButton: {
                     text: 'Yes, Delete Field',
@@ -209,7 +209,7 @@
                 sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#burialSiteTypeFieldEdit--burialSiteTypeFieldId').value = burialSiteTypeField.burialSiteTypeFieldId.toString();
                 modalElement.querySelector('#burialSiteTypeFieldEdit--burialSiteTypeField').value = burialSiteTypeField.burialSiteTypeField ?? '';
-                modalElement.querySelector('#burialSiteTypeFieldEdit--isRequired').value = burialSiteTypeField.isRequired ?? false ? '1' : '0';
+                modalElement.querySelector('#burialSiteTypeFieldEdit--isRequired').value = (burialSiteTypeField.isRequired ?? false) ? '1' : '0';
                 fieldTypeElement = modalElement.querySelector('#burialSiteTypeFieldEdit--fieldType');
                 fieldTypeElement.value = burialSiteTypeField.fieldType;
                 minLengthInputElement = modalElement.querySelector('#burialSiteTypeFieldEdit--minLength');
