@@ -227,16 +227,12 @@ declare const exports: {
       tableRowElement
         .querySelector('form')
         ?.addEventListener('submit', updateServiceType)
-      ;(
-        tableRowElement.querySelector(
-          '.button--moveServiceTypeUp'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveServiceType)
-      ;(
-        tableRowElement.querySelector(
-          '.button--moveServiceTypeDown'
-        ) as HTMLButtonElement
-      ).addEventListener('click', moveServiceType)
+
+      for (const moveButton of tableRowElement.querySelectorAll(
+        '.button--moveServiceTypeUp, .button--moveServiceTypeDown'
+      )) {
+        moveButton.addEventListener('click', moveServiceType)
+      }
 
       tableRowElement
         .querySelector('.button--deleteServiceType')
