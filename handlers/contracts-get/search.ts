@@ -4,6 +4,7 @@ import getCemeteries from '../../database/getCemeteries.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js'
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
 import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js'
+import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js'
 
 export default function handler(
   request: Request<
@@ -39,6 +40,7 @@ export default function handler(
   const burialSiteTypes = getCachedBurialSiteTypes()
   const contractTypes = getCachedContractTypes()
   const funeralHomes = getFuneralHomes()
+  const serviceTypes = getCachedServiceTypes()
 
   response.render('contracts/search', {
     headTitle: 'Contract Search',
@@ -50,6 +52,7 @@ export default function handler(
     cemeteries,
     contractTypes,
     funeralHomes,
+    serviceTypes,
 
     error
   })

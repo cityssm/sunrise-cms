@@ -15,6 +15,7 @@ export default async function handler(
 
     includeFees: true,
     includeInterments: true,
+    includeServiceTypes: true,
     includeTransactions: true
   })
 
