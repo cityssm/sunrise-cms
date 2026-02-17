@@ -148,8 +148,8 @@ declare const exports: {
             return serviceTypes.length === 0
               ? '<span class="has-text-grey-dark is-size-7">(None)</span>'
               : serviceTypes
-                  .map((st) => cityssm.escapeHTML(st.serviceType))
-                  .join(', ')
+                  .map((st) => `<span class="tag">${cityssm.escapeHTML(st.serviceType)}</span>`)
+                  .join(' ')
           })()
         }
       </td>
