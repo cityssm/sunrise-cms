@@ -21,7 +21,7 @@ import {
   getDeceasedNameWhereClause,
   getPurchaserNameWhereClause
 } from '../helpers/functions.sqlFilters.js'
-import type { Contract } from '../types/record.types.js'
+import type { Contract, ServiceType } from '../types/record.types.js'
 
 import getContractFees from './getContractFees.js'
 import getContractInterments from './getContractInterments.js'
@@ -48,6 +48,8 @@ export interface GetContractsFilters {
   funeralHomeId?: number | string
   funeralTime?: '' | 'upcoming'
 
+  serviceTypeId?: number | string
+
   notWorkOrderId?: number | string
   workOrderId?: number | string
 
@@ -70,6 +72,7 @@ export interface GetContractsOptions {
 
   includeFees: boolean
   includeInterments: boolean
+  includeServiceTypes?: boolean
   includeTransactions: boolean
 }
 
@@ -243,6 +246,26 @@ async function addInclusions(
     contract.contractFees = getContractFees(contract.contractId, database)
   }
 
+  if (options.includeServiceTypes ?? false) {
+    contract.contractServiceTypes = database
+      .prepare(/* sql */ `
+        SELECT
+          st.serviceTypeId,
+          st.serviceType
+        FROM
+          ContractServiceTypes cst
+        INNER JOIN
+          ServiceTypes st ON cst.serviceTypeId = st.serviceTypeId
+        WHERE
+          cst.contractId = ?
+          AND cst.recordDelete_timeMillis IS NULL
+          AND st.recordDelete_timeMillis IS NULL
+        ORDER BY
+          st.orderNumber, st.serviceType
+      `)
+      .all(contract.contractId) as ServiceType[]
+  }
+
   if (options.includeTransactions) {
     contract.contractTransactions = await getContractTransactions(
       contract.contractId,
@@ -356,6 +379,19 @@ function buildWhereClause(filters: GetContractsFilters): {
   if ((filters.burialSiteTypeId ?? '') !== '') {
     sqlWhereClause += ' and b.burialSiteTypeId = ?'
     sqlParameters.push(filters.burialSiteTypeId)
+  }
+
+  if ((filters.serviceTypeId ?? '') !== '') {
+    sqlWhereClause += /* sql */ `
+      and exists (
+        select 1
+        from ContractServiceTypes cst
+        where cst.contractId = c.contractId
+          and cst.serviceTypeId = ?
+          and cst.recordDelete_timeMillis is null
+      )
+    `
+    sqlParameters.push(filters.serviceTypeId)
   }
 
   if ((filters.funeralHomeId ?? '') !== '') {
