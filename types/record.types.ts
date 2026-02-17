@@ -410,6 +410,14 @@ export interface IntermentContainerType extends Record {
   orderNumber?: number
 }
 
+export interface ServiceType extends Record {
+  serviceTypeId: number
+
+  serviceType: string
+
+  orderNumber?: number
+}
+
 export interface Record {
   recordCreate_dateString?: string
   recordCreate_timeMillis?: number

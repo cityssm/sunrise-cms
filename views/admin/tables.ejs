@@ -221,6 +221,62 @@
       <div class="panel-heading">
         <div class="columns is-vcentered is-mobile">
           <div class="column is-narrow">
+            <button class="button is-small is-toggle-button" type="button" title="Toggle Service Types">
+              <span class="icon">
+                <i class="fa-solid fa-plus"></i>
+              </span>
+            </button>
+          </div>
+          <div class="column">
+            <h2 class="title is-5 has-text-white">Service Types</h2>
+          </div>
+          <div class="column is-narrow">
+            <i class="fa-solid fa-file-contract"></i>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-block is-hidden">
+        <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+          <thead>
+            <tr>
+              <th>Service Type</th>
+              <th class="has-text-centered has-width-1">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2">
+                <form id="form--addServiceType">
+                  <div class="field has-addons">
+                    <div class="control is-expanded">
+                      <input
+                        class="input"
+                        name="serviceType"
+                        type="text"
+                        maxlength="100"
+                        placeholder="New Service Type"
+                        required
+                      />
+                    </div>
+                    <div class="control">
+                      <button class="button is-success" type="submit" title="Add Type">
+                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+          <tbody id="container--serviceTypes"></tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="columns is-vcentered is-mobile">
+          <div class="column is-narrow">
             <button class="button is-small is-toggle-button" type="button" title="Toggle Interment Container Types">
               <span class="icon">
                 <i class="fa-solid fa-plus"></i>
@@ -351,6 +407,7 @@
   exports.burialSiteStatuses = <%- JSON.stringify(burialSiteStatuses) %>;
   exports.committalTypes = <%- JSON.stringify(committalTypes) %>;
   exports.intermentContainerTypes = <%- JSON.stringify(intermentContainerTypes) %>;
+  exports.serviceTypes = <%- JSON.stringify(serviceTypes) %>;
   exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
   exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
 </script>
@@ -360,6 +417,7 @@
 <script src="<%= urlPrefix %>/javascripts/burialSiteStatuses.admin.js"></script>
 <script src="<%= urlPrefix %>/javascripts/committalTypes.admin.js"></script>
 <script src="<%= urlPrefix %>/javascripts/intermentContainerTypes.admin.js"></script>
+<script src="<%= urlPrefix %>/javascripts/serviceTypes.admin.js"></script>
 <script src="<%= urlPrefix %>/javascripts/workOrderMilestoneTypes.admin.js"></script>
 <script src="<%= urlPrefix %>/javascripts/workOrderTypes.admin.js"></script>
 
