@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @cspell/spellchecker, complexity, no-console */
 import fs from 'node:fs';
 import { dateIntegerToString, dateToString } from '@cityssm/utils-datetime';
@@ -105,6 +104,7 @@ export async function importFromWorkOrderCSV() {
                         burialSiteLatitude: '',
                         burialSiteLongitude: ''
                     }, user, database);
+                    // eslint-disable-next-line no-await-in-loop, require-atomic-updates
                     burialSite = await getBurialSite(burialSiteKeys.burialSiteId, true, database);
                 }
                 const workOrderContainsBurialSite = workOrder?.workOrderBurialSites?.find((possibleLot) => possibleLot.burialSiteId === burialSite?.burialSiteId);
@@ -120,18 +120,15 @@ export async function importFromWorkOrderCSV() {
             if (workOrderRow.WO_INTERMENT_YR) {
                 contractStartDateString = formatDateString(workOrderRow.WO_INTERMENT_YR, workOrderRow.WO_INTERMENT_MON, workOrderRow.WO_INTERMENT_DAY);
             }
-            const contractType = burialSite
-                ? importIds.intermentContractType
-                : importIds.cremationContractType;
+            const isCremation = burialSite === undefined;
+            const contractType = importIds.atNeedContractType;
             const funeralHomeId = workOrderRow.WO_FUNERAL_HOME === ''
                 ? ''
                 : getFuneralHomeIdByKey(workOrderRow.WO_FUNERAL_HOME, user, database);
-            const committalTypeId = contractType.contractType === 'Cremation' ||
-                workOrderRow.WO_COMMITTAL_TYPE === ''
+            const committalTypeId = isCremation || workOrderRow.WO_COMMITTAL_TYPE === ''
                 ? ''
                 : getCommittalTypeIdByKey(workOrderRow.WO_COMMITTAL_TYPE, user, database);
-            const intermentContainerTypeKey = contractType.contractType === 'Cremation' &&
-                workOrderRow.WO_CONTAINER_TYPE === ''
+            const intermentContainerTypeKey = isCremation && workOrderRow.WO_CONTAINER_TYPE === ''
                 ? 'U'
                 : workOrderRow.WO_CONTAINER_TYPE;
             const intermentContainerTypeId = intermentContainerTypeKey === ''
@@ -170,21 +167,30 @@ export async function importFromWorkOrderCSV() {
                 deathPlace: workOrderRow.WO_DEATH_PLACE,
                 intermentContainerTypeId
             };
-            if (contractType.contractType === 'Interment' &&
-                importIds.intermentDepthContractField?.contractTypeFieldId !==
-                    undefined &&
-                workOrderRow.WO_DEPTH !== '') {
-                contractForm.contractTypeFieldIds =
-                    importIds.intermentDepthContractField.contractTypeFieldId.toString();
-                let depth = workOrderRow.WO_DEPTH;
-                if (depth === 'S') {
-                    depth = 'Single';
-                }
-                else if (depth === 'D') {
-                    depth = 'Double';
-                }
-                contractForm[`fieldValue_${importIds.intermentDepthContractField.contractTypeFieldId.toString()}`] = depth;
+            // eslint-disable-next-line no-secrets/no-secrets
+            /*
+            if (
+              contractType.contractType === 'Interment' &&
+              importIds.intermentDepthContractField?.contractTypeFieldId !==
+                undefined &&
+              workOrderRow.WO_DEPTH !== ''
+            ) {
+              contractForm.contractTypeFieldIds =
+                importIds.intermentDepthContractField.contractTypeFieldId.toString()
+      
+              let depth = workOrderRow.WO_DEPTH
+      
+              if (depth === 'S') {
+                depth = 'Single'
+              } else if (depth === 'D') {
+                depth = 'Double'
+              }
+      
+              contractForm[
+                `fieldValue_${importIds.intermentDepthContractField.contractTypeFieldId.toString()}`
+              ] = depth
             }
+            */
             const contractId = addContract(contractForm, user, database);
             addWorkOrderContract({
                 contractId,

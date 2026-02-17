@@ -338,6 +338,31 @@ const createStatements = [
   `,
 
   /* sql */ `
+    CREATE TABLE IF NOT EXISTS ServiceTypes (
+      serviceTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      serviceType VARCHAR(100) NOT NULL,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns}
+    )
+  `,
+
+  /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_ServiceTypes_orderNumber ON ServiceTypes (orderNumber, serviceType)
+  `,
+
+  /* sql */ `
+    CREATE TABLE IF NOT EXISTS ContractServiceTypes (
+      contractId INTEGER NOT NULL,
+      serviceTypeId INTEGER NOT NULL,
+      contractServiceDetails TEXT,
+      ${recordColumns},
+      PRIMARY KEY (contractId, serviceTypeId),
+      FOREIGN KEY (contractId) REFERENCES Contracts (contractId),
+      FOREIGN KEY (serviceTypeId) REFERENCES ServiceTypes (serviceTypeId)
+    ) WITHOUT rowid
+  `,
+
+  /* sql */ `
     CREATE TABLE IF NOT EXISTS ContractAttachments (
       contractAttachmentId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       contractId INTEGER NOT NULL,
@@ -649,7 +674,7 @@ export function initializeDatabase(
 
   const row = sunriseDB
     .prepare(
-      "select name from sqlite_master where type = 'table' and name = 'Users'"
+      "select name from sqlite_master where type = 'table' and name = 'ContractServiceTypes'"
     )
     .get()
 
@@ -786,9 +811,9 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
       connectedDatabase
     )
 
-    const intermentContractTypeId = addContractType(
+    const atNeedContractTypeId = addContractType(
       {
-        contractType: 'Interment',
+        contractType: 'At Need',
         orderNumber: 2
       },
       initializingUser,
@@ -797,7 +822,7 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
 
     addContractTypeField(
       {
-        contractTypeId: intermentContractTypeId,
+        contractTypeId: atNeedContractTypeId,
 
         contractTypeField: 'Interment Depth',
         fieldType: 'select',
@@ -810,7 +835,7 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
 
     addContractType(
       {
-        contractType: 'Cremation',
+        contractType: 'Permit Only',
         orderNumber: 3
       },
       initializingUser,

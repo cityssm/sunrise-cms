@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @cspell/spellchecker, complexity, no-console */
 
 import fs from 'node:fs'
@@ -171,6 +170,7 @@ export async function importFromWorkOrderCSV(): Promise<void> {
             database
           )
 
+          // eslint-disable-next-line no-await-in-loop, require-atomic-updates
           burialSite = await getBurialSite(
             burialSiteKeys.burialSiteId,
             true,
@@ -208,18 +208,16 @@ export async function importFromWorkOrderCSV(): Promise<void> {
         )
       }
 
-      const contractType = burialSite
-        ? importIds.intermentContractType
-        : importIds.cremationContractType
+      const isCremation = burialSite === undefined
 
+      const contractType = importIds.atNeedContractType
       const funeralHomeId =
         workOrderRow.WO_FUNERAL_HOME === ''
           ? ''
           : getFuneralHomeIdByKey(workOrderRow.WO_FUNERAL_HOME, user, database)
 
       const committalTypeId =
-        contractType.contractType === 'Cremation' ||
-        workOrderRow.WO_COMMITTAL_TYPE === ''
+        isCremation || workOrderRow.WO_COMMITTAL_TYPE === ''
           ? ''
           : getCommittalTypeIdByKey(
               workOrderRow.WO_COMMITTAL_TYPE,
@@ -228,8 +226,7 @@ export async function importFromWorkOrderCSV(): Promise<void> {
             )
 
       const intermentContainerTypeKey =
-        contractType.contractType === 'Cremation' &&
-        workOrderRow.WO_CONTAINER_TYPE === ''
+        isCremation && workOrderRow.WO_CONTAINER_TYPE === ''
           ? 'U'
           : workOrderRow.WO_CONTAINER_TYPE
 
@@ -304,6 +301,8 @@ export async function importFromWorkOrderCSV(): Promise<void> {
         intermentContainerTypeId
       }
 
+      // eslint-disable-next-line no-secrets/no-secrets
+      /*
       if (
         contractType.contractType === 'Interment' &&
         importIds.intermentDepthContractField?.contractTypeFieldId !==
@@ -325,6 +324,7 @@ export async function importFromWorkOrderCSV(): Promise<void> {
           `fieldValue_${importIds.intermentDepthContractField.contractTypeFieldId.toString()}`
         ] = depth
       }
+      */
 
       const contractId = addContract(contractForm, user, database)
 

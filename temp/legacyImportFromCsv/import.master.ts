@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @cspell/spellchecker, complexity, no-console */
 
 import fs from 'node:fs'
@@ -300,9 +299,7 @@ export async function importFromMasterCSV(): Promise<void> {
           ? ''
           : deceasedContractStartDateString
 
-        const contractType = burialSiteId
-          ? importIds.intermentContractType
-          : importIds.cremationContractType
+        const contractType = importIds.atNeedContractType
 
         const deceasedPostalCode =
           `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim()
@@ -400,6 +397,8 @@ export async function importFromMasterCSV(): Promise<void> {
           intermentContainerTypeId
         }
 
+        // eslint-disable-next-line no-secrets/no-secrets
+        /*
         if (
           contractType.contractType === 'Interment' &&
           importIds.intermentDepthContractField?.contractTypeFieldId !==
@@ -421,6 +420,7 @@ export async function importFromMasterCSV(): Promise<void> {
             `fieldValue_${importIds.intermentDepthContractField.contractTypeFieldId.toString()}`
           ] = depth
         }
+        */
 
         deceasedContractId = addContract(contractForm, user, database)
 

@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @cspell/spellchecker, complexity, no-console */
 import fs from 'node:fs';
 import sqlite from 'better-sqlite3';
@@ -175,9 +174,7 @@ export async function importFromMasterCSV() {
                 const deceasedContractEndDateString = burialSiteId
                     ? ''
                     : deceasedContractStartDateString;
-                const contractType = burialSiteId
-                    ? importIds.intermentContractType
-                    : importIds.cremationContractType;
+                const contractType = importIds.atNeedContractType;
                 const deceasedPostalCode = `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim();
                 const funeralHomeId = masterRow.CM_FUNERAL_HOME === ''
                     ? ''
@@ -234,21 +231,30 @@ export async function importFromMasterCSV() {
                     deathPlace: '',
                     intermentContainerTypeId
                 };
-                if (contractType.contractType === 'Interment' &&
-                    importIds.intermentDepthContractField?.contractTypeFieldId !==
-                        undefined &&
-                    masterRow.CM_DEPTH !== '') {
-                    contractForm.contractTypeFieldIds =
-                        importIds.intermentDepthContractField.contractTypeFieldId.toString();
-                    let depth = masterRow.CM_DEPTH;
-                    if (depth === 'S') {
-                        depth = 'Single';
-                    }
-                    else if (depth === 'D') {
-                        depth = 'Double';
-                    }
-                    contractForm[`fieldValue_${importIds.intermentDepthContractField.contractTypeFieldId.toString()}`] = depth;
+                // eslint-disable-next-line no-secrets/no-secrets
+                /*
+                if (
+                  contractType.contractType === 'Interment' &&
+                  importIds.intermentDepthContractField?.contractTypeFieldId !==
+                    undefined &&
+                  masterRow.CM_DEPTH !== ''
+                ) {
+                  contractForm.contractTypeFieldIds =
+                    importIds.intermentDepthContractField.contractTypeFieldId.toString()
+        
+                  let depth = masterRow.CM_DEPTH
+        
+                  if (depth === 'S') {
+                    depth = 'Single'
+                  } else if (depth === 'D') {
+                    depth = 'Double'
+                  }
+        
+                  contractForm[
+                    `fieldValue_${importIds.intermentDepthContractField.contractTypeFieldId.toString()}`
+                  ] = depth
                 }
+                */
                 deceasedContractId = addContract(contractForm, user, database);
                 if (preneedContractId !== undefined) {
                     addRelatedContract({

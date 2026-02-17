@@ -14,9 +14,8 @@ export const occupiedBurialSiteStatusId = getCachedBurialSiteStatusByBurialSiteS
  * Contract Type IDs
  */
 export const preneedContractType = getCachedContractTypeByContractType('Preneed', true);
-export const intermentContractType = getCachedContractTypeByContractType('Interment', true);
-export const intermentDepthContractField = intermentContractType.contractTypeFields?.find((field) => field.contractTypeField === 'Interment Depth');
-export const cremationContractType = getCachedContractTypeByContractType('Cremation', true);
+export const atNeedContractType = getCachedContractTypeByContractType('At Need', true);
+export const permitOnlyContractType = getCachedContractTypeByContractType('Permit Only', true);
 /*
  * Work Order Milestone Type IDs
  */

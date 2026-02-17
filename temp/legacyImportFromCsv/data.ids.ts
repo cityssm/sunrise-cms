@@ -28,18 +28,13 @@ export const preneedContractType = getCachedContractTypeByContractType(
   true
 ) as ContractType
 
-export const intermentContractType = getCachedContractTypeByContractType(
-  'Interment',
+export const atNeedContractType = getCachedContractTypeByContractType(
+  'At Need',
   true
 ) as ContractType
 
-export const intermentDepthContractField =
-  intermentContractType.contractTypeFields?.find(
-    (field) => field.contractTypeField === 'Interment Depth'
-  )
-
-export const cremationContractType = getCachedContractTypeByContractType(
-  'Cremation',
+export const permitOnlyContractType = getCachedContractTypeByContractType(
+  'Permit Only',
   true
 ) as ContractType
 

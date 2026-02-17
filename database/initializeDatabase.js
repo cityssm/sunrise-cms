@@ -298,6 +298,28 @@ const createStatements = [
     ) WITHOUT rowid
   `,
     /* sql */ `
+    CREATE TABLE IF NOT EXISTS ServiceTypes (
+      serviceTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      serviceType VARCHAR(100) NOT NULL,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns}
+    )
+  `,
+    /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_ServiceTypes_orderNumber ON ServiceTypes (orderNumber, serviceType)
+  `,
+    /* sql */ `
+    CREATE TABLE IF NOT EXISTS ContractServiceTypes (
+      contractId INTEGER NOT NULL,
+      serviceTypeId INTEGER NOT NULL,
+      contractServiceDetails TEXT,
+      ${recordColumns},
+      PRIMARY KEY (contractId, serviceTypeId),
+      FOREIGN KEY (contractId) REFERENCES Contracts (contractId),
+      FOREIGN KEY (serviceTypeId) REFERENCES ServiceTypes (serviceTypeId)
+    ) WITHOUT rowid
+  `,
+    /* sql */ `
     CREATE TABLE IF NOT EXISTS ContractAttachments (
       contractAttachmentId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       contractId INTEGER NOT NULL,
@@ -574,7 +596,7 @@ export function initializeDatabase(connectedDatabase) {
     const sunriseDB = connectedDatabase ?? sqlite(databasePath);
     sunriseDB.pragma('journal_mode = WAL');
     const row = sunriseDB
-        .prepare("select name from sqlite_master where type = 'table' and name = 'Users'")
+        .prepare("select name from sqlite_master where type = 'table' and name = 'ContractServiceTypes'")
         .get();
     if (row !== undefined) {
         return false;
@@ -650,19 +672,19 @@ export function initializeData(connectedDatabase) {
             isPreneed: '1',
             orderNumber: 1
         }, initializingUser, connectedDatabase);
-        const intermentContractTypeId = addContractType({
-            contractType: 'Interment',
+        const atNeedContractTypeId = addContractType({
+            contractType: 'At Need',
             orderNumber: 2
         }, initializingUser, connectedDatabase);
         addContractTypeField({
-            contractTypeId: intermentContractTypeId,
+            contractTypeId: atNeedContractTypeId,
             contractTypeField: 'Interment Depth',
             fieldType: 'select',
             fieldValues: 'Single\nDouble',
             isRequired: ''
         }, initializingUser, connectedDatabase);
         addContractType({
-            contractType: 'Cremation',
+            contractType: 'Permit Only',
             orderNumber: 3
         }, initializingUser, connectedDatabase);
     }
