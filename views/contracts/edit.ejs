@@ -319,7 +319,13 @@
       (contract.committalTypeId !== null && contract.committalTypeId !== "");
   %>
 
-  <% if (!isCreate) { %>
+  <% if (isCreate) { %>
+  <div class="message is-info">
+    <p class="message-body">
+      Related data, like service types, can be added after the contract is created.
+    </p>
+  </div>
+  <% } else { %>
   <div class="panel">
     <div class="panel-heading">
       <div class="level is-mobile">
