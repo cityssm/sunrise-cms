@@ -152,8 +152,9 @@
             tableRowElement
                 .querySelector('form')
                 ?.addEventListener('submit', updateServiceType);
-            tableRowElement.querySelector('.button--moveServiceTypeUp').addEventListener('click', moveServiceType);
-            tableRowElement.querySelector('.button--moveServiceTypeDown').addEventListener('click', moveServiceType);
+            for (const moveButton of tableRowElement.querySelectorAll('.button--moveServiceTypeUp, .button--moveServiceTypeDown')) {
+                moveButton.addEventListener('click', moveServiceType);
+            }
             tableRowElement
                 .querySelector('.button--deleteServiceType')
                 ?.addEventListener('click', deleteServiceType);

@@ -89,11 +89,14 @@
         <span class="is-size-7">#${contract.contractId}</span>
       </td>
       <td>
-        ${(contract.contractServiceTypes ?? []).length === 0
-            ? '<span class="has-text-grey-dark is-size-7">(None)</span>'
-            : (contract.contractServiceTypes ?? [])
-                .map((st) => cityssm.escapeHTML(st.serviceType))
-                .join(', ')}
+        ${(() => {
+            const serviceTypes = contract.contractServiceTypes ?? [];
+            return serviceTypes.length === 0
+                ? '<span class="has-text-grey-dark is-size-7">(None)</span>'
+                : serviceTypes
+                    .map((st) => cityssm.escapeHTML(st.serviceType))
+                    .join(', ');
+        })()}
       </td>
       <td>
         ${(contract.burialSiteId ?? -1) === -1
