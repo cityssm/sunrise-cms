@@ -1,7 +1,9 @@
-import { moveRecordUp } from '../../database/moveRecord.js';
+import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js';
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js';
 export default function handler(request, response) {
-    const isSuccessful = moveRecordUp('ServiceTypes', request.body.serviceTypeId, request.body.moveToEnd === '1');
+    const isSuccessful = request.body.moveToEnd === '1'
+        ? moveRecordUpToTop('ServiceTypes', request.body.serviceTypeId)
+        : moveRecordUp('ServiceTypes', request.body.serviceTypeId);
     if (isSuccessful) {
         const serviceTypes = getCachedServiceTypes();
         response.json({

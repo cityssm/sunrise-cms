@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import { moveRecordUp } from '../../database/moveRecord.js'
+import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js'
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js'
 
 export default function handler(
@@ -11,11 +11,10 @@ export default function handler(
   >,
   response: Response
 ): void {
-  const isSuccessful = moveRecordUp(
-    'ServiceTypes',
-    request.body.serviceTypeId,
+  const isSuccessful =
     request.body.moveToEnd === '1'
-  )
+      ? moveRecordUpToTop('ServiceTypes', request.body.serviceTypeId)
+      : moveRecordUp('ServiceTypes', request.body.serviceTypeId)
 
   if (isSuccessful) {
     const serviceTypes = getCachedServiceTypes()
