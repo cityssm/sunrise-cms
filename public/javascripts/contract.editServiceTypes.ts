@@ -1,0 +1,250 @@
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+
+import type { ServiceType } from '../../types/record.types.js'
+
+import type { Sunrise } from './types.js'
+
+declare const cityssm: cityssmGlobal
+declare const bulmaJS: BulmaJS
+
+declare const exports: {
+  sunrise: Sunrise
+
+  serviceTypes: ServiceType[]
+  contractServiceTypes: ServiceType[]
+}
+;(() => {
+  const sunrise = exports.sunrise
+
+  const contractId = (
+    document.querySelector('#contract--contractId') as HTMLInputElement
+  ).value
+
+  const serviceTypes = exports.serviceTypes
+  let contractServiceTypes = exports.contractServiceTypes
+
+  function deleteContractServiceType(clickEvent: Event): void {
+    const serviceTypeId = Number.parseInt(
+      (clickEvent.currentTarget as HTMLElement).closest('tr')?.dataset
+        .serviceTypeId ?? '',
+      10
+    )
+
+    const serviceType = contractServiceTypes.find(
+      (currentServiceType) => currentServiceType.serviceTypeId === serviceTypeId
+    )
+
+    function doDelete(): void {
+      cityssm.postJSON(
+        `${sunrise.urlPrefix}/contracts/doDeleteContractServiceType`,
+        {
+          contractId,
+          serviceTypeId
+        },
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+
+            contractServiceTypes?: ServiceType[]
+            errorMessage?: string
+          }
+
+          if (responseJSON.success) {
+            contractServiceTypes = responseJSON.contractServiceTypes ?? []
+            renderContractServiceTypes()
+
+            bulmaJS.alert({
+              contextualColorName: 'success',
+              message: 'Service Type Removed Successfully'
+            })
+          } else {
+            bulmaJS.alert({
+              contextualColorName: 'danger',
+              title: 'Error Removing Service Type',
+
+              message: responseJSON.errorMessage ?? ''
+            })
+          }
+        }
+      )
+    }
+
+    bulmaJS.confirm({
+      contextualColorName: 'warning',
+      title: 'Remove Service Type',
+
+      message: `Are you sure you want to remove this service type from the contract?<br />
+          <strong>${cityssm.escapeHTML(serviceType?.serviceType ?? '')}</strong>`,
+      messageIsHtml: true,
+
+      okButton: {
+        callbackFunction: doDelete,
+        text: 'Yes, Remove Service Type'
+      }
+    })
+  }
+
+  function renderContractServiceTypes(): void {
+    const containerElement = document.querySelector(
+      '#container--contractServiceTypes'
+    ) as HTMLElement
+
+    if (contractServiceTypes.length === 0) {
+      containerElement.innerHTML = /* html */ `
+        <div class="message is-info">
+          <p class="message-body">There are no service types associated with this contract.</p>
+        </div>
+      `
+
+      return
+    }
+
+    let tableHTML = /* html */ `
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Service Type</th>
+            <th class="has-width-1"></th>
+          </tr>
+        </thead>
+        <tbody>
+    `
+
+    for (const contractServiceType of contractServiceTypes) {
+      tableHTML += /* html */ `
+        <tr data-service-type-id="${contractServiceType.serviceTypeId.toString()}">
+          <td>${cityssm.escapeHTML(contractServiceType.serviceType)}</td>
+          <td class="is-nowrap">
+            <button
+              class="button is-small is-danger is-light button--deleteServiceType"
+              type="button"
+              title="Remove Service Type"
+            >
+              <span class="icon"><i class="fa-solid fa-trash"></i></span>
+              <span>Remove</span>
+            </button>
+          </td>
+        </tr>
+      `
+    }
+
+    tableHTML += /* html */ `
+        </tbody>
+      </table>
+    `
+
+    // eslint-disable-next-line no-unsanitized/property
+    containerElement.innerHTML = tableHTML
+
+    const deleteButtons = containerElement.querySelectorAll(
+      '.button--deleteServiceType'
+    )
+
+    for (const deleteButton of deleteButtons) {
+      deleteButton.addEventListener('click', deleteContractServiceType)
+    }
+  }
+
+  function openAddServiceType(): void {
+    // Get service types not already added
+    const availableServiceTypes = serviceTypes.filter((serviceType) => {
+      return !contractServiceTypes.some(
+        (contractServiceType) =>
+          contractServiceType.serviceTypeId === serviceType.serviceTypeId
+      )
+    })
+
+    if (availableServiceTypes.length === 0) {
+      bulmaJS.alert({
+        contextualColorName: 'info',
+        message: 'All available service types have already been added to this contract.'
+      })
+      return
+    }
+
+    let addFormElement: HTMLFormElement | undefined
+    let addCloseModalFunction: (() => void) | undefined
+
+    function addContractServiceType(submitEvent: SubmitEvent): void {
+      submitEvent.preventDefault()
+
+      cityssm.postJSON(
+        `${sunrise.urlPrefix}/contracts/doAddContractServiceType`,
+        addFormElement,
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+
+            contractServiceTypes?: ServiceType[]
+            errorMessage?: string
+          }
+
+          if (responseJSON.success) {
+            contractServiceTypes = responseJSON.contractServiceTypes ?? []
+
+            if (addCloseModalFunction !== undefined) {
+              addCloseModalFunction()
+            }
+
+            renderContractServiceTypes()
+
+            bulmaJS.alert({
+              contextualColorName: 'success',
+              message: 'Service Type Added Successfully'
+            })
+          } else {
+            bulmaJS.alert({
+              contextualColorName: 'danger',
+              title: 'Error Adding Service Type',
+
+              message: responseJSON.errorMessage ?? ''
+            })
+          }
+        }
+      )
+    }
+
+    cityssm.openHtmlModal('contract-addServiceType', {
+      onshow(modalElement) {
+        sunrise.populateAliases(modalElement)
+
+        modalElement
+          .querySelector('#contractServiceTypeAdd--contractId')
+          ?.setAttribute('value', contractId)
+
+        const selectElement = modalElement.querySelector(
+          '#contractServiceTypeAdd--serviceTypeId'
+        ) as HTMLSelectElement
+
+        selectElement.innerHTML = ''
+
+        for (const serviceType of availableServiceTypes) {
+          const optionElement = document.createElement('option')
+          optionElement.value = serviceType.serviceTypeId.toString()
+          optionElement.textContent = serviceType.serviceType
+          selectElement.append(optionElement)
+        }
+
+        addFormElement = modalElement.querySelector(
+          'form'
+        ) as HTMLFormElement
+
+        addFormElement.addEventListener('submit', addContractServiceType)
+      },
+      onshown(_modalElement, closeModalFunction) {
+        addCloseModalFunction = closeModalFunction
+      },
+      onremoved() {
+        addFormElement = undefined
+        addCloseModalFunction = undefined
+      }
+    })
+  }
+
+  document
+    .querySelector('#button--addServiceType')
+    ?.addEventListener('click', openAddServiceType)
+
+  renderContractServiceTypes()
+})()
