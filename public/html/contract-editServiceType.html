@@ -1,0 +1,46 @@
+<div id="contract-editServiceType" class="modal" data-target-selector=".is-main-content">
+  <div class="modal-background" data-cityssm-modal-close></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Edit Service Type Details</p>
+      <button class="delete" type="button" data-cityssm-modal-close aria-label="Close"></button>
+    </header>
+    <form>
+      <input id="contractServiceTypeEdit--contractId" name="contractId" type="hidden" />
+      <input id="contractServiceTypeEdit--serviceTypeId" name="serviceTypeId" type="hidden" />
+      <section class="modal-card-body">
+        <div class="field">
+          <label class="label">
+            Service Type
+          </label>
+          <div class="control">
+            <p class="has-text-weight-bold" id="contractServiceTypeEdit--serviceTypeName"></p>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="contractServiceTypeEdit--contractServiceDetails">
+            Details
+            <span class="has-text-weight-normal is-size-7">(Optional)</span>
+          </label>
+          <div class="control">
+            <textarea
+              class="textarea"
+              id="contractServiceTypeEdit--contractServiceDetails"
+              name="contractServiceDetails"
+              maxlength="500"
+              rows="3"
+            ></textarea>
+          </div>
+          <p class="help">Additional details about this service type for this contract</p>
+        </div>
+      </section>
+      <footer class="modal-card-foot is-justify-content-end">
+        <button class="button is-success" type="submit">
+          <span class="icon"><i class="fa-solid fa-save"></i></span>
+          <span>Save Changes</span>
+        </button>
+        <button class="button is-light" type="button" data-cityssm-modal-close>Cancel</button>
+      </footer>
+    </form>
+  </div>
+</div>

@@ -39,6 +39,7 @@ import handler_doUpdateContractAttachment from '../handlers/contracts-post/doUpd
 import handler_doUpdateContractComment from '../handlers/contracts-post/doUpdateContractComment.js'
 import handler_doUpdateContractFeeQuantity from '../handlers/contracts-post/doUpdateContractFeeQuantity.js'
 import handler_doUpdateContractInterment from '../handlers/contracts-post/doUpdateContractInterment.js'
+import handler_doUpdateContractServiceType from '../handlers/contracts-post/doUpdateContractServiceType.js'
 import handler_doUpdateContractTransaction from '../handlers/contracts-post/doUpdateContractTransaction.js'
 import handler_doUploadContractAttachment from '../handlers/contracts-post/doUploadContractAttachment.js'
 import {
@@ -129,6 +130,11 @@ router
     '/doAddContractServiceType',
     updateContractsPostHandler,
     handler_doAddContractServiceType
+  )
+  .post(
+    '/doUpdateContractServiceType',
+    updateContractsPostHandler,
+    handler_doUpdateContractServiceType
   )
   .post(
     '/doDeleteContractServiceType',

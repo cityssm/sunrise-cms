@@ -319,6 +319,29 @@
       (contract.committalTypeId !== null && contract.committalTypeId !== "");
   %>
 
+  <% if (!isCreate) { %>
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="has-text-weight-bold is-size-5">Service Types</h2>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <button class="button is-small is-success is-hidden-print" id="button--addServiceType" type="button">
+              <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+              <span>Add Service Type</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-block is-block" id="container--contractServiceTypes"></div>
+  </div>
+  <% } %>
+
   <div class="panel">
     <div class="panel-heading">
       <div class="level is-mobile">
@@ -1098,27 +1121,6 @@
       </div>
     </div>
     <div class="panel-block is-block" id="container--relatedContracts"></div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-heading">
-      <div class="level is-mobile">
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="has-text-weight-bold is-size-5">Service Types</h2>
-          </div>
-        </div>
-        <div class="level-right">
-          <div class="level-item">
-            <button class="button is-small is-success is-hidden-print" id="button--addServiceType" type="button">
-              <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-              <span>Add Service Type</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="panel-block is-block" id="container--contractServiceTypes"></div>
   </div>
 
   <div class="panel">
