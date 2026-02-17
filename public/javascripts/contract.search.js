@@ -89,6 +89,13 @@
         <span class="is-size-7">#${contract.contractId}</span>
       </td>
       <td>
+        ${(contract.contractServiceTypes ?? []).length === 0
+            ? '<span class="has-text-grey-dark is-size-7">(None)</span>'
+            : (contract.contractServiceTypes ?? [])
+                .map((st) => cityssm.escapeHTML(st.serviceType))
+                .join(', ')}
+      </td>
+      <td>
         ${(contract.burialSiteId ?? -1) === -1
             ? '<span class="has-text-grey-dark">(No Burial Site)</span>'
             : /* html */ `
@@ -167,6 +174,7 @@
                 `
             : ''}
             <th>Contract Type</th>
+            <th>Service Types</th>
             <th>Burial Site</th>
             <th>Contract Date</th>
             ${exports.contractEndDateIsAvailable ? '<th>End Date</th>' : ''}

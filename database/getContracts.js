@@ -137,6 +137,25 @@ async function addInclusions(contract, options, database) {
     if (options.includeFees) {
         contract.contractFees = getContractFees(contract.contractId, database);
     }
+    if (options.includeServiceTypes ?? false) {
+        contract.contractServiceTypes = database
+            .prepare(/* sql */ `
+        SELECT
+          st.serviceTypeId,
+          st.serviceType
+        FROM
+          ContractServiceTypes cst
+        INNER JOIN
+          ServiceTypes st ON cst.serviceTypeId = st.serviceTypeId
+        WHERE
+          cst.contractId = ?
+          AND cst.recordDelete_timeMillis IS NULL
+          AND st.recordDelete_timeMillis IS NULL
+        ORDER BY
+          st.orderNumber, st.serviceType
+      `)
+            .all(contract.contractId);
+    }
     if (options.includeTransactions) {
         contract.contractTransactions = await getContractTransactions(contract.contractId, { includeIntegrations: false }, database);
     }
@@ -203,6 +222,18 @@ function buildWhereClause(filters) {
     if ((filters.burialSiteTypeId ?? '') !== '') {
         sqlWhereClause += ' and b.burialSiteTypeId = ?';
         sqlParameters.push(filters.burialSiteTypeId);
+    }
+    if ((filters.serviceTypeId ?? '') !== '') {
+        sqlWhereClause += /* sql */ `
+      and exists (
+        select 1
+        from ContractServiceTypes cst
+        where cst.contractId = c.contractId
+          and cst.serviceTypeId = ?
+          and cst.recordDelete_timeMillis is null
+      )
+    `;
+        sqlParameters.push(filters.serviceTypeId);
     }
     if ((filters.funeralHomeId ?? '') !== '') {
         sqlWhereClause += ' and c.funeralHomeId = ?';

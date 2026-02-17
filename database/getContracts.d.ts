@@ -15,6 +15,7 @@ export interface GetContractsFilters {
     burialSiteTypeId?: number | string;
     funeralHomeId?: number | string;
     funeralTime?: '' | 'upcoming';
+    serviceTypeId?: number | string;
     notWorkOrderId?: number | string;
     workOrderId?: number | string;
     notContractId?: number | string;
@@ -29,6 +30,7 @@ export interface GetContractsOptions {
     orderBy?: (typeof validOrderByStrings)[number];
     includeFees: boolean;
     includeInterments: boolean;
+    includeServiceTypes?: boolean;
     includeTransactions: boolean;
 }
 export default function getContracts(filters: GetContractsFilters, options: GetContractsOptions, connectedDatabase?: sqlite.Database): Promise<{
