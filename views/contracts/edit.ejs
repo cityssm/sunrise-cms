@@ -319,6 +319,35 @@
       (contract.committalTypeId !== null && contract.committalTypeId !== "");
   %>
 
+  <% if (isCreate) { %>
+  <div class="message is-info">
+    <p class="message-body">
+      Related data, like service types, can be added after the contract is created.
+    </p>
+  </div>
+  <% } else { %>
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h2 class="has-text-weight-bold is-size-5">Service Types</h2>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <button class="button is-small is-success is-hidden-print" id="button--addServiceType" type="button">
+              <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
+              <span>Add Service Type</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-block is-block" id="container--contractServiceTypes"></div>
+  </div>
+  <% } %>
+
   <div class="panel">
     <div class="panel-heading">
       <div class="level is-mobile">
@@ -1209,9 +1238,11 @@
 
     exports.contractComments = <%- JSON.stringify(contract.contractComments) %>;
     exports.contractFees = <%- JSON.stringify(contract.contractFees) %>;
+    exports.contractServiceTypes = <%- JSON.stringify(contract.contractServiceTypes ?? []) %>;
     exports.contractTransactions = <%- JSON.stringify(contract.contractTransactions) %>;
     exports.relatedContracts = <%- JSON.stringify(contract.relatedContracts) %>;
 
+    exports.serviceTypes = <%- JSON.stringify(serviceTypes) %>;
     exports.workOrderTypes = <%- JSON.stringify(workOrderTypes) %>;
     exports.workOrderMilestoneTypes = <%- JSON.stringify(workOrderMilestoneTypes) %>;
 
@@ -1232,6 +1263,7 @@
   <script src="<%= urlPrefix %>/javascripts/contract.editInterments.js"></script>
   <script src="<%= urlPrefix %>/javascripts/contract.editFees.js"></script>
   <script src="<%= urlPrefix %>/javascripts/contract.editWorkOrders.js"></script>
+  <script src="<%= urlPrefix %>/javascripts/contract.editServiceTypes.js"></script>
   <script src="<%= urlPrefix %>/javascripts/contract.editRelated.js"></script>
   <script src="<%= urlPrefix %>/javascripts/contract.editComments.js"></script>
   <script src="<%= urlPrefix %>/javascripts/contract.editAttachments.js"></script>

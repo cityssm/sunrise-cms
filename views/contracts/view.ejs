@@ -174,6 +174,49 @@
   </div>
 </div>
 
+<% if ((contract.contractServiceTypes ?? []).length > 0) { %>
+<div class="panel">
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="has-text-weight-bold is-size-5">Service Types</h2>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <i class="fa-solid fa-list-check"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-block is-block">
+    <table class="table is-fullwidth is-striped">
+      <thead>
+        <tr>
+          <th>Service Type</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const serviceType of contract.contractServiceTypes) { %>
+        <tr>
+          <td><%= serviceType.serviceType %></td>
+          <td>
+            <% if ((serviceType.contractServiceDetails ?? '') !== '') { %>
+              <%= serviceType.contractServiceDetails %>
+            <% } else { %>
+              <span class="has-text-grey-light">-</span>
+            <% } %>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<% } %>
+
 <%
 const displayServicesPanel = 
   (contract.funeralHomeName !== null) ||

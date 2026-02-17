@@ -105,6 +105,26 @@
                 </div>
               </div>
             </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="searchFilter--serviceTypeId">Service Type</label>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth">
+                    <select id="searchFilter--serviceTypeId" name="serviceTypeId">
+                      <option value="">(All Service Types)</option>
+                      <% for (const serviceType of serviceTypes) { %>
+                      <option value="<%= serviceType.serviceTypeId %>">
+                        <%= serviceType.serviceType %>
+                      </option>
+                      <% } %>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
             <% if (configFunctions.getConfigProperty('settings.contracts.contractEndDateIsAvailable')) { %>
             <div class="column">
               <div class="field">
