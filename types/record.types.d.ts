@@ -157,6 +157,7 @@ export interface Contract extends Record {
     contractFees?: ContractFee[];
     contractFields?: ContractField[];
     contractInterments?: ContractInterment[];
+    contractServiceTypes?: ServiceType[];
     contractTransactions?: ContractTransaction[];
     relatedContracts?: Contract[];
     workOrders?: WorkOrder[];
@@ -294,6 +295,12 @@ export interface IntermentContainerType extends Record {
     intermentContainerType: string;
     intermentContainerTypeKey: string;
     isCremationType: boolean;
+    orderNumber?: number;
+}
+export interface ServiceType extends Record {
+    serviceTypeId: number;
+    serviceType: string;
+    contractServiceDetails?: string;
     orderNumber?: number;
 }
 export interface Record {

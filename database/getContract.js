@@ -6,6 +6,7 @@ import getContractComments from './getContractComments.js';
 import getContractFees from './getContractFees.js';
 import getContractFields from './getContractFields.js';
 import getContractInterments from './getContractInterments.js';
+import getContractServiceTypes from './getContractServiceTypes.js';
 import getContracts from './getContracts.js';
 import getContractTransactions from './getContractTransactions.js';
 import { getWorkOrders } from './getWorkOrders.js';
@@ -88,6 +89,7 @@ export default async function getContract(contractId, connectedDatabase) {
         contract.contractIsFuture = contract.contractStartDate > currentDateInteger;
         contract.contractFields = getContractFields(contractId, database);
         contract.contractInterments = getContractInterments(contractId, database);
+        contract.contractServiceTypes = getContractServiceTypes(contractId, database);
         contract.contractComments = getContractComments(contractId, database);
         contract.contractFees = getContractFees(contractId, database);
         contract.contractTransactions = await getContractTransactions(contractId, { includeIntegrations: true }, database);

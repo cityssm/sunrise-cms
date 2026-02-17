@@ -1,20 +1,19 @@
 import type { Request, Response } from 'express'
 
-import { moveRecord } from '../../database/moveRecord.js'
+import { moveRecordDown } from '../../database/moveRecord.js'
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js'
 
 export default function handler(
   request: Request<
     unknown,
     unknown,
-    { serviceTypeId: number | string; moveToEnd?: string | '0' | '1' }
+    { serviceTypeId: number | string; moveToEnd?: '0' | '1' }
   >,
   response: Response
 ): void {
-  const isSuccessful = moveRecord(
+  const isSuccessful = moveRecordDown(
     'ServiceTypes',
     request.body.serviceTypeId,
-    'down',
     request.body.moveToEnd === '1'
   )
 

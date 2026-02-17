@@ -16,6 +16,7 @@ import handler_doAddContractTypePrint from '../handlers/admin-post/doAddContract
 import handler_doAddFee from '../handlers/admin-post/doAddFee.js';
 import handler_doAddFeeCategory from '../handlers/admin-post/doAddFeeCategory.js';
 import handler_doAddIntermentContainerType from '../handlers/admin-post/doAddIntermentContainerType.js';
+import handler_doAddServiceType from '../handlers/admin-post/doAddServiceType.js';
 import handler_doAddUser from '../handlers/admin-post/doAddUser.js';
 import handler_doAddWorkOrderMilestoneType from '../handlers/admin-post/doAddWorkOrderMilestoneType.js';
 import handler_doAddWorkOrderType from '../handlers/admin-post/doAddWorkOrderType.js';
@@ -31,6 +32,7 @@ import handler_doDeleteContractTypePrint from '../handlers/admin-post/doDeleteCo
 import handler_doDeleteFee from '../handlers/admin-post/doDeleteFee.js';
 import handler_doDeleteFeeCategory from '../handlers/admin-post/doDeleteFeeCategory.js';
 import handler_doDeleteIntermentContainerType from '../handlers/admin-post/doDeleteIntermentContainerType.js';
+import handler_doDeleteServiceType from '../handlers/admin-post/doDeleteServiceType.js';
 import handler_doDeleteUser from '../handlers/admin-post/doDeleteUser.js';
 import handler_doDeleteWorkOrderMilestoneType from '../handlers/admin-post/doDeleteWorkOrderMilestoneType.js';
 import handler_doDeleteWorkOrderType from '../handlers/admin-post/doDeleteWorkOrderType.js';
@@ -54,6 +56,8 @@ import handler_doMoveFeeDown from '../handlers/admin-post/doMoveFeeDown.js';
 import handler_doMoveFeeUp from '../handlers/admin-post/doMoveFeeUp.js';
 import handler_doMoveIntermentContainerTypeDown from '../handlers/admin-post/doMoveIntermentContainerTypeDown.js';
 import handler_doMoveIntermentContainerTypeUp from '../handlers/admin-post/doMoveIntermentContainerTypeUp.js';
+import handler_doMoveServiceTypeDown from '../handlers/admin-post/doMoveServiceTypeDown.js';
+import handler_doMoveServiceTypeUp from '../handlers/admin-post/doMoveServiceTypeUp.js';
 import handler_doMoveWorkOrderMilestoneTypeDown from '../handlers/admin-post/doMoveWorkOrderMilestoneTypeDown.js';
 import handler_doMoveWorkOrderMilestoneTypeUp from '../handlers/admin-post/doMoveWorkOrderMilestoneTypeUp.js';
 import handler_doMoveWorkOrderTypeDown from '../handlers/admin-post/doMoveWorkOrderTypeDown.js';
@@ -69,6 +73,7 @@ import handler_doUpdateFee from '../handlers/admin-post/doUpdateFee.js';
 import handler_doUpdateFeeAmount from '../handlers/admin-post/doUpdateFeeAmount.js';
 import handler_doUpdateFeeCategory from '../handlers/admin-post/doUpdateFeeCategory.js';
 import handler_doUpdateIntermentContainerType from '../handlers/admin-post/doUpdateIntermentContainerType.js';
+import handler_doUpdateServiceType from '../handlers/admin-post/doUpdateServiceType.js';
 import handler_doUpdateSetting from '../handlers/admin-post/doUpdateSetting.js';
 import handler_doUpdateUser from '../handlers/admin-post/doUpdateUser.js';
 import handler_doUpdateWorkOrderMilestoneType from '../handlers/admin-post/doUpdateWorkOrderMilestoneType.js';
@@ -165,6 +170,13 @@ router
     .post('/doMoveCommittalTypeUp', handler_doMoveCommittalTypeUp)
     .post('/doMoveCommittalTypeDown', handler_doMoveCommittalTypeDown)
     .post('/doDeleteCommittalType', handler_doDeleteCommittalType);
+// Config Tables - Service Types
+router
+    .post('/doAddServiceType', handler_doAddServiceType)
+    .post('/doUpdateServiceType', handler_doUpdateServiceType)
+    .post('/doMoveServiceTypeUp', handler_doMoveServiceTypeUp)
+    .post('/doMoveServiceTypeDown', handler_doMoveServiceTypeDown)
+    .post('/doDeleteServiceType', handler_doDeleteServiceType);
 // Config Tables - Interment Container Types
 router
     .post('/doAddIntermentContainerType', handler_doAddIntermentContainerType)
