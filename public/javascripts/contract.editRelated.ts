@@ -137,7 +137,7 @@ declare const exports: {
             href="${sunrise.getContractUrl(relatedContract.contractId)}">
             ${cityssm.escapeHTML(relatedContract.contractType)}
           </a><br />
-          <span class="is-size-7">#${relatedContract.contractId}</span>
+          <span class="is-size-7">#${relatedContract.contractNumber}</span>
         </td>
         <td>${relatedContract.contractStartDateString}</td>
         <td>
@@ -268,7 +268,7 @@ declare const exports: {
                   </div>
                   <div class="column">
                     ${cityssm.escapeHTML(contract.contractType)}<br />
-                    #${cityssm.escapeHTML(contract.contractId.toString())}
+                    #${cityssm.escapeHTML(contract.contractNumber)}
                   </div>
                   <div class="column">
                     ${cityssm.escapeHTML(contract.contractStartDateString)}
@@ -276,9 +276,7 @@ declare const exports: {
                   <div class="column">
                     ${
                       contract.contractEndDateString
-                        ? cityssm.escapeHTML(
-                            contract.contractEndDateString
-                          )
+                        ? cityssm.escapeHTML(contract.contractEndDateString)
                         : '<span class="has-text-grey">(No End Date)</span>'
                     }
                   </div>

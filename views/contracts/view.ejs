@@ -23,7 +23,7 @@
   <div class="column">
     <h1 class="title is-1">
       Contract
-      #<%= contract.contractId %>:
+      #<%= contract.contractNumber %>:
       <span class="is-nowrap"><%= contract.burialSiteName || "(No Burial Site)" %></span>
     </h1>
   </div>
@@ -51,7 +51,7 @@
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column">
     <span class="has-text-weight-bold">
-      Contract #<%= contract.contractId %>:
+      Contract #<%= contract.contractNumber %>:
       <%= contract.burialSiteName ?? "(No Burial Site)" %>
     </span>
   </div>
@@ -678,170 +678,170 @@ const displayServicesPanel =
 
 <div class="columns">
   <% if (contract.workOrders.length > 0) { %>
-    <%
-    const workOrderOpenDateAlias = settingFunctions.getSettingValue("aliases.workOrderOpenDate");
-    const workOrderCloseDateAlias = settingFunctions.getSettingValue("aliases.workOrderCloseDate");
-    %>
-    <div class="column">
-      <div class="panel">
-        <div class="panel-heading">
-          <div class="level is-mobile">
-            <div class="level-left">
-              <div class="level-item">
-                <h2 class="has-text-weight-bold">Work Orders</h2>
-              </div>
+  <%
+  const workOrderOpenDateAlias = settingFunctions.getSettingValue("aliases.workOrderOpenDate");
+  const workOrderCloseDateAlias = settingFunctions.getSettingValue("aliases.workOrderCloseDate");
+  %>
+  <div class="column">
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="has-text-weight-bold">Work Orders</h2>
             </div>
-            <div class="level-right">
-              <div class="level-item">
-                <i class="fa-solid fa-hard-hat"></i>
-              </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <i class="fa-solid fa-hard-hat"></i>
             </div>
           </div>
         </div>
-        <div class="panel-block is-block">
-          <%
-            const currentDateNumber = dateTimeFunctions.dateToInteger(new Date())
-          %>
-          <table class="table is-fullwidth is-striped is-hoverable">
-            <thead>
-              <tr>
-                <th>Work Order Number</th>
-                <th>Description</th>
-                <th>Date</th>
-                <th>Milestones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (const workOrder of contract.workOrders) { %>
-                <tr>
-                  <td>
-                    <a class="has-text-weight-bold" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
-                      <%= workOrder.workOrderNumber %>
-                    </a>
-                  </td>
-                  <td>
-                      <%= workOrder.workOrderType %><br />
-                      <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
-                  </td>
-                  <td class="is-nowrap">
-                    <span title="<%= workOrderOpenDateAlias %>">
-                      <i class="fa-solid fa-play"></i>
-                      <%= workOrder.workOrderOpenDateString %>
-                    </span><br />
-                    <span title="<%= workOrderCloseDateAlias %>">
-                      <i class="fa-solid fa-stop"></i>
-                      <% if (workOrder.workOrderCloseDate) { %>
-                        <%= workOrder.workOrderCloseDateString %>
+      </div>
+      <div class="panel-block is-block">
+        <%
+          const currentDateNumber = dateTimeFunctions.dateToInteger(new Date())
+        %>
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th>Work Order Number</th>
+              <th>Description</th>
+              <th>Date</th>
+              <th>Milestones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (const workOrder of contract.workOrders) { %>
+            <tr>
+              <td>
+                <a class="has-text-weight-bold" href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
+                  <%= workOrder.workOrderNumber %>
+                </a>
+              </td>
+              <td>
+                  <%= workOrder.workOrderType %><br />
+                  <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
+              </td>
+              <td class="is-nowrap">
+                <span title="<%= workOrderOpenDateAlias %>">
+                  <i class="fa-solid fa-play"></i>
+                  <%= workOrder.workOrderOpenDateString %>
+                </span><br />
+                <span title="<%= workOrderCloseDateAlias %>">
+                  <i class="fa-solid fa-stop"></i>
+                  <% if (workOrder.workOrderCloseDate) { %>
+                    <%= workOrder.workOrderCloseDateString %>
+                  <% } else { %>
+                    <span class="has-text-grey">(No <%= workOrderCloseDateAlias %>)</span>
+                  <% } %>
+                </span>
+              </td>
+              <td>
+                <% for (const milestone of workOrder.workOrderMilestones) { %>
+                  <%
+                    const isOverdue = milestone.workOrderMilestoneCompletionDate === null && milestone.workOrderMilestoneDate < currentDateNumber
+                  %>
+                  <div class="columns mb-0 <%= (isOverdue ? 'has-background-warning-light' : '') %>">
+                    <div class="column is-narrow">
+                      <% if (milestone.workOrderMilestoneCompletionDate) { %>
+                        <span class="icon has-text-success">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
                       <% } else { %>
-                        <span class="has-text-grey">(No <%= workOrderCloseDateAlias %>)</span>
+                        <span class="icon has-text-grey">
+                          <i class="fa-regular fa-square"></i>
+                        </span>
                       <% } %>
-                    </span>
-                  </td>
-                  <td>
-                    <% for (const milestone of workOrder.workOrderMilestones) { %>
-                      <%
-                        const isOverdue = milestone.workOrderMilestoneCompletionDate === null && milestone.workOrderMilestoneDate < currentDateNumber
-                      %>
-                      <div class="columns mb-0 <%= (isOverdue ? 'has-background-warning-light' : '') %>">
-                        <div class="column is-narrow">
-                          <% if (milestone.workOrderMilestoneCompletionDate) { %>
-                            <span class="icon has-text-success">
-                              <i class="fa-solid fa-check"></i>
-                            </span>
-                          <% } else { %>
-                            <span class="icon has-text-grey">
-                              <i class="fa-regular fa-square"></i>
-                            </span>
-                          <% } %>
-                        </div>
-                        <div class="column">
-                          <strong><%= milestone.workOrderMilestoneType %></strong><br />
-                          <span class="is-size-7">
-                            <%= milestone.workOrderMilestoneDateString %>
-                          </span>
-                        </div>
-                      </div>
-                    <% } %>
-                  </td>
-                </tr>
-              <% } %>
-            </tbody>
-          </table>
-        </div>
+                    </div>
+                    <div class="column">
+                      <strong><%= milestone.workOrderMilestoneType %></strong><br />
+                      <span class="is-size-7">
+                        <%= milestone.workOrderMilestoneDateString %>
+                      </span>
+                    </div>
+                  </div>
+                <% } %>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
   <% } %>
   <% if (contract.relatedContracts.length > 0) { %>
-    <div class="column">
-      <div class="panel">
-        <div class="panel-heading">
-          <div class="level is-mobile">
-            <div class="level-left">
-              <div class="level-item">
-                <h2 class="has-text-weight-bold">Related Contracts</h2>
-              </div>
+  <div class="column">
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="has-text-weight-bold">Related Contracts</h2>
             </div>
-            <div class="level-right">
-              <div class="level-item">
-                <i class="fa-solid fa-file-contract"></i>
-              </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <i class="fa-solid fa-file-contract"></i>
             </div>
           </div>
         </div>
-        <div class="panel-block is-block">
-          <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
-            <thead>
-              <tr>
-                <th class="has-width-1">&nbsp;</th>
-                <th>Contract Type</th>
-                <th>Contract Date</th>
-                <th>End Date</th>
-                <th>Interments</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (const relatedContract of contract.relatedContracts) { %>
-                <tr>
-                  <td class="has-text-centered">
-                    <% if (relatedContract.contractIsFuture) { %>
-                      <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
-                    <% } else if (relatedContract.contractIsActive) { %>
-                      <i class="fa-solid fa-play" title="Current Contract"></i>
-                    <% } else { %>
-                      <i class="fa-solid fa-stop" title="Previous Contract"></i>
-                    <% } %>
-                  </td>
-                  <td>
-                    <a class="has-text-weight-bold"
-                      href="<%= urlPrefix %>/contracts/<%= relatedContract.contractId %>">
-                      <%= relatedContract.contractType %>
-                    </a><br />
-                    <span class="is-size-7">#<%= relatedContract.contractId %></span>
-                  </td>
-                  <td><%= relatedContract.contractStartDateString %></td>
-                  <td>
-                    <% if (relatedContract.contractEndDate) { %>
-                      <%= relatedContract.contractEndDateString %>
-                    <% } else { %>
-                      <span class="has-text-grey">(No End Date)</span>
-                    <% } %>
-                  </td>
-                  <td>
-                    <% if (relatedContract.contractInterments.length === 0) { %>
-                      <span class="has-text-grey">(No Interments)</span>
-                    <% } else { %>
-                      <% for (const interment of contract.contractInterments) { %>
-                        <%= interment.deceasedName %><br />
-                      <% } %>
-                    <% } %>
-                  </td>
-                </tr>
-              <% } %>
-            </tbody>
-          </table>
-        </div>
+      </div>
+      <div class="panel-block is-block">
+        <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
+          <thead>
+            <tr>
+              <th class="has-width-1">&nbsp;</th>
+              <th>Contract Type</th>
+              <th>Contract Date</th>
+              <th>End Date</th>
+              <th>Interments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (const relatedContract of contract.relatedContracts) { %>
+            <tr>
+              <td class="has-text-centered">
+                <% if (relatedContract.contractIsFuture) { %>
+                  <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
+                <% } else if (relatedContract.contractIsActive) { %>
+                  <i class="fa-solid fa-play" title="Current Contract"></i>
+                <% } else { %>
+                  <i class="fa-solid fa-stop" title="Previous Contract"></i>
+                <% } %>
+              </td>
+              <td>
+                <a class="has-text-weight-bold"
+                  href="<%= urlPrefix %>/contracts/<%= relatedContract.contractId %>">
+                  <%= relatedContract.contractType %>
+                </a><br />
+                <span class="is-size-7">#<%= relatedContract.contractNumber %></span>
+              </td>
+              <td><%= relatedContract.contractStartDateString %></td>
+              <td>
+                <% if (relatedContract.contractEndDate) { %>
+                  <%= relatedContract.contractEndDateString %>
+                <% } else { %>
+                  <span class="has-text-grey">(No End Date)</span>
+                <% } %>
+              </td>
+              <td>
+                <% if (relatedContract.contractInterments.length === 0) { %>
+                  <span class="has-text-grey">(No Interments)</span>
+                <% } else { %>
+                  <% for (const interment of relatedContract.contractInterments) { %>
+                    <%= interment.deceasedName %><br />
+                  <% } %>
+                <% } %>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
   <% } %>
 </div>
 

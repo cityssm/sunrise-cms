@@ -14,7 +14,7 @@ jobs:
     env:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-      DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
+
     name: Ubuntu - Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v5

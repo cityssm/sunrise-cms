@@ -51,6 +51,7 @@ function purgeTables() {
         'ContractFields',
         'ContractComments',
         'ContractInterments',
+        'ContractServiceTypes',
         'RelatedContracts',
         'Contracts',
         'FuneralHomes',
@@ -60,6 +61,7 @@ function purgeTables() {
     ];
     const database = sqlite(databasePath);
     for (const tableName of tablesToPurge) {
+        debug(`Purging table: ${tableName}`);
         database.prepare(`delete from ${tableName}`).run();
         database
             .prepare('delete from sqlite_sequence where name = ?')

@@ -31,3 +31,13 @@ export function formatTimeString(hour: string, minute: string): TimeString {
 
   return `${formattedHour}:${formattedMinute}` as TimeString
 }
+
+export function formatContractNumber(orderNumber: string): string | undefined {
+  const trimmedOrderNumber = orderNumber.trim()
+
+  if (trimmedOrderNumber === '') {
+    return undefined
+  }
+
+  return `UNIX-${trimmedOrderNumber}`
+}

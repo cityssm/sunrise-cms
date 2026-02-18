@@ -17,7 +17,7 @@ import { getDeathAgePeriod } from './data.deathAgePeriods.js';
 import { getFuneralHomeIdByKey } from './data.funeralHomes.js';
 import * as importIds from './data.ids.js';
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js';
-import { formatDateString, user } from './utilities.js';
+import { formatContractNumber, formatDateString, user } from './utilities.js';
 export async function importFromMasterCSV() {
     console.time('importFromMasterCSV');
     let masterRow;
@@ -105,6 +105,7 @@ export async function importFromMasterCSV() {
                 }
                 const purchaserPostalCode = `${masterRow.CM_POST1} ${masterRow.CM_POST2}`.trim();
                 preneedContractId = addContract({
+                    contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
                     burialSiteId: burialSiteId ?? '',
                     contractEndDateString,
                     contractStartDateString: preneedContractStartDateString,
@@ -198,6 +199,7 @@ export async function importFromMasterCSV() {
                     ? ''
                     : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user, database);
                 const contractForm = {
+                    contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
                     burialSiteId: burialSiteId ?? '',
                     contractEndDateString: deceasedContractEndDateString,
                     contractStartDateString: deceasedContractStartDateString,

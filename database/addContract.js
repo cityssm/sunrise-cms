@@ -6,6 +6,7 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import addContractInterment from './addContractInterment.js';
 import addFuneralHome from './addFuneralHome.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
+import getNextContractNumber from './getNextContractNumber.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:addContract`);
 // eslint-disable-next-line complexity
 export default function addContract(addForm, user, connectedDatabase) {
@@ -23,12 +24,17 @@ export default function addContract(addForm, user, connectedDatabase) {
         }, user, database);
     }
     const rightNowMillis = Date.now();
+    let contractNumber = addForm.contractNumber;
+    if ((contractNumber ?? '') === '') {
+        contractNumber = getNextContractNumber(database);
+    }
     const contractStartDate = dateStringToInteger(addForm.contractStartDateString);
     try {
         const result = database
             .prepare(/* sql */ `
         INSERT INTO
           Contracts (
+            contractNumber,
             contractTypeId,
             burialSiteId,
             contractStartDate,
@@ -55,6 +61,7 @@ export default function addContract(addForm, user, connectedDatabase) {
           )
         VALUES
           (
+        ?,
             ?,
             ?,
             ?,
@@ -80,7 +87,7 @@ export default function addContract(addForm, user, connectedDatabase) {
             ?
           )
       `)
-            .run(addForm.contractTypeId, addForm.burialSiteId === '' ? undefined : addForm.burialSiteId, contractStartDate, addForm.contractEndDateString === ''
+            .run(contractNumber, addForm.contractTypeId, addForm.burialSiteId === '' ? undefined : addForm.burialSiteId, contractStartDate, addForm.contractEndDateString === ''
             ? undefined
             : dateStringToInteger(addForm.contractEndDateString), addForm.purchaserName ?? '', addForm.purchaserAddress1 ?? '', addForm.purchaserAddress2 ?? '', addForm.purchaserCity ?? '', addForm.purchaserProvince ?? '', addForm.purchaserPostalCode ?? '', addForm.purchaserPhoneNumber ?? '', addForm.purchaserEmail ?? '', addForm.purchaserRelationship ?? '', funeralHomeId === '' ? undefined : funeralHomeId, addForm.funeralDirectorName ?? '', addForm.funeralDateString === ''
             ? undefined

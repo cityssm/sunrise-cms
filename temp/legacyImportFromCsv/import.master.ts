@@ -25,7 +25,7 @@ import { getFuneralHomeIdByKey } from './data.funeralHomes.js'
 import * as importIds from './data.ids.js'
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js'
 import type { MasterRecord } from './recordTypes.js'
-import { formatDateString, user } from './utilities.js'
+import { formatContractNumber, formatDateString, user } from './utilities.js'
 
 export async function importFromMasterCSV(): Promise<void> {
   console.time('importFromMasterCSV')
@@ -180,6 +180,8 @@ export async function importFromMasterCSV(): Promise<void> {
 
         preneedContractId = addContract(
           {
+            contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
+
             burialSiteId: burialSiteId ?? '',
             contractEndDateString,
             contractStartDateString: preneedContractStartDateString,
@@ -354,6 +356,8 @@ export async function importFromMasterCSV(): Promise<void> {
               )
 
         const contractForm: AddContractForm = {
+          contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
+
           burialSiteId: burialSiteId ?? '',
           contractEndDateString: deceasedContractEndDateString,
           contractStartDateString: deceasedContractStartDateString,

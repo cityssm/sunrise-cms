@@ -5,6 +5,7 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 
 export interface BurialSiteMapContract {
   contractId: number
+  contractNumber: string
   contractType: string
   isPreneed: boolean
 
@@ -99,6 +100,7 @@ export default function getBurialSitesForMap(
     .prepare(/* sql */ `
       SELECT
         c.contractId,
+        c.contractNumber,
         c.burialSiteId,
         c.contractStartDate,
         c.contractEndDate,
@@ -135,6 +137,7 @@ export default function getBurialSitesForMap(
     `)
     .all(cemeteryId, currentDate) as Array<{
     contractId: number
+    contractNumber: string
     burialSiteId: number
     contractStartDate: number
     contractEndDate: number | null
@@ -153,6 +156,7 @@ export default function getBurialSitesForMap(
 
     contractsByBurialSite.get(contract.burialSiteId)!.push({
       contractId: contract.contractId,
+      contractNumber: contract.contractNumber,
       contractType: contract.contractType,
       isPreneed: contract.isPreneed,
       contractStartDate: contract.contractStartDate,

@@ -28,6 +28,8 @@ import getContractInterments from './getContractInterments.js'
 import getContractTransactions from './getContractTransactions.js'
 
 export interface GetContractsFilters {
+  contractNumber?: string
+
   burialSiteId?: number | string
 
   contractEffectiveDateString?: string
@@ -118,6 +120,7 @@ export default async function getContracts(
       .prepare(/* sql */ `
         SELECT
           c.contractId,
+          c.contractNumber,
           c.contractTypeId,
           t.contractType,
           t.isPreneed,
@@ -267,6 +270,7 @@ async function addInclusions(
   }
 
   if (options.includeTransactions) {
+    // eslint-disable-next-line require-atomic-updates
     contract.contractTransactions = await getContractTransactions(
       contract.contractId,
       { includeIntegrations: false },
@@ -291,6 +295,15 @@ function buildWhereClause(filters: GetContractsFilters): {
 } {
   let sqlWhereClause = ' where c.recordDelete_timeMillis is null'
   const sqlParameters: unknown[] = []
+
+  /*
+   * Contract Number
+    */
+
+  if ((filters.contractNumber ?? '') !== '') {
+    sqlWhereClause += " and c.contractNumber like '%' || ? || '%'"
+    sqlParameters.push(filters.contractNumber?.trim())
+  }
 
   /*
    * Burial Site

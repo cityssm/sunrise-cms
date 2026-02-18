@@ -20,3 +20,10 @@ export function formatTimeString(hour, minute) {
     const formattedMinute = `00${minute}`.slice(-2);
     return `${formattedHour}:${formattedMinute}`;
 }
+export function formatContractNumber(orderNumber) {
+    const trimmedOrderNumber = orderNumber.trim();
+    if (trimmedOrderNumber === '') {
+        return undefined;
+    }
+    return `UNIX-${trimmedOrderNumber}`;
+}

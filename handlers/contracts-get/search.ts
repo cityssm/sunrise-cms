@@ -11,7 +11,7 @@ export default function handler(
     unknown,
     unknown,
     unknown,
-    { cemeteryId?: string; deceasedName?: string; error?: string }
+    { cemeteryId?: string; contractNumber?: string; deceasedName?: string; error?: string }
   >,
   response: Response
 ): void {
@@ -46,7 +46,8 @@ export default function handler(
     headTitle: 'Contract Search',
 
     cemeteryId: request.query.cemeteryId,
-    deceasedName: request.query.deceasedName,
+    contractNumber: request.query.contractNumber ?? '',
+    deceasedName: request.query.deceasedName ?? '',
 
     burialSiteTypes,
     cemeteries,

@@ -40,6 +40,7 @@ export default async function getContracts(filters, options, connectedDatabase) 
             .prepare(/* sql */ `
         SELECT
           c.contractId,
+          c.contractNumber,
           c.contractTypeId,
           t.contractType,
           t.isPreneed,
@@ -157,6 +158,7 @@ async function addInclusions(contract, options, database) {
             .all(contract.contractId);
     }
     if (options.includeTransactions) {
+        // eslint-disable-next-line require-atomic-updates
         contract.contractTransactions = await getContractTransactions(contract.contractId, { includeIntegrations: false }, database);
     }
     if (options.includeInterments) {
@@ -168,6 +170,13 @@ async function addInclusions(contract, options, database) {
 function buildWhereClause(filters) {
     let sqlWhereClause = ' where c.recordDelete_timeMillis is null';
     const sqlParameters = [];
+    /*
+     * Contract Number
+      */
+    if ((filters.contractNumber ?? '') !== '') {
+        sqlWhereClause += " and c.contractNumber like '%' || ? || '%'";
+        sqlParameters.push(filters.contractNumber?.trim());
+    }
     /*
      * Burial Site
      */

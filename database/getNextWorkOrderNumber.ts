@@ -3,6 +3,7 @@ import sqlite from 'better-sqlite3'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
+// eslint-disable-next-line require-unicode-regexp
 const workOrderNumberRegex = /^\d{4}-\d+$/
 
 function matchesWorkOrderNumberSyntax(workOrderNumber: string): 0 | 1 {

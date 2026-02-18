@@ -23,7 +23,7 @@ import { getDeathAgePeriod } from './data.deathAgePeriods.js';
 import { getFuneralHomeIdByKey } from './data.funeralHomes.js';
 import * as importIds from './data.ids.js';
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js';
-import { formatDateString, formatTimeString, user } from './utilities.js';
+import { formatContractNumber, formatDateString, formatTimeString, user } from './utilities.js';
 export async function importFromWorkOrderCSV() {
     console.time('importFromWorkOrderCSV');
     let workOrderRow;
@@ -139,6 +139,7 @@ export async function importFromWorkOrderCSV() {
                 funeralHour += 12;
             }
             const contractForm = {
+                contractNumber: formatContractNumber(workOrderRow.WO_WORK_ORDER),
                 burialSiteId: burialSite ? burialSite.burialSiteId : '',
                 contractTypeId: contractType.contractTypeId,
                 contractEndDateString: '',

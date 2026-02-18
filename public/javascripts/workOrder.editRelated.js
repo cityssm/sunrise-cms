@@ -113,7 +113,7 @@
         <a class="has-text-weight-bold" href="${sunrise.getContractUrl(contract.contractId)}">
           ${cityssm.escapeHTML(contract.contractType)}
         </a><br />
-        <span class="is-size-7">#${cityssm.escapeHTML(contract.contractId.toString())}</span>
+        <span class="is-size-7">#${cityssm.escapeHTML(contract.contractNumber)}</span>
       </td>
     `;
         if (contract.burialSiteId === null || contract.burialSiteId === undefined) {

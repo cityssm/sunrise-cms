@@ -86,7 +86,7 @@
             href="${sunrise.getContractUrl(relatedContract.contractId)}">
             ${cityssm.escapeHTML(relatedContract.contractType)}
           </a><br />
-          <span class="is-size-7">#${relatedContract.contractId}</span>
+          <span class="is-size-7">#${relatedContract.contractNumber}</span>
         </td>
         <td>${relatedContract.contractStartDateString}</td>
         <td>
@@ -174,7 +174,7 @@
                   </div>
                   <div class="column">
                     ${cityssm.escapeHTML(contract.contractType)}<br />
-                    #${cityssm.escapeHTML(contract.contractId.toString())}
+                    #${cityssm.escapeHTML(contract.contractNumber)}
                   </div>
                   <div class="column">
                     ${cityssm.escapeHTML(contract.contractStartDateString)}

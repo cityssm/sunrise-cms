@@ -9,15 +9,23 @@ const simpleReports = {
     'burialSiteTypeFields-all': 'select * from BurialSiteTypeFields',
     'burialSiteTypes-all': 'select * from BurialSiteTypes',
     'cemeteries-all': 'select * from Cemeteries',
-    'cemeteries-formatted': `select cemeteryName,
-    cemeteryDescription,
-    cemeteryAddress1, cemeteryAddress2,
-    cemeteryCity, cemeteryProvince,
-    cemeteryPostalCode,
-    cemeteryPhoneNumber
-    from Cemeteries
-    where recordDelete_timeMillis is null
-    order by cemeteryName`,
+    'cemeteries-formatted': /* sql */ `
+    SELECT
+      cemeteryName,
+      cemeteryDescription,
+      cemeteryAddress1,
+      cemeteryAddress2,
+      cemeteryCity,
+      cemeteryProvince,
+      cemeteryPostalCode,
+      cemeteryPhoneNumber
+    FROM
+      Cemeteries
+    WHERE
+      recordDelete_timeMillis IS NULL
+    ORDER BY
+      cemeteryName
+  `,
     'committalTypes-all': 'select * from CommittalTypes',
     'contractAttachments-all': 'select * from ContractAttachments',
     'contractComments-all': 'select * from ContractComments',
@@ -33,13 +41,20 @@ const simpleReports = {
     'feeCategories-all': 'select * from FeeCategories',
     'fees-all': 'select * from Fees',
     'funeralHomes-all': 'select * from FuneralHomes',
-    'funeralHomes-formatted': `select funeralHomeName,
-    funeralHomeAddress1, funeralHomeAddress2,
-    funeralHomeCity, funeralHomeProvince,
-    funeralHomePostalCode,
-    funeralHomePhoneNumber
-    from FuneralHomes
-    where recordDelete_timeMillis is null`,
+    'funeralHomes-formatted': /* sql */ `
+    SELECT
+      funeralHomeName,
+      funeralHomeAddress1,
+      funeralHomeAddress2,
+      funeralHomeCity,
+      funeralHomeProvince,
+      funeralHomePostalCode,
+      funeralHomePhoneNumber
+    FROM
+      FuneralHomes
+    WHERE
+      recordDelete_timeMillis IS NULL
+  `,
     'intermentContainerTypes-all': 'select * from IntermentContainerTypes',
     'workOrderBurialSites-all': 'select * from WorkOrderBurialSites',
     'workOrderComments-all': 'select * from WorkOrderComments',
@@ -48,131 +63,202 @@ const simpleReports = {
     'workOrders-all': 'select * from WorkOrders',
     'workOrderTypes-all': 'select * from WorkOrderTypes'
 };
-export default function getReportData(reportName, reportParameters = {}, connectedDatabase = undefined) {
-    let sql = '';
+export default function getReportData(reportName, reportParameters = {}, connectedDatabase) {
+    let sql;
     const sqlParameters = [];
     // eslint-disable-next-line security/detect-object-injection
     if (simpleReports[reportName] === undefined) {
         switch (reportName) {
             case 'burialSites-byBurialSiteStatusId': {
-                sql = `select l.burialSiteId,
-          m.cemeteryName,
-          l.burialSiteName,
-          t.burialSiteType,
-          s.burialSiteStatus
-          from BurialSites l
-          left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
-          left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
-          left join Cemeteries m on l.cemeteryId = m.cemeteryId
-          where l.recordDelete_timeMillis is null
-          and l.burialSiteStatusId = ?`;
+                sql = /* sql */ `
+          SELECT
+            l.burialSiteId,
+            m.cemeteryName,
+            l.burialSiteName,
+            t.burialSiteType,
+            s.burialSiteStatus
+          FROM
+            BurialSites l
+            LEFT JOIN BurialSiteTypes t ON l.burialSiteTypeId = t.burialSiteTypeId
+            LEFT JOIN BurialSiteStatuses s ON l.burialSiteStatusId = s.burialSiteStatusId
+            LEFT JOIN Cemeteries m ON l.cemeteryId = m.cemeteryId
+          WHERE
+            l.recordDelete_timeMillis IS NULL
+            AND l.burialSiteStatusId = ?
+        `;
                 sqlParameters.push(reportParameters.burialSiteStatusId);
                 break;
             }
             case 'burialSites-byBurialSiteTypeId': {
-                sql = `select l.burialSiteId,
-          m.cemeteryName,
-          l.burialSiteName,
-          t.burialSiteType,
-          s.burialSiteStatus
-          from BurialSites l
-          left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
-          left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
-          left join Cemeteries m on l.cemeteryId = m.cemeteryId
-          where l.recordDelete_timeMillis is null
-          and l.burialSiteTypeId = ?`;
+                sql = /* sql */ `
+          SELECT
+            l.burialSiteId,
+            m.cemeteryName,
+            l.burialSiteName,
+            t.burialSiteType,
+            s.burialSiteStatus
+          FROM
+            BurialSites l
+            LEFT JOIN BurialSiteTypes t ON l.burialSiteTypeId = t.burialSiteTypeId
+            LEFT JOIN BurialSiteStatuses s ON l.burialSiteStatusId = s.burialSiteStatusId
+            LEFT JOIN Cemeteries m ON l.cemeteryId = m.cemeteryId
+          WHERE
+            l.recordDelete_timeMillis IS NULL
+            AND l.burialSiteTypeId = ?
+        `;
                 sqlParameters.push(reportParameters.burialSiteTypeId);
                 break;
             }
             case 'burialSites-byCemeteryId': {
-                sql = `select l.burialSiteId,
-          m.cemeteryName,
-          l.burialSiteName,
-          t.burialSiteType,
-          s.burialSiteStatus
-          from BurialSites l
-          left join BurialSiteTypes t on l.burialSiteTypeId = t.burialSiteTypeId
-          left join BurialSiteStatuses s on l.burialSiteStatusId = s.burialSiteStatusId
-          left join Cemeteries m on l.cemeteryId = m.cemeteryId
-          where l.recordDelete_timeMillis is null
-          and l.cemeteryId = ?`;
+                sql = /* sql */ `
+          SELECT
+            l.burialSiteId,
+            m.cemeteryName,
+            l.burialSiteName,
+            t.burialSiteType,
+            s.burialSiteStatus
+          FROM
+            BurialSites l
+            LEFT JOIN BurialSiteTypes t ON l.burialSiteTypeId = t.burialSiteTypeId
+            LEFT JOIN BurialSiteStatuses s ON l.burialSiteStatusId = s.burialSiteStatusId
+            LEFT JOIN Cemeteries m ON l.cemeteryId = m.cemeteryId
+          WHERE
+            l.recordDelete_timeMillis IS NULL
+            AND l.cemeteryId = ?
+        `;
                 sqlParameters.push(reportParameters.cemeteryId);
                 break;
             }
             case 'contractInterments-byContractId': {
-                sql = `select i.contractId, i.intermentNumber,
-          i.deceasedName, i.deceasedAddress1, i.deceasedAddress2,
-          i.deceasedCity, i.deceasedProvince, i.deceasedPostalCode,
-          i.birthDate, i.birthPlace,
-          i.deathDate, i.deathPlace,
-          i.deathAge, i.deathAgePeriod
-          from ContractInterments i
-          left join IntermentContainerTypes t on i.intermentContainerTypeId = t.intermentContainerTypeId
-          where i.recordDelete_timeMillis is null
-          and i.contractId = ?`;
+                sql = /* sql */ `
+          SELECT
+            i.contractId,
+            c.contractNumber,
+            i.intermentNumber,
+            i.deceasedName,
+            i.deceasedAddress1,
+            i.deceasedAddress2,
+            i.deceasedCity,
+            i.deceasedProvince,
+            i.deceasedPostalCode,
+            i.birthDate,
+            i.birthPlace,
+            i.deathDate,
+            i.deathPlace,
+            i.deathAge,
+            i.deathAgePeriod
+          FROM
+            ContractInterments i
+            LEFT JOIN Contracts c ON i.contractId = c.contractId
+            LEFT JOIN IntermentContainerTypes t ON i.intermentContainerTypeId = t.intermentContainerTypeId
+          WHERE
+            i.recordDelete_timeMillis IS NULL
+            AND i.contractId = ?
+        `;
                 sqlParameters.push(reportParameters.contractId);
                 break;
             }
             case 'contracts-current-byCemeteryId': {
-                sql = `select c.contractId,
-          b.burialSiteName,
-          cem.cemeteryName,
-          ct.contractType,
-          c.contractStartDate,
-          c.contractEndDate
-          from Contracts c
-          left join ContractTypes ct on c.contractTypeId = ct.contractTypeId
-          left join BurialSites b on c.burialSiteId = b.burialSiteId
-          left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
-          where c.recordDelete_timeMillis is null
-          and (c.contractEndDate is null or c.contractEndDate >= ?)
-          and b.cemeteryId = ?`;
+                sql = /* sql */ `
+          SELECT
+            c.contractId,
+            c.contractNumber,
+            b.burialSiteName,
+            cem.cemeteryName,
+            ct.contractType,
+            c.contractStartDate,
+            c.contractEndDate
+          FROM
+            Contracts c
+            LEFT JOIN ContractTypes ct ON c.contractTypeId = ct.contractTypeId
+            LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
+            LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          WHERE
+            c.recordDelete_timeMillis IS NULL
+            AND (
+              c.contractEndDate IS NULL
+              OR c.contractEndDate >= ?
+            )
+            AND b.cemeteryId = ?
+        `;
                 sqlParameters.push(dateToInteger(new Date()), reportParameters.cemeteryId);
                 break;
             }
             case 'contractTransactions-byTransactionDateString': {
-                sql = `select t.contractId, t.transactionIndex,
-          t.transactionDate, t.transactionTime,
-          t.transactionAmount,
-          t.isInvoiced,
-          t.externalReceiptNumber, t.transactionNote
-          from ContractTransactions t
-          where t.recordDelete_timeMillis is null
-          and t.transactionDate = ?`;
+                sql = /* sql */ `
+          SELECT
+            t.contractId,
+            c.contractNumber,
+            t.transactionIndex,
+            t.transactionDate,
+            t.transactionTime,
+            t.transactionAmount,
+            t.isInvoiced,
+            t.externalReceiptNumber,
+            t.transactionNote
+          FROM
+            ContractTransactions t
+            LEFT JOIN Contracts c ON t.contractId = c.contractId
+          WHERE
+            t.recordDelete_timeMillis IS NULL
+            AND t.transactionDate = ?
+        `;
                 sqlParameters.push(dateStringToInteger(reportParameters.transactionDateString));
                 break;
             }
             case 'workOrderMilestones-byWorkOrderId': {
-                sql = `select t.workOrderMilestoneType,
-          m.workOrderMilestoneDate,
-          m.workOrderMilestoneTime,
-          m.workOrderMilestoneDescription,
-          m.workOrderMilestoneCompletionDate,
-          m.workOrderMilestoneCompletionTime
-          from WorkOrderMilestones m
-          left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId
-          where m.recordDelete_timeMillis is null
-          and m.workOrderId = ?`;
+                sql = /* sql */ `
+          SELECT
+            t.workOrderMilestoneType,
+            m.workOrderMilestoneDate,
+            m.workOrderMilestoneTime,
+            m.workOrderMilestoneDescription,
+            m.workOrderMilestoneCompletionDate,
+            m.workOrderMilestoneCompletionTime
+          FROM
+            WorkOrderMilestones m
+            LEFT JOIN WorkOrderMilestoneTypes t ON m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId
+          WHERE
+            m.recordDelete_timeMillis IS NULL
+            AND m.workOrderId = ?
+        `;
                 sqlParameters.push(reportParameters.workOrderId);
                 break;
             }
             case 'workOrders-open': {
-                sql = `select w.workOrderId, w.workOrderNumber,
-          t.workOrderType, w.workOrderDescription,
-          w.workOrderOpenDate,
-          m.workOrderMilestoneCount, m.workOrderMilestoneCompletionCount
-          from WorkOrders w
-          left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
-          left join (
-            select m.workOrderId,
-            count(m.workOrderMilestoneId) as workOrderMilestoneCount,
-            sum(case when m.workOrderMilestoneCompletionDate is null then 0 else 1 end) as workOrderMilestoneCompletionCount
-            from WorkOrderMilestones m
-            where m.recordDelete_timeMillis is null
-            group by m.workOrderId
-          ) m on w.workOrderId = m.workOrderId
-          where w.recordDelete_timeMillis is null
-          and w.workOrderCloseDate is null`;
+                sql = /* sql */ `
+          SELECT
+            w.workOrderId,
+            w.workOrderNumber,
+            t.workOrderType,
+            w.workOrderDescription,
+            w.workOrderOpenDate,
+            m.workOrderMilestoneCount,
+            m.workOrderMilestoneCompletionCount
+          FROM
+            WorkOrders w
+            LEFT JOIN WorkOrderTypes t ON w.workOrderTypeId = t.workOrderTypeId
+            LEFT JOIN (
+              SELECT
+                m.workOrderId,
+                count(m.workOrderMilestoneId) AS workOrderMilestoneCount,
+                sum(
+                  CASE
+                    WHEN m.workOrderMilestoneCompletionDate IS NULL THEN 0
+                    ELSE 1
+                  END
+                ) AS workOrderMilestoneCompletionCount
+              FROM
+                WorkOrderMilestones m
+              WHERE
+                m.recordDelete_timeMillis IS NULL
+              GROUP BY
+                m.workOrderId
+            ) m ON w.workOrderId = m.workOrderId
+          WHERE
+            w.recordDelete_timeMillis IS NULL
+            AND w.workOrderCloseDate IS NULL
+        `;
                 break;
             }
             default: {

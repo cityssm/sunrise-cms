@@ -139,7 +139,7 @@ declare const exports: {
           href="${sunrise.getContractUrl(contract.contractId)}">
           ${cityssm.escapeHTML(contract.contractType)}
         </a><br />
-        <span class="is-size-7">#${contract.contractId}</span>
+        <span class="is-size-7">#${contract.contractNumber}</span>
       </td>
       <td>
         ${

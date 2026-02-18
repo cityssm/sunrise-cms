@@ -16,7 +16,7 @@ import { getBurialSiteTypeId } from './data.burialSiteTypes.js';
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js';
 import { getFeeIdByFeeDescription } from './data.fees.js';
 import * as importIds from './data.ids.js';
-import { formatDateString, user } from './utilities.js';
+import { formatContractNumber, formatDateString, user } from './utilities.js';
 export async function importFromPrepaidCSV() {
     console.time('importFromPrepaidCSV');
     let prepaidRow;
@@ -104,6 +104,7 @@ export async function importFromPrepaidCSV() {
                 }
             }
             contractId ||= addContract({
+                contractNumber: formatContractNumber(prepaidRow.CMPP_ORDER_NO),
                 burialSiteId: burialSite === undefined ? '' : burialSite.burialSiteId,
                 contractTypeId: importIds.preneedContractType.contractTypeId,
                 contractEndDateString: '',

@@ -13,10 +13,13 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import addContractInterment from './addContractInterment.js'
 import addFuneralHome from './addFuneralHome.js'
 import addOrUpdateContractField from './addOrUpdateContractField.js'
+import getNextContractNumber from './getNextContractNumber.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:addContract`)
 
 export interface AddContractForm {
+  contractNumber?: string
+
   burialSiteId: number | string
   contractEndDateString: '' | DateString
   contractStartDateString: '' | DateString
@@ -96,6 +99,12 @@ export default function addContract(
 
   const rightNowMillis = Date.now()
 
+  let contractNumber = addForm.contractNumber
+
+  if ((contractNumber ?? '') === '') {
+    contractNumber = getNextContractNumber(database)
+  }
+
   const contractStartDate = dateStringToInteger(
     addForm.contractStartDateString as DateString
   )
@@ -105,6 +114,7 @@ export default function addContract(
       .prepare(/* sql */ `
         INSERT INTO
           Contracts (
+            contractNumber,
             contractTypeId,
             burialSiteId,
             contractStartDate,
@@ -131,6 +141,7 @@ export default function addContract(
           )
         VALUES
           (
+        ?,
             ?,
             ?,
             ?,
@@ -157,6 +168,7 @@ export default function addContract(
           )
       `)
       .run(
+        contractNumber,
         addForm.contractTypeId,
         addForm.burialSiteId === '' ? undefined : addForm.burialSiteId,
         contractStartDate,

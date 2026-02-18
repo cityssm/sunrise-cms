@@ -28,7 +28,8 @@ export default function handler(request, response) {
     response.render('contracts/search', {
         headTitle: 'Contract Search',
         cemeteryId: request.query.cemeteryId,
-        deceasedName: request.query.deceasedName,
+        contractNumber: request.query.contractNumber ?? '',
+        deceasedName: request.query.deceasedName ?? '',
         burialSiteTypes,
         cemeteries,
         contractTypes,

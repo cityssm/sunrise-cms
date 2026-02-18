@@ -35,7 +35,7 @@ import { getFuneralHomeIdByKey } from './data.funeralHomes.js'
 import * as importIds from './data.ids.js'
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js'
 import type { WorkOrderRecord } from './recordTypes.js'
-import { formatDateString, formatTimeString, user } from './utilities.js'
+import { formatContractNumber, formatDateString, formatTimeString, user } from './utilities.js'
 
 export async function importFromWorkOrderCSV(): Promise<void> {
   console.time('importFromWorkOrderCSV')
@@ -249,6 +249,8 @@ export async function importFromWorkOrderCSV(): Promise<void> {
       }
 
       const contractForm: AddContractForm = {
+        contractNumber: formatContractNumber(workOrderRow.WO_WORK_ORDER),
+
         burialSiteId: burialSite ? burialSite.burialSiteId : '',
         contractTypeId: contractType.contractTypeId,
 

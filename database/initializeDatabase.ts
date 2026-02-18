@@ -287,6 +287,7 @@ const createStatements = [
   /* sql */ `
     CREATE TABLE IF NOT EXISTS Contracts (
       contractId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      contractNumber VARCHAR(50) NOT NULL DEFAULT '',
       contractTypeId INTEGER NOT NULL,
       burialSiteId INTEGER,
       contractStartDate INTEGER NOT NULL CHECK (contractStartDate > 0),

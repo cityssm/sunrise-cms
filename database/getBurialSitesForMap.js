@@ -53,6 +53,7 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
         .prepare(/* sql */ `
       SELECT
         c.contractId,
+        c.contractNumber,
         c.burialSiteId,
         c.contractStartDate,
         c.contractEndDate,
@@ -96,6 +97,7 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
         }
         contractsByBurialSite.get(contract.burialSiteId).push({
             contractId: contract.contractId,
+            contractNumber: contract.contractNumber,
             contractType: contract.contractType,
             isPreneed: contract.isPreneed,
             contractStartDate: contract.contractStartDate,

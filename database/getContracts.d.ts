@@ -2,6 +2,7 @@ import { type DateString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import type { Contract } from '../types/record.types.js';
 export interface GetContractsFilters {
+    contractNumber?: string;
     burialSiteId?: number | string;
     contractEffectiveDateString?: string;
     contractStartDateString?: DateString;

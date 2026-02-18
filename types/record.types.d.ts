@@ -107,6 +107,7 @@ export interface CommittalType extends Record {
 }
 export interface Contract extends Record {
     contractId: number;
+    contractNumber: string;
     contractType: string;
     contractTypeId: number;
     isPreneed: boolean;

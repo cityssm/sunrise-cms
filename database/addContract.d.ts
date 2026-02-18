@@ -1,6 +1,7 @@
 import { type DateString, type TimeString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 export interface AddContractForm {
+    contractNumber?: string;
     burialSiteId: number | string;
     contractEndDateString: '' | DateString;
     contractStartDateString: '' | DateString;

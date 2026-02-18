@@ -6,8 +6,8 @@ import getContractComments from './getContractComments.js';
 import getContractFees from './getContractFees.js';
 import getContractFields from './getContractFields.js';
 import getContractInterments from './getContractInterments.js';
-import getContractServiceTypes from './getContractServiceTypes.js';
 import getContracts from './getContracts.js';
+import getContractServiceTypes from './getContractServiceTypes.js';
 import getContractTransactions from './getContractTransactions.js';
 import { getWorkOrders } from './getWorkOrders.js';
 export default async function getContract(contractId, connectedDatabase) {
@@ -19,6 +19,7 @@ export default async function getContract(contractId, connectedDatabase) {
         .prepare(/* sql */ `
       SELECT
         c.contractId,
+        c.contractNumber,
         c.contractTypeId,
         t.contractType,
         t.isPreneed,
