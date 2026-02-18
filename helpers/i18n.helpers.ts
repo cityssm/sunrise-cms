@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 
 import i18next from 'i18next'
 import i18nextFsBackend from 'i18next-fs-backend'
-import * as i18nextMiddleware from 'i18next-http-middleware'
+import { LanguageDetector } from 'i18next-http-middleware'
 
 const __filename: string = fileURLToPath(import.meta.url)
 const __dirname: string = path.dirname(__filename)
@@ -12,7 +12,7 @@ const localesPath: string = path.join(__dirname, '..', 'locales')
 
 await i18next
   .use(i18nextFsBackend)
-  .use(i18nextMiddleware.LanguageDetector)
+  .use(LanguageDetector)
   .init({
     showSupportNotice: false, //hide the funding message
     fallbackLng: 'en',
@@ -34,4 +34,4 @@ await i18next
     }
   })
 
-export { i18next, i18nextMiddleware }
+export { i18next, LanguageDetector }
