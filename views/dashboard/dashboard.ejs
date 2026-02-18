@@ -6,9 +6,9 @@
 
 <% if (error !== undefined) { %>
 <div class="notification is-danger is-light">
-  <button class="delete" aria-label="delete"></button>
+  <button class="delete" aria-label="<%= t('common:delete') %>"></button>
   <p>
-    <strong>Error</strong><br />
+    <strong><%= t('dashboard:error') %></strong><br />
     <%= error %>
   </p>
 </div>
@@ -26,10 +26,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  Contracts
+                  <%= t('dashboard:contracts') %>
                 </h2>
                 <p>
-                  View and maintain current and past contracts.
+                  <%= t('dashboard:contractsDescription') %>
                 </p>
               </div>
             </div>
@@ -40,14 +40,14 @@
               <span class="icon">
                 <i class="fa-solid fa-plus"></i>
               </span>
-              <span>New Contract</span>
+              <span><%= t('dashboard:newContract') %></span>
             </a>
             <% } %>
             <a class="button is-fullwidth is-link is-light" href="<%= urlPrefix %>/funeralHomes">
               <span class="icon">
                 <i class="fa-solid fa-place-of-worship"></i>
               </span>
-              <span>Funeral Homes</span>
+              <span><%= t('dashboard:funeralHomes') %></span>
             </a>
           </div>
         </div>
@@ -61,10 +61,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  Work Orders
+                  <%= t('dashboard:workOrders') %>
                 </h2>
                 <p>
-                  View and maintain work orders.
+                  <%= t('dashboard:workOrdersDescription') %>
                 </p>
               </div>
             </div>
@@ -75,14 +75,14 @@
               <span class="icon">
                 <i class="fa-solid fa-plus"></i>
               </span>
-              <span>New Work Order</span>
+              <span><%= t('dashboard:newWorkOrder') %></span>
             </a>
             <% } %>
             <a class="button is-fullwidth is-link is-light" href="<%= urlPrefix %>/workOrders/workday">
               <span class="icon">
                 <i class="fa-solid fa-calendar-check"></i>
               </span>
-              <span>Workday Report</span>
+              <span><%= t('dashboard:workdayReport') %></span>
             </a>
           </div>
         </div>
@@ -98,10 +98,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  Burial Sites
+                  <%= t('dashboard:burialSites') %>
                 </h2>
                 <p>
-                  View and maintain burial sites within a cemetery.
+                  <%= t('dashboard:burialSitesDescription') %>
                 </p>
               </div>
             </div>
@@ -112,13 +112,13 @@
               <span class="icon">
                 <i class="fa-solid fa-plus"></i>
               </span>
-              <span>New Burial Site</span>
+              <span><%= t('dashboard:newBurialSite') %></span>
             </a>
             <a class="button is-fullwidth is-link is-light mt-2" href="<%= urlPrefix %>/burialSites/map">
               <span class="icon">
                 <i class="fa-solid fa-map-location-dot"></i>
               </span>
-              <span>Burial Site Map (Beta)</span>
+              <span><%= t('dashboard:burialSiteMap') %></span>
             </a>
           </div>
           <% } %>
@@ -133,10 +133,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  Cemeteries
+                  <%= t('dashboard:cemeteries') %>
                 </h2>
                 <p>
-                  View and maintain cemeteries.
+                  <%= t('dashboard:cemeteriesDescription') %>
                 </p>
               </div>
             </div>
@@ -147,7 +147,7 @@
               <span class="icon">
                 <i class="fa-solid fa-plus"></i>
               </span>
-              <span>New Cemetery</span>
+              <span><%= t('dashboard:newCemetery') %></span>
             </a>
           </div>
           <% } %>
@@ -164,9 +164,9 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  Report Library
+                  <%= t('dashboard:reportLibrary') %>
                 </h2>
-                <p>Produce reports and export data.</p>
+                <p><%= t('dashboard:reportLibraryDescription') %></p>
               </div>
             </div>
           </a>
@@ -175,7 +175,7 @@
               <span class="icon">
                 <i class="fa-solid fa-scroll"></i>
               </span>
-              <span>Update Log</span>
+              <span><%= t('dashboard:updateLog') %></span>
             </a>
           </div>
         </div>
@@ -194,9 +194,9 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  Help Documentation
+                  <%= t('dashboard:helpDocumentation') %>
                 </h2>
-                <p>Tips and tricks to get the most out of Sunrise CMS.</p>
+                <p><%= t('dashboard:helpDescription') %></p>
               </div>
             </div>
           </a>
@@ -220,7 +220,7 @@
     
     <% if (user.userProperties.isAdmin) { %>
     <h2 class="title is-3">
-      Administrator Tools
+      <%= t('dashboard:adminTools') %>
     </h2>
 
     <div class="columns">
@@ -236,11 +236,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  Fee Management
+                  <%= t('dashboard:feeManagement') %>
                 </h2>
                 <p>
-                  Manage fees for contracts
-                  and specific burial site types.
+                  <%= t('dashboard:feeManagementDescription') %>
                 </p>
               </div>
             </div>
@@ -255,12 +254,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  Contract Type Management
+                  <%= t('dashboard:contractTypeManagement') %>
                 </h2>
                 <p>
-                  Manage contract types,
-                  the fields associated with them,
-                  and their available print options.
+                  <%= t('dashboard:contractTypeManagementDescription') %>
                 </p>
               </div>
             </div>
@@ -275,10 +272,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  Burial Site Type Management
+                  <%= t('dashboard:burialSiteTypeManagement') %>
                 </h2>
                 <p>
-                  Manage burial site types and fields associated with them.
+                  <%= t('dashboard:burialSiteTypeManagementDescription') %>
                 </p>
               </div>
             </div>
@@ -293,12 +290,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  Config Table Management
+                  <%= t('dashboard:configTableManagement') %>
                 </h2>
                 <p>
-                  Manage simple configuration tables for
-                  work order types
-                  and burial site statuses.
+                  <%= t('dashboard:configTableManagementDescription') %>
                 </p>
               </div>
             </div>
@@ -317,10 +312,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  User Management
+                  <%= t('dashboard:userManagement') %>
                 </h2>
                 <p>
-                  Manage user accounts and permissions.
+                  <%= t('dashboard:userManagementDescription') %>
                 </p>
               </div>
             </div>
@@ -332,10 +327,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  Settings Management
+                  <%= t('dashboard:settingsManagement') %>
                 </h2>
                 <p>
-                  Manage application settings.
+                  <%= t('dashboard:settingsManagementDescription') %>
                 </p>
               </div>
             </div>
@@ -347,11 +342,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  Database Maintenance
+                  <%= t('dashboard:databaseMaintenance') %>
                 </h2>
                 <p>
-                  Backup the database before making significant updates.
-                  Permanently delete records that have been previously deleted from the database.
+                  <%= t('dashboard:databaseMaintenanceDescription') %>
                 </p>
               </div>
             </div>

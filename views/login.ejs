@@ -5,12 +5,12 @@
   id="is-login-page"
   data-theme="light"
   style="background-image:url('<%= backgroundImageUrl %>')"
-  lang="en"
+  lang="<%= lng || 'en' %>"
 >
 
   <head>
     <title>
-      Login:
+      <%= t('login:title') %>:
       <%= configFunctions.getConfigProperty("application.applicationName") %>
     </title>
 
@@ -52,22 +52,22 @@
                       name="userName"
                       type="text"
                       value="<%= userName %>"
-                      aria-label="User Name"
-                      placeholder="User Name"
+                      aria-label="<%= t('login:username') %>"
+                      placeholder="<%= t('login:username') %>"
                       autofocus
                       required
                     />
                   </div>
                 </div>
                 <div class="field">
-                  <label class="is-sr-only" for="login--password">Password</label>
-                  <div class="control has-icons-left" title="Password">
+                  <label class="is-sr-only" for="login--password"><%= t('login:password') %></label>
+                  <div class="control has-icons-left" title="<%= t('login:password') %>">
                     <input
                       class="input"
                       id="login--password"
                       name="password"
                       type="password"
-                      placeholder="Password"
+                      placeholder="<%= t('login:password') %>"
                       required
                     />
                     <span class="icon is-small is-left">
@@ -78,7 +78,7 @@
                 <% if (useTestDatabases) { %>
                 <div class="message is-small is-warning">
                   <p class="message-body has-text-centered">
-                    Testing databases in use!
+                    <%= t('login:testingDatabasesInUse') %>
                   </p>
                 </div>
                 <% } %>
@@ -96,7 +96,7 @@
                       <span class="icon">
                         <i class="fa-solid fa-sign-in-alt"></i>
                       </span>
-                      <span>Log In</span>
+                      <span><%= t('login:loginButton') %></span>
                     </button>
                   </div>
                 </div>
@@ -112,7 +112,7 @@
                   <span class="icon is-small">
                     <i class="fa-solid fa-question-circle"></i>
                   </span>
-                  <span>Help</span>
+                  <span><%= t('navigation:help') %></span>
                 </a>
                 <a
                   class="has-text-grey-dark ml-4"
