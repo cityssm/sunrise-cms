@@ -79,7 +79,7 @@
                 html += /* html */ `
           <li class="is-size-7">
             <a href="${contractUrl}" target="_blank">
-              ${cityssm.escapeHTML(contract.contractId.toString())}
+              ${cityssm.escapeHTML(contract.contractNumber)}
             </a>
             - ${cityssm.escapeHTML(contract.contractType)}${deceasedText}
           </li>
