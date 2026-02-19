@@ -31,10 +31,17 @@ jobs:
       - name: Run editorconfig-checker
         run: editorconfig-checker
 
-      - name: Install Application
-        run: |
-          npm ci
-          npm install -g c8 cypress@15
+      - name: Install Global Dependencies
+        run: npm install -g c8 cypress@15
+
+      - name: Install Application (CI)
+        id: installCi
+        continue-on-error: true
+        run: npm ci
+
+      - name: Install Application (Install)
+        if: steps.installCi.outcome == 'failure'
+        run: npm install
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
