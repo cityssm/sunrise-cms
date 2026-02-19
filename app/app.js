@@ -13,6 +13,7 @@ import session from 'express-session';
 import createError from 'http-errors';
 import FileStore from 'session-file-store';
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js';
+import { i18next, i18nextMiddleware } from '../helpers/i18n.helpers.js';
 import * as permissionHandlers from '../handlers/permissions.js';
 import { getSafeRedirectUrl } from '../helpers/authentication.helpers.js';
 import { getCachedSettingValue } from '../helpers/cache/settings.cache.js';
@@ -69,6 +70,10 @@ app.use(express.urlencoded({
     extended: false
 }));
 app.use(cookieParser());
+/*
+ * i18n Middleware
+ */
+app.use(i18nextMiddleware.handle(i18next));
 /*
  * URL Prefix
  */
@@ -153,6 +158,10 @@ app.use((request, response, next) => {
     };
     response.locals.dataLists = dataLists;
     response.locals.urlPrefix = urlPrefix;
+    // i18n translation
+    response.locals.t = request.t;
+    response.locals.i18n = request.i18n;
+    response.locals.lng = request.language;
     next();
 });
 /*

@@ -1,0 +1,12 @@
+{
+  "forgotPassword": "Forgot Password?",
+  "invalidCredentials": "Invalid username or password.",
+  "loginButton": "Log In",
+  "logout": "Log Out",
+  "password": "Password",
+  "rememberMe": "Remember Me",
+  "testingDatabasesInUse": "Testing databases in use!",
+  "title": "Login",
+  "tooManyAttempts": "Too many login attempts. Please try again later.",
+  "username": "User Name"
+}
