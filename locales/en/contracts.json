@@ -11,7 +11,7 @@
   "createANewFuneralHome": "Create a New Funeral Home",
   "deleteFuneralHome": "Delete Funeral Home",
   "export": "Export",
-  "filterUpcomingFunerals": "Only show funeral homes with upcoming funerals",
+  "filterUpcomingServices": "Only show funeral homes with upcoming services",
   "findAFuneralHome": "Find a Funeral Home",
   "funeralDate": "Funeral Date",
   "funeralDirector": "Funeral Director",
@@ -33,5 +33,6 @@
   "province": "Province",
   "restoreFuneralHome": "Restore Funeral Home",
   "searchPlaceholder": "Search funeral home name and address",
+  "upcomingServices": "Upcoming Services",
   "updateFuneralHome": "Update Funeral Home"
 }

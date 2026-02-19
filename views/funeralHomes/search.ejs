@@ -18,13 +18,13 @@
     </nav>
 
     <% if (error !== undefined) { %>
-      <div class="notification is-danger is-light">
-        <button class="delete" aria-label="delete"></button>
-        <p>
-          <strong><%= t('contracts:funeralHomeError') %></strong><br />
-          <%= error %>
-        </p>
-      </div>
+    <div class="notification is-danger is-light">
+      <button class="delete" aria-label="delete"></button>
+      <p>
+        <strong><%= t('contracts:funeralHomeError') %></strong><br />
+        <%= error %>
+      </p>
+    </div>
     <% } %>
 
     <div class="columns is-vcentered">
@@ -59,7 +59,7 @@
           <div class="column is-narrow">
             <label class="checkbox">
               <input id="searchFilter--hasUpcomingFunerals" type="checkbox" />
-              <%= t('contracts:filterUpcomingFunerals') %>
+              <%= t('contracts:filterUpcomingServices') %>
             </label>
           </div>
         </div>

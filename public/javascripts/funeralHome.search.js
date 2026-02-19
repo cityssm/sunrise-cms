@@ -23,7 +23,7 @@
         return addressHTML;
     }
     function renderResults() {
-        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Funeral Homes...');
+        searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(i18next.t('common:loading'));
         let searchResultCount = 0;
         const searchResultsTbodyElement = document.createElement('tbody');
         const filterStringSplit = searchFilterElement.value
@@ -73,7 +73,7 @@
         if (searchResultCount === 0) {
             searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
-          <p class="message-body">There are no funeral homes that meet the search criteria.</p>
+          <p class="message-body">${cityssm.escapeHTML(i18next.t('common:noResults'))}</p>
         </div>
       `;
         }
@@ -84,10 +84,10 @@
             searchResultsTableElement.innerHTML = /* html */ `
         <thead>
           <tr>
-            <th>Funeral Home</th>
-            <th>Address</th>
-            <th>Phone Number</th>
-            <th class="has-text-right">Upcoming Funerals</th>
+            <th>${cityssm.escapeHTML(i18next.t('contracts:funeralHome'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('contracts:address'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('contracts:phoneNumber'))}</th>
+            <th class="has-text-right">${cityssm.escapeHTML(i18next.t('contracts:upcomingServices'))}</th>
           </tr>
         </thead>
       `;
@@ -103,5 +103,5 @@
         formEvent.preventDefault();
         renderResults();
     });
-    renderResults();
+    i18next.on('initialized', renderResults);
 })();
