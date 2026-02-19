@@ -11,15 +11,16 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import session from 'express-session';
 import createError from 'http-errors';
+import * as i18nextMiddleware from 'i18next-http-middleware';
 import FileStore from 'session-file-store';
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js';
-import { i18next, i18nextMiddleware } from '../helpers/i18n.helpers.js';
 import * as permissionHandlers from '../handlers/permissions.js';
 import { getSafeRedirectUrl } from '../helpers/authentication.helpers.js';
 import { getCachedSettingValue } from '../helpers/cache/settings.cache.js';
 import * as configFunctions from '../helpers/config.helpers.js';
 import { useTestDatabases } from '../helpers/database.helpers.js';
 import dataLists from '../helpers/dataLists.js';
+import { i18next } from '../helpers/i18n.helpers.js';
 import * as printFunctions from '../helpers/print.helpers.js';
 import { getCsrfSecret } from '../helpers/settings.helpers.js';
 import routerAdmin from '../routes/admin.js';
@@ -106,12 +107,15 @@ app.use(`${urlPrefix}/public-internal`, (request, response, next) => {
 }, express.static(path.join(configFunctions.getConfigProperty('settings.customizationsPath'), 'public-internal')));
 app
     .use(urlPrefix, express.static('public'))
+    .use(`${urlPrefix}/locales`, express.static('locales'))
     .use(`${urlPrefix}/lib/bulma`, express.static('node_modules/bulma/css'))
     .use(`${urlPrefix}/lib/cityssm-bulma-js/bulma-js.js`, express.static('node_modules/@cityssm/bulma-js/dist/bulma-js.js'))
     .use(`${urlPrefix}/lib/cityssm-fa-glow`, express.static('node_modules/@cityssm/fa-glow'))
     .use(`${urlPrefix}/lib/cityssm-bulma-sticky-table`, express.static('node_modules/@cityssm/bulma-sticky-table'))
     .use(`${urlPrefix}/lib/cityssm-bulma-webapp-js`, express.static('node_modules/@cityssm/bulma-webapp-js/dist'))
     .use(`${urlPrefix}/lib/fa`, express.static('node_modules/@fortawesome/fontawesome-free'))
+    .use(`${urlPrefix}/lib/i18next`, express.static('node_modules/i18next'))
+    .use(`${urlPrefix}/lib/i18next-http-backend`, express.static('node_modules/i18next-http-backend'))
     .use(`${urlPrefix}/lib/leaflet`, express.static('node_modules/leaflet/dist'));
 /*
  * SESSION MANAGEMENT

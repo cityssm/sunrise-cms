@@ -3,6 +3,7 @@
   "invalidCredentials": "Invalid username or password.",
   "loginButton": "Log In",
   "logout": "Log Out",
+  "logoutConfirm": "Are you sure you want to log out?",
   "password": "Password",
   "rememberMe": "Remember Me",
   "testingDatabasesInUse": "Testing databases in use!",

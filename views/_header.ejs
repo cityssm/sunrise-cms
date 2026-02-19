@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- eslint-disable-next-line html/require-closing-tags -->
 <html class="has-navbar-fixed-top is-fullwidth" data-theme="light"
-      lang="<%= lng || 'en' %>">
+  lang="<%= lng || 'en' %>">
 
   <head>
     <meta charset="utf-8" />
@@ -61,14 +61,14 @@
               <span class="icon">
                 <i class="fa-solid fa-file-contract"></i>
               </span>
-              <span>Contracts</span>
+              <span><%= t('dashboard:contracts') %></span>
             </a>
 
             <a class="navbar-item" href="<%= urlPrefix %>/workOrders">
               <span class="icon">
                 <i class="fa-solid fa-hard-hat"></i>
               </span>
-              <span>Work Orders</span>
+              <span><%= t('dashboard:workOrders') %></span>
             </a>
               
             <div class="navbar-item has-dropdown">
@@ -80,28 +80,28 @@
                   <span class="icon">
                     <i class="fa-solid fa-place-of-worship"></i>
                   </span>
-                  <span>Funeral Homes</span>
+                  <span><%= t('dashboard:funeralHomes') %></span>
                 </a>
                 <a class="navbar-item" href="<%= urlPrefix %>/burialSites"
                 >
                   <span class="icon">
                     <i class="fa-solid fa-map-pin"></i>
                   </span>
-                  <span>Burial Sites</span>
+                  <span><%= t('dashboard:burialSites') %></span>
                 </a>
                 <a class="navbar-item" href="<%= urlPrefix %>/cemeteries"
                 >
                   <span class="icon">
                     <i class="fa-regular fa-map"></i>
                   </span>
-                  <span>Cemeteries</span>
+                  <span><%= t('dashboard:cemeteries') %></span>
                 </a>
                 <hr class="navbar-divider" />
                 <a class="navbar-item" href="<%= urlPrefix %>/reports">
                   <span class="icon">
                     <i class="fa-solid fa-file"></i>
                   </span>
-                  <span>Reports</span>
+                  <span><%= t('dashboard:reportLibrary') %></span>
                 </a>
                 <hr class="navbar-divider" />
                 <a
@@ -113,7 +113,7 @@
                   <span class="icon">
                     <i class="fa-solid fa-question-circle"></i>
                   </span>
-                  <span>Help</span>
+                  <span><%= t('dashboard:helpDocumentation') %></span>
                 </a>
               </div>
             </div>
@@ -128,7 +128,7 @@
               <span class="icon">
                 <i class="fa-solid fa-search"></i>
               </span>
-              <span>Quick Search</span>
+              <span><%= t('common:search') %></span>
             </a>
             <div class="navbar-item has-dropdown">
               <a class="navbar-link" href="#">
@@ -143,7 +143,7 @@
                   <span class="icon">
                     <i class="fa-solid fa-cog"></i>
                   </span>
-                  <span>User Settings</span>
+                  <span><%= t('dashboard:userSettings') %></span>
                 </a>
                 <a
                   class="navbar-item"
@@ -154,7 +154,7 @@
                   <span class="icon">
                     <i class="fa-solid fa-sign-out-alt"></i>
                   </span>
-                  <span>Log Out</span>
+                  <span><%= t('login:logout') %></span>
                 </a>
               </div>
             </div>

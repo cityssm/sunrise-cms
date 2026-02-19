@@ -37,6 +37,7 @@
   "updateLog": "Update Log",
   "userManagement": "User Management",
   "userManagementDescription": "Manage user accounts and permissions.",
+  "userSettings": "User Settings",
   "welcome": "Welcome, {{name}}!",
   "workOrders": "Work Orders",
   "workOrdersDescription": "View and maintain work orders.",

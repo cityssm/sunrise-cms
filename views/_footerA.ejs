@@ -31,7 +31,20 @@
 <script src="<%= urlPrefix %>/lib/cityssm-bulma-js/bulma-js.js"></script>
 <script src="<%= urlPrefix %>/lib/cityssm-bulma-webapp-js/cityssm.js"></script>
 <script src="<%= urlPrefix %>/lib/leaflet/leaflet-global.js"></script>
+<script src="<%= urlPrefix %>/lib/i18next/i18next.min.js"></script>
+<script src="<%= urlPrefix %>/lib/i18next-http-backend/i18nextHttpBackend.min.js"></script>
 <script>
+  i18next.use(i18nextHttpBackend).init({
+    lng: '<%= lng %>',
+    showSupportNotice: false,
+    fallbackLng: 'en',
+    supportedLngs: ['en', 'de'],
+    ns: ['common', 'login', 'dashboard', 'navigation', 'errors'],
+    backend: {
+      loadPath: "<%= urlPrefix %>/locales/{{lng}}/{{ns}}.json"
+    }
+  });
+
   cityssm.htmlModalFolder = "<%= urlPrefix %>/html/";
   bulmaJS.init();
 </script>

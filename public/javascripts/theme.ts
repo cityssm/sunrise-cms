@@ -1,8 +1,10 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { i18n } from 'i18next'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+declare const i18next: i18n
 
   /*
    * LOGOUT MODAL
@@ -22,13 +24,13 @@ declare const bulmaJS: BulmaJS
 
       bulmaJS.confirm({
         contextualColorName: 'warning',
-        title: 'Log Out?',
+        title: i18next.t('login:logout'),
 
-        message: 'Are you sure you want to log out?',
+        message: i18next.t('login:logoutConfirm'),
 
         okButton: {
           callbackFunction: doLogout,
-          text: 'Log Out'
+          text: i18next.t('login:logout')
         }
       })
     })
