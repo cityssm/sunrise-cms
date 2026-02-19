@@ -3,6 +3,7 @@
   "invalidCredentials": "Ungültiger Benutzername oder Passwort.",
   "loginButton": "Anmelden",
   "logout": "Abmelden",
+  "logoutConfirm": "Sind Sie sicher, dass Sie sich abmelden möchten?",
   "password": "Passwort",
   "rememberMe": "Angemeldet bleiben",
   "testingDatabasesInUse": "Testdatenbanken werden verwendet!",
