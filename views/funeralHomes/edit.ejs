@@ -6,22 +6,22 @@
     <li>
       <a href="<%= urlPrefix %>/funeralHomes">
         <span class="icon is-small"><i class="fa-solid fa-place-of-worship"></i></span>
-        <span>Funeral Homes</span>
+        <span><%= t('contracts:funeralHomes') %></span>
       </a>
     </li>
     <% if (!isCreate) { %>
       <li>
         <a href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>">
-          <%= funeralHome.funeralHomeName || "(No Name)" %>
+          <%= funeralHome.funeralHomeName || t('contracts:noName') %>
         </a>
       </li>
     <% } %>
     <li class="is-active">
       <a href="#" aria-current="page">
         <% if (isCreate) { %>
-          Create a New Funeral Home
+          <%= t('contracts:createANewFuneralHome') %>
         <% } else { %>
-          Update
+          <%= t('common:update') %>
         <% } %>
       </a>
     </li>
@@ -30,9 +30,9 @@
 
 <h1 class="title is-1">
   <% if (isCreate) { %>
-    Create a New Funeral Home
+    <%= t('contracts:createANewFuneralHome') %>
   <% } else { %>
-    Update Funeral Home
+    <%= t('contracts:updateFuneralHome') %>
   <% } %>
 </h1>
 
@@ -40,7 +40,7 @@
   <div class="column">
     <% if (!isCreate) { %>
       <span class="has-text-weight-bold">
-        <%= funeralHome.funeralHomeName || "(No Name)" %>
+        <%= funeralHome.funeralHomeName || t('contracts:noName') %>
       </span>
     <% } %>
   </div>
@@ -48,13 +48,13 @@
     <div class="buttons is-right">
       <% if (isCreate) { %>
         <a class="button is-danger is-light" href="<%= urlPrefix %>/funeralHomes">
-          Cancel
+          <%= t('common:cancel') %>
         </a>
       <% } else { %>
         <div class="dropdown is-right is-up">
           <div class="dropdown-trigger">
             <button class="button" type="button">
-              <span>More Options</span>
+              <span><%= t('contracts:moreOptions') %></span>
               <span class="icon is-small">
                 <i class="fa-solid fa-angle-up"></i>
               </span>
@@ -64,7 +64,7 @@
             <div class="dropdown-content">
               <a class="dropdown-item" id="button--deleteFuneralHome" href="#">
                 <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
-                <span>Delete Funeral Home</span>
+                <span><%= t('contracts:deleteFuneralHome') %></span>
               </a>
             </div>
           </div>
@@ -73,8 +73,8 @@
       <button class="button is-primary is-light" type="submit" form="form--funeralHome">
         <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
         <span>
-          <%= (isCreate ? "Create": "Update") %>
-          <span class="is-hidden-mobile">Funeral Home</span>
+          <%= (isCreate ? t('common:create') : t('common:update')) %>
+          <span class="is-hidden-mobile"><%= t('contracts:funeralHome') %></span>
         </span>
       </button>
     </div>
@@ -89,7 +89,7 @@
       <div class="panel">
         <div class="panel-block is-block">
           <div class="field">
-            <label class="label" for="funeralHome--funeralHomeName">Funeral Home Name</label>
+            <label class="label" for="funeralHome--funeralHomeName"><%= t('contracts:funeralHomeName') %></label>
             <div class="control">
               <input
                 class="input"
@@ -105,14 +105,14 @@
             </div>
           </div>
           <div class="field">
-            <label class="label" for="funeralHome--funeralHomeAddress1">Address</label>
+            <label class="label" for="funeralHome--funeralHomeAddress1"><%= t('contracts:address') %></label>
             <div class="control">
               <input class="input" id="funeralHome--funeralHomeAddress1" name="funeralHomeAddress1"
                 type="text"
                 value="<%= funeralHome.funeralHomeAddress1 %>"
                 maxlength="50"
                 autocomplete="off"
-                placeholder="Line 1" />
+                placeholder="<%= t('contracts:addressLine1') %>" />
             </div>
           </div>
           <div class="field">
@@ -122,14 +122,14 @@
                 value="<%= funeralHome.funeralHomeAddress2 %>"
                 maxlength="50"
                 autocomplete="off"
-                placeholder="Line 2"
-                aria-label="Address Line 2" />
+                placeholder="<%= t('contracts:addressLine2') %>"
+                aria-label="<%= t('contracts:addressLine2') %>" />
             </div>
           </div>
           <div class="columns">
             <div class="column is-8">
               <div class="field">
-                <label class="label" for="funeralHome--funeralHomeCity">City</label>
+                <label class="label" for="funeralHome--funeralHomeCity"><%= t('contracts:city') %></label>
                 <div class="control">
                   <input class="input" id="funeralHome--funeralHomeCity" name="funeralHomeCity"
                     type="text"
@@ -140,7 +140,7 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="funeralHome--funeralHomeProvince">Province</label>
+                <label class="label" for="funeralHome--funeralHomeProvince"><%= t('contracts:province') %></label>
                 <div class="control">
                   <input class="input" id="funeralHome--funeralHomeProvince" name="funeralHomeProvince"
                     type="text"
@@ -153,7 +153,7 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label" for="funeralHome--funeralHomePostalCode">Postal Code</label>
+                <label class="label" for="funeralHome--funeralHomePostalCode"><%= t('contracts:postalCode') %></label>
                 <div class="control">
                   <input class="input" id="funeralHome--funeralHomePostalCode" name="funeralHomePostalCode"
                     type="text"
@@ -167,7 +167,7 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="funeralHome--funeralHomePhoneNumber">Phone Number</label>
+                <label class="label" for="funeralHome--funeralHomePhoneNumber"><%= t('contracts:phoneNumber') %></label>
                 <div class="control">
                   <input class="input" id="funeralHome--funeralHomePhoneNumber" name="funeralHomePhoneNumber"
                     type="text"
