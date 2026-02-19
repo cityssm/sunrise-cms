@@ -13,12 +13,12 @@
             <li>
               <a href="#">
                 <span class="icon is-small"><i class="fa-solid fa-cog"></i></span>
-                <span><%= t('Administrator Tools') %></span>
+                <span><%= t('admin:adminTools') %></span>
               </a>
             </li>
             <li class="is-active">
               <a href="#" aria-current="page">
-                <%= t('userManagement') %>
+                <%= t('admin:userManagement') %>
               </a>
             </li>
           </ul>
@@ -33,7 +33,7 @@
           target="_blank"
         >
           <span class="icon is-small"><i class="fa-regular fa-circle-question"></i></span>
-          <span><%= t('Help') %></span>
+          <span><%= t('common:help') %></span>
         </a>
       </div>
     </div>
@@ -41,7 +41,7 @@
     <div class="columns is-vcentered">
       <div class="column">
         <h1 class="title is-1">
-            <%= t('userManagement') %>
+          <%= t('admin:userManagement') %>
         </h1>
       </div>
       <div class="column is-narrow">
@@ -49,7 +49,7 @@
           <span class="icon">
             <i class="fa-solid fa-plus"></i>
           </span>
-          <span><%= t('addUser') %></span>
+          <span><%= t('admin:addUser') %></span>
         </button>
       </div>
     </div>
@@ -60,12 +60,12 @@
         <div class="columns">
           <div class="column is-7">
             <p>
-              <strong><%= t('note') %>:</strong><br />
-              <%= t('someUsersAreConfiguredInTheApplicationConfigFileAndWillNotAppearInThisTable') %>
+              <strong><%= t('common:note') %>:</strong><br />
+              <%= t('admin:someUsersAreConfiguredInTheConfigFile') %>
             </p>
           </div>
           <div class="column">
-            <p><%= t('usersDefinedInConfig') %>:</p>
+            <p><%= t('admin:usersDefinedInConfig') %>:</p>
             <ul>
               <% const allConfigUsers = [...new Set([
               ...configUsers.canLogin,

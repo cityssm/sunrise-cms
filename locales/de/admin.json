@@ -1,0 +1,17 @@
+{
+  "adminTools": "Administratorwerkzeuge",
+  "burialSiteTypeManagement": "Grabstättenartenverwaltung",
+  "burialSiteTypeManagementDescription": "Grabstättenarten und zugehörige Felder verwalten.",
+  "configTableManagement": "Konfigurationstabellenverwaltung",
+  "configTableManagementDescription": "Einfache Konfigurationstabellen für Arbeitsauftragsarten und Grabstättenstatus verwalten.",
+  "contractTypeManagement": "Vertragsartenverwaltung",
+  "contractTypeManagementDescription": "Vertragsarten, die zugehörigen Felder und verfügbaren Druckoptionen verwalten.",
+  "databaseMaintenance": "Datenbankwartung",
+  "databaseMaintenanceDescription": "Datenbank vor wichtigen Aktualisierungen sichern. Zuvor gelöschte Datensätze dauerhaft aus der Datenbank entfernen.",
+  "feeManagement": "Gebührenverwaltung",
+  "feeManagementDescription": "Gebühren für Verträge und bestimmte Grabstättenarten verwalten.",
+  "settingsManagement": "Einstellungsverwaltung",
+  "settingsManagementDescription": "Anwendungseinstellungen verwalten.",
+  "userManagement": "Benutzerverwaltung",
+  "userManagementDescription": "Benutzerkonten und Berechtigungen verwalten."
+}
