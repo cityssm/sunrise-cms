@@ -279,6 +279,31 @@
      */
     const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled;
     /*
+     * i18n
+     */
+    function applyLocalization(i18nElement) {
+        const i18nKey = i18nElement.dataset.i18n ?? '';
+        if (i18nKey === '') {
+            return;
+        }
+        const i18nAttribute = i18nElement.dataset.i18nAttribute ?? '';
+        if (i18nAttribute === '') {
+            i18nElement.textContent = i18next.t(i18nKey);
+        }
+        else {
+            i18nElement.setAttribute(i18nAttribute, i18next.t(i18nKey));
+        }
+    }
+    function localize(element = document.body) {
+        if (Object.hasOwn(element.dataset, 'i18n')) {
+            applyLocalization(element);
+        }
+        const elements = element.querySelectorAll('[data-i18n]');
+        for (const i18nElement of elements) {
+            applyLocalization(i18nElement);
+        }
+    }
+    /*
      * Declare sunrise
      */
     const sunrise = {
@@ -291,6 +316,7 @@
         initializeUnlockFieldButtons,
         escapedAliases,
         populateAliases,
+        localize,
         clearUnsavedChanges,
         hasUnsavedChanges,
         setUnsavedChanges,

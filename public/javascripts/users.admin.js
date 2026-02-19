@@ -81,7 +81,7 @@
           data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Active Status"
         >
-          ${user.isActive ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.isActive ? i18next.t('common:yes') : i18next.t('common:no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -91,7 +91,7 @@
           data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Can Update Cemeteries"
         >
-          ${user.canUpdateCemeteries ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.canUpdateCemeteries ? i18next.t('common:yes') : i18next.t('common:no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -101,7 +101,7 @@
           data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Can Update Contracts"
         >
-          ${user.canUpdateContracts ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.canUpdateContracts ? i18next.t('common:yes') : i18next.t('common:no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -111,7 +111,7 @@
           data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Can Update Work Orders"
         >
-          ${user.canUpdateWorkOrders ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.canUpdateWorkOrders ? i18next.t('common:yes') : i18next.t('common:no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -121,16 +121,16 @@
           data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Is Admin"
         >
-          ${user.isAdmin ? 'Yes' : 'No'}
+          ${cityssm.escapeHTML(user.isAdmin ? i18next.t('common:yes') : i18next.t('common:no'))}
         </button>
       </td>
       <td class="has-text-centered">
         <button
           class="button is-small is-danger delete-user"
           data-user-name="${cityssm.escapeHTML(user.userName)}"
-          title="Delete User"
+          title="${cityssm.escapeHTML(i18next.t('admin:deleteUser'))}"
         >
-          Delete
+          ${cityssm.escapeHTML(i18next.t('common:delete'))}
         </button>
       </td>
     `;
@@ -146,14 +146,14 @@
         tableElement.innerHTML = /* html */ `
       <thead>
         <tr>
-          <th>User Name</th>
-          <th class="has-text-centered">Can Login</th>
-          <th class="has-text-centered">Can Update<br /> Cemeteries</th>
-          <th class="has-text-centered">Can Update<br /> Contracts</th>
-          <th class="has-text-centered">Can Update<br /> Work Orders</th>
-          <th class="has-text-centered">Is Admin</th>
+          <th>${cityssm.escapeHTML(i18next.t('admin:userName'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canLogin'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateCemeteries'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateContracts'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:canUpdateWorkOrders'))}</th>
+          <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('admin:isAdmin'))}</th>
           <th class="has-text-centered">
-            <span class="is-sr-only">Delete User</span>
+            <span class="is-sr-only">${cityssm.escapeHTML(i18next.t('admin:deleteUser'))}</span>
           </th>
         </tr>
       </thead>
@@ -195,7 +195,7 @@
         }
         cityssm.openHtmlModal('adminUsers-add', {
             onshow(modalElement) {
-                ;
+                sunrise.localize(modalElement);
                 modalElement.querySelector('#span--domain').textContent = `${exports.domain}\\`;
             },
             onshown(modalElement, _closeModalFunction) {
@@ -210,5 +210,7 @@
             }
         });
     });
-    renderUsers(exports.users);
+    i18next.on('initialized', () => {
+        renderUsers(exports.users);
+    });
 })();

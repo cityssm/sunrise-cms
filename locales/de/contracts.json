@@ -8,7 +8,7 @@
   "contractsDescription": "Aktuelle und vergangene Verträge anzeigen und verwalten.",
   "contractsWithUpcomingFunerals": "Verträge mit bevorstehenden Beerdigungen",
   "contractType": "Vertragsart",
-  "createANewFuneralHome": "Neues Bestattungsinstitut erstellen",
+  "createNewFuneralHome": "Neues Bestattungsinstitut erstellen",
   "deleteFuneralHome": "Bestattungsinstitut löschen",
   "export": "Exportieren",
   "filterUpcomingServices": "Nur Bestattungsinstitute mit bevorstehenden Beerdigungen anzeigen",

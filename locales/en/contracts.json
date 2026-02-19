@@ -8,7 +8,7 @@
   "contractsDescription": "View and maintain current and past contracts.",
   "contractsWithUpcomingFunerals": "Contracts with Upcoming Funerals",
   "contractType": "Contract Type",
-  "createANewFuneralHome": "Create a New Funeral Home",
+  "createNewFuneralHome": "Create a New Funeral Home",
   "deleteFuneralHome": "Delete Funeral Home",
   "export": "Export",
   "filterUpcomingServices": "Only show funeral homes with upcoming services",

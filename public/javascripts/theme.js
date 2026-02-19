@@ -57,8 +57,8 @@
         if (contractField === 'deceasedName') {
             globalThis.location.href = `${urlPrefix}/contracts/?deceasedName=${encodeURIComponent(searchValue)}`;
         }
-        else if (contractField === 'contractId' && /^\d+$/.test(searchValue)) {
-            globalThis.location.href = `${urlPrefix}/contracts/${encodeURIComponent(searchValue)}`;
+        else if (contractField === 'contractNumber') {
+            globalThis.location.href = `${urlPrefix}/contracts/?contractNumber=${encodeURIComponent(searchValue)}`;
         }
         else {
             bulmaJS.alert({

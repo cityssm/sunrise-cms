@@ -7,7 +7,7 @@
   <div class="column">
     <nav class="breadcrumb">
       <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-solid fa-place-of-worship"></i></span>
@@ -34,7 +34,12 @@
         </h1>
       </div>
       <div class="column has-text-right is-narrow is-hidden-print">
-        <a class="button" href="<%= urlPrefix %>/reports/funeralHomes-formatted" target="_blank" download>
+        <a
+          class="button"
+          href="<%= urlPrefix %>/reports/funeralHomes-formatted"
+          download
+          target="_blank"
+        >
           <span class="icon is-small"><i class="fa-solid fa-download"></i></span>
           <span><%= t('contracts:export') %></span>
         </a>
@@ -47,7 +52,10 @@
           <div class="column">
             <div class="field">
               <div class="control has-icons-left">
-                <input class="input" id="searchFilter--funeralHome" type="text"
+                <input
+                  class="input"
+                  id="searchFilter--funeralHome"
+                  type="text"
                   placeholder="<%= t('contracts:searchPlaceholder') %>"
                 />
                 <span class="icon is-small is-left">

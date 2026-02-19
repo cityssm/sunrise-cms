@@ -1,13 +1,15 @@
 <div
   class="modal"
   id="modal--addUser"
+  data-i18n="admin:addUser"
+  data-i18n-attribute="aria-label"
   role="dialog"
   aria-label="Add User"
 >
   <div class="modal-background"></div>
   <div class="modal-card">
     <div class="modal-card-head">
-      <p class="modal-card-title">Add User</p>
+      <p class="modal-card-title" data-i18n="admin:addUser">Add User</p>
       <button
         class="delete is-close-modal-button"
         type="button"
@@ -18,7 +20,7 @@
       <form id="form--addUser">
         <div class="columns">
           <div class="column">
-            <label class="label" for="userName">Username</label>
+            <label class="label" data-i18n="admin:userName" for="userName">User Name</label>
             <div class="field has-addons">
               <div class="control">
                 <span
@@ -43,25 +45,25 @@
               <div class="control">
                 <label class="checkbox">
                   <input name="canUpdateCemeteries" type="checkbox" value="1" />
-                  Can Update Cemeteries
+                  <span data-i18n="admin:canUpdateCemeteries">Can Update Cemeteries</span>
                 </label>
               </div>
               <div class="control">
                 <label class="checkbox">
                   <input name="canUpdateContracts" type="checkbox" value="1" />
-                  Can Update Contracts
+                  <span data-i18n="admin:canUpdateContracts">Can Update Contracts</span>
                 </label>
               </div>
               <div class="control">
                 <label class="checkbox">
                   <input name="canUpdateWorkOrders" type="checkbox" value="1" />
-                  Can Update Work Orders
+                  <span data-i18n="admin:canUpdateWorkOrders">Can Update Work Orders</span>
                 </label>
               </div>
               <div class="control">
                 <label class="checkbox">
                   <input name="isAdmin" type="checkbox" value="1" />
-                  Administrator
+                  <span data-i18n="admin:isAdmin">Administrator</span>
                 </label>
               </div>
             </div>
@@ -72,10 +74,10 @@
     <div class="modal-card-foot is-justify-content-right">
       <div class="buttons">
         <button class="button is-primary" type="submit" form="form--addUser">
-          Add User
+          <span data-i18n="admin:addUser">Add User</span>
         </button>
         <button class="button is-close-modal-button" type="button">
-          Cancel
+          <span data-i18n="common:cancel">Cancel</span>
         </button>
       </div>
     </div>

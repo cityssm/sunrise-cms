@@ -23,6 +23,7 @@ export interface Sunrise {
         WorkOrderOpenDate: string;
         workOrderOpenDate: string;
     };
+    localize: (element?: HTMLElement) => void;
     dynamicsGPIntegrationIsEnabled: boolean;
     clearUnsavedChanges: () => void;
     hasUnsavedChanges: () => boolean;

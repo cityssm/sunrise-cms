@@ -9,6 +9,7 @@
   "contractTypeManagementDescription": "Manage contract types, the fields associated with them, and their available print options.",
   "databaseMaintenance": "Database Maintenance",
   "databaseMaintenanceDescription": "Backup the database before making significant updates. Permanently delete records that have been previously deleted from the database.",
+  "deleteUser": "Delete User",
   "feeManagement": "Fee Management",
   "feeManagementDescription": "Manage fees for contracts and specific burial site types.",
   "settingsManagement": "Settings Management",
@@ -16,5 +17,11 @@
   "someUsersAreConfiguredInTheConfigFile": "Some users are configured in the application config file and will not appear in this table.",
   "userManagement": "User Management",
   "userManagementDescription": "Manage user accounts and permissions.",
-  "usersDefinedInConfig": "Users defined in config"
+  "usersDefinedInConfig": "Users defined in config",
+  "userName": "User Name",
+  "canLogin": "Can Login",
+  "canUpdateCemeteries": "Can Update Cemeteries",
+  "canUpdateContracts": "Can Update Contracts",
+  "canUpdateWorkOrders": "Can Update Work Orders",
+  "isAdmin": "Is Admin"
 }

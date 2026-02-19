@@ -1,5 +1,6 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { i18n } from 'i18next'
 import type Leaflet from 'leaflet'
 
 import type { Sunrise } from './types.js'
@@ -7,6 +8,7 @@ import type { Sunrise } from './types.js'
 declare const L: typeof Leaflet
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+declare const i18next: i18n
 
 declare const exports: {
   aliases: Record<string, string>
@@ -435,6 +437,40 @@ declare const exports: {
   const dynamicsGPIntegrationIsEnabled = exports.dynamicsGPIntegrationIsEnabled
 
   /*
+   * i18n
+   */
+
+  function applyLocalization(i18nElement: HTMLElement): void {
+    const i18nKey = i18nElement.dataset.i18n ?? ''
+
+    if (i18nKey === '') {
+      return
+    }
+
+    const i18nAttribute = i18nElement.dataset.i18nAttribute ?? ''
+
+    if (i18nAttribute === '') {
+      i18nElement.textContent = i18next.t(i18nKey)
+    } else {
+      i18nElement.setAttribute(i18nAttribute, i18next.t(i18nKey))
+    }
+  }
+
+  function localize(element: HTMLElement = document.body): void {
+    if (Object.hasOwn(element.dataset, 'i18n')) {
+      applyLocalization(element)
+    }
+
+    const elements = element.querySelectorAll(
+      '[data-i18n]'
+    ) as NodeListOf<HTMLElement>
+
+    for (const i18nElement of elements) {
+      applyLocalization(i18nElement)
+    }
+  }
+
+  /*
    * Declare sunrise
    */
 
@@ -451,6 +487,7 @@ declare const exports: {
 
     escapedAliases,
     populateAliases,
+    localize,
 
     clearUnsavedChanges,
     hasUnsavedChanges,
