@@ -6,31 +6,31 @@
     <li>
       <a href="<%= urlPrefix %>/funeralHomes">
         <span class="icon is-small"><i class="fa-solid fa-place-of-worship"></i></span>
-        <span>Funeral Homes</span>
+        <span><%= t('contracts:funeralHomes') %></span>
       </a>
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        <%= funeralHome.funeralHomeName || "(No Name)" %>
+        <%= funeralHome.funeralHomeName || t('contracts:noName') %>
       </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-  <%= funeralHome.funeralHomeName || "(No Name)" %>
+  <%= funeralHome.funeralHomeName || t('contracts:noName') %>
 </h1>
 
 <% const funeralHomeIsDeleted = funeralHome.recordDelete_timeMillis !== null; %>
 <% if (funeralHomeIsDeleted) { %>
   <div class="message is-danger">
     <div class="message-header">
-      <p>Funeral Home Deleted</p>
+      <p><%= t('contracts:funeralHomeDeleted') %></p>
     </div>
     <div class="message-body">
-      <p>This funeral home has been deleted. It is no longer available for use.</p>
+      <p><%= t('contracts:funeralHomeDeletedMessage') %></p>
       <% if (!user.userProperties.isAdmin) { %>
-        <p>To restore this funeral home, please contact your system administrator.</p>
+        <p><%= t('contracts:contactAdminToRestore') %></p>
       <% } %>
     </div>
   </div>
@@ -39,24 +39,24 @@
 <div class="columns is-vcentered p-0 is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column">
     <span class="has-text-weight-bold">
-      <%= funeralHome.funeralHomeName || "(No Name)" %>
+      <%= funeralHome.funeralHomeName || t('contracts:noName') %>
     </span>
   </div>
   <div class="column is-narrow has-text-right">
     <div class="buttons is-right">
       <% if (!funeralHomeIsDeleted) { %>
         <a class="button is-link is-outlined"
-          title="Previous Funeral Home"
+          title="<%= t('contracts:previousFuneralHome') %>"
           href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/previous"
         >
           <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
-          <span class="is-sr-only">Previous Funeral Home</span>
+          <span class="is-sr-only"><%= t('contracts:previousFuneralHome') %></span>
         </a>
         <a class="button is-link"
-          title="Next Funeral Home"
+          title="<%= t('common:next') %>"
           href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/next"
         >
-          <span>Next</span>
+          <span><%= t('common:next') %></span>
           <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
         </a>
       <% } %>
@@ -65,7 +65,7 @@
           data-funeral-home-id="<%= funeralHome.funeralHomeId %>"
           type="button">
           <span class="icon"><i class="fa-solid fa-undo"></i></span>
-          <span>Restore Funeral Home</span>
+          <span><%= t('contracts:restoreFuneralHome') %></span>
         </button>
       <% } else if (!funeralHomeIsDeleted && user.userProperties.canUpdateContracts) { %>
         <a class="button is-primary"
@@ -73,8 +73,8 @@
         >
           <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
           <span>
-            Edit
-            <span class="is-hidden-mobile">Funeral Home</span>
+            <%= t('common:edit') %>
+            <span class="is-hidden-mobile"><%= t('contracts:funeralHome') %></span>
           </span>
         </a>
       <% } %>
@@ -86,7 +86,7 @@
   <div class="panel-block is-block">
     <div class="columns">
       <div class="column">
-        <strong>Address</strong><br />
+        <strong><%= t('contracts:address') %></strong><br />
         <% if (funeralHome.funeralHomeAddress1 !== "") { %>
             <%= funeralHome.funeralHomeAddress1 %><br />
         <% } %>
@@ -98,7 +98,7 @@
       </div>
       <% if (funeralHome.funeralHomePhoneNumber !== "") { %>
         <div class="column">
-          <strong>Phone Number</strong><br />
+          <strong><%= t('contracts:phoneNumber') %></strong><br />
           <%= funeralHome.funeralHomePhoneNumber %>
         </div>
       <% } %>
@@ -110,7 +110,7 @@
   <div class="panel-heading">
     <div class="level is-mobile">
       <div class="level-left">
-        <h2 class="has-text-weight-bold">Contracts with Upcoming Funerals</h2>
+        <h2 class="has-text-weight-bold"><%= t('contracts:contractsWithUpcomingFunerals') %></h2>
       </div>
       <div class="level-right">
         <i class="fa-solid fa-file-contract"></i>
@@ -121,7 +121,7 @@
     <% if (contracts.length === 0) { %>
       <div class="message is-info">
         <div class="message-body">
-          <p>No contracts with upcoming funerals.</p>
+          <p><%= t('contracts:noContractsWithUpcomingFunerals') %></p>
         </div>
       </div>
     <% } else { %>
@@ -129,10 +129,10 @@
       <table class="table is-striped is-fullwidth is-hoverable has-sticky-header">
         <thead>
           <tr>
-            <th>Funeral Date</th>
-            <th>Contract Type</th>
-            <th>Interments</th>
-            <th>Funeral Director</th>
+            <th><%= t('contracts:funeralDate') %></th>
+            <th><%= t('contracts:contractType') %></th>
+            <th><%= t('contracts:interments') %></th>
+            <th><%= t('contracts:funeralDirector') %></th>
           </tr>
         </thead>
         <tbody id="burialSite--contractsTbody">
@@ -151,7 +151,7 @@
               </td>
               <td>
                 <% if (contract.contractInterments.length === 0) { %>
-                  <span class="has-text-grey">(No Interments)</span>
+                  <span class="has-text-grey"><%= t('contracts:noInterments') %></span>
                 <% } else { %>
                   <ul class="fa-ul ml-5">
                     <% for (const interment of contract.contractInterments) { %>

@@ -11,7 +11,7 @@
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-solid fa-place-of-worship"></i></span>
-            <span>Funeral Homes</span>
+            <span><%= t('contracts:funeralHomes') %></span>
           </a>
         </li>
       </ul>
@@ -21,7 +21,7 @@
       <div class="notification is-danger is-light">
         <button class="delete" aria-label="delete"></button>
         <p>
-          <strong>Funeral Home Error</strong><br />
+          <strong><%= t('contracts:funeralHomeError') %></strong><br />
           <%= error %>
         </p>
       </div>
@@ -30,13 +30,13 @@
     <div class="columns is-vcentered">
       <div class="column">
         <h1 class="title is-1">
-          Find a Funeral Home
+          <%= t('contracts:findAFuneralHome') %>
         </h1>
       </div>
       <div class="column has-text-right is-narrow is-hidden-print">
         <a class="button" href="<%= urlPrefix %>/reports/funeralHomes-formatted" target="_blank" download>
           <span class="icon is-small"><i class="fa-solid fa-download"></i></span>
-          <span>Export</span>
+          <span><%= t('contracts:export') %></span>
         </a>
       </div>
     </div>
@@ -48,7 +48,7 @@
             <div class="field">
               <div class="control has-icons-left">
                 <input class="input" id="searchFilter--funeralHome" type="text"
-                  placeholder="Search funeral home name and address"
+                  placeholder="<%= t('contracts:searchPlaceholder') %>"
                 />
                 <span class="icon is-small is-left">
                   <i class="fa-solid fa-search"></i>
@@ -59,7 +59,7 @@
           <div class="column is-narrow">
             <label class="checkbox">
               <input id="searchFilter--hasUpcomingFunerals" type="checkbox" />
-              Only show funeral homes with upcoming funerals
+              <%= t('contracts:filterUpcomingFunerals') %>
             </label>
           </div>
         </div>
