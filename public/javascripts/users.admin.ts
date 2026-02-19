@@ -34,13 +34,13 @@ declare const exports: {
 
     bulmaJS.confirm({
       contextualColorName: 'warning',
-      title: 'Delete User',
+      title: i18next.t('admin:deleteUser'),
 
-      message: `Are you sure you want to delete user "${userName}"? This action cannot be undone.`,
+      message: i18next.t('admin:deleteUserConfirmation', { userName }),
 
       okButton: {
         contextualColorName: 'warning',
-        text: 'Delete User',
+        text: i18next.t('common:delete'),
 
         callbackFunction() {
           cityssm.postJSON(
@@ -64,16 +64,14 @@ declare const exports: {
 
                 bulmaJS.alert({
                   contextualColorName: 'success',
-                  title: 'User Deleted',
-
-                  message: 'User has been successfully deleted.'
+                  message: i18next.t('admin:userDeletedMessage', { userName })
                 })
               } else {
                 bulmaJS.alert({
                   contextualColorName: 'danger',
-                  title: 'Error Deleting User',
+                  title: i18next.t('common:error'),
 
-                  message: responseJSON.message ?? 'Please try again.'
+                  message: responseJSON.message ?? i18next.t('common:tryAgain')
                 })
               }
             }
@@ -111,9 +109,9 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Permission',
+            title: i18next.t('common:error'),
 
-            message: responseJSON.message ?? 'Please try again.'
+            message: responseJSON.message ?? i18next.t('common:tryAgain')
           })
         }
       }
@@ -264,7 +262,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Adding User',
 
-              message: 'Please try again.'
+              message: i18next.t('common:tryAgain')
             })
           }
         }

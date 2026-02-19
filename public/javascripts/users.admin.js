@@ -9,11 +9,11 @@
         }
         bulmaJS.confirm({
             contextualColorName: 'warning',
-            title: 'Delete User',
-            message: `Are you sure you want to delete user "${userName}"? This action cannot be undone.`,
+            title: i18next.t('admin:deleteUser'),
+            message: i18next.t('admin:deleteUserConfirmation', { userName }),
             okButton: {
                 contextualColorName: 'warning',
-                text: 'Delete User',
+                text: i18next.t('common:delete'),
                 callbackFunction() {
                     cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteUser`, {
                         userName
@@ -26,15 +26,14 @@
                             }
                             bulmaJS.alert({
                                 contextualColorName: 'success',
-                                title: 'User Deleted',
-                                message: 'User has been successfully deleted.'
+                                message: i18next.t('admin:userDeletedMessage', { userName })
                             });
                         }
                         else {
                             bulmaJS.alert({
                                 contextualColorName: 'danger',
-                                title: 'Error Deleting User',
-                                message: responseJSON.message ?? 'Please try again.'
+                                title: i18next.t('common:error'),
+                                message: responseJSON.message ?? i18next.t('common:tryAgain')
                             });
                         }
                     });
@@ -60,8 +59,8 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Permission',
-                    message: responseJSON.message ?? 'Please try again.'
+                    title: i18next.t('common:error'),
+                    message: responseJSON.message ?? i18next.t('common:tryAgain')
                 });
             }
         });
@@ -188,7 +187,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding User',
-                        message: 'Please try again.'
+                        message: i18next.t('common:tryAgain')
                     });
                 }
             });

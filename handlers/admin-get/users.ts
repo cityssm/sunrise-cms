@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 
 import getUsers from '../../database/getUsers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(_request: Request, response: Response): void {
   const users = getUsers()
@@ -21,7 +22,9 @@ export default function handler(_request: Request, response: Response): void {
   )
 
   response.render('admin/users', {
-    headTitle: 'User Management',
+    headTitle: i18next.t('admin:userManagement', {
+      lng: response.locals.language
+    }),
     users,
 
     configUsers,
