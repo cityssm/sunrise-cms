@@ -29,6 +29,7 @@
     "task:puppeteerSetup": "cross-env NODE_ENV=development DEBUG=sunrise:* node ./tasks/puppeteerSetup.task.js",
     "temp:legacyImportFromCsv": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true node ./temp/legacyImportFromCsv/index.js",
     "test": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true node --test --test-concurrency 1",
+    "test:i18n": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true node --test ./test/helpers.i18n.test.js",
     "test:pdf": "cross-env NODE_ENV=development DEBUG=sunrise:*,pdf-puppeteer:*,puppeteer-launch:* TEST_DATABASES=true node --test ./test/helpers.pdf.test.js",
     "test:startup": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true STARTUP_TEST=true node ./index.js"
   },
