@@ -1,10 +1,12 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { i18n } from 'i18next'
 
 import type { Cemetery } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
+declare const i18next: i18n
 
 declare const exports: {
   sunrise: Sunrise
@@ -51,7 +53,7 @@ declare const exports: {
 
     if (cemetery.parentCemeteryId !== null) {
       featuresHTML += /* html */ `
-        <span class="icon" title="Parent: ${cemetery.parentCemeteryName ?? '(No Name)'}">
+        <span class="icon" title="Parent: ${cemetery.parentCemeteryName ?? i18next.t('cemeteries:noName')}">
           <i class="fa-solid fa-turn-up" role="img" aria-label="Has Parent Cemetery"></i>
         </span>
       `
@@ -62,7 +64,7 @@ declare const exports: {
       typeof cemetery.cemeteryLongitude === 'number'
     ) {
       featuresHTML += /* html */ `
-        <span class="icon" title="Geographic Coordinates">
+        <span class="icon" title="${cityssm.escapeHTML(i18next.t('cemeteries:geographicLocation'))}">
           <i class="fa-solid fa-map-marker-alt" role="img" aria-label="Has Geographic Coordinates"></i>
         </span>
       `
@@ -70,7 +72,7 @@ declare const exports: {
 
     if (cemetery.cemeterySvg !== '') {
       featuresHTML += /* html */ `
-        <span class="icon" title="Image">
+        <span class="icon" title="${cityssm.escapeHTML(i18next.t('cemeteries:image'))}">
           <i class="fa-solid fa-image" role="img" aria-label="Has Image"></i>
         </span>
       `
@@ -81,7 +83,7 @@ declare const exports: {
 
   function renderResults(): void {
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
-      'Loading Cemeteries...'
+      i18next.t('common:loading')
     )
 
     let searchResultCount = 0
@@ -127,7 +129,7 @@ declare const exports: {
               <a class="has-text-weight-bold" href="${sunrise.getCemeteryUrl(cemetery.cemeteryId)}">
                 ${
                   cemetery.cemeteryName === ''
-                    ? `(No Name) <span class="icon is-small has-text-danger">
+                    ? `${cityssm.escapeHTML(i18next.t('cemeteries:noName'))} <span class="icon is-small has-text-danger">
                         <i class="fa-solid fa-exclamation-triangle"></i>
                         </span>`
                     : cityssm.escapeHTML(cemetery.cemeteryName)
@@ -169,7 +171,7 @@ declare const exports: {
     if (searchResultCount === 0) {
       searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
-          <p class="message-body">There are no cemeteries that meet the search criteria.</p>
+          <p class="message-body">${cityssm.escapeHTML(i18next.t('cemeteries:noCemeteriesFound'))}</p>
         </div>
       `
     } else {
@@ -181,11 +183,11 @@ declare const exports: {
       searchResultsTableElement.innerHTML = /* html */ `
         <thead>
           <tr>
-            <th>Cemetery</th>
-            <th>Address</th>
-            <th>Phone Number</th>
-            <th class="has-text-centered">Features</th>
-            <th class="has-text-right">Burial Sites</th>
+            <th>${cityssm.escapeHTML(i18next.t('cemeteries:cemetery'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('common:address'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('common:phoneNumber'))}</th>
+            <th class="has-text-centered">${cityssm.escapeHTML(i18next.t('cemeteries:features'))}</th>
+            <th class="has-text-right">${cityssm.escapeHTML(i18next.t('cemeteries:burialSites'))}</th>
           </tr>
         </thead>
       `
@@ -205,5 +207,5 @@ declare const exports: {
       renderResults()
     })
 
-  renderResults()
+  i18next.on('initialized', renderResults)
 })()
