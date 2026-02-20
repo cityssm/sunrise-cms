@@ -422,6 +422,23 @@ const createStatements = [
   `,
 
   /* sql */ `
+    CREATE TABLE IF NOT EXISTS IntermentDepths (
+      intermentDepthId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      intermentDepth VARCHAR(100) NOT NULL,
+      intermentDepthKey VARCHAR(20) NOT NULL DEFAULT '',
+      isCremationType bit NOT NULL DEFAULT 0,
+      orderNumber smallint NOT NULL DEFAULT 0,
+      ${recordColumns}
+    )
+  `,
+
+  /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_IntermentDepths_orderNumber ON IntermentDepths (orderNumber, intermentDepth)
+  `,
+
+
+
+  /* sql */ `
     CREATE TABLE IF NOT EXISTS ContractInterments (
       contractId INTEGER NOT NULL,
       intermentNumber INTEGER NOT NULL,
@@ -439,10 +456,12 @@ const createStatements = [
       deathAge INTEGER,
       deathAgePeriod VARCHAR(10),
       intermentContainerTypeId INTEGER,
+      intermentDepthId INTEGER,
       ${recordColumns},
       PRIMARY KEY (contractId, intermentNumber),
       FOREIGN KEY (contractId) REFERENCES Contracts (contractId),
-      FOREIGN KEY (intermentContainerTypeId) REFERENCES IntermentContainerTypes (intermentContainerTypeId)
+      FOREIGN KEY (intermentContainerTypeId) REFERENCES IntermentContainerTypes (intermentContainerTypeId),
+      FOREIGN KEY (intermentDepthId) REFERENCES IntermentDepths (intermentDepthId)
     ) WITHOUT rowid
   `,
 
@@ -675,7 +694,7 @@ export function initializeDatabase(
 
   const row = sunriseDB
     .prepare(
-      "select name from sqlite_master where type = 'table' and name = 'ContractServiceTypes'"
+      "select name from sqlite_master where type = 'table' and name = 'IntermentDepths'"
     )
     .get()
 
