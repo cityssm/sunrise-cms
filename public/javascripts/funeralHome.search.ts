@@ -140,8 +140,8 @@ declare const exports: {
         <thead>
           <tr>
             <th>${cityssm.escapeHTML(i18next.t('contracts:funeralHome'))}</th>
-            <th>${cityssm.escapeHTML(i18next.t('contracts:address'))}</th>
-            <th>${cityssm.escapeHTML(i18next.t('contracts:phoneNumber'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('common:address'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('common:phoneNumber'))}</th>
             <th class="has-text-right">${cityssm.escapeHTML(i18next.t('contracts:upcomingServices'))}</th>
           </tr>
         </thead>

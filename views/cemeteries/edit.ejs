@@ -2,26 +2,26 @@
 
 <nav class="breadcrumb">
   <ul>
-    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
     <li>
       <a href="<%= urlPrefix %>/cemeteries">
         <span class="icon is-small"><i class="fa-regular fa-map"></i></span>
-        <span>Cemeteries</span>
+        <span><%= t('cemeteries:cemeteries') %></span>
       </a>
     </li>
     <% if (!isCreate) { %>
       <li>
         <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>">
-          <%= cemetery.cemeteryName || "(No Name)" %>
+          <%= cemetery.cemeteryName || t('cemeteries:noName') %>
         </a>
       </li>
     <% } %>
     <li class="is-active">
       <a href="#" aria-current="page">
         <% if (isCreate) { %>
-          Create a New Cemetery
+          <%= t('cemeteries:createNewCemetery') %>
         <% } else { %>
-          Update
+          <%= t('common:update') %>
         <% } %>
       </a>
     </li>
@@ -30,9 +30,9 @@
 
 <h1 class="title is-1">
   <% if (isCreate) { %>
-    Create a New Cemetery
+    <%= t('cemeteries:createNewCemetery') %>
   <% } else { %>
-    Update Cemetery
+    <%= t('cemeteries:updateCemetery') %>
   <% } %>
 </h1>
 
@@ -40,7 +40,7 @@
   <div class="column">
     <% if (!isCreate) { %>
       <span class="has-text-weight-bold">
-        <%= cemetery.cemeteryName || "(No Name)" %>
+        <%= cemetery.cemeteryName || t('cemeteries:noName') %>
       </span>
     <% } %>
   </div>
@@ -48,13 +48,13 @@
     <div class="buttons is-right">
       <% if (isCreate) { %>
         <a class="button is-danger is-light" href="<%= urlPrefix %>/cemeteries">
-          Cancel
+          <%= t('common:cancel') %>
         </a>
       <% } else { %>
         <div class="dropdown is-right is-up" data-cy="dropdown--moreOptions">
           <div class="dropdown-trigger">
             <button class="button" type="button">
-              <span>More Options</span>
+              <span><%= t('cemeteries:moreOptions') %></span>
               <span class="icon is-small">
                 <i class="fa-solid fa-angle-up"></i>
               </span>
@@ -64,7 +64,7 @@
             <div class="dropdown-content">
               <a class="dropdown-item" id="button--deleteCemetery" href="#">
                 <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
-                <span>Delete Cemetery</span>
+                <span><%= t('cemeteries:deleteCemetery') %></span>
               </a>
             </div>
           </div>
@@ -73,8 +73,8 @@
       <button class="button is-primary is-light" type="submit" form="form--cemetery">
         <span class="icon is-small"><i class="fa-solid fa-save"></i></span>
         <span>
-          <%= (isCreate ? "Create": "Update") %>
-          <span class="is-hidden-mobile">Cemetery</span>
+          <%= (isCreate ? t('common:create') : t('common:update')) %>
+          <span class="is-hidden-mobile"><%= t('cemeteries:cemetery') %></span>
         </span>
       </button>
     </div>
@@ -89,7 +89,7 @@
       <div class="panel">
         <div class="panel-block is-block">
           <div class="field">
-            <label class="label" for="cemetery--cemeteryName">Cemetery Name</label>
+            <label class="label" for="cemetery--cemeteryName"><%= t('cemeteries:cemeteryName') %></label>
             <div class="control has-icons-right">
               <input class="input" id="cemetery--cemeteryName" name="cemeteryName" type="text"
                 value="<%= cemetery.cemeteryName %>"
@@ -106,7 +106,7 @@
             const cemeteryKeyIsRequired = configFunctions.getConfigProperty('settings.burialSites.burialSiteNameSegments.includeCemeteryKey');
           %>
           <div class="field">
-            <label class="label" for="cemetery--cemeteryKey">Cemetery Key</label>
+            <label class="label" for="cemetery--cemeteryKey"><%= t('cemeteries:cemeteryKey') %></label>
             <div class="control has-icons-right">
               <input class="input" id="cemetery--cemeteryKey" name="cemeteryKey" type="text"
                 value="<%= cemetery.cemeteryKey %>"
@@ -120,23 +120,23 @@
               <% } %>
               <% if (cemeteryKeyIsRequired) { %>
                 <p class="help">
-                  The cemetery key is prepended to the burial site names.
+                  <%= t('cemeteries:cemeteryKeyDescription') %>
                 </p>
               <% } %>
             </div>
           </div>
           <div class="field">
-            <label class="label" for="cemetery--cemeteryDescription">Cemetery Description</label>
+            <label class="label" for="cemetery--cemeteryDescription"><%= t('cemeteries:cemeteryDescription') %></label>
             <div class="control">
               <textarea class="textarea" id="cemetery--cemeteryDescription" name="cemeteryDescription"><%= cemetery.cemeteryDescription %></textarea>
             </div>
           </div>
           <div class="field">
-            <label class="label" for="cemetery--parentCemeteryId">Parent Cemetery</label>
+            <label class="label" for="cemetery--parentCemeteryId"><%= t('cemeteries:parentCemetery') %></label>
             <div class="control">
               <div class="select is-fullwidth">
                 <select id="cemetery--parentCemeteryId" name="parentCemeteryId" <%= (cemetery.childCemeteries.length > 0 ? 'disabled' : '') %>>
-                  <option value="">(No Parent Cemetery)</option>
+                  <option value=""><%= t('cemeteries:noParentCemetery') %></option>
                   <% for (const parentCemetery of cemeteries) { %>
                     <%
                       if (parentCemetery.cemeteryId === cemetery.cemeteryId || parentCemetery.parentCemeteryId !== null) {
@@ -145,7 +145,7 @@
                       }
                     %>
                     <option value="<%= parentCemetery.cemeteryId %>" <%= (cemetery.parentCemeteryId === parentCemetery.cemeteryId) ? " selected" : "" %>>
-                      <%= parentCemetery.cemeteryName === '' ? '(No Name)' : parentCemetery.cemeteryName %>
+                      <%= parentCemetery.cemeteryName === '' ? t('cemeteries:noName') : parentCemetery.cemeteryName %>
                     </option>
                   <% } %>
                 </select>
@@ -161,7 +161,7 @@
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
-                <h2 class="title is-5 has-text-weight-bold has-text-white">Address</h2>
+                <h2 class="title is-5 has-text-weight-bold has-text-white"><%= t('common:address') %></h2>
               </div>
             </div>
             <div class="level-right">
@@ -173,13 +173,13 @@
         </div>
         <div class="panel-block is-block">
           <div class="field">
-            <label class="label" for="cemetery--cemeteryAddress1">Address</label>
+            <label class="label" for="cemetery--cemeteryAddress1"><%= t('common:address') %></label>
             <div class="control">
               <input class="input" id="cemetery--cemeteryAddress1" name="cemeteryAddress1" type="text"
                 value="<%= cemetery.cemeteryAddress1 %>"
                 maxlength="50"
                 autocomplete="off"
-                placeholder="Line 1" />
+                placeholder="<%= t('common:addressLine1') %>" />
             </div>
           </div>
           <div class="field">
@@ -188,13 +188,13 @@
                 value="<%= cemetery.cemeteryAddress2 %>"
                 maxlength="50"
                 autocomplete="off"
-                placeholder="Line 2" aria-label="Address Line 2" />
+                placeholder="<%= t('common:addressLine2') %>" aria-label="<%= t('common:addressLine2') %>" />
             </div>
           </div>
           <div class="columns">
             <div class="column is-8">
               <div class="field">
-                <label class="label" for="cemetery--cemeteryCity">City</label>
+                <label class="label" for="cemetery--cemeteryCity"><%= t('common:city') %></label>
                 <div class="control">
                   <input class="input" id="cemetery--cemeteryCity" name="cemeteryCity" value="<%= cemetery.cemeteryCity %>" maxlength="20" />
                 </div>
@@ -202,7 +202,7 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="cemetery--cemeteryProvince">Province</label>
+                <label class="label" for="cemetery--cemeteryProvince"><%= t('common:province') %></label>
                 <div class="control">
                   <input class="input" id="cemetery--cemeteryProvince" name="cemeteryProvince"
                     type="text"
@@ -215,7 +215,7 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label" for="cemetery--cemeteryPostalCode">Postal Code</label>
+                <label class="label" for="cemetery--cemeteryPostalCode"><%= t('common:postalCode') %></label>
                 <div class="control">
                   <input class="input" id="cemetery--cemeteryPostalCode" name="cemeteryPostalCode"
                     type="text"
@@ -229,7 +229,7 @@
             </div>
             <div class="column">
               <div class="field">
-                <label class="label" for="cemetery--cemeteryPhoneNumber">Phone Number</label>
+                <label class="label" for="cemetery--cemeteryPhoneNumber"><%= t('common:phoneNumber') %></label>
                 <div class="control">
                   <input class="input" id="cemetery--cemeteryPhoneNumber" name="cemeteryPhoneNumber"
                     value="<%= cemetery.cemeteryPhoneNumber %>"
@@ -250,14 +250,14 @@
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
-                <h2 class="title is-5 has-text-weight-bold has-text-white">Geographic Location</h2>
+                <h2 class="title is-5 has-text-weight-bold has-text-white"><%= t('cemeteries:geographicLocation') %></h2>
               </div>
             </div>
             <div class="level-right">
               <div class="level-item">
                 <button class="button is-small" id="button--selectCoordinate" type="button">
                   <span class="icon"><i class="fa-solid fa-map-marked-alt"></i></span>
-                  <span>Select Coordinate</span>
+                  <span><%= t('cemeteries:selectCoordinate') %></span>
                 </button>
               </div>
             </div>
@@ -265,7 +265,7 @@
         </div>
         <div class="panel-block is-block">
           <div class="field">
-            <label class="label" for="cemetery--cemeteryLatitude">Latitude</label>
+            <label class="label" for="cemetery--cemeteryLatitude"><%= t('cemeteries:latitude') %></label>
             <div class="control">
               <input class="input" id="cemetery--cemeteryLatitude" name="cemeteryLatitude" type="number"
                 min="<%= configFunctions.getConfigProperty('settings.latitudeMin') %>"
@@ -274,7 +274,7 @@
             </div>
           </div>
           <div class="field">
-            <label class="label" for="cemetery--cemeteryLongitude">Longitude</label>
+            <label class="label" for="cemetery--cemeteryLongitude"><%= t('cemeteries:longitude') %></label>
             <div class="control">
               <input class="input" id="cemetery--cemeteryLongitude" name="cemeteryLongitude" type="number"
                 min="<%= configFunctions.getConfigProperty('settings.longitudeMin') %>"
@@ -289,7 +289,7 @@
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
-                <h2 class="title is-5 has-text-weight-bold has-text-white">Image</h2>
+                <h2 class="title is-5 has-text-weight-bold has-text-white"><%= t('cemeteries:image') %></h2>
               </div>
             </div>
             <div class="level-right">
@@ -301,11 +301,11 @@
         </div>
         <div class="panel-block is-block">
           <div class="field">
-            <label class="label" for="cemetery--cemeterySvg">SVG File</label>
+            <label class="label" for="cemetery--cemeterySvg"><%= t('cemeteries:svgFile') %></label>
             <div class="control">
               <div class="select is-fullwidth">
                 <select id="cemetery--cemeterySvg" name="cemeterySvg">
-                  <option value="">(Select a File)</option>
+                  <option value=""><%= t('cemeteries:selectAFile') %></option>
                   <% for (const cemeterySVG of cemeterySVGs) { %>
                     <option value="<%= cemeterySVG %>" <%= (cemetery.cemeterySvg === cemeterySVG) ? " selected" : "" %>>
                       <%= cemeterySVG %>
@@ -324,7 +324,7 @@
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
-                <h2 class="title is-5 has-text-weight-bold has-text-white">Directions of Arrival</h2>
+                <h2 class="title is-5 has-text-weight-bold has-text-white"><%= t('cemeteries:directionsOfArrival') %></h2>
               </div>
             </div>
           </div>
@@ -336,8 +336,8 @@
                 <th class="has-width-1">
                   <span class="is-sr-only">Selected</span>
                 </th>
-                <th>Direction</th>
-                <th>Description</th>
+                <th><%= t('cemeteries:direction') %></th>
+                <th><%= t('common:description') %></th>
               </tr>
             </thead>
             <tbody>
@@ -365,7 +365,7 @@
                         type="text"
                         value="<%= cemetery.directionsOfArrival[direction] || "" %>"
                         maxlength="100"
-                        placeholder="Description"
+                        placeholder="<%= t('common:description') %>"
                         <%= directionIsSelected ? "" : "disabled" %>
                         />
                     </div>
