@@ -18,6 +18,65 @@
 
 <div class="columns">
   <div class="column">
+    <div class="panel">
+      <h2 class="panel-heading">Language</h2>
+      <div class="panel-block is-block">
+        <div class="message is-info is-small">
+          <div class="message-body">
+            <p>Select your preferred language.</p>
+          </div>
+        </div>
+        <div class="buttons">
+          <a class="button<% if (lng === 'en') { %> is-primary is-active<% } %>"
+            href="?lng=en">
+            <span class="icon is-small">
+              <i class="fa-solid fa-language"></i>
+            </span>
+            <span>English</span>
+          </a>
+          <a class="button<% if (lng === 'de') { %> is-primary is-active<% } %>"
+            href="?lng=de">
+            <span class="icon is-small">
+              <i class="fa-solid fa-language"></i>
+            </span>
+            <span>Deutsch</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="panel">
+      <h2 class="panel-heading">API Key Reset</h2>
+      <div class="panel-block is-block">
+        <div class="message is-warning">
+          <div class="message-body">
+            <p>
+              API keys are used to authenticate API requests without using your username and password.
+              If you have set up your calendar application to automatically refresh milestone updates,
+              you are using your API key.
+            </p>
+            <p>
+              If you believe your API key has been compromised, you can reset it here.
+              This will invalidate your current API key and generate a new one.
+            </p>
+          </div>
+        </div>
+        <div class="has-text-right">
+          <button class="button is-warning" id="button--resetApiKey" type="button">
+            <span class="icon is-small">
+              <i class="fa-solid fa-rotate"></i>
+            </span>
+            <span>Reset API Key</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="columns">
+  <div class="column">
     <% const hasConsignoEnabled = configFunctions.getConfigProperty('integrations.consignoCloud.integrationIsEnabled') %>
     <div class="panel">
       <div class="panel-heading">
@@ -188,33 +247,6 @@
         </div>
         <% } %>
       </div>
-    </div>
-  </div>
-</div>
-
-<div class="panel">
-  <h2 class="panel-heading">API Key Reset</h2>
-  <div class="panel-block is-block">
-    <div class="message is-warning">
-      <div class="message-body">
-        <p>
-          API keys are used to authenticate API requests without using your username and password.
-          If you have set up your calendar application to automatically refresh milestone updates,
-          you are using your API key.
-        </p>
-        <p>
-          If you believe your API key has been compromised, you can reset it here.
-          This will invalidate your current API key and generate a new one.
-        </p>
-      </div>
-    </div>
-    <div class="has-text-right">
-      <button class="button is-warning" id="button--resetApiKey" type="button">
-        <span class="icon is-small">
-          <i class="fa-solid fa-rotate"></i>
-        </span>
-        <span>Reset API Key</span>
-      </button>
     </div>
   </div>
 </div>
