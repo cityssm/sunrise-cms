@@ -412,6 +412,14 @@ export interface IntermentContainerType extends Record {
   orderNumber?: number
 }
 
+export interface IntermentDepth extends Record {
+  intermentDepthId: number
+
+  intermentDepth: string
+  intermentDepthKey: string
+  orderNumber?: number
+}
+
 export interface ServiceType extends Record {
   serviceTypeId: number
 

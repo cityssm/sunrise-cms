@@ -1,0 +1,58 @@
+import sqlite from 'better-sqlite3'
+
+import { sunriseDB } from '../helpers/database.helpers.js'
+import type { IntermentDepth } from '../types/record.types.js'
+
+import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
+
+export default function getIntermentDepths(
+  includeDeleted = false,
+  connectedDatabase?: sqlite.Database
+): IntermentDepth[] {
+  const database = connectedDatabase ?? sqlite(sunriseDB)
+
+  const updateOrderNumbers = !database.readonly && !includeDeleted
+
+  const intermentDepths = database
+    .prepare(/* sql */ `
+      SELECT
+        intermentDepthId,
+        intermentDepth,
+        intermentDepthKey,
+        orderNumber
+      FROM
+        IntermentDepths ${includeDeleted
+          ? ''
+          : ' where recordDelete_timeMillis is null '}
+      ORDER BY
+        orderNumber,
+        intermentDepth,
+        intermentDepthId
+    `)
+    .all() as IntermentDepth[]
+
+  if (updateOrderNumbers) {
+    let expectedOrderNumber = -1
+
+    for (const intermentDepth of intermentDepths) {
+      expectedOrderNumber += 1
+
+      if (intermentDepth.orderNumber !== expectedOrderNumber) {
+        updateRecordOrderNumber(
+          'IntermentDepths',
+          intermentDepth.intermentDepthId,
+          expectedOrderNumber,
+          database
+        )
+
+        intermentDepth.orderNumber = expectedOrderNumber
+      }
+    }
+  }
+
+  if (connectedDatabase === undefined) {
+    database.close()
+  }
+
+  return intermentDepths
+}

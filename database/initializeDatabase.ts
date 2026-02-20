@@ -12,6 +12,7 @@ import addContractType from './addContractType.js'
 import addContractTypeField from './addContractTypeField.js'
 import addFeeCategory from './addFeeCategory.js'
 import addIntermentContainerType from './addIntermentContainerType.js'
+import addIntermentDepth from './addIntermentDepth.js'
 import {
   addBurialSiteStatus,
   addWorkOrderMilestoneType,
@@ -28,12 +29,14 @@ import getWorkOrderTypes from './getWorkOrderTypes.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:database:initializeDatabase`)
 
-const recordColumns = `recordCreate_userName varchar(30) not null,
-  recordCreate_timeMillis integer not null,
-  recordUpdate_userName varchar(30) not null,
-  recordUpdate_timeMillis integer not null,
-  recordDelete_userName varchar(30),
-  recordDelete_timeMillis integer`
+const recordColumns = /* sql */ `
+  recordCreate_userName VARCHAR(30) NOT NULL,
+  recordCreate_timeMillis INTEGER NOT NULL,
+  recordUpdate_userName VARCHAR(30) NOT NULL,
+  recordUpdate_timeMillis INTEGER NOT NULL,
+  recordDelete_userName VARCHAR(30),
+  recordDelete_timeMillis INTEGER
+`
 
 const createStatements = [
   /*
@@ -426,7 +429,6 @@ const createStatements = [
       intermentDepthId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       intermentDepth VARCHAR(100) NOT NULL,
       intermentDepthKey VARCHAR(20) NOT NULL DEFAULT '',
-      isCremationType bit NOT NULL DEFAULT 0,
       orderNumber smallint NOT NULL DEFAULT 0,
       ${recordColumns}
     )
@@ -435,8 +437,6 @@ const createStatements = [
   /* sql */ `
     CREATE INDEX IF NOT EXISTS idx_IntermentDepths_orderNumber ON IntermentDepths (orderNumber, intermentDepth)
   `,
-
-
 
   /* sql */ `
     CREATE TABLE IF NOT EXISTS ContractInterments (
@@ -949,6 +949,34 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
         intermentContainerTypeKey: 'U',
         isCremationType: '1',
         orderNumber: 7
+      },
+      initializingUser,
+      connectedDatabase
+    )
+  }
+
+  // Interment Depths
+
+  const intermentDepths = getIntermentContainerTypes(false, connectedDatabase)
+
+  if (intermentDepths.length <= 0) {
+    debug('No interment depths found, adding default depths.')
+
+    addIntermentDepth(
+      {
+        intermentDepth: 'Single',
+        intermentDepthKey: 'S',
+        orderNumber: 1
+      },
+      initializingUser,
+      connectedDatabase
+    )
+
+    addIntermentDepth(
+      {
+        intermentDepth: 'Double',
+        intermentDepthKey: 'D',
+        orderNumber: 2
       },
       initializingUser,
       connectedDatabase
