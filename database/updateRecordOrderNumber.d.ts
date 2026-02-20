@@ -1,4 +1,4 @@
 import type sqlite from 'better-sqlite3';
-type RecordTable = 'BurialSiteStatuses' | 'BurialSiteTypeFields' | 'BurialSiteTypes' | 'CommittalTypes' | 'ContractTypeFields' | 'ContractTypes' | 'FeeCategories' | 'Fees' | 'IntermentContainerTypes' | 'ServiceTypes' | 'WorkOrderMilestoneTypes' | 'WorkOrderTypes';
+type RecordTable = 'BurialSiteStatuses' | 'BurialSiteTypeFields' | 'BurialSiteTypes' | 'CommittalTypes' | 'ContractTypeFields' | 'ContractTypes' | 'FeeCategories' | 'Fees' | 'IntermentContainerTypes' | 'IntermentDepths' | 'ServiceTypes' | 'WorkOrderMilestoneTypes' | 'WorkOrderTypes';
 export declare function updateRecordOrderNumber(recordTable: RecordTable, recordId: number | string, orderNumber: number | string, connectedDatabase: sqlite.Database): boolean;
 export {};
