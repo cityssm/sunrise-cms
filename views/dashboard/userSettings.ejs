@@ -26,21 +26,25 @@
             <p>Select your preferred language.</p>
           </div>
         </div>
-        <div class="buttons">
-          <a class="button<% if (lng === 'en') { %> is-primary is-active<% } %>"
-            href="?lng=en">
-            <span class="icon is-small">
-              <i class="fa-solid fa-language"></i>
-            </span>
-            <span>English</span>
-          </a>
-          <a class="button<% if (lng === 'de') { %> is-primary is-active<% } %>"
-            href="?lng=de">
-            <span class="icon is-small">
-              <i class="fa-solid fa-language"></i>
-            </span>
-            <span>Deutsch</span>
-          </a>
+        <div class="columns">
+          <div class="column">
+            <a class="button is-fullwidth<% if (lng === 'en') { %> is-primary<% } %>"
+              href="?lng=en">
+              <span class="icon is-small">
+                <i class="fa-solid fa-language"></i>
+              </span>
+              <span>English</span>
+            </a>
+          </div>
+          <div class="column">
+            <a class="button is-fullwidth<% if (lng === 'de') { %> is-primary<% } %>"
+              href="?lng=de">
+              <span class="icon is-small">
+                <i class="fa-solid fa-language"></i>
+              </span>
+              <span>Deutsch</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
