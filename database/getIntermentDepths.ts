@@ -7,7 +7,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getIntermentDepths(
   includeDeleted = false,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): IntermentDepth[] {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
