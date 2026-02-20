@@ -7,11 +7,11 @@
   <div class="column">
     <nav class="breadcrumb">
       <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-regular fa-map"></i></span>
-            <span>Cemeteries</span>
+            <span><%= t('cemeteries:cemeteries') %></span>
           </a>
         </li>
       </ul>
@@ -21,7 +21,7 @@
     <div class="notification is-danger is-light">
       <button class="delete" aria-label="delete"></button>
       <p>
-        <strong>Cemetery Error</strong><br />
+        <strong><%= t('cemeteries:cemeteryError') %></strong><br />
         <%= error %>
       </p>
     </div>
@@ -30,7 +30,7 @@
     <div class="columns is-vcentered">
       <div class="column">
         <h1 class="title is-1">
-          Find a Cemetery
+          <%= t('cemeteries:findACemetery') %>
         </h1>
       </div>
       <div class="column has-text-right is-narrow is-hidden-print">
@@ -41,7 +41,7 @@
           target="_blank"
         >
           <span class="icon is-small"><i class="fa-solid fa-download"></i></span>
-          <span>Export</span>
+          <span><%= t('cemeteries:export') %></span>
         </a>
       </div>
     </div>
@@ -54,7 +54,7 @@
               class="input"
               id="searchFilter--cemetery"
               type="text"
-              placeholder="Search cemetery name, description, and address"
+              placeholder="<%= t('cemeteries:searchPlaceholder') %>"
             />
             <span class="icon is-small is-left">
               <i class="fa-solid fa-search"></i>
