@@ -2,19 +2,75 @@
 
 <nav class="breadcrumb">
   <ul>
-    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
     <li class="is-active">
       <a href="#" aria-current="page">
         <span class="icon is-small"><i class="fa-solid fa-cog"></i></span>
-        <span>User Settings</span>
+        <span><%= t('dashboard:userSettings') %></span>
       </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-  User Settings
+  <%= t('dashboard:userSettings') %>
 </h1>
+
+<div class="columns">
+  <div class="column">
+    <div class="panel">
+      <h2 class="panel-heading"><%= t('dashboard:userSettingsLanguage') %></h2>
+      <div class="panel-block is-block">
+        <div class="message is-info is-small">
+          <div class="message-body">
+            <p><%= t('dashboard:userSettingsLanguageDescription') %></p>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <a class="button is-fullwidth<% if (lng === 'en') { %> is-primary<% } %>"
+              href="?lng=en">
+              <span class="icon is-small">
+                <i class="fa-solid fa-language"></i>
+              </span>
+              <span>English</span>
+            </a>
+          </div>
+          <div class="column">
+            <a class="button is-fullwidth<% if (lng === 'de') { %> is-primary<% } %>"
+              href="?lng=de">
+              <span class="icon is-small">
+                <i class="fa-solid fa-language"></i>
+              </span>
+              <span>Deutsch</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="panel">
+      <h2 class="panel-heading"><%= t('dashboard:userSettingsApiKeyReset') %></h2>
+      <div class="panel-block is-block">
+        <div class="message is-warning">
+          <div class="message-body">
+            <p><%= t('dashboard:userSettingsApiKeyDescription1') %></p>
+            <p><%= t('dashboard:userSettingsApiKeyDescription2') %></p>
+          </div>
+        </div>
+        <div class="has-text-right">
+          <button class="button is-warning" id="button--resetApiKey" type="button">
+            <span class="icon is-small">
+              <i class="fa-solid fa-rotate"></i>
+            </span>
+            <span><%= t('dashboard:userSettingsResetApiKey') %></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="columns">
   <div class="column">
@@ -34,14 +90,14 @@
                 <span class="icon">
                   <i class="fa-solid fa-check"></i>
                 </span>
-                <span>Enabled</span>
+                <span><%= t('common:enabled') %></span>
               </span>
               <% } else { %>
               <span class="tag is-danger">
                 <span class="icon">
                   <i class="fa-solid fa-times"></i>
                 </span>
-                <span>Disabled</span>
+                <span><%= t('common:disabled') %></span>
               </span>
               <% } %>
             </div>
@@ -52,9 +108,9 @@
         <div class="message is-info is-small">
           <div class="message-body">
             <p>
-              The
-              <a href="https://consignocloud.com/" rel="noopener noreferrer" target="_blank">ConsignO Cloud</a>
-              integration allows you to send contracts to purchasers for electronic signatures.
+              <%- t('dashboard:userSettingsConsignoCloudDescription', {
+                consignoCloudLink: '<a href="https://consignocloud.com/" rel="noopener noreferrer" target="_blank">ConsignO Cloud</a>'
+              }) %>
             </p>
           </div>
         </div>
@@ -64,7 +120,7 @@
             <div class="columns is-desktop">
               <div class="column">
                 <div class="field">
-                  <label class="label" for="consignoCloud--userName">ConsignO Cloud User Name</label>
+                  <label class="label" for="consignoCloud--userName"><%= t('dashboard:userSettingsConsignoCloudUserName') %></label>
                   <div class="control">
                     <input
                       class="input"
@@ -76,13 +132,13 @@
                     />
                   </div>
                   <p class="help">
-                    This is the email address you use to log in to ConsignO Cloud.
+                    <%= t('dashboard:userSettingsConsignoCloudUserNameHelp') %>
                   </p>
                 </div>
               </div>
               <div class="column">
                 <div class="field">
-                  <label class="label" for="consignoCloud--thirdPartyApplicationPassword">Third-Party Application Password</label>
+                  <label class="label" for="consignoCloud--thirdPartyApplicationPassword"><%= t('dashboard:userSettingsConsignoCloudPassword') %></label>
                   <div class="control">
                     <input
                       class="input"
@@ -90,13 +146,12 @@
                       name="thirdPartyApplicationPassword"
                       type="text"
                       value=""
-                      placeholder="(Unchanged)"
+                      placeholder="<%= t('dashboard:userSettingsConsignoCloudPasswordUnchanged') %>"
                       autocomplete="off"
                     />
                   </div>
                   <p class="help">
-                    This is not the same as your ConsignO Cloud password.
-                    It is a separate password that you can generate in your ConsignO Cloud preferences.
+                    <%= t('dashboard:userSettingsConsignoCloudPasswordHelp') %>
                   </p>
                 </div>
               </div>
@@ -106,7 +161,7 @@
                 <span class="icon is-small">
                   <i class="fa-solid fa-save"></i>
                 </span>
-                <span>Save ConsignO Cloud Settings</span>
+                <span><%= t('dashboard:userSettingsConsignoCloudSave') %></span>
               </button>
             </p>
           </form>
@@ -122,7 +177,7 @@
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="has-text-weight-bold">NTFY Notifications</h2>
+              <h2 class="has-text-weight-bold"><%= t('dashboard:userSettingsNtfyNotifications') %></h2>
             </div>
           </div>
           <div class="level-right">
@@ -132,14 +187,14 @@
                 <span class="icon">
                   <i class="fa-solid fa-check"></i>
                 </span>
-                <span>Enabled</span>
+                <span><%= t('common:enabled') %></span>
               </span>
               <% } else { %>
               <span class="tag is-danger">
                 <span class="icon">
                   <i class="fa-solid fa-times"></i>
                 </span>
-                <span>Disabled</span>
+                <span><%= t('common:disabled') %></span>
               </span>
               <% } %>
             </div>
@@ -150,23 +205,24 @@
         <div class="message is-info is-small">
           <div class="message-body">
             <p>
-              The <a href="https://ntfy.sh/" rel="noopener noreferrer" target="_blank">NTFY</a>
-              integration allows you to receive notifications about important events in the application.
+              <%- t('dashboard:userSettingsNtfyDescription', {
+                ntfyLink: '<a href="https://ntfy.sh/" rel="noopener noreferrer" target="_blank">NTFY</a>'
+              }) %>
             </p>
           </div>
         </div>
         <% if (hasNtfyEnabled) { %>
         <div class="content">
           <p class="has-text-centered">
-            <strong>Server</strong><br />
-            <%= configFunctions.getConfigProperty("integrations.ntfy.server") || "Default Server" %>
+            <strong><%= t('dashboard:userSettingsNtfyServer') %></strong><br />
+            <%= configFunctions.getConfigProperty("integrations.ntfy.server") || t('dashboard:userSettingsNtfyDefaultServer') %>
           </p>
 
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
-                <th>Event</th>
-                <th>NTFY Topic</th>
+                <th><%= t('dashboard:userSettingsNtfyEvent') %></th>
+                <th><%= t('dashboard:userSettingsNtfyTopic') %></th>
               </tr>
             </thead>
             <tbody>
@@ -188,33 +244,6 @@
         </div>
         <% } %>
       </div>
-    </div>
-  </div>
-</div>
-
-<div class="panel">
-  <h2 class="panel-heading">API Key Reset</h2>
-  <div class="panel-block is-block">
-    <div class="message is-warning">
-      <div class="message-body">
-        <p>
-          API keys are used to authenticate API requests without using your username and password.
-          If you have set up your calendar application to automatically refresh milestone updates,
-          you are using your API key.
-        </p>
-        <p>
-          If you believe your API key has been compromised, you can reset it here.
-          This will invalidate your current API key and generate a new one.
-        </p>
-      </div>
-    </div>
-    <div class="has-text-right">
-      <button class="button is-warning" id="button--resetApiKey" type="button">
-        <span class="icon is-small">
-          <i class="fa-solid fa-rotate"></i>
-        </span>
-        <span>Reset API Key</span>
-      </button>
     </div>
   </div>
 </div>
