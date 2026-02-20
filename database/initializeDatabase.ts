@@ -426,7 +426,6 @@ const createStatements = [
       intermentDepthId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       intermentDepth VARCHAR(100) NOT NULL,
       intermentDepthKey VARCHAR(20) NOT NULL DEFAULT '',
-      isCremationType bit NOT NULL DEFAULT 0,
       orderNumber smallint NOT NULL DEFAULT 0,
       ${recordColumns}
     )
