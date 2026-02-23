@@ -34,8 +34,14 @@ import { getDeathAgePeriod } from './data.deathAgePeriods.js'
 import { getFuneralHomeIdByKey } from './data.funeralHomes.js'
 import * as importIds from './data.ids.js'
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js'
+import { getIntermentDepthIdByKey } from './data.intermentDepths.js'
 import type { WorkOrderRecord } from './recordTypes.js'
-import { formatContractNumber, formatDateString, formatTimeString, user } from './utilities.js'
+import {
+  formatContractNumber,
+  formatDateString,
+  formatTimeString,
+  user
+} from './utilities.js'
 
 export async function importFromWorkOrderCSV(): Promise<void> {
   console.time('importFromWorkOrderCSV')
@@ -239,6 +245,13 @@ export async function importFromWorkOrderCSV(): Promise<void> {
               database
             )
 
+      const intermentDepthKey = workOrderRow.WO_DEPTH
+
+      const intermentDepthId =
+        intermentDepthKey === ''
+          ? ''
+          : getIntermentDepthIdByKey(intermentDepthKey, user, database)
+
       let funeralHour = Number.parseInt(
         workOrderRow.WO_FUNERAL_HR === '' ? '0' : workOrderRow.WO_FUNERAL_HR,
         10
@@ -300,7 +313,8 @@ export async function importFromWorkOrderCSV(): Promise<void> {
                 workOrderRow.WO_DEATH_DAY
               ),
         deathPlace: workOrderRow.WO_DEATH_PLACE,
-        intermentContainerTypeId
+        intermentContainerTypeId,
+        intermentDepthId
       }
 
       // eslint-disable-next-line no-secrets/no-secrets

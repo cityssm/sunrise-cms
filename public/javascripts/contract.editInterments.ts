@@ -441,7 +441,7 @@ declare const exports: {
               ${cityssm.escapeHTML(interment.deathAgePeriod ?? '')}
             </div>
           </div>
-          <div class="columns">
+          <div class="columns mb-0">
             <div class="column">
               <strong>Container:</strong>
             </div>

@@ -24,6 +24,7 @@ import { getDeathAgePeriod } from './data.deathAgePeriods.js'
 import { getFuneralHomeIdByKey } from './data.funeralHomes.js'
 import * as importIds from './data.ids.js'
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js'
+import { getIntermentDepthIdByKey } from './data.intermentDepths.js'
 import type { MasterRecord } from './recordTypes.js'
 import { formatContractNumber, formatDateString, user } from './utilities.js'
 
@@ -355,6 +356,13 @@ export async function importFromMasterCSV(): Promise<void> {
                 database
               )
 
+        const intermentDepthKey = masterRow.CM_DEPTH
+
+        const intermentDepthId =
+          intermentDepthKey === ''
+            ? ''
+            : getIntermentDepthIdByKey(intermentDepthKey, user, database)
+
         const contractForm: AddContractForm = {
           contractNumber: formatContractNumber(masterRow.CM_WORK_ORDER),
 
@@ -398,7 +406,9 @@ export async function importFromMasterCSV(): Promise<void> {
           deathAgePeriod: getDeathAgePeriod(masterRow.CM_PERIOD),
           deathDateString,
           deathPlace: '',
-          intermentContainerTypeId
+
+          intermentContainerTypeId,
+          intermentDepthId
         }
 
         // eslint-disable-next-line no-secrets/no-secrets

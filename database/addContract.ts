@@ -66,7 +66,9 @@ export interface AddContractForm {
   deceasedName?: string
   deceasedPostalCode?: string
   deceasedProvince?: string
+
   intermentContainerTypeId?: number | string
+  intermentDepthId?: number | string
 }
 
 // eslint-disable-next-line complexity

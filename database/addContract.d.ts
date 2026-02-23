@@ -43,5 +43,6 @@ export interface AddContractForm {
     deceasedPostalCode?: string;
     deceasedProvince?: string;
     intermentContainerTypeId?: number | string;
+    intermentDepthId?: number | string;
 }
 export default function addContract(addForm: AddContractForm, user: User, connectedDatabase?: sqlite.Database): number;

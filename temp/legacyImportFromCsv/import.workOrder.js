@@ -23,6 +23,7 @@ import { getDeathAgePeriod } from './data.deathAgePeriods.js';
 import { getFuneralHomeIdByKey } from './data.funeralHomes.js';
 import * as importIds from './data.ids.js';
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js';
+import { getIntermentDepthIdByKey } from './data.intermentDepths.js';
 import { formatContractNumber, formatDateString, formatTimeString, user } from './utilities.js';
 export async function importFromWorkOrderCSV() {
     console.time('importFromWorkOrderCSV');
@@ -134,6 +135,10 @@ export async function importFromWorkOrderCSV() {
             const intermentContainerTypeId = intermentContainerTypeKey === ''
                 ? ''
                 : getIntermentContainerTypeIdByKey(intermentContainerTypeKey, user, database);
+            const intermentDepthKey = workOrderRow.WO_DEPTH;
+            const intermentDepthId = intermentDepthKey === ''
+                ? ''
+                : getIntermentDepthIdByKey(intermentDepthKey, user, database);
             let funeralHour = Number.parseInt(workOrderRow.WO_FUNERAL_HR === '' ? '0' : workOrderRow.WO_FUNERAL_HR, 10);
             if (funeralHour <= 6) {
                 funeralHour += 12;
@@ -166,7 +171,8 @@ export async function importFromWorkOrderCSV() {
                     ? ''
                     : formatDateString(workOrderRow.WO_DEATH_YR, workOrderRow.WO_DEATH_MON, workOrderRow.WO_DEATH_DAY),
                 deathPlace: workOrderRow.WO_DEATH_PLACE,
-                intermentContainerTypeId
+                intermentContainerTypeId,
+                intermentDepthId
             };
             // eslint-disable-next-line no-secrets/no-secrets
             /*

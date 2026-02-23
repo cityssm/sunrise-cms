@@ -23,6 +23,7 @@ import getCommittalTypes from './getCommittalTypes.js'
 import getContractTypes from './getContractTypes.js'
 import getFeeCategories from './getFeeCategories.js'
 import getIntermentContainerTypes from './getIntermentContainerTypes.js'
+import getIntermentDepths from './getIntermentDepths.js'
 import getWorkOrderMilestoneTypes from './getWorkOrderMilestoneTypes.js'
 import getWorkOrderTypes from './getWorkOrderTypes.js'
 
@@ -943,7 +944,7 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
 
   // Interment Depths
 
-  const intermentDepths = getIntermentContainerTypes(false, connectedDatabase)
+  const intermentDepths = getIntermentDepths(false, connectedDatabase)
 
   if (intermentDepths.length <= 0) {
     debug('No interment depths found, adding default depths.')

@@ -21,6 +21,7 @@ function purgeConfigTables() {
         'ContractTypePrints',
         'ContractTypes',
         'IntermentContainerTypes',
+        'IntermentDepths',
         'WorkOrderMilestoneTypes',
         'WorkOrderTypes'
     ];
