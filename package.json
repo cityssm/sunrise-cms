@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@cacheable/node-cache": "^2.0.1",
-    "@cityssm/authentication-helper": "^0.6.1",
+    "@cityssm/authentication-helper": "^0.6.2",
     "@cityssm/bulma-js": "^1.0.0-rc.3",
     "@cityssm/bulma-sticky-table": "^3.0.2",
     "@cityssm/bulma-webapp-js": "^2.0.0-beta",
@@ -102,8 +102,8 @@
     "cypress": "^15.10.0",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^6.1.1",
-    "eslint-config-cityssm": "^38.2.1",
-    "nodemon": "^3.1.13",
+    "eslint-config-cityssm": "^38.2.2",
+    "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.1.1"
   },
   "optionalDependencies": {
