@@ -1,27 +1,42 @@
-<div id="contract-addServiceType" class="modal" data-target-selector=".is-main-content">
-  <div class="modal-background" data-cityssm-modal-close></div>
+<div class="modal" id="contract-addServiceType">
+  <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
-      <p class="modal-card-title">Add Service Type</p>
-      <button class="delete" type="button" data-cityssm-modal-close aria-label="Close"></button>
-    </header>
-    <form>
-      <input id="contractServiceTypeAdd--contractId" name="contractId" type="hidden" />
-      <section class="modal-card-body">
+    <div class="modal-card-head">
+      <h3 class="modal-card-title">Add Service Type</h3>
+      <button
+        class="delete is-close-modal-button"
+        type="button"
+        aria-label="Close"
+      ></button>
+    </div>
+    <section class="modal-card-body">
+      <form id="form--contractServiceTypeAdd">
+        <input
+          id="contractServiceTypeAdd--contractId"
+          name="contractId"
+          type="hidden"
+        />
         <div class="field">
           <label class="label" for="contractServiceTypeAdd--serviceTypeId">
             Service Type
           </label>
           <div class="control">
             <div class="select is-fullwidth">
-              <select id="contractServiceTypeAdd--serviceTypeId" name="serviceTypeId" required>
+              <select
+                id="contractServiceTypeAdd--serviceTypeId"
+                name="serviceTypeId"
+                required
+              >
                 <!-- Populated by JavaScript -->
               </select>
             </div>
           </div>
         </div>
         <div class="field">
-          <label class="label" for="contractServiceTypeAdd--contractServiceDetails">
+          <label
+            class="label"
+            for="contractServiceTypeAdd--contractServiceDetails"
+          >
             Details
             <span class="has-text-weight-normal is-size-7">(Optional)</span>
           </label>
@@ -35,14 +50,22 @@
             ></textarea>
           </div>
         </div>
-      </section>
-      <footer class="modal-card-foot is-justify-content-end">
-        <button class="button is-success" type="submit">
+      </form>
+    </section>
+    <div class="modal-card-foot is-justify-content-right">
+      <div class="buttons">
+        <button
+          class="button is-success"
+          type="submit"
+          form="form--contractServiceTypeAdd"
+        >
           <span class="icon"><i class="fa-solid fa-save"></i></span>
           <span>Add Service Type</span>
         </button>
-        <button class="button is-light" type="button" data-cityssm-modal-close>Cancel</button>
-      </footer>
-    </form>
+        <button class="button is-close-modal-button" type="button">
+          Cancel
+        </button>
+      </div>
+    </div>
   </div>
 </div>

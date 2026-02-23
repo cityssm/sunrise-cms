@@ -166,9 +166,7 @@
     }
     function openAddServiceType() {
         // Get service types not already added
-        const availableServiceTypes = serviceTypes.filter((serviceType) => {
-            return !contractServiceTypes.some((contractServiceType) => contractServiceType.serviceTypeId === serviceType.serviceTypeId);
-        });
+        const availableServiceTypes = serviceTypes.filter((serviceType) => !contractServiceTypes.some((contractServiceType) => contractServiceType.serviceTypeId === serviceType.serviceTypeId));
         if (availableServiceTypes.length === 0) {
             bulmaJS.alert({
                 contextualColorName: 'info',

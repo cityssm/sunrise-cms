@@ -164,15 +164,14 @@ declare const exports: {
         ) as HTMLTextAreaElement
         detailsElement.value = serviceType.contractServiceDetails ?? ''
 
-        editFormElement = modalElement.querySelector(
-          'form'
-        ) as HTMLFormElement
+        editFormElement = modalElement.querySelector('form') as HTMLFormElement
 
         editFormElement.addEventListener('submit', updateContractServiceType)
       },
       onshown(_modalElement, closeModalFunction) {
         editCloseModalFunction = closeModalFunction
       },
+
       onremoved() {
         editFormElement = undefined
         editCloseModalFunction = undefined
@@ -263,17 +262,19 @@ declare const exports: {
 
   function openAddServiceType(): void {
     // Get service types not already added
-    const availableServiceTypes = serviceTypes.filter((serviceType) => {
-      return !contractServiceTypes.some(
-        (contractServiceType) =>
-          contractServiceType.serviceTypeId === serviceType.serviceTypeId
-      )
-    })
+    const availableServiceTypes = serviceTypes.filter(
+      (serviceType) =>
+        !contractServiceTypes.some(
+          (contractServiceType) =>
+            contractServiceType.serviceTypeId === serviceType.serviceTypeId
+        )
+    )
 
     if (availableServiceTypes.length === 0) {
       bulmaJS.alert({
         contextualColorName: 'info',
-        message: 'All available service types have already been added to this contract.'
+        message:
+          'All available service types have already been added to this contract.'
       })
       return
     }
@@ -341,15 +342,14 @@ declare const exports: {
           selectElement.append(optionElement)
         }
 
-        addFormElement = modalElement.querySelector(
-          'form'
-        ) as HTMLFormElement
+        addFormElement = modalElement.querySelector('form') as HTMLFormElement
 
         addFormElement.addEventListener('submit', addContractServiceType)
       },
       onshown(_modalElement, closeModalFunction) {
         addCloseModalFunction = closeModalFunction
       },
+
       onremoved() {
         addFormElement = undefined
         addCloseModalFunction = undefined
