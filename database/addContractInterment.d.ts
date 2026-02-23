@@ -15,5 +15,6 @@ export interface AddForm {
     deathAge?: number | string;
     deathAgePeriod?: string;
     intermentContainerTypeId?: number | string;
+    intermentDepthId?: number | string;
 }
 export default function addContractInterment(contractForm: AddForm, user: User, connectedDatabase?: sqlite.Database): number;

@@ -20,6 +20,7 @@ export default function updateContractInterment(contractForm, user, connectedDat
         deathAge = ?,
         deathAgePeriod = ?,
         intermentContainerTypeId = ?,
+        intermentDepthId = ?,
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
       WHERE
@@ -33,7 +34,9 @@ export default function updateContractInterment(contractForm, user, connectedDat
         ? undefined
         : dateStringToInteger(contractForm.deathDateString), contractForm.deathPlace, contractForm.deathAge, contractForm.deathAgePeriod, contractForm.intermentContainerTypeId === ''
         ? undefined
-        : contractForm.intermentContainerTypeId, user.userName, Date.now(), contractForm.contractId, contractForm.intermentNumber);
+        : contractForm.intermentContainerTypeId, contractForm.intermentDepthId === ''
+        ? undefined
+        : contractForm.intermentDepthId, user.userName, Date.now(), contractForm.contractId, contractForm.intermentNumber);
     if (connectedDatabase === undefined) {
         database.close();
     }

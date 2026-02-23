@@ -16,5 +16,6 @@ export interface UpdateForm {
     deathAge: string;
     deathAgePeriod: string;
     intermentContainerTypeId: number | string;
+    intermentDepthId: number | string;
 }
 export default function updateContractInterment(contractForm: UpdateForm, user: User, connectedDatabase?: sqlite.Database): boolean;

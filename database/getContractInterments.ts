@@ -33,10 +33,13 @@ export default function getContractInterments(
         ci.deathAgePeriod,
         ci.intermentContainerTypeId,
         t.intermentContainerType,
-        t.isCremationType
+        t.isCremationType,
+        ci.intermentDepthId,
+        d.intermentDepth
       FROM
         ContractInterments ci
         LEFT JOIN IntermentContainerTypes t ON ci.intermentContainerTypeId = t.intermentContainerTypeId
+        LEFT JOIN IntermentDepths d ON ci.intermentDepthId = d.intermentDepthId
       WHERE
         ci.recordDelete_timeMillis IS NULL
         AND ci.contractId = ?

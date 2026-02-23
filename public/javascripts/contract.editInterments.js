@@ -5,6 +5,7 @@
     let contractInterments = exports.contractInterments;
     const deathAgePeriods = exports.deathAgePeriods;
     const intermentContainerTypes = exports.intermentContainerTypes;
+    const intermentDepths = exports.intermentDepths;
     function initializeDeathAgeCalculator(fieldPrefix) {
         const birthDateStringElement = document.querySelector(`#${fieldPrefix}--birthDateString`);
         const deathDateStringElement = document.querySelector(`#${fieldPrefix}--deathDateString`);
@@ -156,6 +157,16 @@
                     optionElement.selected = true;
                     containerTypeElement.append(optionElement);
                 }
+                const depthElement = modalElement.querySelector('#contractIntermentEdit--intermentDepthId');
+                for (const depth of intermentDepths) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = depth.intermentDepthId.toString();
+                    optionElement.text = depth.intermentDepth;
+                    if (depth.intermentDepthId === contractInterment.intermentDepthId) {
+                        optionElement.selected = true;
+                    }
+                    depthElement.append(optionElement);
+                }
             },
             onshown(modalElement, closeModal) {
                 closeModalFunction = closeModal;
@@ -273,6 +284,14 @@
               ${cityssm.escapeHTML(interment.intermentContainerType ?? '(No Container Type)')}
             </div>
           </div>
+          <div class="columns">
+            <div class="column">
+              <strong>Depth:</strong>
+            </div>
+            <div class="column">
+              ${cityssm.escapeHTML(interment.intermentDepth ?? '(No Depth)')}
+            </div>
+          </div>
         </td>
         <td class="is-hidden-print has-text-right">
           <button class="button is-small is-info button--edit mb-1" type="button" title="Edit Interment">
@@ -339,6 +358,13 @@
                     containerTypeElement
                         .querySelector(`optgroup[data-is-cremation-type="${containerType.isCremationType ? '1' : '0'}"]`)
                         ?.append(optionElement);
+                }
+                const depthElement = modalElement.querySelector('#contractIntermentAdd--intermentDepthId');
+                for (const depth of intermentDepths) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = depth.intermentDepthId.toString();
+                    optionElement.text = depth.intermentDepth;
+                    depthElement.append(optionElement);
                 }
             },
             onshown(modalElement, closeModal) {
