@@ -646,11 +646,14 @@
                             <div class="column">
                               <%= interment.deceasedName %>
                             </div>
-                            <% if (interment.intermentContainerType) { %>
-                              <div class="column">
-                                <span class="tag"><%= interment.intermentContainerType %></span>
-                              </div>
-                            <% } %>
+                            <div class="column">
+                              <% if (interment.intermentContainerType) { %>
+                              <span class="tag"><%= interment.intermentContainerType %></span>
+                              <% } %>
+                              <% if (interment.intermentDepth) { %>
+                              <span class="tag"><%= interment.intermentDepth %></span>
+                              <% } %>
+                            </div>
                           </div>
                         <% } %>
                       <% } %>
