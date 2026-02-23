@@ -202,6 +202,8 @@ export interface ContractInterment extends Record {
     intermentContainerType?: string;
     intermentContainerTypeId?: number;
     isCremationType?: boolean;
+    intermentDepth?: string;
+    intermentDepthId?: number;
     contractIdCount?: number;
     recordUpdate_timeMillisMax?: number;
 }

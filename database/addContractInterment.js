@@ -36,6 +36,7 @@ export default function addContractInterment(contractForm, user, connectedDataba
           deathAge,
           deathAgePeriod,
           intermentContainerTypeId,
+          intermentDepthId,
           recordCreate_userName,
           recordCreate_timeMillis,
           recordUpdate_userName,
@@ -43,6 +44,7 @@ export default function addContractInterment(contractForm, user, connectedDataba
         )
       VALUES
         (
+          ?,
           ?,
           ?,
           ?,
@@ -70,7 +72,9 @@ export default function addContractInterment(contractForm, user, connectedDataba
         ? undefined
         : dateStringToInteger(contractForm.deathDateString), contractForm.deathPlace ?? '', (contractForm.deathAge ?? '') === '' ? undefined : contractForm.deathAge, contractForm.deathAgePeriod ?? '', (contractForm.intermentContainerTypeId ?? '') === ''
         ? undefined
-        : contractForm.intermentContainerTypeId, user.userName, rightNowMillis, user.userName, rightNowMillis);
+        : contractForm.intermentContainerTypeId, (contractForm.intermentDepthId ?? '') === ''
+        ? undefined
+        : contractForm.intermentDepthId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (connectedDatabase === undefined) {
         database.close();
     }

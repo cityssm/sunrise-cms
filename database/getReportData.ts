@@ -179,11 +179,16 @@ export default function getReportData(
             i.deathDate,
             i.deathPlace,
             i.deathAge,
-            i.deathAgePeriod
+            i.deathAgePeriod,
+            i.intermentContainerTypeId,
+            t.intermentContainerType,
+            i.intermentDepthId,
+            d.intermentDepth
           FROM
             ContractInterments i
             LEFT JOIN Contracts c ON i.contractId = c.contractId
             LEFT JOIN IntermentContainerTypes t ON i.intermentContainerTypeId = t.intermentContainerTypeId
+            LEFT JOIN IntermentDepths d ON i.intermentDepthId = d.intermentDepthId
           WHERE
             i.recordDelete_timeMillis IS NULL
             AND i.contractId = ?

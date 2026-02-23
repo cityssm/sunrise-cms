@@ -67,6 +67,8 @@
           <tr>
             <th>Interment</th>
             <th>Address</th>
+            <th>Container</th>
+            <th>Depth</th>
           </tr>
         </thead>
         <tbody>
@@ -84,6 +86,8 @@
                 <%= contractInterment.deceasedProvince %><br />
                 <%= contractInterment.deceasedPostalCode %>
               </td>
+              <td><%= contractInterment.intermentContainerType ?? '' %></td>
+              <td><%= contractInterment.intermentDepth ?? '' %></td>
             </tr>
           <% } %>
         </tbody>

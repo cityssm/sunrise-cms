@@ -18,6 +18,7 @@ import {
   getCachedContractTypes
 } from '../../helpers/cache/contractTypes.cache.js'
 import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js'
+import { getCachedIntermentDepths } from '../../helpers/cache/intermentDepths.cache.js'
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js'
 import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js'
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
@@ -62,6 +63,7 @@ export default async function handler(
     const funeralHomes = getFuneralHomes(database)
     const committalTypes = getCachedCommittalTypes()
     const intermentContainerTypes = getCachedIntermentContainerTypes()
+    const intermentDepths = getCachedIntermentDepths()
     const serviceTypes = getCachedServiceTypes()
 
     /*
@@ -112,6 +114,7 @@ export default async function handler(
       contractTypes,
       funeralHomes,
       intermentContainerTypes,
+      intermentDepths,
       serviceTypes,
 
       burialSiteStatuses,

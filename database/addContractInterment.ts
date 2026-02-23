@@ -23,6 +23,7 @@ export interface AddForm {
   deathAgePeriod?: string
 
   intermentContainerTypeId?: number | string
+  intermentDepthId?: number | string
 }
 
 // eslint-disable-next-line complexity
@@ -67,6 +68,7 @@ export default function addContractInterment(
           deathAge,
           deathAgePeriod,
           intermentContainerTypeId,
+          intermentDepthId,
           recordCreate_userName,
           recordCreate_timeMillis,
           recordUpdate_userName,
@@ -74,6 +76,7 @@ export default function addContractInterment(
         )
       VALUES
         (
+          ?,
           ?,
           ?,
           ?,
@@ -117,6 +120,9 @@ export default function addContractInterment(
       (contractForm.intermentContainerTypeId ?? '') === ''
         ? undefined
         : contractForm.intermentContainerTypeId,
+      (contractForm.intermentDepthId ?? '') === ''
+        ? undefined
+        : contractForm.intermentDepthId,
       user.userName,
       rightNowMillis,
       user.userName,

@@ -1,8 +1,8 @@
-<div class="modal" role="dialog" aria-label="Add Interment">
+<div class="modal" role="dialog" aria-label="Add Recipient">
   <div class="modal-background"></div>
   <div class="modal-card">
     <div class="modal-card-head">
-      <h3 class="modal-card-title">Add Interment</h3>
+      <h3 class="modal-card-title">Add Recipient</h3>
       <button
         class="delete is-close-modal-button"
         type="button"
@@ -240,29 +240,53 @@
             </div>
           </div>
         </div>
-        <div class="field">
-          <label
-            class="label"
-            for="contractIntermentAdd--intermentContainerTypeId"
-          >
-            Container
-          </label>
-          <div class="control">
-            <div class="select is-fullwidth">
-              <select
-                id="contractIntermentAdd--intermentContainerTypeId"
-                name="intermentContainerTypeId"
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label
+                class="label"
+                for="contractIntermentAdd--intermentContainerTypeId"
               >
-                <option value="">(No Container)</option>
-                <optgroup
-                  data-is-cremation-type="0"
-                  label="Non-Cremated"
-                ></optgroup>
-                <optgroup
-                  data-is-cremation-type="1"
-                  label="Cremated"
-                ></optgroup>
-              </select>
+                Container
+              </label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    id="contractIntermentAdd--intermentContainerTypeId"
+                    name="intermentContainerTypeId"
+                  >
+                    <option value="">(No Container)</option>
+                    <optgroup
+                      data-is-cremation-type="0"
+                      label="Non-Cremated"
+                    ></optgroup>
+                    <optgroup
+                      data-is-cremation-type="1"
+                      label="Cremated"
+                    ></optgroup>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label
+                class="label"
+                for="contractIntermentAdd--intermentDepthId"
+              >
+                Depth
+              </label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    id="contractIntermentAdd--intermentDepthId"
+                    name="intermentDepthId"
+                  >
+                    <option value="">(No Depth)</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -276,7 +300,7 @@
           form="form--contractIntermentAdd"
         >
           <span class="icon"><i class="fa-solid fa-plus"></i></span>
-          <span>Add Interment</span>
+          <span>Add Recipient</span>
         </button>
         <button class="button is-close-modal-button" type="button">
           Cancel

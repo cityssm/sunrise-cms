@@ -925,6 +925,20 @@
                 </select>
               </div>
             </div>
+            <div class="field">
+              <label class="label" for="contract--intermentDepthId">Depth</label>
+              <div class="select is-fullwidth">
+                <select id="contract--intermentDepthId" name="intermentDepthId">
+                  <option value="">(No Depth)</option>
+                  <% for (const depth of intermentDepths) { %>
+                    <option value="<%= depth.intermentDepthId %>"
+                      <%= (contract.intermentDepthId === depth.intermentDepthId ? ' selected' : '') %>>
+                      <%= depth.intermentDepth %>
+                    </option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
             <div class="message is-info is-small">
               <p class="message-body">
                 Any additional interments associated with this contract can be added after the contract is created.
@@ -1234,6 +1248,7 @@
 
     exports.contractInterments = <%- JSON.stringify(contract.contractInterments) %>;
     exports.intermentContainerTypes = <%- JSON.stringify(intermentContainerTypes) %>;
+    exports.intermentDepths = <%- JSON.stringify(intermentDepths) %>;
     exports.deathAgePeriods = <%- JSON.stringify(dataLists.deathAgePeriods) %>;
 
     exports.contractComments = <%- JSON.stringify(contract.contractComments) %>;

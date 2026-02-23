@@ -15,6 +15,7 @@ import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.ca
 import { getCachedCommittalTypes } from '../../helpers/cache/committalTypes.cache.js'
 import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js'
 import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentContainerTypes.cache.js'
+import { getCachedIntermentDepths } from '../../helpers/cache/intermentDepths.cache.js'
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
 import type { Contract } from '../../types/record.types.js'
@@ -64,6 +65,7 @@ export default async function handler(
     const funeralHomes = getFuneralHomes(database)
     const committalTypes = getCachedCommittalTypes()
     const intermentContainerTypes = getCachedIntermentContainerTypes()
+    const intermentDepths = getCachedIntermentDepths()
 
     /*
      * Burial Site Drop Lists
@@ -87,6 +89,7 @@ export default async function handler(
       contractTypes,
       funeralHomes,
       intermentContainerTypes,
+      intermentDepths,
 
       burialSiteStatuses,
       burialSiteTypes,
