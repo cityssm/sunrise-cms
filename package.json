@@ -103,7 +103,7 @@
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^6.1.1",
     "eslint-config-cityssm": "^38.2.1",
-    "nodemon": "^3.1.13",
+    "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.1.1"
   },
   "optionalDependencies": {
