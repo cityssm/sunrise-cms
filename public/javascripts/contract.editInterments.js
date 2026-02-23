@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
 (() => {
     const contractId = document.querySelector('#contract--contractId').value;
@@ -254,7 +253,7 @@
             <div class="column">
               ${cityssm.escapeHTML((interment.birthDateString ?? '') === ''
                 ? '(No Birth Date)'
-                : interment.birthDateString ?? '')}<br />
+                : (interment.birthDateString ?? ''))}<br />
               ${cityssm.escapeHTML(interment.birthPlace ?? '(No Birth Place)')}
             </div>
           </div>
@@ -272,7 +271,7 @@
               <strong>Age:</strong>
             </div>
             <div class="column">
-              ${cityssm.escapeHTML((interment.deathAge ?? '') === '' ? '(No Age)' : interment.deathAge?.toString() ?? '')}
+              ${cityssm.escapeHTML((interment.deathAge ?? '') === '' ? '(No Age)' : (interment.deathAge?.toString() ?? ''))}
               ${cityssm.escapeHTML(interment.deathAgePeriod ?? '')}
             </div>
           </div>

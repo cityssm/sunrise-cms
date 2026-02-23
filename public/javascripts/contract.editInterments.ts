@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
@@ -419,7 +418,7 @@ declare const exports: {
               ${cityssm.escapeHTML(
                 (interment.birthDateString ?? '') === ''
                   ? '(No Birth Date)'
-                  : interment.birthDateString ?? ''
+                  : (interment.birthDateString ?? '')
               )}<br />
               ${cityssm.escapeHTML(interment.birthPlace ?? '(No Birth Place)')}
             </div>
@@ -438,7 +437,7 @@ declare const exports: {
               <strong>Age:</strong>
             </div>
             <div class="column">
-              ${cityssm.escapeHTML((interment.deathAge ?? '') === '' ? '(No Age)' : interment.deathAge?.toString() ?? '')}
+              ${cityssm.escapeHTML((interment.deathAge ?? '') === '' ? '(No Age)' : (interment.deathAge?.toString() ?? ''))}
               ${cityssm.escapeHTML(interment.deathAgePeriod ?? '')}
             </div>
           </div>

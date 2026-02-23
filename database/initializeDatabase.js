@@ -6,7 +6,6 @@ import { sunriseDB as databasePath } from '../helpers/database.helpers.js';
 import addBurialSiteType from './addBurialSiteType.js';
 import addCommittalType from './addCommittalType.js';
 import addContractType from './addContractType.js';
-import addContractTypeField from './addContractTypeField.js';
 import addFeeCategory from './addFeeCategory.js';
 import addIntermentContainerType from './addIntermentContainerType.js';
 import addIntermentDepth from './addIntermentDepth.js';
@@ -690,16 +689,9 @@ export function initializeData(connectedDatabase) {
             isPreneed: '1',
             orderNumber: 1
         }, initializingUser, connectedDatabase);
-        const atNeedContractTypeId = addContractType({
+        addContractType({
             contractType: 'At Need',
             orderNumber: 2
-        }, initializingUser, connectedDatabase);
-        addContractTypeField({
-            contractTypeId: atNeedContractTypeId,
-            contractTypeField: 'Interment Depth',
-            fieldType: 'select',
-            fieldValues: 'Single\nDouble',
-            isRequired: ''
         }, initializingUser, connectedDatabase);
         addContractType({
             contractType: 'Permit Only',
