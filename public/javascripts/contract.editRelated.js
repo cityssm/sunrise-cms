@@ -53,13 +53,14 @@
         const contractsTableElement = document.createElement('table');
         contractsTableElement.className =
             'table is-striped is-fullwidth is-hoverable';
+        // eslint-disable-next-line no-unsanitized/property
         contractsTableElement.innerHTML = /* html */ `
       <thead>
         <tr>
-          <th>Contract Type</th>
-          <th>Contract Date</th>
-          <th>End Date</th>
-          <th>Interments</th>
+          <th>${i18next.t('contracts:contractType')}</th>
+          <th>${i18next.t('contracts:contractDate')}</th>
+          ${exports.contractEndDateIsAvailable ? `<th>${i18next.t('contracts:endDate')}</th>` : ''}
+          <th>${i18next.t('contracts:recipients')}</th>
           <th></th>
         </tr>
       </thead>
@@ -89,11 +90,15 @@
           <span class="is-size-7">#${relatedContract.contractNumber}</span>
         </td>
         <td>${relatedContract.contractStartDateString}</td>
-        <td>
-          ${relatedContract.contractEndDate
-                ? relatedContract.contractEndDateString
-                : '<span class="has-text-grey">(No End Date)</span>'}
-        </td>
+        ${exports.contractEndDateIsAvailable
+                ? /* html */ `
+              <td>
+                ${relatedContract.contractEndDate
+                    ? relatedContract.contractEndDateString
+                    : '<span class="has-text-grey">(No End Date)</span>'}
+              </td>
+            `
+                : ''}
         <td>${intermentsHTML}</td>
         <td>
           <button
@@ -115,7 +120,7 @@
         relatedContractsContainer.innerHTML = '';
         relatedContractsContainer.append(contractsTableElement);
     }
-    renderRelatedContracts();
+    i18next.on('loaded', renderRelatedContracts);
     document
         .querySelector('#button--addRelatedContract')
         ?.addEventListener('click', () => {

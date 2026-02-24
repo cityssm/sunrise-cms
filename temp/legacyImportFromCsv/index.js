@@ -6,12 +6,12 @@ import { initializeData } from '../../database/initializeDatabase.js';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { clearCaches } from '../../helpers/cache.helpers.js';
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js';
+import { initializeContractTypePrints } from './data.contractPrints.js';
 import { initializeFuneralHomes } from './data.funeralHomes.js';
 import { importFromMasterCSV } from './import.master.js';
 import { importFromPrepaidCSV } from './import.prepaid.js';
 import { importFromWorkOrderCSV } from './import.workOrder.js';
 import { user } from './utilities.js';
-import { initializeContractTypePrints } from './data.contractPrints.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:legacyImportFromCsv`);
 function purgeConfigTables() {
     console.time('purgeConfigTables');

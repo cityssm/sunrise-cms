@@ -786,7 +786,7 @@ const displayServicesPanel =
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="has-text-weight-bold">Related Contracts</h2>
+              <h2 class="has-text-weight-bold"><%= t('contracts:relatedContracts') %></h2>
             </div>
           </div>
           <div class="level-right">
@@ -801,10 +801,12 @@ const displayServicesPanel =
           <thead>
             <tr>
               <th class="has-width-1">&nbsp;</th>
-              <th>Contract Type</th>
-              <th>Contract Date</th>
-              <th>End Date</th>
-              <th>Interments</th>
+              <th><%= t('contracts:contractType') %></th>
+              <th><%= t('contracts:contractDate') %></th>
+              <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
+              <th><%= t('contracts:endDate') %></th>
+              <% } %>
+              <th><%= t('contracts:recipients') %></th>
             </tr>
           </thead>
           <tbody>
@@ -827,12 +829,15 @@ const displayServicesPanel =
                 <span class="is-size-7">#<%= relatedContract.contractNumber %></span>
               </td>
               <td><%= relatedContract.contractStartDateString %></td>
+              <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
               <td>
                 <% if (relatedContract.contractEndDate) { %>
                   <%= relatedContract.contractEndDateString %>
                 <% } else { %>
                   <span class="has-text-grey">(No End Date)</span>
                 <% } %>
+              </td>
+              <% } %>
               </td>
               <td>
                 <% if (relatedContract.contractInterments.length === 0) { %>

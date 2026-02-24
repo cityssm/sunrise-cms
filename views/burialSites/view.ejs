@@ -331,10 +331,12 @@ for (const contract of burialSite.contracts) {
       <thead>
         <tr>
           <th class="has-width-1">&nbsp;</th>
-          <th>Contract Type</th>
-          <th>Contract Date</th>
-          <th>End Date</th>
-          <th>Interments</th>
+          <th><%= t('contracts:contractType') %></th>
+          <th><%= t('contracts:contractDate') %></th>
+          <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
+          <th><%= t('contracts:endDate') %></th>
+          <% } %>
+          <th><%= t('contracts:recipients') %></th>
         </tr>
       </thead>
       <tbody id="burialSite--contractsTbody">
@@ -360,6 +362,7 @@ for (const contract of burialSite.contracts) {
             <span class="is-size-7">#<%= contract.contractNumber %></span>
           </td>
           <td><%= contract.contractStartDateString %></td>
+          <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
           <td>
             <% if (contract.contractEndDate) { %>
             <%= contract.contractEndDateString %>
@@ -367,9 +370,10 @@ for (const contract of burialSite.contracts) {
             <span class="has-text-grey">(No End Date)</span>
             <% } %>
           </td>
+          <% } %>
           <td>
             <% if (contract.contractInterments.length === 0) { %>
-            <span class="has-text-grey">(No Interments)</span>
+            <span class="has-text-grey"><%= t('contracts:noInterments') %></span>
             <% } else { %>
             <% for (const interment of contract.contractInterments) { %>
             <div class="columns">

@@ -18,7 +18,14 @@ export function formatDateString(
   month: string,
   day: string
 ): DateString {
-  const formattedYear = `0000${year}`.slice(-4)
+  let formattedYear = `0000${year}`.slice(-4)
+
+  if (formattedYear === '3014') {
+    formattedYear = '2014'
+  } else if (formattedYear === '2202') {
+    formattedYear = '2022'
+  }
+
   const formattedMonth = `00${month}`.slice(-2)
   const formattedDay = `00${day}`.slice(-2)
 

@@ -1,5 +1,6 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
+import type { i18n } from 'i18next'
 
 import type { Contract } from '../../types/record.types.js'
 
@@ -7,10 +8,12 @@ import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
+declare const i18next: i18n
 
 declare const exports: {
   sunrise: Sunrise
 
+  contractEndDateIsAvailable: boolean
   relatedContracts: Contract[]
 }
 ;(() => {
@@ -98,13 +101,14 @@ declare const exports: {
     contractsTableElement.className =
       'table is-striped is-fullwidth is-hoverable'
 
+    // eslint-disable-next-line no-unsanitized/property
     contractsTableElement.innerHTML = /* html */ `
       <thead>
         <tr>
-          <th>Contract Type</th>
-          <th>Contract Date</th>
-          <th>End Date</th>
-          <th>Interments</th>
+          <th>${i18next.t('contracts:contractType')}</th>
+          <th>${i18next.t('contracts:contractDate')}</th>
+          ${exports.contractEndDateIsAvailable ? `<th>${i18next.t('contracts:endDate')}</th>` : ''}
+          <th>${i18next.t('contracts:recipients')}</th>
           <th></th>
         </tr>
       </thead>
@@ -140,13 +144,19 @@ declare const exports: {
           <span class="is-size-7">#${relatedContract.contractNumber}</span>
         </td>
         <td>${relatedContract.contractStartDateString}</td>
-        <td>
-          ${
-            relatedContract.contractEndDate
-              ? relatedContract.contractEndDateString
-              : '<span class="has-text-grey">(No End Date)</span>'
-          }
-        </td>
+        ${
+          exports.contractEndDateIsAvailable
+            ? /* html */ `
+              <td>
+                ${
+                  relatedContract.contractEndDate
+                    ? relatedContract.contractEndDateString
+                    : '<span class="has-text-grey">(No End Date)</span>'
+                }
+              </td>
+            `
+            : ''
+        }
         <td>${intermentsHTML}</td>
         <td>
           <button
@@ -172,7 +182,7 @@ declare const exports: {
     relatedContractsContainer.append(contractsTableElement)
   }
 
-  renderRelatedContracts()
+  i18next.on('loaded', renderRelatedContracts)
 
   document
     .querySelector('#button--addRelatedContract')

@@ -1128,13 +1128,15 @@
     <div class="panel-heading">
       <div class="level is-mobile">
         <div class="level-left">
-          <h2 class="has-text-weight-bold is-size-5">Related Contracts</h2>
+          <h2 class="has-text-weight-bold is-size-5">
+            <%= t("contracts:relatedContracts") %>
+          </h2>
         </div>
         <div class="level-right">
           <div class="level-item">
             <button class="button is-small is-success is-hidden-print" id="button--addRelatedContract" type="button">
               <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
-              <span>Add Related Contract</span>
+              <span><%= t("contracts:addRelatedContract") %></span>
             </button>
           </div>
         </div>
@@ -1255,6 +1257,8 @@
     exports.contractFees = <%- JSON.stringify(contract.contractFees) %>;
     exports.contractServiceTypes = <%- JSON.stringify(contract.contractServiceTypes ?? []) %>;
     exports.contractTransactions = <%- JSON.stringify(contract.contractTransactions) %>;
+    
+    exports.contractEndDateIsAvailable = <%= JSON.stringify(configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) %>;
     exports.relatedContracts = <%- JSON.stringify(contract.relatedContracts) %>;
 
     exports.serviceTypes = <%- JSON.stringify(serviceTypes) %>;
