@@ -1,4 +1,4 @@
-/* eslint-disable @cspell/spellchecker, complexity, no-console */
+/* eslint-disable @cspell/spellchecker, complexity, max-lines, no-await-in-loop, no-console */
 
 import fs from 'node:fs'
 
@@ -10,6 +10,7 @@ import addBurialSite from '../../database/addBurialSite.js'
 import addContract, {
   type AddContractForm
 } from '../../database/addContract.js'
+import addContractServiceType from '../../database/addContractServiceType.js'
 import addWorkOrder from '../../database/addWorkOrder.js'
 import addWorkOrderBurialSite from '../../database/addWorkOrderBurialSite.js'
 import addWorkOrderContract from '../../database/addWorkOrderContract.js'
@@ -176,7 +177,7 @@ export async function importFromWorkOrderCSV(): Promise<void> {
             database
           )
 
-          // eslint-disable-next-line no-await-in-loop, require-atomic-updates
+          // eslint-disable-next-line require-atomic-updates
           burialSite = await getBurialSite(
             burialSiteKeys.burialSiteId,
             true,
@@ -317,32 +318,33 @@ export async function importFromWorkOrderCSV(): Promise<void> {
         intermentDepthId
       }
 
-      // eslint-disable-next-line no-secrets/no-secrets
-      /*
-      if (
-        contractType.contractType === 'Interment' &&
-        importIds.intermentDepthContractField?.contractTypeFieldId !==
-          undefined &&
-        workOrderRow.WO_DEPTH !== ''
-      ) {
-        contractForm.contractTypeFieldIds =
-          importIds.intermentDepthContractField.contractTypeFieldId.toString()
-
-        let depth = workOrderRow.WO_DEPTH
-
-        if (depth === 'S') {
-          depth = 'Single'
-        } else if (depth === 'D') {
-          depth = 'Double'
-        }
-
-        contractForm[
-          `fieldValue_${importIds.intermentDepthContractField.contractTypeFieldId.toString()}`
-        ] = depth
-      }
-      */
-
       const contractId = addContract(contractForm, user, database)
+
+      // Service Type
+
+      if (workOrderRow.WO_INTERMENT_YR !== '') {
+        addContractServiceType(
+          {
+            contractId,
+            serviceTypeId: importIds.intermentServiceTypeId
+          },
+          user,
+          database
+        )
+      }
+
+      if (workOrderRow.WO_CREMATION === 'Y') {
+        addContractServiceType(
+          {
+            contractId,
+            serviceTypeId: importIds.cremationServiceTypeId
+          },
+          user,
+          database
+        )
+      }
+
+      // Work Order Contract
 
       addWorkOrderContract(
         {

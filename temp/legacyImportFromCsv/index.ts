@@ -1,10 +1,12 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console -- Temp legacy import, not used in production */
+/* eslint-disable sonarjs/sql-queries -- Temp legacy import, not used in production */
 
 import sqlite from 'better-sqlite3'
 import Debug from 'debug'
 
 import { initializeData } from '../../database/initializeDatabase.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
+import { clearCaches } from '../../helpers/cache.helpers.js'
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
 
 import { initializeFuneralHomes } from './data.funeralHomes.js'
@@ -12,6 +14,7 @@ import { importFromMasterCSV } from './import.master.js'
 import { importFromPrepaidCSV } from './import.prepaid.js'
 import { importFromWorkOrderCSV } from './import.workOrder.js'
 import { user } from './utilities.js'
+import { initializeContractTypePrints } from './data.contractPrints.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:legacyImportFromCsv`)
 
@@ -46,6 +49,7 @@ function purgeConfigTables(): void {
 
   database.close()
 
+  clearCaches()
   initializeData()
 
   console.timeEnd('purgeConfigTables')
@@ -102,6 +106,7 @@ purgeTables()
 purgeConfigTables()
 
 // Initialize SSM Data
+initializeContractTypePrints(user)
 initializeFuneralHomes(user)
 
 // Do Imports

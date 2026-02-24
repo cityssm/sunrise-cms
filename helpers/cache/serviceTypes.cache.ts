@@ -9,14 +9,26 @@ export function getCachedServiceTypeById(
   const cachedServiceTypes = getCachedServiceTypes()
 
   return cachedServiceTypes.find(
-    (currentServiceType) =>
-      currentServiceType.serviceTypeId === serviceTypeId
+    (currentServiceType) => currentServiceType.serviceTypeId === serviceTypeId
   )
 }
 
 export function getCachedServiceTypes(): ServiceType[] {
   serviceTypes ??= getServiceTypesFromDatabase()
   return serviceTypes
+}
+
+export function getCachedServiceTypeByServiceType(
+  serviceType: string
+): ServiceType | undefined {
+  const cachedServiceTypes = getCachedServiceTypes()
+
+  const serviceTypeLowerCase = serviceType.toLowerCase()
+
+  return cachedServiceTypes.find(
+    (currentServiceType) =>
+      currentServiceType.serviceType.toLowerCase() === serviceTypeLowerCase
+  )
 }
 
 export function clearServiceTypesCache(): void {

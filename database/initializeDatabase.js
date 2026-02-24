@@ -10,6 +10,7 @@ import addFeeCategory from './addFeeCategory.js';
 import addIntermentContainerType from './addIntermentContainerType.js';
 import addIntermentDepth from './addIntermentDepth.js';
 import { addBurialSiteStatus, addWorkOrderMilestoneType, addWorkOrderType } from './addRecord.js';
+import addServiceType from './addServiceType.js';
 import getBurialSiteStatuses from './getBurialSiteStatuses.js';
 import getBurialSiteTypes from './getBurialSiteTypes.js';
 import getCommittalTypes from './getCommittalTypes.js';
@@ -17,6 +18,7 @@ import getContractTypes from './getContractTypes.js';
 import getFeeCategories from './getFeeCategories.js';
 import getIntermentContainerTypes from './getIntermentContainerTypes.js';
 import getIntermentDepths from './getIntermentDepths.js';
+import getServiceTypes from './getServiceTypes.js';
 import getWorkOrderMilestoneTypes from './getWorkOrderMilestoneTypes.js';
 import getWorkOrderTypes from './getWorkOrderTypes.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:database:initializeDatabase`);
@@ -699,6 +701,31 @@ export function initializeData(connectedDatabase) {
             orderNumber: 3
         }, initializingUser, connectedDatabase);
     }
+    // Service Types
+    const serviceTypes = getServiceTypes(false, connectedDatabase);
+    if (serviceTypes.length <= 0) {
+        debug('No service types found, adding default types.');
+        addServiceType({
+            serviceType: 'Interment',
+            orderNumber: 1
+        }, initializingUser, connectedDatabase);
+        addServiceType({
+            serviceType: 'Cremation',
+            orderNumber: 2
+        }, initializingUser, connectedDatabase);
+        addServiceType({
+            serviceType: 'Entombment',
+            orderNumber: 3
+        }, initializingUser, connectedDatabase);
+        addServiceType({
+            serviceType: 'Niche',
+            orderNumber: 4
+        }, initializingUser, connectedDatabase);
+        addServiceType({
+            serviceType: 'Disinterment',
+            orderNumber: 5
+        }, initializingUser, connectedDatabase);
+    }
     // Interment Container Types
     const intermentContainerTypes = getIntermentContainerTypes(false, connectedDatabase);
     if (intermentContainerTypes.length <= 0) {
@@ -780,9 +807,7 @@ export function initializeData(connectedDatabase) {
             orderNumber: 3
         }, initializingUser, connectedDatabase);
     }
-    /*
-     * Fee Categories
-     */
+    // Fee Categories
     const feeCategories = getFeeCategories({}, {}, connectedDatabase);
     if (feeCategories.length <= 0) {
         debug('No fee categories found, adding default categories.');

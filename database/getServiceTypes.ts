@@ -7,7 +7,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getServiceTypes(
   includeDeleted = false,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): ServiceType[] {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 

@@ -1,5 +1,6 @@
 import { getCachedBurialSiteStatusByBurialSiteStatus } from '../../helpers/cache/burialSiteStatuses.cache.js'
 import { getCachedContractTypeByContractType } from '../../helpers/cache/contractTypes.cache.js'
+import { getCachedServiceTypeByServiceType } from '../../helpers/cache/serviceTypes.cache.js'
 import { getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType } from '../../helpers/cache/workOrderMilestoneTypes.cache.js'
 import type { ContractType } from '../../types/record.types.js'
 
@@ -37,6 +38,27 @@ export const permitOnlyContractType = getCachedContractTypeByContractType(
   'Permit Only',
   true
 ) as ContractType
+
+/* Service Types */
+
+export const intermentServiceTypeId = getCachedServiceTypeByServiceType(
+  'Interment'
+)?.serviceTypeId as number
+
+export const cremationServiceTypeId = getCachedServiceTypeByServiceType(
+  'Cremation'
+)?.serviceTypeId as number
+
+export const entombmentServiceTypeId = getCachedServiceTypeByServiceType(
+  'Entombment'
+)?.serviceTypeId as number
+
+export const nicheServiceTypeId = getCachedServiceTypeByServiceType('Niche')
+  ?.serviceTypeId as number
+
+export const disintermentServiceTypeId = getCachedServiceTypeByServiceType(
+  'Disinterment'
+)?.serviceTypeId as number
 
 /*
  * Work Order Milestone Type IDs
