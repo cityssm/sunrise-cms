@@ -52,7 +52,7 @@ describe('Admin - User Management', () => {
                 .click();
             // Confirm the deletion in the modal
             cy.get('.modal').should('be.visible');
-            cy.get('.modal button[data-cy="ok"]').contains('Delete User').click();
+            cy.get('.modal button[data-cy="ok"]').contains('Delete').click();
             cy.wait(ajaxDelayMillis);
             // Verify the user is removed
             cy.get('#container--users').should('not.contain.text', user.userName);

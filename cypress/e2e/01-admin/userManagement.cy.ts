@@ -73,7 +73,7 @@ describe('Admin - User Management', () => {
       // Confirm the deletion in the modal
       cy.get('.modal').should('be.visible')
 
-      cy.get('.modal button[data-cy="ok"]').contains('Delete User').click()
+      cy.get('.modal button[data-cy="ok"]').contains('Delete').click()
 
       cy.wait(ajaxDelayMillis)
 
