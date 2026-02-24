@@ -223,6 +223,8 @@ export async function importFromPrepaidCSV(): Promise<void> {
           user,
           database
         )
+
+
       }
 
       if (prepaidRow.CMPP_FEE_CREM !== '0.0') {

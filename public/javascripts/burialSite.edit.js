@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable max-lines */
 (() => {
     const sunrise = exports.sunrise;
@@ -150,12 +149,11 @@
                     const fieldId = `burialSite--${fieldName}`;
                     const fieldElement = document.createElement('div');
                     fieldElement.className = 'field';
-                    // eslint-disable-next-line no-unsanitized/property
                     fieldElement.innerHTML = /* html */ `
-              <label class="label" for="${fieldId}"></label>
+              <label class="label" for="${cityssm.escapeHTML(fieldId)}"></label>
               <div class="control"></div>
             `;
-                    fieldElement.querySelector('label').textContent = burialSiteTypeField.burialSiteTypeField;
+                    fieldElement.querySelector('label').textContent = burialSiteTypeField.burialSiteTypeField ?? '';
                     if ((burialSiteTypeField.fieldValues ?? '') === '') {
                         const inputElement = document.createElement('input');
                         inputElement.className = 'input';

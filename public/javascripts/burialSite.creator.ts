@@ -48,13 +48,11 @@ interface GetBurialSiteNamesByRangeResult {
         countElementSelector
       ) as HTMLSpanElement
 
-    // eslint-disable-next-line no-unsanitized/property
-    newResultsCountElement.innerHTML = newResultsPanelElement
+    newResultsCountElement.textContent = newResultsPanelElement
       .querySelectorAll(burialSiteElementSelector)
       .length.toString()
 
-    // eslint-disable-next-line no-unsanitized/property
-    existingResultsCountElement.innerHTML = existingResultsPanelElement
+    existingResultsCountElement.textContent = existingResultsPanelElement
       .querySelectorAll(burialSiteElementSelector)
       .length.toString()
   }
