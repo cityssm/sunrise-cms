@@ -1,3 +1,5 @@
+/* eslint-disable no-secrets/no-secrets */
+
 import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -23,20 +25,25 @@ export default function getNextContractNumber(
   const currentYearString = currentYear.toString()
 
   database.function(
-    // eslint-disable-next-line no-secrets/no-secrets
     'userFn_matchesContractNumberSyntax',
     matchesContractNumberSyntax
   )
 
   const contractNumberRecord = database
-    .prepare(
-      `select contractNumber from Contracts
-        where contractNumber like ? || '%'
-          and userFn_matchesContractNumberSyntax(contractNumber) = 1
-          and length(contractNumber) = ?
-        order by cast(contractNumber as integer) desc
-        limit 1`
-    )
+    .prepare(/* sql */ `
+      SELECT
+        contractNumber
+      FROM
+        Contracts
+      WHERE
+        contractNumber like ? || '%'
+        AND userFn_matchesContractNumberSyntax (contractNumber) = 1
+        AND length(contractNumber) = ?
+      ORDER BY
+        cast(contractNumber AS INTEGER) DESC
+      LIMIT
+        1
+    `)
     .get(currentYearString, paddingLength) as
     | {
         contractNumber: string
@@ -47,7 +54,7 @@ export default function getNextContractNumber(
     database.close()
   }
 
-  let contractNumber = `${currentYearString.padEnd(paddingLength - 1, '0')  }1`
+  let contractNumber = `${currentYearString.padEnd(paddingLength - 1, '0')}1`
 
   if (contractNumberRecord !== undefined) {
     contractNumber = (

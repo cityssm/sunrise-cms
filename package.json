@@ -14,7 +14,9 @@
   "license": "MIT",
   "author": "The Corporation of the City of Sault Ste. Marie",
   "type": "module",
-  "exports": "./index.js",
+  "exports": {
+    ".": "./index.js"
+  },
   "scripts": {
     "coverage": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary node --test --no-experimental-strip-types --test-concurrency 1",
     "cy:open": "cypress open --config-file cypress.config.js",
@@ -102,7 +104,7 @@
     "cypress": "^15.10.0",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^6.1.1",
-    "eslint-config-cityssm": "^38.2.2",
+    "eslint-config-cityssm": "^38.3.0",
     "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.1.1"
   },

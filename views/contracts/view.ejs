@@ -496,7 +496,11 @@ const displayServicesPanel =
                     <strong>Container:</strong>
                   </div>
                   <div class="column">
-                    <%= contractInterment.intermentContainerType ?? '(No Container Type)' %>
+                    <% if ((contractInterment.intermentContainerType ?? '') === '') { %>
+                    <span class="has-text-grey">(No Container Type)</span>
+                    <% } else { %>
+                    <%= contractInterment.intermentContainerType %>
+                    <% } %>
                   </div>
                 </div>
                 <div class="columns">
@@ -504,7 +508,11 @@ const displayServicesPanel =
                     <strong>Depth:</strong>
                   </div>
                   <div class="column">
-                    <%= contractInterment.intermentDepth ?? '(No Depth)' %>
+                    <% if ((contractInterment.intermentDepth ?? '') === '') { %>
+                    <span class="has-text-grey">(No Depth)</span>
+                    <% } else { %>
+                    <%= contractInterment.intermentDepth %>
+                    <% } %>
                   </div>
                 </div>
               </td>

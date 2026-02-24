@@ -14,13 +14,22 @@ export default function getNextWorkOrderNumber(connectedDatabase) {
     // eslint-disable-next-line no-secrets/no-secrets
     'userFn_matchesWorkOrderNumberSyntax', matchesWorkOrderNumberSyntax);
     const workOrderNumberRecord = database
-        .prepare(
-    // eslint-disable-next-line no-secrets/no-secrets
-    `select workOrderNumber from WorkOrders
-        where workOrderNumber like ? || '-%'
-          and userFn_matchesWorkOrderNumberSyntax(workOrderNumber) = 1
-        order by cast(substr(workOrderNumber, instr(workOrderNumber, '-') + 1) as integer) desc
-        limit 1`)
+        .prepare(// eslint-disable-next-line no-secrets/no-secrets
+    /* sql */ `
+      SELECT
+        workOrderNumber
+      FROM
+        WorkOrders
+      WHERE
+        workOrderNumber like ? || '-%'
+        AND userFn_matchesWorkOrderNumberSyntax (workOrderNumber) = 1
+      ORDER BY
+        cast(
+          substr(workOrderNumber, instr(workOrderNumber, '-') + 1) AS INTEGER
+        ) DESC
+      LIMIT
+        1
+    `)
         .get(currentYearString);
     if (connectedDatabase === undefined) {
         database.close();

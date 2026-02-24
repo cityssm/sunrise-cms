@@ -257,8 +257,31 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
   }
 
   if ((filters.workOrderMilestoneDateString ?? '') !== '') {
-    sqlWhereClause += ` and (w.workOrderId in (select workOrderId from WorkOrderMilestones where recordDelete_timeMillis is null and workOrderMilestoneDate = ?)
-        or (w.workOrderOpenDate = ? and (select count(*) from WorkOrderMilestones m where m.recordDelete_timeMillis is null and m.workOrderId = w.workOrderId) = 0))`
+    sqlWhereClause += /* sql */ `
+      AND (
+        w.workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderMilestones
+          WHERE
+            recordDelete_timeMillis IS NULL
+            AND workOrderMilestoneDate = ?
+        )
+        OR (
+          w.workOrderOpenDate = ?
+          AND (
+            SELECT
+              count(*)
+            FROM
+              WorkOrderMilestones m
+            WHERE
+              m.recordDelete_timeMillis IS NULL
+              AND m.workOrderId = w.workOrderId
+          ) = 0
+        )
+      )
+    `
 
     sqlParameters.push(
       dateStringToInteger(filters.workOrderMilestoneDateString as DateString),
@@ -271,11 +294,18 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
    */
 
   if ((filters.funeralHomeId ?? '') !== '') {
-    sqlWhereClause += ` and w.workOrderId in (
-      select workOrderId from WorkOrderContracts wc
-      left join Contracts c on wc.contractId = c.contractId
-      where wc.recordDelete_timeMillis is null
-      and c.funeralHomeId = ?)`
+    sqlWhereClause += /* sql */ `
+      AND w.workOrderId IN (
+        SELECT
+          workOrderId
+        FROM
+          WorkOrderContracts wc
+          LEFT JOIN Contracts c ON wc.contractId = c.contractId
+        WHERE
+          wc.recordDelete_timeMillis IS NULL
+          AND c.funeralHomeId = ?
+      )
+    `
 
     sqlParameters.push(filters.funeralHomeId)
   }
@@ -289,13 +319,24 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
     'ci'
   )
   if (deceasedNameFilters.sqlParameters.length > 0) {
-    sqlWhereClause += ` and w.workOrderId in (
-        select workOrderId from WorkOrderContracts wc
-        where wc.recordDelete_timeMillis is null
-        and wc.contractId in (
-          select contractId from ContractInterments ci where ci.recordDelete_timeMillis is null
-          ${deceasedNameFilters.sqlWhereClause}
-        ))`
+    sqlWhereClause += /* sql */ `
+      AND w.workOrderId IN (
+        SELECT
+          workOrderId
+        FROM
+          WorkOrderContracts wc
+        WHERE
+          wc.recordDelete_timeMillis IS NULL
+          AND wc.contractId IN (
+            SELECT
+              contractId
+            FROM
+              ContractInterments ci
+            WHERE
+              ci.recordDelete_timeMillis IS NULL ${deceasedNameFilters.sqlWhereClause}
+          )
+      )
+    `
     sqlParameters.push(...deceasedNameFilters.sqlParameters)
   }
 
@@ -309,25 +350,43 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
     'l'
   )
   if (burialSiteNameFilters.sqlParameters.length > 0) {
-    sqlWhereClause += ` and (
-      w.workOrderId in (
-        select workOrderId from WorkOrderBurialSites
-        where recordDelete_timeMillis is null
-        and burialSiteId in (
-          select burialSiteId from BurialSites l
-          where recordDelete_timeMillis is null
-          ${burialSiteNameFilters.sqlWhereClause}
+    sqlWhereClause += /* sql */ `
+      AND (
+        w.workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderBurialSites
+          WHERE
+            recordDelete_timeMillis IS NULL
+            AND burialSiteId IN (
+              SELECT
+                burialSiteId
+              FROM
+                BurialSites l
+              WHERE
+                recordDelete_timeMillis IS NULL ${burialSiteNameFilters.sqlWhereClause}
+            )
         )
-      ) or w.workOrderId in (
-        select workOrderId from WorkOrderContracts wc
-        left join Contracts c on wc.contractId = c.contractId
-        where wc.recordDelete_timeMillis is null
-        and c.burialSiteId in (
-          select burialSiteId from BurialSites l
-          where l.recordDelete_timeMillis is null
-          ${burialSiteNameFilters.sqlWhereClause}
+        OR w.workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderContracts wc
+            LEFT JOIN Contracts c ON wc.contractId = c.contractId
+          WHERE
+            wc.recordDelete_timeMillis IS NULL
+            AND c.burialSiteId IN (
+              SELECT
+                burialSiteId
+              FROM
+                BurialSites l
+              WHERE
+                l.recordDelete_timeMillis IS NULL ${burialSiteNameFilters.sqlWhereClause}
+            )
         )
-      ))`
+      )
+    `
 
     sqlParameters.push(
       ...burialSiteNameFilters.sqlParameters,
@@ -340,21 +399,39 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
    */
 
   if ((filters.cemeteryId ?? '') !== '') {
-    sqlWhereClause += ` and (
-      w.workOrderId in (
-        select workOrderId from WorkOrderBurialSites wb
-        left join BurialSites b on wb.burialSiteId = b.burialSiteId
-        left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
-        where wb.recordDelete_timeMillis is null
-        and (cem.cemeteryId = ? or cem.parentCemeteryId = ?)
-      ) or w.workOrderId in (
-        select workOrderId from WorkOrderContracts wc
-        left join Contracts c on wc.contractId = c.contractId
-        left join BurialSites b on c.burialSiteId = b.burialSiteId
-        left join Cemeteries cem on b.cemeteryId = cem.cemeteryId
-        where wc.recordDelete_timeMillis is null
-        and (cem.cemeteryId = ? or cem.parentCemeteryId = ?)
-      ))`
+    sqlWhereClause += /* sql */ `
+      AND (
+        w.workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderBurialSites wb
+            LEFT JOIN BurialSites b ON wb.burialSiteId = b.burialSiteId
+            LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          WHERE
+            wb.recordDelete_timeMillis IS NULL
+            AND (
+              cem.cemeteryId = ?
+              OR cem.parentCemeteryId = ?
+            )
+        )
+        OR w.workOrderId IN (
+          SELECT
+            workOrderId
+          FROM
+            WorkOrderContracts wc
+            LEFT JOIN Contracts c ON wc.contractId = c.contractId
+            LEFT JOIN BurialSites b ON c.burialSiteId = b.burialSiteId
+            LEFT JOIN Cemeteries cem ON b.cemeteryId = cem.cemeteryId
+          WHERE
+            wc.recordDelete_timeMillis IS NULL
+            AND (
+              cem.cemeteryId = ?
+              OR cem.parentCemeteryId = ?
+            )
+        )
+      )
+    `
 
     sqlParameters.push(
       filters.cemeteryId,
@@ -369,8 +446,17 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
    */
 
   if ((filters.contractId ?? '') !== '') {
-    sqlWhereClause +=
-      ' and w.workOrderId in (select workOrderId from WorkOrderContracts where recordDelete_timeMillis is null and contractId = ?)'
+    sqlWhereClause += /* sql */ `
+      AND w.workOrderId IN (
+        SELECT
+          workOrderId
+        FROM
+          WorkOrderContracts
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND contractId = ?
+      )
+    `
     sqlParameters.push(filters.contractId)
   }
 

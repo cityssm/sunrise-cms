@@ -61,21 +61,27 @@ export default function getRecordUpdateLog(
   const recordTableSql: string[] = []
 
   if (filters.recordType === '' || filters.recordType === 'contract') {
-    recordTableSql.push(`select 'contract' as recordType,
-        case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
-          then 'create'
-          else 'update' end as updateType,
-        r.contractId as displayRecordId,
-        r.contractId as recordId,
-        coalesce(t.contractType, 'Contract') as recordDescription,
+    recordTableSql.push(/* sql */ `
+      SELECT
+        'contract' AS recordType,
+        CASE
+          WHEN r.recordCreate_timeMillis = r.recordUpdate_timeMillis THEN 'create'
+          ELSE 'update'
+        END AS updateType,
+        r.contractId AS displayRecordId,
+        r.contractId AS recordId,
+        coalesce(t.contractType, 'Contract') AS recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_userName,
         r.recordCreate_timeMillis,
         r.recordCreate_userName
-      from Contracts r
-      left join ContractTypes t on r.contractTypeId = t.contractTypeId
-      where r.recordDelete_timeMillis is null
-        and r.recordUpdate_timeMillis >= @minimumMillis`)
+      FROM
+        Contracts r
+        LEFT JOIN ContractTypes t ON r.contractTypeId = t.contractTypeId
+      WHERE
+        r.recordDelete_timeMillis IS NULL
+        AND r.recordUpdate_timeMillis >= @minimumMillis
+    `)
   }
 
   if (
@@ -83,42 +89,58 @@ export default function getRecordUpdateLog(
     filters.recordType === 'contract' ||
     filters.recordType === 'contractTransactions'
   ) {
-    recordTableSql.push(`select 'contractTransactions' as recordType,
-        case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
-          then 'create'
-          else 'update' end as updateType,
-        r.contractId as displayRecordId,
-        r.contractId as recordId,
-        case when r.transactionNote is not null and r.transactionNote != ''
-          then r.transactionNote
-          else 'Transaction: $' || printf('%.2f', r.transactionAmount) end as recordDescription,
+    recordTableSql.push(/* sql */ `
+      SELECT
+        'contractTransactions' AS recordType,
+        CASE
+          WHEN r.recordCreate_timeMillis = r.recordUpdate_timeMillis THEN 'create'
+          ELSE 'update'
+        END AS updateType,
+        r.contractId AS displayRecordId,
+        r.contractId AS recordId,
+        CASE
+          WHEN r.transactionNote IS NOT NULL
+          AND r.transactionNote != '' THEN r.transactionNote
+          ELSE 'Transaction: $' || printf('%.2f', r.transactionAmount)
+        END AS recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_userName,
         r.recordCreate_timeMillis,
         r.recordCreate_userName
-      from ContractTransactions r
-      where r.recordDelete_timeMillis is null
-        and r.recordUpdate_timeMillis >= @minimumMillis`)
+      FROM
+        ContractTransactions r
+      WHERE
+        r.recordDelete_timeMillis IS NULL
+        AND r.recordUpdate_timeMillis >= @minimumMillis
+    `)
   }
 
   if (filters.recordType === '' || filters.recordType === 'workOrder') {
-    recordTableSql.push(`select 'workOrder' as recordType,
-        case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
-          then 'create'
-          else 'update' end as updateType,
-        workOrderNumber as displayRecordId,
-        workOrderId as recordId,
-        case when r.workOrderDescription is not null and r.workOrderDescription != ''
-          then r.workOrderDescription
-          else coalesce(t.workOrderType, 'Work Order') end as recordDescription,
+    recordTableSql.push(/* sql */ `
+      SELECT
+        'workOrder' AS recordType,
+        CASE
+          WHEN r.recordCreate_timeMillis = r.recordUpdate_timeMillis THEN 'create'
+          ELSE 'update'
+        END AS updateType,
+        workOrderNumber AS displayRecordId,
+        workOrderId AS recordId,
+        CASE
+          WHEN r.workOrderDescription IS NOT NULL
+          AND r.workOrderDescription != '' THEN r.workOrderDescription
+          ELSE coalesce(t.workOrderType, 'Work Order')
+        END AS recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_userName,
         r.recordCreate_timeMillis,
         r.recordCreate_userName
-      from WorkOrders r
-      left join WorkOrderTypes t on r.workOrderTypeId = t.workOrderTypeId
-      where r.recordDelete_timeMillis is null
-        and r.recordUpdate_timeMillis >= @minimumMillis`)
+      FROM
+        WorkOrders r
+        LEFT JOIN WorkOrderTypes t ON r.workOrderTypeId = t.workOrderTypeId
+      WHERE
+        r.recordDelete_timeMillis IS NULL
+        AND r.recordUpdate_timeMillis >= @minimumMillis
+    `)
   }
 
   if (
@@ -126,46 +148,61 @@ export default function getRecordUpdateLog(
     filters.recordType === 'workOrder' ||
     filters.recordType === 'workOrderMilestone'
   ) {
-    recordTableSql.push(`select 'workOrderMilestone' as recordType,
-        case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
-          then 'create'
-          else 'update' end as updateType,
-        workOrderNumber as displayRecordId,
-        r.workOrderId as recordId,
-        case when mt.workOrderMilestoneType is null
-          then ''
-          else mt.workOrderMilestoneType || ' - ' end || r.workOrderMilestoneDescription as recordDescription,
+    recordTableSql.push(/* sql */ `
+      SELECT
+        'workOrderMilestone' AS recordType,
+        CASE
+          WHEN r.recordCreate_timeMillis = r.recordUpdate_timeMillis THEN 'create'
+          ELSE 'update'
+        END AS updateType,
+        workOrderNumber AS displayRecordId,
+        r.workOrderId AS recordId,
+        CASE
+          WHEN mt.workOrderMilestoneType IS NULL THEN ''
+          ELSE mt.workOrderMilestoneType || ' - '
+        END || r.workOrderMilestoneDescription AS recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_userName,
         r.recordCreate_timeMillis,
         r.recordCreate_userName
-      from WorkOrderMilestones r
-      left join WorkOrderMilestoneTypes mt on r.workOrderMilestoneTypeId = mt.workOrderMilestoneTypeId
-      left join WorkOrders w on r.workOrderId = w.workOrderId
-      where r.recordDelete_timeMillis is null
-        and w.recordDelete_timeMillis is null
-        and r.recordUpdate_timeMillis >= @minimumMillis`)
+      FROM
+        WorkOrderMilestones r
+        LEFT JOIN WorkOrderMilestoneTypes mt ON r.workOrderMilestoneTypeId = mt.workOrderMilestoneTypeId
+        LEFT JOIN WorkOrders w ON r.workOrderId = w.workOrderId
+      WHERE
+        r.recordDelete_timeMillis IS NULL
+        AND w.recordDelete_timeMillis IS NULL
+        AND r.recordUpdate_timeMillis >= @minimumMillis
+    `)
   }
 
   // Burial Sites
   if (filters.recordType === '' || filters.recordType === 'burialSite') {
-    recordTableSql.push(`select 'burialSite' as recordType,
-        case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
-          then 'create'
-          else 'update' end as updateType,
-        r.burialSiteName as displayRecordId,
-        r.burialSiteId as recordId,
-        coalesce(t.burialSiteType, 'Burial Site') ||
-        case when s.burialSiteStatus is not null then ' (' || s.burialSiteStatus || ')' else '' end as recordDescription,
+    recordTableSql.push(/* sql */ `
+      SELECT
+        'burialSite' AS recordType,
+        CASE
+          WHEN r.recordCreate_timeMillis = r.recordUpdate_timeMillis THEN 'create'
+          ELSE 'update'
+        END AS updateType,
+        r.burialSiteName AS displayRecordId,
+        r.burialSiteId AS recordId,
+        coalesce(t.burialSiteType, 'Burial Site') || CASE
+          WHEN s.burialSiteStatus IS NOT NULL THEN ' (' || s.burialSiteStatus || ')'
+          ELSE ''
+        END AS recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_userName,
         r.recordCreate_timeMillis,
         r.recordCreate_userName
-      from BurialSites r
-      left join BurialSiteTypes t on r.burialSiteTypeId = t.burialSiteTypeId
-      left join BurialSiteStatuses s on r.burialSiteStatusId = s.burialSiteStatusId
-      where r.recordDelete_timeMillis is null
-        and r.recordUpdate_timeMillis >= @minimumMillis`)
+      FROM
+        BurialSites r
+        LEFT JOIN BurialSiteTypes t ON r.burialSiteTypeId = t.burialSiteTypeId
+        LEFT JOIN BurialSiteStatuses s ON r.burialSiteStatusId = s.burialSiteStatusId
+      WHERE
+        r.recordDelete_timeMillis IS NULL
+        AND r.recordUpdate_timeMillis >= @minimumMillis
+    `)
   }
 
   // Contract Fees
@@ -174,21 +211,27 @@ export default function getRecordUpdateLog(
     filters.recordType === 'contract' ||
     filters.recordType === 'contractFee'
   ) {
-    recordTableSql.push(`select 'contractFee' as recordType,
-        case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
-          then 'create'
-          else 'update' end as updateType,
-        r.contractId as displayRecordId,
-        r.contractId as recordId,
-        'Contract Fee: ' || coalesce(f.feeName, 'Unknown Fee') || ' ($' || printf('%.2f', r.feeAmount) || ')' as recordDescription,
+    recordTableSql.push(/* sql */ `
+      SELECT
+        'contractFee' AS recordType,
+        CASE
+          WHEN r.recordCreate_timeMillis = r.recordUpdate_timeMillis THEN 'create'
+          ELSE 'update'
+        END AS updateType,
+        r.contractId AS displayRecordId,
+        r.contractId AS recordId,
+        'Contract Fee: ' || coalesce(f.feeName, 'Unknown Fee') || ' ($' || printf('%.2f', r.feeAmount) || ')' AS recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_userName,
         r.recordCreate_timeMillis,
         r.recordCreate_userName
-      from ContractFees r
-      left join Fees f on r.feeId = f.feeId
-      where r.recordDelete_timeMillis is null
-        and r.recordUpdate_timeMillis >= @minimumMillis`)
+      FROM
+        ContractFees r
+        LEFT JOIN Fees f ON r.feeId = f.feeId
+      WHERE
+        r.recordDelete_timeMillis IS NULL
+        AND r.recordUpdate_timeMillis >= @minimumMillis
+    `)
   }
 
   // Comments - Contract Comments
@@ -197,21 +240,29 @@ export default function getRecordUpdateLog(
     filters.recordType === 'comments' ||
     filters.recordType === 'contractComment'
   ) {
-    recordTableSql.push(`select 'contractComment' as recordType,
-        case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
-          then 'create'
-          else 'update' end as updateType,
-        r.contractId as displayRecordId,
-        r.contractId as recordId,
-        'Contract Comment: ' || substr(r.comment, 1, 100) ||
-        case when length(r.comment) > 100 then '...' else '' end as recordDescription,
+    recordTableSql.push(/* sql */ `
+      SELECT
+        'contractComment' AS recordType,
+        CASE
+          WHEN r.recordCreate_timeMillis = r.recordUpdate_timeMillis THEN 'create'
+          ELSE 'update'
+        END AS updateType,
+        r.contractId AS displayRecordId,
+        r.contractId AS recordId,
+        'Contract Comment: ' || substr(r.comment, 1, 100) || CASE
+          WHEN length(r.comment) > 100 THEN '...'
+          ELSE ''
+        END AS recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_userName,
         r.recordCreate_timeMillis,
         r.recordCreate_userName
-      from ContractComments r
-      where r.recordDelete_timeMillis is null
-        and r.recordUpdate_timeMillis >= @minimumMillis`)
+      FROM
+        ContractComments r
+      WHERE
+        r.recordDelete_timeMillis IS NULL
+        AND r.recordUpdate_timeMillis >= @minimumMillis
+    `)
   }
 
   // Comments - Work Order Comments
@@ -220,23 +271,31 @@ export default function getRecordUpdateLog(
     filters.recordType === 'comments' ||
     filters.recordType === 'workOrderComment'
   ) {
-    recordTableSql.push(`select 'workOrderComment' as recordType,
-        case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
-          then 'create'
-          else 'update' end as updateType,
-        w.workOrderNumber as displayRecordId,
-        r.workOrderId as recordId,
-        'Work Order Comment: ' || substr(r.comment, 1, 100) ||
-        case when length(r.comment) > 100 then '...' else '' end as recordDescription,
+    recordTableSql.push(/* sql */ `
+      SELECT
+        'workOrderComment' AS recordType,
+        CASE
+          WHEN r.recordCreate_timeMillis = r.recordUpdate_timeMillis THEN 'create'
+          ELSE 'update'
+        END AS updateType,
+        w.workOrderNumber AS displayRecordId,
+        r.workOrderId AS recordId,
+        'Work Order Comment: ' || substr(r.comment, 1, 100) || CASE
+          WHEN length(r.comment) > 100 THEN '...'
+          ELSE ''
+        END AS recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_userName,
         r.recordCreate_timeMillis,
         r.recordCreate_userName
-      from WorkOrderComments r
-      left join WorkOrders w on r.workOrderId = w.workOrderId
-      where r.recordDelete_timeMillis is null
-        and w.recordDelete_timeMillis is null
-        and r.recordUpdate_timeMillis >= @minimumMillis`)
+      FROM
+        WorkOrderComments r
+        LEFT JOIN WorkOrders w ON r.workOrderId = w.workOrderId
+      WHERE
+        r.recordDelete_timeMillis IS NULL
+        AND w.recordDelete_timeMillis IS NULL
+        AND r.recordUpdate_timeMillis >= @minimumMillis
+    `)
   }
 
   // Comments - Burial Site Comments
@@ -245,23 +304,31 @@ export default function getRecordUpdateLog(
     filters.recordType === 'comments' ||
     filters.recordType === 'burialSiteComment'
   ) {
-    recordTableSql.push(`select 'burialSiteComment' as recordType,
-        case when r.recordCreate_timeMillis = r.recordUpdate_timeMillis
-          then 'create'
-          else 'update' end as updateType,
-        b.burialSiteName as displayRecordId,
-        r.burialSiteId as recordId,
-        'Burial Site Comment: ' || substr(r.comment, 1, 100) ||
-        case when length(r.comment) > 100 then '...' else '' end as recordDescription,
+    recordTableSql.push(/* sql */ `
+      SELECT
+        'burialSiteComment' AS recordType,
+        CASE
+          WHEN r.recordCreate_timeMillis = r.recordUpdate_timeMillis THEN 'create'
+          ELSE 'update'
+        END AS updateType,
+        b.burialSiteName AS displayRecordId,
+        r.burialSiteId AS recordId,
+        'Burial Site Comment: ' || substr(r.comment, 1, 100) || CASE
+          WHEN length(r.comment) > 100 THEN '...'
+          ELSE ''
+        END AS recordDescription,
         r.recordUpdate_timeMillis,
         r.recordUpdate_userName,
         r.recordCreate_timeMillis,
         r.recordCreate_userName
-      from BurialSiteComments r
-      left join BurialSites b on r.burialSiteId = b.burialSiteId
-      where r.recordDelete_timeMillis is null
-        and b.recordDelete_timeMillis is null
-        and r.recordUpdate_timeMillis >= @minimumMillis`)
+      FROM
+        BurialSiteComments r
+        LEFT JOIN BurialSites b ON r.burialSiteId = b.burialSiteId
+      WHERE
+        r.recordDelete_timeMillis IS NULL
+        AND b.recordDelete_timeMillis IS NULL
+        AND r.recordUpdate_timeMillis >= @minimumMillis
+    `)
   }
 
   const limit = Math.min(options?.limit ?? defaultRecordLimit, maxRecordLimit)

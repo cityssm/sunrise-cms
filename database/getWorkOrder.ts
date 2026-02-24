@@ -15,15 +15,25 @@ interface WorkOrderOptions {
   includeMilestones: boolean
 }
 
-const baseSQL = `select w.workOrderId,
-    w.workOrderTypeId, t.workOrderType,
-    w.workOrderNumber, w.workOrderDescription,
-    w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
-    w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
-    w.recordCreate_timeMillis, w.recordUpdate_timeMillis
-    from WorkOrders w
-    left join WorkOrderTypes t on w.workOrderTypeId = t.workOrderTypeId
-    where w.recordDelete_timeMillis is null`
+const baseSQL = /* sql */ `
+  SELECT
+    w.workOrderId,
+    w.workOrderTypeId,
+    t.workOrderType,
+    w.workOrderNumber,
+    w.workOrderDescription,
+    w.workOrderOpenDate,
+    userFn_dateIntegerToString (w.workOrderOpenDate) AS workOrderOpenDateString,
+    w.workOrderCloseDate,
+    userFn_dateIntegerToString (w.workOrderCloseDate) AS workOrderCloseDateString,
+    w.recordCreate_timeMillis,
+    w.recordUpdate_timeMillis
+  FROM
+    WorkOrders w
+    LEFT JOIN WorkOrderTypes t ON w.workOrderTypeId = t.workOrderTypeId
+  WHERE
+    w.recordDelete_timeMillis IS NULL
+`
 
 export default async function getWorkOrder(
   workOrderId: number | string,
@@ -31,7 +41,7 @@ export default async function getWorkOrder(
   connectedDatabase?: sqlite.Database
 ): Promise<WorkOrder | undefined> {
   return await _getWorkOrder(
-    `${baseSQL} and w.workOrderId = ?`,
+    `${baseSQL} AND w.workOrderId = ?`,
     workOrderId,
     options,
     connectedDatabase
@@ -43,7 +53,7 @@ export async function getWorkOrderByWorkOrderNumber(
   connectedDatabase?: sqlite.Database
 ): Promise<WorkOrder | undefined> {
   return await _getWorkOrder(
-    `${baseSQL} and w.workOrderNumber = ?`,
+    `${baseSQL} AND w.workOrderNumber = ?`,
     workOrderNumber,
     {
       includeBurialSites: true,

@@ -24,8 +24,8 @@ export default function getContractTypeFields(contractTypeId, connectedDatabase)
         ContractTypeFields
       WHERE
         recordDelete_timeMillis IS NULL ${(contractTypeId ?? -1) === -1
-        ? ' and contractTypeId is null'
-        : ' and contractTypeId = ?'}
+        ? ' AND contractTypeId IS NULL'
+        : ' AND contractTypeId = ?'}
       ORDER BY
         orderNumber,
         contractTypeField

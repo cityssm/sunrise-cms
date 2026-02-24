@@ -33,15 +33,39 @@ export default function getFeeCategories(
   const sqlParameters: unknown[] = []
 
   if ((filters.contractTypeId ?? '') !== '') {
-    sqlWhereClause += ` and feeCategoryId in (
-        select feeCategoryId from Fees where recordDelete_timeMillis is null and (contractTypeId is null or contractTypeId = ?))`
+    sqlWhereClause += /* sql */ `
+      AND feeCategoryId IN (
+        SELECT
+          feeCategoryId
+        FROM
+          Fees
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND (
+            contractTypeId IS NULL
+            OR contractTypeId = ?
+          )
+      )
+    `
 
     sqlParameters.push(filters.contractTypeId)
   }
 
   if ((filters.burialSiteTypeId ?? '') !== '') {
-    sqlWhereClause += ` and feeCategoryId in (
-        select feeCategoryId from Fees where recordDelete_timeMillis is null and (burialSiteTypeId is null or burialSiteTypeId = ?))`
+    sqlWhereClause += /* sql */ `
+      AND feeCategoryId IN (
+        SELECT
+          feeCategoryId
+        FROM
+          Fees
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND (
+            burialSiteTypeId IS NULL
+            OR burialSiteTypeId = ?
+          )
+      )
+    `
 
     sqlParameters.push(filters.burialSiteTypeId)
   }

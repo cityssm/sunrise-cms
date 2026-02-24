@@ -165,9 +165,15 @@ function getCurrentField(
   connectedDatabase: sqlite.Database
 ): { burialSiteTypeId?: number; orderNumber: number } {
   return connectedDatabase
-    .prepare(
-      'select burialSiteTypeId, orderNumber from BurialSiteTypeFields where burialSiteTypeFieldId = ?'
-    )
+    .prepare(/* sql */ `
+      SELECT
+        burialSiteTypeId,
+        orderNumber
+      FROM
+        BurialSiteTypeFields
+      WHERE
+        burialSiteTypeFieldId = ?
+    `)
     .get(burialSiteTypeFieldId) as {
     burialSiteTypeId?: number
     orderNumber: number

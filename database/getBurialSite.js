@@ -49,7 +49,7 @@ async function _getBurialSite(keyColumn, burialSiteIdOrName, includeDeleted = fa
       WHERE
         b.${keyColumn} = ? ${includeDeleted
         ? ''
-        : ' and b.recordDelete_timeMillis is null '}
+        : ' AND b.recordDelete_timeMillis IS NULL '}
       ORDER BY
         b.burialSiteId
     `)

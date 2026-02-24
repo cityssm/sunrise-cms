@@ -1,3 +1,4 @@
+/* eslint-disable no-secrets/no-secrets */
 import sqlite from 'better-sqlite3';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
@@ -11,16 +12,22 @@ export default function getNextContractNumber(connectedDatabase) {
     const paddingLength = getConfigProperty('settings.contracts.contractNumberLength');
     const currentYear = new Date().getFullYear();
     const currentYearString = currentYear.toString();
-    database.function(
-    // eslint-disable-next-line no-secrets/no-secrets
-    'userFn_matchesContractNumberSyntax', matchesContractNumberSyntax);
+    database.function('userFn_matchesContractNumberSyntax', matchesContractNumberSyntax);
     const contractNumberRecord = database
-        .prepare(`select contractNumber from Contracts
-        where contractNumber like ? || '%'
-          and userFn_matchesContractNumberSyntax(contractNumber) = 1
-          and length(contractNumber) = ?
-        order by cast(contractNumber as integer) desc
-        limit 1`)
+        .prepare(/* sql */ `
+      SELECT
+        contractNumber
+      FROM
+        Contracts
+      WHERE
+        contractNumber like ? || '%'
+        AND userFn_matchesContractNumberSyntax (contractNumber) = 1
+        AND length(contractNumber) = ?
+      ORDER BY
+        cast(contractNumber AS INTEGER) DESC
+      LIMIT
+        1
+    `)
         .get(currentYearString, paddingLength);
     if (connectedDatabase === undefined) {
         database.close();

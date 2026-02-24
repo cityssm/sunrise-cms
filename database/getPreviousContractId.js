@@ -10,9 +10,16 @@ export default function getPreviousContractId(contractId, connectedDatabase) {
         Contracts
       WHERE
         recordDelete_timeMillis IS NULL
-        AND contractId < ?
+        AND contractNumber < (
+          SELECT
+            contractNumber
+          FROM
+            Contracts
+          WHERE
+            contractId = ?
+        )
       ORDER BY
-        contractId DESC
+        contractNumber DESC
       LIMIT
         1
     `)

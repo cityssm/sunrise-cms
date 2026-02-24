@@ -1,8 +1,13 @@
 import type sqlite from 'better-sqlite3'
 
-const isDeletedSqlStatement = `select burialSiteId
-  from BurialSites
-  where recordDelete_timeMillis is not null`
+const isDeletedSqlStatement = /* sql */ `
+  SELECT
+    burialSiteId
+  FROM
+    BurialSites
+  WHERE
+    recordDelete_timeMillis IS NOT NULL
+`
 
 const burialSiteTables = [
   'BurialSiteComments',

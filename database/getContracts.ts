@@ -257,14 +257,14 @@ async function addInclusions(
           st.serviceType
         FROM
           ContractServiceTypes cst
-        INNER JOIN
-          ServiceTypes st ON cst.serviceTypeId = st.serviceTypeId
+          INNER JOIN ServiceTypes st ON cst.serviceTypeId = st.serviceTypeId
         WHERE
           cst.contractId = ?
           AND cst.recordDelete_timeMillis IS NULL
           AND st.recordDelete_timeMillis IS NULL
         ORDER BY
-          st.orderNumber, st.serviceType
+          st.orderNumber,
+          st.serviceType
       `)
       .all(contract.contractId) as ServiceType[]
   }
@@ -298,7 +298,7 @@ function buildWhereClause(filters: GetContractsFilters): {
 
   /*
    * Contract Number
-    */
+   */
 
   if ((filters.contractNumber ?? '') !== '') {
     sqlWhereClause += " and c.contractNumber like '%' || ? || '%'"
@@ -347,10 +347,16 @@ function buildWhereClause(filters: GetContractsFilters): {
   )
 
   if (deceasedNameFilters.sqlParameters.length > 0) {
-    sqlWhereClause += ` and c.contractId in (
-        select contractId from ContractInterments ci
-        where recordDelete_timeMillis is null
-        ${deceasedNameFilters.sqlWhereClause})`
+    sqlWhereClause += /* sql */ `
+      AND c.contractId IN (
+        SELECT
+          contractId
+        FROM
+          ContractInterments ci
+        WHERE
+          recordDelete_timeMillis IS NULL ${deceasedNameFilters.sqlWhereClause}
+      )
+    `
     sqlParameters.push(...deceasedNameFilters.sqlParameters)
   }
 
@@ -374,10 +380,15 @@ function buildWhereClause(filters: GetContractsFilters): {
   }
 
   if ((filters.contractEffectiveDateString ?? '') !== '') {
-    sqlWhereClause += ` and (
-        c.contractEndDate is null
-        or (c.contractStartDate <= ? and c.contractEndDate >= ?)
-      )`
+    sqlWhereClause += /* sql */ `
+      AND (
+        c.contractEndDate IS NULL
+        OR (
+          c.contractStartDate <= ?
+          AND c.contractEndDate >= ?
+        )
+      )
+    `
     sqlParameters.push(
       dateStringToInteger(filters.contractEffectiveDateString as DateString),
       dateStringToInteger(filters.contractEffectiveDateString as DateString)
@@ -396,12 +407,15 @@ function buildWhereClause(filters: GetContractsFilters): {
 
   if ((filters.serviceTypeId ?? '') !== '') {
     sqlWhereClause += /* sql */ `
-      and exists (
-        select 1
-        from ContractServiceTypes cst
-        where cst.contractId = c.contractId
-          and cst.serviceTypeId = ?
-          and cst.recordDelete_timeMillis is null
+      AND EXISTS (
+        SELECT
+          1
+        FROM
+          ContractServiceTypes cst
+        WHERE
+          cst.contractId = c.contractId
+          AND cst.serviceTypeId = ?
+          AND cst.recordDelete_timeMillis IS NULL
       )
     `
     sqlParameters.push(filters.serviceTypeId)
@@ -435,16 +449,48 @@ function buildWhereClause(filters: GetContractsFilters): {
   }
 
   if ((filters.relatedContractId ?? '') !== '') {
-    sqlWhereClause += ` and (
-        c.contractId in (select contractIdA from RelatedContracts where contractIdB = ?)
-        or c.contractId in (select contractIdB from RelatedContracts where contractIdA = ?)
-      )`
+    sqlWhereClause += /* sql */ `
+      AND (
+        c.contractId IN (
+          SELECT
+            contractIdA
+          FROM
+            RelatedContracts
+          WHERE
+            contractIdB = ?
+        )
+        OR c.contractId IN (
+          SELECT
+            contractIdB
+          FROM
+            RelatedContracts
+          WHERE
+            contractIdA = ?
+        )
+      )
+    `
     sqlParameters.push(filters.relatedContractId, filters.relatedContractId)
   }
 
   if ((filters.notRelatedContractId ?? '') !== '') {
-    sqlWhereClause += ` and c.contractId not in (select contractIdA from RelatedContracts where contractIdB = ?)
-      and c.contractId not in (select contractIdB from RelatedContracts where contractIdA = ?)`
+    sqlWhereClause += /* sql */ `
+      AND c.contractId NOT IN (
+        SELECT
+          contractIdA
+        FROM
+          RelatedContracts
+        WHERE
+          contractIdB = ?
+      )
+      AND c.contractId NOT IN (
+        SELECT
+          contractIdB
+        FROM
+          RelatedContracts
+        WHERE
+          contractIdA = ?
+      )
+    `
 
     sqlParameters.push(
       filters.notRelatedContractId,

@@ -695,9 +695,15 @@ export function initializeDatabase(
   sunriseDB.pragma('journal_mode = WAL')
 
   const row = sunriseDB
-    .prepare(
-      "select name from sqlite_master where type = 'table' and name = 'IntermentDepths'"
-    )
+    .prepare(/* sql */ `
+      SELECT
+        name
+      FROM
+        sqlite_master
+      WHERE
+        type = 'table'
+        AND name = 'IntermentDepths'
+    `)
     .get()
 
   if (row !== undefined) {

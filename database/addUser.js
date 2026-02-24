@@ -48,7 +48,14 @@ export default function addUser(options, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     // Check if an user with the same name already exists
     const recordDeleteTimeMillis = database
-        .prepare('select recordDelete_timeMillis from Users where userName = ?')
+        .prepare(/* sql */ `
+      SELECT
+        recordDelete_timeMillis
+      FROM
+        Users
+      WHERE
+        userName = ?
+    `)
         .pluck()
         .get(options.userName);
     let success = false;

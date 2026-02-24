@@ -35,35 +35,37 @@ export default async function getWorkOrderMilestones(filters, options, connected
     }
     // Query
     // eslint-disable-next-line no-secrets/no-secrets
-    const sql = `select m.workOrderMilestoneId,
-    m.workOrderMilestoneTypeId, t.workOrderMilestoneType,
-    m.workOrderMilestoneDate,
-    userFn_dateIntegerToString(m.workOrderMilestoneDate) as workOrderMilestoneDateString,
-    m.workOrderMilestoneTime,
-    userFn_timeIntegerToString(m.workOrderMilestoneTime) as workOrderMilestoneTimeString,
-    userFn_timeIntegerToPeriodString(ifnull(m.workOrderMilestoneTime, 0)) as workOrderMilestoneTimePeriodString,
-    m.workOrderMilestoneDescription,
-    m.workOrderMilestoneCompletionDate,
-    userFn_dateIntegerToString(m.workOrderMilestoneCompletionDate) as workOrderMilestoneCompletionDateString,
-    m.workOrderMilestoneCompletionTime,
-    userFn_timeIntegerToString(m.workOrderMilestoneCompletionTime) as workOrderMilestoneCompletionTimeString,
-    userFn_timeIntegerToPeriodString(ifnull(m.workOrderMilestoneCompletionTime, 0)) as workOrderMilestoneCompletionTimePeriodString,
-    ${(options.includeWorkOrders ?? false)
+    const sql = /* sql */ `
+    SELECT
+      m.workOrderMilestoneId,
+      m.workOrderMilestoneTypeId,
+      t.workOrderMilestoneType,
+      m.workOrderMilestoneDate,
+      userFn_dateIntegerToString (m.workOrderMilestoneDate) AS workOrderMilestoneDateString,
+      m.workOrderMilestoneTime,
+      userFn_timeIntegerToString (m.workOrderMilestoneTime) AS workOrderMilestoneTimeString,
+      userFn_timeIntegerToPeriodString (ifnull(m.workOrderMilestoneTime, 0)) AS workOrderMilestoneTimePeriodString,
+      m.workOrderMilestoneDescription,
+      m.workOrderMilestoneCompletionDate,
+      userFn_dateIntegerToString (m.workOrderMilestoneCompletionDate) AS workOrderMilestoneCompletionDateString,
+      m.workOrderMilestoneCompletionTime,
+      userFn_timeIntegerToString (m.workOrderMilestoneCompletionTime) AS workOrderMilestoneCompletionTimeString,
+      userFn_timeIntegerToPeriodString (ifnull(m.workOrderMilestoneCompletionTime, 0)) AS workOrderMilestoneCompletionTimePeriodString,
+      ${(options.includeWorkOrders ?? false)
         ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,
             w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
             w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
             w.recordUpdate_timeMillis as workOrderRecordUpdate_timeMillis,`
-        : ''}
-    m.recordCreate_userName, m.recordCreate_timeMillis,
-    m.recordUpdate_userName, m.recordUpdate_timeMillis
-
-    from WorkOrderMilestones m
-    left join WorkOrderMilestoneTypes t on m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId
-    left join WorkOrders w on m.workOrderId = w.workOrderId
-    left join WorkOrderTypes wt on w.workOrderTypeId = wt.workOrderTypeId
-
-    ${sqlWhereClause}
-    ${orderByClause}`;
+        : ''} m.recordCreate_userName,
+      m.recordCreate_timeMillis,
+      m.recordUpdate_userName,
+      m.recordUpdate_timeMillis
+    FROM
+      WorkOrderMilestones m
+      LEFT JOIN WorkOrderMilestoneTypes t ON m.workOrderMilestoneTypeId = t.workOrderMilestoneTypeId
+      LEFT JOIN WorkOrders w ON m.workOrderId = w.workOrderId
+      LEFT JOIN WorkOrderTypes wt ON w.workOrderTypeId = wt.workOrderTypeId ${sqlWhereClause} ${orderByClause}
+  `;
     const workOrderMilestones = database
         .prepare(sql)
         .all(sqlParameters);

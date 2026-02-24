@@ -99,7 +99,14 @@ export default function addUser(
   // Check if an user with the same name already exists
 
   const recordDeleteTimeMillis = database
-    .prepare('select recordDelete_timeMillis from Users where userName = ?')
+    .prepare(/* sql */ `
+      SELECT
+        recordDelete_timeMillis
+      FROM
+        Users
+      WHERE
+        userName = ?
+    `)
     .pluck()
     .get(options.userName) as number | null | undefined
 
