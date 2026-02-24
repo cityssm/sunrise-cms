@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable no-console */
 import addCemetery from '../../database/addCemetery.js';
 import { getCemeteryByKey } from '../../database/getCemetery.js';

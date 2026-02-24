@@ -18,7 +18,10 @@ import { updateBurialSiteStatus } from '../../database/updateBurialSite.js'
 import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js'
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
 
-import { getBurialSiteTypeId } from './data.burialSiteTypes.js'
+import {
+  getBurialSiteTypeId,
+  inGroundBurialSiteTypeId
+} from './data.burialSiteTypes.js'
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js'
 import { getCommittalTypeIdByKey } from './data.committalTypes.js'
 import { getDeathAgePeriod } from './data.deathAgePeriods.js'
@@ -219,10 +222,15 @@ export async function importFromMasterCSV(): Promise<void> {
         // Service Types
 
         if (burialSiteId !== undefined) {
+          const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY)
+
           addContractServiceType(
             {
               contractId: preneedContractId,
-              serviceTypeId: importIds.intermentServiceTypeId
+              serviceTypeId:
+                burialSiteTypeId === inGroundBurialSiteTypeId
+                  ? importIds.intermentServiceTypeId
+                  : importIds.entombmentServiceTypeId
             },
             user,
             database
@@ -454,10 +462,15 @@ export async function importFromMasterCSV(): Promise<void> {
         // Service Types
 
         if (burialSiteId !== undefined) {
+          const burialSiteTypeId = getBurialSiteTypeId(masterRow.CM_CEMETERY)
+
           addContractServiceType(
             {
               contractId: deceasedContractId,
-              serviceTypeId: importIds.intermentServiceTypeId
+              serviceTypeId:
+                burialSiteTypeId === inGroundBurialSiteTypeId
+                  ? importIds.intermentServiceTypeId
+                  : importIds.entombmentServiceTypeId
             },
             user,
             database

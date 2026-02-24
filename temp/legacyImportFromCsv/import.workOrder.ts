@@ -28,7 +28,10 @@ import { buildBurialSiteName } from '../../helpers/burialSites.helpers.js'
 import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
 import type { BurialSite } from '../../types/record.types.js'
 
-import { getBurialSiteTypeId } from './data.burialSiteTypes.js'
+import {
+  getBurialSiteTypeId,
+  inGroundBurialSiteTypeId
+} from './data.burialSiteTypes.js'
 import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js'
 import { getCommittalTypeIdByKey } from './data.committalTypes.js'
 import { getDeathAgePeriod } from './data.deathAgePeriods.js'
@@ -323,10 +326,15 @@ export async function importFromWorkOrderCSV(): Promise<void> {
       // Service Type
 
       if (workOrderRow.WO_INTERMENT_YR !== '') {
+        const burialSiteTypeId = getBurialSiteTypeId(workOrderRow.WO_CEMETERY)
+
         addContractServiceType(
           {
             contractId,
-            serviceTypeId: importIds.intermentServiceTypeId
+            serviceTypeId:
+              burialSiteTypeId === inGroundBurialSiteTypeId
+                ? importIds.intermentServiceTypeId
+                : importIds.entombmentServiceTypeId
           },
           user,
           database
