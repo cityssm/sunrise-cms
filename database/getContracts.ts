@@ -301,7 +301,7 @@ function buildWhereClause(filters: GetContractsFilters): {
    */
 
   if ((filters.contractNumber ?? '') !== '') {
-    sqlWhereClause += " and c.contractNumber like '%' || ? || '%'"
+    sqlWhereClause += " AND c.contractNumber LIKE '%' || ? || '%'"
     sqlParameters.push(filters.contractNumber?.trim())
   }
 
@@ -310,7 +310,7 @@ function buildWhereClause(filters: GetContractsFilters): {
    */
 
   if ((filters.burialSiteId ?? '') !== '') {
-    sqlWhereClause += ' and c.burialSiteId = ?'
+    sqlWhereClause += ' AND c.burialSiteId = ?'
     sqlParameters.push(filters.burialSiteId)
   }
 
@@ -361,7 +361,7 @@ function buildWhereClause(filters: GetContractsFilters): {
   }
 
   if ((filters.contractTypeId ?? '') !== '') {
-    sqlWhereClause += ' and c.contractTypeId = ?'
+    sqlWhereClause += ' AND c.contractTypeId = ?'
     sqlParameters.push(filters.contractTypeId)
   }
 
@@ -373,7 +373,7 @@ function buildWhereClause(filters: GetContractsFilters): {
   sqlParameters.push(...contractTimeFilters.sqlParameters)
 
   if ((filters.contractStartDateString ?? '') !== '') {
-    sqlWhereClause += ' and c.contractStartDate = ?'
+    sqlWhereClause += ' AND c.contractStartDate = ?'
     sqlParameters.push(
       dateStringToInteger(filters.contractStartDateString as DateString)
     )
@@ -396,12 +396,12 @@ function buildWhereClause(filters: GetContractsFilters): {
   }
 
   if ((filters.cemeteryId ?? '') !== '') {
-    sqlWhereClause += ' and (cem.cemeteryId = ? or cem.parentCemeteryId = ?)'
+    sqlWhereClause += ' AND (cem.cemeteryId = ? OR cem.parentCemeteryId = ?)'
     sqlParameters.push(filters.cemeteryId, filters.cemeteryId)
   }
 
   if ((filters.burialSiteTypeId ?? '') !== '') {
-    sqlWhereClause += ' and b.burialSiteTypeId = ?'
+    sqlWhereClause += ' AND b.burialSiteTypeId = ?'
     sqlParameters.push(filters.burialSiteTypeId)
   }
 
@@ -422,29 +422,47 @@ function buildWhereClause(filters: GetContractsFilters): {
   }
 
   if ((filters.funeralHomeId ?? '') !== '') {
-    sqlWhereClause += ' and c.funeralHomeId = ?'
+    sqlWhereClause += ' AND c.funeralHomeId = ?'
     sqlParameters.push(filters.funeralHomeId)
   }
 
   if ((filters.funeralTime ?? '') === 'upcoming') {
-    sqlWhereClause += ' and c.funeralDate >= ?'
+    sqlWhereClause += ' AND c.funeralDate >= ?'
     sqlParameters.push(dateToInteger(new Date()))
   }
 
   if ((filters.workOrderId ?? '') !== '') {
-    sqlWhereClause +=
-      ' and c.contractId in (select contractId from WorkOrderContracts where recordDelete_timeMillis is null and workOrderId = ?)'
+    sqlWhereClause += /* sql */ `
+      AND c.contractId IN (
+        SELECT
+          contractId
+        FROM
+          WorkOrderContracts
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND workOrderId = ?
+      )
+    `
     sqlParameters.push(filters.workOrderId)
   }
 
   if ((filters.notWorkOrderId ?? '') !== '') {
-    sqlWhereClause +=
-      ' and c.contractId not in (select contractId from WorkOrderContracts where recordDelete_timeMillis is null and workOrderId = ?)'
+    sqlWhereClause += /* sql */ `
+      AND c.contractId NOT IN (
+        SELECT
+          contractId
+        FROM
+          WorkOrderContracts
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND workOrderId = ?
+      )
+    `
     sqlParameters.push(filters.notWorkOrderId)
   }
 
   if ((filters.notContractId ?? '') !== '') {
-    sqlWhereClause += ' and c.contractId <> ?'
+    sqlWhereClause += ' AND c.contractId <> ?'
     sqlParameters.push(filters.notContractId)
   }
 

@@ -3,22 +3,38 @@
   <div class="modal-card">
     <div class="modal-card-head">
       <p class="modal-card-title">Edit Service Type Details</p>
-      <button class="delete is-close-modal-button" type="button" aria-label="Close"></button>
+      <button
+        class="delete is-close-modal-button"
+        type="button"
+        aria-label="Close"
+      ></button>
     </div>
     <section class="modal-card-body">
       <form id="form--contractServiceTypeEdit">
-        <input id="contractServiceTypeEdit--contractId" name="contractId" type="hidden" />
-        <input id="contractServiceTypeEdit--serviceTypeId" name="serviceTypeId" type="hidden" />
+        <input
+          id="contractServiceTypeEdit--contractId"
+          name="contractId"
+          type="hidden"
+        />
+        <input
+          id="contractServiceTypeEdit--serviceTypeId"
+          name="serviceTypeId"
+          type="hidden"
+        />
         <div class="field">
-          <label class="label">
-            Service Type
-          </label>
+          <label class="label"> Service Type </label>
           <div class="control">
-            <p class="has-text-weight-bold" id="contractServiceTypeEdit--serviceTypeName"></p>
+            <p
+              class="has-text-weight-bold"
+              id="contractServiceTypeEdit--serviceTypeName"
+            ></p>
           </div>
         </div>
         <div class="field">
-          <label class="label" for="contractServiceTypeEdit--contractServiceDetails">
+          <label
+            class="label"
+            for="contractServiceTypeEdit--contractServiceDetails"
+          >
             Details
             <span class="has-text-weight-normal is-size-7">(Optional)</span>
           </label>
@@ -31,17 +47,25 @@
               rows="3"
             ></textarea>
           </div>
-          <p class="help">Additional details about this service type for this contract</p>
+          <p class="help">
+            Additional details about this service type for this contract
+          </p>
         </div>
       </form>
     </section>
     <footer class="modal-card-foot is-justify-content-right">
       <div class="buttons">
-        <button class="button is-success" type="submit" form="form--contractServiceTypeEdit">
+        <button
+          class="button is-success"
+          type="submit"
+          form="form--contractServiceTypeEdit"
+        >
           <span class="icon"><i class="fa-solid fa-save"></i></span>
           <span>Save Changes</span>
         </button>
-        <button class="button is-close-modal-button" type="button">Cancel</button>
+        <button class="button is-close-modal-button" type="button">
+          Cancel
+        </button>
       </div>
     </footer>
   </div>

@@ -131,14 +131,14 @@ async function addInclusions(workOrder, options, database) {
         workOrder.workOrderContracts = contracts.contracts;
     }
     if (options.includeMilestones ?? false) {
-        workOrder.workOrderMilestones =
-            workOrder.workOrderMilestoneCount === 0
-                ? []
-                : await getWorkOrderMilestones({
-                    workOrderId: workOrder.workOrderId
-                }, {
-                    orderBy: 'date'
-                }, database);
+        const milestones = workOrder.workOrderMilestoneCount === 0
+            ? []
+            : await getWorkOrderMilestones({
+                workOrderId: workOrder.workOrderId
+            }, {
+                orderBy: 'date'
+            }, database);
+        workOrder.workOrderMilestones = milestones;
     }
     return workOrder;
 }

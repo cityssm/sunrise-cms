@@ -12,6 +12,7 @@ export function moveContractTypeFieldDown(
 
   const currentField = getCurrentField(contractTypeFieldId, database)
 
+  // eslint-disable-next-line sonarjs/sql-queries
   database
     .prepare(/* sql */ `
       UPDATE ContractTypeFields
@@ -54,6 +55,7 @@ export function moveContractTypeFieldDownToBottom(
   }
 
   const maxOrderNumber: number = (
+    // eslint-disable-next-line sonarjs/sql-queries
     database
       .prepare(/* sql */ `
         SELECT
@@ -79,6 +81,7 @@ export function moveContractTypeFieldDownToBottom(
 
     contractTypeParameters.push(currentField.orderNumber)
 
+    // eslint-disable-next-line sonarjs/sql-queries
     database
       .prepare(/* sql */ `
         UPDATE ContractTypeFields
@@ -87,8 +90,8 @@ export function moveContractTypeFieldDownToBottom(
         WHERE
           recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
           undefined
-            ? ' and contractTypeId is null'
-            : ' and contractTypeId = ?'}
+            ? ' AND contractTypeId is null'
+            : ' AND contractTypeId = ?'}
           AND orderNumber > ?
       `)
       .run(contractTypeParameters)
@@ -113,6 +116,7 @@ export function moveContractTypeFieldUp(
     return true
   }
 
+  // eslint-disable-next-line sonarjs/sql-queries
   database
     .prepare(/* sql */ `
       UPDATE ContractTypeFields
@@ -121,8 +125,8 @@ export function moveContractTypeFieldUp(
       WHERE
         recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
         undefined
-          ? ' and contractTypeId is null'
-          : ` and contractTypeId = '${currentField.contractTypeId.toString()}'`}
+          ? ' AND contractTypeId is null'
+          : ` AND contractTypeId = '${currentField.contractTypeId.toString()}'`}
         AND orderNumber = ? - 1
     `)
     .run(currentField.orderNumber)
@@ -164,6 +168,7 @@ export function moveContractTypeFieldUpToTop(
 
     contractTypeParameters.push(currentField.orderNumber)
 
+    // eslint-disable-next-line sonarjs/sql-queries
     database
       .prepare(/* sql */ `
         UPDATE ContractTypeFields
@@ -171,8 +176,8 @@ export function moveContractTypeFieldUpToTop(
           orderNumber = orderNumber + 1
         WHERE
           recordDelete_timeMillis IS NULL ${currentField.contractTypeId
-            ? ' and contractTypeId = ?'
-            : ' and contractTypeId is null'}
+            ? ' AND contractTypeId = ?'
+            : ' AND contractTypeId is null'}
           AND orderNumber < ?
       `)
       .run(contractTypeParameters)

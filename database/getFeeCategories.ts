@@ -28,7 +28,7 @@ export default function getFeeCategories(
     !(filters.burialSiteTypeId || filters.contractTypeId) &&
     options.includeFees
 
-  let sqlWhereClause = ' where recordDelete_timeMillis is null'
+  let sqlWhereClause = ' WHERE recordDelete_timeMillis IS NULL'
 
   const sqlParameters: unknown[] = []
 
@@ -71,7 +71,7 @@ export default function getFeeCategories(
   }
 
   if ((filters.feeCategoryId ?? '') !== '') {
-    sqlWhereClause += ' and feeCategoryId = ?'
+    sqlWhereClause += ' AND feeCategoryId = ?'
     sqlParameters.push(filters.feeCategoryId)
   }
 

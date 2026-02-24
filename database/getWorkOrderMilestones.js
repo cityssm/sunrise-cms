@@ -17,17 +17,26 @@ export default async function getWorkOrderMilestones(filters, options, connected
     let orderByClause = '';
     switch (options.orderBy) {
         case 'completion': {
-            orderByClause = ` order by
-        m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime,
-        m.workOrderMilestoneDate,
-        ifnull(m.workOrderMilestoneTime, 9999),
-        t.orderNumber, m.workOrderMilestoneId`;
+            orderByClause = /* sql */ `
+        ORDER BY
+          m.workOrderMilestoneCompletionDate,
+          m.workOrderMilestoneCompletionTime,
+          m.workOrderMilestoneDate,
+          ifnull(m.workOrderMilestoneTime, 9999),
+          t.orderNumber,
+          m.workOrderMilestoneId
+      `;
             break;
         }
         case 'date': {
-            orderByClause = ` order by m.workOrderMilestoneDate,
-        ifnull(m.workOrderMilestoneTime, 9999),
-        t.orderNumber, m.workOrderId, m.workOrderMilestoneId`;
+            orderByClause = /* sql */ `
+        ORDER BY
+          m.workOrderMilestoneDate,
+          ifnull(m.workOrderMilestoneTime, 9999),
+          t.orderNumber,
+          m.workOrderId,
+          m.workOrderMilestoneId
+      `;
             break;
         }
         // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check

@@ -7,7 +7,7 @@ export default function getFeeCategories(filters, options, connectedDatabase) {
     const updateOrderNumbers = !database.readonly &&
         !(filters.burialSiteTypeId || filters.contractTypeId) &&
         options.includeFees;
-    let sqlWhereClause = ' where recordDelete_timeMillis is null';
+    let sqlWhereClause = ' WHERE recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
     if ((filters.contractTypeId ?? '') !== '') {
         sqlWhereClause += /* sql */ `
@@ -44,7 +44,7 @@ export default function getFeeCategories(filters, options, connectedDatabase) {
         sqlParameters.push(filters.burialSiteTypeId);
     }
     if ((filters.feeCategoryId ?? '') !== '') {
-        sqlWhereClause += ' and feeCategoryId = ?';
+        sqlWhereClause += ' AND feeCategoryId = ?';
         sqlParameters.push(filters.feeCategoryId);
     }
     const feeCategories = database

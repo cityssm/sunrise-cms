@@ -212,7 +212,7 @@ async function addInclusions(
   }
 
   if (options.includeMilestones ?? false) {
-    workOrder.workOrderMilestones =
+    const milestones =
       workOrder.workOrderMilestoneCount === 0
         ? []
         : await getWorkOrderMilestones(
@@ -224,6 +224,8 @@ async function addInclusions(
             },
             database
           )
+          
+    workOrder.workOrderMilestones = milestones
   }
 
   return workOrder

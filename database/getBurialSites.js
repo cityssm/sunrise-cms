@@ -142,11 +142,11 @@ function buildWhereClause(filters, includeDeleted) {
     }
     if ((filters.hasCoordinates ?? '') === 'yes') {
         sqlWhereClause +=
-            ' AND (b.burialSiteLatitude is not null and b.burialSiteLongitude is not null)';
+            ' AND (b.burialSiteLatitude is not null AND b.burialSiteLongitude is not null)';
     }
     if ((filters.hasCoordinates ?? '') === 'no') {
         sqlWhereClause +=
-            ' AND (b.burialSiteLatitude is null or b.burialSiteLongitude is null)';
+            ' AND (b.burialSiteLatitude is null OR b.burialSiteLongitude is null)';
     }
     return {
         sqlParameters,

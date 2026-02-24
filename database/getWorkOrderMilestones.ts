@@ -65,18 +65,27 @@ export default async function getWorkOrderMilestones(
 
   switch (options.orderBy) {
     case 'completion': {
-      orderByClause = ` order by
-        m.workOrderMilestoneCompletionDate, m.workOrderMilestoneCompletionTime,
-        m.workOrderMilestoneDate,
-        ifnull(m.workOrderMilestoneTime, 9999),
-        t.orderNumber, m.workOrderMilestoneId`
+      orderByClause = /* sql */ `
+        ORDER BY
+          m.workOrderMilestoneCompletionDate,
+          m.workOrderMilestoneCompletionTime,
+          m.workOrderMilestoneDate,
+          ifnull(m.workOrderMilestoneTime, 9999),
+          t.orderNumber,
+          m.workOrderMilestoneId
+      `
       break
     }
 
     case 'date': {
-      orderByClause = ` order by m.workOrderMilestoneDate,
-        ifnull(m.workOrderMilestoneTime, 9999),
-        t.orderNumber, m.workOrderId, m.workOrderMilestoneId`
+      orderByClause = /* sql */ `
+        ORDER BY
+          m.workOrderMilestoneDate,
+          ifnull(m.workOrderMilestoneTime, 9999),
+          t.orderNumber,
+          m.workOrderId,
+          m.workOrderMilestoneId
+      `
       break
     }
 
@@ -103,11 +112,11 @@ export default async function getWorkOrderMilestones(
       userFn_timeIntegerToString (m.workOrderMilestoneCompletionTime) AS workOrderMilestoneCompletionTimeString,
       userFn_timeIntegerToPeriodString (ifnull(m.workOrderMilestoneCompletionTime, 0)) AS workOrderMilestoneCompletionTimePeriodString,
       ${(options.includeWorkOrders ?? false)
-      ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,
+        ? ` m.workOrderId, w.workOrderNumber, wt.workOrderType, w.workOrderDescription,
             w.workOrderOpenDate, userFn_dateIntegerToString(w.workOrderOpenDate) as workOrderOpenDateString,
             w.workOrderCloseDate, userFn_dateIntegerToString(w.workOrderCloseDate) as workOrderCloseDateString,
             w.recordUpdate_timeMillis as workOrderRecordUpdate_timeMillis,`
-      : ''} m.recordCreate_userName,
+        : ''} m.recordCreate_userName,
       m.recordCreate_timeMillis,
       m.recordUpdate_userName,
       m.recordUpdate_timeMillis
