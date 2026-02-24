@@ -20,6 +20,7 @@ function purgeConfigTables() {
         'Cemeteries',
         'BurialSiteStatuses',
         'CommittalTypes',
+        'ServiceTypes',
         'ContractTypeFields',
         'ContractTypePrints',
         'ContractTypes',

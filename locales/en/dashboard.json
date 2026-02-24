@@ -1,7 +1,9 @@
 {
-  "helpDescription": "Tips and tricks to get the most out of Sunrise CMS.",
+  "helpDescription": "Tips and tricks to get the most out of {{applicationName}}.",
   "helpDocumentation": "Help Documentation",
+  "incompleteLanguages": "The following languages are incomplete and may have missing translations.",
   "overview": "Overview",
+  "preferredLanguages": "Preferred Languages",
   "quickLinks": "Quick Links",
   "recentActivity": "Recent Activity",
   "reportLibrary": "Report Library",
@@ -21,7 +23,6 @@
   "userSettingsConsignoCloudUserName": "ConsignO Cloud User Name",
   "userSettingsConsignoCloudUserNameHelp": "This is the email address you use to log in to ConsignO Cloud.",
   "userSettingsLanguage": "Language",
-  "userSettingsLanguageDescription": "Select your preferred language.",
   "userSettingsNtfyDefaultServer": "Default Server",
   "userSettingsNtfyDescription": "The {{ntfyLink}} integration allows you to receive notifications about important events in the application.",
   "userSettingsNtfyEvent": "Event",

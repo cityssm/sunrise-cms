@@ -13,7 +13,8 @@
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        Contract #<%= contract.contractId %>: <%= contract.burialSiteName ?? "(No Burial Site)" %>
+        Contract #<%= contract.contractNumber %>:
+        <%= contract.burialSiteName ?? "(No Burial Site)" %>
       </a>
     </li>
   </ul>
@@ -422,95 +423,95 @@ const displayServicesPanel =
       </div>
       <div class="panel-block is-block">
         <% if (contract.contractInterments.length === 0) { %>
-          <div class="message is-warning">
-            <p class="message-body">
-              There are no recipients associated with this record.
-            </p>
-          </div>
+        <div class="message is-warning">
+          <p class="message-body">
+            There are no recipients associated with this record.
+          </p>
+        </div>
         <% } else { %>
-          <table class="table is-fullwidth is-striped is-hoverable is-fixed">
-            <thead>
-              <tr>
-                <th>Recipient</th>
-                <th>Details</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (const contractInterment of contract.contractInterments) { %>
-                <tr>
-                  <td>
-                    <%= contractInterment.deceasedName %><br />
-                    <span class="is-size-7">
-                      <% if (contractInterment.deceasedAddress1) { %>
-                          <%= contractInterment.deceasedAddress1 %><br />
-                      <% } %>
-                      <% if (contractInterment.deceasedAddress2) { %>
-                          <%= contractInterment.deceasedAddress2 %><br />
-                      <% } %>
-                      <% if (contractInterment.deceasedCity) { %>
-                          <%= contractInterment.deceasedCity %>, 
-                      <% } %>
-                      <%= contractInterment.deceasedProvince %><br />
-                      <%= contractInterment.deceasedPostalCode %>
-                    </span>
-                  </td>
-                  <td>
-                    <div class="columns mb-0">
-                      <div class="column">
-                        <strong>Birth:</strong>
-                      </div>
-                      <div class="column">
-                        <% if (contractInterment.birthDateString === '') { %>
-                          <span class="has-text-grey">(No Birth Date)</span>
-                        <% } else { %>
-                          <%= contractInterment.birthDateString %>
-                        <% } %><br />
-                        <%= contractInterment.birthPlace %>
-                      </div>
-                    </div>
-                    <div class="columns mb-0">
-                      <div class="column">
-                        <strong>Death:</strong>
-                      </div>
-                      <div class="column">
-                        <% if (contractInterment.deathDateString === '') { %>
-                          <span class="has-text-grey">(No Death Date)</span>
-                        <% } else { %>
-                          <%= contractInterment.deathDateString %>
-                        <% } %><br />
-                        <%= contractInterment.deathPlace %>
-                      </div>
-                    </div>
-                    <div class="columns mb-0">
-                      <div class="column">
-                        <strong>Age:</strong>
-                      </div>
-                      <div class="column">
-                        <%= contractInterment.deathAge %>
-                        <%= contractInterment.deathAgePeriod %>
-                      </div>
-                    </div>
-                    <div class="columns mb-0">
-                      <div class="column">
-                        <strong>Container:</strong>
-                      </div>
-                      <div class="column">
-                        <%= contractInterment.intermentContainerType ?? '(No Container Type)' %>
-                      </div>
-                    </div>
-                    <div class="columns">
-                      <div class="column">
-                        <strong>Depth:</strong>
-                      </div>
-                      <div class="column">
-                        <%= contractInterment.intermentDepth ?? '(No Depth)' %>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              <% } %>
-            </tbody>
-          </table>
+        <table class="table is-fullwidth is-striped is-hoverable is-fixed">
+          <thead>
+            <tr>
+              <th>Recipient</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (const contractInterment of contract.contractInterments) { %>
+            <tr>
+              <td>
+                <%= contractInterment.deceasedName %><br />
+                <span class="is-size-7">
+                  <% if (contractInterment.deceasedAddress1) { %>
+                      <%= contractInterment.deceasedAddress1 %><br />
+                  <% } %>
+                  <% if (contractInterment.deceasedAddress2) { %>
+                      <%= contractInterment.deceasedAddress2 %><br />
+                  <% } %>
+                  <% if (contractInterment.deceasedCity) { %>
+                      <%= contractInterment.deceasedCity %>, 
+                  <% } %>
+                  <%= contractInterment.deceasedProvince %><br />
+                  <%= contractInterment.deceasedPostalCode %>
+                </span>
+              </td>
+              <td>
+                <div class="columns mb-0">
+                  <div class="column">
+                    <strong>Birth:</strong>
+                  </div>
+                  <div class="column">
+                    <% if (contractInterment.birthDateString === '') { %>
+                      <span class="has-text-grey">(No Birth Date)</span>
+                    <% } else { %>
+                      <%= contractInterment.birthDateString %>
+                    <% } %><br />
+                    <%= contractInterment.birthPlace %>
+                  </div>
+                </div>
+                <div class="columns mb-0">
+                  <div class="column">
+                    <strong>Death:</strong>
+                  </div>
+                  <div class="column">
+                    <% if (contractInterment.deathDateString === '') { %>
+                      <span class="has-text-grey">(No Death Date)</span>
+                    <% } else { %>
+                      <%= contractInterment.deathDateString %>
+                    <% } %><br />
+                    <%= contractInterment.deathPlace %>
+                  </div>
+                </div>
+                <div class="columns mb-0">
+                  <div class="column">
+                    <strong>Age:</strong>
+                  </div>
+                  <div class="column">
+                    <%= contractInterment.deathAge %>
+                    <%= contractInterment.deathAgePeriod %>
+                  </div>
+                </div>
+                <div class="columns mb-0">
+                  <div class="column">
+                    <strong>Container:</strong>
+                  </div>
+                  <div class="column">
+                    <%= contractInterment.intermentContainerType ?? '(No Container Type)' %>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column">
+                    <strong>Depth:</strong>
+                  </div>
+                  <div class="column">
+                    <%= contractInterment.intermentDepth ?? '(No Depth)' %>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
         <% } %>
       </div>
     </div>
@@ -542,57 +543,61 @@ const displayServicesPanel =
           </p>
         </div>
         <% } else { %>
-          <%
-            let feeAmountTotal = 0;
-            let taxAmountTotal = 0;
-          %>
-          <table class="table is-fullwidth is-striped is-hoverable">
-            <thead>
-              <tr>
-                <th scope="col">Fee</th>
-                <th class="has-text-right" scope="col"><span class="is-sr-only">Unit Cost</span></th>
-                <th class="has-width-1" scope="col"><span class="is-sr-only">&times;</span></th>
-                <th class="has-width-1 has-text-right" scope="col"><span class="is-sr-only">Quantity</span></th>
-                <th class="has-width-1" scope="col"><span class="is-sr-only">=</span></th>
-                <th class="has-width-1 has-text-right" scope="col">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (const contractFee of contract.contractFees) { %>
-                <%
-                  feeAmountTotal += (contractFee.feeAmount * contractFee.quantity);
-                  taxAmountTotal += (contractFee.taxAmount * contractFee.quantity);
-                %>
-                <tr>
-                  <td colspan="<%= (contractFee.quantity === 1 ? "5" : "1") %>">
-                    <%= contractFee.feeName %><br />
-                    <span class="tag"><%= contractFee.feeCategory %></span>
-                  </td>
-                  <% if (contractFee.quantity !== 1) { %>
-                    <td class="has-text-right">$<%= contractFee.feeAmount.toFixed(2) %></td>
-                    <td>&times;</td>
-                    <td class="has-text-right"><%= contractFee.quantity %></td>
-                    <td>=</td>
-                  <% } %>
-                  <td class="has-text-right">$<%= (contractFee.feeAmount * contractFee.quantity).toFixed(2) %></td>
-                </tr>
+        <%
+        let feeAmountTotal = 0;
+        let taxAmountTotal = 0;
+        %>
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th scope="col">Fee</th>
+              <th class="has-text-right" scope="col"><span class="is-sr-only">Unit Cost</span></th>
+              <th class="has-width-1" scope="col"><span class="is-sr-only">&times;</span></th>
+              <th class="has-width-1 has-text-right" scope="col"><span class="is-sr-only">Quantity</span></th>
+              <th class="has-width-1" scope="col"><span class="is-sr-only">=</span></th>
+              <th class="has-width-1 has-text-right" scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (const contractFee of contract.contractFees) { %>
+            <%
+            feeAmountTotal += (contractFee.feeAmount * contractFee.quantity);
+            taxAmountTotal += (contractFee.taxAmount * contractFee.quantity);
+            %>
+            <tr>
+              <td
+                colspan="<%= (contractFee.quantity === 1 ? '5' : '1') %>"
+              >
+                <%= contractFee.feeName %><br />
+                <span class="tag"><%= contractFee.feeCategory %></span>
+              </td>
+              <% if (contractFee.quantity !== 1) { %>
+                <td class="has-text-right">$<%= contractFee.feeAmount.toFixed(2) %></td>
+                <td>&times;</td>
+                <td class="has-text-right"><%= contractFee.quantity %></td>
+                <td>=</td>
               <% } %>
-            </tbody>
-            <tfoot>
-              <tr>
-                <th colspan="5" scope="row">Subtotal</th>
-                <td class="has-text-right has-text-weight-bold">$<%= feeAmountTotal.toFixed(2) %></td>
-              </tr>
-              <tr>
-                <th colspan="5" scope="row">Tax</th>
-                <td class="has-text-right">$<%= taxAmountTotal.toFixed(2) %></td>
-              </tr>
-              <tr>
-                <th colspan="5" scope="row">Grand Total</th>
-                <td class="has-text-right has-text-weight-bold">$<%= (feeAmountTotal + taxAmountTotal).toFixed(2) %></td>
-              </tr>
-            </tfoot>
-          </table>
+              <td class="has-text-right">
+                $<%= (contractFee.feeAmount * contractFee.quantity).toFixed(2) %>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="5" scope="row">Subtotal</th>
+              <td class="has-text-right has-text-weight-bold">$<%= feeAmountTotal.toFixed(2) %></td>
+            </tr>
+            <tr>
+              <th colspan="5" scope="row">Tax</th>
+              <td class="has-text-right">$<%= taxAmountTotal.toFixed(2) %></td>
+            </tr>
+            <tr>
+              <th colspan="5" scope="row">Grand Total</th>
+              <td class="has-text-right has-text-weight-bold">$<%= (feeAmountTotal + taxAmountTotal).toFixed(2) %></td>
+            </tr>
+          </tfoot>
+        </table>
         <% } %>
       </div>
     </div>
@@ -614,71 +619,71 @@ const displayServicesPanel =
         </div>
       </div>
       <div class="panel-block is-block">
-          <% if (contract.contractTransactions.length === 0) { %>
-            <div class="message is-info">
-              <p class="message-body">
-                There are no transactions associated with this contract.
-              </p>
-            </div>
-          <% } else { %>
-            <table class="table is-fullwidth is-striped is-hoverable">
-              <thead>
-                <tr>
-                  <th scope="col">Date</th>
-                  <th class="has-width-1" scope="col"><span class="is-sr-only">Invoiced Status</span></th>
-                  <th scope="col"><%= settingFunctions.getSettingValue("aliases.externalReceiptNumber") %></th>
-                  <th class="has-text-right" scope="col">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% let transactionTotal = 0; %>
-                <% for (const contractTransaction of contract.contractTransactions) { %>
-                  <% transactionTotal += contractTransaction.transactionAmount; %>
-                  <tr>
-                    <td><%= contractTransaction.transactionDateString %></td>
-                    <td>
-                      <% if (contractTransaction.isInvoiced) { %>
-                        <span class="tag is-info">Invoiced</span>
+        <% if (contract.contractTransactions.length === 0) { %>
+        <div class="message is-info">
+          <p class="message-body">
+            There are no transactions associated with this contract.
+          </p>
+        </div>
+        <% } else { %>
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th class="has-width-1" scope="col"><span class="is-sr-only">Invoiced Status</span></th>
+              <th scope="col"><%= settingFunctions.getSettingValue("aliases.externalReceiptNumber") %></th>
+              <th class="has-text-right" scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% let transactionTotal = 0; %>
+            <% for (const contractTransaction of contract.contractTransactions) { %>
+              <% transactionTotal += contractTransaction.transactionAmount; %>
+              <tr>
+                <td><%= contractTransaction.transactionDateString %></td>
+                <td>
+                  <% if (contractTransaction.isInvoiced) { %>
+                    <span class="tag is-info">Invoiced</span>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (contractTransaction.externalReceiptNumber !== '') { %>
+                    <%= contractTransaction.externalReceiptNumber %>
+                    <% if (configFunctions.getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) { %>
+                      <% if (contractTransaction.dynamicsGPDocument === undefined) { %>
+                        <span title="No Matching Document Found">
+                          <i class="fa-solid fa-times-circle has-text-danger"></i>
+                        </span>
+                      <% } else if (contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) === contractTransaction.transactionAmount.toFixed(2)) { %>
+                        <span title="Matching Document Found">
+                          <i class="fa-solid fa-check-circle has-text-success"></i>
+                        </span>
+                      <% } else { %>
+                        <span title="Matching Document: $<%= contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) %>">
+                          <i class="fa-solid fa-exclamation-triangle has-text-warning"></i>
+                        </span>
                       <% } %>
-                    </td>
-                    <td>
-                      <% if (contractTransaction.externalReceiptNumber !== '') { %>
-                        <%= contractTransaction.externalReceiptNumber %>
-                        <% if (configFunctions.getConfigProperty('integrations.dynamicsGP.integrationIsEnabled')) { %>
-                          <% if (contractTransaction.dynamicsGPDocument === undefined) { %>
-                            <span title="No Matching Document Found">
-                              <i class="fa-solid fa-times-circle has-text-danger"></i>
-                            </span>
-                          <% } else if (contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) === contractTransaction.transactionAmount.toFixed(2)) { %>
-                            <span title="Matching Document Found">
-                              <i class="fa-solid fa-check-circle has-text-success"></i>
-                            </span>
-                          <% } else { %>
-                            <span title="Matching Document: $<%= contractTransaction.dynamicsGPDocument.documentTotal.toFixed(2) %>">
-                              <i class="fa-solid fa-exclamation-triangle has-text-warning"></i>
-                            </span>
-                          <% } %>
-                        <% } %>
-                        <br />
-                      <% } %>
-                      <small><%= contractTransaction.transactionNote %></small>
-                    </td>
-                    <td class="has-text-right">
-                      $<%= contractTransaction.transactionAmount.toFixed(2) %>
-                    </td>
-                  </tr>
-                <% } %>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th colspan="3" scope="row">Transaction Total</th>
-                  <td class="has-text-weight-bold has-text-right">
-                    $<%= transactionTotal.toFixed(2) %>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          <% } %>
+                    <% } %>
+                    <br />
+                  <% } %>
+                  <small><%= contractTransaction.transactionNote %></small>
+                </td>
+                <td class="has-text-right">
+                  $<%= contractTransaction.transactionAmount.toFixed(2) %>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="3" scope="row">Transaction Total</th>
+              <td class="has-text-weight-bold has-text-right">
+                $<%= transactionTotal.toFixed(2) %>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        <% } %>
       </div>
     </div>
   </div>
@@ -728,8 +733,8 @@ const displayServicesPanel =
                 </a>
               </td>
               <td>
-                  <%= workOrder.workOrderType %><br />
-                  <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
+                <%= workOrder.workOrderType %><br />
+                <span class="is-size-7"><%= workOrder.workOrderDescription %></span>
               </td>
               <td class="is-nowrap">
                 <span title="<%= workOrderOpenDateAlias %>">
@@ -800,7 +805,9 @@ const displayServicesPanel =
         <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
           <thead>
             <tr>
+              <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
               <th class="has-width-1">&nbsp;</th>
+              <% } %>
               <th><%= t('contracts:contractType') %></th>
               <th><%= t('contracts:contractDate') %></th>
               <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
@@ -812,15 +819,17 @@ const displayServicesPanel =
           <tbody>
             <% for (const relatedContract of contract.relatedContracts) { %>
             <tr>
+              <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
               <td class="has-text-centered">
                 <% if (relatedContract.contractIsFuture) { %>
-                  <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
+                <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
                 <% } else if (relatedContract.contractIsActive) { %>
-                  <i class="fa-solid fa-play" title="Current Contract"></i>
+                <i class="fa-solid fa-play" title="Current Contract"></i>
                 <% } else { %>
-                  <i class="fa-solid fa-stop" title="Previous Contract"></i>
+                <i class="fa-solid fa-stop" title="Previous Contract"></i>
                 <% } %>
               </td>
+              <% } %>
               <td>
                 <a class="has-text-weight-bold"
                   href="<%= urlPrefix %>/contracts/<%= relatedContract.contractId %>">
@@ -859,96 +868,98 @@ const displayServicesPanel =
 </div>
 
 <% if (contract.contractComments.length > 0) { %>
-  <div class="panel">
-    <div class="panel-heading">
-      <div class="level is-mobile">
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="has-text-weight-bold">Comments</h2>
-          </div>
+<div class="panel">
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="has-text-weight-bold">Comments</h2>
         </div>
-        <div class="level-right">
-          <div class="level-item">
-            <i class="fa-solid fa-comment-dots"></i>
-          </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <i class="fa-solid fa-comment-dots"></i>
         </div>
       </div>
     </div>
-    <div class="panel-block is-block">
-      <table class="table is-fullwidth is-striped is-hoverable">
-        <thead>
-          <tr>
-            <th>Author</th>
-            <th>Comment Date</th>
-            <th>Comment</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (const contractComment of contract.contractComments) { %>
-            <tr>
-              <td><%= contractComment.recordCreate_userName %></td>
-              <td>
-                <%= contractComment.commentDateString %>
-                <%= (contractComment.commentTime === 0 ? "" : contractComment.commentTimePeriodString) %>
-              </td>
-              <td><%= contractComment.comment %></td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
   </div>
+  <div class="panel-block is-block">
+    <table class="table is-fullwidth is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Author</th>
+          <th>Comment Date</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const contractComment of contract.contractComments) { %>
+        <tr>
+          <td><%= contractComment.recordCreate_userName %></td>
+          <td>
+            <%= contractComment.commentDateString %>
+            <%= (contractComment.commentTime === 0 ? "" : contractComment.commentTimePeriodString) %>
+          </td>
+          <td><%= contractComment.comment %></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
 <% } %>
 
 <% if (contract.contractAttachments.length > 0) { %>
-  <div class="panel">
-    <div class="panel-heading">
-      <div class="level is-mobile">
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="has-text-weight-bold">Attachments</h2>
-          </div>
+<div class="panel">
+  <div class="panel-heading">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <h2 class="has-text-weight-bold">Attachments</h2>
         </div>
-        <div class="level-right">
-          <div class="level-item">
-            <i class="fa-solid fa-paperclip"></i>
-          </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <i class="fa-solid fa-paperclip"></i>
         </div>
       </div>
     </div>
-    <div class="panel-block is-block">
-      <table class="table is-fullwidth is-striped is-hoverable">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Details</th>
-            <th>Uploaded</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (const attachment of contract.contractAttachments) { %>
-            <tr>
-              <td>
-                <a href="<%= urlPrefix %>/contracts/attachment/<%= attachment.contractAttachmentId %>"
-                  class="has-text-weight-bold"
-                  target="_blank"
-                  download>
-                  <%= attachment.attachmentTitle === '' ? attachment.fileName : attachment.attachmentTitle %>
-                </a><br />
-                <small class="has-text-grey"><%= attachment.fileName %></small>
-              </td>
-              <td><%= attachment.attachmentDetails %></td>
-              <td>
-                <% const attachmentDate = new Date(attachment.recordCreate_timeMillis); %>
-                <%= dateTimeFunctions.dateToString(attachmentDate) %>
-                <%= dateTimeFunctions.dateToTimeString(attachmentDate) %>
-              </td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
   </div>
+  <div class="panel-block is-block">
+    <table class="table is-fullwidth is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Details</th>
+          <th>Uploaded</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const attachment of contract.contractAttachments) { %>
+        <tr>
+          <td>
+            <a
+              class="has-text-weight-bold"
+              href="<%= urlPrefix %>/contracts/attachment/<%= attachment.contractAttachmentId %>"
+              download
+              target="_blank"
+            >
+              <%= attachment.attachmentTitle === '' ? attachment.fileName : attachment.attachmentTitle %>
+            </a><br />
+            <small class="has-text-grey"><%= attachment.fileName %></small>
+          </td>
+          <td><%= attachment.attachmentDetails %></td>
+          <td>
+            <% const attachmentDate = new Date(attachment.recordCreate_timeMillis); %>
+            <%= dateTimeFunctions.dateToString(attachmentDate) %>
+            <%= dateTimeFunctions.dateToTimeString(attachmentDate) %>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
 <% } %>
 
 <%- include('../_footerA'); -%>

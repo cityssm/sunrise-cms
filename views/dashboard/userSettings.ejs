@@ -21,13 +21,9 @@
     <div class="panel">
       <h2 class="panel-heading"><%= t('dashboard:userSettingsLanguage') %></h2>
       <div class="panel-block is-block">
-        <div class="message is-info is-small">
-          <div class="message-body">
-            <p><%= t('dashboard:userSettingsLanguageDescription') %></p>
-          </div>
-        </div>
         <div class="columns">
           <div class="column">
+            <p class="title is-6"><%= t('dashboard:preferredLanguages') %></p>
             <a class="button is-fullwidth<% if (lng === 'en') { %> is-primary<% } %>"
               href="?lng=en">
               <span class="icon is-small">
@@ -37,6 +33,11 @@
             </a>
           </div>
           <div class="column">
+            <div class="message is-warning">
+              <div class="message-body is-size-7">
+                <p><%= t('dashboard:incompleteLanguages') %></p>
+              </div>
+            </div>
             <a class="button is-fullwidth<% if (lng === 'de') { %> is-primary<% } %>"
               href="?lng=de">
               <span class="icon is-small">
@@ -54,7 +55,7 @@
       <h2 class="panel-heading"><%= t('dashboard:userSettingsApiKeyReset') %></h2>
       <div class="panel-block is-block">
         <div class="message is-warning">
-          <div class="message-body">
+          <div class="message-body is-size-7">
             <p><%= t('dashboard:userSettingsApiKeyDescription1') %></p>
             <p><%= t('dashboard:userSettingsApiKeyDescription2') %></p>
           </div>

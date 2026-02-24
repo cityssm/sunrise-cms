@@ -196,7 +196,7 @@
                 <h2 class="title is-4 mb-0 has-text-link">
                   <%= t('dashboard:helpDocumentation') %>
                 </h2>
-                <p><%= t('dashboard:helpDescription') %></p>
+                <p><%= t('dashboard:helpDescription', { applicationName: configFunctions.getConfigProperty("application.applicationName") }) %></p>
               </div>
             </div>
           </a>

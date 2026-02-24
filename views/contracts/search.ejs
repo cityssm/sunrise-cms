@@ -165,7 +165,11 @@
         <%
           const hideLocationFilters = (cemeteryId ?? '') === ''
         %>
-        <a class="panel-block has-background-light filter-block-toggle" data-cy="location-filters-toggle" href="#">
+        <a
+          class="panel-block has-background-light filter-block-toggle"
+          data-cy="location-filters-toggle"
+          href="#"
+        >
           <span class="panel-icon">
             <i class="fa-solid fa-caret-right <%= hideLocationFilters ? '' : 'fa-rotate-90' %>"></i>
           </span>
@@ -278,7 +282,9 @@
                 <select id="searchFilter--funeralHomeId" name="funeralHomeId">
                   <option value="">(All Funeral Homes)</option>
                   <% for (const funeralHome of funeralHomes) { %>
-                    <option value="<%= funeralHome.funeralHomeId %>"><%= funeralHome.funeralHomeName %></option>
+                    <option value="<%= funeralHome.funeralHomeId %>">
+                      <%= funeralHome.funeralHomeName %>
+                    </option>
                   <% } %>
                 </select>
               </div>
