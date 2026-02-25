@@ -26,7 +26,7 @@ import * as importIds from './data.ids.js';
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js';
 import { getIntermentDepthIdByKey } from './data.intermentDepths.js';
 import { formatContractNumber, formatDateString, formatTimeString, user } from './utilities.js';
-export async function importFromWorkOrderCSV() {
+export default async function importFromWorkOrderCSV() {
     console.time('importFromWorkOrderCSV');
     let workOrderRow;
     const rawData = fs.readFileSync('./temp/CMWKORDR.csv').toString();

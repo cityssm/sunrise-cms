@@ -579,7 +579,7 @@
                 <span>Create New Contract</span>
               </a>
             </div>
-            <% if (burialSite.contracts.length > 0) { %>
+            <% if (pastCount > 0) { %>
               <div class="level-item">
                 <button class="button is-info is-small"
                   id="burialSite--contractsToggle" type="button">
@@ -602,16 +602,21 @@
           <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
             <thead>
               <tr>
+                <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
                 <th class="has-width-1">&nbsp;</th>
+                <% } %>
                 <th>Contract Type</th>
                 <th>Contract Date</th>
+                <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
                 <th>End Date</th>
+                <% } %>
                 <th>Interments</th>
               </tr>
             </thead>
             <tbody id="burialSite--contractsTbody">
               <% for (const contract of burialSite.contracts) { %>
                 <tr data-is-active="<%= contract.contractIsActive %>" class="<%= contract.contractIsActive ? "" : "is-hidden" %>">
+                  <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
                   <td class="has-text-centered">
                     <% if (contract.contractIsFuture) { %>
                       <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
@@ -621,6 +626,7 @@
                       <i class="fa-solid fa-stop" title="Previous Contract"></i>
                     <% } %>
                   </td>
+                  <% } %>
                   <td>
                     <a class="has-text-weight-bold" href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
                       <%= contract.contractType %>
@@ -630,6 +636,7 @@
                     </span>
                   </td>
                     <td><%= contract.contractStartDateString %></td>
+                    <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
                     <td>
                       <% if (contract.contractEndDate) { %>
                         <%= contract.contractEndDateString %>
@@ -637,6 +644,7 @@
                         <span class="has-text-grey">(No End Date)</span>
                       <% } %>
                     </td>
+                    <% } %>
                     <td>
                       <% if (contract.contractInterments.length === 0) { %>
                         <span class="has-text-grey">(No Interments)</span>

@@ -308,6 +308,7 @@ for (const contract of burialSite.contracts) {
           </div>
         </div>
       </div>
+      <% if (pastCount > 0) { %>
       <div class="level-right">
         <div class="level-item">
           <button class="button is-info is-small"
@@ -317,6 +318,7 @@ for (const contract of burialSite.contracts) {
           </button>
         </div>
       </div>
+      <% } %>
     </div>
   </div>
   <div class="panel-block is-block">
@@ -330,7 +332,9 @@ for (const contract of burialSite.contracts) {
     <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
       <thead>
         <tr>
+          <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
           <th class="has-width-1">&nbsp;</th>
+          <% } %>
           <th><%= t('contracts:contractType') %></th>
           <th><%= t('contracts:contractDate') %></th>
           <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
@@ -345,6 +349,7 @@ for (const contract of burialSite.contracts) {
           class="<%= contract.contractIsActive ? '' : 'is-hidden' %>"
           data-is-active="<%= contract.contractIsActive %>"
         >
+          <% if (configFunctions.getConfigProperty("settings.contracts.contractEndDateIsAvailable")) { %>
           <td class="has-text-centered">
             <% if (contract.contractIsFuture) { %>
             <i class="fa-solid fa-fast-forward" title="Future Contract"></i>
@@ -354,6 +359,7 @@ for (const contract of burialSite.contracts) {
             <i class="fa-solid fa-stop" title="Previous Contract"></i>
             <% } %>
           </td>
+          <% } %>
           <td>
             <a class="has-text-weight-bold"
               href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">

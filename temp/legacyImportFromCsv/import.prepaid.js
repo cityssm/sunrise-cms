@@ -18,7 +18,7 @@ import { cremationCemeteryKeys, getCemeteryIdByKey } from './data.cemeteries.js'
 import { getFeeIdByFeeDescription } from './data.fees.js';
 import * as importIds from './data.ids.js';
 import { formatContractNumber, formatDateString, user } from './utilities.js';
-export async function importFromPrepaidCSV() {
+export default async function importFromPrepaidCSV() {
     console.time('importFromPrepaidCSV');
     let prepaidRow;
     const rawData = fs.readFileSync('./temp/CMPRPAID.csv').toString();

@@ -1,1 +1,1 @@
-export declare function importFromMasterCSV(): Promise<void>;
+export default function importFromMasterCSV(): Promise<void>;

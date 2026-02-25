@@ -32,7 +32,7 @@ import { getIntermentDepthIdByKey } from './data.intermentDepths.js'
 import type { MasterRecord } from './recordTypes.js'
 import { formatContractNumber, formatDateString, user } from './utilities.js'
 
-export async function importFromMasterCSV(): Promise<void> {
+export default async function importFromMasterCSV(): Promise<void> {
   console.time('importFromMasterCSV')
 
   let masterRow: MasterRecord | undefined

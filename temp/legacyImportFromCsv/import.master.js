@@ -20,7 +20,7 @@ import * as importIds from './data.ids.js';
 import { getIntermentContainerTypeIdByKey } from './data.intermentContainerTypes.js';
 import { getIntermentDepthIdByKey } from './data.intermentDepths.js';
 import { formatContractNumber, formatDateString, user } from './utilities.js';
-export async function importFromMasterCSV() {
+export default async function importFromMasterCSV() {
     console.time('importFromMasterCSV');
     let masterRow;
     const rawData = fs.readFileSync('./temp/CMMASTER.csv').toString();

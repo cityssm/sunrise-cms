@@ -11,9 +11,6 @@ import { sunriseDB as databasePath } from '../../helpers/database.helpers.js'
 
 import { initializeContractTypePrints } from './data.contractPrints.js'
 import { initializeFuneralHomes } from './data.funeralHomes.js'
-import { importFromMasterCSV } from './import.master.js'
-import { importFromPrepaidCSV } from './import.prepaid.js'
-import { importFromWorkOrderCSV } from './import.workOrder.js'
 import { user } from './utilities.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:legacyImportFromCsv`)
@@ -111,9 +108,14 @@ initializeContractTypePrints(user)
 initializeFuneralHomes(user)
 
 // Do Imports
-await importFromMasterCSV()
-await importFromPrepaidCSV()
-await importFromWorkOrderCSV()
+const importFromMasterCSV = await import('./import.master.js')
+await importFromMasterCSV.default()
+
+const importFromPrepaidCSV = await import('./import.prepaid.js')
+await importFromPrepaidCSV.default()
+
+const importFromWorkOrderCSV = await import('./import.workOrder.js')
+await importFromWorkOrderCSV.default()
 
 console.timeEnd('importFromCsv')
 

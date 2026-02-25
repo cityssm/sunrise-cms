@@ -1,1 +1,1 @@
-export declare function importFromWorkOrderCSV(): Promise<void>;
+export default function importFromWorkOrderCSV(): Promise<void>;

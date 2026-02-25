@@ -1,4 +1,4 @@
-/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair, unicorn/filename-case */
+/* eslint-disable unicorn/filename-case */
 
 import type { Request, Response } from 'express'
 

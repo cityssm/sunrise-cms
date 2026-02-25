@@ -70,7 +70,11 @@
           </a>
         </li>
         <li>
-          <a class="<%= reportTab === 'configTableExports' ? 'is-active' : '' %>" href="#tab--configTableExports" title="Config Tables">
+          <a
+            class="<%= reportTab === 'configTableExports' ? 'is-active' : '' %>"
+            href="#tab--configTableExports"
+            title="Config Tables"
+          >
             <div class="columns is-mobile is-1">
               <div class="column is-narrow">
                 <span class="icon"><i class="fa-solid fa-table"></i></span>
@@ -85,7 +89,7 @@
   <div class="column">
     <nav class="breadcrumb">
       <ul>
-        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-regular fa-file"></i></span>
@@ -179,7 +183,11 @@
               </div>
             </div>
           </form>
-          <form class="panel-block align-items-flex-start" action="<%= urlPrefix %>/reports/contractTransactions-byTransactionDateString" method="get">
+          <form
+            class="panel-block align-items-flex-start"
+            action="<%= urlPrefix %>/reports/contractTransactions-byTransactionDateString"
+            method="get"
+          >
             <div class="has-text-centered my-2 ml-2 mr-3">
               <span class="icon has-text-info">
                 <i class="fa-solid fa-2x fa-file"></i>
@@ -190,7 +198,10 @@
               <h2 class="title is-5 mb-0">Transactions by Date</h2>
               <div class="field has-addons mt-2">
                 <div class="control">
-                  <label class="button is-small is-static has-text-grey-dark" for="contractTransactions-byTransactionDateString--transactionDateString">
+                  <label
+                    class="button is-small is-static has-text-grey-dark"
+                    for="contractTransactions-byTransactionDateString--transactionDateString"
+                  >
                     Transaction Date
                   </label>
                 </div>
@@ -307,7 +318,11 @@
               </div>
             </div>
           </form>
-          <form class="panel-block align-items-flex-start" action="<%= urlPrefix %>/reports/burialSites-byBurialSiteStatusId" method="get">
+          <form
+            class="panel-block align-items-flex-start"
+            action="<%= urlPrefix %>/reports/burialSites-byBurialSiteStatusId"
+            method="get"
+          >
             <div class="has-text-centered my-2 ml-2 mr-3">
               <span class="icon has-text-info">
                 <i class="fa-solid fa-2x fa-file"></i>

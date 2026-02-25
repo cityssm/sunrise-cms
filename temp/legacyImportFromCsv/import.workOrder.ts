@@ -47,7 +47,7 @@ import {
   user
 } from './utilities.js'
 
-export async function importFromWorkOrderCSV(): Promise<void> {
+export default async function importFromWorkOrderCSV(): Promise<void> {
   console.time('importFromWorkOrderCSV')
 
   let workOrderRow: WorkOrderRecord | undefined

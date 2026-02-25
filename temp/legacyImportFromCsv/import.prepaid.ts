@@ -27,7 +27,7 @@ import * as importIds from './data.ids.js'
 import type { PrepaidRecord } from './recordTypes.js'
 import { formatContractNumber, formatDateString, user } from './utilities.js'
 
-export async function importFromPrepaidCSV(): Promise<void> {
+export default async function importFromPrepaidCSV(): Promise<void> {
   console.time('importFromPrepaidCSV')
 
   let prepaidRow: PrepaidRecord | undefined
