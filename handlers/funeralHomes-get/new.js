@@ -1,4 +1,5 @@
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js';
+import { i18next } from '../../helpers/i18n.helpers.js';
 export default function handler(_request, response) {
     const funeralHome = {
         funeralHomeName: '',
@@ -10,7 +11,7 @@ export default function handler(_request, response) {
         funeralHomePhoneNumber: ''
     };
     response.render('funeralHomes/edit', {
-        headTitle: 'Create a Funeral Home',
+        headTitle: i18next.t('contracts:createNewFuneralHome', { lng: response.locals.lng }),
         funeralHome,
         isCreate: true
     });

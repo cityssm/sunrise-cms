@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express'
 
 import getCemeteries from '../../database/getCemeteries.js'
+import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(request: Request, response: Response): void {
   let error = request.query.error
@@ -27,7 +28,7 @@ export default function handler(request: Request, response: Response): void {
   const cemeteries = getCemeteries()
 
   response.render('cemeteries/search', {
-    headTitle: 'Cemetery Search',
+    headTitle: i18next.t('cemeteries:cemeterySearch', { lng: response.locals.lng }),
 
     cemeteries,
 

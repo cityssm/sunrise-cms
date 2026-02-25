@@ -5,6 +5,7 @@ import {
 import type { Request, Response } from 'express'
 
 import { getLastBackupDate } from '../../helpers/database.helpers.js'
+import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default async function handler(
   _request: Request,
@@ -19,7 +20,7 @@ export default async function handler(
     lastBackupDate === undefined ? '' : dateToTimePeriodString(lastBackupDate)
 
   response.render('admin/database', {
-    headTitle: 'Database Maintenance',
+    headTitle: i18next.t('admin:databaseMaintenance', { lng: response.locals.lng }),
     lastBackupDateString,
     lastBackupTimePeriodString
   })

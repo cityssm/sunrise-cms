@@ -6,7 +6,7 @@
     <li>
       <a href="<%= urlPrefix %>/burialSites">
         <span class="icon is-small"><i class="fa-solid fa-map-pin"></i></span>
-        <span>Burial Sites</span>
+        <span><%= t('cemeteries:burialSites') %></span>
       </a>
     </li>
     <li class="is-active">
@@ -25,7 +25,7 @@
 <% if (burialSiteIsDeleted) { %>
 <div class="message is-danger">
   <div class="message-header">
-    <p>Burial Site Deleted</p>
+    <p><%= t('cemeteries:burialSiteDeleted') %></p>
   </div>
   <div class="message-body">
     <p>This burial site has been deleted. It is no longer available for use.</p>
@@ -93,10 +93,10 @@
         <p class="mb-2">
           <strong>Cemetery</strong><br />
           <% if (burialSite.cemeteryId === null) { %>
-          <span class="has-text-grey">(No Cemetery)</span>
+          <span class="has-text-grey">(<%= t('cemeteries:noCemetery') %>)</span>
           <% } else { %>
           <a href="<%= urlPrefix %>/cemeteries/<%= burialSite.cemeteryId %>">
-            <%= burialSite.cemeteryName || "(No Name)" %>
+            <%= burialSite.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
           </a>
           <% } %>
         </p>
@@ -123,7 +123,7 @@
         <p>
           <strong>Status</strong><br />
           <% if (burialSite.burialSiteStatusId === null) { %>
-          <span class="has-text-grey">(No Status)</span>
+          <span class="has-text-grey">(<%= t('cemeteries:noStatus') %>)</span>
           <% } else { %>
           <%= burialSite.burialSiteStatus %>
           <% } %>
@@ -137,7 +137,7 @@
           <% if (burialSiteField.fieldValue) { %>
           <%= burialSiteField.fieldValue %>
           <% } else { %>
-          <span class="has-text-grey">(No Value)</span>
+          <span class="has-text-grey">(<%= t('common:noValue') %>)</span>
           <% } %>
         </p>
         <% } %>
@@ -373,13 +373,13 @@ for (const contract of burialSite.contracts) {
             <% if (contract.contractEndDate) { %>
             <%= contract.contractEndDateString %>
             <% } else { %>
-            <span class="has-text-grey">(No End Date)</span>
+            <span class="has-text-grey">(<%= t('common:noEndDate') %>)</span>
             <% } %>
           </td>
           <% } %>
           <td>
             <% if (contract.contractInterments.length === 0) { %>
-            <span class="has-text-grey"><%= t('contracts:noInterments') %></span>
+            <span class="has-text-grey">(<%= t('contracts:noInterments') %>)</span>
             <% } else { %>
             <% for (const interment of contract.contractInterments) { %>
             <div class="columns">

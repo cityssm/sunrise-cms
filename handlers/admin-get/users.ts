@@ -23,7 +23,7 @@ export default function handler(_request: Request, response: Response): void {
 
   response.render('admin/users', {
     headTitle: i18next.t('admin:userManagement', {
-      lng: response.locals.language
+      lng: response.locals.lng
     }),
     users,
 

@@ -1,6 +1,16 @@
 {
+  "createNewWorkOrder": "Neuen Arbeitsauftrag erstellen",
+  "icalIntegration": "iCalendar-Integration",
+  "milestoneCalendar": "Meilensteinkalender",
   "newWorkOrder": "Neuer Arbeitsauftrag",
+  "noDescription": "Keine Beschreibung",
+  "noEndDate": "Kein Enddatum",
+  "noNumber": "Keine Nummer",
+  "noSetDate": "Kein Festgelegtes Datum",
+  "workOrderReports": "Arbeitsauftragsberichte",
   "workOrders": "Arbeitsaufträge",
   "workOrdersDescription": "Arbeitsaufträge anzeigen und verwalten.",
-  "workdayReport": "Arbeitstagesbericht"
+  "workdayReport": "Arbeitstagesbericht",
+  "workOrderSearch": "Arbeitsauftragssuche",
+  "workOrderTitle": "Arbeitsauftrag #{{number}}"
 }

@@ -13,7 +13,7 @@
             <span class="icon is-small">
               <i class="fa-solid fa-file-contract"></i>
             </span>
-            <span>Contracts</span>
+            <span><%= t('contracts:contracts') %></span>
           </a>
         </li>
       </ul>
@@ -187,7 +187,7 @@
                     value="<%= cemetery.cemeteryId %>"
                     _<%= (cemetery.cemeteryId.toString() === cemeteryId) ? ' selected' : '' %>
                   >
-                    <%= cemetery.cemeteryName || '(No Name)' %>
+                    <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
                   </option>
                   <% } %>
                 </select>

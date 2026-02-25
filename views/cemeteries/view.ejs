@@ -11,14 +11,14 @@
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        <%= cemetery.cemeteryName || t('cemeteries:noName') %>
+        <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
       </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-  <%= cemetery.cemeteryName || t('cemeteries:noName') %>
+  <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
   <% if (cemetery.cemeteryKey !== '') { %>
     <span class="tag is-large"><%= cemetery.cemeteryKey %></span>
   <% } %>
@@ -28,7 +28,7 @@
 <div class="columns is-vcentered p-0 is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column">
     <span class="has-text-weight-bold">
-      <%= cemetery.cemeteryName || t('cemeteries:noName') %>
+      <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
     </span>
   </div>
   <div class="column is-narrow has-text-right">
@@ -97,7 +97,7 @@
         <strong><%= t('cemeteries:parentCemetery') %></strong><br />
         <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.parentCemeteryId %>">
           <span class="icon"><i class="fa-regular fa-map"></i></span>
-          <%= (cemetery.parentCemeteryName ?? '') === '' ? t('cemeteries:noName') : cemetery.parentCemeteryName %>
+          <%= (cemetery.parentCemeteryName ?? '') === '' ? ('(' + t('cemeteries:noName') + ')') : cemetery.parentCemeteryName %>
         </a>
       </div>
       <% } else if (cemetery.childCemeteries.length > 0) { %>
@@ -108,7 +108,7 @@
           <li>
             <a href="<%= urlPrefix %>/cemeteries/<%= childCemetery.cemeteryId %>">
               <span class="icon"><i class="fa-regular fa-map"></i></span>
-              <%= (childCemetery.cemeteryName ?? '') === '' ? t('cemeteries:noName') : childCemetery.cemeteryName %>
+              <%= (childCemetery.cemeteryName ?? '') === '' ? ('(' + t('cemeteries:noName') + ')') : childCemetery.cemeteryName %>
             </a>
           </li>
           <% } %>

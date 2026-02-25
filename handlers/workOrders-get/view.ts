@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 
 import getWorkOrder from '../../database/getWorkOrder.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
+import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default async function handler(
   request: Request,
@@ -23,7 +24,10 @@ export default async function handler(
   }
 
   response.render('workOrders/view', {
-    headTitle: `Work Order #${workOrder.workOrderNumber}`,
+    headTitle: i18next.t('workOrders:workOrderTitle', {
+      number: workOrder.workOrderNumber,
+      lng: response.locals.lng
+    }),
     workOrder
   })
 }

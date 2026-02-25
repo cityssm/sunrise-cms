@@ -6,7 +6,7 @@
     <li>
       <a href="<%= urlPrefix %>/burialSites">
         <span class="icon is-small"><i class="fa-solid fa-map-pin"></i></span>
-        <span>Burial Sites</span>
+        <span><%= t('cemeteries:burialSites') %></span>
       </a>
     </li>
     <% if (!isCreate) { %>
@@ -19,7 +19,7 @@
     <li class="is-active">
       <a href="#" aria-current="page">
         <% if (isCreate) { %>
-          Create a New Burial Site
+          <%= t('cemeteries:createBurialSite') %>
         <% } else { %>
           Update Burial Site
         <% } %>
@@ -30,7 +30,7 @@
 
 <h1 class="title is-1">
   <% if (isCreate) { %>
-    Create a New Burial Site
+    <%= t('cemeteries:createBurialSite') %>
   <% } else { %>
     <%= burialSite.burialSiteName %>
   <% } %>
@@ -111,7 +111,7 @@
                       <option value=""
                         _<%= (!isCreate && burialSite.cemeteryId ? " disabled" : "") %>
                       >
-                        (No Cemetery Selected)
+                        (<%= t('cemeteries:noCemeterySelected') %>)
                       </option>
                       <% let cemeteryIsFound = false; %>
                       <% for (const cemetery of cemeteries) { %>
@@ -126,7 +126,7 @@
                           <%= (burialSite.cemeteryId === cemetery.cemeteryId ? " selected" : "") %>
                           <%= (!isCreate && burialSite.cemeteryId !== cemetery.cemeteryId ? " disabled" : "") %>
                         >
-                          <%= cemetery.cemeteryName || "(No Name)"  %>
+                          <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')')  %>
                         </option>
                       <% } %>
                       <% if (burialSite.cemeteryId && !cemeteryIsFound) { %>
@@ -299,7 +299,7 @@
                 <div class="control">
                   <div class="select is-fullwidth">
                     <select id="burialSite--burialSiteStatusId" name="burialSiteStatusId">
-                      <option value="">(No Status)</option>
+                      <option value="">(<%= t('cemeteries:noStatus') %>)</option>
                       <% let statusIsFound = false; %>
                       <% for (const burialSiteStatus of burialSiteStatuses) { %>
                         <% 
@@ -357,7 +357,7 @@
                         <select id="burialSite--fieldValue_<%= burialSiteField.burialSiteTypeFieldId %>"
                           name="fieldValue_<%= burialSiteField.burialSiteTypeFieldId %>">
                           <% if (!burialSiteField.isRequired || burialSiteField.fieldValue === "") { %>
-                            <option value="">(Not Set)</option>
+                            <option value="">(<%= t('contracts:notSet') %>)</option>
                           <% } %>
                           <% for (const fieldValue of fieldValues) { %>
                             <% 
@@ -641,13 +641,13 @@
                       <% if (contract.contractEndDate) { %>
                         <%= contract.contractEndDateString %>
                       <% } else { %>
-                        <span class="has-text-grey">(No End Date)</span>
+                        <span class="has-text-grey">(<%= t('common:noEndDate') %>)</span>
                       <% } %>
                     </td>
                     <% } %>
                     <td>
                       <% if (contract.contractInterments.length === 0) { %>
-                        <span class="has-text-grey">(No Interments)</span>
+                        <span class="has-text-grey">(<%= t('contracts:noInterments') %>)</span>
                       <% } else { %>
                         <% for (const interment of contract.contractInterments) { %>
                           <div class="columns">

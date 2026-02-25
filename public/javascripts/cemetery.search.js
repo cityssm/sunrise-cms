@@ -24,7 +24,7 @@
         let featuresHTML = '';
         if (cemetery.parentCemeteryId !== null) {
             featuresHTML += /* html */ `
-        <span class="icon" title="Parent: ${cemetery.parentCemeteryName ?? i18next.t('cemeteries:noName')}">
+        <span class="icon" title="Parent: ${cemetery.parentCemeteryName ?? `(${i18next.t('cemeteries:noName')})`}">
           <i class="fa-solid fa-turn-up" role="img" aria-label="Has Parent Cemetery"></i>
         </span>
       `;
@@ -82,9 +82,12 @@
             <td>
               <a class="has-text-weight-bold" href="${sunrise.getCemeteryUrl(cemetery.cemeteryId)}">
                 ${cemetery.cemeteryName === ''
-                ? `${cityssm.escapeHTML(i18next.t('cemeteries:noName'))} <span class="icon is-small has-text-danger">
+                ? /* html */ `
+                      (${cityssm.escapeHTML(i18next.t('cemeteries:noName'))})
+                      <span class="icon is-small has-text-danger">
                         <i class="fa-solid fa-exclamation-triangle"></i>
-                        </span>`
+                      </span>
+                    `
                 : cityssm.escapeHTML(cemetery.cemeteryName)}
                 ${cemetery.cemeteryKey === ''
                 ? ''
