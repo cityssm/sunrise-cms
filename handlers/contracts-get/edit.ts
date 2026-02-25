@@ -26,6 +26,7 @@ import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
 import { userCanUpdateWorkOrders } from '../../helpers/user.helpers.js'
 import { userHasConsignoCloudAccess } from '../../integrations/consignoCloud/helpers.js'
+import { i18next } from '../../helpers/i18n.helpers.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:edit`)
 
@@ -103,7 +104,7 @@ export default async function handler(
       : []
 
     response.render('contracts/edit', {
-      headTitle: 'Contract Update',
+      headTitle: i18next.t('contracts:contractUpdate', { lng: response.locals.lng }),
 
       contract,
 

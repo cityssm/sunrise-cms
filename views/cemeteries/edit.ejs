@@ -12,7 +12,7 @@
     <% if (!isCreate) { %>
       <li>
         <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>">
-          <%= cemetery.cemeteryName || t('cemeteries:noName') %>
+          <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
         </a>
       </li>
     <% } %>
@@ -40,7 +40,7 @@
   <div class="column">
     <% if (!isCreate) { %>
       <span class="has-text-weight-bold">
-        <%= cemetery.cemeteryName || t('cemeteries:noName') %>
+        <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
       </span>
     <% } %>
   </div>
@@ -54,7 +54,7 @@
         <div class="dropdown is-right is-up" data-cy="dropdown--moreOptions">
           <div class="dropdown-trigger">
             <button class="button" type="button">
-              <span><%= t('cemeteries:moreOptions') %></span>
+              <span><%= t('common:moreOptions') %></span>
               <span class="icon is-small">
                 <i class="fa-solid fa-angle-up"></i>
               </span>
@@ -136,7 +136,7 @@
             <div class="control">
               <div class="select is-fullwidth">
                 <select id="cemetery--parentCemeteryId" name="parentCemeteryId" <%= (cemetery.childCemeteries.length > 0 ? 'disabled' : '') %>>
-                  <option value=""><%= t('cemeteries:noParentCemetery') %></option>
+                  <option value="">(<%= t('cemeteries:noParentCemetery') %>)</option>
                   <% for (const parentCemetery of cemeteries) { %>
                     <%
                       if (parentCemetery.cemeteryId === cemetery.cemeteryId || parentCemetery.parentCemeteryId !== null) {
@@ -145,7 +145,7 @@
                       }
                     %>
                     <option value="<%= parentCemetery.cemeteryId %>" <%= (cemetery.parentCemeteryId === parentCemetery.cemeteryId) ? " selected" : "" %>>
-                      <%= parentCemetery.cemeteryName === '' ? t('cemeteries:noName') : parentCemetery.cemeteryName %>
+                      <%= parentCemetery.cemeteryName === '' ? ('(' + t('cemeteries:noName') + ')') : parentCemetery.cemeteryName %>
                     </option>
                   <% } %>
                 </select>
@@ -305,7 +305,7 @@
             <div class="control">
               <div class="select is-fullwidth">
                 <select id="cemetery--cemeterySvg" name="cemeterySvg">
-                  <option value=""><%= t('cemeteries:selectAFile') %></option>
+                  <option value="">(<%= t('cemeteries:selectAFile') %>)</option>
                   <% for (const cemeterySVG of cemeterySVGs) { %>
                     <option value="<%= cemeterySVG %>" <%= (cemetery.cemeterySvg === cemeterySVG) ? " selected" : "" %>>
                       <%= cemeterySVG %>

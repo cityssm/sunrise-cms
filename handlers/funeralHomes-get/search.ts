@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express'
 
 import getFuneralHomes from '../../database/getFuneralHomes.js'
+import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(request: Request, response: Response): void {
   let error = request.query.error
@@ -27,7 +28,7 @@ export default function handler(request: Request, response: Response): void {
   const funeralHomes = getFuneralHomes()
 
   response.render('funeralHomes/search', {
-    headTitle: 'Funeral Home Search',
+    headTitle: i18next.t('contracts:funeralHomeSearch', { lng: response.locals.lng }),
 
     funeralHomes,
 

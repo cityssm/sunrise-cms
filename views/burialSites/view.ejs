@@ -6,7 +6,7 @@
     <li>
       <a href="<%= urlPrefix %>/burialSites">
         <span class="icon is-small"><i class="fa-solid fa-map-pin"></i></span>
-        <span>Burial Sites</span>
+        <span><%= t('cemeteries:burialSites') %></span>
       </a>
     </li>
     <li class="is-active">
@@ -25,7 +25,7 @@
 <% if (burialSiteIsDeleted) { %>
 <div class="message is-danger">
   <div class="message-header">
-    <p>Burial Site Deleted</p>
+    <p><%= t('cemeteries:burialSiteDeleted') %></p>
   </div>
   <div class="message-body">
     <p>This burial site has been deleted. It is no longer available for use.</p>
@@ -379,7 +379,7 @@ for (const contract of burialSite.contracts) {
           <% } %>
           <td>
             <% if (contract.contractInterments.length === 0) { %>
-            <span class="has-text-grey"><%= t('contracts:noInterments') %></span>
+            <span class="has-text-grey">(<%= t('contracts:noInterments') %>)</span>
             <% } else { %>
             <% for (const interment of contract.contractInterments) { %>
             <div class="columns">

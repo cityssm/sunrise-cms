@@ -8,13 +8,13 @@
         <span class="icon is-small">
           <i class="fa-solid fa-file-contract"></i>
         </span>
-        <span>Contracts</span>
+        <span><%= t('contracts:contracts') %></span>
       </a>
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
         Contract #<%= contract.contractNumber %>:
-        <%= contract.burialSiteName ?? "(No Burial Site)" %>
+        <%= contract.burialSiteName ?? ('(' + t('contracts:noBurialSite') + ')') %>
       </a>
     </li>
   </ul>
@@ -25,7 +25,7 @@
     <h1 class="title is-1">
       Contract
       #<%= contract.contractNumber %>:
-      <span class="is-nowrap"><%= contract.burialSiteName || "(No Burial Site)" %></span>
+      <span class="is-nowrap"><%= contract.burialSiteName || ('(' + t('contracts:noBurialSite') + ')') %></span>
     </h1>
   </div>
   <% if (contract.contractEndDate) { %>
@@ -53,7 +53,7 @@
   <div class="column">
     <span class="has-text-weight-bold">
       Contract #<%= contract.contractNumber %>:
-      <%= contract.burialSiteName ?? "(No Burial Site)" %>
+      <%= contract.burialSiteName ?? ('(' + t('contracts:noBurialSite') + ')') %>
     </span>
   </div>
   <div class="column is-narrow has-text-right">
@@ -129,7 +129,7 @@
             <%= contract.burialSiteName %>
           </a>
           <% } else { %>
-          <span class="has-text-grey">(No Burial Site)</span>
+          <span class="has-text-grey">(<%= t('contracts:noBurialSite') %>)</span>
           <% } %>
         </p>
         <p>

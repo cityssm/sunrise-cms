@@ -3,18 +3,18 @@
 <nav class="breadcrumb">
   <ul>
     <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
-    <li><a href="<%= urlPrefix %>/burialSites">Burial Sites</a></li>
+    <li><a href="<%= urlPrefix %>/burialSites"><%= t('cemeteries:burialSites') %></a></li>
     <li class="is-active">
       <a href="#" aria-current="page">
         <span class="icon is-small"><i class="fa-solid fa-map-location-dot"></i></span>
-        <span>Burial Site Map</span>
+        <span><%= t('cemeteries:burialSiteMap') %></span>
       </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-  Burial Site Map (Beta)
+  <%= t('cemeteries:burialSiteMap') %>
 </h1>
 
 <!-- Map Container -->

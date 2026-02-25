@@ -12,7 +12,7 @@
     <% if (!isCreate) { %>
     <li>
       <a href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>">
-        <%= funeralHome.funeralHomeName || t('contracts:noName') %>
+        <%= funeralHome.funeralHomeName || ('(' + t('contracts:noName') + ')') %>
       </a>
     </li>
     <% } %>
@@ -40,7 +40,7 @@
   <div class="column">
     <% if (!isCreate) { %>
     <span class="has-text-weight-bold">
-      <%= funeralHome.funeralHomeName || t('contracts:noName') %>
+      <%= funeralHome.funeralHomeName || ('(' + t('contracts:noName') + ')') %>
     </span>
     <% } %>
   </div>
@@ -54,7 +54,7 @@
       <div class="dropdown is-right is-up">
         <div class="dropdown-trigger">
           <button class="button" type="button">
-            <span><%= t('contracts:moreOptions') %></span>
+            <span><%= t('common:moreOptions') %></span>
             <span class="icon is-small">
               <i class="fa-solid fa-angle-up"></i>
             </span>

@@ -1,21 +1,21 @@
-<aside class="menu" aria-label="Contracts">
+<aside class="menu" aria-label="<%= t('contracts:contracts') %>">
   <h2 class="menu-label is-hidden-touch">
-    Contracts
+    <%= t('contracts:contracts') %>
   </h2>
   <ul class="menu-list">
     <%
-    const isContractSearch = headTitle === 'Contract Search';
-    const isFuneralHomeSearch = headTitle === 'Funeral Home Search';
+    const isContractSearch = headTitle === t('contracts:contractSearch');
+    const isFuneralHomeSearch = headTitle === t('contracts:funeralHomeSearch');
     %>
     <li>
       <a class="<%= (isContractSearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/contracts"
-        title="Contract Search">
+        title="<%= t('contracts:contractSearch') %>">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-file-contract"></i></span>
           </div>
-          <div class="column is-hidden-touch">Contract Search</div>
+          <div class="column is-hidden-touch"><%= t('contracts:contractSearch') %></div>
         </div>
       </a>
       <% if (isContractSearch && user.userProperties.canUpdateContracts) { %>
@@ -23,9 +23,9 @@
         <li>
           <a
             href="<%= urlPrefix %>/contracts/new"
-            title="Create New Contract"
+            title="<%= t('contracts:createNewContract') %>"
           >
-            <span class="is-hidden-touch">Create New Contract</span>
+            <span class="is-hidden-touch"><%= t('contracts:createNewContract') %></span>
             <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
           </a>
         </li>
@@ -35,12 +35,12 @@
     <li>
       <a class="<%= (isFuneralHomeSearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/funeralHomes"
-        title="Funeral Home Search">
+        title="<%= t('contracts:funeralHomeSearch') %>">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-place-of-worship"></i></span>
           </div>
-          <div class="column is-hidden-touch">Funeral Home Search</div>
+          <div class="column is-hidden-touch"><%= t('contracts:funeralHomeSearch') %></div>
         </div>
       </a>
       <% if (isFuneralHomeSearch && user.userProperties.canUpdateContracts) { %>
@@ -48,9 +48,9 @@
         <li>
           <a
             href="<%= urlPrefix %>/funeralHomes/new"
-            title="Create New Funeral Home"
+            title="<%= t('contracts:createNewFuneralHome') %>"
           >
-            <span class="is-hidden-touch">Create New Funeral Home</span>
+            <span class="is-hidden-touch"><%= t('contracts:createNewFuneralHome') %></span>
             <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
           </a>
         </li>
@@ -65,39 +65,39 @@
   <ul class="menu-list is-hidden-touch">
     <li>
       <a href="<%= urlPrefix %>/admin/contractTypes"
-        title="Contract Type Maintenance">
+        title="<%= t('admin:contractTypeManagement') %>">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-gear"></i></span>
           </div>
-          <div class="column is-hidden-touch">Contract Type Maintenance</div>
+          <div class="column is-hidden-touch"><%= t('admin:contractTypeManagement') %></div>
         </div>
       </a>
     </li>
     <li>
       <a href="<%= urlPrefix %>/admin/fees"
-        title="Fee Maintenance">
+        title="<%= t('admin:feeManagement') %>">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-gear"></i></span>
           </div>
-          <div class="column is-hidden-touch">Fee Maintenance</div>
+          <div class="column is-hidden-touch"><%= t('admin:feeManagement') %></div>
         </div>
       </a>
     </li>
   </ul>
   <% } %>
   <h2 class="menu-label is-hidden-touch">
-    Reports
+    <%= t('dashboard:reports') %>
   </h2>
   <ul class="menu-list">
     <li>
-      <a href="<%= urlPrefix %>/reports/?tab=contracts" title="Contract Reports">
+      <a href="<%= urlPrefix %>/reports/?tab=contracts" title="<%= t('contracts:contractReports') %>">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-file"></i></span>
           </div>
-          <div class="column is-hidden-touch">Contract Reports</div>
+          <div class="column is-hidden-touch"><%= t('contracts:contractReports') %></div>
         </div>
       </a>
     </li>
@@ -112,7 +112,7 @@
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-circle-question"></i></span>
           </div>
-          <div class="column is-hidden-touch">Help</div>
+          <div class="column is-hidden-touch"><%= t('common:help') %></div>
         </div>
       </a>
     </li>

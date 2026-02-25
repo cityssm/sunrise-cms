@@ -8,22 +8,22 @@
         <span class="icon is-small">
           <i class="fa-solid fa-file-contract"></i>
         </span>
-        <span>Contracts</span>
+        <span><%= t('contracts:contracts') %></span>
       </a>
     </li>
     <% if (!isCreate) { %>
     <li>
       <a href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
-        Contract #<%= contract.contractNumber %>: <%= contract.burialSiteName || ("(No Burial Site)") %>
+        Contract #<%= contract.contractNumber %>: <%= contract.burialSiteName || ('(' + t('contracts:noBurialSite') + ')') %>
       </a>
     </li>
     <% } %>
     <li class="is-active">
       <a href="#" aria-current="page">
         <% if (isCreate) { %>
-          Create a New Contract
+          <%= t('contracts:createNewContract') %>
         <% } else { %>
-          Update Contract
+          <%= t('contracts:contractUpdate') %>
         <% } %>
       </a>
     </li>
@@ -32,7 +32,7 @@
 
 <% if (isCreate) { %>
   <h1 class="title is-1">
-    Create a New Contract
+    <%= t('contracts:createNewContract') %>
   </h1>
 <% } else { %>
   <h1 class="title is-1">
@@ -44,7 +44,7 @@
   <div class="column has-text-weight-bold">
     <% if (!isCreate) { %>
       Contract #<%= contract.contractNumber %>:
-      <%= contract.burialSiteName || ("(No Burial Site)") %>
+      <%= contract.burialSiteName || ('(' + t('contracts:noBurialSite') + ')') %>
     <% } %>
   </div>
   <div class="column is-narrow has-text-right">
@@ -186,7 +186,7 @@
             <div class="control is-expanded">
               <input class="input is-clickable has-text-left <%= (isCreate ? "" : " is-readonly") %>"
                 id="contract--burialSiteName" type="button"
-                value="<%= contract.burialSiteName || "(No Burial Site)" %>"
+                value="<%= contract.burialSiteName || ('(' + t('contracts:noBurialSite') + ')') %>"
                 <%= (configFunctions.getConfigProperty("settings.contracts.burialSiteIdIsRequired") ? " required" : "") %>
                 <%= (isCreate ? "" : " disabled readonly") %> />
             </div>

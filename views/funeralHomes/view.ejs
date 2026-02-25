@@ -11,14 +11,14 @@
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        <%= funeralHome.funeralHomeName || t('contracts:noName') %>
+        <%= funeralHome.funeralHomeName || ('(' + t('contracts:noName') + ')') %>
       </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-  <%= funeralHome.funeralHomeName || t('contracts:noName') %>
+  <%= funeralHome.funeralHomeName || ('(' + t('contracts:noName') + ')') %>
 </h1>
 
 <% const funeralHomeIsDeleted = funeralHome.recordDelete_timeMillis !== null; %>
@@ -39,7 +39,7 @@
 <div class="columns is-vcentered p-0 is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column">
     <span class="has-text-weight-bold">
-      <%= funeralHome.funeralHomeName || t('contracts:noName') %>
+      <%= funeralHome.funeralHomeName || ('(' + t('contracts:noName') + ')') %>
     </span>
   </div>
   <div class="column is-narrow has-text-right">
@@ -156,7 +156,7 @@
           </td>
           <td>
             <% if (contract.contractInterments.length === 0) { %>
-            <span class="has-text-grey"><%= t('contracts:noInterments') %></span>
+            <span class="has-text-grey">(<%= t('contracts:noInterments') %>)</span>
             <% } else { %>
             <ul class="fa-ul ml-5">
               <% for (const interment of contract.contractInterments) { %>

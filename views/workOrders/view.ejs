@@ -6,12 +6,12 @@
     <li>
       <a href="<%= urlPrefix %>/workOrders">
         <span class="icon is-small"><i class="fa-solid fa-hard-hat"></i></span>
-        <span>Work Orders</span>
+        <span><%= t('workOrders:workOrders') %></span>
       </a>
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        Work Order #<%= workOrder.workOrderNumber || "(No Number)" %>
+        Work Order #<%= workOrder.workOrderNumber || ('(' + t('workOrders:noNumber') + ')') %>
       </a>
     </li>
   </ul>
@@ -22,7 +22,7 @@
     <div class="level-item">
       <h1 class="title is-1">
         Work Order
-        #<%= workOrder.workOrderNumber || "(No Number)" %>
+        #<%= workOrder.workOrderNumber || ('(' + t('workOrders:noNumber') + ')') %>
       </h1>
     </div>
   </div>
@@ -44,7 +44,7 @@
   <div class="column">
     <span class="has-text-weight-bold">
       Work Order
-      #<%= workOrder.workOrderNumber || "(No Number)" %>
+      #<%= workOrder.workOrderNumber || ('(' + t('workOrders:noNumber') + ')') %>
     </span>
   </div>
   <div class="column is-narrow has-text-right">

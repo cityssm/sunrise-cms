@@ -89,7 +89,7 @@
             <tr>
               <td>
                 <% if (burialSiteStatus.burialSiteStatusId === null) { %>
-                <%= t('cemeteries:noStatus') %>
+                (<%= t('cemeteries:noStatus') %>)
                 <% } else { %>
                 <a class="has-text-weight-bold" href="<%= burialSiteSearchUrl %>&burialSiteStatusId=<%= burialSiteStatus.burialSiteStatusId %>">
                   <%= burialSiteStatus.burialSiteStatus %>
