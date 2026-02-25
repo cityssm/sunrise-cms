@@ -1,6 +1,6 @@
 # Sunrise Cemetery Management System (CMS)
 
-Sunrise CMS is a Node.js 20+ TypeScript web application that helps cemetery managers manage their cemetery records. It uses Express.js, SQLite database, and includes both a web interface and optional Windows service support.
+Sunrise CMS is a Node.js 22+ TypeScript web application that helps cemetery managers manage their cemetery records. It uses Express.js, SQLite database, and includes both a web interface and optional Windows service support.
 
 Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
