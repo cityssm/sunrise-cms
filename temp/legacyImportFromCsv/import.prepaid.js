@@ -267,13 +267,6 @@ export async function importFromPrepaidCSV() {
                     commentDateString: contractStartDateString
                 }, user, database);
             }
-            if (prepaidRow.CMPP_REMARK2 !== '') {
-                addContractComment({
-                    contractId,
-                    comment: prepaidRow.CMPP_REMARK2,
-                    commentDateString: contractStartDateString
-                }, user, database);
-            }
         }
     }
     catch (error) {

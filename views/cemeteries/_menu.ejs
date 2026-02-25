@@ -81,9 +81,11 @@
   </h2>
   <ul class="menu-list">
     <li>
-      <a class="<%= (headTitle === "Burial Site Range Creator" ? "is-active" : "") %>"
+      <a
+        class="<%= (headTitle === 'Burial Site Range Creator' ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/burialSites/creator"
-        title="Burial Site Range Creator">
+        title="Burial Site Range Creator"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-folder-plus"></i></span>
@@ -93,9 +95,11 @@
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === "GPS Coordinate Capture" ? "is-active" : "") %>"
+      <a
+        class="<%= (headTitle === 'GPS Coordinate Capture' ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/burialSites/gpsCapture"
-        title="GPS Coordinate Capture">
+        title="GPS Coordinate Capture"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-crosshairs"></i></span>
@@ -108,12 +112,14 @@
   <% } %>
   <% if (user.userProperties.isAdmin) { %>
   <h2 class="menu-label is-hidden-touch">
-    Administrator Tools
+    <%= t('admin:adminTools') %>
   </h2>
   <ul class="menu-list is-hidden-touch">
     <li>
-      <a href="<%= urlPrefix %>/admin/burialSiteTypes"
-        title="Burial Site Type Maintenance">
+      <a
+        href="<%= urlPrefix %>/admin/burialSiteTypes"
+        title="Burial Site Type Maintenance"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-gear"></i></span>

@@ -224,7 +224,7 @@ async function addInclusions(
             },
             database
           )
-          
+
     workOrder.workOrderMilestones = milestones
   }
 

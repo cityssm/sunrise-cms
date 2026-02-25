@@ -9,7 +9,7 @@
   "export": "Exportieren",
   "filterUpcomingServices": "Nur Bestattungsinstitute mit bevorstehenden Beerdigungen anzeigen",
   "findAFuneralHome": "Bestattungsinstitut suchen",
-  "funeralDate": "Beerdigungsdatum",
+  "serviceDate": "Beerdigungsdatum",
   "funeralDirector": "Bestattungsunternehmer",
   "funeralHome": "Bestattungsinstitut",
   "funeralHomeDeleted": "Bestattungsinstitut gelöscht",

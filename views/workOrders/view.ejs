@@ -2,7 +2,7 @@
 
 <nav class="breadcrumb">
   <ul>
-    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
     <li>
       <a href="<%= urlPrefix %>/workOrders">
         <span class="icon is-small"><i class="fa-solid fa-hard-hat"></i></span>
@@ -27,16 +27,16 @@
     </div>
   </div>
   <% if (workOrder.workOrderCloseDate) { %>
-    <div class="level-right">
-      <div class="level-item">
-        <span class="tag is-info is-medium">
-          <span class="icon">
-            <i class="fa-solid fa-stop"></i>
-          </span>
-          <span>Closed</span>
+  <div class="level-right">
+    <div class="level-item">
+      <span class="tag is-info is-medium">
+        <span class="icon">
+          <i class="fa-solid fa-stop"></i>
         </span>
-      </div>
+        <span>Closed</span>
+      </span>
     </div>
+  </div>
   <% } %>
 </div>
 
@@ -50,35 +50,44 @@
   <div class="column is-narrow has-text-right">
     <div class="buttons is-right">
       <% if (configFunctions.getConfigProperty("settings.workOrders.prints").length > 0) { %>
-        <div class="dropdown is-right is-up">
-          <div class="dropdown-trigger">
-            <button class="button" type="button" aria-label="Print">
-              <span class="icon"><i class="fa-solid fa-print"></i></span>
-              <span class="is-hidden-touch">Print</span>
-              <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
-            </button>
-          </div>
-          <div class="dropdown-menu">
-            <div class="dropdown-content has-text-left">
-              <% for (const printName of configFunctions.getConfigProperty("settings.workOrders.prints")) { %>
-                <% const printConfig = printFunctions.getPrintConfig(printName); %>
-                <% if (printConfig) { %>
-                  <a class="dropdown-item" href="<%= urlPrefix %>/print/<%= printName %>/?workOrderId=<%= workOrder.workOrderId %>" target="_blank">
-                    <span class="icon"><i class="fa-solid fa-print"></i></span>
-                    <span><%= printConfig.title %></span>
-                  </a>
-                <% } %>
+      <div class="dropdown is-right is-up">
+        <div class="dropdown-trigger">
+          <button class="button" type="button" aria-label="Print">
+            <span class="icon"><i class="fa-solid fa-print"></i></span>
+            <span class="is-hidden-touch">Print</span>
+            <span class="icon"><i class="fa-solid fa-angle-up"></i></span>
+          </button>
+        </div>
+        <div class="dropdown-menu">
+          <div class="dropdown-content has-text-left">
+            <% for (const printName of configFunctions.getConfigProperty("settings.workOrders.prints")) { %>
+              <% const printConfig = printFunctions.getPrintConfig(printName); %>
+              <% if (printConfig) { %>
+                <a
+                  class="dropdown-item"
+                  href="<%= urlPrefix %>/print/<%= printName %>/?workOrderId=<%= workOrder.workOrderId %>"
+                  target="_blank"
+                >
+                  <span class="icon"><i class="fa-solid fa-print"></i></span>
+                  <span><%= printConfig.title %></span>
+                </a>
               <% } %>
-            </div>
+            <% } %>
           </div>
         </div>
+      </div>
       <% } %>
       <% if (user.userProperties.canUpdateWorkOrders) { %>
         <% if (workOrder.workOrderCloseDate) { %>
-          <button class="button is-warning" id="button--reopenWorkOrder" data-work-order-id="<%= workOrder.workOrderId %>" type="button">
-            <span class="icon"><i class="fa-solid fa-undo"></i></span>
-            <span>Reopen Work Order</span>
-          </button>
+        <button
+          class="button is-warning"
+          id="button--reopenWorkOrder"
+          data-work-order-id="<%= workOrder.workOrderId %>"
+          type="button"
+        >
+          <span class="icon"><i class="fa-solid fa-undo"></i></span>
+          <span>Reopen Work Order</span>
+        </button>
         <% } else { %>
           <a class="button is-primary"
             href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>/edit"
@@ -159,11 +168,11 @@
         <div class="tab-container">
           <div class="<%= (tabToSelect === 'contracts' ? '' : 'is-hidden') %>" id="relatedTab--contracts">
             <% if (workOrder.workOrderContracts.length === 0) { %>
-              <div class="message is-info">
-                <p class="message-body">
-                  There are no contracts associated with this work order.
-                </p>
-              </div>
+            <div class="message is-info">
+              <p class="message-body">
+                There are no contracts associated with this work order.
+              </p>
+            </div>
             <% } else { %>
             <table class="table is-fullwidth is-striped is-hoverable">
               <thead>
@@ -250,36 +259,36 @@
           </div>
           <div class="<%= (tabToSelect === 'burialSites' ? '' : 'is-hidden') %>" id="relatedTab--burialSites">
             <% if (workOrder.workOrderBurialSites.length === 0) { %>
-              <div class="message is-info">
-                <p class="message-body">
-                  There are no burial sites associated with this work order.
-                </p>
-              </div>
+            <div class="message is-info">
+              <p class="message-body">
+                There are no burial sites associated with this work order.
+              </p>
+            </div>
             <% } else { %>
-              <table class="table is-fullwidth is-striped is-hoverable">
-                <thead>
-                  <tr>
-                    <th>Burial Site</th>
-                    <th>Cemetery</th>
-                    <th>Burial Site Type</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% for (const burialSite of workOrder.workOrderBurialSites) { %>
-                    <tr>
-                      <td>
-                        <a class="has-text-weight-bold" href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>">
-                          <%= burialSite.burialSiteName %>
-                        </a>
-                      </td>
-                      <td><%= burialSite.cemeteryName %></td>
-                      <td><%= burialSite.burialSiteType %></td>
-                      <td><%= burialSite.burialSiteStatus %></td>
-                    </tr>
-                  <% } %>
-                </tbody>
-              </table>
+            <table class="table is-fullwidth is-striped is-hoverable">
+              <thead>
+                <tr>
+                  <th>Burial Site</th>
+                  <th>Cemetery</th>
+                  <th>Burial Site Type</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (const burialSite of workOrder.workOrderBurialSites) { %>
+                <tr>
+                  <td>
+                    <a class="has-text-weight-bold" href="<%= urlPrefix %>/burialSites/<%= burialSite.burialSiteId %>">
+                      <%= burialSite.burialSiteName %>
+                    </a>
+                  </td>
+                  <td><%= burialSite.cemeteryName %></td>
+                  <td><%= burialSite.burialSiteType %></td>
+                  <td><%= burialSite.burialSiteStatus %></td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
             <% } %>
           </div>
         </div>
@@ -287,32 +296,32 @@
     </div>
 
     <% if (workOrder.workOrderComments.length > 0) { %>
-      <div class="panel">
-        <h2 class="panel-heading">Work Order Comments</h2>
-        <div class="panel-block is-block">
-          <table class="table is-fullwidth is-striped is-hoverable">
-            <thead>
-              <tr>
-                <th>Author</th>
-                <th>Comment Date</th>
-                <th>Comment</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (const workOrderComment of workOrder.workOrderComments) { %>
-                <tr>
-                  <td><%= workOrderComment.recordCreate_userName %></td>
-                  <td>
-                    <%= workOrderComment.commentDateString %>
-                    <%= (workOrderComment.commentTime === 0 ? "" : workOrderComment.commentTimePeriodString) %>
-                  </td>
-                  <td><%= workOrderComment.comment %></td>
-                </tr>
-              <% } %>
-            </tbody>
-          </table>
-        </div>
+    <div class="panel">
+      <h2 class="panel-heading">Work Order Comments</h2>
+      <div class="panel-block is-block">
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th>Author</th>
+              <th>Comment Date</th>
+              <th>Comment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (const workOrderComment of workOrder.workOrderComments) { %>
+            <tr>
+              <td><%= workOrderComment.recordCreate_userName %></td>
+              <td>
+                <%= workOrderComment.commentDateString %>
+                <%= (workOrderComment.commentTime === 0 ? "" : workOrderComment.commentTimePeriodString) %>
+              </td>
+              <td><%= workOrderComment.comment %></td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
       </div>
+    </div>
     <% } %>
   </div>
 
@@ -325,7 +334,7 @@
           <% if (contract.funeralDate !== null && contract.funeralDate >= workOrder.workOrderOpenDate && (workOrder.workOrderCloseDate === null || workOrder.workOrderCloseDate >= contract.funeralDate)) { %>
             <% hasContractMilestones = true; %>
             <div class="panel-block is-block">
-              <strong>Funeral</strong><br />
+              <strong><%= t('contracts:serviceDate') %></strong><br />
               <%= contract.funeralDateString %>
               <% if (contract.funeralTime !== null && contract.funeralTime !== 0) { %>
                 <%= contract.funeralTimePeriodString %>

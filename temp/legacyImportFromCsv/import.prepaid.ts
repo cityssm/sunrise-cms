@@ -223,8 +223,6 @@ export async function importFromPrepaidCSV(): Promise<void> {
           user,
           database
         )
-
-
       }
 
       if (prepaidRow.CMPP_FEE_CREM !== '0.0') {
@@ -434,19 +432,6 @@ export async function importFromPrepaidCSV(): Promise<void> {
             contractId,
 
             comment: prepaidRow.CMPP_REMARK1,
-            commentDateString: contractStartDateString
-          },
-          user,
-          database
-        )
-      }
-
-      if (prepaidRow.CMPP_REMARK2 !== '') {
-        addContractComment(
-          {
-            contractId,
-
-            comment: prepaidRow.CMPP_REMARK2,
             commentDateString: contractStartDateString
           },
           user,
