@@ -1,3 +1,4 @@
+import { i18next } from '../../helpers/i18n.helpers.js';
 export default function handler(request, response) {
     let error = request.query.error;
     if (error === 'accessDenied') {
@@ -7,7 +8,7 @@ export default function handler(request, response) {
         error = 'Print configuration not found.';
     }
     response.render('dashboard/dashboard', {
-        headTitle: 'Dashboard',
+        headTitle: i18next.t('dashboard:title', { lng: response.locals.lng }),
         error
     });
 }
