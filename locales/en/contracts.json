@@ -6,6 +6,7 @@
   "contractDate": "Contract Date",
   "contractsDescription": "View and maintain current and past contracts.",
   "contractSearch": "Contract Search",
+  "contractTitle": "Contract #{{id}}",
   "contractsWithUpcomingFunerals": "Contracts with Upcoming Funerals",
   "contractType": "Contract Type",
   "contractUpdate": "Contract Update",

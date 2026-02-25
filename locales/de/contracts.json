@@ -4,6 +4,7 @@
   "contracts": "Verträge",
   "contractsDescription": "Aktuelle und vergangene Verträge anzeigen und verwalten.",
   "contractSearch": "Vertragssuche",
+  "contractTitle": "Vertrag #{{id}}",
   "contractsWithUpcomingFunerals": "Verträge mit bevorstehenden Beerdigungen",
   "contractType": "Vertragsart",
   "contractUpdate": "Vertrag aktualisieren",

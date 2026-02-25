@@ -11,5 +11,6 @@
   "workOrders": "Work Orders",
   "workOrdersDescription": "View and maintain work orders.",
   "workdayReport": "Workday Report",
-  "workOrderSearch": "Work Order Search"
+  "workOrderSearch": "Work Order Search",
+  "workOrderTitle": "Work Order #{{number}}"
 }
