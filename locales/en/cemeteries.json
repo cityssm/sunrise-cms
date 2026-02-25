@@ -13,6 +13,8 @@
   "exportAll": "Export All",
   "gpsCoordinateCapture": "GPS Coordinate Capture",
   "noBurialSites": "There are no burial sites associated with this cemetery.",
+  "noCemetery": "No Cemetery",
+  "noCemeterySelected": "No Cemetery Selected",
   "noStatus": "No Status",
   "percentage": "Percentage",
   "cemeteries": "Cemeteries",

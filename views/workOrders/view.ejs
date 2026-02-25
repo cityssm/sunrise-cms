@@ -119,7 +119,7 @@
               <% if (workOrder.workOrderDescription) { %>
                 <%= workOrder.workOrderDescription %>
               <% } else { %>
-                <span class="has-text-grey">(No Description)</span>
+                <span class="has-text-grey">(<%= t('workOrders:noDescription') %>)</span>
               <% } %>
             </p>
           </div>
@@ -216,7 +216,7 @@
                     <% if (contract.burialSiteId) { %>
                       <%= contract.burialSiteName %>
                     <% } else { %>
-                      <span class="has-text-grey">(No Burial Site)</span>
+                      <span class="has-text-grey">(<%= t('contracts:noBurialSite') %>)</span>
                     <% } %>
                   </td>
                   <td><%= contract.contractStartDateString %></td>
@@ -225,7 +225,7 @@
                     <% if (contract.contractEndDate) { %>
                       <%= contract.contractEndDateString %>
                     <% } else { %>
-                      <span class="has-text-grey">(No End Date)</span>
+                      <span class="has-text-grey">(<%= t('workOrders:noEndDate') %>)</span>
                     <% } %>
                   </td>
                   <% } %>
@@ -415,7 +415,7 @@
                 <strong><%= milestone.workOrderMilestoneType %></strong><br />
               <% } %>
               <% if (milestone.workOrderMilestoneDate === 0) { %>
-                <span class="has-text-grey">(No Set Date)</span>
+                <span class="has-text-grey">(<%= t('workOrders:noSetDate') %>)</span>
               <% } else { %>
                 <%= milestone.workOrderMilestoneDateString %>
               <% } %>

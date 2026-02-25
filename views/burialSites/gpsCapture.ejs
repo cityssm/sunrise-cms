@@ -50,7 +50,7 @@
                     <option value="">Select Cemetery...</option>
                     <% for (const cemetery of cemeteries) { %>
                     <option value="<%= cemetery.cemeteryId %>" <%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>>
-                      <%= cemetery.cemeteryName || "(No Name)" %>
+                      <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
                     </option>
                     <% } %>
                   </select>

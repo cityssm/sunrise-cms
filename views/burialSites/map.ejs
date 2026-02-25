@@ -34,7 +34,7 @@
               value="<%= cemetery.cemeteryId %>"
               _<% if (cemetery.cemeteryId.toString() === cemeteryId) { %> selected <% } %>
             >
-              <%= cemetery.cemeteryName || '(No Name)' %>
+              <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
             </option>
             <% } %>
           </select>

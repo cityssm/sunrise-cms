@@ -73,7 +73,7 @@
                       <option value="">(All Work Order Types)</option>
                       <% for (const workOrderType of workOrderTypes) { %>
                       <option value="<%= workOrderType.workOrderTypeId %>">
-                        <%= workOrderType.workOrderType || "(No Name)" %>
+                        <%= workOrderType.workOrderType || ('(' + t('cemeteries:noName') + ')') %>
                       </option>
                       <% } %>
                     </select>
@@ -146,7 +146,7 @@
                     <select id="searchFilter--cemeteryId" name="cemeteryId">
                       <option value="">(All Cemeteries)</option>
                       <% for (const cemetery of cemeteries) { %>
-                      <option value="<%= cemetery.cemeteryId %>"><%= cemetery.cemeteryName || "(No Name)" %></option>
+                      <option value="<%= cemetery.cemeteryId %>"><%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %></option>
                       <% } %>
                     </select>
                   </div>
@@ -204,7 +204,7 @@
                     <select id="searchFilter--funeralHomeId" name="funeralHomeId">
                       <option value="">(All Funeral Homes)</option>
                       <% for (const funeralHome of funeralHomes) { %>
-                      <option value="<%= funeralHome.funeralHomeId %>"><%= funeralHome.funeralHomeName || "(No Name)" %></option>
+                      <option value="<%= funeralHome.funeralHomeId %>"><%= funeralHome.funeralHomeName || ('(' + t('cemeteries:noName') + ')') %></option>
                       <% } %>
                     </select>
                   </div>

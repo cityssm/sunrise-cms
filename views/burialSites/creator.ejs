@@ -67,10 +67,10 @@
               <div class="control">
                 <div class="select is-fullwidth">
                   <select id="burialSiteCreator--cemeteryId" name="cemeteryId">
-                    <option value="">(No Cemetery Selected)</option>
+                    <option value="">(<%= t('cemeteries:noCemeterySelected') %>)</option>
                     <% for (const cemetery of cemeteries) { %>
                     <option data-cemetery-key="<%= cemetery.cemeteryKey %>" value="<%= cemetery.cemeteryId %>">
-                      <%= cemetery.cemeteryName === '' ? '(No Name)' : cemetery.cemeteryName %>
+                      <%= cemetery.cemeteryName === '' ? ('(' + t('cemeteries:noName') + ')') : cemetery.cemeteryName %>
                     </option>
                     <% } %>
                   </select>
@@ -220,7 +220,7 @@
                       <option value="">(Select a Type)</option>
                       <% for (const burialSiteType of burialSiteTypes) { %>
                       <option value="<%= burialSiteType.burialSiteTypeId %>">
-                        <%= burialSiteType.burialSiteType === '' ? '(No Name)' : burialSiteType.burialSiteType %>
+                        <%= burialSiteType.burialSiteType === '' ? ('(' + t('cemeteries:noName') + ')') : burialSiteType.burialSiteType %>
                       </option>
                       <% } %>
                     </select>
@@ -237,7 +237,7 @@
                       <option value="">(Select a Status)</option>
                       <% for (const burialSiteStatus of burialSiteStatuses) { %>
                       <option value="<%= burialSiteStatus.burialSiteStatusId %>">
-                        <%= burialSiteStatus.burialSiteStatus === '' ? '(No Name)' : burialSiteStatus.burialSiteStatus %>
+                        <%= burialSiteStatus.burialSiteStatus === '' ? ('(' + t('cemeteries:noName') + ')') : burialSiteStatus.burialSiteStatus %>
                       </option>
                       <% } %>
                     </select>

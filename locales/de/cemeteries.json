@@ -13,6 +13,8 @@
   "exportAll": "Alle exportieren",
   "gpsCoordinateCapture": "GPS-Koordinatenerfassung",
   "noBurialSites": "Es gibt keine Grabstätten, die diesem Friedhof zugeordnet sind.",
+  "noCemetery": "Kein Friedhof",
+  "noCemeterySelected": "Kein Friedhof ausgewählt",
   "noStatus": "Kein Status",
   "percentage": "Prozentsatz",
   "cemeteries": "Friedhöfe",

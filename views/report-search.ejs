@@ -169,7 +169,7 @@
                     <select id="contracts-current-byCemeteryId--cemeteryId" name="cemeteryId">
                       <% for (const cemetery of cemeteries) { %>
                       <option value="<%= cemetery.cemeteryId %>">
-                        <%= cemetery.cemeteryName || "(No Name)" %>
+                        <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
                       </option>
                       <% } %>
                     </select>
@@ -270,7 +270,7 @@
                     <select id="burialSites-byCemeteryId--cemeteryId" name="cemeteryId">
                       <% for (const cemetery of cemeteries) { %>
                       <option value="<%= cemetery.cemeteryId %>">
-                        <%= cemetery.cemeteryName || "(No Name)" %>
+                        <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
                       </option>
                       <% } %>
                     </select>

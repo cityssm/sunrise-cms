@@ -93,10 +93,10 @@
         <p class="mb-2">
           <strong>Cemetery</strong><br />
           <% if (burialSite.cemeteryId === null) { %>
-          <span class="has-text-grey">(No Cemetery)</span>
+          <span class="has-text-grey">(<%= t('cemeteries:noCemetery') %>)</span>
           <% } else { %>
           <a href="<%= urlPrefix %>/cemeteries/<%= burialSite.cemeteryId %>">
-            <%= burialSite.cemeteryName || "(No Name)" %>
+            <%= burialSite.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
           </a>
           <% } %>
         </p>
@@ -123,7 +123,7 @@
         <p>
           <strong>Status</strong><br />
           <% if (burialSite.burialSiteStatusId === null) { %>
-          <span class="has-text-grey">(No Status)</span>
+          <span class="has-text-grey">(<%= t('cemeteries:noStatus') %>)</span>
           <% } else { %>
           <%= burialSite.burialSiteStatus %>
           <% } %>
@@ -137,7 +137,7 @@
           <% if (burialSiteField.fieldValue) { %>
           <%= burialSiteField.fieldValue %>
           <% } else { %>
-          <span class="has-text-grey">(No Value)</span>
+          <span class="has-text-grey">(<%= t('common:noValue') %>)</span>
           <% } %>
         </p>
         <% } %>
@@ -373,7 +373,7 @@ for (const contract of burialSite.contracts) {
             <% if (contract.contractEndDate) { %>
             <%= contract.contractEndDateString %>
             <% } else { %>
-            <span class="has-text-grey">(No End Date)</span>
+            <span class="has-text-grey">(<%= t('common:noEndDate') %>)</span>
             <% } %>
           </td>
           <% } %>
