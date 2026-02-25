@@ -208,6 +208,7 @@ async function addInclusions(
       database
     )
 
+    // eslint-disable-next-line require-atomic-updates
     workOrder.workOrderContracts = contracts.contracts
   }
 
@@ -225,6 +226,7 @@ async function addInclusions(
             database
           )
 
+    // eslint-disable-next-line require-atomic-updates
     workOrder.workOrderMilestones = milestones
   }
 

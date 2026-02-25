@@ -128,6 +128,7 @@ async function addInclusions(workOrder, options, database) {
             includeInterments: true,
             includeTransactions: false
         }, database);
+        // eslint-disable-next-line require-atomic-updates
         workOrder.workOrderContracts = contracts.contracts;
     }
     if (options.includeMilestones ?? false) {
@@ -138,6 +139,7 @@ async function addInclusions(workOrder, options, database) {
             }, {
                 orderBy: 'date'
             }, database);
+        // eslint-disable-next-line require-atomic-updates
         workOrder.workOrderMilestones = milestones;
     }
     return workOrder;
