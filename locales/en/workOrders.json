@@ -1,6 +1,12 @@
 {
+  "createNewWorkOrder": "Create a New Work Order",
+  "icalIntegration": "iCalendar Integration",
+  "milestoneCalendar": "Milestone Calendar",
   "newWorkOrder": "New Work Order",
+  "noNumber": "No Number",
+  "workOrderReports": "Work Order Reports",
   "workOrders": "Work Orders",
   "workOrdersDescription": "View and maintain work orders.",
-  "workdayReport": "Workday Report"
+  "workdayReport": "Workday Report",
+  "workOrderSearch": "Work Order Search"
 }
