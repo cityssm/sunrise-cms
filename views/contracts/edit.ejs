@@ -8,22 +8,22 @@
         <span class="icon is-small">
           <i class="fa-solid fa-file-contract"></i>
         </span>
-        <span>Contracts</span>
+        <span><%= t('contracts:contracts') %></span>
       </a>
     </li>
     <% if (!isCreate) { %>
     <li>
       <a href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
-        Contract #<%= contract.contractNumber %>: <%= contract.burialSiteName || ("(No Burial Site)") %>
+        Contract #<%= contract.contractNumber %>: <%= contract.burialSiteName || ('(' + t('contracts:noBurialSite') + ')') %>
       </a>
     </li>
     <% } %>
     <li class="is-active">
       <a href="#" aria-current="page">
         <% if (isCreate) { %>
-          Create a New Contract
+          <%= t('contracts:createNewContract') %>
         <% } else { %>
-          Update Contract
+          <%= t('contracts:contractUpdate') %>
         <% } %>
       </a>
     </li>
@@ -32,7 +32,7 @@
 
 <% if (isCreate) { %>
   <h1 class="title is-1">
-    Create a New Contract
+    <%= t('contracts:createNewContract') %>
   </h1>
 <% } else { %>
   <h1 class="title is-1">
@@ -44,7 +44,7 @@
   <div class="column has-text-weight-bold">
     <% if (!isCreate) { %>
       Contract #<%= contract.contractNumber %>:
-      <%= contract.burialSiteName || ("(No Burial Site)") %>
+      <%= contract.burialSiteName || ('(' + t('contracts:noBurialSite') + ')') %>
     <% } %>
   </div>
   <div class="column is-narrow has-text-right">
@@ -186,7 +186,7 @@
             <div class="control is-expanded">
               <input class="input is-clickable has-text-left <%= (isCreate ? "" : " is-readonly") %>"
                 id="contract--burialSiteName" type="button"
-                value="<%= contract.burialSiteName || "(No Burial Site)" %>"
+                value="<%= contract.burialSiteName || ('(' + t('contracts:noBurialSite') + ')') %>"
                 <%= (configFunctions.getConfigProperty("settings.contracts.burialSiteIdIsRequired") ? " required" : "") %>
                 <%= (isCreate ? "" : " disabled readonly") %> />
             </div>
@@ -265,7 +265,7 @@
                         <select id="contract--fieldValue_<%= contractField.contractTypeFieldId %>"
                           name="fieldValue_<%= contractField.contractTypeFieldId %>">
                           <% if (!contractField.isRequired || contractField.contractFieldValue === "") { %>
-                            <option value="">(Not Set)</option>
+                            <option value="">(<%= t('contracts:notSet') %>)</option>
                           <% } %>
                           <% for (const fieldValue of fieldValues) { %>
                             <% 
@@ -382,7 +382,7 @@
             <div class="control">
               <div class="select is-fullwidth">
                 <select id="contract--funeralHomeId" name="funeralHomeId">
-                  <option value="">(No Funeral Home)</option>
+                  <option value="">(<%= t('contracts:noFuneralHome') %>)</option>
                   <% let funeralHomeIsFound = false; %>
                   <optgroup label="Available Funeral Homes">
                     <% for (const funeralHome of funeralHomes) { %>
@@ -549,7 +549,7 @@
             <div class="control">
               <div class="select is-fullwidth">
                 <select id="contract--directionOfArrival" name="directionOfArrival">
-                  <option value="">(No Direction)</option>
+                  <option value="">(<%= t('contracts:noDirection') %>)</option>
                   <% for (const direction of dataLists.directionsOfArrival) { %>
                     <%
                       if (burialSiteDirectionsOfArrival[direction] === undefined) {
@@ -573,7 +573,7 @@
             <div class="control">
               <div class="select is-fullwidth">
                 <select id="contract--committalTypeId" name="committalTypeId">
-                  <option value="">(No Type)</option>
+                  <option value="">(<%= t('contracts:noCommittalType') %>)</option>
                   <% let committalTypeIsFound = false; %>
                   <% for (const committalType of committalTypes) { %>
                     <%
@@ -894,7 +894,7 @@
               <label class="label" for="contract--intermentContainerTypeId">Container</label>
               <div class="select is-fullwidth">
                 <select id="contract--intermentContainerTypeId" name="intermentContainerTypeId">
-                  <option value="">(No Container)</option>
+                  <option value="">(<%= t('contracts:noContainer') %>)</option>
                   <optgroup label="Non-Cremated">
                     <%
                       let containerIsFound = false;
@@ -929,7 +929,7 @@
               <label class="label" for="contract--intermentDepthId">Depth</label>
               <div class="select is-fullwidth">
                 <select id="contract--intermentDepthId" name="intermentDepthId">
-                  <option value="">(No Depth)</option>
+                  <option value="">(<%= t('contracts:noDepth') %>)</option>
                   <% for (const depth of intermentDepths) { %>
                     <option value="<%= depth.intermentDepthId %>"
                       <%= (contract.intermentDepthId === depth.intermentDepthId ? ' selected' : '') %>>

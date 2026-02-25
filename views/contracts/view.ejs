@@ -8,13 +8,13 @@
         <span class="icon is-small">
           <i class="fa-solid fa-file-contract"></i>
         </span>
-        <span>Contracts</span>
+        <span><%= t('contracts:contracts') %></span>
       </a>
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
         Contract #<%= contract.contractNumber %>:
-        <%= contract.burialSiteName ?? "(No Burial Site)" %>
+        <%= contract.burialSiteName ?? ('(' + t('contracts:noBurialSite') + ')') %>
       </a>
     </li>
   </ul>
@@ -25,7 +25,7 @@
     <h1 class="title is-1">
       Contract
       #<%= contract.contractNumber %>:
-      <span class="is-nowrap"><%= contract.burialSiteName || "(No Burial Site)" %></span>
+      <span class="is-nowrap"><%= contract.burialSiteName || ('(' + t('contracts:noBurialSite') + ')') %></span>
     </h1>
   </div>
   <% if (contract.contractEndDate) { %>
@@ -53,7 +53,7 @@
   <div class="column">
     <span class="has-text-weight-bold">
       Contract #<%= contract.contractNumber %>:
-      <%= contract.burialSiteName ?? "(No Burial Site)" %>
+      <%= contract.burialSiteName ?? ('(' + t('contracts:noBurialSite') + ')') %>
     </span>
   </div>
   <div class="column is-narrow has-text-right">
@@ -129,7 +129,7 @@
             <%= contract.burialSiteName %>
           </a>
           <% } else { %>
-          <span class="has-text-grey">(No Burial Site)</span>
+          <span class="has-text-grey">(<%= t('contracts:noBurialSite') %>)</span>
           <% } %>
         </p>
         <p>
@@ -137,7 +137,7 @@
           <% if (contract.cemeteryId) { %>
           <a href="<%= urlPrefix %>/cemeteries/<%= contract.cemeteryId %>"><%= contract.cemeteryName %></a>
           <% } else { %>
-          <span class="has-text-grey">(No Cemetery)</span>
+          <span class="has-text-grey">(<%= t('contracts:noCemetery') %>)</span>
           <% } %>
         </p>
       </div>
@@ -150,7 +150,7 @@
         <p>
           <strong>End Date</strong><br />
           <% if (contract.contractEndDateString === "") { %>
-          <span class="has-text-grey">(No End Date)</span>
+          <span class="has-text-grey">(<%= t('contracts:noEndDate') %>)</span>
           <% } else { %>
           <%= contract.contractEndDateString %>
           <% } %>
@@ -165,7 +165,7 @@
           <% if (contractField.fieldValue) { %>
           <%= contractField.fieldValue %>
           <% } else { %>
-          <span class="has-text-grey">(No Value)</span>
+          <span class="has-text-grey">(<%= t('contracts:noValue') %>)</span>
           <% } %>
         </p>
         <% } %>
@@ -249,7 +249,7 @@ const displayServicesPanel =
         <p>
           <strong>Funeral Home</strong><br />
           <% if (contract.funeralHomeName === null) { %>
-            <span class="has-text-grey">(No Funeral Home)</span>
+            <span class="has-text-grey">(<%= t('contracts:noFuneralHome') %>)</span>
           <% } else { %>
             <a class="<%= contract.funeralHomeIsActive ? '' : 'has-text-danger-dark' %>" href="<%= urlPrefix %>/funeralHomes/<%= contract.funeralHomeId %>">
               <%= contract.funeralHomeName %>
@@ -288,7 +288,7 @@ const displayServicesPanel =
         <p>
           <strong>Funeral Director's Name</strong><br />
           <% if (contract.funeralDirectorName === '') { %>
-          <span class="has-text-grey">(No Funeral Director's Name)</span>
+          <span class="has-text-grey">(<%= t('contracts:noFuneralDirectorName') %>)</span>
           <% } else { %>
           <%= contract.funeralDirectorName %>
           <% } %>
@@ -313,7 +313,7 @@ const displayServicesPanel =
         <p>
           <strong>Direction of Arrival</strong><br />
           <% if ((contract.directionOfArrival ?? '') === '') { %>
-          <span class="has-text-grey">(No Direction of Arrival)</span>
+          <span class="has-text-grey">(<%= t('contracts:noDirectionOfArrival') %>)</span>
           <% } else { %>
           <%= contract.directionOfArrivalDescription %>
           <span class="tag"><%= contract.directionOfArrival %></span>
@@ -323,7 +323,7 @@ const displayServicesPanel =
         <p class="mt-2">
           <strong>Committal Type</strong><br />
           <% if (contract.committalType === null) { %>
-          <span class="has-text-grey">(No Committal Type)</span>
+          <span class="has-text-grey">(<%= t('contracts:noCommittalType') %>)</span>
           <% } else { %>
           <%= contract.committalType %>
           <% } %>
@@ -356,7 +356,7 @@ const displayServicesPanel =
           <div class="column">
             <p>
               <% if (contract.purchaserName === '') { %>
-                <span class="has-text-grey">(No Purchaser Set)</span>
+                <span class="has-text-grey">(<%= t('contracts:noPurchaser') %>)</span>
               <% } else { %>
                 <%= contract.purchaserName %>
               <% } %><br />
@@ -469,7 +469,7 @@ const displayServicesPanel =
                   </div>
                   <div class="column">
                     <% if (contractInterment.birthDateString === '') { %>
-                      <span class="has-text-grey">(No Birth Date)</span>
+                      <span class="has-text-grey">(<%= t('contracts:noBirthDate') %>)</span>
                     <% } else { %>
                       <%= contractInterment.birthDateString %>
                     <% } %><br />
@@ -482,7 +482,7 @@ const displayServicesPanel =
                   </div>
                   <div class="column">
                     <% if (contractInterment.deathDateString === '') { %>
-                      <span class="has-text-grey">(No Death Date)</span>
+                      <span class="has-text-grey">(<%= t('contracts:noDeathDate') %>)</span>
                     <% } else { %>
                       <%= contractInterment.deathDateString %>
                     <% } %><br />
@@ -504,7 +504,7 @@ const displayServicesPanel =
                   </div>
                   <div class="column">
                     <% if ((contractInterment.intermentContainerType ?? '') === '') { %>
-                    <span class="has-text-grey">(No Container Type)</span>
+                    <span class="has-text-grey">(<%= t('contracts:noContainerType') %>)</span>
                     <% } else { %>
                     <%= contractInterment.intermentContainerType %>
                     <% } %>
@@ -516,7 +516,7 @@ const displayServicesPanel =
                   </div>
                   <div class="column">
                     <% if ((contractInterment.intermentDepth ?? '') === '') { %>
-                    <span class="has-text-grey">(No Depth)</span>
+                    <span class="has-text-grey">(<%= t('contracts:noDepth') %>)</span>
                     <% } else { %>
                     <%= contractInterment.intermentDepth %>
                     <% } %>
@@ -856,13 +856,13 @@ const displayServicesPanel =
                 <% if (relatedContract.contractEndDate) { %>
                   <%= relatedContract.contractEndDateString %>
                 <% } else { %>
-                  <span class="has-text-grey">(No End Date)</span>
+                  <span class="has-text-grey">(<%= t('contracts:noEndDate') %>)</span>
                 <% } %>
               </td>
               <% } %>
               <td>
                 <% if (relatedContract.contractInterments.length === 0) { %>
-                  <span class="has-text-grey">(No Interments)</span>
+                  <span class="has-text-grey">(<%= t('contracts:noInterments') %>)</span>
                 <% } else { %>
                   <% for (const interment of relatedContract.contractInterments) { %>
                   <%= interment.deceasedName %><br />

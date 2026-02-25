@@ -21,7 +21,7 @@ await i18next
     fallbackLng: 'en',
     supportedLngs: ['en', 'de'],
     preload: ['en', 'de'],
-    ns: ['admin', 'cemeteries', 'common', 'contracts', 'workOrders', 'login', 'dashboard', 'navigation', 'errors'],
+    ns: ['admin', 'cemeteries', 'common', 'contracts', 'workOrders', 'login', 'dashboard', 'errors'],
     defaultNS: 'common',
     backend: {
       loadPath: path.join(localesPath, '{{lng}}', '{{ns}}.json')

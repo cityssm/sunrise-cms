@@ -5,6 +5,7 @@ import getFuneralHomes from '../../database/getFuneralHomes.js'
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
 import { getCachedContractTypes } from '../../helpers/cache/contractTypes.cache.js'
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js'
+import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(
   request: Request<
@@ -43,7 +44,7 @@ export default function handler(
   const serviceTypes = getCachedServiceTypes()
 
   response.render('contracts/search', {
-    headTitle: 'Contract Search',
+    headTitle: i18next.t('contracts:contractSearch', { lng: response.locals.lng }),
 
     cemeteryId: request.query.cemeteryId,
     contractNumber: request.query.contractNumber ?? '',

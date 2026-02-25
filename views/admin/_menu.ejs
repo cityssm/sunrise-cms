@@ -5,100 +5,100 @@
   <ul class="menu-list">
     <li>
       <a
-        class="<%= (headTitle === 'Fee Management' ? 'is-active' : '') %>"
+        class="<%= (headTitle === t('admin:feeManagement') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/admin/fees"
-        title="Fee Management"
+        title="<%= t('admin:feeManagement') %>"
       >
         <div class="columns is-1 is-mobile">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-dollar-sign"></i></span>
           </div>
           <div class="column is-hidden-touch">
-            Fees
+            <%= t('admin:fees') %>
           </div>
         </div>
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === 'Contract Type Management' ? 'is-active' : '') %>"
+      <a class="<%= (headTitle === t('admin:contractTypeManagement') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/admin/contractTypes"
-        title="Contract Type Management">
+        title="<%= t('admin:contractTypeManagement') %>">
         <div class="columns is-1 is-mobile">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-file-contract"></i></span>
           </div>
           <div class="column is-hidden-touch">
-            Contract Types
+            <%= t('admin:contractTypes') %>
           </div>
         </div>
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === 'Burial Site Type Management' ? 'is-active' : '') %>"
+      <a class="<%= (headTitle === t('admin:burialSiteTypeManagement') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/admin/burialSiteTypes"
-        title="Burial Site Type Management">
+        title="<%= t('admin:burialSiteTypeManagement') %>">
         <div class="columns is-1 is-mobile">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-map-pin"></i></span>
           </div>
           <div class="column is-hidden-touch">
-            Burial Site Types
+            <%= t('admin:burialSiteTypes') %>
           </div>
         </div>
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === 'Config Table Management' ? 'is-active' : '') %>"
+      <a class="<%= (headTitle === t('admin:configTableManagement') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/admin/tables"
-        title="Config Table Management">
+        title="<%= t('admin:configTableManagement') %>">
         <div class="columns is-1 is-mobile">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-table"></i></span>
           </div>
           <div class="column is-hidden-touch">
-            Config Tables
+            <%= t('admin:configTables') %>
           </div>
         </div>
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === 'User Management' ? 'is-active' : '') %>"
+      <a class="<%= (headTitle === t('admin:userManagement') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/admin/users"
-        title="User Management">
+        title="<%= t('admin:userManagement') %>">
         <div class="columns is-1 is-mobile">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-users"></i></span>
           </div>
           <div class="column is-hidden-touch">
-            Users
+            <%= t('admin:users') %>
           </div>
         </div>
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === 'Settings Management' ? 'is-active' : '') %>"
+      <a class="<%= (headTitle === t('admin:settingsManagement') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/admin/settings"
-        title="Settings Management">
+        title="<%= t('admin:settingsManagement') %>">
         <div class="columns is-1 is-mobile">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-sliders"></i></span>
           </div>
           <div class="column is-hidden-touch">
-            Settings
+            <%= t('admin:settings') %>
           </div>
         </div>
       </a>
     </li>
     <li>
-      <a class="<%= (headTitle === 'Database Maintenance' ? 'is-active' : '') %>"
+      <a class="<%= (headTitle === t('admin:databaseMaintenance') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/admin/database"
-        title="Database Maintenance">
+        title="<%= t('admin:databaseMaintenance') %>">
         <div class="columns is-1 is-mobile">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-database"></i></span>
           </div>
           <div class="column is-hidden-touch">
-            Database
+            <%= t('admin:database') %>
           </div>
         </div>
       </a>

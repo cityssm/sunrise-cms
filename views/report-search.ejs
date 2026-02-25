@@ -5,7 +5,7 @@
   <div class="column is-3-desktop is-narrow-touch">
     <aside class="menu">
       <h2 class="menu-label is-hidden-touch">
-        Reports
+        <%= t('dashboard:reports') %>
       </h2>
       <ul class="menu-list">
         <li>
@@ -93,7 +93,7 @@
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-regular fa-file"></i></span>
-            <span>Reports</span>
+            <span><%= t('dashboard:reports') %></span>
           </a>
         </li>
       </ul>
@@ -169,7 +169,7 @@
                     <select id="contracts-current-byCemeteryId--cemeteryId" name="cemeteryId">
                       <% for (const cemetery of cemeteries) { %>
                       <option value="<%= cemetery.cemeteryId %>">
-                        <%= cemetery.cemeteryName || "(No Name)" %>
+                        <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
                       </option>
                       <% } %>
                     </select>
@@ -270,7 +270,7 @@
                     <select id="burialSites-byCemeteryId--cemeteryId" name="cemeteryId">
                       <% for (const cemetery of cemeteries) { %>
                       <option value="<%= cemetery.cemeteryId %>">
-                        <%= cemetery.cemeteryName || "(No Name)" %>
+                        <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
                       </option>
                       <% } %>
                     </select>

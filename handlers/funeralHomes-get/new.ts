@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import type { FuneralHome } from '../../types/record.types.js'
+import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(_request: Request, response: Response): void {
   const funeralHome: FuneralHome = {
@@ -17,7 +18,7 @@ export default function handler(_request: Request, response: Response): void {
   }
 
   response.render('funeralHomes/edit', {
-    headTitle: 'Create a Funeral Home',
+    headTitle: i18next.t('contracts:createNewFuneralHome', { lng: response.locals.lng }),
 
     funeralHome,
     isCreate: true

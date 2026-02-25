@@ -15,7 +15,7 @@ export default function handler(_request, response) {
     const hasConfigUsers = Object.values(configUsers).some((userArray) => userArray.length > 0);
     response.render('admin/users', {
         headTitle: i18next.t('admin:userManagement', {
-            lng: response.locals.language
+            lng: response.locals.lng
         }),
         users,
         configUsers,

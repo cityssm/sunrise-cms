@@ -3,6 +3,7 @@ import type { Request, Response } from 'express'
 import getCemeteries from '../../database/getCemeteries.js'
 import getFuneralHomes from '../../database/getFuneralHomes.js';
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
+import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(
   request: Request<
@@ -27,7 +28,7 @@ export default function handler(
   const workOrderTypes = getCachedWorkOrderTypes()
 
   response.render('workOrders/search', {
-    headTitle: 'Work Order Search',
+    headTitle: i18next.t('workOrders:workOrderSearch', { lng: response.locals.lng }),
 
     cemeteries,
     funeralHomes,

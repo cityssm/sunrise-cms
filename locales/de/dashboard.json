@@ -1,4 +1,5 @@
 {
+  "about": "Über",
   "helpDescription": "Tipps und Tricks, um das Beste aus Sunrise CMS herauszuholen.",
   "helpDocumentation": "Hilfedokumentation",
   "overview": "Übersicht",
@@ -6,6 +7,7 @@
   "recentActivity": "Letzte Aktivitäten",
   "reportLibrary": "Berichtsbibliothek",
   "reportLibraryDescription": "Berichte erstellen und Daten exportieren.",
+  "reports": "Berichte",
   "statistics": "Statistiken",
   "title": "Dashboard",
   "updateLog": "Aktualisierungsprotokoll",
@@ -16,7 +18,7 @@
   "userSettingsConsignoCloudDescription": "Die {{consignoCloudLink}}-Integration ermöglicht es Ihnen, Verträge zur elektronischen Unterzeichnung an Käufer zu senden.",
   "userSettingsConsignoCloudPassword": "Drittanbieter-Anwendungspasswort",
   "userSettingsConsignoCloudPasswordHelp": "Dies ist nicht dasselbe wie Ihr ConsignO Cloud-Passwort. Es ist ein separates Passwort, das Sie in Ihren ConsignO Cloud-Einstellungen generieren können.",
-  "userSettingsConsignoCloudPasswordUnchanged": "(Unverändert)",
+  "userSettingsConsignoCloudPasswordUnchanged": "Unverändert",
   "userSettingsConsignoCloudSave": "ConsignO Cloud-Einstellungen speichern",
   "userSettingsConsignoCloudUserName": "ConsignO Cloud-Benutzername",
   "userSettingsConsignoCloudUserNameHelp": "Dies ist die E-Mail-Adresse, mit der Sie sich bei ConsignO Cloud anmelden.",

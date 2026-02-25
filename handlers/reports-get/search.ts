@@ -4,6 +4,7 @@ import type { Request, Response } from 'express'
 import getCemeteries from '../../database/getCemeteries.js'
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
+import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(
   request: Request<unknown, unknown, unknown, { tab?: string }>,
@@ -18,7 +19,7 @@ export default function handler(
   const burialSiteStatuses = getCachedBurialSiteStatuses()
 
   response.render('report-search', {
-    headTitle: 'Reports',
+    headTitle: i18next.t('dashboard:reports', { lng: response.locals.lng }),
     reportTab,
 
     burialSiteStatuses,

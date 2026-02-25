@@ -37,3 +37,7 @@ megalinter-reports/
 temp_build/
 
 tsconfig.tsbuildinfo
+
+# Jetbrains IDEs
+.idea/
+*.iml

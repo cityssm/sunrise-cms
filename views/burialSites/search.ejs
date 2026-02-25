@@ -11,7 +11,7 @@
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-solid fa-map-pin"></i></span>
-            <span>Burial Sites</span>
+            <span><%= t('cemeteries:burialSites') %></span>
           </a>
         </li>
       </ul>
@@ -87,7 +87,7 @@
                       <option value="<%= burialSiteType.burialSiteTypeId %>"
                         _<%= (burialSiteType.burialSiteTypeId.toString() === burialSiteTypeId) ? " selected" : "" %>
                       >
-                        <%= burialSiteType.burialSiteType || "(No Name)" %>
+                        <%= burialSiteType.burialSiteType || ('(' + t('cemeteries:noName') + ')') %>
                       </option>
                     <% } %>
                   </select>
@@ -112,7 +112,7 @@
                       value="<%= cemetery.cemeteryId %>"
                       _<%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>
                     >
-                      <%= cemetery.cemeteryName || "(No Name)" %>
+                      <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
                     </option>
                     <% } %>
                   </select>
