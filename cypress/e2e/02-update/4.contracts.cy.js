@@ -1,5 +1,5 @@
 import { testUpdate } from '../../../test/_globals.js';
-import { login, logout, pageLoadDelayMillis } from '../../support/index.js';
+import { checkA11yLog, login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Contracts - Update', () => {
     beforeEach(() => {
         logout();
@@ -15,7 +15,7 @@ describe('Contracts - Update', () => {
         cy.visit('/contracts/new');
         cy.log('Check the accessibility');
         cy.injectAxe();
-        cy.checkA11y();
+        cy.checkA11y(undefined, undefined, checkA11yLog);
         cy.log('Populate the fields');
         // Select the first available contract type
         cy.get("select[name='contractTypeId'] option")

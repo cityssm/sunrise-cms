@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js'
-import { login, logout } from '../../support/index.js'
+import { checkA11yLog, login, logout } from '../../support/index.js'
 
 describe('User Settings', () => {
   beforeEach(() => {
@@ -14,6 +14,6 @@ describe('User Settings', () => {
     cy.location('pathname').should('equal', '/dashboard/userSettings')
 
     cy.injectAxe()
-    cy.checkA11y()
+    cy.checkA11y(undefined, undefined, checkA11yLog)
   })
 })

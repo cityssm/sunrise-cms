@@ -1,6 +1,6 @@
 import { testUpdate } from '../../../test/_globals.js'
 import type { Contract } from '../../../types/record.types.js'
-import { login, logout, pageLoadDelayMillis } from '../../support/index.js'
+import { checkA11yLog, login, logout, pageLoadDelayMillis } from '../../support/index.js'
 
 describe('Contracts - Update', () => {
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('Contracts - Update', () => {
     cy.log('Check the accessibility')
 
     cy.injectAxe()
-    cy.checkA11y()
+    cy.checkA11y(undefined, undefined, checkA11yLog)
 
     cy.log('Populate the fields')
 

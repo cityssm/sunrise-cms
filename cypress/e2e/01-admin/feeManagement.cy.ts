@@ -1,7 +1,7 @@
 import config from '../../../data/config.js'
 import { testAdmin } from '../../../test/_globals.js'
 import type { Fee } from '../../../types/record.types.js'
-import { ajaxDelayMillis, login, logout } from '../../support/index.js'
+import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js'
 
 describe('Admin - Fee Management', () => {
   beforeEach('Loads page', () => {
@@ -15,7 +15,7 @@ describe('Admin - Fee Management', () => {
 
   it('Has no detectable accessibility issues', () => {
     cy.injectAxe()
-    cy.checkA11y()
+    cy.checkA11y(undefined, undefined, checkA11yLog)
   })
 
   it('Creates a new fee category', () => {
@@ -24,7 +24,7 @@ describe('Admin - Fee Management', () => {
     cy.get('.modal').should('be.visible')
 
     cy.injectAxe()
-    cy.checkA11y()
+    cy.checkA11y(undefined, undefined, checkA11yLog)
 
     cy.fixture('fee.json').then((fee: Fee) => {
       cy.get(".modal input[name='feeCategory']").type(fee.feeCategory ?? '')
@@ -46,7 +46,7 @@ describe('Admin - Fee Management', () => {
     cy.get('.modal').should('be.visible')
 
     cy.injectAxe()
-    cy.checkA11y()
+    cy.checkA11y(undefined, undefined, checkA11yLog)
 
     cy.fixture('fee.json').then((fee: Fee) => {
       cy.get(".modal input[name='feeName']").type(fee.feeName ?? '')

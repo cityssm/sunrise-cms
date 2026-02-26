@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js';
-import { ajaxDelayMillis, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js';
 describe('Work Order Milestone Calendar', () => {
     beforeEach(() => {
         logout();
@@ -14,7 +14,7 @@ describe('Work Order Milestone Calendar', () => {
         cy.location('pathname').should('equal', milestoneCalendarUrl);
         cy.wait(ajaxDelayMillis);
         cy.injectAxe();
-        cy.checkA11y();
+        cy.checkA11y(undefined, undefined, checkA11yLog);
     });
     it('Should page to next month', () => {
         cy.visit(milestoneCalendarUrl);

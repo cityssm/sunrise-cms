@@ -1,5 +1,5 @@
 import { testUpdate } from '../../../test/_globals.js';
-import { login, logout } from '../../support/index.js';
+import { checkA11yLog, login, logout } from '../../support/index.js';
 describe('Burial Sites - Range Creator', () => {
     beforeEach('Loads page', () => {
         logout();
@@ -10,6 +10,6 @@ describe('Burial Sites - Range Creator', () => {
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
         cy.injectAxe();
-        cy.checkA11y();
+        cy.checkA11y(undefined, undefined, checkA11yLog);
     });
 });

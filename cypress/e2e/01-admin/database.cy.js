@@ -1,5 +1,5 @@
 import { testAdmin } from '../../../test/_globals.js';
-import { ajaxDelayMillis, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js';
 describe('Admin - Database Maintenance', () => {
     beforeEach('Loads page', () => {
         logout();
@@ -10,7 +10,7 @@ describe('Admin - Database Maintenance', () => {
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
         cy.injectAxe();
-        cy.checkA11y();
+        cy.checkA11y(undefined, undefined, checkA11yLog);
     });
     it('Backs up the database', () => {
         cy.get("button[data-cy='backup']").click();

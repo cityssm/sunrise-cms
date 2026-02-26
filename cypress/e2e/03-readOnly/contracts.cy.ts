@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js'
-import { login, logout } from '../../support/index.js'
+import { checkA11yLog, login, logout } from '../../support/index.js'
 
 describe('Contract Search', () => {
   beforeEach(() => {
@@ -13,7 +13,7 @@ describe('Contract Search', () => {
     cy.visit('/contracts')
 
     cy.injectAxe()
-    cy.checkA11y()
+    cy.checkA11y(undefined, undefined, checkA11yLog)
 
     cy.get('#searchFilter--cemeteryId').should('not.be.visible')
     cy.get('a[data-cy="location-filters-toggle"]').click()
@@ -28,7 +28,7 @@ describe('Contract Search', () => {
     cy.visit('/contracts?cemeteryId=1')
 
     cy.injectAxe()
-    cy.checkA11y()
+    cy.checkA11y(undefined, undefined, checkA11yLog)
 
     cy.get('#searchFilter--cemeteryId').should('be.visible')
   })
@@ -39,7 +39,7 @@ describe('Contract Search', () => {
     cy.visit(`/contracts?deceasedName=${deceasedName}`)
 
     cy.injectAxe()
-    cy.checkA11y()
+    cy.checkA11y(undefined, undefined, checkA11yLog)
 
     cy.get('#searchFilter--deceasedName')
       .should('be.visible')

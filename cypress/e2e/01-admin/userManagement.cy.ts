@@ -2,7 +2,7 @@
 
 import { testAdmin } from '../../../test/_globals.js'
 import type { DatabaseUser } from '../../../types/record.types.js'
-import { ajaxDelayMillis, login, logout } from '../../support/index.js'
+import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js'
 
 describe('Admin - User Management', () => {
   beforeEach('Loads page', () => {
@@ -16,7 +16,7 @@ describe('Admin - User Management', () => {
 
   it('Has no detectable accessibility issues', () => {
     cy.injectAxe()
-    cy.checkA11y()
+    cy.checkA11y(undefined, undefined, checkA11yLog)
   })
 
   it('Adds a new user', () => {
@@ -25,7 +25,7 @@ describe('Admin - User Management', () => {
     cy.get('.modal').should('be.visible')
 
     cy.injectAxe()
-    cy.checkA11y()
+    cy.checkA11y(undefined, undefined, checkA11yLog)
 
     cy.fixture('user.json').then((user: DatabaseUser) => {
       cy.get(".modal input[name='userName']").type(user.userName)

@@ -1,6 +1,6 @@
 /* eslint-disable max-nested-callbacks */
 import { testUpdate } from '../../../test/_globals.js';
-import { login, logout, pageLoadDelayMillis } from '../../support/index.js';
+import { checkA11yLog, login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Burial Sites - Update', () => {
     beforeEach('Loads page', () => {
         logout();
@@ -11,7 +11,7 @@ describe('Burial Sites - Update', () => {
         cy.visit('/burialSites');
         cy.location('pathname').should('equal', '/burialSites');
         cy.injectAxe();
-        cy.checkA11y();
+        cy.checkA11y(undefined, undefined, checkA11yLog);
         cy.get("a[href$='/burialSites/new']").should('exist');
     });
     it('Creates a New Burial Site', () => {
@@ -20,7 +20,7 @@ describe('Burial Sites - Update', () => {
         });
         cy.log('Check the accessibility');
         cy.injectAxe();
-        cy.checkA11y();
+        cy.checkA11y(undefined, undefined, checkA11yLog);
         cy.log('Populate the fields');
         cy.fixture('burialSite.json').then((burialSiteData) => {
             // Select the first available cemetery
