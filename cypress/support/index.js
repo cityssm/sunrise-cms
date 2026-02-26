@@ -1,8 +1,8 @@
 import 'cypress-axe';
-export const logout = () => {
+export function logout() {
     cy.visit('/logout');
-};
-export const login = (userName) => {
+}
+export function login(userName) {
     cy.visit('/login');
     cy.get('.message').contains('Testing', {
         matchCase: false
@@ -13,7 +13,7 @@ export const login = (userName) => {
     cy.location('pathname').should('not.contain', '/login');
     // Logged in pages have a navbar
     cy.get('.navbar').should('have.length', 1);
-};
+}
 export const ajaxDelayMillis = 800;
 export const pageLoadDelayMillis = 1200;
 export const pdfGenerationDelayMillis = 10_000;

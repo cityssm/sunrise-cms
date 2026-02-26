@@ -1,11 +1,11 @@
 import type axe from 'axe-core'
 import 'cypress-axe'
 
-export const logout = (): void => {
+export function logout(): void {
   cy.visit('/logout')
 }
 
-export const login = (userName: string): void => {
+export function login(userName: string): void {
   cy.visit('/login')
 
   cy.get('.message').contains('Testing', {
@@ -29,7 +29,7 @@ export const pageLoadDelayMillis = 1200
 
 export const pdfGenerationDelayMillis = 10_000
 
-export function checkA11yLog (violations: axe.Result[]): void {
+export function checkA11yLog(violations: axe.Result[]): void {
   if (violations.length > 0) {
     cy.log('Accessibility violations found:')
     for (const violation of violations) {
