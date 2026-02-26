@@ -8,21 +8,21 @@
         if (contract.contractIsFuture) {
             return /* html */ `
         <span title="Future Contract">
-          <i class="fa-solid fa-fast-forward" aria-label="Future Contract"></i>
+          <i class="fa-solid fa-fast-forward"></i>
         </span>
       `;
         }
         else if (contract.contractIsActive) {
             return /* html */ `
         <span title="Current Contract">
-          <i class="fa-solid fa-play" aria-label="Current Contract"></i>
+          <i class="fa-solid fa-play"></i>
         </span>
       `;
         }
         else {
             return /* html */ `
         <span title="Past Contract">
-          <i class="fa-solid fa-stop" aria-label="Past Contract"></i>
+          <i class="fa-solid fa-stop"></i>
         </span>
       `;
         }

@@ -23,6 +23,7 @@ export default function getBurialSiteDeceasedNames(
     const placeholders = burialSiteIds.map(() => '?').join(',')
 
     // Get deceased names for burial sites with active contracts
+    // eslint-disable-next-line sonarjs/sql-queries -- the query is parameterized and properly formatted
     const rows = database
       .prepare(/* sql */ `
         SELECT
