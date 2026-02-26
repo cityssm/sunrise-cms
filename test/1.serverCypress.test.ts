@@ -33,7 +33,7 @@ function runCypress(browser: 'chrome' | 'firefox', done: () => void): void {
   })
 
   childProcess.on('exit', (code) => {
-    assert.ok(code === 0)
+    assert.strictEqual(code, 0)
     done()
   })
 }

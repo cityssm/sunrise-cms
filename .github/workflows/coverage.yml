@@ -97,7 +97,7 @@ jobs:
         run: cp ./data/testing.config.js ./data/config.js
 
       - name: Run Test
-        run: node --test --test-concurrency 1
+        run: npm run test
 
   Mac:
     runs-on: macos-latest
@@ -132,4 +132,4 @@ jobs:
         run: cp ./data/testing.config.js ./data/config.js
 
       - name: Run Test
-        run: node --test --test-concurrency 1
+        run: npm run test

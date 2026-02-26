@@ -22,7 +22,7 @@ function runCypress(browser, done) {
         console.error(data);
     });
     childProcess.on('exit', (code) => {
-        assert.ok(code === 0);
+        assert.strictEqual(code, 0);
         done();
     });
 }
