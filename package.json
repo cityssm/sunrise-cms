@@ -18,7 +18,7 @@
     ".": "./index.js"
   },
   "scripts": {
-    "coverage": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary node --test --no-experimental-strip-types --test-concurrency 1",
+    "coverage": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary node --test --test-concurrency 1 \"./test/*.test.js\"",
     "cy:open": "cypress open --config-file cypress.config.js",
     "cy:run": "cypress run --config-file cypress.config.js",
     "cy:run:firefox": "cypress run --config-file cypress.config.js --browser firefox",
@@ -30,7 +30,7 @@
     "start": "cross-env NODE_ENV=production node ./index.js",
     "task:puppeteerSetup": "cross-env NODE_ENV=development DEBUG=sunrise:* node ./tasks/puppeteerSetup.task.js",
     "temp:legacyImportFromCsv": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true node ./temp/legacyImportFromCsv/index.js",
-    "test": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true node --test --no-experimental-strip-types --test-concurrency 1",
+    "test": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true node --test --test-concurrency 1 \"./test/*.test.js\"",
     "test:i18n": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true node --test ./test/helpers.i18n.test.js",
     "test:pdf": "cross-env NODE_ENV=development DEBUG=sunrise:*,pdf-puppeteer:*,puppeteer-launch:* TEST_DATABASES=true node --test ./test/helpers.pdf.test.js",
     "test:startup": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true STARTUP_TEST=true node ./index.js"
