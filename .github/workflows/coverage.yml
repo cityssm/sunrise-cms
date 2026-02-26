@@ -64,13 +64,15 @@ jobs:
           chmod +x codecov
           ./codecov -t ${CODECOV_TOKEN}
 
-      - name: Archive Cypress screenshots
+      - name: Archive Cypress error screenshots
+        if: ${{ (success() || failure()) }}
         uses: actions/upload-artifact@v6
         with:
           name: cypress-output-ubuntu-node-${{ matrix.node }}
           path: |
             cypress/screenshots/**/*.png
             cypress/videos/**/*.mp4
+          if-no-files-found: ignore
 
   Windows:
     runs-on: windows-2025
@@ -107,13 +109,15 @@ jobs:
       - name: Run Test
         run: npm run test
 
-      - name: Archive Cypress screenshots
+      - name: Archive Cypress error screenshots
+        if: ${{ (success() || failure()) }}
         uses: actions/upload-artifact@v6
         with:
           name: cypress-output-windows-node-${{ matrix.node }}
           path: |
             cypress/screenshots/**/*.png
             cypress/videos/**/*.mp4
+          if-no-files-found: ignore
 
   Mac:
     runs-on: macos-latest
@@ -150,10 +154,12 @@ jobs:
       - name: Run Test
         run: npm run test
 
-      - name: Archive Cypress screenshots
+      - name: Archive Cypress error screenshots
+        if: ${{ (success() || failure()) }}
         uses: actions/upload-artifact@v6
         with:
           name: cypress-output-macos-node-${{ matrix.node }}
           path: |
             cypress/screenshots/**/*.png
             cypress/videos/**/*.mp4
+          if-no-files-found: ignore
