@@ -4,8 +4,7 @@
     delete exports.intermentDepths;
     function updateIntermentDepth(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateIntermentDepth`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateIntermentDepth`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 intermentDepths = responseJSON.intermentDepths;
                 bulmaJS.alert({
@@ -28,8 +27,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteIntermentDepth`, {
                 intermentDepthId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     intermentDepths = responseJSON.intermentDepths;
                     if (intermentDepths.length === 0) {
@@ -73,8 +71,7 @@
             : 'doMoveIntermentDepthDown'}`, {
             intermentDepthId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 intermentDepths = responseJSON.intermentDepths;
                 renderIntermentDepths();
@@ -161,12 +158,12 @@
             containerElement.append(tableRowElement);
         }
     }
-    ;
-    document.querySelector('#form--addIntermentDepth').addEventListener('submit', (submitEvent) => {
+    document
+        .querySelector('#form--addIntermentDepth')
+        ?.addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddIntermentDepth`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddIntermentDepth`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 intermentDepths = responseJSON.intermentDepths;
                 renderIntermentDepths();

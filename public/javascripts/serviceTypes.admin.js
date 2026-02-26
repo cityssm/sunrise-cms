@@ -4,8 +4,7 @@
     delete exports.serviceTypes;
     function updateServiceType(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateServiceType`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateServiceType`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 serviceTypes = responseJSON.serviceTypes;
                 bulmaJS.alert({
@@ -28,8 +27,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteServiceType`, {
                 serviceTypeId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     serviceTypes = responseJSON.serviceTypes;
                     if (serviceTypes.length === 0) {
@@ -73,8 +71,7 @@
             : 'doMoveServiceTypeDown'}`, {
             serviceTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 serviceTypes = responseJSON.serviceTypes;
                 renderServiceTypes();
@@ -161,12 +158,12 @@
             containerElement.append(tableRowElement);
         }
     }
-    ;
-    document.querySelector('#form--addServiceType').addEventListener('submit', (submitEvent) => {
+    document
+        .querySelector('#form--addServiceType')
+        ?.addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddServiceType`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddServiceType`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 serviceTypes = responseJSON.serviceTypes;
                 renderServiceTypes();

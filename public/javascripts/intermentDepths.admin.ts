@@ -1,7 +1,7 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { ServiceType } from '../../types/record.types.js'
+import type { IntermentDepth } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
@@ -11,44 +11,44 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 
-  serviceTypes?: ServiceType[]
+  intermentDepths?: IntermentDepth[]
 }
+
+type IntermentDepthResponseJSON =
+  | {
+      success: false
+
+      errorMessage?: string
+    }
+  | {
+      success: true
+
+      intermentDepths: IntermentDepth[]
+    }
 ;(() => {
   const sunrise = exports.sunrise
 
-  let serviceTypes = exports.serviceTypes as ServiceType[]
-  delete exports.serviceTypes
+  let intermentDepths = exports.intermentDepths as IntermentDepth[]
+  delete exports.intermentDepths
 
-  type ServiceTypeResponseJSON =
-    | {
-        success: false
-
-        errorMessage?: string
-      }
-    | {
-        success: true
-
-        serviceTypes: ServiceType[]
-      }
-
-  function updateServiceType(submitEvent: SubmitEvent): void {
+  function updateIntermentDepth(submitEvent: Event): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
-      `${sunrise.urlPrefix}/admin/doUpdateServiceType`,
+      `${sunrise.urlPrefix}/admin/doUpdateIntermentDepth`,
       submitEvent.currentTarget,
-      (responseJSON: ServiceTypeResponseJSON) => {
+      (responseJSON: IntermentDepthResponseJSON) => {
         if (responseJSON.success) {
-          serviceTypes = responseJSON.serviceTypes
+          intermentDepths = responseJSON.intermentDepths
 
           bulmaJS.alert({
             contextualColorName: 'success',
-            message: 'Service Type Updated Successfully'
+            message: 'Interment Depth Updated Successfully'
           })
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Service Type',
+            title: 'Error Updating Interment Depth',
 
             message: responseJSON.errorMessage ?? ''
           })
@@ -57,37 +57,37 @@ declare const exports: {
     )
   }
 
-  function deleteServiceType(clickEvent: Event): void {
+  function deleteIntermentDepth(clickEvent: Event): void {
     const tableRowElement = (clickEvent.currentTarget as HTMLElement).closest(
       'tr'
     ) as HTMLTableRowElement
 
-    const serviceTypeId = tableRowElement.dataset.serviceTypeId
+    const intermentDepthId = tableRowElement.dataset.intermentDepthId
 
     function doDelete(): void {
       cityssm.postJSON(
-        `${sunrise.urlPrefix}/admin/doDeleteServiceType`,
+        `${sunrise.urlPrefix}/admin/doDeleteIntermentDepth`,
         {
-          serviceTypeId
+          intermentDepthId
         },
-        (responseJSON: ServiceTypeResponseJSON) => {
+        (responseJSON: IntermentDepthResponseJSON) => {
           if (responseJSON.success) {
-            serviceTypes = responseJSON.serviceTypes
+            intermentDepths = responseJSON.intermentDepths
 
-            if (serviceTypes.length === 0) {
-              renderServiceTypes()
+            if (intermentDepths.length === 0) {
+              renderIntermentDepths()
             } else {
               tableRowElement.remove()
             }
 
             bulmaJS.alert({
               contextualColorName: 'success',
-              message: 'Service Type Deleted Successfully'
+              message: 'Interment Depth Deleted Successfully'
             })
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Service Type',
+              title: 'Error Deleting Interment Depth',
 
               message: responseJSON.errorMessage ?? ''
             })
@@ -95,47 +95,45 @@ declare const exports: {
         }
       )
     }
-
     bulmaJS.confirm({
       contextualColorName: 'warning',
-      title: 'Delete Service Type',
+      title: 'Delete Interment Depth',
 
-      message: `Are you sure you want to delete this type?<br />
+      message: `Are you sure you want to delete this depth?<br />
           Note that no contracts will be removed.`,
       messageIsHtml: true,
-
       okButton: {
         callbackFunction: doDelete,
-        text: 'Yes, Delete Type'
+        text: 'Yes, Delete Depth'
       }
     })
   }
 
-  function moveServiceType(clickEvent: MouseEvent): void {
+  function moveIntermentDepth(clickEvent: MouseEvent): void {
     const buttonElement = clickEvent.currentTarget as HTMLButtonElement
 
     const tableRowElement = buttonElement.closest('tr') as HTMLTableRowElement
 
-    const serviceTypeId = tableRowElement.dataset.serviceTypeId
+    const intermentDepthId = tableRowElement.dataset.intermentDepthId
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/${
         buttonElement.dataset.direction === 'up'
-          ? 'doMoveServiceTypeUp'
-          : 'doMoveServiceTypeDown'
+          ? 'doMoveIntermentDepthUp'
+          : 'doMoveIntermentDepthDown'
       }`,
       {
-        serviceTypeId,
+        intermentDepthId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: ServiceTypeResponseJSON) => {
+      (responseJSON: IntermentDepthResponseJSON) => {
         if (responseJSON.success) {
-          serviceTypes = responseJSON.serviceTypes
-          renderServiceTypes()
+          intermentDepths = responseJSON.intermentDepths
+          renderIntermentDepths()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Service Type',
+            title: 'Error Moving Interment Depth',
 
             message: responseJSON.errorMessage ?? ''
           })
@@ -143,48 +141,43 @@ declare const exports: {
       }
     )
   }
-
-  function renderServiceTypes(): void {
+  function renderIntermentDepths(): void {
     const containerElement = document.querySelector(
-      '#container--serviceTypes'
+      '#container--intermentDepths'
     ) as HTMLTableSectionElement
 
-    if (serviceTypes.length === 0) {
+    if (intermentDepths.length === 0) {
       containerElement.innerHTML = /* html */ `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
-              <p class="message-body">There are no active service types.</p>
+              <p class="message-body">There are no active interment depths.</p>
             </div>
           </td>
         </tr>
       `
-
       return
     }
-
     containerElement.innerHTML = ''
-
-    for (const serviceType of serviceTypes) {
+    for (const intermentDepth of intermentDepths) {
       const tableRowElement = document.createElement('tr')
-
-      tableRowElement.dataset.serviceTypeId =
-        serviceType.serviceTypeId.toString()
+      tableRowElement.dataset.intermentDepthId =
+        intermentDepth.intermentDepthId.toString()
 
       // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = /* html */ `
         <td>
           <form>
-            <input name="serviceTypeId" type="hidden" value="${serviceType.serviceTypeId.toString()}" />
+            <input name="intermentDepthId" type="hidden" value="${intermentDepth.intermentDepthId.toString()}" />
             <div class="field has-addons">
               <div class="control is-expanded">
                 <input
                   class="input"
-                  name="serviceType"
+                  name="intermentDepth"
                   type="text"
-                  value="${cityssm.escapeHTML(serviceType.serviceType)}"
+                  value="${cityssm.escapeHTML(intermentDepth.intermentDepth)}"
                   maxlength="100"
-                  aria-label="Service Type"
+                  aria-label="Interment Depth"
                   required
                 />
               </div>
@@ -199,17 +192,13 @@ declare const exports: {
         <td class="is-nowrap">
           <div class="field is-grouped">
             <div class="control">
-              ${sunrise.getMoveUpDownButtonFieldHTML(
-                'button--moveServiceTypeUp',
-                'button--moveServiceTypeDown',
-                false
-              )}
+              ${sunrise.getMoveUpDownButtonFieldHTML('button--moveIntermentDepthUp', 'button--moveIntermentDepthDown', false)}
             </div>
             <div class="control">
               <button
-                class="button is-danger is-light button--deleteServiceType"
+                class="button is-danger is-light button--deleteIntermentDepth"
                 type="button"
-                title="Delete Type"
+                title="Delete Depth"
               >
                 <span class="icon"><i class="fa-solid fa-trash"></i></span>
               </button>
@@ -217,46 +206,45 @@ declare const exports: {
           </div>
         </td>
       `
-
       tableRowElement
         .querySelector('form')
-        ?.addEventListener('submit', updateServiceType)
+        ?.addEventListener('submit', updateIntermentDepth)
 
       for (const moveButton of tableRowElement.querySelectorAll(
-        '.button--moveServiceTypeUp, .button--moveServiceTypeDown'
+        '.button--moveIntermentDepthUp, .button--moveIntermentDepthDown'
       )) {
-        moveButton.addEventListener('click', moveServiceType)
+        moveButton.addEventListener('click', moveIntermentDepth)
       }
 
       tableRowElement
-        .querySelector('.button--deleteServiceType')
-        ?.addEventListener('click', deleteServiceType)
+        .querySelector('.button--deleteIntermentDepth')
+        ?.addEventListener('click', deleteIntermentDepth)
 
       containerElement.append(tableRowElement)
     }
   }
 
   document
-    .querySelector('#form--addServiceType')
+    .querySelector('#form--addIntermentDepth')
     ?.addEventListener('submit', (submitEvent: SubmitEvent) => {
       submitEvent.preventDefault()
 
       const formElement = submitEvent.currentTarget as HTMLFormElement
 
       cityssm.postJSON(
-        `${sunrise.urlPrefix}/admin/doAddServiceType`,
+        `${sunrise.urlPrefix}/admin/doAddIntermentDepth`,
         formElement,
-        (responseJSON: ServiceTypeResponseJSON) => {
+        (responseJSON: IntermentDepthResponseJSON) => {
           if (responseJSON.success) {
-            serviceTypes = responseJSON.serviceTypes
-            renderServiceTypes()
+            intermentDepths = responseJSON.intermentDepths
+            renderIntermentDepths()
 
             formElement.reset()
             formElement.querySelector('input')?.focus()
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Adding Service Type',
+              title: 'Error Adding Interment Depth',
 
               message: responseJSON.errorMessage ?? ''
             })
@@ -265,5 +253,5 @@ declare const exports: {
       )
     })
 
-  renderServiceTypes()
+  renderIntermentDepths()
 })()
