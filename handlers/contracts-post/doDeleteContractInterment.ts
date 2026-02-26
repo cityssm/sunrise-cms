@@ -7,9 +7,17 @@ import getContractInterments from '../../database/getContractInterments.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
 
+import type { ContractInterment } from '../../types/record.types.js'
+
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:contracts:doDeleteContractInterment`
 )
+
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoDeleteContractIntermentResponse =
+  { success: boolean; contractInterments: ContractInterment[] }
+  | { errorMessage: string; success: false }
 
 export default function handler(
   request: Request<
@@ -17,7 +25,7 @@ export default function handler(
     unknown,
     { contractId: string; intermentNumber: string }
   >,
-  response: Response
+  response: Response<DoDeleteContractIntermentResponse>
 ): void {
   let database: sqlite.Database | undefined
 

@@ -2,9 +2,14 @@ import type { Request, Response } from 'express'
 
 import { restoreFuneralHome } from '../../database/restoreFuneralHome.js'
 
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoRestoreFuneralHomeResponse =
+  { success: boolean; funeralHomeId: number }
+
 export default function handler(
   request: Request<unknown, unknown, { funeralHomeId: number }>,
-  response: Response
+  response: Response<DoRestoreFuneralHomeResponse>
 ): void {
   const success = restoreFuneralHome(
     request.body.funeralHomeId,

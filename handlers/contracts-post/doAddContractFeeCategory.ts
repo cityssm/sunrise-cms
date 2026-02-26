@@ -9,13 +9,21 @@ import getContractFees from '../../database/getContractFees.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
 
+import type { ContractFee } from '../../types/record.types.js'
+
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:contracts:doAddContractFeeCategory`
 )
 
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoAddContractFeeCategoryResponse =
+  { success: true; contractFees: ContractFee[] }
+  | { errorMessage: string; success: false }
+
 export default async function handler(
   request: Request<unknown, unknown, AddContractCategoryForm>,
-  response: Response
+  response: Response<DoAddContractFeeCategoryResponse>
 ): Promise<void> {
   let database: sqlite.Database | undefined
 

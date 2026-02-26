@@ -5,13 +5,21 @@ import getContract from '../../database/getContract.js'
 import getContractAttachment from '../../database/getContractAttachment.js'
 import getContractAttachments from '../../database/getContractAttachments.js'
 
+import type { ContractAttachment } from '../../types/record.types.js'
+
 export interface DeleteContractAttachmentForm {
   contractAttachmentId: string
 }
 
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoDeleteContractAttachmentResponse =
+  { errorMessage: string; success: false }
+  | { success: true; contractAttachments: ContractAttachment[] }
+
 export default async function handler(
   request: Request<unknown, unknown, DeleteContractAttachmentForm>,
-  response: Response
+  response: Response<DoDeleteContractAttachmentResponse>
 ): Promise<void> {
   const contractAttachmentId = Number.parseInt(
     request.body.contractAttachmentId,

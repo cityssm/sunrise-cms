@@ -5,6 +5,8 @@ import getContract from '../../database/getContract.js'
 import getContractAttachments from '../../database/getContractAttachments.js'
 import { writeAttachment } from '../../helpers/attachments.helpers.js'
 
+import type { ContractAttachment } from '../../types/record.types.js'
+
 export interface UploadContractAttachmentForm {
   contractId: string
 
@@ -12,9 +14,15 @@ export interface UploadContractAttachmentForm {
   attachmentTitle?: string
 }
 
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoUploadContractAttachmentResponse =
+  { success: false; errorMessage: string }
+  | { success: true; attachmentId: number; contractAttachments: ContractAttachment[] }
+
 export default async function handler(
   request: Request<unknown, unknown, UploadContractAttachmentForm>,
-  response: Response
+  response: Response<DoUploadContractAttachmentResponse>
 ): Promise<void> {
   const file = (request as Request & { file: Express.Multer.File }).file
 

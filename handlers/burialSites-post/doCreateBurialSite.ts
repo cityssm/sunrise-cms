@@ -5,9 +5,15 @@ import addBurialSite, {
 } from '../../database/addBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoCreateBurialSiteResponse =
+  | { success: true; burialSiteId: number; burialSiteName: string }
+  | { success: false; errorMessage: string }
+
 export default function handler(
   request: Request<unknown, unknown, AddBurialSiteForm>,
-  response: Response
+  response: Response<DoCreateBurialSiteResponse>
 ): void {
   try {
     const burialSite = addBurialSite(

@@ -5,6 +5,13 @@ import getRecordUpdateLog, {
   defaultRecordLimit
 } from '../../database/getRecordUpdateLog.js'
 
+import type { RecordUpdateLog } from '../../database/getRecordUpdateLog.js'
+
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoGetRecordUpdateLogResponse =
+  { updateLog: RecordUpdateLog[] }
+
 export default function handler(
   request: Request<
     unknown,
@@ -17,7 +24,7 @@ export default function handler(
       sortDirection?: 'asc' | 'desc'
     }
   >,
-  response: Response
+  response: Response<DoGetRecordUpdateLogResponse>
 ): void {
   const updateLog = getRecordUpdateLog(
     {

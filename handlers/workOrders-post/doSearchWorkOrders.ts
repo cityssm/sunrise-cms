@@ -6,13 +6,20 @@ import {
   getWorkOrders
 } from '../../database/getWorkOrders.js'
 
+import type { WorkOrder } from '../../types/record.types.js'
+
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoSearchWorkOrdersResponse =
+  { count: number; offset: number; workOrders: WorkOrder[] }
+
 export default async function handler(
   request: Request<
     unknown,
     unknown,
     GetWorkOrdersFilters & GetWorkOrdersOptions
   >,
-  response: Response
+  response: Response<DoSearchWorkOrdersResponse>
 ): Promise<void> {
   const result = await getWorkOrders(request.body as GetWorkOrdersFilters, {
     limit: request.body.limit,

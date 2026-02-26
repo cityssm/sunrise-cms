@@ -3,10 +3,17 @@
 import type { Request, Response } from 'express'
 
 import { getDynamicsGPDocument } from '../../integrations/dynamicsGp/helpers.js'
+import type { DynamicsGPDocument } from '../../integrations/dynamicsGp/types.js'
+
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoGetDynamicsGPDocumentResponse =
+  { success: false }
+  | { success: true; dynamicsGPDocument: DynamicsGPDocument }
 
 export default async function handler(
   request: Request<unknown, unknown, { externalReceiptNumber: string }>,
-  response: Response
+  response: Response<DoGetDynamicsGPDocumentResponse>
 ): Promise<void> {
   const externalReceiptNumber = request.body.externalReceiptNumber
 

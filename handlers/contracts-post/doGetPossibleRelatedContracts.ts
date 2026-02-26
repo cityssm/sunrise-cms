@@ -5,9 +5,16 @@ import getContracts, {
   type GetContractsOptions
 } from '../../database/getContracts.js'
 
+import type { Contract } from '../../types/record.types.js'
+
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoGetPossibleRelatedContractsResponse =
+  { contracts: Contract[]; count: number; offset: number }
+
 export default async function handler(
   request: Request<unknown, unknown, GetContractsFilters & GetContractsOptions>,
-  response: Response
+  response: Response<DoGetPossibleRelatedContractsResponse>
 ): Promise<void> {
   const result = await getContracts(request.body, {
     limit: request.body.limit,

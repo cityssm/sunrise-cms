@@ -2,9 +2,15 @@ import type { Request, Response } from 'express'
 
 import { backupDatabase } from '../../database/backupDatabase.js'
 
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoBackupDatabaseResponse =
+  { success: true; fileName: string | undefined }
+  | { success: false; errorMessage: string }
+
 export default async function handler(
   _request: Request,
-  response: Response
+  response: Response<DoBackupDatabaseResponse>
 ): Promise<void> {
   const backupDatabasePath = await backupDatabase()
 
