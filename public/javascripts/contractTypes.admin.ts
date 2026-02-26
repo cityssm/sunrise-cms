@@ -310,7 +310,7 @@ type ResponseJSON =
 
     const contractTypeField = (
       contractType
-        ? contractType.contractTypeFields ?? []
+        ? (contractType.contractTypeFields ?? [])
         : allContractTypeFields
     ).find(
       (currentContractTypeField) =>
@@ -420,7 +420,7 @@ type ResponseJSON =
           modalElement.querySelector(
             '#contractTypeFieldEdit--isRequired'
           ) as HTMLSelectElement
-        ).value = contractTypeField.isRequired ?? false ? '1' : '0'
+        ).value = (contractTypeField.isRequired ?? false) ? '1' : '0'
 
         fieldTypeElement = modalElement.querySelector(
           '#contractTypeFieldEdit--fieldType'
@@ -767,12 +767,11 @@ type ResponseJSON =
           printIconClass = 'fa-file'
         }
 
-        // eslint-disable-next-line no-unsanitized/property
         panelBlockElement.innerHTML = /* html */ `
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
-                <i class="fa-solid ${printIconClass}"></i>
+                <i class="fa-solid ${cityssm.escapeHTML(printIconClass)}"></i>
               </div>
               <div class="level-item">
                 ${cityssm.escapeHTML(printTitle || printEJS)}
@@ -898,7 +897,7 @@ type ResponseJSON =
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
-                <button class="button is-small button--toggleContractTypeFields" title="Toggle Fields" type="button">
+                <button class="button is-small button--toggleContractTypeFields" type="button" title="Toggle Fields">
                   <span class="icon">
                     ${
                       expandedContractTypes.has(contractType.contractTypeId)

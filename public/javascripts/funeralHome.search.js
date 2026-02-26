@@ -103,5 +103,5 @@
         formEvent.preventDefault();
         renderResults();
     });
-    i18next.on('initialized', renderResults);
+    i18next.on('loaded', renderResults);
 })();

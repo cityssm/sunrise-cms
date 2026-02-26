@@ -142,7 +142,7 @@
             contractType = contractTypes.find((currentContractType) => currentContractType.contractTypeId === contractTypeId);
         }
         const contractTypeField = (contractType
-            ? contractType.contractTypeFields ?? []
+            ? (contractType.contractTypeFields ?? [])
             : allContractTypeFields).find((currentContractTypeField) => currentContractTypeField.contractTypeFieldId === contractTypeFieldId);
         let fieldTypeElement;
         let minLengthInputElement;
@@ -216,7 +216,7 @@
                 sunrise.populateAliases(modalElement);
                 modalElement.querySelector('#contractTypeFieldEdit--contractTypeFieldId').value = contractTypeField.contractTypeFieldId.toString();
                 modalElement.querySelector('#contractTypeFieldEdit--contractTypeField').value = contractTypeField.contractTypeField ?? '';
-                modalElement.querySelector('#contractTypeFieldEdit--isRequired').value = contractTypeField.isRequired ?? false ? '1' : '0';
+                modalElement.querySelector('#contractTypeFieldEdit--isRequired').value = (contractTypeField.isRequired ?? false) ? '1' : '0';
                 fieldTypeElement = modalElement.querySelector('#contractTypeFieldEdit--fieldType');
                 fieldTypeElement.value = contractTypeField.fieldType;
                 minLengthInputElement = modalElement.querySelector('#contractTypeFieldEdit--minLength');
@@ -410,12 +410,11 @@
                 else if (printEJS.startsWith('screen/')) {
                     printIconClass = 'fa-file';
                 }
-                // eslint-disable-next-line no-unsanitized/property
                 panelBlockElement.innerHTML = /* html */ `
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
-                <i class="fa-solid ${printIconClass}"></i>
+                <i class="fa-solid ${cityssm.escapeHTML(printIconClass)}"></i>
               </div>
               <div class="level-item">
                 ${cityssm.escapeHTML(printTitle || printEJS)}
@@ -505,7 +504,7 @@
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
-                <button class="button is-small button--toggleContractTypeFields" title="Toggle Fields" type="button">
+                <button class="button is-small button--toggleContractTypeFields" type="button" title="Toggle Fields">
                   <span class="icon">
                     ${expandedContractTypes.has(contractType.contractTypeId)
                 ? '<i class="fa-solid fa-minus"></i>'
