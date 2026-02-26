@@ -1,6 +1,6 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { BurialSite } from '../../types/record.types.js'
+import type { DoSearchBurialSitesResponse } from '../../handlers/burialSites-post/doSearchBurialSites.js'
 
 import type { Sunrise } from './types.js'
 
@@ -28,13 +28,7 @@ declare const exports: {
     '#searchFilter--offset'
   ) as HTMLInputElement
 
-  function renderBurialSites(rawResponseJSON: unknown): void {
-    const responseJSON = rawResponseJSON as {
-      burialSites: BurialSite[]
-      count: number
-      offset: number
-    }
-
+  function renderBurialSites(responseJSON: DoSearchBurialSitesResponse): void {
     if (responseJSON.burialSites.length === 0) {
       searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">

@@ -49,8 +49,7 @@
             return;
         }
         function doRestore() {
-            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doRestoreBurialSite`, { burialSiteId }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doRestoreBurialSite`, { burialSiteId }, (responseJSON) => {
                 if (responseJSON.success) {
                     globalThis.location.reload();
                 }
@@ -58,7 +57,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Restoring Burial Site',
-                        message: responseJSON.errorMessage ?? ''
+                        message: 'Please try again.'
                     });
                 }
             });

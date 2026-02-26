@@ -4,8 +4,7 @@
     const searchResultsContainerElement = document.querySelector('#container--searchResults');
     const limitElement = document.querySelector('#searchFilter--limit');
     const offsetElement = document.querySelector('#searchFilter--offset');
-    function renderBurialSites(rawResponseJSON) {
-        const responseJSON = rawResponseJSON;
+    function renderBurialSites(responseJSON) {
         if (responseJSON.burialSites.length === 0) {
             searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">

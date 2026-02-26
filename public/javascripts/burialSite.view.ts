@@ -2,6 +2,8 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type Leaflet from 'leaflet'
 
+import type { DoRestoreBurialSiteResponse } from '../../handlers/burialSites-post/doRestoreBurialSite.js'
+
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
@@ -99,12 +101,7 @@ declare const exports: {
         cityssm.postJSON(
           `${sunrise.urlPrefix}/burialSites/doRestoreBurialSite`,
           { burialSiteId },
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              errorMessage?: string
-              success: boolean
-            }
-
+          (responseJSON: DoRestoreBurialSiteResponse) => {
             if (responseJSON.success) {
               globalThis.location.reload()
             } else {
@@ -112,7 +109,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Restoring Burial Site',
 
-                message: responseJSON.errorMessage ?? ''
+                message: 'Please try again.'
               })
             }
           }

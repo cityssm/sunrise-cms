@@ -4,13 +4,14 @@ import getBurialSites, {
   type GetBurialSitesFilters,
   type GetBurialSitesOptions
 } from '../../database/getBurialSites.js'
-
 import type { BurialSite } from '../../types/record.types.js'
 
-
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoSearchBurialSitesResponse =
-  { count: number; offset: number; burialSites: BurialSite[] }
+export type DoSearchBurialSitesResponse = {
+  count: number
+  offset: number
+  burialSites: BurialSite[]
+}
 
 export default function handler(
   request: Request<
