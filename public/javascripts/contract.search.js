@@ -147,8 +147,7 @@
     `;
         return contractRowElement;
     }
-    function renderContracts(rawResponseJSON) {
-        const responseJSON = rawResponseJSON;
+    function renderContracts(responseJSON) {
         if (responseJSON.contracts.length === 0) {
             searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">

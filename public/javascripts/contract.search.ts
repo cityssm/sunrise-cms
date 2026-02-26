@@ -1,5 +1,6 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoSearchContractsResponse } from '../../handlers/contracts-post/doSearchContracts.js'
 import type { Contract } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -213,13 +214,7 @@ declare const exports: {
     return contractRowElement
   }
 
-  function renderContracts(rawResponseJSON: unknown): void {
-    const responseJSON = rawResponseJSON as {
-      contracts: Contract[]
-      count: number
-      offset: number
-    }
-
+  function renderContracts(responseJSON: DoSearchContractsResponse): void {
     if (responseJSON.contracts.length === 0) {
       searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
