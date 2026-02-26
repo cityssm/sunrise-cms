@@ -9,13 +9,20 @@ import {
   getCachedContractTypes
 } from '../../helpers/cache/contractTypes.cache.js'
 
+import type { ContractType, ContractTypeField } from '../../types/record.types.js'
+
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoMoveContractTypeFieldDownResponse =
+  { success: boolean; allContractTypeFields: ContractTypeField[]; contractTypes: ContractType[] }
+
 export default function handler(
   request: Request<
     unknown,
     unknown,
     { contractTypeFieldId: string; moveToEnd: '0' | '1' }
   >,
-  response: Response
+  response: Response<DoMoveContractTypeFieldDownResponse>
 ): void {
   const success =
     request.body.moveToEnd === '1'

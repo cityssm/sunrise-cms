@@ -7,9 +7,17 @@ import getContractComments from '../../database/getContractComments.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
 
+import type { ContractComment } from '../../types/record.types.js'
+
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:contracts:doDeleteContractComment`
 )
+
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoDeleteContractCommentResponse =
+  { success: boolean; contractComments: ContractComment[] }
+  | { errorMessage: string; success: false }
 
 export default function handler(
   request: Request<
@@ -17,7 +25,7 @@ export default function handler(
     unknown,
     { contractCommentId: string; contractId: string }
   >,
-  response: Response
+  response: Response<DoDeleteContractCommentResponse>
 ): void {
   let database: sqlite.Database | undefined
 

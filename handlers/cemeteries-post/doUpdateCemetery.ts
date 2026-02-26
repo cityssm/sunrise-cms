@@ -6,9 +6,14 @@ import updateCemetery, {
 } from '../../database/updateCemetery.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoUpdateCemeteryResponse =
+  { success: boolean; cemeteryId: number | string }
+
 export default function handler(
   request: Request<unknown, unknown, UpdateCemeteryForm>,
-  response: Response
+  response: Response<DoUpdateCemeteryResponse>
 ): void {
   const success = updateCemetery(request.body, request.session.user as User)
 

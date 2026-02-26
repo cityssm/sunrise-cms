@@ -8,9 +8,17 @@ import reopenWorkOrderMilestone from '../../database/reopenWorkOrderMilestone.js
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
 
+import type { WorkOrder } from '../../types/record.types.js'
+
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doReopenWorkdayWorkOrderMilestone`
 )
+
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoReopenWorkdayWorkOrderMilestoneResponse =
+  { success: boolean; workOrders: WorkOrder[] }
+  | { errorMessage: string; success: false }
 
 export default async function handler(
   request: Request<
@@ -18,7 +26,7 @@ export default async function handler(
     unknown,
     { workdayDateString: DateString; workOrderMilestoneId: string }
   >,
-  response: Response
+  response: Response<DoReopenWorkdayWorkOrderMilestoneResponse>
 ): Promise<void> {
   let database: sqlite.Database | undefined
 

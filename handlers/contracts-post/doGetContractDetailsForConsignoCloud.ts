@@ -7,7 +7,8 @@ import getContractMetadataByContractId from '../../database/getContractMetadataB
 import { getCachedContractTypePrintsById } from '../../helpers/cache/contractTypes.cache.js'
 import { getPrintConfig } from '../../helpers/print.helpers.js'
 
-type ResponseData =
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoGetContractDetailsForConsignoCloudResponse =
   | {
       success: false
 
@@ -32,7 +33,7 @@ type ResponseData =
 
 export default async function handler(
   request: Request<unknown, unknown, { contractId: string }>,
-  response: Response<ResponseData>
+  response: Response<DoGetContractDetailsForConsignoCloudResponse>
 ): Promise<void> {
   /*
    * Validate Contract

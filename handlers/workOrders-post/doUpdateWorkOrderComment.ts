@@ -9,9 +9,17 @@ import updateWorkOrderComment, {
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
 
+import type { WorkOrderComment } from '../../types/record.types.js'
+
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doUpdateWorkOrderComment`
 )
+
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoUpdateWorkOrderCommentResponse =
+  { success: boolean; workOrderComments: WorkOrderComment[] }
+  | { errorMessage: string; success: false }
 
 export default function handler(
   request: Request<
@@ -19,7 +27,7 @@ export default function handler(
     unknown,
     UpdateWorkOrderCommentForm & { workOrderId: string }
   >,
-  response: Response
+  response: Response<DoUpdateWorkOrderCommentResponse>
 ): void {
   let database: sqlite.Database | undefined
 

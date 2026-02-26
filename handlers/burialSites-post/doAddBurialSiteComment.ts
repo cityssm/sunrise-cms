@@ -9,13 +9,21 @@ import getBurialSiteComments from '../../database/getBurialSiteComments.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
 
+import type { BurialSiteComment } from '../../types/record.types.js'
+
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:burialSites:doAddBurialSiteComment`
 )
 
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoAddBurialSiteCommentResponse =
+  { success: true; burialSiteComments: BurialSiteComment[] }
+  | { errorMessage: string; success: false }
+
 export default function handler(
   request: Request<unknown, unknown, AddBurialSiteCommentForm>,
-  response: Response
+  response: Response<DoAddBurialSiteCommentResponse>
 ): void {
   let database: sqlite.Database | undefined
 

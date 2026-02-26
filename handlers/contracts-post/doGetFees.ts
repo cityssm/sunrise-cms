@@ -6,13 +6,21 @@ import getContract from '../../database/getContract.js'
 import getFeeCategories from '../../database/getFeeCategories.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-import type { Contract } from '../../types/record.types.js'
+import type { Contract ,
+  FeeCategory
+} from '../../types/record.types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:doGetFees`)
 
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoGetFeesResponse =
+  { feeCategories: FeeCategory[] }
+  | { errorMessage: string; success: false }
+
 export default async function handler(
   request: Request<unknown, unknown, { contractId: string }>,
-  response: Response
+  response: Response<DoGetFeesResponse>
 ): Promise<void> {
   const contractId = request.body.contractId
 

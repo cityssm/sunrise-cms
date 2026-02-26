@@ -7,9 +7,17 @@ import getUsers from '../../database/getUsers.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
 
+import type { DatabaseUser } from '../../types/record.types.js'
+
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddUser`)
 
-export default function handler(request: Request, response: Response): void {
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoAddUserResponse =
+  { success: boolean; users: DatabaseUser[] }
+  | { errorMessage: string; success: false }
+
+export default function handler(request: Request, response: Response<DoAddUserResponse>): void {
   const {
     userName,
 

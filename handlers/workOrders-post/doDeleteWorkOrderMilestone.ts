@@ -7,9 +7,17 @@ import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
 
+import type { WorkOrderMilestone } from '../../types/record.types.js'
+
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doDeleteWorkOrderMilestone`
 )
+
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
+export type DoDeleteWorkOrderMilestoneResponse =
+  { success: boolean; workOrderMilestones: WorkOrderMilestone[] }
+  | { errorMessage: string; success: false }
 
 export default async function handler(
   request: Request<
@@ -17,7 +25,7 @@ export default async function handler(
     unknown,
     { workOrderId: string; workOrderMilestoneId: string }
   >,
-  response: Response
+  response: Response<DoDeleteWorkOrderMilestoneResponse>
 ): Promise<void> {
   let database: sqlite.Database | undefined
 
