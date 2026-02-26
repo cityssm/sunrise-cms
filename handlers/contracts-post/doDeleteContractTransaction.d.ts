@@ -1,5 +1,13 @@
 import type { Request, Response } from 'express';
+import type { ContractTransaction } from '../../types/record.types.js';
+export type DoDeleteContractTransactionResponse = {
+    success: boolean;
+    contractTransactions: ContractTransaction[];
+} | {
+    errorMessage: string;
+    success: false;
+};
 export default function handler(request: Request<unknown, unknown, {
     contractId: string;
     transactionIndex: number;
-}>, response: Response): Promise<void>;
+}>, response: Response<DoDeleteContractTransactionResponse>): Promise<void>;

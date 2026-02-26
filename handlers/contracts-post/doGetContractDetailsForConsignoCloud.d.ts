@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-type ResponseData = {
+export type DoGetContractDetailsForConsignoCloudResponse = {
     success: false;
     errorMessage: string;
 } | {
@@ -16,5 +16,4 @@ type ResponseData = {
 };
 export default function handler(request: Request<unknown, unknown, {
     contractId: string;
-}>, response: Response<ResponseData>): Promise<void>;
-export {};
+}>, response: Response<DoGetContractDetailsForConsignoCloudResponse>): Promise<void>;

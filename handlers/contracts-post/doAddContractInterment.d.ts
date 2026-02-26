@@ -1,3 +1,11 @@
 import type { Request, Response } from 'express';
 import { type AddForm } from '../../database/addContractInterment.js';
-export default function handler(request: Request<unknown, unknown, AddForm>, response: Response): void;
+import type { ContractInterment } from '../../types/record.types.js';
+export type DoAddContractIntermentResponse = {
+    success: true;
+    contractInterments: ContractInterment[];
+} | {
+    errorMessage: string;
+    success: false;
+};
+export default function handler(request: Request<unknown, unknown, AddForm>, response: Response<DoAddContractIntermentResponse>): void;

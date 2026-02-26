@@ -1,3 +1,9 @@
 import type { Request, Response } from 'express';
 import { type GetBurialSitesFilters, type GetBurialSitesOptions } from '../../database/getBurialSites.js';
-export default function handler(request: Request<unknown, unknown, GetBurialSitesFilters & GetBurialSitesOptions>, response: Response): void;
+import type { BurialSite } from '../../types/record.types.js';
+export type DoSearchBurialSitesResponse = {
+    count: number;
+    offset: number;
+    burialSites: BurialSite[];
+};
+export default function handler(request: Request<unknown, unknown, GetBurialSitesFilters & GetBurialSitesOptions>, response: Response<DoSearchBurialSitesResponse>): void;
