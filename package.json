@@ -38,7 +38,7 @@
   "dependencies": {
     "@cacheable/node-cache": "^2.0.1",
     "@cityssm/authentication-helper": "^0.6.2",
-    "@cityssm/bulma-js": "^1.0.0-rc.3",
+    "@cityssm/bulma-js": "^1.0.0-rc.4",
     "@cityssm/bulma-sticky-table": "^3.0.2",
     "@cityssm/bulma-webapp-js": "^2.0.0-beta",
     "@cityssm/configurator": "^0.1.0",
