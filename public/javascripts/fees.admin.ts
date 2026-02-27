@@ -3,6 +3,17 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddFeeResponse } from '../../handlers/admin-post/doAddFee.js'
+import type { DoAddFeeCategoryResponse } from '../../handlers/admin-post/doAddFeeCategory.js'
+import type { DoDeleteFeeResponse } from '../../handlers/admin-post/doDeleteFee.js'
+import type { DoDeleteFeeCategoryResponse } from '../../handlers/admin-post/doDeleteFeeCategory.js'
+import type { DoMoveFeeCategoryDownResponse } from '../../handlers/admin-post/doMoveFeeCategoryDown.js'
+import type { DoMoveFeeCategoryUpResponse } from '../../handlers/admin-post/doMoveFeeCategoryUp.js'
+import type { DoMoveFeeDownResponse } from '../../handlers/admin-post/doMoveFeeDown.js'
+import type { DoMoveFeeUpResponse } from '../../handlers/admin-post/doMoveFeeUp.js'
+import type { DoUpdateFeeResponse } from '../../handlers/admin-post/doUpdateFee.js'
+import type { DoUpdateFeeAmountResponse } from '../../handlers/admin-post/doUpdateFeeAmount.js'
+import type { DoUpdateFeeCategoryResponse } from '../../handlers/admin-post/doUpdateFeeCategory.js'
 import type {
   BurialSiteType,
   ContractType,
@@ -34,18 +45,6 @@ declare const exports: {
   const feeCategoryContainerSelector = `.${feeCategoryContainerClassName}`
 
   let feeCategories = exports.feeCategories
-
-  type ResponseJSON =
-    | {
-        success: false
-
-        errorMessage?: string
-      }
-    | {
-        success: true
-
-        feeCategories: FeeCategory[]
-      }
 
   function getFeeCategory(feeCategoryId: number): FeeCategory {
     return feeCategories.find(
@@ -316,9 +315,7 @@ declare const exports: {
         cityssm.postJSON(
           `${sunrise.urlPrefix}/admin/doAddFeeCategory`,
           submitEvent.currentTarget,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as ResponseJSON
-
+          (responseJSON: DoAddFeeCategoryResponse) => {
             if (responseJSON.success) {
               feeCategories = responseJSON.feeCategories
               addCloseModalFunction()
@@ -381,9 +378,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateFeeCategory`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoUpdateFeeCategoryResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
             editCloseModalFunction()
@@ -458,9 +453,7 @@ declare const exports: {
         {
           feeCategoryId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoDeleteFeeCategoryResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
             renderFeeCategories()
@@ -505,8 +498,7 @@ declare const exports: {
         feeCategoryId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as ResponseJSON
+      (responseJSON: DoMoveFeeCategoryUpResponse | DoMoveFeeCategoryDownResponse) => {
 
         if (responseJSON.success) {
           feeCategories = responseJSON.feeCategories
@@ -545,9 +537,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddFee`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoAddFeeResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
             addCloseModalFunction()
@@ -718,9 +708,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateFeeAmount`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoUpdateFeeAmountResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
             editCloseModalFunction()
@@ -801,9 +789,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateFee`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoUpdateFeeResponse) => {
           if (responseJSON.success) {
             feeCategories = responseJSON.feeCategories
             editCloseModalFunction()
@@ -830,9 +816,7 @@ declare const exports: {
             feeId
           },
           // eslint-disable-next-line sonarjs/no-nested-functions
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as ResponseJSON
-
+          (responseJSON: DoDeleteFeeResponse) => {
             if (responseJSON.success) {
               feeCategories = responseJSON.feeCategories
               editCloseModalFunction()
@@ -1077,8 +1061,7 @@ declare const exports: {
         feeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as ResponseJSON
+      (responseJSON: DoMoveFeeUpResponse | DoMoveFeeDownResponse) => {
 
         if (responseJSON.success) {
           feeCategories = responseJSON.feeCategories
