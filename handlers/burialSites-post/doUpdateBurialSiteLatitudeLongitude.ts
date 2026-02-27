@@ -30,6 +30,7 @@ export default function handler(
 
     response.json({
       success,
+
       errorMessage: success
         ? ''
         : 'Failed to update burial site latitude and longitude'

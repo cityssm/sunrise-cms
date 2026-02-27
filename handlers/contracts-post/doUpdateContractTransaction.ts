@@ -8,18 +8,19 @@ import updateContractTransaction, {
 } from '../../database/updateContractTransaction.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { ContractTransaction } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:contracts:doUpdateContractTransaction`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoUpdateContractTransactionResponse =
-  { success: true; contractTransactions: ContractTransaction[] }
   | { errorMessage: string; success: false }
+  | {
+      success: true
+
+      contractTransactions: ContractTransaction[]
+    }
 
 export default async function handler(
   request: Request<unknown, unknown, ContractTransactionUpdateForm>,

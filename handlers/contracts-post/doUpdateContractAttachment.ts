@@ -4,7 +4,6 @@ import getContract from '../../database/getContract.js'
 import getContractAttachment from '../../database/getContractAttachment.js'
 import getContractAttachments from '../../database/getContractAttachments.js'
 import updateContractAttachment from '../../database/updateContractAttachment.js'
-
 import type { ContractAttachment } from '../../types/record.types.js'
 
 export interface UpdateContractAttachmentForm {
@@ -13,11 +12,17 @@ export interface UpdateContractAttachmentForm {
   attachmentDetails?: string
 }
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoUpdateContractAttachmentResponse =
-  { success: false; errorMessage: string }
-  | { success: true; contractAttachments: ContractAttachment[] }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      contractAttachments: ContractAttachment[]
+    }
 
 export default async function handler(
   request: Request<unknown, unknown, UpdateContractAttachmentForm>,

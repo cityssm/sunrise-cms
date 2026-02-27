@@ -3,11 +3,11 @@ import type { Request, Response } from 'express';
 import { type UpdateWorkOrderMilestoneTimeForm } from '../../database/updateWorkOrderMilestoneTime.js';
 import type { WorkOrder } from '../../types/record.types.js';
 export type DoUpdateWorkdayWorkOrderMilestoneTimeResponse = {
-    success: boolean;
-    workOrders: WorkOrder[];
-} | {
     errorMessage: string;
     success: false;
+} | {
+    success: boolean;
+    workOrders: WorkOrder[];
 };
 export default function handler(request: Request<unknown, unknown, UpdateWorkOrderMilestoneTimeForm & {
     workdayDateString: DateString;

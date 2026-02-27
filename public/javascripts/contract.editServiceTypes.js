@@ -13,7 +13,7 @@
                 serviceTypeId
             }, (responseJSON) => {
                 if (responseJSON.success) {
-                    contractServiceTypes = responseJSON.contractServiceTypes ?? [];
+                    contractServiceTypes = responseJSON.contractServiceTypes;
                     renderContractServiceTypes();
                     bulmaJS.alert({
                         contextualColorName: 'success',
@@ -23,8 +23,7 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Removing Service Type',
-                        message: responseJSON.errorMessage ?? ''
+                        message: 'Error Removing Service Type'
                     });
                 }
             });
@@ -54,7 +53,7 @@
             submitEvent.preventDefault();
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractServiceType`, editFormElement, (responseJSON) => {
                 if (responseJSON.success) {
-                    contractServiceTypes = responseJSON.contractServiceTypes ?? [];
+                    contractServiceTypes = responseJSON.contractServiceTypes;
                     if (editCloseModalFunction !== undefined) {
                         editCloseModalFunction();
                     }
@@ -68,7 +67,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Service Type',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -178,7 +177,7 @@
             submitEvent.preventDefault();
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractServiceType`, addFormElement, (responseJSON) => {
                 if (responseJSON.success) {
-                    contractServiceTypes = responseJSON.contractServiceTypes ?? [];
+                    contractServiceTypes = responseJSON.contractServiceTypes;
                     if (addCloseModalFunction !== undefined) {
                         addCloseModalFunction();
                     }
@@ -192,7 +191,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Service Type',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });

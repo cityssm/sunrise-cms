@@ -10,18 +10,15 @@ import {
 } from '../../database/updateWorkOrderMilestoneTime.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { WorkOrder } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doUpdateWorkdayWorkOrderMilestoneTime`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoUpdateWorkdayWorkOrderMilestoneTimeResponse =
-  { success: boolean; workOrders: WorkOrder[] }
   | { errorMessage: string; success: false }
+  | { success: boolean; workOrders: WorkOrder[] }
 
 export default async function handler(
   request: Request<

@@ -14,11 +14,9 @@ const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:dashboard:doUpdateConsignoCloudUserSettings`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoUpdateConsignoCloudUserSettingsResponse =
-  { success: boolean }
   | { errorMessage: string; success: false }
+  | { success: boolean }
 
 export default function handler(
   request: Request<unknown, unknown, UpdateConsignoCloudUserSettingsForm>,

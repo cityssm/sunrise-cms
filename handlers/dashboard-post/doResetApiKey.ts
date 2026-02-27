@@ -9,13 +9,18 @@ import { sunriseDB } from '../../helpers/database.helpers.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:dashboard:doResetApiKey`)
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoResetApiKeyResponse =
-  { success: true; apiKey: string }
   | { errorMessage: string; success: false }
+  | {
+      success: true
 
-export default function handler(request: Request, response: Response<DoResetApiKeyResponse>): void {
+      apiKey: string
+    }
+
+export default function handler(
+  request: Request,
+  response: Response<DoResetApiKeyResponse>
+): void {
   let database: sqlite.Database | undefined
 
   try {

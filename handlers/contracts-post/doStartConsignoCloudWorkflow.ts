@@ -4,11 +4,13 @@ import startConsignoCloudWorkflow, {
   type StartConsignoCloudWorkflowForm
 } from '../../integrations/consignoCloud/startWorkflow.js'
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoStartConsignoCloudWorkflowResponse =
-  { success: true; workflowEditUrl: string; workflowId: string }
-  | { errorMessage: string; success: false }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | { success: true; workflowEditUrl: string; workflowId: string }
 
 export default async function handler(
   request: Request<unknown, unknown, StartConsignoCloudWorkflowForm>,
@@ -28,7 +30,7 @@ export default async function handler(
   } catch (error) {
     response.json({
       errorMessage: (error as Error).message,
-      success: false,
+      success: false
     })
   }
 }

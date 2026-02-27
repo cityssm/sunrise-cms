@@ -47,7 +47,7 @@ declare const exports: {
         },
         (responseJSON: DoDeleteContractServiceTypeResponse) => {
           if (responseJSON.success) {
-            contractServiceTypes = responseJSON.contractServiceTypes ?? []
+            contractServiceTypes = responseJSON.contractServiceTypes
             renderContractServiceTypes()
 
             bulmaJS.alert({
@@ -57,9 +57,7 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Removing Service Type',
-
-              message: responseJSON.errorMessage ?? ''
+              message: 'Error Removing Service Type'
             })
           }
         }
@@ -107,7 +105,7 @@ declare const exports: {
         editFormElement,
         (responseJSON: DoUpdateContractServiceTypeResponse) => {
           if (responseJSON.success) {
-            contractServiceTypes = responseJSON.contractServiceTypes ?? []
+            contractServiceTypes = responseJSON.contractServiceTypes
 
             if (editCloseModalFunction !== undefined) {
               editCloseModalFunction()
@@ -124,7 +122,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Service Type',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -279,7 +277,7 @@ declare const exports: {
         addFormElement,
         (responseJSON: DoAddContractServiceTypeResponse) => {
           if (responseJSON.success) {
-            contractServiceTypes = responseJSON.contractServiceTypes ?? []
+            contractServiceTypes = responseJSON.contractServiceTypes
 
             if (addCloseModalFunction !== undefined) {
               addCloseModalFunction()
@@ -296,7 +294,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Adding Service Type',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }

@@ -17,7 +17,7 @@ export default function handler(
 
   const workOrderIdNumber =
     typeof request.body.workOrderId === 'string'
-      ? Number.parseInt(request.body.workOrderId)
+      ? Number.parseInt(request.body.workOrderId, 10)
       : request.body.workOrderId
 
   response.json({
