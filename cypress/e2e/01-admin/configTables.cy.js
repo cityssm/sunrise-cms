@@ -255,4 +255,94 @@ describe('Admin - Config Table Management', () => {
             });
         });
     });
+    describe('Service Types', () => {
+        const firstServiceTypeInputSelector = '#container--serviceTypes tr:first input[name="serviceType"]';
+        beforeEach(() => {
+            // Expand the Service Types panel
+            cy.contains('h2', 'Service Types')
+                .parents('.panel')
+                .find('.is-toggle-button')
+                .click();
+        });
+        it('Adds a new service type', () => {
+            cy.fixture('configTables.json').then((configTables) => {
+                cy.get('#form--addServiceType input[name="serviceType"]').type(configTables.serviceType);
+                cy.get('#form--addServiceType button[type="submit"]').click();
+                cy.wait(ajaxDelayMillis);
+                cy.get(firstServiceTypeInputSelector).should('have.value', configTables.serviceType);
+            });
+        });
+        it('Updates a service type', () => {
+            cy.fixture('configTables.json').then((configTables) => {
+                cy.get(firstServiceTypeInputSelector)
+                    .should('have.value', configTables.serviceType)
+                    .clear()
+                    .type(configTables.serviceTypeUpdated)
+                    .parents('tr')
+                    .find('button[type="submit"]')
+                    .click();
+                cy.wait(ajaxDelayMillis);
+                cy.get(firstServiceTypeInputSelector).should('have.value', configTables.serviceTypeUpdated);
+            });
+        });
+        it('Deletes a service type', () => {
+            cy.fixture('configTables.json').then((configTables) => {
+                cy.get(firstServiceTypeInputSelector)
+                    .should('have.value', configTables.serviceTypeUpdated)
+                    .parents('tr')
+                    .find('.button--deleteServiceType')
+                    .click();
+                cy.get('.modal').should('be.visible');
+                cy.get('.modal button[data-cy="ok"]').contains('Delete Type').click();
+                cy.wait(ajaxDelayMillis);
+                cy.get('.modal button[data-cy="ok"]').click();
+                cy.get(firstServiceTypeInputSelector).should('not.have.value', configTables.serviceTypeUpdated);
+            });
+        });
+    });
+    describe('Interment Depths', () => {
+        const firstIntermentDepthInputSelector = '#container--intermentDepths tr:first input[name="intermentDepth"]';
+        beforeEach(() => {
+            // Expand the Interment Depths panel
+            cy.contains('h2', 'Interment Depths')
+                .parents('.panel')
+                .find('.is-toggle-button')
+                .click();
+        });
+        it('Adds a new interment depth', () => {
+            cy.fixture('configTables.json').then((configTables) => {
+                cy.get('#form--addIntermentDepth input[name="intermentDepth"]').type(configTables.intermentDepth);
+                cy.get('#form--addIntermentDepth button[type="submit"]').click();
+                cy.wait(ajaxDelayMillis);
+                cy.get(firstIntermentDepthInputSelector).should('have.value', configTables.intermentDepth);
+            });
+        });
+        it('Updates an interment depth', () => {
+            cy.fixture('configTables.json').then((configTables) => {
+                cy.get(firstIntermentDepthInputSelector)
+                    .should('have.value', configTables.intermentDepth)
+                    .clear()
+                    .type(configTables.intermentDepthUpdated)
+                    .parents('tr')
+                    .find('button[type="submit"]')
+                    .click();
+                cy.wait(ajaxDelayMillis);
+                cy.get(firstIntermentDepthInputSelector).should('have.value', configTables.intermentDepthUpdated);
+            });
+        });
+        it('Deletes an interment depth', () => {
+            cy.fixture('configTables.json').then((configTables) => {
+                cy.get(firstIntermentDepthInputSelector)
+                    .should('have.value', configTables.intermentDepthUpdated)
+                    .parents('tr')
+                    .find('.button--deleteIntermentDepth')
+                    .click();
+                cy.get('.modal').should('be.visible');
+                cy.get('.modal button[data-cy="ok"]').contains('Delete Depth').click();
+                cy.wait(ajaxDelayMillis);
+                cy.get('.modal button[data-cy="ok"]').click();
+                cy.get(firstIntermentDepthInputSelector).should('not.have.value', configTables.intermentDepthUpdated);
+            });
+        });
+    });
 });
