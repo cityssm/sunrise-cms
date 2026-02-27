@@ -2,13 +2,14 @@ import type { Request, Response } from 'express'
 
 import { addWorkOrderType } from '../../database/addRecord.js'
 import { getCachedWorkOrderTypes } from '../../helpers/cache/workOrderTypes.cache.js'
-
 import type { WorkOrderType } from '../../types/record.types.js'
 
-
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoAddWorkOrderTypeResponse =
-  { success: true; workOrderTypeId: number; workOrderTypes: WorkOrderType[] }
+export type DoAddWorkOrderTypeResponse = {
+  success: true
+  workOrderTypeId: number
+  workOrderTypes: WorkOrderType[]
+}
 
 export default function handler(
   request: Request<
