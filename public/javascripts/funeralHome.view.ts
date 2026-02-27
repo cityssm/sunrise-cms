@@ -37,9 +37,7 @@ declare const exports: {
             } else {
               bulmaJS.alert({
                 contextualColorName: 'danger',
-                title: 'Error Restoring Funeral Home',
-
-                message: responseJSON.errorMessage ?? ''
+                message: 'Error Restoring Funeral Home'
               })
             }
           }

@@ -15,8 +15,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Work Order Milestone Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Updating Work Order Milestone Type'
                 });
             }
         });
@@ -44,8 +43,7 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Deleting Work Order Milestone Type',
-                        message: responseJSON.errorMessage ?? ''
+                        message: 'Error Deleting Work Order Milestone Type'
                     });
                 }
             });
@@ -79,8 +77,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Work Order Milestone Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Work Order Milestone Type'
                 });
             }
         });
@@ -169,19 +166,10 @@
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddWorkOrderMilestoneType`, formElement, (responseJSON) => {
-            if (responseJSON.success) {
-                workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
-                renderWorkOrderMilestoneTypes();
-                formElement.reset();
-                formElement.querySelector('input')?.focus();
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Adding Work Order Milestone Type',
-                    message: responseJSON.errorMessage ?? ''
-                });
-            }
+            workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
+            renderWorkOrderMilestoneTypes();
+            formElement.reset();
+            formElement.querySelector('input')?.focus();
         });
     });
     renderWorkOrderMilestoneTypes();

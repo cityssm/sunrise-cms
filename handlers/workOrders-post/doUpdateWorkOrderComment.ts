@@ -8,18 +8,19 @@ import updateWorkOrderComment, {
 } from '../../database/updateWorkOrderComment.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { WorkOrderComment } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doUpdateWorkOrderComment`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoUpdateWorkOrderCommentResponse =
-  { success: boolean; workOrderComments: WorkOrderComment[] }
   | { errorMessage: string; success: false }
+  | {
+      success: boolean
+      workOrderComments: WorkOrderComment[]
+      errorMessage: string
+    }
 
 export default function handler(
   request: Request<
@@ -47,7 +48,9 @@ export default function handler(
 
     response.json({
       success,
-      workOrderComments
+      workOrderComments,
+
+      errorMessage: success ? '' : 'Failed to update comment'
     })
   } catch (error) {
     debug(error)

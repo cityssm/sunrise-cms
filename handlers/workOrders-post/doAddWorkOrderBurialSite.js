@@ -22,7 +22,8 @@ export default function handler(request, response) {
         }, database);
         response.json({
             success,
-            workOrderBurialSites: results.burialSites
+            workOrderBurialSites: results.burialSites,
+            errorMessage: success ? '' : 'Failed to add burial site to work order'
         });
     }
     catch (error) {

@@ -21,7 +21,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Contract Relationship',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -50,7 +50,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Error Adding Burial Site',
-                    message: responseJSON.errorMessage ?? ''
+                    message: responseJSON.errorMessage
                 });
             }
             if (callbackFunction !== undefined) {
@@ -71,7 +71,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Error Adding Contract',
-                    message: responseJSON.errorMessage ?? ''
+                    message: responseJSON.errorMessage
                 });
             }
             if (callbackFunction !== undefined) {
@@ -176,13 +176,15 @@
         </td>
         ${exports.contractEndDateIsAvailable
             ? /* html */ `
-          <td>
-            ${contract.contractEndDate === null ||
+              <td>
+                ${
+            // eslint-disable-next-line sonarjs/no-nested-conditional
+            contract.contractEndDate === null ||
                 contract.contractEndDate === undefined
                 ? '<span class="has-text-grey">(No End Date)</span>'
                 : contract.contractEndDateString}
-          </td>
-        `
+              </td>
+            `
             : ''}
         <td>
           <ul class="fa-ul ml-5">
@@ -256,7 +258,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Relationship',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -326,7 +328,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Burial Site Relationship',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -512,7 +514,9 @@
                   ${exports.contractEndDateIsAvailable
                         ? /* html */ `
                         <td>
-                          ${contract.contractEndDate === null ||
+                          ${
+                        // eslint-disable-next-line sonarjs/no-nested-conditional
+                        contract.contractEndDate === null ||
                             contract.contractEndDate === undefined
                             ? '<span class="has-text-grey">(No End Date)</span>'
                             : contract.contractEndDateString}

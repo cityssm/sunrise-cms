@@ -6,18 +6,19 @@ import addWorkOrderBurialSite from '../../database/addWorkOrderBurialSite.js'
 import getBurialSites from '../../database/getBurialSites.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { BurialSite } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doAddWorkOrderBurialSite`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoAddWorkOrderBurialSiteResponse =
-  { success: boolean; workOrderBurialSites: BurialSite[] }
   | { errorMessage: string; success: false }
+  | {
+      success: boolean
+      workOrderBurialSites: BurialSite[]
+      errorMessage: string
+    }
 
 export default function handler(
   request: Request<
@@ -56,7 +57,8 @@ export default function handler(
 
     response.json({
       success,
-      workOrderBurialSites: results.burialSites
+      workOrderBurialSites: results.burialSites,
+      errorMessage: success ? '' : 'Failed to add burial site to work order'
     })
   } catch (error) {
     debug(error)

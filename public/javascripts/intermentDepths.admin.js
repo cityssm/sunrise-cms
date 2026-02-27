@@ -15,8 +15,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Interment Depth',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Updating Interment Depth'
                 });
             }
         });
@@ -44,8 +43,7 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Deleting Interment Depth',
-                        message: responseJSON.errorMessage ?? ''
+                        message: 'Error Deleting Interment Depth'
                     });
                 }
             });
@@ -79,8 +77,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Interment Depth',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Interment Depth'
                 });
             }
         });
@@ -164,19 +161,10 @@
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddIntermentDepth`, formElement, (responseJSON) => {
-            if (responseJSON.success) {
-                intermentDepths = responseJSON.intermentDepths;
-                renderIntermentDepths();
-                formElement.reset();
-                formElement.querySelector('input')?.focus();
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Adding Interment Depth',
-                    message: responseJSON.errorMessage ?? ''
-                });
-            }
+            intermentDepths = responseJSON.intermentDepths;
+            renderIntermentDepths();
+            formElement.reset();
+            formElement.querySelector('input')?.focus();
         });
     });
     renderIntermentDepths();

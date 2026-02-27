@@ -18,7 +18,6 @@ declare const exports: {
 
   intermentDepths?: IntermentDepth[]
 }
-
 ;(() => {
   const sunrise = exports.sunrise
 
@@ -42,9 +41,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Interment Depth',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Interment Depth'
           })
         }
       }
@@ -81,9 +78,7 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Interment Depth',
-
-              message: responseJSON.errorMessage ?? ''
+              message: 'Error Deleting Interment Depth'
             })
           }
         }
@@ -120,16 +115,18 @@ declare const exports: {
         intermentDepthId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: DoMoveIntermentDepthUpResponse | DoMoveIntermentDepthDownResponse) => {
+      (
+        responseJSON:
+          | DoMoveIntermentDepthDownResponse
+          | DoMoveIntermentDepthUpResponse
+      ) => {
         if (responseJSON.success) {
           intermentDepths = responseJSON.intermentDepths
           renderIntermentDepths()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Interment Depth',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Interment Depth'
           })
         }
       }
@@ -229,20 +226,11 @@ declare const exports: {
         `${sunrise.urlPrefix}/admin/doAddIntermentDepth`,
         formElement,
         (responseJSON: DoAddIntermentDepthResponse) => {
-          if (responseJSON.success) {
-            intermentDepths = responseJSON.intermentDepths
-            renderIntermentDepths()
+          intermentDepths = responseJSON.intermentDepths
+          renderIntermentDepths()
 
-            formElement.reset()
-            formElement.querySelector('input')?.focus()
-          } else {
-            bulmaJS.alert({
-              contextualColorName: 'danger',
-              title: 'Error Adding Interment Depth',
-
-              message: responseJSON.errorMessage ?? ''
-            })
-          }
+          formElement.reset()
+          formElement.querySelector('input')?.focus()
         }
       )
     })

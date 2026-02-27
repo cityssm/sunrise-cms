@@ -78,9 +78,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Update Failed',
 
-            message:
-              responseJSON.errorMessage ??
-              'There was an error updating the setting.'
+            message: 'There was an error updating the setting.'
           })
         }
       }

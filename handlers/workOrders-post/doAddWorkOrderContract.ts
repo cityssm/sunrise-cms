@@ -6,18 +6,15 @@ import addWorkOrderContract from '../../database/addWorkOrderContract.js'
 import getContracts from '../../database/getContracts.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { Contract } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doAddWorkOrderContract`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoAddWorkOrderContractResponse =
-  { success: boolean; workOrderContracts: Contract[] }
   | { errorMessage: string; success: false }
+  | { success: boolean; workOrderContracts: Contract[]; errorMessage: string }
 
 export default async function handler(
   request: Request<
@@ -58,7 +55,8 @@ export default async function handler(
 
     response.json({
       success,
-      workOrderContracts: results.contracts
+      workOrderContracts: results.contracts,
+      errorMessage: success ? '' : 'Failed to add contract to work order.'
     })
   } catch (error) {
     debug(error)

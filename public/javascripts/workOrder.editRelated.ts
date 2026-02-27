@@ -59,7 +59,6 @@ declare const exports: {
           workOrderId
         },
         (responseJSON: DoDeleteWorkOrderContractResponse) => {
-
           if (responseJSON.success) {
             workOrderContracts = responseJSON.workOrderContracts
             renderRelatedBurialSitesAndContracts()
@@ -68,7 +67,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Deleting Contract Relationship',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -100,7 +99,6 @@ declare const exports: {
         workOrderId
       },
       (responseJSON: DoAddWorkOrderBurialSiteResponse) => {
-
         if (responseJSON.success) {
           workOrderBurialSites = responseJSON.workOrderBurialSites
           renderRelatedBurialSitesAndContracts()
@@ -109,7 +107,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Error Adding Burial Site',
 
-            message: responseJSON.errorMessage ?? ''
+            message: responseJSON.errorMessage
           })
         }
 
@@ -131,7 +129,6 @@ declare const exports: {
         workOrderId
       },
       (responseJSON: DoAddWorkOrderContractResponse) => {
-
         if (responseJSON.success) {
           workOrderContracts = responseJSON.workOrderContracts
           renderRelatedBurialSitesAndContracts()
@@ -140,7 +137,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Error Adding Contract',
 
-            message: responseJSON.errorMessage ?? ''
+            message: responseJSON.errorMessage
           })
         }
 
@@ -273,15 +270,16 @@ declare const exports: {
         ${
           exports.contractEndDateIsAvailable
             ? /* html */ `
-          <td>
-            ${
-              contract.contractEndDate === null ||
-              contract.contractEndDate === undefined
-                ? '<span class="has-text-grey">(No End Date)</span>'
-                : contract.contractEndDateString
-            }
-          </td>
-        `
+              <td>
+                ${
+                  // eslint-disable-next-line sonarjs/no-nested-conditional
+                  contract.contractEndDate === null ||
+                  contract.contractEndDate === undefined
+                    ? '<span class="has-text-grey">(No End Date)</span>'
+                    : contract.contractEndDateString
+                }
+              </td>
+            `
             : ''
         }
         <td>
@@ -390,7 +388,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Deleting Relationship',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -500,7 +498,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Deleting Burial Site Relationship',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -653,7 +651,6 @@ declare const exports: {
           `${sunrise.urlPrefix}/contracts/doSearchContracts`,
           searchFormElement,
           (responseJSON: DoSearchContractsResponse) => {
-
             if (responseJSON.contracts.length === 0) {
               searchResultsContainerElement.innerHTML = /* html */ `
                 <div class="message is-info">
@@ -745,6 +742,7 @@ declare const exports: {
                       ? /* html */ `
                         <td>
                           ${
+                            // eslint-disable-next-line sonarjs/no-nested-conditional
                             contract.contractEndDate === null ||
                             contract.contractEndDate === undefined
                               ? '<span class="has-text-grey">(No End Date)</span>'
@@ -857,7 +855,6 @@ declare const exports: {
           `${sunrise.urlPrefix}/burialSites/doSearchBurialSites`,
           searchFormElement,
           (responseJSON: DoSearchBurialSitesResponse) => {
-
             if (responseJSON.burialSites.length === 0) {
               searchResultsContainerElement.innerHTML = /* html */ `
                 <div class="message is-info">

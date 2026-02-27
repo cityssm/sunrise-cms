@@ -20,7 +20,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -39,7 +39,7 @@
                     // eslint-disable-next-line unicorn/prefer-math-min-max
                     (workOrderComment.commentDateString ?? '') <= currentDateString
                         ? currentDateString
-                        : workOrderComment.commentDateString ?? '';
+                        : (workOrderComment.commentDateString ?? '');
                 modalElement.querySelector('#workOrderCommentEdit--commentTimeString').value = workOrderComment.commentTimeString ?? '';
             },
             onshown(modalElement, closeModalFunction) {
@@ -70,7 +70,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Removing Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -120,7 +120,7 @@
           ${cityssm.escapeHTML(workOrderComment.commentDateString ?? '')}
           ${cityssm.escapeHTML(workOrderComment.commentTime === 0
                 ? ''
-                : workOrderComment.commentTimePeriodString ?? '')}
+                : (workOrderComment.commentTimePeriodString ?? ''))}
         </td>
         <td>
           ${cityssm.escapeHTML(workOrderComment.comment ?? '')}

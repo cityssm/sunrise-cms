@@ -13,7 +13,8 @@ export default function handler(request, response) {
         const workOrderComments = getWorkOrderComments(request.body.workOrderId, database);
         response.json({
             success,
-            workOrderComments
+            workOrderComments,
+            errorMessage: success ? '' : 'Failed to delete comment'
         });
     }
     catch (error) {

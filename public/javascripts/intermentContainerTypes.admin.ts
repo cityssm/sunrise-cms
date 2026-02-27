@@ -42,9 +42,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Interment Container Type',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Interment Container Type'
           })
         }
       }
@@ -82,9 +80,7 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Interment Container Type',
-
-              message: responseJSON.errorMessage ?? ''
+              message: 'Error Deleting Interment Container Type'
             })
           }
         }
@@ -123,16 +119,18 @@ declare const exports: {
         intermentContainerTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: DoMoveIntermentContainerTypeUpResponse | DoMoveIntermentContainerTypeDownResponse) => {
+      (
+        responseJSON:
+          | DoMoveIntermentContainerTypeDownResponse
+          | DoMoveIntermentContainerTypeUpResponse
+      ) => {
         if (responseJSON.success) {
           intermentContainerTypes = responseJSON.intermentContainerTypes
           renderIntermentContainerTypes()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Interment Container Type',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Interment Container Type'
           })
         }
       }
@@ -264,19 +262,10 @@ declare const exports: {
       `${sunrise.urlPrefix}/admin/doAddIntermentContainerType`,
       formElement,
       (responseJSON: DoAddIntermentContainerTypeResponse) => {
-        if (responseJSON.success) {
-          intermentContainerTypes = responseJSON.intermentContainerTypes
-          renderIntermentContainerTypes()
-          formElement.reset()
-          formElement.querySelector('input')?.focus()
-        } else {
-          bulmaJS.alert({
-            contextualColorName: 'danger',
-            title: 'Error Adding Interment Container Type',
-
-            message: responseJSON.errorMessage ?? ''
-          })
-        }
+        intermentContainerTypes = responseJSON.intermentContainerTypes
+        renderIntermentContainerTypes()
+        formElement.reset()
+        formElement.querySelector('input')?.focus()
       }
     )
   })

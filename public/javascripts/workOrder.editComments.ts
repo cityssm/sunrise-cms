@@ -56,7 +56,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Comment',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -94,7 +94,7 @@ declare const exports: {
           // eslint-disable-next-line unicorn/prefer-math-min-max
           (workOrderComment.commentDateString ?? '') <= currentDateString
             ? currentDateString
-            : workOrderComment.commentDateString ?? ''
+            : (workOrderComment.commentDateString ?? '')
         ;(
           modalElement.querySelector(
             '#workOrderCommentEdit--commentTimeString'
@@ -144,7 +144,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Removing Comment',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -206,7 +206,7 @@ declare const exports: {
           ${cityssm.escapeHTML(
             workOrderComment.commentTime === 0
               ? ''
-              : workOrderComment.commentTimePeriodString ?? ''
+              : (workOrderComment.commentTimePeriodString ?? '')
           )}
         </td>
         <td>

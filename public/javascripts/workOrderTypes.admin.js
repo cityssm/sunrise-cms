@@ -15,8 +15,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Work Order Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Updating Work Order Type'
                 });
             }
         });
@@ -44,8 +43,7 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Deleting Work Order Type',
-                        message: responseJSON.errorMessage ?? ''
+                        message: 'Error Deleting Work Order Type'
                     });
                 }
             });
@@ -79,8 +77,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Work Order Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Work Order Type'
                 });
             }
         });
@@ -166,19 +163,10 @@
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddWorkOrderType`, formElement, (responseJSON) => {
-            if (responseJSON.success) {
-                workOrderTypes = responseJSON.workOrderTypes;
-                renderWorkOrderTypes();
-                formElement.reset();
-                formElement.querySelector('input')?.focus();
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Adding Work Order Type',
-                    message: responseJSON.errorMessage ?? ''
-                });
-            }
+            workOrderTypes = responseJSON.workOrderTypes;
+            renderWorkOrderTypes();
+            formElement.reset();
+            formElement.querySelector('input')?.focus();
         });
     });
     renderWorkOrderTypes();

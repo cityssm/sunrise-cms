@@ -24,7 +24,8 @@ export default async function handler(request, response) {
         }, database);
         response.json({
             success,
-            workOrderContracts: results.contracts
+            workOrderContracts: results.contracts,
+            errorMessage: success ? '' : 'Failed to add contract to work order.'
         });
     }
     catch (error) {

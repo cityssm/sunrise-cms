@@ -37,9 +37,7 @@ declare const exports: {
             } else {
               bulmaJS.alert({
                 contextualColorName: 'danger',
-                title: 'Error Reopening Work Order',
-
-                message: responseJSON.errorMessage ?? '',
+                message: 'Error Reopening Work Order'
               })
             }
           }

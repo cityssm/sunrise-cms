@@ -41,9 +41,7 @@ declare const bulmaJS: BulmaJS
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Work Order Type',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Work Order Type'
           })
         }
       }
@@ -80,9 +78,7 @@ declare const bulmaJS: BulmaJS
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Work Order Type',
-
-              message: responseJSON.errorMessage ?? ''
+              message: 'Error Deleting Work Order Type'
             })
           }
         }
@@ -122,16 +118,18 @@ declare const bulmaJS: BulmaJS
 
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: DoMoveWorkOrderTypeUpResponse | DoMoveWorkOrderTypeDownResponse) => {
+      (
+        responseJSON:
+          | DoMoveWorkOrderTypeDownResponse
+          | DoMoveWorkOrderTypeUpResponse
+      ) => {
         if (responseJSON.success) {
           workOrderTypes = responseJSON.workOrderTypes
           renderWorkOrderTypes()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Work Order Type',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Work Order Type'
           })
         }
       }
@@ -249,19 +247,10 @@ declare const bulmaJS: BulmaJS
       `${sunrise.urlPrefix}/admin/doAddWorkOrderType`,
       formElement,
       (responseJSON: DoAddWorkOrderTypeResponse) => {
-        if (responseJSON.success) {
-          workOrderTypes = responseJSON.workOrderTypes
-          renderWorkOrderTypes()
-          formElement.reset()
-          formElement.querySelector('input')?.focus()
-        } else {
-          bulmaJS.alert({
-            contextualColorName: 'danger',
-            title: 'Error Adding Work Order Type',
-
-            message: responseJSON.errorMessage ?? ''
-          })
-        }
+        workOrderTypes = responseJSON.workOrderTypes
+        renderWorkOrderTypes()
+        formElement.reset()
+        formElement.querySelector('input')?.focus()
       }
     )
   })

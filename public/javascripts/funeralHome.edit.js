@@ -33,8 +33,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Funeral Home',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Updating Funeral Home'
                 });
             }
         });
@@ -59,7 +58,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Funeral Home',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });

@@ -21,7 +21,8 @@ export default async function handler(request, response) {
         }, database);
         response.json({
             success,
-            workOrderContracts: workOrderContracts.contracts
+            workOrderContracts: workOrderContracts.contracts,
+            errorMessage: success ? '' : 'Failed to delete contract from work order'
         });
     }
     catch (error) {

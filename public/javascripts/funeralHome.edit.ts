@@ -45,7 +45,9 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/funeralHomes/${isCreate ? 'doCreateFuneralHome' : 'doUpdateFuneralHome'}`,
       funeralHomeForm,
-      (responseJSON: DoCreateFuneralHomeResponse | DoUpdateFuneralHomeResponse) => {
+      (
+        responseJSON: DoCreateFuneralHomeResponse | DoUpdateFuneralHomeResponse
+      ) => {
         if (responseJSON.success) {
           clearUnsavedChanges()
 
@@ -63,9 +65,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Funeral Home',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Funeral Home'
           })
         }
       }
@@ -100,7 +100,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Deleting Funeral Home',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }

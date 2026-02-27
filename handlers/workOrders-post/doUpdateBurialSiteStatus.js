@@ -19,7 +19,8 @@ export default function handler(request, response) {
         }, database);
         response.json({
             success,
-            workOrderBurialSites: results.burialSites
+            workOrderBurialSites: results.burialSites,
+            errorMessage: success ? '' : 'Failed to update burial site status.'
         });
     }
     catch (error) {
