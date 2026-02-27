@@ -6,7 +6,9 @@ labels: bug
 assignees: ''
 ---
 
-<!-- All fields are optional, but the more you can provide, and sooner we can help. -->
+<!--
+  All fields are optional, but the more you can provide, and sooner we can help.
+-->
 
 **What seems to be the problem?**
 

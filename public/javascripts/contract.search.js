@@ -27,7 +27,7 @@
       `;
         }
     }
-    function getContactsHTML(contract) {
+    function getContactsHtml(contract) {
         let contactsHTML = '';
         for (const interment of contract.contractInterments ?? []) {
             contactsHTML += /* html */ `
@@ -57,7 +57,7 @@
     }
     function buildContractRowElement(contract) {
         const contractTimeHTML = getContractTimeHtml(contract);
-        const contactsHTML = getContactsHTML(contract);
+        const contactsHTML = getContactsHtml(contract);
         const feeTotal = (contract.contractFees?.reduce((soFar, currentFee) => soFar +
             ((currentFee.feeAmount ?? 0) + (currentFee.taxAmount ?? 0)) *
                 (currentFee.quantity ?? 0), 0) ?? 0).toFixed(2);

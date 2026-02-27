@@ -17,7 +17,7 @@ await describe('helpers.cache', async () => {
         await it('returns Burial Site Statuses', () => {
             cacheFunctions.clearCacheByTableName('BurialSiteStatuses');
             const burialSiteStatuses = getCachedBurialSiteStatuses();
-            assert.ok(burialSiteStatuses.length > 0);
+            assert.notStrictEqual(burialSiteStatuses.length, 0, 'Expected burial site statuses to be cached');
             for (const burialSiteStatus of burialSiteStatuses) {
                 const byId = getCachedBurialSiteStatusById(burialSiteStatus.burialSiteStatusId);
                 assert.strictEqual(burialSiteStatus.burialSiteStatusId, byId?.burialSiteStatusId);
