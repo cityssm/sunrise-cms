@@ -8,7 +8,8 @@ export default function handler(request, response) {
             : request.body.burialSiteId;
         response.json({
             success,
-            burialSiteId
+            burialSiteId,
+            errorMessage: success ? '' : 'Failed to update burial site'
         });
         response.on('finish', () => {
             clearNextPreviousBurialSiteIdCache(burialSiteId);

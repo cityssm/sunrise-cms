@@ -13,7 +13,8 @@ export default function handler(request, response) {
         const burialSiteComments = getBurialSiteComments(request.body.burialSiteId, database);
         response.json({
             success,
-            burialSiteComments
+            burialSiteComments,
+            errorMessage: success ? '' : 'Failed to delete comment'
         });
     }
     catch (error) {

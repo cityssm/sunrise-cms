@@ -5,10 +5,8 @@ import updateBurialSite, {
 } from '../../database/updateBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoUpdateBurialSiteResponse =
-  { success: boolean; burialSiteId: number }
+  | { success: boolean; burialSiteId: number; errorMessage: string }
   | { success: false; errorMessage: string }
 
 export default function handler(
@@ -26,7 +24,8 @@ export default function handler(
     response.json({
       success,
 
-      burialSiteId
+      burialSiteId,
+      errorMessage: success ? '' : 'Failed to update burial site'
     })
 
     response.on('finish', () => {

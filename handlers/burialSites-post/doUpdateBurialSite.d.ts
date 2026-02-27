@@ -3,6 +3,7 @@ import { type UpdateBurialSiteForm } from '../../database/updateBurialSite.js';
 export type DoUpdateBurialSiteResponse = {
     success: boolean;
     burialSiteId: number;
+    errorMessage: string;
 } | {
     success: false;
     errorMessage: string;

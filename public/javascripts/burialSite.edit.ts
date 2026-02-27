@@ -10,10 +10,7 @@ import type { DoDeleteBurialSiteCommentResponse } from '../../handlers/burialSit
 import type { DoGetBurialSiteTypeFieldsResponse } from '../../handlers/burialSites-post/doGetBurialSiteTypeFields.js'
 import type { DoUpdateBurialSiteResponse } from '../../handlers/burialSites-post/doUpdateBurialSite.js'
 import type { DoUpdateBurialSiteCommentResponse } from '../../handlers/burialSites-post/doUpdateBurialSiteComment.js'
-import type {
-  BurialSiteComment,
-  BurialSiteTypeField
-} from '../../types/record.types.js'
+import type { BurialSiteComment } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
@@ -64,7 +61,9 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/burialSites/${isCreate ? 'doCreateBurialSite' : 'doUpdateBurialSite'}`,
       formElement,
-      (responseJSON: DoCreateBurialSiteResponse | DoUpdateBurialSiteResponse) => {
+      (
+        responseJSON: DoCreateBurialSiteResponse | DoUpdateBurialSiteResponse
+      ) => {
         if (responseJSON.success) {
           clearUnsavedChanges()
 
@@ -85,7 +84,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Error Updating Burial Site',
 
-            message: responseJSON.errorMessage ?? ''
+            message: responseJSON.errorMessage
           })
         }
       }
@@ -122,7 +121,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Deleting Burial Site',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }
@@ -226,7 +225,6 @@ declare const exports: {
           burialSiteTypeId: burialSiteTypeIdElement.value
         },
         (responseJSON: DoGetBurialSiteTypeFieldsResponse) => {
-
           if (responseJSON.burialSiteTypeFields.length === 0) {
             burialSiteFieldsContainerElement.innerHTML = /* html */ `
               <div class="message is-info">
@@ -415,7 +413,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Comment',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -494,7 +492,6 @@ declare const exports: {
           burialSiteId
         },
         (responseJSON: DoDeleteBurialSiteCommentResponse) => {
-
           if (responseJSON.success) {
             burialSiteComments = responseJSON.burialSiteComments
             renderBurialSiteComments()
@@ -503,7 +500,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Removing Comment',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }

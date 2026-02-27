@@ -6,6 +6,7 @@ export type DoDeleteBurialSiteCommentResponse = {
 } | {
     success: boolean;
     burialSiteComments: BurialSiteComment[];
+    errorMessage: string;
 };
 export default function handler(request: Request<unknown, unknown, {
     burialSiteCommentId: string;

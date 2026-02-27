@@ -14,7 +14,11 @@ const debug = Debug(
 
 export type DoDeleteBurialSiteCommentResponse =
   | { errorMessage: string; success: false }
-  | { success: boolean; burialSiteComments: BurialSiteComment[] }
+  | {
+      success: boolean
+      burialSiteComments: BurialSiteComment[]
+      errorMessage: string
+    }
 
 export default function handler(
   request: Request<
@@ -44,7 +48,9 @@ export default function handler(
     response.json({
       success,
 
-      burialSiteComments
+      burialSiteComments,
+
+      errorMessage: success ? '' : 'Failed to delete comment'
     })
   } catch (error) {
     debug(error)
