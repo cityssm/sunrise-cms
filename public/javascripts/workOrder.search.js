@@ -53,8 +53,7 @@
         }
         return relatedHTML;
     }
-    function renderWorkOrders(rawResponseJSON) {
-        const responseJSON = rawResponseJSON;
+    function renderWorkOrders(responseJSON) {
         if (responseJSON.workOrders.length === 0) {
             searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">

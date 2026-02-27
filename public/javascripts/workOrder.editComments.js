@@ -10,8 +10,7 @@
         let editCloseModalFunction;
         function editComment(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkOrderComment`, editFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkOrderComment`, editFormElement, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderComments = responseJSON.workOrderComments;
                     editCloseModalFunction();
@@ -62,8 +61,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderComment`, {
                 workOrderCommentId,
                 workOrderId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderComments = responseJSON.workOrderComments;
                     renderWorkOrderComments();
@@ -154,8 +152,7 @@
         let addCommentCloseModalFunction;
         function doAddComment(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderComment`, formEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderComment`, formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderComments = responseJSON.workOrderComments;
                     renderWorkOrderComments();

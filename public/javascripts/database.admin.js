@@ -1,8 +1,7 @@
 (() => {
     const sunrise = exports.sunrise;
     function doBackup() {
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doBackupDatabase`, {}, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doBackupDatabase`, {}, (responseJSON) => {
             if (responseJSON.success) {
                 bulmaJS.alert({
                     contextualColorName: 'success',
@@ -23,8 +22,7 @@
         });
     }
     function doCleanup() {
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doCleanupDatabase`, {}, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doCleanupDatabase`, {}, (responseJSON) => {
             if (responseJSON.success) {
                 bulmaJS.alert({
                     contextualColorName: 'success',

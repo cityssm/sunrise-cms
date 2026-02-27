@@ -20,8 +20,7 @@
                     cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteRelatedContract`, {
                         contractId,
                         relatedContractId
-                    }, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
+                    }, (responseJSON) => {
                         if (responseJSON.success) {
                             relatedContracts = responseJSON.relatedContracts;
                             renderRelatedContracts();
@@ -134,8 +133,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddRelatedContract`, {
                 contractId,
                 relatedContractId: selectedContractId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     relatedContracts = responseJSON.relatedContracts;
                     renderRelatedContracts();
@@ -154,8 +152,7 @@
             formEvent?.preventDefault();
             const containerElement = modalElement?.querySelector('#resultsContainer--relatedContractSelect');
             containerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Contracts...');
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`, formElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`, formElement, (responseJSON) => {
                 containerElement.innerHTML = '<div class="panel"></div>';
                 for (const contract of responseJSON.contracts) {
                     let intermentsHTML = '';

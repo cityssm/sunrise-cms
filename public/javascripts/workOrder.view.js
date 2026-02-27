@@ -8,8 +8,7 @@
         function doReopen() {
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doReopenWorkOrder`, {
                 workOrderId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     globalThis.location.href = sunrise.getWorkOrderUrl(workOrderId, true, true);
                 }

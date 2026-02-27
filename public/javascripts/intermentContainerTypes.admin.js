@@ -4,8 +4,7 @@
     delete exports.intermentContainerTypes;
     function updateIntermentContainerType(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateIntermentContainerType`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateIntermentContainerType`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 intermentContainerTypes = responseJSON.intermentContainerTypes;
                 bulmaJS.alert({
@@ -28,8 +27,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteIntermentContainerType`, {
                 intermentContainerTypeId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     intermentContainerTypes = responseJSON.intermentContainerTypes;
                     if (intermentContainerTypes.length === 0) {
@@ -73,8 +71,7 @@
             : 'doMoveIntermentContainerTypeDown'}`, {
             intermentContainerTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 intermentContainerTypes = responseJSON.intermentContainerTypes;
                 renderIntermentContainerTypes();
@@ -180,8 +177,7 @@
     document.querySelector('#form--addIntermentContainerType').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddIntermentContainerType`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddIntermentContainerType`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 intermentContainerTypes = responseJSON.intermentContainerTypes;
                 renderIntermentContainerTypes();

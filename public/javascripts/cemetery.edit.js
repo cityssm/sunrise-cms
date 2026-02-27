@@ -35,8 +35,7 @@
     }
     function updateCemetery(formEvent) {
         formEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/cemeteries/${isCreate ? 'doCreateCemetery' : 'doUpdateCemetery'}`, cemeteryForm, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/cemeteries/${isCreate ? 'doCreateCemetery' : 'doUpdateCemetery'}`, cemeteryForm, (responseJSON) => {
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
@@ -70,8 +69,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/cemeteries/doDeleteCemetery`, {
                 cemeteryId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     globalThis.location.href = sunrise.getCemeteryUrl();
                 }

@@ -17,8 +17,7 @@
                 callbackFunction() {
                     cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteUser`, {
                         userName
-                    }, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
+                    }, (responseJSON) => {
                         if (responseJSON.success) {
                             // Update the users list with the new data from the server
                             if (responseJSON.users !== undefined) {
@@ -51,8 +50,7 @@
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doToggleUserPermission`, {
             permissionField: permission,
             userName
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 renderUsers(responseJSON.users);
             }
@@ -177,8 +175,7 @@
         function doAddUser(submitEvent) {
             submitEvent.preventDefault();
             const addForm = submitEvent.currentTarget;
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddUser`, addForm, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddUser`, addForm, (responseJSON) => {
                 if (responseJSON.success) {
                     closeModalFunction();
                     renderUsers(responseJSON.users);

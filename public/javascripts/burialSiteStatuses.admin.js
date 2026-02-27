@@ -4,8 +4,7 @@
     delete exports.burialSiteStatuses;
     function updateBurialSiteStatus(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateBurialSiteStatus`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateBurialSiteStatus`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 burialSiteStatuses = responseJSON.burialSiteStatuses;
                 bulmaJS.alert({
@@ -28,8 +27,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteBurialSiteStatus`, {
                 burialSiteStatusId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     burialSiteStatuses = responseJSON.burialSiteStatuses;
                     if (burialSiteStatuses.length === 0) {
@@ -73,8 +71,7 @@
             : 'doMoveBurialSiteStatusDown'}`, {
             burialSiteStatusId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 burialSiteStatuses = responseJSON.burialSiteStatuses;
                 renderBurialSiteStatuses();
@@ -165,8 +162,7 @@
     document.querySelector('#form--addBurialSiteStatus').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddBurialSiteStatus`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddBurialSiteStatus`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 burialSiteStatuses = responseJSON.burialSiteStatuses;
                 renderBurialSiteStatuses();

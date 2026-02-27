@@ -4,8 +4,7 @@
     delete exports.workOrderMilestoneTypes;
     function updateWorkOrderMilestoneType(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateWorkOrderMilestoneType`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateWorkOrderMilestoneType`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 bulmaJS.alert({
@@ -28,8 +27,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteWorkOrderMilestoneType`, {
                 workOrderMilestoneTypeId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                     if (workOrderMilestoneTypes.length === 0) {
@@ -73,8 +71,7 @@
             : 'doMoveWorkOrderMilestoneTypeDown'}`, {
             workOrderMilestoneTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 renderWorkOrderMilestoneTypes();
@@ -171,8 +168,7 @@
         ?.addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddWorkOrderMilestoneType`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddWorkOrderMilestoneType`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes;
                 renderWorkOrderMilestoneTypes();

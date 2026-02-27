@@ -201,8 +201,7 @@
         let addCloseModalFunction;
         function doAddFeeCategory(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddFeeCategory`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddFeeCategory`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     addCloseModalFunction();
@@ -238,8 +237,7 @@
         let editCloseModalFunction;
         function doUpdateFeeCategory(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFeeCategory`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFeeCategory`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     editCloseModalFunction();
@@ -282,8 +280,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteFeeCategory`, {
                 feeCategoryId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     renderFeeCategories();
@@ -316,8 +313,7 @@
             : 'doMoveFeeCategoryDown'}`, {
             feeCategoryId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 feeCategories = responseJSON.feeCategories;
                 renderFeeCategories();
@@ -339,8 +335,7 @@
         let addCloseModalFunction;
         function doAddFee(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddFee`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddFee`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     addCloseModalFunction();
@@ -446,8 +441,7 @@
         let editCloseModalFunction;
         function doUpdateFeeAmount(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFeeAmount`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFeeAmount`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     editCloseModalFunction();
@@ -492,8 +486,7 @@
         let editModalElement;
         function doUpdateFee(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFee`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateFee`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     feeCategories = responseJSON.feeCategories;
                     editCloseModalFunction();
@@ -515,8 +508,7 @@
                     feeId
                 }, 
                 // eslint-disable-next-line sonarjs/no-nested-functions
-                (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
+                (responseJSON) => {
                     if (responseJSON.success) {
                         feeCategories = responseJSON.feeCategories;
                         editCloseModalFunction();
@@ -662,8 +654,7 @@
             : 'doMoveFeeDown'}`, {
             feeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 feeCategories = responseJSON.feeCategories;
                 renderFeeCategories();

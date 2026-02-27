@@ -20,8 +20,7 @@
     const formElement = document.querySelector('#form--burialSite');
     function updateBurialSite(formEvent) {
         formEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/${isCreate ? 'doCreateBurialSite' : 'doUpdateBurialSite'}`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/${isCreate ? 'doCreateBurialSite' : 'doUpdateBurialSite'}`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
@@ -56,8 +55,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doDeleteBurialSite`, {
                 burialSiteId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     clearUnsavedChanges();
                     globalThis.location.href = sunrise.getBurialSiteUrl();
@@ -129,8 +127,7 @@
             }
             cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doGetBurialSiteTypeFields`, {
                 burialSiteTypeId: burialSiteTypeIdElement.value
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.burialSiteTypeFields.length === 0) {
                     burialSiteFieldsContainerElement.innerHTML = /* html */ `
               <div class="message is-info">
@@ -250,8 +247,7 @@
         let editCloseModalFunction;
         function editComment(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doUpdateBurialSiteComment`, editFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doUpdateBurialSiteComment`, editFormElement, (responseJSON) => {
                 if (responseJSON.success) {
                     burialSiteComments = responseJSON.burialSiteComments;
                     editCloseModalFunction();
@@ -306,8 +302,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doDeleteBurialSiteComment`, {
                 burialSiteCommentId,
                 burialSiteId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     burialSiteComments = responseJSON.burialSiteComments;
                     renderBurialSiteComments();
@@ -398,8 +393,7 @@
         let addCommentCloseModalFunction;
         function doAddComment(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doAddBurialSiteComment`, formEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doAddBurialSiteComment`, formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     burialSiteComments = responseJSON.burialSiteComments;
                     renderBurialSiteComments();

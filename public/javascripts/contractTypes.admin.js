@@ -25,8 +25,7 @@
             panelBlockElement.classList.toggle('is-hidden');
         }
     }
-    function contractTypeResponseHandler(rawResponseJSON) {
-        const responseJSON = rawResponseJSON;
+    function contractTypeResponseHandler(responseJSON) {
         if (responseJSON.success) {
             contractTypes = responseJSON.contractTypes;
             allContractTypeFields = responseJSON.allContractTypeFields;
@@ -63,8 +62,7 @@
         let editCloseModalFunction;
         function doEdit(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateContractType`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateContractType`, submitEvent.currentTarget, (responseJSON) => {
                 contractTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -97,8 +95,7 @@
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddContractTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddContractTypeField`, submitEvent.currentTarget, (responseJSON) => {
                 expandedContractTypes.add(contractTypeId);
                 contractTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
@@ -180,8 +177,7 @@
         }
         function doUpdate(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateContractTypeField`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateContractTypeField`, submitEvent.currentTarget, (responseJSON) => {
                 contractTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -191,8 +187,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteContractTypeField`, {
                 contractTypeFieldId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 contractTypeResponseHandler(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -325,8 +320,7 @@
         let closeAddModalFunction;
         function doAdd(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddContractTypePrint`, formEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddContractTypePrint`, formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     closeAddModalFunction();
                 }
@@ -605,8 +599,7 @@
         let addCloseModalFunction;
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddContractType`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddContractType`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     addCloseModalFunction();
                     contractTypes = responseJSON.contractTypes;

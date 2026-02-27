@@ -4,8 +4,7 @@
     delete exports.committalTypes;
     function updateCommittalType(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateCommittalType`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateCommittalType`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 committalTypes = responseJSON.committalTypes;
                 bulmaJS.alert({
@@ -28,8 +27,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteCommittalType`, {
                 committalTypeId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     committalTypes = responseJSON.committalTypes;
                     if (committalTypes.length === 0) {
@@ -73,8 +71,7 @@
             : 'doMoveCommittalTypeDown'}`, {
             committalTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 committalTypes = responseJSON.committalTypes;
                 renderCommittalTypes();
@@ -164,8 +161,7 @@
     document.querySelector('#form--addCommittalType').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddCommittalType`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddCommittalType`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 committalTypes = responseJSON.committalTypes;
                 renderCommittalTypes();

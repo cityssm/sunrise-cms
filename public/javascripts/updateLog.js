@@ -177,8 +177,7 @@
             recordType: recordTypeFilterElement.value,
             sortBy,
             sortDirection
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             loadMoreButtonElement.classList.toggle('is-hidden', responseJSON.updateLog.length < currentLimit);
             renderUpdateLog(responseJSON.updateLog);
         });

@@ -8,8 +8,7 @@
         ?.addEventListener('submit', (event) => {
         event.preventDefault();
         const formElement = event.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/dashboard/doUpdateConsignoCloudUserSettings`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/dashboard/doUpdateConsignoCloudUserSettings`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 bulmaJS.alert({
                     message: 'ConsignO Cloud Settings updated successfully.'
@@ -24,8 +23,7 @@
      * API Key
      */
     function doResetApiKey() {
-        cityssm.postJSON(`${sunrise.urlPrefix}/dashboard/doResetApiKey`, {}, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/dashboard/doResetApiKey`, {}, (responseJSON) => {
             if (responseJSON.success) {
                 bulmaJS.alert({
                     contextualColorName: 'success',

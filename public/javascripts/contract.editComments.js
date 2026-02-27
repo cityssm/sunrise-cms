@@ -10,8 +10,7 @@
         let editCloseModalFunction;
         function editContractComment(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractComment`, editFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractComment`, editFormElement, (responseJSON) => {
                 if (responseJSON.success) {
                     contractComments = responseJSON.contractComments ?? [];
                     if (editCloseModalFunction !== undefined) {
@@ -68,8 +67,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractComment`, {
                 contractCommentId,
                 contractId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     contractComments = responseJSON.contractComments;
                     renderContractComments();
@@ -161,8 +159,7 @@
         let addCloseModalFunction;
         function addComment(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractComment`, addFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractComment`, addFormElement, (responseJSON) => {
                 if (responseJSON.success) {
                     contractComments = responseJSON.contractComments;
                     if (addCloseModalFunction !== undefined) {

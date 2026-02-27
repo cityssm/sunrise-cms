@@ -24,8 +24,7 @@
     function updateSetting(formEvent) {
         formEvent.preventDefault();
         const formElement = formEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateSetting`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateSetting`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 bulmaJS.alert({
                     contextualColorName: 'success',

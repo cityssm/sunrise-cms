@@ -28,8 +28,7 @@
         let createCloseModalFunction;
         function doCreate(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCreateWorkOrder`, formEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCreateWorkOrder`, formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     createCloseModalFunction();
                     confirmOpenNewWorkOrder(responseJSON.workOrderId);

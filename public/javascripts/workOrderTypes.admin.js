@@ -4,8 +4,7 @@
     delete exports.workOrderTypes;
     function updateWorkOrderType(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateWorkOrderType`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateWorkOrderType`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 bulmaJS.alert({
@@ -28,8 +27,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteWorkOrderType`, {
                 workOrderTypeId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderTypes = responseJSON.workOrderTypes;
                     if (workOrderTypes.length === 0) {
@@ -73,8 +71,7 @@
             : 'doMoveWorkOrderTypeDown'}`, {
             workOrderTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 renderWorkOrderTypes();
@@ -168,8 +165,7 @@
     document.querySelector('#form--addWorkOrderType').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddWorkOrderType`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddWorkOrderType`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 renderWorkOrderTypes();

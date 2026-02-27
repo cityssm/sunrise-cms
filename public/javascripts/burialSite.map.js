@@ -175,8 +175,7 @@
             statsTotalElement.textContent = '0';
             return;
         }
-        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doGetBurialSitesForMap`, { cemeteryId }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doGetBurialSitesForMap`, { cemeteryId }, (responseJSON) => {
             if (responseJSON.success) {
                 allBurialSites = responseJSON.burialSites;
                 // Update stats

@@ -12,7 +12,6 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 }
-
 ;(() => {
   const sunrise = exports.sunrise
 
@@ -171,7 +170,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Error Creating Burial Site',
 
-            message: responseJSON.errorMessage ?? 'Unknown error.'
+            message: responseJSON.errorMessage
           })
 
           buttonElement.disabled = false
@@ -193,7 +192,8 @@ declare const exports: {
 
         panelBlockElement.className = 'panel-block is-burial-site-block'
 
-        panelBlockElement.dataset.cemeteryId = responseJSON.cemeteryId
+        panelBlockElement.dataset.cemeteryId = String(responseJSON.cemeteryId)
+
         panelBlockElement.dataset.burialSiteName = burialSiteName.burialSiteName
 
         panelBlockElement.dataset.burialSiteNameSegment1 =

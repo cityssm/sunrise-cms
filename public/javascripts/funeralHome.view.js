@@ -10,8 +10,7 @@
             return;
         }
         function doRestore() {
-            cityssm.postJSON(`${sunrise.urlPrefix}/funeralHomes/doRestoreFuneralHome`, { funeralHomeId }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/funeralHomes/doRestoreFuneralHome`, { funeralHomeId }, (responseJSON) => {
                 if (responseJSON.success) {
                     globalThis.location.reload();
                 }

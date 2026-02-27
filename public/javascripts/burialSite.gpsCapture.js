@@ -90,8 +90,7 @@
             cemeteryId,
             hasCoordinates: formData.get('hasCoordinates')
         };
-        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSitesForGPS`, searchData, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSitesForGPS`, searchData, (responseJSON) => {
             if (responseJSON.success && responseJSON.burialSites !== undefined) {
                 allBurialSites = responseJSON.burialSites;
                 renderBurialSites();
@@ -132,8 +131,7 @@
             burialSiteLatitude: currentPosition.latitude.toFixed(coordinatePrecision),
             burialSiteLongitude: currentPosition.longitude.toFixed(coordinatePrecision)
         };
-        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doUpdateBurialSiteLatitudeLongitude`, updateData, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doUpdateBurialSiteLatitudeLongitude`, updateData, (responseJSON) => {
             captureButton.disabled = false;
             if (responseJSON.success) {
                 captureButton.innerHTML = /* html */ `
