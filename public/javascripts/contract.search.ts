@@ -178,6 +178,7 @@ declare const exports: {
           ? /* html */ `
             <td>
               ${
+                // eslint-disable-next-line sonarjs/no-nested-conditional
                 contract.contractEndDate === null &&
                 contract.contractEndDateString === undefined
                   ? '<span class="has-text-grey-dark">(No End Date)</span>'

@@ -29,7 +29,7 @@
                             bulmaJS.alert({
                                 contextualColorName: 'danger',
                                 title: 'Error Removing Related Contract',
-                                message: responseJSON.errorMessage ?? 'Please Try Again'
+                                message: responseJSON.errorMessage
                             });
                         }
                     });
@@ -92,7 +92,9 @@
         ${exports.contractEndDateIsAvailable
                 ? /* html */ `
               <td>
-                ${relatedContract.contractEndDate
+                ${
+                // eslint-disable-next-line sonarjs/no-nested-conditional
+                relatedContract.contractEndDate
                     ? relatedContract.contractEndDateString
                     : '<span class="has-text-grey">(No End Date)</span>'}
               </td>
@@ -143,7 +145,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Related Contract',
-                        message: responseJSON.errorMessage ?? 'Please Try Again'
+                        message: responseJSON.errorMessage
                     });
                 }
             });

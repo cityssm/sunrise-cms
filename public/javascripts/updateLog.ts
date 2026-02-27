@@ -1,7 +1,7 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoGetRecordUpdateLogResponse } from '../../handlers/dashboard-post/doGetRecordUpdateLog.js'
 import type { RecordUpdateLog } from '../../database/getRecordUpdateLog.js'
+import type { DoGetRecordUpdateLogResponse } from '../../handlers/dashboard-post/doGetRecordUpdateLog.js'
 
 import type { Sunrise } from './types.js'
 

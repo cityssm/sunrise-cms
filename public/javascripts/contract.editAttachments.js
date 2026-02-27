@@ -204,8 +204,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Attachment',
-                        message: responseJSON.errorMessage ??
-                            'An error occurred while updating the attachment.'
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -254,8 +253,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Attachment',
-                        message: responseJSON.errorMessage ??
-                            'An error occurred while deleting the attachment.'
+                        message: responseJSON.errorMessage
                     });
                 }
             });

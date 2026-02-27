@@ -61,7 +61,6 @@ declare const exports: {
               relatedContractId
             },
             (responseJSON: DoDeleteRelatedContractResponse) => {
-
               if (responseJSON.success) {
                 relatedContracts = responseJSON.relatedContracts
 
@@ -71,7 +70,7 @@ declare const exports: {
                   contextualColorName: 'danger',
                   title: 'Error Removing Related Contract',
 
-                  message: responseJSON.errorMessage ?? 'Please Try Again'
+                  message: responseJSON.errorMessage
                 })
               }
             }
@@ -147,6 +146,7 @@ declare const exports: {
             ? /* html */ `
               <td>
                 ${
+                  // eslint-disable-next-line sonarjs/no-nested-conditional
                   relatedContract.contractEndDate
                     ? relatedContract.contractEndDateString
                     : '<span class="has-text-grey">(No End Date)</span>'
@@ -204,7 +204,6 @@ declare const exports: {
             relatedContractId: selectedContractId
           },
           (responseJSON: DoAddRelatedContractResponse) => {
-
             if (responseJSON.success) {
               relatedContracts = responseJSON.relatedContracts
 
@@ -216,7 +215,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Adding Related Contract',
 
-                message: responseJSON.errorMessage ?? 'Please Try Again'
+                message: responseJSON.errorMessage
               })
             }
           }
@@ -238,7 +237,6 @@ declare const exports: {
           `${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`,
           formElement,
           (responseJSON: DoGetPossibleRelatedContractsResponse) => {
-
             containerElement.innerHTML = '<div class="panel"></div>'
 
             for (const contract of responseJSON.contracts) {

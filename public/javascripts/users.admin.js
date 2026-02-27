@@ -20,9 +20,7 @@
                     }, (responseJSON) => {
                         if (responseJSON.success) {
                             // Update the users list with the new data from the server
-                            if (responseJSON.users !== undefined) {
-                                renderUsers(responseJSON.users);
-                            }
+                            renderUsers(responseJSON.users);
                             bulmaJS.alert({
                                 contextualColorName: 'success',
                                 message: i18next.t('admin:userDeletedMessage', { userName })
@@ -32,7 +30,7 @@
                             bulmaJS.alert({
                                 contextualColorName: 'danger',
                                 title: i18next.t('common:error'),
-                                message: responseJSON.message ?? i18next.t('common:tryAgain')
+                                message: responseJSON.message
                             });
                         }
                     });
@@ -58,7 +56,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: i18next.t('common:error'),
-                    message: responseJSON.message ?? i18next.t('common:tryAgain')
+                    message: responseJSON.message
                 });
             }
         });

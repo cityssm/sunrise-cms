@@ -223,11 +223,12 @@ declare const exports: {
 
     let dateString = workOrderMilestones[0]?.workOrderMilestoneDateString
 
-    dateString ??=
-      workOrderMilestoneYearElement.value.padStart(4, '0') +
-      '-' +
-      workOrderMilestoneMonthElement.value.padStart(2, '0') +
-      '-01'
+    if (dateString === undefined) {
+      const paddedYear = workOrderMilestoneYearElement.value.padStart(4, '0')
+      const paddedMonth = workOrderMilestoneMonthElement.value.padStart(2, '0')
+
+      dateString = `${paddedYear}-${paddedMonth}-01`
+    }
 
     renderBlankCalendar(dateString)
 

@@ -54,9 +54,7 @@ declare const exports: {
             (responseJSON: DoDeleteUserResponse) => {
               if (responseJSON.success) {
                 // Update the users list with the new data from the server
-                if (responseJSON.users !== undefined) {
-                  renderUsers(responseJSON.users)
-                }
+                renderUsers(responseJSON.users)
 
                 bulmaJS.alert({
                   contextualColorName: 'success',
@@ -67,7 +65,7 @@ declare const exports: {
                   contextualColorName: 'danger',
                   title: i18next.t('common:error'),
 
-                  message: responseJSON.message ?? i18next.t('common:tryAgain')
+                  message: responseJSON.message
                 })
               }
             }
@@ -100,7 +98,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: i18next.t('common:error'),
 
-            message: responseJSON.message ?? i18next.t('common:tryAgain')
+            message: responseJSON.message
           })
         }
       }

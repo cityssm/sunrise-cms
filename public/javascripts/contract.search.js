@@ -117,7 +117,9 @@
       ${exports.contractEndDateIsAvailable
             ? /* html */ `
             <td>
-              ${contract.contractEndDate === null &&
+              ${
+            // eslint-disable-next-line sonarjs/no-nested-conditional
+            contract.contractEndDate === null &&
                 contract.contractEndDateString === undefined
                 ? '<span class="has-text-grey-dark">(No End Date)</span>'
                 : contract.contractEndDateString}
