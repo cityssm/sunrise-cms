@@ -3,8 +3,8 @@ import { after, before, describe, it } from 'node:test'
 
 import sqlite from 'better-sqlite3'
 
-import addCemetery from '../database/addCemetery.js'
 import addBurialSite from '../database/addBurialSite.js'
+import addCemetery from '../database/addCemetery.js'
 import addContract from '../database/addContract.js'
 import addContractComment from '../database/addContractComment.js'
 import addContractInterment from '../database/addContractInterment.js'
@@ -123,7 +123,10 @@ await describe('database/contracts', async () => {
         options,
         database
       )
-      assert.ok(true, 'getContracts() executed with contractEffectiveDateString filter')
+      assert.ok(
+        true,
+        'getContracts() executed with contractEffectiveDateString filter'
+      )
     })
 
     await it('executes with contractStartDateString filter', async () => {
@@ -132,7 +135,10 @@ await describe('database/contracts', async () => {
         options,
         database
       )
-      assert.ok(true, 'getContracts() executed with contractStartDateString filter')
+      assert.ok(
+        true,
+        'getContracts() executed with contractStartDateString filter'
+      )
     })
 
     await it('executes with contractTime filter', async () => {
@@ -202,7 +208,10 @@ await describe('database/contracts', async () => {
 
     await it('executes with notRelatedContractId filter', async () => {
       await getContracts({ notRelatedContractId: '1' }, options, database)
-      assert.ok(true, 'getContracts() executed with notRelatedContractId filter')
+      assert.ok(
+        true,
+        'getContracts() executed with notRelatedContractId filter'
+      )
     })
   })
 
@@ -224,7 +233,7 @@ await describe('database/contracts', async () => {
     let transactionIndex: number
     let intermentNumber: number
 
-    before(async () => {
+    before(() => {
       // Create a cemetery and burial site for the contract
       cemeteryId = addCemetery(
         {
@@ -269,7 +278,11 @@ await describe('database/contracts', async () => {
         },
         testUser
       )
-      assert.notStrictEqual(contractId, 0, 'Expected a valid contractId to be returned')
+      assert.notStrictEqual(
+        contractId,
+        0,
+        'Expected a valid contractId to be returned'
+      )
     })
 
     await it('adds a contract comment', () => {
@@ -325,12 +338,20 @@ await describe('database/contracts', async () => {
         },
         testUser
       )
-      assert.strictEqual(transactionIndex, 0, 'Expected first transaction to have index 0')
+      assert.strictEqual(
+        transactionIndex,
+        0,
+        'Expected first transaction to have index 0'
+      )
     })
 
     await it('retrieves the created contract', async () => {
       const contract = await getContract(contractId)
-      assert.notStrictEqual(contract, undefined, 'Expected contract to be retrievable')
+      assert.notStrictEqual(
+        contract,
+        undefined,
+        'Expected contract to be retrievable'
+      )
       assert.strictEqual(
         contract?.purchaserName,
         'Test Purchaser',
@@ -411,7 +432,11 @@ await describe('database/contracts', async () => {
     })
 
     await it('deletes the contract interment', () => {
-      const success = deleteContractInterment(contractId, intermentNumber, testUser)
+      const success = deleteContractInterment(
+        contractId,
+        intermentNumber,
+        testUser
+      )
       assert.ok(success, 'Expected deleteContractInterment() to succeed')
     })
 
@@ -421,7 +446,11 @@ await describe('database/contracts', async () => {
     })
 
     await it('deletes the contract transaction', () => {
-      const success = deleteContractTransaction(contractId, transactionIndex, testUser)
+      const success = deleteContractTransaction(
+        contractId,
+        transactionIndex,
+        testUser
+      )
       assert.ok(success, 'Expected deleteContractTransaction() to succeed')
     })
 
@@ -432,7 +461,11 @@ await describe('database/contracts', async () => {
 
     await it('confirms the contract is deleted', async () => {
       const contract = await getContract(contractId)
-      assert.strictEqual(contract, undefined, 'Expected deleted contract to be undefined')
+      assert.strictEqual(
+        contract,
+        undefined,
+        'Expected deleted contract to be undefined'
+      )
     })
   })
 })

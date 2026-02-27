@@ -1,8 +1,8 @@
 import assert from 'node:assert';
 import { after, before, describe, it } from 'node:test';
 import sqlite from 'better-sqlite3';
-import addCemetery from '../database/addCemetery.js';
 import addBurialSite from '../database/addBurialSite.js';
+import addCemetery from '../database/addCemetery.js';
 import addContract from '../database/addContract.js';
 import addContractComment from '../database/addContractComment.js';
 import addContractInterment from '../database/addContractInterment.js';
@@ -176,7 +176,7 @@ await describe('database/contracts', async () => {
         let contractCommentId;
         let transactionIndex;
         let intermentNumber;
-        before(async () => {
+        before(() => {
             // Create a cemetery and burial site for the contract
             cemeteryId = addCemetery({
                 cemeteryName: 'Test Cemetery',

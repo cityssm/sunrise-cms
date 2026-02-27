@@ -36,8 +36,8 @@ import {
 } from '../helpers/cache/serviceTypes.cache.js'
 import {
   getCachedSetting,
-  getCachedSettingValue,
-  getCachedSettings
+  getCachedSettings,
+  getCachedSettingValue
 } from '../helpers/cache/settings.cache.js'
 import {
   getCachedWorkOrderMilestoneTypeById,

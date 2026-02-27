@@ -8,7 +8,7 @@ import { getCachedContractTypeByContractType, getCachedContractTypeById, getCach
 import { getCachedIntermentContainerTypeById, getCachedIntermentContainerTypes } from '../helpers/cache/intermentContainerTypes.cache.js';
 import { getCachedIntermentDepthById, getCachedIntermentDepths } from '../helpers/cache/intermentDepths.cache.js';
 import { getCachedServiceTypeById, getCachedServiceTypeByServiceType, getCachedServiceTypes } from '../helpers/cache/serviceTypes.cache.js';
-import { getCachedSetting, getCachedSettingValue, getCachedSettings } from '../helpers/cache/settings.cache.js';
+import { getCachedSetting, getCachedSettings, getCachedSettingValue } from '../helpers/cache/settings.cache.js';
 import { getCachedWorkOrderMilestoneTypeById, getCachedWorkOrderMilestoneTypeByWorkOrderMilestoneType, getCachedWorkOrderMilestoneTypes } from '../helpers/cache/workOrderMilestoneTypes.cache.js';
 import { getCachedWorkOrderTypeById, getCachedWorkOrderTypes } from '../helpers/cache/workOrderTypes.cache.js';
 await describe('helpers.cache', async () => {
