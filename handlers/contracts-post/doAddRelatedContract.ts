@@ -8,18 +8,15 @@ import addRelatedContract, {
 import getContracts from '../../database/getContracts.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { Contract } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:contracts:doAddRelatedContract`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoAddRelatedContractResponse =
-  { success: true; relatedContracts: Contract[] }
   | { errorMessage: string; success: false }
+  | { success: true; relatedContracts: Contract[] }
 
 export default async function handler(
   request: Request<unknown, unknown, AddRelatedContractForm>,
