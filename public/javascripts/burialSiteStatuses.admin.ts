@@ -41,9 +41,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Burial Site Status',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Burial Site Status'
           })
         }
       }
@@ -80,9 +78,7 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Burial Site Status',
-
-              message: responseJSON.errorMessage ?? ''
+              message: 'Error Deleting Burial Site Status'
             })
           }
         }
@@ -121,16 +117,18 @@ declare const exports: {
         burialSiteStatusId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: DoMoveBurialSiteStatusUpResponse | DoMoveBurialSiteStatusDownResponse) => {
+      (
+        responseJSON:
+          | DoMoveBurialSiteStatusDownResponse
+          | DoMoveBurialSiteStatusUpResponse
+      ) => {
         if (responseJSON.success) {
           burialSiteStatuses = responseJSON.burialSiteStatuses
           renderBurialSiteStatuses()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Burial Site Status',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Burial Site Status'
           })
         }
       }
@@ -244,19 +242,10 @@ declare const exports: {
       `${sunrise.urlPrefix}/admin/doAddBurialSiteStatus`,
       formElement,
       (responseJSON: DoAddBurialSiteStatusResponse) => {
-        if (responseJSON.success) {
-          burialSiteStatuses = responseJSON.burialSiteStatuses
-          renderBurialSiteStatuses()
-          formElement.reset()
-          formElement.querySelector('input')?.focus()
-        } else {
-          bulmaJS.alert({
-            contextualColorName: 'danger',
-            title: 'Error Adding Burial Site Status',
-
-            message: responseJSON.errorMessage ?? ''
-          })
-        }
+        burialSiteStatuses = responseJSON.burialSiteStatuses
+        renderBurialSiteStatuses()
+        formElement.reset()
+        formElement.querySelector('input')?.focus()
       }
     )
   })

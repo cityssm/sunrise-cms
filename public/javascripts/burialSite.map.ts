@@ -2,12 +2,12 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type Leaflet from 'leaflet'
 
-import type { DoGetBurialSitesForMapResponse } from '../../handlers/burialSites-post/doGetBurialSitesForMap.js'
 import type {
   BurialSiteForMap,
   BurialSiteMapContract,
   BurialSiteMapResult
 } from '../../database/getBurialSitesForMap.js'
+import type { DoGetBurialSitesForMapResponse } from '../../handlers/burialSites-post/doGetBurialSitesForMap.js'
 
 import type { Sunrise } from './types.js'
 
@@ -133,7 +133,7 @@ declare const exports: {
 
         const deceasedText =
           contract.deceasedNames.length > 0
-            ? ' - ' + cityssm.escapeHTML(contract.deceasedNames.join(', '))
+            ? ` - ${cityssm.escapeHTML(contract.deceasedNames.join(', '))}`
             : ''
 
         html += /* html */ `
@@ -294,9 +294,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Error Loading Burial Sites',
 
-            message:
-              responseJSON.errorMessage ??
-              'An error occurred while loading burial sites. Please try again.'
+            message: responseJSON.errorMessage
           })
         }
       }

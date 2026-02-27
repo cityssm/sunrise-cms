@@ -12,8 +12,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderContract`, {
                 contractId,
                 workOrderId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderContracts = responseJSON.workOrderContracts;
                     renderRelatedBurialSitesAndContracts();
@@ -42,8 +41,7 @@
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderBurialSite`, {
             burialSiteId,
             workOrderId
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderBurialSites = responseJSON.workOrderBurialSites;
                 renderRelatedBurialSitesAndContracts();
@@ -64,8 +62,7 @@
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderContract`, {
             contractId,
             workOrderId
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderContracts = responseJSON.workOrderContracts;
                 renderRelatedBurialSitesAndContracts();
@@ -249,8 +246,7 @@
         let editCloseModalFunction;
         function doUpdateBurialSiteStatus(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateBurialSiteStatus`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateBurialSiteStatus`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderBurialSites = responseJSON.workOrderBurialSites;
                     renderRelatedBurialSitesAndContracts();
@@ -321,8 +317,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderBurialSite`, {
                 burialSiteId,
                 workOrderId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderBurialSites = responseJSON.workOrderBurialSites;
                     renderRelatedBurialSitesAndContracts();
@@ -445,8 +440,7 @@
             event?.preventDefault();
             searchResultsContainerElement.innerHTML =
                 sunrise.getLoadingParagraphHTML('Searching...');
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doSearchContracts`, searchFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doSearchContracts`, searchFormElement, (responseJSON) => {
                 if (responseJSON.contracts.length === 0) {
                     searchResultsContainerElement.innerHTML = /* html */ `
                 <div class="message is-info">
@@ -578,8 +572,7 @@
             event?.preventDefault();
             searchResultsContainerElement.innerHTML =
                 sunrise.getLoadingParagraphHTML('Searching...');
-            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, searchFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, searchFormElement, (responseJSON) => {
                 if (responseJSON.burialSites.length === 0) {
                     searchResultsContainerElement.innerHTML = /* html */ `
                 <div class="message is-info">

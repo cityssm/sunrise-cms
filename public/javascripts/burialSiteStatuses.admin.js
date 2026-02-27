@@ -15,8 +15,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Burial Site Status',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Updating Burial Site Status'
                 });
             }
         });
@@ -44,8 +43,7 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Deleting Burial Site Status',
-                        message: responseJSON.errorMessage ?? ''
+                        message: 'Error Deleting Burial Site Status'
                     });
                 }
             });
@@ -79,8 +77,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Burial Site Status',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Burial Site Status'
                 });
             }
         });
@@ -163,19 +160,10 @@
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddBurialSiteStatus`, formElement, (responseJSON) => {
-            if (responseJSON.success) {
-                burialSiteStatuses = responseJSON.burialSiteStatuses;
-                renderBurialSiteStatuses();
-                formElement.reset();
-                formElement.querySelector('input')?.focus();
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Adding Burial Site Status',
-                    message: responseJSON.errorMessage ?? ''
-                });
-            }
+            burialSiteStatuses = responseJSON.burialSiteStatuses;
+            renderBurialSiteStatuses();
+            formElement.reset();
+            formElement.querySelector('input')?.focus();
         });
     });
     renderBurialSiteStatuses();

@@ -74,7 +74,7 @@
             for (const contract of site.contracts) {
                 const contractUrl = sunrise.getContractUrl(contract.contractId);
                 const deceasedText = contract.deceasedNames.length > 0
-                    ? ' - ' + cityssm.escapeHTML(contract.deceasedNames.join(', '))
+                    ? ` - ${cityssm.escapeHTML(contract.deceasedNames.join(', '))}`
                     : '';
                 html += /* html */ `
           <li class="is-size-7">
@@ -189,8 +189,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Error Loading Burial Sites',
-                    message: responseJSON.errorMessage ??
-                        'An error occurred while loading burial sites. Please try again.'
+                    message: responseJSON.errorMessage
                 });
             }
         });
