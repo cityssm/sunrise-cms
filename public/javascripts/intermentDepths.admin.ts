@@ -1,6 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddIntermentDepthResponse } from '../../handlers/admin-post/doAddIntermentDepth.js'
+import type { DoDeleteIntermentDepthResponse } from '../../handlers/admin-post/doDeleteIntermentDepth.js'
+import type { DoMoveIntermentDepthDownResponse } from '../../handlers/admin-post/doMoveIntermentDepthDown.js'
+import type { DoMoveIntermentDepthUpResponse } from '../../handlers/admin-post/doMoveIntermentDepthUp.js'
+import type { DoUpdateIntermentDepthResponse } from '../../handlers/admin-post/doUpdateIntermentDepth.js'
 import type { IntermentDepth } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -14,17 +19,6 @@ declare const exports: {
   intermentDepths?: IntermentDepth[]
 }
 
-type IntermentDepthResponseJSON =
-  | {
-      success: false
-
-      errorMessage?: string
-    }
-  | {
-      success: true
-
-      intermentDepths: IntermentDepth[]
-    }
 ;(() => {
   const sunrise = exports.sunrise
 
@@ -37,7 +31,7 @@ type IntermentDepthResponseJSON =
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateIntermentDepth`,
       submitEvent.currentTarget,
-      (responseJSON: IntermentDepthResponseJSON) => {
+      (responseJSON: DoUpdateIntermentDepthResponse) => {
         if (responseJSON.success) {
           intermentDepths = responseJSON.intermentDepths
 
@@ -70,7 +64,7 @@ type IntermentDepthResponseJSON =
         {
           intermentDepthId
         },
-        (responseJSON: IntermentDepthResponseJSON) => {
+        (responseJSON: DoDeleteIntermentDepthResponse) => {
           if (responseJSON.success) {
             intermentDepths = responseJSON.intermentDepths
 
@@ -126,7 +120,7 @@ type IntermentDepthResponseJSON =
         intermentDepthId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: IntermentDepthResponseJSON) => {
+      (responseJSON: DoMoveIntermentDepthUpResponse | DoMoveIntermentDepthDownResponse) => {
         if (responseJSON.success) {
           intermentDepths = responseJSON.intermentDepths
           renderIntermentDepths()
@@ -234,7 +228,7 @@ type IntermentDepthResponseJSON =
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddIntermentDepth`,
         formElement,
-        (responseJSON: IntermentDepthResponseJSON) => {
+        (responseJSON: DoAddIntermentDepthResponse) => {
           if (responseJSON.success) {
             intermentDepths = responseJSON.intermentDepths
             renderIntermentDepths()

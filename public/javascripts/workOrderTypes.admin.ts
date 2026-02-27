@@ -1,6 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddWorkOrderTypeResponse } from '../../handlers/admin-post/doAddWorkOrderType.js'
+import type { DoDeleteWorkOrderTypeResponse } from '../../handlers/admin-post/doDeleteWorkOrderType.js'
+import type { DoMoveWorkOrderTypeDownResponse } from '../../handlers/admin-post/doMoveWorkOrderTypeDown.js'
+import type { DoMoveWorkOrderTypeUpResponse } from '../../handlers/admin-post/doMoveWorkOrderTypeUp.js'
+import type { DoUpdateWorkOrderTypeResponse } from '../../handlers/admin-post/doUpdateWorkOrderType.js'
 import type { WorkOrderType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -19,25 +24,13 @@ declare const bulmaJS: BulmaJS
   let workOrderTypes = exports.workOrderTypes as WorkOrderType[]
   delete exports.workOrderTypes
 
-  type WorkOrderTypeResponseJSON =
-    | {
-        errorMessage?: string
-        success: false
-      }
-    | {
-        success: true
-        workOrderTypes: WorkOrderType[]
-      }
-
   function updateWorkOrderType(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateWorkOrderType`,
       submitEvent.currentTarget,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as WorkOrderTypeResponseJSON
-
+      (responseJSON: DoUpdateWorkOrderTypeResponse) => {
         if (responseJSON.success) {
           workOrderTypes = responseJSON.workOrderTypes
 
@@ -70,9 +63,7 @@ declare const bulmaJS: BulmaJS
         {
           workOrderTypeId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as WorkOrderTypeResponseJSON
-
+        (responseJSON: DoDeleteWorkOrderTypeResponse) => {
           if (responseJSON.success) {
             workOrderTypes = responseJSON.workOrderTypes
 
@@ -131,9 +122,7 @@ declare const bulmaJS: BulmaJS
 
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as WorkOrderTypeResponseJSON
-
+      (responseJSON: DoMoveWorkOrderTypeUpResponse | DoMoveWorkOrderTypeDownResponse) => {
         if (responseJSON.success) {
           workOrderTypes = responseJSON.workOrderTypes
           renderWorkOrderTypes()
@@ -259,9 +248,7 @@ declare const bulmaJS: BulmaJS
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doAddWorkOrderType`,
       formElement,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as WorkOrderTypeResponseJSON
-
+      (responseJSON: DoAddWorkOrderTypeResponse) => {
         if (responseJSON.success) {
           workOrderTypes = responseJSON.workOrderTypes
           renderWorkOrderTypes()

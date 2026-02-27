@@ -3,6 +3,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddContractIntermentResponse } from '../../handlers/contracts-post/doAddContractInterment.js'
+import type { DoDeleteContractIntermentResponse } from '../../handlers/contracts-post/doDeleteContractInterment.js'
+import type { DoUpdateContractIntermentResponse } from '../../handlers/contracts-post/doUpdateContractInterment.js'
 import type {
   ContractInterment,
   IntermentContainerType,
@@ -136,11 +139,7 @@ declare const exports: {
       cityssm.postJSON(
         '/contracts/doUpdateContractInterment',
         formElement,
-        (responseJSON: {
-          success: boolean
-
-          contractInterments: ContractInterment[]
-        }) => {
+        (responseJSON: DoUpdateContractIntermentResponse) => {
           if (responseJSON.success) {
             contractInterments = responseJSON.contractInterments
             renderContractInterments()
@@ -334,11 +333,7 @@ declare const exports: {
           contractId,
           intermentNumber
         },
-        (responseJSON: {
-          success: boolean
-
-          contractInterments: ContractInterment[]
-        }) => {
+        (responseJSON: DoDeleteContractIntermentResponse) => {
           if (responseJSON.success) {
             contractInterments = responseJSON.contractInterments
             renderContractInterments()
@@ -498,11 +493,7 @@ declare const exports: {
         cityssm.postJSON(
           '/contracts/doAddContractInterment',
           formElement,
-          (responseJSON: {
-            success: boolean
-
-            contractInterments: ContractInterment[]
-          }) => {
+          (responseJSON: DoAddContractIntermentResponse) => {
             if (responseJSON.success) {
               contractInterments = responseJSON.contractInterments
               renderContractInterments()

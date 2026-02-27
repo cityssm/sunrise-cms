@@ -1,6 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddIntermentContainerTypeResponse } from '../../handlers/admin-post/doAddIntermentContainerType.js'
+import type { DoDeleteIntermentContainerTypeResponse } from '../../handlers/admin-post/doDeleteIntermentContainerType.js'
+import type { DoMoveIntermentContainerTypeDownResponse } from '../../handlers/admin-post/doMoveIntermentContainerTypeDown.js'
+import type { DoMoveIntermentContainerTypeUpResponse } from '../../handlers/admin-post/doMoveIntermentContainerTypeUp.js'
+import type { DoUpdateIntermentContainerTypeResponse } from '../../handlers/admin-post/doUpdateIntermentContainerType.js'
 import type { IntermentContainerType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -20,28 +25,13 @@ declare const exports: {
     exports.intermentContainerTypes as IntermentContainerType[]
   delete exports.intermentContainerTypes
 
-  type IntermentContainerTypeResponseJSON =
-    | {
-        success: false
-
-        errorMessage?: string
-      }
-    | {
-        success: true
-
-        intermentContainerTypes: IntermentContainerType[]
-      }
-
   function updateIntermentContainerType(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateIntermentContainerType`,
       submitEvent.currentTarget,
-      (rawResponseJSON) => {
-        const responseJSON =
-          rawResponseJSON as IntermentContainerTypeResponseJSON
-
+      (responseJSON: DoUpdateIntermentContainerTypeResponse) => {
         if (responseJSON.success) {
           intermentContainerTypes = responseJSON.intermentContainerTypes
 
@@ -75,10 +65,7 @@ declare const exports: {
         {
           intermentContainerTypeId
         },
-        (rawResponseJSON) => {
-          const responseJSON =
-            rawResponseJSON as IntermentContainerTypeResponseJSON
-
+        (responseJSON: DoDeleteIntermentContainerTypeResponse) => {
           if (responseJSON.success) {
             intermentContainerTypes = responseJSON.intermentContainerTypes
 
@@ -136,10 +123,7 @@ declare const exports: {
         intermentContainerTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (rawResponseJSON) => {
-        const responseJSON =
-          rawResponseJSON as IntermentContainerTypeResponseJSON
-
+      (responseJSON: DoMoveIntermentContainerTypeUpResponse | DoMoveIntermentContainerTypeDownResponse) => {
         if (responseJSON.success) {
           intermentContainerTypes = responseJSON.intermentContainerTypes
           renderIntermentContainerTypes()
@@ -279,10 +263,7 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doAddIntermentContainerType`,
       formElement,
-      (rawResponseJSON) => {
-        const responseJSON =
-          rawResponseJSON as IntermentContainerTypeResponseJSON
-
+      (responseJSON: DoAddIntermentContainerTypeResponse) => {
         if (responseJSON.success) {
           intermentContainerTypes = responseJSON.intermentContainerTypes
           renderIntermentContainerTypes()

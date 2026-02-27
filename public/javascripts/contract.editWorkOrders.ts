@@ -3,6 +3,7 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoCreateWorkOrderResponse } from '../../handlers/workOrders-post/doCreateWorkOrder.js'
 import type {
   WorkOrderMilestoneType,
   WorkOrderType
@@ -69,17 +70,11 @@ declare const exports: {
         cityssm.postJSON(
           `${sunrise.urlPrefix}/workOrders/doCreateWorkOrder`,
           formEvent.currentTarget,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              errorMessage?: string
-              success: boolean
-              workOrderId?: number
-            }
-
+          (responseJSON: DoCreateWorkOrderResponse) => {
             if (responseJSON.success) {
               createCloseModalFunction()
 
-              confirmOpenNewWorkOrder(responseJSON.workOrderId as number)
+              confirmOpenNewWorkOrder(responseJSON.workOrderId)
             } else {
               bulmaJS.alert({
                 contextualColorName: 'danger',

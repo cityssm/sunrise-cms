@@ -2,6 +2,9 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
+import type { DoAddRelatedContractResponse } from '../../handlers/contracts-post/doAddRelatedContract.js'
+import type { DoDeleteRelatedContractResponse } from '../../handlers/contracts-post/doDeleteRelatedContract.js'
+import type { DoGetPossibleRelatedContractsResponse } from '../../handlers/contracts-post/doGetPossibleRelatedContracts.js'
 import type { Contract } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -57,12 +60,7 @@ declare const exports: {
               contractId,
               relatedContractId
             },
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                errorMessage?: string
-                relatedContracts: Contract[]
-                success: boolean
-              }
+            (responseJSON: DoDeleteRelatedContractResponse) => {
 
               if (responseJSON.success) {
                 relatedContracts = responseJSON.relatedContracts
@@ -205,12 +203,7 @@ declare const exports: {
             contractId,
             relatedContractId: selectedContractId
           },
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              errorMessage?: string
-              relatedContracts: Contract[]
-              success: boolean
-            }
+          (responseJSON: DoAddRelatedContractResponse) => {
 
             if (responseJSON.success) {
               relatedContracts = responseJSON.relatedContracts
@@ -244,13 +237,7 @@ declare const exports: {
         cityssm.postJSON(
           `${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`,
           formElement,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              count: number
-              offset: number
-
-              contracts: Contract[]
-            }
+          (responseJSON: DoGetPossibleRelatedContractsResponse) => {
 
             containerElement.innerHTML = '<div class="panel"></div>'
 

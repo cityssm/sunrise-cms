@@ -1,6 +1,8 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoDeleteContractAttachmentResponse } from '../../handlers/contracts-post/doDeleteContractAttachment.js'
+import type { DoUpdateContractAttachmentResponse } from '../../handlers/contracts-post/doUpdateContractAttachment.js'
 import type { ContractAttachment } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -284,12 +286,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doUpdateContractAttachment`,
         editFormElement,
-        (responseJSON: {
-          errorMessage?: string
-          success: boolean
-
-          contractAttachments: ContractAttachment[]
-        }) => {
+        (responseJSON: DoUpdateContractAttachmentResponse) => {
           if (responseJSON.success) {
             editCloseModalFunction?.()
 
@@ -370,12 +367,7 @@ declare const exports: {
         {
           contractAttachmentId
         },
-        (responseJSON: {
-          errorMessage?: string
-          success: boolean
-
-          contractAttachments: ContractAttachment[]
-        }) => {
+        (responseJSON: DoDeleteContractAttachmentResponse) => {
           if (responseJSON.success) {
             bulmaJS.alert({
               contextualColorName: 'success',

@@ -1,6 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddServiceTypeResponse } from '../../handlers/admin-post/doAddServiceType.js'
+import type { DoDeleteServiceTypeResponse } from '../../handlers/admin-post/doDeleteServiceType.js'
+import type { DoMoveServiceTypeDownResponse } from '../../handlers/admin-post/doMoveServiceTypeDown.js'
+import type { DoMoveServiceTypeUpResponse } from '../../handlers/admin-post/doMoveServiceTypeUp.js'
+import type { DoUpdateServiceTypeResponse } from '../../handlers/admin-post/doUpdateServiceType.js'
 import type { ServiceType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -19,25 +24,13 @@ declare const exports: {
   let serviceTypes = exports.serviceTypes as ServiceType[]
   delete exports.serviceTypes
 
-  type ServiceTypeResponseJSON =
-    | {
-        success: false
-
-        errorMessage?: string
-      }
-    | {
-        success: true
-
-        serviceTypes: ServiceType[]
-      }
-
   function updateServiceType(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateServiceType`,
       submitEvent.currentTarget,
-      (responseJSON: ServiceTypeResponseJSON) => {
+      (responseJSON: DoUpdateServiceTypeResponse) => {
         if (responseJSON.success) {
           serviceTypes = responseJSON.serviceTypes
 
@@ -70,7 +63,7 @@ declare const exports: {
         {
           serviceTypeId
         },
-        (responseJSON: ServiceTypeResponseJSON) => {
+        (responseJSON: DoDeleteServiceTypeResponse) => {
           if (responseJSON.success) {
             serviceTypes = responseJSON.serviceTypes
 
@@ -128,7 +121,7 @@ declare const exports: {
         serviceTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: ServiceTypeResponseJSON) => {
+      (responseJSON: DoMoveServiceTypeUpResponse | DoMoveServiceTypeDownResponse) => {
         if (responseJSON.success) {
           serviceTypes = responseJSON.serviceTypes
           renderServiceTypes()
@@ -246,7 +239,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddServiceType`,
         formElement,
-        (responseJSON: ServiceTypeResponseJSON) => {
+        (responseJSON: DoAddServiceTypeResponse) => {
           if (responseJSON.success) {
             serviceTypes = responseJSON.serviceTypes
             renderServiceTypes()
