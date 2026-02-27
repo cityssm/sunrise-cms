@@ -1,6 +1,8 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoSearchBurialSitesForGpsResponse } from '../../handlers/burialSites-post/doSearchBurialSitesForGps.js'
+import type { DoUpdateBurialSiteLatitudeLongitudeResponse } from '../../handlers/burialSites-post/doUpdateBurialSiteLatitudeLongitude.js'
 import type { BurialSite } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -150,14 +152,7 @@ interface GPSPosition {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/burialSites/doSearchBurialSitesForGPS`,
       searchData,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          success: boolean
-
-          burialSites?: BurialSite[]
-          errorMessage?: string
-        }
-
+      (responseJSON: DoSearchBurialSitesForGpsResponse) => {
         if (responseJSON.success && responseJSON.burialSites !== undefined) {
           allBurialSites = responseJSON.burialSites
           renderBurialSites()
@@ -212,13 +207,7 @@ interface GPSPosition {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/burialSites/doUpdateBurialSiteLatitudeLongitude`,
       updateData,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          success: boolean
-
-          errorMessage?: string
-        }
-
+      (responseJSON: DoUpdateBurialSiteLatitudeLongitudeResponse) => {
         captureButton.disabled = false
 
         if (responseJSON.success) {

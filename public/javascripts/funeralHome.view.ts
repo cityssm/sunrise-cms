@@ -1,6 +1,8 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoRestoreFuneralHomeResponse } from '../../handlers/funeralHomes-post/doRestoreFuneralHome.js'
+
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
@@ -29,12 +31,7 @@ declare const exports: {
         cityssm.postJSON(
           `${sunrise.urlPrefix}/funeralHomes/doRestoreFuneralHome`,
           { funeralHomeId },
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              errorMessage?: string
-              success: boolean
-            }
-
+          (responseJSON: DoRestoreFuneralHomeResponse) => {
             if (responseJSON.success) {
               globalThis.location.reload()
             } else {

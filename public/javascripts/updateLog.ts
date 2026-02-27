@@ -1,5 +1,6 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoGetRecordUpdateLogResponse } from '../../handlers/dashboard-post/doGetRecordUpdateLog.js'
 import type { RecordUpdateLog } from '../../database/getRecordUpdateLog.js'
 
 import type { Sunrise } from './types.js'
@@ -255,8 +256,7 @@ declare const exports: {
         sortBy,
         sortDirection
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as { updateLog: RecordUpdateLog[] }
+      (responseJSON: DoGetRecordUpdateLogResponse) => {
 
         loadMoreButtonElement.classList.toggle(
           'is-hidden',

@@ -2,6 +2,7 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type Leaflet from 'leaflet'
 
+import type { DoGetBurialSitesForMapResponse } from '../../handlers/burialSites-post/doGetBurialSitesForMap.js'
 import type {
   BurialSiteForMap,
   BurialSiteMapContract,
@@ -273,14 +274,7 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/burialSites/doGetBurialSitesForMap`,
       { cemeteryId },
-      (rawResponseJSON) => {
-        const responseJSON =
-          rawResponseJSON as unknown as BurialSiteMapResult & {
-            success: boolean
-
-            errorMessage?: string
-          }
-
+      (responseJSON: DoGetBurialSitesForMapResponse) => {
         if (responseJSON.success) {
           allBurialSites = responseJSON.burialSites
 

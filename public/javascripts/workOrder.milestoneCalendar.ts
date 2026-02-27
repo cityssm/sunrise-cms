@@ -1,5 +1,6 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoGetWorkOrderMilestonesResponse } from '../../handlers/workOrders-post/doGetWorkOrderMilestones.js'
 import type { WorkOrder, WorkOrderMilestone } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -308,14 +309,8 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`,
       workOrderSearchFiltersFormElement,
-      (responseJSON) => {
-        renderMilestones(
-          (
-            responseJSON as {
-              workOrderMilestones: WorkOrderMilestone[]
-            }
-          ).workOrderMilestones
-        )
+      (responseJSON: DoGetWorkOrderMilestonesResponse) => {
+        renderMilestones(responseJSON.workOrderMilestones)
       }
     )
   }

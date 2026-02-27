@@ -1,6 +1,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoBackupDatabaseResponse } from '../../handlers/admin-post/doBackupDatabase.js'
+import type { DoCleanupDatabaseResponse } from '../../handlers/admin-post/doCleanupDatabase.js'
+
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
@@ -16,17 +19,7 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doBackupDatabase`,
       {},
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as
-          | {
-              errorMessage?: string
-              success: false
-            }
-          | {
-              fileName: string
-              success: true
-            }
-
+      (responseJSON: DoBackupDatabaseResponse) => {
         if (responseJSON.success) {
           bulmaJS.alert({
             contextualColorName: 'success',
@@ -54,19 +47,7 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doCleanupDatabase`,
       {},
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as
-          | {
-              errorMessage?: string
-              success: false
-            }
-          | {
-              success: true
-
-              inactivatedRecordCount: number
-              purgedRecordCount: number
-            }
-
+      (responseJSON: DoCleanupDatabaseResponse) => {
         if (responseJSON.success) {
           bulmaJS.alert({
             contextualColorName: 'success',

@@ -1,6 +1,8 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoUpdateSettingResponse } from '../../handlers/admin-post/doUpdateSetting.js'
+
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
@@ -59,12 +61,7 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateSetting`,
       formElement,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          errorMessage?: string
-          success: boolean
-        }
-
+      (responseJSON: DoUpdateSettingResponse) => {
         if (responseJSON.success) {
           bulmaJS.alert({
             contextualColorName: 'success',
