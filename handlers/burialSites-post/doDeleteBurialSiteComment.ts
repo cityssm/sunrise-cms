@@ -15,9 +15,10 @@ const debug = Debug(
 export type DoDeleteBurialSiteCommentResponse =
   | { errorMessage: string; success: false }
   | {
-      success: boolean
-      burialSiteComments: BurialSiteComment[]
       errorMessage: string
+      success: boolean
+
+      burialSiteComments: BurialSiteComment[]
     }
 
 export default function handler(

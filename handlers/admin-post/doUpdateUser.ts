@@ -2,13 +2,13 @@ import type { Request, Response } from 'express'
 
 import updateUser from '../../database/updateUser.js'
 
-
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoUpdateUserResponse =
-  { message: string; success: true }
-  | { message: string; success: false }
+export type DoUpdateUserResponse = { message: string; success: boolean }
 
-export default function handler(request: Request, response: Response<DoUpdateUserResponse>): void {
+export default function handler(
+  request: Request,
+  response: Response<DoUpdateUserResponse>
+): void {
   const {
     userName,
 

@@ -2,14 +2,17 @@ import type { Request, Response } from 'express'
 
 import deleteContractServiceType from '../../database/deleteContractServiceType.js'
 import getContractServiceTypes from '../../database/getContractServiceTypes.js'
-
 import type { ServiceType } from '../../types/record.types.js'
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoDeleteContractServiceTypeResponse =
-  | { success: true; contractServiceTypes: ServiceType[] }
-  | { success: false; errorMessage: string }
+  | {
+      success: false
+    }
+  | {
+      success: true
+
+      contractServiceTypes: ServiceType[]
+    }
 
 export default function handler(
   request: Request<
@@ -26,16 +29,18 @@ export default function handler(
   )
 
   if (success) {
-    const contractServiceTypes = getContractServiceTypes(request.body.contractId)
+    const contractServiceTypes = getContractServiceTypes(
+      request.body.contractId
+    )
 
     response.json({
       success: true,
+
       contractServiceTypes
     })
   } else {
     response.json({
-      success: false,
-      errorMessage: 'Service Type Not Deleted'
+      success: false
     })
   }
 }

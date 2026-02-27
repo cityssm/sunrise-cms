@@ -5,8 +5,8 @@ export type DoDeleteContractFeeResponse = {
     success: false;
 } | {
     success: boolean;
-    contractFees: ContractFee[];
     errorMessage: string;
+    contractFees: ContractFee[];
 };
 export default function handler(request: Request<unknown, unknown, {
     contractId: string;

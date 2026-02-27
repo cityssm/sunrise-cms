@@ -4,14 +4,15 @@ import {
   getAllCachedContractTypeFields,
   getCachedContractTypeById
 } from '../../helpers/cache/contractTypes.cache.js'
-import type { ContractType ,
+import type {
+  ContractType,
   ContractTypeField
 } from '../../types/record.types.js'
 
-
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoGetContractTypeFieldsResponse =
-  { contractTypeFields: ContractTypeField[] }
+export type DoGetContractTypeFieldsResponse = {
+  contractTypeFields: ContractTypeField[]
+}
 
 export default function handler(
   request: Request<unknown, unknown, { contractTypeId: string }>,
@@ -23,9 +24,10 @@ export default function handler(
     Number.parseInt(request.body.contractTypeId, 10)
   ) as ContractType
 
-  const contractTypeFields = [...allContractTypeFields]
-
-  contractTypeFields.push(...(result.contractTypeFields ?? []))
+  const contractTypeFields = [
+    ...allContractTypeFields,
+    ...(result.contractTypeFields ?? [])
+  ]
 
   response.json({
     contractTypeFields

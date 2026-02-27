@@ -8,16 +8,21 @@ import addContractInterment, {
 import getContractInterments from '../../database/getContractInterments.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { ContractInterment } from '../../types/record.types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddContractInterment`)
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoAddContractIntermentResponse =
-  { success: true; contractInterments: ContractInterment[] }
-  | { errorMessage: string; success: false }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      contractInterments: ContractInterment[]
+    }
 
 export default function handler(
   request: Request<unknown, unknown, AddForm>,

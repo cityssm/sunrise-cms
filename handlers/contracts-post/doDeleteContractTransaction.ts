@@ -16,8 +16,10 @@ export type DoDeleteContractTransactionResponse =
   | { errorMessage: string; success: false }
   | {
       success: boolean
-      contractTransactions: ContractTransaction[]
+
       errorMessage: string
+
+      contractTransactions: ContractTransaction[]
     }
 
 export default async function handler(

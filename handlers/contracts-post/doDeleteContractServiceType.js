@@ -11,8 +11,7 @@ export default function handler(request, response) {
     }
     else {
         response.json({
-            success: false,
-            errorMessage: 'Service Type Not Deleted'
+            success: false
         });
     }
 }

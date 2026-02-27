@@ -2,8 +2,8 @@ import type { Request, Response } from 'express';
 import { type AddTransactionForm } from '../../database/addContractTransaction.js';
 import type { ContractTransaction } from '../../types/record.types.js';
 export type DoAddContractTransactionResponse = {
-    errorMessage: string;
     success: false;
+    errorMessage: string;
 } | {
     success: true;
     contractTransactions: ContractTransaction[];

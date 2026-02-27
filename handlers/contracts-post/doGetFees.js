@@ -18,6 +18,7 @@ export default async function handler(request, response) {
             includeFees: true
         }, database);
         response.json({
+            success: true,
             feeCategories
         });
     }

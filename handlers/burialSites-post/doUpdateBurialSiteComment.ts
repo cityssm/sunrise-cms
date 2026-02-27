@@ -18,6 +18,7 @@ export type DoUpdateBurialSiteCommentResponse =
   | { errorMessage: string; success: false }
   | {
       success: boolean
+
       burialSiteComments: BurialSiteComment[]
       errorMessage: string
     }

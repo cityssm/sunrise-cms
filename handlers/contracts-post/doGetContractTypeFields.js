@@ -2,8 +2,10 @@ import { getAllCachedContractTypeFields, getCachedContractTypeById } from '../..
 export default function handler(request, response) {
     const allContractTypeFields = getAllCachedContractTypeFields();
     const result = getCachedContractTypeById(Number.parseInt(request.body.contractTypeId, 10));
-    const contractTypeFields = [...allContractTypeFields];
-    contractTypeFields.push(...(result.contractTypeFields ?? []));
+    const contractTypeFields = [
+        ...allContractTypeFields,
+        ...(result.contractTypeFields ?? [])
+    ];
     response.json({
         contractTypeFields
     });

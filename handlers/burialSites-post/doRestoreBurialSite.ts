@@ -6,6 +6,7 @@ import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.he
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoRestoreBurialSiteResponse = {
   success: boolean
+
   burialSiteId: number
 }
 

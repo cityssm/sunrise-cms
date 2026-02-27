@@ -2,14 +2,11 @@ import type { Request, Response } from 'express'
 
 import updateServiceType from '../../database/updateServiceType.js'
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js'
-
 import type { ServiceType } from '../../types/record.types.js'
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoUpdateServiceTypeResponse =
-  | { success: true; serviceTypes: ServiceType[] }
   | { success: false; errorMessage: string }
+  | { success: true; serviceTypes: ServiceType[] }
 
 export default function handler(
   request: Request<
@@ -29,11 +26,13 @@ export default function handler(
 
     response.json({
       success: true,
+
       serviceTypes
     })
   } else {
     response.json({
       success: false,
+
       errorMessage: 'Service Type Not Updated'
     })
   }

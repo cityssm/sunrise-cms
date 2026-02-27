@@ -5,8 +5,8 @@ export type DoDeleteContractTransactionResponse = {
     success: false;
 } | {
     success: boolean;
-    contractTransactions: ContractTransaction[];
     errorMessage: string;
+    contractTransactions: ContractTransaction[];
 };
 export default function handler(request: Request<unknown, unknown, {
     contractId: string;

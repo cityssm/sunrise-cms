@@ -11,8 +11,14 @@ import type { ContractFee } from '../../types/record.types.js'
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:doDeleteContractFee`)
 
 export type DoDeleteContractFeeResponse =
-  { errorMessage: string; success: false }
-  | { success: boolean; contractFees: ContractFee[]; errorMessage: string }
+  | { errorMessage: string; success: false }
+  | {
+      success: boolean
+
+      errorMessage: string
+
+      contractFees: ContractFee[]
+    }
 
 export default function handler(
   request: Request<unknown, unknown, { contractId: string; feeId: string }>,

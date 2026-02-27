@@ -5,27 +5,22 @@ import addBurialSite, {
 } from '../../database/addBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoCreateBurialSiteResponse =
-  | { success: true; burialSiteId: number; burialSiteName: string }
   | { success: false; errorMessage: string }
+  | { success: true; burialSiteId: number; burialSiteName: string }
 
 export default function handler(
   request: Request<unknown, unknown, AddBurialSiteForm>,
   response: Response<DoCreateBurialSiteResponse>
 ): void {
   try {
-    const burialSite = addBurialSite(
-      request.body,
-      request.session.user as User
-    )
+    const burialSite = addBurialSite(request.body, request.session.user as User)
 
     response.json({
       success: true,
 
       burialSiteId: burialSite.burialSiteId,
-      burialSiteName: burialSite.burialSiteName,
+      burialSiteName: burialSite.burialSiteName
     })
 
     response.on('finish', () => {

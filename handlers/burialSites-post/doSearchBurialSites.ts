@@ -8,9 +8,9 @@ import type { BurialSite } from '../../types/record.types.js'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoSearchBurialSitesResponse = {
+  burialSites: BurialSite[]
   count: number
   offset: number
-  burialSites: BurialSite[]
 }
 
 export default function handler(
@@ -29,12 +29,11 @@ export default function handler(
   })
 
   response.json({
+    burialSites: result.burialSites,
     count: result.count,
     offset:
       typeof request.body.offset === 'string'
         ? Number.parseInt(request.body.offset, 10)
-        : request.body.offset,
-
-    burialSites: result.burialSites
+        : request.body.offset
   })
 }
