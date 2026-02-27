@@ -3,6 +3,7 @@ import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoDeleteContractAttachmentResponse } from '../../handlers/contracts-post/doDeleteContractAttachment.js'
 import type { DoUpdateContractAttachmentResponse } from '../../handlers/contracts-post/doUpdateContractAttachment.js'
+import type { DoUploadContractAttachmentResponse } from '../../handlers/contracts-post/doUploadContractAttachment.js'
 import type { ContractAttachment } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -174,35 +175,26 @@ declare const exports: {
         })
           // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           .then(async (response) => await response.json())
-          .then(
-            (responseJSON: {
-              errorMessage?: string
-              success: boolean
+          .then((responseJSON: DoUploadContractAttachmentResponse) => {
+            if (responseJSON.success) {
+              uploadCloseModalFunction?.()
 
-              contractAttachments: ContractAttachment[]
-            }) => {
-              if (responseJSON.success) {
-                uploadCloseModalFunction?.()
+              bulmaJS.alert({
+                contextualColorName: 'success',
+                message: 'Attachment uploaded successfully.'
+              })
 
-                bulmaJS.alert({
-                  contextualColorName: 'success',
-                  message: 'Attachment uploaded successfully.'
-                })
+              // Refresh the page to show the new attachment
+              renderAttachments(responseJSON.contractAttachments)
+            } else {
+              bulmaJS.alert({
+                contextualColorName: 'danger',
+                title: 'Error Uploading Attachment',
 
-                // Refresh the page to show the new attachment
-                renderAttachments(responseJSON.contractAttachments)
-              } else {
-                bulmaJS.alert({
-                  contextualColorName: 'danger',
-                  title: 'Error Uploading Attachment',
-
-                  message:
-                    responseJSON.errorMessage ??
-                    'An error occurred while uploading the file.'
-                })
-              }
+                message: responseJSON.errorMessage
+              })
             }
-          )
+          })
           .catch(() => {
             bulmaJS.alert({
               contextualColorName: 'danger',

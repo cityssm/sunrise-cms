@@ -131,8 +131,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Uploading Attachment',
-                        message: responseJSON.errorMessage ??
-                            'An error occurred while uploading the file.'
+                        message: responseJSON.errorMessage
                     });
                 }
             })
