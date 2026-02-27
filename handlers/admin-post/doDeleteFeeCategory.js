@@ -10,13 +10,18 @@ export default function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = deleteRecord('FeeCategories', request.body.feeCategoryId, request.session.user, database);
+        if (!success) {
+            response
+                .status(400)
+                .json({ errorMessage: 'Fee category not found', success: false });
+            return;
+        }
         const feeCategories = getFeeCategories({}, {
             includeFees: true
         }, database);
         response.json({
             success,
-            feeCategories,
-            errorMessage: success ? '' : 'Failed to delete fee category'
+            feeCategories
         });
     }
     catch (error) {

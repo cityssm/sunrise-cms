@@ -15,9 +15,7 @@ const debug = Debug(
 export type DoDeleteContractCommentResponse =
   | { errorMessage: string; success: false }
   | {
-      success: boolean
-
-      errorMessage: string
+      success: true
 
       contractComments: ContractComment[]
     }
@@ -42,6 +40,13 @@ export default function handler(
       database
     )
 
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Comment not found', success: false })
+      return
+    }
+
     const contractComments = getContractComments(
       request.body.contractId,
       database
@@ -50,8 +55,7 @@ export default function handler(
     response.json({
       success,
 
-      contractComments,
-      errorMessage: success ? '' : 'Failed to delete comment'
+      contractComments
     })
   } catch (error) {
     debug(error)

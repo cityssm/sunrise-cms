@@ -1,7 +1,9 @@
 import type { Request, Response } from 'express';
 export type DoUpdateBurialSiteLatitudeLongitudeResponse = {
-    success: boolean;
+    success: false;
     errorMessage: string;
+} | {
+    success: true;
 };
 export default function handler(request: Request<unknown, unknown, {
     burialSiteId: string;

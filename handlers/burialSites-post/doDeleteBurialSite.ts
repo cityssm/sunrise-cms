@@ -3,11 +3,9 @@ import type { Request, Response } from 'express'
 import { deleteBurialSite } from '../../database/deleteBurialSite.js'
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoDeleteBurialSiteResponse = {
-  success: boolean
-  errorMessage: string
-}
+export type DoDeleteBurialSiteResponse =
+  | { errorMessage: string; success: false }
+  | { success: true }
 
 export default function handler(
   request: Request<unknown, unknown, { burialSiteId: string }>,
@@ -17,17 +15,20 @@ export default function handler(
 
   const success = deleteBurialSite(burialSiteId, request.session.user as User)
 
-  response.json({
-    success,
+  if (!success) {
+    response.status(400).json({
+      errorMessage:
+        'Note that burial sites with active contracts cannot be deleted.',
+      success: false
+    })
+    return
+  }
 
-    errorMessage: success
-      ? ''
-      : 'Note that burial sites with active contracts cannot be deleted.'
+  response.on('finish', () => {
+    clearNextPreviousBurialSiteIdCache(burialSiteId)
   })
 
-  if (success) {
-    response.on('finish', () => {
-      clearNextPreviousBurialSiteIdCache(burialSiteId)
-    })
-  }
+  response.json({
+    success
+  })
 }

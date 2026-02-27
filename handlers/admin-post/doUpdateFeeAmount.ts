@@ -15,7 +15,11 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doUpdateFeeAmount`)
 
 export type DoUpdateFeeAmountResponse =
   | { errorMessage: string; success: false }
-  | { success: boolean; feeCategories: FeeCategory[]; errorMessage: string }
+  | {
+      success: true
+
+      feeCategories: FeeCategory[]
+    }
 
 export default function handler(
   request: Request,
@@ -32,6 +36,13 @@ export default function handler(
       database
     )
 
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Failed to update fee amount', success: false })
+      return
+    }
+
     const feeCategories = getFeeCategories(
       {},
       {
@@ -43,8 +54,7 @@ export default function handler(
     response.json({
       success,
 
-      feeCategories,
-      errorMessage: success ? '' : 'Failed to update fee amount'
+      feeCategories
     })
   } catch (error) {
     debug(error)

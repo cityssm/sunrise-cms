@@ -4,9 +4,8 @@ export type DoDeleteFeeResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
+    success: true;
     feeCategories: FeeCategory[];
-    errorMessage: string;
 };
 export default function handler(request: Request<unknown, unknown, {
     feeId: string;

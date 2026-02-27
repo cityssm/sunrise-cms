@@ -5,9 +5,8 @@ export type DoUpdateBurialSiteCommentResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
+    success: true;
     burialSiteComments: BurialSiteComment[];
-    errorMessage: string;
 };
 export default function handler(request: Request<unknown, unknown, UpdateBurialSiteCommentForm & {
     burialSiteId: string;

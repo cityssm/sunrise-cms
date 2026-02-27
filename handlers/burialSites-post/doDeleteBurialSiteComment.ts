@@ -15,8 +15,7 @@ const debug = Debug(
 export type DoDeleteBurialSiteCommentResponse =
   | { errorMessage: string; success: false }
   | {
-      errorMessage: string
-      success: boolean
+      success: true
 
       burialSiteComments: BurialSiteComment[]
     }
@@ -41,6 +40,13 @@ export default function handler(
       database
     )
 
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Comment not found', success: false })
+      return
+    }
+
     const burialSiteComments = getBurialSiteComments(
       request.body.burialSiteId,
       database
@@ -49,9 +55,7 @@ export default function handler(
     response.json({
       success,
 
-      burialSiteComments,
-
-      errorMessage: success ? '' : 'Failed to delete comment'
+      burialSiteComments
     })
   } catch (error) {
     debug(error)

@@ -10,11 +10,16 @@ export default function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = deleteRecord('ContractComments', request.body.contractCommentId, request.session.user, database);
+        if (!success) {
+            response
+                .status(400)
+                .json({ errorMessage: 'Comment not found', success: false });
+            return;
+        }
         const contractComments = getContractComments(request.body.contractId, database);
         response.json({
             success,
-            contractComments,
-            errorMessage: success ? '' : 'Failed to delete comment'
+            contractComments
         });
     }
     catch (error) {

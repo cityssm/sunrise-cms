@@ -12,10 +12,21 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddUser`)
 
 export type DoAddUserResponse =
   | { errorMessage: string; success: false }
-  | { success: boolean; users: DatabaseUser[] }
+  | { success: true; users: DatabaseUser[] }
 
 export default function handler(
-  request: Request,
+  request: Request<
+    unknown,
+    unknown,
+    {
+      userName: string
+
+      canUpdateCemeteries?: string
+      canUpdateContracts?: string
+      canUpdateWorkOrders?: string
+      isAdmin?: string
+    }
+  >,
   response: Response<DoAddUserResponse>
 ): void {
   const {
@@ -25,14 +36,7 @@ export default function handler(
     canUpdateContracts = '0',
     canUpdateWorkOrders = '0',
     isAdmin = '0'
-  } = request.body as {
-    userName: string
-
-    canUpdateCemeteries?: string
-    canUpdateContracts?: string
-    canUpdateWorkOrders?: string
-    isAdmin?: string
-  }
+  } = request.body
 
   let database: sqlite.Database | undefined
 
@@ -51,6 +55,13 @@ export default function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'User name already exists', success: false })
+      return
+    }
 
     const users = getUsers(database)
 

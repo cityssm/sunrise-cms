@@ -10,11 +10,16 @@ export default function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = deleteRecord('BurialSiteComments', request.body.burialSiteCommentId, request.session.user, database);
+        if (!success) {
+            response
+                .status(400)
+                .json({ errorMessage: 'Comment not found', success: false });
+            return;
+        }
         const burialSiteComments = getBurialSiteComments(request.body.burialSiteId, database);
         response.json({
             success,
-            burialSiteComments,
-            errorMessage: success ? '' : 'Failed to delete comment'
+            burialSiteComments
         });
     }
     catch (error) {

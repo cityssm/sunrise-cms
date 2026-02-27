@@ -4,7 +4,13 @@ export type DoAddUserResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
+    success: true;
     users: DatabaseUser[];
 };
-export default function handler(request: Request, response: Response<DoAddUserResponse>): void;
+export default function handler(request: Request<unknown, unknown, {
+    userName: string;
+    canUpdateCemeteries?: string;
+    canUpdateContracts?: string;
+    canUpdateWorkOrders?: string;
+    isAdmin?: string;
+}>, response: Response<DoAddUserResponse>): void;

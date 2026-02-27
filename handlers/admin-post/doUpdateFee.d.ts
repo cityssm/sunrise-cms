@@ -4,8 +4,7 @@ export type DoUpdateFeeResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
+    success: true;
     feeCategories: FeeCategory[];
-    errorMessage: string;
 };
 export default function handler(request: Request, response: Response<DoUpdateFeeResponse>): void;

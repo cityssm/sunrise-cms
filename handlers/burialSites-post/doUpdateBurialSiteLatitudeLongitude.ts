@@ -2,11 +2,9 @@ import type { Request, Response } from 'express'
 
 import { updateBurialSiteLatitudeLongitude } from '../../database/updateBurialSite.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoUpdateBurialSiteLatitudeLongitudeResponse = {
-  success: boolean
-  errorMessage: string
-}
+export type DoUpdateBurialSiteLatitudeLongitudeResponse =
+  | { success: false; errorMessage: string }
+  | { success: true }
 
 export default function handler(
   request: Request<
@@ -28,12 +26,16 @@ export default function handler(
       request.session.user as User
     )
 
-    response.json({
-      success,
+    if (!success) {
+      response.status(400).json({
+        success: false,
+        errorMessage: 'Failed to update burial site latitude and longitude'
+      })
+      return
+    }
 
-      errorMessage: success
-        ? ''
-        : 'Failed to update burial site latitude and longitude'
+    response.json({
+      success
     })
   } catch (error) {
     response.json({

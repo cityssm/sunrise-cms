@@ -12,7 +12,11 @@ const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doDeleteFee`)
 
 export type DoDeleteFeeResponse =
   | { errorMessage: string; success: false }
-  | { success: boolean; feeCategories: FeeCategory[]; errorMessage: string }
+  | {
+      success: true
+
+      feeCategories: FeeCategory[]
+    }
 
 export default function handler(
   request: Request<unknown, unknown, { feeId: string }>,
@@ -30,6 +34,13 @@ export default function handler(
       database
     )
 
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Fee not found', success: false })
+      return
+    }
+
     const feeCategories = getFeeCategories(
       {},
       {
@@ -41,8 +52,7 @@ export default function handler(
     response.json({
       success,
 
-      feeCategories,
-      errorMessage: success ? '' : 'Failed to delete fee'
+      feeCategories
     })
   } catch (error) {
     debug(error)

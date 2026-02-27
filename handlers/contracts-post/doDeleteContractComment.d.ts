@@ -4,8 +4,7 @@ export type DoDeleteContractCommentResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
-    errorMessage: string;
+    success: true;
     contractComments: ContractComment[];
 };
 export default function handler(request: Request<unknown, unknown, {

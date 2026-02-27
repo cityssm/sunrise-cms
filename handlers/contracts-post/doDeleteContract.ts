@@ -2,12 +2,15 @@ import type { Request, Response } from 'express'
 
 import { deleteContract } from '../../database/deleteContract.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoDeleteContractResponse = {
-  success: boolean
+export type DoDeleteContractResponse =
+  | {
+      success: false
 
-  errorMessage: string
-}
+      errorMessage: string
+    }
+  | {
+      success: true
+    }
 
 export default function handler(
   request: Request<unknown, unknown, { contractId: string }>,
@@ -18,11 +21,17 @@ export default function handler(
     request.session.user as User
   )
 
-  response.json({
-    success,
+  if (!success) {
+    response.status(400).json({
+      success: false,
 
-    errorMessage: success
-      ? ''
-      : 'Note that contracts with active work orders cannot be deleted.'
+      errorMessage:
+        'Note that contracts with active work orders cannot be deleted.'
+    })
+    return
+  }
+
+  response.json({
+    success
   })
 }
