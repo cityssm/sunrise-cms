@@ -1,0 +1,13 @@
+.github/
+.idea/
+.vscode/
+docs/
+temp/
+test/
+/.*/
+node_modules/
+windowsService*
+Dockerfile
+*.md
+**/*.env
+eslint.config.ts
