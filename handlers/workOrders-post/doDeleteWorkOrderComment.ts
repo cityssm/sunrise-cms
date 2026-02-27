@@ -15,9 +15,8 @@ const debug = Debug(
 export type DoDeleteWorkOrderCommentResponse =
   | { errorMessage: string; success: false }
   | {
-      success: boolean
+      success: true
       workOrderComments: WorkOrderComment[]
-      errorMessage: string
     }
 
 export default function handler(
@@ -40,6 +39,13 @@ export default function handler(
       database
     )
 
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Comment not found', success: false })
+      return
+    }
+
     const workOrderComments = getWorkOrderComments(
       request.body.workOrderId,
       database
@@ -47,8 +53,7 @@ export default function handler(
 
     response.json({
       success,
-      workOrderComments,
-      errorMessage: success ? '' : 'Failed to delete comment'
+      workOrderComments
     })
   } catch (error) {
     debug(error)

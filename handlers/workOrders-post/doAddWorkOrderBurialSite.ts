@@ -15,9 +15,8 @@ const debug = Debug(
 export type DoAddWorkOrderBurialSiteResponse =
   | { errorMessage: string; success: false }
   | {
-      success: boolean
+      success: true
       workOrderBurialSites: BurialSite[]
-      errorMessage: string
     }
 
 export default function handler(
@@ -42,6 +41,16 @@ export default function handler(
       database
     )
 
+    if (!success) {
+      response
+        .status(400)
+        .json({
+          errorMessage: 'Failed to add burial site to work order',
+          success: false
+        })
+      return
+    }
+
     const results = getBurialSites(
       {
         workOrderId: request.body.workOrderId
@@ -57,8 +66,7 @@ export default function handler(
 
     response.json({
       success,
-      workOrderBurialSites: results.burialSites,
-      errorMessage: success ? '' : 'Failed to add burial site to work order'
+      workOrderBurialSites: results.burialSites
     })
   } catch (error) {
     debug(error)

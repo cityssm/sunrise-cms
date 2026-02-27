@@ -15,9 +15,8 @@ const debug = Debug(
 export type DoUpdateBurialSiteStatusResponse =
   | { errorMessage: string; success: false }
   | {
-      success: boolean
+      success: true
       workOrderBurialSites: BurialSite[]
-      errorMessage: string
     }
 
 export default function handler(
@@ -40,6 +39,16 @@ export default function handler(
       database
     )
 
+    if (!success) {
+      response
+        .status(400)
+        .json({
+          errorMessage: 'Failed to update burial site status',
+          success: false
+        })
+      return
+    }
+
     const results = getBurialSites(
       {
         workOrderId: request.body.workOrderId
@@ -55,8 +64,7 @@ export default function handler(
 
     response.json({
       success,
-      workOrderBurialSites: results.burialSites,
-      errorMessage: success ? '' : 'Failed to update burial site status.'
+      workOrderBurialSites: results.burialSites
     })
   } catch (error) {
     debug(error)

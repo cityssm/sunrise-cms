@@ -4,7 +4,7 @@ export type DoDeleteContractIntermentResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
+    success: true;
     contractInterments: ContractInterment[];
 };
 export default function handler(request: Request<unknown, unknown, {

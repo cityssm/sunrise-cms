@@ -13,6 +13,15 @@ export default async function handler(request, response) {
             contractId: request.body.contractId,
             workOrderId: request.body.workOrderId
         }, request.session.user, database);
+        if (!success) {
+            response
+                .status(400)
+                .json({
+                errorMessage: 'Failed to add contract to work order',
+                success: false
+            });
+            return;
+        }
         const results = await getContracts({
             workOrderId: request.body.workOrderId
         }, {
@@ -24,8 +33,7 @@ export default async function handler(request, response) {
         }, database);
         response.json({
             success,
-            workOrderContracts: results.contracts,
-            errorMessage: success ? '' : 'Failed to add contract to work order.'
+            workOrderContracts: results.contracts
         });
     }
     catch (error) {

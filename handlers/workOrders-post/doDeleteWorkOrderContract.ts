@@ -14,7 +14,7 @@ const debug = Debug(
 
 export type DoDeleteWorkOrderContractResponse =
   | { errorMessage: string; success: false }
-  | { success: boolean; workOrderContracts: Contract[]; errorMessage: string }
+  | { success: true; workOrderContracts: Contract[] }
 
 export default async function handler(
   request: Request<
@@ -36,6 +36,14 @@ export default async function handler(
       database
     )
 
+    if (!success) {
+      response.status(400).json({
+        errorMessage: 'Failed to delete contract from work order',
+        success: false
+      })
+      return
+    }
+
     const workOrderContracts = await getContracts(
       {
         workOrderId: request.body.workOrderId
@@ -53,8 +61,7 @@ export default async function handler(
 
     response.json({
       success,
-      workOrderContracts: workOrderContracts.contracts,
-      errorMessage: success ? '' : 'Failed to delete contract from work order'
+      workOrderContracts: workOrderContracts.contracts
     })
   } catch (error) {
     debug(error)

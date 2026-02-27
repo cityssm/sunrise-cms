@@ -14,7 +14,11 @@ const debug = Debug(
 
 export type DoDeleteContractIntermentResponse =
   | { errorMessage: string; success: false }
-  | { success: boolean; contractInterments: ContractInterment[] }
+  | {
+      success: true
+
+      contractInterments: ContractInterment[]
+    }
 
 export default function handler(
   request: Request<
@@ -35,6 +39,13 @@ export default function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Interment not found', success: false })
+      return
+    }
 
     const contractInterments = getContractInterments(
       request.body.contractId,

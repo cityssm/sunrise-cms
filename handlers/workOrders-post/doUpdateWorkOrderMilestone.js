@@ -10,6 +10,13 @@ export default async function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = updateWorkOrderMilestone(request.body, request.session.user, database);
+        if (!success) {
+            response.status(400).json({
+                errorMessage: 'Failed to update milestone',
+                success: false
+            });
+            return;
+        }
         const workOrderMilestones = await getWorkOrderMilestones({
             workOrderId: request.body.workOrderId
         }, {
@@ -17,8 +24,7 @@ export default async function handler(request, response) {
         }, database);
         response.json({
             success,
-            workOrderMilestones,
-            errorMessage: success ? '' : 'Failed to update milestone'
+            workOrderMilestones
         });
     }
     catch (error) {

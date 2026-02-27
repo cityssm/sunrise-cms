@@ -17,9 +17,8 @@ const debug = Debug(
 export type DoUpdateWorkOrderMilestoneResponse =
   | { errorMessage: string; success: false }
   | {
-      success: boolean
+      success: true
       workOrderMilestones: WorkOrderMilestone[]
-      errorMessage: string
     }
 
 export default async function handler(
@@ -41,6 +40,14 @@ export default async function handler(
       database
     )
 
+    if (!success) {
+      response.status(400).json({
+        errorMessage: 'Failed to update milestone',
+        success: false
+      })
+      return
+    }
+
     const workOrderMilestones = await getWorkOrderMilestones(
       {
         workOrderId: request.body.workOrderId
@@ -53,9 +60,7 @@ export default async function handler(
 
     response.json({
       success,
-      workOrderMilestones,
-
-      errorMessage: success ? '' : 'Failed to update milestone'
+      workOrderMilestones
     })
   } catch (error) {
     debug(error)

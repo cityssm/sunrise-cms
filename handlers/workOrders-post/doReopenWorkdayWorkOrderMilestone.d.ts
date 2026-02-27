@@ -5,7 +5,7 @@ export type DoReopenWorkdayWorkOrderMilestoneResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
+    success: true;
     workOrders: WorkOrder[];
 };
 export default function handler(request: Request<unknown, unknown, {

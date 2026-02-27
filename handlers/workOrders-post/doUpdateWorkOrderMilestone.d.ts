@@ -5,9 +5,8 @@ export type DoUpdateWorkOrderMilestoneResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
+    success: true;
     workOrderMilestones: WorkOrderMilestone[];
-    errorMessage: string;
 };
 export default function handler(request: Request<unknown, unknown, UpdateWorkOrderMilestoneForm & {
     workOrderId: string;

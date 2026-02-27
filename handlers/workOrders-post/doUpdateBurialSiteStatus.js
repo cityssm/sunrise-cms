@@ -10,6 +10,15 @@ export default function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = updateBurialSiteStatus(request.body.burialSiteId, request.body.burialSiteStatusId, request.session.user, database);
+        if (!success) {
+            response
+                .status(400)
+                .json({
+                errorMessage: 'Failed to update burial site status',
+                success: false
+            });
+            return;
+        }
         const results = getBurialSites({
             workOrderId: request.body.workOrderId
         }, {
@@ -19,8 +28,7 @@ export default function handler(request, response) {
         }, database);
         response.json({
             success,
-            workOrderBurialSites: results.burialSites,
-            errorMessage: success ? '' : 'Failed to update burial site status.'
+            workOrderBurialSites: results.burialSites
         });
     }
     catch (error) {

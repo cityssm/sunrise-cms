@@ -17,10 +17,9 @@ const debug = Debug(
 export type DoAddWorkOrderMilestoneResponse =
   | { errorMessage: string; success: false }
   | {
-      success: boolean
+      success: true
       workOrderMilestoneId: number
       workOrderMilestones: WorkOrderMilestone[]
-      errorMessage: ''
     }
 
 export default async function handler(
@@ -49,8 +48,7 @@ export default async function handler(
     response.json({
       success: true,
       workOrderMilestoneId,
-      workOrderMilestones,
-      errorMessage: ''
+      workOrderMilestones
     })
   } catch (error) {
     debug(error)

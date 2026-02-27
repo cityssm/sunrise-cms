@@ -6,12 +6,17 @@ import updateContractFeeQuantity, {
 } from '../../database/updateContractFeeQuantity.js'
 import type { ContractFee } from '../../types/record.types.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoUpdateContractFeeQuantityResponse = {
-  success: boolean
+export type DoUpdateContractFeeQuantityResponse =
+  | {
+      success: false
 
-  contractFees: ContractFee[]
-}
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      contractFees: ContractFee[]
+    }
 
 export default function handler(
   request: Request<unknown, unknown, UpdateBurialSiteFeeForm>,
@@ -21,6 +26,15 @@ export default function handler(
     request.body,
     request.session.user as User
   )
+
+  if (!success) {
+    response.status(400).json({
+      success: false,
+
+      errorMessage: 'Failed to update fee quantity'
+    })
+    return
+  }
 
   const contractFees = getContractFees(request.body.contractId)
 

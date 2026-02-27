@@ -4,7 +4,7 @@ export type DoReopenWorkOrderMilestoneResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
+    success: true;
     workOrderMilestones: WorkOrderMilestone[];
 };
 export default function handler(request: Request<unknown, unknown, {

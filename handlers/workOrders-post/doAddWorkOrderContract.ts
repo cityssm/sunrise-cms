@@ -14,7 +14,7 @@ const debug = Debug(
 
 export type DoAddWorkOrderContractResponse =
   | { errorMessage: string; success: false }
-  | { success: boolean; workOrderContracts: Contract[]; errorMessage: string }
+  | { success: true; workOrderContracts: Contract[] }
 
 export default async function handler(
   request: Request<
@@ -38,6 +38,16 @@ export default async function handler(
       database
     )
 
+    if (!success) {
+      response
+        .status(400)
+        .json({
+          errorMessage: 'Failed to add contract to work order',
+          success: false
+        })
+      return
+    }
+
     const results = await getContracts(
       {
         workOrderId: request.body.workOrderId
@@ -55,8 +65,7 @@ export default async function handler(
 
     response.json({
       success,
-      workOrderContracts: results.contracts,
-      errorMessage: success ? '' : 'Failed to add contract to work order.'
+      workOrderContracts: results.contracts
     })
   } catch (error) {
     debug(error)

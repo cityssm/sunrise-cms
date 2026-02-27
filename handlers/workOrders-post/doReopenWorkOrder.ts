@@ -2,11 +2,12 @@ import type { Request, Response } from 'express'
 
 import reopenWorkOrder from '../../database/reopenWorkOrder.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoReopenWorkOrderResponse = {
-  success: boolean
-  workOrderId: string
-}
+export type DoReopenWorkOrderResponse =
+  | { success: false; errorMessage: string }
+  | {
+      success: true
+      workOrderId: string
+    }
 
 export default function handler(
   request: Request<unknown, unknown, { workOrderId: string }>,
@@ -16,6 +17,15 @@ export default function handler(
     request.body.workOrderId,
     request.session.user as User
   )
+
+  if (!success) {
+    response.status(400).json({
+      success: false,
+
+      errorMessage: 'Failed to reopen work order'
+    })
+    return
+  }
 
   response.json({
     success,

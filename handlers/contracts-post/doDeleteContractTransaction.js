@@ -10,13 +10,18 @@ export default async function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = deleteContractTransaction(request.body.contractId, request.body.transactionIndex, request.session.user, database);
+        if (!success) {
+            response
+                .status(400)
+                .json({ errorMessage: 'Transaction not found', success: false });
+            return;
+        }
         const contractTransactions = await getContractTransactions(request.body.contractId, {
             includeIntegrations: true
         }, database);
         response.json({
             success,
-            contractTransactions,
-            errorMessage: success ? '' : 'Failed to delete transaction'
+            contractTransactions
         });
     }
     catch (error) {

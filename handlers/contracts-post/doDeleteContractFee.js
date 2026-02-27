@@ -10,11 +10,16 @@ export default function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = deleteContractFee(request.body.contractId, request.body.feeId, request.session.user, database);
+        if (!success) {
+            response
+                .status(400)
+                .json({ errorMessage: 'Fee not found', success: false });
+            return;
+        }
         const contractFees = getContractFees(request.body.contractId, database);
         response.json({
             success,
-            contractFees,
-            errorMessage: success ? '' : 'Failed to delete fee'
+            contractFees
         });
     }
     catch (error) {

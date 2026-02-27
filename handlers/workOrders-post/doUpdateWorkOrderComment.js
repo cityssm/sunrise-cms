@@ -10,11 +10,16 @@ export default function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = updateWorkOrderComment(request.body, request.session.user, database);
+        if (!success) {
+            response
+                .status(400)
+                .json({ errorMessage: 'Failed to update comment', success: false });
+            return;
+        }
         const workOrderComments = getWorkOrderComments(request.body.workOrderId, database);
         response.json({
             success,
-            workOrderComments,
-            errorMessage: success ? '' : 'Failed to update comment'
+            workOrderComments
         });
     }
     catch (error) {

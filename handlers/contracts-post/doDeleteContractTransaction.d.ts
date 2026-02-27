@@ -4,8 +4,7 @@ export type DoDeleteContractTransactionResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
-    errorMessage: string;
+    success: true;
     contractTransactions: ContractTransaction[];
 };
 export default function handler(request: Request<unknown, unknown, {

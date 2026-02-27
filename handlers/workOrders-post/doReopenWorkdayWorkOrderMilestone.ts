@@ -15,7 +15,7 @@ const debug = Debug(
 
 export type DoReopenWorkdayWorkOrderMilestoneResponse =
   | { errorMessage: string; success: false }
-  | { success: boolean; workOrders: WorkOrder[] }
+  | { success: true; workOrders: WorkOrder[] }
 
 export default async function handler(
   request: Request<
@@ -35,6 +35,14 @@ export default async function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response.status(400).json({
+        errorMessage: 'Failed to reopen work order milestone',
+        success: false
+      })
+      return
+    }
 
     const result = await getWorkOrders(
       {

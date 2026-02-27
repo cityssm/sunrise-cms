@@ -1,6 +1,9 @@
 import type { Request, Response } from 'express';
 export type DoRestoreFuneralHomeResponse = {
-    success: boolean;
+    errorMessage: string;
+    success: false;
+} | {
+    success: true;
     funeralHomeId: number;
 };
 export default function handler(request: Request<unknown, unknown, {

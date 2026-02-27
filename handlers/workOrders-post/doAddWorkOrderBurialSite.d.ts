@@ -4,9 +4,8 @@ export type DoAddWorkOrderBurialSiteResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
+    success: true;
     workOrderBurialSites: BurialSite[];
-    errorMessage: string;
 };
 export default function handler(request: Request<unknown, unknown, {
     burialSiteId: string;

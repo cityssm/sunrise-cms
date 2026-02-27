@@ -10,6 +10,15 @@ export default function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = deleteWorkOrderBurialSite(request.body.workOrderId, request.body.burialSiteId, request.session.user, database);
+        if (!success) {
+            response
+                .status(400)
+                .json({
+                errorMessage: 'Burial site not found in work order',
+                success: false
+            });
+            return;
+        }
         const results = getBurialSites({
             workOrderId: request.body.workOrderId
         }, {
@@ -19,10 +28,7 @@ export default function handler(request, response) {
         }, database);
         response.json({
             success,
-            workOrderBurialSites: results.burialSites,
-            errorMessage: success
-                ? ''
-                : 'Failed to delete burial site from work order.'
+            workOrderBurialSites: results.burialSites
         });
     }
     catch (error) {

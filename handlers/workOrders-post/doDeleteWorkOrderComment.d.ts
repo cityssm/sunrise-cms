@@ -4,9 +4,8 @@ export type DoDeleteWorkOrderCommentResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
+    success: true;
     workOrderComments: WorkOrderComment[];
-    errorMessage: string;
 };
 export default function handler(request: Request<unknown, unknown, {
     workOrderCommentId: string;

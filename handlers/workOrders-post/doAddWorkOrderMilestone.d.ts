@@ -5,9 +5,8 @@ export type DoAddWorkOrderMilestoneResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
+    success: true;
     workOrderMilestoneId: number;
     workOrderMilestones: WorkOrderMilestone[];
-    errorMessage: '';
 };
 export default function handler(request: Request<unknown, unknown, AddWorkOrderMilestoneForm>, response: Response<DoAddWorkOrderMilestoneResponse>): Promise<void>;

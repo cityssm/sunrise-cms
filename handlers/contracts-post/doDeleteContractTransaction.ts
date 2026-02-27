@@ -15,9 +15,7 @@ const debug = Debug(
 export type DoDeleteContractTransactionResponse =
   | { errorMessage: string; success: false }
   | {
-      success: boolean
-
-      errorMessage: string
+      success: true
 
       contractTransactions: ContractTransaction[]
     }
@@ -42,6 +40,13 @@ export default async function handler(
       database
     )
 
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Transaction not found', success: false })
+      return
+    }
+
     const contractTransactions = await getContractTransactions(
       request.body.contractId,
       {
@@ -53,9 +58,7 @@ export default async function handler(
     response.json({
       success,
 
-      contractTransactions,
-
-      errorMessage: success ? '' : 'Failed to delete transaction'
+      contractTransactions
     })
   } catch (error) {
     debug(error)

@@ -4,6 +4,6 @@ export type DoUpdateConsignoCloudUserSettingsResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
+    success: true;
 };
 export default function handler(request: Request<unknown, unknown, UpdateConsignoCloudUserSettingsForm>, response: Response<DoUpdateConsignoCloudUserSettingsResponse>): void;

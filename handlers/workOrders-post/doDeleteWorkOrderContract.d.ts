@@ -4,9 +4,8 @@ export type DoDeleteWorkOrderContractResponse = {
     errorMessage: string;
     success: false;
 } | {
-    success: boolean;
+    success: true;
     workOrderContracts: Contract[];
-    errorMessage: string;
 };
 export default function handler(request: Request<unknown, unknown, {
     contractId: string;
