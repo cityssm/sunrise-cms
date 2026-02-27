@@ -94,7 +94,7 @@
     "@types/leaflet": "^1.9.21",
     "@types/mssql": "^9.1.9",
     "@types/multer": "^2.0.0",
-    "@types/node": "^25.3.1",
+    "@types/node": "^25.3.2",
     "@types/node-schedule": "^2.1.8",
     "@types/node-windows": "^0.1.6",
     "@types/papaparse": "^5.5.2",
@@ -104,7 +104,7 @@
     "cypress": "^15.11.0",
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^6.1.1",
-    "eslint-config-cityssm": "^38.3.1",
+    "eslint-config-cityssm": "^38.3.2",
     "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.1.1"
   },
