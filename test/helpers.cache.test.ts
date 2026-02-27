@@ -42,7 +42,11 @@ await describe('helpers.cache', async () => {
 
       const burialSiteStatuses = getCachedBurialSiteStatuses()
 
-      assert.ok(burialSiteStatuses.length > 0)
+      assert.notStrictEqual(
+        burialSiteStatuses.length,
+        0,
+        'Expected burial site statuses to be cached'
+      )
 
       for (const burialSiteStatus of burialSiteStatuses) {
         const byId = getCachedBurialSiteStatusById(
@@ -80,10 +84,15 @@ await describe('helpers.cache', async () => {
 
       const burialSiteTypes = getCachedBurialSiteTypes()
 
-      assert.ok(burialSiteTypes.length > 0, 'Expected burial site types to be cached')
+      assert.ok(
+        burialSiteTypes.length > 0,
+        'Expected burial site types to be cached'
+      )
 
       for (const burialSiteType of burialSiteTypes) {
-        const byId = getCachedBurialSiteTypeById(burialSiteType.burialSiteTypeId)
+        const byId = getCachedBurialSiteTypeById(
+          burialSiteType.burialSiteTypeId
+        )
 
         assert.strictEqual(
           burialSiteType.burialSiteTypeId,
@@ -125,7 +134,9 @@ await describe('helpers.cache', async () => {
         const byId = getCachedContractTypeById(contractType.contractTypeId)
         assert.strictEqual(contractType.contractTypeId, byId?.contractTypeId)
 
-        const byName = getCachedContractTypeByContractType(contractType.contractType)
+        const byName = getCachedContractTypeByContractType(
+          contractType.contractType
+        )
         assert.strictEqual(contractType.contractType, byName?.contractType)
       }
     })

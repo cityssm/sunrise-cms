@@ -6,7 +6,9 @@ labels: enhancement
 assignees: ''
 ---
 
-<!-- All fields are optional, but the more you can provide, and sooner we can help. -->
+<!--
+  All fields are optional, but the more you can provide, and sooner we can help.
+-->
 
 **What feature are you suggesting?**
 
@@ -15,8 +17,10 @@ assignees: ''
 **Is your feature request related to a problem?**
 
 <!--
-  If so, describe the problem as best as you can, keeping in mind that this is a public forum.
-  Keep confidential details confidential! For example, I'm always frustrated when [...]
+  If so, describe the problem as best as you can, keeping in mind that this is
+  a public forum. Keep confidential details confidential!
+  
+  For example, I'm always frustrated when [...]
 -->
 
 **Are there any workarounds?  Are there any alternative solutions that would work?**
@@ -28,7 +32,10 @@ assignees: ''
 
 **Are there any other helpful details?**
 
-<!-- The more information you can provide, the better chance the solution will be right the first time! -->
+<!--
+  The more information you can provide, the better chance the solution will
+  be right the first time!
+-->
 
 <!--
   Thanks for helping to make Sunrise CMS better!

@@ -53,7 +53,7 @@ declare const exports: {
     }
   }
 
-  function getContactsHTML(contract: Contract): string {
+  function getContactsHtml(contract: Contract): string {
     let contactsHTML = ''
 
     for (const interment of contract.contractInterments ?? []) {
@@ -82,12 +82,13 @@ declare const exports: {
         </li>
       `
     }
+
     return contactsHTML
   }
 
   function buildContractRowElement(contract: Contract): HTMLTableRowElement {
     const contractTimeHTML = getContractTimeHtml(contract)
-    const contactsHTML = getContactsHTML(contract)
+    const contactsHTML = getContactsHtml(contract)
 
     const feeTotal = (
       contract.contractFees?.reduce(
