@@ -4,8 +4,7 @@
     delete exports.committalTypes;
     function updateCommittalType(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateCommittalType`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateCommittalType`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 committalTypes = responseJSON.committalTypes;
                 bulmaJS.alert({
@@ -16,8 +15,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Committal Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Updating Committal Type'
                 });
             }
         });
@@ -28,8 +26,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteCommittalType`, {
                 committalTypeId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     committalTypes = responseJSON.committalTypes;
                     if (committalTypes.length === 0) {
@@ -46,8 +43,7 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Deleting Committal Type',
-                        message: responseJSON.errorMessage ?? ''
+                        message: 'Error Deleting Committal Type'
                     });
                 }
             });
@@ -73,8 +69,7 @@
             : 'doMoveCommittalTypeDown'}`, {
             committalTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 committalTypes = responseJSON.committalTypes;
                 renderCommittalTypes();
@@ -82,8 +77,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Committal Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Committal Type'
                 });
             }
         });
@@ -164,21 +158,11 @@
     document.querySelector('#form--addCommittalType').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddCommittalType`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
-            if (responseJSON.success) {
-                committalTypes = responseJSON.committalTypes;
-                renderCommittalTypes();
-                formElement.reset();
-                formElement.querySelector('input')?.focus();
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Adding Committal Type',
-                    message: responseJSON.errorMessage ?? ''
-                });
-            }
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddCommittalType`, formElement, (responseJSON) => {
+            committalTypes = responseJSON.committalTypes;
+            renderCommittalTypes();
+            formElement.reset();
+            formElement.querySelector('input')?.focus();
         });
     });
     renderCommittalTypes();

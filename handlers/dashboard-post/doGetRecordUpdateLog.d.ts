@@ -1,6 +1,5 @@
 import type { Request, Response } from 'express';
-import { type RecordType } from '../../database/getRecordUpdateLog.js';
-import type { RecordUpdateLog } from '../../database/getRecordUpdateLog.js';
+import { type RecordType, type RecordUpdateLog } from '../../database/getRecordUpdateLog.js';
 export type DoGetRecordUpdateLogResponse = {
     updateLog: RecordUpdateLog[];
 };

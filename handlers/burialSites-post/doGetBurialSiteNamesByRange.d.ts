@@ -1,6 +1,5 @@
 import type { Request, Response } from 'express';
-import { type GetBurialSiteNamesByRangeForm } from '../../database/getBurialSiteNamesByRange.js';
-import type { GetBurialSiteNamesByRangeResult } from '../../database/getBurialSiteNamesByRange.js';
+import { type GetBurialSiteNamesByRangeForm, type GetBurialSiteNamesByRangeResult } from '../../database/getBurialSiteNamesByRange.js';
 export type DoGetBurialSiteNamesByRangeResponse = {
     burialSiteNames: GetBurialSiteNamesByRangeResult;
     cemeteryId: number | string;

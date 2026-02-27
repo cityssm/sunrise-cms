@@ -1,6 +1,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddContractServiceTypeResponse } from '../../handlers/contracts-post/doAddContractServiceType.js'
+import type { DoDeleteContractServiceTypeResponse } from '../../handlers/contracts-post/doDeleteContractServiceType.js'
+import type { DoUpdateContractServiceTypeResponse } from '../../handlers/contracts-post/doUpdateContractServiceType.js'
 import type { ServiceType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -42,16 +45,9 @@ declare const exports: {
           contractId,
           serviceTypeId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-
-            contractServiceTypes?: ServiceType[]
-            errorMessage?: string
-          }
-
+        (responseJSON: DoDeleteContractServiceTypeResponse) => {
           if (responseJSON.success) {
-            contractServiceTypes = responseJSON.contractServiceTypes ?? []
+            contractServiceTypes = responseJSON.contractServiceTypes
             renderContractServiceTypes()
 
             bulmaJS.alert({
@@ -61,9 +57,7 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Removing Service Type',
-
-              message: responseJSON.errorMessage ?? ''
+              message: 'Error Removing Service Type'
             })
           }
         }
@@ -109,16 +103,9 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doUpdateContractServiceType`,
         editFormElement,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-
-            contractServiceTypes?: ServiceType[]
-            errorMessage?: string
-          }
-
+        (responseJSON: DoUpdateContractServiceTypeResponse) => {
           if (responseJSON.success) {
-            contractServiceTypes = responseJSON.contractServiceTypes ?? []
+            contractServiceTypes = responseJSON.contractServiceTypes
 
             if (editCloseModalFunction !== undefined) {
               editCloseModalFunction()
@@ -135,7 +122,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Service Type',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -288,16 +275,9 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doAddContractServiceType`,
         addFormElement,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-
-            contractServiceTypes?: ServiceType[]
-            errorMessage?: string
-          }
-
+        (responseJSON: DoAddContractServiceTypeResponse) => {
           if (responseJSON.success) {
-            contractServiceTypes = responseJSON.contractServiceTypes ?? []
+            contractServiceTypes = responseJSON.contractServiceTypes
 
             if (addCloseModalFunction !== undefined) {
               addCloseModalFunction()
@@ -314,7 +294,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Adding Service Type',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }

@@ -2,6 +2,9 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
+import type { DoAddUserResponse } from '../../handlers/admin-post/doAddUser.js'
+import type { DoDeleteUserResponse } from '../../handlers/admin-post/doDeleteUser.js'
+import type { DoToggleUserPermissionResponse } from '../../handlers/admin-post/doToggleUserPermission.js'
 import type { DatabaseUser } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -48,19 +51,10 @@ declare const exports: {
             {
               userName
             },
-            (rawResponseJSON) => {
-              const responseJSON = rawResponseJSON as {
-                message?: string
-                success: boolean
-
-                users?: DatabaseUser[]
-              }
-
+            (responseJSON: DoDeleteUserResponse) => {
               if (responseJSON.success) {
                 // Update the users list with the new data from the server
-                if (responseJSON.users !== undefined) {
-                  renderUsers(responseJSON.users)
-                }
+                renderUsers(responseJSON.users)
 
                 bulmaJS.alert({
                   contextualColorName: 'success',
@@ -71,7 +65,7 @@ declare const exports: {
                   contextualColorName: 'danger',
                   title: i18next.t('common:error'),
 
-                  message: responseJSON.message ?? i18next.t('common:tryAgain')
+                  message: responseJSON.message
                 })
               }
             }
@@ -96,14 +90,7 @@ declare const exports: {
         permissionField: permission,
         userName
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          message?: string
-          success: boolean
-
-          users: DatabaseUser[]
-        }
-
+      (responseJSON: DoToggleUserPermissionResponse) => {
         if (responseJSON.success) {
           renderUsers(responseJSON.users)
         } else {
@@ -111,7 +98,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: i18next.t('common:error'),
 
-            message: responseJSON.message ?? i18next.t('common:tryAgain')
+            message: responseJSON.message
           })
         }
       }
@@ -247,13 +234,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddUser`,
         addForm,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-
-            users: DatabaseUser[]
-          }
-
+        (responseJSON: DoAddUserResponse) => {
           if (responseJSON.success) {
             closeModalFunction()
             renderUsers(responseJSON.users)

@@ -16,7 +16,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Error Updating Service Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: responseJSON.errorMessage
                 });
             }
         });
@@ -45,7 +45,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Service Type',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -80,7 +80,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Error Moving Service Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: responseJSON.errorMessage
                 });
             }
         });
@@ -164,19 +164,10 @@
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddServiceType`, formElement, (responseJSON) => {
-            if (responseJSON.success) {
-                serviceTypes = responseJSON.serviceTypes;
-                renderServiceTypes();
-                formElement.reset();
-                formElement.querySelector('input')?.focus();
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Adding Service Type',
-                    message: responseJSON.errorMessage ?? ''
-                });
-            }
+            serviceTypes = responseJSON.serviceTypes;
+            renderServiceTypes();
+            formElement.reset();
+            formElement.querySelector('input')?.focus();
         });
     });
     renderServiceTypes();

@@ -15,8 +15,16 @@ const debug = Debug(
 )
 
 export type DoAddContractTransactionResponse =
-  | { errorMessage: string; success: false }
-  | { success: true; contractTransactions: ContractTransaction[] }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      contractTransactions: ContractTransaction[]
+    }
 
 export default async function handler(
   request: Request<unknown, unknown, AddTransactionForm>,

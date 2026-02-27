@@ -1,6 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddCommittalTypeResponse } from '../../handlers/admin-post/doAddCommittalType.js'
+import type { DoDeleteCommittalTypeResponse } from '../../handlers/admin-post/doDeleteCommittalType.js'
+import type { DoMoveCommittalTypeDownResponse } from '../../handlers/admin-post/doMoveCommittalTypeDown.js'
+import type { DoMoveCommittalTypeUpResponse } from '../../handlers/admin-post/doMoveCommittalTypeUp.js'
+import type { DoUpdateCommittalTypeResponse } from '../../handlers/admin-post/doUpdateCommittalType.js'
 import type { CommittalType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -19,27 +24,13 @@ declare const exports: {
   let committalTypes = exports.committalTypes as CommittalType[]
   delete exports.committalTypes
 
-  type CommittalTypeResponseJSON =
-    | {
-        success: false
-
-        errorMessage?: string
-      }
-    | {
-        success: true
-
-        committalTypes: CommittalType[]
-      }
-
   function updateCommittalType(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateCommittalType`,
       submitEvent.currentTarget,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as CommittalTypeResponseJSON
-
+      (responseJSON: DoUpdateCommittalTypeResponse) => {
         if (responseJSON.success) {
           committalTypes = responseJSON.committalTypes
 
@@ -50,9 +41,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Committal Type',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Committal Type'
           })
         }
       }
@@ -72,9 +61,7 @@ declare const exports: {
         {
           committalTypeId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as CommittalTypeResponseJSON
-
+        (responseJSON: DoDeleteCommittalTypeResponse) => {
           if (responseJSON.success) {
             committalTypes = responseJSON.committalTypes
 
@@ -91,9 +78,7 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Committal Type',
-
-              message: responseJSON.errorMessage ?? ''
+              message: 'Error Deleting Committal Type'
             })
           }
         }
@@ -132,18 +117,18 @@ declare const exports: {
         committalTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as CommittalTypeResponseJSON
-
+      (
+        responseJSON:
+          | DoMoveCommittalTypeDownResponse
+          | DoMoveCommittalTypeUpResponse
+      ) => {
         if (responseJSON.success) {
           committalTypes = responseJSON.committalTypes
           renderCommittalTypes()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Committal Type',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Committal Type'
           })
         }
       }
@@ -255,22 +240,11 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doAddCommittalType`,
       formElement,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as CommittalTypeResponseJSON
-
-        if (responseJSON.success) {
-          committalTypes = responseJSON.committalTypes
-          renderCommittalTypes()
-          formElement.reset()
-          formElement.querySelector('input')?.focus()
-        } else {
-          bulmaJS.alert({
-            contextualColorName: 'danger',
-            title: 'Error Adding Committal Type',
-
-            message: responseJSON.errorMessage ?? ''
-          })
-        }
+      (responseJSON: DoAddCommittalTypeResponse) => {
+        committalTypes = responseJSON.committalTypes
+        renderCommittalTypes()
+        formElement.reset()
+        formElement.querySelector('input')?.focus()
       }
     )
   })

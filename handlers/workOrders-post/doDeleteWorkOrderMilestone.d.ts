@@ -1,11 +1,11 @@
 import type { Request, Response } from 'express';
 import type { WorkOrderMilestone } from '../../types/record.types.js';
 export type DoDeleteWorkOrderMilestoneResponse = {
-    success: boolean;
-    workOrderMilestones: WorkOrderMilestone[];
-} | {
     errorMessage: string;
     success: false;
+} | {
+    success: true;
+    workOrderMilestones: WorkOrderMilestone[];
 };
 export default function handler(request: Request<unknown, unknown, {
     workOrderId: string;

@@ -1,6 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddIntermentDepthResponse } from '../../handlers/admin-post/doAddIntermentDepth.js'
+import type { DoDeleteIntermentDepthResponse } from '../../handlers/admin-post/doDeleteIntermentDepth.js'
+import type { DoMoveIntermentDepthDownResponse } from '../../handlers/admin-post/doMoveIntermentDepthDown.js'
+import type { DoMoveIntermentDepthUpResponse } from '../../handlers/admin-post/doMoveIntermentDepthUp.js'
+import type { DoUpdateIntermentDepthResponse } from '../../handlers/admin-post/doUpdateIntermentDepth.js'
 import type { IntermentDepth } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -13,18 +18,6 @@ declare const exports: {
 
   intermentDepths?: IntermentDepth[]
 }
-
-type IntermentDepthResponseJSON =
-  | {
-      success: false
-
-      errorMessage?: string
-    }
-  | {
-      success: true
-
-      intermentDepths: IntermentDepth[]
-    }
 ;(() => {
   const sunrise = exports.sunrise
 
@@ -37,7 +30,7 @@ type IntermentDepthResponseJSON =
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateIntermentDepth`,
       submitEvent.currentTarget,
-      (responseJSON: IntermentDepthResponseJSON) => {
+      (responseJSON: DoUpdateIntermentDepthResponse) => {
         if (responseJSON.success) {
           intermentDepths = responseJSON.intermentDepths
 
@@ -48,9 +41,7 @@ type IntermentDepthResponseJSON =
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Interment Depth',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Interment Depth'
           })
         }
       }
@@ -70,7 +61,7 @@ type IntermentDepthResponseJSON =
         {
           intermentDepthId
         },
-        (responseJSON: IntermentDepthResponseJSON) => {
+        (responseJSON: DoDeleteIntermentDepthResponse) => {
           if (responseJSON.success) {
             intermentDepths = responseJSON.intermentDepths
 
@@ -87,9 +78,7 @@ type IntermentDepthResponseJSON =
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Interment Depth',
-
-              message: responseJSON.errorMessage ?? ''
+              message: 'Error Deleting Interment Depth'
             })
           }
         }
@@ -126,16 +115,18 @@ type IntermentDepthResponseJSON =
         intermentDepthId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: IntermentDepthResponseJSON) => {
+      (
+        responseJSON:
+          | DoMoveIntermentDepthDownResponse
+          | DoMoveIntermentDepthUpResponse
+      ) => {
         if (responseJSON.success) {
           intermentDepths = responseJSON.intermentDepths
           renderIntermentDepths()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Interment Depth',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Interment Depth'
           })
         }
       }
@@ -234,21 +225,12 @@ type IntermentDepthResponseJSON =
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddIntermentDepth`,
         formElement,
-        (responseJSON: IntermentDepthResponseJSON) => {
-          if (responseJSON.success) {
-            intermentDepths = responseJSON.intermentDepths
-            renderIntermentDepths()
+        (responseJSON: DoAddIntermentDepthResponse) => {
+          intermentDepths = responseJSON.intermentDepths
+          renderIntermentDepths()
 
-            formElement.reset()
-            formElement.querySelector('input')?.focus()
-          } else {
-            bulmaJS.alert({
-              contextualColorName: 'danger',
-              title: 'Error Adding Interment Depth',
-
-              message: responseJSON.errorMessage ?? ''
-            })
-          }
+          formElement.reset()
+          formElement.querySelector('input')?.focus()
         }
       )
     })

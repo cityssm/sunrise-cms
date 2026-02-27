@@ -13,6 +13,15 @@ export default function handler(request, response) {
             burialSiteId: request.body.burialSiteId,
             workOrderId: request.body.workOrderId
         }, request.session.user, database);
+        if (!success) {
+            response
+                .status(400)
+                .json({
+                errorMessage: 'Failed to add burial site to work order',
+                success: false
+            });
+            return;
+        }
         const results = getBurialSites({
             workOrderId: request.body.workOrderId
         }, {

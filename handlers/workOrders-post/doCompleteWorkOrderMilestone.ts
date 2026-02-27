@@ -6,18 +6,15 @@ import completeWorkOrderMilestone from '../../database/completeWorkOrderMileston
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { WorkOrderMilestone } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doCompleteWorkOrderMilestone`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoCompleteWorkOrderMilestoneResponse =
-  { success: boolean; workOrderMilestones: WorkOrderMilestone[] }
   | { errorMessage: string; success: false }
+  | { success: true; workOrderMilestones: WorkOrderMilestone[] }
 
 export default async function handler(
   request: Request<
@@ -39,6 +36,14 @@ export default async function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response.status(400).json({
+        errorMessage: 'Failed to complete work order milestone',
+        success: false
+      })
+      return
+    }
 
     const workOrderMilestones = await getWorkOrderMilestones(
       {

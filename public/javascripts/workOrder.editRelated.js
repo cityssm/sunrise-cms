@@ -12,8 +12,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderContract`, {
                 contractId,
                 workOrderId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderContracts = responseJSON.workOrderContracts;
                     renderRelatedBurialSitesAndContracts();
@@ -22,7 +21,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Contract Relationship',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -42,8 +41,7 @@
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderBurialSite`, {
             burialSiteId,
             workOrderId
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderBurialSites = responseJSON.workOrderBurialSites;
                 renderRelatedBurialSitesAndContracts();
@@ -52,7 +50,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Error Adding Burial Site',
-                    message: responseJSON.errorMessage ?? ''
+                    message: responseJSON.errorMessage
                 });
             }
             if (callbackFunction !== undefined) {
@@ -64,8 +62,7 @@
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderContract`, {
             contractId,
             workOrderId
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderContracts = responseJSON.workOrderContracts;
                 renderRelatedBurialSitesAndContracts();
@@ -74,7 +71,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Error Adding Contract',
-                    message: responseJSON.errorMessage ?? ''
+                    message: responseJSON.errorMessage
                 });
             }
             if (callbackFunction !== undefined) {
@@ -179,13 +176,15 @@
         </td>
         ${exports.contractEndDateIsAvailable
             ? /* html */ `
-          <td>
-            ${contract.contractEndDate === null ||
+              <td>
+                ${
+            // eslint-disable-next-line sonarjs/no-nested-conditional
+            contract.contractEndDate === null ||
                 contract.contractEndDate === undefined
                 ? '<span class="has-text-grey">(No End Date)</span>'
                 : contract.contractEndDateString}
-          </td>
-        `
+              </td>
+            `
             : ''}
         <td>
           <ul class="fa-ul ml-5">
@@ -249,8 +248,7 @@
         let editCloseModalFunction;
         function doUpdateBurialSiteStatus(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateBurialSiteStatus`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateBurialSiteStatus`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderBurialSites = responseJSON.workOrderBurialSites;
                     renderRelatedBurialSitesAndContracts();
@@ -260,7 +258,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Relationship',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -321,8 +319,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderBurialSite`, {
                 burialSiteId,
                 workOrderId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderBurialSites = responseJSON.workOrderBurialSites;
                     renderRelatedBurialSitesAndContracts();
@@ -331,7 +328,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Burial Site Relationship',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -445,8 +442,7 @@
             event?.preventDefault();
             searchResultsContainerElement.innerHTML =
                 sunrise.getLoadingParagraphHTML('Searching...');
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doSearchContracts`, searchFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doSearchContracts`, searchFormElement, (responseJSON) => {
                 if (responseJSON.contracts.length === 0) {
                     searchResultsContainerElement.innerHTML = /* html */ `
                 <div class="message is-info">
@@ -518,7 +514,9 @@
                   ${exports.contractEndDateIsAvailable
                         ? /* html */ `
                         <td>
-                          ${contract.contractEndDate === null ||
+                          ${
+                        // eslint-disable-next-line sonarjs/no-nested-conditional
+                        contract.contractEndDate === null ||
                             contract.contractEndDate === undefined
                             ? '<span class="has-text-grey">(No End Date)</span>'
                             : contract.contractEndDateString}
@@ -578,8 +576,7 @@
             event?.preventDefault();
             searchResultsContainerElement.innerHTML =
                 sunrise.getLoadingParagraphHTML('Searching...');
-            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, searchFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, searchFormElement, (responseJSON) => {
                 if (responseJSON.burialSites.length === 0) {
                     searchResultsContainerElement.innerHTML = /* html */ `
                 <div class="message is-info">

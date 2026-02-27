@@ -4,10 +4,9 @@ import closeWorkOrder, {
   type CloseWorkOrderForm
 } from '../../database/closeWorkOrder.js'
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoCloseWorkOrderResponse =
-  { success: boolean; workOrderId: number | undefined }
+  | { errorMessage: string; success: false }
+  | { success: true; workOrderId: number | undefined }
 
 export default function handler(
   request: Request<unknown, unknown, CloseWorkOrderForm>,
@@ -15,14 +14,22 @@ export default function handler(
 ): void {
   const success = closeWorkOrder(request.body, request.session.user as User)
 
+  if (!success) {
+    response.status(400).json({
+      errorMessage: 'Failed to close work order',
+      success: false
+    })
+    return
+  }
+
   const workOrderIdNumber =
     typeof request.body.workOrderId === 'string'
-      ? Number.parseInt(request.body.workOrderId)
+      ? Number.parseInt(request.body.workOrderId, 10)
       : request.body.workOrderId
 
   response.json({
     success,
 
-    workOrderId: success ? workOrderIdNumber : undefined
+    workOrderId: workOrderIdNumber
   })
 }

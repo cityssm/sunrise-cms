@@ -1,6 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddWorkOrderTypeResponse } from '../../handlers/admin-post/doAddWorkOrderType.js'
+import type { DoDeleteWorkOrderTypeResponse } from '../../handlers/admin-post/doDeleteWorkOrderType.js'
+import type { DoMoveWorkOrderTypeDownResponse } from '../../handlers/admin-post/doMoveWorkOrderTypeDown.js'
+import type { DoMoveWorkOrderTypeUpResponse } from '../../handlers/admin-post/doMoveWorkOrderTypeUp.js'
+import type { DoUpdateWorkOrderTypeResponse } from '../../handlers/admin-post/doUpdateWorkOrderType.js'
 import type { WorkOrderType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -19,25 +24,13 @@ declare const bulmaJS: BulmaJS
   let workOrderTypes = exports.workOrderTypes as WorkOrderType[]
   delete exports.workOrderTypes
 
-  type WorkOrderTypeResponseJSON =
-    | {
-        errorMessage?: string
-        success: false
-      }
-    | {
-        success: true
-        workOrderTypes: WorkOrderType[]
-      }
-
   function updateWorkOrderType(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateWorkOrderType`,
       submitEvent.currentTarget,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as WorkOrderTypeResponseJSON
-
+      (responseJSON: DoUpdateWorkOrderTypeResponse) => {
         if (responseJSON.success) {
           workOrderTypes = responseJSON.workOrderTypes
 
@@ -48,9 +41,7 @@ declare const bulmaJS: BulmaJS
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Work Order Type',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Work Order Type'
           })
         }
       }
@@ -70,9 +61,7 @@ declare const bulmaJS: BulmaJS
         {
           workOrderTypeId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as WorkOrderTypeResponseJSON
-
+        (responseJSON: DoDeleteWorkOrderTypeResponse) => {
           if (responseJSON.success) {
             workOrderTypes = responseJSON.workOrderTypes
 
@@ -89,9 +78,7 @@ declare const bulmaJS: BulmaJS
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Work Order Type',
-
-              message: responseJSON.errorMessage ?? ''
+              message: 'Error Deleting Work Order Type'
             })
           }
         }
@@ -131,18 +118,18 @@ declare const bulmaJS: BulmaJS
 
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as WorkOrderTypeResponseJSON
-
+      (
+        responseJSON:
+          | DoMoveWorkOrderTypeDownResponse
+          | DoMoveWorkOrderTypeUpResponse
+      ) => {
         if (responseJSON.success) {
           workOrderTypes = responseJSON.workOrderTypes
           renderWorkOrderTypes()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Work Order Type',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Work Order Type'
           })
         }
       }
@@ -259,22 +246,11 @@ declare const bulmaJS: BulmaJS
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doAddWorkOrderType`,
       formElement,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as WorkOrderTypeResponseJSON
-
-        if (responseJSON.success) {
-          workOrderTypes = responseJSON.workOrderTypes
-          renderWorkOrderTypes()
-          formElement.reset()
-          formElement.querySelector('input')?.focus()
-        } else {
-          bulmaJS.alert({
-            contextualColorName: 'danger',
-            title: 'Error Adding Work Order Type',
-
-            message: responseJSON.errorMessage ?? ''
-          })
-        }
+      (responseJSON: DoAddWorkOrderTypeResponse) => {
+        workOrderTypes = responseJSON.workOrderTypes
+        renderWorkOrderTypes()
+        formElement.reset()
+        formElement.querySelector('input')?.focus()
       }
     )
   })

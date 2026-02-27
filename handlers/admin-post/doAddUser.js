@@ -17,6 +17,12 @@ export default function handler(request, response) {
             canUpdateWorkOrders: canUpdateWorkOrders === '1',
             isAdmin: isAdmin === '1'
         }, request.session.user, database);
+        if (!success) {
+            response
+                .status(400)
+                .json({ errorMessage: 'User name already exists', success: false });
+            return;
+        }
         const users = getUsers(database);
         response.json({
             success,

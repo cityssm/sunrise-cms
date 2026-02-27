@@ -6,18 +6,29 @@ import addUser from '../../database/addUser.js'
 import getUsers from '../../database/getUsers.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { DatabaseUser } from '../../types/record.types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doAddUser`)
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoAddUserResponse =
-  { success: boolean; users: DatabaseUser[] }
   | { errorMessage: string; success: false }
+  | { success: true; users: DatabaseUser[] }
 
-export default function handler(request: Request, response: Response<DoAddUserResponse>): void {
+export default function handler(
+  request: Request<
+    unknown,
+    unknown,
+    {
+      userName: string
+
+      canUpdateCemeteries?: string
+      canUpdateContracts?: string
+      canUpdateWorkOrders?: string
+      isAdmin?: string
+    }
+  >,
+  response: Response<DoAddUserResponse>
+): void {
   const {
     userName,
 
@@ -25,14 +36,7 @@ export default function handler(request: Request, response: Response<DoAddUserRe
     canUpdateContracts = '0',
     canUpdateWorkOrders = '0',
     isAdmin = '0'
-  } = request.body as {
-    userName: string
-
-    canUpdateCemeteries?: string
-    canUpdateContracts?: string
-    canUpdateWorkOrders?: string
-    isAdmin?: string
-  }
+  } = request.body
 
   let database: sqlite.Database | undefined
 
@@ -51,6 +55,13 @@ export default function handler(request: Request, response: Response<DoAddUserRe
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'User name already exists', success: false })
+      return
+    }
 
     const users = getUsers(database)
 

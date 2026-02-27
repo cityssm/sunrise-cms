@@ -2,6 +2,7 @@ import { backupDatabase } from '../../database/backupDatabase.js';
 export default async function handler(_request, response) {
     const backupDatabasePath = await backupDatabase();
     if (typeof backupDatabasePath === 'string') {
+        // eslint-disable-next-line require-unicode-regexp
         const backupDatabasePathSplit = backupDatabasePath.split(/[/\\]/);
         const fileName = backupDatabasePathSplit.at(-1);
         response.json({

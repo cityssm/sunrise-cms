@@ -24,8 +24,7 @@
     function updateSetting(formEvent) {
         formEvent.preventDefault();
         const formElement = formEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateSetting`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateSetting`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 bulmaJS.alert({
                     contextualColorName: 'success',
@@ -40,8 +39,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Update Failed',
-                    message: responseJSON.errorMessage ??
-                        'There was an error updating the setting.'
+                    message: 'There was an error updating the setting.'
                 });
             }
         });

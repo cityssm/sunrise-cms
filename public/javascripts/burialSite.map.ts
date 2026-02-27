@@ -7,6 +7,7 @@ import type {
   BurialSiteMapContract,
   BurialSiteMapResult
 } from '../../database/getBurialSitesForMap.js'
+import type { DoGetBurialSitesForMapResponse } from '../../handlers/burialSites-post/doGetBurialSitesForMap.js'
 
 import type { Sunrise } from './types.js'
 
@@ -132,7 +133,7 @@ declare const exports: {
 
         const deceasedText =
           contract.deceasedNames.length > 0
-            ? ' - ' + cityssm.escapeHTML(contract.deceasedNames.join(', '))
+            ? ` - ${cityssm.escapeHTML(contract.deceasedNames.join(', '))}`
             : ''
 
         html += /* html */ `
@@ -273,13 +274,9 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/burialSites/doGetBurialSitesForMap`,
       { cemeteryId },
-      (rawResponseJSON) => {
-        const responseJSON =
-          rawResponseJSON as unknown as BurialSiteMapResult & {
-            success: boolean
-
-            errorMessage?: string
-          }
+      (rawResponseJSON: unknown) => {
+        // Type uses an interface, causing an error if used directly
+        const responseJSON = rawResponseJSON as DoGetBurialSitesForMapResponse
 
         if (responseJSON.success) {
           allBurialSites = responseJSON.burialSites
@@ -300,9 +297,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Error Loading Burial Sites',
 
-            message:
-              responseJSON.errorMessage ??
-              'An error occurred while loading burial sites. Please try again.'
+            message: responseJSON.errorMessage
           })
         }
       }

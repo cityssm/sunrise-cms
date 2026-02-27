@@ -6,18 +6,19 @@ import { deleteRecord } from '../../database/deleteRecord.js'
 import getContractComments from '../../database/getContractComments.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { ContractComment } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:contracts:doDeleteContractComment`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoDeleteContractCommentResponse =
-  { success: boolean; contractComments: ContractComment[] }
   | { errorMessage: string; success: false }
+  | {
+      success: true
+
+      contractComments: ContractComment[]
+    }
 
 export default function handler(
   request: Request<
@@ -38,6 +39,13 @@ export default function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Comment not found', success: false })
+      return
+    }
 
     const contractComments = getContractComments(
       request.body.contractId,

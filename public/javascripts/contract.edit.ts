@@ -3,12 +3,18 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoCreateBurialSiteResponse } from '../../handlers/burialSites-post/doCreateBurialSite.js'
+import type { DoSearchBurialSitesResponse } from '../../handlers/burialSites-post/doSearchBurialSites.js'
+import type { DoCopyContractResponse } from '../../handlers/contracts-post/doCopyContract.js'
+import type { DoCreateContractResponse } from '../../handlers/contracts-post/doCreateContract.js'
+import type { DoDeleteContractResponse } from '../../handlers/contracts-post/doDeleteContract.js'
+import type { DoGetBurialSiteDirectionsOfArrivalResponse } from '../../handlers/contracts-post/doGetBurialSiteDirectionsOfArrival.js'
+import type { DoGetContractTypeFieldsResponse } from '../../handlers/contracts-post/doGetContractTypeFields.js'
+import type { DoUpdateContractResponse } from '../../handlers/contracts-post/doUpdateContract.js'
 import type {
-  BurialSite,
   BurialSiteStatus,
   BurialSiteType,
-  Cemetery,
-  ContractTypeField
+  Cemetery
 } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -63,14 +69,7 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/contracts/${isCreate ? 'doCreateContract' : 'doUpdateContract'}`,
       formElement,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          errorMessage?: string
-          success: boolean
-
-          contractId?: number
-        }
-
+      (responseJSON: DoCreateContractResponse | DoUpdateContractResponse) => {
         if (responseJSON.success) {
           clearUnsavedChanges()
 
@@ -89,9 +88,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Saving Contract',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Saving Contract'
           })
         }
       }
@@ -110,29 +107,13 @@ declare const exports: {
       {
         contractId
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          success: boolean
+      (responseJSON: DoCopyContractResponse) => {
+        clearUnsavedChanges()
 
-          contractId?: number
-          errorMessage?: string
-        }
-
-        if (responseJSON.success) {
-          clearUnsavedChanges()
-
-          globalThis.location.href = sunrise.getContractUrl(
-            responseJSON.contractId,
-            true
-          )
-        } else {
-          bulmaJS.alert({
-            contextualColorName: 'danger',
-            title: 'Error Copying Record',
-
-            message: responseJSON.errorMessage ?? ''
-          })
-        }
+        globalThis.location.href = sunrise.getContractUrl(
+          responseJSON.contractId,
+          true
+        )
       }
     )
   }
@@ -175,13 +156,7 @@ declare const exports: {
           {
             contractId
           },
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              success: boolean
-
-              errorMessage?: string
-            }
-
+          (responseJSON: DoDeleteContractResponse) => {
             if (responseJSON.success) {
               clearUnsavedChanges()
               globalThis.location.href = sunrise.getContractUrl()
@@ -190,7 +165,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Deleting Record',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }
@@ -237,11 +212,7 @@ declare const exports: {
         {
           contractTypeId: contractTypeIdElement.value
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            contractTypeFields: ContractTypeField[]
-          }
-
+        (responseJSON: DoGetContractTypeFieldsResponse) => {
           if (responseJSON.contractTypeFields.length === 0) {
             contractFieldsContainerElement.innerHTML = /* html */ `
               <div class="message is-info">
@@ -397,11 +368,7 @@ declare const exports: {
       {
         burialSiteId
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          directionsOfArrival: Partial<Record<string, string>>
-        }
-
+      (responseJSON: DoGetBurialSiteDirectionsOfArrivalResponse) => {
         const currentDirectionOfArrival = directionOfArrivalElement.value
 
         directionOfArrivalElement.value = ''
@@ -477,12 +444,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/burialSites/doSearchBurialSites`,
         burialSiteSelectFormElement,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            burialSites: BurialSite[]
-            count: number
-          }
-
+        (responseJSON: DoSearchBurialSitesResponse) => {
           if (responseJSON.count === 0) {
             burialSiteSelectResultsElement.innerHTML = /* html */ `
               <div class="message is-info">
@@ -541,28 +503,20 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/burialSites/doCreateBurialSite`,
         burialSiteCreateFormElement,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-
-            burialSiteId?: number
-            burialSiteName?: string
-            errorMessage?: string
-          }
-
+        (responseJSON: DoCreateBurialSiteResponse) => {
           if (responseJSON.success) {
             setUnsavedChanges()
 
             renderSelectedBurialSiteAndClose(
-              responseJSON.burialSiteId ?? 0,
-              responseJSON.burialSiteName ?? ''
+              responseJSON.burialSiteId,
+              responseJSON.burialSiteName
             )
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
               title: 'Error Creating Burial Site',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }

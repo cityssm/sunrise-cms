@@ -1,6 +1,8 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoSearchBurialSitesForGpsResponse } from '../../handlers/burialSites-post/doSearchBurialSitesForGps.js'
+import type { DoUpdateBurialSiteLatitudeLongitudeResponse } from '../../handlers/burialSites-post/doUpdateBurialSiteLatitudeLongitude.js'
 import type { BurialSite } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -150,22 +152,15 @@ interface GPSPosition {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/burialSites/doSearchBurialSitesForGPS`,
       searchData,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          success: boolean
-
-          burialSites?: BurialSite[]
-          errorMessage?: string
-        }
-
-        if (responseJSON.success && responseJSON.burialSites !== undefined) {
+      (responseJSON: DoSearchBurialSitesForGpsResponse) => {
+        if (responseJSON.success) {
           allBurialSites = responseJSON.burialSites
           renderBurialSites()
         } else {
           burialSitesContainerElement.innerHTML = /* html */ `
             <div class="message is-danger">
               <p class="message-body">
-                ${cityssm.escapeHTML(responseJSON.errorMessage ?? 'Failed to search burial sites.')}
+                ${cityssm.escapeHTML(responseJSON.errorMessage)}
               </p>
             </div>
           `
@@ -212,13 +207,7 @@ interface GPSPosition {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/burialSites/doUpdateBurialSiteLatitudeLongitude`,
       updateData,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          success: boolean
-
-          errorMessage?: string
-        }
-
+      (responseJSON: DoUpdateBurialSiteLatitudeLongitudeResponse) => {
         captureButton.disabled = false
 
         if (responseJSON.success) {
@@ -270,9 +259,7 @@ interface GPSPosition {
             contextualColorName: 'danger',
             title: 'Capture Failed',
 
-            message:
-              responseJSON.errorMessage ??
-              'Failed to capture coordinates. Please try again.'
+            message: responseJSON.errorMessage
           })
         }
       }

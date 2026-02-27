@@ -12,6 +12,13 @@ export default async function handler(request, response) {
         const success = completeWorkOrderMilestone({
             workOrderMilestoneId: request.body.workOrderMilestoneId
         }, request.session.user, database);
+        if (!success) {
+            response.status(400).json({
+                errorMessage: 'Failed to complete work order milestone',
+                success: false
+            });
+            return;
+        }
         const workOrderMilestones = await getWorkOrderMilestones({
             workOrderId: request.body.workOrderId
         }, {

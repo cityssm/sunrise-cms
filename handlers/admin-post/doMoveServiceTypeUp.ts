@@ -2,14 +2,11 @@ import type { Request, Response } from 'express'
 
 import { moveRecordUp, moveRecordUpToTop } from '../../database/moveRecord.js'
 import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js'
-
 import type { ServiceType } from '../../types/record.types.js'
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoMoveServiceTypeUpResponse =
-  | { success: true; serviceTypes: ServiceType[] }
   | { success: false; errorMessage: string }
+  | { success: true; serviceTypes: ServiceType[] }
 
 export default function handler(
   request: Request<

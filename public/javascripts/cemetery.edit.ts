@@ -1,6 +1,10 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoCreateCemeteryResponse } from '../../handlers/cemeteries-post/doCreateCemetery.js'
+import type { DoDeleteCemeteryResponse } from '../../handlers/cemeteries-post/doDeleteCemetery.js'
+import type { DoUpdateCemeteryResponse } from '../../handlers/cemeteries-post/doUpdateCemetery.js'
+
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
@@ -69,14 +73,7 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/cemeteries/${isCreate ? 'doCreateCemetery' : 'doUpdateCemetery'}`,
       cemeteryForm,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          errorMessage?: string
-          success: boolean
-
-          cemeteryId?: number
-        }
-
+      (responseJSON: DoCreateCemeteryResponse | DoUpdateCemeteryResponse) => {
         if (responseJSON.success) {
           clearUnsavedChanges()
 
@@ -88,15 +85,13 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'success',
-              message: 'Cemetery Updated Successfully',
+              message: 'Cemetery Updated Successfully'
             })
           }
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Cemetery',
-
-            message: responseJSON.errorMessage ?? '',
+            message: 'Error Updating Cemetery'
           })
         }
       }
@@ -123,12 +118,7 @@ declare const exports: {
           {
             cemeteryId
           },
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              errorMessage?: string
-              success: boolean
-            }
-
+          (responseJSON: DoDeleteCemeteryResponse) => {
             if (responseJSON.success) {
               globalThis.location.href = sunrise.getCemeteryUrl()
             } else {
@@ -136,7 +126,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Deleting Cemetery',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }
@@ -147,7 +137,8 @@ declare const exports: {
         contextualColorName: 'warning',
         title: 'Delete Cemetery',
 
-        message: 'Are you sure you want to delete this cemetery <strong>and all related burial sites</strong>?',
+        message:
+          'Are you sure you want to delete this cemetery <strong>and all related burial sites</strong>?',
         messageIsHtml: true,
 
         okButton: {

@@ -10,6 +10,12 @@ export default function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = updateFeeAmount(request.body, request.session.user, database);
+        if (!success) {
+            response
+                .status(400)
+                .json({ errorMessage: 'Failed to update fee amount', success: false });
+            return;
+        }
         const feeCategories = getFeeCategories({}, {
             includeFees: true
         }, database);

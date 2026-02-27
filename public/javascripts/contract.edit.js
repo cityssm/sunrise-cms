@@ -22,8 +22,7 @@
     const formElement = document.querySelector('#form--contract');
     formElement.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/${isCreate ? 'doCreateContract' : 'doUpdateContract'}`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/${isCreate ? 'doCreateContract' : 'doUpdateContract'}`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
@@ -39,8 +38,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Saving Contract',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Saving Contract'
                 });
             }
         });
@@ -52,19 +50,9 @@
     function doCopy() {
         cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doCopyContract`, {
             contractId
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
-            if (responseJSON.success) {
-                clearUnsavedChanges();
-                globalThis.location.href = sunrise.getContractUrl(responseJSON.contractId, true);
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Copying Record',
-                    message: responseJSON.errorMessage ?? ''
-                });
-            }
+        }, (responseJSON) => {
+            clearUnsavedChanges();
+            globalThis.location.href = sunrise.getContractUrl(responseJSON.contractId, true);
         });
     }
     document
@@ -97,8 +85,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContract`, {
                 contractId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     clearUnsavedChanges();
                     globalThis.location.href = sunrise.getContractUrl();
@@ -107,7 +94,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Record',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -137,8 +124,7 @@
             }
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetContractTypeFields`, {
                 contractTypeId: contractTypeIdElement.value
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.contractTypeFields.length === 0) {
                     contractFieldsContainerElement.innerHTML = /* html */ `
               <div class="message is-info">
@@ -241,8 +227,7 @@
         const burialSiteId = burialSiteIdElement.value;
         cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetBurialSiteDirectionsOfArrival`, {
             burialSiteId
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             const currentDirectionOfArrival = directionOfArrivalElement.value;
             directionOfArrivalElement.value = '';
             directionOfArrivalElement.innerHTML =
@@ -288,8 +273,7 @@
         function searchBurialSites() {
             burialSiteSelectResultsElement.innerHTML =
                 sunrise.getLoadingParagraphHTML('Searching...');
-            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, burialSiteSelectFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, burialSiteSelectFormElement, (responseJSON) => {
                 if (responseJSON.count === 0) {
                     burialSiteSelectResultsElement.innerHTML = /* html */ `
               <div class="message is-info">
@@ -331,17 +315,16 @@
         }
         function createBurialSite(createEvent) {
             createEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doCreateBurialSite`, burialSiteCreateFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doCreateBurialSite`, burialSiteCreateFormElement, (responseJSON) => {
                 if (responseJSON.success) {
                     setUnsavedChanges();
-                    renderSelectedBurialSiteAndClose(responseJSON.burialSiteId ?? 0, responseJSON.burialSiteName ?? '');
+                    renderSelectedBurialSiteAndClose(responseJSON.burialSiteId, responseJSON.burialSiteName);
                 }
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Creating Burial Site',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });

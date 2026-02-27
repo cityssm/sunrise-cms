@@ -1,6 +1,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddWorkOrderCommentResponse } from '../../handlers/workOrders-post/doAddWorkOrderComment.js'
+import type { DoDeleteWorkOrderCommentResponse } from '../../handlers/workOrders-post/doDeleteWorkOrderComment.js'
+import type { DoUpdateWorkOrderCommentResponse } from '../../handlers/workOrders-post/doUpdateWorkOrderComment.js'
 import type { WorkOrderComment } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -43,13 +46,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doUpdateWorkOrderComment`,
         editFormElement,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            errorMessage?: string
-            success: boolean
-            workOrderComments: WorkOrderComment[]
-          }
-
+        (responseJSON: DoUpdateWorkOrderCommentResponse) => {
           if (responseJSON.success) {
             workOrderComments = responseJSON.workOrderComments
             editCloseModalFunction()
@@ -59,7 +56,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Comment',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -97,7 +94,7 @@ declare const exports: {
           // eslint-disable-next-line unicorn/prefer-math-min-max
           (workOrderComment.commentDateString ?? '') <= currentDateString
             ? currentDateString
-            : workOrderComment.commentDateString ?? ''
+            : (workOrderComment.commentDateString ?? '')
         ;(
           modalElement.querySelector(
             '#workOrderCommentEdit--commentTimeString'
@@ -138,13 +135,7 @@ declare const exports: {
           workOrderCommentId,
           workOrderId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            errorMessage?: string
-            success: boolean
-            workOrderComments: WorkOrderComment[]
-          }
-
+        (responseJSON: DoDeleteWorkOrderCommentResponse) => {
           if (responseJSON.success) {
             workOrderComments = responseJSON.workOrderComments
             renderWorkOrderComments()
@@ -153,7 +144,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Removing Comment',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -215,7 +206,7 @@ declare const exports: {
           ${cityssm.escapeHTML(
             workOrderComment.commentTime === 0
               ? ''
-              : workOrderComment.commentTimePeriodString ?? ''
+              : (workOrderComment.commentTimePeriodString ?? '')
           )}
         </td>
         <td>
@@ -258,12 +249,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doAddWorkOrderComment`,
         formEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-            workOrderComments: WorkOrderComment[]
-          }
-
+        (responseJSON: DoAddWorkOrderCommentResponse) => {
           if (responseJSON.success) {
             workOrderComments = responseJSON.workOrderComments
             renderWorkOrderComments()

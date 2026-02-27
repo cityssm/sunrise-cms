@@ -5,13 +5,13 @@ import {
   moveRecordDownToBottom
 } from '../../database/moveRecord.js'
 import { getCachedWorkOrderMilestoneTypes } from '../../helpers/cache/workOrderMilestoneTypes.cache.js'
-
 import type { WorkOrderMilestoneType } from '../../types/record.types.js'
 
-
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoMoveWorkOrderMilestoneTypeDownResponse =
-  { success: boolean; workOrderMilestoneTypes: WorkOrderMilestoneType[] }
+export type DoMoveWorkOrderMilestoneTypeDownResponse = {
+  success: boolean
+  workOrderMilestoneTypes: WorkOrderMilestoneType[]
+}
 
 export default function handler(
   request: Request<

@@ -1,6 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddServiceTypeResponse } from '../../handlers/admin-post/doAddServiceType.js'
+import type { DoDeleteServiceTypeResponse } from '../../handlers/admin-post/doDeleteServiceType.js'
+import type { DoMoveServiceTypeDownResponse } from '../../handlers/admin-post/doMoveServiceTypeDown.js'
+import type { DoMoveServiceTypeUpResponse } from '../../handlers/admin-post/doMoveServiceTypeUp.js'
+import type { DoUpdateServiceTypeResponse } from '../../handlers/admin-post/doUpdateServiceType.js'
 import type { ServiceType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -19,25 +24,13 @@ declare const exports: {
   let serviceTypes = exports.serviceTypes as ServiceType[]
   delete exports.serviceTypes
 
-  type ServiceTypeResponseJSON =
-    | {
-        success: false
-
-        errorMessage?: string
-      }
-    | {
-        success: true
-
-        serviceTypes: ServiceType[]
-      }
-
   function updateServiceType(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateServiceType`,
       submitEvent.currentTarget,
-      (responseJSON: ServiceTypeResponseJSON) => {
+      (responseJSON: DoUpdateServiceTypeResponse) => {
         if (responseJSON.success) {
           serviceTypes = responseJSON.serviceTypes
 
@@ -50,7 +43,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Error Updating Service Type',
 
-            message: responseJSON.errorMessage ?? ''
+            message: responseJSON.errorMessage
           })
         }
       }
@@ -70,7 +63,7 @@ declare const exports: {
         {
           serviceTypeId
         },
-        (responseJSON: ServiceTypeResponseJSON) => {
+        (responseJSON: DoDeleteServiceTypeResponse) => {
           if (responseJSON.success) {
             serviceTypes = responseJSON.serviceTypes
 
@@ -89,7 +82,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Deleting Service Type',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -128,7 +121,11 @@ declare const exports: {
         serviceTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: ServiceTypeResponseJSON) => {
+      (
+        responseJSON:
+          | DoMoveServiceTypeDownResponse
+          | DoMoveServiceTypeUpResponse
+      ) => {
         if (responseJSON.success) {
           serviceTypes = responseJSON.serviceTypes
           renderServiceTypes()
@@ -137,7 +134,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Error Moving Service Type',
 
-            message: responseJSON.errorMessage ?? ''
+            message: responseJSON.errorMessage
           })
         }
       }
@@ -246,21 +243,12 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddServiceType`,
         formElement,
-        (responseJSON: ServiceTypeResponseJSON) => {
-          if (responseJSON.success) {
-            serviceTypes = responseJSON.serviceTypes
-            renderServiceTypes()
+        (responseJSON: DoAddServiceTypeResponse) => {
+          serviceTypes = responseJSON.serviceTypes
+          renderServiceTypes()
 
-            formElement.reset()
-            formElement.querySelector('input')?.focus()
-          } else {
-            bulmaJS.alert({
-              contextualColorName: 'danger',
-              title: 'Error Adding Service Type',
-
-              message: responseJSON.errorMessage ?? ''
-            })
-          }
+          formElement.reset()
+          formElement.querySelector('input')?.focus()
         }
       )
     })

@@ -6,16 +6,17 @@ import { deleteRecord } from '../../database/deleteRecord.js'
 import getFeeCategories from '../../database/getFeeCategories.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { FeeCategory } from '../../types/record.types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doDeleteFeeCategory`)
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoDeleteFeeCategoryResponse =
-  { success: boolean; feeCategories: FeeCategory[] }
   | { errorMessage: string; success: false }
+  | {
+      success: true
+
+      feeCategories: FeeCategory[]
+    }
 
 export default function handler(
   request: Request<unknown, unknown, { feeCategoryId: string }>,
@@ -32,6 +33,13 @@ export default function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response
+        .status(400)
+        .json({ errorMessage: 'Fee category not found', success: false })
+      return
+    }
 
     const feeCategories = getFeeCategories(
       {},

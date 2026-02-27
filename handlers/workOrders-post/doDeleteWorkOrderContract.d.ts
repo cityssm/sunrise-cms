@@ -1,11 +1,11 @@
 import type { Request, Response } from 'express';
 import type { Contract } from '../../types/record.types.js';
 export type DoDeleteWorkOrderContractResponse = {
-    success: boolean;
-    workOrderContracts: Contract[];
-} | {
     errorMessage: string;
     success: false;
+} | {
+    success: true;
+    workOrderContracts: Contract[];
 };
 export default function handler(request: Request<unknown, unknown, {
     contractId: string;

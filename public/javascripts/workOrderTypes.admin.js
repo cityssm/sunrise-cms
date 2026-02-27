@@ -4,8 +4,7 @@
     delete exports.workOrderTypes;
     function updateWorkOrderType(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateWorkOrderType`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateWorkOrderType`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 bulmaJS.alert({
@@ -16,8 +15,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Work Order Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Updating Work Order Type'
                 });
             }
         });
@@ -28,8 +26,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteWorkOrderType`, {
                 workOrderTypeId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderTypes = responseJSON.workOrderTypes;
                     if (workOrderTypes.length === 0) {
@@ -46,8 +43,7 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Deleting Work Order Type',
-                        message: responseJSON.errorMessage ?? ''
+                        message: 'Error Deleting Work Order Type'
                     });
                 }
             });
@@ -73,8 +69,7 @@
             : 'doMoveWorkOrderTypeDown'}`, {
             workOrderTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 workOrderTypes = responseJSON.workOrderTypes;
                 renderWorkOrderTypes();
@@ -82,8 +77,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Work Order Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Work Order Type'
                 });
             }
         });
@@ -168,21 +162,11 @@
     document.querySelector('#form--addWorkOrderType').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddWorkOrderType`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
-            if (responseJSON.success) {
-                workOrderTypes = responseJSON.workOrderTypes;
-                renderWorkOrderTypes();
-                formElement.reset();
-                formElement.querySelector('input')?.focus();
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Adding Work Order Type',
-                    message: responseJSON.errorMessage ?? ''
-                });
-            }
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddWorkOrderType`, formElement, (responseJSON) => {
+            workOrderTypes = responseJSON.workOrderTypes;
+            renderWorkOrderTypes();
+            formElement.reset();
+            formElement.querySelector('input')?.focus();
         });
     });
     renderWorkOrderTypes();

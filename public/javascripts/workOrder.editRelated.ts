@@ -3,6 +3,13 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoSearchBurialSitesResponse } from '../../handlers/burialSites-post/doSearchBurialSites.js'
+import type { DoSearchContractsResponse } from '../../handlers/contracts-post/doSearchContracts.js'
+import type { DoAddWorkOrderBurialSiteResponse } from '../../handlers/workOrders-post/doAddWorkOrderBurialSite.js'
+import type { DoAddWorkOrderContractResponse } from '../../handlers/workOrders-post/doAddWorkOrderContract.js'
+import type { DoDeleteWorkOrderBurialSiteResponse } from '../../handlers/workOrders-post/doDeleteWorkOrderBurialSite.js'
+import type { DoDeleteWorkOrderContractResponse } from '../../handlers/workOrders-post/doDeleteWorkOrderContract.js'
+import type { DoUpdateBurialSiteStatusResponse } from '../../handlers/workOrders-post/doUpdateBurialSiteStatus.js'
 import type {
   BurialSite,
   BurialSiteStatus,
@@ -51,13 +58,7 @@ declare const exports: {
           contractId,
           workOrderId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            errorMessage?: string
-            success: boolean
-            workOrderContracts: Contract[]
-          }
-
+        (responseJSON: DoDeleteWorkOrderContractResponse) => {
           if (responseJSON.success) {
             workOrderContracts = responseJSON.workOrderContracts
             renderRelatedBurialSitesAndContracts()
@@ -66,7 +67,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Deleting Contract Relationship',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -97,13 +98,7 @@ declare const exports: {
         burialSiteId,
         workOrderId
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          errorMessage?: string
-          success: boolean
-          workOrderBurialSites: BurialSite[]
-        }
-
+      (responseJSON: DoAddWorkOrderBurialSiteResponse) => {
         if (responseJSON.success) {
           workOrderBurialSites = responseJSON.workOrderBurialSites
           renderRelatedBurialSitesAndContracts()
@@ -112,7 +107,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Error Adding Burial Site',
 
-            message: responseJSON.errorMessage ?? ''
+            message: responseJSON.errorMessage
           })
         }
 
@@ -133,13 +128,7 @@ declare const exports: {
         contractId,
         workOrderId
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          errorMessage?: string
-          success: boolean
-          workOrderContracts: Contract[]
-        }
-
+      (responseJSON: DoAddWorkOrderContractResponse) => {
         if (responseJSON.success) {
           workOrderContracts = responseJSON.workOrderContracts
           renderRelatedBurialSitesAndContracts()
@@ -148,7 +137,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Error Adding Contract',
 
-            message: responseJSON.errorMessage ?? ''
+            message: responseJSON.errorMessage
           })
         }
 
@@ -281,15 +270,16 @@ declare const exports: {
         ${
           exports.contractEndDateIsAvailable
             ? /* html */ `
-          <td>
-            ${
-              contract.contractEndDate === null ||
-              contract.contractEndDate === undefined
-                ? '<span class="has-text-grey">(No End Date)</span>'
-                : contract.contractEndDateString
-            }
-          </td>
-        `
+              <td>
+                ${
+                  // eslint-disable-next-line sonarjs/no-nested-conditional
+                  contract.contractEndDate === null ||
+                  contract.contractEndDate === undefined
+                    ? '<span class="has-text-grey">(No End Date)</span>'
+                    : contract.contractEndDateString
+                }
+              </td>
+            `
             : ''
         }
         <td>
@@ -388,13 +378,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doUpdateBurialSiteStatus`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            errorMessage?: string
-            success: boolean
-            workOrderBurialSites: BurialSite[]
-          }
-
+        (responseJSON: DoUpdateBurialSiteStatusResponse) => {
           if (responseJSON.success) {
             workOrderBurialSites = responseJSON.workOrderBurialSites
             renderRelatedBurialSitesAndContracts()
@@ -404,7 +388,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Deleting Relationship',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -505,13 +489,7 @@ declare const exports: {
           burialSiteId,
           workOrderId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            errorMessage?: string
-            success: boolean
-            workOrderBurialSites: BurialSite[]
-          }
-
+        (responseJSON: DoDeleteWorkOrderBurialSiteResponse) => {
           if (responseJSON.success) {
             workOrderBurialSites = responseJSON.workOrderBurialSites
             renderRelatedBurialSitesAndContracts()
@@ -520,7 +498,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Deleting Burial Site Relationship',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -672,11 +650,7 @@ declare const exports: {
         cityssm.postJSON(
           `${sunrise.urlPrefix}/contracts/doSearchContracts`,
           searchFormElement,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              contracts: Contract[]
-            }
-
+          (responseJSON: DoSearchContractsResponse) => {
             if (responseJSON.contracts.length === 0) {
               searchResultsContainerElement.innerHTML = /* html */ `
                 <div class="message is-info">
@@ -768,6 +742,7 @@ declare const exports: {
                       ? /* html */ `
                         <td>
                           ${
+                            // eslint-disable-next-line sonarjs/no-nested-conditional
                             contract.contractEndDate === null ||
                             contract.contractEndDate === undefined
                               ? '<span class="has-text-grey">(No End Date)</span>'
@@ -879,11 +854,7 @@ declare const exports: {
         cityssm.postJSON(
           `${sunrise.urlPrefix}/burialSites/doSearchBurialSites`,
           searchFormElement,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              burialSites: BurialSite[]
-            }
-
+          (responseJSON: DoSearchBurialSitesResponse) => {
             if (responseJSON.burialSites.length === 0) {
               searchResultsContainerElement.innerHTML = /* html */ `
                 <div class="message is-info">

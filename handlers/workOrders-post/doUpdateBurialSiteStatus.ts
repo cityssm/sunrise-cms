@@ -6,18 +6,18 @@ import getBurialSites from '../../database/getBurialSites.js'
 import { updateBurialSiteStatus } from '../../database/updateBurialSite.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { BurialSite } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doUpdateBurialSiteStatus`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoUpdateBurialSiteStatusResponse =
-  { success: boolean; workOrderBurialSites: BurialSite[] }
   | { errorMessage: string; success: false }
+  | {
+      success: true
+      workOrderBurialSites: BurialSite[]
+    }
 
 export default function handler(
   request: Request<
@@ -38,6 +38,16 @@ export default function handler(
       request.session.user as User,
       database
     )
+
+    if (!success) {
+      response
+        .status(400)
+        .json({
+          errorMessage: 'Failed to update burial site status',
+          success: false
+        })
+      return
+    }
 
     const results = getBurialSites(
       {

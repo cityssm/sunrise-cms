@@ -8,18 +8,19 @@ import addWorkOrderMilestone, {
 import getWorkOrderMilestones from '../../database/getWorkOrderMilestones.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { WorkOrderMilestone } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doAddWorkOrderMilestone`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoAddWorkOrderMilestoneResponse =
-  { success: number; workOrderMilestones: WorkOrderMilestone[] }
   | { errorMessage: string; success: false }
+  | {
+      success: true
+      workOrderMilestoneId: number
+      workOrderMilestones: WorkOrderMilestone[]
+    }
 
 export default async function handler(
   request: Request<unknown, unknown, AddWorkOrderMilestoneForm>,
@@ -30,7 +31,7 @@ export default async function handler(
   try {
     database = sqlite(sunriseDB)
 
-    const success = addWorkOrderMilestone(
+    const workOrderMilestoneId = addWorkOrderMilestone(
       request.body,
       request.session.user as User
     )
@@ -45,7 +46,8 @@ export default async function handler(
     )
 
     response.json({
-      success,
+      success: true,
+      workOrderMilestoneId,
       workOrderMilestones
     })
   } catch (error) {

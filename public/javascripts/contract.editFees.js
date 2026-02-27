@@ -20,8 +20,7 @@
         let updateCloseModalFunction;
         function doUpdateQuantity(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractFeeQuantity`, formEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractFeeQuantity`, formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     contractFees = responseJSON.contractFees;
                     renderContractFees();
@@ -63,8 +62,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractFee`, {
                 contractId,
                 feeId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     contractFees = responseJSON.contractFees;
                     renderContractFees();
@@ -73,7 +71,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Fee',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -139,7 +137,7 @@
             tableRowElement.className = 'container--contractFee';
             tableRowElement.dataset.feeId = contractFee.feeId.toString();
             tableRowElement.dataset.includeQuantity =
-                contractFee.includeQuantity ?? false ? '1' : '0';
+                (contractFee.includeQuantity ?? false) ? '1' : '0';
             // eslint-disable-next-line no-unsanitized/property
             tableRowElement.innerHTML = /* html */ `
         <td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
@@ -150,7 +148,7 @@
                 ? ''
                 : /*html */ `
               <td class="has-text-right">
-              $${contractFee.feeAmount?.toFixed(2)}
+                $${contractFee.feeAmount?.toFixed(2)}
               </td>
               <td>&times;</td>
               <td class="has-text-right">${contractFee.quantity?.toString()}</td>
@@ -161,7 +159,7 @@
         </td>
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-            ${contractFee.includeQuantity ?? false
+            ${(contractFee.includeQuantity ?? false)
                 ? /* html */ `
                   <button class="button is-primary button--editQuantity">
                     <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
@@ -213,8 +211,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractFeeCategory`, {
                 contractId,
                 feeCategoryId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     contractFees = responseJSON.contractFees;
                     renderContractFees();
@@ -227,7 +224,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Fee',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -237,8 +234,7 @@
                 contractId,
                 feeId,
                 quantity
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     contractFees = responseJSON.contractFees;
                     renderContractFees();
@@ -248,7 +244,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Fee',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -380,8 +376,9 @@
                 feeFilterResultsElement = modalElement.querySelector('#resultsContainer--feeSelect');
                 cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetFees`, {
                     contractId
-                }, (rawResponseJSON) => {
-                    const responseJSON = rawResponseJSON;
+                }, (responseJSON) => {
+                    if (!('feeCategories' in responseJSON))
+                        return;
                     feeCategories = responseJSON.feeCategories;
                     feeFilterElement.disabled = false;
                     feeFilterElement.addEventListener('keyup', filterFees);
@@ -417,8 +414,7 @@
         let editCloseModalFunction;
         function doEdit(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractTransaction`, formEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractTransaction`, formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     contractTransactions = responseJSON.contractTransactions;
                     renderContractTransactions();
@@ -466,8 +462,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractTransaction`, {
                 contractId,
                 transactionIndex
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     contractTransactions = responseJSON.contractTransactions;
                     renderContractTransactions();
@@ -476,7 +471,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Transaction',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -622,8 +617,7 @@
         let addCloseModalFunction;
         function doAddTransaction(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractTransaction`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractTransaction`, submitEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     contractTransactions = responseJSON.contractTransactions;
                     addCloseModalFunction();
@@ -632,8 +626,8 @@
                 else {
                     bulmaJS.confirm({
                         contextualColorName: 'danger',
-                        message: responseJSON.errorMessage ?? '',
-                        title: 'Error Adding Transaction'
+                        title: 'Error Adding Transaction',
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -654,10 +648,8 @@
             }
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetDynamicsGPDocument`, {
                 externalReceiptNumber
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
-                if (!responseJSON.success ||
-                    responseJSON.dynamicsGPDocument === undefined) {
+            }, (responseJSON) => {
+                if (!responseJSON.success) {
                     helpTextElement.textContent = 'No Matching Document Found';
                     iconElement.innerHTML = '<i class="fa-solid fa-times-circle"></i>';
                 }

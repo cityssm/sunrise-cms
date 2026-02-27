@@ -1,6 +1,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddContractCommentResponse } from '../../handlers/contracts-post/doAddContractComment.js'
+import type { DoDeleteContractCommentResponse } from '../../handlers/contracts-post/doDeleteContractComment.js'
+import type { DoUpdateContractCommentResponse } from '../../handlers/contracts-post/doUpdateContractComment.js'
 import type { ContractComment } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -42,16 +45,9 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/contracts/doUpdateContractComment`,
         editFormElement,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-
-            contractComments?: ContractComment[]
-            errorMessage?: string
-          }
-
+        (responseJSON: DoUpdateContractCommentResponse) => {
           if (responseJSON.success) {
-            contractComments = responseJSON.contractComments ?? []
+            contractComments = responseJSON.contractComments
 
             if (editCloseModalFunction !== undefined) {
               editCloseModalFunction()
@@ -63,7 +59,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Comment',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -142,14 +138,7 @@ declare const exports: {
           contractCommentId,
           contractId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-
-            contractComments: ContractComment[]
-            errorMessage?: string
-          }
-
+        (responseJSON: DoDeleteContractCommentResponse) => {
           if (responseJSON.success) {
             contractComments = responseJSON.contractComments
             renderContractComments()
@@ -158,7 +147,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Removing Comment',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -263,14 +252,7 @@ declare const exports: {
         cityssm.postJSON(
           `${sunrise.urlPrefix}/contracts/doAddContractComment`,
           addFormElement,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              success: boolean
-
-              contractComments: ContractComment[]
-              errorMessage?: string
-            }
-
+          (responseJSON: DoAddContractCommentResponse) => {
             if (responseJSON.success) {
               contractComments = responseJSON.contractComments
 
@@ -284,7 +266,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Adding Comment',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }

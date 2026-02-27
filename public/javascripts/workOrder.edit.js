@@ -3,6 +3,7 @@
     const sunrise = exports.sunrise;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     const isCreate = workOrderId === '';
+    // eslint-disable-next-line require-unicode-regexp
     if (!isCreate && !/^\d+$/.test(workOrderId)) {
         globalThis.location.href = `${sunrise.urlPrefix}/workOrders`;
     }
@@ -22,8 +23,7 @@
     }
     workOrderFormElement.addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/${isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'}`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/${isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'}`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
@@ -39,8 +39,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Work Order',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Updating Work Order'
                 });
             }
         });
@@ -55,8 +54,7 @@
     function doClose() {
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCloseWorkOrder`, {
             workOrderId
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 globalThis.location.href = sunrise.getWorkOrderUrl(responseJSON.workOrderId);
@@ -64,8 +62,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Closing Work Order',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Closing Work Order'
                 });
             }
         });
@@ -73,8 +70,7 @@
     function doDelete() {
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrder`, {
             workOrderId
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 globalThis.location.href = `${sunrise.urlPrefix}/workOrders`;
@@ -82,8 +78,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Deleting Work Order',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Deleting Work Order'
                 });
             }
         });
@@ -149,8 +144,7 @@
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`, {
             workOrderMilestoneDateFilter: 'date',
             workOrderMilestoneDateString
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             const conflictingWorkOrderMilestones = responseJSON.workOrderMilestones.filter((possibleMilestone) => possibleMilestone.workOrderId.toString() !== workOrderId);
             clearPanelBlockElements(targetPanelElement);
             for (const milestone of conflictingWorkOrderMilestones) {
@@ -159,7 +153,7 @@
               <div class="panel-block is-block">
                 <div class="columns">
                   <div class="column is-5">
-                    ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === null ? 'No Time' : milestone.workOrderMilestoneTimePeriodString ?? '')}<br />
+                    ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === null ? 'No Time' : (milestone.workOrderMilestoneTimePeriodString ?? ''))}<br />
                     <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
                   </div>
                   <div class="column">
@@ -187,8 +181,7 @@
             }
         });
     }
-    function processMilestoneResponse(rawResponseJSON) {
-        const responseJSON = rawResponseJSON;
+    function processMilestoneResponse(responseJSON) {
         if (responseJSON.success) {
             workOrderMilestones = responseJSON.workOrderMilestones;
             renderMilestones();
@@ -196,8 +189,8 @@
         else {
             bulmaJS.alert({
                 contextualColorName: 'danger',
-                title: 'Error Reopening Milestone',
-                message: responseJSON.errorMessage ?? ''
+                title: 'Error Updating Milestone',
+                message: responseJSON.errorMessage
             });
         }
     }
@@ -305,8 +298,7 @@
         let workOrderMilestoneDateStringElement;
         function doEdit(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkOrderMilestone`, submitEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkOrderMilestone`, submitEvent.currentTarget, (responseJSON) => {
                 processMilestoneResponse(responseJSON);
                 if (responseJSON.success) {
                     editCloseModalFunction();
@@ -508,8 +500,7 @@
         let workOrderMilestoneDateStringElement;
         let addCloseModalFunction;
         function _doAdd() {
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderMilestone`, addFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderMilestone`, addFormElement, (responseJSON) => {
                 processMilestoneResponse(responseJSON);
                 if (responseJSON.success) {
                     addCloseModalFunction();

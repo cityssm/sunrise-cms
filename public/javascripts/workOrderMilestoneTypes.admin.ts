@@ -1,6 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddWorkOrderMilestoneTypeResponse } from '../../handlers/admin-post/doAddWorkOrderMilestoneType.js'
+import type { DoDeleteWorkOrderMilestoneTypeResponse } from '../../handlers/admin-post/doDeleteWorkOrderMilestoneType.js'
+import type { DoMoveWorkOrderMilestoneTypeDownResponse } from '../../handlers/admin-post/doMoveWorkOrderMilestoneTypeDown.js'
+import type { DoMoveWorkOrderMilestoneTypeUpResponse } from '../../handlers/admin-post/doMoveWorkOrderMilestoneTypeUp.js'
+import type { DoUpdateWorkOrderMilestoneTypeResponse } from '../../handlers/admin-post/doUpdateWorkOrderMilestoneType.js'
 import type { WorkOrderMilestoneType } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -20,28 +25,13 @@ declare const bulmaJS: BulmaJS
     exports.workOrderMilestoneTypes as WorkOrderMilestoneType[]
   delete exports.workOrderMilestoneTypes
 
-  type WorkOrderMilestoneTypeResponseJSON =
-    | {
-        success: false
-
-        errorMessage?: string
-      }
-    | {
-        success: true
-
-        workOrderMilestoneTypes: WorkOrderMilestoneType[]
-      }
-
   function updateWorkOrderMilestoneType(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateWorkOrderMilestoneType`,
       submitEvent.currentTarget,
-      (rawResponseJSON) => {
-        const responseJSON =
-          rawResponseJSON as WorkOrderMilestoneTypeResponseJSON
-
+      (responseJSON: DoUpdateWorkOrderMilestoneTypeResponse) => {
         if (responseJSON.success) {
           workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes
 
@@ -52,9 +42,7 @@ declare const bulmaJS: BulmaJS
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Work Order Milestone Type',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Work Order Milestone Type'
           })
         }
       }
@@ -75,10 +63,7 @@ declare const bulmaJS: BulmaJS
         {
           workOrderMilestoneTypeId
         },
-        (rawResponseJSON) => {
-          const responseJSON =
-            rawResponseJSON as WorkOrderMilestoneTypeResponseJSON
-
+        (responseJSON: DoDeleteWorkOrderMilestoneTypeResponse) => {
           if (responseJSON.success) {
             workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes
 
@@ -95,9 +80,7 @@ declare const bulmaJS: BulmaJS
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Work Order Milestone Type',
-
-              message: responseJSON.errorMessage ?? ''
+              message: 'Error Deleting Work Order Milestone Type'
             })
           }
         }
@@ -137,19 +120,18 @@ declare const bulmaJS: BulmaJS
 
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (rawResponseJSON) => {
-        const responseJSON =
-          rawResponseJSON as WorkOrderMilestoneTypeResponseJSON
-
+      (
+        responseJSON:
+          | DoMoveWorkOrderMilestoneTypeDownResponse
+          | DoMoveWorkOrderMilestoneTypeUpResponse
+      ) => {
         if (responseJSON.success) {
           workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes
           renderWorkOrderMilestoneTypes()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Work Order Milestone Type',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Work Order Milestone Type'
           })
         }
       }
@@ -264,23 +246,11 @@ declare const bulmaJS: BulmaJS
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddWorkOrderMilestoneType`,
         formElement,
-        (rawResponseJSON) => {
-          const responseJSON =
-            rawResponseJSON as WorkOrderMilestoneTypeResponseJSON
-
-          if (responseJSON.success) {
-            workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes
-            renderWorkOrderMilestoneTypes()
-            formElement.reset()
-            formElement.querySelector('input')?.focus()
-          } else {
-            bulmaJS.alert({
-              contextualColorName: 'danger',
-              title: 'Error Adding Work Order Milestone Type',
-
-              message: responseJSON.errorMessage ?? ''
-            })
-          }
+        (responseJSON: DoAddWorkOrderMilestoneTypeResponse) => {
+          workOrderMilestoneTypes = responseJSON.workOrderMilestoneTypes
+          renderWorkOrderMilestoneTypes()
+          formElement.reset()
+          formElement.querySelector('input')?.focus()
         }
       )
     })

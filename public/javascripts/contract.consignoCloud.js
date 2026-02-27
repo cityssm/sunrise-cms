@@ -11,8 +11,7 @@
         if (modalElement === undefined) {
             return;
         }
-        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetContractDetailsForConsignoCloud`, { contractId }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetContractDetailsForConsignoCloud`, { contractId }, (responseJSON) => {
             if (!responseJSON.success) {
                 bulmaJS.alert({
                     contextualColorName: 'warning',
@@ -120,8 +119,7 @@
         /*
          * Submit the form
          */
-        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doStartConsignoCloudWorkflow`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doStartConsignoCloudWorkflow`, formElement, (responseJSON) => {
             if (responseJSON.success) {
                 closeModalFunction?.();
                 bulmaJS.alert({

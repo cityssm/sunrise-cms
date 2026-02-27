@@ -20,8 +20,7 @@
                     cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteRelatedContract`, {
                         contractId,
                         relatedContractId
-                    }, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
+                    }, (responseJSON) => {
                         if (responseJSON.success) {
                             relatedContracts = responseJSON.relatedContracts;
                             renderRelatedContracts();
@@ -30,7 +29,7 @@
                             bulmaJS.alert({
                                 contextualColorName: 'danger',
                                 title: 'Error Removing Related Contract',
-                                message: responseJSON.errorMessage ?? 'Please Try Again'
+                                message: responseJSON.errorMessage
                             });
                         }
                     });
@@ -93,7 +92,9 @@
         ${exports.contractEndDateIsAvailable
                 ? /* html */ `
               <td>
-                ${relatedContract.contractEndDate
+                ${
+                // eslint-disable-next-line sonarjs/no-nested-conditional
+                relatedContract.contractEndDate
                     ? relatedContract.contractEndDateString
                     : '<span class="has-text-grey">(No End Date)</span>'}
               </td>
@@ -134,8 +135,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddRelatedContract`, {
                 contractId,
                 relatedContractId: selectedContractId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     relatedContracts = responseJSON.relatedContracts;
                     renderRelatedContracts();
@@ -145,7 +145,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Related Contract',
-                        message: responseJSON.errorMessage ?? 'Please Try Again'
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -154,8 +154,7 @@
             formEvent?.preventDefault();
             const containerElement = modalElement?.querySelector('#resultsContainer--relatedContractSelect');
             containerElement.innerHTML = sunrise.getLoadingParagraphHTML('Loading Contracts...');
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`, formElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetPossibleRelatedContracts`, formElement, (responseJSON) => {
                 containerElement.innerHTML = '<div class="panel"></div>';
                 for (const contract of responseJSON.contracts) {
                     let intermentsHTML = '';

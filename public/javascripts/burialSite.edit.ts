@@ -3,10 +3,14 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type {
-  BurialSiteComment,
-  BurialSiteTypeField
-} from '../../types/record.types.js'
+import type { DoAddBurialSiteCommentResponse } from '../../handlers/burialSites-post/doAddBurialSiteComment.js'
+import type { DoCreateBurialSiteResponse } from '../../handlers/burialSites-post/doCreateBurialSite.js'
+import type { DoDeleteBurialSiteResponse } from '../../handlers/burialSites-post/doDeleteBurialSite.js'
+import type { DoDeleteBurialSiteCommentResponse } from '../../handlers/burialSites-post/doDeleteBurialSiteComment.js'
+import type { DoGetBurialSiteTypeFieldsResponse } from '../../handlers/burialSites-post/doGetBurialSiteTypeFields.js'
+import type { DoUpdateBurialSiteResponse } from '../../handlers/burialSites-post/doUpdateBurialSite.js'
+import type { DoUpdateBurialSiteCommentResponse } from '../../handlers/burialSites-post/doUpdateBurialSiteComment.js'
+import type { BurialSiteComment } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
@@ -57,13 +61,9 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/burialSites/${isCreate ? 'doCreateBurialSite' : 'doUpdateBurialSite'}`,
       formElement,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          burialSiteId?: number
-          errorMessage?: string
-          success: boolean
-        }
-
+      (
+        responseJSON: DoCreateBurialSiteResponse | DoUpdateBurialSiteResponse
+      ) => {
         if (responseJSON.success) {
           clearUnsavedChanges()
 
@@ -84,7 +84,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Error Updating Burial Site',
 
-            message: responseJSON.errorMessage ?? ''
+            message: responseJSON.errorMessage
           })
         }
       }
@@ -112,12 +112,7 @@ declare const exports: {
           {
             burialSiteId
           },
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              errorMessage?: string
-              success: boolean
-            }
-
+          (responseJSON: DoDeleteBurialSiteResponse) => {
             if (responseJSON.success) {
               clearUnsavedChanges()
               globalThis.location.href = sunrise.getBurialSiteUrl()
@@ -126,7 +121,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Deleting Burial Site',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }
@@ -229,11 +224,7 @@ declare const exports: {
         {
           burialSiteTypeId: burialSiteTypeIdElement.value
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            burialSiteTypeFields: BurialSiteTypeField[]
-          }
-
+        (responseJSON: DoGetBurialSiteTypeFieldsResponse) => {
           if (responseJSON.burialSiteTypeFields.length === 0) {
             burialSiteFieldsContainerElement.innerHTML = /* html */ `
               <div class="message is-info">
@@ -412,13 +403,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/burialSites/doUpdateBurialSiteComment`,
         editFormElement,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            burialSiteComments: BurialSiteComment[]
-            errorMessage?: string
-            success: boolean
-          }
-
+        (responseJSON: DoUpdateBurialSiteCommentResponse) => {
           if (responseJSON.success) {
             burialSiteComments = responseJSON.burialSiteComments
             editCloseModalFunction()
@@ -428,7 +413,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Comment',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -506,13 +491,7 @@ declare const exports: {
           burialSiteCommentId,
           burialSiteId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            burialSiteComments: BurialSiteComment[]
-            errorMessage?: string
-            success: boolean
-          }
-
+        (responseJSON: DoDeleteBurialSiteCommentResponse) => {
           if (responseJSON.success) {
             burialSiteComments = responseJSON.burialSiteComments
             renderBurialSiteComments()
@@ -521,7 +500,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Removing Comment',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -626,12 +605,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/burialSites/doAddBurialSiteComment`,
         formEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            burialSiteComments: BurialSiteComment[]
-            success: boolean
-          }
-
+        (responseJSON: DoAddBurialSiteCommentResponse) => {
           if (responseJSON.success) {
             burialSiteComments = responseJSON.burialSiteComments
             renderBurialSiteComments()

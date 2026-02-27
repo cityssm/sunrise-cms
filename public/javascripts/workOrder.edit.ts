@@ -3,6 +3,13 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doAddWorkOrderMilestone.js'
+import type { DoCloseWorkOrderResponse } from '../../handlers/workOrders-post/doCloseWorkOrder.js'
+import type { DoCreateWorkOrderResponse } from '../../handlers/workOrders-post/doCreateWorkOrder.js'
+import type { DoDeleteWorkOrderResponse } from '../../handlers/workOrders-post/doDeleteWorkOrder.js'
+import type { DoGetWorkOrderMilestonesResponse } from '../../handlers/workOrders-post/doGetWorkOrderMilestones.js'
+import type { DoUpdateWorkOrderResponse } from '../../handlers/workOrders-post/doUpdateWorkOrder.js'
+import type { DoUpdateWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doUpdateWorkOrderMilestone.js'
 import type {
   WorkOrderMilestone,
   WorkOrderMilestoneType
@@ -32,6 +39,7 @@ declare const exports: {
 
   const isCreate = workOrderId === ''
 
+  // eslint-disable-next-line require-unicode-regexp
   if (!isCreate && !/^\d+$/.test(workOrderId)) {
     globalThis.location.href = `${sunrise.urlPrefix}/workOrders`
   }
@@ -62,17 +70,9 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/workOrders/${isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'}`,
       submitEvent.currentTarget,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          success: boolean
-
-          errorMessage?: string
-          workOrderId?: number
-        }
-
+      (responseJSON: DoCreateWorkOrderResponse | DoUpdateWorkOrderResponse) => {
         if (responseJSON.success) {
           clearUnsavedChanges()
-
           if (isCreate) {
             globalThis.location.href = sunrise.getWorkOrderUrl(
               responseJSON.workOrderId,
@@ -87,9 +87,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Work Order',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Work Order'
           })
         }
       }
@@ -114,14 +112,7 @@ declare const exports: {
       {
         workOrderId
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          errorMessage?: string
-          success: boolean
-
-          workOrderId?: number
-        }
-
+      (responseJSON: DoCloseWorkOrderResponse) => {
         if (responseJSON.success) {
           clearUnsavedChanges()
           globalThis.location.href = sunrise.getWorkOrderUrl(
@@ -130,9 +121,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Closing Work Order',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Closing Work Order'
           })
         }
       }
@@ -145,21 +134,14 @@ declare const exports: {
       {
         workOrderId
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          errorMessage?: string
-          success: boolean
-        }
-
+      (responseJSON: DoDeleteWorkOrderResponse) => {
         if (responseJSON.success) {
           clearUnsavedChanges()
           globalThis.location.href = `${sunrise.urlPrefix}/workOrders`
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Deleting Work Order',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Deleting Work Order'
           })
         }
       }
@@ -252,11 +234,7 @@ declare const exports: {
         workOrderMilestoneDateFilter: 'date',
         workOrderMilestoneDateString
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          workOrderMilestones: WorkOrderMilestone[]
-        }
-
+      (responseJSON: DoGetWorkOrderMilestonesResponse) => {
         const conflictingWorkOrderMilestones =
           responseJSON.workOrderMilestones.filter(
             (possibleMilestone) =>
@@ -272,7 +250,7 @@ declare const exports: {
               <div class="panel-block is-block">
                 <div class="columns">
                   <div class="column is-5">
-                    ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === null ? 'No Time' : milestone.workOrderMilestoneTimePeriodString ?? '')}<br />
+                    ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === null ? 'No Time' : (milestone.workOrderMilestoneTimePeriodString ?? ''))}<br />
                     <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
                   </div>
                   <div class="column">
@@ -306,23 +284,20 @@ declare const exports: {
     )
   }
 
-  function processMilestoneResponse(rawResponseJSON: unknown): void {
-    const responseJSON = rawResponseJSON as {
-      errorMessage?: string
-      success: boolean
-
-      workOrderMilestones: WorkOrderMilestone[]
-    }
-
+  function processMilestoneResponse(
+    responseJSON:
+      | DoAddWorkOrderMilestoneResponse
+      | DoUpdateWorkOrderMilestoneResponse
+  ): void {
     if (responseJSON.success) {
       workOrderMilestones = responseJSON.workOrderMilestones
       renderMilestones()
     } else {
       bulmaJS.alert({
         contextualColorName: 'danger',
-        title: 'Error Reopening Milestone',
+        title: 'Error Updating Milestone',
 
-        message: responseJSON.errorMessage ?? ''
+        message: responseJSON.errorMessage
       })
     }
   }
@@ -526,14 +501,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doUpdateWorkOrderMilestone`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-
-            errorMessage?: string
-            workOrderMilestones?: WorkOrderMilestone[]
-          }
-
+        (responseJSON: DoUpdateWorkOrderMilestoneResponse) => {
           processMilestoneResponse(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -834,14 +802,7 @@ declare const exports: {
         cityssm.postJSON(
           `${sunrise.urlPrefix}/workOrders/doAddWorkOrderMilestone`,
           addFormElement,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              success: boolean
-
-              errorMessage?: string
-              workOrderMilestones?: WorkOrderMilestone[]
-            }
-
+          (responseJSON: DoAddWorkOrderMilestoneResponse) => {
             processMilestoneResponse(responseJSON)
 
             if (responseJSON.success) {

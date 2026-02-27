@@ -4,8 +4,7 @@
     delete exports.burialSiteStatuses;
     function updateBurialSiteStatus(submitEvent) {
         submitEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateBurialSiteStatus`, submitEvent.currentTarget, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doUpdateBurialSiteStatus`, submitEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 burialSiteStatuses = responseJSON.burialSiteStatuses;
                 bulmaJS.alert({
@@ -16,8 +15,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Burial Site Status',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Updating Burial Site Status'
                 });
             }
         });
@@ -28,8 +26,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteBurialSiteStatus`, {
                 burialSiteStatusId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     burialSiteStatuses = responseJSON.burialSiteStatuses;
                     if (burialSiteStatuses.length === 0) {
@@ -46,8 +43,7 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Deleting Burial Site Status',
-                        message: responseJSON.errorMessage ?? ''
+                        message: 'Error Deleting Burial Site Status'
                     });
                 }
             });
@@ -73,8 +69,7 @@
             : 'doMoveBurialSiteStatusDown'}`, {
             burialSiteStatusId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 burialSiteStatuses = responseJSON.burialSiteStatuses;
                 renderBurialSiteStatuses();
@@ -82,8 +77,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Burial Site Status',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Burial Site Status'
                 });
             }
         });
@@ -165,21 +159,11 @@
     document.querySelector('#form--addBurialSiteStatus').addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddBurialSiteStatus`, formElement, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
-            if (responseJSON.success) {
-                burialSiteStatuses = responseJSON.burialSiteStatuses;
-                renderBurialSiteStatuses();
-                formElement.reset();
-                formElement.querySelector('input')?.focus();
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Adding Burial Site Status',
-                    message: responseJSON.errorMessage ?? ''
-                });
-            }
+        cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddBurialSiteStatus`, formElement, (responseJSON) => {
+            burialSiteStatuses = responseJSON.burialSiteStatuses;
+            renderBurialSiteStatuses();
+            formElement.reset();
+            formElement.querySelector('input')?.focus();
         });
     });
     renderBurialSiteStatuses();

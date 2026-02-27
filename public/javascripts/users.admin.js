@@ -17,13 +17,10 @@
                 callbackFunction() {
                     cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteUser`, {
                         userName
-                    }, (rawResponseJSON) => {
-                        const responseJSON = rawResponseJSON;
+                    }, (responseJSON) => {
                         if (responseJSON.success) {
                             // Update the users list with the new data from the server
-                            if (responseJSON.users !== undefined) {
-                                renderUsers(responseJSON.users);
-                            }
+                            renderUsers(responseJSON.users);
                             bulmaJS.alert({
                                 contextualColorName: 'success',
                                 message: i18next.t('admin:userDeletedMessage', { userName })
@@ -33,7 +30,7 @@
                             bulmaJS.alert({
                                 contextualColorName: 'danger',
                                 title: i18next.t('common:error'),
-                                message: responseJSON.message ?? i18next.t('common:tryAgain')
+                                message: responseJSON.message
                             });
                         }
                     });
@@ -51,8 +48,7 @@
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doToggleUserPermission`, {
             permissionField: permission,
             userName
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 renderUsers(responseJSON.users);
             }
@@ -60,7 +56,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: i18next.t('common:error'),
-                    message: responseJSON.message ?? i18next.t('common:tryAgain')
+                    message: responseJSON.message
                 });
             }
         });
@@ -177,8 +173,7 @@
         function doAddUser(submitEvent) {
             submitEvent.preventDefault();
             const addForm = submitEvent.currentTarget;
-            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddUser`, addForm, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddUser`, addForm, (responseJSON) => {
                 if (responseJSON.success) {
                     closeModalFunction();
                     renderUsers(responseJSON.users);

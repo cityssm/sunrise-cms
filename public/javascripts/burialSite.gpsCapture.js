@@ -90,9 +90,8 @@
             cemeteryId,
             hasCoordinates: formData.get('hasCoordinates')
         };
-        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSitesForGPS`, searchData, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
-            if (responseJSON.success && responseJSON.burialSites !== undefined) {
+        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSitesForGPS`, searchData, (responseJSON) => {
+            if (responseJSON.success) {
                 allBurialSites = responseJSON.burialSites;
                 renderBurialSites();
             }
@@ -100,7 +99,7 @@
                 burialSitesContainerElement.innerHTML = /* html */ `
             <div class="message is-danger">
               <p class="message-body">
-                ${cityssm.escapeHTML(responseJSON.errorMessage ?? 'Failed to search burial sites.')}
+                ${cityssm.escapeHTML(responseJSON.errorMessage)}
               </p>
             </div>
           `;
@@ -132,8 +131,7 @@
             burialSiteLatitude: currentPosition.latitude.toFixed(coordinatePrecision),
             burialSiteLongitude: currentPosition.longitude.toFixed(coordinatePrecision)
         };
-        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doUpdateBurialSiteLatitudeLongitude`, updateData, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doUpdateBurialSiteLatitudeLongitude`, updateData, (responseJSON) => {
             captureButton.disabled = false;
             if (responseJSON.success) {
                 captureButton.innerHTML = /* html */ `
@@ -173,8 +171,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Capture Failed',
-                    message: responseJSON.errorMessage ??
-                        'Failed to capture coordinates. Please try again.'
+                    message: responseJSON.errorMessage
                 });
             }
         });

@@ -7,7 +7,6 @@ import getContractMetadataByContractId from '../../database/getContractMetadataB
 import { getCachedContractTypePrintsById } from '../../helpers/cache/contractTypes.cache.js'
 import { getPrintConfig } from '../../helpers/print.helpers.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoGetContractDetailsForConsignoCloudResponse =
   | {
       success: false

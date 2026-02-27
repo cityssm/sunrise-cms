@@ -3,6 +3,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddBurialSiteTypeResponse } from '../../handlers/admin-post/doAddBurialSiteType.js'
+import type { DoAddBurialSiteTypeFieldResponse } from '../../handlers/admin-post/doAddBurialSiteTypeField.js'
+import type { DoDeleteBurialSiteTypeFieldResponse } from '../../handlers/admin-post/doDeleteBurialSiteTypeField.js'
+import type { DoUpdateBurialSiteTypeResponse } from '../../handlers/admin-post/doUpdateBurialSiteType.js'
+import type { DoUpdateBurialSiteTypeFieldResponse } from '../../handlers/admin-post/doUpdateBurialSiteTypeField.js'
 import type {
   BurialSiteType,
   BurialSiteTypeField
@@ -21,19 +26,6 @@ declare const exports: {
   bodyCapacityMaxDefault: number
   crematedCapacityMaxDefault: number
 }
-
-type ResponseJSON =
-  | {
-      success: false
-
-      errorMessage?: string
-    }
-  | {
-      success: true
-
-      burialSiteTypeFieldId?: number
-      burialSiteTypes: BurialSiteType[]
-    }
 ;(() => {
   const sunrise = exports.sunrise
 
@@ -79,17 +71,16 @@ type ResponseJSON =
     }
   }
 
-  function burialSiteTypeResponseHandler(rawResponseJSON: unknown): void {
-    const responseJSON = rawResponseJSON as ResponseJSON
+  function burialSiteTypeResponseHandler(
+    responseJSON: DoUpdateBurialSiteTypeResponse
+  ): void {
     if (responseJSON.success) {
       burialSiteTypes = responseJSON.burialSiteTypes
       renderBurialSiteTypes()
     } else {
       bulmaJS.alert({
         contextualColorName: 'danger',
-        title: 'Error Updating Burial Site Type',
-
-        message: responseJSON.errorMessage ?? ''
+        message: 'Error Updating Burial Site Type'
       })
     }
   }
@@ -149,9 +140,7 @@ type ResponseJSON =
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateBurialSiteType`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoUpdateBurialSiteTypeResponse) => {
           burialSiteTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -221,19 +210,15 @@ type ResponseJSON =
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddBurialSiteTypeField`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoAddBurialSiteTypeFieldResponse) => {
           expandedBurialSiteTypes.add(burialSiteTypeId)
           burialSiteTypeResponseHandler(responseJSON)
 
-          if (responseJSON.success) {
-            addCloseModalFunction()
-            openEditBurialSiteTypeField(
-              burialSiteTypeId,
-              responseJSON.burialSiteTypeFieldId as number
-            )
-          }
+          addCloseModalFunction()
+          openEditBurialSiteTypeField(
+            burialSiteTypeId,
+            responseJSON.burialSiteTypeFieldId
+          )
         }
       )
     }
@@ -350,9 +335,7 @@ type ResponseJSON =
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateBurialSiteTypeField`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoUpdateBurialSiteTypeFieldResponse) => {
           burialSiteTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -367,9 +350,7 @@ type ResponseJSON =
         {
           burialSiteTypeFieldId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoDeleteBurialSiteTypeFieldResponse) => {
           burialSiteTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -780,21 +761,10 @@ type ResponseJSON =
         cityssm.postJSON(
           `${sunrise.urlPrefix}/admin/doAddBurialSiteType`,
           submitEvent.currentTarget,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as ResponseJSON
-
-            if (responseJSON.success) {
-              addCloseModalFunction()
-              burialSiteTypes = responseJSON.burialSiteTypes
-              renderBurialSiteTypes()
-            } else {
-              bulmaJS.alert({
-                contextualColorName: 'danger',
-                title: 'Error Adding Burial Site Type',
-
-                message: responseJSON.errorMessage ?? ''
-              })
-            }
+          (responseJSON: DoAddBurialSiteTypeResponse) => {
+            addCloseModalFunction()
+            burialSiteTypes = responseJSON.burialSiteTypes
+            renderBurialSiteTypes()
           }
         )
       }

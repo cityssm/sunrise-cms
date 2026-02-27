@@ -14,8 +14,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/${milestoneIsCompleted ? 'doReopenWorkdayWorkOrderMilestone' : 'doCompleteWorkdayWorkOrderMilestone'}`, {
                 workdayDateString,
                 workOrderMilestoneId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     bulmaJS.alert({
                         contextualColorName: 'success',
@@ -63,8 +62,7 @@
         function doUpdateTime(submitEvent) {
             submitEvent.preventDefault();
             const formElement = submitEvent.currentTarget;
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkdayWorkOrderMilestoneTime`, formElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkdayWorkOrderMilestoneTime`, formElement, (responseJSON) => {
                 if (responseJSON.success) {
                     closeModalFunction?.();
                     bulmaJS.alert({
@@ -118,8 +116,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCloseWorkdayWorkOrder`, {
                 workdayDateString,
                 workOrderId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     bulmaJS.alert({
                         contextualColorName: 'success',
@@ -394,7 +391,7 @@
           </div>
         </div>
         <div class="panel-block is-block">
-          <p>${cityssm.escapeHTML((workOrder.workOrderDescription ?? '') === '' ? workOrder.workOrderType ?? '' : workOrder.workOrderDescription ?? '')}</p>
+          <p>${cityssm.escapeHTML((workOrder.workOrderDescription ?? '') === '' ? (workOrder.workOrderType ?? '') : (workOrder.workOrderDescription ?? ''))}</p>
           ${(workOrder.workOrderContracts ?? []).length > 0 ||
                 (workOrder.workOrderBurialSites ?? []).length > 0
                 ? /* html */ `
@@ -437,8 +434,7 @@
         const workdayDateString = cityssm.dateToString(workdayDate);
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkdayReport`, {
             workdayDateString
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             renderWorkOrders(workdayDateString, responseJSON.workOrders);
         });
     }

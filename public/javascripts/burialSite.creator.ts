@@ -1,6 +1,9 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoCreateBurialSiteResponse } from '../../handlers/burialSites-post/doCreateBurialSite.js'
+import type { DoGetBurialSiteNamesByRangeResponse } from '../../handlers/burialSites-post/doGetBurialSiteNamesByRange.js'
+
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
@@ -9,22 +12,6 @@ declare const bulmaJS: BulmaJS
 declare const exports: {
   sunrise: Sunrise
 }
-
-interface GetBurialSiteNamesByRangeResult {
-  burialSiteNames: Array<{
-    burialSiteId?: number
-    burialSiteName: string
-    burialSiteNameSegment1: string
-    burialSiteNameSegment2: string
-    burialSiteNameSegment3: string
-    burialSiteNameSegment4: string
-    burialSiteNameSegment5: string
-  }>
-  cemeteryId: string
-
-  burialSiteNameRangeLimit: number
-}
-
 ;(() => {
   const sunrise = exports.sunrise
 
@@ -164,22 +151,13 @@ interface GetBurialSiteNamesByRangeResult {
         burialSiteStatusId,
         burialSiteTypeId
       },
-      (rawResponseJSON: unknown) => {
-        const responseJSON = rawResponseJSON as {
-          success: boolean
-
-          burialSiteId?: number
-          burialSiteName?: string
-
-          errorMessage?: string
-        }
-
+      (responseJSON: DoCreateBurialSiteResponse) => {
         if (responseJSON.success) {
           panelBlockElement.remove()
 
           const newPanelBlockElement = buildExistingBurialSitePanelBlockElement(
-            responseJSON.burialSiteName as string,
-            responseJSON.burialSiteId as number
+            responseJSON.burialSiteName,
+            responseJSON.burialSiteId
           )
 
           existingResultsPanelElement
@@ -192,7 +170,7 @@ interface GetBurialSiteNamesByRangeResult {
             contextualColorName: 'danger',
             title: 'Error Creating Burial Site',
 
-            message: responseJSON.errorMessage ?? 'Unknown error.'
+            message: responseJSON.errorMessage
           })
 
           buttonElement.disabled = false
@@ -203,7 +181,7 @@ interface GetBurialSiteNamesByRangeResult {
   }
 
   function renderBurialSiteNames(
-    responseJSON: GetBurialSiteNamesByRangeResult
+    responseJSON: DoGetBurialSiteNamesByRangeResponse
   ): void {
     clearPanel(newResultsPanelElement)
     clearPanel(existingResultsPanelElement)
@@ -214,7 +192,8 @@ interface GetBurialSiteNamesByRangeResult {
 
         panelBlockElement.className = 'panel-block is-burial-site-block'
 
-        panelBlockElement.dataset.cemeteryId = responseJSON.cemeteryId
+        panelBlockElement.dataset.cemeteryId = String(responseJSON.cemeteryId)
+
         panelBlockElement.dataset.burialSiteName = burialSiteName.burialSiteName
 
         panelBlockElement.dataset.burialSiteNameSegment1 =
@@ -286,11 +265,7 @@ interface GetBurialSiteNamesByRangeResult {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/burialSites/doGetBurialSiteNamesByRange`,
         formElement,
-        (rawResponseJSON: unknown) => {
-          renderBurialSiteNames(
-            rawResponseJSON as GetBurialSiteNamesByRangeResult
-          )
-        }
+        renderBurialSiteNames
       )
     })
 

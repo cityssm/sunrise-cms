@@ -1,6 +1,10 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoCreateFuneralHomeResponse } from '../../handlers/funeralHomes-post/doCreateFuneralHome.js'
+import type { DoDeleteFuneralHomeResponse } from '../../handlers/funeralHomes-post/doDeleteFuneralHome.js'
+import type { DoUpdateFuneralHomeResponse } from '../../handlers/funeralHomes-post/doUpdateFuneralHome.js'
+
 import type { Sunrise } from './types.js'
 
 declare const cityssm: cityssmGlobal
@@ -41,14 +45,9 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/funeralHomes/${isCreate ? 'doCreateFuneralHome' : 'doUpdateFuneralHome'}`,
       funeralHomeForm,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as {
-          errorMessage?: string
-          success: boolean
-
-          funeralHomeId?: number
-        }
-
+      (
+        responseJSON: DoCreateFuneralHomeResponse | DoUpdateFuneralHomeResponse
+      ) => {
         if (responseJSON.success) {
           clearUnsavedChanges()
 
@@ -66,9 +65,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Funeral Home',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Funeral Home'
           })
         }
       }
@@ -95,12 +92,7 @@ declare const exports: {
           {
             funeralHomeId
           },
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as {
-              errorMessage?: string
-              success: boolean
-            }
-
+          (responseJSON: DoDeleteFuneralHomeResponse) => {
             if (responseJSON.success) {
               globalThis.location.href = sunrise.getFuneralHomeUrl()
             } else {
@@ -108,7 +100,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Deleting Funeral Home',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }

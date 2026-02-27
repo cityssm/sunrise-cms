@@ -2,10 +2,13 @@ import type { Request, Response } from 'express'
 
 import { restoreFuneralHome } from '../../database/restoreFuneralHome.js'
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoRestoreFuneralHomeResponse =
-  { success: boolean; funeralHomeId: number }
+  | { errorMessage: string; success: false }
+  | {
+      success: true
+
+      funeralHomeId: number
+    }
 
 export default function handler(
   request: Request<unknown, unknown, { funeralHomeId: number }>,
@@ -15,6 +18,14 @@ export default function handler(
     request.body.funeralHomeId,
     request.session.user as User
   )
+
+  if (!success) {
+    response.status(400).json({
+      errorMessage: 'Failed to restore funeral home',
+      success: false
+    })
+    return
+  }
 
   const funeralHomeId =
     typeof request.body.funeralHomeId === 'string'

@@ -4,8 +4,8 @@ export interface DeleteContractAttachmentForm {
     contractAttachmentId: string;
 }
 export type DoDeleteContractAttachmentResponse = {
-    errorMessage: string;
     success: false;
+    errorMessage: string;
 } | {
     success: true;
     contractAttachments: ContractAttachment[];

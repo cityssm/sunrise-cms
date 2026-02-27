@@ -19,7 +19,7 @@ export default async function handler(request, response) {
     if (contract === undefined) {
         response.json({
             errorMessage: 'Contract not found.',
-            success: false,
+            success: false
         });
         return;
     }
@@ -28,7 +28,7 @@ export default async function handler(request, response) {
         if (!success) {
             response.json({
                 errorMessage: 'Failed to delete attachment.',
-                success: false,
+                success: false
             });
             return;
         }
@@ -41,7 +41,7 @@ export default async function handler(request, response) {
     catch (error) {
         response.json({
             errorMessage: error.message,
-            success: false,
+            success: false
         });
     }
 }

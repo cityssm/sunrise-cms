@@ -1,6 +1,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddBurialSiteStatusResponse } from '../../handlers/admin-post/doAddBurialSiteStatus.js'
+import type { DoDeleteBurialSiteStatusResponse } from '../../handlers/admin-post/doDeleteBurialSiteStatus.js'
+import type { DoMoveBurialSiteStatusDownResponse } from '../../handlers/admin-post/doMoveBurialSiteStatusDown.js'
+import type { DoMoveBurialSiteStatusUpResponse } from '../../handlers/admin-post/doMoveBurialSiteStatusUp.js'
+import type { DoUpdateBurialSiteStatusResponse } from '../../handlers/admin-post/doUpdateBurialSiteStatus.js'
 import type { BurialSiteStatus } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -19,26 +24,13 @@ declare const exports: {
   let burialSiteStatuses = exports.burialSiteStatuses as BurialSiteStatus[]
   delete exports.burialSiteStatuses
 
-  type BurialSiteStatusResponseJSON =
-    | {
-        errorMessage?: string
-        success: false
-      }
-    | {
-        success: true
-
-        burialSiteStatuses: BurialSiteStatus[]
-      }
-
   function updateBurialSiteStatus(submitEvent: SubmitEvent): void {
     submitEvent.preventDefault()
 
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doUpdateBurialSiteStatus`,
       submitEvent.currentTarget,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as BurialSiteStatusResponseJSON
-
+      (responseJSON: DoUpdateBurialSiteStatusResponse) => {
         if (responseJSON.success) {
           burialSiteStatuses = responseJSON.burialSiteStatuses
 
@@ -49,9 +41,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Burial Site Status',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Burial Site Status'
           })
         }
       }
@@ -71,9 +61,7 @@ declare const exports: {
         {
           burialSiteStatusId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as BurialSiteStatusResponseJSON
-
+        (responseJSON: DoDeleteBurialSiteStatusResponse) => {
           if (responseJSON.success) {
             burialSiteStatuses = responseJSON.burialSiteStatuses
 
@@ -90,9 +78,7 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Deleting Burial Site Status',
-
-              message: responseJSON.errorMessage ?? ''
+              message: 'Error Deleting Burial Site Status'
             })
           }
         }
@@ -131,18 +117,18 @@ declare const exports: {
         burialSiteStatusId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as BurialSiteStatusResponseJSON
-
+      (
+        responseJSON:
+          | DoMoveBurialSiteStatusDownResponse
+          | DoMoveBurialSiteStatusUpResponse
+      ) => {
         if (responseJSON.success) {
           burialSiteStatuses = responseJSON.burialSiteStatuses
           renderBurialSiteStatuses()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Burial Site Status',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Burial Site Status'
           })
         }
       }
@@ -255,22 +241,11 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/admin/doAddBurialSiteStatus`,
       formElement,
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as BurialSiteStatusResponseJSON
-
-        if (responseJSON.success) {
-          burialSiteStatuses = responseJSON.burialSiteStatuses
-          renderBurialSiteStatuses()
-          formElement.reset()
-          formElement.querySelector('input')?.focus()
-        } else {
-          bulmaJS.alert({
-            contextualColorName: 'danger',
-            title: 'Error Adding Burial Site Status',
-
-            message: responseJSON.errorMessage ?? ''
-          })
-        }
+      (responseJSON: DoAddBurialSiteStatusResponse) => {
+        burialSiteStatuses = responseJSON.burialSiteStatuses
+        renderBurialSiteStatuses()
+        formElement.reset()
+        formElement.querySelector('input')?.focus()
       }
     )
   })

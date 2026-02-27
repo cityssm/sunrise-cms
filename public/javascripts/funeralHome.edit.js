@@ -17,8 +17,7 @@
     }
     function updateFuneralHome(formEvent) {
         formEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/funeralHomes/${isCreate ? 'doCreateFuneralHome' : 'doUpdateFuneralHome'}`, funeralHomeForm, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/funeralHomes/${isCreate ? 'doCreateFuneralHome' : 'doUpdateFuneralHome'}`, funeralHomeForm, (responseJSON) => {
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
@@ -34,8 +33,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Funeral Home',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Updating Funeral Home'
                 });
             }
         });
@@ -52,8 +50,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/funeralHomes/doDeleteFuneralHome`, {
                 funeralHomeId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     globalThis.location.href = sunrise.getFuneralHomeUrl();
                 }
@@ -61,7 +58,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Funeral Home',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });

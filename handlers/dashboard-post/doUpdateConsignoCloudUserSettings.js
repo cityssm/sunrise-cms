@@ -10,10 +10,14 @@ export default function handler(request, response) {
     try {
         database = sqlite(sunriseDB);
         const success = updateConsignoCloudUserSettings(request.body, request.session.user, database);
-        if (success) {
-            ;
-            request.session.user.userSettings = getUserSettings(request.session.user?.userName ?? '', database);
+        if (!success) {
+            response
+                .status(400)
+                .json({ errorMessage: 'Failed to update settings', success: false });
+            return;
         }
+        ;
+        request.session.user.userSettings = getUserSettings(request.session.user?.userName ?? '', database);
         response.json({
             success
         });

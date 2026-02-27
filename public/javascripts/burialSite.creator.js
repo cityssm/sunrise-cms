@@ -1,4 +1,3 @@
-;
 (() => {
     const sunrise = exports.sunrise;
     const newResultsPanelElement = document.querySelector('#panel--burialSitePreview_new');
@@ -86,8 +85,7 @@
             burialSiteNameSegment5,
             burialSiteStatusId,
             burialSiteTypeId
-        }, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        }, (responseJSON) => {
             if (responseJSON.success) {
                 panelBlockElement.remove();
                 const newPanelBlockElement = buildExistingBurialSitePanelBlockElement(responseJSON.burialSiteName, responseJSON.burialSiteId);
@@ -100,7 +98,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Error Creating Burial Site',
-                    message: responseJSON.errorMessage ?? 'Unknown error.'
+                    message: responseJSON.errorMessage
                 });
                 buttonElement.disabled = false;
                 buttonElement.classList.remove('is-loading');
@@ -114,7 +112,7 @@
             if (burialSiteName.burialSiteId === undefined) {
                 const panelBlockElement = document.createElement('div');
                 panelBlockElement.className = 'panel-block is-burial-site-block';
-                panelBlockElement.dataset.cemeteryId = responseJSON.cemeteryId;
+                panelBlockElement.dataset.cemeteryId = String(responseJSON.cemeteryId);
                 panelBlockElement.dataset.burialSiteName = burialSiteName.burialSiteName;
                 panelBlockElement.dataset.burialSiteNameSegment1 =
                     burialSiteName.burialSiteNameSegment1;
@@ -166,9 +164,7 @@
         clearPanel(existingResultsPanelElement);
         updateCountElements();
         document.querySelector('#tab--burialSitePreview').click();
-        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doGetBurialSiteNamesByRange`, formElement, (rawResponseJSON) => {
-            renderBurialSiteNames(rawResponseJSON);
-        });
+        cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doGetBurialSiteNamesByRange`, formElement, renderBurialSiteNames);
     });
     // Cemetery Key Preview
     const cemeteryKeyFromSpanElement = document.querySelector('#burialSiteCreator--cemeteryKey_from');

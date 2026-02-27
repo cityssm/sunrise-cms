@@ -4,13 +4,13 @@ import getBurialSiteDeceasedNames from '../../database/getBurialSiteDeceasedName
 import getBurialSites, {
   type GetBurialSitesFilters
 } from '../../database/getBurialSites.js'
-
 import type { BurialSite } from '../../types/record.types.js'
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoSearchBurialSitesForGpsResponse =
-  | { burialSites: Array<BurialSite & { deceasedNames: string[] }>; success: true }
+  | {
+      burialSites: Array<BurialSite & { deceasedNames: string[] }>
+      success: true
+    }
   | { errorMessage: string; success: false }
 
 export default function handler(

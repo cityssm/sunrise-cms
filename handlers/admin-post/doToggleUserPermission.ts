@@ -2,21 +2,22 @@ import type { Request, Response } from 'express'
 
 import getUsers from '../../database/getUsers.js'
 import updateUser from '../../database/updateUser.js'
-
 import type { DatabaseUser } from '../../types/record.types.js'
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoToggleUserPermissionResponse =
-  { message: string; success: true; users: DatabaseUser[] }
   | { message: string; success: false }
+  | { message: string; success: true; users: DatabaseUser[] }
 
-export default function handler(request: Request, response: Response<DoToggleUserPermissionResponse>): void {
+export default function handler(
+  request: Request,
+  response: Response<DoToggleUserPermissionResponse>
+): void {
   const { userName, permissionField } = request.body
 
   if (!userName || !permissionField) {
     response.status(400).json({
       success: false,
+
       message: 'User name and permission field are required'
     })
     return
@@ -46,6 +47,7 @@ export default function handler(request: Request, response: Response<DoToggleUse
     if (!currentUser) {
       response.status(404).json({
         success: false,
+
         message: 'User not found'
       })
       return
@@ -54,10 +56,12 @@ export default function handler(request: Request, response: Response<DoToggleUse
     // Toggle the permission
     const updateForm = {
       userName,
+
       isActive:
         permissionField === 'isActive'
           ? !currentUser.isActive
           : currentUser.isActive,
+
       canUpdateCemeteries:
         permissionField === 'canUpdateCemeteries'
           ? !currentUser.canUpdateCemeteries
@@ -82,18 +86,21 @@ export default function handler(request: Request, response: Response<DoToggleUse
       const updatedUsers = getUsers()
       response.json({
         success: true,
+
         message: 'Permission updated successfully',
         users: updatedUsers
       })
     } else {
       response.status(404).json({
         success: false,
+
         message: 'User not found'
       })
     }
   } catch (error) {
     response.status(500).json({
       success: false,
+
       message:
         error instanceof Error ? error.message : 'Failed to update permission'
     })

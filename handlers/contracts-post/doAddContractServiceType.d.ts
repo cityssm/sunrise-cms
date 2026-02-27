@@ -1,11 +1,11 @@
 import type { Request, Response } from 'express';
 import type { ServiceType } from '../../types/record.types.js';
 export type DoAddContractServiceTypeResponse = {
-    success: true;
-    contractServiceTypes: ServiceType[];
-} | {
     success: false;
     errorMessage: string;
+} | {
+    success: true;
+    contractServiceTypes: ServiceType[];
 };
 export default function handler(request: Request<unknown, unknown, {
     contractId: number | string;

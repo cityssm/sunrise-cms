@@ -10,10 +10,9 @@
         let editCloseModalFunction;
         function editContractComment(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractComment`, editFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractComment`, editFormElement, (responseJSON) => {
                 if (responseJSON.success) {
-                    contractComments = responseJSON.contractComments ?? [];
+                    contractComments = responseJSON.contractComments;
                     if (editCloseModalFunction !== undefined) {
                         editCloseModalFunction();
                     }
@@ -23,7 +22,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -68,8 +67,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractComment`, {
                 contractCommentId,
                 contractId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     contractComments = responseJSON.contractComments;
                     renderContractComments();
@@ -78,7 +76,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Removing Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -161,8 +159,7 @@
         let addCloseModalFunction;
         function addComment(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractComment`, addFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doAddContractComment`, addFormElement, (responseJSON) => {
                 if (responseJSON.success) {
                     contractComments = responseJSON.contractComments;
                     if (addCloseModalFunction !== undefined) {
@@ -174,7 +171,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });

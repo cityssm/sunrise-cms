@@ -10,8 +10,7 @@
         let editCloseModalFunction;
         function editComment(submitEvent) {
             submitEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkOrderComment`, editFormElement, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkOrderComment`, editFormElement, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderComments = responseJSON.workOrderComments;
                     editCloseModalFunction();
@@ -21,7 +20,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -40,7 +39,7 @@
                     // eslint-disable-next-line unicorn/prefer-math-min-max
                     (workOrderComment.commentDateString ?? '') <= currentDateString
                         ? currentDateString
-                        : workOrderComment.commentDateString ?? '';
+                        : (workOrderComment.commentDateString ?? '');
                 modalElement.querySelector('#workOrderCommentEdit--commentTimeString').value = workOrderComment.commentTimeString ?? '';
             },
             onshown(modalElement, closeModalFunction) {
@@ -62,8 +61,7 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doDeleteWorkOrderComment`, {
                 workOrderCommentId,
                 workOrderId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderComments = responseJSON.workOrderComments;
                     renderWorkOrderComments();
@@ -72,7 +70,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Removing Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -122,7 +120,7 @@
           ${cityssm.escapeHTML(workOrderComment.commentDateString ?? '')}
           ${cityssm.escapeHTML(workOrderComment.commentTime === 0
                 ? ''
-                : workOrderComment.commentTimePeriodString ?? '')}
+                : (workOrderComment.commentTimePeriodString ?? ''))}
         </td>
         <td>
           ${cityssm.escapeHTML(workOrderComment.comment ?? '')}
@@ -154,8 +152,7 @@
         let addCommentCloseModalFunction;
         function doAddComment(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderComment`, formEvent.currentTarget, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doAddWorkOrderComment`, formEvent.currentTarget, (responseJSON) => {
                 if (responseJSON.success) {
                     workOrderComments = responseJSON.workOrderComments;
                     renderWorkOrderComments();

@@ -1,5 +1,6 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoGetWorkOrderMilestonesResponse } from '../../handlers/workOrders-post/doGetWorkOrderMilestones.js'
 import type { WorkOrder, WorkOrderMilestone } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -222,11 +223,12 @@ declare const exports: {
 
     let dateString = workOrderMilestones[0]?.workOrderMilestoneDateString
 
-    dateString ??=
-      workOrderMilestoneYearElement.value.padStart(4, '0') +
-      '-' +
-      workOrderMilestoneMonthElement.value.padStart(2, '0') +
-      '-01'
+    if (dateString === undefined) {
+      const paddedYear = workOrderMilestoneYearElement.value.padStart(4, '0')
+      const paddedMonth = workOrderMilestoneMonthElement.value.padStart(2, '0')
+
+      dateString = `${paddedYear}-${paddedMonth}-01`
+    }
 
     renderBlankCalendar(dateString)
 
@@ -308,14 +310,8 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/workOrders/doGetWorkOrderMilestones`,
       workOrderSearchFiltersFormElement,
-      (responseJSON) => {
-        renderMilestones(
-          (
-            responseJSON as {
-              workOrderMilestones: WorkOrderMilestone[]
-            }
-          ).workOrderMilestones
-        )
+      (responseJSON: DoGetWorkOrderMilestonesResponse) => {
+        renderMilestones(responseJSON.workOrderMilestones)
       }
     )
   }

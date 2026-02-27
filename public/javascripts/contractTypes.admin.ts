@@ -3,6 +3,12 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoAddContractTypeResponse } from '../../handlers/admin-post/doAddContractType.js'
+import type { DoAddContractTypeFieldResponse } from '../../handlers/admin-post/doAddContractTypeField.js'
+import type { DoAddContractTypePrintResponse } from '../../handlers/admin-post/doAddContractTypePrint.js'
+import type { DoDeleteContractTypeFieldResponse } from '../../handlers/admin-post/doDeleteContractTypeField.js'
+import type { DoUpdateContractTypeResponse } from '../../handlers/admin-post/doUpdateContractType.js'
+import type { DoUpdateContractTypeFieldResponse } from '../../handlers/admin-post/doUpdateContractTypeField.js'
 import type {
   ContractType,
   ContractTypeField
@@ -20,20 +26,6 @@ declare const exports: {
   contractTypePrintTitles: Record<string, string>
   contractTypes: ContractType[]
 }
-
-type ResponseJSON =
-  | {
-      success: false
-
-      errorMessage?: string
-    }
-  | {
-      success: true
-
-      allContractTypeFields: ContractTypeField[]
-      contractTypeFieldId?: number
-      contractTypes: ContractType[]
-    }
 ;(() => {
   const sunrise = exports.sunrise
 
@@ -82,9 +74,9 @@ type ResponseJSON =
     }
   }
 
-  function contractTypeResponseHandler(rawResponseJSON: unknown): void {
-    const responseJSON = rawResponseJSON as ResponseJSON
-
+  function contractTypeResponseHandler(
+    responseJSON: DoUpdateContractTypeResponse
+  ): void {
     if (responseJSON.success) {
       contractTypes = responseJSON.contractTypes
       allContractTypeFields = responseJSON.allContractTypeFields
@@ -92,9 +84,7 @@ type ResponseJSON =
     } else {
       bulmaJS.alert({
         contextualColorName: 'danger',
-        title: 'Error Updating Contract Type',
-
-        message: responseJSON.errorMessage ?? ''
+        message: 'Error Updating Contract Type'
       })
     }
   }
@@ -154,9 +144,7 @@ type ResponseJSON =
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateContractType`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoUpdateContractTypeResponse) => {
           contractTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -224,19 +212,15 @@ type ResponseJSON =
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddContractTypeField`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoAddContractTypeFieldResponse) => {
           expandedContractTypes.add(contractTypeId)
           contractTypeResponseHandler(responseJSON)
 
-          if (responseJSON.success) {
-            addCloseModalFunction()
-            openEditContractTypeField(
-              contractTypeId,
-              responseJSON.contractTypeFieldId ?? 0
-            )
-          }
+          addCloseModalFunction()
+          openEditContractTypeField(
+            contractTypeId,
+            responseJSON.contractTypeFieldId
+          )
         }
       )
     }
@@ -361,9 +345,7 @@ type ResponseJSON =
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doUpdateContractTypeField`,
         submitEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoUpdateContractTypeFieldResponse) => {
           contractTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -378,9 +360,7 @@ type ResponseJSON =
         {
           contractTypeFieldId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoDeleteContractTypeFieldResponse) => {
           contractTypeResponseHandler(responseJSON)
           if (responseJSON.success) {
             editCloseModalFunction()
@@ -624,9 +604,7 @@ type ResponseJSON =
       cityssm.postJSON(
         `${sunrise.urlPrefix}/admin/doAddContractTypePrint`,
         formEvent.currentTarget,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as ResponseJSON
-
+        (responseJSON: DoAddContractTypePrintResponse) => {
           if (responseJSON.success) {
             closeAddModalFunction()
           }
@@ -1041,21 +1019,10 @@ type ResponseJSON =
         cityssm.postJSON(
           `${sunrise.urlPrefix}/admin/doAddContractType`,
           submitEvent.currentTarget,
-          (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON as ResponseJSON
-
-            if (responseJSON.success) {
-              addCloseModalFunction()
-              contractTypes = responseJSON.contractTypes
-              renderContractTypes()
-            } else {
-              bulmaJS.alert({
-                contextualColorName: 'danger',
-                title: 'Error Adding Contract Type',
-
-                message: responseJSON.errorMessage ?? ''
-              })
-            }
+          (responseJSON: DoAddContractTypeResponse) => {
+            addCloseModalFunction()
+            contractTypes = responseJSON.contractTypes
+            renderContractTypes()
           }
         )
       }

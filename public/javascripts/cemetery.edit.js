@@ -35,8 +35,7 @@
     }
     function updateCemetery(formEvent) {
         formEvent.preventDefault();
-        cityssm.postJSON(`${sunrise.urlPrefix}/cemeteries/${isCreate ? 'doCreateCemetery' : 'doUpdateCemetery'}`, cemeteryForm, (rawResponseJSON) => {
-            const responseJSON = rawResponseJSON;
+        cityssm.postJSON(`${sunrise.urlPrefix}/cemeteries/${isCreate ? 'doCreateCemetery' : 'doUpdateCemetery'}`, cemeteryForm, (responseJSON) => {
             if (responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
@@ -45,15 +44,14 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'success',
-                        message: 'Cemetery Updated Successfully',
+                        message: 'Cemetery Updated Successfully'
                     });
                 }
             }
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Cemetery',
-                    message: responseJSON.errorMessage ?? '',
+                    message: 'Error Updating Cemetery'
                 });
             }
         });
@@ -70,8 +68,7 @@
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/cemeteries/doDeleteCemetery`, {
                 cemeteryId
-            }, (rawResponseJSON) => {
-                const responseJSON = rawResponseJSON;
+            }, (responseJSON) => {
                 if (responseJSON.success) {
                     globalThis.location.href = sunrise.getCemeteryUrl();
                 }
@@ -79,7 +76,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Cemetery',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
