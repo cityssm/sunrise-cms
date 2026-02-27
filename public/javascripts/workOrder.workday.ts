@@ -3,6 +3,11 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
+import type { DoCloseWorkdayWorkOrderResponse } from '../../handlers/workOrders-post/doCloseWorkdayWorkOrder.js'
+import type { DoCompleteWorkdayWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doCompleteWorkdayWorkOrderMilestone.js'
+import type { DoGetWorkdayReportResponse } from '../../handlers/workOrders-post/doGetWorkdayReport.js'
+import type { DoReopenWorkdayWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doReopenWorkdayWorkOrderMilestone.js'
+import type { DoUpdateWorkdayWorkOrderMilestoneTimeResponse } from '../../handlers/workOrders-post/doUpdateWorkdayWorkOrderMilestoneTime.js'
 import type {
   BurialSite,
   Contract,
@@ -53,19 +58,7 @@ declare const exports: {
           workdayDateString,
           workOrderMilestoneId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-            workOrders: WorkOrder[]
-          }
-
-          if (responseJSON.success) {
-            bulmaJS.alert({
-              contextualColorName: 'success',
-              message: 'Work Order Milestone updated successfully.'
-            })
-
-            renderWorkOrders(workdayDateString, responseJSON.workOrders)
+        (responseJSON: DoCompleteWorkdayWorkOrderMilestoneResponse | DoReopenWorkdayWorkOrderMilestoneResponse) => {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
@@ -128,14 +121,7 @@ declare const exports: {
       cityssm.postJSON(
         `${sunrise.urlPrefix}/workOrders/doUpdateWorkdayWorkOrderMilestoneTime`,
         formElement,
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-            workOrders: WorkOrder[]
-          }
-
-          if (responseJSON.success) {
-            closeModalFunction?.()
+        (responseJSON: DoUpdateWorkdayWorkOrderMilestoneTimeResponse) => {
 
             bulmaJS.alert({
               contextualColorName: 'success',
@@ -226,12 +212,7 @@ declare const exports: {
           workdayDateString,
           workOrderId
         },
-        (rawResponseJSON) => {
-          const responseJSON = rawResponseJSON as {
-            success: boolean
-            workOrders: WorkOrder[]
-          }
-
+        (responseJSON: DoCloseWorkdayWorkOrderResponse) => {
           if (responseJSON.success) {
             bulmaJS.alert({
               contextualColorName: 'success',
@@ -656,8 +637,7 @@ declare const exports: {
       {
         workdayDateString
       },
-      (rawResponseJSON) => {
-        const responseJSON = rawResponseJSON as { workOrders: WorkOrder[] }
+      (responseJSON: DoGetWorkdayReportResponse) => {
         renderWorkOrders(workdayDateString, responseJSON.workOrders)
       }
     )
