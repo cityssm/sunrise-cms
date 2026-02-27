@@ -6,18 +6,19 @@ import deleteContractTransaction from '../../database/deleteContractTransaction.
 import getContractTransactions from '../../database/getContractTransactions.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { ContractTransaction } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:contracts:doDeleteContractTransaction`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoDeleteContractTransactionResponse =
-  { success: boolean; contractTransactions: ContractTransaction[] }
   | { errorMessage: string; success: false }
+  | {
+      success: boolean
+      contractTransactions: ContractTransaction[]
+      errorMessage: string
+    }
 
 export default async function handler(
   request: Request<
@@ -50,7 +51,9 @@ export default async function handler(
     response.json({
       success,
 
-      contractTransactions
+      contractTransactions,
+
+      errorMessage: success ? '' : 'Failed to delete transaction'
     })
   } catch (error) {
     debug(error)

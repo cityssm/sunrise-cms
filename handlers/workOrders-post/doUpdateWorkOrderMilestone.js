@@ -17,7 +17,8 @@ export default async function handler(request, response) {
         }, database);
         response.json({
             success,
-            workOrderMilestones
+            workOrderMilestones,
+            errorMessage: success ? '' : 'Failed to update milestone'
         });
     }
     catch (error) {

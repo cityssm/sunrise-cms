@@ -91,7 +91,7 @@
             hasCoordinates: formData.get('hasCoordinates')
         };
         cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSitesForGPS`, searchData, (responseJSON) => {
-            if (responseJSON.success && responseJSON.burialSites !== undefined) {
+            if (responseJSON.success) {
                 allBurialSites = responseJSON.burialSites;
                 renderBurialSites();
             }
@@ -99,7 +99,7 @@
                 burialSitesContainerElement.innerHTML = /* html */ `
             <div class="message is-danger">
               <p class="message-body">
-                ${cityssm.escapeHTML(responseJSON.errorMessage ?? 'Failed to search burial sites.')}
+                ${cityssm.escapeHTML(responseJSON.errorMessage)}
               </p>
             </div>
           `;
@@ -171,8 +171,7 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Capture Failed',
-                    message: responseJSON.errorMessage ??
-                        'Failed to capture coordinates. Please try again.'
+                    message: responseJSON.errorMessage
                 });
             }
         });

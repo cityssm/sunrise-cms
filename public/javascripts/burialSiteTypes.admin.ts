@@ -5,12 +5,7 @@ import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
 import type { DoAddBurialSiteTypeResponse } from '../../handlers/admin-post/doAddBurialSiteType.js'
 import type { DoAddBurialSiteTypeFieldResponse } from '../../handlers/admin-post/doAddBurialSiteTypeField.js'
-import type { DoDeleteBurialSiteTypeResponse } from '../../handlers/admin-post/doDeleteBurialSiteType.js'
 import type { DoDeleteBurialSiteTypeFieldResponse } from '../../handlers/admin-post/doDeleteBurialSiteTypeField.js'
-import type { DoMoveBurialSiteTypeDownResponse } from '../../handlers/admin-post/doMoveBurialSiteTypeDown.js'
-import type { DoMoveBurialSiteTypeFieldDownResponse } from '../../handlers/admin-post/doMoveBurialSiteTypeFieldDown.js'
-import type { DoMoveBurialSiteTypeFieldUpResponse } from '../../handlers/admin-post/doMoveBurialSiteTypeFieldUp.js'
-import type { DoMoveBurialSiteTypeUpResponse } from '../../handlers/admin-post/doMoveBurialSiteTypeUp.js'
 import type { DoUpdateBurialSiteTypeResponse } from '../../handlers/admin-post/doUpdateBurialSiteType.js'
 import type { DoUpdateBurialSiteTypeFieldResponse } from '../../handlers/admin-post/doUpdateBurialSiteTypeField.js'
 import type {
@@ -31,7 +26,6 @@ declare const exports: {
   bodyCapacityMaxDefault: number
   crematedCapacityMaxDefault: number
 }
-
 ;(() => {
   const sunrise = exports.sunrise
 
@@ -77,16 +71,16 @@ declare const exports: {
     }
   }
 
-  function burialSiteTypeResponseHandler(responseJSON: DoUpdateBurialSiteTypeResponse): void {
+  function burialSiteTypeResponseHandler(
+    responseJSON: DoUpdateBurialSiteTypeResponse
+  ): void {
     if (responseJSON.success) {
       burialSiteTypes = responseJSON.burialSiteTypes
       renderBurialSiteTypes()
     } else {
       bulmaJS.alert({
         contextualColorName: 'danger',
-        title: 'Error Updating Burial Site Type',
-
-        message: responseJSON.errorMessage ?? ''
+        message: 'Error Updating Burial Site Type'
       })
     }
   }
@@ -220,13 +214,11 @@ declare const exports: {
           expandedBurialSiteTypes.add(burialSiteTypeId)
           burialSiteTypeResponseHandler(responseJSON)
 
-          if (responseJSON.success) {
-            addCloseModalFunction()
-            openEditBurialSiteTypeField(
-              burialSiteTypeId,
-              responseJSON.burialSiteTypeFieldId
-            )
-          }
+          addCloseModalFunction()
+          openEditBurialSiteTypeField(
+            burialSiteTypeId,
+            responseJSON.burialSiteTypeFieldId
+          )
         }
       )
     }
@@ -770,18 +762,9 @@ declare const exports: {
           `${sunrise.urlPrefix}/admin/doAddBurialSiteType`,
           submitEvent.currentTarget,
           (responseJSON: DoAddBurialSiteTypeResponse) => {
-            if (responseJSON.success) {
-              addCloseModalFunction()
-              burialSiteTypes = responseJSON.burialSiteTypes
-              renderBurialSiteTypes()
-            } else {
-              bulmaJS.alert({
-                contextualColorName: 'danger',
-                title: 'Error Adding Burial Site Type',
-
-                message: responseJSON.errorMessage ?? ''
-              })
-            }
+            addCloseModalFunction()
+            burialSiteTypes = responseJSON.burialSiteTypes
+            renderBurialSiteTypes()
           }
         )
       }

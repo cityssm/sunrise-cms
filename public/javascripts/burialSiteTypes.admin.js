@@ -32,8 +32,7 @@
         else {
             bulmaJS.alert({
                 contextualColorName: 'danger',
-                title: 'Error Updating Burial Site Type',
-                message: responseJSON.errorMessage ?? ''
+                message: 'Error Updating Burial Site Type'
             });
         }
     }
@@ -94,10 +93,8 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddBurialSiteTypeField`, submitEvent.currentTarget, (responseJSON) => {
                 expandedBurialSiteTypes.add(burialSiteTypeId);
                 burialSiteTypeResponseHandler(responseJSON);
-                if (responseJSON.success) {
-                    addCloseModalFunction();
-                    openEditBurialSiteTypeField(burialSiteTypeId, responseJSON.burialSiteTypeFieldId);
-                }
+                addCloseModalFunction();
+                openEditBurialSiteTypeField(burialSiteTypeId, responseJSON.burialSiteTypeFieldId);
             });
         }
         cityssm.openHtmlModal('adminBurialSiteTypes-addField', {
@@ -447,18 +444,9 @@
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddBurialSiteType`, submitEvent.currentTarget, (responseJSON) => {
-                if (responseJSON.success) {
-                    addCloseModalFunction();
-                    burialSiteTypes = responseJSON.burialSiteTypes;
-                    renderBurialSiteTypes();
-                }
-                else {
-                    bulmaJS.alert({
-                        contextualColorName: 'danger',
-                        title: 'Error Adding Burial Site Type',
-                        message: responseJSON.errorMessage ?? ''
-                    });
-                }
+                addCloseModalFunction();
+                burialSiteTypes = responseJSON.burialSiteTypes;
+                renderBurialSiteTypes();
             });
         }
         cityssm.openHtmlModal('adminBurialSiteTypes-add', {

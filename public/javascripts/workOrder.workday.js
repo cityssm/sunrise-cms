@@ -15,125 +15,136 @@
                 workdayDateString,
                 workOrderMilestoneId
             }, (responseJSON) => {
-            }, {
-                bulmaJS, : .alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Updating Milestone',
-                    message: 'Please try again.'
-                })
+                if (responseJSON.success) {
+                    bulmaJS.alert({
+                        contextualColorName: 'success',
+                        message: 'Work Order Milestone updated successfully.'
+                    });
+                    renderWorkOrders(workdayDateString, responseJSON.workOrders);
+                }
+                else {
+                    bulmaJS.alert({
+                        contextualColorName: 'danger',
+                        title: 'Error Updating Milestone',
+                        message: 'Please try again.'
+                    });
+                }
+            });
+        }
+        if (milestoneIsCompleted) {
+            bulmaJS.confirm({
+                contextualColorName: 'warning',
+                title: 'Reopen Work Order Milestone',
+                message: 'Are you sure you want to reopen this milestone?',
+                okButton: {
+                    text: 'Yes, Reopen this Milestone',
+                    callbackFunction: doToggleMilestone
+                }
+            });
+        }
+        else {
+            bulmaJS.confirm({
+                contextualColorName: 'info',
+                title: 'Complete Work Order Milestone',
+                message: 'Are you sure you want to complete this milestone?',
+                okButton: {
+                    text: 'Yes, Complete this Milestone',
+                    callbackFunction: doToggleMilestone
+                }
             });
         }
     }
-    if (milestoneIsCompleted) {
+    function updateMilestoneTime(clickEvent) {
+        const buttonElement = clickEvent.currentTarget;
+        const workOrderMilestoneId = Number.parseInt(buttonElement.dataset.workOrderMilestoneId ?? '', 10);
+        const workOrderMilestoneTimeString = buttonElement.dataset.workOrderMilestoneTimeString ?? '';
+        let closeModalFunction;
+        function doUpdateTime(submitEvent) {
+            submitEvent.preventDefault();
+            const formElement = submitEvent.currentTarget;
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkdayWorkOrderMilestoneTime`, formElement, (responseJSON) => {
+                if (responseJSON.success) {
+                    closeModalFunction?.();
+                    bulmaJS.alert({
+                        contextualColorName: 'success',
+                        message: 'Work Order Milestone Time updated successfully.'
+                    });
+                    renderWorkOrders(cityssm.dateToString(workdayDate), responseJSON.workOrders);
+                }
+                else {
+                    bulmaJS.alert({
+                        contextualColorName: 'danger',
+                        title: 'Error Updating Milestone Time',
+                        message: 'Please try again.'
+                    });
+                }
+            });
+        }
+        cityssm.openHtmlModal('workOrderWorkday-editMilestoneTime', {
+            onshow(modalElement) {
+                ;
+                modalElement.querySelector('#workOrderMilestoneUpdate--workdayDateString').value = cityssm.dateToString(workdayDate);
+                modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneId').value = workOrderMilestoneId.toString();
+                modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneDateString').value = cityssm.dateToString(workdayDate);
+                modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneTimeString').value = workOrderMilestoneTimeString;
+            },
+            onshown(modalElement, _closeModalFunction) {
+                bulmaJS.toggleHtmlClipped();
+                closeModalFunction = _closeModalFunction;
+                modalElement
+                    .querySelector('.is-unlock-button')
+                    ?.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const dateElement = modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneDateString');
+                    dateElement.removeAttribute('readonly');
+                    dateElement.focus();
+                });
+                modalElement
+                    .querySelector('form')
+                    ?.addEventListener('submit', doUpdateTime);
+            },
+            onremoved() {
+                bulmaJS.toggleHtmlClipped();
+            }
+        });
+    }
+    function closeWorkOrder(clickEvent) {
+        const closeButtonElement = clickEvent.currentTarget;
+        const workdayDateString = cityssm.dateToString(workdayDate);
+        const workOrderId = Number.parseInt(closeButtonElement.dataset.workOrderId ?? '', 10);
+        function doClose() {
+            cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCloseWorkdayWorkOrder`, {
+                workdayDateString,
+                workOrderId
+            }, (responseJSON) => {
+                if (responseJSON.success) {
+                    bulmaJS.alert({
+                        contextualColorName: 'success',
+                        message: 'Work Order closed successfully.'
+                    });
+                    renderWorkOrders(workdayDateString, responseJSON.workOrders);
+                }
+                else {
+                    bulmaJS.alert({
+                        contextualColorName: 'danger',
+                        title: 'Error Closing Work Order',
+                        message: 'Please try again.'
+                    });
+                }
+            });
+        }
         bulmaJS.confirm({
             contextualColorName: 'warning',
-            title: 'Reopen Work Order Milestone',
-            message: 'Are you sure you want to reopen this milestone?',
+            title: 'Close Work Order',
+            message: 'Are you sure you want to close this work order?',
             okButton: {
-                text: 'Yes, Reopen this Milestone',
-                callbackFunction: doToggleMilestone
+                text: 'Yes, Close this Work Order',
+                callbackFunction: doClose
             }
         });
     }
-    else {
-        bulmaJS.confirm({
-            contextualColorName: 'info',
-            title: 'Complete Work Order Milestone',
-            message: 'Are you sure you want to complete this milestone?',
-            okButton: {
-                text: 'Yes, Complete this Milestone',
-                callbackFunction: doToggleMilestone
-            }
-        });
-    }
-});
-function updateMilestoneTime(clickEvent) {
-    const buttonElement = clickEvent.currentTarget;
-    const workOrderMilestoneId = Number.parseInt(buttonElement.dataset.workOrderMilestoneId ?? '', 10);
-    const workOrderMilestoneTimeString = buttonElement.dataset.workOrderMilestoneTimeString ?? '';
-    let closeModalFunction;
-    function doUpdateTime(submitEvent) {
-        submitEvent.preventDefault();
-        const formElement = submitEvent.currentTarget;
-        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doUpdateWorkdayWorkOrderMilestoneTime`, formElement, (responseJSON) => {
-            bulmaJS.alert({
-                contextualColorName: 'success',
-                message: 'Work Order Milestone Time updated successfully.'
-            });
-            renderWorkOrders(cityssm.dateToString(workdayDate), responseJSON.workOrders);
-        }, {
-            bulmaJS, : .alert({
-                contextualColorName: 'danger',
-                title: 'Error Updating Milestone Time',
-                message: 'Please try again.'
-            })
-        });
-    }
-}
-cityssm.openHtmlModal('workOrderWorkday-editMilestoneTime', {
-    onshow(modalElement) {
-        ;
-        modalElement.querySelector('#workOrderMilestoneUpdate--workdayDateString').value = cityssm.dateToString(workdayDate);
-        modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneId').value = workOrderMilestoneId.toString();
-        modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneDateString').value = cityssm.dateToString(workdayDate);
-        modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneTimeString').value = workOrderMilestoneTimeString;
-    },
-    onshown(modalElement, _closeModalFunction) {
-        bulmaJS.toggleHtmlClipped();
-        closeModalFunction = _closeModalFunction;
-        modalElement
-            .querySelector('.is-unlock-button')
-            ?.addEventListener('click', (event) => {
-            event.preventDefault();
-            const dateElement = modalElement.querySelector('#workOrderMilestoneUpdate--workOrderMilestoneDateString');
-            dateElement.removeAttribute('readonly');
-            dateElement.focus();
-        });
-        modalElement
-            .querySelector('form')
-            ?.addEventListener('submit', doUpdateTime);
-    },
-    onremoved() {
-        bulmaJS.toggleHtmlClipped();
-    }
-});
-function closeWorkOrder(clickEvent) {
-    const closeButtonElement = clickEvent.currentTarget;
-    const workdayDateString = cityssm.dateToString(workdayDate);
-    const workOrderId = Number.parseInt(closeButtonElement.dataset.workOrderId ?? '', 10);
-    function doClose() {
-        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCloseWorkdayWorkOrder`, {
-            workdayDateString,
-            workOrderId
-        }, (responseJSON) => {
-            if (responseJSON.success) {
-                bulmaJS.alert({
-                    contextualColorName: 'success',
-                    message: 'Work Order closed successfully.'
-                });
-                renderWorkOrders(workdayDateString, responseJSON.workOrders);
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Closing Work Order',
-                    message: 'Please try again.'
-                });
-            }
-        });
-    }
-    bulmaJS.confirm({
-        contextualColorName: 'warning',
-        title: 'Close Work Order',
-        message: 'Are you sure you want to close this work order?',
-        okButton: {
-            text: 'Yes, Close this Work Order',
-            callbackFunction: doClose
-        }
-    });
-}
-function buildBurialSiteHTML(burialSite) {
-    return /* html */ `
+    function buildBurialSiteHTML(burialSite) {
+        return /* html */ `
       <li>
         <span class="fa-li"><i class="fa-solid fa-map-pin"></i></span>
         <a href="${sunrise.urlPrefix}/burialSites/${burialSite.burialSiteId}" target="_blank">
@@ -142,16 +153,16 @@ function buildBurialSiteHTML(burialSite) {
         <span class="is-size-7">${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}</span>
       </li>
     `;
-}
-function buildMilestoneElement(milestone, options) {
-    const milestoneElement = document.createElement('div');
-    milestoneElement.className = 'panel-block is-block';
-    const milestoneIsCompleted = milestone.workOrderMilestoneCompletionDate !== null;
-    const milestoneCheckIcon = milestoneIsCompleted
-        ? 'fa-solid fa-check'
-        : 'fa-regular fa-square';
-    const milestoneCheckHTML = options.canUpdateThisWorkOrder
-        ? /* html */ `
+    }
+    function buildMilestoneElement(milestone, options) {
+        const milestoneElement = document.createElement('div');
+        milestoneElement.className = 'panel-block is-block';
+        const milestoneIsCompleted = milestone.workOrderMilestoneCompletionDate !== null;
+        const milestoneCheckIcon = milestoneIsCompleted
+            ? 'fa-solid fa-check'
+            : 'fa-regular fa-square';
+        const milestoneCheckHTML = options.canUpdateThisWorkOrder
+            ? /* html */ `
         <button
           class="button button--toggle-milestone"
           data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
@@ -165,16 +176,16 @@ function buildMilestoneElement(milestone, options) {
           </span>
         </button>
       `
-        : /* html */ `
+            : /* html */ `
         <span class="icon is-small">
           <i class="${milestoneCheckIcon}"></i>
         </span>
       `;
-    const milestoneTimeString = milestone.workOrderMilestoneTime === null
-        ? 'No Set Time'
-        : milestone.workOrderMilestoneTimePeriodString;
-    const milestoneTimeHTML = options.canUpdateThisWorkOrder && !milestoneIsCompleted
-        ? /* html */ `
+        const milestoneTimeString = milestone.workOrderMilestoneTime === null
+            ? 'No Set Time'
+            : milestone.workOrderMilestoneTimePeriodString;
+        const milestoneTimeHTML = options.canUpdateThisWorkOrder && !milestoneIsCompleted
+            ? /* html */ `
           <button
             class="button button--edit-milestone-time"
             data-work-order-milestone-id="${milestone.workOrderMilestoneId}"
@@ -185,9 +196,9 @@ function buildMilestoneElement(milestone, options) {
             ${milestoneTimeString}
           </button>
         `
-        : milestoneTimeString;
-    // eslint-disable-next-line no-unsanitized/property
-    milestoneElement.innerHTML = /* html */ `
+            : milestoneTimeString;
+        // eslint-disable-next-line no-unsanitized/property
+        milestoneElement.innerHTML = /* html */ `
       <div class="columns is-mobile">
         <div class="column is-narrow">
           ${milestoneCheckHTML}
@@ -205,27 +216,27 @@ function buildMilestoneElement(milestone, options) {
         </div>
       </div>
     `;
-    if (options.canUpdateThisWorkOrder) {
-        milestoneElement
-            .querySelector('.button--toggle-milestone')
-            ?.addEventListener('click', toggleWorkOrderMilestoneCompletion);
-        milestoneElement
-            .querySelector('.button--edit-milestone-time')
-            ?.addEventListener('click', updateMilestoneTime);
+        if (options.canUpdateThisWorkOrder) {
+            milestoneElement
+                .querySelector('.button--toggle-milestone')
+                ?.addEventListener('click', toggleWorkOrderMilestoneCompletion);
+            milestoneElement
+                .querySelector('.button--edit-milestone-time')
+                ?.addEventListener('click', updateMilestoneTime);
+        }
+        return milestoneElement;
     }
-    return milestoneElement;
-}
-function renderContractsAndBurialSitesOnWorkOrder(workOrder, workOrderElement) {
-    const usedFuneralHomeIds = new Set();
-    const usedBurialSiteIds = new Set();
-    const contactContainerElement = workOrderElement.querySelector('.list--contacts');
-    const burialSitesContainerElement = workOrderElement.querySelector('.list--burialSites');
-    for (const contract of workOrder.workOrderContracts ?? []) {
-        if (contract.funeralHomeId !== null &&
-            !usedFuneralHomeIds.has(contract.funeralHomeId)) {
-            usedFuneralHomeIds.add(contract.funeralHomeId);
-            workOrderElement.insertAdjacentHTML('beforeend', 
-            /* html */ `
+    function renderContractsAndBurialSitesOnWorkOrder(workOrder, workOrderElement) {
+        const usedFuneralHomeIds = new Set();
+        const usedBurialSiteIds = new Set();
+        const contactContainerElement = workOrderElement.querySelector('.list--contacts');
+        const burialSitesContainerElement = workOrderElement.querySelector('.list--burialSites');
+        for (const contract of workOrder.workOrderContracts ?? []) {
+            if (contract.funeralHomeId !== null &&
+                !usedFuneralHomeIds.has(contract.funeralHomeId)) {
+                usedFuneralHomeIds.add(contract.funeralHomeId);
+                workOrderElement.insertAdjacentHTML('beforeend', 
+                /* html */ `
             <div class="panel-block is-block">
               <div class="columns is-mobile">
                 <div class="column is-narrow">
@@ -251,10 +262,10 @@ function renderContractsAndBurialSitesOnWorkOrder(workOrder, workOrderElement) {
               </div>
             </div>
           `);
-        }
-        for (const interment of contract.contractInterments ?? []) {
-            contactContainerElement.insertAdjacentHTML('beforeend', 
-            /* html */ `
+            }
+            for (const interment of contract.contractInterments ?? []) {
+                contactContainerElement.insertAdjacentHTML('beforeend', 
+                /* html */ `
             <li>
               <span class="fa-li"><i class="fa-solid fa-user"></i></span>
               ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
@@ -263,49 +274,49 @@ function renderContractsAndBurialSitesOnWorkOrder(workOrder, workOrderElement) {
               </a>
             </li>
           `);
+            }
+            if (contract.burialSiteId !== undefined &&
+                contract.burialSiteId !== null &&
+                !usedBurialSiteIds.has(contract.burialSiteId)) {
+                usedBurialSiteIds.add(contract.burialSiteId);
+                burialSitesContainerElement.insertAdjacentHTML('beforeend', buildBurialSiteHTML(contract));
+            }
         }
-        if (contract.burialSiteId !== undefined &&
-            contract.burialSiteId !== null &&
-            !usedBurialSiteIds.has(contract.burialSiteId)) {
-            usedBurialSiteIds.add(contract.burialSiteId);
-            burialSitesContainerElement.insertAdjacentHTML('beforeend', buildBurialSiteHTML(contract));
+        for (const burialSite of workOrder.workOrderBurialSites ?? []) {
+            if (usedBurialSiteIds.has(burialSite.burialSiteId)) {
+                continue;
+            }
+            burialSitesContainerElement.insertAdjacentHTML('beforeend', buildBurialSiteHTML(burialSite));
         }
     }
-    for (const burialSite of workOrder.workOrderBurialSites ?? []) {
-        if (usedBurialSiteIds.has(burialSite.burialSiteId)) {
-            continue;
+    function renderMilestonesOnWorkOrder(workOrder, workOrderElement, options) {
+        const workdayDateString = cityssm.dateToString(workdayDate);
+        let includesMilestones = false;
+        let includesIncompleteMilestones = false;
+        for (const milestone of workOrder.workOrderMilestones ?? []) {
+            if (milestone.workOrderMilestoneCompletionDate === null) {
+                includesIncompleteMilestones = true;
+            }
+            if (milestone.workOrderMilestoneDateString !== workdayDateString) {
+                continue;
+            }
+            includesMilestones = true;
+            const milestoneElement = buildMilestoneElement(milestone, options);
+            workOrderElement.append(milestoneElement);
         }
-        burialSitesContainerElement.insertAdjacentHTML('beforeend', buildBurialSiteHTML(burialSite));
-    }
-}
-function renderMilestonesOnWorkOrder(workOrder, workOrderElement, options) {
-    const workdayDateString = cityssm.dateToString(workdayDate);
-    let includesMilestones = false;
-    let includesIncompleteMilestones = false;
-    for (const milestone of workOrder.workOrderMilestones ?? []) {
-        if (milestone.workOrderMilestoneCompletionDate === null) {
-            includesIncompleteMilestones = true;
-        }
-        if (milestone.workOrderMilestoneDateString !== workdayDateString) {
-            continue;
-        }
-        includesMilestones = true;
-        const milestoneElement = buildMilestoneElement(milestone, options);
-        workOrderElement.append(milestoneElement);
-    }
-    if (!includesMilestones) {
-        workOrderElement.insertAdjacentHTML('beforeend', 
-        /* html */ `
+        if (!includesMilestones) {
+            workOrderElement.insertAdjacentHTML('beforeend', 
+            /* html */ `
           <div class="panel-block is-block">
             <p class="has-text-grey">No individual milestones for this work order.</p>
           </div>
         `);
-    }
-    if (!includesIncompleteMilestones && options.canUpdateThisWorkOrder) {
-        workOrderElement
-            .querySelector('.panel-heading .level-right')
-            ?.insertAdjacentHTML('beforeend', 
-        /* html */ `
+        }
+        if (!includesIncompleteMilestones && options.canUpdateThisWorkOrder) {
+            workOrderElement
+                .querySelector('.panel-heading .level-right')
+                ?.insertAdjacentHTML('beforeend', 
+            /* html */ `
             <div class="level-item is-hidden-print">
               <button class="button is-small button--close-work-order"
                 data-work-order-id="${cityssm.escapeHTML(workOrder.workOrderId.toString())}"
@@ -317,32 +328,32 @@ function renderMilestonesOnWorkOrder(workOrder, workOrderElement, options) {
               </button>
             </div>
           `);
-        workOrderElement
-            .querySelector('.button--close-work-order')
-            ?.addEventListener('click', closeWorkOrder);
+            workOrderElement
+                .querySelector('.button--close-work-order')
+                ?.addEventListener('click', closeWorkOrder);
+        }
     }
-}
-// eslint-disable-next-line complexity
-function renderWorkOrders(workdayDateString, workOrders) {
-    workdayContainer.innerHTML = '';
-    currentDateString = cityssm.dateToString(new Date());
-    for (const workOrder of workOrders) {
-        const workOrderIsClosed = workOrder.workOrderCloseDate !== null;
-        const canUpdateThisWorkOrder = !workOrderIsClosed &&
-            canUpdateWorkOrders &&
-            cityssm.dateToString(workdayDate) <= currentDateString;
-        const workOrderElement = document.createElement('div');
-        workOrderElement.className = 'panel avoid-page-break';
-        let progressTagClassName = '';
-        if (workOrder.workOrderMilestoneCompletionCount ===
-            workOrder.workOrderMilestoneCount) {
-            progressTagClassName = 'is-success';
-        }
-        else if ((workOrder.workOrderMilestoneOverdueCount ?? 0) > 0) {
-            progressTagClassName = 'is-warning';
-        }
-        // eslint-disable-next-line no-unsanitized/property
-        workOrderElement.innerHTML = /* html */ `
+    // eslint-disable-next-line complexity
+    function renderWorkOrders(workdayDateString, workOrders) {
+        workdayContainer.innerHTML = '';
+        currentDateString = cityssm.dateToString(new Date());
+        for (const workOrder of workOrders) {
+            const workOrderIsClosed = workOrder.workOrderCloseDate !== null;
+            const canUpdateThisWorkOrder = !workOrderIsClosed &&
+                canUpdateWorkOrders &&
+                cityssm.dateToString(workdayDate) <= currentDateString;
+            const workOrderElement = document.createElement('div');
+            workOrderElement.className = 'panel avoid-page-break';
+            let progressTagClassName = '';
+            if (workOrder.workOrderMilestoneCompletionCount ===
+                workOrder.workOrderMilestoneCount) {
+                progressTagClassName = 'is-success';
+            }
+            else if ((workOrder.workOrderMilestoneOverdueCount ?? 0) > 0) {
+                progressTagClassName = 'is-warning';
+            }
+            // eslint-disable-next-line no-unsanitized/property
+            workOrderElement.innerHTML = /* html */ `
         <div class="panel-heading p-3">
           <div class="level is-mobile">
             <div class="level-left">
@@ -357,13 +368,13 @@ function renderWorkOrders(workdayDateString, workOrders) {
                     #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
                   </a>
                   ${workOrderIsClosed
-            ? /* html */ `
+                ? /* html */ `
                         <span class="tag is-info">
                           <span class="icon is-small"><i class="fa-solid fa-stop"></i></span>
                           <span>Closed</span>
                         </span>
                       `
-            : ''}
+                : ''}
                 </h2>
               </div>
             </div>
@@ -380,10 +391,10 @@ function renderWorkOrders(workdayDateString, workOrders) {
           </div>
         </div>
         <div class="panel-block is-block">
-          <p>${cityssm.escapeHTML((workOrder.workOrderDescription ?? '') === '' ? workOrder.workOrderType ?? '' : workOrder.workOrderDescription ?? '')}</p>
+          <p>${cityssm.escapeHTML((workOrder.workOrderDescription ?? '') === '' ? (workOrder.workOrderType ?? '') : (workOrder.workOrderDescription ?? ''))}</p>
           ${(workOrder.workOrderContracts ?? []).length > 0 ||
-            (workOrder.workOrderBurialSites ?? []).length > 0
-            ? /* html */ `
+                (workOrder.workOrderBurialSites ?? []).length > 0
+                ? /* html */ `
                 <div class="columns">
                   <div class="column">
                     <ul class="fa-ul list--contacts"></ul>
@@ -393,69 +404,69 @@ function renderWorkOrders(workdayDateString, workOrders) {
                   </div>
                 </div>
               `
-            : ''}
+                : ''}
         </div>
       `;
-        /*
-         * Contracts
-         */
-        renderContractsAndBurialSitesOnWorkOrder(workOrder, workOrderElement);
-        /*
-         * Milestones
-         */
-        renderMilestonesOnWorkOrder(workOrder, workOrderElement, {
-            canUpdateThisWorkOrder,
-            workdayDateString
-        });
-        workdayContainer.append(workOrderElement);
-    }
-    if (workOrders.length === 0) {
-        workdayContainer.insertAdjacentHTML('beforeend', 
-        /* html */ `
+            /*
+             * Contracts
+             */
+            renderContractsAndBurialSitesOnWorkOrder(workOrder, workOrderElement);
+            /*
+             * Milestones
+             */
+            renderMilestonesOnWorkOrder(workOrder, workOrderElement, {
+                canUpdateThisWorkOrder,
+                workdayDateString
+            });
+            workdayContainer.append(workOrderElement);
+        }
+        if (workOrders.length === 0) {
+            workdayContainer.insertAdjacentHTML('beforeend', 
+            /* html */ `
           <div class="message is-info">
             <p class="message-body">No work orders for this workday.</p>
           </div>
         `);
+        }
     }
-}
-function getWorkdayReport() {
-    workdayContainer.innerHTML = sunrise.getLoadingParagraphHTML('Loading workday report...');
-    const workdayDateString = cityssm.dateToString(workdayDate);
-    cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkdayReport`, {
-        workdayDateString
-    }, (responseJSON) => {
-        renderWorkOrders(workdayDateString, responseJSON.workOrders);
-    });
-}
-function updateFiltersAndGetReport() {
-    ;
-    document.querySelector('#workdayDateStringSpan').textContent = cityssm.dateToString(workdayDate);
+    function getWorkdayReport() {
+        workdayContainer.innerHTML = sunrise.getLoadingParagraphHTML('Loading workday report...');
+        const workdayDateString = cityssm.dateToString(workdayDate);
+        cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doGetWorkdayReport`, {
+            workdayDateString
+        }, (responseJSON) => {
+            renderWorkOrders(workdayDateString, responseJSON.workOrders);
+        });
+    }
+    function updateFiltersAndGetReport() {
+        ;
+        document.querySelector('#workdayDateStringSpan').textContent = cityssm.dateToString(workdayDate);
+        document
+            .querySelector('#button--workdayToday')
+            ?.classList.toggle('is-hidden', workdayDate.toDateString() === new Date().toDateString());
+        getWorkdayReport();
+    }
     document
         .querySelector('#button--workdayToday')
-        ?.classList.toggle('is-hidden', workdayDate.toDateString() === new Date().toDateString());
-    getWorkdayReport();
-}
-document
-    .querySelector('#button--workdayToday')
-    ?.addEventListener('click', () => {
-    workdayDate = new Date();
+        ?.addEventListener('click', () => {
+        workdayDate = new Date();
+        updateFiltersAndGetReport();
+    });
+    document
+        .querySelector('#button--workdayPreviousDay')
+        ?.addEventListener('click', () => {
+        workdayDate.setDate(workdayDate.getDate() - 1);
+        updateFiltersAndGetReport();
+    });
+    document
+        .querySelector('#button--workdayNextDay')
+        ?.addEventListener('click', () => {
+        workdayDate.setDate(workdayDate.getDate() + 1);
+        updateFiltersAndGetReport();
+    });
     updateFiltersAndGetReport();
-});
-document
-    .querySelector('#button--workdayPreviousDay')
-    ?.addEventListener('click', () => {
-    workdayDate.setDate(workdayDate.getDate() - 1);
-    updateFiltersAndGetReport();
-});
-document
-    .querySelector('#button--workdayNextDay')
-    ?.addEventListener('click', () => {
-    workdayDate.setDate(workdayDate.getDate() + 1);
-    updateFiltersAndGetReport();
-});
-updateFiltersAndGetReport();
-document
-    .querySelector('aside.menu')
-    ?.closest('.column')
-    ?.classList.add('is-hidden-mobile');
-();
+    document
+        .querySelector('aside.menu')
+        ?.closest('.column')
+        ?.classList.add('is-hidden-mobile');
+})();

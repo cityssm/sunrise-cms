@@ -8,18 +8,19 @@ import updateWorkOrderMilestone, {
 } from '../../database/updateWorkOrderMilestone.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { WorkOrderMilestone } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:workOrders:doUpdateWorkOrderMilestone`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoUpdateWorkOrderMilestoneResponse =
-  { success: boolean; workOrderMilestones: WorkOrderMilestone[] }
   | { errorMessage: string; success: false }
+  | {
+      success: boolean
+      workOrderMilestones: WorkOrderMilestone[]
+      errorMessage: string
+    }
 
 export default async function handler(
   request: Request<
@@ -52,7 +53,9 @@ export default async function handler(
 
     response.json({
       success,
-      workOrderMilestones
+      workOrderMilestones,
+
+      errorMessage: success ? '' : 'Failed to update milestone'
     })
   } catch (error) {
     debug(error)

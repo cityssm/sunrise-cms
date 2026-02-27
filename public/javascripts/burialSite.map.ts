@@ -274,7 +274,10 @@ declare const exports: {
     cityssm.postJSON(
       `${sunrise.urlPrefix}/burialSites/doGetBurialSitesForMap`,
       { cemeteryId },
-      (responseJSON: DoGetBurialSitesForMapResponse) => {
+      (rawResponseJSON: unknown) => {
+        // Type uses an interface, causing an error if used directly
+        const responseJSON = rawResponseJSON as DoGetBurialSitesForMapResponse
+
         if (responseJSON.success) {
           allBurialSites = responseJSON.burialSites
 

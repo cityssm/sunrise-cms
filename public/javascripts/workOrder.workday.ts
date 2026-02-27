@@ -58,7 +58,18 @@ declare const exports: {
           workdayDateString,
           workOrderMilestoneId
         },
-        (responseJSON: DoCompleteWorkdayWorkOrderMilestoneResponse | DoReopenWorkdayWorkOrderMilestoneResponse) => {
+        (
+          responseJSON:
+            | DoCompleteWorkdayWorkOrderMilestoneResponse
+            | DoReopenWorkdayWorkOrderMilestoneResponse
+        ) => {
+          if (responseJSON.success) {
+            bulmaJS.alert({
+              contextualColorName: 'success',
+              message: 'Work Order Milestone updated successfully.'
+            })
+
+            renderWorkOrders(workdayDateString, responseJSON.workOrders)
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
@@ -122,6 +133,8 @@ declare const exports: {
         `${sunrise.urlPrefix}/workOrders/doUpdateWorkdayWorkOrderMilestoneTime`,
         formElement,
         (responseJSON: DoUpdateWorkdayWorkOrderMilestoneTimeResponse) => {
+          if (responseJSON.success) {
+            closeModalFunction?.()
 
             bulmaJS.alert({
               contextualColorName: 'success',
@@ -576,7 +589,7 @@ declare const exports: {
           </div>
         </div>
         <div class="panel-block is-block">
-          <p>${cityssm.escapeHTML((workOrder.workOrderDescription ?? '') === '' ? workOrder.workOrderType ?? '' : workOrder.workOrderDescription ?? '')}</p>
+          <p>${cityssm.escapeHTML((workOrder.workOrderDescription ?? '') === '' ? (workOrder.workOrderType ?? '') : (workOrder.workOrderDescription ?? ''))}</p>
           ${
             (workOrder.workOrderContracts ?? []).length > 0 ||
             (workOrder.workOrderBurialSites ?? []).length > 0

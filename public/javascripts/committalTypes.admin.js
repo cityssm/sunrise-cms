@@ -15,8 +15,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Committal Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Updating Committal Type'
                 });
             }
         });
@@ -44,8 +43,7 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Deleting Committal Type',
-                        message: responseJSON.errorMessage ?? ''
+                        message: 'Error Deleting Committal Type'
                     });
                 }
             });
@@ -79,8 +77,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Committal Type',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Committal Type'
                 });
             }
         });
@@ -162,19 +159,10 @@
         submitEvent.preventDefault();
         const formElement = submitEvent.currentTarget;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddCommittalType`, formElement, (responseJSON) => {
-            if (responseJSON.success) {
-                committalTypes = responseJSON.committalTypes;
-                renderCommittalTypes();
-                formElement.reset();
-                formElement.querySelector('input')?.focus();
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Adding Committal Type',
-                    message: responseJSON.errorMessage ?? ''
-                });
-            }
+            committalTypes = responseJSON.committalTypes;
+            renderCommittalTypes();
+            formElement.reset();
+            formElement.querySelector('input')?.focus();
         });
     });
     renderCommittalTypes();

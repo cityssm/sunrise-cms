@@ -3,21 +3,18 @@
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 
-import type { DoSearchBurialSitesResponse } from '../../handlers/burialSites-post/doSearchBurialSites.js'
 import type { DoCreateBurialSiteResponse } from '../../handlers/burialSites-post/doCreateBurialSite.js'
+import type { DoSearchBurialSitesResponse } from '../../handlers/burialSites-post/doSearchBurialSites.js'
 import type { DoCopyContractResponse } from '../../handlers/contracts-post/doCopyContract.js'
 import type { DoCreateContractResponse } from '../../handlers/contracts-post/doCreateContract.js'
 import type { DoDeleteContractResponse } from '../../handlers/contracts-post/doDeleteContract.js'
 import type { DoGetBurialSiteDirectionsOfArrivalResponse } from '../../handlers/contracts-post/doGetBurialSiteDirectionsOfArrival.js'
 import type { DoGetContractTypeFieldsResponse } from '../../handlers/contracts-post/doGetContractTypeFields.js'
-import type { DoGetFuneralDirectorsResponse } from '../../handlers/contracts-post/doGetFuneralDirectors.js'
 import type { DoUpdateContractResponse } from '../../handlers/contracts-post/doUpdateContract.js'
 import type {
-  BurialSite,
   BurialSiteStatus,
   BurialSiteType,
-  Cemetery,
-  ContractTypeField
+  Cemetery
 } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
@@ -73,10 +70,6 @@ declare const exports: {
       `${sunrise.urlPrefix}/contracts/${isCreate ? 'doCreateContract' : 'doUpdateContract'}`,
       formElement,
       (responseJSON: DoCreateContractResponse | DoUpdateContractResponse) => {
-
-          contractId?: number
-        }
-
         if (responseJSON.success) {
           clearUnsavedChanges()
 
@@ -95,9 +88,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Saving Contract',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Saving Contract'
           })
         }
       }
@@ -117,21 +108,12 @@ declare const exports: {
         contractId
       },
       (responseJSON: DoCopyContractResponse) => {
-        if (responseJSON.success) {
-          clearUnsavedChanges()
+        clearUnsavedChanges()
 
-          globalThis.location.href = sunrise.getContractUrl(
-            responseJSON.contractId,
-            true
-          )
-        } else {
-          bulmaJS.alert({
-            contextualColorName: 'danger',
-            title: 'Error Copying Record',
-
-            message: responseJSON.errorMessage ?? ''
-          })
-        }
+        globalThis.location.href = sunrise.getContractUrl(
+          responseJSON.contractId,
+          true
+        )
       }
     )
   }
@@ -183,7 +165,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Deleting Record',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }
@@ -231,7 +213,6 @@ declare const exports: {
           contractTypeId: contractTypeIdElement.value
         },
         (responseJSON: DoGetContractTypeFieldsResponse) => {
-
           if (responseJSON.contractTypeFields.length === 0) {
             contractFieldsContainerElement.innerHTML = /* html */ `
               <div class="message is-info">
@@ -388,7 +369,6 @@ declare const exports: {
         burialSiteId
       },
       (responseJSON: DoGetBurialSiteDirectionsOfArrivalResponse) => {
-
         const currentDirectionOfArrival = directionOfArrivalElement.value
 
         directionOfArrivalElement.value = ''
@@ -465,7 +445,6 @@ declare const exports: {
         `${sunrise.urlPrefix}/burialSites/doSearchBurialSites`,
         burialSiteSelectFormElement,
         (responseJSON: DoSearchBurialSitesResponse) => {
-
           if (responseJSON.count === 0) {
             burialSiteSelectResultsElement.innerHTML = /* html */ `
               <div class="message is-info">
@@ -525,20 +504,19 @@ declare const exports: {
         `${sunrise.urlPrefix}/burialSites/doCreateBurialSite`,
         burialSiteCreateFormElement,
         (responseJSON: DoCreateBurialSiteResponse) => {
-
           if (responseJSON.success) {
             setUnsavedChanges()
 
             renderSelectedBurialSiteAndClose(
-              responseJSON.burialSiteId ?? 0,
-              responseJSON.burialSiteName ?? ''
+              responseJSON.burialSiteId,
+              responseJSON.burialSiteName
             )
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
               title: 'Error Creating Burial Site',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }

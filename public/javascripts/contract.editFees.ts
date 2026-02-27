@@ -12,7 +12,6 @@ import type { DoGetDynamicsGPDocumentResponse } from '../../handlers/contracts-p
 import type { DoGetFeesResponse } from '../../handlers/contracts-post/doGetFees.js'
 import type { DoUpdateContractFeeQuantityResponse } from '../../handlers/contracts-post/doUpdateContractFeeQuantity.js'
 import type { DoUpdateContractTransactionResponse } from '../../handlers/contracts-post/doUpdateContractTransaction.js'
-import type { DynamicsGPDocument } from '../../integrations/dynamicsGp/types.js'
 import type {
   ContractFee,
   ContractTransaction,
@@ -76,6 +75,10 @@ declare const exports: {
         `${sunrise.urlPrefix}/contracts/doUpdateContractFeeQuantity`,
         formEvent.currentTarget,
         (responseJSON: DoUpdateContractFeeQuantityResponse) => {
+          if (responseJSON.success) {
+            contractFees = responseJSON.contractFees
+            renderContractFees()
+            updateCloseModalFunction()
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
@@ -155,7 +158,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Deleting Fee',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -231,7 +234,7 @@ declare const exports: {
       tableRowElement.className = 'container--contractFee'
       tableRowElement.dataset.feeId = contractFee.feeId.toString()
       tableRowElement.dataset.includeQuantity =
-        contractFee.includeQuantity ?? false ? '1' : '0'
+        (contractFee.includeQuantity ?? false) ? '1' : '0'
 
       // eslint-disable-next-line no-unsanitized/property
       tableRowElement.innerHTML = /* html */ `
@@ -244,7 +247,7 @@ declare const exports: {
             ? ''
             : /*html */ `
               <td class="has-text-right">
-              $${contractFee.feeAmount?.toFixed(2)}
+                $${contractFee.feeAmount?.toFixed(2)}
               </td>
               <td>&times;</td>
               <td class="has-text-right">${contractFee.quantity?.toString()}</td>
@@ -257,7 +260,7 @@ declare const exports: {
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
             ${
-              contractFee.includeQuantity ?? false
+              (contractFee.includeQuantity ?? false)
                 ? /* html */ `
                   <button class="button is-primary button--editQuantity">
                     <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
@@ -357,7 +360,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Adding Fee',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -382,7 +385,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Adding Fee',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -747,7 +750,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Deleting Transaction',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -936,7 +939,6 @@ declare const exports: {
         `${sunrise.urlPrefix}/contracts/doAddContractTransaction`,
         submitEvent.currentTarget,
         (responseJSON: DoAddContractTransactionResponse) => {
-
           if (responseJSON.success) {
             contractTransactions = responseJSON.contractTransactions
             addCloseModalFunction()
@@ -944,8 +946,9 @@ declare const exports: {
           } else {
             bulmaJS.confirm({
               contextualColorName: 'danger',
-              message: responseJSON.errorMessage ?? '',
-              title: 'Error Adding Transaction'
+              title: 'Error Adding Transaction',
+
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -976,11 +979,7 @@ declare const exports: {
           externalReceiptNumber
         },
         (responseJSON: DoGetDynamicsGPDocumentResponse) => {
-
-          if (
-            !responseJSON.success ||
-            responseJSON.dynamicsGPDocument === undefined
-          ) {
+          if (!responseJSON.success) {
             helpTextElement.textContent = 'No Matching Document Found'
             iconElement.innerHTML = '<i class="fa-solid fa-times-circle"></i>'
           } else if (

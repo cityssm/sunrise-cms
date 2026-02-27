@@ -39,13 +39,6 @@ declare const exports: {
       `${sunrise.urlPrefix}/contracts/doGetContractDetailsForConsignoCloud`,
       { contractId },
       (responseJSON: DoGetContractDetailsForConsignoCloudResponse) => {
-              signerFirstName: string
-              signerLastName: string
-
-              signerEmail: string
-              signerPhone: string
-            }
-
         if (!responseJSON.success) {
           bulmaJS.alert({
             contextualColorName: 'warning',
@@ -227,7 +220,6 @@ declare const exports: {
       `${sunrise.urlPrefix}/contracts/doStartConsignoCloudWorkflow`,
       formElement,
       (responseJSON: DoStartConsignoCloudWorkflowResponse) => {
-
         if (responseJSON.success) {
           closeModalFunction?.()
 

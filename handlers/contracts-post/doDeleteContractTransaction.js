@@ -15,7 +15,8 @@ export default async function handler(request, response) {
         }, database);
         response.json({
             success,
-            contractTransactions
+            contractTransactions,
+            errorMessage: success ? '' : 'Failed to delete transaction'
         });
     }
     catch (error) {

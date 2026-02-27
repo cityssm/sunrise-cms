@@ -44,15 +44,14 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'success',
-                        message: 'Cemetery Updated Successfully',
+                        message: 'Cemetery Updated Successfully'
                     });
                 }
             }
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Updating Cemetery',
-                    message: responseJSON.errorMessage ?? '',
+                    message: 'Error Updating Cemetery'
                 });
             }
         });
@@ -77,7 +76,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Deleting Cemetery',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });

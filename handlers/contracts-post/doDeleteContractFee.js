@@ -13,7 +13,8 @@ export default function handler(request, response) {
         const contractFees = getContractFees(request.body.contractId, database);
         response.json({
             success,
-            contractFees
+            contractFees,
+            errorMessage: success ? '' : 'Failed to delete fee'
         });
     }
     catch (error) {

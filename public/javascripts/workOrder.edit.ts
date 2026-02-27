@@ -8,8 +8,8 @@ import type { DoCloseWorkOrderResponse } from '../../handlers/workOrders-post/do
 import type { DoCreateWorkOrderResponse } from '../../handlers/workOrders-post/doCreateWorkOrder.js'
 import type { DoDeleteWorkOrderResponse } from '../../handlers/workOrders-post/doDeleteWorkOrder.js'
 import type { DoGetWorkOrderMilestonesResponse } from '../../handlers/workOrders-post/doGetWorkOrderMilestones.js'
-import type { DoUpdateWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doUpdateWorkOrderMilestone.js'
 import type { DoUpdateWorkOrderResponse } from '../../handlers/workOrders-post/doUpdateWorkOrder.js'
+import type { DoUpdateWorkOrderMilestoneResponse } from '../../handlers/workOrders-post/doUpdateWorkOrderMilestone.js'
 import type {
   WorkOrderMilestone,
   WorkOrderMilestoneType
@@ -39,6 +39,7 @@ declare const exports: {
 
   const isCreate = workOrderId === ''
 
+  // eslint-disable-next-line require-unicode-regexp
   if (!isCreate && !/^\d+$/.test(workOrderId)) {
     globalThis.location.href = `${sunrise.urlPrefix}/workOrders`
   }
@@ -70,7 +71,8 @@ declare const exports: {
       `${sunrise.urlPrefix}/workOrders/${isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'}`,
       submitEvent.currentTarget,
       (responseJSON: DoCreateWorkOrderResponse | DoUpdateWorkOrderResponse) => {
-
+        if (responseJSON.success) {
+          clearUnsavedChanges()
           if (isCreate) {
             globalThis.location.href = sunrise.getWorkOrderUrl(
               responseJSON.workOrderId,
@@ -85,9 +87,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Updating Work Order',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Updating Work Order'
           })
         }
       }
@@ -113,7 +113,6 @@ declare const exports: {
         workOrderId
       },
       (responseJSON: DoCloseWorkOrderResponse) => {
-
         if (responseJSON.success) {
           clearUnsavedChanges()
           globalThis.location.href = sunrise.getWorkOrderUrl(
@@ -122,9 +121,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Closing Work Order',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Closing Work Order'
           })
         }
       }
@@ -138,12 +135,13 @@ declare const exports: {
         workOrderId
       },
       (responseJSON: DoDeleteWorkOrderResponse) => {
+        if (responseJSON.success) {
+          clearUnsavedChanges()
+          globalThis.location.href = `${sunrise.urlPrefix}/workOrders`
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Deleting Work Order',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Deleting Work Order'
           })
         }
       }
@@ -237,7 +235,6 @@ declare const exports: {
         workOrderMilestoneDateString
       },
       (responseJSON: DoGetWorkOrderMilestonesResponse) => {
-
         const conflictingWorkOrderMilestones =
           responseJSON.workOrderMilestones.filter(
             (possibleMilestone) =>
@@ -253,7 +250,7 @@ declare const exports: {
               <div class="panel-block is-block">
                 <div class="columns">
                   <div class="column is-5">
-                    ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === null ? 'No Time' : milestone.workOrderMilestoneTimePeriodString ?? '')}<br />
+                    ${cityssm.escapeHTML(milestone.workOrderMilestoneTime === null ? 'No Time' : (milestone.workOrderMilestoneTimePeriodString ?? ''))}<br />
                     <strong>${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}</strong>
                   </div>
                   <div class="column">
@@ -287,17 +284,20 @@ declare const exports: {
     )
   }
 
-  function processMilestoneResponse(responseJSON: DoUpdateWorkOrderMilestoneResponse): void {
-
+  function processMilestoneResponse(
+    responseJSON:
+      | DoAddWorkOrderMilestoneResponse
+      | DoUpdateWorkOrderMilestoneResponse
+  ): void {
     if (responseJSON.success) {
       workOrderMilestones = responseJSON.workOrderMilestones
       renderMilestones()
     } else {
       bulmaJS.alert({
         contextualColorName: 'danger',
-        title: 'Error Reopening Milestone',
+        title: 'Error Updating Milestone',
 
-        message: responseJSON.errorMessage ?? ''
+        message: responseJSON.errorMessage
       })
     }
   }
