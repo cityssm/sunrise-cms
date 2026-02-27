@@ -8,5 +8,9 @@
   "committalType": "Cypress Test - Committal Type",
   "committalTypeUpdated": "Cypress Test - Committal Type Updated",
   "intermentContainerType": "Cypress Test - Container Type",
-  "intermentContainerTypeUpdated": "Cypress Test - Container Type Updated"
+  "intermentContainerTypeUpdated": "Cypress Test - Container Type Updated",
+  "serviceType": "Cypress Test - Service Type",
+  "serviceTypeUpdated": "Cypress Test - Service Type Updated",
+  "intermentDepth": "Cypress Test - Interment Depth",
+  "intermentDepthUpdated": "Cypress Test - Interment Depth Updated"
 }
