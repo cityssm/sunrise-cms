@@ -15,7 +15,8 @@ export default function handler(request, response) {
         }, database);
         response.json({
             success,
-            feeCategories
+            feeCategories,
+            errorMessage: success ? '' : 'Failed to update fee amount'
         });
     }
     catch (error) {

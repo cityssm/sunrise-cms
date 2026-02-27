@@ -47,7 +47,7 @@ declare const exports: {
         editFormElement,
         (responseJSON: DoUpdateContractCommentResponse) => {
           if (responseJSON.success) {
-            contractComments = responseJSON.contractComments ?? []
+            contractComments = responseJSON.contractComments
 
             if (editCloseModalFunction !== undefined) {
               editCloseModalFunction()
@@ -59,7 +59,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Comment',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -147,7 +147,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Removing Comment',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -266,7 +266,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Adding Comment',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }

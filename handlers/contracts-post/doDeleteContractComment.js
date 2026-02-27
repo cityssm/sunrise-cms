@@ -13,7 +13,8 @@ export default function handler(request, response) {
         const contractComments = getContractComments(request.body.contractId, database);
         response.json({
             success,
-            contractComments
+            contractComments,
+            errorMessage: success ? '' : 'Failed to delete comment'
         });
     }
     catch (error) {

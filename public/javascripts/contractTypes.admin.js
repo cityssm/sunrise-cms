@@ -34,8 +34,7 @@
         else {
             bulmaJS.alert({
                 contextualColorName: 'danger',
-                title: 'Error Updating Contract Type',
-                message: responseJSON.errorMessage ?? ''
+                message: 'Error Updating Contract Type'
             });
         }
     }
@@ -98,10 +97,8 @@
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddContractTypeField`, submitEvent.currentTarget, (responseJSON) => {
                 expandedContractTypes.add(contractTypeId);
                 contractTypeResponseHandler(responseJSON);
-                if (responseJSON.success) {
-                    addCloseModalFunction();
-                    openEditContractTypeField(contractTypeId, responseJSON.contractTypeFieldId ?? 0);
-                }
+                addCloseModalFunction();
+                openEditContractTypeField(contractTypeId, responseJSON.contractTypeFieldId);
             });
         }
         cityssm.openHtmlModal('adminContractTypes-addField', {
@@ -600,18 +597,9 @@
         function doAdd(submitEvent) {
             submitEvent.preventDefault();
             cityssm.postJSON(`${sunrise.urlPrefix}/admin/doAddContractType`, submitEvent.currentTarget, (responseJSON) => {
-                if (responseJSON.success) {
-                    addCloseModalFunction();
-                    contractTypes = responseJSON.contractTypes;
-                    renderContractTypes();
-                }
-                else {
-                    bulmaJS.alert({
-                        contextualColorName: 'danger',
-                        title: 'Error Adding Contract Type',
-                        message: responseJSON.errorMessage ?? ''
-                    });
-                }
+                addCloseModalFunction();
+                contractTypes = responseJSON.contractTypes;
+                renderContractTypes();
             });
         }
         cityssm.openHtmlModal('adminContractTypes-add', {

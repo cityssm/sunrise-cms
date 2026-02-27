@@ -6,15 +6,7 @@ import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { DoAddContractTypeResponse } from '../../handlers/admin-post/doAddContractType.js'
 import type { DoAddContractTypeFieldResponse } from '../../handlers/admin-post/doAddContractTypeField.js'
 import type { DoAddContractTypePrintResponse } from '../../handlers/admin-post/doAddContractTypePrint.js'
-import type { DoDeleteContractTypeResponse } from '../../handlers/admin-post/doDeleteContractType.js'
 import type { DoDeleteContractTypeFieldResponse } from '../../handlers/admin-post/doDeleteContractTypeField.js'
-import type { DoDeleteContractTypePrintResponse } from '../../handlers/admin-post/doDeleteContractTypePrint.js'
-import type { DoMoveContractTypeDownResponse } from '../../handlers/admin-post/doMoveContractTypeDown.js'
-import type { DoMoveContractTypeFieldDownResponse } from '../../handlers/admin-post/doMoveContractTypeFieldDown.js'
-import type { DoMoveContractTypeFieldUpResponse } from '../../handlers/admin-post/doMoveContractTypeFieldUp.js'
-import type { DoMoveContractTypePrintDownResponse } from '../../handlers/admin-post/doMoveContractTypePrintDown.js'
-import type { DoMoveContractTypePrintUpResponse } from '../../handlers/admin-post/doMoveContractTypePrintUp.js'
-import type { DoMoveContractTypeUpResponse } from '../../handlers/admin-post/doMoveContractTypeUp.js'
 import type { DoUpdateContractTypeResponse } from '../../handlers/admin-post/doUpdateContractType.js'
 import type { DoUpdateContractTypeFieldResponse } from '../../handlers/admin-post/doUpdateContractTypeField.js'
 import type {
@@ -34,7 +26,6 @@ declare const exports: {
   contractTypePrintTitles: Record<string, string>
   contractTypes: ContractType[]
 }
-
 ;(() => {
   const sunrise = exports.sunrise
 
@@ -83,8 +74,9 @@ declare const exports: {
     }
   }
 
-  function contractTypeResponseHandler(responseJSON: DoUpdateContractTypeResponse): void {
-
+  function contractTypeResponseHandler(
+    responseJSON: DoUpdateContractTypeResponse
+  ): void {
     if (responseJSON.success) {
       contractTypes = responseJSON.contractTypes
       allContractTypeFields = responseJSON.allContractTypeFields
@@ -92,9 +84,7 @@ declare const exports: {
     } else {
       bulmaJS.alert({
         contextualColorName: 'danger',
-        title: 'Error Updating Contract Type',
-
-        message: responseJSON.errorMessage ?? ''
+        message: 'Error Updating Contract Type'
       })
     }
   }
@@ -226,13 +216,11 @@ declare const exports: {
           expandedContractTypes.add(contractTypeId)
           contractTypeResponseHandler(responseJSON)
 
-          if (responseJSON.success) {
-            addCloseModalFunction()
-            openEditContractTypeField(
-              contractTypeId,
-              responseJSON.contractTypeFieldId ?? 0
-            )
-          }
+          addCloseModalFunction()
+          openEditContractTypeField(
+            contractTypeId,
+            responseJSON.contractTypeFieldId
+          )
         }
       )
     }
@@ -1032,18 +1020,9 @@ declare const exports: {
           `${sunrise.urlPrefix}/admin/doAddContractType`,
           submitEvent.currentTarget,
           (responseJSON: DoAddContractTypeResponse) => {
-            if (responseJSON.success) {
-              addCloseModalFunction()
-              contractTypes = responseJSON.contractTypes
-              renderContractTypes()
-            } else {
-              bulmaJS.alert({
-                contextualColorName: 'danger',
-                title: 'Error Adding Contract Type',
-
-                message: responseJSON.errorMessage ?? ''
-              })
-            }
+            addCloseModalFunction()
+            contractTypes = responseJSON.contractTypes
+            renderContractTypes()
           }
         )
       }

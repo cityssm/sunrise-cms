@@ -15,7 +15,8 @@ export default function handler(request, response) {
         }, database);
         response.json({
             success,
-            feeCategories
+            feeCategories,
+            errorMessage: success ? '' : 'Failed to delete fee'
         });
     }
     catch (error) {

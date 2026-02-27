@@ -71,18 +71,9 @@ declare const exports: {
           `${sunrise.urlPrefix}/workOrders/doCreateWorkOrder`,
           formEvent.currentTarget,
           (responseJSON: DoCreateWorkOrderResponse) => {
-            if (responseJSON.success) {
-              createCloseModalFunction()
+            createCloseModalFunction()
 
-              confirmOpenNewWorkOrder(responseJSON.workOrderId)
-            } else {
-              bulmaJS.alert({
-                contextualColorName: 'danger',
-                title: 'Error Creating Work Order',
-
-                message: responseJSON.errorMessage as string
-              })
-            }
+            confirmOpenNewWorkOrder(responseJSON.workOrderId)
           }
         )
       }

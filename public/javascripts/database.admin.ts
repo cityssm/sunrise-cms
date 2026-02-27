@@ -29,14 +29,15 @@ declare const exports: {
               To request a copy of the backup, contact your application administrator.`,
             messageIsHtml: true
           })
-
-          ;(document.querySelector('#database--lastBackup') as HTMLElement).textContent = 'Right now'
+          ;(
+            document.querySelector('#database--lastBackup') as HTMLElement
+          ).textContent = 'Right now'
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
             title: 'Error Backing Up Database',
 
-            message: responseJSON.errorMessage ?? ''
+            message: responseJSON.errorMessage
           })
         }
       }
@@ -48,22 +49,13 @@ declare const exports: {
       `${sunrise.urlPrefix}/admin/doCleanupDatabase`,
       {},
       (responseJSON: DoCleanupDatabaseResponse) => {
-        if (responseJSON.success) {
-          bulmaJS.alert({
-            contextualColorName: 'success',
-            title: 'Database Cleaned Up Successfully',
+        bulmaJS.alert({
+          contextualColorName: 'success',
+          title: 'Database Cleaned Up Successfully',
 
-            message: `${responseJSON.inactivatedRecordCount} records inactivated,
+          message: `${responseJSON.inactivatedRecordCount} records inactivated,
               ${responseJSON.purgedRecordCount} permanently deleted.`
-          })
-        } else {
-          bulmaJS.alert({
-            contextualColorName: 'danger',
-            title: 'Error Cleaning Database',
-
-            message: responseJSON.errorMessage ?? ''
-          })
-        }
+        })
       }
     )
   }

@@ -325,7 +325,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Creating Fee Category',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }
@@ -388,7 +388,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Fee Category',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -460,9 +460,9 @@ declare const exports: {
           } else {
             bulmaJS.alert({
               contextualColorName: 'danger',
-              title: 'Error Updating Fee Category',
+              title: 'Error Deleting Fee Category',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -498,17 +498,18 @@ declare const exports: {
         feeCategoryId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: DoMoveFeeCategoryUpResponse | DoMoveFeeCategoryDownResponse) => {
-
+      (
+        responseJSON:
+          | DoMoveFeeCategoryDownResponse
+          | DoMoveFeeCategoryUpResponse
+      ) => {
         if (responseJSON.success) {
           feeCategories = responseJSON.feeCategories
           renderFeeCategories()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Fee Category',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Fee Category'
           })
         }
       }
@@ -547,7 +548,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Adding Fee',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -718,7 +719,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Fee Amount',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -799,7 +800,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Updating Fee',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -815,7 +816,6 @@ declare const exports: {
           {
             feeId
           },
-          // eslint-disable-next-line sonarjs/no-nested-functions
           (responseJSON: DoDeleteFeeResponse) => {
             if (responseJSON.success) {
               feeCategories = responseJSON.feeCategories
@@ -826,7 +826,7 @@ declare const exports: {
                 contextualColorName: 'danger',
                 title: 'Error Deleting Fee',
 
-                message: responseJSON.errorMessage ?? ''
+                message: responseJSON.errorMessage
               })
             }
           }
@@ -1061,17 +1061,14 @@ declare const exports: {
         feeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: DoMoveFeeUpResponse | DoMoveFeeDownResponse) => {
-
+      (responseJSON: DoMoveFeeDownResponse | DoMoveFeeUpResponse) => {
         if (responseJSON.success) {
           feeCategories = responseJSON.feeCategories
           renderFeeCategories()
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: 'Error Moving Fee',
-
-            message: responseJSON.errorMessage ?? ''
+            message: 'Error Moving Fee'
           })
         }
       }

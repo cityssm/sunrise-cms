@@ -12,7 +12,7 @@
             submitEvent.preventDefault();
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doUpdateContractComment`, editFormElement, (responseJSON) => {
                 if (responseJSON.success) {
-                    contractComments = responseJSON.contractComments ?? [];
+                    contractComments = responseJSON.contractComments;
                     if (editCloseModalFunction !== undefined) {
                         editCloseModalFunction();
                     }
@@ -22,7 +22,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -76,7 +76,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Removing Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -171,7 +171,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Comment',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });

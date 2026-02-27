@@ -8,18 +8,19 @@ import updateContractComment, {
 } from '../../database/updateContractComment.js'
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-
 import type { ContractComment } from '../../types/record.types.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:handlers:contracts:doUpdateContractComment`
 )
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoUpdateContractCommentResponse =
-  { success: boolean; contractComments: ContractComment[] }
   | { errorMessage: string; success: false }
+  | {
+      success: boolean
+      contractComments: ContractComment[]
+      errorMessage: string
+    }
 
 export default function handler(
   request: Request<unknown, unknown, UpdateForm & { contractId: string }>,
@@ -44,7 +45,9 @@ export default function handler(
     response.json({
       success,
 
-      contractComments
+      contractComments,
+
+      errorMessage: success ? '' : 'Failed to update comment'
     })
   } catch (error) {
     debug(error)

@@ -43,7 +43,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Error Updating Service Type',
 
-            message: responseJSON.errorMessage ?? ''
+            message: responseJSON.errorMessage
           })
         }
       }
@@ -82,7 +82,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Deleting Service Type',
 
-              message: responseJSON.errorMessage ?? ''
+              message: responseJSON.errorMessage
             })
           }
         }
@@ -121,7 +121,11 @@ declare const exports: {
         serviceTypeId,
         moveToEnd: clickEvent.shiftKey ? '1' : '0'
       },
-      (responseJSON: DoMoveServiceTypeUpResponse | DoMoveServiceTypeDownResponse) => {
+      (
+        responseJSON:
+          | DoMoveServiceTypeDownResponse
+          | DoMoveServiceTypeUpResponse
+      ) => {
         if (responseJSON.success) {
           serviceTypes = responseJSON.serviceTypes
           renderServiceTypes()
@@ -130,7 +134,7 @@ declare const exports: {
             contextualColorName: 'danger',
             title: 'Error Moving Service Type',
 
-            message: responseJSON.errorMessage ?? ''
+            message: responseJSON.errorMessage
           })
         }
       }
@@ -240,20 +244,11 @@ declare const exports: {
         `${sunrise.urlPrefix}/admin/doAddServiceType`,
         formElement,
         (responseJSON: DoAddServiceTypeResponse) => {
-          if (responseJSON.success) {
-            serviceTypes = responseJSON.serviceTypes
-            renderServiceTypes()
+          serviceTypes = responseJSON.serviceTypes
+          renderServiceTypes()
 
-            formElement.reset()
-            formElement.querySelector('input')?.focus()
-          } else {
-            bulmaJS.alert({
-              contextualColorName: 'danger',
-              title: 'Error Adding Service Type',
-
-              message: responseJSON.errorMessage ?? ''
-            })
-          }
+          formElement.reset()
+          formElement.querySelector('input')?.focus()
         }
       )
     })

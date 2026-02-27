@@ -16,28 +16,19 @@
                 bulmaJS.alert({
                     contextualColorName: 'danger',
                     title: 'Error Backing Up Database',
-                    message: responseJSON.errorMessage ?? ''
+                    message: responseJSON.errorMessage
                 });
             }
         });
     }
     function doCleanup() {
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/doCleanupDatabase`, {}, (responseJSON) => {
-            if (responseJSON.success) {
-                bulmaJS.alert({
-                    contextualColorName: 'success',
-                    title: 'Database Cleaned Up Successfully',
-                    message: `${responseJSON.inactivatedRecordCount} records inactivated,
+            bulmaJS.alert({
+                contextualColorName: 'success',
+                title: 'Database Cleaned Up Successfully',
+                message: `${responseJSON.inactivatedRecordCount} records inactivated,
               ${responseJSON.purgedRecordCount} permanently deleted.`
-                });
-            }
-            else {
-                bulmaJS.alert({
-                    contextualColorName: 'danger',
-                    title: 'Error Cleaning Database',
-                    message: responseJSON.errorMessage ?? ''
-                });
-            }
+            });
         });
     }
     document

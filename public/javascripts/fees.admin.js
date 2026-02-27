@@ -211,7 +211,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Creating Fee Category',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -247,7 +247,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Fee Category',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -288,8 +288,8 @@
                 else {
                     bulmaJS.alert({
                         contextualColorName: 'danger',
-                        title: 'Error Updating Fee Category',
-                        message: responseJSON.errorMessage ?? ''
+                        title: 'Error Deleting Fee Category',
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -321,8 +321,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Fee Category',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Fee Category'
                 });
             }
         });
@@ -345,7 +344,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Adding Fee',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -451,7 +450,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Fee Amount',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -496,7 +495,7 @@
                     bulmaJS.alert({
                         contextualColorName: 'danger',
                         title: 'Error Updating Fee',
-                        message: responseJSON.errorMessage ?? ''
+                        message: responseJSON.errorMessage
                     });
                 }
             });
@@ -506,9 +505,7 @@
             function doDelete() {
                 cityssm.postJSON(`${sunrise.urlPrefix}/admin/doDeleteFee`, {
                     feeId
-                }, 
-                // eslint-disable-next-line sonarjs/no-nested-functions
-                (responseJSON) => {
+                }, (responseJSON) => {
                     if (responseJSON.success) {
                         feeCategories = responseJSON.feeCategories;
                         editCloseModalFunction();
@@ -518,7 +515,7 @@
                         bulmaJS.alert({
                             contextualColorName: 'danger',
                             title: 'Error Deleting Fee',
-                            message: responseJSON.errorMessage ?? ''
+                            message: responseJSON.errorMessage
                         });
                     }
                 });
@@ -662,8 +659,7 @@
             else {
                 bulmaJS.alert({
                     contextualColorName: 'danger',
-                    title: 'Error Moving Fee',
-                    message: responseJSON.errorMessage ?? ''
+                    message: 'Error Moving Fee'
                 });
             }
         });

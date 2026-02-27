@@ -29,17 +29,8 @@
         function doCreate(formEvent) {
             formEvent.preventDefault();
             cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCreateWorkOrder`, formEvent.currentTarget, (responseJSON) => {
-                if (responseJSON.success) {
-                    createCloseModalFunction();
-                    confirmOpenNewWorkOrder(responseJSON.workOrderId);
-                }
-                else {
-                    bulmaJS.alert({
-                        contextualColorName: 'danger',
-                        title: 'Error Creating Work Order',
-                        message: responseJSON.errorMessage
-                    });
-                }
+                createCloseModalFunction();
+                confirmOpenNewWorkOrder(responseJSON.workOrderId);
             });
         }
         function toggleActiveMilestone(changeEvent) {

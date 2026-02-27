@@ -2,11 +2,9 @@ import type { Request, Response } from 'express'
 
 import { backupDatabase } from '../../database/backupDatabase.js'
 
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoBackupDatabaseResponse =
-  { success: true; fileName: string | undefined }
   | { success: false; errorMessage: string }
+  | { success: true; fileName: string | undefined }
 
 export default async function handler(
   _request: Request,
@@ -15,6 +13,7 @@ export default async function handler(
   const backupDatabasePath = await backupDatabase()
 
   if (typeof backupDatabasePath === 'string') {
+    // eslint-disable-next-line require-unicode-regexp
     const backupDatabasePathSplit = backupDatabasePath.split(/[/\\]/)
 
     const fileName = backupDatabasePathSplit.at(-1)
