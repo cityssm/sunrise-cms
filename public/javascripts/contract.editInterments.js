@@ -80,22 +80,22 @@
                     ?.setAttribute('value', intermentNumber);
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedName')
-                    ?.setAttribute('value', contractInterment.deceasedName ?? '');
+                    ?.setAttribute('value', contractInterment.deceasedName);
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedAddress1')
-                    ?.setAttribute('value', contractInterment.deceasedAddress1 ?? '');
+                    ?.setAttribute('value', contractInterment.deceasedAddress1);
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedAddress2')
-                    ?.setAttribute('value', contractInterment.deceasedAddress2 ?? '');
+                    ?.setAttribute('value', contractInterment.deceasedAddress2);
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedCity')
-                    ?.setAttribute('value', contractInterment.deceasedCity ?? '');
+                    ?.setAttribute('value', contractInterment.deceasedCity);
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedProvince')
-                    ?.setAttribute('value', contractInterment.deceasedProvince ?? '');
+                    ?.setAttribute('value', contractInterment.deceasedProvince);
                 modalElement
                     .querySelector('#contractIntermentEdit--deceasedPostalCode')
-                    ?.setAttribute('value', contractInterment.deceasedPostalCode ?? '');
+                    ?.setAttribute('value', contractInterment.deceasedPostalCode);
                 const todayDateString = cityssm.dateToString(new Date());
                 const birthDateStringElement = modalElement.querySelector('#contractIntermentEdit--birthDateString');
                 birthDateStringElement.value = contractInterment.birthDateString ?? '';
@@ -237,12 +237,12 @@
             // eslint-disable-next-line no-unsanitized/property
             tableRowElement.innerHTML = /* html */ `
         <td>
-          ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
+          ${cityssm.escapeHTML(interment.deceasedName)}<br />
           <span class="is-size-7">
-            ${cityssm.escapeHTML(interment.deceasedAddress1 ?? '')}<br />
-            ${interment.deceasedAddress2 === '' ? '' : `${cityssm.escapeHTML(interment.deceasedAddress2 ?? '')}<br />`}
-            ${cityssm.escapeHTML(interment.deceasedCity ?? '')}, ${cityssm.escapeHTML(interment.deceasedProvince ?? '')}<br />
-            ${cityssm.escapeHTML(interment.deceasedPostalCode ?? '')}
+            ${cityssm.escapeHTML(interment.deceasedAddress1)}<br />
+            ${interment.deceasedAddress2 === '' ? '' : `${cityssm.escapeHTML(interment.deceasedAddress2)}<br />`}
+            ${cityssm.escapeHTML(interment.deceasedCity)}, ${cityssm.escapeHTML(interment.deceasedProvince)}<br />
+            ${cityssm.escapeHTML(interment.deceasedPostalCode)}
           </span>
         </td>
         <td>

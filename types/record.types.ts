@@ -256,13 +256,13 @@ export interface ContractInterment extends Record {
   contractId?: number
   intermentNumber?: number
 
-  deceasedName?: string
+  deceasedName: string
 
-  deceasedAddress1?: string
-  deceasedAddress2?: string
-  deceasedCity?: string
-  deceasedPostalCode?: string
-  deceasedProvince?: string
+  deceasedAddress1: string
+  deceasedAddress2: string
+  deceasedCity: string
+  deceasedPostalCode: string
+  deceasedProvince: string
 
   birthDate?: number
   birthDateString?: DateString

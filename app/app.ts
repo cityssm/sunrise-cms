@@ -170,23 +170,37 @@ app
     express.static('node_modules/@cityssm/bulma-js/dist/bulma-js.js')
   )
   .use(
-    `${urlPrefix}/lib/cityssm-fa-glow`,
-    express.static('node_modules/@cityssm/fa-glow')
+    `${urlPrefix}/lib/cityssm-fa-glow/fa-glow.min.css`,
+    express.static('node_modules/@cityssm/fa-glow/fa-glow.min.css')
   )
   .use(
-    `${urlPrefix}/lib/cityssm-bulma-sticky-table`,
-    express.static('node_modules/@cityssm/bulma-sticky-table')
+    `${urlPrefix}/lib/cityssm-bulma-sticky-table/bulma-with-sticky-table.css`,
+    express.static(
+      'node_modules/@cityssm/bulma-sticky-table/bulma-with-sticky-table.css'
+    )
   )
   .use(
-    `${urlPrefix}/lib/cityssm-bulma-webapp-js`,
-    express.static('node_modules/@cityssm/bulma-webapp-js/dist')
+    `${urlPrefix}/lib/cityssm-bulma-webapp-js/cityssm.js`,
+    express.static('node_modules/@cityssm/bulma-webapp-js/dist/cityssm.js')
   )
   .use(
-    `${urlPrefix}/lib/fa`,
-    express.static('node_modules/@fortawesome/fontawesome-free')
+    `${urlPrefix}/lib/fa/js/all.min.js`,
+    express.static('node_modules/@fortawesome/fontawesome-free/js/all.min.js')
   )
-  .use(`${urlPrefix}/lib/i18next`, express.static('node_modules/i18next'))
-  .use(`${urlPrefix}/lib/i18next-http-backend`, express.static('node_modules/i18next-http-backend'))
+  .use(
+    `${urlPrefix}/lib/fa/css/all.min.css`,
+    express.static('node_modules/@fortawesome/fontawesome-free/css/all.min.css')
+  )
+  .use(
+    `${urlPrefix}/lib/i18next/i18next.min.js`,
+    express.static('node_modules/i18next/dist/umd/i18next.min.js')
+  )
+  .use(
+    `${urlPrefix}/lib/i18next-http-backend/i18nextHttpBackend.min.js`,
+    express.static(
+      'node_modules/i18next-http-backend/i18nextHttpBackend.min.js'
+    )
+  )
   .use(`${urlPrefix}/lib/leaflet`, express.static('node_modules/leaflet/dist'))
 
 /*
