@@ -1,9 +1,26 @@
+<% const isWorkOrderSearch = headTitle === t('workOrders:workOrderSearch'); %>
 <aside class="menu" aria-label="<%= t('workOrders:workOrders') %>">
+  <% if (isWorkOrderSearch && user.userProperties.canUpdateWorkOrders) { %>
+  <ul class="menu-list">
+    <li>
+      <a
+        href="<%= urlPrefix %>/workOrders/new"
+        title="<%= t('workOrders:createNewWorkOrder') %>"
+      >
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-plus-circle has-text-success"></i></span>
+          </div>
+          <div class="column is-hidden-touch has-text-weight-semibold">
+            <%= t('workOrders:createNewWorkOrder') %>
+          </div>
+        </div>
+      </a>
+    </li>
+  </ul>
+  <% } %>
   <h2 class="menu-label is-hidden-touch"><%= t('workOrders:workOrders') %></h2>
   <ul class="menu-list">
-    <%
-    const isWorkOrderSearch = headTitle === t('workOrders:workOrderSearch');
-    %>
     <li>
       <a
         class="<%= (isWorkOrderSearch ? 'is-active' : '') %>"
@@ -17,19 +34,6 @@
           <div class="column is-hidden-touch"><%= t('workOrders:workOrderSearch') %></div>
         </div>
       </a>
-      <% if (isWorkOrderSearch && user.userProperties.canUpdateWorkOrders) { %>
-      <ul>
-        <li>
-          <a
-            href="<%= urlPrefix %>/workOrders/new"
-            title="<%= t('workOrders:createNewWorkOrder') %>"
-          >
-            <span class="is-hidden-touch"><%= t('workOrders:createNewWorkOrder') %></span>
-            <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
-          </a>
-        </li>
-      </ul>
-      <% } %>
     </li>
     <li>
       <a

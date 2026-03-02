@@ -1,12 +1,50 @@
+<%
+const isContractSearch = headTitle === t('contracts:contractSearch');
+const isFuneralHomeSearch = headTitle === t('contracts:funeralHomeSearch');
+%>
 <aside class="menu" aria-label="<%= t('contracts:contracts') %>">
+  <% if (isContractSearch && user.userProperties.canUpdateContracts) { %>
+  <ul class="menu-list">
+    <li>
+      <a
+        href="<%= urlPrefix %>/contracts/new"
+        title="<%= t('contracts:createNewContract') %>"
+      >
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-plus-circle has-text-success"></i></span>
+          </div>
+          <div class="column is-hidden-touch has-text-weight-semibold">
+            <%= t('contracts:createNewContract') %>
+          </div>
+        </div>
+      </a>
+    </li>
+  </ul>
+  <% } %>
+  <% if (isFuneralHomeSearch && user.userProperties.canUpdateContracts) { %>
+  <ul class="menu-list">
+    <li>
+      <a
+        href="<%= urlPrefix %>/funeralHomes/new"
+        title="<%= t('contracts:createNewFuneralHome') %>"
+      >
+        <div class="columns is-mobile is-1">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-plus-circle has-text-success"></i></span>
+          </div>
+          <div class="column is-hidden-touch has-text-weight-semibold">
+            <%= t('contracts:createNewFuneralHome') %>
+          </div>
+        </div>
+      </a>
+    </li>
+  </ul>
+  <% } %>
   <h2 class="menu-label is-hidden-touch">
     <%= t('contracts:contracts') %>
   </h2>
   <ul class="menu-list">
-    <%
-    const isContractSearch = headTitle === t('contracts:contractSearch');
-    const isFuneralHomeSearch = headTitle === t('contracts:funeralHomeSearch');
-    %>
     <li>
       <a class="<%= (isContractSearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/contracts"
@@ -18,19 +56,6 @@
           <div class="column is-hidden-touch"><%= t('contracts:contractSearch') %></div>
         </div>
       </a>
-      <% if (isContractSearch && user.userProperties.canUpdateContracts) { %>
-      <ul>
-        <li>
-          <a
-            href="<%= urlPrefix %>/contracts/new"
-            title="<%= t('contracts:createNewContract') %>"
-          >
-            <span class="is-hidden-touch"><%= t('contracts:createNewContract') %></span>
-            <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
-          </a>
-        </li>
-      </ul>
-      <% } %>
     </li>
     <li>
       <a class="<%= (isFuneralHomeSearch ? 'is-active' : '') %>"
@@ -43,19 +68,6 @@
           <div class="column is-hidden-touch"><%= t('contracts:funeralHomeSearch') %></div>
         </div>
       </a>
-      <% if (isFuneralHomeSearch && user.userProperties.canUpdateContracts) { %>
-      <ul>
-        <li>
-          <a
-            href="<%= urlPrefix %>/funeralHomes/new"
-            title="<%= t('contracts:createNewFuneralHome') %>"
-          >
-            <span class="is-hidden-touch"><%= t('contracts:createNewFuneralHome') %></span>
-            <span class="icon is-hidden-desktop"><i class="fa-solid fa-plus"></i></span>
-          </a>
-        </li>
-      </ul>
-      <% } %>
     </li>
   </ul>
   <% if (user.userProperties.isAdmin) { %>
