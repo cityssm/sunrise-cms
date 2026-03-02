@@ -1,7 +1,7 @@
 <%- include('../_header'); -%>
 
 <div class="columns is-mobile">
-  <div class="column is-2-desktop is-narrow-touch is-hidden-print">
+  <div class="column is-narrow is-hidden-print">
     <%- include('../contracts/_menu'); -%>
   </div>
   <div class="column">
@@ -48,8 +48,8 @@
 
     <div class="box">
       <form id="form--searchFilters">
-        <div class="columns is-vcentered">
-          <div class="column">
+        <div class="columns is-multiline is-vcentered">
+          <div class="column is-6-widescreen is-full-desktop">
             <div class="field">
               <div class="control has-icons-left">
                 <input
@@ -64,7 +64,7 @@
               </div>
             </div>
           </div>
-          <div class="column is-narrow">
+          <div class="column is-6-widescreen is-full-desktop">
             <label class="checkbox">
               <input id="searchFilter--hasUpcomingFunerals" type="checkbox" />
               <%= t('contracts:filterUpcomingServices') %>
