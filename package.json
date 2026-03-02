@@ -74,7 +74,7 @@
     "i18next-http-middleware": "^3.9.2",
     "ical-generator": "^10.0.0",
     "leaflet": "^2.0.0-alpha.1",
-    "multer": "^2.0.2",
+    "multer": "^2.1.0",
     "papaparse": "^5.5.3",
     "parse-full-name": "^1.2.7",
     "sanitize-filename": "^1.6.3",
