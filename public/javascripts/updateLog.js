@@ -245,7 +245,7 @@
     // Add export functionality
     exportButtonElement.addEventListener('click', () => {
         const recordType = recordTypeFilterElement.value;
-        window.open(`${sunrise.urlPrefix}/dashboard/exportRecordUpdateLog?recordType=${encodeURIComponent(recordType)}`, '_blank');
+        globalThis.open(`${sunrise.urlPrefix}/dashboard/exportRecordUpdateLog?recordType=${encodeURIComponent(recordType)}`, '_blank');
     });
     getUpdateLog();
 })();

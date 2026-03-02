@@ -382,7 +382,7 @@ interface GPSPosition {
   })
 
   // Cleanup on page unload
-  window.addEventListener('beforeunload', () => {
+  globalThis.addEventListener('beforeunload', () => {
     if (watchId !== null) {
       navigator.geolocation.clearWatch(watchId)
     }

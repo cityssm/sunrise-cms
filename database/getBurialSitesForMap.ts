@@ -154,7 +154,7 @@ export default function getBurialSitesForMap(
       contractsByBurialSite.set(contract.burialSiteId, [])
     }
 
-    contractsByBurialSite.get(contract.burialSiteId)!.push({
+    contractsByBurialSite.get(contract.burialSiteId)?.push({
       contractId: contract.contractId,
       contractNumber: contract.contractNumber,
       contractType: contract.contractType,

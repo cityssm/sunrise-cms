@@ -1,73 +1,14 @@
 import { dateIntegerToString, dateStringToInteger, dateToInteger, timeIntegerToString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-const simpleReports = {
-    'burialSiteComments-all': 'select * from BurialSiteComments',
-    'burialSiteFields-all': 'select * from BurialSiteFields',
-    'burialSites-all': 'select * from BurialSites',
-    'burialSiteStatuses-all': 'select * from BurialSiteStatuses',
-    'burialSiteTypeFields-all': 'select * from BurialSiteTypeFields',
-    'burialSiteTypes-all': 'select * from BurialSiteTypes',
-    'cemeteries-all': 'select * from Cemeteries',
-    'cemeteries-formatted': /* sql */ `
-    SELECT
-      cemeteryName,
-      cemeteryDescription,
-      cemeteryAddress1,
-      cemeteryAddress2,
-      cemeteryCity,
-      cemeteryProvince,
-      cemeteryPostalCode,
-      cemeteryPhoneNumber
-    FROM
-      Cemeteries
-    WHERE
-      recordDelete_timeMillis IS NULL
-    ORDER BY
-      cemeteryName
-  `,
-    'committalTypes-all': 'select * from CommittalTypes',
-    'contractAttachments-all': 'select * from ContractAttachments',
-    'contractComments-all': 'select * from ContractComments',
-    'contractFees-all': 'select * from ContractFees',
-    'contractFields-all': 'select * from ContractFields',
-    'contractInterments-all': 'select * from ContractInterments',
-    'contractMetadata-all': 'select * from ContractMetadata',
-    'contracts-all': 'select * from Contracts',
-    'contractTransactions-all': 'select * from ContractTransactions',
-    'contractTypeFields-all': 'select * from ContractTypeFields',
-    'contractTypePrints-all': 'select * from ContractTypePrints',
-    'contractTypes-all': 'select * from ContractTypes',
-    'feeCategories-all': 'select * from FeeCategories',
-    'fees-all': 'select * from Fees',
-    'funeralHomes-all': 'select * from FuneralHomes',
-    'funeralHomes-formatted': /* sql */ `
-    SELECT
-      funeralHomeName,
-      funeralHomeAddress1,
-      funeralHomeAddress2,
-      funeralHomeCity,
-      funeralHomeProvince,
-      funeralHomePostalCode,
-      funeralHomePhoneNumber
-    FROM
-      FuneralHomes
-    WHERE
-      recordDelete_timeMillis IS NULL
-  `,
-    'intermentContainerTypes-all': 'select * from IntermentContainerTypes',
-    'workOrderBurialSites-all': 'select * from WorkOrderBurialSites',
-    'workOrderComments-all': 'select * from WorkOrderComments',
-    'workOrderMilestones-all': 'select * from WorkOrderMilestones',
-    'workOrderMilestoneTypes-all': 'select * from WorkOrderMilestoneTypes',
-    'workOrders-all': 'select * from WorkOrders',
-    'workOrderTypes-all': 'select * from WorkOrderTypes'
-};
+import { simpleReports } from '../helpers/reports.helpers.js';
 export default function getReportData(reportName, reportParameters = {}, connectedDatabase) {
     let sql;
     const sqlParameters = [];
-    // eslint-disable-next-line security/detect-object-injection
-    if (simpleReports[reportName] === undefined) {
+    if (simpleReports.has(reportName)) {
+        sql = simpleReports.get(reportName);
+    }
+    else {
         switch (reportName) {
             case 'burialSites-byBurialSiteStatusId': {
                 sql = /* sql */ `
@@ -270,10 +211,6 @@ export default function getReportData(reportName, reportParameters = {}, connect
                 return undefined;
             }
         }
-    }
-    else {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, security/detect-object-injection
-        sql = simpleReports[reportName];
     }
     const database = connectedDatabase ?? sqlite(sunriseDB);
     database.function('userFn_dateIntegerToString', dateIntegerToString);

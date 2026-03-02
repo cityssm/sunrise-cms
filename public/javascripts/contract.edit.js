@@ -406,7 +406,7 @@
             });
         }
         else {
-            window.open(`${sunrise.urlPrefix}/burialSites/${burialSiteId}`);
+            globalThis.open(sunrise.getBurialSiteUrl(burialSiteId));
         }
     });
     document

@@ -95,7 +95,7 @@ export default function getBurialSitesForMap(cemeteryId, connectedDatabase) {
         if (!contractsByBurialSite.has(contract.burialSiteId)) {
             contractsByBurialSite.set(contract.burialSiteId, []);
         }
-        contractsByBurialSite.get(contract.burialSiteId).push({
+        contractsByBurialSite.get(contract.burialSiteId)?.push({
             contractId: contract.contractId,
             contractNumber: contract.contractNumber,
             contractType: contract.contractType,

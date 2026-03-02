@@ -349,7 +349,7 @@ declare const exports: {
   // Add export functionality
   exportButtonElement.addEventListener('click', () => {
     const recordType = recordTypeFilterElement.value
-    window.open(
+    globalThis.open(
       `${sunrise.urlPrefix}/dashboard/exportRecordUpdateLog?recordType=${encodeURIComponent(recordType)}`,
       '_blank'
     )

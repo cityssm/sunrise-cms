@@ -130,7 +130,7 @@
                     okButton: {
                         text: 'Open Workflow in ConsignO Cloud',
                         callbackFunction() {
-                            window.open(responseJSON.workflowEditUrl, '_blank');
+                            globalThis.open(responseJSON.workflowEditUrl, '_blank');
                         }
                     }
                 });

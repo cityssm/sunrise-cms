@@ -667,7 +667,7 @@ declare const exports: {
           message: 'No burial site selected.'
         })
       } else {
-        window.open(`${sunrise.urlPrefix}/burialSites/${burialSiteId}`)
+        globalThis.open(sunrise.getBurialSiteUrl(burialSiteId))
       }
     })
 

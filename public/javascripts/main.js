@@ -246,9 +246,16 @@
      */
     const urlPrefix = document.querySelector('main')?.dataset.urlPrefix ?? '';
     function getRecordUrl(recordTypePlural, recordId, edit, time) {
-        return (`${urlPrefix}/${recordTypePlural}/${recordId.toString()}` +
-            (recordId !== '' && edit ? '/edit' : '') +
-            (time ? `/?t=${Date.now().toString()}` : ''));
+        const urlPieces = [
+            `${urlPrefix}/${recordTypePlural}/${recordId.toString()}`
+        ];
+        if (recordId !== '' && edit) {
+            urlPieces.push('/edit');
+        }
+        if (time) {
+            urlPieces.push(`/?t=${Date.now().toString()}`);
+        }
+        return urlPieces.join('');
     }
     function getCemeteryUrl(cemeteryId = '', edit = false, time = false) {
         return getRecordUrl('cemeteries', cemeteryId, edit, time);

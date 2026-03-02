@@ -368,11 +368,19 @@ declare const exports: {
     edit: boolean,
     time: boolean
   ): string {
-    return (
-      `${urlPrefix}/${recordTypePlural}/${recordId.toString()}` +
-      (recordId !== '' && edit ? '/edit' : '') +
-      (time ? `/?t=${Date.now().toString()}` : '')
-    )
+    const urlPieces = [
+      `${urlPrefix}/${recordTypePlural}/${recordId.toString()}`
+    ]
+
+    if (recordId !== '' && edit) {
+      urlPieces.push('/edit')
+    }
+
+    if (time) {
+      urlPieces.push(`/?t=${Date.now().toString()}`)
+    }
+
+    return urlPieces.join('')
   }
 
   function getCemeteryUrl(
@@ -461,12 +469,10 @@ declare const exports: {
       applyLocalization(element)
     }
 
-    const elements = element.querySelectorAll(
-      '[data-i18n]'
-    ) as NodeListOf<HTMLElement>
+    const elements = element.querySelectorAll('[data-i18n]')
 
     for (const i18nElement of elements) {
-      applyLocalization(i18nElement)
+      applyLocalization(i18nElement as HTMLElement)
     }
   }
 
@@ -487,6 +493,7 @@ declare const exports: {
 
     escapedAliases,
     populateAliases,
+
     localize,
 
     clearUnsavedChanges,
