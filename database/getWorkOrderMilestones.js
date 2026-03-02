@@ -109,7 +109,7 @@ export default async function getWorkOrderMilestones(filters, options, connected
 function buildWhereClause(filters) {
     const recentBeforeDays = Number.parseInt(getCachedSettingValue('workOrder.workOrderMilestone.recentBeforeDays'), 10);
     const recentAfterDays = Number.parseInt(getCachedSettingValue('workOrder.workOrderMilestone.recentAfterDays'), 10);
-    let sqlWhereClause = ' where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null';
+    let sqlWhereClause = ' where m.recordDelete_timeMillis IS NULL and w.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
     if ((filters.workOrderId ?? '') !== '') {
         sqlWhereClause += ' and m.workOrderId = ?';
@@ -138,7 +138,7 @@ function buildWhereClause(filters) {
         }
         case 'upcomingMissed': {
             sqlWhereClause +=
-                ' and (m.workOrderMilestoneCompletionDate is null or m.workOrderMilestoneDate >= ?)';
+                ' and (m.workOrderMilestoneCompletionDate IS NULL or m.workOrderMilestoneDate >= ?)';
             sqlParameters.push(currentDateNumber);
             break;
         }

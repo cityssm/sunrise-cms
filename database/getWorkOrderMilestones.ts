@@ -190,7 +190,7 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
   )
 
   let sqlWhereClause =
-    ' where m.recordDelete_timeMillis is null and w.recordDelete_timeMillis is null'
+    ' where m.recordDelete_timeMillis IS NULL and w.recordDelete_timeMillis IS NULL'
   const sqlParameters: unknown[] = []
 
   if ((filters.workOrderId ?? '') !== '') {
@@ -229,7 +229,7 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
 
     case 'upcomingMissed': {
       sqlWhereClause +=
-        ' and (m.workOrderMilestoneCompletionDate is null or m.workOrderMilestoneDate >= ?)'
+        ' and (m.workOrderMilestoneCompletionDate IS NULL or m.workOrderMilestoneDate >= ?)'
       sqlParameters.push(currentDateNumber)
       break
     }

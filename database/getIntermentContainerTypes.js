@@ -15,7 +15,7 @@ export default function getIntermentContainerTypes(includeDeleted = false, conne
       FROM
         IntermentContainerTypes ${includeDeleted
         ? ''
-        : ' where recordDelete_timeMillis is null '}
+        : ' where recordDelete_timeMillis IS NULL '}
       ORDER BY
         isCremationType,
         orderNumber,

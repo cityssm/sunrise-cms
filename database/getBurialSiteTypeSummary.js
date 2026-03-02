@@ -2,7 +2,7 @@ import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export default function getBurialSiteTypeSummary(filters, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
-    let sqlWhereClause = ' where l.recordDelete_timeMillis is null';
+    let sqlWhereClause = ' where l.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
     if ((filters.cemeteryId ?? '') !== '') {
         sqlWhereClause += ' and l.cemeteryId = ?';

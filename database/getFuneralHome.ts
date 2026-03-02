@@ -56,7 +56,7 @@ function _getFuneralHome(
       WHERE
         f.${keyColumn} = ? ${includeDeleted
           ? ''
-          : ' and f.recordDelete_timeMillis is null '}
+          : ' and f.recordDelete_timeMillis IS NULL '}
       ORDER BY
         f.funeralHomeName,
         f.funeralHomeId

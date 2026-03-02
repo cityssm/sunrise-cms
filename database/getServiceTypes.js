@@ -13,7 +13,7 @@ export default function getServiceTypes(includeDeleted = false, connectedDatabas
       FROM
         ServiceTypes ${includeDeleted
         ? ''
-        : ' where recordDelete_timeMillis is null '}
+        : ' where recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         serviceType,

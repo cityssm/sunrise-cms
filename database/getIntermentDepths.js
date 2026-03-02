@@ -14,7 +14,7 @@ export default function getIntermentDepths(includeDeleted = false, connectedData
       FROM
         IntermentDepths ${includeDeleted
         ? ''
-        : ' where recordDelete_timeMillis is null '}
+        : ' where recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         intermentDepth,

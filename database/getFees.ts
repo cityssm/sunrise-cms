@@ -22,19 +22,19 @@ export default function getFees(
     !(additionalFilters.burialSiteTypeId || additionalFilters.contractTypeId)
 
   let sqlWhereClause =
-    ' where f.recordDelete_timeMillis is null and f.feeCategoryId = ?'
+    ' where f.recordDelete_timeMillis IS NULL and f.feeCategoryId = ?'
 
   const sqlParameters: unknown[] = [feeCategoryId]
 
   if (additionalFilters.contractTypeId) {
-    sqlWhereClause += ' and (f.contractTypeId is null or f.contractTypeId = ?)'
+    sqlWhereClause += ' and (f.contractTypeId IS NULL or f.contractTypeId = ?)'
 
     sqlParameters.push(additionalFilters.contractTypeId)
   }
 
   if (additionalFilters.burialSiteTypeId) {
     sqlWhereClause +=
-      ' and (f.burialSiteTypeId is null or f.burialSiteTypeId = ?)'
+      ' and (f.burialSiteTypeId IS NULL or f.burialSiteTypeId = ?)'
 
     sqlParameters.push(additionalFilters.burialSiteTypeId)
   }

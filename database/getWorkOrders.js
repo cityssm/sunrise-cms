@@ -145,7 +145,7 @@ async function addInclusions(workOrder, options, database) {
     return workOrder;
 }
 function buildWhereClause(filters) {
-    let sqlWhereClause = ' where w.recordDelete_timeMillis is null';
+    let sqlWhereClause = ' where w.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
     if ((filters.workOrderTypeId ?? '') !== '') {
         sqlWhereClause += ' and w.workOrderTypeId = ?';
@@ -153,10 +153,10 @@ function buildWhereClause(filters) {
     }
     if ((filters.workOrderOpenStatus ?? '') !== '') {
         if (filters.workOrderOpenStatus === 'open') {
-            sqlWhereClause += ' and w.workOrderCloseDate is null';
+            sqlWhereClause += ' and w.workOrderCloseDate IS NULL';
         }
         else if (filters.workOrderOpenStatus === 'closed') {
-            sqlWhereClause += ' and w.workOrderCloseDate is not null';
+            sqlWhereClause += ' and w.workOrderCloseDate IS NOT NULL';
         }
     }
     if ((filters.workOrderOpenDateString ?? '') !== '') {

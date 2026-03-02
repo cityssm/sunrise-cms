@@ -237,7 +237,7 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
   sqlParameters: unknown[]
   sqlWhereClause: string
 } {
-  let sqlWhereClause = ' where w.recordDelete_timeMillis is null'
+  let sqlWhereClause = ' where w.recordDelete_timeMillis IS NULL'
   const sqlParameters: unknown[] = []
 
   if ((filters.workOrderTypeId ?? '') !== '') {
@@ -247,9 +247,9 @@ function buildWhereClause(filters: GetWorkOrdersFilters): {
 
   if ((filters.workOrderOpenStatus ?? '') !== '') {
     if (filters.workOrderOpenStatus === 'open') {
-      sqlWhereClause += ' and w.workOrderCloseDate is null'
+      sqlWhereClause += ' and w.workOrderCloseDate IS NULL'
     } else if (filters.workOrderOpenStatus === 'closed') {
-      sqlWhereClause += ' and w.workOrderCloseDate is not null'
+      sqlWhereClause += ' and w.workOrderCloseDate IS NOT NULL'
     }
   }
 

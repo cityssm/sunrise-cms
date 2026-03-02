@@ -25,7 +25,7 @@ export default function getContractTypes(
       FROM
         ContractTypes ${includeDeleted
           ? ''
-          : ' where recordDelete_timeMillis is null '}
+          : ' where recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         contractType,

@@ -21,7 +21,7 @@ export function moveContractTypeFieldDown(
       WHERE
         recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
         undefined
-          ? ' and contractTypeId is null'
+          ? ' and contractTypeId IS NULL'
           : ` and contractTypeId = '${currentField.contractTypeId.toString()}'`}
         AND orderNumber = ? + 1
     `)
@@ -65,7 +65,7 @@ export function moveContractTypeFieldDownToBottom(
         WHERE
           recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
           undefined
-            ? ' and contractTypeId is null'
+            ? ' and contractTypeId IS NULL'
             : ' and contractTypeId = ?'}
       `)
       .get(contractTypeParameters) as { maxOrderNumber: number }
@@ -90,7 +90,7 @@ export function moveContractTypeFieldDownToBottom(
         WHERE
           recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
           undefined
-            ? ' AND contractTypeId is null'
+            ? ' AND contractTypeId IS NULL'
             : ' AND contractTypeId = ?'}
           AND orderNumber > ?
       `)
@@ -125,7 +125,7 @@ export function moveContractTypeFieldUp(
       WHERE
         recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
         undefined
-          ? ' AND contractTypeId is null'
+          ? ' AND contractTypeId IS NULL'
           : ` AND contractTypeId = '${currentField.contractTypeId.toString()}'`}
         AND orderNumber = ? - 1
     `)
@@ -177,7 +177,7 @@ export function moveContractTypeFieldUpToTop(
         WHERE
           recordDelete_timeMillis IS NULL ${currentField.contractTypeId
             ? ' AND contractTypeId = ?'
-            : ' AND contractTypeId is null'}
+            : ' AND contractTypeId IS NULL'}
           AND orderNumber < ?
       `)
       .run(contractTypeParameters)

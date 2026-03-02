@@ -168,7 +168,7 @@ async function addInclusions(contract, options, database) {
 }
 // eslint-disable-next-line complexity
 function buildWhereClause(filters) {
-    let sqlWhereClause = ' where c.recordDelete_timeMillis is null';
+    let sqlWhereClause = ' where c.recordDelete_timeMillis IS NULL';
     const sqlParameters = [];
     /*
      * Contract Number

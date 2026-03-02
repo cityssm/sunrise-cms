@@ -17,7 +17,7 @@ export default function getBurialSiteTypeSummary(
 ): BurialSiteTypeSummary[] {
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 
-  let sqlWhereClause = ' where l.recordDelete_timeMillis is null'
+  let sqlWhereClause = ' where l.recordDelete_timeMillis IS NULL'
   const sqlParameters: unknown[] = []
 
   if ((filters.cemeteryId ?? '') !== '') {

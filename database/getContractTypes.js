@@ -16,7 +16,7 @@ export default function getContractTypes(includeDeleted = false, connectedDataba
       FROM
         ContractTypes ${includeDeleted
         ? ''
-        : ' where recordDelete_timeMillis is null '}
+        : ' where recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         contractType,

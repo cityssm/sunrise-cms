@@ -14,7 +14,7 @@ export function moveContractTypeFieldDown(contractTypeFieldId) {
       WHERE
         recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
         undefined
-        ? ' and contractTypeId is null'
+        ? ' and contractTypeId IS NULL'
         : ` and contractTypeId = '${currentField.contractTypeId.toString()}'`}
         AND orderNumber = ? + 1
     `)
@@ -42,7 +42,7 @@ export function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
         WHERE
           recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
         undefined
-        ? ' and contractTypeId is null'
+        ? ' and contractTypeId IS NULL'
         : ' and contractTypeId = ?'}
       `)
         .get(contractTypeParameters).maxOrderNumber;
@@ -58,7 +58,7 @@ export function moveContractTypeFieldDownToBottom(contractTypeFieldId) {
         WHERE
           recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
             undefined
-            ? ' AND contractTypeId is null'
+            ? ' AND contractTypeId IS NULL'
             : ' AND contractTypeId = ?'}
           AND orderNumber > ?
       `)
@@ -84,7 +84,7 @@ export function moveContractTypeFieldUp(contractTypeFieldId) {
       WHERE
         recordDelete_timeMillis IS NULL ${currentField.contractTypeId ===
         undefined
-        ? ' AND contractTypeId is null'
+        ? ' AND contractTypeId IS NULL'
         : ` AND contractTypeId = '${currentField.contractTypeId.toString()}'`}
         AND orderNumber = ? - 1
     `)
@@ -113,7 +113,7 @@ export function moveContractTypeFieldUpToTop(contractTypeFieldId) {
         WHERE
           recordDelete_timeMillis IS NULL ${currentField.contractTypeId
             ? ' AND contractTypeId = ?'
-            : ' AND contractTypeId is null'}
+            : ' AND contractTypeId IS NULL'}
           AND orderNumber < ?
       `)
             .run(contractTypeParameters);

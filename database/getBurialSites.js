@@ -132,21 +132,30 @@ function buildWhereClause(filters, includeDeleted) {
             sqlWhereClause += ' AND contractCount > 0';
         }
         else if (filters.contractStatus === 'unoccupied') {
-            sqlWhereClause += ' AND (contractCount is null or contractCount = 0)';
+            sqlWhereClause += ' AND (contractCount IS NULL or contractCount = 0)';
         }
     }
     if ((filters.workOrderId ?? '') !== '') {
-        sqlWhereClause +=
-            ' AND b.burialSiteId in (select burialSiteId from WorkOrderBurialSites where recordDelete_timeMillis is null and workOrderId = ?)';
+        sqlWhereClause += /* sql */ `
+      AND b.burialSiteId IN (
+        SELECT
+          burialSiteId
+        FROM
+          WorkOrderBurialSites
+        WHERE
+          recordDelete_timeMillis IS NULL
+          AND workOrderId = ?
+      )
+    `;
         sqlParameters.push(filters.workOrderId);
     }
     if ((filters.hasCoordinates ?? '') === 'yes') {
         sqlWhereClause +=
-            ' AND (b.burialSiteLatitude is not null AND b.burialSiteLongitude is not null)';
+            ' AND (b.burialSiteLatitude IS NOT NULL AND b.burialSiteLongitude IS NOT NULL)';
     }
     if ((filters.hasCoordinates ?? '') === 'no') {
         sqlWhereClause +=
-            ' AND (b.burialSiteLatitude is null OR b.burialSiteLongitude is null)';
+            ' AND (b.burialSiteLatitude IS NULL OR b.burialSiteLongitude IS NULL)';
     }
     return {
         sqlParameters,

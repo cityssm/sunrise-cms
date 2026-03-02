@@ -293,7 +293,7 @@ function buildWhereClause(filters: GetContractsFilters): {
   sqlParameters: unknown[]
   sqlWhereClause: string
 } {
-  let sqlWhereClause = ' where c.recordDelete_timeMillis is null'
+  let sqlWhereClause = ' where c.recordDelete_timeMillis IS NULL'
   const sqlParameters: unknown[] = []
 
   /*

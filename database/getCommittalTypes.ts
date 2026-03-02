@@ -23,7 +23,7 @@ export default function getCommittalTypes(
       FROM
         CommittalTypes ${includeDeleted
           ? ''
-          : ' where recordDelete_timeMillis is null '}
+          : ' where recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         committalType,

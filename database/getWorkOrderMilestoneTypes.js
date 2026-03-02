@@ -13,7 +13,7 @@ export default function getWorkOrderMilestoneTypes(includeDeleted = false, conne
       FROM
         WorkOrderMilestoneTypes ${includeDeleted
         ? ''
-        : ' where recordDelete_timeMillis is null '}
+        : ' where recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         workOrderMilestoneType

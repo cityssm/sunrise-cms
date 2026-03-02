@@ -22,7 +22,7 @@ export default function getBurialSiteStatuses(
       FROM
         BurialSiteStatuses ${includeDeleted
           ? ''
-          : ' where recordDelete_timeMillis is null '}
+          : ' where recordDelete_timeMillis IS NULL '}
       ORDER BY
         orderNumber,
         burialSiteStatus
