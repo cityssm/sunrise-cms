@@ -4,6 +4,7 @@ export default defineConfig({
         baseUrl: 'http://localhost:9000',
         projectId: '26a4bi',
         specPattern: 'cypress/e2e/**/*.cy.js',
+        allowCypressEnv: false,
         supportFile: false
     }
 });
