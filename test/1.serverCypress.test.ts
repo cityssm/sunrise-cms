@@ -14,7 +14,15 @@ import { portNumber } from './_globals.js'
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const cypressTimeoutMillis = minutesToMillis(15)
 
+let continueNextRun = true
+
 function runCypress(browser: 'chrome' | 'firefox', done: () => void): void {
+  if (!continueNextRun) {
+    assert.fail(
+      `Skipping Cypress tests in ${browser} due to previous test failures`
+    )
+  }
+
   let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}`
 
   if ((process.env.CYPRESS_RECORD_KEY ?? '') !== '') {
@@ -33,12 +41,21 @@ function runCypress(browser: 'chrome' | 'firefox', done: () => void): void {
   })
 
   childProcess.on('exit', (code) => {
-    assert.strictEqual(code, 0)
+    if (code !== 0) {
+      continueNextRun = false
+    }
+
+    assert.strictEqual(
+      code,
+      0,
+      `Cypress tests failed in ${browser} with exit code ${code}`
+    )
     done()
   })
 }
 
 await describe('sunrise-cms', async () => {
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises, @typescript-eslint/strict-void-return
   const httpServer = http.createServer(app)
 
   let serverStarted = false
@@ -81,14 +98,16 @@ await describe('sunrise-cms', async () => {
       }
     )
 
-    await it(
-      'Should run Cypress tests in Firefox',
-      {
-        timeout: cypressTimeoutMillis
-      },
-      (_context, done) => {
-        runCypress('firefox', done)
-      }
-    )
+    if (continueNextRun) {
+      await it(
+        'Should run Cypress tests in Firefox',
+        {
+          timeout: cypressTimeoutMillis
+        },
+        (_context, done) => {
+          runCypress('firefox', done)
+        }
+      )
+    }
   })
 })
