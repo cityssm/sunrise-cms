@@ -1,6 +1,10 @@
 import { dateToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
+import getCemetery from './getCemetery.js';
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     /*
@@ -40,6 +44,9 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
     /*
      * Delete the cemetery
      */
+    const recordBefore = auditLogIsEnabled
+        ? getCemetery(cemeteryId, database)
+        : undefined;
     const rightNowMillis = Date.now();
     database
         .prepare(/* sql */ `
@@ -119,6 +126,20 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
         `)
                 .run(cemeteryId);
         }
+    }
+    if (auditLogIsEnabled) {
+        createAuditLogEntries({
+            mainRecordType: 'cemetery',
+            mainRecordId: cemeteryId,
+            updateTable: 'Cemeteries'
+        }, [
+            {
+                property: '*',
+                type: 'deleted',
+                from: recordBefore,
+                to: undefined
+            }
+        ], user, database);
     }
     if (connectedDatabase === undefined) {
         database.close();

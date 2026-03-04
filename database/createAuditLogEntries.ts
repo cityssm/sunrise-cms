@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/no-null */
+
 import type { Difference } from '@cityssm/object-difference'
 import { dateToInteger, dateToTimeInteger } from '@cityssm/utils-datetime'
 import type sqlite from 'better-sqlite3'
@@ -31,12 +33,21 @@ export default function createAuditLogEntries(
   let entriesCreated = 0
 
   for (const difference of differences) {
-
     if (difference.property === 'recordUpdate_timeMillis') {
       continue
     }
 
     const currentDate = new Date()
+
+    const fromValue =
+      difference.from === undefined || difference.from === null
+        ? null
+        : JSON.stringify(difference.from)
+
+    const toValue =
+      difference.to === undefined || difference.to === null
+        ? null
+        : JSON.stringify(difference.to)
 
     connectedDatabase
       .prepare(/* sql */ `
@@ -69,8 +80,8 @@ export default function createAuditLogEntries(
         difference.property,
         difference.type,
         user.userName,
-        difference.from,
-        difference.to
+        fromValue,
+        toValue
       )
 
     entriesCreated += 1

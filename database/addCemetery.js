@@ -1,6 +1,10 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import updateCemeteryDirectionsOfArrival from './updateCemeteryDirectionsOfArrival.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
+import getCemetery from './getCemetery.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addCemetery(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
@@ -32,6 +36,21 @@ export default function addCemetery(addForm, user, connectedDatabase) {
         .run(addForm.cemeteryName, addForm.cemeteryKey, addForm.cemeteryDescription, addForm.cemeterySvg, addForm.cemeteryLatitude === '' ? undefined : addForm.cemeteryLatitude, addForm.cemeteryLongitude === '' ? undefined : addForm.cemeteryLongitude, addForm.cemeteryAddress1, addForm.cemeteryAddress2, addForm.cemeteryCity, addForm.cemeteryProvince, addForm.cemeteryPostalCode.toUpperCase(), addForm.cemeteryPhoneNumber, addForm.parentCemeteryId === '' ? undefined : addForm.parentCemeteryId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     const cemeteryId = result.lastInsertRowid;
     updateCemeteryDirectionsOfArrival(cemeteryId, addForm, database);
+    if (auditLogIsEnabled) {
+        const recordAfter = getCemetery(cemeteryId, database);
+        createAuditLogEntries({
+            mainRecordType: 'cemetery',
+            mainRecordId: cemeteryId,
+            updateTable: 'Cemeteries'
+        }, [
+            {
+                property: '*',
+                type: 'created',
+                from: undefined,
+                to: recordAfter
+            }
+        ], user, database);
+    }
     if (connectedDatabase === undefined) {
         database.close();
     }

@@ -5,6 +5,11 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 import updateCemeteryDirectionsOfArrival, {
   type UpdateCemeteryDirectionsOfArrivalForm
 } from './updateCemeteryDirectionsOfArrival.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
+import getCemetery from './getCemetery.js'
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export type AddCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
   cemeteryDescription: string
@@ -82,6 +87,28 @@ export default function addCemetery(
   const cemeteryId = result.lastInsertRowid as number
 
   updateCemeteryDirectionsOfArrival(cemeteryId, addForm, database)
+
+  if (auditLogIsEnabled) {
+    const recordAfter = getCemetery(cemeteryId, database)
+
+    createAuditLogEntries(
+      {
+        mainRecordType: 'cemetery',
+        mainRecordId: cemeteryId,
+        updateTable: 'Cemeteries'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

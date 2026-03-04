@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-null */
 import { dateToInteger, dateToTimeInteger } from '@cityssm/utils-datetime';
 export default function createAuditLogEntries(record, differences, user, connectedDatabase) {
     let entriesCreated = 0;
@@ -6,6 +7,12 @@ export default function createAuditLogEntries(record, differences, user, connect
             continue;
         }
         const currentDate = new Date();
+        const fromValue = difference.from === undefined || difference.from === null
+            ? null
+            : JSON.stringify(difference.from);
+        const toValue = difference.to === undefined || difference.to === null
+            ? null
+            : JSON.stringify(difference.to);
         connectedDatabase
             .prepare(/* sql */ `
         INSERT INTO
@@ -26,7 +33,7 @@ export default function createAuditLogEntries(record, differences, user, connect
         VALUES
           (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
-            .run(currentDate.getTime(), dateToInteger(currentDate), dateToTimeInteger(currentDate), record.mainRecordType, record.mainRecordId, record.updateTable, record.recordIndex, difference.property, difference.type, user.userName, difference.from, difference.to);
+            .run(currentDate.getTime(), dateToInteger(currentDate), dateToTimeInteger(currentDate), record.mainRecordType, record.mainRecordId, record.updateTable, record.recordIndex, difference.property, difference.type, user.userName, fromValue, toValue);
         entriesCreated += 1;
     }
     return entriesCreated;
