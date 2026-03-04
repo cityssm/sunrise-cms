@@ -63,7 +63,7 @@ export default function addIntermentContainerType(
     createAuditLogEntries(
       {
         mainRecordType: 'intermentContainerType',
-        mainRecordId: intermentContainerTypeId,
+        mainRecordId: String(intermentContainerTypeId),
         updateTable: 'IntermentContainerTypes'
       },
       [

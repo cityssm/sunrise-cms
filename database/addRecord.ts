@@ -97,7 +97,7 @@ function addRecord(
       createAuditLogEntries(
         {
           mainRecordType: auditInfo.mainRecordType,
-          mainRecordId: recordId,
+          mainRecordId: String(recordId),
           updateTable: record.recordTable
         },
         [

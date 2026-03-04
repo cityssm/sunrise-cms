@@ -111,7 +111,7 @@ function updateRecord(
       createAuditLogEntries(
         {
           mainRecordType: auditInfo.mainRecordType,
-          mainRecordId: record.recordId,
+          mainRecordId: String(record.recordId),
           updateTable: record.recordTable
         },
         differences,

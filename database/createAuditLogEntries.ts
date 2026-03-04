@@ -36,7 +36,7 @@ type UpdateTable =
 export default function createAuditLogEntries(
   record: {
     mainRecordType: MainRecordType
-    mainRecordId: number | string
+    mainRecordId: string
     updateTable: UpdateTable
     recordIndex?: string
   },

@@ -148,7 +148,7 @@ export function deleteRecord(
     createAuditLogEntries(
       {
         mainRecordType: configAuditInfo.mainRecordType,
-        mainRecordId: recordId,
+        mainRecordId: String(recordId),
         updateTable: recordTable as ConfigRecordTable
       },
       [

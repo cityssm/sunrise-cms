@@ -58,7 +58,7 @@ export default function addServiceType(
     createAuditLogEntries(
       {
         mainRecordType: 'serviceType',
-        mainRecordId: serviceTypeId,
+        mainRecordId: String(serviceTypeId),
         updateTable: 'ServiceTypes'
       },
       [
