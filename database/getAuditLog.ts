@@ -17,7 +17,7 @@ export interface AuditLogEntry {
   logTime: number
 
   mainRecordType: string
-  mainRecordId: number
+  mainRecordId: string
 
   updateTable: string
   recordIndex: string | null

@@ -5,7 +5,7 @@ export interface AuditLogEntry {
     logDate: number;
     logTime: number;
     mainRecordType: string;
-    mainRecordId: number;
+    mainRecordId: string;
     updateTable: string;
     recordIndex: string | null;
     updateField: string;
