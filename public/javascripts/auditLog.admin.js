@@ -182,5 +182,5 @@
             }
         });
     });
-    i18next.on('loaded', filterAuditLog);
+    i18next.on('initialized', fetchAuditLog);
 })();
