@@ -14,7 +14,16 @@ export interface AuditLogEntry {
     fromValue: string | null;
     toValue: string | null;
 }
+export declare const defaultAuditLogLimit = 50;
 export default function getAuditLog(filters: {
-    logDate?: string;
+    logDateFrom?: string;
+    logDateTo?: string;
     mainRecordType?: AuditLogMainRecordType;
-}, connectedDatabase?: sqlite.Database): AuditLogEntry[];
+    updateUserName?: string;
+}, options?: {
+    limit?: number;
+    offset?: number;
+}, connectedDatabase?: sqlite.Database): {
+    auditLogEntries: AuditLogEntry[];
+    count: number;
+};

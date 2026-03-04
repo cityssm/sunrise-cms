@@ -2,8 +2,14 @@ import type { Request, Response } from 'express';
 import { type AuditLogEntry, type AuditLogMainRecordType } from '../../database/getAuditLog.js';
 export type DoGetAuditLogResponse = {
     auditLogEntries: AuditLogEntry[];
+    count: number;
+    offset: number;
 };
 export default function handler(request: Request<unknown, unknown, {
-    logDate?: string;
+    logDateFrom?: string;
+    logDateTo?: string;
     mainRecordType?: AuditLogMainRecordType;
+    updateUserName?: string;
+    limit?: number | string;
+    offset?: number | string;
 }>, response: Response<DoGetAuditLogResponse>): void;

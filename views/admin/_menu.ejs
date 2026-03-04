@@ -103,7 +103,6 @@
         </div>
       </a>
     </li>
-    <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
     <li>
       <a class="<%= (headTitle === t('admin:auditLog') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/admin/auditLog"
@@ -118,6 +117,5 @@
         </div>
       </a>
     </li>
-    <% } %>
   </ul>
 </aside>

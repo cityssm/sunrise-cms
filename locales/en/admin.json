@@ -21,6 +21,8 @@
   "auditLogTo": "To",
   "filters": "Filters",
   "logDate": "Log Date",
+  "logDateFrom": "Log Date From",
+  "logDateTo": "Log Date To",
   "mainRecordType": "Record Type",
   "burialSiteTypeManagement": "Burial Site Type Management",
   "burialSiteTypeManagementDescription": "Manage burial site types and fields associated with them.",

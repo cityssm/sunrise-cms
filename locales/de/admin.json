@@ -21,6 +21,8 @@
   "auditLogTo": "Bis",
   "filters": "Filter",
   "logDate": "Protokolldatum",
+  "logDateFrom": "Protokolldatum von",
+  "logDateTo": "Protokolldatum bis",
   "mainRecordType": "Datensatzart",
   "burialSiteTypeManagement": "Grabstättenartenverwaltung",
   "burialSiteTypeManagementDescription": "Grabstättenarten und zugehörige Felder verwalten.",
