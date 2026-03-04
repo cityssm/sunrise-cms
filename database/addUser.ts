@@ -1,6 +1,12 @@
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+import getUser from './getUser.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddLocalUserOptions {
   userName: string
@@ -116,6 +122,28 @@ export default function addUser(
     success = insertNewUser(options, user, database)
   } else if (recordDeleteTimeMillis !== null) {
     success = restoreDeletedUser(options, user, database)
+  }
+
+  if (success && auditLogIsEnabled) {
+    const recordAfter = getUser(options.userName, database)
+
+    createAuditLogEntries(
+      {
+        mainRecordType: 'user',
+        mainRecordId: options.userName,
+        updateTable: 'Users'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
   }
 
   if (connectedDatabase === undefined) {
