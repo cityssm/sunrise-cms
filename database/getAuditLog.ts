@@ -6,10 +6,17 @@ import { sunriseDB } from '../helpers/database.helpers.js'
 export type AuditLogMainRecordType =
   | ''
   | 'burialSite'
+  | 'burialSiteStatus'
   | 'cemetery'
+  | 'committalType'
   | 'contract'
+  | 'intermentContainerType'
+  | 'intermentDepth'
+  | 'serviceType'
   | 'user'
   | 'workOrder'
+  | 'workOrderMilestoneType'
+  | 'workOrderType'
 
 export interface AuditLogEntry {
   logMillis: number

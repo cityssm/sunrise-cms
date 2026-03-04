@@ -6,17 +6,31 @@ import type sqlite from 'better-sqlite3'
 
 type MainRecordType =
   | 'burialSite'
+  | 'burialSiteStatus'
   | 'cemetery'
+  | 'committalType'
   | 'contract'
+  | 'intermentContainerType'
+  | 'intermentDepth'
+  | 'serviceType'
   | 'user'
   | 'workOrder'
+  | 'workOrderMilestoneType'
+  | 'workOrderType'
 
 type UpdateTable =
+  | 'BurialSiteStatuses'
   | 'BurialSites'
   | 'Cemeteries'
   | 'CemeteryDirectionsOfArrival'
+  | 'CommittalTypes'
   | 'Contracts'
+  | 'IntermentContainerTypes'
+  | 'IntermentDepths'
+  | 'ServiceTypes'
   | 'Users'
+  | 'WorkOrderMilestoneTypes'
+  | 'WorkOrderTypes'
   | 'WorkOrders'
 
 export default function createAuditLogEntries(
