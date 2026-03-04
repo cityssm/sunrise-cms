@@ -18,6 +18,10 @@ export const config: Config = {
 
     databaseBackup: {
       taskIsEnabled: false
+    },
+
+    auditLog: {
+      enabled: false
     }
   },
 

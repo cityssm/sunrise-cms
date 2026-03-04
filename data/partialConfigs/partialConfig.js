@@ -12,6 +12,9 @@ export const config = {
         adminCleanup: {},
         databaseBackup: {
             taskIsEnabled: false
+        },
+        auditLog: {
+            enabled: false
         }
     },
     integrations: {

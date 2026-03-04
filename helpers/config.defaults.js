@@ -60,6 +60,7 @@ export const configDefaultValues = {
     'settings.adminCleanup.recordDeleteAgeDays': 60,
     'settings.printPdf.browser': 'chrome',
     'settings.printPdf.contentDisposition': 'attachment',
+    'settings.auditLog.enabled': false,
     'settings.databaseBackup.taskIsEnabled': false,
     'settings.databaseBackup.backupHour': 2,
     'settings.databaseBackup.deleteAgeDays': 0,

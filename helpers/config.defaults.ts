@@ -116,6 +116,8 @@ export const configDefaultValues = {
     | 'attachment'
     | 'inline',
 
+  'settings.auditLog.enabled': false,
+
   'settings.databaseBackup.taskIsEnabled': false,
 
   'settings.databaseBackup.backupHour': 2,

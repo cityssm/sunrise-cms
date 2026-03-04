@@ -63,6 +63,7 @@ export declare const configDefaultValues: {
     'settings.adminCleanup.recordDeleteAgeDays': number;
     'settings.printPdf.browser': "chrome" | "firefox";
     'settings.printPdf.contentDisposition': "attachment" | "inline";
+    'settings.auditLog.enabled': boolean;
     'settings.databaseBackup.taskIsEnabled': boolean;
     'settings.databaseBackup.backupHour': number;
     'settings.databaseBackup.deleteAgeDays': number;

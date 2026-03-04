@@ -1,7 +1,11 @@
+import getObjectDifference from '@cityssm/object-difference'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
+import createAuditLogEntries from './createAuditLogEntries.js'
+import getCemetery from './getCemetery.js'
 import updateCemeteryDirectionsOfArrival, {
   type UpdateCemeteryDirectionsOfArrivalForm
 } from './updateCemeteryDirectionsOfArrival.js'
@@ -27,6 +31,8 @@ export type UpdateCemeteryForm = UpdateCemeteryDirectionsOfArrivalForm & {
   cemeterySvg: string
 }
 
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+
 /**
  * Updates a cemetery in the database.
  * Be sure to rebuild burial site names after updating a cemetery.
@@ -41,6 +47,10 @@ export default function updateCemetery(
   connectedDatabase?: sqlite.Database
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
+
+  const recordBefore = auditLogIsEnabled
+    ? getCemetery(updateForm.cemeteryId, database)
+    : undefined
 
   const result = database
     .prepare(/* sql */ `
@@ -90,7 +100,50 @@ export default function updateCemetery(
       updateForm.cemeteryId
     )
 
+  const recordAfter = auditLogIsEnabled
+    ? getCemetery(updateForm.cemeteryId, database)
+    : undefined
+
+  const cemeteryDifferences = getObjectDifference(recordBefore, recordAfter)
+
+  if (cemeteryDifferences.length > 0) {
+    createAuditLogEntries(
+      {
+        mainRecordType: 'cemetery',
+        mainRecordId: updateForm.cemeteryId,
+        updateTable: 'Cemeteries'
+      },
+      cemeteryDifferences,
+      user,
+      database
+    )
+  }
+
+  const directionsBefore = recordAfter?.directionsOfArrival
+
   updateCemeteryDirectionsOfArrival(updateForm.cemeteryId, updateForm, database)
+
+  const directionsAfter = auditLogIsEnabled
+    ? getCemetery(updateForm.cemeteryId, database)?.directionsOfArrival
+    : undefined
+
+  const directionsDifferences = getObjectDifference(
+    directionsBefore,
+    directionsAfter
+  )
+
+  if (directionsDifferences.length > 0) {
+    createAuditLogEntries(
+      {
+        mainRecordType: 'cemetery',
+        mainRecordId: updateForm.cemeteryId,
+        updateTable: 'CemeteryDirectionsOfArrival'
+      },
+      directionsDifferences,
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

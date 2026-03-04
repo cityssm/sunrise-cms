@@ -674,6 +674,33 @@ const createStatements = [
       isAdmin bit NOT NULL DEFAULT 0,
       ${recordColumns}
     ) WITHOUT rowid
+  `,
+
+  /*
+   * Audit Log
+   */
+
+  /* sql */ `
+    CREATE TABLE IF NOT EXISTS AuditLog (
+      logMillis INTEGER NOT NULL,
+      logDate INTEGER NOT NULL,
+      logTime INTEGER NOT NULL,
+      mainRecordType VARCHAR(50) NOT NULL,
+      mainRecordId INTEGER NOT NULL,
+      updateTable VARCHAR(50) NOT NULL,
+      recordIndex VARCHAR(20),
+      updateField VARCHAR(50) NOT NULL,
+      updateType VARCHAR(20) NOT NULL,
+      updateUserName VARCHAR(30) NOT NULL,
+      fromValue TEXT,
+      toValue TEXT
+    )
+  `,
+
+  /* sql */ `CREATE INDEX IF NOT EXISTS idx_AuditLog ON AuditLog (logMillis)`,
+
+  /* sql */ `
+    CREATE INDEX IF NOT EXISTS idx_AuditLog_recordTypeId ON AuditLog (mainRecordType, mainRecordId, logMillis)
   `
 ]
 
@@ -868,6 +895,7 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
     addServiceType(
       {
         serviceType: 'Interment',
+
         orderNumber: 1
       },
       initializingUser,
@@ -877,6 +905,7 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
     addServiceType(
       {
         serviceType: 'Cremation',
+
         orderNumber: 2
       },
       initializingUser,
@@ -886,6 +915,7 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
     addServiceType(
       {
         serviceType: 'Entombment',
+
         orderNumber: 3
       },
       initializingUser,
@@ -895,6 +925,7 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
     addServiceType(
       {
         serviceType: 'Niche',
+
         orderNumber: 4
       },
       initializingUser,
@@ -904,6 +935,7 @@ export function initializeData(connectedDatabase?: sqlite.Database): void {
     addServiceType(
       {
         serviceType: 'Disinterment',
+
         orderNumber: 5
       },
       initializingUser,

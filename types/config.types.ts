@@ -126,6 +126,10 @@ export interface Config {
       backupHour?: number
       deleteAgeDays?: number
     }
+
+    auditLog: {
+      enabled?: boolean
+    }
   }
 
   integrations: {
