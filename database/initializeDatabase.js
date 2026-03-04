@@ -610,7 +610,7 @@ const createStatements = [
       logDate INTEGER NOT NULL,
       logTime INTEGER NOT NULL,
       mainRecordType VARCHAR(50) NOT NULL,
-      mainRecordId INTEGER NOT NULL,
+      mainRecordId VARCHAR(50) NOT NULL,
       updateTable VARCHAR(50) NOT NULL,
       recordIndex VARCHAR(20),
       updateField VARCHAR(50) NOT NULL,
