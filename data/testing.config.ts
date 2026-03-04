@@ -63,4 +63,6 @@ config.settings.burialSites.burialSiteNameSegments = {
   }
 }
 
+config.settings.auditLog.enabled = true
+
 export default config

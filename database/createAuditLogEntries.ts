@@ -33,7 +33,10 @@ export default function createAuditLogEntries(
   let entriesCreated = 0
 
   for (const difference of differences) {
-    if (difference.property === 'recordUpdate_timeMillis') {
+    if (
+      difference.property === 'recordUpdate_timeMillis' ||
+      difference.type === 'NA'
+    ) {
       continue
     }
 

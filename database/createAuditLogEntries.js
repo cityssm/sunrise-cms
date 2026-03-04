@@ -3,7 +3,8 @@ import { dateToInteger, dateToTimeInteger } from '@cityssm/utils-datetime';
 export default function createAuditLogEntries(record, differences, user, connectedDatabase) {
     let entriesCreated = 0;
     for (const difference of differences) {
-        if (difference.property === 'recordUpdate_timeMillis') {
+        if (difference.property === 'recordUpdate_timeMillis' ||
+            difference.type === 'NA') {
             continue;
         }
         const currentDate = new Date();
