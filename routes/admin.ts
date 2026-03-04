@@ -1,5 +1,6 @@
 import { Router } from 'express'
 
+import handler_auditLog from '../handlers/admin-get/auditLog.js'
 import handler_burialSiteTypes from '../handlers/admin-get/burialSiteTypes.js'
 import handler_contractTypes from '../handlers/admin-get/contractTypes.js'
 import handler_database from '../handlers/admin-get/database.js'
@@ -39,6 +40,7 @@ import handler_doDeleteServiceType from '../handlers/admin-post/doDeleteServiceT
 import handler_doDeleteUser from '../handlers/admin-post/doDeleteUser.js'
 import handler_doDeleteWorkOrderMilestoneType from '../handlers/admin-post/doDeleteWorkOrderMilestoneType.js'
 import handler_doDeleteWorkOrderType from '../handlers/admin-post/doDeleteWorkOrderType.js'
+import handler_doGetAuditLog from '../handlers/admin-post/doGetAuditLog.js'
 import handler_doMoveBurialSiteStatusDown from '../handlers/admin-post/doMoveBurialSiteStatusDown.js'
 import handler_doMoveBurialSiteStatusUp from '../handlers/admin-post/doMoveBurialSiteStatusUp.js'
 import handler_doMoveBurialSiteTypeDown from '../handlers/admin-post/doMoveBurialSiteTypeDown.js'
@@ -67,6 +69,7 @@ import handler_doMoveWorkOrderMilestoneTypeDown from '../handlers/admin-post/doM
 import handler_doMoveWorkOrderMilestoneTypeUp from '../handlers/admin-post/doMoveWorkOrderMilestoneTypeUp.js'
 import handler_doMoveWorkOrderTypeDown from '../handlers/admin-post/doMoveWorkOrderTypeDown.js'
 import handler_doMoveWorkOrderTypeUp from '../handlers/admin-post/doMoveWorkOrderTypeUp.js'
+import handler_doPurgeAuditLog from '../handlers/admin-post/doPurgeAuditLog.js'
 import handler_doToggleUserPermission from '../handlers/admin-post/doToggleUserPermission.js'
 import handler_doUpdateBurialSiteStatus from '../handlers/admin-post/doUpdateBurialSiteStatus.js'
 import handler_doUpdateBurialSiteType from '../handlers/admin-post/doUpdateBurialSiteType.js'
@@ -84,6 +87,7 @@ import handler_doUpdateSetting from '../handlers/admin-post/doUpdateSetting.js'
 import handler_doUpdateUser from '../handlers/admin-post/doUpdateUser.js'
 import handler_doUpdateWorkOrderMilestoneType from '../handlers/admin-post/doUpdateWorkOrderMilestoneType.js'
 import handler_doUpdateWorkOrderType from '../handlers/admin-post/doUpdateWorkOrderType.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 
 // Ntfy Startup
 
@@ -281,5 +285,16 @@ router
   .get('/database', handler_database)
   .post('/doBackupDatabase', handler_doBackupDatabase)
   .post('/doCleanupDatabase', handler_doCleanupDatabase)
+
+/*
+ * Audit Log
+ */
+
+if (getConfigProperty('settings.auditLog.enabled')) {
+  router
+    .get('/auditLog', handler_auditLog)
+    .post('/doGetAuditLog', handler_doGetAuditLog)
+    .post('/doPurgeAuditLog', handler_doPurgeAuditLog)
+}
 
 export default router

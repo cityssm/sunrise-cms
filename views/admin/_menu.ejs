@@ -103,5 +103,21 @@
         </div>
       </a>
     </li>
+    <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+    <li>
+      <a class="<%= (headTitle === t('admin:auditLog') ? 'is-active' : '') %>"
+        href="<%= urlPrefix %>/admin/auditLog"
+        title="<%= t('admin:auditLog') %>">
+        <div class="columns is-1 is-mobile">
+          <div class="column is-narrow">
+            <span class="icon"><i class="fa-solid fa-clipboard-list"></i></span>
+          </div>
+          <div class="column is-hidden-touch">
+            <%= t('admin:auditLog') %>
+          </div>
+        </div>
+      </a>
+    </li>
+    <% } %>
   </ul>
 </aside>

@@ -1,0 +1,132 @@
+<%- include('../_header'); -%>
+
+<div class="columns is-mobile">
+  <div class="column is-narrow is-hidden-print">
+    <%- include('_menu'); -%>
+  </div>
+  <div class="column">
+    <div class="columns is-vcentered is-mobile">
+      <div class="column">
+        <nav class="breadcrumb">
+          <ul>
+            <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
+            <li>
+              <a href="#">
+                <span class="icon is-small"><i class="fa-solid fa-cog"></i></span>
+                <span><%= t('admin:adminTools') %></span>
+              </a>
+            </li>
+            <li class="is-active">
+              <a href="#" aria-current="page">
+                <%= t('admin:auditLog') %>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div class="columns is-vcentered">
+      <div class="column">
+        <h1 class="title is-1">
+          <%= t('admin:auditLog') %>
+        </h1>
+      </div>
+      <div class="column is-narrow">
+        <button
+          class="button is-danger"
+          id="button--purgeAuditLog"
+          type="button"
+        >
+          <span class="icon"><i class="fa-solid fa-trash"></i></span>
+          <span><%= t('admin:auditLogPurge') %></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="columns is-multiline">
+        <div class="column is-one-third-desktop">
+          <div class="field">
+            <label class="label" for="filter--logDateFrom"><%= t('admin:logDateFrom') %></label>
+            <div class="control">
+              <input
+                class="input"
+                id="filter--logDateFrom"
+                type="date"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="column is-one-third-desktop">
+          <div class="field">
+            <label class="label" for="filter--logDateTo"><%= t('admin:logDateTo') %></label>
+            <div class="control">
+              <input
+                class="input"
+                id="filter--logDateTo"
+                type="date"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="column is-one-third-desktop">
+          <div class="field">
+            <label class="label" for="filter--mainRecordType"><%= t('admin:mainRecordType') %></label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="filter--mainRecordType">
+                  <option value=""><%= t('admin:allRecordTypes') %></option>
+                  <option value="burialSite"><%= t('cemeteries:burialSites') %></option>
+                  <option value="cemetery"><%= t('cemeteries:cemetery') %></option>
+                  <option value="contract"><%= t('contracts:contracts') %></option>
+                  <option value="user"><%= t('admin:users') %></option>
+                  <option value="workOrder"><%= t('workOrders:workOrders') %></option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-one-third-desktop">
+          <div class="field">
+            <label class="label" for="filter--updateUserName"><%= t('admin:userName') %></label>
+            <div class="control">
+              <input
+                class="input"
+                id="filter--updateUserName"
+                type="search"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="column is-narrow is-flex is-align-items-flex-end">
+          <div class="field">
+            <div class="control">
+              <button
+                class="button is-info"
+                id="button--filterAuditLog"
+                type="button"
+              >
+                <span class="icon"><i class="fa-solid fa-search"></i></span>
+                <span><%= t('common:filter') %></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="container--auditLog">
+      <p class="has-text-grey"><%= t('admin:auditLogLoadPrompt') %></p>
+    </div>
+  </div>
+</div>
+
+<%- include('../_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/auditLog.admin.js"></script>
+
+<%- include('../_footerB'); -%>
