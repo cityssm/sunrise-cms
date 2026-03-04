@@ -1,13 +1,13 @@
 import purgeAuditLog from '../../database/purgeAuditLog.js';
-const validAges = [
-    'thirtyDays',
+const validAges = new Set([
+    'all',
     'ninetyDays',
     'oneYear',
-    'all'
-];
+    'thirtyDays'
+]);
 export default function handler(request, response) {
     const age = request.body.age;
-    if (age === undefined || !validAges.includes(age)) {
+    if (age === undefined || !validAges.has(age)) {
         response.status(400).json({
             message: 'A valid purge age is required.',
             success: false

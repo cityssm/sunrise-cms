@@ -4,17 +4,16 @@ import purgeAuditLog, {
   type PurgeAuditLogAge
 } from '../../database/purgeAuditLog.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoPurgeAuditLogResponse =
   | { message: string; success: false }
   | { purgedCount: number; success: true }
 
-const validAges: PurgeAuditLogAge[] = [
-  'thirtyDays',
+const validAges = new Set<PurgeAuditLogAge>([
+  'all',
   'ninetyDays',
   'oneYear',
-  'all'
-]
+  'thirtyDays'
+])
 
 export default function handler(
   request: Request<unknown, unknown, { age?: string }>,
@@ -22,7 +21,7 @@ export default function handler(
 ): void {
   const age = request.body.age as PurgeAuditLogAge | undefined
 
-  if (age === undefined || !validAges.includes(age)) {
+  if (age === undefined || !validAges.has(age)) {
     response.status(400).json({
       message: 'A valid purge age is required.',
       success: false
