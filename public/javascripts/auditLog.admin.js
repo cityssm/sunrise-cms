@@ -6,13 +6,13 @@
     function getUpdateTypeIcon(updateType) {
         switch (updateType) {
             case 'created': {
-                return '<span class="icon has-text-success"><i class="fa-solid fa-plus"></i></span>';
+                return `<span class="icon has-text-success" title="${cityssm.escapeHTML(i18next.t('admin:auditLogUpdateTypeCreated'))}"><i class="fa-solid fa-plus"></i></span>`;
             }
             case 'deleted': {
-                return '<span class="icon has-text-danger"><i class="fa-solid fa-trash"></i></span>';
+                return `<span class="icon has-text-danger" title="${cityssm.escapeHTML(i18next.t('admin:auditLogUpdateTypeDeleted'))}"><i class="fa-solid fa-trash"></i></span>`;
             }
             default: {
-                return '<span class="icon has-text-warning"><i class="fa-solid fa-pen"></i></span>';
+                return `<span class="icon has-text-warning" title="${cityssm.escapeHTML(i18next.t('admin:auditLogUpdateTypeUpdated'))}"><i class="fa-solid fa-pen"></i></span>`;
             }
         }
     }
@@ -29,10 +29,10 @@
         }
         const escaped = cityssm.escapeHTML(rawValue);
         if (rawValue.length <= maxValueLength) {
-            return `<code>${escaped}</code>`;
+            return `<code style="word-break:break-all">${escaped}</code>`;
         }
         const truncated = cityssm.escapeHTML(truncateValue(rawValue));
-        return `<code title="${escaped}" style="cursor:help">${truncated}</code>`;
+        return `<code title="${escaped}" style="cursor:help;word-break:break-all">${truncated}</code>`;
     }
     function renderAuditLog(responseJSON) {
         const { auditLogEntries, count, offset } = responseJSON;
@@ -53,8 +53,8 @@
           <td>${entry.mainRecordId.toString()}</td>
           <td>${cityssm.escapeHTML(entry.updateTable)}</td>
           <td>${cityssm.escapeHTML(entry.updateField)}</td>
-          <td>${buildValueCell(entry.fromValue)}</td>
-          <td>${buildValueCell(entry.toValue)}</td>
+          <td style="max-width:200px">${buildValueCell(entry.fromValue)}</td>
+          <td style="max-width:200px">${buildValueCell(entry.toValue)}</td>
           <td>${cityssm.escapeHTML(entry.updateUserName)}</td>
         </tr>`;
         })
