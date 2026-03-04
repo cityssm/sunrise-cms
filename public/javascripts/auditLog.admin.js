@@ -53,7 +53,7 @@
             </td>
             <td>
               ${cityssm.escapeHTML(entry.mainRecordType)}<br />
-              <span class="is-size-7">#${entry.mainRecordId.toString()}</span>
+              <span class="is-size-7">${entry.mainRecordId.toString()}</span>
             </td>
             <td>
               ${cityssm.escapeHTML(entry.updateTable)}<br />
