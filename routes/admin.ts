@@ -1,5 +1,6 @@
 import { Router } from 'express'
 
+import handler_auditLog from '../handlers/admin-get/auditLog.js'
 import handler_burialSiteTypes from '../handlers/admin-get/burialSiteTypes.js'
 import handler_contractTypes from '../handlers/admin-get/contractTypes.js'
 import handler_database from '../handlers/admin-get/database.js'
@@ -24,6 +25,8 @@ import handler_doAddWorkOrderMilestoneType from '../handlers/admin-post/doAddWor
 import handler_doAddWorkOrderType from '../handlers/admin-post/doAddWorkOrderType.js'
 import handler_doBackupDatabase from '../handlers/admin-post/doBackupDatabase.js'
 import handler_doCleanupDatabase from '../handlers/admin-post/doCleanupDatabase.js'
+import handler_doGetAuditLog from '../handlers/admin-post/doGetAuditLog.js'
+import handler_doPurgeAuditLog from '../handlers/admin-post/doPurgeAuditLog.js'
 import handler_doDeleteBurialSiteStatus from '../handlers/admin-post/doDeleteBurialSiteStatus.js'
 import handler_doDeleteBurialSiteType from '../handlers/admin-post/doDeleteBurialSiteType.js'
 import handler_doDeleteBurialSiteTypeField from '../handlers/admin-post/doDeleteBurialSiteTypeField.js'
@@ -281,5 +284,14 @@ router
   .get('/database', handler_database)
   .post('/doBackupDatabase', handler_doBackupDatabase)
   .post('/doCleanupDatabase', handler_doCleanupDatabase)
+
+/*
+ * Audit Log
+ */
+
+router
+  .get('/auditLog', handler_auditLog)
+  .post('/doGetAuditLog', handler_doGetAuditLog)
+  .post('/doPurgeAuditLog', handler_doPurgeAuditLog)
 
 export default router
