@@ -24,8 +24,6 @@ import handler_doAddWorkOrderMilestoneType from '../handlers/admin-post/doAddWor
 import handler_doAddWorkOrderType from '../handlers/admin-post/doAddWorkOrderType.js';
 import handler_doBackupDatabase from '../handlers/admin-post/doBackupDatabase.js';
 import handler_doCleanupDatabase from '../handlers/admin-post/doCleanupDatabase.js';
-import handler_doGetAuditLog from '../handlers/admin-post/doGetAuditLog.js';
-import handler_doPurgeAuditLog from '../handlers/admin-post/doPurgeAuditLog.js';
 import handler_doDeleteBurialSiteStatus from '../handlers/admin-post/doDeleteBurialSiteStatus.js';
 import handler_doDeleteBurialSiteType from '../handlers/admin-post/doDeleteBurialSiteType.js';
 import handler_doDeleteBurialSiteTypeField from '../handlers/admin-post/doDeleteBurialSiteTypeField.js';
@@ -41,6 +39,7 @@ import handler_doDeleteServiceType from '../handlers/admin-post/doDeleteServiceT
 import handler_doDeleteUser from '../handlers/admin-post/doDeleteUser.js';
 import handler_doDeleteWorkOrderMilestoneType from '../handlers/admin-post/doDeleteWorkOrderMilestoneType.js';
 import handler_doDeleteWorkOrderType from '../handlers/admin-post/doDeleteWorkOrderType.js';
+import handler_doGetAuditLog from '../handlers/admin-post/doGetAuditLog.js';
 import handler_doMoveBurialSiteStatusDown from '../handlers/admin-post/doMoveBurialSiteStatusDown.js';
 import handler_doMoveBurialSiteStatusUp from '../handlers/admin-post/doMoveBurialSiteStatusUp.js';
 import handler_doMoveBurialSiteTypeDown from '../handlers/admin-post/doMoveBurialSiteTypeDown.js';
@@ -69,6 +68,7 @@ import handler_doMoveWorkOrderMilestoneTypeDown from '../handlers/admin-post/doM
 import handler_doMoveWorkOrderMilestoneTypeUp from '../handlers/admin-post/doMoveWorkOrderMilestoneTypeUp.js';
 import handler_doMoveWorkOrderTypeDown from '../handlers/admin-post/doMoveWorkOrderTypeDown.js';
 import handler_doMoveWorkOrderTypeUp from '../handlers/admin-post/doMoveWorkOrderTypeUp.js';
+import handler_doPurgeAuditLog from '../handlers/admin-post/doPurgeAuditLog.js';
 import handler_doToggleUserPermission from '../handlers/admin-post/doToggleUserPermission.js';
 import handler_doUpdateBurialSiteStatus from '../handlers/admin-post/doUpdateBurialSiteStatus.js';
 import handler_doUpdateBurialSiteType from '../handlers/admin-post/doUpdateBurialSiteType.js';
@@ -86,6 +86,7 @@ import handler_doUpdateSetting from '../handlers/admin-post/doUpdateSetting.js';
 import handler_doUpdateUser from '../handlers/admin-post/doUpdateUser.js';
 import handler_doUpdateWorkOrderMilestoneType from '../handlers/admin-post/doUpdateWorkOrderMilestoneType.js';
 import handler_doUpdateWorkOrderType from '../handlers/admin-post/doUpdateWorkOrderType.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 // Ntfy Startup
 export const router = Router();
 /*
@@ -224,8 +225,10 @@ router
 /*
  * Audit Log
  */
-router
-    .get('/auditLog', handler_auditLog)
-    .post('/doGetAuditLog', handler_doGetAuditLog)
-    .post('/doPurgeAuditLog', handler_doPurgeAuditLog);
+if (getConfigProperty('settings.auditLog.enabled')) {
+    router
+        .get('/auditLog', handler_auditLog)
+        .post('/doGetAuditLog', handler_doGetAuditLog)
+        .post('/doPurgeAuditLog', handler_doPurgeAuditLog);
+}
 export default router;

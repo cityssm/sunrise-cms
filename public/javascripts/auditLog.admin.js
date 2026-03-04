@@ -21,23 +21,23 @@
         if (value.length <= maxValueLength) {
             return value;
         }
-        return value.slice(0, maxValueLength) + '\u2026';
+        return `${value.slice(0, maxValueLength)}\u2026`;
     }
     function buildValueCell(rawValue) {
         if (rawValue === null || rawValue === 'null') {
-            return `<em class="has-text-grey">null</em>`;
+            return /* html */ `<em class="has-text-grey">null</em>`;
         }
         const escaped = cityssm.escapeHTML(rawValue);
         if (rawValue.length <= maxValueLength) {
-            return `<code style="word-break:break-all">${escaped}</code>`;
+            return /* html */ `<code style="word-break:break-all">${escaped}</code>`;
         }
         const truncated = cityssm.escapeHTML(truncateValue(rawValue));
-        return `<code title="${escaped}" style="cursor:help;word-break:break-all">${truncated}</code>`;
+        return /* html */ `<code title="${escaped}" style="cursor:help;word-break:break-all">${truncated}</code>`;
     }
     function renderAuditLog(responseJSON) {
         const { auditLogEntries, count, offset } = responseJSON;
         if (auditLogEntries.length === 0) {
-            auditLogContainerElement.innerHTML = `<p class="has-text-grey">${cityssm.escapeHTML(i18next.t('admin:auditLogNoEntries'))}</p>`;
+            auditLogContainerElement.innerHTML = /* html */ `<p class="has-text-grey">${cityssm.escapeHTML(i18next.t('admin:auditLogNoEntries'))}</p>`;
             return;
         }
         const rowsHtml = auditLogEntries
@@ -45,40 +45,52 @@
             const logDate = new Date(entry.logMillis);
             const dateString = logDate.toLocaleDateString();
             const timeString = logDate.toLocaleTimeString();
-            return `<tr>
-          <td>${getUpdateTypeIcon(entry.updateType)}</td>
-          <td>${cityssm.escapeHTML(dateString)}</td>
-          <td>${cityssm.escapeHTML(timeString)}</td>
-          <td>${cityssm.escapeHTML(entry.mainRecordType)}</td>
-          <td>${entry.mainRecordId.toString()}</td>
-          <td>${cityssm.escapeHTML(entry.updateTable)}</td>
-          <td>${cityssm.escapeHTML(entry.updateField)}</td>
-          <td style="max-width:200px">${buildValueCell(entry.fromValue)}</td>
-          <td style="max-width:200px">${buildValueCell(entry.toValue)}</td>
-          <td>${cityssm.escapeHTML(entry.updateUserName)}</td>
-        </tr>`;
+            return /* html */ `
+          <tr>
+            <td>
+              ${cityssm.escapeHTML(dateString)}<br />
+              <span class="is-size-7">${cityssm.escapeHTML(timeString)}</span>
+            </td>
+            <td>
+              ${cityssm.escapeHTML(entry.mainRecordType)}<br />
+              <span class="is-size-7">#${entry.mainRecordId.toString()}</span>
+            </td>
+            <td>
+              ${cityssm.escapeHTML(entry.updateTable)}<br />
+              <span class="is-size-7">${cityssm.escapeHTML(entry.updateField)}</span>
+            </td>
+            <td>${getUpdateTypeIcon(entry.updateType)}</td>
+            <td style="max-width:200px">${buildValueCell(entry.fromValue)}</td>
+            <td style="max-width:200px">${buildValueCell(entry.toValue)}</td>
+            <td class="is-nowrap">
+              ${cityssm.escapeHTML(entry.updateUserName)}
+            </td>
+          </tr>
+        `;
         })
             .join('');
         // eslint-disable-next-line no-unsanitized/property
-        auditLogContainerElement.innerHTML = `<div class="table-container">
-      <table class="table is-fullwidth is-striped is-hoverable">
-        <thead>
-          <tr>
-            <th></th>
-            <th>${cityssm.escapeHTML(i18next.t('common:date'))}</th>
-            <th>${cityssm.escapeHTML(i18next.t('common:time'))}</th>
-            <th>${cityssm.escapeHTML(i18next.t('admin:mainRecordType'))}</th>
-            <th>${cityssm.escapeHTML(i18next.t('admin:auditLogRecordId'))}</th>
-            <th>${cityssm.escapeHTML(i18next.t('admin:auditLogTable'))}</th>
-            <th>${cityssm.escapeHTML(i18next.t('admin:auditLogField'))}</th>
-            <th>${cityssm.escapeHTML(i18next.t('admin:auditLogFrom'))}</th>
-            <th>${cityssm.escapeHTML(i18next.t('admin:auditLogTo'))}</th>
-            <th>${cityssm.escapeHTML(i18next.t('admin:userName'))}</th>
-          </tr>
-        </thead>
-        <tbody>${rowsHtml}</tbody>
-      </table>
-    </div>`;
+        auditLogContainerElement.innerHTML = /* html */ `
+      <div class="table-container">
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th>${cityssm.escapeHTML(i18next.t('common:time'))}</th>
+              <th>${cityssm.escapeHTML(i18next.t('admin:mainRecordType'))}</th>
+              <th>
+                ${cityssm.escapeHTML(i18next.t('admin:auditLogTable'))}
+                /
+                ${cityssm.escapeHTML(i18next.t('admin:auditLogField'))}</th>
+              <th></th>
+              <th>${cityssm.escapeHTML(i18next.t('admin:auditLogFrom'))}</th>
+              <th>${cityssm.escapeHTML(i18next.t('admin:auditLogTo'))}</th>
+              <th>${cityssm.escapeHTML(i18next.t('admin:userName'))}</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+      </div>
+    `;
         auditLogContainerElement.insertAdjacentHTML('beforeend', sunrise.getSearchResultsPagerHTML(pageLimit, offset, count));
         auditLogContainerElement
             .querySelector("button[data-page='previous']")
@@ -89,7 +101,7 @@
         auditLogContainerElement
             .querySelector("button[data-page='next']")
             ?.addEventListener('click', () => {
-            currentOffset = currentOffset + pageLimit;
+            currentOffset += pageLimit;
             fetchAuditLog();
         });
     }
@@ -170,4 +182,5 @@
             }
         });
     });
+    i18next.on('loaded', filterAuditLog);
 })();
