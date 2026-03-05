@@ -219,44 +219,38 @@ declare const exports: {
   document
     .querySelector('#button--purgeAuditLog')
     ?.addEventListener('click', () => {
-      const purgeAgeSelectHtml = `<div class="field">
-        <label class="label">${cityssm.escapeHTML(i18next.t('admin:auditLogPurgeOlderThan'))}</label>
-        <div class="control">
-          <div class="select is-fullwidth">
-            <select id="purge--age">
-              <option value="thirtyDays">${cityssm.escapeHTML(i18next.t('admin:auditLogPurgeThirtyDays'))}</option>
-              <option value="ninetyDays">${cityssm.escapeHTML(i18next.t('admin:auditLogPurgeNinetyDays'))}</option>
-              <option value="oneYear">${cityssm.escapeHTML(i18next.t('admin:auditLogPurgeOneYear'))}</option>
-              <option value="all">${cityssm.escapeHTML(i18next.t('admin:auditLogPurgeEverything'))}</option>
-            </select>
-          </div>
-        </div>
-      </div>`
+      let closeModalFunction: () => void = () => {}
 
-      bulmaJS.confirm({
-        contextualColorName: 'danger',
-        title: i18next.t('admin:auditLogPurge'),
+      function doSubmitPurge(submitEvent: Event): void {
+        submitEvent.preventDefault()
 
-        message: purgeAgeSelectHtml,
-        messageIsHtml: true,
+        const ageSelectElement = (
+          submitEvent.currentTarget as HTMLFormElement
+        ).querySelector('#purge--age') as HTMLSelectElement
 
-        okButton: {
-          contextualColorName: 'danger',
-          text: i18next.t('common:delete'),
+        const age = ageSelectElement.value
+        const ageLabel =
+          ageSelectElement.options[ageSelectElement.selectedIndex].textContent ??
+          ''
 
-          callbackFunction() {
-            const ageSelectElement = document.querySelector(
-              '#purge--age'
-            ) as HTMLSelectElement | null
+        closeModalFunction()
+        doPurge(age, ageLabel)
+      }
 
-            const age = ageSelectElement?.value ?? 'thirtyDays'
+      cityssm.openHtmlModal('adminAuditLog-purge', {
+        onshow(modalElement) {
+          sunrise.localize(modalElement)
+        },
+        onshown(modalElement, _closeModalFunction) {
+          bulmaJS.toggleHtmlClipped()
+          closeModalFunction = _closeModalFunction
 
-            const ageLabel =
-              ageSelectElement?.options[ageSelectElement.selectedIndex]
-                .textContent ?? ''
-
-            doPurge(age, ageLabel)
-          }
+          modalElement
+            .querySelector('form')
+            ?.addEventListener('submit', doSubmitPurge)
+        },
+        onremoved() {
+          bulmaJS.toggleHtmlClipped()
         }
       })
     })
