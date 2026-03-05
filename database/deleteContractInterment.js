@@ -7,8 +7,15 @@ export default function deleteContractInterment(contractId, intermentNumber, use
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractInterments WHERE contractId = ? AND intermentNumber = ?`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractInterments
+          WHERE
+            contractId = ?
+            AND intermentNumber = ?
+        `)
             .get(contractId, intermentNumber)
         : undefined;
     const result = database
@@ -25,9 +32,9 @@ export default function deleteContractInterment(contractId, intermentNumber, use
     if (result.changes > 0 && auditLogIsEnabled) {
         createAuditLogEntries({
             mainRecordType: 'contract',
-            mainRecordId: String(contractId),
+            mainRecordId: contractId,
             updateTable: 'ContractInterments',
-            recordIndex: String(intermentNumber)
+            recordIndex: intermentNumber
         }, [
             {
                 property: '*',

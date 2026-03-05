@@ -147,7 +147,7 @@ export default function addContract(
           )
         VALUES
           (
-        ?,
+            ?,
             ?,
             ?,
             ?,
@@ -242,19 +242,27 @@ export default function addContract(
 
     if (auditLogIsEnabled) {
       const recordAfter = database
-        .prepare(/* sql */ `SELECT * FROM Contracts WHERE contractId = ?`)
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            Contracts
+          WHERE
+            contractId = ?
+        `)
         .get(contractId)
 
       createAuditLogEntries(
         {
           mainRecordType: 'contract',
-          mainRecordId: String(contractId),
+          mainRecordId: contractId,
           updateTable: 'Contracts'
         },
         [
           {
             property: '*',
             type: 'created',
+
             from: undefined,
             to: recordAfter
           }

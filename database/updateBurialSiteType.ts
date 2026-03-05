@@ -29,9 +29,15 @@ export default function updateBurialSiteType(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM BurialSiteTypes WHERE burialSiteTypeId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSiteTypes
+          WHERE
+            burialSiteTypeId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(updateForm.burialSiteTypeId)
     : undefined
 
@@ -64,9 +70,14 @@ export default function updateBurialSiteType(
 
   if (result.changes > 0 && auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM BurialSiteTypes WHERE burialSiteTypeId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          BurialSiteTypes
+        WHERE
+          burialSiteTypeId = ?
+      `)
       .get(updateForm.burialSiteTypeId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -75,7 +86,7 @@ export default function updateBurialSiteType(
       createAuditLogEntries(
         {
           mainRecordType: 'burialSiteType',
-          mainRecordId: String(updateForm.burialSiteTypeId),
+          mainRecordId: updateForm.burialSiteTypeId,
           updateTable: 'BurialSiteTypes'
         },
         differences,

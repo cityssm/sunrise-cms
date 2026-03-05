@@ -79,9 +79,15 @@ function updateRecord(
   const recordBefore =
     auditLogIsEnabled && auditInfo !== undefined
       ? database
-          .prepare(
-            /* sql */ `SELECT * FROM ${record.recordTable} WHERE ${auditInfo.recordIdColumn} = ? AND recordDelete_timeMillis IS NULL`
-          )
+          .prepare(/* sql */ `
+            SELECT
+              *
+            FROM
+              ${record.recordTable}
+            WHERE
+              ${auditInfo.recordIdColumn} = ?
+              AND recordDelete_timeMillis IS NULL
+          `)
           .get(record.recordId)
       : undefined
 
@@ -100,9 +106,14 @@ function updateRecord(
 
   if (result.changes > 0 && auditLogIsEnabled && auditInfo !== undefined) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM ${record.recordTable} WHERE ${auditInfo.recordIdColumn} = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ${record.recordTable}
+        WHERE
+          ${auditInfo.recordIdColumn} = ?
+      `)
       .get(record.recordId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -111,7 +122,7 @@ function updateRecord(
       createAuditLogEntries(
         {
           mainRecordType: auditInfo.mainRecordType,
-          mainRecordId: String(record.recordId),
+          mainRecordId: record.recordId,
           updateTable: record.recordTable
         },
         differences,

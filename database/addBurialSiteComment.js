@@ -26,8 +26,14 @@ export default function addBurialSiteComment(commentForm, user, connectedDatabas
         .run(commentForm.burialSiteId, dateToInteger(rightNow), dateToTimeInteger(rightNow), commentForm.comment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM BurialSiteComments WHERE burialSiteCommentId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          BurialSiteComments
+        WHERE
+          burialSiteCommentId = ?
+      `)
             .get(result.lastInsertRowid);
         createAuditLogEntries({
             mainRecordType: 'burialSite',

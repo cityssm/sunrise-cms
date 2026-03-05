@@ -64,7 +64,7 @@ export default function addContract(addForm, user, connectedDatabase) {
           )
         VALUES
           (
-        ?,
+            ?,
             ?,
             ?,
             ?,
@@ -120,11 +120,18 @@ export default function addContract(addForm, user, connectedDatabase) {
         }
         if (auditLogIsEnabled) {
             const recordAfter = database
-                .prepare(/* sql */ `SELECT * FROM Contracts WHERE contractId = ?`)
+                .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            Contracts
+          WHERE
+            contractId = ?
+        `)
                 .get(contractId);
             createAuditLogEntries({
                 mainRecordType: 'contract',
-                mainRecordId: String(contractId),
+                mainRecordId: contractId,
                 updateTable: 'Contracts'
             }, [
                 {

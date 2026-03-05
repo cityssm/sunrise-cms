@@ -82,6 +82,7 @@ export default function addFuneralHome(
         {
           property: '*',
           type: 'created',
+
           from: undefined,
           to: recordAfter
         }

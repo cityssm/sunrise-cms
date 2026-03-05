@@ -7,8 +7,16 @@ export default function deleteWorkOrderContract(workOrderId, contractId, user, c
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM WorkOrderContracts WHERE workOrderId = ? AND contractId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            WorkOrderContracts
+          WHERE
+            workOrderId = ?
+            AND contractId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(workOrderId, contractId)
         : undefined;
     const result = database
@@ -25,9 +33,9 @@ export default function deleteWorkOrderContract(workOrderId, contractId, user, c
     if (result.changes > 0 && auditLogIsEnabled) {
         createAuditLogEntries({
             mainRecordType: 'workOrder',
-            mainRecordId: String(workOrderId),
+            mainRecordId: workOrderId,
             updateTable: 'WorkOrderContracts',
-            recordIndex: String(contractId)
+            recordIndex: contractId
         }, [
             {
                 property: '*',

@@ -66,7 +66,11 @@ export default function updateFuneralHome(
     )
 
   if (result.changes > 0 && auditLogIsEnabled) {
-    const recordAfter = getFuneralHome(updateForm.funeralHomeId, false, database)
+    const recordAfter = getFuneralHome(
+      updateForm.funeralHomeId,
+      false,
+      database
+    )
 
     const differences = getObjectDifference(recordBefore, recordAfter)
 
@@ -74,7 +78,7 @@ export default function updateFuneralHome(
       createAuditLogEntries(
         {
           mainRecordType: 'funeralHome',
-          mainRecordId: String(updateForm.funeralHomeId),
+          mainRecordId: updateForm.funeralHomeId,
           updateTable: 'FuneralHomes'
         },
         differences,

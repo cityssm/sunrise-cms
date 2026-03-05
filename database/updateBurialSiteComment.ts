@@ -30,9 +30,15 @@ export default function updateBurialSiteComment(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM BurialSiteComments WHERE burialSiteCommentId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSiteComments
+          WHERE
+            burialSiteCommentId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(commentForm.burialSiteCommentId)
     : undefined
 
@@ -62,9 +68,14 @@ export default function updateBurialSiteComment(
     const parentId = (recordBefore as Record<string, unknown>).burialSiteId
 
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM BurialSiteComments WHERE burialSiteCommentId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          BurialSiteComments
+        WHERE
+          burialSiteCommentId = ?
+      `)
       .get(commentForm.burialSiteCommentId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -75,7 +86,7 @@ export default function updateBurialSiteComment(
           mainRecordType: 'burialSite',
           mainRecordId: String(parentId),
           updateTable: 'BurialSiteComments',
-          recordIndex: String(commentForm.burialSiteCommentId)
+          recordIndex: commentForm.burialSiteCommentId
         },
         differences,
         user,

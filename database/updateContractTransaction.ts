@@ -37,9 +37,16 @@ export default function updateContractTransaction(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM ContractTransactions WHERE contractId = ? AND transactionIndex = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractTransactions
+          WHERE
+            contractId = ?
+            AND transactionIndex = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(updateForm.contractId, updateForm.transactionIndex)
     : undefined
 
@@ -75,9 +82,15 @@ export default function updateContractTransaction(
 
   if (result.changes > 0 && auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM ContractTransactions WHERE contractId = ? AND transactionIndex = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractTransactions
+        WHERE
+          contractId = ?
+          AND transactionIndex = ?
+      `)
       .get(updateForm.contractId, updateForm.transactionIndex)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -86,9 +99,9 @@ export default function updateContractTransaction(
       createAuditLogEntries(
         {
           mainRecordType: 'contract',
-          mainRecordId: String(updateForm.contractId),
+          mainRecordId: updateForm.contractId,
           updateTable: 'ContractTransactions',
-          recordIndex: String(updateForm.transactionIndex)
+          recordIndex: updateForm.transactionIndex
         },
         differences,
         user,

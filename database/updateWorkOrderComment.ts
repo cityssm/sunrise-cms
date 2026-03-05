@@ -31,9 +31,15 @@ export default function updateWorkOrderComment(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM WorkOrderComments WHERE workOrderCommentId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            WorkOrderComments
+          WHERE
+            workOrderCommentId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(commentForm.workOrderCommentId)
     : undefined
 
@@ -63,9 +69,14 @@ export default function updateWorkOrderComment(
     const parentId = (recordBefore as Record<string, unknown>).workOrderId
 
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM WorkOrderComments WHERE workOrderCommentId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrderComments
+        WHERE
+          workOrderCommentId = ?
+      `)
       .get(commentForm.workOrderCommentId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -76,7 +87,7 @@ export default function updateWorkOrderComment(
           mainRecordType: 'workOrder',
           mainRecordId: String(parentId),
           updateTable: 'WorkOrderComments',
-          recordIndex: String(commentForm.workOrderCommentId)
+          recordIndex: commentForm.workOrderCommentId
         },
         differences,
         user,

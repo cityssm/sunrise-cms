@@ -22,7 +22,7 @@ export interface UpdateBurialSiteForm extends BurialSiteFieldsForm {
  * @param updateForm - The burial site's updated information
  * @param user - The user making the request
  * @returns True if the burial site was updated.
- * @throws If an active burial site with the same name already exists.
+ * @throws {Error} If an active burial site with the same name already exists.
  */
 export default function updateBurialSite(updateForm: UpdateBurialSiteForm, user: User): boolean;
 export declare function updateBurialSiteStatus(burialSiteId: number | string, burialSiteStatusId: number | string, user: User, connectedDatabase?: sqlite.Database): boolean;

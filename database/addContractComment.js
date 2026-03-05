@@ -36,12 +36,18 @@ export default function addContractComment(commentForm, user, connectedDatabase)
         .run(commentForm.contractId, commentDate, commentTime ?? 0, commentForm.comment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractComments WHERE contractCommentId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractComments
+        WHERE
+          contractCommentId = ?
+      `)
             .get(result.lastInsertRowid);
         createAuditLogEntries({
             mainRecordType: 'contract',
-            mainRecordId: String(commentForm.contractId),
+            mainRecordId: commentForm.contractId,
             updateTable: 'ContractComments',
             recordIndex: String(result.lastInsertRowid)
         }, [

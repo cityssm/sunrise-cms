@@ -34,9 +34,9 @@ type UpdateTable =
   | 'ContractComments'
   | 'ContractFees'
   | 'ContractInterments'
+  | 'Contracts'
   | 'ContractServiceTypes'
   | 'ContractTransactions'
-  | 'Contracts'
   | 'ContractTypes'
   | 'Fees'
   | 'FuneralHomes'
@@ -61,9 +61,9 @@ const propertiesToExclude = new Set([
 export default function createAuditLogEntries(
   record: {
     mainRecordType: MainRecordType
-    mainRecordId: string
+    mainRecordId: number | string
     updateTable: UpdateTable
-    recordIndex?: string
+    recordIndex?: number | string
   },
   differences: Difference[],
   user: User,

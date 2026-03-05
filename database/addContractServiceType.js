@@ -25,14 +25,21 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
             .run(addForm.contractId, addForm.serviceTypeId, addForm.contractServiceDetails ?? '', user.userName, rightNowMillis, user.userName, rightNowMillis);
         if (result.changes > 0 && auditLogIsEnabled) {
             const recordAfter = database
-                .prepare(
-            /* sql */ `SELECT * FROM ContractServiceTypes WHERE contractId = ? AND serviceTypeId = ?`)
+                .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractServiceTypes
+          WHERE
+            contractId = ?
+            AND serviceTypeId = ?
+        `)
                 .get(addForm.contractId, addForm.serviceTypeId);
             createAuditLogEntries({
                 mainRecordType: 'contract',
-                mainRecordId: String(addForm.contractId),
+                mainRecordId: addForm.contractId,
                 updateTable: 'ContractServiceTypes',
-                recordIndex: String(addForm.serviceTypeId)
+                recordIndex: addForm.serviceTypeId
             }, [
                 {
                     property: '*',

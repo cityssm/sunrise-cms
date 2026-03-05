@@ -76,13 +76,14 @@ export default function deleteFuneralHome(
     createAuditLogEntries(
       {
         mainRecordType: 'funeralHome',
-        mainRecordId: String(funeralHomeId),
+        mainRecordId: funeralHomeId,
         updateTable: 'FuneralHomes'
       },
       [
         {
           property: '*',
           type: 'deleted',
+
           from: recordBefore,
           to: undefined
         }

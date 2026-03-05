@@ -50,9 +50,14 @@ export default function addContractType(
 
   if (auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM ContractTypes WHERE contractTypeId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractTypes
+        WHERE
+          contractTypeId = ?
+      `)
       .get(result.lastInsertRowid)
 
     createAuditLogEntries(
@@ -65,6 +70,7 @@ export default function addContractType(
         {
           property: '*',
           type: 'created',
+
           from: undefined,
           to: recordAfter
         }

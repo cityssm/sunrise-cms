@@ -28,8 +28,14 @@ export default function addBurialSiteType(addForm, user, connectedDatabase) {
         : addForm.crematedCapacityMax, addForm.orderNumber ?? -1, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM BurialSiteTypes WHERE burialSiteTypeId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          BurialSiteTypes
+        WHERE
+          burialSiteTypeId = ?
+      `)
             .get(result.lastInsertRowid);
         createAuditLogEntries({
             mainRecordType: 'burialSiteType',

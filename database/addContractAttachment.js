@@ -26,12 +26,18 @@ export default function addContractAttachment(attachment, user, connectedDatabas
         .run(attachment.contractId, attachment.attachmentTitle ?? attachment.fileName, attachment.attachmentDetails ?? '', attachment.fileName, attachment.filePath, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractAttachments WHERE contractAttachmentId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractAttachments
+        WHERE
+          contractAttachmentId = ?
+      `)
             .get(result.lastInsertRowid);
         createAuditLogEntries({
             mainRecordType: 'contract',
-            mainRecordId: String(attachment.contractId),
+            mainRecordId: attachment.contractId,
             updateTable: 'ContractAttachments',
             recordIndex: String(result.lastInsertRowid)
         }, [

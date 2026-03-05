@@ -113,6 +113,7 @@ export default function addFee(
         {
           property: '*',
           type: 'created',
+
           from: undefined,
           to: recordAfter
         }

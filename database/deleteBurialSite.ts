@@ -51,9 +51,15 @@ export function deleteBurialSite(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(burialSiteId)
     : undefined
 
@@ -75,13 +81,14 @@ export function deleteBurialSite(
     createAuditLogEntries(
       {
         mainRecordType: 'burialSite',
-        mainRecordId: String(burialSiteId),
+        mainRecordId: burialSiteId,
         updateTable: 'BurialSites'
       },
       [
         {
           property: '*',
           type: 'deleted',
+
           from: recordBefore,
           to: undefined
         }

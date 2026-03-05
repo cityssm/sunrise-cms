@@ -9,8 +9,15 @@ export default function updateBurialSiteComment(commentForm, user, connectedData
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM BurialSiteComments WHERE burialSiteCommentId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSiteComments
+          WHERE
+            burialSiteCommentId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(commentForm.burialSiteCommentId)
         : undefined;
     const result = database
@@ -30,8 +37,14 @@ export default function updateBurialSiteComment(commentForm, user, connectedData
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const parentId = recordBefore.burialSiteId;
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM BurialSiteComments WHERE burialSiteCommentId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          BurialSiteComments
+        WHERE
+          burialSiteCommentId = ?
+      `)
             .get(commentForm.burialSiteCommentId);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
@@ -39,7 +52,7 @@ export default function updateBurialSiteComment(commentForm, user, connectedData
                 mainRecordType: 'burialSite',
                 mainRecordId: String(parentId),
                 updateTable: 'BurialSiteComments',
-                recordIndex: String(commentForm.burialSiteCommentId)
+                recordIndex: commentForm.burialSiteCommentId
             }, differences, user, database);
         }
     }

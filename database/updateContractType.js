@@ -10,8 +10,15 @@ export default function updateContractType(updateForm, user, connectedDatabase) 
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractTypes WHERE contractTypeId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractTypes
+          WHERE
+            contractTypeId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(updateForm.contractTypeId)
         : undefined;
     const result = database
@@ -29,14 +36,20 @@ export default function updateContractType(updateForm, user, connectedDatabase) 
         .run(updateForm.contractType, updateForm.isPreneed === undefined ? 0 : 1, user.userName, rightNowMillis, updateForm.contractTypeId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractTypes WHERE contractTypeId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractTypes
+        WHERE
+          contractTypeId = ?
+      `)
             .get(updateForm.contractTypeId);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
                 mainRecordType: 'contractType',
-                mainRecordId: String(updateForm.contractTypeId),
+                mainRecordId: updateForm.contractTypeId,
                 updateTable: 'ContractTypes'
             }, differences, user, database);
         }

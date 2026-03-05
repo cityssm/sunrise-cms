@@ -51,9 +51,14 @@ export default function addBurialSiteComment(
 
   if (auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM BurialSiteComments WHERE burialSiteCommentId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          BurialSiteComments
+        WHERE
+          burialSiteCommentId = ?
+      `)
       .get(result.lastInsertRowid)
 
     createAuditLogEntries(
@@ -67,6 +72,7 @@ export default function addBurialSiteComment(
         {
           property: '*',
           type: 'created',
+
           from: undefined,
           to: recordAfter
         }

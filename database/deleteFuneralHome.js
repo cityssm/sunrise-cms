@@ -56,7 +56,7 @@ export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase
     if (auditLogIsEnabled) {
         createAuditLogEntries({
             mainRecordType: 'funeralHome',
-            mainRecordId: String(funeralHomeId),
+            mainRecordId: funeralHomeId,
             updateTable: 'FuneralHomes'
         }, [
             {

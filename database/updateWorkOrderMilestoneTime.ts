@@ -31,9 +31,14 @@ export function updateWorkOrderMilestoneTime(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM WorkOrderMilestones WHERE workOrderMilestoneId = ?`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            WorkOrderMilestones
+          WHERE
+            workOrderMilestoneId = ?
+        `)
         .get(milestoneForm.workOrderMilestoneId)
     : undefined
 
@@ -67,9 +72,14 @@ export function updateWorkOrderMilestoneTime(
     const parentId = (recordBefore as Record<string, unknown>).workOrderId
 
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM WorkOrderMilestones WHERE workOrderMilestoneId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrderMilestones
+        WHERE
+          workOrderMilestoneId = ?
+      `)
       .get(milestoneForm.workOrderMilestoneId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -80,7 +90,7 @@ export function updateWorkOrderMilestoneTime(
           mainRecordType: 'workOrder',
           mainRecordId: String(parentId),
           updateTable: 'WorkOrderMilestones',
-          recordIndex: String(milestoneForm.workOrderMilestoneId)
+          recordIndex: milestoneForm.workOrderMilestoneId
         },
         differences,
         user,

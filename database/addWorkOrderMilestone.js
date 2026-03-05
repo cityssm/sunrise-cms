@@ -39,12 +39,18 @@ export default function addWorkOrderMilestone(milestoneForm, user, connectedData
         : timeStringToInteger(milestoneForm.workOrderMilestoneCompletionTimeString), user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM WorkOrderMilestones WHERE workOrderMilestoneId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrderMilestones
+        WHERE
+          workOrderMilestoneId = ?
+      `)
             .get(result.lastInsertRowid);
         createAuditLogEntries({
             mainRecordType: 'workOrder',
-            mainRecordId: String(milestoneForm.workOrderId),
+            mainRecordId: milestoneForm.workOrderId,
             updateTable: 'WorkOrderMilestones',
             recordIndex: String(result.lastInsertRowid)
         }, [

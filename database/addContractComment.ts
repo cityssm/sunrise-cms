@@ -74,15 +74,20 @@ export default function addContractComment(
 
   if (auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM ContractComments WHERE contractCommentId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractComments
+        WHERE
+          contractCommentId = ?
+      `)
       .get(result.lastInsertRowid)
 
     createAuditLogEntries(
       {
         mainRecordType: 'contract',
-        mainRecordId: String(commentForm.contractId),
+        mainRecordId: commentForm.contractId,
         updateTable: 'ContractComments',
         recordIndex: String(result.lastInsertRowid)
       },
@@ -90,6 +95,7 @@ export default function addContractComment(
         {
           property: '*',
           type: 'created',
+
           from: undefined,
           to: recordAfter
         }

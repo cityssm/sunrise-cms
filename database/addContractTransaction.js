@@ -54,14 +54,21 @@ export default function addContractTransaction(contractTransactionForm, user, co
         .run(contractTransactionForm.contractId, transactionIndex, transactionDate, transactionTime, contractTransactionForm.transactionAmount, contractTransactionForm.isInvoiced ?? 0, contractTransactionForm.externalReceiptNumber, contractTransactionForm.transactionNote, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractTransactions WHERE contractId = ? AND transactionIndex = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractTransactions
+        WHERE
+          contractId = ?
+          AND transactionIndex = ?
+      `)
             .get(contractTransactionForm.contractId, transactionIndex);
         createAuditLogEntries({
             mainRecordType: 'contract',
-            mainRecordId: String(contractTransactionForm.contractId),
+            mainRecordId: contractTransactionForm.contractId,
             updateTable: 'ContractTransactions',
-            recordIndex: String(transactionIndex)
+            recordIndex: transactionIndex
         }, [
             {
                 property: '*',

@@ -30,9 +30,15 @@ export default function updateContractComment(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM ContractComments WHERE contractCommentId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractComments
+          WHERE
+            contractCommentId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(commentForm.contractCommentId)
     : undefined
 
@@ -62,9 +68,14 @@ export default function updateContractComment(
     const parentId = (recordBefore as Record<string, unknown>).contractId
 
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM ContractComments WHERE contractCommentId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractComments
+        WHERE
+          contractCommentId = ?
+      `)
       .get(commentForm.contractCommentId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -75,7 +86,7 @@ export default function updateContractComment(
           mainRecordType: 'contract',
           mainRecordId: String(parentId),
           updateTable: 'ContractComments',
-          recordIndex: String(commentForm.contractCommentId)
+          recordIndex: commentForm.contractCommentId
         },
         differences,
         user,

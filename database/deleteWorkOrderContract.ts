@@ -17,9 +17,16 @@ export default function deleteWorkOrderContract(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM WorkOrderContracts WHERE workOrderId = ? AND contractId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            WorkOrderContracts
+          WHERE
+            workOrderId = ?
+            AND contractId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(workOrderId, contractId)
     : undefined
 
@@ -39,14 +46,15 @@ export default function deleteWorkOrderContract(
     createAuditLogEntries(
       {
         mainRecordType: 'workOrder',
-        mainRecordId: String(workOrderId),
+        mainRecordId: workOrderId,
         updateTable: 'WorkOrderContracts',
-        recordIndex: String(contractId)
+        recordIndex: contractId
       },
       [
         {
           property: '*',
           type: 'deleted',
+
           from: recordBefore,
           to: undefined
         }

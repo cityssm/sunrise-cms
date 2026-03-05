@@ -10,8 +10,15 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM BurialSiteTypes WHERE burialSiteTypeId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSiteTypes
+          WHERE
+            burialSiteTypeId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(updateForm.burialSiteTypeId)
         : undefined;
     const result = database
@@ -34,14 +41,20 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
         : updateForm.crematedCapacityMax, user.userName, rightNowMillis, updateForm.burialSiteTypeId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM BurialSiteTypes WHERE burialSiteTypeId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          BurialSiteTypes
+        WHERE
+          burialSiteTypeId = ?
+      `)
             .get(updateForm.burialSiteTypeId);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
                 mainRecordType: 'burialSiteType',
-                mainRecordId: String(updateForm.burialSiteTypeId),
+                mainRecordId: updateForm.burialSiteTypeId,
                 updateTable: 'BurialSiteTypes'
             }, differences, user, database);
         }

@@ -64,8 +64,15 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                 record.taxAmount === taxAmount) {
                 const recordBefore = auditLogIsEnabled
                     ? database
-                        .prepare(
-                    /* sql */ `SELECT * FROM ContractFees WHERE contractId = ? AND feeId = ?`)
+                        .prepare(/* sql */ `
+                SELECT
+                  *
+                FROM
+                  ContractFees
+                WHERE
+                  contractId = ?
+                  AND feeId = ?
+              `)
                         .get(addFeeForm.contractId, addFeeForm.feeId)
                     : undefined;
                 database
@@ -82,14 +89,21 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                     .run(addFeeForm.quantity, user.userName, rightNowMillis, addFeeForm.contractId, addFeeForm.feeId);
                 if (auditLogIsEnabled) {
                     const recordAfter = database
-                        .prepare(
-                    /* sql */ `SELECT * FROM ContractFees WHERE contractId = ? AND feeId = ?`)
+                        .prepare(/* sql */ `
+              SELECT
+                *
+              FROM
+                ContractFees
+              WHERE
+                contractId = ?
+                AND feeId = ?
+            `)
                         .get(addFeeForm.contractId, addFeeForm.feeId);
                     const differences = getObjectDifference(recordBefore, recordAfter);
                     if (differences.length > 0) {
                         createAuditLogEntries({
                             mainRecordType: 'contract',
-                            mainRecordId: String(addFeeForm.contractId),
+                            mainRecordId: addFeeForm.contractId,
                             updateTable: 'ContractFees',
                             recordIndex: String(addFeeForm.feeId)
                         }, differences, user, database);
@@ -103,8 +117,15 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                     : addFeeForm.quantity;
                 const recordBefore = auditLogIsEnabled
                     ? database
-                        .prepare(
-                    /* sql */ `SELECT * FROM ContractFees WHERE contractId = ? AND feeId = ?`)
+                        .prepare(/* sql */ `
+                SELECT
+                  *
+                FROM
+                  ContractFees
+                WHERE
+                  contractId = ?
+                  AND feeId = ?
+              `)
                         .get(addFeeForm.contractId, addFeeForm.feeId)
                     : undefined;
                 database
@@ -123,14 +144,21 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                     .run(feeAmount * quantity, taxAmount * quantity, user.userName, rightNowMillis, addFeeForm.contractId, addFeeForm.feeId);
                 if (auditLogIsEnabled) {
                     const recordAfter = database
-                        .prepare(
-                    /* sql */ `SELECT * FROM ContractFees WHERE contractId = ? AND feeId = ?`)
+                        .prepare(/* sql */ `
+              SELECT
+                *
+              FROM
+                ContractFees
+              WHERE
+                contractId = ?
+                AND feeId = ?
+            `)
                         .get(addFeeForm.contractId, addFeeForm.feeId);
                     const differences = getObjectDifference(recordBefore, recordAfter);
                     if (differences.length > 0) {
                         createAuditLogEntries({
                             mainRecordType: 'contract',
-                            mainRecordId: String(addFeeForm.contractId),
+                            mainRecordId: addFeeForm.contractId,
                             updateTable: 'ContractFees',
                             recordIndex: String(addFeeForm.feeId)
                         }, differences, user, database);
@@ -160,12 +188,19 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
             .run(addFeeForm.contractId, addFeeForm.feeId, addFeeForm.quantity, feeAmount, taxAmount, user.userName, rightNowMillis, user.userName, rightNowMillis);
         if (result.changes > 0 && auditLogIsEnabled) {
             const recordAfter = database
-                .prepare(
-            /* sql */ `SELECT * FROM ContractFees WHERE contractId = ? AND feeId = ?`)
+                .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractFees
+          WHERE
+            contractId = ?
+            AND feeId = ?
+        `)
                 .get(addFeeForm.contractId, addFeeForm.feeId);
             createAuditLogEntries({
                 mainRecordType: 'contract',
-                mainRecordId: String(addFeeForm.contractId),
+                mainRecordId: addFeeForm.contractId,
                 updateTable: 'ContractFees',
                 recordIndex: String(addFeeForm.feeId)
             }, [

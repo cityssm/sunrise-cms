@@ -50,13 +50,14 @@ export default function deleteServiceType(
       createAuditLogEntries(
         {
           mainRecordType: 'serviceType',
-          mainRecordId: String(serviceTypeId),
+          mainRecordId: serviceTypeId,
           updateTable: 'ServiceTypes'
         },
         [
           {
             property: '*',
             type: 'deleted',
+
             from: recordBefore,
             to: undefined
           }

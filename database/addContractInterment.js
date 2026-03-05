@@ -80,14 +80,21 @@ export default function addContractInterment(contractForm, user, connectedDataba
         : contractForm.intermentDepthId, user.userName, rightNowMillis, user.userName, rightNowMillis);
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractInterments WHERE contractId = ? AND intermentNumber = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractInterments
+        WHERE
+          contractId = ?
+          AND intermentNumber = ?
+      `)
             .get(contractForm.contractId, newIntermentNumber);
         createAuditLogEntries({
             mainRecordType: 'contract',
-            mainRecordId: String(contractForm.contractId),
+            mainRecordId: contractForm.contractId,
             updateTable: 'ContractInterments',
-            recordIndex: String(newIntermentNumber)
+            recordIndex: newIntermentNumber
         }, [
             {
                 property: '*',

@@ -9,8 +9,15 @@ export default function updateContractComment(commentForm, user, connectedDataba
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractComments WHERE contractCommentId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractComments
+          WHERE
+            contractCommentId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(commentForm.contractCommentId)
         : undefined;
     const result = database
@@ -30,8 +37,14 @@ export default function updateContractComment(commentForm, user, connectedDataba
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const parentId = recordBefore.contractId;
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractComments WHERE contractCommentId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractComments
+        WHERE
+          contractCommentId = ?
+      `)
             .get(commentForm.contractCommentId);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
@@ -39,7 +52,7 @@ export default function updateContractComment(commentForm, user, connectedDataba
                 mainRecordType: 'contract',
                 mainRecordId: String(parentId),
                 updateTable: 'ContractComments',
-                recordIndex: String(commentForm.contractCommentId)
+                recordIndex: commentForm.contractCommentId
             }, differences, user, database);
         }
     }

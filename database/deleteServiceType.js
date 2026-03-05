@@ -36,7 +36,7 @@ export default function deleteServiceType(serviceTypeId, user, connectedDatabase
         if (auditLogIsEnabled) {
             createAuditLogEntries({
                 mainRecordType: 'serviceType',
-                mainRecordId: String(serviceTypeId),
+                mainRecordId: serviceTypeId,
                 updateTable: 'ServiceTypes'
             }, [
                 {

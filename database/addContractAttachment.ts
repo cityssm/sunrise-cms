@@ -55,15 +55,20 @@ export default function addContractAttachment(
 
   if (auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM ContractAttachments WHERE contractAttachmentId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractAttachments
+        WHERE
+          contractAttachmentId = ?
+      `)
       .get(result.lastInsertRowid)
 
     createAuditLogEntries(
       {
         mainRecordType: 'contract',
-        mainRecordId: String(attachment.contractId),
+        mainRecordId: attachment.contractId,
         updateTable: 'ContractAttachments',
         recordIndex: String(result.lastInsertRowid)
       },
@@ -71,6 +76,7 @@ export default function addContractAttachment(
         {
           property: '*',
           type: 'created',
+
           from: undefined,
           to: recordAfter
         }

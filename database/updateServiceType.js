@@ -49,7 +49,7 @@ export default function updateServiceType(updateForm, user, connectedDatabase) {
             if (differences.length > 0) {
                 createAuditLogEntries({
                     mainRecordType: 'serviceType',
-                    mainRecordId: String(updateForm.serviceTypeId),
+                    mainRecordId: updateForm.serviceTypeId,
                     updateTable: 'ServiceTypes'
                 }, differences, user, database);
             }

@@ -7,8 +7,16 @@ export default function deleteContractFee(contractId, feeId, user, connectedData
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractFees WHERE contractId = ? AND feeId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractFees
+          WHERE
+            contractId = ?
+            AND feeId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(contractId, feeId)
         : undefined;
     const result = database
@@ -25,9 +33,9 @@ export default function deleteContractFee(contractId, feeId, user, connectedData
     if (result.changes > 0 && auditLogIsEnabled) {
         createAuditLogEntries({
             mainRecordType: 'contract',
-            mainRecordId: String(contractId),
+            mainRecordId: contractId,
             updateTable: 'ContractFees',
-            recordIndex: String(feeId)
+            recordIndex: feeId
         }, [
             {
                 property: '*',

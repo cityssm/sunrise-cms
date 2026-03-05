@@ -12,8 +12,15 @@ export default function updateContract(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM Contracts WHERE contractId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            Contracts
+          WHERE
+            contractId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(updateForm.contractId)
         : undefined;
     const result = database
@@ -68,13 +75,20 @@ export default function updateContract(updateForm, user, connectedDatabase) {
         }
         if (auditLogIsEnabled) {
             const recordAfter = database
-                .prepare(/* sql */ `SELECT * FROM Contracts WHERE contractId = ?`)
+                .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            Contracts
+          WHERE
+            contractId = ?
+        `)
                 .get(updateForm.contractId);
             const differences = getObjectDifference(recordBefore, recordAfter);
             if (differences.length > 0) {
                 createAuditLogEntries({
                     mainRecordType: 'contract',
-                    mainRecordId: String(updateForm.contractId),
+                    mainRecordId: updateForm.contractId,
                     updateTable: 'Contracts'
                 }, differences, user, database);
             }

@@ -42,9 +42,16 @@ export default function updateContractInterment(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM ContractInterments WHERE contractId = ? AND intermentNumber = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractInterments
+          WHERE
+            contractId = ?
+            AND intermentNumber = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(contractForm.contractId, contractForm.intermentNumber)
     : undefined
 
@@ -104,9 +111,15 @@ export default function updateContractInterment(
 
   if (results.changes > 0 && auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM ContractInterments WHERE contractId = ? AND intermentNumber = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractInterments
+        WHERE
+          contractId = ?
+          AND intermentNumber = ?
+      `)
       .get(contractForm.contractId, contractForm.intermentNumber)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -115,9 +128,9 @@ export default function updateContractInterment(
       createAuditLogEntries(
         {
           mainRecordType: 'contract',
-          mainRecordId: String(contractForm.contractId),
+          mainRecordId: contractForm.contractId,
           updateTable: 'ContractInterments',
-          recordIndex: String(contractForm.intermentNumber)
+          recordIndex: contractForm.intermentNumber
         },
         differences,
         user,

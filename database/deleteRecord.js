@@ -45,8 +45,8 @@ const configTableAuditInfo = new Map([
     ['IntermentContainerTypes', { mainRecordType: 'intermentContainerType' }],
     ['IntermentDepths', { mainRecordType: 'intermentDepth' }],
     ['WorkOrderMilestoneTypes', { mainRecordType: 'workOrderMilestoneType' }],
-    ['WorkOrderTypes', { mainRecordType: 'workOrderType' }],
-    ['WorkOrders', { mainRecordType: 'workOrder' }]
+    ['WorkOrders', { mainRecordType: 'workOrder' }],
+    ['WorkOrderTypes', { mainRecordType: 'workOrderType' }]
 ]);
 const childTableAuditInfo = new Map([
     [
@@ -76,10 +76,18 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
     const rightNowMillis = Date.now();
     const configAuditInfo = configTableAuditInfo.get(recordTable);
     const childAuditInfo = childTableAuditInfo.get(recordTable);
-    const recordBefore = auditLogIsEnabled && (configAuditInfo !== undefined || childAuditInfo !== undefined)
+    const recordBefore = auditLogIsEnabled &&
+        (configAuditInfo !== undefined || childAuditInfo !== undefined)
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM ${recordTable} WHERE ${recordIdColumns.get(recordTable)} = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+            SELECT
+              *
+            FROM
+              ${recordTable}
+            WHERE
+              ${recordIdColumns.get(recordTable)} = ?
+              AND recordDelete_timeMillis IS NULL
+          `)
             .get(recordId)
         : undefined;
     const result = database
@@ -110,7 +118,7 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
         if (configAuditInfo !== undefined) {
             createAuditLogEntries({
                 mainRecordType: configAuditInfo.mainRecordType,
-                mainRecordId: String(recordId),
+                mainRecordId: recordId,
                 updateTable: recordTable
             }, [
                 {
@@ -127,7 +135,7 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
                 mainRecordType: childAuditInfo.mainRecordType,
                 mainRecordId: String(parentId),
                 updateTable: recordTable,
-                recordIndex: String(recordId)
+                recordIndex: recordId
             }, [
                 {
                     property: '*',

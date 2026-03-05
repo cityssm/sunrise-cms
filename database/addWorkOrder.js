@@ -62,11 +62,18 @@ export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
     }
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(/* sql */ `SELECT * FROM WorkOrders WHERE workOrderId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrders
+        WHERE
+          workOrderId = ?
+      `)
             .get(workOrderId);
         createAuditLogEntries({
             mainRecordType: 'workOrder',
-            mainRecordId: String(workOrderId),
+            mainRecordId: workOrderId,
             updateTable: 'WorkOrders'
         }, [
             {

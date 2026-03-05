@@ -87,15 +87,20 @@ export default function addWorkOrderMilestone(
 
   if (auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM WorkOrderMilestones WHERE workOrderMilestoneId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrderMilestones
+        WHERE
+          workOrderMilestoneId = ?
+      `)
       .get(result.lastInsertRowid)
 
     createAuditLogEntries(
       {
         mainRecordType: 'workOrder',
-        mainRecordId: String(milestoneForm.workOrderId),
+        mainRecordId: milestoneForm.workOrderId,
         updateTable: 'WorkOrderMilestones',
         recordIndex: String(result.lastInsertRowid)
       },
@@ -103,6 +108,7 @@ export default function addWorkOrderMilestone(
         {
           property: '*',
           type: 'created',
+
           from: undefined,
           to: recordAfter
         }

@@ -74,7 +74,7 @@ export default function updateIntermentDepth(
       createAuditLogEntries(
         {
           mainRecordType: 'intermentDepth',
-          mainRecordId: String(updateForm.intermentDepthId),
+          mainRecordId: updateForm.intermentDepthId,
           updateTable: 'IntermentDepths'
         },
         differences,

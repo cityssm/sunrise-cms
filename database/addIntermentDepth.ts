@@ -65,13 +65,14 @@ export default function addIntermentDepth(
     createAuditLogEntries(
       {
         mainRecordType: 'intermentDepth',
-        mainRecordId: String(intermentDepthId),
+        mainRecordId: intermentDepthId,
         updateTable: 'IntermentDepths'
       },
       [
         {
           property: '*',
           type: 'created',
+
           from: undefined,
           to: recordAfter
         }

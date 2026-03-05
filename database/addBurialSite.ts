@@ -199,21 +199,27 @@ export default function addBurialSite(
 
     if (auditLogIsEnabled) {
       const recordAfter = database
-        .prepare(
-          /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ?`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+        `)
         .get(burialSiteId)
 
       createAuditLogEntries(
         {
           mainRecordType: 'burialSite',
-          mainRecordId: String(burialSiteId),
+          mainRecordId: burialSiteId,
           updateTable: 'BurialSites'
         },
         [
           {
             property: '*',
             type: 'created',
+
             from: undefined,
             to: recordAfter
           }

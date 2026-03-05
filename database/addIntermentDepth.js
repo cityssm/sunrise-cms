@@ -37,7 +37,7 @@ export default function addIntermentDepth(addForm, user, connectedDatabase) {
             .get(intermentDepthId);
         createAuditLogEntries({
             mainRecordType: 'intermentDepth',
-            mainRecordId: String(intermentDepthId),
+            mainRecordId: intermentDepthId,
             updateTable: 'IntermentDepths'
         }, [
             {

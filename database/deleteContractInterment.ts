@@ -17,9 +17,15 @@ export default function deleteContractInterment(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM ContractInterments WHERE contractId = ? AND intermentNumber = ?`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractInterments
+          WHERE
+            contractId = ?
+            AND intermentNumber = ?
+        `)
         .get(contractId, intermentNumber)
     : undefined
 
@@ -39,14 +45,15 @@ export default function deleteContractInterment(
     createAuditLogEntries(
       {
         mainRecordType: 'contract',
-        mainRecordId: String(contractId),
+        mainRecordId: contractId,
         updateTable: 'ContractInterments',
-        recordIndex: String(intermentNumber)
+        recordIndex: intermentNumber
       },
       [
         {
           property: '*',
           type: 'deleted',
+
           from: recordBefore,
           to: undefined
         }

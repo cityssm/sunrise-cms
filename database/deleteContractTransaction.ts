@@ -17,9 +17,16 @@ export default function deleteContractTransaction(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM ContractTransactions WHERE contractId = ? AND transactionIndex = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractTransactions
+          WHERE
+            contractId = ?
+            AND transactionIndex = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(contractId, transactionIndex)
     : undefined
 
@@ -39,14 +46,15 @@ export default function deleteContractTransaction(
     createAuditLogEntries(
       {
         mainRecordType: 'contract',
-        mainRecordId: String(contractId),
+        mainRecordId: contractId,
         updateTable: 'ContractTransactions',
-        recordIndex: String(transactionIndex)
+        recordIndex: transactionIndex
       },
       [
         {
           property: '*',
           type: 'deleted',
+
           from: recordBefore,
           to: undefined
         }

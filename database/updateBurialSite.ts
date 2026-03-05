@@ -40,7 +40,7 @@ export interface UpdateBurialSiteForm extends BurialSiteFieldsForm {
  * @param updateForm - The burial site's updated information
  * @param user - The user making the request
  * @returns True if the burial site was updated.
- * @throws If an active burial site with the same name already exists.
+ * @throws {Error} If an active burial site with the same name already exists.
  */
 export default function updateBurialSite(
   updateForm: UpdateBurialSiteForm,
@@ -78,9 +78,15 @@ export default function updateBurialSite(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(updateForm.burialSiteId)
     : undefined
 
@@ -154,9 +160,14 @@ export default function updateBurialSite(
 
     if (auditLogIsEnabled) {
       const recordAfter = database
-        .prepare(
-          /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ?`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+        `)
         .get(updateForm.burialSiteId)
 
       const differences = getObjectDifference(recordBefore, recordAfter)
@@ -165,7 +176,7 @@ export default function updateBurialSite(
         createAuditLogEntries(
           {
             mainRecordType: 'burialSite',
-            mainRecordId: String(updateForm.burialSiteId),
+            mainRecordId: updateForm.burialSiteId,
             updateTable: 'BurialSites'
           },
           differences,
@@ -193,9 +204,15 @@ export function updateBurialSiteStatus(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(burialSiteId)
     : undefined
 
@@ -219,9 +236,14 @@ export function updateBurialSiteStatus(
 
   if (result.changes > 0 && auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          BurialSites
+        WHERE
+          burialSiteId = ?
+      `)
       .get(burialSiteId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -230,7 +252,7 @@ export function updateBurialSiteStatus(
       createAuditLogEntries(
         {
           mainRecordType: 'burialSite',
-          mainRecordId: String(burialSiteId),
+          mainRecordId: burialSiteId,
           updateTable: 'BurialSites'
         },
         differences,
@@ -257,9 +279,15 @@ export function updateBurialSiteLatitudeLongitude(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(burialSiteId)
     : undefined
 
@@ -285,9 +313,14 @@ export function updateBurialSiteLatitudeLongitude(
 
   if (result.changes > 0 && auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          BurialSites
+        WHERE
+          burialSiteId = ?
+      `)
       .get(burialSiteId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -296,7 +329,7 @@ export function updateBurialSiteLatitudeLongitude(
       createAuditLogEntries(
         {
           mainRecordType: 'burialSite',
-          mainRecordId: String(burialSiteId),
+          mainRecordId: burialSiteId,
           updateTable: 'BurialSites'
         },
         differences,

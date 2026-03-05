@@ -109,9 +109,15 @@ export default async function addContractFee(
       ) {
         const recordBefore = auditLogIsEnabled
           ? database
-              .prepare(
-                /* sql */ `SELECT * FROM ContractFees WHERE contractId = ? AND feeId = ?`
-              )
+              .prepare(/* sql */ `
+                SELECT
+                  *
+                FROM
+                  ContractFees
+                WHERE
+                  contractId = ?
+                  AND feeId = ?
+              `)
               .get(addFeeForm.contractId, addFeeForm.feeId)
           : undefined
 
@@ -136,9 +142,15 @@ export default async function addContractFee(
 
         if (auditLogIsEnabled) {
           const recordAfter = database
-            .prepare(
-              /* sql */ `SELECT * FROM ContractFees WHERE contractId = ? AND feeId = ?`
-            )
+            .prepare(/* sql */ `
+              SELECT
+                *
+              FROM
+                ContractFees
+              WHERE
+                contractId = ?
+                AND feeId = ?
+            `)
             .get(addFeeForm.contractId, addFeeForm.feeId)
 
           const differences = getObjectDifference(recordBefore, recordAfter)
@@ -147,7 +159,7 @@ export default async function addContractFee(
             createAuditLogEntries(
               {
                 mainRecordType: 'contract',
-                mainRecordId: String(addFeeForm.contractId),
+                mainRecordId: addFeeForm.contractId,
                 updateTable: 'ContractFees',
                 recordIndex: String(addFeeForm.feeId)
               },
@@ -167,9 +179,15 @@ export default async function addContractFee(
 
         const recordBefore = auditLogIsEnabled
           ? database
-              .prepare(
-                /* sql */ `SELECT * FROM ContractFees WHERE contractId = ? AND feeId = ?`
-              )
+              .prepare(/* sql */ `
+                SELECT
+                  *
+                FROM
+                  ContractFees
+                WHERE
+                  contractId = ?
+                  AND feeId = ?
+              `)
               .get(addFeeForm.contractId, addFeeForm.feeId)
           : undefined
 
@@ -197,9 +215,15 @@ export default async function addContractFee(
 
         if (auditLogIsEnabled) {
           const recordAfter = database
-            .prepare(
-              /* sql */ `SELECT * FROM ContractFees WHERE contractId = ? AND feeId = ?`
-            )
+            .prepare(/* sql */ `
+              SELECT
+                *
+              FROM
+                ContractFees
+              WHERE
+                contractId = ?
+                AND feeId = ?
+            `)
             .get(addFeeForm.contractId, addFeeForm.feeId)
 
           const differences = getObjectDifference(recordBefore, recordAfter)
@@ -208,7 +232,7 @@ export default async function addContractFee(
             createAuditLogEntries(
               {
                 mainRecordType: 'contract',
-                mainRecordId: String(addFeeForm.contractId),
+                mainRecordId: addFeeForm.contractId,
                 updateTable: 'ContractFees',
                 recordIndex: String(addFeeForm.feeId)
               },
@@ -255,15 +279,21 @@ export default async function addContractFee(
 
     if (result.changes > 0 && auditLogIsEnabled) {
       const recordAfter = database
-        .prepare(
-          /* sql */ `SELECT * FROM ContractFees WHERE contractId = ? AND feeId = ?`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractFees
+          WHERE
+            contractId = ?
+            AND feeId = ?
+        `)
         .get(addFeeForm.contractId, addFeeForm.feeId)
 
       createAuditLogEntries(
         {
           mainRecordType: 'contract',
-          mainRecordId: String(addFeeForm.contractId),
+          mainRecordId: addFeeForm.contractId,
           updateTable: 'ContractFees',
           recordIndex: String(addFeeForm.feeId)
         },
@@ -271,6 +301,7 @@ export default async function addContractFee(
           {
             property: '*',
             type: 'created',
+
             from: undefined,
             to: recordAfter
           }

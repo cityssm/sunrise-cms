@@ -59,9 +59,15 @@ export function deleteContract(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM Contracts WHERE contractId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            Contracts
+          WHERE
+            contractId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(contractId)
     : undefined
 
@@ -85,13 +91,14 @@ export function deleteContract(
     createAuditLogEntries(
       {
         mainRecordType: 'contract',
-        mainRecordId: String(contractId),
+        mainRecordId: contractId,
         updateTable: 'Contracts'
       },
       [
         {
           property: '*',
           type: 'deleted',
+
           from: recordBefore,
           to: undefined
         }

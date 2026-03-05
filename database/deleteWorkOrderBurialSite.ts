@@ -17,9 +17,16 @@ export default function deleteWorkOrderBurialSite(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM WorkOrderBurialSites WHERE workOrderId = ? AND burialSiteId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            WorkOrderBurialSites
+          WHERE
+            workOrderId = ?
+            AND burialSiteId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(workOrderId, burialSiteId)
     : undefined
 
@@ -39,14 +46,15 @@ export default function deleteWorkOrderBurialSite(
     createAuditLogEntries(
       {
         mainRecordType: 'workOrder',
-        mainRecordId: String(workOrderId),
+        mainRecordId: workOrderId,
         updateTable: 'WorkOrderBurialSites',
-        recordIndex: String(burialSiteId)
+        recordIndex: burialSiteId
       },
       [
         {
           property: '*',
           type: 'deleted',
+
           from: recordBefore,
           to: undefined
         }

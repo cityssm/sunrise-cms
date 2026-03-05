@@ -23,9 +23,15 @@ export default function updateContractAttachment(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM ContractAttachments WHERE contractAttachmentId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractAttachments
+          WHERE
+            contractAttachmentId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(contractAttachmentId)
     : undefined
 
@@ -53,9 +59,14 @@ export default function updateContractAttachment(
     const parentId = (recordBefore as Record<string, unknown>).contractId
 
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM ContractAttachments WHERE contractAttachmentId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractAttachments
+        WHERE
+          contractAttachmentId = ?
+      `)
       .get(contractAttachmentId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
@@ -66,7 +77,7 @@ export default function updateContractAttachment(
           mainRecordType: 'contract',
           mainRecordId: String(parentId),
           updateTable: 'ContractAttachments',
-          recordIndex: String(contractAttachmentId)
+          recordIndex: contractAttachmentId
         },
         differences,
         user,

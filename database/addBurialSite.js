@@ -113,12 +113,18 @@ export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
         addOrUpdateBurialSiteFields({ burialSiteId, fieldForm: burialSiteForm }, true, user, database);
         if (auditLogIsEnabled) {
             const recordAfter = database
-                .prepare(
-            /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ?`)
+                .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+        `)
                 .get(burialSiteId);
             createAuditLogEntries({
                 mainRecordType: 'burialSite',
-                mainRecordId: String(burialSiteId),
+                mainRecordId: burialSiteId,
                 updateTable: 'BurialSites'
             }, [
                 {

@@ -74,8 +74,8 @@ type ConfigRecordTable =
   | 'IntermentContainerTypes'
   | 'IntermentDepths'
   | 'WorkOrderMilestoneTypes'
-  | 'WorkOrderTypes'
   | 'WorkOrders'
+  | 'WorkOrderTypes'
 
 const configTableAuditInfo = new Map<
   ConfigRecordTable,
@@ -88,9 +88,9 @@ const configTableAuditInfo = new Map<
       | 'fee'
       | 'intermentContainerType'
       | 'intermentDepth'
+      | 'workOrder'
       | 'workOrderMilestoneType'
       | 'workOrderType'
-      | 'workOrder'
   }
 >([
   ['BurialSiteStatuses', { mainRecordType: 'burialSiteStatus' }],
@@ -101,8 +101,8 @@ const configTableAuditInfo = new Map<
   ['IntermentContainerTypes', { mainRecordType: 'intermentContainerType' }],
   ['IntermentDepths', { mainRecordType: 'intermentDepth' }],
   ['WorkOrderMilestoneTypes', { mainRecordType: 'workOrderMilestoneType' }],
-  ['WorkOrderTypes', { mainRecordType: 'workOrderType' }],
-  ['WorkOrders', { mainRecordType: 'workOrder' }]
+  ['WorkOrders', { mainRecordType: 'workOrder' }],
+  ['WorkOrderTypes', { mainRecordType: 'workOrderType' }]
 ])
 
 type ChildRecordTable =
@@ -157,14 +157,23 @@ export function deleteRecord(
     recordTable as ConfigRecordTable
   )
 
-  const childAuditInfo = childTableAuditInfo.get(recordTable as ChildRecordTable)
+  const childAuditInfo = childTableAuditInfo.get(
+    recordTable as ChildRecordTable
+  )
 
   const recordBefore =
-    auditLogIsEnabled && (configAuditInfo !== undefined || childAuditInfo !== undefined)
+    auditLogIsEnabled &&
+    (configAuditInfo !== undefined || childAuditInfo !== undefined)
       ? database
-          .prepare(
-            /* sql */ `SELECT * FROM ${recordTable} WHERE ${recordIdColumns.get(recordTable)} = ? AND recordDelete_timeMillis IS NULL`
-          )
+          .prepare(/* sql */ `
+            SELECT
+              *
+            FROM
+              ${recordTable}
+            WHERE
+              ${recordIdColumns.get(recordTable)} = ?
+              AND recordDelete_timeMillis IS NULL
+          `)
           .get(recordId)
       : undefined
 
@@ -199,13 +208,14 @@ export function deleteRecord(
       createAuditLogEntries(
         {
           mainRecordType: configAuditInfo.mainRecordType,
-          mainRecordId: String(recordId),
+          mainRecordId: recordId,
           updateTable: recordTable as ConfigRecordTable
         },
         [
           {
             property: '*',
             type: 'deleted',
+
             from: recordBefore,
             to: undefined
           }
@@ -223,12 +233,13 @@ export function deleteRecord(
           mainRecordType: childAuditInfo.mainRecordType,
           mainRecordId: String(parentId),
           updateTable: recordTable as ChildRecordTable,
-          recordIndex: String(recordId)
+          recordIndex: recordId
         },
         [
           {
             property: '*',
             type: 'deleted',
+
             from: recordBefore,
             to: undefined
           }

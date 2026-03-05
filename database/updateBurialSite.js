@@ -12,7 +12,7 @@ const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
  * @param updateForm - The burial site's updated information
  * @param user - The user making the request
  * @returns True if the burial site was updated.
- * @throws If an active burial site with the same name already exists.
+ * @throws {Error} If an active burial site with the same name already exists.
  */
 export default function updateBurialSite(updateForm, user) {
     const database = sqlite(sunriseDB);
@@ -40,8 +40,15 @@ export default function updateBurialSite(updateForm, user) {
     }
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(updateForm.burialSiteId)
         : undefined;
     const result = database
@@ -85,14 +92,20 @@ export default function updateBurialSite(updateForm, user) {
         }, false, user, database);
         if (auditLogIsEnabled) {
             const recordAfter = database
-                .prepare(
-            /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ?`)
+                .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+        `)
                 .get(updateForm.burialSiteId);
             const differences = getObjectDifference(recordBefore, recordAfter);
             if (differences.length > 0) {
                 createAuditLogEntries({
                     mainRecordType: 'burialSite',
-                    mainRecordId: String(updateForm.burialSiteId),
+                    mainRecordId: updateForm.burialSiteId,
                     updateTable: 'BurialSites'
                 }, differences, user, database);
             }
@@ -106,8 +119,15 @@ export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, c
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(burialSiteId)
         : undefined;
     const result = database
@@ -124,14 +144,20 @@ export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, c
         .run(burialSiteStatusId === '' ? undefined : burialSiteStatusId, user.userName, rightNowMillis, burialSiteId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          BurialSites
+        WHERE
+          burialSiteId = ?
+      `)
             .get(burialSiteId);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
                 mainRecordType: 'burialSite',
-                mainRecordId: String(burialSiteId),
+                mainRecordId: burialSiteId,
                 updateTable: 'BurialSites'
             }, differences, user, database);
         }
@@ -145,8 +171,15 @@ export function updateBurialSiteLatitudeLongitude(burialSiteId, burialSiteLatitu
     const database = sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(burialSiteId)
         : undefined;
     const result = database
@@ -164,14 +197,20 @@ export function updateBurialSiteLatitudeLongitude(burialSiteId, burialSiteLatitu
         .run(burialSiteLatitude === '' ? undefined : burialSiteLatitude, burialSiteLongitude === '' ? undefined : burialSiteLongitude, user.userName, Date.now(), burialSiteId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM BurialSites WHERE burialSiteId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          BurialSites
+        WHERE
+          burialSiteId = ?
+      `)
             .get(burialSiteId);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
                 mainRecordType: 'burialSite',
-                mainRecordId: String(burialSiteId),
+                mainRecordId: burialSiteId,
                 updateTable: 'BurialSites'
             }, differences, user, database);
         }

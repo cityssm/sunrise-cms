@@ -9,8 +9,16 @@ export default function updateContractInterment(contractForm, user, connectedDat
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractInterments WHERE contractId = ? AND intermentNumber = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractInterments
+          WHERE
+            contractId = ?
+            AND intermentNumber = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(contractForm.contractId, contractForm.intermentNumber)
         : undefined;
     const results = database
@@ -49,16 +57,23 @@ export default function updateContractInterment(contractForm, user, connectedDat
         : contractForm.intermentDepthId, user.userName, Date.now(), contractForm.contractId, contractForm.intermentNumber);
     if (results.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractInterments WHERE contractId = ? AND intermentNumber = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractInterments
+        WHERE
+          contractId = ?
+          AND intermentNumber = ?
+      `)
             .get(contractForm.contractId, contractForm.intermentNumber);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
                 mainRecordType: 'contract',
-                mainRecordId: String(contractForm.contractId),
+                mainRecordId: contractForm.contractId,
                 updateTable: 'ContractInterments',
-                recordIndex: String(contractForm.intermentNumber)
+                recordIndex: contractForm.intermentNumber
             }, differences, user, database);
         }
     }

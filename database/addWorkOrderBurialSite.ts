@@ -87,9 +87,15 @@ export default function addWorkOrderBurialSite(
 
   if (auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM WorkOrderBurialSites WHERE workOrderId = ? AND burialSiteId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrderBurialSites
+        WHERE
+          workOrderId = ?
+          AND burialSiteId = ?
+      `)
       .get(
         workOrderBurialSiteForm.workOrderId,
         workOrderBurialSiteForm.burialSiteId
@@ -98,14 +104,15 @@ export default function addWorkOrderBurialSite(
     createAuditLogEntries(
       {
         mainRecordType: 'workOrder',
-        mainRecordId: String(workOrderBurialSiteForm.workOrderId),
+        mainRecordId: workOrderBurialSiteForm.workOrderId,
         updateTable: 'WorkOrderBurialSites',
-        recordIndex: String(workOrderBurialSiteForm.burialSiteId)
+        recordIndex: workOrderBurialSiteForm.burialSiteId
       },
       [
         {
           property: '*',
           type: 'created',
+
           from: undefined,
           to: recordAfter
         }

@@ -9,8 +9,15 @@ export default function updateContractAttachment(contractAttachmentId, attachmen
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractAttachments WHERE contractAttachmentId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractAttachments
+          WHERE
+            contractAttachmentId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(contractAttachmentId)
         : undefined;
     const result = database
@@ -29,8 +36,14 @@ export default function updateContractAttachment(contractAttachmentId, attachmen
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const parentId = recordBefore.contractId;
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM ContractAttachments WHERE contractAttachmentId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractAttachments
+        WHERE
+          contractAttachmentId = ?
+      `)
             .get(contractAttachmentId);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
@@ -38,7 +51,7 @@ export default function updateContractAttachment(contractAttachmentId, attachmen
                 mainRecordType: 'contract',
                 mainRecordId: String(parentId),
                 updateTable: 'ContractAttachments',
-                recordIndex: String(contractAttachmentId)
+                recordIndex: contractAttachmentId
             }, differences, user, database);
         }
     }

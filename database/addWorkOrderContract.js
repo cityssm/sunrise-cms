@@ -54,14 +54,21 @@ export default function addWorkOrderContract(addForm, user, connectedDatabase) {
     }
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM WorkOrderContracts WHERE workOrderId = ? AND contractId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrderContracts
+        WHERE
+          workOrderId = ?
+          AND contractId = ?
+      `)
             .get(addForm.workOrderId, addForm.contractId);
         createAuditLogEntries({
             mainRecordType: 'workOrder',
-            mainRecordId: String(addForm.workOrderId),
+            mainRecordId: addForm.workOrderId,
             updateTable: 'WorkOrderContracts',
-            recordIndex: String(addForm.contractId)
+            recordIndex: addForm.contractId
         }, [
             {
                 property: '*',
