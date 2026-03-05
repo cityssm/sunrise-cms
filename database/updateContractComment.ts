@@ -1,3 +1,4 @@
+import getObjectDifference from '@cityssm/object-difference'
 import {
   type DateString,
   type TimeString,
@@ -6,7 +7,12 @@ import {
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateForm {
   comment: string
@@ -21,6 +27,14 @@ export default function updateContractComment(
   connectedDatabase?: sqlite.Database
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
+
+  const recordBefore = auditLogIsEnabled
+    ? database
+        .prepare(
+          /* sql */ `SELECT * FROM ContractComments WHERE contractCommentId = ? AND recordDelete_timeMillis IS NULL`
+        )
+        .get(commentForm.contractCommentId)
+    : undefined
 
   const result = database
     .prepare(/* sql */ `
@@ -43,6 +57,32 @@ export default function updateContractComment(
       Date.now(),
       commentForm.contractCommentId
     )
+
+  if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
+    const parentId = (recordBefore as Record<string, unknown>).contractId
+
+    const recordAfter = database
+      .prepare(
+        /* sql */ `SELECT * FROM ContractComments WHERE contractCommentId = ?`
+      )
+      .get(commentForm.contractCommentId)
+
+    const differences = getObjectDifference(recordBefore, recordAfter)
+
+    if (differences.length > 0) {
+      createAuditLogEntries(
+        {
+          mainRecordType: 'contract',
+          mainRecordId: String(parentId),
+          updateTable: 'ContractComments',
+          recordIndex: String(commentForm.contractCommentId)
+        },
+        differences,
+        user,
+        database
+      )
+    }
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

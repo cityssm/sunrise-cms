@@ -105,6 +105,42 @@ const configTableAuditInfo = new Map<
   ['WorkOrders', { mainRecordType: 'workOrder' }]
 ])
 
+type ChildRecordTable =
+  | 'BurialSiteComments'
+  | 'ContractAttachments'
+  | 'ContractComments'
+  | 'WorkOrderComments'
+  | 'WorkOrderMilestones'
+
+const childTableAuditInfo = new Map<
+  ChildRecordTable,
+  {
+    mainRecordType: 'burialSite' | 'contract' | 'workOrder'
+    parentIdColumn: string
+  }
+>([
+  [
+    'BurialSiteComments',
+    { mainRecordType: 'burialSite', parentIdColumn: 'burialSiteId' }
+  ],
+  [
+    'ContractAttachments',
+    { mainRecordType: 'contract', parentIdColumn: 'contractId' }
+  ],
+  [
+    'ContractComments',
+    { mainRecordType: 'contract', parentIdColumn: 'contractId' }
+  ],
+  [
+    'WorkOrderComments',
+    { mainRecordType: 'workOrder', parentIdColumn: 'workOrderId' }
+  ],
+  [
+    'WorkOrderMilestones',
+    { mainRecordType: 'workOrder', parentIdColumn: 'workOrderId' }
+  ]
+])
+
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export function deleteRecord(
@@ -121,8 +157,10 @@ export function deleteRecord(
     recordTable as ConfigRecordTable
   )
 
+  const childAuditInfo = childTableAuditInfo.get(recordTable as ChildRecordTable)
+
   const recordBefore =
-    auditLogIsEnabled && configAuditInfo !== undefined
+    auditLogIsEnabled && (configAuditInfo !== undefined || childAuditInfo !== undefined)
       ? database
           .prepare(
             /* sql */ `SELECT * FROM ${recordTable} WHERE ${recordIdColumns.get(recordTable)} = ? AND recordDelete_timeMillis IS NULL`
@@ -156,24 +194,49 @@ export function deleteRecord(
       .run(user.userName, rightNowMillis, recordId)
   }
 
-  if (result.changes > 0 && auditLogIsEnabled && configAuditInfo !== undefined) {
-    createAuditLogEntries(
-      {
-        mainRecordType: configAuditInfo.mainRecordType,
-        mainRecordId: String(recordId),
-        updateTable: recordTable as ConfigRecordTable
-      },
-      [
+  if (result.changes > 0 && auditLogIsEnabled) {
+    if (configAuditInfo !== undefined) {
+      createAuditLogEntries(
         {
-          property: '*',
-          type: 'deleted',
-          from: recordBefore,
-          to: undefined
-        }
-      ],
-      user,
-      database
-    )
+          mainRecordType: configAuditInfo.mainRecordType,
+          mainRecordId: String(recordId),
+          updateTable: recordTable as ConfigRecordTable
+        },
+        [
+          {
+            property: '*',
+            type: 'deleted',
+            from: recordBefore,
+            to: undefined
+          }
+        ],
+        user,
+        database
+      )
+    } else if (childAuditInfo !== undefined && recordBefore !== undefined) {
+      const parentId = (recordBefore as Record<string, unknown>)[
+        childAuditInfo.parentIdColumn
+      ]
+
+      createAuditLogEntries(
+        {
+          mainRecordType: childAuditInfo.mainRecordType,
+          mainRecordId: String(parentId),
+          updateTable: recordTable as ChildRecordTable,
+          recordIndex: String(recordId)
+        },
+        [
+          {
+            property: '*',
+            type: 'deleted',
+            from: recordBefore,
+            to: undefined
+          }
+        ],
+        user,
+        database
+      )
+    }
   }
 
   if (connectedDatabase === undefined) {

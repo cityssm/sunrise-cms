@@ -1,6 +1,11 @@
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddForm {
   contractId: number | string
@@ -75,6 +80,33 @@ export default function addWorkOrderContract(
         addForm.workOrderId,
         addForm.contractId
       )
+  }
+
+  if (auditLogIsEnabled) {
+    const recordAfter = database
+      .prepare(
+        /* sql */ `SELECT * FROM WorkOrderContracts WHERE workOrderId = ? AND contractId = ?`
+      )
+      .get(addForm.workOrderId, addForm.contractId)
+
+    createAuditLogEntries(
+      {
+        mainRecordType: 'workOrder',
+        mainRecordId: String(addForm.workOrderId),
+        updateTable: 'WorkOrderContracts',
+        recordIndex: String(addForm.contractId)
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
   }
 
   if (connectedDatabase === undefined) {

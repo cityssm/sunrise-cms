@@ -1,6 +1,11 @@
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function deleteWorkOrderBurialSite(
   workOrderId: number | string,
@@ -9,6 +14,14 @@ export default function deleteWorkOrderBurialSite(
   connectedDatabase?: sqlite.Database
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
+
+  const recordBefore = auditLogIsEnabled
+    ? database
+        .prepare(
+          /* sql */ `SELECT * FROM WorkOrderBurialSites WHERE workOrderId = ? AND burialSiteId = ? AND recordDelete_timeMillis IS NULL`
+        )
+        .get(workOrderId, burialSiteId)
+    : undefined
 
   const result = database
     .prepare(/* sql */ `
@@ -21,6 +34,27 @@ export default function deleteWorkOrderBurialSite(
         AND burialSiteId = ?
     `)
     .run(user.userName, Date.now(), workOrderId, burialSiteId)
+
+  if (result.changes > 0 && auditLogIsEnabled) {
+    createAuditLogEntries(
+      {
+        mainRecordType: 'workOrder',
+        mainRecordId: String(workOrderId),
+        updateTable: 'WorkOrderBurialSites',
+        recordIndex: String(burialSiteId)
+      },
+      [
+        {
+          property: '*',
+          type: 'deleted',
+          from: recordBefore,
+          to: undefined
+        }
+      ],
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

@@ -1,7 +1,12 @@
 import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddForm {
   contractId: number | string
@@ -128,6 +133,33 @@ export default function addContractInterment(
       user.userName,
       rightNowMillis
     )
+
+  if (auditLogIsEnabled) {
+    const recordAfter = database
+      .prepare(
+        /* sql */ `SELECT * FROM ContractInterments WHERE contractId = ? AND intermentNumber = ?`
+      )
+      .get(contractForm.contractId, newIntermentNumber)
+
+    createAuditLogEntries(
+      {
+        mainRecordType: 'contract',
+        mainRecordId: String(contractForm.contractId),
+        updateTable: 'ContractInterments',
+        recordIndex: String(newIntermentNumber)
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()
