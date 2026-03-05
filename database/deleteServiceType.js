@@ -9,14 +9,20 @@ export default function deleteServiceType(serviceTypeId, user, connectedDatabase
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM ServiceTypes WHERE serviceTypeId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ServiceTypes
+          WHERE
+            serviceTypeId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(serviceTypeId)
         : undefined;
     const info = database
         .prepare(/* sql */ `
-      UPDATE
-        ServiceTypes
+      UPDATE ServiceTypes
       SET
         recordDelete_userName = ?,
         recordDelete_timeMillis = ?

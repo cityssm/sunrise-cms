@@ -25,8 +25,14 @@ export default function addServiceType(addForm, user, connectedDatabase) {
     const serviceTypeId = result.lastInsertRowid;
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM ServiceTypes WHERE serviceTypeId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ServiceTypes
+        WHERE
+          serviceTypeId = ?
+      `)
             .get(serviceTypeId);
         createAuditLogEntries({
             mainRecordType: 'serviceType',

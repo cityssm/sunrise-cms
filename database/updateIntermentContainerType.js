@@ -10,8 +10,15 @@ export default function updateIntermentContainerType(updateForm, user, connected
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM IntermentContainerTypes WHERE intermentContainerTypeId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            IntermentContainerTypes
+          WHERE
+            intermentContainerTypeId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(updateForm.intermentContainerTypeId)
         : undefined;
     const result = database
@@ -29,8 +36,14 @@ export default function updateIntermentContainerType(updateForm, user, connected
         .run(updateForm.intermentContainerType, updateForm.isCremationType, user.userName, rightNowMillis, updateForm.intermentContainerTypeId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM IntermentContainerTypes WHERE intermentContainerTypeId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          IntermentContainerTypes
+        WHERE
+          intermentContainerTypeId = ?
+      `)
             .get(updateForm.intermentContainerTypeId);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {

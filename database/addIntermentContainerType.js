@@ -27,8 +27,14 @@ export default function addIntermentContainerType(addForm, user, connectedDataba
     const intermentContainerTypeId = result.lastInsertRowid;
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM IntermentContainerTypes WHERE intermentContainerTypeId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          IntermentContainerTypes
+        WHERE
+          intermentContainerTypeId = ?
+      `)
             .get(intermentContainerTypeId);
         createAuditLogEntries({
             mainRecordType: 'intermentContainerType',

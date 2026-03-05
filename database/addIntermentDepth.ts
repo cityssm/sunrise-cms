@@ -52,9 +52,14 @@ export default function addIntermentDepth(
 
   if (auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM IntermentDepths WHERE intermentDepthId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          IntermentDepths
+        WHERE
+          intermentDepthId = ?
+      `)
       .get(intermentDepthId)
 
     createAuditLogEntries(

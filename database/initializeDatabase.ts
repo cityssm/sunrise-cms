@@ -697,11 +697,9 @@ const createStatements = [
     )
   `,
 
-  /* sql */ `CREATE INDEX IF NOT EXISTS idx_AuditLog ON AuditLog (logMillis)`,
+  /* sql */ 'CREATE INDEX IF NOT EXISTS idx_AuditLog ON AuditLog (logMillis)',
 
-  /* sql */ `
-    CREATE INDEX IF NOT EXISTS idx_AuditLog_recordTypeId ON AuditLog (mainRecordType, mainRecordId, logMillis)
-  `
+  /* sql */ 'CREATE INDEX IF NOT EXISTS idx_AuditLog_recordTypeId ON AuditLog (mainRecordType, mainRecordId, logMillis)'
 ]
 
 const initializingUser: User = {
