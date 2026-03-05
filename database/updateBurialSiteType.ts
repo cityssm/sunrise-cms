@@ -1,7 +1,13 @@
+import getObjectDifference from '@cityssm/object-difference'
 import sqlite from 'better-sqlite3'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateBurialSiteTypeForm {
   burialSiteTypeId: number | string
@@ -20,6 +26,14 @@ export default function updateBurialSiteType(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
+
+  const recordBefore = auditLogIsEnabled
+    ? database
+        .prepare(
+          /* sql */ `SELECT * FROM BurialSiteTypes WHERE burialSiteTypeId = ? AND recordDelete_timeMillis IS NULL`
+        )
+        .get(updateForm.burialSiteTypeId)
+    : undefined
 
   const result = database
     .prepare(/* sql */ `
@@ -47,6 +61,29 @@ export default function updateBurialSiteType(
       rightNowMillis,
       updateForm.burialSiteTypeId
     )
+
+  if (result.changes > 0 && auditLogIsEnabled) {
+    const recordAfter = database
+      .prepare(
+        /* sql */ `SELECT * FROM BurialSiteTypes WHERE burialSiteTypeId = ?`
+      )
+      .get(updateForm.burialSiteTypeId)
+
+    const differences = getObjectDifference(recordBefore, recordAfter)
+
+    if (differences.length > 0) {
+      createAuditLogEntries(
+        {
+          mainRecordType: 'burialSiteType',
+          mainRecordId: String(updateForm.burialSiteTypeId),
+          updateTable: 'BurialSiteTypes'
+        },
+        differences,
+        user,
+        database
+      )
+    }
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

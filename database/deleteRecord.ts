@@ -67,30 +67,42 @@ const relatedTables = new Map<RecordTable, string[]>([
 
 type ConfigRecordTable =
   | 'BurialSiteStatuses'
+  | 'BurialSiteTypes'
   | 'CommittalTypes'
+  | 'ContractTypes'
+  | 'Fees'
   | 'IntermentContainerTypes'
   | 'IntermentDepths'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrderTypes'
+  | 'WorkOrders'
 
 const configTableAuditInfo = new Map<
   ConfigRecordTable,
   {
     mainRecordType:
       | 'burialSiteStatus'
+      | 'burialSiteType'
       | 'committalType'
+      | 'contractType'
+      | 'fee'
       | 'intermentContainerType'
       | 'intermentDepth'
       | 'workOrderMilestoneType'
       | 'workOrderType'
+      | 'workOrder'
   }
 >([
   ['BurialSiteStatuses', { mainRecordType: 'burialSiteStatus' }],
+  ['BurialSiteTypes', { mainRecordType: 'burialSiteType' }],
   ['CommittalTypes', { mainRecordType: 'committalType' }],
+  ['ContractTypes', { mainRecordType: 'contractType' }],
+  ['Fees', { mainRecordType: 'fee' }],
   ['IntermentContainerTypes', { mainRecordType: 'intermentContainerType' }],
   ['IntermentDepths', { mainRecordType: 'intermentDepth' }],
   ['WorkOrderMilestoneTypes', { mainRecordType: 'workOrderMilestoneType' }],
-  ['WorkOrderTypes', { mainRecordType: 'workOrderType' }]
+  ['WorkOrderTypes', { mainRecordType: 'workOrderType' }],
+  ['WorkOrders', { mainRecordType: 'workOrder' }]
 ])
 
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')

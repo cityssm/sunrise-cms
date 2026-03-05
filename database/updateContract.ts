@@ -1,3 +1,4 @@
+import getObjectDifference from '@cityssm/object-difference'
 import {
   type DateString,
   type TimeString,
@@ -6,10 +7,14 @@ import {
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addOrUpdateContractField from './addOrUpdateContractField.js'
+import createAuditLogEntries from './createAuditLogEntries.js'
 import deleteContractField from './deleteContractField.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateContractForm {
   contractId: number | string
@@ -51,6 +56,14 @@ export default function updateContract(
   connectedDatabase?: sqlite.Database
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
+
+  const recordBefore = auditLogIsEnabled
+    ? database
+        .prepare(
+          /* sql */ `SELECT * FROM Contracts WHERE contractId = ? AND recordDelete_timeMillis IS NULL`
+        )
+        .get(updateForm.contractId)
+    : undefined
 
   const result = database
     .prepare(/* sql */ `
@@ -141,6 +154,27 @@ export default function updateContract(
             user,
             database
           )
+    }
+
+    if (auditLogIsEnabled) {
+      const recordAfter = database
+        .prepare(/* sql */ `SELECT * FROM Contracts WHERE contractId = ?`)
+        .get(updateForm.contractId)
+
+      const differences = getObjectDifference(recordBefore, recordAfter)
+
+      if (differences.length > 0) {
+        createAuditLogEntries(
+          {
+            mainRecordType: 'contract',
+            mainRecordId: String(updateForm.contractId),
+            updateTable: 'Contracts'
+          },
+          differences,
+          user,
+          database
+        )
+      }
     }
   }
 
