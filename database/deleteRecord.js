@@ -1,6 +1,8 @@
 import sqlite from 'better-sqlite3';
 import { cacheTableNames, clearCacheByTableName } from '../helpers/cache.helpers.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
 const recordIdColumns = new Map([
     ['BurialSiteComments', 'burialSiteCommentId'],
     ['BurialSiteStatuses', 'burialSiteStatusId'],
@@ -34,9 +36,25 @@ const relatedTables = new Map([
         ]
     ]
 ]);
+const configTableAuditInfo = new Map([
+    ['BurialSiteStatuses', { mainRecordType: 'burialSiteStatus' }],
+    ['CommittalTypes', { mainRecordType: 'committalType' }],
+    ['IntermentContainerTypes', { mainRecordType: 'intermentContainerType' }],
+    ['IntermentDepths', { mainRecordType: 'intermentDepth' }],
+    ['WorkOrderMilestoneTypes', { mainRecordType: 'workOrderMilestoneType' }],
+    ['WorkOrderTypes', { mainRecordType: 'workOrderType' }]
+]);
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
+    const configAuditInfo = configTableAuditInfo.get(recordTable);
+    const recordBefore = auditLogIsEnabled && configAuditInfo !== undefined
+        ? database
+            .prepare(
+        /* sql */ `SELECT * FROM ${recordTable} WHERE ${recordIdColumns.get(recordTable)} = ? AND recordDelete_timeMillis IS NULL`)
+            .get(recordId)
+        : undefined;
     const result = database
         .prepare(/* sql */ `
       UPDATE ${recordTable}
@@ -60,6 +78,20 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
           AND recordDelete_timeMillis IS NULL
       `)
             .run(user.userName, rightNowMillis, recordId);
+    }
+    if (result.changes > 0 && auditLogIsEnabled && configAuditInfo !== undefined) {
+        createAuditLogEntries({
+            mainRecordType: configAuditInfo.mainRecordType,
+            mainRecordId: String(recordId),
+            updateTable: recordTable
+        }, [
+            {
+                property: '*',
+                type: 'deleted',
+                from: recordBefore,
+                to: undefined
+            }
+        ], user, database);
     }
     if (connectedDatabase === undefined) {
         database.close();

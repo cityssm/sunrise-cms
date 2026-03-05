@@ -1,6 +1,9 @@
+import getObjectDifference from '@cityssm/object-difference';
 import sqlite from 'better-sqlite3';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
 const recordNameIdColumns = new Map([
     ['BurialSiteStatuses', ['burialSiteStatus', 'burialSiteStatusId']],
     ['CommittalTypes', ['committalType', 'committalTypeId']],
@@ -10,12 +13,41 @@ const recordNameIdColumns = new Map([
     ],
     ['WorkOrderTypes', ['workOrderType', 'workOrderTypeId']]
 ]);
+const recordAuditInfo = new Map([
+    [
+        'BurialSiteStatuses',
+        { mainRecordType: 'burialSiteStatus', recordIdColumn: 'burialSiteStatusId' }
+    ],
+    [
+        'CommittalTypes',
+        { mainRecordType: 'committalType', recordIdColumn: 'committalTypeId' }
+    ],
+    [
+        'WorkOrderMilestoneTypes',
+        {
+            mainRecordType: 'workOrderMilestoneType',
+            recordIdColumn: 'workOrderMilestoneTypeId'
+        }
+    ],
+    [
+        'WorkOrderTypes',
+        { mainRecordType: 'workOrderType', recordIdColumn: 'workOrderTypeId' }
+    ]
+]);
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 function updateRecord(record, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const columnNames = recordNameIdColumns.get(record.recordTable);
     if (columnNames === undefined) {
         throw new Error(`Invalid record table: ${record.recordTable}`);
     }
+    const auditInfo = recordAuditInfo.get(record.recordTable);
+    const recordBefore = auditLogIsEnabled && auditInfo !== undefined
+        ? database
+            .prepare(
+        /* sql */ `SELECT * FROM ${record.recordTable} WHERE ${auditInfo.recordIdColumn} = ? AND recordDelete_timeMillis IS NULL`)
+            .get(record.recordId)
+        : undefined;
     const result = database
         .prepare(/* sql */ `
       UPDATE ${record.recordTable}
@@ -28,6 +60,20 @@ function updateRecord(record, user, connectedDatabase) {
         AND ${columnNames[1]} = ?
     `)
         .run(record.recordName, user.userName, Date.now(), record.recordId);
+    if (result.changes > 0 && auditLogIsEnabled && auditInfo !== undefined) {
+        const recordAfter = database
+            .prepare(
+        /* sql */ `SELECT * FROM ${record.recordTable} WHERE ${auditInfo.recordIdColumn} = ?`)
+            .get(record.recordId);
+        const differences = getObjectDifference(recordBefore, recordAfter);
+        if (differences.length > 0) {
+            createAuditLogEntries({
+                mainRecordType: auditInfo.mainRecordType,
+                mainRecordId: String(record.recordId),
+                updateTable: record.recordTable
+            }, differences, user, database);
+        }
+    }
     if (connectedDatabase === undefined) {
         database.close();
     }

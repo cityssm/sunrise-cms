@@ -19,8 +19,8 @@ type MainRecordType =
   | 'workOrderType'
 
 type UpdateTable =
-  | 'BurialSiteStatuses'
   | 'BurialSites'
+  | 'BurialSiteStatuses'
   | 'Cemeteries'
   | 'CemeteryDirectionsOfArrival'
   | 'CommittalTypes'
@@ -30,8 +30,14 @@ type UpdateTable =
   | 'ServiceTypes'
   | 'Users'
   | 'WorkOrderMilestoneTypes'
-  | 'WorkOrderTypes'
   | 'WorkOrders'
+  | 'WorkOrderTypes'
+
+const propertiesToExclude = new Set([
+  'recordCreate_timeMillis',
+  'recordCreate_userName',
+  'recordUpdate_timeMillis'
+])
 
 export default function createAuditLogEntries(
   record: {
@@ -48,7 +54,7 @@ export default function createAuditLogEntries(
 
   for (const difference of differences) {
     if (
-      difference.property === 'recordUpdate_timeMillis' ||
+      propertiesToExclude.has(difference.property) ||
       difference.type === 'NA'
     ) {
       continue

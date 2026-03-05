@@ -1,5 +1,5 @@
 import sqlite from 'better-sqlite3';
-export type AuditLogMainRecordType = '' | 'burialSite' | 'cemetery' | 'contract' | 'user' | 'workOrder';
+export type AuditLogMainRecordType = '' | 'burialSite' | 'burialSiteStatus' | 'cemetery' | 'committalType' | 'contract' | 'intermentContainerType' | 'intermentDepth' | 'serviceType' | 'user' | 'workOrder' | 'workOrderMilestoneType' | 'workOrderType';
 export interface AuditLogEntry {
     logMillis: number;
     logDate: number;
