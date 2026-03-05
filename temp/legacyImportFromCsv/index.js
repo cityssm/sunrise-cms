@@ -60,7 +60,8 @@ function purgeTables() {
         'FuneralHomes',
         'BurialSiteFields',
         'BurialSiteComments',
-        'BurialSites'
+        'BurialSites',
+        'AuditLogs'
     ];
     const database = sqlite(databasePath);
     for (const tableName of tablesToPurge) {
