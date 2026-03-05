@@ -1,13 +1,17 @@
 import sqlite from 'better-sqlite3'
 
 import { buildBurialSiteName } from '../helpers/burialSites.helpers.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addOrUpdateBurialSiteFields, {
   type BurialSiteFieldsForm
 } from './addOrUpdateBurialSiteFields.js'
+import createAuditLogEntries from './createAuditLogEntries.js'
 import getCemetery from './getCemetery.js'
 import { purgeBurialSite } from './purgeBurialSite.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddBurialSiteForm extends BurialSiteFieldsForm {
   burialSiteNameSegment1?: string
@@ -192,6 +196,38 @@ export default function addBurialSite(
       user,
       database
     )
+
+    if (auditLogIsEnabled) {
+      const recordAfter = database
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            BurialSites
+          WHERE
+            burialSiteId = ?
+        `)
+        .get(burialSiteId)
+
+      createAuditLogEntries(
+        {
+          mainRecordType: 'burialSite',
+          mainRecordId: burialSiteId,
+          updateTable: 'BurialSites'
+        },
+        [
+          {
+            property: '*',
+            type: 'created',
+
+            from: undefined,
+            to: recordAfter
+          }
+        ],
+        user,
+        database
+      )
+    }
 
     return {
       burialSiteId,

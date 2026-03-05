@@ -89,21 +89,27 @@ function addRecord(
 
     if (auditInfo !== undefined) {
       const recordAfter = database
-        .prepare(
-          /* sql */ `SELECT * FROM ${record.recordTable} WHERE ${auditInfo.recordIdColumn} = ?`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ${record.recordTable}
+          WHERE
+            ${auditInfo.recordIdColumn} = ?
+        `)
         .get(recordId)
 
       createAuditLogEntries(
         {
           mainRecordType: auditInfo.mainRecordType,
-          mainRecordId: String(recordId),
+          mainRecordId: recordId,
           updateTable: record.recordTable
         },
         [
           {
             property: '*',
             type: 'created',
+
             from: undefined,
             to: recordAfter
           }

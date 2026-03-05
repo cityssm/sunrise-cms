@@ -1,6 +1,6 @@
 import { type DateString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
-export type AuditLogMainRecordType = '' | 'burialSite' | 'burialSiteStatus' | 'cemetery' | 'committalType' | 'contract' | 'intermentContainerType' | 'intermentDepth' | 'serviceType' | 'user' | 'workOrder' | 'workOrderMilestoneType' | 'workOrderType';
+export type AuditLogMainRecordType = '' | 'burialSite' | 'burialSiteStatus' | 'burialSiteType' | 'cemetery' | 'committalType' | 'contract' | 'contractType' | 'fee' | 'funeralHome' | 'intermentContainerType' | 'intermentDepth' | 'serviceType' | 'user' | 'workOrder' | 'workOrderMilestoneType' | 'workOrderType';
 export interface AuditLogEntry {
     logMillis: number;
     logDate: number;

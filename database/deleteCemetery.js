@@ -130,7 +130,7 @@ export default function deleteCemetery(cemeteryId, user, connectedDatabase) {
     if (auditLogIsEnabled) {
         createAuditLogEntries({
             mainRecordType: 'cemetery',
-            mainRecordId: String(cemeteryId),
+            mainRecordId: cemeteryId,
             updateTable: 'Cemeteries'
         }, [
             {

@@ -1,6 +1,12 @@
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+import getFuneralHome from './getFuneralHome.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddForm {
   funeralHomeKey?: string
@@ -58,6 +64,33 @@ export default function addFuneralHome(
       user.userName,
       rightNowMillis
     )
+
+  if (auditLogIsEnabled) {
+    const recordAfter = getFuneralHome(
+      result.lastInsertRowid as number,
+      false,
+      database
+    )
+
+    createAuditLogEntries(
+      {
+        mainRecordType: 'funeralHome',
+        mainRecordId: String(result.lastInsertRowid),
+        updateTable: 'FuneralHomes'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

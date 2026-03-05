@@ -1,5 +1,7 @@
+import getObjectDifference from '@cityssm/object-difference'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 import {
   calculateFeeAmount,
@@ -7,8 +9,11 @@ import {
 } from '../helpers/functions.fee.js'
 import type { Contract, Fee } from '../types/record.types.js'
 
+import createAuditLogEntries from './createAuditLogEntries.js'
 import getContract from './getContract.js'
 import getFee from './getFee.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface AddContractFeeForm {
   contractId: number | string
@@ -102,6 +107,20 @@ export default async function addContractFee(
         record.feeAmount === feeAmount &&
         record.taxAmount === taxAmount
       ) {
+        const recordBefore = auditLogIsEnabled
+          ? database
+              .prepare(/* sql */ `
+                SELECT
+                  *
+                FROM
+                  ContractFees
+                WHERE
+                  contractId = ?
+                  AND feeId = ?
+              `)
+              .get(addFeeForm.contractId, addFeeForm.feeId)
+          : undefined
+
         database
           .prepare(/* sql */ `
             UPDATE ContractFees
@@ -121,12 +140,56 @@ export default async function addContractFee(
             addFeeForm.feeId
           )
 
+        if (auditLogIsEnabled) {
+          const recordAfter = database
+            .prepare(/* sql */ `
+              SELECT
+                *
+              FROM
+                ContractFees
+              WHERE
+                contractId = ?
+                AND feeId = ?
+            `)
+            .get(addFeeForm.contractId, addFeeForm.feeId)
+
+          const differences = getObjectDifference(recordBefore, recordAfter)
+
+          if (differences.length > 0) {
+            createAuditLogEntries(
+              {
+                mainRecordType: 'contract',
+                mainRecordId: addFeeForm.contractId,
+                updateTable: 'ContractFees',
+                recordIndex: String(addFeeForm.feeId)
+              },
+              differences,
+              user,
+              database
+            )
+          }
+        }
+
         return true
       } else {
         const quantity =
           typeof addFeeForm.quantity === 'string'
             ? Number.parseFloat(addFeeForm.quantity)
             : addFeeForm.quantity
+
+        const recordBefore = auditLogIsEnabled
+          ? database
+              .prepare(/* sql */ `
+                SELECT
+                  *
+                FROM
+                  ContractFees
+                WHERE
+                  contractId = ?
+                  AND feeId = ?
+              `)
+              .get(addFeeForm.contractId, addFeeForm.feeId)
+          : undefined
 
         database
           .prepare(/* sql */ `
@@ -149,6 +212,36 @@ export default async function addContractFee(
             addFeeForm.contractId,
             addFeeForm.feeId
           )
+
+        if (auditLogIsEnabled) {
+          const recordAfter = database
+            .prepare(/* sql */ `
+              SELECT
+                *
+              FROM
+                ContractFees
+              WHERE
+                contractId = ?
+                AND feeId = ?
+            `)
+            .get(addFeeForm.contractId, addFeeForm.feeId)
+
+          const differences = getObjectDifference(recordBefore, recordAfter)
+
+          if (differences.length > 0) {
+            createAuditLogEntries(
+              {
+                mainRecordType: 'contract',
+                mainRecordId: addFeeForm.contractId,
+                updateTable: 'ContractFees',
+                recordIndex: String(addFeeForm.feeId)
+              },
+              differences,
+              user,
+              database
+            )
+          }
+        }
 
         return true
       }
@@ -183,6 +276,40 @@ export default async function addContractFee(
         user.userName,
         rightNowMillis
       )
+
+    if (result.changes > 0 && auditLogIsEnabled) {
+      const recordAfter = database
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ContractFees
+          WHERE
+            contractId = ?
+            AND feeId = ?
+        `)
+        .get(addFeeForm.contractId, addFeeForm.feeId)
+
+      createAuditLogEntries(
+        {
+          mainRecordType: 'contract',
+          mainRecordId: addFeeForm.contractId,
+          updateTable: 'ContractFees',
+          recordIndex: String(addFeeForm.feeId)
+        },
+        [
+          {
+            property: '*',
+            type: 'created',
+
+            from: undefined,
+            to: recordAfter
+          }
+        ],
+        user,
+        database
+      )
+    }
 
     return result.changes > 0
   } finally {

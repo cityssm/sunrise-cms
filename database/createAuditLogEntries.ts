@@ -7,9 +7,13 @@ import type sqlite from 'better-sqlite3'
 type MainRecordType =
   | 'burialSite'
   | 'burialSiteStatus'
+  | 'burialSiteType'
   | 'cemetery'
   | 'committalType'
   | 'contract'
+  | 'contractType'
+  | 'fee'
+  | 'funeralHome'
   | 'intermentContainerType'
   | 'intermentDepth'
   | 'serviceType'
@@ -19,16 +23,31 @@ type MainRecordType =
   | 'workOrderType'
 
 type UpdateTable =
+  | 'BurialSiteComments'
   | 'BurialSites'
   | 'BurialSiteStatuses'
+  | 'BurialSiteTypes'
   | 'Cemeteries'
   | 'CemeteryDirectionsOfArrival'
   | 'CommittalTypes'
+  | 'ContractAttachments'
+  | 'ContractComments'
+  | 'ContractFees'
+  | 'ContractInterments'
   | 'Contracts'
+  | 'ContractServiceTypes'
+  | 'ContractTransactions'
+  | 'ContractTypes'
+  | 'Fees'
+  | 'FuneralHomes'
   | 'IntermentContainerTypes'
   | 'IntermentDepths'
   | 'ServiceTypes'
   | 'Users'
+  | 'WorkOrderBurialSites'
+  | 'WorkOrderComments'
+  | 'WorkOrderContracts'
+  | 'WorkOrderMilestones'
   | 'WorkOrderMilestoneTypes'
   | 'WorkOrders'
   | 'WorkOrderTypes'
@@ -42,9 +61,9 @@ const propertiesToExclude = new Set([
 export default function createAuditLogEntries(
   record: {
     mainRecordType: MainRecordType
-    mainRecordId: string
+    mainRecordId: number | string
     updateTable: UpdateTable
-    recordIndex?: string
+    recordIndex?: number | string
   },
   differences: Difference[],
   user: User,

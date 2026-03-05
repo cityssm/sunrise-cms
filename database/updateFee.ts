@@ -1,6 +1,13 @@
+import getObjectDifference from '@cityssm/object-difference'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+import getFee from './getFee.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface UpdateFeeForm {
   feeId: string
@@ -25,6 +32,10 @@ export default function updateFee(
   connectedDatabase?: sqlite.Database
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
+
+  const recordBefore = auditLogIsEnabled
+    ? getFee(feeForm.feeId, database)
+    : undefined
 
   const result = database
     .prepare(/* sql */ `
@@ -70,6 +81,25 @@ export default function updateFee(
       feeForm.feeId
     )
 
+  if (result.changes > 0 && auditLogIsEnabled) {
+    const recordAfter = getFee(feeForm.feeId, database)
+
+    const differences = getObjectDifference(recordBefore, recordAfter)
+
+    if (differences.length > 0) {
+      createAuditLogEntries(
+        {
+          mainRecordType: 'fee',
+          mainRecordId: feeForm.feeId,
+          updateTable: 'Fees'
+        },
+        differences,
+        user,
+        database
+      )
+    }
+  }
+
   if (connectedDatabase === undefined) {
     database.close()
   }
@@ -89,6 +119,10 @@ export function updateFeeAmount(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
+  const recordBefore = auditLogIsEnabled
+    ? getFee(feeAmountForm.feeId, database)
+    : undefined
+
   const result = database
     .prepare(/* sql */ `
       UPDATE Fees
@@ -106,6 +140,25 @@ export function updateFeeAmount(
       Date.now(),
       feeAmountForm.feeId
     )
+
+  if (result.changes > 0 && auditLogIsEnabled) {
+    const recordAfter = getFee(feeAmountForm.feeId, database)
+
+    const differences = getObjectDifference(recordBefore, recordAfter)
+
+    if (differences.length > 0) {
+      createAuditLogEntries(
+        {
+          mainRecordType: 'fee',
+          mainRecordId: feeAmountForm.feeId,
+          updateTable: 'Fees'
+        },
+        differences,
+        user,
+        database
+      )
+    }
+  }
 
   if (connectedDatabase === undefined) {
     database.close()

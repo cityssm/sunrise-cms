@@ -38,7 +38,7 @@ export default function addIntermentContainerType(addForm, user, connectedDataba
             .get(intermentContainerTypeId);
         createAuditLogEntries({
             mainRecordType: 'intermentContainerType',
-            mainRecordId: String(intermentContainerTypeId),
+            mainRecordId: intermentContainerTypeId,
             updateTable: 'IntermentContainerTypes'
         }, [
             {

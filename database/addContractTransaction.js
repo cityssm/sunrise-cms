@@ -1,6 +1,9 @@
 import { dateStringToInteger, dateToInteger, dateToTimeInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addContractTransaction(contractTransactionForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     let transactionIndex = 0;
@@ -49,6 +52,32 @@ export default function addContractTransaction(contractTransactionForm, user, co
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
         .run(contractTransactionForm.contractId, transactionIndex, transactionDate, transactionTime, contractTransactionForm.transactionAmount, contractTransactionForm.isInvoiced ?? 0, contractTransactionForm.externalReceiptNumber, contractTransactionForm.transactionNote, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
+    if (auditLogIsEnabled) {
+        const recordAfter = database
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractTransactions
+        WHERE
+          contractId = ?
+          AND transactionIndex = ?
+      `)
+            .get(contractTransactionForm.contractId, transactionIndex);
+        createAuditLogEntries({
+            mainRecordType: 'contract',
+            mainRecordId: contractTransactionForm.contractId,
+            updateTable: 'ContractTransactions',
+            recordIndex: transactionIndex
+        }, [
+            {
+                property: '*',
+                type: 'created',
+                from: undefined,
+                to: recordAfter
+            }
+        ], user, database);
+    }
     if (connectedDatabase === undefined) {
         database.close();
     }

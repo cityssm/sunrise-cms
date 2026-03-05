@@ -77,7 +77,7 @@ export default function updateIntermentContainerType(
       createAuditLogEntries(
         {
           mainRecordType: 'intermentContainerType',
-          mainRecordId: String(updateForm.intermentContainerTypeId),
+          mainRecordId: updateForm.intermentContainerTypeId,
           updateTable: 'IntermentContainerTypes'
         },
         differences,

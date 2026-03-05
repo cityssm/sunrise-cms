@@ -74,7 +74,7 @@ export default function updateServiceType(
         createAuditLogEntries(
           {
             mainRecordType: 'serviceType',
-            mainRecordId: String(updateForm.serviceTypeId),
+            mainRecordId: updateForm.serviceTypeId,
             updateTable: 'ServiceTypes'
           },
           differences,

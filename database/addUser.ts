@@ -137,6 +137,7 @@ export default function addUser(
         {
           property: '*',
           type: 'created',
+
           from: undefined,
           to: recordAfter
         }

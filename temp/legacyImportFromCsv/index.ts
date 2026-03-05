@@ -75,7 +75,8 @@ function purgeTables(): void {
     'FuneralHomes',
     'BurialSiteFields',
     'BurialSiteComments',
-    'BurialSites'
+    'BurialSites',
+    'AuditLogs'
   ]
 
   const database = sqlite(databasePath)
