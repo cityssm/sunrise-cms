@@ -16,6 +16,28 @@
             }
         }
     }
+    function getRecordUrl(mainRecordType, mainRecordId) {
+        switch (mainRecordType) {
+            case 'burialSite': {
+                return exports.sunrise.getBurialSiteUrl(mainRecordId);
+            }
+            case 'cemetery': {
+                return exports.sunrise.getCemeteryUrl(mainRecordId);
+            }
+            case 'contract': {
+                return exports.sunrise.getContractUrl(mainRecordId);
+            }
+            case 'funeralHome': {
+                return exports.sunrise.getFuneralHomeUrl(mainRecordId);
+            }
+            case 'workOrder': {
+                return exports.sunrise.getWorkOrderUrl(mainRecordId);
+            }
+            default: {
+                return undefined;
+            }
+        }
+    }
     const maxValueLength = 100;
     function truncateValue(value) {
         if (value.length <= maxValueLength) {
@@ -32,7 +54,11 @@
             return /* html */ `<code style="word-break:break-all">${escaped}</code>`;
         }
         const truncated = cityssm.escapeHTML(truncateValue(rawValue));
-        return /* html */ `<code title="${escaped}" style="cursor:help;word-break:break-all">${truncated}</code>`;
+        return /* html */ `
+      <code title="${escaped}" style="cursor:help;word-break:break-all">
+        ${truncated}
+      </code>
+    `;
     }
     function renderAuditLog(responseJSON) {
         const { auditLogEntries, count, offset } = responseJSON;
@@ -49,6 +75,7 @@
             const logDate = new Date(entry.logMillis);
             const dateString = logDate.toLocaleDateString();
             const timeString = logDate.toLocaleTimeString();
+            const recordUrl = getRecordUrl(entry.mainRecordType, entry.mainRecordId);
             return /* html */ `
           <tr class="${getUpdateTypeColorClass(entry.updateType)}">
             <td>
@@ -57,7 +84,18 @@
             </td>
             <td>
               ${cityssm.escapeHTML(entry.mainRecordType)}<br />
-              <span class="is-size-7">${cityssm.escapeHTML(entry.mainRecordId)}</span>
+              ${recordUrl === undefined
+                ? `<span class="is-size-7">${cityssm.escapeHTML(entry.mainRecordId)}</span>`
+                : /* html */ `
+                    <a
+                      class="has-text-black has-text-weight-semibold is-size-7"
+                      href="${cityssm.escapeHTML(recordUrl)}"
+                      title="${cityssm.escapeHTML(i18next.t('admin:auditLogViewRecord'))}"
+                      target="_blank"
+                    >
+                      ${cityssm.escapeHTML(entry.mainRecordId)}
+                    </a>
+                  `}
             </td>
             <td>
               ${cityssm.escapeHTML(entry.updateTable)}<br />

@@ -35,7 +35,8 @@ export default function updateBurialSiteComment(commentForm, user, connectedData
     `)
         .run(dateStringToInteger(commentForm.commentDateString), timeStringToInteger(commentForm.commentTimeString), commentForm.comment, user.userName, Date.now(), commentForm.burialSiteCommentId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
-        const parentId = recordBefore.burialSiteId;
+        const parentId = recordBefore
+            .burialSiteId;
         const recordAfter = database
             .prepare(/* sql */ `
         SELECT
@@ -49,10 +50,10 @@ export default function updateBurialSiteComment(commentForm, user, connectedData
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
+                mainRecordId: parentId,
                 mainRecordType: 'burialSite',
-                mainRecordId: String(parentId),
-                updateTable: 'BurialSiteComments',
-                recordIndex: commentForm.burialSiteCommentId
+                recordIndex: commentForm.burialSiteCommentId,
+                updateTable: 'BurialSiteComments'
             }, differences, user, database);
         }
     }

@@ -34,7 +34,8 @@ export default function updateContractAttachment(contractAttachmentId, attachmen
     `)
         .run(attachment.attachmentTitle ?? '', attachment.attachmentDetails ?? '', user.userName, rightNowMillis, contractAttachmentId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
-        const parentId = recordBefore.contractId;
+        const parentId = recordBefore
+            .contractId;
         const recordAfter = database
             .prepare(/* sql */ `
         SELECT
@@ -48,10 +49,10 @@ export default function updateContractAttachment(contractAttachmentId, attachmen
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
+                mainRecordId: parentId,
                 mainRecordType: 'contract',
-                mainRecordId: String(parentId),
-                updateTable: 'ContractAttachments',
-                recordIndex: contractAttachmentId
+                recordIndex: contractAttachmentId,
+                updateTable: 'ContractAttachments'
             }, differences, user, database);
         }
     }

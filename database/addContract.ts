@@ -254,8 +254,8 @@ export default function addContract(
 
       createAuditLogEntries(
         {
-          mainRecordType: 'contract',
           mainRecordId: contractId,
+          mainRecordType: 'contract',
           updateTable: 'Contracts'
         },
         [

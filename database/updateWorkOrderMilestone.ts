@@ -76,7 +76,8 @@ export default function updateWorkOrderMilestone(
     )
 
   if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
-    const parentId = (recordBefore as Record<string, unknown>).workOrderId
+    const parentId = (recordBefore as Record<string, unknown>)
+      .workOrderId as number
 
     const recordAfter = database
       .prepare(/* sql */ `
@@ -94,10 +95,10 @@ export default function updateWorkOrderMilestone(
     if (differences.length > 0) {
       createAuditLogEntries(
         {
+          mainRecordId: parentId,
           mainRecordType: 'workOrder',
-          mainRecordId: String(parentId),
-          updateTable: 'WorkOrderMilestones',
-          recordIndex: milestoneForm.workOrderMilestoneId
+          recordIndex: milestoneForm.workOrderMilestoneId,
+          updateTable: 'WorkOrderMilestones'
         },
         differences,
         user,

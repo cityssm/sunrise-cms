@@ -104,8 +104,8 @@ export default function updateBurialSite(updateForm, user) {
             const differences = getObjectDifference(recordBefore, recordAfter);
             if (differences.length > 0) {
                 createAuditLogEntries({
-                    mainRecordType: 'burialSite',
                     mainRecordId: updateForm.burialSiteId,
+                    mainRecordType: 'burialSite',
                     updateTable: 'BurialSites'
                 }, differences, user, database);
             }
@@ -156,8 +156,8 @@ export function updateBurialSiteStatus(burialSiteId, burialSiteStatusId, user, c
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
-                mainRecordType: 'burialSite',
                 mainRecordId: burialSiteId,
+                mainRecordType: 'burialSite',
                 updateTable: 'BurialSites'
             }, differences, user, database);
         }
@@ -209,8 +209,8 @@ export function updateBurialSiteLatitudeLongitude(burialSiteId, burialSiteLatitu
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
-                mainRecordType: 'burialSite',
                 mainRecordId: burialSiteId,
+                mainRecordType: 'burialSite',
                 updateTable: 'BurialSites'
             }, differences, user, database);
         }

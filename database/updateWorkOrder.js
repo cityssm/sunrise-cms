@@ -49,8 +49,8 @@ export default function updateWorkOrder(workOrderForm, user, connectedDatabase) 
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
-                mainRecordType: 'workOrder',
                 mainRecordId: workOrderForm.workOrderId,
+                mainRecordType: 'workOrder',
                 updateTable: 'WorkOrders'
             }, differences, user, database);
         }

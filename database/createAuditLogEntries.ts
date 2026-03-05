@@ -60,10 +60,10 @@ const propertiesToExclude = new Set([
 
 export default function createAuditLogEntries(
   record: {
+    mainRecordId: bigint | number | string
     mainRecordType: MainRecordType
-    mainRecordId: number | string
+    recordIndex?: bigint | number | string
     updateTable: UpdateTable
-    recordIndex?: number | string
   },
   differences: Difference[],
   user: User,

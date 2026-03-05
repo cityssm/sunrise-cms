@@ -35,7 +35,8 @@ export default function updateWorkOrderComment(commentForm, user, connectedDatab
     `)
         .run(dateStringToInteger(commentForm.commentDateString), timeStringToInteger(commentForm.commentTimeString), commentForm.comment, user.userName, Date.now(), commentForm.workOrderCommentId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
-        const parentId = recordBefore.workOrderId;
+        const parentId = recordBefore
+            .workOrderId;
         const recordAfter = database
             .prepare(/* sql */ `
         SELECT
@@ -49,10 +50,10 @@ export default function updateWorkOrderComment(commentForm, user, connectedDatab
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
+                mainRecordId: parentId,
                 mainRecordType: 'workOrder',
-                mainRecordId: String(parentId),
-                updateTable: 'WorkOrderComments',
-                recordIndex: commentForm.workOrderCommentId
+                recordIndex: commentForm.workOrderCommentId,
+                updateTable: 'WorkOrderComments'
             }, differences, user, database);
         }
     }

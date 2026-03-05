@@ -62,8 +62,8 @@ export function deleteBurialSite(burialSiteId, user, connectedDatabase) {
         .run(user.userName, rightNowMillis, burialSiteId);
     if (auditLogIsEnabled) {
         createAuditLogEntries({
-            mainRecordType: 'burialSite',
             mainRecordId: burialSiteId,
+            mainRecordType: 'burialSite',
             updateTable: 'BurialSites'
         }, [
             {

@@ -10,7 +10,7 @@ import getContracts from './getContracts.js'
 export default async function getBurialSite(
   burialSiteId: number | string,
   includeDeleted = false,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): Promise<BurialSite | undefined> {
   return await _getBurialSite(
     'burialSiteId',
@@ -23,7 +23,7 @@ export default async function getBurialSite(
 export async function getBurialSiteByBurialSiteName(
   burialSiteName: string,
   includeDeleted = false,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): Promise<BurialSite | undefined> {
   return await _getBurialSite(
     'burialSiteName',
@@ -37,7 +37,7 @@ async function _getBurialSite(
   keyColumn: 'burialSiteId' | 'burialSiteName',
   burialSiteIdOrName: number | string,
   includeDeleted = false,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): Promise<BurialSite | undefined> {
   const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true })
 

@@ -39,8 +39,8 @@ export default function addCemetery(addForm, user, connectedDatabase) {
     if (auditLogIsEnabled) {
         const recordAfter = getCemetery(cemeteryId, database);
         createAuditLogEntries({
-            mainRecordType: 'cemetery',
             mainRecordId: cemeteryId,
+            mainRecordType: 'cemetery',
             updateTable: 'Cemeteries'
         }, [
             {

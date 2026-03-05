@@ -67,10 +67,10 @@ export default function addContractAttachment(
 
     createAuditLogEntries(
       {
-        mainRecordType: 'contract',
         mainRecordId: attachment.contractId,
-        updateTable: 'ContractAttachments',
-        recordIndex: String(result.lastInsertRowid)
+        mainRecordType: 'contract',
+        recordIndex: String(result.lastInsertRowid),
+        updateTable: 'ContractAttachments'
       },
       [
         {

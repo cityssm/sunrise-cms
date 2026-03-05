@@ -65,7 +65,8 @@ export default function updateBurialSiteComment(
     )
 
   if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
-    const parentId = (recordBefore as Record<string, unknown>).burialSiteId
+    const parentId = (recordBefore as Record<string, unknown>)
+      .burialSiteId as number
 
     const recordAfter = database
       .prepare(/* sql */ `
@@ -83,10 +84,10 @@ export default function updateBurialSiteComment(
     if (differences.length > 0) {
       createAuditLogEntries(
         {
+          mainRecordId: parentId,
           mainRecordType: 'burialSite',
-          mainRecordId: String(parentId),
-          updateTable: 'BurialSiteComments',
-          recordIndex: commentForm.burialSiteCommentId
+          recordIndex: commentForm.burialSiteCommentId,
+          updateTable: 'BurialSiteComments'
         },
         differences,
         user,

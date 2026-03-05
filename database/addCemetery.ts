@@ -93,8 +93,8 @@ export default function addCemetery(
 
     createAuditLogEntries(
       {
-        mainRecordType: 'cemetery',
         mainRecordId: cemeteryId,
+        mainRecordType: 'cemetery',
         updateTable: 'Cemeteries'
       },
       [

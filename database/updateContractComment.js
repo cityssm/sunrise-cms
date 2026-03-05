@@ -35,7 +35,8 @@ export default function updateContractComment(commentForm, user, connectedDataba
     `)
         .run(dateStringToInteger(commentForm.commentDateString), timeStringToInteger(commentForm.commentTimeString), commentForm.comment, user.userName, Date.now(), commentForm.contractCommentId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
-        const parentId = recordBefore.contractId;
+        const parentId = recordBefore
+            .contractId;
         const recordAfter = database
             .prepare(/* sql */ `
         SELECT
@@ -49,10 +50,10 @@ export default function updateContractComment(commentForm, user, connectedDataba
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
+                mainRecordId: parentId,
                 mainRecordType: 'contract',
-                mainRecordId: String(parentId),
-                updateTable: 'ContractComments',
-                recordIndex: commentForm.contractCommentId
+                recordIndex: commentForm.contractCommentId,
+                updateTable: 'ContractComments'
             }, differences, user, database);
         }
     }

@@ -85,8 +85,8 @@ export default function updateBurialSiteType(
     if (differences.length > 0) {
       createAuditLogEntries(
         {
-          mainRecordType: 'burialSiteType',
           mainRecordId: updateForm.burialSiteTypeId,
+          mainRecordType: 'burialSiteType',
           updateTable: 'BurialSiteTypes'
         },
         differences,

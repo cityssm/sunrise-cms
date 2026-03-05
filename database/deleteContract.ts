@@ -90,8 +90,8 @@ export function deleteContract(
   if (auditLogIsEnabled) {
     createAuditLogEntries(
       {
-        mainRecordType: 'contract',
         mainRecordId: contractId,
+        mainRecordType: 'contract',
         updateTable: 'Contracts'
       },
       [

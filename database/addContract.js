@@ -130,8 +130,8 @@ export default function addContract(addForm, user, connectedDatabase) {
         `)
                 .get(contractId);
             createAuditLogEntries({
-                mainRecordType: 'contract',
                 mainRecordId: contractId,
+                mainRecordType: 'contract',
                 updateTable: 'Contracts'
             }, [
                 {

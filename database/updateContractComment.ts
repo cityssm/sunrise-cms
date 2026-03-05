@@ -65,7 +65,8 @@ export default function updateContractComment(
     )
 
   if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
-    const parentId = (recordBefore as Record<string, unknown>).contractId
+    const parentId = (recordBefore as Record<string, unknown>)
+      .contractId as number
 
     const recordAfter = database
       .prepare(/* sql */ `
@@ -83,10 +84,10 @@ export default function updateContractComment(
     if (differences.length > 0) {
       createAuditLogEntries(
         {
+          mainRecordId: parentId,
           mainRecordType: 'contract',
-          mainRecordId: String(parentId),
-          updateTable: 'ContractComments',
-          recordIndex: commentForm.contractCommentId
+          recordIndex: commentForm.contractCommentId,
+          updateTable: 'ContractComments'
         },
         differences,
         user,

@@ -123,8 +123,8 @@ export default function addBurialSite(burialSiteForm, user, connectedDatabase) {
         `)
                 .get(burialSiteId);
             createAuditLogEntries({
-                mainRecordType: 'burialSite',
                 mainRecordId: burialSiteId,
+                mainRecordType: 'burialSite',
                 updateTable: 'BurialSites'
             }, [
                 {

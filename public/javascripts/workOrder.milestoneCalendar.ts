@@ -158,7 +158,7 @@ declare const exports: {
       burialSiteNames.add(contract.burialSiteName ?? '')
 
       for (const interment of contract.contractInterments ?? []) {
-        deceasedNames.add(interment.deceasedName ?? '')
+        deceasedNames.add(interment.deceasedName)
       }
     }
 

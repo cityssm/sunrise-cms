@@ -48,10 +48,10 @@ export default function deleteContractServiceType(
   if (info.changes > 0 && auditLogIsEnabled) {
     createAuditLogEntries(
       {
-        mainRecordType: 'contract',
         mainRecordId: contractId,
+        mainRecordType: 'contract',
+        recordIndex: serviceTypeId,
         updateTable: 'ContractServiceTypes',
-        recordIndex: serviceTypeId
       },
       [
         {

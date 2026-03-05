@@ -36,10 +36,10 @@ export default function addBurialSiteComment(commentForm, user, connectedDatabas
       `)
             .get(result.lastInsertRowid);
         createAuditLogEntries({
-            mainRecordType: 'burialSite',
             mainRecordId: commentForm.burialSiteId,
-            updateTable: 'BurialSiteComments',
-            recordIndex: String(result.lastInsertRowid)
+            mainRecordType: 'burialSite',
+            recordIndex: String(result.lastInsertRowid),
+            updateTable: 'BurialSiteComments'
         }, [
             {
                 property: '*',

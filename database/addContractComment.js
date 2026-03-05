@@ -46,10 +46,10 @@ export default function addContractComment(commentForm, user, connectedDatabase)
       `)
             .get(result.lastInsertRowid);
         createAuditLogEntries({
-            mainRecordType: 'contract',
             mainRecordId: commentForm.contractId,
-            updateTable: 'ContractComments',
-            recordIndex: String(result.lastInsertRowid)
+            mainRecordType: 'contract',
+            recordIndex: String(result.lastInsertRowid),
+            updateTable: 'ContractComments'
         }, [
             {
                 property: '*',

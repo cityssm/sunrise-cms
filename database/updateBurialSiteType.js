@@ -53,8 +53,8 @@ export default function updateBurialSiteType(updateForm, user, connectedDatabase
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
-                mainRecordType: 'burialSiteType',
                 mainRecordId: updateForm.burialSiteTypeId,
+                mainRecordType: 'burialSiteType',
                 updateTable: 'BurialSiteTypes'
             }, differences, user, database);
         }

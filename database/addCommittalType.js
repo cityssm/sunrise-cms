@@ -36,8 +36,8 @@ export default function addCommittalType(addForm, user, connectedDatabase) {
       `)
             .get(committalTypeId);
         createAuditLogEntries({
-            mainRecordType: 'committalType',
             mainRecordId: committalTypeId,
+            mainRecordType: 'committalType',
             updateTable: 'CommittalTypes'
         }, [
             {

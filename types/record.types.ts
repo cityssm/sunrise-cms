@@ -555,14 +555,15 @@ export interface DatabaseUser extends Record {
 
 export interface AuditLogEntry {
   logMillis: number
+
   logDate: number
   logTime: number
 
-  mainRecordType: string
   mainRecordId: string
+  mainRecordType: string
 
-  updateTable: string
   recordIndex: string | null
+  updateTable: string
 
   updateField: string
   updateType: string

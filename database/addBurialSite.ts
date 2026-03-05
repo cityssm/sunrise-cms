@@ -211,8 +211,8 @@ export default function addBurialSite(
 
       createAuditLogEntries(
         {
-          mainRecordType: 'burialSite',
           mainRecordId: burialSiteId,
+          mainRecordType: 'burialSite',
           updateTable: 'BurialSites'
         },
         [

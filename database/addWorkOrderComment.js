@@ -36,10 +36,10 @@ export default function addWorkOrderComment(workOrderCommentForm, user, connecte
       `)
             .get(result.lastInsertRowid);
         createAuditLogEntries({
-            mainRecordType: 'workOrder',
             mainRecordId: workOrderCommentForm.workOrderId,
-            updateTable: 'WorkOrderComments',
-            recordIndex: String(result.lastInsertRowid)
+            mainRecordType: 'workOrder',
+            recordIndex: String(result.lastInsertRowid),
+            updateTable: 'WorkOrderComments'
         }, [
             {
                 property: '*',

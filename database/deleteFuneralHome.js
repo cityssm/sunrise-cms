@@ -55,8 +55,8 @@ export default function deleteFuneralHome(funeralHomeId, user, connectedDatabase
         .run(user.userName, rightNowMillis, funeralHomeId);
     if (auditLogIsEnabled) {
         createAuditLogEntries({
-            mainRecordType: 'funeralHome',
             mainRecordId: funeralHomeId,
+            mainRecordType: 'funeralHome',
             updateTable: 'FuneralHomes'
         }, [
             {

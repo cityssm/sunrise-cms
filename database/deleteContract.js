@@ -72,8 +72,8 @@ export function deleteContract(contractId, user, connectedDatabase) {
     }
     if (auditLogIsEnabled) {
         createAuditLogEntries({
-            mainRecordType: 'contract',
             mainRecordId: contractId,
+            mainRecordType: 'contract',
             updateTable: 'Contracts'
         }, [
             {

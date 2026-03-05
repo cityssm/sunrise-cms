@@ -80,8 +80,8 @@ export default function updateWorkOrder(
     if (differences.length > 0) {
       createAuditLogEntries(
         {
-          mainRecordType: 'workOrder',
           mainRecordId: workOrderForm.workOrderId,
+          mainRecordType: 'workOrder',
           updateTable: 'WorkOrders'
         },
         differences,

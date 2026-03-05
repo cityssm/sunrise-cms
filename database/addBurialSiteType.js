@@ -38,8 +38,8 @@ export default function addBurialSiteType(addForm, user, connectedDatabase) {
       `)
             .get(result.lastInsertRowid);
         createAuditLogEntries({
-            mainRecordType: 'burialSiteType',
             mainRecordId: String(result.lastInsertRowid),
+            mainRecordType: 'burialSiteType',
             updateTable: 'BurialSiteTypes'
         }, [
             {

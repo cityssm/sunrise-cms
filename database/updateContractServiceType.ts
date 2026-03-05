@@ -74,10 +74,10 @@ export default function updateContractServiceType(
     if (differences.length > 0) {
       createAuditLogEntries(
         {
-          mainRecordType: 'contract',
           mainRecordId: updateForm.contractId,
-          updateTable: 'ContractServiceTypes',
-          recordIndex: updateForm.serviceTypeId
+          mainRecordType: 'contract',
+          recordIndex: updateForm.serviceTypeId,
+          updateTable: 'ContractServiceTypes'
         },
         differences,
         user,

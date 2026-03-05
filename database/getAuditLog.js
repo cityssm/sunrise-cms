@@ -6,15 +6,11 @@ export default function getAuditLog(filters, options, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB, { readonly: true });
     const sqlParameters = [];
     let sqlWhereClause = '';
-    if (filters.logDateFrom !== undefined &&
-        filters.logDateFrom !== '' &&
-        /^\d{4}-\d{2}-\d{2}$/v.test(filters.logDateFrom)) {
+    if (filters.logDateFrom !== undefined && filters.logDateFrom !== '') {
         sqlWhereClause += ' and logDate >= ?';
         sqlParameters.push(dateStringToInteger(filters.logDateFrom));
     }
-    if (filters.logDateTo !== undefined &&
-        filters.logDateTo !== '' &&
-        /^\d{4}-\d{2}-\d{2}$/v.test(filters.logDateTo)) {
+    if (filters.logDateTo !== undefined && filters.logDateTo !== '') {
         sqlWhereClause += ' and logDate <= ?';
         sqlParameters.push(dateStringToInteger(filters.logDateTo));
     }

@@ -398,10 +398,10 @@ export interface AuditLogEntry {
     logMillis: number;
     logDate: number;
     logTime: number;
-    mainRecordType: string;
     mainRecordId: string;
-    updateTable: string;
+    mainRecordType: string;
     recordIndex: string | null;
+    updateTable: string;
     updateField: string;
     updateType: string;
     updateUserName: string;

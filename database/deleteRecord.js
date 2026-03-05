@@ -117,8 +117,8 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
     if (result.changes > 0 && auditLogIsEnabled) {
         if (configAuditInfo !== undefined) {
             createAuditLogEntries({
-                mainRecordType: configAuditInfo.mainRecordType,
                 mainRecordId: recordId,
+                mainRecordType: configAuditInfo.mainRecordType,
                 updateTable: recordTable
             }, [
                 {
@@ -132,10 +132,10 @@ export function deleteRecord(recordTable, recordId, user, connectedDatabase) {
         else if (childAuditInfo !== undefined && recordBefore !== undefined) {
             const parentId = recordBefore[childAuditInfo.parentIdColumn];
             createAuditLogEntries({
+                mainRecordId: parentId,
                 mainRecordType: childAuditInfo.mainRecordType,
-                mainRecordId: String(parentId),
-                updateTable: recordTable,
-                recordIndex: recordId
+                recordIndex: recordId,
+                updateTable: recordTable
             }, [
                 {
                     property: '*',

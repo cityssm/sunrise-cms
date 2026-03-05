@@ -109,8 +109,8 @@ export default function updateCemetery(
   if (cemeteryDifferences.length > 0) {
     createAuditLogEntries(
       {
-        mainRecordType: 'cemetery',
         mainRecordId: updateForm.cemeteryId,
+        mainRecordType: 'cemetery',
         updateTable: 'Cemeteries'
       },
       cemeteryDifferences,
@@ -135,8 +135,8 @@ export default function updateCemetery(
   if (directionsDifferences.length > 0) {
     createAuditLogEntries(
       {
-        mainRecordType: 'cemetery',
         mainRecordId: updateForm.cemeteryId,
+        mainRecordType: 'cemetery',
         updateTable: 'CemeteryDirectionsOfArrival'
       },
       directionsDifferences,

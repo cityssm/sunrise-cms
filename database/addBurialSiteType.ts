@@ -69,8 +69,8 @@ export default function addBurialSiteType(
 
     createAuditLogEntries(
       {
-        mainRecordType: 'burialSiteType',
         mainRecordId: String(result.lastInsertRowid),
+        mainRecordType: 'burialSiteType',
         updateTable: 'BurialSiteTypes'
       },
       [

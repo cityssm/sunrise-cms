@@ -23,8 +23,6 @@ export type AuditLogMainRecordType =
   | 'workOrderMilestoneType'
   | 'workOrderType'
 
-
-
 export const defaultAuditLogLimit = 50
 
 export default function getAuditLog(
@@ -45,20 +43,12 @@ export default function getAuditLog(
   const sqlParameters: unknown[] = []
   let sqlWhereClause = ''
 
-  if (
-    filters.logDateFrom !== undefined &&
-    filters.logDateFrom !== '' &&
-    /^\d{4}-\d{2}-\d{2}$/v.test(filters.logDateFrom)
-  ) {
+  if (filters.logDateFrom !== undefined && filters.logDateFrom !== '') {
     sqlWhereClause += ' and logDate >= ?'
     sqlParameters.push(dateStringToInteger(filters.logDateFrom))
   }
 
-  if (
-    filters.logDateTo !== undefined &&
-    filters.logDateTo !== '' &&
-    /^\d{4}-\d{2}-\d{2}$/v.test(filters.logDateTo)
-  ) {
+  if (filters.logDateTo !== undefined && filters.logDateTo !== '') {
     sqlWhereClause += ' and logDate <= ?'
     sqlParameters.push(dateStringToInteger(filters.logDateTo))
   }

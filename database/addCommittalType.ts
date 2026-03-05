@@ -64,8 +64,8 @@ export default function addCommittalType(
 
     createAuditLogEntries(
       {
-        mainRecordType: 'committalType',
         mainRecordId: committalTypeId,
+        mainRecordType: 'committalType',
         updateTable: 'CommittalTypes'
       },
       [

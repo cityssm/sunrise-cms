@@ -34,10 +34,10 @@ export default function deleteContractServiceType(contractId, serviceTypeId, use
         .run(user.userName, rightNowMillis, contractId, serviceTypeId);
     if (info.changes > 0 && auditLogIsEnabled) {
         createAuditLogEntries({
-            mainRecordType: 'contract',
             mainRecordId: contractId,
+            mainRecordType: 'contract',
+            recordIndex: serviceTypeId,
             updateTable: 'ContractServiceTypes',
-            recordIndex: serviceTypeId
         }, [
             {
                 property: '*',

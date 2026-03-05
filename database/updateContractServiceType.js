@@ -48,10 +48,10 @@ export default function updateContractServiceType(updateForm, user, connectedDat
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
-                mainRecordType: 'contract',
                 mainRecordId: updateForm.contractId,
-                updateTable: 'ContractServiceTypes',
-                recordIndex: updateForm.serviceTypeId
+                mainRecordType: 'contract',
+                recordIndex: updateForm.serviceTypeId,
+                updateTable: 'ContractServiceTypes'
             }, differences, user, database);
         }
     }

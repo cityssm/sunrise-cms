@@ -55,8 +55,8 @@ export default function updateCemetery(updateForm, user, connectedDatabase) {
     const cemeteryDifferences = getObjectDifference(recordBefore, recordAfter);
     if (cemeteryDifferences.length > 0) {
         createAuditLogEntries({
-            mainRecordType: 'cemetery',
             mainRecordId: updateForm.cemeteryId,
+            mainRecordType: 'cemetery',
             updateTable: 'Cemeteries'
         }, cemeteryDifferences, user, database);
     }
@@ -68,8 +68,8 @@ export default function updateCemetery(updateForm, user, connectedDatabase) {
     const directionsDifferences = getObjectDifference(directionsBefore, directionsAfter);
     if (directionsDifferences.length > 0) {
         createAuditLogEntries({
-            mainRecordType: 'cemetery',
             mainRecordId: updateForm.cemeteryId,
+            mainRecordType: 'cemetery',
             updateTable: 'CemeteryDirectionsOfArrival'
         }, directionsDifferences, user, database);
     }

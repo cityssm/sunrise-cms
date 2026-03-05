@@ -80,8 +80,8 @@ export function deleteBurialSite(
   if (auditLogIsEnabled) {
     createAuditLogEntries(
       {
-        mainRecordType: 'burialSite',
         mainRecordId: burialSiteId,
+        mainRecordType: 'burialSite',
         updateTable: 'BurialSites'
       },
       [

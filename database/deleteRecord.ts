@@ -207,8 +207,8 @@ export function deleteRecord(
     if (configAuditInfo !== undefined) {
       createAuditLogEntries(
         {
-          mainRecordType: configAuditInfo.mainRecordType,
           mainRecordId: recordId,
+          mainRecordType: configAuditInfo.mainRecordType,
           updateTable: recordTable as ConfigRecordTable
         },
         [
@@ -226,14 +226,14 @@ export function deleteRecord(
     } else if (childAuditInfo !== undefined && recordBefore !== undefined) {
       const parentId = (recordBefore as Record<string, unknown>)[
         childAuditInfo.parentIdColumn
-      ]
+      ] as number | string
 
       createAuditLogEntries(
         {
+          mainRecordId: parentId,
           mainRecordType: childAuditInfo.mainRecordType,
-          mainRecordId: String(parentId),
-          updateTable: recordTable as ChildRecordTable,
-          recordIndex: recordId
+          recordIndex: recordId,
+          updateTable: recordTable as ChildRecordTable
         },
         [
           {

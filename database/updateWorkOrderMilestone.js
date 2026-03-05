@@ -40,7 +40,8 @@ export default function updateWorkOrderMilestone(milestoneForm, user, connectedD
         ? undefined
         : timeStringToInteger(milestoneForm.workOrderMilestoneTimeString), milestoneForm.workOrderMilestoneDescription, user.userName, Date.now(), milestoneForm.workOrderMilestoneId);
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
-        const parentId = recordBefore.workOrderId;
+        const parentId = recordBefore
+            .workOrderId;
         const recordAfter = database
             .prepare(/* sql */ `
         SELECT
@@ -54,10 +55,10 @@ export default function updateWorkOrderMilestone(milestoneForm, user, connectedD
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
+                mainRecordId: parentId,
                 mainRecordType: 'workOrder',
-                mainRecordId: String(parentId),
-                updateTable: 'WorkOrderMilestones',
-                recordIndex: milestoneForm.workOrderMilestoneId
+                recordIndex: milestoneForm.workOrderMilestoneId,
+                updateTable: 'WorkOrderMilestones'
             }, differences, user, database);
         }
     }

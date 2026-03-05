@@ -31,10 +31,10 @@ export default function deleteContractInterment(contractId, intermentNumber, use
         .run(user.userName, Date.now(), contractId, intermentNumber);
     if (result.changes > 0 && auditLogIsEnabled) {
         createAuditLogEntries({
-            mainRecordType: 'contract',
             mainRecordId: contractId,
+            mainRecordType: 'contract',
+            recordIndex: intermentNumber,
             updateTable: 'ContractInterments',
-            recordIndex: intermentNumber
         }, [
             {
                 property: '*',

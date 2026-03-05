@@ -45,10 +45,10 @@ export default function deleteContractTransaction(
   if (result.changes > 0 && auditLogIsEnabled) {
     createAuditLogEntries(
       {
-        mainRecordType: 'contract',
         mainRecordId: contractId,
-        updateTable: 'ContractTransactions',
-        recordIndex: transactionIndex
+        mainRecordType: 'contract',
+        recordIndex: transactionIndex,
+        updateTable: 'ContractTransactions'
       },
       [
         {

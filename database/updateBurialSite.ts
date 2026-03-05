@@ -175,8 +175,8 @@ export default function updateBurialSite(
       if (differences.length > 0) {
         createAuditLogEntries(
           {
-            mainRecordType: 'burialSite',
             mainRecordId: updateForm.burialSiteId,
+            mainRecordType: 'burialSite',
             updateTable: 'BurialSites'
           },
           differences,
@@ -251,8 +251,8 @@ export function updateBurialSiteStatus(
     if (differences.length > 0) {
       createAuditLogEntries(
         {
-          mainRecordType: 'burialSite',
           mainRecordId: burialSiteId,
+          mainRecordType: 'burialSite',
           updateTable: 'BurialSites'
         },
         differences,
@@ -328,8 +328,8 @@ export function updateBurialSiteLatitudeLongitude(
     if (differences.length > 0) {
       createAuditLogEntries(
         {
-          mainRecordType: 'burialSite',
           mainRecordId: burialSiteId,
+          mainRecordType: 'burialSite',
           updateTable: 'BurialSites'
         },
         differences,

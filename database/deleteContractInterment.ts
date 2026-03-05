@@ -44,10 +44,10 @@ export default function deleteContractInterment(
   if (result.changes > 0 && auditLogIsEnabled) {
     createAuditLogEntries(
       {
-        mainRecordType: 'contract',
         mainRecordId: contractId,
+        mainRecordType: 'contract',
+        recordIndex: intermentNumber,
         updateTable: 'ContractInterments',
-        recordIndex: intermentNumber
       },
       [
         {

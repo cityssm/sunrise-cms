@@ -87,8 +87,8 @@ export default function updateContract(updateForm, user, connectedDatabase) {
             const differences = getObjectDifference(recordBefore, recordAfter);
             if (differences.length > 0) {
                 createAuditLogEntries({
-                    mainRecordType: 'contract',
                     mainRecordId: updateForm.contractId,
+                    mainRecordType: 'contract',
                     updateTable: 'Contracts'
                 }, differences, user, database);
             }
