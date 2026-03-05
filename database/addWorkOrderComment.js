@@ -26,8 +26,14 @@ export default function addWorkOrderComment(workOrderCommentForm, user, connecte
         .run(workOrderCommentForm.workOrderId, dateToInteger(rightNow), dateToTimeInteger(rightNow), workOrderCommentForm.comment, user.userName, rightNow.getTime(), user.userName, rightNow.getTime());
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM WorkOrderComments WHERE workOrderCommentId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrderComments
+        WHERE
+          workOrderCommentId = ?
+      `)
             .get(result.lastInsertRowid);
         createAuditLogEntries({
             mainRecordType: 'workOrder',

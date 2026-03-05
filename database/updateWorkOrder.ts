@@ -27,9 +27,15 @@ export default function updateWorkOrder(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM WorkOrders WHERE workOrderId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            WorkOrders
+          WHERE
+            workOrderId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(workOrderForm.workOrderId)
     : undefined
 
@@ -59,7 +65,14 @@ export default function updateWorkOrder(
 
   if (result.changes > 0 && auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(/* sql */ `SELECT * FROM WorkOrders WHERE workOrderId = ?`)
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrders
+        WHERE
+          workOrderId = ?
+      `)
       .get(workOrderForm.workOrderId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)

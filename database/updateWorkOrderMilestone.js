@@ -9,8 +9,14 @@ export default function updateWorkOrderMilestone(milestoneForm, user, connectedD
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM WorkOrderMilestones WHERE workOrderMilestoneId = ?`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            WorkOrderMilestones
+          WHERE
+            workOrderMilestoneId = ?
+        `)
             .get(milestoneForm.workOrderMilestoneId)
         : undefined;
     const result = database
@@ -36,8 +42,14 @@ export default function updateWorkOrderMilestone(milestoneForm, user, connectedD
     if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
         const parentId = recordBefore.workOrderId;
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM WorkOrderMilestones WHERE workOrderMilestoneId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrderMilestones
+        WHERE
+          workOrderMilestoneId = ?
+      `)
             .get(milestoneForm.workOrderMilestoneId);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
@@ -45,7 +57,7 @@ export default function updateWorkOrderMilestone(milestoneForm, user, connectedD
                 mainRecordType: 'workOrder',
                 mainRecordId: String(parentId),
                 updateTable: 'WorkOrderMilestones',
-                recordIndex: String(milestoneForm.workOrderMilestoneId)
+                recordIndex: milestoneForm.workOrderMilestoneId
             }, differences, user, database);
         }
     }

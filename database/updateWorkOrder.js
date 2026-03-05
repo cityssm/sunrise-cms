@@ -9,8 +9,15 @@ export default function updateWorkOrder(workOrderForm, user, connectedDatabase) 
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM WorkOrders WHERE workOrderId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            WorkOrders
+          WHERE
+            workOrderId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(workOrderForm.workOrderId)
         : undefined;
     const result = database
@@ -30,7 +37,14 @@ export default function updateWorkOrder(workOrderForm, user, connectedDatabase) 
         .run(workOrderForm.workOrderNumber, workOrderForm.workOrderTypeId, workOrderForm.workOrderDescription, dateStringToInteger(workOrderForm.workOrderOpenDateString), user.userName, Date.now(), workOrderForm.workOrderId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(/* sql */ `SELECT * FROM WorkOrders WHERE workOrderId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrders
+        WHERE
+          workOrderId = ?
+      `)
             .get(workOrderForm.workOrderId);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {

@@ -51,9 +51,14 @@ export default function addWorkOrderComment(
 
   if (auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM WorkOrderComments WHERE workOrderCommentId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrderComments
+        WHERE
+          workOrderCommentId = ?
+      `)
       .get(result.lastInsertRowid)
 
     createAuditLogEntries(
@@ -67,6 +72,7 @@ export default function addWorkOrderComment(
         {
           property: '*',
           type: 'created',
+
           from: undefined,
           to: recordAfter
         }
