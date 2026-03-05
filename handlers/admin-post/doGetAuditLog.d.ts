@@ -1,3 +1,4 @@
+import type { DateString } from '@cityssm/utils-datetime';
 import type { Request, Response } from 'express';
 import { type AuditLogEntry, type AuditLogMainRecordType } from '../../database/getAuditLog.js';
 export type DoGetAuditLogResponse = {
@@ -6,8 +7,8 @@ export type DoGetAuditLogResponse = {
     offset: number;
 };
 export default function handler(request: Request<unknown, unknown, {
-    logDateFrom?: string;
-    logDateTo?: string;
+    logDateFrom?: '' | DateString;
+    logDateTo?: '' | DateString;
     mainRecordType?: AuditLogMainRecordType;
     updateUserName?: string;
     limit?: number | string;

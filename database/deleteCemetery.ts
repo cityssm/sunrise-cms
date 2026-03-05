@@ -154,7 +154,7 @@ export default function deleteCemetery(
     createAuditLogEntries(
       {
         mainRecordType: 'cemetery',
-        mainRecordId: cemeteryId,
+        mainRecordId: String(cemeteryId),
         updateTable: 'Cemeteries'
       },
       [

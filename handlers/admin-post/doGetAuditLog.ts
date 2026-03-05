@@ -1,3 +1,4 @@
+import type { DateString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
 import getAuditLog, {
@@ -18,8 +19,8 @@ export default function handler(
     unknown,
     unknown,
     {
-      logDateFrom?: string
-      logDateTo?: string
+      logDateFrom?: '' | DateString
+      logDateTo?: '' | DateString
       mainRecordType?: AuditLogMainRecordType
       updateUserName?: string
       limit?: number | string

@@ -40,7 +40,7 @@ export default function addCemetery(addForm, user, connectedDatabase) {
         const recordAfter = getCemetery(cemeteryId, database);
         createAuditLogEntries({
             mainRecordType: 'cemetery',
-            mainRecordId: cemeteryId,
+            mainRecordId: String(cemeteryId),
             updateTable: 'Cemeteries'
         }, [
             {

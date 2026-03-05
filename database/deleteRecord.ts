@@ -5,7 +5,10 @@ import {
   cacheTableNames,
   clearCacheByTableName
 } from '../helpers/cache.helpers.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
 
 type RecordTable =
   | 'BurialSiteComments'
@@ -62,6 +65,36 @@ const relatedTables = new Map<RecordTable, string[]>([
   ]
 ])
 
+type ConfigRecordTable =
+  | 'BurialSiteStatuses'
+  | 'CommittalTypes'
+  | 'IntermentContainerTypes'
+  | 'IntermentDepths'
+  | 'WorkOrderMilestoneTypes'
+  | 'WorkOrderTypes'
+
+const configTableAuditInfo = new Map<
+  ConfigRecordTable,
+  {
+    mainRecordType:
+      | 'burialSiteStatus'
+      | 'committalType'
+      | 'intermentContainerType'
+      | 'intermentDepth'
+      | 'workOrderMilestoneType'
+      | 'workOrderType'
+  }
+>([
+  ['BurialSiteStatuses', { mainRecordType: 'burialSiteStatus' }],
+  ['CommittalTypes', { mainRecordType: 'committalType' }],
+  ['IntermentContainerTypes', { mainRecordType: 'intermentContainerType' }],
+  ['IntermentDepths', { mainRecordType: 'intermentDepth' }],
+  ['WorkOrderMilestoneTypes', { mainRecordType: 'workOrderMilestoneType' }],
+  ['WorkOrderTypes', { mainRecordType: 'workOrderType' }]
+])
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+
 export function deleteRecord(
   recordTable: RecordTable,
   recordId: number | string,
@@ -71,6 +104,19 @@ export function deleteRecord(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNowMillis = Date.now()
+
+  const configAuditInfo = configTableAuditInfo.get(
+    recordTable as ConfigRecordTable
+  )
+
+  const recordBefore =
+    auditLogIsEnabled && configAuditInfo !== undefined
+      ? database
+          .prepare(
+            /* sql */ `SELECT * FROM ${recordTable} WHERE ${recordIdColumns.get(recordTable)} = ? AND recordDelete_timeMillis IS NULL`
+          )
+          .get(recordId)
+      : undefined
 
   const result = database
     .prepare(/* sql */ `
@@ -96,6 +142,26 @@ export function deleteRecord(
           AND recordDelete_timeMillis IS NULL
       `)
       .run(user.userName, rightNowMillis, recordId)
+  }
+
+  if (result.changes > 0 && auditLogIsEnabled && configAuditInfo !== undefined) {
+    createAuditLogEntries(
+      {
+        mainRecordType: configAuditInfo.mainRecordType,
+        mainRecordId: String(recordId),
+        updateTable: recordTable as ConfigRecordTable
+      },
+      [
+        {
+          property: '*',
+          type: 'deleted',
+          from: recordBefore,
+          to: undefined
+        }
+      ],
+      user,
+      database
+    )
   }
 
   if (connectedDatabase === undefined) {

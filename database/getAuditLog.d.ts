@@ -1,5 +1,6 @@
+import { type DateString } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
-export type AuditLogMainRecordType = '' | 'burialSite' | 'cemetery' | 'contract' | 'user' | 'workOrder';
+export type AuditLogMainRecordType = '' | 'burialSite' | 'burialSiteStatus' | 'cemetery' | 'committalType' | 'contract' | 'intermentContainerType' | 'intermentDepth' | 'serviceType' | 'user' | 'workOrder' | 'workOrderMilestoneType' | 'workOrderType';
 export interface AuditLogEntry {
     logMillis: number;
     logDate: number;
@@ -16,8 +17,8 @@ export interface AuditLogEntry {
 }
 export declare const defaultAuditLogLimit = 50;
 export default function getAuditLog(filters: {
-    logDateFrom?: string;
-    logDateTo?: string;
+    logDateFrom?: '' | DateString;
+    logDateTo?: '' | DateString;
     mainRecordType?: AuditLogMainRecordType;
     updateUserName?: string;
 }, options?: {

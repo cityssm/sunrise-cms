@@ -1,11 +1,31 @@
 import sqlite from 'better-sqlite3';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
 const recordNameColumns = new Map([
     ['BurialSiteStatuses', 'burialSiteStatus'],
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneType'],
     ['WorkOrderTypes', 'workOrderType']
 ]);
+const recordAuditInfo = new Map([
+    [
+        'BurialSiteStatuses',
+        { mainRecordType: 'burialSiteStatus', recordIdColumn: 'burialSiteStatusId' }
+    ],
+    [
+        'WorkOrderMilestoneTypes',
+        {
+            mainRecordType: 'workOrderMilestoneType',
+            recordIdColumn: 'workOrderMilestoneTypeId'
+        }
+    ],
+    [
+        'WorkOrderTypes',
+        { mainRecordType: 'workOrderType', recordIdColumn: 'workOrderTypeId' }
+    ]
+]);
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 function addRecord(record, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
@@ -24,11 +44,33 @@ function addRecord(record, user, connectedDatabase) {
         (?, ?, ?, ?, ?, ?)
     `)
         .run(record.recordName, record.orderNumber === '' ? -1 : record.orderNumber, user.userName, rightNowMillis, user.userName, rightNowMillis);
+    const recordId = result.lastInsertRowid;
+    if (auditLogIsEnabled) {
+        const auditInfo = recordAuditInfo.get(record.recordTable);
+        if (auditInfo !== undefined) {
+            const recordAfter = database
+                .prepare(
+            /* sql */ `SELECT * FROM ${record.recordTable} WHERE ${auditInfo.recordIdColumn} = ?`)
+                .get(recordId);
+            createAuditLogEntries({
+                mainRecordType: auditInfo.mainRecordType,
+                mainRecordId: String(recordId),
+                updateTable: record.recordTable
+            }, [
+                {
+                    property: '*',
+                    type: 'created',
+                    from: undefined,
+                    to: recordAfter
+                }
+            ], user, database);
+        }
+    }
     if (connectedDatabase === undefined) {
         database.close();
     }
     clearCacheByTableName(record.recordTable);
-    return result.lastInsertRowid;
+    return recordId;
 }
 export function addBurialSiteStatus(burialSiteStatus, orderNumber, user, connectedDatabase) {
     return addRecord({

@@ -1,9 +1,14 @@
 /* eslint-disable unicorn/no-null */
 import { dateToInteger, dateToTimeInteger } from '@cityssm/utils-datetime';
+const propertiesToExclude = new Set([
+    'recordCreate_timeMillis',
+    'recordCreate_userName',
+    'recordUpdate_timeMillis'
+]);
 export default function createAuditLogEntries(record, differences, user, connectedDatabase) {
     let entriesCreated = 0;
     for (const difference of differences) {
-        if (difference.property === 'recordUpdate_timeMillis' ||
+        if (propertiesToExclude.has(difference.property) ||
             difference.type === 'NA') {
             continue;
         }

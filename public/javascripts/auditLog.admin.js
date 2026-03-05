@@ -53,7 +53,7 @@
             </td>
             <td>
               ${cityssm.escapeHTML(entry.mainRecordType)}<br />
-              <span class="is-size-7">${entry.mainRecordId.toString()}</span>
+              <span class="is-size-7">${cityssm.escapeHTML(entry.mainRecordId)}</span>
             </td>
             <td>
               ${cityssm.escapeHTML(entry.updateTable)}<br />
@@ -151,34 +151,29 @@
     document
         .querySelector('#button--purgeAuditLog')
         ?.addEventListener('click', () => {
-        const purgeAgeSelectHtml = `<div class="field">
-        <label class="label">${cityssm.escapeHTML(i18next.t('admin:auditLogPurgeOlderThan'))}</label>
-        <div class="control">
-          <div class="select is-fullwidth">
-            <select id="purge--age">
-              <option value="thirtyDays">${cityssm.escapeHTML(i18next.t('admin:auditLogPurgeThirtyDays'))}</option>
-              <option value="ninetyDays">${cityssm.escapeHTML(i18next.t('admin:auditLogPurgeNinetyDays'))}</option>
-              <option value="oneYear">${cityssm.escapeHTML(i18next.t('admin:auditLogPurgeOneYear'))}</option>
-              <option value="all">${cityssm.escapeHTML(i18next.t('admin:auditLogPurgeEverything'))}</option>
-            </select>
-          </div>
-        </div>
-      </div>`;
-        bulmaJS.confirm({
-            contextualColorName: 'danger',
-            title: i18next.t('admin:auditLogPurge'),
-            message: purgeAgeSelectHtml,
-            messageIsHtml: true,
-            okButton: {
-                contextualColorName: 'danger',
-                text: i18next.t('common:delete'),
-                callbackFunction() {
-                    const ageSelectElement = document.querySelector('#purge--age');
-                    const age = ageSelectElement?.value ?? 'thirtyDays';
-                    const ageLabel = ageSelectElement?.options[ageSelectElement.selectedIndex]
-                        .textContent ?? '';
-                    doPurge(age, ageLabel);
-                }
+        let closeModalFunction;
+        function doSubmitPurge(submitEvent) {
+            submitEvent.preventDefault();
+            const ageSelectElement = submitEvent.currentTarget.querySelector('#purge--age');
+            const age = ageSelectElement.value;
+            const ageLabel = ageSelectElement.options[ageSelectElement.selectedIndex]
+                .textContent ?? '';
+            closeModalFunction();
+            doPurge(age, ageLabel);
+        }
+        cityssm.openHtmlModal('adminAuditLog-purge', {
+            onshow(modalElement) {
+                sunrise.localize(modalElement);
+            },
+            onshown(modalElement, _closeModalFunction) {
+                bulmaJS.toggleHtmlClipped();
+                closeModalFunction = _closeModalFunction;
+                modalElement
+                    .querySelector('form')
+                    ?.addEventListener('submit', doSubmitPurge);
+            },
+            onremoved() {
+                bulmaJS.toggleHtmlClipped();
             }
         });
     });

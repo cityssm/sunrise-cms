@@ -6,23 +6,43 @@ import type sqlite from 'better-sqlite3'
 
 type MainRecordType =
   | 'burialSite'
+  | 'burialSiteStatus'
   | 'cemetery'
+  | 'committalType'
   | 'contract'
+  | 'intermentContainerType'
+  | 'intermentDepth'
+  | 'serviceType'
   | 'user'
   | 'workOrder'
+  | 'workOrderMilestoneType'
+  | 'workOrderType'
 
 type UpdateTable =
   | 'BurialSites'
+  | 'BurialSiteStatuses'
   | 'Cemeteries'
   | 'CemeteryDirectionsOfArrival'
+  | 'CommittalTypes'
   | 'Contracts'
+  | 'IntermentContainerTypes'
+  | 'IntermentDepths'
+  | 'ServiceTypes'
   | 'Users'
+  | 'WorkOrderMilestoneTypes'
   | 'WorkOrders'
+  | 'WorkOrderTypes'
+
+const propertiesToExclude = new Set([
+  'recordCreate_timeMillis',
+  'recordCreate_userName',
+  'recordUpdate_timeMillis'
+])
 
 export default function createAuditLogEntries(
   record: {
     mainRecordType: MainRecordType
-    mainRecordId: number | string
+    mainRecordId: string
     updateTable: UpdateTable
     recordIndex?: string
   },
@@ -34,7 +54,7 @@ export default function createAuditLogEntries(
 
   for (const difference of differences) {
     if (
-      difference.property === 'recordUpdate_timeMillis' ||
+      propertiesToExclude.has(difference.property) ||
       difference.type === 'NA'
     ) {
       continue

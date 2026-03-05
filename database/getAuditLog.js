@@ -1,4 +1,4 @@
-import { dateToInteger } from '@cityssm/utils-datetime';
+import { dateStringToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
 export const defaultAuditLogLimit = 50;
@@ -8,18 +8,17 @@ export default function getAuditLog(filters, options, connectedDatabase) {
     let sqlWhereClause = '';
     if (filters.logDateFrom !== undefined &&
         filters.logDateFrom !== '' &&
-        /^\d{4}-\d{2}-\d{2}$/.test(filters.logDateFrom)) {
+        /^\d{4}-\d{2}-\d{2}$/v.test(filters.logDateFrom)) {
         sqlWhereClause += ' and logDate >= ?';
-        sqlParameters.push(dateToInteger(new Date(filters.logDateFrom + 'T12:00:00')));
+        sqlParameters.push(dateStringToInteger(filters.logDateFrom));
     }
     if (filters.logDateTo !== undefined &&
         filters.logDateTo !== '' &&
-        /^\d{4}-\d{2}-\d{2}$/.test(filters.logDateTo)) {
+        /^\d{4}-\d{2}-\d{2}$/v.test(filters.logDateTo)) {
         sqlWhereClause += ' and logDate <= ?';
-        sqlParameters.push(dateToInteger(new Date(filters.logDateTo + 'T12:00:00')));
+        sqlParameters.push(dateStringToInteger(filters.logDateTo));
     }
-    if (filters.mainRecordType !== undefined &&
-        filters.mainRecordType !== '') {
+    if (filters.mainRecordType !== undefined && filters.mainRecordType !== '') {
         sqlWhereClause += ' and mainRecordType = ?';
         sqlParameters.push(filters.mainRecordType);
     }
@@ -35,8 +34,7 @@ export default function getAuditLog(filters, options, connectedDatabase) {
       FROM
         AuditLog
       WHERE
-        1 = 1
-        ${sqlWhereClause}
+        1 = 1 ${sqlWhereClause}
     `)
         .pluck()
         .get(...sqlParameters);
@@ -60,8 +58,7 @@ export default function getAuditLog(filters, options, connectedDatabase) {
       FROM
         AuditLog
       WHERE
-        1 = 1
-        ${sqlWhereClause}
+        1 = 1 ${sqlWhereClause}
       ORDER BY
         logMillis DESC
       LIMIT

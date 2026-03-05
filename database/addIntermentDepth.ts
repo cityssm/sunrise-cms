@@ -1,13 +1,18 @@
 import sqlite from 'better-sqlite3'
 
 import { clearCacheByTableName } from '../helpers/cache.helpers.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
 
 export interface AddIntermentDepthForm {
   intermentDepth: string
   intermentDepthKey?: string
   orderNumber?: number | string
 }
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export default function addIntermentDepth(
   addForm: AddIntermentDepthForm,
@@ -43,11 +48,39 @@ export default function addIntermentDepth(
       rightNowMillis
     )
 
+  const intermentDepthId = result.lastInsertRowid as number
+
+  if (auditLogIsEnabled) {
+    const recordAfter = database
+      .prepare(
+        /* sql */ `SELECT * FROM IntermentDepths WHERE intermentDepthId = ?`
+      )
+      .get(intermentDepthId)
+
+    createAuditLogEntries(
+      {
+        mainRecordType: 'intermentDepth',
+        mainRecordId: String(intermentDepthId),
+        updateTable: 'IntermentDepths'
+      },
+      [
+        {
+          property: '*',
+          type: 'created',
+          from: undefined,
+          to: recordAfter
+        }
+      ],
+      user,
+      database
+    )
+  }
+
   if (connectedDatabase === undefined) {
     database.close()
   }
 
   clearCacheByTableName('IntermentDepths')
 
-  return result.lastInsertRowid as number
+  return intermentDepthId
 }
