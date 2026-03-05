@@ -10,8 +10,15 @@ export default function updateIntermentDepth(updateForm, user, connectedDatabase
     const rightNowMillis = Date.now();
     const recordBefore = auditLogIsEnabled
         ? database
-            .prepare(
-        /* sql */ `SELECT * FROM IntermentDepths WHERE intermentDepthId = ? AND recordDelete_timeMillis IS NULL`)
+            .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            IntermentDepths
+          WHERE
+            intermentDepthId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
             .get(updateForm.intermentDepthId)
         : undefined;
     const result = database
@@ -28,8 +35,14 @@ export default function updateIntermentDepth(updateForm, user, connectedDatabase
         .run(updateForm.intermentDepth, user.userName, rightNowMillis, updateForm.intermentDepthId);
     if (result.changes > 0 && auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM IntermentDepths WHERE intermentDepthId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          IntermentDepths
+        WHERE
+          intermentDepthId = ?
+      `)
             .get(updateForm.intermentDepthId);
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {

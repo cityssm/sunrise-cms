@@ -52,9 +52,14 @@ export default function addCommittalType(
 
   if (auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM CommittalTypes WHERE committalTypeId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          CommittalTypes
+        WHERE
+          committalTypeId = ?
+      `)
       .get(committalTypeId)
 
     createAuditLogEntries(

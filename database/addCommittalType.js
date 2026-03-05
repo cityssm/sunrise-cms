@@ -26,8 +26,14 @@ export default function addCommittalType(addForm, user, connectedDatabase) {
     const committalTypeId = result.lastInsertRowid;
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM CommittalTypes WHERE committalTypeId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          CommittalTypes
+        WHERE
+          committalTypeId = ?
+      `)
             .get(committalTypeId);
         createAuditLogEntries({
             mainRecordType: 'committalType',

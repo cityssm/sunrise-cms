@@ -55,9 +55,14 @@ export default function addIntermentContainerType(
 
   if (auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM IntermentContainerTypes WHERE intermentContainerTypeId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          IntermentContainerTypes
+        WHERE
+          intermentContainerTypeId = ?
+      `)
       .get(intermentContainerTypeId)
 
     createAuditLogEntries(

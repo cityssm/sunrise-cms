@@ -50,9 +50,14 @@ export default function addServiceType(
 
   if (auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM ServiceTypes WHERE serviceTypeId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ServiceTypes
+        WHERE
+          serviceTypeId = ?
+      `)
       .get(serviceTypeId)
 
     createAuditLogEntries(

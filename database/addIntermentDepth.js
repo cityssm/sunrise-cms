@@ -26,8 +26,14 @@ export default function addIntermentDepth(addForm, user, connectedDatabase) {
     const intermentDepthId = result.lastInsertRowid;
     if (auditLogIsEnabled) {
         const recordAfter = database
-            .prepare(
-        /* sql */ `SELECT * FROM IntermentDepths WHERE intermentDepthId = ?`)
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          IntermentDepths
+        WHERE
+          intermentDepthId = ?
+      `)
             .get(intermentDepthId);
         createAuditLogEntries({
             mainRecordType: 'intermentDepth',

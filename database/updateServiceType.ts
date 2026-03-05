@@ -23,16 +23,21 @@ export default function updateServiceType(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM ServiceTypes WHERE serviceTypeId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ServiceTypes
+          WHERE
+            serviceTypeId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(updateForm.serviceTypeId)
     : undefined
 
   const info = database
     .prepare(/* sql */ `
-      UPDATE
-        ServiceTypes
+      UPDATE ServiceTypes
       SET
         serviceType = ?,
         recordUpdate_userName = ?,
@@ -53,9 +58,14 @@ export default function updateServiceType(
   if (success) {
     if (auditLogIsEnabled) {
       const recordAfter = database
-        .prepare(
-          /* sql */ `SELECT * FROM ServiceTypes WHERE serviceTypeId = ?`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            ServiceTypes
+          WHERE
+            serviceTypeId = ?
+        `)
         .get(updateForm.serviceTypeId)
 
       const differences = getObjectDifference(recordBefore, recordAfter)

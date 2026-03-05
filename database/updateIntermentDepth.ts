@@ -26,9 +26,15 @@ export default function updateIntermentDepth(
 
   const recordBefore = auditLogIsEnabled
     ? database
-        .prepare(
-          /* sql */ `SELECT * FROM IntermentDepths WHERE intermentDepthId = ? AND recordDelete_timeMillis IS NULL`
-        )
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            IntermentDepths
+          WHERE
+            intermentDepthId = ?
+            AND recordDelete_timeMillis IS NULL
+        `)
         .get(updateForm.intermentDepthId)
     : undefined
 
@@ -52,9 +58,14 @@ export default function updateIntermentDepth(
 
   if (result.changes > 0 && auditLogIsEnabled) {
     const recordAfter = database
-      .prepare(
-        /* sql */ `SELECT * FROM IntermentDepths WHERE intermentDepthId = ?`
-      )
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          IntermentDepths
+        WHERE
+          intermentDepthId = ?
+      `)
       .get(updateForm.intermentDepthId)
 
     const differences = getObjectDifference(recordBefore, recordAfter)
