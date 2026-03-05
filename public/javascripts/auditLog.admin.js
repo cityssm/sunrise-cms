@@ -47,7 +47,7 @@
     }
     function buildValueCell(rawValue) {
         if (rawValue === null || rawValue === 'null') {
-            return /* html */ '<em class="has-text-grey">null</em>';
+            return /* html */ '<em class="has-text-grey-darker">null</em>';
         }
         const escaped = cityssm.escapeHTML(rawValue);
         if (rawValue.length <= maxValueLength) {
