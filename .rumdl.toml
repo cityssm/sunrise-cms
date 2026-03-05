@@ -3,21 +3,21 @@
 # Global configuration options
 [global]
 # List of rules to disable (uncomment and modify as needed)
- disable = ["MD041"]
+disable = ["MD041"]
 
 # List of file/directory patterns to exclude from linting
 exclude = [
-    # Common directories to exclude
-    ".git",
-    ".github",
-    "node_modules",
-    "vendor",
-    "dist",
-    "build",
+  # Common directories to exclude
+  ".git",
+  ".github",
+  "node_modules",
+  "vendor",
+  "dist",
+  "build",
 
-    # Specific files or patterns
-    "CHANGELOG.md",
-    "LICENSE.md",
+  # Specific files or patterns
+  "CHANGELOG.md",
+  "LICENSE.md",
 ]
 
 # Respect .gitignore files when scanning directories (default: true)
@@ -39,7 +39,7 @@ respect-gitignore = true
 # indent = 4  # Unordered list indentation
 
 # [MD013]
- line-length = 120  # Line length
+line-length = 120  # Line length
 # code-blocks = false  # Exclude code blocks from line length check
 # tables = false  # Exclude tables from line length check
 # headings = true  # Include headings in line length check
