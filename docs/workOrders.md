@@ -57,5 +57,5 @@ Each date can be clicked on to open the corresponding day's [Workday Report](#wo
 
 ## Related
 
-[Config Table Management](./configTableManagement.md)<br />
+[Config Table Management](./configTableManagement.md)  
 Update Work Order Types and Work Order Milestone Types.

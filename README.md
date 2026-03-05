@@ -38,7 +38,7 @@ Sunrise CMS does not need an expensive server to run.
 No separate database server is required either.
 The whole application could run on a current, modest workstation.
 
-### ✔️ Track Unlimited Cemeteries, Unlimited Burial Sites, Unlimited Contracts...
+### ✔️ Track Unlimited Cemeteries, Unlimited Burial Sites, Unlimited Contracts…
 
 There are no limits to the number of records that can be tracked in Sunrise CMS.
 
@@ -72,18 +72,18 @@ an option to those who may be looking to refresh their own cemetery systems.
 
 ## Related Sunrise CMS Projects
 
-[**sunrise-cms-customizations**](https://github.com/cityssm/sunrise-cms-customizations/)<br />
+[**sunrise-cms-customizations**](https://github.com/cityssm/sunrise-cms-customizations/)  
 The types and template for Sunrise CMS custom asset packages.
 
-[**sunrise-cms-saultstemarie**](github.com/cityssm/sunrise-cms-saultstemarie/)<br />
+[**sunrise-cms-saultstemarie**](https://github.com/cityssm/sunrise-cms-saultstemarie/)  
 Sault Ste. Marie specific assets for use with Sunrise CMS.
 
 ## More City Management Applications from the City of Sault Ste. Marie
 
-[**General Licence Manager**](https://cityssm.github.io/general-licence-manager/)<br />
+[**General Licence Manager**](https://cityssm.github.io/general-licence-manager/)  
 An application built to manage the general licences issued by municipalities.
 
-[**Attendance Tracking**](https://cityssm.github.io/attendance-tracking/)<br />
+[**Attendance Tracking**](https://cityssm.github.io/attendance-tracking/)  
 Track employee absences, call outs, and more.
 
 💡 Discover even more on [the City of Sault Ste. Marie's GitHub page](https://cityssm.github.io/).

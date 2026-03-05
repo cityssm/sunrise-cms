@@ -11,13 +11,13 @@ interments take place.
 
 ## Key Burial Site Fields
 
-**Burial Site Name**<br />
+**Burial Site Name**  
 Can be up to five segments, each with their own requirements.
 Can be prepended with the cemetery key.
 Must be unique system wide.
 
-**Geographic Location**<br />
+**Geographic Location**  
 Used to show the burial site location on a map.
 
-**Cemetery SVG ID**<br />
+**Cemetery SVG ID**  
 Used to highlight the burial site within the cemetery's SVG image.
