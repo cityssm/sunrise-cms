@@ -114,7 +114,7 @@
                   </span>
                   ${workOrder.workOrderCloseDate === null
                 ? /* html */ `
-                        <span class="has-text-grey">
+                        <span class="has-text-grey-darker">
                           (No ${sunrise.escapedAliases.WorkOrderCloseDate})
                         </span>
                       `
@@ -147,7 +147,7 @@
             <th>Work Order</th>
             <th>Related</th>
             <th>Date</th>
-            ${workOrderPrints.length > 0 ? '<th class="has-width-1"></th>' : ''}
+            ${workOrderPrints.length > 0 ? '<th class="has-width-1"><span class="is-sr-only">Print</span></th>' : ''}
           </tr>
         </thead>
       </table>
