@@ -644,7 +644,7 @@ export function initializeDatabase(connectedDatabase) {
         sqlite_master
       WHERE
         type = 'table'
-        AND name = 'IntermentDepths'
+        AND name = 'AuditLog'
     `)
         .get();
     if (row !== undefined) {

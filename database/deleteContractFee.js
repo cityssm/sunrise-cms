@@ -35,7 +35,7 @@ export default function deleteContractFee(contractId, feeId, user, connectedData
             mainRecordId: contractId,
             mainRecordType: 'contract',
             recordIndex: feeId,
-            updateTable: 'ContractFees',
+            updateTable: 'ContractFees'
         }, [
             {
                 property: '*',

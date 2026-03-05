@@ -37,7 +37,7 @@ export default function deleteContractServiceType(contractId, serviceTypeId, use
             mainRecordId: contractId,
             mainRecordType: 'contract',
             recordIndex: serviceTypeId,
-            updateTable: 'ContractServiceTypes',
+            updateTable: 'ContractServiceTypes'
         }, [
             {
                 property: '*',

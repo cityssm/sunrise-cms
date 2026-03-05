@@ -47,7 +47,7 @@ export default function deleteContractInterment(
         mainRecordId: contractId,
         mainRecordType: 'contract',
         recordIndex: intermentNumber,
-        updateTable: 'ContractInterments',
+        updateTable: 'ContractInterments'
       },
       [
         {

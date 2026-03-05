@@ -727,7 +727,7 @@ export function initializeDatabase(
         sqlite_master
       WHERE
         type = 'table'
-        AND name = 'IntermentDepths'
+        AND name = 'AuditLog'
     `)
     .get()
 
