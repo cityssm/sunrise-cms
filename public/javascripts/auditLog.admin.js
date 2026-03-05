@@ -53,7 +53,7 @@
             </td>
             <td>
               ${cityssm.escapeHTML(entry.mainRecordType)}<br />
-              <span class="is-size-7">${entry.mainRecordId.toString()}</span>
+              <span class="is-size-7">${cityssm.escapeHTML(entry.mainRecordId)}</span>
             </td>
             <td>
               ${cityssm.escapeHTML(entry.updateTable)}<br />
@@ -151,12 +151,13 @@
     document
         .querySelector('#button--purgeAuditLog')
         ?.addEventListener('click', () => {
-        let closeModalFunction = () => {};
+        let closeModalFunction;
         function doSubmitPurge(submitEvent) {
             submitEvent.preventDefault();
             const ageSelectElement = submitEvent.currentTarget.querySelector('#purge--age');
             const age = ageSelectElement.value;
-            const ageLabel = ageSelectElement.options[ageSelectElement.selectedIndex].textContent ?? '';
+            const ageLabel = ageSelectElement.options[ageSelectElement.selectedIndex]
+                .textContent ?? '';
             closeModalFunction();
             doPurge(age, ageLabel);
         }

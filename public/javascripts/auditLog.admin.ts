@@ -87,7 +87,7 @@ declare const exports: {
             </td>
             <td>
               ${cityssm.escapeHTML(entry.mainRecordType)}<br />
-              <span class="is-size-7">${entry.mainRecordId.toString()}</span>
+              <span class="is-size-7">${cityssm.escapeHTML(entry.mainRecordId)}</span>
             </td>
             <td>
               ${cityssm.escapeHTML(entry.updateTable)}<br />
@@ -219,7 +219,7 @@ declare const exports: {
   document
     .querySelector('#button--purgeAuditLog')
     ?.addEventListener('click', () => {
-      let closeModalFunction: () => void = () => {}
+      let closeModalFunction: () => void
 
       function doSubmitPurge(submitEvent: Event): void {
         submitEvent.preventDefault()
@@ -230,8 +230,8 @@ declare const exports: {
 
         const age = ageSelectElement.value
         const ageLabel =
-          ageSelectElement.options[ageSelectElement.selectedIndex].textContent ??
-          ''
+          ageSelectElement.options[ageSelectElement.selectedIndex]
+            .textContent ?? ''
 
         closeModalFunction()
         doPurge(age, ageLabel)
@@ -249,11 +249,12 @@ declare const exports: {
             .querySelector('form')
             ?.addEventListener('submit', doSubmitPurge)
         },
+
         onremoved() {
           bulmaJS.toggleHtmlClipped()
         }
       })
     })
 
-    i18next.on('initialized', fetchAuditLog)
+  i18next.on('initialized', fetchAuditLog)
 })()
