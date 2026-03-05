@@ -1,6 +1,7 @@
 import 'cypress-axe';
 export function logout() {
     cy.visit('/logout');
+    cy.clearCookies();
 }
 export function login(userName) {
     cy.visit('/login');

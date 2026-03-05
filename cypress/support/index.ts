@@ -3,6 +3,8 @@ import 'cypress-axe'
 
 export function logout(): void {
   cy.visit('/logout')
+
+  cy.clearCookies()
 }
 
 export function login(userName: string): void {
