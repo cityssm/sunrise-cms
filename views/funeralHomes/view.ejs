@@ -46,7 +46,7 @@
     <div class="buttons is-right">
       <% if (!funeralHomeIsDeleted) { %>
       <a
-        class="button is-link is-outlined"
+        class="button is-info"
         href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/previous"
         title="<%= t('contracts:previousFuneralHome') %>"
       >
@@ -54,7 +54,7 @@
         <span class="is-sr-only"><%= t('contracts:previousFuneralHome') %></span>
       </a>
       <a
-        class="button is-link"
+        class="button is-info"
         href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/next"
         title="<%= t('common:next') %>"
       >

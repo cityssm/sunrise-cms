@@ -29,7 +29,7 @@
             <span class="fa-li">
               <i class="fa-solid fa-user"></i>
             </span>
-            ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+            ${cityssm.escapeHTML(interment.deceasedName)}
           </li>
         `;
             }
