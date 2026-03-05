@@ -28,6 +28,12 @@ jobs:
       - name: Set up EditorConfig checker
         uses: editorconfig-checker/action-editorconfig-checker@v2.1.0
 
+      - name: Markdown Linting
+        uses: rvben/rumdl@v0.1.41
+        with:
+          version: "0.1.42"
+          fail-on-error: true
+
       - name: Run editorconfig-checker
         run: editorconfig-checker
 
