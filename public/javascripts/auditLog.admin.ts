@@ -78,7 +78,7 @@ declare const exports: {
 
   function buildValueCell(rawValue: string | null): string {
     if (rawValue === null || rawValue === 'null') {
-      return /* html */ '<em class="has-text-grey">null</em>'
+      return /* html */ '<em class="has-text-grey-darker">null</em>'
     }
 
     const escaped = cityssm.escapeHTML(rawValue)
