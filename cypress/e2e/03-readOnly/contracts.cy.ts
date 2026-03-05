@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js'
-import { checkA11yLog, login, logout } from '../../support/index.js'
+import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js'
 
 describe('Contract Search', () => {
   beforeEach(() => {
@@ -44,5 +44,27 @@ describe('Contract Search', () => {
     cy.get('#searchFilter--deceasedName')
       .should('be.visible')
       .should('have.value', deceasedName)
+  })
+
+  it('Can view a contract from the search results', () => {
+    cy.visit('/contracts')
+    cy.location('pathname').should('equal', '/contracts')
+    cy.wait(ajaxDelayMillis)
+
+    cy.get('#container--searchResults a.has-text-weight-bold')
+      .first()
+      .then(($link) => {
+        const href = $link.attr('href')
+        expect(href).to.include('/contracts/')
+
+        cy.wrap($link).click()
+
+        cy.location('pathname').should('include', '/contracts/')
+
+        cy.log('Check accessibility on the contract view page')
+
+        cy.injectAxe()
+        cy.checkA11y(undefined, undefined, checkA11yLog)
+      })
   })
 })
