@@ -3,16 +3,16 @@
     const auditLogContainerElement = document.querySelector('#container--auditLog');
     const pageLimit = 50;
     let currentOffset = 0;
-    function getUpdateTypeIcon(updateType) {
+    function getUpdateTypeColorClass(updateType) {
         switch (updateType) {
             case 'created': {
-                return `<span class="icon has-text-success" title="${cityssm.escapeHTML(i18next.t('admin:auditLogUpdateTypeCreated'))}"><i class="fa-solid fa-plus"></i></span>`;
+                return 'has-background-success-light';
             }
             case 'deleted': {
-                return `<span class="icon has-text-danger" title="${cityssm.escapeHTML(i18next.t('admin:auditLogUpdateTypeDeleted'))}"><i class="fa-solid fa-trash"></i></span>`;
+                return 'has-background-danger-light';
             }
             default: {
-                return `<span class="icon has-text-warning" title="${cityssm.escapeHTML(i18next.t('admin:auditLogUpdateTypeUpdated'))}"><i class="fa-solid fa-pen"></i></span>`;
+                return 'has-background-warning-light';
             }
         }
     }
@@ -37,7 +37,11 @@
     function renderAuditLog(responseJSON) {
         const { auditLogEntries, count, offset } = responseJSON;
         if (auditLogEntries.length === 0) {
-            auditLogContainerElement.innerHTML = /* html */ `<p class="has-text-grey">${cityssm.escapeHTML(i18next.t('admin:auditLogNoEntries'))}</p>`;
+            auditLogContainerElement.innerHTML = /* html */ `
+        <p class="has-text-grey">
+          ${cityssm.escapeHTML(i18next.t('admin:auditLogNoEntries'))}
+        </p>
+      `;
             return;
         }
         const rowsHtml = auditLogEntries
@@ -46,7 +50,7 @@
             const dateString = logDate.toLocaleDateString();
             const timeString = logDate.toLocaleTimeString();
             return /* html */ `
-          <tr>
+          <tr class="${getUpdateTypeColorClass(entry.updateType)}">
             <td>
               ${cityssm.escapeHTML(dateString)}<br />
               <span class="is-size-7">${cityssm.escapeHTML(timeString)}</span>
@@ -57,9 +61,17 @@
             </td>
             <td>
               ${cityssm.escapeHTML(entry.updateTable)}<br />
-              <span class="is-size-7">${cityssm.escapeHTML(entry.updateField)}</span>
+              ${entry.recordIndex === null
+                ? ''
+                : /* html */ `
+                    <span class="is-size-7">
+                      ${cityssm.escapeHTML(entry.recordIndex)}
+                    </span>
+                  `}
             </td>
-            <td>${getUpdateTypeIcon(entry.updateType)}</td>
+            <td>
+              ${cityssm.escapeHTML(entry.updateField)}
+            </td>
             <td style="max-width:200px">${buildValueCell(entry.fromValue)}</td>
             <td style="max-width:200px">${buildValueCell(entry.toValue)}</td>
             <td class="is-nowrap">
@@ -79,9 +91,10 @@
               <th>${cityssm.escapeHTML(i18next.t('admin:mainRecordType'))}</th>
               <th>
                 ${cityssm.escapeHTML(i18next.t('admin:auditLogTable'))}
-                /
-                ${cityssm.escapeHTML(i18next.t('admin:auditLogField'))}</th>
-              <th></th>
+              </th>
+              <th>
+                ${cityssm.escapeHTML(i18next.t('admin:auditLogField'))}
+              </th>
               <th>${cityssm.escapeHTML(i18next.t('admin:auditLogFrom'))}</th>
               <th>${cityssm.escapeHTML(i18next.t('admin:auditLogTo'))}</th>
               <th>${cityssm.escapeHTML(i18next.t('admin:userName'))}</th>

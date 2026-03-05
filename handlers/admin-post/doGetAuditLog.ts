@@ -2,10 +2,10 @@ import type { DateString } from '@cityssm/utils-datetime'
 import type { Request, Response } from 'express'
 
 import getAuditLog, {
-  type AuditLogEntry,
   type AuditLogMainRecordType,
   defaultAuditLogLimit
 } from '../../database/getAuditLog.js'
+import type { AuditLogEntry } from '../../types/record.types.js'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoGetAuditLogResponse = {
@@ -23,6 +23,7 @@ export default function handler(
       logDateTo?: '' | DateString
       mainRecordType?: AuditLogMainRecordType
       updateUserName?: string
+
       limit?: number | string
       offset?: number | string
     }

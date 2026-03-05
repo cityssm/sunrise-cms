@@ -2,9 +2,9 @@ import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/types.js'
 import type { i18n } from 'i18next'
 
-import type { AuditLogEntry } from '../../database/getAuditLog.js'
 import type { DoGetAuditLogResponse } from '../../handlers/admin-post/doGetAuditLog.js'
 import type { DoPurgeAuditLogResponse } from '../../handlers/admin-post/doPurgeAuditLog.js'
+import type { AuditLogEntry } from '../../types/record.types.js'
 
 import type { Sunrise } from './types.js'
 
@@ -26,16 +26,16 @@ declare const exports: {
 
   let currentOffset = 0
 
-  function getUpdateTypeIcon(updateType: string): string {
+  function getUpdateTypeColorClass(updateType: string): string {
     switch (updateType) {
       case 'created': {
-        return `<span class="icon has-text-success" title="${cityssm.escapeHTML(i18next.t('admin:auditLogUpdateTypeCreated'))}"><i class="fa-solid fa-plus"></i></span>`
+        return 'has-background-success-light'
       }
       case 'deleted': {
-        return `<span class="icon has-text-danger" title="${cityssm.escapeHTML(i18next.t('admin:auditLogUpdateTypeDeleted'))}"><i class="fa-solid fa-trash"></i></span>`
+        return 'has-background-danger-light'
       }
       default: {
-        return `<span class="icon has-text-warning" title="${cityssm.escapeHTML(i18next.t('admin:auditLogUpdateTypeUpdated'))}"><i class="fa-solid fa-pen"></i></span>`
+        return 'has-background-warning-light'
       }
     }
   }
@@ -69,7 +69,11 @@ declare const exports: {
     const { auditLogEntries, count, offset } = responseJSON
 
     if (auditLogEntries.length === 0) {
-      auditLogContainerElement.innerHTML = /* html */ `<p class="has-text-grey">${cityssm.escapeHTML(i18next.t('admin:auditLogNoEntries'))}</p>`
+      auditLogContainerElement.innerHTML = /* html */ `
+        <p class="has-text-grey">
+          ${cityssm.escapeHTML(i18next.t('admin:auditLogNoEntries'))}
+        </p>
+      `
       return
     }
 
@@ -80,7 +84,7 @@ declare const exports: {
         const timeString = logDate.toLocaleTimeString()
 
         return /* html */ `
-          <tr>
+          <tr class="${getUpdateTypeColorClass(entry.updateType)}">
             <td>
               ${cityssm.escapeHTML(dateString)}<br />
               <span class="is-size-7">${cityssm.escapeHTML(timeString)}</span>
@@ -91,9 +95,19 @@ declare const exports: {
             </td>
             <td>
               ${cityssm.escapeHTML(entry.updateTable)}<br />
-              <span class="is-size-7">${cityssm.escapeHTML(entry.updateField)}</span>
+              ${
+                entry.recordIndex === null
+                  ? ''
+                  : /* html */ `
+                    <span class="is-size-7">
+                      ${cityssm.escapeHTML(entry.recordIndex)}
+                    </span>
+                  `
+              }
             </td>
-            <td>${getUpdateTypeIcon(entry.updateType)}</td>
+            <td>
+              ${cityssm.escapeHTML(entry.updateField)}
+            </td>
             <td style="max-width:200px">${buildValueCell(entry.fromValue)}</td>
             <td style="max-width:200px">${buildValueCell(entry.toValue)}</td>
             <td class="is-nowrap">
@@ -114,9 +128,10 @@ declare const exports: {
               <th>${cityssm.escapeHTML(i18next.t('admin:mainRecordType'))}</th>
               <th>
                 ${cityssm.escapeHTML(i18next.t('admin:auditLogTable'))}
-                /
-                ${cityssm.escapeHTML(i18next.t('admin:auditLogField'))}</th>
-              <th></th>
+              </th>
+              <th>
+                ${cityssm.escapeHTML(i18next.t('admin:auditLogField'))}
+              </th>
               <th>${cityssm.escapeHTML(i18next.t('admin:auditLogFrom'))}</th>
               <th>${cityssm.escapeHTML(i18next.t('admin:auditLogTo'))}</th>
               <th>${cityssm.escapeHTML(i18next.t('admin:userName'))}</th>
@@ -171,6 +186,7 @@ declare const exports: {
         logDateTo,
         mainRecordType,
         updateUserName,
+
         limit: pageLimit,
         offset: currentOffset
       },

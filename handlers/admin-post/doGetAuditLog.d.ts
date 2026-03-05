@@ -1,6 +1,7 @@
 import type { DateString } from '@cityssm/utils-datetime';
 import type { Request, Response } from 'express';
-import { type AuditLogEntry, type AuditLogMainRecordType } from '../../database/getAuditLog.js';
+import { type AuditLogMainRecordType } from '../../database/getAuditLog.js';
+import type { AuditLogEntry } from '../../types/record.types.js';
 export type DoGetAuditLogResponse = {
     auditLogEntries: AuditLogEntry[];
     count: number;

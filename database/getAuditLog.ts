@@ -2,6 +2,7 @@ import { type DateString, dateStringToInteger } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
+import type { AuditLogEntry } from '../types/record.types.js'
 
 export type AuditLogMainRecordType =
   | ''
@@ -22,25 +23,7 @@ export type AuditLogMainRecordType =
   | 'workOrderMilestoneType'
   | 'workOrderType'
 
-export interface AuditLogEntry {
-  logMillis: number
-  logDate: number
-  logTime: number
 
-  mainRecordType: string
-  mainRecordId: string
-
-  updateTable: string
-  recordIndex: string | null
-
-  updateField: string
-  updateType: string
-
-  updateUserName: string
-
-  fromValue: string | null
-  toValue: string | null
-}
 
 export const defaultAuditLogLimit = 50
 

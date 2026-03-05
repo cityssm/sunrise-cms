@@ -394,3 +394,17 @@ export interface DatabaseUser extends Record {
     canUpdateWorkOrders: boolean;
     isAdmin: boolean;
 }
+export interface AuditLogEntry {
+    logMillis: number;
+    logDate: number;
+    logTime: number;
+    mainRecordType: string;
+    mainRecordId: string;
+    updateTable: string;
+    recordIndex: string | null;
+    updateField: string;
+    updateType: string;
+    updateUserName: string;
+    fromValue: string | null;
+    toValue: string | null;
+}
