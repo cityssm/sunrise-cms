@@ -2,12 +2,15 @@ import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetim
 import sqlite from 'better-sqlite3';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../debug.config.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import addContractInterment from './addContractInterment.js';
 import addFuneralHome from './addFuneralHome.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
 import getNextContractNumber from './getNextContractNumber.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:addContract`);
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 // eslint-disable-next-line complexity
 export default function addContract(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
@@ -114,6 +117,23 @@ export default function addContract(addForm, user, connectedDatabase) {
          */
         if ((addForm.deceasedName ?? '') !== '') {
             addContractInterment({ ...addForm, contractId }, user, database);
+        }
+        if (auditLogIsEnabled) {
+            const recordAfter = database
+                .prepare(/* sql */ `SELECT * FROM Contracts WHERE contractId = ?`)
+                .get(contractId);
+            createAuditLogEntries({
+                mainRecordType: 'contract',
+                mainRecordId: String(contractId),
+                updateTable: 'Contracts'
+            }, [
+                {
+                    property: '*',
+                    type: 'created',
+                    from: undefined,
+                    to: recordAfter
+                }
+            ], user, database);
         }
         return contractId;
     }

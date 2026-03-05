@@ -1,6 +1,9 @@
 import { dateStringToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
+import createAuditLogEntries from './createAuditLogEntries.js';
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 // eslint-disable-next-line complexity
 export default function addContractInterment(contractForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
@@ -75,6 +78,25 @@ export default function addContractInterment(contractForm, user, connectedDataba
         : contractForm.intermentContainerTypeId, (contractForm.intermentDepthId ?? '') === ''
         ? undefined
         : contractForm.intermentDepthId, user.userName, rightNowMillis, user.userName, rightNowMillis);
+    if (auditLogIsEnabled) {
+        const recordAfter = database
+            .prepare(
+        /* sql */ `SELECT * FROM ContractInterments WHERE contractId = ? AND intermentNumber = ?`)
+            .get(contractForm.contractId, newIntermentNumber);
+        createAuditLogEntries({
+            mainRecordType: 'contract',
+            mainRecordId: String(contractForm.contractId),
+            updateTable: 'ContractInterments',
+            recordIndex: String(newIntermentNumber)
+        }, [
+            {
+                property: '*',
+                type: 'created',
+                from: undefined,
+                to: recordAfter
+            }
+        ], user, database);
+    }
     if (connectedDatabase === undefined) {
         database.close();
     }
