@@ -59,8 +59,8 @@ function addRecord(record, user, connectedDatabase) {
         `)
                 .get(recordId);
             createAuditLogEntries({
-                mainRecordType: auditInfo.mainRecordType,
                 mainRecordId: recordId,
+                mainRecordType: auditInfo.mainRecordType,
                 updateTable: record.recordTable
             }, [
                 {
