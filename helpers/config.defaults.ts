@@ -97,6 +97,7 @@ export const configDefaultValues = {
   'settings.contracts.burialSiteIdIsRequired': true,
 
   'settings.contracts.contractNumberLength': 10,
+
   'settings.contracts.contractEndDateIsAvailable': true,
   'settings.contracts.contractEndDateIsRequired': false,
 

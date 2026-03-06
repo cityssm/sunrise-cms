@@ -180,7 +180,7 @@ await describe('database/contracts', async () => {
             // Create a cemetery and burial site for the contract
             cemeteryId = addCemetery({
                 cemeteryName: 'Test Cemetery',
-                cemeteryKey: 'TESTCEM',
+                cemeteryKey: 'CEM',
                 cemeteryDescription: '',
                 parentCemeteryId: '',
                 cemeteryLatitude: '',
@@ -195,10 +195,10 @@ await describe('database/contracts', async () => {
             }, testUser);
             const burialSiteResult = addBurialSite({
                 cemeteryId,
-                burialSiteTypeId: 1,
-                burialSiteStatusId: 1,
                 burialSiteNameSegment1: 'A',
-                burialSiteNameSegment2: '1'
+                burialSiteNameSegment2: '1',
+                burialSiteStatusId: 1,
+                burialSiteTypeId: 1
             }, testUser);
             burialSiteId = burialSiteResult.burialSiteId;
         });

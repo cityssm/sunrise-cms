@@ -1,3 +1,5 @@
+/* eslint-disable no-secrets/no-secrets -- flagging on "userFn_configContainsPrintEJS" */
+
 import sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
@@ -21,7 +23,6 @@ export default function getContractTypePrints(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   database.function(
-    // eslint-disable-next-line no-secrets/no-secrets
     'userFn_configContainsPrintEJS',
     userFunction_configContainsPrintEJS
   )

@@ -238,17 +238,20 @@ await describe('database/contracts', async () => {
       cemeteryId = addCemetery(
         {
           cemeteryName: 'Test Cemetery',
-          cemeteryKey: 'TESTCEM',
+          cemeteryKey: 'CEM',
           cemeteryDescription: '',
           parentCemeteryId: '',
+
           cemeteryLatitude: '',
           cemeteryLongitude: '',
           cemeterySvg: '',
+
           cemeteryAddress1: '',
           cemeteryAddress2: '',
           cemeteryCity: '',
           cemeteryPostalCode: '',
           cemeteryProvince: '',
+
           cemeteryPhoneNumber: ''
         },
         testUser
@@ -257,10 +260,11 @@ await describe('database/contracts', async () => {
       const burialSiteResult = addBurialSite(
         {
           cemeteryId,
-          burialSiteTypeId: 1,
-          burialSiteStatusId: 1,
+
           burialSiteNameSegment1: 'A',
-          burialSiteNameSegment2: '1'
+          burialSiteNameSegment2: '1',
+          burialSiteStatusId: 1,
+          burialSiteTypeId: 1
         },
         testUser
       )
@@ -289,6 +293,7 @@ await describe('database/contracts', async () => {
       contractCommentId = addContractComment(
         {
           contractId,
+
           comment: 'Test comment',
           commentDateString: '2024-01-01',
           commentTimeString: '09:00'
@@ -363,6 +368,7 @@ await describe('database/contracts', async () => {
       const success = updateContractComment(
         {
           contractCommentId,
+
           comment: 'Updated comment',
           commentDateString: '2024-01-02',
           commentTimeString: '10:00'
@@ -377,18 +383,23 @@ await describe('database/contracts', async () => {
         {
           contractId,
           intermentNumber,
+
           deceasedName: 'Updated Deceased',
+
           deceasedAddress1: '',
           deceasedAddress2: '',
           deceasedCity: '',
           deceasedPostalCode: '',
           deceasedProvince: '',
+
           birthDateString: '',
           birthPlace: '',
           deathDateString: '',
           deathPlace: '',
+
           deathAge: '',
           deathAgePeriod: '',
+
           intermentContainerTypeId: '',
           intermentDepthId: ''
         },
