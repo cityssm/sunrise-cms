@@ -1,3 +1,4 @@
+import getObjectDifference from '@cityssm/object-difference'
 import {
   type DateString,
   dateStringToInteger,
@@ -5,7 +6,12 @@ import {
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
+import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
+
+import createAuditLogEntries from './createAuditLogEntries.js'
+
+const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 export interface CloseWorkOrderForm {
   workOrderId: number | string
@@ -21,6 +27,19 @@ export default function closeWorkOrder(
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
   const rightNow = new Date()
+
+  const recordBefore = auditLogIsEnabled
+    ? database
+        .prepare(/* sql */ `
+          SELECT
+            *
+          FROM
+            WorkOrders
+          WHERE
+            workOrderId = ?
+        `)
+        .get(workOrderForm.workOrderId)
+    : undefined
 
   const result = database
     .prepare(/* sql */ `
@@ -40,6 +59,34 @@ export default function closeWorkOrder(
       rightNow.getTime(),
       workOrderForm.workOrderId
     )
+
+  if (result.changes > 0 && auditLogIsEnabled && recordBefore !== undefined) {
+    const recordAfter = database
+      .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          WorkOrders
+        WHERE
+          workOrderId = ?
+      `)
+      .get(workOrderForm.workOrderId)
+
+    const differences = getObjectDifference(recordBefore, recordAfter)
+
+    if (differences.length > 0) {
+      createAuditLogEntries(
+        {
+          mainRecordId: workOrderForm.workOrderId,
+          mainRecordType: 'workOrder',
+          updateTable: 'WorkOrders'
+        },
+        differences,
+        user,
+        database
+      )
+    }
+  }
 
   if (connectedDatabase === undefined) {
     database.close()
