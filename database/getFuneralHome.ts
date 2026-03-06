@@ -6,7 +6,7 @@ import type { FuneralHome } from '../types/record.types.js'
 export default function getFuneralHome(
   funeralHomeId: number | string,
   includeDeleted = false,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): FuneralHome | undefined {
   return _getFuneralHome(
     'funeralHomeId',
@@ -19,7 +19,7 @@ export default function getFuneralHome(
 export function getFuneralHomeByKey(
   funeralHomeKey: string,
   includeDeleted = false,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): FuneralHome | undefined {
   return _getFuneralHome(
     'funeralHomeKey',
@@ -33,7 +33,7 @@ function _getFuneralHome(
   keyColumn: 'funeralHomeId' | 'funeralHomeKey',
   funeralHomeIdOrKey: number | string,
   includeDeleted = false,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): FuneralHome | undefined {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 

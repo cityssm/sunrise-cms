@@ -7,7 +7,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getWorkOrderMilestoneTypes(
   includeDeleted = false,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): WorkOrderMilestoneType[] {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
