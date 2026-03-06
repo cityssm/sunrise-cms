@@ -39,7 +39,7 @@ export default function createAuditLogEntries(record, differences, user, connect
         VALUES
           (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
-            .run(currentDate.getTime(), dateToInteger(currentDate), dateToTimeInteger(currentDate), record.mainRecordType, record.mainRecordId, record.updateTable, record.recordIndex, difference.property, difference.type, user.userName, fromValue, toValue);
+            .run(currentDate.getTime(), dateToInteger(currentDate), dateToTimeInteger(currentDate), record.mainRecordType, String(record.mainRecordId), record.updateTable, record.recordIndex === undefined ? null : String(record.recordIndex), difference.property, difference.type, user.userName, fromValue, toValue);
         entriesCreated += 1;
     }
     return entriesCreated;
