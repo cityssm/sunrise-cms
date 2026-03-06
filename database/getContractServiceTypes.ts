@@ -5,7 +5,7 @@ import type { ServiceType } from '../types/record.types.js'
 
 export default function getContractServiceTypes(
   contractId: number | string,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): ServiceType[] {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 

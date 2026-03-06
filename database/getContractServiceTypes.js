@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3';
 import { sunriseDB } from '../helpers/database.helpers.js';
-export default function getContractServiceTypes(contractId, connectedDatabase = undefined) {
+export default function getContractServiceTypes(contractId, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const serviceTypes = database
         .prepare(/* sql */ `

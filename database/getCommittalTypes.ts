@@ -7,7 +7,7 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js'
 
 export default function getCommittalTypes(
   includeDeleted = false,
-  connectedDatabase: sqlite.Database | undefined = undefined
+  connectedDatabase?: sqlite.Database
 ): CommittalType[] {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
