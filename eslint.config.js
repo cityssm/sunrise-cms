@@ -44,6 +44,7 @@ export const config = defineConfig(configWebApp, {
                         'ical',
                         'javascripts',
                         'latlng',
+                        'lngs',
                         'ntfy',
                         'onhidden',
                         'pdfa',

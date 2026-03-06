@@ -58,7 +58,7 @@ export async function writeAttachment(
       .catch(() => false)
   ) {
     uniqueFileName = `${baseFileName} (${counter})${fileExtension}`
-    counter++
+    counter += 1
   }
 
   /*

@@ -18,7 +18,10 @@ import deleteWorkOrderContract from '../database/deleteWorkOrderContract.js'
 import getWorkOrder from '../database/getWorkOrder.js'
 import getWorkOrderComments from '../database/getWorkOrderComments.js'
 import getWorkOrderMilestones from '../database/getWorkOrderMilestones.js'
-import { getWorkOrders, type GetWorkOrdersOptions } from '../database/getWorkOrders.js'
+import {
+  type GetWorkOrdersOptions,
+  getWorkOrders
+} from '../database/getWorkOrders.js'
 import reopenWorkOrder from '../database/reopenWorkOrder.js'
 import reopenWorkOrderMilestone from '../database/reopenWorkOrderMilestone.js'
 import updateWorkOrder from '../database/updateWorkOrder.js'
@@ -45,7 +48,15 @@ await describe('database/workOrders', async () => {
   })
 
   await it('can execute getWorkOrder()', async () => {
-    await getWorkOrder(1, { includeBurialSites: false, includeComments: false, includeMilestones: false }, database)
+    await getWorkOrder(
+      1,
+      {
+        includeBurialSites: false,
+        includeComments: false,
+        includeMilestones: false
+      },
+      database
+    )
     assert.ok(true, 'getWorkOrder() executed without error')
   })
 
@@ -55,7 +66,11 @@ await describe('database/workOrders', async () => {
   })
 
   await it('can execute getWorkOrderMilestones()', async () => {
-    await getWorkOrderMilestones({ workOrderId: 1 }, { orderBy: 'date' }, database)
+    await getWorkOrderMilestones(
+      { workOrderId: 1 },
+      { orderBy: 'date' },
+      database
+    )
     assert.ok(true, 'getWorkOrderMilestones() executed without error')
   })
 
@@ -80,22 +95,42 @@ await describe('database/workOrders', async () => {
 
     await it('executes with workOrderOpenStatus open filter', async () => {
       await getWorkOrders({ workOrderOpenStatus: 'open' }, options, database)
-      assert.ok(true, 'getWorkOrders() executed with workOrderOpenStatus open filter')
+      assert.ok(
+        true,
+        'getWorkOrders() executed with workOrderOpenStatus open filter'
+      )
     })
 
     await it('executes with workOrderOpenStatus closed filter', async () => {
       await getWorkOrders({ workOrderOpenStatus: 'closed' }, options, database)
-      assert.ok(true, 'getWorkOrders() executed with workOrderOpenStatus closed filter')
+      assert.ok(
+        true,
+        'getWorkOrders() executed with workOrderOpenStatus closed filter'
+      )
     })
 
     await it('executes with workOrderOpenDateString filter', async () => {
-      await getWorkOrders({ workOrderOpenDateString: '2024-01-01' }, options, database)
-      assert.ok(true, 'getWorkOrders() executed with workOrderOpenDateString filter')
+      await getWorkOrders(
+        { workOrderOpenDateString: '2024-01-01' },
+        options,
+        database
+      )
+      assert.ok(
+        true,
+        'getWorkOrders() executed with workOrderOpenDateString filter'
+      )
     })
 
     await it('executes with workOrderMilestoneDateString filter', async () => {
-      await getWorkOrders({ workOrderMilestoneDateString: '2024-01-01' }, options, database)
-      assert.ok(true, 'getWorkOrders() executed with workOrderMilestoneDateString filter')
+      await getWorkOrders(
+        { workOrderMilestoneDateString: '2024-01-01' },
+        options,
+        database
+      )
+      assert.ok(
+        true,
+        'getWorkOrders() executed with workOrderMilestoneDateString filter'
+      )
     })
 
     await it('executes with burialSiteName filter', async () => {
@@ -184,7 +219,11 @@ await describe('database/workOrders', async () => {
         },
         testUser
       )
-      assert.notStrictEqual(workOrderId, 0, 'Expected a valid workOrderId to be returned')
+      assert.notStrictEqual(
+        workOrderId,
+        0,
+        'Expected a valid workOrderId to be returned'
+      )
     })
 
     await it('adds a work order comment', () => {
@@ -220,11 +259,16 @@ await describe('database/workOrders', async () => {
     })
 
     await it('retrieves the created work order', async () => {
-      const workOrder = await getWorkOrder(
-        workOrderId,
-        { includeBurialSites: false, includeComments: true, includeMilestones: true }
+      const workOrder = await getWorkOrder(workOrderId, {
+        includeBurialSites: false,
+        includeComments: true,
+        includeMilestones: true
+      })
+      assert.notStrictEqual(
+        workOrder,
+        undefined,
+        'Expected work order to be retrievable'
       )
-      assert.notStrictEqual(workOrder, undefined, 'Expected work order to be retrievable')
       assert.strictEqual(
         workOrder?.workOrderDescription,
         'Test Work Order',
@@ -310,9 +354,14 @@ await describe('database/workOrders', async () => {
         includeComments: false,
         includeMilestones: false
       })
-      assert.notStrictEqual(workOrder, undefined, 'Expected work order to be retrievable')
+      assert.notStrictEqual(
+        workOrder,
+        undefined,
+        'Expected work order to be retrievable'
+      )
       assert.strictEqual(
         workOrder?.workOrderCloseDate,
+        // eslint-disable-next-line unicorn/no-null
         null,
         'Expected work order to be open (no close date)'
       )
@@ -341,7 +390,11 @@ await describe('database/workOrders', async () => {
     })
 
     await it('deletes the work order burial site', () => {
-      const success = deleteWorkOrderBurialSite(workOrderId, burialSiteId, testUser)
+      const success = deleteWorkOrderBurialSite(
+        workOrderId,
+        burialSiteId,
+        testUser
+      )
       assert.ok(success, 'Expected deleteWorkOrderBurialSite() to succeed')
     })
 

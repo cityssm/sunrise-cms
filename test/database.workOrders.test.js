@@ -39,7 +39,11 @@ await describe('database/workOrders', async () => {
         database.close();
     });
     await it('can execute getWorkOrder()', async () => {
-        await getWorkOrder(1, { includeBurialSites: false, includeComments: false, includeMilestones: false }, database);
+        await getWorkOrder(1, {
+            includeBurialSites: false,
+            includeComments: false,
+            includeMilestones: false
+        }, database);
         assert.ok(true, 'getWorkOrder() executed without error');
     });
     await it('can execute getWorkOrderComments()', () => {
@@ -166,7 +170,11 @@ await describe('database/workOrders', async () => {
             assert.notStrictEqual(workOrderMilestoneId, 0, 'Expected a valid workOrderMilestoneId to be returned');
         });
         await it('retrieves the created work order', async () => {
-            const workOrder = await getWorkOrder(workOrderId, { includeBurialSites: false, includeComments: true, includeMilestones: true });
+            const workOrder = await getWorkOrder(workOrderId, {
+                includeBurialSites: false,
+                includeComments: true,
+                includeMilestones: true
+            });
             assert.notStrictEqual(workOrder, undefined, 'Expected work order to be retrievable');
             assert.strictEqual(workOrder?.workOrderDescription, 'Test Work Order', 'Expected work order description to match');
         });
@@ -227,7 +235,9 @@ await describe('database/workOrders', async () => {
                 includeMilestones: false
             });
             assert.notStrictEqual(workOrder, undefined, 'Expected work order to be retrievable');
-            assert.strictEqual(workOrder?.workOrderCloseDate, null, 'Expected work order to be open (no close date)');
+            assert.strictEqual(workOrder?.workOrderCloseDate, 
+            // eslint-disable-next-line unicorn/no-null
+            null, 'Expected work order to be open (no close date)');
         });
         await it('adds a work order burial site', () => {
             const success = addWorkOrderBurialSite({

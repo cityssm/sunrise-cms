@@ -33,7 +33,7 @@ export async function writeAttachment(fileName, fileData) {
         .then(() => true)
         .catch(() => false)) {
         uniqueFileName = `${baseFileName} (${counter})${fileExtension}`;
-        counter++;
+        counter += 1;
     }
     /*
      * Write the file
