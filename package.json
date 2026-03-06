@@ -70,7 +70,7 @@
     "ejs": "^4.0.1",
     "exit-hook": "^5.1.0",
     "express": "^5.2.1",
-    "express-rate-limit": "^8.2.1",
+    "express-rate-limit": "^8.2.2",
     "express-session": "^1.19.0",
     "http-errors": "^2.0.1",
     "i18next": "^25.8.14",
