@@ -209,7 +209,7 @@
             const age = ageSelectElement.value;
             const ageLabel = ageSelectElement.options[ageSelectElement.selectedIndex]
                 .textContent ?? '';
-            closeModalFunction();
+            closeModalFunction?.();
             doPurge(age, ageLabel);
         }
         cityssm.openHtmlModal('adminAuditLog-purge', {
