@@ -1,0 +1,33 @@
+name: Linting
+
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+  workflow_dispatch:
+
+permissions: read-all
+
+jobs:
+  Ubuntu:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [24]
+
+    name: Ubuntu - Node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+
+      - name: Set up EditorConfig Check
+        uses: editorconfig-checker/action-editorconfig-checker@v2.1.0
+
+      - name: Run EditorConfig Check
+        run: editorconfig-checker
