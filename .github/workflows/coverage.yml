@@ -1,6 +1,10 @@
 name: Coverage Testing
 
-on: [workflow_dispatch, push, pull_request]
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+  workflow_dispatch:
 
 permissions: read-all
 
