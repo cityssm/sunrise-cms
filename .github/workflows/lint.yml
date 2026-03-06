@@ -31,3 +31,7 @@ jobs:
 
       - name: Run EditorConfig Check
         run: editorconfig-checker
+
+      - name: Run Markdownlint Check
+        uses: DavidAnson/markdownlint-cli2-action@v22
+        continue-on-error: true
