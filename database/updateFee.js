@@ -41,8 +41,8 @@ export default function updateFee(feeForm, user, connectedDatabase) {
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
-                mainRecordType: 'fee',
                 mainRecordId: feeForm.feeId,
+                mainRecordType: 'fee',
                 updateTable: 'Fees'
             }, differences, user, database);
         }
@@ -74,8 +74,8 @@ export function updateFeeAmount(feeAmountForm, user, connectedDatabase) {
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
-                mainRecordType: 'fee',
                 mainRecordId: feeAmountForm.feeId,
+                mainRecordType: 'fee',
                 updateTable: 'Fees'
             }, differences, user, database);
         }

@@ -105,8 +105,8 @@ export default function addFee(
 
     createAuditLogEntries(
       {
+        mainRecordId: result.lastInsertRowid,
         mainRecordType: 'fee',
-        mainRecordId: String(result.lastInsertRowid),
         updateTable: 'Fees'
       },
       [

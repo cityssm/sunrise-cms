@@ -56,8 +56,8 @@ export default function addFee(feeForm, user, connectedDatabase) {
     if (auditLogIsEnabled) {
         const recordAfter = getFee(result.lastInsertRowid, database);
         createAuditLogEntries({
+            mainRecordId: result.lastInsertRowid,
             mainRecordType: 'fee',
-            mainRecordId: String(result.lastInsertRowid),
             updateTable: 'Fees'
         }, [
             {

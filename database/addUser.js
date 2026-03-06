@@ -72,8 +72,8 @@ export default function addUser(options, user, connectedDatabase) {
     if (success && auditLogIsEnabled) {
         const recordAfter = getUser(options.userName, database);
         createAuditLogEntries({
-            mainRecordType: 'user',
             mainRecordId: options.userName,
+            mainRecordType: 'user',
             updateTable: 'Users'
         }, [
             {

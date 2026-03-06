@@ -62,8 +62,8 @@ export default function addContractType(
 
     createAuditLogEntries(
       {
-        mainRecordType: 'contractType',
         mainRecordId: String(result.lastInsertRowid),
+        mainRecordType: 'contractType',
         updateTable: 'ContractTypes'
       },
       [

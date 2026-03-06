@@ -69,8 +69,8 @@ export default function updateUser(
     if (userDifferences.length > 0) {
       createAuditLogEntries(
         {
-          mainRecordType: 'user',
           mainRecordId: updateForm.userName,
+          mainRecordType: 'user',
           updateTable: 'Users'
         },
         userDifferences,

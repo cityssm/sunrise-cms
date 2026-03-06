@@ -121,8 +121,8 @@ function updateRecord(
     if (differences.length > 0) {
       createAuditLogEntries(
         {
-          mainRecordType: auditInfo.mainRecordType,
           mainRecordId: record.recordId,
+          mainRecordType: auditInfo.mainRecordType,
           updateTable: record.recordTable
         },
         differences,

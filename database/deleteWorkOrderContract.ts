@@ -45,10 +45,10 @@ export default function deleteWorkOrderContract(
   if (result.changes > 0 && auditLogIsEnabled) {
     createAuditLogEntries(
       {
-        mainRecordType: 'workOrder',
         mainRecordId: workOrderId,
-        updateTable: 'WorkOrderContracts',
-        recordIndex: contractId
+        mainRecordType: 'workOrder',
+        recordIndex: contractId,
+        updateTable: 'WorkOrderContracts'
       },
       [
         {

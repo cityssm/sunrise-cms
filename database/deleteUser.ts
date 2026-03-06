@@ -36,14 +36,15 @@ export function deleteLocalUser(
   if (result.changes > 0 && auditLogIsEnabled) {
     createAuditLogEntries(
       {
-        mainRecordType: 'user',
         mainRecordId: userName,
+        mainRecordType: 'user',
         updateTable: 'Users'
       },
       [
         {
           property: '*',
           type: 'deleted',
+
           from: recordBefore,
           to: undefined
         }

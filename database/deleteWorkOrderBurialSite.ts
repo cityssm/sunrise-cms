@@ -45,10 +45,10 @@ export default function deleteWorkOrderBurialSite(
   if (result.changes > 0 && auditLogIsEnabled) {
     createAuditLogEntries(
       {
-        mainRecordType: 'workOrder',
         mainRecordId: workOrderId,
+        mainRecordType: 'workOrder',
+        recordIndex: burialSiteId,
         updateTable: 'WorkOrderBurialSites',
-        recordIndex: burialSiteId
       },
       [
         {

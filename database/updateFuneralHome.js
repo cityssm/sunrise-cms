@@ -34,8 +34,8 @@ export default function updateFuneralHome(updateForm, user, connectedDatabase) {
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
-                mainRecordType: 'funeralHome',
                 mainRecordId: updateForm.funeralHomeId,
+                mainRecordType: 'funeralHome',
                 updateTable: 'FuneralHomes'
             }, differences, user, database);
         }

@@ -9,6 +9,7 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 export interface UpdateForm {
   contractId: number | string
   serviceTypeId: number | string
+
   contractServiceDetails?: string
 }
 

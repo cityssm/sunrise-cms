@@ -32,10 +32,10 @@ export default function deleteWorkOrderContract(workOrderId, contractId, user, c
         .run(user.userName, Date.now(), workOrderId, contractId);
     if (result.changes > 0 && auditLogIsEnabled) {
         createAuditLogEntries({
-            mainRecordType: 'workOrder',
             mainRecordId: workOrderId,
-            updateTable: 'WorkOrderContracts',
-            recordIndex: contractId
+            mainRecordType: 'workOrder',
+            recordIndex: contractId,
+            updateTable: 'WorkOrderContracts'
         }, [
             {
                 property: '*',

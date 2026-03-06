@@ -129,8 +129,8 @@ export default function addUser(
 
     createAuditLogEntries(
       {
-        mainRecordType: 'user',
         mainRecordId: options.userName,
+        mainRecordType: 'user',
         updateTable: 'Users'
       },
       [

@@ -35,8 +35,8 @@ export default function addServiceType(addForm, user, connectedDatabase) {
       `)
             .get(serviceTypeId);
         createAuditLogEntries({
-            mainRecordType: 'serviceType',
             mainRecordId: serviceTypeId,
+            mainRecordType: 'serviceType',
             updateTable: 'ServiceTypes'
         }, [
             {

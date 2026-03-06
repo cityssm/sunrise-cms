@@ -74,8 +74,8 @@ export default function addFuneralHome(
 
     createAuditLogEntries(
       {
+        mainRecordId: result.lastInsertRowid,
         mainRecordType: 'funeralHome',
-        mainRecordId: String(result.lastInsertRowid),
         updateTable: 'FuneralHomes'
       },
       [

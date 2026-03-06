@@ -35,8 +35,8 @@ export default function addContractType(addForm, user, connectedDatabase) {
       `)
             .get(result.lastInsertRowid);
         createAuditLogEntries({
-            mainRecordType: 'contractType',
             mainRecordId: String(result.lastInsertRowid),
+            mainRecordType: 'contractType',
             updateTable: 'ContractTypes'
         }, [
             {

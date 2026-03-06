@@ -103,10 +103,10 @@ export default function addWorkOrderBurialSite(
 
     createAuditLogEntries(
       {
-        mainRecordType: 'workOrder',
         mainRecordId: workOrderBurialSiteForm.workOrderId,
+        mainRecordType: 'workOrder',
+        recordIndex: workOrderBurialSiteForm.burialSiteId,
         updateTable: 'WorkOrderBurialSites',
-        recordIndex: workOrderBurialSiteForm.burialSiteId
       },
       [
         {

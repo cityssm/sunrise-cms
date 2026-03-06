@@ -160,8 +160,8 @@ export default function addWorkOrder(
 
     createAuditLogEntries(
       {
-        mainRecordType: 'workOrder',
         mainRecordId: workOrderId,
+        mainRecordType: 'workOrder',
         updateTable: 'WorkOrders'
       },
       [

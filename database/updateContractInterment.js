@@ -70,10 +70,10 @@ export default function updateContractInterment(contractForm, user, connectedDat
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
-                mainRecordType: 'contract',
                 mainRecordId: contractForm.contractId,
-                updateTable: 'ContractInterments',
-                recordIndex: contractForm.intermentNumber
+                mainRecordType: 'contract',
+                recordIndex: contractForm.intermentNumber,
+                updateTable: 'ContractInterments'
             }, differences, user, database);
         }
     }

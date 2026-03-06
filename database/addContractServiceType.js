@@ -36,10 +36,10 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
         `)
                 .get(addForm.contractId, addForm.serviceTypeId);
             createAuditLogEntries({
-                mainRecordType: 'contract',
                 mainRecordId: addForm.contractId,
-                updateTable: 'ContractServiceTypes',
-                recordIndex: addForm.serviceTypeId
+                mainRecordType: 'contract',
+                recordIndex: addForm.serviceTypeId,
+                updateTable: 'ContractServiceTypes'
             }, [
                 {
                     property: '*',

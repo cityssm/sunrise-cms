@@ -89,8 +89,8 @@ export default function updateFee(
     if (differences.length > 0) {
       createAuditLogEntries(
         {
-          mainRecordType: 'fee',
           mainRecordId: feeForm.feeId,
+          mainRecordType: 'fee',
           updateTable: 'Fees'
         },
         differences,
@@ -149,8 +149,8 @@ export function updateFeeAmount(
     if (differences.length > 0) {
       createAuditLogEntries(
         {
-          mainRecordType: 'fee',
           mainRecordId: feeAmountForm.feeId,
+          mainRecordType: 'fee',
           updateTable: 'Fees'
         },
         differences,

@@ -39,8 +39,8 @@ export default function updateUser(updateForm, user, connectedDatabase) {
         const userDifferences = getObjectDifference(recordBefore, recordAfter);
         if (userDifferences.length > 0) {
             createAuditLogEntries({
-                mainRecordType: 'user',
                 mainRecordId: updateForm.userName,
+                mainRecordType: 'user',
                 updateTable: 'Users'
             }, userDifferences, user, database);
         }

@@ -124,10 +124,10 @@ export default function addContractTransaction(
 
     createAuditLogEntries(
       {
-        mainRecordType: 'contract',
         mainRecordId: contractTransactionForm.contractId,
-        updateTable: 'ContractTransactions',
-        recordIndex: transactionIndex
+        mainRecordType: 'contract',
+        recordIndex: transactionIndex,
+        updateTable: 'ContractTransactions'
       },
       [
         {

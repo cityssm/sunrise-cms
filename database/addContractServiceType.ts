@@ -10,6 +10,7 @@ const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 export interface AddForm {
   contractId: number | string
   serviceTypeId: number | string
+
   contractServiceDetails?: string
 }
 
@@ -63,10 +64,10 @@ export default function addContractServiceType(
 
       createAuditLogEntries(
         {
-          mainRecordType: 'contract',
           mainRecordId: addForm.contractId,
-          updateTable: 'ContractServiceTypes',
-          recordIndex: addForm.serviceTypeId
+          mainRecordType: 'contract',
+          recordIndex: addForm.serviceTypeId,
+          updateTable: 'ContractServiceTypes'
         },
         [
           {

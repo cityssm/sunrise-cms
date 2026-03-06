@@ -9,6 +9,7 @@ import createAuditLogEntries from './createAuditLogEntries.js'
 
 export interface UpdateForm {
   serviceTypeId: number | string
+
   serviceType: string
 }
 
@@ -73,8 +74,8 @@ export default function updateServiceType(
       if (differences.length > 0) {
         createAuditLogEntries(
           {
-            mainRecordType: 'serviceType',
             mainRecordId: updateForm.serviceTypeId,
+            mainRecordType: 'serviceType',
             updateTable: 'ServiceTypes'
           },
           differences,

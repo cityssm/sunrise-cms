@@ -65,10 +65,10 @@ export default function addWorkOrderBurialSite(workOrderBurialSiteForm, user, co
       `)
             .get(workOrderBurialSiteForm.workOrderId, workOrderBurialSiteForm.burialSiteId);
         createAuditLogEntries({
-            mainRecordType: 'workOrder',
             mainRecordId: workOrderBurialSiteForm.workOrderId,
+            mainRecordType: 'workOrder',
+            recordIndex: workOrderBurialSiteForm.burialSiteId,
             updateTable: 'WorkOrderBurialSites',
-            recordIndex: workOrderBurialSiteForm.burialSiteId
         }, [
             {
                 property: '*',

@@ -23,8 +23,8 @@ export function deleteLocalUser(userName, user, connectedDatabase) {
         .run(user.userName, rightNowMillis, userName);
     if (result.changes > 0 && auditLogIsEnabled) {
         createAuditLogEntries({
-            mainRecordType: 'user',
             mainRecordId: userName,
+            mainRecordType: 'user',
             updateTable: 'Users'
         }, [
             {

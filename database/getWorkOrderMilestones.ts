@@ -94,7 +94,6 @@ export default async function getWorkOrderMilestones(
   }
 
   // Query
-  // eslint-disable-next-line no-secrets/no-secrets
   const sql = /* sql */ `
     SELECT
       m.workOrderMilestoneId,

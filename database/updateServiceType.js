@@ -48,8 +48,8 @@ export default function updateServiceType(updateForm, user, connectedDatabase) {
             const differences = getObjectDifference(recordBefore, recordAfter);
             if (differences.length > 0) {
                 createAuditLogEntries({
-                    mainRecordType: 'serviceType',
                     mainRecordId: updateForm.serviceTypeId,
+                    mainRecordType: 'serviceType',
                     updateTable: 'ServiceTypes'
                 }, differences, user, database);
             }

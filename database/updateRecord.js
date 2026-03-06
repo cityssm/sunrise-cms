@@ -81,8 +81,8 @@ function updateRecord(record, user, connectedDatabase) {
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
-                mainRecordType: auditInfo.mainRecordType,
                 mainRecordId: record.recordId,
+                mainRecordType: auditInfo.mainRecordType,
                 updateTable: record.recordTable
             }, differences, user, database);
         }

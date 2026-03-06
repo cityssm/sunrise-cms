@@ -31,8 +31,8 @@ export default function addFuneralHome(addForm, user, connectedDatabase) {
     if (auditLogIsEnabled) {
         const recordAfter = getFuneralHome(result.lastInsertRowid, false, database);
         createAuditLogEntries({
+            mainRecordId: result.lastInsertRowid,
             mainRecordType: 'funeralHome',
-            mainRecordId: String(result.lastInsertRowid),
             updateTable: 'FuneralHomes'
         }, [
             {

@@ -65,10 +65,10 @@ export default function addWorkOrderContract(addForm, user, connectedDatabase) {
       `)
             .get(addForm.workOrderId, addForm.contractId);
         createAuditLogEntries({
-            mainRecordType: 'workOrder',
             mainRecordId: addForm.workOrderId,
-            updateTable: 'WorkOrderContracts',
-            recordIndex: addForm.contractId
+            mainRecordType: 'workOrder',
+            recordIndex: addForm.contractId,
+            updateTable: 'WorkOrderContracts'
         }, [
             {
                 property: '*',

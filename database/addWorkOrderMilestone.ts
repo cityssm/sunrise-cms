@@ -99,10 +99,10 @@ export default function addWorkOrderMilestone(
 
     createAuditLogEntries(
       {
-        mainRecordType: 'workOrder',
         mainRecordId: milestoneForm.workOrderId,
+        mainRecordType: 'workOrder',
+        recordIndex: result.lastInsertRowid,
         updateTable: 'WorkOrderMilestones',
-        recordIndex: String(result.lastInsertRowid)
       },
       [
         {

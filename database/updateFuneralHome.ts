@@ -77,8 +77,8 @@ export default function updateFuneralHome(
     if (differences.length > 0) {
       createAuditLogEntries(
         {
-          mainRecordType: 'funeralHome',
           mainRecordId: updateForm.funeralHomeId,
+          mainRecordType: 'funeralHome',
           updateTable: 'FuneralHomes'
         },
         differences,

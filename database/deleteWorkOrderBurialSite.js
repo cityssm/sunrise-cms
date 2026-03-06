@@ -32,10 +32,10 @@ export default function deleteWorkOrderBurialSite(workOrderId, burialSiteId, use
         .run(user.userName, Date.now(), workOrderId, burialSiteId);
     if (result.changes > 0 && auditLogIsEnabled) {
         createAuditLogEntries({
-            mainRecordType: 'workOrder',
             mainRecordId: workOrderId,
+            mainRecordType: 'workOrder',
+            recordIndex: burialSiteId,
             updateTable: 'WorkOrderBurialSites',
-            recordIndex: burialSiteId
         }, [
             {
                 property: '*',

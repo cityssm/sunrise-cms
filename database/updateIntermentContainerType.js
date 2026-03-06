@@ -48,8 +48,8 @@ export default function updateIntermentContainerType(updateForm, user, connected
         const differences = getObjectDifference(recordBefore, recordAfter);
         if (differences.length > 0) {
             createAuditLogEntries({
-                mainRecordType: 'intermentContainerType',
                 mainRecordId: updateForm.intermentContainerTypeId,
+                mainRecordType: 'intermentContainerType',
                 updateTable: 'IntermentContainerTypes'
             }, differences, user, database);
         }

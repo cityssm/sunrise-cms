@@ -97,10 +97,10 @@ export default function addWorkOrderContract(
 
     createAuditLogEntries(
       {
-        mainRecordType: 'workOrder',
         mainRecordId: addForm.workOrderId,
-        updateTable: 'WorkOrderContracts',
-        recordIndex: addForm.contractId
+        mainRecordType: 'workOrder',
+        recordIndex: addForm.contractId,
+        updateTable: 'WorkOrderContracts'
       },
       [
         {

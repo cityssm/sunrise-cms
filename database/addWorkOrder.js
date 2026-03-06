@@ -72,8 +72,8 @@ export default function addWorkOrder(workOrderForm, user, connectedDatabase) {
       `)
             .get(workOrderId);
         createAuditLogEntries({
-            mainRecordType: 'workOrder',
             mainRecordId: workOrderId,
+            mainRecordType: 'workOrder',
             updateTable: 'WorkOrders'
         }, [
             {
