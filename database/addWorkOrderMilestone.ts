@@ -102,7 +102,7 @@ export default function addWorkOrderMilestone(
         mainRecordId: milestoneForm.workOrderId,
         mainRecordType: 'workOrder',
         recordIndex: result.lastInsertRowid,
-        updateTable: 'WorkOrderMilestones',
+        updateTable: 'WorkOrderMilestones'
       },
       [
         {

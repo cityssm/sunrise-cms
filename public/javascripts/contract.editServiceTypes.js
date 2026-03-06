@@ -107,6 +107,7 @@
       `;
             return;
         }
+        /* eslint-disable html/require-closing-tags */
         let tableHTML = /* html */ `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
@@ -118,6 +119,7 @@
         </thead>
         <tbody>
     `;
+        /* eslint-enable html/require-closing-tags */
         for (const contractServiceType of contractServiceTypes) {
             tableHTML += /* html */ `
         <tr data-service-type-id="${contractServiceType.serviceTypeId.toString()}">

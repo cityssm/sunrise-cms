@@ -5,9 +5,9 @@ import type { Request, Response } from 'express'
 import getCemeteries from '../../database/getCemeteries.js'
 import { getCachedBurialSiteStatuses } from '../../helpers/cache/burialSiteStatuses.cache.js'
 import { getCachedBurialSiteTypes } from '../../helpers/cache/burialSiteTypes.cache.js'
+import { i18next } from '../../helpers/i18n.helpers.js'
 import { getBurialSiteImages } from '../../helpers/images.helpers.js'
 import type { BurialSite } from '../../types/record.types.js'
-import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default async function handler(
   request: Request,
@@ -58,7 +58,9 @@ export default async function handler(
   const burialSiteStatuses = getCachedBurialSiteStatuses()
 
   response.render('burialSites/edit', {
-    headTitle: i18next.t('cemeteries:createBurialSite', { lng: response.locals.lng }),
+    headTitle: i18next.t('cemeteries:createBurialSite', {
+      lng: response.locals.lng
+    }),
 
     burialSite,
     isCreate: true,

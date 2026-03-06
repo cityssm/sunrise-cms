@@ -28,7 +28,7 @@ function buildEventSummary(milestone) {
                 if (summary !== '') {
                     summary += ': ';
                 }
-                summary += interment.deceasedName ?? '';
+                summary += interment.deceasedName;
             }
         }
     }
@@ -81,7 +81,7 @@ function buildEventDescriptionHTML_occupancies(request, milestone) {
           <td>
       `;
             for (const interment of contract.contractInterments ?? []) {
-                descriptionHTML += `${escapeHTML(interment.deceasedName ?? '')}<br />`;
+                descriptionHTML += `${escapeHTML(interment.deceasedName)}<br />`;
             }
             descriptionHTML += '</td></tr>';
         }
@@ -237,13 +237,13 @@ function createCalendarEventFormMilestone(request, calendar, milestone) {
                 if (organizerSet) {
                     calendarEvent.createAttendee({
                         email: getConfigProperty('settings.workOrders.calendarEmailAddress'),
-                        name: interment.deceasedName ?? ''
+                        name: interment.deceasedName
                     });
                 }
                 else {
                     calendarEvent.organizer({
                         email: getConfigProperty('settings.workOrders.calendarEmailAddress'),
-                        name: interment.deceasedName ?? ''
+                        name: interment.deceasedName
                     });
                     organizerSet = true;
                 }

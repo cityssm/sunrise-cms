@@ -418,7 +418,7 @@ declare const exports: {
           /* html */ `
             <li>
               <span class="fa-li"><i class="fa-solid fa-user"></i></span>
-              ${cityssm.escapeHTML(interment.deceasedName ?? '')}<br />
+              ${cityssm.escapeHTML(interment.deceasedName)}<br />
               <a class="is-size-7" href="${sunrise.getContractUrl(contract.contractId)}" target="_blank">
                 Contract #${cityssm.escapeHTML(contract.contractNumber)}
               </a>

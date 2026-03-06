@@ -18,8 +18,8 @@ import { getCachedIntermentContainerTypes } from '../../helpers/cache/intermentC
 import { getCachedIntermentDepths } from '../../helpers/cache/intermentDepths.cache.js'
 import { getCachedSettingValue } from '../../helpers/cache/settings.cache.js'
 import { sunriseDB } from '../../helpers/database.helpers.js'
-import type { Contract } from '../../types/record.types.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
+import type { Contract } from '../../types/record.types.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:new`)
 
@@ -82,7 +82,9 @@ export default async function handler(
         : getBurialSiteDirectionsOfArrival(contract.burialSiteId, database)
 
     response.render('contracts/edit', {
-      headTitle: i18next.t('contracts:createNewContract', { lng: response.locals.lng }),
+      headTitle: i18next.t('contracts:createNewContract', {
+        lng: response.locals.lng
+      }),
 
       contract,
 

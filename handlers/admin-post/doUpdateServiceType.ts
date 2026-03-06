@@ -5,14 +5,22 @@ import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js
 import type { ServiceType } from '../../types/record.types.js'
 
 export type DoUpdateServiceTypeResponse =
-  | { success: false; errorMessage: string }
-  | { success: true; serviceTypes: ServiceType[] }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      serviceTypes: ServiceType[]
+    }
 
 export default function handler(
   request: Request<
     unknown,
     unknown,
-    { serviceTypeId: number | string; serviceType: string }
+    { serviceType: string; serviceTypeId: number | string }
   >,
   response: Response<DoUpdateServiceTypeResponse>
 ): void {

@@ -233,7 +233,7 @@ declare const exports: {
           <span class="fa-li">
             <i class="fa-solid fa-user" aria-label="Recipient"></i>
           </span>
-          ${cityssm.escapeHTML(interment.deceasedName ?? '')}
+          ${cityssm.escapeHTML(interment.deceasedName)}
         </li>
       `
     }

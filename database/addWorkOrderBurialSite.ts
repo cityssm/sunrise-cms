@@ -106,7 +106,7 @@ export default function addWorkOrderBurialSite(
         mainRecordId: workOrderBurialSiteForm.workOrderId,
         mainRecordType: 'workOrder',
         recordIndex: workOrderBurialSiteForm.burialSiteId,
-        updateTable: 'WorkOrderBurialSites',
+        updateTable: 'WorkOrderBurialSites'
       },
       [
         {

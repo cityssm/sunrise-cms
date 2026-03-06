@@ -9,7 +9,9 @@ export default function handler(request, response) {
     };
     const workOrderTypes = getCachedWorkOrderTypes();
     response.render('workOrders/edit', {
-        headTitle: i18next.t('workOrders:newWorkOrder', { lng: response.locals.lng }),
+        headTitle: i18next.t('workOrders:newWorkOrder', {
+            lng: response.locals.lng
+        }),
         workOrder,
         isCreate: true,
         workOrderTypes

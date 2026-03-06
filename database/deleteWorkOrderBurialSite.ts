@@ -48,7 +48,7 @@ export default function deleteWorkOrderBurialSite(
         mainRecordId: workOrderId,
         mainRecordType: 'workOrder',
         recordIndex: burialSiteId,
-        updateTable: 'WorkOrderBurialSites',
+        updateTable: 'WorkOrderBurialSites'
       },
       [
         {

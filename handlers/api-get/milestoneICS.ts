@@ -52,7 +52,7 @@ function buildEventSummary(milestone: WorkOrderMilestone): string {
           summary += ': '
         }
 
-        summary += interment.deceasedName ?? ''
+        summary += interment.deceasedName
       }
     }
   }
@@ -118,7 +118,7 @@ function buildEventDescriptionHTML_occupancies(
       `
 
       for (const interment of contract.contractInterments ?? []) {
-        descriptionHTML += `${escapeHTML(interment.deceasedName ?? '')}<br />`
+        descriptionHTML += `${escapeHTML(interment.deceasedName)}<br />`
       }
 
       descriptionHTML += '</td></tr>'
@@ -357,14 +357,14 @@ function createCalendarEventFormMilestone(
             email: getConfigProperty(
               'settings.workOrders.calendarEmailAddress'
             ),
-            name: interment.deceasedName ?? ''
+            name: interment.deceasedName
           })
         } else {
           calendarEvent.organizer({
             email: getConfigProperty(
               'settings.workOrders.calendarEmailAddress'
             ),
-            name: interment.deceasedName ?? ''
+            name: interment.deceasedName
           })
           organizerSet = true
         }
