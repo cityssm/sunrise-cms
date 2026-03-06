@@ -115,8 +115,8 @@ await describe('database/workOrders', async () => {
         let workOrderMilestoneId;
         before(() => {
             const cemeteryId = addCemetery({
+                cemeteryKey: 'WO',
                 cemeteryName: 'Work Order Test Cemetery',
-                cemeteryKey: 'WOTEST',
                 cemeteryDescription: '',
                 parentCemeteryId: '',
                 cemeteryLatitude: '',
@@ -131,17 +131,17 @@ await describe('database/workOrders', async () => {
             }, testUser);
             const burialSiteResult = addBurialSite({
                 cemeteryId,
-                burialSiteTypeId: 1,
-                burialSiteStatusId: 1,
                 burialSiteNameSegment1: 'WO',
-                burialSiteNameSegment2: '1'
+                burialSiteNameSegment2: '1',
+                burialSiteStatusId: 1,
+                burialSiteTypeId: 1
             }, testUser);
             burialSiteId = burialSiteResult.burialSiteId;
             contractId = addContract({
-                contractTypeId: 1,
                 burialSiteId,
-                contractStartDateString: '2024-01-01',
+                contractTypeId: 1,
                 contractEndDateString: '',
+                contractStartDateString: '2024-01-01',
                 purchaserName: 'Work Order Test Purchaser'
             }, testUser);
         });

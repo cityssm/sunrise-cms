@@ -149,10 +149,10 @@ export default function addContractInterment(
 
     createAuditLogEntries(
       {
-        mainRecordType: 'contract',
         mainRecordId: contractForm.contractId,
-        updateTable: 'ContractInterments',
-        recordIndex: newIntermentNumber
+        mainRecordType: 'contract',
+        recordIndex: newIntermentNumber,
+        updateTable: 'ContractInterments'
       },
       [
         {

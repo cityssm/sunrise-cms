@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-magic-numbers */
+
+import { daysToMillis } from '@cityssm/to-millis'
 import sqlite from 'better-sqlite3'
 
 import { sunriseDB } from '../helpers/database.helpers.js'
 
-export type PurgeAuditLogAge = 'all' | 'oneYear' | 'ninetyDays' | 'thirtyDays'
+export type PurgeAuditLogAge = 'all' | 'ninetyDays' | 'oneYear' | 'thirtyDays'
 
 export default function purgeAuditLog(
   age: PurgeAuditLogAge,
@@ -15,16 +18,16 @@ export default function purgeAuditLog(
   let minimumMillis: number
 
   switch (age) {
-    case 'thirtyDays': {
-      minimumMillis = currentMillis - 30 * 24 * 60 * 60 * 1000
-      break
-    }
     case 'ninetyDays': {
-      minimumMillis = currentMillis - 90 * 24 * 60 * 60 * 1000
+      minimumMillis = currentMillis - daysToMillis(90)
       break
     }
     case 'oneYear': {
-      minimumMillis = currentMillis - 365 * 24 * 60 * 60 * 1000
+      minimumMillis = currentMillis - daysToMillis(365)
+      break
+    }
+    case 'thirtyDays': {
+      minimumMillis = currentMillis - daysToMillis(30)
       break
     }
     default: {
@@ -35,8 +38,7 @@ export default function purgeAuditLog(
 
   const result = database
     .prepare(/* sql */ `
-      DELETE FROM
-        AuditLog
+      DELETE FROM AuditLog
       WHERE
         logMillis < ?
     `)

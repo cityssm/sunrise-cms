@@ -158,10 +158,10 @@ export default async function addContractFee(
           if (differences.length > 0) {
             createAuditLogEntries(
               {
-                mainRecordType: 'contract',
                 mainRecordId: addFeeForm.contractId,
-                updateTable: 'ContractFees',
-                recordIndex: String(addFeeForm.feeId)
+                mainRecordType: 'contract',
+                recordIndex: addFeeForm.feeId,
+                updateTable: 'ContractFees'
               },
               differences,
               user,
@@ -231,10 +231,10 @@ export default async function addContractFee(
           if (differences.length > 0) {
             createAuditLogEntries(
               {
-                mainRecordType: 'contract',
                 mainRecordId: addFeeForm.contractId,
-                updateTable: 'ContractFees',
-                recordIndex: String(addFeeForm.feeId)
+                mainRecordType: 'contract',
+                recordIndex: addFeeForm.feeId,
+                updateTable: 'ContractFees'
               },
               differences,
               user,
@@ -292,10 +292,10 @@ export default async function addContractFee(
 
       createAuditLogEntries(
         {
-          mainRecordType: 'contract',
           mainRecordId: addFeeForm.contractId,
-          updateTable: 'ContractFees',
-          recordIndex: String(addFeeForm.feeId)
+          mainRecordType: 'contract',
+          recordIndex: addFeeForm.feeId,
+          updateTable: 'ContractFees'
         },
         [
           {

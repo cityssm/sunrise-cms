@@ -102,10 +102,10 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                     const differences = getObjectDifference(recordBefore, recordAfter);
                     if (differences.length > 0) {
                         createAuditLogEntries({
-                            mainRecordType: 'contract',
                             mainRecordId: addFeeForm.contractId,
-                            updateTable: 'ContractFees',
-                            recordIndex: String(addFeeForm.feeId)
+                            mainRecordType: 'contract',
+                            recordIndex: addFeeForm.feeId,
+                            updateTable: 'ContractFees'
                         }, differences, user, database);
                     }
                 }
@@ -157,10 +157,10 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
                     const differences = getObjectDifference(recordBefore, recordAfter);
                     if (differences.length > 0) {
                         createAuditLogEntries({
-                            mainRecordType: 'contract',
                             mainRecordId: addFeeForm.contractId,
-                            updateTable: 'ContractFees',
-                            recordIndex: String(addFeeForm.feeId)
+                            mainRecordType: 'contract',
+                            recordIndex: addFeeForm.feeId,
+                            updateTable: 'ContractFees'
                         }, differences, user, database);
                     }
                 }
@@ -199,10 +199,10 @@ export default async function addContractFee(addFeeForm, user, connectedDatabase
         `)
                 .get(addFeeForm.contractId, addFeeForm.feeId);
             createAuditLogEntries({
-                mainRecordType: 'contract',
                 mainRecordId: addFeeForm.contractId,
-                updateTable: 'ContractFees',
-                recordIndex: String(addFeeForm.feeId)
+                mainRecordType: 'contract',
+                recordIndex: addFeeForm.feeId,
+                updateTable: 'ContractFees'
             }, [
                 {
                     property: '*',

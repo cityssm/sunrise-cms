@@ -169,18 +169,22 @@ await describe('database/workOrders', async () => {
     before(() => {
       const cemeteryId = addCemetery(
         {
+          cemeteryKey: 'WO',
           cemeteryName: 'Work Order Test Cemetery',
-          cemeteryKey: 'WOTEST',
+
           cemeteryDescription: '',
           parentCemeteryId: '',
+
           cemeteryLatitude: '',
           cemeteryLongitude: '',
           cemeterySvg: '',
+
           cemeteryAddress1: '',
           cemeteryAddress2: '',
           cemeteryCity: '',
           cemeteryPostalCode: '',
           cemeteryProvince: '',
+
           cemeteryPhoneNumber: ''
         },
         testUser
@@ -189,10 +193,11 @@ await describe('database/workOrders', async () => {
       const burialSiteResult = addBurialSite(
         {
           cemeteryId,
-          burialSiteTypeId: 1,
-          burialSiteStatusId: 1,
+
           burialSiteNameSegment1: 'WO',
-          burialSiteNameSegment2: '1'
+          burialSiteNameSegment2: '1',
+          burialSiteStatusId: 1,
+          burialSiteTypeId: 1
         },
         testUser
       )
@@ -200,10 +205,12 @@ await describe('database/workOrders', async () => {
 
       contractId = addContract(
         {
-          contractTypeId: 1,
           burialSiteId,
-          contractStartDateString: '2024-01-01',
+          contractTypeId: 1,
+
           contractEndDateString: '',
+          contractStartDateString: '2024-01-01',
+
           purchaserName: 'Work Order Test Purchaser'
         },
         testUser
@@ -214,6 +221,7 @@ await describe('database/workOrders', async () => {
       workOrderId = addWorkOrder(
         {
           workOrderTypeId: 1,
+
           workOrderDescription: 'Test Work Order',
           workOrderOpenDateString: '2024-01-01'
         },
@@ -280,6 +288,7 @@ await describe('database/workOrders', async () => {
       const success = updateWorkOrderComment(
         {
           workOrderCommentId,
+
           comment: 'Updated comment',
           commentDateString: '2024-01-02',
           commentTimeString: '10:00'

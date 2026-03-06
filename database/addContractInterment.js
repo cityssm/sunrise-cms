@@ -91,10 +91,10 @@ export default function addContractInterment(contractForm, user, connectedDataba
       `)
             .get(contractForm.contractId, newIntermentNumber);
         createAuditLogEntries({
-            mainRecordType: 'contract',
             mainRecordId: contractForm.contractId,
-            updateTable: 'ContractInterments',
-            recordIndex: newIntermentNumber
+            mainRecordType: 'contract',
+            recordIndex: newIntermentNumber,
+            updateTable: 'ContractInterments'
         }, [
             {
                 property: '*',

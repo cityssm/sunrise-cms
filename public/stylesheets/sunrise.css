@@ -197,6 +197,7 @@ span.button.is-static {
  */
 
 .textarea {
+  /* eslint-disable-next-line css/use-baseline */
   resize: vertical;
 }
 
@@ -242,6 +243,7 @@ span.button.is-static {
 }
 
 .image svg text {
+  /* eslint-disable-next-line css/use-baseline */
   user-select: none;
 }
 
