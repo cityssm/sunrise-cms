@@ -11,19 +11,14 @@ permissions: read-all
 jobs:
   Ubuntu:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node: [24]
-
-    name: Ubuntu - Node ${{ matrix.node }}
+    name: Ubuntu - Node 24
     steps:
       - uses: actions/checkout@v6
 
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 24
           cache: 'npm'
 
       - name: Install Application (CI)
