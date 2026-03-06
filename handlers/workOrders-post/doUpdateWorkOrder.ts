@@ -5,7 +5,11 @@ import updateWorkOrder, {
 } from '../../database/updateWorkOrder.js'
 
 export type DoUpdateWorkOrderResponse =
-  | { errorMessage: string; success: false }
+  | {
+      success: false
+
+      errorMessage: string
+    }
   | {
       success: true
       workOrderId: number | string
@@ -21,6 +25,7 @@ export default function handler(
     response
       .status(400)
       .json({ errorMessage: 'Failed to update work order', success: false })
+
     return
   }
 

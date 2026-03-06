@@ -17,7 +17,11 @@ const debug = Debug(
 )
 
 export type DoUpdateWorkdayWorkOrderMilestoneTimeResponse =
-  | { errorMessage: string; success: false }
+  | {
+      success: false
+
+      errorMessage: string
+    }
   | { success: true; workOrders: WorkOrder[] }
 
 export default async function handler(

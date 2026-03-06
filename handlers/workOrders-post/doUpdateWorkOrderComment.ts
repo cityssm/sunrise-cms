@@ -15,9 +15,14 @@ const debug = Debug(
 )
 
 export type DoUpdateWorkOrderCommentResponse =
-  | { errorMessage: string; success: false }
+  | {
+      success: false
+
+      errorMessage: string
+    }
   | {
       success: true
+
       workOrderComments: WorkOrderComment[]
     }
 

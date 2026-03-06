@@ -71,6 +71,7 @@ export default async function handler(
     if (!success) {
       response.json({
         success: false,
+
         errorMessage: 'Failed to update attachment.'
       })
       return

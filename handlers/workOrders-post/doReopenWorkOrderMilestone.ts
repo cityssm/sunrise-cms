@@ -13,8 +13,16 @@ const debug = Debug(
 )
 
 export type DoReopenWorkOrderMilestoneResponse =
-  | { errorMessage: string; success: false }
-  | { success: true; workOrderMilestones: WorkOrderMilestone[] }
+  | {
+      errorMessage: string
+
+      success: false
+    }
+  | {
+      success: true
+
+      workOrderMilestones: WorkOrderMilestone[]
+    }
 
 export default async function handler(
   request: Request<

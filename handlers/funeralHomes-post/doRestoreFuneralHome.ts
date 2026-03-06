@@ -3,7 +3,11 @@ import type { Request, Response } from 'express'
 import { restoreFuneralHome } from '../../database/restoreFuneralHome.js'
 
 export type DoRestoreFuneralHomeResponse =
-  | { errorMessage: string; success: false }
+  | {
+      success: false
+
+      errorMessage: string
+    }
   | {
       success: true
 

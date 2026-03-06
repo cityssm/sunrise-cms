@@ -15,7 +15,11 @@ const debug = Debug(
 )
 
 export type DoUpdateContractTransactionResponse =
-  | { errorMessage: string; success: false }
+  | {
+      success: false
+
+      errorMessage: string
+    }
   | {
       success: true
 

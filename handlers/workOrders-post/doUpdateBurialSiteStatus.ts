@@ -13,7 +13,11 @@ const debug = Debug(
 )
 
 export type DoUpdateBurialSiteStatusResponse =
-  | { errorMessage: string; success: false }
+  | {
+      success: false
+
+      errorMessage: string
+    }
   | {
       success: true
       workOrderBurialSites: BurialSite[]
@@ -40,12 +44,10 @@ export default function handler(
     )
 
     if (!success) {
-      response
-        .status(400)
-        .json({
-          errorMessage: 'Failed to update burial site status',
-          success: false
-        })
+      response.status(400).json({
+        errorMessage: 'Failed to update burial site status',
+        success: false
+      })
       return
     }
 

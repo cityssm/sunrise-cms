@@ -23,6 +23,7 @@ export default function handler(
     {
       contractId: number | string
       serviceTypeId: number | string
+
       contractServiceDetails?: string
     }
   >,
