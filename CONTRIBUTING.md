@@ -34,7 +34,8 @@ open an issue and use the closest template.
 
 ## Financial Contributions
 
-**The City of Sault Ste. Marie does not accept financial contributions for its freely available open source work.**
+**The City of Sault Ste. Marie does not accept financial contributions**
+**for its freely available open source work.**
 
 However, Sunrise CMS relies on several packages that do accept donations.
 Some of the main ones:
