@@ -1,0 +1,16 @@
+---
+# Haskell Dockerfile Linter 2.12.0
+# docker run --rm -i -v %CD%/.hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint < Dockerfile
+
+failure-threshold: none
+format: tty
+ignored: [ ]
+no-color: false
+no-fail: false
+override:
+  error: [ ]
+  warning: [ ]
+  info: [ ]
+  style: [ ]
+strict-labels: true
+disable-ignore-pragma: false
