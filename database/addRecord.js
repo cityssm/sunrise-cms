@@ -80,22 +80,22 @@ function addRecord(record, user, connectedDatabase) {
 }
 export function addBurialSiteStatus(burialSiteStatus, orderNumber, user, connectedDatabase) {
     return addRecord({
-        recordTable: 'BurialSiteStatuses',
         recordName: burialSiteStatus,
+        recordTable: 'BurialSiteStatuses',
         orderNumber
     }, user, connectedDatabase);
 }
 export function addWorkOrderMilestoneType(workOrderMilestoneType, orderNumber, user, connectedDatabase) {
     return addRecord({
-        recordTable: 'WorkOrderMilestoneTypes',
         recordName: workOrderMilestoneType,
+        recordTable: 'WorkOrderMilestoneTypes',
         orderNumber
     }, user, connectedDatabase);
 }
 export function addWorkOrderType(workOrderType, orderNumber, user, connectedDatabase) {
     return addRecord({
-        recordTable: 'WorkOrderTypes',
         recordName: workOrderType,
+        recordTable: 'WorkOrderTypes',
         orderNumber
     }, user, connectedDatabase);
 }

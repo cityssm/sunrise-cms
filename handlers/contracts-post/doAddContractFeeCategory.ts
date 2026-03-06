@@ -15,8 +15,16 @@ const debug = Debug(
 )
 
 export type DoAddContractFeeCategoryResponse =
-  | { errorMessage: string; success: false }
-  | { success: true; contractFees: ContractFee[] }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      contractFees: ContractFee[]
+    }
 
 export default async function handler(
   request: Request<unknown, unknown, AddContractCategoryForm>,

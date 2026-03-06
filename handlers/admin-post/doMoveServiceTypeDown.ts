@@ -8,8 +8,16 @@ import { getCachedServiceTypes } from '../../helpers/cache/serviceTypes.cache.js
 import type { ServiceType } from '../../types/record.types.js'
 
 export type DoMoveServiceTypeDownResponse =
-  | { success: false; errorMessage: string }
-  | { success: true; serviceTypes: ServiceType[] }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      serviceTypes: ServiceType[]
+    }
 
 export default function handler(
   request: Request<
@@ -29,11 +37,13 @@ export default function handler(
 
     response.json({
       success: true,
+
       serviceTypes
     })
   } else {
     response.json({
       success: false,
+
       errorMessage: 'Service Type Not Moved'
     })
   }

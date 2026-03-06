@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
 import { type AddBurialSiteForm } from '../../database/addBurialSite.js';
 export type DoCreateBurialSiteResponse = {
-    success: false;
     errorMessage: string;
+    success: false;
 } | {
     success: true;
     burialSiteId: number;

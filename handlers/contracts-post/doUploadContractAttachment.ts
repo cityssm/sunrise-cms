@@ -14,7 +14,11 @@ export interface UploadContractAttachmentForm {
 }
 
 export type DoUploadContractAttachmentResponse =
-  | { success: false; errorMessage: string }
+  | {
+      success: false
+
+      errorMessage: string
+    }
   | {
       success: true
 

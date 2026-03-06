@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
 import type { FeeCategory } from '../../types/record.types.js';
 export type DoUpdateFeeCategoryResponse = {
-    errorMessage: string;
     success: false;
+    errorMessage: string;
 } | {
     success: true;
     feeCategories: FeeCategory[];

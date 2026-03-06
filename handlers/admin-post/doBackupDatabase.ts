@@ -3,8 +3,16 @@ import type { Request, Response } from 'express'
 import { backupDatabase } from '../../database/backupDatabase.js'
 
 export type DoBackupDatabaseResponse =
-  | { success: false; errorMessage: string }
-  | { success: true; fileName: string | undefined }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      fileName: string | undefined
+    }
 
 export default async function handler(
   _request: Request,

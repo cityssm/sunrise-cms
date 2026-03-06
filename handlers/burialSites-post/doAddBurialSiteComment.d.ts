@@ -2,8 +2,8 @@ import type { Request, Response } from 'express';
 import { type AddBurialSiteCommentForm } from '../../database/addBurialSiteComment.js';
 import type { BurialSiteComment } from '../../types/record.types.js';
 export type DoAddBurialSiteCommentResponse = {
-    errorMessage: string;
     success: false;
+    errorMessage: string;
 } | {
     success: true;
     burialSiteComments: BurialSiteComment[];

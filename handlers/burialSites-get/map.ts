@@ -7,7 +7,10 @@ export default function handler(request: Request, response: Response): void {
   const cemeteries = getCemeteries()
 
   response.render('burialSites/map', {
-    headTitle: i18next.t('cemeteries:burialSiteMap', { lng: response.locals.lng }),
+    headTitle: i18next.t('cemeteries:burialSiteMap', {
+      lng: response.locals.lng
+    }),
+
     cemeteries,
     cemeteryId: request.query.cemeteryId ?? ''
   })

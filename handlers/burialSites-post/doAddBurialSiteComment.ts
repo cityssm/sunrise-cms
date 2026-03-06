@@ -15,8 +15,16 @@ const debug = Debug(
 )
 
 export type DoAddBurialSiteCommentResponse =
-  | { errorMessage: string; success: false }
-  | { success: true; burialSiteComments: BurialSiteComment[] }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      burialSiteComments: BurialSiteComment[]
+    }
 
 export default function handler(
   request: Request<unknown, unknown, AddBurialSiteCommentForm>,

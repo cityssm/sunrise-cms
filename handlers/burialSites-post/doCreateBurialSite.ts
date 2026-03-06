@@ -6,8 +6,17 @@ import addBurialSite, {
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
 export type DoCreateBurialSiteResponse =
-  | { success: false; errorMessage: string }
-  | { success: true; burialSiteId: number; burialSiteName: string }
+  | {
+      errorMessage: string
+
+      success: false
+    }
+  | {
+      success: true
+
+      burialSiteId: number
+      burialSiteName: string
+    }
 
 export default function handler(
   request: Request<unknown, unknown, AddBurialSiteForm>,

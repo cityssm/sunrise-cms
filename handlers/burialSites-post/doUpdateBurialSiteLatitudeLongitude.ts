@@ -3,7 +3,11 @@ import type { Request, Response } from 'express'
 import { updateBurialSiteLatitudeLongitude } from '../../database/updateBurialSite.js'
 
 export type DoUpdateBurialSiteLatitudeLongitudeResponse =
-  | { success: false; errorMessage: string }
+  | {
+      success: false
+
+      errorMessage: string
+    }
   | { success: true }
 
 export default function handler(
@@ -29,6 +33,7 @@ export default function handler(
     if (!success) {
       response.status(400).json({
         success: false,
+
         errorMessage: 'Failed to update burial site latitude and longitude'
       })
       return

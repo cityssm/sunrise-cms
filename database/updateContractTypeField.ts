@@ -15,6 +15,8 @@ export interface UpdateContractTypeFieldForm {
   pattern?: string
 }
 
+const DEFAULT_MAX_FIELD_LENGTH = 100
+
 export default function updateContractTypeField(
   updateForm: UpdateContractTypeFieldForm,
   user: User,
@@ -44,7 +46,7 @@ export default function updateContractTypeField(
       Number.parseInt(updateForm.isRequired, 10),
       updateForm.fieldType ?? 'text',
       updateForm.minLength ?? 0,
-      updateForm.maxLength ?? 100,
+      updateForm.maxLength ?? DEFAULT_MAX_FIELD_LENGTH,
       updateForm.pattern ?? '',
       updateForm.fieldValues,
       user.userName,

@@ -141,9 +141,7 @@ declare const exports: {
           })
         }
 
-        if (callbackFunction !== undefined) {
-          callbackFunction(responseJSON.success)
-        }
+        callbackFunction?.(responseJSON.success)
       }
     )
   }

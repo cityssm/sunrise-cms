@@ -15,8 +15,16 @@ const debug = Debug(
 )
 
 export type DoAddRelatedContractResponse =
-  | { errorMessage: string; success: false }
-  | { success: true; relatedContracts: Contract[] }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      relatedContracts: Contract[]
+    }
 
 export default async function handler(
   request: Request<unknown, unknown, AddRelatedContractForm>,
@@ -51,9 +59,11 @@ export default async function handler(
     })
   } catch (error) {
     debug(error)
-    response
-      .status(500)
-      .json({ errorMessage: 'Database error', success: false })
+    response.status(500).json({
+      success: false,
+
+      errorMessage: 'Database error'
+    })
   } finally {
     database?.close()
   }

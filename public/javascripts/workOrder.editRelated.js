@@ -74,9 +74,7 @@
                     message: responseJSON.errorMessage
                 });
             }
-            if (callbackFunction !== undefined) {
-                callbackFunction(responseJSON.success);
-            }
+            callbackFunction?.(responseJSON.success);
         });
     }
     function addBurialSiteFromContract(clickEvent) {

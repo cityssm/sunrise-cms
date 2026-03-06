@@ -15,8 +15,16 @@ const debug = Debug(
 )
 
 export type DoAddContractCommentResponse =
-  | { errorMessage: string; success: false }
-  | { success: true; contractComments: ContractComment[] }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      contractComments: ContractComment[]
+    }
 
 export default function handler(
   request: Request<unknown, unknown, AddContractCommentForm>,

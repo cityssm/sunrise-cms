@@ -13,8 +13,16 @@ import type { FeeCategory } from '../../types/record.types.js'
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:admin:doUpdateFeeCategory`)
 
 export type DoUpdateFeeCategoryResponse =
-  | { errorMessage: string; success: false }
-  | { success: true; feeCategories: FeeCategory[] }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      feeCategories: FeeCategory[]
+    }
 
 export default function handler(
   request: Request,

@@ -6,8 +6,16 @@ import updateBurialSite, {
 import { clearNextPreviousBurialSiteIdCache } from '../../helpers/burialSites.helpers.js'
 
 export type DoUpdateBurialSiteResponse =
-  | { success: false; errorMessage: string }
-  | { success: true; burialSiteId: number }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      burialSiteId: number
+    }
 
 export default function handler(
   request: Request<unknown, unknown, UpdateBurialSiteForm>,
@@ -17,9 +25,12 @@ export default function handler(
     const success = updateBurialSite(request.body, request.session.user as User)
 
     if (!success) {
-      response
-        .status(400)
-        .json({ success: false, errorMessage: 'Failed to update burial site' })
+      response.status(400).json({
+        success: false,
+
+        errorMessage: 'Failed to update burial site'
+      })
+
       return
     }
 

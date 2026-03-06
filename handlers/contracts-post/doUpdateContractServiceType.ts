@@ -5,7 +5,11 @@ import updateContractServiceType from '../../database/updateContractServiceType.
 import type { ServiceType } from '../../types/record.types.js'
 
 export type DoUpdateContractServiceTypeResponse =
-  | { success: false; errorMessage: string }
+  | {
+      success: false
+
+      errorMessage: string
+    }
   | {
       success: true
 
@@ -36,11 +40,13 @@ export default function handler(
 
     response.json({
       success: true,
+
       contractServiceTypes
     })
   } else {
     response.json({
       success: false,
+
       errorMessage: 'Service Type Not Updated'
     })
   }

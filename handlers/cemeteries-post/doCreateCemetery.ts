@@ -5,7 +5,11 @@ import addCemetery, {
 } from '../../database/addCemetery.js'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoCreateCemeteryResponse = { success: true; cemeteryId: number }
+export type DoCreateCemeteryResponse = {
+  success: true
+
+  cemeteryId: number
+}
 
 export default function handler(
   request: Request<unknown, unknown, AddCemeteryForm>,

@@ -3,7 +3,11 @@ import type { Request, Response } from 'express'
 import reopenWorkOrder from '../../database/reopenWorkOrder.js'
 
 export type DoReopenWorkOrderResponse =
-  | { success: false; errorMessage: string }
+  | {
+      success: false
+
+      errorMessage: string
+    }
   | {
       success: true
       workOrderId: string

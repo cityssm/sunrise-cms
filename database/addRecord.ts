@@ -48,8 +48,9 @@ const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 function addRecord(
   record: {
-    recordTable: RecordTable
     recordName: string
+    recordTable: RecordTable
+
     orderNumber: number | string
   },
   user: User,
@@ -136,8 +137,9 @@ export function addBurialSiteStatus(
 ): number {
   return addRecord(
     {
-      recordTable: 'BurialSiteStatuses',
       recordName: burialSiteStatus,
+      recordTable: 'BurialSiteStatuses',
+
       orderNumber
     },
     user,
@@ -153,8 +155,9 @@ export function addWorkOrderMilestoneType(
 ): number {
   return addRecord(
     {
-      recordTable: 'WorkOrderMilestoneTypes',
       recordName: workOrderMilestoneType,
+      recordTable: 'WorkOrderMilestoneTypes',
+
       orderNumber
     },
     user,
@@ -170,8 +173,9 @@ export function addWorkOrderType(
 ): number {
   return addRecord(
     {
-      recordTable: 'WorkOrderTypes',
       recordName: workOrderType,
+      recordTable: 'WorkOrderTypes',
+
       orderNumber
     },
     user,

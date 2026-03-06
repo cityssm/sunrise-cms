@@ -15,7 +15,11 @@ const debug = Debug(
 )
 
 export type DoUpdateBurialSiteCommentResponse =
-  | { errorMessage: string; success: false }
+  | {
+      success: false
+
+      errorMessage: string
+    }
   | {
       success: true
 

@@ -13,8 +13,16 @@ import type { ContractFee } from '../../types/record.types.js'
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:doAddContractFee`)
 
 export type DoAddContractFeeResponse =
-  | { errorMessage: string; success: false }
-  | { success: true; contractFees: ContractFee[] }
+  | {
+      success: false
+
+      errorMessage: string
+    }
+  | {
+      success: true
+
+      contractFees: ContractFee[]
+    }
 
 export default async function handler(
   request: Request<unknown, unknown, AddContractFeeForm>,
