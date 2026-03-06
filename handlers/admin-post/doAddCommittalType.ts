@@ -6,8 +6,6 @@ import type { CommittalType } from '../../types/record.types.js'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoAddCommittalTypeResponse = {
-  success: true
-
   committalTypeId: number
   committalTypes: CommittalType[]
 }
@@ -28,8 +26,6 @@ export default function handler(
   const committalTypes = getCachedCommittalTypes()
 
   response.json({
-    success: true,
-
     committalTypeId,
     committalTypes
   })

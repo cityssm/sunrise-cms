@@ -11,9 +11,7 @@ export default function handler(request, response) {
         database = sqlite(sunriseDB);
         const success = updateBurialSiteStatus(request.body.burialSiteId, request.body.burialSiteStatusId, request.session.user, database);
         if (!success) {
-            response
-                .status(400)
-                .json({
+            response.status(400).json({
                 errorMessage: 'Failed to update burial site status',
                 success: false
             });

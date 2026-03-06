@@ -24,7 +24,7 @@
     workOrderFormElement.addEventListener('submit', (submitEvent) => {
         submitEvent.preventDefault();
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/${isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'}`, submitEvent.currentTarget, (responseJSON) => {
-            if (responseJSON.success) {
+            if (!('success' in responseJSON) || responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
                     globalThis.location.href = sunrise.getWorkOrderUrl(responseJSON.workOrderId, true);

@@ -74,10 +74,12 @@ declare const exports: {
     }
   }
 
-  function contractTypeResponseHandler(
-    responseJSON: DoUpdateContractTypeResponse
-  ): void {
-    if (responseJSON.success) {
+  function contractTypeResponseHandler(responseJSON: {
+    allContractTypeFields: ContractTypeField[]
+    contractTypes: ContractType[]
+    success?: boolean
+  }): void {
+    if (responseJSON.success !== false) {
       contractTypes = responseJSON.contractTypes
       allContractTypeFields = responseJSON.allContractTypeFields
       renderContractTypes()

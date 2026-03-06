@@ -4,7 +4,6 @@ export default function handler(request, response) {
     const workOrderTypeId = addWorkOrderType(request.body.workOrderType, request.body.orderNumber ?? -1, request.session.user);
     const workOrderTypes = getCachedWorkOrderTypes();
     response.json({
-        success: true,
         workOrderTypeId,
         workOrderTypes
     });

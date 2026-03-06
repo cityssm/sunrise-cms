@@ -3,8 +3,8 @@ import type { Request, Response } from 'express';
 import { type UpdateWorkOrderMilestoneTimeForm } from '../../database/updateWorkOrderMilestoneTime.js';
 import type { WorkOrder } from '../../types/record.types.js';
 export type DoUpdateWorkdayWorkOrderMilestoneTimeResponse = {
-    errorMessage: string;
     success: false;
+    errorMessage: string;
 } | {
     success: true;
     workOrders: WorkOrder[];

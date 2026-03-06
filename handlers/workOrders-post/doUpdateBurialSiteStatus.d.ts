@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
 import type { BurialSite } from '../../types/record.types.js';
 export type DoUpdateBurialSiteStatusResponse = {
-    errorMessage: string;
     success: false;
+    errorMessage: string;
 } | {
     success: true;
     workOrderBurialSites: BurialSite[];

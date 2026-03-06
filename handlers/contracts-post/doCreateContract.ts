@@ -6,8 +6,6 @@ import addContract, {
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoCreateContractResponse = {
-  success: true
-
   contractId: number
 }
 
@@ -18,8 +16,6 @@ export default function handler(
   const contractId = addContract(request.body, request.session.user as User)
 
   response.json({
-    success: true,
-
     contractId
   })
 }

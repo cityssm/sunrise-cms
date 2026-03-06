@@ -72,9 +72,9 @@ declare const exports: {
   }
 
   function burialSiteTypeResponseHandler(
-    responseJSON: DoUpdateBurialSiteTypeResponse
+    responseJSON: { burialSiteTypes: BurialSiteType[]; success?: boolean }
   ): void {
-    if (responseJSON.success) {
+    if (responseJSON.success !== false) {
       burialSiteTypes = responseJSON.burialSiteTypes
       renderBurialSiteTypes()
     } else {

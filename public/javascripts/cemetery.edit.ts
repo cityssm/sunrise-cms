@@ -74,7 +74,7 @@ declare const exports: {
       `${sunrise.urlPrefix}/cemeteries/${isCreate ? 'doCreateCemetery' : 'doUpdateCemetery'}`,
       cemeteryForm,
       (responseJSON: DoCreateCemeteryResponse | DoUpdateCemeteryResponse) => {
-        if (responseJSON.success) {
+        if (!('success' in responseJSON) || responseJSON.success) {
           clearUnsavedChanges()
 
           if (isCreate) {

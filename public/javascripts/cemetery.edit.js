@@ -36,7 +36,7 @@
     function updateCemetery(formEvent) {
         formEvent.preventDefault();
         cityssm.postJSON(`${sunrise.urlPrefix}/cemeteries/${isCreate ? 'doCreateCemetery' : 'doUpdateCemetery'}`, cemeteryForm, (responseJSON) => {
-            if (responseJSON.success) {
+            if (!('success' in responseJSON) || responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
                     globalThis.location.href = sunrise.getCemeteryUrl(responseJSON.cemeteryId, true);
