@@ -25,7 +25,8 @@ export default function getFeeCategories(
 
   const updateOrderNumbers =
     !database.readonly &&
-    !(filters.burialSiteTypeId || filters.contractTypeId) &&
+    filters.burialSiteTypeId === undefined &&
+    filters.contractTypeId === undefined &&
     options.includeFees
 
   let sqlWhereClause = ' WHERE recordDelete_timeMillis IS NULL'

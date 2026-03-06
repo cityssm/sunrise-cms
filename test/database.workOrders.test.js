@@ -56,11 +56,11 @@ await describe('database/workOrders', async () => {
     });
     await describe('can execute getWorkOrders()', async () => {
         const options = {
-            limit: 10,
-            offset: 0,
             includeBurialSites: false,
             includeComments: false,
-            includeMilestones: false
+            includeMilestones: false,
+            limit: 10,
+            offset: 0
         };
         await it('executes without filters', async () => {
             await getWorkOrders({}, options, database);

@@ -62,7 +62,7 @@ process.title = `${getConfigProperty('application.applicationName')} (Worker)`
 
 const httpPort = getConfigProperty('application.httpPort')
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
+// eslint-disable-next-line @typescript-eslint/no-misused-promises, @typescript-eslint/strict-void-return -- false positive
 const httpServer = http.createServer(app)
 
 httpServer

@@ -4,7 +4,8 @@ import { updateRecordOrderNumber } from './updateRecordOrderNumber.js';
 export default function getFees(feeCategoryId, additionalFilters, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const updateOrderNumbers = !database.readonly &&
-        !(additionalFilters.burialSiteTypeId || additionalFilters.contractTypeId);
+        additionalFilters.burialSiteTypeId === undefined &&
+        additionalFilters.contractTypeId === undefined;
     let sqlWhereClause = ' where f.recordDelete_timeMillis IS NULL and f.feeCategoryId = ?';
     const sqlParameters = [feeCategoryId];
     if (additionalFilters.contractTypeId) {

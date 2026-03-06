@@ -1,3 +1,4 @@
+/* eslint-disable require-atomic-updates */
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import chokidar from 'chokidar';
