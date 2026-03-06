@@ -30,7 +30,7 @@
     "lint:eslint:css": "eslint **/*.css",
     "lint:eslint:html": "eslint public/html/*.html",
     "lint:eslint:md": "eslint **/*.md",
-    "lint:eslint:ts": "eslint **/*.ts --ignore-pattern \"**/*.d.ts\"",
+    "lint:eslint:ts": "eslint **/*.ts --ignore-pattern \"**/*.d.ts\" --no-warn-ignored",
     "start": "cross-env NODE_ENV=production node ./index.js",
     "task:puppeteerSetup": "cross-env NODE_ENV=development DEBUG=sunrise:* node ./tasks/puppeteerSetup.task.js",
     "temp:legacyImportFromCsv": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true DISABLE_AUDIT_LOG=true node ./temp/legacyImportFromCsv/index.js",

@@ -36,6 +36,7 @@ jobs:
       - run: editorconfig-checker
 
       - name: Run Markdownlint Check
+        if: ${{ (success() || failure()) }}
         uses: DavidAnson/markdownlint-cli2-action@v22
 
       - name: Run ESLint Check (TypeScript)
