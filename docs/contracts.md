@@ -11,7 +11,7 @@ and at-need burial site interments.
 
 ## Key Contract Fields
 
-**End Date**<br />
+**End Date**  
 When set, the end date is considered the date the contract no longer applies.
 In the case of a preneed contract, an end date should be applied when
 the recipient passes and is interred in the burial site.

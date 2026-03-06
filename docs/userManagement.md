@@ -16,19 +16,19 @@ User authentication is based on [settings in the `config.js` file](./configJs.md
 
 ## Permissions
 
-**Can Login**<br />
+**Can Login**  
 Required to allow a user to log in. Users who are able to log in have
 read access to all types of records in the system.
 
-**Can Update Cemeteries**<br />
+**Can Update Cemeteries**  
 Users have the ability to maintain cemetery and burial site records.
 
-**Can Update Contracts**<br />
+**Can Update Contracts**  
 Users have the ability to maintain contracts and funeral home records.
 
-**Can Update Work Orders**<br />
+**Can Update Work Orders**  
 Users have the ability to maintain work orders.
 
-**Administrator**<br />
+**Administrator**  
 Users have access to the administrator interfaces, with the ability to maintain
 droplist options, fees, and other application settings.
