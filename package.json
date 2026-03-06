@@ -29,7 +29,7 @@
     "lint:editorconfig": "editorconfig-checker",
     "start": "cross-env NODE_ENV=production node ./index.js",
     "task:puppeteerSetup": "cross-env NODE_ENV=development DEBUG=sunrise:* node ./tasks/puppeteerSetup.task.js",
-    "temp:legacyImportFromCsv": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true node ./temp/legacyImportFromCsv/index.js",
+    "temp:legacyImportFromCsv": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true DISABLE_AUDIT_LOG=true node ./temp/legacyImportFromCsv/index.js",
     "test": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true node --test --test-concurrency 1 \"./test/*.test.js\"",
     "test:i18n": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true node --test ./test/helpers.i18n.test.js",
     "test:pdf": "cross-env NODE_ENV=development DEBUG=sunrise:*,pdf-puppeteer:*,puppeteer-launch:* TEST_DATABASES=true node --test ./test/helpers.pdf.test.js",
