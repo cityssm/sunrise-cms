@@ -280,7 +280,7 @@ declare const exports: {
   document
     .querySelector('#button--purgeAuditLog')
     ?.addEventListener('click', () => {
-      let closeModalFunction: () => void
+      let closeModalFunction: (() => void) | undefined
 
       function doSubmitPurge(submitEvent: Event): void {
         submitEvent.preventDefault()
@@ -294,7 +294,8 @@ declare const exports: {
           ageSelectElement.options[ageSelectElement.selectedIndex]
             .textContent ?? ''
 
-        closeModalFunction()
+        closeModalFunction?.()
+
         doPurge(age, ageLabel)
       }
 
