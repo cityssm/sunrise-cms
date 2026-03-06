@@ -6,8 +6,6 @@ import type { BurialSiteStatus } from '../../types/record.types.js'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoAddBurialSiteStatusResponse = {
-  success: true
-
   burialSiteStatuses: BurialSiteStatus[]
   burialSiteStatusId: number
 }
@@ -29,8 +27,6 @@ export default function handler(
   const burialSiteStatuses = getCachedBurialSiteStatuses()
 
   response.json({
-    success: true,
-
     burialSiteStatuses,
     burialSiteStatusId
   })

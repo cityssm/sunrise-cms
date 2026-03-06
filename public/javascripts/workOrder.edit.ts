@@ -71,7 +71,7 @@ declare const exports: {
       `${sunrise.urlPrefix}/workOrders/${isCreate ? 'doCreateWorkOrder' : 'doUpdateWorkOrder'}`,
       submitEvent.currentTarget,
       (responseJSON: DoCreateWorkOrderResponse | DoUpdateWorkOrderResponse) => {
-        if (responseJSON.success) {
+        if (!('success' in responseJSON) || responseJSON.success) {
           clearUnsavedChanges()
           if (isCreate) {
             globalThis.location.href = sunrise.getWorkOrderUrl(

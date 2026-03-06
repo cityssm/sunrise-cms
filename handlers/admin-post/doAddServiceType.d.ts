@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express';
 import type { ServiceType } from '../../types/record.types.js';
 export type DoAddServiceTypeResponse = {
-    success: true;
     serviceTypeId: number;
     serviceTypes: ServiceType[];
 };

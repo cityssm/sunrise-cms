@@ -2,8 +2,8 @@ import type { Request, Response } from 'express';
 import type { ContractAttachment } from '../../types/record.types.js';
 export interface UpdateContractAttachmentForm {
     contractAttachmentId: string;
-    attachmentTitle?: string;
     attachmentDetails?: string;
+    attachmentTitle?: string;
 }
 export type DoUpdateContractAttachmentResponse = {
     success: false;

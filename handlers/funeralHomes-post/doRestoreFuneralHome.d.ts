@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 export type DoRestoreFuneralHomeResponse = {
-    errorMessage: string;
     success: false;
+    errorMessage: string;
 } | {
     success: true;
     funeralHomeId: number;

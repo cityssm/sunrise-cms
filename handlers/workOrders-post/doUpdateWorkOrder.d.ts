@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
 import { type UpdateWorkOrderForm } from '../../database/updateWorkOrder.js';
 export type DoUpdateWorkOrderResponse = {
-    errorMessage: string;
     success: false;
+    errorMessage: string;
 } | {
     success: true;
     workOrderId: number | string;

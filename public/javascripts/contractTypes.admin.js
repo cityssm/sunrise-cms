@@ -26,7 +26,7 @@
         }
     }
     function contractTypeResponseHandler(responseJSON) {
-        if (responseJSON.success) {
+        if (responseJSON.success !== false) {
             contractTypes = responseJSON.contractTypes;
             allContractTypeFields = responseJSON.allContractTypeFields;
             renderContractTypes();

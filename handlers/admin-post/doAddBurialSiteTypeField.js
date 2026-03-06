@@ -4,7 +4,6 @@ export default function handler(request, response) {
     const burialSiteTypeFieldId = addBurialSiteTypeField(request.body, request.session.user);
     const burialSiteTypes = getCachedBurialSiteTypes();
     response.json({
-        success: true,
         burialSiteTypeFieldId,
         burialSiteTypes
     });

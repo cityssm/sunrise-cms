@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express';
 import type { WorkOrderMilestoneType } from '../../types/record.types.js';
 export type DoAddWorkOrderMilestoneTypeResponse = {
-    success: true;
     workOrderMilestoneTypeId: number;
     workOrderMilestoneTypes: WorkOrderMilestoneType[];
 };

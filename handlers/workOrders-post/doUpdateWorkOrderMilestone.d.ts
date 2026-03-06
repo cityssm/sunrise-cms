@@ -2,8 +2,8 @@ import type { Request, Response } from 'express';
 import { type UpdateWorkOrderMilestoneForm } from '../../database/updateWorkOrderMilestone.js';
 import type { WorkOrderMilestone } from '../../types/record.types.js';
 export type DoUpdateWorkOrderMilestoneResponse = {
-    errorMessage: string;
     success: false;
+    errorMessage: string;
 } | {
     success: true;
     workOrderMilestones: WorkOrderMilestone[];

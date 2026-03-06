@@ -23,7 +23,7 @@
     formElement.addEventListener('submit', (formEvent) => {
         formEvent.preventDefault();
         cityssm.postJSON(`${sunrise.urlPrefix}/contracts/${isCreate ? 'doCreateContract' : 'doUpdateContract'}`, formElement, (responseJSON) => {
-            if (responseJSON.success) {
+            if (!('success' in responseJSON) || responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate || refreshAfterSave) {
                     globalThis.location.href = sunrise.getContractUrl(responseJSON.contractId, true, true);

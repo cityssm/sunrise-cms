@@ -25,8 +25,8 @@ export default async function handler(request, response) {
     }
     try {
         const success = updateContractAttachment(contractAttachmentId, {
-            attachmentTitle: request.body.attachmentTitle ?? '',
-            attachmentDetails: request.body.attachmentDetails ?? ''
+            attachmentDetails: request.body.attachmentDetails ?? '',
+            attachmentTitle: request.body.attachmentTitle ?? ''
         }, request.session.user);
         if (!success) {
             response.json({

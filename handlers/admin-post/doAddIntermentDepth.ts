@@ -8,8 +8,6 @@ import type { IntermentDepth } from '../../types/record.types.js'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoAddIntermentDepthResponse = {
-  success: true
-
   intermentDepthId: number
   intermentDepths: IntermentDepth[]
 }
@@ -26,8 +24,6 @@ export default function handler(
   const intermentDepths = getCachedIntermentDepths()
 
   response.json({
-    success: true,
-
     intermentDepthId,
     intermentDepths
   })

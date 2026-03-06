@@ -4,7 +4,6 @@ export default function handler(request, response) {
     const intermentContainerTypeId = addIntermentContainerType(request.body, request.session.user);
     const intermentContainerTypes = getCachedIntermentContainerTypes();
     response.json({
-        success: true,
         intermentContainerTypeId,
         intermentContainerTypes
     });

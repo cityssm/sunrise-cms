@@ -25,7 +25,7 @@
         }
     }
     function burialSiteTypeResponseHandler(responseJSON) {
-        if (responseJSON.success) {
+        if (responseJSON.success !== false) {
             burialSiteTypes = responseJSON.burialSiteTypes;
             renderBurialSiteTypes();
         }

@@ -5,7 +5,6 @@ export default function handler(request, response) {
     const contractTypes = getCachedContractTypes();
     const allContractTypeFields = getAllCachedContractTypeFields();
     response.json({
-        success: true,
         allContractTypeFields,
         contractTypeId,
         contractTypes

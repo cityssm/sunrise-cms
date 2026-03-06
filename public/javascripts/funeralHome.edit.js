@@ -18,7 +18,7 @@
     function updateFuneralHome(formEvent) {
         formEvent.preventDefault();
         cityssm.postJSON(`${sunrise.urlPrefix}/funeralHomes/${isCreate ? 'doCreateFuneralHome' : 'doUpdateFuneralHome'}`, funeralHomeForm, (responseJSON) => {
-            if (responseJSON.success) {
+            if (!('success' in responseJSON) || responseJSON.success) {
                 clearUnsavedChanges();
                 if (isCreate) {
                     globalThis.location.href = sunrise.getFuneralHomeUrl(responseJSON.funeralHomeId, true);

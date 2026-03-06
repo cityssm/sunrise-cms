@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express';
 import type { WorkOrderType } from '../../types/record.types.js';
 export type DoAddWorkOrderTypeResponse = {
-    success: true;
     workOrderTypeId: number;
     workOrderTypes: WorkOrderType[];
 };
