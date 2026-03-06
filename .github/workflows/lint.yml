@@ -26,12 +26,35 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: 'npm'
 
-      - name: Set up EditorConfig Check
-        uses: editorconfig-checker/action-editorconfig-checker@v2.1.0
+      - name: Install Application (CI)
+        id: installCi
+        continue-on-error: true
+        run: npm ci
+
+      - name: Install Application (Install)
+        if: steps.installCi.outcome == 'failure'
+        run: npm install
 
       - name: Run EditorConfig Check
-        run: editorconfig-checker
+        uses: editorconfig-checker/action-editorconfig-checker@v2.1.0
+
+      - run: editorconfig-checker
 
       - name: Run Markdownlint Check
         uses: DavidAnson/markdownlint-cli2-action@v22
-        continue-on-error: true
+
+      - name: Run ESLint Check (TypeScript)
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:eslint:ts
+
+      - name: Run ESLint Check (CSS)
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:eslint:css
+
+      - name: Run ESLint Check (HTML)
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:eslint:html
+
+      - name: Run ESLint Check (Markdown)
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:eslint:md

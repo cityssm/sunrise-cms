@@ -70,5 +70,10 @@ export const config = defineConfig(configWebApp, {
             }
         ]
     }
+}, {
+    files: ['**/*.md'],
+    rules: {
+        'markdown/no-missing-label-refs': 'off'
+    }
 });
 export default config;
