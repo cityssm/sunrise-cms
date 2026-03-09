@@ -54,6 +54,3 @@ jobs:
         if: ${{ (success() || failure()) }}
         run: npm run lint:eslint:md
 
-      - name: Run EditorConfig Check Again
-        if: ${{ (success() || failure()) }}
-        run: npm run lint:editorconfig
