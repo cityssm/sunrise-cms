@@ -22,6 +22,15 @@ describe('Login Page', () => {
             matchCase: false
         });
     });
+    it('Has working help documentation and GitHub links', () => {
+        cy.get('a[href^="https://cityssm.github.io"], a[href^="https://github.com"]').each(($link) => {
+            const href = $link.attr('href');
+            cy.request({
+                url: href,
+                failOnStatusCode: false
+            }).its('status').should('be.lessThan', 400);
+        });
+    });
     it('Redirects to login when attempting to access dashboard', () => {
         cy.visit('/dashboard');
         cy.wait(200);
