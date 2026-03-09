@@ -1,5 +1,5 @@
 import { testAdmin } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
 describe('Admin - Contract Type Management', () => {
     const contractTypeTitleSelector = '.container--contractType .panel-heading .title';
     beforeEach('Loads page', () => {
@@ -12,6 +12,7 @@ describe('Admin - Contract Type Management', () => {
     it('Adds a new contract type', () => {
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
+        checkDeadLinks();
         cy.get('#button--addContractType').click();
         cy.get('.modal').should('be.visible');
         cy.injectAxe();

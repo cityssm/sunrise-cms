@@ -1,6 +1,6 @@
 import { testAdmin } from '../../../test/_globals.js'
 import type { BurialSiteType } from '../../../types/record.types.js'
-import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js'
+import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js'
 
 describe('Admin - Burial Site Type Management', () => {
   const burialSiteTypeTitleSelector =
@@ -18,6 +18,7 @@ describe('Admin - Burial Site Type Management', () => {
   it('Has no detectable accessibility issues', () => {
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
+    checkDeadLinks()
   })
 
   it('Adds a new burial site type', () => {

@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js'
-import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js'
+import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js'
 
 describe('Burial Site Search', () => {
   beforeEach(() => {
@@ -16,6 +16,7 @@ describe('Burial Site Search', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
+    checkDeadLinks()
   })
 
   it('Can view a burial site from the search results', () => {
@@ -37,6 +38,7 @@ describe('Burial Site Search', () => {
 
         cy.injectAxe()
         cy.checkA11y(undefined, undefined, checkA11yLog)
+        checkDeadLinks()
       })
   })
 })

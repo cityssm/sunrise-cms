@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js'
-import { checkA11yLog, login, logout } from '../../support/index.js'
+import { checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js'
 
 describe('Work Order iCalendar Integration', () => {
   beforeEach(() => {
@@ -15,5 +15,6 @@ describe('Work Order iCalendar Integration', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
+    checkDeadLinks()
   })
 })

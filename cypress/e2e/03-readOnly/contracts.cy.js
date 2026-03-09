@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
 describe('Contract Search', () => {
     beforeEach(() => {
         logout();
@@ -10,6 +10,7 @@ describe('Contract Search', () => {
         cy.visit('/contracts');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
+        checkDeadLinks();
         cy.get('#searchFilter--cemeteryId').should('not.be.visible');
         cy.get('a[data-cy="location-filters-toggle"]').click();
         cy.get('#searchFilter--cemeteryId').should('be.visible');
@@ -46,6 +47,7 @@ describe('Contract Search', () => {
             cy.log('Check accessibility on the contract view page');
             cy.injectAxe();
             cy.checkA11y(undefined, undefined, checkA11yLog);
+            checkDeadLinks();
         });
     });
 });

@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
 describe('Reports', () => {
     beforeEach(() => {
         logout();
@@ -12,6 +12,7 @@ describe('Reports', () => {
         cy.location('pathname').should('equal', '/reports');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
+        checkDeadLinks();
     });
     it('Exports all reports without parameters', () => {
         cy.get("a:not(.is-hidden)[download][href*='/reports/']").each(($reportLink) => {

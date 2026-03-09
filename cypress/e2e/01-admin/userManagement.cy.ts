@@ -2,7 +2,7 @@
 
 import { testAdmin } from '../../../test/_globals.js'
 import type { DatabaseUser } from '../../../types/record.types.js'
-import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js'
+import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js'
 
 describe('Admin - User Management', () => {
   beforeEach('Loads page', () => {
@@ -17,6 +17,7 @@ describe('Admin - User Management', () => {
   it('Has no detectable accessibility issues', () => {
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
+    checkDeadLinks()
   })
 
   it('Adds a new user', () => {

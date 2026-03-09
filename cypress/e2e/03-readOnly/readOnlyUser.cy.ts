@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js'
-import { checkA11yLog, login, logout } from '../../support/index.js'
+import { checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js'
 
 describe('Read Only User', () => {
   beforeEach(() => {
@@ -16,6 +16,7 @@ describe('Read Only User', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
+    checkDeadLinks()
 
     cy.log('Has no links to new areas')
 
