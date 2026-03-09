@@ -9,9 +9,9 @@ on:
 permissions: read-all
 
 jobs:
-  Ubuntu:
-    runs-on: ubuntu-latest
-    name: Ubuntu - Node 24
+  Windows:
+    runs-on: windows-latest
+    name: Windows - Node 24
     steps:
       - uses: actions/checkout@v6
 
