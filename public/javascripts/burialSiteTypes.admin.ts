@@ -71,17 +71,18 @@ declare const exports: {
     }
   }
 
-  function burialSiteTypeResponseHandler(
-    responseJSON: { burialSiteTypes: BurialSiteType[]; success?: boolean }
-  ): void {
-    if (responseJSON.success !== false) {
-      burialSiteTypes = responseJSON.burialSiteTypes
-      renderBurialSiteTypes()
-    } else {
+  function burialSiteTypeResponseHandler(responseJSON: {
+    burialSiteTypes: BurialSiteType[]
+    success?: boolean
+  }): void {
+    if (responseJSON.success === false) {
       bulmaJS.alert({
         contextualColorName: 'danger',
         message: 'Error Updating Burial Site Type'
       })
+    } else {
+      burialSiteTypes = responseJSON.burialSiteTypes
+      renderBurialSiteTypes()
     }
   }
 

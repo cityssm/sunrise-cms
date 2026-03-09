@@ -79,15 +79,15 @@ declare const exports: {
     contractTypes: ContractType[]
     success?: boolean
   }): void {
-    if (responseJSON.success !== false) {
-      contractTypes = responseJSON.contractTypes
-      allContractTypeFields = responseJSON.allContractTypeFields
-      renderContractTypes()
-    } else {
+    if (responseJSON.success === false) {
       bulmaJS.alert({
         contextualColorName: 'danger',
         message: 'Error Updating Contract Type'
       })
+    } else {
+      contractTypes = responseJSON.contractTypes
+      allContractTypeFields = responseJSON.allContractTypeFields
+      renderContractTypes()
     }
   }
 
