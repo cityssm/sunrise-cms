@@ -14,7 +14,7 @@ export default function handler(
   request: Request<
     unknown,
     unknown,
-    { serviceType: string; orderNumber?: number | string }
+    { orderNumber?: number | string; serviceType: string }
   >,
   response: Response<DoAddServiceTypeResponse>
 ): void {

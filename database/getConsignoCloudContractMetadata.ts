@@ -18,8 +18,9 @@ export default function getConsignoCloudContractMetadata(
     metadata[row.contractId] ??= {
       workflowId: '',
       workflowStatus: '',
-      workflowEditUrl: '',
-      workflowUser: ''
+      workflowUser: '',
+
+      workflowEditUrl: ''
     }
 
     metadata[row.contractId][key] = row.metadataValue

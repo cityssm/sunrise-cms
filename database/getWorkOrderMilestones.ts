@@ -41,7 +41,7 @@ interface WorkOrderMilestoneOptions {
 }
 
 // eslint-disable-next-line security/detect-unsafe-regex
-const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/
+const commaSeparatedNumbersRegex = /^\d+(?:,\d+)*$/v
 
 export default async function getWorkOrderMilestones(
   filters: WorkOrderMilestoneFilters,
@@ -248,7 +248,10 @@ function buildWhereClause(filters: WorkOrderMilestoneFilters): {
       const yearMonth = yearNumber * 10_000 + monthNumber * 100
 
       sqlWhereClause += ' and m.workOrderMilestoneDate between ? and ?'
+
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       sqlParameters.push(yearMonth, yearMonth + 100)
+
       break
     }
 

@@ -17,6 +17,8 @@ export interface UpdateBurialSiteTypeFieldForm {
   pattern?: string
 }
 
+const DEFAULT_MAX_LENGTH = 100
+
 export default function updateBurialSiteTypeField(
   updateForm: UpdateBurialSiteTypeFieldForm,
   user: User,
@@ -46,7 +48,7 @@ export default function updateBurialSiteTypeField(
       Number.parseInt(updateForm.isRequired, 10),
       updateForm.fieldType ?? 'text',
       updateForm.minLength ?? 0,
-      updateForm.maxLength ?? 100,
+      updateForm.maxLength ?? DEFAULT_MAX_LENGTH,
       updateForm.pattern ?? '',
       updateForm.fieldValues,
       user.userName,

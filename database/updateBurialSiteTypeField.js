@@ -1,6 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
+const DEFAULT_MAX_LENGTH = 100;
 export default function updateBurialSiteTypeField(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const result = database
@@ -20,7 +21,7 @@ export default function updateBurialSiteTypeField(updateForm, user, connectedDat
         burialSiteTypeFieldId = ?
         AND recordDelete_timeMillis IS NULL
     `)
-        .run(updateForm.burialSiteTypeField, Number.parseInt(updateForm.isRequired, 10), updateForm.fieldType ?? 'text', updateForm.minLength ?? 0, updateForm.maxLength ?? 100, updateForm.pattern ?? '', updateForm.fieldValues, user.userName, Date.now(), updateForm.burialSiteTypeFieldId);
+        .run(updateForm.burialSiteTypeField, Number.parseInt(updateForm.isRequired, 10), updateForm.fieldType ?? 'text', updateForm.minLength ?? 0, updateForm.maxLength ?? DEFAULT_MAX_LENGTH, updateForm.pattern ?? '', updateForm.fieldValues, user.userName, Date.now(), updateForm.burialSiteTypeFieldId);
     if (connectedDatabase === undefined) {
         database.close();
     }

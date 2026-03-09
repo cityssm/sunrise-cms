@@ -43,6 +43,7 @@ export default function updateCemeteryDirectionsOfArrival(
           VALUES
             (?, ?, ?)
         `)
+        // eslint-disable-next-line security/detect-object-injection -- safe because directionDescriptionName is derived from a fixed list of directionsOfArrival values
         .run(cemeteryId, direction, updateForm[directionDescriptionName] ?? '')
 
       updateCount += 1
