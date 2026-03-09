@@ -40,6 +40,10 @@ jobs:
         if: ${{ (success() || failure()) }}
         run: npm run lint:editorconfig
 
+      - name: Run EditorConfig Check Again
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:editorconfig
+
       - name: Run Markdownlint Check
         if: ${{ (success() || failure()) }}
         run: npm run lint:markdown
