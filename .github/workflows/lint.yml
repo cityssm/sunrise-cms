@@ -31,7 +31,9 @@ jobs:
         run: npm install
 
       - name: Run EditorConfig Check
-        run: npm run lint:editorconfig
+        uses: editorconfig-checker/action-editorconfig-checker@v2.1.0
+
+      - run: editorconfig-checker
 
       - name: Run Markdownlint Check
         if: ${{ (success() || failure()) }}
