@@ -30,11 +30,15 @@ jobs:
         if: steps.installCi.outcome == 'failure'
         run: npm install
 
-      - name: Install EditorConfig Action
-        uses: editorconfig-checker/action-editorconfig-checker@v2.1.0
+      #- name: Install EditorConfig Action
+      #  uses: editorconfig-checker/action-editorconfig-checker@v2.1.0
+
+      #- name: Run EditorConfig Check
+      #  run: editorconfig-checker
 
       - name: Run EditorConfig Check
-        run: editorconfig-checker
+        if: ${{ (success() || failure()) }}
+        run: npm run lint:editorconfig
 
       - name: Run Markdownlint Check
         if: ${{ (success() || failure()) }}
