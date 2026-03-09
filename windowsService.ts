@@ -1,4 +1,3 @@
-// test
 import path from 'node:path'
 
 import type { ServiceConfig } from 'node-windows'

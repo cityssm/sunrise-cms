@@ -1,4 +1,4 @@
-* text=auto
+* text=auto eol=lf
 
 # Shell scripts:LF
 *.sh     text eol=lf

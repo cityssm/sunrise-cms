@@ -1,4 +1,3 @@
-// test
 import path from 'node:path';
 const _dirname = '.';
 export const serviceConfig = {
