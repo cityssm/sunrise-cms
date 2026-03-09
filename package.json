@@ -26,7 +26,7 @@
     "dev:live:inspect": "cross-env NODE_ENV=development DEBUG=sunrise:* nodemon --inspect ./index.js",
     "dev:test": "cross-env NODE_ENV=development DEBUG=sunrise:*,pdf-puppeteer:* TEST_DATABASES=true nodemon ./index.js",
     "dev:test:inspect": "cross-env NODE_ENV=development DEBUG=sunrise:*,pdf-puppeteer:* TEST_DATABASES=true nodemon --inspect ./index.js",
-    "lint:editorconfig": "editorconfig-checker",
+    "lint:editorconfig": "editorconfig-checker -h",
     "lint:eslint:css": "eslint **/*.css",
     "lint:eslint:html": "eslint public/html/*.html",
     "lint:eslint:md": "eslint **/*.md",
