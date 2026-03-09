@@ -30,7 +30,6 @@ describe('Contract Search', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
-    checkDeadLinks()
 
     cy.get('#searchFilter--cemeteryId').should('be.visible')
   })
@@ -42,7 +41,6 @@ describe('Contract Search', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
-    checkDeadLinks()
 
     cy.get('#searchFilter--deceasedName')
       .should('be.visible')

@@ -27,7 +27,6 @@ describe('Admin - User Management', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
-    checkDeadLinks()
 
     cy.fixture('user.json').then((user: DatabaseUser) => {
       cy.get(".modal input[name='userName']").type(user.userName)

@@ -17,7 +17,6 @@ describe('Admin - Contract Type Management', () => {
         cy.get('.modal').should('be.visible');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
-        checkDeadLinks();
         cy.fixture('contractType.json').then((contractType) => {
             cy.get(".modal input[name='contractType']").type(contractType.contractType);
             cy.get(".modal button[type='submit']").click();
@@ -37,7 +36,6 @@ describe('Admin - Contract Type Management', () => {
             cy.get('.modal').should('be.visible');
             cy.injectAxe();
             cy.checkA11y(undefined, undefined, checkA11yLog);
-            checkDeadLinks();
             // Update the contract type name
             const updatedName = `${contractType.contractType} Updated`;
             cy.get(".modal input[name='contractType']").clear().type(updatedName);

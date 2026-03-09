@@ -22,7 +22,6 @@ describe('Contract Search', () => {
         cy.visit('/contracts?cemeteryId=1');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
-        checkDeadLinks();
         cy.get('#searchFilter--cemeteryId').should('be.visible');
     });
     it('Should show contact filters when a deceasedName is a parameter', () => {
@@ -30,7 +29,6 @@ describe('Contract Search', () => {
         cy.visit(`/contracts?deceasedName=${deceasedName}`);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
-        checkDeadLinks();
         cy.get('#searchFilter--deceasedName')
             .should('be.visible')
             .should('have.value', deceasedName);

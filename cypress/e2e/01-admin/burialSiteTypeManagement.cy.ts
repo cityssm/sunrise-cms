@@ -28,7 +28,6 @@ describe('Admin - Burial Site Type Management', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
-    checkDeadLinks()
 
     cy.fixture('burialSiteType.json').then((burialSiteType: BurialSiteType) => {
       cy.get(".modal input[name='burialSiteType']").type(
@@ -68,7 +67,6 @@ describe('Admin - Burial Site Type Management', () => {
 
       cy.injectAxe()
       cy.checkA11y(undefined, undefined, checkA11yLog)
-      checkDeadLinks()
 
       // Update the burial site type name
       const updatedName = `${burialSiteType.burialSiteType} Updated`

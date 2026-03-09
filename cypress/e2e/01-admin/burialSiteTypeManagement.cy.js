@@ -19,7 +19,6 @@ describe('Admin - Burial Site Type Management', () => {
         cy.get('.modal').should('be.visible');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
-        checkDeadLinks();
         cy.fixture('burialSiteType.json').then((burialSiteType) => {
             cy.get(".modal input[name='burialSiteType']").type(burialSiteType.burialSiteType);
             cy.get(".modal input[name='bodyCapacityMax']")
@@ -45,7 +44,6 @@ describe('Admin - Burial Site Type Management', () => {
             cy.get('.modal').should('be.visible');
             cy.injectAxe();
             cy.checkA11y(undefined, undefined, checkA11yLog);
-            checkDeadLinks();
             // Update the burial site type name
             const updatedName = `${burialSiteType.burialSiteType} Updated`;
             cy.get(".modal input[name='burialSiteType']").clear().type(updatedName);

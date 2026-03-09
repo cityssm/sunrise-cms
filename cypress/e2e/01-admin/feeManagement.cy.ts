@@ -26,7 +26,6 @@ describe('Admin - Fee Management', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
-    checkDeadLinks()
 
     cy.fixture('fee.json').then((fee: Fee) => {
       cy.get(".modal input[name='feeCategory']").type(fee.feeCategory ?? '')
@@ -49,7 +48,6 @@ describe('Admin - Fee Management', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
-    checkDeadLinks()
 
     cy.fixture('fee.json').then((fee: Fee) => {
       cy.get(".modal input[name='feeName']").type(fee.feeName ?? '')

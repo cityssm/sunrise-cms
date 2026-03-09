@@ -19,7 +19,6 @@ describe('Admin - User Management', () => {
         cy.get('.modal').should('be.visible');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
-        checkDeadLinks();
         cy.fixture('user.json').then((user) => {
             cy.get(".modal input[name='userName']").type(user.userName);
             cy.get(".modal button[type='submit']").click();

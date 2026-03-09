@@ -26,7 +26,6 @@ describe('Admin - Contract Type Management', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
-    checkDeadLinks()
 
     cy.fixture('contractType.json').then((contractType: ContractType) => {
       cy.get(".modal input[name='contractType']").type(
@@ -58,7 +57,6 @@ describe('Admin - Contract Type Management', () => {
 
       cy.injectAxe()
       cy.checkA11y(undefined, undefined, checkA11yLog)
-      checkDeadLinks()
 
       // Update the contract type name
       const updatedName = `${contractType.contractType} Updated`

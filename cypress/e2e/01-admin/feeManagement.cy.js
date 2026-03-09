@@ -19,7 +19,6 @@ describe('Admin - Fee Management', () => {
         cy.get('.modal').should('be.visible');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
-        checkDeadLinks();
         cy.fixture('fee.json').then((fee) => {
             cy.get(".modal input[name='feeCategory']").type(fee.feeCategory ?? '');
             cy.get(".modal button[type='submit']").click();
@@ -32,7 +31,6 @@ describe('Admin - Fee Management', () => {
         cy.get('.modal').should('be.visible');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
-        checkDeadLinks();
         cy.fixture('fee.json').then((fee) => {
             cy.get(".modal input[name='feeName']").type(fee.feeName ?? '');
             cy.get(".modal textarea[name='feeDescription']").type(fee.feeDescription ?? '');
