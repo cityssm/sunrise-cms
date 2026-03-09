@@ -14,8 +14,6 @@ import type {
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoAddContractTypeResponse = {
-  success: true
-
   allContractTypeFields: ContractTypeField[]
   contractTypeId: number
   contractTypes: ContractType[]
@@ -34,8 +32,6 @@ export default function handler(
   const allContractTypeFields = getAllCachedContractTypeFields()
 
   response.json({
-    success: true,
-
     allContractTypeFields,
     contractTypeId,
     contractTypes

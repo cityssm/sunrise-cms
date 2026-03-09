@@ -70,7 +70,7 @@ declare const exports: {
       `${sunrise.urlPrefix}/contracts/${isCreate ? 'doCreateContract' : 'doUpdateContract'}`,
       formElement,
       (responseJSON: DoCreateContractResponse | DoUpdateContractResponse) => {
-        if (responseJSON.success) {
+        if (!('success' in responseJSON) || responseJSON.success) {
           clearUnsavedChanges()
 
           if (isCreate || refreshAfterSave) {
@@ -769,8 +769,6 @@ declare const exports: {
       },
       (rawResponseJSON) => {
         const responseJSON = rawResponseJSON as {
-          success: boolean
-
           funeralDirectorNames: string[]
         }
 

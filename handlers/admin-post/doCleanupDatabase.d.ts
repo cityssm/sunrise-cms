@@ -1,6 +1,5 @@
 import type { Request, Response } from 'express';
 export type DoCleanupDatabaseResponse = {
-    success: true;
     inactivatedRecordCount: number;
     purgedRecordCount: number;
 };

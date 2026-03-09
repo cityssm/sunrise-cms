@@ -2,8 +2,8 @@ import type { Request, Response } from 'express';
 import { type AddRelatedContractForm } from '../../database/addRelatedContract.js';
 import type { Contract } from '../../types/record.types.js';
 export type DoAddRelatedContractResponse = {
-    errorMessage: string;
     success: false;
+    errorMessage: string;
 } | {
     success: true;
     relatedContracts: Contract[];

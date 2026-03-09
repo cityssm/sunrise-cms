@@ -26,9 +26,10 @@ export default async function handler(request, response) {
     }
     catch (error) {
         debug(error);
-        response
-            .status(500)
-            .json({ errorMessage: 'Database error', success: false });
+        response.status(500).json({
+            success: false,
+            errorMessage: 'Database error'
+        });
     }
     finally {
         database?.close();

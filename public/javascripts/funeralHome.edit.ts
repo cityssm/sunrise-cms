@@ -48,7 +48,7 @@ declare const exports: {
       (
         responseJSON: DoCreateFuneralHomeResponse | DoUpdateFuneralHomeResponse
       ) => {
-        if (responseJSON.success) {
+        if (!('success' in responseJSON) || responseJSON.success) {
           clearUnsavedChanges()
 
           if (isCreate) {

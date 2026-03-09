@@ -4,8 +4,6 @@ import getFuneralDirectorNamesByFuneralHomeId from '../../database/getFuneralDir
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
 export type DoGetFuneralDirectorsResponse = {
-  success: true
-
   funeralDirectorNames: string[]
 }
 
@@ -19,8 +17,6 @@ export default function handler(
     getFuneralDirectorNamesByFuneralHomeId(funeralHomeId)
 
   response.json({
-    success: true,
-
     funeralDirectorNames
   })
 }

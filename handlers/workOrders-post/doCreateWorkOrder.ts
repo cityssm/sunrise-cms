@@ -5,7 +5,7 @@ import addWorkOrder, {
 } from '../../database/addWorkOrder.js'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoCreateWorkOrderResponse = { success: true; workOrderId: number }
+export type DoCreateWorkOrderResponse = { workOrderId: number }
 
 export default function handler(
   request: Request,
@@ -17,7 +17,6 @@ export default function handler(
   )
 
   response.json({
-    success: true,
     workOrderId
   })
 }
