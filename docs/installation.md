@@ -128,7 +128,7 @@ by creating a service that can start with the hosting server.
 
     > windowsService-install
 
-## Step 5a: The application won't start!
+## Step 5a: The application won't start
 
 If the application won't start, it can be run with debug output using the
 following command.

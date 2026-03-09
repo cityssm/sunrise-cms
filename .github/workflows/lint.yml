@@ -31,13 +31,11 @@ jobs:
         run: npm install
 
       - name: Run EditorConfig Check
-        uses: editorconfig-checker/action-editorconfig-checker@v2.1.0
-
-      - run: editorconfig-checker
+        run: npm run lint:editorconfig
 
       - name: Run Markdownlint Check
         if: ${{ (success() || failure()) }}
-        uses: DavidAnson/markdownlint-cli2-action@v22
+        run: npm run lint:markdown
 
       - name: Run ESLint Check (TypeScript)
         if: ${{ (success() || failure()) }}

@@ -31,6 +31,7 @@
     "lint:eslint:html": "eslint public/html/*.html",
     "lint:eslint:md": "eslint **/*.md",
     "lint:eslint:ts": "eslint --ignore-pattern \"**/*.d.ts\" --ignore-pattern \"test/**\" --ignore-pattern \"temp/**\" --no-warn-ignored **/*.ts **/**/*.ts",
+    "lint:markdown": "markdownlint-cli2 --config .markdownlint.json \"**/*.md\" \"#node_modules\" \"#.github\"",
     "start": "cross-env NODE_ENV=production node ./index.js",
     "task:puppeteerSetup": "cross-env NODE_ENV=development DEBUG=sunrise:* node ./tasks/puppeteerSetup.task.js",
     "temp:legacyImportFromCsv": "cross-env NODE_ENV=development DEBUG=sunrise:* TEST_DATABASES=true DISABLE_AUDIT_LOG=true node ./temp/legacyImportFromCsv/index.js",
@@ -110,6 +111,7 @@
     "cypress-axe": "^1.7.0",
     "editorconfig-checker": "^6.1.1",
     "eslint-config-cityssm": "^38.4.0",
+    "markdownlint-cli2": "^0.21.0",
     "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.1.1"
   },
