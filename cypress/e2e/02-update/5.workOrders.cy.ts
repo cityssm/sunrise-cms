@@ -1,6 +1,6 @@
 import { testUpdate } from '../../../test/_globals.js'
 import {
-  checkA11yLog,
+  checkA11yLog, checkDeadLinks,
   login,
   logout,
   pageLoadDelayMillis,
@@ -27,6 +27,7 @@ describe('Work Orders - Update', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
+    checkDeadLinks()
 
     cy.log('Submit the form using defaults')
 
@@ -41,6 +42,7 @@ describe('Work Orders - Update', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
+    checkDeadLinks()
 
     cy.log('Print the work order')
 

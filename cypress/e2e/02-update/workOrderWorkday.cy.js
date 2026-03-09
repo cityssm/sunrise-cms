@@ -1,5 +1,5 @@
 import { testUpdate } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
 describe('Work Orders - Workday Report', () => {
     beforeEach(() => {
         logout();
@@ -13,6 +13,7 @@ describe('Work Orders - Workday Report', () => {
         cy.location('pathname').should('equal', workdayUrl);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
+        checkDeadLinks();
         // Get the initial date string
         cy.get(dateSpanSelector).invoke('text').as('initialDateString');
         // Verify the date changes when clicking next day

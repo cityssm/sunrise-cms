@@ -40,3 +40,14 @@ export function checkA11yLog(violations: axe.Result[]): void {
     }
   }
 }
+
+export function checkDeadLinks(): void {
+  cy.get('a[href^="https://"]').each(($link) => {
+    const href = $link.attr('href') as string
+    cy.request({
+      url: href,
+      failOnStatusCode: false,
+      timeout: 10_000
+    }).its('status').should('be.lessThan', 400)
+  })
+}

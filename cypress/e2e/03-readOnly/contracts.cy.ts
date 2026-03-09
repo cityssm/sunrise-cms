@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js'
-import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js'
+import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js'
 
 describe('Contract Search', () => {
   beforeEach(() => {
@@ -14,6 +14,7 @@ describe('Contract Search', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
+    checkDeadLinks()
 
     cy.get('#searchFilter--cemeteryId').should('not.be.visible')
     cy.get('a[data-cy="location-filters-toggle"]').click()
@@ -29,6 +30,7 @@ describe('Contract Search', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
+    checkDeadLinks()
 
     cy.get('#searchFilter--cemeteryId').should('be.visible')
   })
@@ -40,6 +42,7 @@ describe('Contract Search', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, checkA11yLog)
+    checkDeadLinks()
 
     cy.get('#searchFilter--deceasedName')
       .should('be.visible')
@@ -65,6 +68,7 @@ describe('Contract Search', () => {
 
         cy.injectAxe()
         cy.checkA11y(undefined, undefined, checkA11yLog)
+        checkDeadLinks()
       })
   })
 })

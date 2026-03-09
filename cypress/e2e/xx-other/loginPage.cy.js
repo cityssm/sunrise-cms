@@ -1,9 +1,10 @@
-import { checkA11yLog, logout } from '../../support/index.js';
+import { checkA11yLog, checkDeadLinks, logout } from '../../support/index.js';
 describe('Login Page', () => {
     beforeEach(logout);
     it('Has no detectable accessibility issues', () => {
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
+        checkDeadLinks();
     });
     it('Contains a login form', () => {
         cy.get('form').should('have.length', 1);
@@ -20,15 +21,6 @@ describe('Login Page', () => {
     it('Contains a help link', () => {
         cy.get('a').contains('help', {
             matchCase: false
-        });
-    });
-    it('Has working help documentation and GitHub links', () => {
-        cy.get('a[href^="https://cityssm.github.io"], a[href^="https://github.com"]').each(($link) => {
-            const href = $link.attr('href');
-            cy.request({
-                url: href,
-                failOnStatusCode: false
-            }).its('status').should('be.lessThan', 400);
         });
     });
     it('Redirects to login when attempting to access dashboard', () => {

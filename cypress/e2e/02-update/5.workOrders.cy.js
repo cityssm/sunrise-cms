@@ -1,5 +1,5 @@
 import { testUpdate } from '../../../test/_globals.js';
-import { checkA11yLog, login, logout, pageLoadDelayMillis, pdfGenerationDelayMillis } from '../../support/index.js';
+import { checkA11yLog, checkDeadLinks, login, logout, pageLoadDelayMillis, pdfGenerationDelayMillis } from '../../support/index.js';
 describe('Work Orders - Update', () => {
     beforeEach(() => {
         logout();
@@ -16,6 +16,7 @@ describe('Work Orders - Update', () => {
         cy.location('pathname').should('equal', '/workOrders/new');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
+        checkDeadLinks();
         cy.log('Submit the form using defaults');
         cy.get('#form--workOrderEdit').submit();
         cy.wait(pageLoadDelayMillis)
@@ -25,6 +26,7 @@ describe('Work Orders - Update', () => {
         cy.log('Check for accessibility issues');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
+        checkDeadLinks();
         cy.log('Print the work order');
         cy.get('button[data-cy="print"]').click();
         cy.get('.dropdown.is-active a').first().should('exist').click({

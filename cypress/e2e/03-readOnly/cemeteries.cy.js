@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkA11yLog, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
 describe('Cemetery Search', () => {
     beforeEach(() => {
         logout();
@@ -12,6 +12,7 @@ describe('Cemetery Search', () => {
         cy.wait(ajaxDelayMillis);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, checkA11yLog);
+        checkDeadLinks();
     });
     it('Can view a cemetery from the search results', () => {
         cy.visit('/cemeteries');
@@ -27,6 +28,7 @@ describe('Cemetery Search', () => {
             cy.log('Check accessibility on the cemetery view page');
             cy.injectAxe();
             cy.checkA11y(undefined, undefined, checkA11yLog);
+            checkDeadLinks();
         });
     });
 });
