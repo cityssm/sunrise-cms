@@ -1,5 +1,11 @@
 import { testView } from '../../../test/_globals.js'
-import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js'
+import {
+  ajaxDelayMillis,
+  checkDeadLinks,
+  logAccessibilityViolations,
+  login,
+  logout
+} from '../../support/index.js'
 
 describe('Update Log', () => {
   beforeEach(() => {
@@ -15,7 +21,8 @@ describe('Update Log', () => {
     cy.wait(ajaxDelayMillis)
 
     cy.injectAxe()
-    cy.checkA11y(undefined, undefined, checkA11yLog)
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
     checkDeadLinks()
   })
 })

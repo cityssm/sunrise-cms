@@ -1,9 +1,9 @@
-import { checkA11yLog, checkDeadLinks, logout } from '../../support/index.js';
+import { checkDeadLinks, logAccessibilityViolations, logout } from '../../support/index.js';
 describe('Login Page', () => {
     beforeEach(logout);
     it('Has no detectable accessibility issues', () => {
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
     it('Contains a login form', () => {

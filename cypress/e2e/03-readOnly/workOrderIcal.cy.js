@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js';
-import { checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
+import { checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Work Order iCalendar Integration', () => {
     beforeEach(() => {
         logout();
@@ -10,7 +10,7 @@ describe('Work Order iCalendar Integration', () => {
         cy.visit('/workOrders/ical');
         cy.location('pathname').should('equal', '/workOrders/ical');
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
 });

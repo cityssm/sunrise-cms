@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Reports', () => {
     beforeEach(() => {
         logout();
@@ -11,7 +11,7 @@ describe('Reports', () => {
         cy.visit('/reports');
         cy.location('pathname').should('equal', '/reports');
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
     it('Exports all reports without parameters', () => {

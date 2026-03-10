@@ -1,8 +1,7 @@
 import { testUpdate } from '../../../test/_globals.js'
 import {
-  ajaxDelayMillis,
-  checkA11yLog,
   checkDeadLinks,
+  logAccessibilityViolations,
   login,
   logout,
   pageLoadDelayMillis,
@@ -28,7 +27,8 @@ describe('Work Orders - Update', () => {
     cy.location('pathname').should('equal', '/workOrders/new')
 
     cy.injectAxe()
-    cy.checkA11y(undefined, undefined, checkA11yLog)
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
     checkDeadLinks()
 
     cy.log('Submit the form using defaults')
@@ -43,7 +43,7 @@ describe('Work Orders - Update', () => {
     cy.log('Check for accessibility issues')
 
     cy.injectAxe()
-    cy.checkA11y(undefined, undefined, checkA11yLog)
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
     checkDeadLinks()
 
     cy.log('Print the work order')

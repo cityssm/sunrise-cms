@@ -1,6 +1,6 @@
 /* eslint-disable max-nested-callbacks */
 import { testAdmin } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Admin - User Management', () => {
     beforeEach('Loads page', () => {
         logout();
@@ -11,14 +11,14 @@ describe('Admin - User Management', () => {
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
     it('Adds a new user', () => {
         cy.get('#button--addUser').click();
         cy.get('.modal').should('be.visible');
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         cy.fixture('user.json').then((user) => {
             cy.get(".modal input[name='userName']").type(user.userName);
             cy.get(".modal button[type='submit']").click();

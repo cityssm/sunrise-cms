@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Burial Site Search', () => {
     beforeEach(() => {
         logout();
@@ -11,7 +11,7 @@ describe('Burial Site Search', () => {
         cy.location('pathname').should('equal', '/burialSites');
         cy.wait(ajaxDelayMillis);
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
     it('Can view a burial site from the search results', () => {
@@ -27,7 +27,7 @@ describe('Burial Site Search', () => {
             cy.location('pathname').should('include', '/burialSites/');
             cy.log('Check accessibility on the burial site view page');
             cy.injectAxe();
-            cy.checkA11y(undefined, undefined, checkA11yLog);
+            cy.checkA11y(undefined, undefined, logAccessibilityViolations);
             checkDeadLinks();
         });
     });

@@ -2,9 +2,8 @@
 import { testUpdate } from '../../../test/_globals.js'
 import type { FuneralHome } from '../../../types/record.types.js'
 import {
-  ajaxDelayMillis,
-  checkA11yLog,
   checkDeadLinks,
+  logAccessibilityViolations,
   login,
   logout,
   pageLoadDelayMillis
@@ -30,7 +29,8 @@ describe('Funeral Homes - Update', () => {
     cy.log('Check the accessibility')
 
     cy.injectAxe()
-    cy.checkA11y(undefined, undefined, checkA11yLog)
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
     checkDeadLinks()
 
     cy.log('Populate the fields')

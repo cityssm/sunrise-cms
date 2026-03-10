@@ -1,8 +1,8 @@
 import { testUpdate } from '../../../test/_globals.js'
 import {
   ajaxDelayMillis,
-  checkA11yLog,
   checkDeadLinks,
+  logAccessibilityViolations,
   login,
   logout
 } from '../../support/index.js'
@@ -23,7 +23,8 @@ describe('Work Orders - Workday Report', () => {
     cy.location('pathname').should('equal', workdayUrl)
 
     cy.injectAxe()
-    cy.checkA11y(undefined, undefined, checkA11yLog)
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
     checkDeadLinks()
 
     // Get the initial date string

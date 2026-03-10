@@ -2,6 +2,7 @@ import { testUpdate } from '../../../test/_globals.js'
 import {
   checkA11yLog,
   checkDeadLinks,
+  logAccessibilityViolations,
   login,
   logout
 } from '../../support/index.js'
@@ -18,7 +19,8 @@ describe('Burial Sites - GPS Capture', () => {
 
   it('Has no detectable accessibility issues', () => {
     cy.injectAxe()
-    cy.checkA11y(undefined, undefined, checkA11yLog)
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
     checkDeadLinks()
   })
 })

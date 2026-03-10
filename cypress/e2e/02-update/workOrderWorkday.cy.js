@@ -1,5 +1,5 @@
 import { testUpdate } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Work Orders - Workday Report', () => {
     beforeEach(() => {
         logout();
@@ -12,7 +12,7 @@ describe('Work Orders - Workday Report', () => {
         cy.visit(workdayUrl);
         cy.location('pathname').should('equal', workdayUrl);
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
         // Get the initial date string
         cy.get(dateSpanSelector).invoke('text').as('initialDateString');

@@ -1,6 +1,6 @@
 /* eslint-disable max-nested-callbacks, no-secrets/no-secrets */
 import { testAdmin } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Admin - Config Table Management', () => {
     beforeEach('Loads page', () => {
         logout();
@@ -14,7 +14,7 @@ describe('Admin - Config Table Management', () => {
             cy.wrap($expandButton).click({ force: true });
         });
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
     describe('Work Order Types', () => {

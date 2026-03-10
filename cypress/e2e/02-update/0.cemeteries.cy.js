@@ -1,5 +1,5 @@
 import { testUpdate } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout, pageLoadDelayMillis } from '../../support/index.js';
+import { checkDeadLinks, logAccessibilityViolations, login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Cemeteries - Update', () => {
     beforeEach('Loads page', () => {
         logout();
@@ -17,7 +17,7 @@ describe('Cemeteries - Update', () => {
         });
         cy.log('Check the accessibility');
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
         cy.log('Populate the fields');
         cy.fixture('cemetery.json').then((cemeteryData) => {
