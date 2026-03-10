@@ -1,6 +1,7 @@
 (() => {
     const sunrise = exports.sunrise;
     const auditLogContainerElement = document.querySelector('#container--auditLog');
+    const filterFormElement = document.querySelector('#form--auditLogFilters');
     const pageLimit = 50;
     let currentOffset = 0;
     function getUpdateTypeColorClass(updateType) {
@@ -196,9 +197,11 @@
             }
         });
     }
-    document
-        .querySelector('#button--filterAuditLog')
-        ?.addEventListener('click', filterAuditLog);
+    filterFormElement.addEventListener('submit', (event) => {
+        event.preventDefault();
+        filterAuditLog();
+    });
+    filterFormElement.addEventListener('change', filterAuditLog);
     document
         .querySelector('#button--purgeAuditLog')
         ?.addEventListener('click', () => {

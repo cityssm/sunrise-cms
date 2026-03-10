@@ -22,6 +22,10 @@ declare const exports: {
     '#container--auditLog'
   ) as HTMLElement
 
+  const filterFormElement = document.querySelector(
+    '#form--auditLogFilters'
+  ) as HTMLFormElement
+
   const pageLimit = 50
 
   let currentOffset = 0
@@ -273,9 +277,12 @@ declare const exports: {
     )
   }
 
-  document
-    .querySelector('#button--filterAuditLog')
-    ?.addEventListener('click', filterAuditLog)
+  filterFormElement.addEventListener('submit', (event) => {
+    event.preventDefault()
+    filterAuditLog()
+  })
+
+  filterFormElement.addEventListener('change', filterAuditLog)
 
   document
     .querySelector('#button--purgeAuditLog')
