@@ -6,16 +6,24 @@ import getAuditLog, {
 } from '../../database/getAuditLog.js'
 import type { AuditLogEntry } from '../../types/record.types.js'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Works on client side
-export type DoGetRecordAuditLogResponse = {
-  auditLogEntries: AuditLogEntry[]
-  count: number
-  offset: number
-}
+export type DoGetRecordAuditLogResponse =
+  | {
+      success: false
 
-type RequestBody = {
-  mainRecordType?: AuditLogMainRecordType
+      message: string
+    }
+  | {
+      success: true
+
+      auditLogEntries: AuditLogEntry[]
+      count: number
+      offset: number
+    }
+
+interface RequestBody {
   mainRecordId?: number | string
+  mainRecordType?: AuditLogMainRecordType
+
   limit?: number | string
   offset?: number | string
 }
@@ -29,10 +37,13 @@ const forbiddenStatus = 403
  */
 export default function createHandler(
   expectedMainRecordType: AuditLogMainRecordType
-): (request: Request<unknown, unknown, RequestBody>, response: Response) => void {
+): (
+  request: Request<unknown, unknown, RequestBody>,
+  response: Response
+) => void {
   return function handler(
     request: Request<unknown, unknown, RequestBody>,
-    response: Response
+    response: Response<DoGetRecordAuditLogResponse>
   ): void {
     if (request.body.mainRecordType !== expectedMainRecordType) {
       response
@@ -56,16 +67,18 @@ export default function createHandler(
 
     const result = getAuditLog(
       {
-        mainRecordType: expectedMainRecordType,
-        mainRecordId: request.body.mainRecordId ?? ''
+        mainRecordId: request.body.mainRecordId ?? '',
+        mainRecordType: expectedMainRecordType
       },
       { limit, offset }
     )
 
     response.json({
+      success: true,
+
       auditLogEntries: result.auditLogEntries,
       count: result.count,
       offset
-    } satisfies DoGetRecordAuditLogResponse)
+    })
   }
 }

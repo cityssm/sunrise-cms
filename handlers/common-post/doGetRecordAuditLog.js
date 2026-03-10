@@ -20,10 +20,11 @@ export default function createHandler(expectedMainRecordType) {
             ? request.body.offset
             : Number.parseInt(request.body.offset ?? '0', 10);
         const result = getAuditLog({
-            mainRecordType: expectedMainRecordType,
-            mainRecordId: request.body.mainRecordId ?? ''
+            mainRecordId: request.body.mainRecordId ?? '',
+            mainRecordType: expectedMainRecordType
         }, { limit, offset });
         response.json({
+            success: true,
             auditLogEntries: result.auditLogEntries,
             count: result.count,
             offset

@@ -37,6 +37,14 @@
     `;
     }
     function renderRecordAuditLog(auditLogContainerElement, auditLogUrl, currentOffset, responseJSON) {
+        if (!responseJSON.success) {
+            auditLogContainerElement.innerHTML = /* html */ `
+        <p class="has-text-danger">
+          ${cityssm.escapeHTML(responseJSON.message)}
+        </p>
+      `;
+            return;
+        }
         const { auditLogEntries, count, offset } = responseJSON;
         if (auditLogEntries.length === 0) {
             auditLogContainerElement.innerHTML = /* html */ `
@@ -105,18 +113,24 @@
         auditLogContainerElement
             .querySelector("button[data-page='previous']")
             ?.addEventListener('click', () => {
-            fetchRecordAuditLog(auditLogContainerElement, auditLogUrl, document.querySelector('#recordAuditLog--mainRecordType').value, document.querySelector('#recordAuditLog--mainRecordId').value, Math.max(currentOffset - pageLimit, 0));
+            fetchRecordAuditLog(auditLogContainerElement, auditLogUrl, {
+                mainRecordId: document.querySelector('#recordAuditLog--mainRecordId').value,
+                mainRecordType: document.querySelector('#recordAuditLog--mainRecordType').value
+            }, Math.max(currentOffset - pageLimit, 0));
         });
         auditLogContainerElement
             .querySelector("button[data-page='next']")
             ?.addEventListener('click', () => {
-            fetchRecordAuditLog(auditLogContainerElement, auditLogUrl, document.querySelector('#recordAuditLog--mainRecordType').value, document.querySelector('#recordAuditLog--mainRecordId').value, currentOffset + pageLimit);
+            fetchRecordAuditLog(auditLogContainerElement, auditLogUrl, {
+                mainRecordId: document.querySelector('#recordAuditLog--mainRecordId').value,
+                mainRecordType: document.querySelector('#recordAuditLog--mainRecordType').value
+            }, currentOffset + pageLimit);
         });
     }
-    function fetchRecordAuditLog(auditLogContainerElement, auditLogUrl, mainRecordType, mainRecordId, offset) {
+    function fetchRecordAuditLog(auditLogContainerElement, auditLogUrl, mainRecord, offset) {
         cityssm.postJSON(auditLogUrl, {
-            mainRecordType,
-            mainRecordId,
+            mainRecordType: mainRecord.mainRecordType,
+            mainRecordId: mainRecord.mainRecordId,
             limit: pageLimit,
             offset
         }, (responseJSON) => {
@@ -174,7 +188,10 @@
             onshown(modalElement, _closeModalFunction) {
                 bulmaJS.toggleHtmlClipped();
                 const auditLogContainerElement = modalElement.querySelector('#container--recordAuditLog');
-                fetchRecordAuditLog(auditLogContainerElement, options.auditLogUrl, options.mainRecordType, options.mainRecordId, 0);
+                fetchRecordAuditLog(auditLogContainerElement, options.auditLogUrl, {
+                    mainRecordId: options.mainRecordId,
+                    mainRecordType: options.mainRecordType
+                }, 0);
             },
             onremoved() {
                 bulmaJS.toggleHtmlClipped();
@@ -188,13 +205,13 @@
             clickEvent.preventDefault();
             const buttonElement = clickEvent.currentTarget;
             openRecordAuditLogModal({
-                mainRecordType: buttonElement.dataset.mainRecordType ?? '',
                 mainRecordId: buttonElement.dataset.mainRecordId ?? '',
+                mainRecordType: buttonElement.dataset.mainRecordType ?? '',
                 auditLogUrl: buttonElement.dataset.auditLogUrl ?? '',
-                recordCreateUser: buttonElement.dataset.recordCreateUser,
                 recordCreateMillis: buttonElement.dataset.recordCreateMillis,
-                recordUpdateUser: buttonElement.dataset.recordUpdateUser,
-                recordUpdateMillis: buttonElement.dataset.recordUpdateMillis
+                recordCreateUser: buttonElement.dataset.recordCreateUser,
+                recordUpdateMillis: buttonElement.dataset.recordUpdateMillis,
+                recordUpdateUser: buttonElement.dataset.recordUpdateUser
             });
         });
     }

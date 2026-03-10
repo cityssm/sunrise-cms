@@ -68,6 +68,15 @@ declare const exports: {
     currentOffset: number,
     responseJSON: DoGetRecordAuditLogResponse
   ): void {
+    if (!responseJSON.success) {
+      auditLogContainerElement.innerHTML = /* html */ `
+        <p class="has-text-danger">
+          ${cityssm.escapeHTML(responseJSON.message)}
+        </p>
+      `
+      return
+    }
+
     const { auditLogEntries, count, offset } = responseJSON
 
     if (auditLogEntries.length === 0) {
@@ -150,12 +159,18 @@ declare const exports: {
         fetchRecordAuditLog(
           auditLogContainerElement,
           auditLogUrl,
-          (document.querySelector(
-            '#recordAuditLog--mainRecordType'
-          ) as HTMLInputElement).value,
-          (document.querySelector(
-            '#recordAuditLog--mainRecordId'
-          ) as HTMLInputElement).value,
+          {
+            mainRecordId: (
+              document.querySelector(
+                '#recordAuditLog--mainRecordId'
+              ) as HTMLInputElement
+            ).value,
+            mainRecordType: (
+              document.querySelector(
+                '#recordAuditLog--mainRecordType'
+              ) as HTMLInputElement
+            ).value
+          },
           Math.max(currentOffset - pageLimit, 0)
         )
       })
@@ -166,12 +181,18 @@ declare const exports: {
         fetchRecordAuditLog(
           auditLogContainerElement,
           auditLogUrl,
-          (document.querySelector(
-            '#recordAuditLog--mainRecordType'
-          ) as HTMLInputElement).value,
-          (document.querySelector(
-            '#recordAuditLog--mainRecordId'
-          ) as HTMLInputElement).value,
+          {
+            mainRecordId: (
+              document.querySelector(
+                '#recordAuditLog--mainRecordId'
+              ) as HTMLInputElement
+            ).value,
+            mainRecordType: (
+              document.querySelector(
+                '#recordAuditLog--mainRecordType'
+              ) as HTMLInputElement
+            ).value
+          },
           currentOffset + pageLimit
         )
       })
@@ -180,15 +201,17 @@ declare const exports: {
   function fetchRecordAuditLog(
     auditLogContainerElement: HTMLElement,
     auditLogUrl: string,
-    mainRecordType: string,
-    mainRecordId: string,
+    mainRecord: {
+      mainRecordType: string
+      mainRecordId: string
+    },
     offset: number
   ): void {
     cityssm.postJSON(
       auditLogUrl,
       {
-        mainRecordType,
-        mainRecordId,
+        mainRecordType: mainRecord.mainRecordType,
+        mainRecordId: mainRecord.mainRecordId,
         limit: pageLimit,
         offset
       },
@@ -204,13 +227,15 @@ declare const exports: {
   }
 
   function openRecordAuditLogModal(options: {
-    mainRecordType: string
     mainRecordId: string
+    mainRecordType: string
+
     auditLogUrl: string
-    recordCreateUser?: string
+
     recordCreateMillis?: string
-    recordUpdateUser?: string
+    recordCreateUser?: string
     recordUpdateMillis?: string
+    recordUpdateUser?: string
   }): void {
     cityssm.openHtmlModal('record-auditLog', {
       onshow(modalElement) {
@@ -236,7 +261,7 @@ declare const exports: {
         // Display record creation info
         const createInfoElement = modalElement.querySelector(
           '#recordAuditLog--createInfo'
-        ) as HTMLElement
+        ) as HTMLElement | null
 
         if (createInfoElement !== null) {
           if (options.recordCreateUser && options.recordCreateMillis) {
@@ -254,7 +279,7 @@ declare const exports: {
         // Display record update info
         const updateInfoElement = modalElement.querySelector(
           '#recordAuditLog--updateInfo'
-        ) as HTMLElement
+        ) as HTMLElement | null
 
         if (updateInfoElement !== null) {
           if (options.recordUpdateUser && options.recordUpdateMillis) {
@@ -279,8 +304,11 @@ declare const exports: {
         fetchRecordAuditLog(
           auditLogContainerElement,
           options.auditLogUrl,
-          options.mainRecordType,
-          options.mainRecordId,
+          {
+            mainRecordId: options.mainRecordId,
+            mainRecordType: options.mainRecordType
+          },
+
           0
         )
       },
@@ -301,13 +329,15 @@ declare const exports: {
       const buttonElement = clickEvent.currentTarget as HTMLElement
 
       openRecordAuditLogModal({
-        mainRecordType: buttonElement.dataset.mainRecordType ?? '',
         mainRecordId: buttonElement.dataset.mainRecordId ?? '',
+        mainRecordType: buttonElement.dataset.mainRecordType ?? '',
+
         auditLogUrl: buttonElement.dataset.auditLogUrl ?? '',
-        recordCreateUser: buttonElement.dataset.recordCreateUser,
+
         recordCreateMillis: buttonElement.dataset.recordCreateMillis,
-        recordUpdateUser: buttonElement.dataset.recordUpdateUser,
-        recordUpdateMillis: buttonElement.dataset.recordUpdateMillis
+        recordCreateUser: buttonElement.dataset.recordCreateUser,
+        recordUpdateMillis: buttonElement.dataset.recordUpdateMillis,
+        recordUpdateUser: buttonElement.dataset.recordUpdateUser
       })
     })
   }
