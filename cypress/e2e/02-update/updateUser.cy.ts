@@ -1,5 +1,10 @@
 import { testUpdate } from '../../../test/_globals.js'
-import { checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js'
+import {
+  checkDeadLinks,
+  logAccessibilityViolations,
+  login,
+  logout
+} from '../../support/index.js'
 
 describe('Update User', () => {
   beforeEach('Loads page', () => {
@@ -15,7 +20,8 @@ describe('Update User', () => {
     cy.log('Has no detectable accessibility issues')
 
     cy.injectAxe()
-    cy.checkA11y(undefined, undefined, checkA11yLog)
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
     checkDeadLinks()
 
     cy.log('Has no links to admin areas')

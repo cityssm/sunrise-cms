@@ -1,5 +1,5 @@
 import { testAdmin } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Admin - Burial Site Type Management', () => {
     const burialSiteTypeTitleSelector = '.container--burialSiteType .panel-heading .title';
     beforeEach('Loads page', () => {
@@ -11,14 +11,14 @@ describe('Admin - Burial Site Type Management', () => {
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
     it('Adds a new burial site type', () => {
         cy.get('#button--addBurialSiteType').click();
         cy.get('.modal').should('be.visible');
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         cy.fixture('burialSiteType.json').then((burialSiteType) => {
             cy.get(".modal input[name='burialSiteType']").type(burialSiteType.burialSiteType);
             cy.get(".modal input[name='bodyCapacityMax']")
@@ -43,7 +43,7 @@ describe('Admin - Burial Site Type Management', () => {
             // Modal should be visible
             cy.get('.modal').should('be.visible');
             cy.injectAxe();
-            cy.checkA11y(undefined, undefined, checkA11yLog);
+            cy.checkA11y(undefined, undefined, logAccessibilityViolations);
             // Update the burial site type name
             const updatedName = `${burialSiteType.burialSiteType} Updated`;
             cy.get(".modal input[name='burialSiteType']").clear().type(updatedName);

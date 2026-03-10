@@ -1,6 +1,12 @@
 import { testAdmin } from '../../../test/_globals.js'
 import type { ContractType } from '../../../types/record.types.js'
-import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js'
+import {
+  ajaxDelayMillis,
+  checkDeadLinks,
+  logAccessibilityViolations,
+  login,
+  logout
+} from '../../support/index.js'
 
 describe('Admin - Contract Type Management', () => {
   const contractTypeTitleSelector =
@@ -17,7 +23,8 @@ describe('Admin - Contract Type Management', () => {
 
   it('Adds a new contract type', () => {
     cy.injectAxe()
-    cy.checkA11y(undefined, undefined, checkA11yLog)
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
     checkDeadLinks()
 
     cy.get('#button--addContractType').click()
@@ -25,7 +32,7 @@ describe('Admin - Contract Type Management', () => {
     cy.get('.modal').should('be.visible')
 
     cy.injectAxe()
-    cy.checkA11y(undefined, undefined, checkA11yLog)
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
 
     cy.fixture('contractType.json').then((contractType: ContractType) => {
       cy.get(".modal input[name='contractType']").type(
@@ -56,7 +63,7 @@ describe('Admin - Contract Type Management', () => {
       cy.get('.modal').should('be.visible')
 
       cy.injectAxe()
-      cy.checkA11y(undefined, undefined, checkA11yLog)
+      cy.checkA11y(undefined, undefined, logAccessibilityViolations)
 
       // Update the contract type name
       const updatedName = `${contractType.contractType} Updated`

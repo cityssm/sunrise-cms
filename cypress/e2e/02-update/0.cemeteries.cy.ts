@@ -1,7 +1,13 @@
 // import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { Cemetery } from '../../../types/record.types.js'
-import { checkA11yLog, checkDeadLinks, login, logout, pageLoadDelayMillis } from '../../support/index.js'
+import {
+  checkDeadLinks,
+  logAccessibilityViolations,
+  login,
+  logout,
+  pageLoadDelayMillis
+} from '../../support/index.js'
 
 describe('Cemeteries - Update', () => {
   beforeEach('Loads page', () => {
@@ -25,7 +31,8 @@ describe('Cemeteries - Update', () => {
     cy.log('Check the accessibility')
 
     cy.injectAxe()
-    cy.checkA11y(undefined, undefined, checkA11yLog)
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
     checkDeadLinks()
 
     cy.log('Populate the fields')

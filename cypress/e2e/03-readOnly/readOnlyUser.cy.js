@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js';
-import { checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
+import { checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Read Only User', () => {
     beforeEach(() => {
         logout();
@@ -10,7 +10,7 @@ describe('Read Only User', () => {
         cy.visit('/dashboard');
         cy.log('Has no detectable accessibility issues');
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
         cy.log('Has no links to new areas');
         cy.get("a[href*='/new']").should('not.exist');

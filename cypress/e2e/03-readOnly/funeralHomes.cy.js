@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Funeral Home Search', () => {
     beforeEach(() => {
         logout();
@@ -11,7 +11,7 @@ describe('Funeral Home Search', () => {
         cy.location('pathname').should('equal', '/funeralHomes');
         cy.wait(ajaxDelayMillis);
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
     it('Can view a funeral home from the search results', () => {
@@ -27,7 +27,7 @@ describe('Funeral Home Search', () => {
             cy.location('pathname').should('include', '/funeralHomes/');
             cy.log('Check accessibility on the funeral home view page');
             cy.injectAxe();
-            cy.checkA11y(undefined, undefined, checkA11yLog);
+            cy.checkA11y(undefined, undefined, logAccessibilityViolations);
             checkDeadLinks();
         });
     });

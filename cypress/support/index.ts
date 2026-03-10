@@ -31,7 +31,7 @@ export const pageLoadDelayMillis = 1200
 
 export const pdfGenerationDelayMillis = 10_000
 
-export function checkA11yLog(violations: axe.Result[]): void {
+export function logAccessibilityViolations(violations: axe.Result[]): void {
   if (violations.length > 0) {
     cy.log('Accessibility violations found:')
     for (const violation of violations) {

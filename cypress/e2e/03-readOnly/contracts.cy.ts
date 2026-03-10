@@ -1,5 +1,11 @@
 import { testView } from '../../../test/_globals.js'
-import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js'
+import {
+  ajaxDelayMillis,
+  checkDeadLinks,
+  logAccessibilityViolations,
+  login,
+  logout
+} from '../../support/index.js'
 
 describe('Contract Search', () => {
   beforeEach(() => {
@@ -13,7 +19,8 @@ describe('Contract Search', () => {
     cy.visit('/contracts')
 
     cy.injectAxe()
-    cy.checkA11y(undefined, undefined, checkA11yLog)
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
     checkDeadLinks()
 
     cy.get('#searchFilter--cemeteryId').should('not.be.visible')
@@ -29,7 +36,7 @@ describe('Contract Search', () => {
     cy.visit('/contracts?cemeteryId=1')
 
     cy.injectAxe()
-    cy.checkA11y(undefined, undefined, checkA11yLog)
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
 
     cy.get('#searchFilter--cemeteryId').should('be.visible')
   })
@@ -40,7 +47,7 @@ describe('Contract Search', () => {
     cy.visit(`/contracts?deceasedName=${deceasedName}`)
 
     cy.injectAxe()
-    cy.checkA11y(undefined, undefined, checkA11yLog)
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
 
     cy.get('#searchFilter--deceasedName')
       .should('be.visible')
@@ -65,7 +72,7 @@ describe('Contract Search', () => {
         cy.log('Check accessibility on the contract view page')
 
         cy.injectAxe()
-        cy.checkA11y(undefined, undefined, checkA11yLog)
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations)
         checkDeadLinks()
       })
   })

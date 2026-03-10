@@ -1,5 +1,5 @@
 import { testView } from '../../../test/_globals.js';
-import { checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js';
+import { checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('User Settings', () => {
     beforeEach(() => {
         logout();
@@ -10,7 +10,7 @@ describe('User Settings', () => {
         cy.visit('/dashboard/userSettings');
         cy.location('pathname').should('equal', '/dashboard/userSettings');
         cy.injectAxe();
-        cy.checkA11y(undefined, undefined, checkA11yLog);
+        cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
 });
