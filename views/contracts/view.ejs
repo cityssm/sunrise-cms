@@ -119,10 +119,9 @@
               </button>
             </div>
             <div class="dropdown-menu">
-              <div class="dropdown-content">
+              <div class="dropdown-content has-text-left">
                 <a
                   class="dropdown-item is-view-audit-log-button"
-                  href="#"
                   data-main-record-type="contract"
                   data-main-record-id="<%= contract.contractId %>"
                   data-record-create-user="<%= contract.recordCreate_userName %>"
@@ -130,6 +129,7 @@
                   data-record-update-user="<%= contract.recordUpdate_userName %>"
                   data-record-update-millis="<%= contract.recordUpdate_timeMillis %>"
                   data-audit-log-url="<%= urlPrefix %>/contracts/doGetRecordAuditLog"
+                  href="#"
                 >
                   <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
                   <span>Audit Log</span>

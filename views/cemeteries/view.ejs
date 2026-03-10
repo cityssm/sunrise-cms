@@ -73,7 +73,6 @@
                 <div class="dropdown-content has-text-left">
                   <a
                     class="dropdown-item is-view-audit-log-button"
-                    href="#"
                     data-main-record-type="cemetery"
                     data-main-record-id="<%= cemetery.cemeteryId %>"
                     data-record-create-user="<%= cemetery.recordCreate_userName %>"
@@ -81,6 +80,7 @@
                     data-record-update-user="<%= cemetery.recordUpdate_userName %>"
                     data-record-update-millis="<%= cemetery.recordUpdate_timeMillis %>"
                     data-audit-log-url="<%= urlPrefix %>/cemeteries/doGetRecordAuditLog"
+                    href="#"
                   >
                     <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
                     <span>Audit Log</span>

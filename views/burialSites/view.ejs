@@ -92,10 +92,9 @@
               </button>
             </div>
             <div class="dropdown-menu">
-              <div class="dropdown-content">
+              <div class="dropdown-content has-text-left">
                 <a
                   class="dropdown-item is-view-audit-log-button"
-                  href="#"
                   data-main-record-type="burialSite"
                   data-main-record-id="<%= burialSite.burialSiteId %>"
                   data-record-create-user="<%= burialSite.recordCreate_userName %>"
@@ -103,6 +102,7 @@
                   data-record-update-user="<%= burialSite.recordUpdate_userName %>"
                   data-record-update-millis="<%= burialSite.recordUpdate_timeMillis %>"
                   data-audit-log-url="<%= urlPrefix %>/burialSites/doGetRecordAuditLog"
+                  href="#"
                 >
                   <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
                   <span>Audit Log</span>
