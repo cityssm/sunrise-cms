@@ -4,6 +4,9 @@ const forbiddenStatus = 403;
  * Returns a route handler that only serves audit log entries for the given
  * `expectedMainRecordType`.  Any request that supplies a different (or
  * missing) `mainRecordType` in the body is rejected with 403 Forbidden.
+ * @param expectedMainRecordType The main record type that this handler will serve
+ * audit log entries for.
+ * @returns An Express route handler function.
  */
 export default function createHandler(expectedMainRecordType) {
     return function handler(request, response) {
