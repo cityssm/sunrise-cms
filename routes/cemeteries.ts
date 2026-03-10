@@ -50,6 +50,13 @@ if (getConfigProperty('settings.auditLog.enabled')) {
   router.post(
     '/doGetRecordAuditLog',
     updateCemeteriesPostHandler,
+    (request, response, next) => {
+      if (request.body.mainRecordType !== 'cemetery') {
+        response.status(403).json({ message: 'Forbidden', success: false })
+        return
+      }
+      next()
+    },
     handler_doGetRecordAuditLog
   )
 }

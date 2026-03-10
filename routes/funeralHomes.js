@@ -27,6 +27,12 @@ router
     .post('/doUpdateFuneralHome', updateContractsPostHandler, handler_doUpdateFuneralHome)
     .post('/doDeleteFuneralHome', updateContractsPostHandler, handler_doDeleteFuneralHome);
 if (getConfigProperty('settings.auditLog.enabled')) {
-    router.post('/doGetRecordAuditLog', updateContractsPostHandler, handler_doGetRecordAuditLog);
+    router.post('/doGetRecordAuditLog', updateContractsPostHandler, (request, response, next) => {
+        if (request.body.mainRecordType !== 'funeralHome') {
+            response.status(403).json({ message: 'Forbidden', success: false });
+            return;
+        }
+        next();
+    }, handler_doGetRecordAuditLog);
 }
 export default router;

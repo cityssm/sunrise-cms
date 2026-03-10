@@ -53,6 +53,13 @@ if (getConfigProperty('settings.auditLog.enabled')) {
   router.post(
     '/doGetRecordAuditLog',
     updateContractsPostHandler,
+    (request, response, next) => {
+      if (request.body.mainRecordType !== 'funeralHome') {
+        response.status(403).json({ message: 'Forbidden', success: false })
+        return
+      }
+      next()
+    },
     handler_doGetRecordAuditLog
   )
 }

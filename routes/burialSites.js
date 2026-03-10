@@ -73,6 +73,12 @@ router
     .post('/doUpdateBurialSiteComment', updateCemeteriesPostHandler, handler_doUpdateBurialSiteComment)
     .post('/doDeleteBurialSiteComment', updateCemeteriesPostHandler, handler_doDeleteBurialSiteComment);
 if (getConfigProperty('settings.auditLog.enabled')) {
-    router.post('/doGetRecordAuditLog', updateCemeteriesPostHandler, handler_doGetRecordAuditLog);
+    router.post('/doGetRecordAuditLog', updateCemeteriesPostHandler, (request, response, next) => {
+        if (request.body.mainRecordType !== 'burialSite') {
+            response.status(403).json({ message: 'Forbidden', success: false });
+            return;
+        }
+        next();
+    }, handler_doGetRecordAuditLog);
 }
 export default router;
