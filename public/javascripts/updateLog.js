@@ -8,7 +8,6 @@
     const updateLogTableElement = document.querySelector('#table--updateLog');
     const loadingElement = document.querySelector('#loading--updateLog');
     const loadMoreButtonElement = document.querySelector('#button--updateLogLoadMore');
-    const exportButtonElement = document.querySelector('#button--exportUpdateLog');
     function getRecordSpecificElements(logEntry) {
         let recordTypeHTML = '';
         let recordUrl = '';
@@ -242,10 +241,5 @@
     if (createHeader !== null) {
         addSortClickHandler(createHeader, 'recordCreate_timeMillis');
     }
-    // Add export functionality
-    exportButtonElement.addEventListener('click', () => {
-        const recordType = recordTypeFilterElement.value;
-        globalThis.open(`${sunrise.urlPrefix}/dashboard/exportRecordUpdateLog?recordType=${encodeURIComponent(recordType)}`, '_blank');
-    });
     getUpdateLog();
 })();

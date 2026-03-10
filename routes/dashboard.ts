@@ -1,7 +1,6 @@
 import { Router } from 'express'
 
 import handler_dashboard from '../handlers/dashboard-get/dashboard.js'
-import handler_exportRecordUpdateLog from '../handlers/dashboard-get/exportRecordUpdateLog.js'
 import handler_updateLog from '../handlers/dashboard-get/updateLog.js'
 import handler_userSettings from '../handlers/dashboard-get/userSettings.js'
 import handler_doGetRecordUpdateLog from '../handlers/dashboard-post/doGetRecordUpdateLog.js'
@@ -27,7 +26,5 @@ router
 router
   .get('/updateLog', handler_updateLog)
   .post('/doGetRecordUpdateLog', handler_doGetRecordUpdateLog)
-
-router.get('/exportRecordUpdateLog', handler_exportRecordUpdateLog)
 
 export default router
