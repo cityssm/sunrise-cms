@@ -1,6 +1,7 @@
 import { testUpdate } from '../../../test/_globals.js'
 import type { Contract } from '../../../types/record.types.js'
 import {
+  ajaxDelayMillis,
   checkDeadLinks,
   logAccessibilityViolations,
   login,

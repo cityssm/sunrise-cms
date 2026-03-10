@@ -1,6 +1,6 @@
 // import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
 import { testUpdate } from '../../../test/_globals.js';
-import { checkDeadLinks, logAccessibilityViolations, login, logout, pageLoadDelayMillis } from '../../support/index.js';
+import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Funeral Homes - Update', () => {
     beforeEach('Loads page', () => {
         logout();

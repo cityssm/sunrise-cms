@@ -2,6 +2,7 @@
 import { testUpdate } from '../../../test/_globals.js'
 import type { FuneralHome } from '../../../types/record.types.js'
 import {
+  ajaxDelayMillis,
   checkDeadLinks,
   logAccessibilityViolations,
   login,

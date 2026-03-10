@@ -1,5 +1,6 @@
 import { testUpdate } from '../../../test/_globals.js'
 import {
+  ajaxDelayMillis,
   checkDeadLinks,
   logAccessibilityViolations,
   login,

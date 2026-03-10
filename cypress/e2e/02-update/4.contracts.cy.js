@@ -1,5 +1,5 @@
 import { testUpdate } from '../../../test/_globals.js';
-import { checkDeadLinks, logAccessibilityViolations, login, logout, pageLoadDelayMillis } from '../../support/index.js';
+import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Contracts - Update', () => {
     beforeEach(() => {
         logout();

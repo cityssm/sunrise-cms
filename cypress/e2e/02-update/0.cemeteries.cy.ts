@@ -2,7 +2,6 @@ import { testUpdate } from '../../../test/_globals.js'
 import type { Cemetery } from '../../../types/record.types.js'
 import {
   ajaxDelayMillis,
-  checkA11yLog,
   checkDeadLinks,
   logAccessibilityViolations,
   login,

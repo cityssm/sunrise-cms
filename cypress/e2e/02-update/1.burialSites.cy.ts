@@ -4,7 +4,6 @@ import { testUpdate } from '../../../test/_globals.js'
 import type { BurialSite } from '../../../types/record.types.js'
 import {
   ajaxDelayMillis,
-  checkA11yLog,
   checkDeadLinks,
   logAccessibilityViolations,
   login,

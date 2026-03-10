@@ -1,6 +1,6 @@
 /* eslint-disable max-nested-callbacks */
 import { testUpdate } from '../../../test/_globals.js';
-import { checkDeadLinks, logAccessibilityViolations, login, logout, pageLoadDelayMillis } from '../../support/index.js';
+import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Burial Sites - Update', () => {
     beforeEach('Loads page', () => {
         logout();
