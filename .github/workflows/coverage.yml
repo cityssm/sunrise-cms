@@ -78,6 +78,8 @@ jobs:
       fail-fast: false
       matrix:
         node: [22, 24, 25]
+    env:
+      USE_LONGER_TEST_TIMEOUTS: 'true'
 
     name: Windows - Node ${{ matrix.node }}
     steps:
@@ -106,8 +108,6 @@ jobs:
 
       - name: Run Test
         run: npm run test
-        env:
-          USE_LONGER_TIMEOUTS: 'true'
 
       - name: Archive Cypress error screenshots
         if: ${{ (success() || failure()) }}
@@ -125,6 +125,8 @@ jobs:
       fail-fast: false
       matrix:
         node: [22, 24]
+    env:
+      USE_LONGER_TEST_TIMEOUTS: 'true'
 
     name: MacOS - Node ${{ matrix.node }}
     steps:
@@ -153,8 +155,6 @@ jobs:
 
       - name: Run Test
         run: npm run test
-        env:
-          USE_LONGER_TIMEOUTS: 'true'
 
       - name: Archive Cypress error screenshots
         if: ${{ (success() || failure()) }}

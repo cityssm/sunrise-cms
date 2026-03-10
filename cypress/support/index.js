@@ -17,9 +17,9 @@ export function login(userName) {
 }
 export let ajaxDelayMillis = 800;
 export let pageLoadDelayMillis = 1200;
-if (process.env.USE_LONGER_TIMEOUTS === 'true') {
+if (process.env.USE_LONGER_TEST_TIMEOUTS === 'true') {
     // eslint-disable-next-line no-console
-    console.warn('Using longer timeouts for Cypress tests due to USE_LONGER_TIMEOUTS environment variable being set to true');
+    console.warn('Using longer timeouts for Cypress tests due to USE_LONGER_TEST_TIMEOUTS environment variable being set to true');
     ajaxDelayMillis = 1500;
     pageLoadDelayMillis = 2000;
 }
