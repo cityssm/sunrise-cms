@@ -15,8 +15,14 @@ export function login(userName) {
     // Logged in pages have a navbar
     cy.get('.navbar').should('have.length', 1);
 }
-export const ajaxDelayMillis = 800;
-export const pageLoadDelayMillis = 1200;
+export let ajaxDelayMillis = 800;
+export let pageLoadDelayMillis = 1200;
+if (process.env.USE_LONGER_TIMEOUTS === 'true') {
+    // eslint-disable-next-line no-console
+    console.warn('Using longer timeouts for Cypress tests due to USE_LONGER_TIMEOUTS environment variable being set to true');
+    ajaxDelayMillis = 1500;
+    pageLoadDelayMillis = 2000;
+}
 export const pdfGenerationDelayMillis = 10_000;
 export function logAccessibilityViolations(violations) {
     if (violations.length > 0) {
@@ -34,6 +40,8 @@ export function checkDeadLinks() {
             url: href,
             failOnStatusCode: false,
             timeout: 10_000
-        }).its('status').should('be.lessThan', 400);
+        })
+            .its('status')
+            .should('be.lessThan', 400);
     });
 }
