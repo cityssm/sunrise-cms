@@ -49,3 +49,23 @@ describe('Burial Site Search', () => {
       })
   })
 })
+
+describe('Burial Site Map', () => {
+  beforeEach(() => {
+    logout()
+    login(testView)
+  })
+
+  afterEach(logout)
+
+   it('Has no detectable accessibility issues', () => {
+    cy.visit('/burialSites/map')
+    cy.location('pathname').should('equal', '/burialSites/map')
+    cy.wait(ajaxDelayMillis)
+
+    cy.injectAxe()
+    cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
+    checkDeadLinks()
+  })
+})
