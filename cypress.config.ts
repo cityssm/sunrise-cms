@@ -8,5 +8,8 @@ export default defineConfig({
 
     allowCypressEnv: false,
     supportFile: false
+  },
+  env: {
+    useLongerTimeouts: process.env.CYPRESS_USE_LONGER_TIMEOUTS === 'true'
   }
 })

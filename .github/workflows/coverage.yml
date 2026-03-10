@@ -79,7 +79,7 @@ jobs:
       matrix:
         node: [22, 24, 25]
     env:
-      USE_LONGER_TEST_TIMEOUTS: 'true'
+      CYPRESS_USE_LONGER_TIMEOUTS: 'true'
 
     name: Windows - Node ${{ matrix.node }}
     steps:
@@ -126,7 +126,7 @@ jobs:
       matrix:
         node: [22, 24]
     env:
-      USE_LONGER_TEST_TIMEOUTS: 'true'
+      CYPRESS_USE_LONGER_TIMEOUTS: 'true'
 
     name: MacOS - Node ${{ matrix.node }}
     steps:
