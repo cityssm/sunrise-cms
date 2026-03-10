@@ -13,44 +13,59 @@ export type DoGetRecordAuditLogResponse = {
   offset: number
 }
 
-export default function handler(
-  request: Request<
-    unknown,
-    unknown,
-    {
-      mainRecordType?: AuditLogMainRecordType
-      mainRecordId?: number | string
+type RequestBody = {
+  mainRecordType?: AuditLogMainRecordType
+  mainRecordId?: number | string
+  limit?: number | string
+  offset?: number | string
+}
 
-      limit?: number | string
-      offset?: number | string
+const forbiddenStatus = 403
+
+/**
+ * Returns a route handler that only serves audit log entries for the given
+ * `expectedMainRecordType`.  Any request that supplies a different (or
+ * missing) `mainRecordType` in the body is rejected with 403 Forbidden.
+ */
+export default function createHandler(
+  expectedMainRecordType: AuditLogMainRecordType
+): (request: Request<unknown, unknown, RequestBody>, response: Response) => void {
+  return function handler(
+    request: Request<unknown, unknown, RequestBody>,
+    response: Response
+  ): void {
+    if (request.body.mainRecordType !== expectedMainRecordType) {
+      response
+        .status(forbiddenStatus)
+        .json({ message: 'Forbidden', success: false })
+      return
     }
-  >,
-  response: Response<DoGetRecordAuditLogResponse>
-): void {
-  const limit =
-    typeof request.body.limit === 'number'
-      ? request.body.limit
-      : Number.parseInt(
-          request.body.limit ?? defaultAuditLogLimit.toString(),
-          10
-        )
 
-  const offset =
-    typeof request.body.offset === 'number'
-      ? request.body.offset
-      : Number.parseInt(request.body.offset ?? '0', 10)
+    const limit =
+      typeof request.body.limit === 'number'
+        ? request.body.limit
+        : Number.parseInt(
+            request.body.limit ?? defaultAuditLogLimit.toString(),
+            10
+          )
 
-  const result = getAuditLog(
-    {
-      mainRecordType: request.body.mainRecordType ?? '',
-      mainRecordId: request.body.mainRecordId ?? ''
-    },
-    { limit, offset }
-  )
+    const offset =
+      typeof request.body.offset === 'number'
+        ? request.body.offset
+        : Number.parseInt(request.body.offset ?? '0', 10)
 
-  response.json({
-    auditLogEntries: result.auditLogEntries,
-    count: result.count,
-    offset
-  })
+    const result = getAuditLog(
+      {
+        mainRecordType: expectedMainRecordType,
+        mainRecordId: request.body.mainRecordId ?? ''
+      },
+      { limit, offset }
+    )
+
+    response.json({
+      auditLogEntries: result.auditLogEntries,
+      count: result.count,
+      offset
+    } satisfies DoGetRecordAuditLogResponse)
+  }
 }

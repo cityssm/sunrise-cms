@@ -125,12 +125,6 @@ router
     .post('/doDeleteRelatedContract', updateContractsPostHandler, handler_doDeleteRelatedContract);
 // Audit Log
 if (getConfigProperty('settings.auditLog.enabled')) {
-    router.post('/doGetRecordAuditLog', updateContractsPostHandler, (request, response, next) => {
-        if (request.body.mainRecordType !== 'contract') {
-            response.status(403).json({ message: 'Forbidden', success: false });
-            return;
-        }
-        next();
-    }, handler_doGetRecordAuditLog);
+    router.post('/doGetRecordAuditLog', updateContractsPostHandler, handler_doGetRecordAuditLog('contract'));
 }
 export default router;

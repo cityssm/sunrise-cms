@@ -84,6 +84,9 @@ export default async function getContract(
         d.directionOfArrivalDescription,
         c.committalTypeId,
         ct.committalType,
+        c.recordCreate_userName,
+        c.recordCreate_timeMillis,
+        c.recordUpdate_userName,
         c.recordUpdate_timeMillis
       FROM
         Contracts c

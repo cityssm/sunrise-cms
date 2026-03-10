@@ -25,12 +25,6 @@ router
     .post('/doUpdateCemetery', updateCemeteriesPostHandler, handler_doUpdateCemetery)
     .post('/doDeleteCemetery', updateCemeteriesPostHandler, handler_doDeleteCemetery);
 if (getConfigProperty('settings.auditLog.enabled')) {
-    router.post('/doGetRecordAuditLog', updateCemeteriesPostHandler, (request, response, next) => {
-        if (request.body.mainRecordType !== 'cemetery') {
-            response.status(403).json({ message: 'Forbidden', success: false });
-            return;
-        }
-        next();
-    }, handler_doGetRecordAuditLog);
+    router.post('/doGetRecordAuditLog', updateCemeteriesPostHandler, handler_doGetRecordAuditLog('cemetery'));
 }
 export default router;

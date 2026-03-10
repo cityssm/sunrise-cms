@@ -90,12 +90,6 @@ router
     .post('/doDeleteWorkOrderMilestone', updateWorkOrdersPostHandler, handler_doDeleteWorkOrderMilestone);
 // Audit Log
 if (getConfigProperty('settings.auditLog.enabled')) {
-    router.post('/doGetRecordAuditLog', updateWorkOrdersPostHandler, (request, response, next) => {
-        if (request.body.mainRecordType !== 'workOrder') {
-            response.status(403).json({ message: 'Forbidden', success: false });
-            return;
-        }
-        next();
-    }, handler_doGetRecordAuditLog);
+    router.post('/doGetRecordAuditLog', updateWorkOrdersPostHandler, handler_doGetRecordAuditLog('workOrder'));
 }
 export default router;
