@@ -58,7 +58,7 @@ describe('Burial Site Map', () => {
 
   afterEach(logout)
 
-   it('Has no detectable accessibility issues', () => {
+  it('Has no detectable accessibility issues', () => {
     cy.visit('/burialSites/map')
     cy.location('pathname').should('equal', '/burialSites/map')
     cy.wait(ajaxDelayMillis)
