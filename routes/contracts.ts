@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import multer from 'multer'
 
+import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js'
 import handler_attachment from '../handlers/contracts-get/attachment.js'
 import handler_edit from '../handlers/contracts-get/edit.js'
 import handler_new from '../handlers/contracts-get/new.js'
@@ -46,7 +47,6 @@ import {
   updateContractsGetHandler,
   updateContractsPostHandler
 } from '../handlers/permissions.js'
-import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js'
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export const router = Router()

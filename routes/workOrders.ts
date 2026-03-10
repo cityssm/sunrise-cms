@@ -1,10 +1,10 @@
 import { Router } from 'express'
 
+import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js'
 import {
   updateWorkOrdersGetHandler,
   updateWorkOrdersPostHandler
 } from '../handlers/permissions.js'
-import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js'
 import handler_byWorkOrderNumber from '../handlers/workOrders-get/byWorkOrderNumber.js'
 import handler_edit from '../handlers/workOrders-get/edit.js'
 import handler_ical from '../handlers/workOrders-get/ical.js'
