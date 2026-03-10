@@ -1,10 +1,12 @@
 /* eslint-disable max-nested-callbacks, no-secrets/no-secrets */
 import { testAdmin } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { checkDeadLinks, getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Admin - Config Table Management', () => {
+    let ajaxDelayMillis;
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
+        ({ ajaxDelayMillis } = getDelayMillis());
         cy.visit('/admin/tables');
         cy.location('pathname').should('equal', '/admin/tables');
     });

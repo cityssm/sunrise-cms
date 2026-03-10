@@ -1,9 +1,12 @@
 import { testUpdate } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout, pageLoadDelayMillis, pdfGenerationDelayMillis } from '../../support/index.js';
+import { checkDeadLinks, getDelayMillis, logAccessibilityViolations, login, logout, pdfGenerationDelayMillis } from '../../support/index.js';
 describe('Work Orders - Update', () => {
+    let ajaxDelayMillis;
+    let pageLoadDelayMillis;
     beforeEach(() => {
         logout();
         login(testUpdate);
+        ({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis());
     });
     afterEach(logout);
     it('Has a "Create" link on the Work Order Search', () => {

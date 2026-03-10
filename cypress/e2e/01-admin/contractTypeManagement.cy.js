@@ -1,10 +1,12 @@
 import { testAdmin } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { checkDeadLinks, getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Admin - Contract Type Management', () => {
+    let ajaxDelayMillis;
     const contractTypeTitleSelector = '.container--contractType .panel-heading .title';
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
+        ({ ajaxDelayMillis } = getDelayMillis());
         cy.visit('/admin/contractTypes');
         cy.location('pathname').should('equal', '/admin/contractTypes');
     });

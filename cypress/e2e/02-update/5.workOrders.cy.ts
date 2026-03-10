@@ -1,18 +1,21 @@
 import { testUpdate } from '../../../test/_globals.js'
 import {
-  ajaxDelayMillis,
   checkDeadLinks,
+  getDelayMillis,
   logAccessibilityViolations,
   login,
   logout,
-  pageLoadDelayMillis,
   pdfGenerationDelayMillis
 } from '../../support/index.js'
 
 describe('Work Orders - Update', () => {
+  let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
+
   beforeEach(() => {
     logout()
     login(testUpdate)
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)

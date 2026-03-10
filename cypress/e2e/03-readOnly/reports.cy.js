@@ -1,9 +1,11 @@
 import { testView } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { checkDeadLinks, getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Reports', () => {
+    let ajaxDelayMillis;
     beforeEach(() => {
         logout();
         login(testView);
+        ({ ajaxDelayMillis } = getDelayMillis());
         cy.visit('/reports');
     });
     afterEach(logout);

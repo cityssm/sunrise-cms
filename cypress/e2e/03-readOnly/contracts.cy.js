@@ -1,9 +1,11 @@
 import { testView } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { checkDeadLinks, getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Contract Search', () => {
+    let ajaxDelayMillis;
     beforeEach(() => {
         logout();
         login(testView);
+        ({ ajaxDelayMillis } = getDelayMillis());
     });
     afterEach(logout);
     it('Should hide the extra filters by default', () => {

@@ -1,9 +1,11 @@
 import { testAdmin } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { checkDeadLinks, getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Admin - Database Maintenance', () => {
+    let ajaxDelayMillis;
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
+        ({ ajaxDelayMillis } = getDelayMillis());
         cy.visit('/admin/database');
         cy.location('pathname').should('equal', '/admin/database');
     });

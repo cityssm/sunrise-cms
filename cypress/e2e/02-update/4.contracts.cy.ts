@@ -1,18 +1,21 @@
 import { testUpdate } from '../../../test/_globals.js'
 import type { Contract } from '../../../types/record.types.js'
 import {
-  ajaxDelayMillis,
   checkDeadLinks,
+  getDelayMillis,
   logAccessibilityViolations,
   login,
-  logout,
-  pageLoadDelayMillis
+  logout
 } from '../../support/index.js'
 
 describe('Contracts - Update', () => {
+  let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
+
   beforeEach(() => {
     logout()
     login(testUpdate)
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)

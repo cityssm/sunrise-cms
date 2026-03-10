@@ -1,20 +1,24 @@
 import { testAdmin } from '../../../test/_globals.js'
 import type { ContractType } from '../../../types/record.types.js'
 import {
-  ajaxDelayMillis,
   checkDeadLinks,
+  getDelayMillis,
   logAccessibilityViolations,
   login,
   logout
 } from '../../support/index.js'
 
 describe('Admin - Contract Type Management', () => {
+  let ajaxDelayMillis: number
+
   const contractTypeTitleSelector =
     '.container--contractType .panel-heading .title'
 
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
+    ;({ ajaxDelayMillis } = getDelayMillis())
+
     cy.visit('/admin/contractTypes')
     cy.location('pathname').should('equal', '/admin/contractTypes')
   })

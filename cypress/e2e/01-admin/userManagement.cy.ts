@@ -3,17 +3,21 @@
 import { testAdmin } from '../../../test/_globals.js'
 import type { DatabaseUser } from '../../../types/record.types.js'
 import {
-  ajaxDelayMillis,
   checkDeadLinks,
+  getDelayMillis,
   logAccessibilityViolations,
   login,
   logout
 } from '../../support/index.js'
 
 describe('Admin - User Management', () => {
+  let ajaxDelayMillis: number
+
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
+    ;({ ajaxDelayMillis } = getDelayMillis())
+
     cy.visit('/admin/users')
     cy.location('pathname').should('equal', '/admin/users')
   })

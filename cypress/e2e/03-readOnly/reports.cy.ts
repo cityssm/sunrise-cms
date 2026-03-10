@@ -1,16 +1,20 @@
 import { testView } from '../../../test/_globals.js'
 import {
-  ajaxDelayMillis,
   checkDeadLinks,
+  getDelayMillis,
   logAccessibilityViolations,
   login,
   logout
 } from '../../support/index.js'
 
 describe('Reports', () => {
+  let ajaxDelayMillis: number
+  
   beforeEach(() => {
     logout()
     login(testView)
+    ;({ ajaxDelayMillis } = getDelayMillis())
+
     cy.visit('/reports')
   })
 

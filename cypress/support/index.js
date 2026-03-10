@@ -15,17 +15,22 @@ export function login(userName) {
     // Logged in pages have a navbar
     cy.get('.navbar').should('have.length', 1);
 }
-export let ajaxDelayMillis = 800;
-export let pageLoadDelayMillis = 1200;
-// eslint-disable-next-line unicorn/prefer-top-level-await
-cy.env(['useLongerTimeout']).then(({ useLongerTimeouts }) => {
-    if (useLongerTimeouts) {
-        // eslint-disable-next-line no-console
-        console.log('Using longer timeouts for Cypress tests due to USE_LONGER_TEST_TIMEOUTS environment variable being set to true');
-        ajaxDelayMillis = 1500;
-        pageLoadDelayMillis = 2000;
-    }
-});
+export function getDelayMillis() {
+    let ajaxDelayMillis = 800;
+    let pageLoadDelayMillis = 1200;
+    cy.env(['useLongerTimeout']).then(({ useLongerTimeouts }) => {
+        if (useLongerTimeouts) {
+            // eslint-disable-next-line no-console
+            cy.log('Using longer timeouts for Cypress tests due to CYPRESS_USE_LONGER_TIMEOUTS environment variable being set to true');
+            ajaxDelayMillis = 1500;
+            pageLoadDelayMillis = 2000;
+        }
+    });
+    return {
+        ajaxDelayMillis,
+        pageLoadDelayMillis
+    };
+}
 export const pdfGenerationDelayMillis = 10_000;
 export function logAccessibilityViolations(violations) {
     if (violations.length > 0) {

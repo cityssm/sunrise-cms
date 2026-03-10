@@ -1,16 +1,19 @@
 import { testView } from '../../../test/_globals.js'
 import {
-  ajaxDelayMillis,
   checkDeadLinks,
+  getDelayMillis,
   logAccessibilityViolations,
   login,
   logout
 } from '../../support/index.js'
 
 describe('Burial Site Search', () => {
+  let ajaxDelayMillis: number
+
   beforeEach(() => {
     logout()
     login(testView)
+    ;({ ajaxDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)
@@ -51,9 +54,12 @@ describe('Burial Site Search', () => {
 })
 
 describe('Burial Site Map', () => {
+  let ajaxDelayMillis: number
+
   beforeEach(() => {
     logout()
     login(testView)
+    ;({ ajaxDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)

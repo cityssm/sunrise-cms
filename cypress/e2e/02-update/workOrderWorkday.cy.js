@@ -1,9 +1,11 @@
 import { testUpdate } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { checkDeadLinks, getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Work Orders - Workday Report', () => {
+    let ajaxDelayMillis;
     beforeEach(() => {
         logout();
         login(testUpdate);
+        ({ ajaxDelayMillis } = getDelayMillis());
     });
     afterEach(logout);
     const workdayUrl = '/workOrders/workday';

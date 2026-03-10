@@ -1,10 +1,13 @@
 // import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
 import { testUpdate } from '../../../test/_globals.js';
-import { ajaxDelayMillis, checkDeadLinks, logAccessibilityViolations, login, logout, pageLoadDelayMillis } from '../../support/index.js';
+import { checkDeadLinks, getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Funeral Homes - Update', () => {
+    let ajaxDelayMillis;
+    let pageLoadDelayMillis;
     beforeEach('Loads page', () => {
         logout();
         login(testUpdate);
+        ({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis());
     });
     afterEach(logout);
     it('Has a "Create" link on the Funeral Home Search', () => {

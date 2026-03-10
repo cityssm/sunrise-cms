@@ -10,6 +10,7 @@ describe('Admin - Settings Management', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
+
     cy.visit('/admin/settings')
     cy.location('pathname').should('equal', '/admin/settings')
   })

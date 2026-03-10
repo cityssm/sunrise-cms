@@ -3,18 +3,21 @@
 import { testUpdate } from '../../../test/_globals.js'
 import type { BurialSite } from '../../../types/record.types.js'
 import {
-  ajaxDelayMillis,
   checkDeadLinks,
+  getDelayMillis,
   logAccessibilityViolations,
   login,
-  logout,
-  pageLoadDelayMillis
+  logout
 } from '../../support/index.js'
 
 describe('Burial Sites - Update', () => {
+  let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
+
   beforeEach('Loads page', () => {
     logout()
     login(testUpdate)
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)

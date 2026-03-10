@@ -2,17 +2,21 @@ import config from '../../../data/config.js'
 import { testAdmin } from '../../../test/_globals.js'
 import type { Fee } from '../../../types/record.types.js'
 import {
-  ajaxDelayMillis,
   checkDeadLinks,
+  getDelayMillis,
   logAccessibilityViolations,
   login,
   logout
 } from '../../support/index.js'
 
 describe('Admin - Fee Management', () => {
+  let ajaxDelayMillis: number
+
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
+    ;({ ajaxDelayMillis } = getDelayMillis())
+
     cy.visit('/admin/fees')
     cy.location('pathname').should('equal', '/admin/fees')
   })

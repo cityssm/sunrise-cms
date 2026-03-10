@@ -2,17 +2,21 @@
 
 import { testAdmin } from '../../../test/_globals.js'
 import {
-  ajaxDelayMillis,
   checkDeadLinks,
+  getDelayMillis,
   logAccessibilityViolations,
   login,
   logout
 } from '../../support/index.js'
 
 describe('Admin - Config Table Management', () => {
+  let ajaxDelayMillis: number
+
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
+    ;({ ajaxDelayMillis } = getDelayMillis())
+
     cy.visit('/admin/tables')
     cy.location('pathname').should('equal', '/admin/tables')
   })
