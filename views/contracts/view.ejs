@@ -97,16 +97,49 @@
       </div>
       <% } %>
       <% if (user.userProperties.canUpdateContracts) { %>
-      <a
-        class="button <%= (contract.contractEndDate ? 'is-warning' : 'is-primary') %>"
-        href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/edit"
-      >
-        <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
-        <span>
-          Edit
-          <span class="is-hidden-mobile">Contract</span>
-        </span>
-      </a>
+      <div class="field has-addons">
+        <div class="control">
+          <a
+            class="button <%= (contract.contractEndDate ? 'is-warning' : 'is-primary') %>"
+            href="<%= urlPrefix %>/contracts/<%= contract.contractId %>/edit"
+          >
+            <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
+            <span>
+              Edit
+              <span class="is-hidden-mobile">Contract</span>
+            </span>
+          </a>
+        </div>
+        <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+        <div class="control">
+          <div class="dropdown is-right is-up">
+            <div class="dropdown-trigger">
+              <button class="button <%= (contract.contractEndDate ? 'is-warning' : 'is-primary') %>" type="button" aria-haspopup="true">
+                <span class="icon is-small"><i class="fa-solid fa-angle-up"></i></span>
+              </button>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-content has-text-left">
+                <a
+                  class="dropdown-item is-view-audit-log-button"
+                  data-main-record-type="contract"
+                  data-main-record-id="<%= contract.contractId %>"
+                  data-record-create-user="<%= contract.recordCreate_userName %>"
+                  data-record-create-millis="<%= contract.recordCreate_timeMillis %>"
+                  data-record-update-user="<%= contract.recordUpdate_userName %>"
+                  data-record-update-millis="<%= contract.recordUpdate_timeMillis %>"
+                  data-audit-log-url="<%= urlPrefix %>/contracts/doGetRecordAuditLog"
+                  href="#"
+                >
+                  <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                  <span>Audit Log</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
       <% } %>
     </div>
   </div>
@@ -975,5 +1008,9 @@ const displayServicesPanel =
 <% } %>
 
 <%- include('../_footerA'); -%>
+
+<% if (configFunctions.getConfigProperty('settings.auditLog.enabled') && user.userProperties.canUpdateContracts) { %>
+<script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
+<% } %>
 
 <%- include('../_footerB'); -%>

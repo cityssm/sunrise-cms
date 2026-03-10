@@ -49,15 +49,48 @@
       </a>
       <% if (user.userProperties.canUpdateCemeteries) { %>
       <div class="level-item">
-        <a class="button is-primary"
-          href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>/edit"
-        >
-          <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
-          <span>
-            <%= t('common:edit') %>
-            <span class="is-hidden-mobile"><%= t('cemeteries:cemetery') %></span>
-          </span>
-        </a>
+        <div class="field has-addons">
+          <div class="control">
+            <a class="button is-primary"
+              href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>/edit"
+            >
+              <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
+              <span>
+                <%= t('common:edit') %>
+                <span class="is-hidden-mobile"><%= t('cemeteries:cemetery') %></span>
+              </span>
+            </a>
+          </div>
+          <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+          <div class="control">
+            <div class="dropdown is-right is-up">
+              <div class="dropdown-trigger">
+                <button class="button is-primary" type="button" aria-haspopup="true">
+                  <span class="icon is-small"><i class="fa-solid fa-angle-up"></i></span>
+                </button>
+              </div>
+              <div class="dropdown-menu">
+                <div class="dropdown-content has-text-left">
+                  <a
+                    class="dropdown-item is-view-audit-log-button"
+                    data-main-record-type="cemetery"
+                    data-main-record-id="<%= cemetery.cemeteryId %>"
+                    data-record-create-user="<%= cemetery.recordCreate_userName %>"
+                    data-record-create-millis="<%= cemetery.recordCreate_timeMillis %>"
+                    data-record-update-user="<%= cemetery.recordUpdate_userName %>"
+                    data-record-update-millis="<%= cemetery.recordUpdate_timeMillis %>"
+                    data-audit-log-url="<%= urlPrefix %>/cemeteries/doGetRecordAuditLog"
+                    href="#"
+                  >
+                    <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                    <span>Audit Log</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% } %>
+        </div>
       </div>
       <% } %>
     </div>
@@ -216,6 +249,9 @@
 
 <%- include('../_footerA'); -%>
 
+<% if (configFunctions.getConfigProperty('settings.auditLog.enabled') && user.userProperties.canUpdateCemeteries) { %>
+<script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
+<% } %>
 <script src="<%= urlPrefix %>/javascripts/cemetery.view.js"></script>
 
 <%- include('../_footerB'); -%>

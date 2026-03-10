@@ -18,6 +18,11 @@ export default function getAuditLog(filters, options, connectedDatabase) {
         sqlWhereClause += ' and mainRecordType = ?';
         sqlParameters.push(filters.mainRecordType);
     }
+    if (filters.mainRecordId !== undefined &&
+        filters.mainRecordId.toString().trim() !== '') {
+        sqlWhereClause += ' and mainRecordId = ?';
+        sqlParameters.push(filters.mainRecordId.toString().trim());
+    }
     if (filters.updateUserName !== undefined &&
         filters.updateUserName.trim() !== '') {
         sqlWhereClause += ' and updateUserName like ?';

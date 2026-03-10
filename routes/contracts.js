@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import multer from 'multer';
+import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js';
 import handler_attachment from '../handlers/contracts-get/attachment.js';
 import handler_edit from '../handlers/contracts-get/edit.js';
 import handler_new from '../handlers/contracts-get/new.js';
@@ -122,4 +123,8 @@ router
     .post('/doGetPossibleRelatedContracts', updateContractsPostHandler, handler_doGetPossibleRelatedContracts)
     .post('/doAddRelatedContract', updateContractsPostHandler, handler_doAddRelatedContract)
     .post('/doDeleteRelatedContract', updateContractsPostHandler, handler_doDeleteRelatedContract);
+// Audit Log
+if (getConfigProperty('settings.auditLog.enabled')) {
+    router.post('/doGetRecordAuditLog', updateContractsPostHandler, handler_doGetRecordAuditLog('contract'));
+}
 export default router;

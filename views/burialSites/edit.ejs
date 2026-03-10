@@ -51,7 +51,7 @@
           Cancel
         </a>
       <% } else { %>
-        <div class="dropdown is-right is-up">
+        <div class="dropdown is-right is-up" data-cy="dropdown--moreOptions">
           <div class="dropdown-trigger">
             <button class="button" type="button">
               <span>More Options</span>
@@ -61,11 +61,28 @@
             </button>
           </div>
           <div class="dropdown-menu">
-            <div class="dropdown-content">
+            <div class="dropdown-content has-text-left">
               <a class="dropdown-item" id="button--deleteBurialSite" href="#">
                 <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
                 <span>Delete Burial Site</span>
               </a>
+              <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+              <hr class="dropdown-divider" />
+              <a
+                class="dropdown-item is-view-audit-log-button"
+                href="#"
+                data-main-record-type="burialSite"
+                data-main-record-id="<%= burialSite.burialSiteId %>"
+                data-record-create-user="<%= burialSite.recordCreate_userName %>"
+                data-record-create-millis="<%= burialSite.recordCreate_timeMillis %>"
+                data-record-update-user="<%= burialSite.recordUpdate_userName %>"
+                data-record-update-millis="<%= burialSite.recordUpdate_timeMillis %>"
+                data-audit-log-url="<%= urlPrefix %>/burialSites/doGetRecordAuditLog"
+              >
+                <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                <span>Audit Log</span>
+              </a>
+              <% } %>
             </div>
           </div>
         </div>
@@ -686,6 +703,9 @@
   <script>
     exports.burialSiteComments = <%- JSON.stringify(burialSite.burialSiteComments) %>;
   </script>
+<% } %>
+<% if (configFunctions.getConfigProperty('settings.auditLog.enabled') && !isCreate) { %>
+<script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
 <% } %>
 <script src="<%= urlPrefix %>/javascripts/burialSite.edit.js"></script>
 

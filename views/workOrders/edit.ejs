@@ -79,7 +79,7 @@
           Cancel
         </a>
       <% } else { %>
-        <div class="dropdown is-right is-up">
+        <div class="dropdown is-right is-up" data-cy="dropdown--moreOptions">
           <div class="dropdown-trigger">
             <button class="button" type="button">
               <span>
@@ -97,6 +97,25 @@
                 </span>
                 <span>Delete Work Order</span>
               </a>
+              <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+              <hr class="dropdown-divider" />
+              <a
+                class="dropdown-item is-view-audit-log-button"
+                href="#"
+                data-main-record-type="workOrder"
+                data-main-record-id="<%= workOrder.workOrderId %>"
+                data-record-create-user="<%= workOrder.recordCreate_userName %>"
+                data-record-create-millis="<%= workOrder.recordCreate_timeMillis %>"
+                data-record-update-user="<%= workOrder.recordUpdate_userName %>"
+                data-record-update-millis="<%= workOrder.recordUpdate_timeMillis %>"
+                data-audit-log-url="<%= urlPrefix %>/workOrders/doGetRecordAuditLog"
+              >
+                <span class="icon">
+                  <i class="fa-solid fa-clock-rotate-left"></i>
+                </span>
+                <span>Audit Log</span>
+              </a>
+              <% } %>
             </div>
           </div>
         </div>
@@ -365,6 +384,9 @@
 <% if (!isCreate) { %>
   <script src="<%= urlPrefix %>/javascripts/workOrder.editRelated.js"></script>
   <script src="<%= urlPrefix %>/javascripts/workOrder.editComments.js"></script>
+  <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+    <script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
+  <% } %>
 <% } %>
 
 <%- include('../_footerB'); -%>

@@ -30,6 +30,7 @@ export default function getAuditLog(
     logDateFrom?: '' | DateString
     logDateTo?: '' | DateString
     mainRecordType?: AuditLogMainRecordType
+    mainRecordId?: number | string
     updateUserName?: string
   },
   options?: {
@@ -56,6 +57,14 @@ export default function getAuditLog(
   if (filters.mainRecordType !== undefined && filters.mainRecordType !== '') {
     sqlWhereClause += ' and mainRecordType = ?'
     sqlParameters.push(filters.mainRecordType)
+  }
+
+  if (
+    filters.mainRecordId !== undefined &&
+    filters.mainRecordId.toString().trim() !== ''
+  ) {
+    sqlWhereClause += ' and mainRecordId = ?'
+    sqlParameters.push(filters.mainRecordId.toString().trim())
   }
 
   if (

@@ -61,11 +61,28 @@
             </button>
           </div>
           <div class="dropdown-menu">
-            <div class="dropdown-content">
+            <div class="dropdown-content has-text-left">
               <a class="dropdown-item" id="button--deleteCemetery" href="#">
                 <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
                 <span><%= t('cemeteries:deleteCemetery') %></span>
               </a>
+              <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+              <hr class="dropdown-divider" />
+              <a
+                class="dropdown-item is-view-audit-log-button"
+                href="#"
+                data-main-record-type="cemetery"
+                data-main-record-id="<%= cemetery.cemeteryId %>"
+                data-record-create-user="<%= cemetery.recordCreate_userName %>"
+                data-record-create-millis="<%= cemetery.recordCreate_timeMillis %>"
+                data-record-update-user="<%= cemetery.recordUpdate_userName %>"
+                data-record-update-millis="<%= cemetery.recordUpdate_timeMillis %>"
+                data-audit-log-url="<%= urlPrefix %>/cemeteries/doGetRecordAuditLog"
+              >
+                <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                <span>Audit Log</span>
+              </a>
+              <% } %>
             </div>
           </div>
         </div>
@@ -387,6 +404,9 @@
 
 <%- include('../_footerA'); -%>
 
+<% if (configFunctions.getConfigProperty('settings.auditLog.enabled') && !isCreate) { %>
+<script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
+<% } %>
 <script src="<%= urlPrefix %>/javascripts/cemetery.edit.js"></script>
 
 <%- include('../_footerB'); -%>

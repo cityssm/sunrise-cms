@@ -1,7 +1,7 @@
-// import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { Cemetery } from '../../../types/record.types.js'
 import {
+  ajaxDelayMillis,
   checkDeadLinks,
   logAccessibilityViolations,
   login,
@@ -161,5 +161,22 @@ describe('Cemeteries - Update', () => {
     cy.get(moreOptionsSelector).find('.dropdown-trigger button').click()
 
     cy.get(moreOptionsSelector).should('not.have.class', 'is-active')
+
+    cy.log('Open the Audit Log modal and verify at least one entry')
+
+    cy.get(moreOptionsSelector).find('.dropdown-trigger button').click()
+
+    cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click()
+
+    cy.wait(ajaxDelayMillis)
+
+    cy.get('#modal--recordAuditLog').should('be.visible')
+
+    cy.get('#container--recordAuditLog tbody tr').should(
+      'have.length.at.least',
+      1
+    )
+
+    cy.get('#modal--recordAuditLog .is-close-modal-button').first().click()
   })
 })

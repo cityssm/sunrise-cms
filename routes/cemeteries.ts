@@ -9,10 +9,12 @@ import handler_view from '../handlers/cemeteries-get/view.js'
 import handler_doCreateCemetery from '../handlers/cemeteries-post/doCreateCemetery.js'
 import handler_doDeleteCemetery from '../handlers/cemeteries-post/doDeleteCemetery.js'
 import handler_doUpdateCemetery from '../handlers/cemeteries-post/doUpdateCemetery.js'
+import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js'
 import {
   updateCemeteriesGetHandler,
   updateCemeteriesPostHandler
 } from '../handlers/permissions.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export const router = Router()
 
@@ -43,5 +45,13 @@ router
     updateCemeteriesPostHandler,
     handler_doDeleteCemetery
   )
+
+if (getConfigProperty('settings.auditLog.enabled')) {
+  router.post(
+    '/doGetRecordAuditLog',
+    updateCemeteriesPostHandler,
+    handler_doGetRecordAuditLog('cemetery')
+  )
+}
 
 export default router

@@ -1,5 +1,6 @@
 import { Router } from 'express'
 
+import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js'
 import handler_edit from '../handlers/funeralHomes-get/edit.js'
 import handler_new from '../handlers/funeralHomes-get/new.js'
 import handler_next from '../handlers/funeralHomes-get/next.js'
@@ -15,6 +16,7 @@ import {
   updateContractsGetHandler,
   updateContractsPostHandler
 } from '../handlers/permissions.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export const router = Router()
 
@@ -46,5 +48,13 @@ router
     updateContractsPostHandler,
     handler_doDeleteFuneralHome
   )
+
+if (getConfigProperty('settings.auditLog.enabled')) {
+  router.post(
+    '/doGetRecordAuditLog',
+    updateContractsPostHandler,
+    handler_doGetRecordAuditLog('funeralHome')
+  )
+}
 
 export default router

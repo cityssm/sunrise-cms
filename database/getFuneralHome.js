@@ -20,6 +20,10 @@ function _getFuneralHome(keyColumn, funeralHomeIdOrKey, includeDeleted = false, 
         funeralHomeProvince,
         funeralHomePostalCode,
         funeralHomePhoneNumber,
+        recordCreate_userName,
+        recordCreate_timeMillis,
+        recordUpdate_userName,
+        recordUpdate_timeMillis,
         recordDelete_userName,
         recordDelete_timeMillis
       FROM

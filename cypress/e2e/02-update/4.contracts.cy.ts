@@ -1,6 +1,7 @@
 import { testUpdate } from '../../../test/_globals.js'
 import type { Contract } from '../../../types/record.types.js'
 import {
+  ajaxDelayMillis,
   checkDeadLinks,
   logAccessibilityViolations,
   login,
@@ -139,5 +140,24 @@ describe('Contracts - Update', () => {
         contractData.purchaserRelationship
       )
     })
+
+    cy.log('Open the Audit Log modal and verify at least one entry')
+
+    const moreOptionsSelector = '[data-cy="dropdown--moreOptions"]'
+
+    cy.get(moreOptionsSelector).find('.dropdown-trigger button').click()
+
+    cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click()
+
+    cy.wait(ajaxDelayMillis)
+
+    cy.get('#modal--recordAuditLog').should('be.visible')
+
+    cy.get('#container--recordAuditLog tbody tr').should(
+      'have.length.at.least',
+      1
+    )
+
+    cy.get('#modal--recordAuditLog .is-close-modal-button').first().click()
   })
 })

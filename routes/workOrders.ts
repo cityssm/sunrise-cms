@@ -1,5 +1,6 @@
 import { Router } from 'express'
 
+import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js'
 import {
   updateWorkOrdersGetHandler,
   updateWorkOrdersPostHandler
@@ -37,6 +38,7 @@ import handler_doUpdateWorkdayWorkOrderMilestoneTime from '../handlers/workOrder
 import handler_doUpdateWorkOrder from '../handlers/workOrders-post/doUpdateWorkOrder.js'
 import handler_doUpdateWorkOrderComment from '../handlers/workOrders-post/doUpdateWorkOrderComment.js'
 import handler_doUpdateWorkOrderMilestone from '../handlers/workOrders-post/doUpdateWorkOrderMilestone.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export const router = Router()
 
@@ -200,5 +202,15 @@ router
     updateWorkOrdersPostHandler,
     handler_doDeleteWorkOrderMilestone
   )
+
+// Audit Log
+
+if (getConfigProperty('settings.auditLog.enabled')) {
+  router.post(
+    '/doGetRecordAuditLog',
+    updateWorkOrdersPostHandler,
+    handler_doGetRecordAuditLog('workOrder')
+  )
+}
 
 export default router
