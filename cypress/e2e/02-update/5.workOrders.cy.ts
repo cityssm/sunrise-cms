@@ -1,7 +1,8 @@
 import { testUpdate } from '../../../test/_globals.js'
 import {
   ajaxDelayMillis,
-  checkA11yLog, checkDeadLinks,
+  checkA11yLog,
+  checkDeadLinks,
   login,
   logout,
   pageLoadDelayMillis,
@@ -65,7 +66,10 @@ describe('Work Orders - Update', () => {
 
     cy.get('#modal--recordAuditLog').should('be.visible')
 
-    cy.get('#container--recordAuditLog tbody tr').should('have.length.at.least', 1)
+    cy.get('#container--recordAuditLog tbody tr').should(
+      'have.length.at.least',
+      1
+    )
 
     cy.get('#modal--recordAuditLog .is-close-modal-button').first().click()
   })

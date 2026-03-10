@@ -1,7 +1,14 @@
 // import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { FuneralHome } from '../../../types/record.types.js'
-import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout, pageLoadDelayMillis } from '../../support/index.js'
+import {
+  ajaxDelayMillis,
+  checkA11yLog,
+  checkDeadLinks,
+  login,
+  logout,
+  pageLoadDelayMillis
+} from '../../support/index.js'
 
 describe('Funeral Homes - Update', () => {
   beforeEach('Loads page', () => {
@@ -124,7 +131,10 @@ describe('Funeral Homes - Update', () => {
 
     cy.get('#modal--recordAuditLog').should('be.visible')
 
-    cy.get('#container--recordAuditLog tbody tr').should('have.length.at.least', 1)
+    cy.get('#container--recordAuditLog tbody tr').should(
+      'have.length.at.least',
+      1
+    )
 
     cy.get('#modal--recordAuditLog .is-close-modal-button').first().click()
   })

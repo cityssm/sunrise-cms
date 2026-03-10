@@ -1,5 +1,11 @@
 import { testUpdate } from '../../../test/_globals.js'
-import { ajaxDelayMillis, checkA11yLog, checkDeadLinks, login, logout } from '../../support/index.js'
+import {
+  ajaxDelayMillis,
+  checkA11yLog,
+  checkDeadLinks,
+  login,
+  logout
+} from '../../support/index.js'
 
 describe('Work Orders - Workday Report', () => {
   beforeEach(() => {
