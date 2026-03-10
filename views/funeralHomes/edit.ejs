@@ -66,6 +66,23 @@
               <span class="icon is-small"><i class="fa-solid fa-trash has-text-danger"></i></span>
               <span><%= t('contracts:deleteFuneralHome') %></span>
             </a>
+            <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+            <hr class="dropdown-divider" />
+            <a
+              class="dropdown-item is-view-audit-log-button"
+              href="#"
+              data-main-record-type="funeralHome"
+              data-main-record-id="<%= funeralHome.funeralHomeId %>"
+              data-record-create-user="<%= funeralHome.recordCreate_userName %>"
+              data-record-create-millis="<%= funeralHome.recordCreate_timeMillis %>"
+              data-record-update-user="<%= funeralHome.recordUpdate_userName %>"
+              data-record-update-millis="<%= funeralHome.recordUpdate_timeMillis %>"
+              data-audit-log-url="<%= urlPrefix %>/funeralHomes/doGetRecordAuditLog"
+            >
+              <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
+              <span>Audit Log</span>
+            </a>
+            <% } %>
           </div>
         </div>
       </div>
@@ -226,6 +243,9 @@
 
 <%- include('../_footerA'); -%>
 
+<% if (configFunctions.getConfigProperty('settings.auditLog.enabled') && !isCreate) { %>
+<script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
+<% } %>
 <script src="<%= urlPrefix %>/javascripts/funeralHome.edit.js"></script>
 
 <%- include('../_footerB'); -%>

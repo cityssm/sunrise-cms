@@ -27,6 +27,8 @@ import {
   updateCemeteriesGetHandler,
   updateCemeteriesPostHandler
 } from '../handlers/permissions.js'
+import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export const router = Router()
 
@@ -130,5 +132,13 @@ router
     updateCemeteriesPostHandler,
     handler_doDeleteBurialSiteComment
   )
+
+if (getConfigProperty('settings.auditLog.enabled')) {
+  router.post(
+    '/doGetRecordAuditLog',
+    updateCemeteriesPostHandler,
+    handler_doGetRecordAuditLog
+  )
+}
 
 export default router

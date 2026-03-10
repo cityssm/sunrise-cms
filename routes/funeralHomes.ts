@@ -10,11 +10,13 @@ import handler_doCreateFuneralHome from '../handlers/funeralHomes-post/doCreateF
 import handler_doDeleteFuneralHome from '../handlers/funeralHomes-post/doDeleteFuneralHome.js'
 import handler_doRestoreFuneralHome from '../handlers/funeralHomes-post/doRestoreFuneralHome.js'
 import handler_doUpdateFuneralHome from '../handlers/funeralHomes-post/doUpdateFuneralHome.js'
+import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js'
 import {
   adminPostHandler,
   updateContractsGetHandler,
   updateContractsPostHandler
 } from '../handlers/permissions.js'
+import { getConfigProperty } from '../helpers/config.helpers.js'
 
 export const router = Router()
 
@@ -46,5 +48,13 @@ router
     updateContractsPostHandler,
     handler_doDeleteFuneralHome
   )
+
+if (getConfigProperty('settings.auditLog.enabled')) {
+  router.post(
+    '/doGetRecordAuditLog',
+    updateContractsPostHandler,
+    handler_doGetRecordAuditLog
+  )
+}
 
 export default router

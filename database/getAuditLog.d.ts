@@ -7,6 +7,7 @@ export default function getAuditLog(filters: {
     logDateFrom?: '' | DateString;
     logDateTo?: '' | DateString;
     mainRecordType?: AuditLogMainRecordType;
+    mainRecordId?: number | string;
     updateUserName?: string;
 }, options?: {
     limit?: number;

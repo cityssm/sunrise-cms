@@ -72,16 +72,49 @@
         <span><%= t('contracts:restoreFuneralHome') %></span>
       </button>
       <% } else if (!funeralHomeIsDeleted && user.userProperties.canUpdateContracts) { %>
-      <a
-        class="button is-primary"
-        href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/edit"
-      >
-        <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
-        <span>
-          <%= t('common:edit') %>
-          <span class="is-hidden-mobile"><%= t('contracts:funeralHome') %></span>
-        </span>
-      </a>
+      <div class="field has-addons">
+        <div class="control">
+          <a
+            class="button is-primary"
+            href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/edit"
+          >
+            <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
+            <span>
+              <%= t('common:edit') %>
+              <span class="is-hidden-mobile"><%= t('contracts:funeralHome') %></span>
+            </span>
+          </a>
+        </div>
+        <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+        <div class="control">
+          <div class="dropdown is-right is-up">
+            <div class="dropdown-trigger">
+              <button class="button is-primary" type="button" aria-haspopup="true">
+                <span class="icon is-small"><i class="fa-solid fa-angle-up"></i></span>
+              </button>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-content">
+                <a
+                  class="dropdown-item is-view-audit-log-button"
+                  href="#"
+                  data-main-record-type="funeralHome"
+                  data-main-record-id="<%= funeralHome.funeralHomeId %>"
+                  data-record-create-user="<%= funeralHome.recordCreate_userName %>"
+                  data-record-create-millis="<%= funeralHome.recordCreate_timeMillis %>"
+                  data-record-update-user="<%= funeralHome.recordUpdate_userName %>"
+                  data-record-update-millis="<%= funeralHome.recordUpdate_timeMillis %>"
+                  data-audit-log-url="<%= urlPrefix %>/funeralHomes/doGetRecordAuditLog"
+                >
+                  <span class="icon is-small"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                  <span>Audit Log</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
       <% } %>
     </div>
   </div>
@@ -181,6 +214,9 @@
 
 <%- include('../_footerA'); -%>
 
+<% if (configFunctions.getConfigProperty('settings.auditLog.enabled') && user.userProperties.canUpdateContracts) { %>
+<script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
+<% } %>
 <script src="<%= urlPrefix %>/javascripts/funeralHome.view.js"></script>
 
 <%- include('../_footerB'); -%>

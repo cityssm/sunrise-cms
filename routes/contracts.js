@@ -42,6 +42,7 @@ import handler_doUpdateContractServiceType from '../handlers/contracts-post/doUp
 import handler_doUpdateContractTransaction from '../handlers/contracts-post/doUpdateContractTransaction.js';
 import handler_doUploadContractAttachment from '../handlers/contracts-post/doUploadContractAttachment.js';
 import { updateContractsGetHandler, updateContractsPostHandler } from '../handlers/permissions.js';
+import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 export const router = Router();
 // Search
@@ -122,4 +123,8 @@ router
     .post('/doGetPossibleRelatedContracts', updateContractsPostHandler, handler_doGetPossibleRelatedContracts)
     .post('/doAddRelatedContract', updateContractsPostHandler, handler_doAddRelatedContract)
     .post('/doDeleteRelatedContract', updateContractsPostHandler, handler_doDeleteRelatedContract);
+// Audit Log
+if (getConfigProperty('settings.auditLog.enabled')) {
+    router.post('/doGetRecordAuditLog', updateContractsPostHandler, handler_doGetRecordAuditLog);
+}
 export default router;

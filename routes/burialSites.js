@@ -22,6 +22,8 @@ import handler_doUpdateBurialSite from '../handlers/burialSites-post/doUpdateBur
 import handler_doUpdateBurialSiteComment from '../handlers/burialSites-post/doUpdateBurialSiteComment.js';
 import handler_doUpdateBurialSiteLatitudeLongitude from '../handlers/burialSites-post/doUpdateBurialSiteLatitudeLongitude.js';
 import { adminPostHandler, updateCemeteriesGetHandler, updateCemeteriesPostHandler } from '../handlers/permissions.js';
+import handler_doGetRecordAuditLog from '../handlers/common-post/doGetRecordAuditLog.js';
+import { getConfigProperty } from '../helpers/config.helpers.js';
 export const router = Router();
 /*
  * Burial Site Search
@@ -70,4 +72,7 @@ router
     .post('/doAddBurialSiteComment', updateCemeteriesPostHandler, handler_doAddBurialSiteComment)
     .post('/doUpdateBurialSiteComment', updateCemeteriesPostHandler, handler_doUpdateBurialSiteComment)
     .post('/doDeleteBurialSiteComment', updateCemeteriesPostHandler, handler_doDeleteBurialSiteComment);
+if (getConfigProperty('settings.auditLog.enabled')) {
+    router.post('/doGetRecordAuditLog', updateCemeteriesPostHandler, handler_doGetRecordAuditLog);
+}
 export default router;

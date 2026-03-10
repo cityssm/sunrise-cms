@@ -107,6 +107,23 @@
                 <span class="icon"><i class="fa-solid fa-trash has-text-danger"></i></span>
                 <span>Delete Contract</span>
               </a>
+              <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+              <hr class="dropdown-divider" />
+              <a
+                class="dropdown-item is-view-audit-log-button"
+                href="#"
+                data-main-record-type="contract"
+                data-main-record-id="<%= contract.contractId %>"
+                data-record-create-user="<%= contract.recordCreate_userName %>"
+                data-record-create-millis="<%= contract.recordCreate_timeMillis %>"
+                data-record-update-user="<%= contract.recordUpdate_userName %>"
+                data-record-update-millis="<%= contract.recordUpdate_timeMillis %>"
+                data-audit-log-url="<%= urlPrefix %>/contracts/doGetRecordAuditLog"
+              >
+                <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                <span>Audit Log</span>
+              </a>
+              <% } %>
             </div>
           </div>
         </div>
@@ -1289,6 +1306,10 @@
 
   <% if (userHasConsignoCloudAccess) { %>
     <script src="<%= urlPrefix %>/javascripts/contract.consignoCloud.js"></script>
+  <% } %>
+
+  <% if (configFunctions.getConfigProperty('settings.auditLog.enabled')) { %>
+    <script src="<%= urlPrefix %>/javascripts/record.auditLog.js"></script>
   <% } %>
 <% } %>
 

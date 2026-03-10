@@ -1,0 +1,49 @@
+<div
+  class="modal"
+  id="modal--recordAuditLog"
+  role="dialog"
+  aria-label="Audit Log"
+>
+  <div class="modal-background"></div>
+  <div class="modal-card" style="width:90vw;max-width:1400px">
+    <div class="modal-card-head">
+      <p class="modal-card-title">
+        <span class="icon">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </span>
+        <span>Audit Log</span>
+      </p>
+      <button
+        class="delete is-close-modal-button"
+        type="button"
+        aria-label="close"
+      ></button>
+    </div>
+    <section class="modal-card-body">
+      <div class="message is-info" id="recordAuditLog--recordInfo">
+        <div class="message-body">
+          <div class="columns">
+            <div class="column">
+              <strong>Created</strong><br />
+              <span id="recordAuditLog--createInfo"></span>
+            </div>
+            <div class="column">
+              <strong>Last Updated</strong><br />
+              <span id="recordAuditLog--updateInfo"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="container--recordAuditLog">
+        <p class="has-text-centered has-text-grey">
+          <i class="fa-solid fa-5x fa-circle-notch fa-spin"></i>
+        </p>
+      </div>
+    </section>
+    <div class="modal-card-foot is-justify-content-right">
+      <button class="button is-close-modal-button" type="button">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
