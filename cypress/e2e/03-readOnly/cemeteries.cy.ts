@@ -45,6 +45,7 @@ describe('Cemetery Search', () => {
 
         cy.injectAxe()
         cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
         checkDeadLinks()
       })
   })

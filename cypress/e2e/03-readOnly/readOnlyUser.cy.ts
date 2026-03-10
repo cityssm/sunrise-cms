@@ -33,10 +33,24 @@ describe('Read Only User', () => {
     cy.get("a[href*='/admin']").should('not.exist')
   })
 
+  // Cemeteries
+
   it('Has no link to create cemeteries on Cemetery Search', () => {
     cy.visit('/cemeteries')
     cy.get("a[href*='/new']").should('not.exist')
   })
+
+  it('Redirects to Dashboard when attempting to create or update a cemetery', () => {
+    cy.visit('/cemeteries/new')
+    cy.wait(200)
+    cy.location('pathname').should('not.contain', 'new')
+
+    cy.visit('/cemeteries/1/edit')
+    cy.wait(200)
+    cy.location('pathname').should('not.contain', 'edit')
+  })
+
+  // Burial Sites
 
   it('Has no link to create burial sites on Burial Site Search', () => {
     cy.visit('/burialSites')
@@ -46,31 +60,80 @@ describe('Read Only User', () => {
     cy.get("a[href*='/gpsCapture']").should('not.exist')
   })
 
+  it('Redirects to Dashboard when attempting to create or update a burial site', () => {
+    cy.visit('/burialSites/new')
+    cy.wait(200)
+    cy.location('pathname').should('not.contain', 'new')
+
+    cy.visit('/burialSites/1/edit')
+    cy.wait(200)
+    cy.location('pathname').should('not.contain', 'edit')
+
+    cy.visit('/burialSites/creator')
+    cy.wait(200)
+    cy.location('pathname').should('not.contain', 'creator')
+
+    cy.visit('/burialSites/gpsCapture')
+    cy.wait(200)
+    cy.location('pathname').should('not.contain', 'gpsCapture')
+  })
+
+  // Contracts
+
   it('Has no link to create contracts on Contract Search', () => {
     cy.visit('/contracts')
     cy.get("a[href*='/new']").should('not.exist')
   })
+
+  it('Redirects to Dashboard when attempting to create or update a contract', () => {
+    cy.visit('/contracts/new')
+    cy.wait(200)
+    cy.location('pathname').should('not.contain', 'new')
+
+    cy.visit('/contracts/1/edit')
+    cy.wait(200)
+    cy.location('pathname').should('not.contain', 'edit')
+  })
+
+  // Work Orders
 
   it('Has no link to create work orders on Work Order Search', () => {
     cy.visit('/workOrders')
     cy.get("a[href*='/new']").should('not.exist')
   })
 
-  it('Redirects to Dashboard when attempting to access the login page while authenticated', () => {
-    cy.visit('/login')
-    cy.wait(200)
-    cy.location('pathname').should('equal', '/dashboard/')
-  })
-
   it('Redirects to Dashboard when attempting to create a work order', () => {
     cy.visit('/workOrders/new')
     cy.wait(200)
-    cy.location('pathname').should('equal', '/dashboard/')
+    cy.location('pathname').should('not.contain', 'new')
+
+    cy.visit('/workOrders/1/edit')
+    cy.wait(200)
+    cy.location('pathname').should('not.contain', 'edit')
   })
 
-  it('Redirects to Dashboard when attempting to alter fees', () => {
-    cy.visit('/admin/fees')
+  it('Redirects to Dashboard when attempting to access admin sections', () => {
+    const adminPaths = [
+      '/admin/fees',
+      '/admin/contractTypes',
+      '/admin/burialSiteTypes',
+      '/admin/tables',
+      '/admin/users',
+      '/admin/settings',
+      '/admin/database',
+      '/admin/auditLog'
+    ]
+
+    for (const adminPath of adminPaths) {
+      cy.visit(adminPath)
+      cy.wait(200)
+      cy.location('pathname').should('not.contain', '/admin')
+    }
+  })
+
+  it('Redirects to Dashboard when attempting to access the login page while authenticated', () => {
+    cy.visit('/login')
     cy.wait(200)
-    cy.location('pathname').should('not.contain', '/admin')
+    cy.location('pathname').should('not.contain', '/login')
   })
 })
