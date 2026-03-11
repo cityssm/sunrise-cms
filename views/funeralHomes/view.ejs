@@ -49,6 +49,7 @@
         class="button is-info"
         href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/previous"
         title="<%= t('contracts:previousFuneralHome') %>"
+        rel="prev"
       >
         <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
         <span class="is-sr-only"><%= t('contracts:previousFuneralHome') %></span>
@@ -57,6 +58,7 @@
         class="button is-info"
         href="<%= urlPrefix %>/funeralHomes/<%= funeralHome.funeralHomeId %>/next"
         title="<%= t('common:next') %>"
+        rel="next"
       >
         <span><%= t('common:next') %></span>
         <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
