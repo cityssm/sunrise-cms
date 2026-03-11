@@ -12,8 +12,7 @@
             relatedHTML += /* html */ `
         <li title="${cityssm.escapeHTML(burialSite.cemeteryName ?? '')}">
           <span class="fa-li">
-            <i class="fa-solid fa-map-pin"
-              aria-label="Burial Site"></i>
+            <i class="fa-solid fa-map-pin"></i>
           </span>
           ${cityssm.escapeHTML(burialSite.burialSiteName === ''
                 ? '(No Burial Site Name)'
@@ -104,13 +103,13 @@
               <ul class="fa-ul ml-5 is-size-7">
                 <li title="${sunrise.escapedAliases.WorkOrderOpenDate}">
                   <span class="fa-li">
-                    <i class="fa-solid fa-play" aria-label="${sunrise.escapedAliases.WorkOrderOpenDate}"></i>
+                    <i class="fa-solid fa-play"></i>
                   </span>
                   ${workOrder.workOrderOpenDateString}
                 </li>
                 <li title="${sunrise.escapedAliases.WorkOrderCloseDate}">
                   <span class="fa-li">
-                    <i class="fa-solid fa-stop" aria-label="${sunrise.escapedAliases.WorkOrderCloseDate}"></i>
+                    <i class="fa-solid fa-stop"></i>
                   </span>
                   ${workOrder.workOrderCloseDate === null
                 ? /* html */ `
