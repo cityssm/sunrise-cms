@@ -104,6 +104,39 @@ export default function getReportData(reportName, reportParameters = {}, connect
                 sqlParameters.push(reportParameters.contractId);
                 break;
             }
+            case 'contractInterments-directory': {
+                sql = /* sql */ `
+          SELECT
+            ci.deceasedName,
+            ci.deathDate,
+            ci.deathAge,
+            ci.deathAgePeriod,
+            cem.cemeteryName,
+            bs.burialSiteName,
+            bst.burialSiteType
+          FROM
+            ContractInterments ci
+            LEFT JOIN Contracts c ON ci.contractId = c.contractId
+            INNER JOIN BurialSites bs ON c.burialSiteId = bs.burialSiteId
+            LEFT JOIN BurialSiteTypes bst ON bs.burialSiteTypeId = bst.burialSiteTypeId
+            LEFT JOIN Cemeteries cem ON bs.cemeteryId = cem.cemeteryId
+          WHERE
+            ci.recordDelete_timeMillis IS NULL
+            AND c.recordDelete_timeMillis IS NULL
+            AND c.contractTypeId IN (
+              SELECT
+                contractTypeId
+              FROM
+                ContractTypes
+              WHERE
+                isPreneed = 0
+            )
+          ORDER BY
+            ci.deceasedName,
+            ci.deathDate
+        `;
+                break;
+            }
             case 'contracts-current-byCemeteryId': {
                 sql = /* sql */ `
           SELECT
