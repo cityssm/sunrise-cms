@@ -32,7 +32,7 @@ export function getDelayMillis(): {
   let ajaxDelayMillis = 800
   let pageLoadDelayMillis = 1200
 
-  cy.env(['useLongerTimeout']).then(({ useLongerTimeouts }) => {
+  cy.env(['useLongerTimeouts']).then(({ useLongerTimeouts }) => {
     if (useLongerTimeouts) {
       cy.log(
         'Using longer timeouts for Cypress tests due to CYPRESS_USE_LONGER_TIMEOUTS environment variable being set to true'
