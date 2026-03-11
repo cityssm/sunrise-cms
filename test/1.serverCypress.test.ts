@@ -14,6 +14,9 @@ import { portNumber } from './_globals.js'
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const cypressTimeoutMillis = minutesToMillis(15)
 
+// Record to Cypress Cloud if Node is the selected version. Should match the logging version in coverage.yml
+const versionToRecord = 'v22'
+
 let continueNextRun = true
 
 function runCypress(browser: 'chrome' | 'firefox', done: () => void): void {
@@ -25,7 +28,7 @@ function runCypress(browser: 'chrome' | 'firefox', done: () => void): void {
 
   let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}`
 
-  if ((process.env.CYPRESS_RECORD_KEY ?? '') !== '') {
+  if ((process.env.CYPRESS_RECORD_KEY ?? '') !== '' && process.version.startsWith(versionToRecord)) {
     cypressCommand += ` --tag "${browser},${process.version},${process.platform}" --record`
   }
 
