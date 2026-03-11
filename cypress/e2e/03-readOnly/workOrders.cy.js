@@ -10,19 +10,16 @@ describe('Work Order Search', () => {
         ({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis());
     });
     afterEach(logout);
-    it('Has no detectable accessibility issues on the search page', () => {
+    it('Can view a work order from the search results', () => {
         cy.visit('/workOrders');
         cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/workOrders');
         cy.wait(ajaxDelayMillis);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
-    });
-    it('Can view a work order from the search results', () => {
-        cy.visit('/workOrders');
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/workOrders');
-        cy.wait(ajaxDelayMillis);
-        cy.get('#container--searchResults a.has-text-weight-bold')
+        cy.get('#container--searchResults a.has-text-weight-bold', {
+            timeout: ajaxDelayMillis
+        })
             .first()
             .then(($link) => {
             const href = $link.attr('href');

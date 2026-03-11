@@ -19,7 +19,7 @@ describe('Cemetery Search', () => {
 
   afterEach(logout)
 
-  it('Has no detectable accessibility issues on the search page', () => {
+  it('Can view a cemetery from the search results', () => {
     cy.visit('/cemeteries')
     cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
       'equal',
@@ -31,17 +31,10 @@ describe('Cemetery Search', () => {
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
 
     checkDeadLinks()
-  })
 
-  it('Can view a cemetery from the search results', () => {
-    cy.visit('/cemeteries')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
-      'equal',
-      '/cemeteries'
-    )
-    cy.wait(ajaxDelayMillis)
-
-    cy.get('#container--searchResults a.has-text-weight-bold')
+    cy.get('#container--searchResults a.has-text-weight-bold', {
+      timeout: ajaxDelayMillis
+    })
       .first()
       .then(($link) => {
         const href = $link.attr('href')

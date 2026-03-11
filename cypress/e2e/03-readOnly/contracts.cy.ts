@@ -66,7 +66,9 @@ describe('Contract Search', () => {
     )
     cy.wait(ajaxDelayMillis)
 
-    cy.get('#container--searchResults a.has-text-weight-bold')
+    cy.get('#container--searchResults a.has-text-weight-bold', {
+      timeout: ajaxDelayMillis
+    })
       .first()
       .then(($link) => {
         const href = $link.attr('href')

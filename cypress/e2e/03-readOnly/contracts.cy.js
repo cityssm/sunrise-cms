@@ -41,7 +41,9 @@ describe('Contract Search', () => {
         cy.visit('/contracts');
         cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/contracts');
         cy.wait(ajaxDelayMillis);
-        cy.get('#container--searchResults a.has-text-weight-bold')
+        cy.get('#container--searchResults a.has-text-weight-bold', {
+            timeout: ajaxDelayMillis
+        })
             .first()
             .then(($link) => {
             const href = $link.attr('href');

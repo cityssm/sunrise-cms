@@ -10,19 +10,16 @@ describe('Funeral Home Search', () => {
         ({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis());
     });
     afterEach(logout);
-    it('Has no detectable accessibility issues on the search page', () => {
+    it('Can view a funeral home from the search results', () => {
         cy.visit('/funeralHomes');
         cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/funeralHomes');
         cy.wait(ajaxDelayMillis);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
-    });
-    it('Can view a funeral home from the search results', () => {
-        cy.visit('/funeralHomes');
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/funeralHomes');
-        cy.wait(ajaxDelayMillis);
-        cy.get('#container--searchResults a.has-text-weight-bold')
+        cy.get('#container--searchResults a.has-text-weight-bold', {
+            timeout: ajaxDelayMillis
+        })
             .first()
             .then(($link) => {
             const href = $link.attr('href');
