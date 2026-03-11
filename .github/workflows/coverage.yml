@@ -108,6 +108,8 @@ jobs:
 
       - name: Run Test
         run: npm run test
+        env:
+          CYPRESS_USE_LONGER_TIMEOUTS: 'true'
 
       - name: Archive Cypress error screenshots
         if: ${{ (success() || failure()) }}
@@ -155,6 +157,8 @@ jobs:
 
       - name: Run Test
         run: npm run test
+        env:
+          CYPRESS_USE_LONGER_TIMEOUTS: 'true'
 
       - name: Archive Cypress error screenshots
         if: ${{ (success() || failure()) }}

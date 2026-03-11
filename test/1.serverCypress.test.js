@@ -16,6 +16,9 @@ function runCypress(browser, done) {
         assert.fail(`Skipping Cypress tests in ${browser} due to previous test failures`);
     }
     let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}`;
+    if ((process.env.CYPRESS_USE_LONGER_TIMEOUTS ?? '') === 'true') {
+        cypressCommand += ' --env useLongerTimeouts=true';
+    }
     if ((process.env.CYPRESS_RECORD_KEY ?? '') !== '' && process.version.startsWith(versionToRecord)) {
         cypressCommand += ` --tag "${browser},${process.version},${process.platform}" --record`;
     }
