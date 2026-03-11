@@ -3,12 +3,13 @@ import { checkDeadLinks } from '../../support/deadLinks.js';
 import { getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Admin - Database Maintenance', () => {
     let ajaxDelayMillis;
+    let pageLoadDelayMillis;
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
-        ({ ajaxDelayMillis } = getDelayMillis());
+        ({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis());
         cy.visit('/admin/database');
-        cy.location('pathname').should('equal', '/admin/database');
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/admin/database');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {

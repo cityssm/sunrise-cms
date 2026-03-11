@@ -9,14 +9,18 @@ import {
 
 describe('Admin - Database Maintenance', () => {
   let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
 
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
-    ;({ ajaxDelayMillis } = getDelayMillis())
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
 
     cy.visit('/admin/database')
-    cy.location('pathname').should('equal', '/admin/database')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/admin/database'
+    )
   })
 
   afterEach(logout)

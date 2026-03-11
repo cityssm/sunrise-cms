@@ -9,11 +9,12 @@ import {
 
 describe('Work Orders - Workday Report', () => {
   let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
 
   beforeEach(() => {
     logout()
     login(testUpdate)
-    ;({ ajaxDelayMillis } = getDelayMillis())
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)
@@ -23,7 +24,10 @@ describe('Work Orders - Workday Report', () => {
 
   it('Should page between days', () => {
     cy.visit(workdayUrl)
-    cy.location('pathname').should('equal', workdayUrl)
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      workdayUrl
+    )
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)

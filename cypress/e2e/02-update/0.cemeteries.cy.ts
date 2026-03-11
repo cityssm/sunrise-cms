@@ -22,7 +22,7 @@ describe('Cemeteries - Update', () => {
 
   it('Has a "Create" link on the Cemetery Search', () => {
     cy.visit('/cemeteries')
-    cy.location('pathname').should('equal', '/cemeteries')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/cemeteries')
     cy.get("a[href$='/cemeteries/new']").should('exist')
   })
 

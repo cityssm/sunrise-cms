@@ -1,11 +1,17 @@
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
+  getDelayMillis,
   logAccessibilityViolations,
   logout
 } from '../../support/index.js'
 
 describe('Login Page', () => {
-  beforeEach(logout)
+  let pageLoadDelayMillis: number
+
+  beforeEach(() => {
+    logout()
+    ;({ pageLoadDelayMillis } = getDelayMillis())
+  })
 
   it('Has no detectable accessibility issues', () => {
     cy.injectAxe()
@@ -38,7 +44,10 @@ describe('Login Page', () => {
   it('Redirects to login when attempting to access dashboard', () => {
     cy.visit('/dashboard')
     cy.wait(200)
-    cy.location('pathname').should('contain', '/login')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'contain',
+      '/login'
+    )
   })
 
   it('Redirects to login when invalid credentials are used', () => {
@@ -49,7 +58,10 @@ describe('Login Page', () => {
 
     cy.get('form').submit()
 
-    cy.location('pathname').should('contain', '/login')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'contain',
+      '/login'
+    )
 
     cy.get('form').contains('Login Failed', {
       matchCase: false

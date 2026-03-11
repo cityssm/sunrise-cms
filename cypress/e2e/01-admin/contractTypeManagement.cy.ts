@@ -10,6 +10,7 @@ import {
 
 describe('Admin - Contract Type Management', () => {
   let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
 
   const contractTypeTitleSelector =
     '.container--contractType .panel-heading .title'
@@ -17,10 +18,13 @@ describe('Admin - Contract Type Management', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
-    ;({ ajaxDelayMillis } = getDelayMillis())
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
 
     cy.visit('/admin/contractTypes')
-    cy.location('pathname').should('equal', '/admin/contractTypes')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/admin/contractTypes'
+    )
   })
 
   afterEach(logout)

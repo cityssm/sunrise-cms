@@ -12,14 +12,18 @@ import {
 
 describe('Admin - User Management', () => {
   let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
 
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
-    ;({ ajaxDelayMillis } = getDelayMillis())
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
 
     cy.visit('/admin/users')
-    cy.location('pathname').should('equal', '/admin/users')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/admin/users'
+    )
   })
 
   afterEach(logout)

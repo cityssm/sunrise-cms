@@ -9,11 +9,12 @@ import {
 
 describe('Contract Search', () => {
   let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
 
   beforeEach(() => {
     logout()
     login(testView)
-    ;({ ajaxDelayMillis } = getDelayMillis())
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)
@@ -59,7 +60,10 @@ describe('Contract Search', () => {
 
   it('Can view a contract from the search results', () => {
     cy.visit('/contracts')
-    cy.location('pathname').should('equal', '/contracts')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/contracts'
+    )
     cy.wait(ajaxDelayMillis)
 
     cy.get('#container--searchResults a.has-text-weight-bold')
@@ -70,7 +74,10 @@ describe('Contract Search', () => {
 
         cy.wrap($link).click()
 
-        cy.location('pathname').should('include', '/contracts/')
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+          'include',
+          '/contracts/'
+        )
 
         cy.log('Check accessibility on the contract view page')
 

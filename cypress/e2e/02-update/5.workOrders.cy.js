@@ -12,12 +12,12 @@ describe('Work Orders - Update', () => {
     afterEach(logout);
     it('Has a "Create" link on the Work Order Search', () => {
         cy.visit('/workOrders');
-        cy.location('pathname').should('equal', '/workOrders');
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/workOrders');
         cy.get("a[href$='/workOrders/new']").should('exist');
     });
     it('Creates a New Work Order', () => {
         cy.visit('/workOrders/new');
-        cy.location('pathname').should('equal', '/workOrders/new');
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/workOrders/new');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();

@@ -13,14 +13,18 @@ describe('Admin - Burial Site Type Management', () => {
     '.container--burialSiteType .panel-heading .title'
 
   let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
 
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
-    ;({ ajaxDelayMillis } = getDelayMillis())
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
 
     cy.visit('/admin/burialSiteTypes')
-    cy.location('pathname').should('equal', '/admin/burialSiteTypes')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/admin/burialSiteTypes'
+    )
   })
 
   afterEach(logout)

@@ -9,18 +9,22 @@ import {
 
 describe('Funeral Home Search', () => {
   let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
 
   beforeEach(() => {
     logout()
     login(testView)
-    ;({ ajaxDelayMillis } = getDelayMillis())
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)
 
   it('Has no detectable accessibility issues on the search page', () => {
     cy.visit('/funeralHomes')
-    cy.location('pathname').should('equal', '/funeralHomes')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/funeralHomes'
+    )
     cy.wait(ajaxDelayMillis)
 
     cy.injectAxe()
@@ -31,7 +35,10 @@ describe('Funeral Home Search', () => {
 
   it('Can view a funeral home from the search results', () => {
     cy.visit('/funeralHomes')
-    cy.location('pathname').should('equal', '/funeralHomes')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/funeralHomes'
+    )
     cy.wait(ajaxDelayMillis)
 
     cy.get('#container--searchResults a.has-text-weight-bold')
@@ -42,7 +49,10 @@ describe('Funeral Home Search', () => {
 
         cy.wrap($link).click()
 
-        cy.location('pathname').should('include', '/funeralHomes/')
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+          'include',
+          '/funeralHomes/'
+        )
 
         cy.log('Check accessibility on the funeral home view page')
 

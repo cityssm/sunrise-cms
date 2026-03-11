@@ -3,10 +3,11 @@ import { checkDeadLinks } from '../../support/deadLinks.js';
 import { getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Work Order Milestone Calendar', () => {
     let ajaxDelayMillis;
+    let pageLoadDelayMillis;
     beforeEach(() => {
         logout();
         login(testView);
-        ({ ajaxDelayMillis } = getDelayMillis());
+        ({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis());
     });
     afterEach(logout);
     const milestoneCalendarUrl = '/workOrders/milestoneCalendar';
@@ -14,7 +15,7 @@ describe('Work Order Milestone Calendar', () => {
     const yearSelector = '#searchFilter--workOrderMilestoneYear';
     it('Has no detectable accessibility issues', () => {
         cy.visit(milestoneCalendarUrl);
-        cy.location('pathname').should('equal', milestoneCalendarUrl);
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', milestoneCalendarUrl);
         cy.wait(ajaxDelayMillis);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
@@ -22,7 +23,7 @@ describe('Work Order Milestone Calendar', () => {
     });
     it('Should page to next month', () => {
         cy.visit(milestoneCalendarUrl);
-        cy.location('pathname').should('equal', milestoneCalendarUrl);
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', milestoneCalendarUrl);
         cy.wait(ajaxDelayMillis);
         // Store the initial month and year
         const state = { initialMonth: '', initialYear: '' };
@@ -55,7 +56,7 @@ describe('Work Order Milestone Calendar', () => {
     });
     it('Should page to previous month', () => {
         cy.visit(milestoneCalendarUrl);
-        cy.location('pathname').should('equal', milestoneCalendarUrl);
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', milestoneCalendarUrl);
         cy.wait(ajaxDelayMillis);
         // Store the initial month and year
         const state = { initialMonth: '', initialYear: '' };
@@ -88,7 +89,7 @@ describe('Work Order Milestone Calendar', () => {
     });
     it('Should navigate to workday view from calendar date link', () => {
         cy.visit(milestoneCalendarUrl);
-        cy.location('pathname').should('equal', milestoneCalendarUrl);
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', milestoneCalendarUrl);
         cy.wait(ajaxDelayMillis);
         // Find a calendar date link and click it
         cy.get('#container--milestoneCalendar td[data-date-string] a')
@@ -103,7 +104,7 @@ describe('Work Order Milestone Calendar', () => {
             // Click the link using Cypress's click method
             cy.wrap($link).click();
             // Verify we navigated to the workday page
-            cy.location('pathname').should('include', '/workOrders/workday');
+            cy.location('pathname', { timeout: pageLoadDelayMillis }).should('include', '/workOrders/workday');
             cy.location('search').should('include', `workdayDateString=${dateString}`);
         });
     });

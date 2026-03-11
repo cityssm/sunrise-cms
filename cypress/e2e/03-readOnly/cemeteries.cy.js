@@ -3,15 +3,16 @@ import { checkDeadLinks } from '../../support/deadLinks.js';
 import { getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Cemetery Search', () => {
     let ajaxDelayMillis;
+    let pageLoadDelayMillis;
     beforeEach(() => {
         logout();
         login(testView);
-        ({ ajaxDelayMillis } = getDelayMillis());
+        ({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis());
     });
     afterEach(logout);
     it('Has no detectable accessibility issues on the search page', () => {
         cy.visit('/cemeteries');
-        cy.location('pathname').should('equal', '/cemeteries');
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/cemeteries');
         cy.wait(ajaxDelayMillis);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
@@ -19,7 +20,7 @@ describe('Cemetery Search', () => {
     });
     it('Can view a cemetery from the search results', () => {
         cy.visit('/cemeteries');
-        cy.location('pathname').should('equal', '/cemeteries');
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/cemeteries');
         cy.wait(ajaxDelayMillis);
         cy.get('#container--searchResults a.has-text-weight-bold')
             .first()
@@ -27,7 +28,7 @@ describe('Cemetery Search', () => {
             const href = $link.attr('href');
             expect(href).to.include('/cemeteries/');
             cy.wrap($link).click();
-            cy.location('pathname').should('include', '/cemeteries/');
+            cy.location('pathname', { timeout: pageLoadDelayMillis }).should('include', '/cemeteries/');
             cy.log('Check accessibility on the cemetery view page');
             cy.injectAxe();
             cy.checkA11y(undefined, undefined, logAccessibilityViolations);
@@ -37,13 +38,13 @@ describe('Cemetery Search', () => {
     
             cy.get("a[rel='next']").click()
     
-            cy.location('pathname').should('include', '/cemeteries/')
+            cy.location('pathname', { timeout: pageLoadDelayMillis }).should('include', '/cemeteries/')
     
             cy.log('Navigate back to the previous cemetery')
     
             cy.get("a[rel='prev']").click()
     
-            cy.location('pathname').should('include', '/cemeteries/')
+            cy.location('pathname', { timeout: pageLoadDelayMillis }).should('include', '/cemeteries/')
             */
         });
     });

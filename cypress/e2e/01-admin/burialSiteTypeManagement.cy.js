@@ -4,12 +4,13 @@ import { getDelayMillis, logAccessibilityViolations, login, logout } from '../..
 describe('Admin - Burial Site Type Management', () => {
     const burialSiteTypeTitleSelector = '.container--burialSiteType .panel-heading .title';
     let ajaxDelayMillis;
+    let pageLoadDelayMillis;
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
-        ({ ajaxDelayMillis } = getDelayMillis());
+        ({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis());
         cy.visit('/admin/burialSiteTypes');
-        cy.location('pathname').should('equal', '/admin/burialSiteTypes');
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/admin/burialSiteTypes');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {

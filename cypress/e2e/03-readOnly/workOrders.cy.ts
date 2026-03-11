@@ -9,18 +9,22 @@ import {
 
 describe('Work Order Search', () => {
   let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
 
   beforeEach(() => {
     logout()
     login(testView)
-    ;({ ajaxDelayMillis } = getDelayMillis())
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)
 
   it('Has no detectable accessibility issues on the search page', () => {
     cy.visit('/workOrders')
-    cy.location('pathname').should('equal', '/workOrders')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/workOrders'
+    )
     cy.wait(ajaxDelayMillis)
 
     cy.injectAxe()
@@ -31,7 +35,10 @@ describe('Work Order Search', () => {
 
   it('Can view a work order from the search results', () => {
     cy.visit('/workOrders')
-    cy.location('pathname').should('equal', '/workOrders')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/workOrders'
+    )
     cy.wait(ajaxDelayMillis)
 
     cy.get('#container--searchResults a.has-text-weight-bold')
@@ -42,7 +49,10 @@ describe('Work Order Search', () => {
 
         cy.wrap($link).click()
 
-        cy.location('pathname').should('include', '/workOrders/')
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+          'include',
+          '/workOrders/'
+        )
 
         cy.log('Check accessibility on the work order view page')
 

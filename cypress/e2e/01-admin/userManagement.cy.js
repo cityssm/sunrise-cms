@@ -4,12 +4,13 @@ import { checkDeadLinks } from '../../support/deadLinks.js';
 import { getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Admin - User Management', () => {
     let ajaxDelayMillis;
+    let pageLoadDelayMillis;
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
-        ({ ajaxDelayMillis } = getDelayMillis());
+        ({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis());
         cy.visit('/admin/users');
-        cy.location('pathname').should('equal', '/admin/users');
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/admin/users');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {

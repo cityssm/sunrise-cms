@@ -11,14 +11,18 @@ import {
 
 describe('Admin - Fee Management', () => {
   let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
 
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
-    ;({ ajaxDelayMillis } = getDelayMillis())
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
 
     cy.visit('/admin/fees')
-    cy.location('pathname').should('equal', '/admin/fees')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/admin/fees'
+    )
   })
 
   afterEach(logout)

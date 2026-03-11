@@ -22,7 +22,7 @@ describe('Contracts - Update', () => {
 
   it('Has a "Create" link on the Contract Search', () => {
     cy.visit('/contracts')
-    cy.location('pathname').should('equal', '/contracts')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/contracts')
     cy.get("a[href$='/contracts/new']").should('exist')
   })
 

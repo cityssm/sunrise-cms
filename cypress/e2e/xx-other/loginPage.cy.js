@@ -1,7 +1,11 @@
 import { checkDeadLinks } from '../../support/deadLinks.js';
-import { logAccessibilityViolations, logout } from '../../support/index.js';
+import { getDelayMillis, logAccessibilityViolations, logout } from '../../support/index.js';
 describe('Login Page', () => {
-    beforeEach(logout);
+    let pageLoadDelayMillis;
+    beforeEach(() => {
+        logout();
+        ({ pageLoadDelayMillis } = getDelayMillis());
+    });
     it('Has no detectable accessibility issues', () => {
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
@@ -27,14 +31,14 @@ describe('Login Page', () => {
     it('Redirects to login when attempting to access dashboard', () => {
         cy.visit('/dashboard');
         cy.wait(200);
-        cy.location('pathname').should('contain', '/login');
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('contain', '/login');
     });
     it('Redirects to login when invalid credentials are used', () => {
         cy.get("form [name='userName']").type('*testUser');
         // eslint-disable-next-line @cspell/spellchecker
         cy.get("form [name='password']").type('b@dP@ssword');
         cy.get('form').submit();
-        cy.location('pathname').should('contain', '/login');
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('contain', '/login');
         cy.get('form').contains('Login Failed', {
             matchCase: false
         });

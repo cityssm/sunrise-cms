@@ -9,11 +9,12 @@ import {
 
 describe('Reports', () => {
   let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
 
   beforeEach(() => {
     logout()
     login(testView)
-    ;({ ajaxDelayMillis } = getDelayMillis())
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
 
     cy.visit('/reports')
   })
@@ -22,7 +23,10 @@ describe('Reports', () => {
 
   it('Has no detectable accessibility issues', () => {
     cy.visit('/reports')
-    cy.location('pathname').should('equal', '/reports')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/reports'
+    )
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)

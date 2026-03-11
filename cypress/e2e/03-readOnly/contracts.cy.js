@@ -3,10 +3,11 @@ import { checkDeadLinks } from '../../support/deadLinks.js';
 import { getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Contract Search', () => {
     let ajaxDelayMillis;
+    let pageLoadDelayMillis;
     beforeEach(() => {
         logout();
         login(testView);
-        ({ ajaxDelayMillis } = getDelayMillis());
+        ({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis());
     });
     afterEach(logout);
     it('Should hide the extra filters by default', () => {
@@ -38,7 +39,7 @@ describe('Contract Search', () => {
     });
     it('Can view a contract from the search results', () => {
         cy.visit('/contracts');
-        cy.location('pathname').should('equal', '/contracts');
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/contracts');
         cy.wait(ajaxDelayMillis);
         cy.get('#container--searchResults a.has-text-weight-bold')
             .first()
@@ -46,7 +47,7 @@ describe('Contract Search', () => {
             const href = $link.attr('href');
             expect(href).to.include('/contracts/');
             cy.wrap($link).click();
-            cy.location('pathname').should('include', '/contracts/');
+            cy.location('pathname', { timeout: pageLoadDelayMillis }).should('include', '/contracts/');
             cy.log('Check accessibility on the contract view page');
             cy.injectAxe();
             cy.checkA11y(undefined, undefined, logAccessibilityViolations);

@@ -3,17 +3,18 @@ import { checkDeadLinks } from '../../support/deadLinks.js';
 import { getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Work Orders - Workday Report', () => {
     let ajaxDelayMillis;
+    let pageLoadDelayMillis;
     beforeEach(() => {
         logout();
         login(testUpdate);
-        ({ ajaxDelayMillis } = getDelayMillis());
+        ({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis());
     });
     afterEach(logout);
     const workdayUrl = '/workOrders/workday';
     const dateSpanSelector = '#workdayDateStringSpan';
     it('Should page between days', () => {
         cy.visit(workdayUrl);
-        cy.location('pathname').should('equal', workdayUrl);
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', workdayUrl);
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();

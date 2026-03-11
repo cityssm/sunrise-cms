@@ -9,18 +9,22 @@ import {
 
 describe('Burial Site Search', () => {
   let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
 
   beforeEach(() => {
     logout()
     login(testView)
-    ;({ ajaxDelayMillis } = getDelayMillis())
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)
 
   it('Has no detectable accessibility issues on the search page', () => {
     cy.visit('/burialSites')
-    cy.location('pathname').should('equal', '/burialSites')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/burialSites'
+    )
     cy.wait(ajaxDelayMillis)
 
     cy.injectAxe()
@@ -31,7 +35,10 @@ describe('Burial Site Search', () => {
 
   it('Can view a burial site from the search results', () => {
     cy.visit('/burialSites')
-    cy.location('pathname').should('equal', '/burialSites')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/burialSites'
+    )
     cy.wait(ajaxDelayMillis)
 
     cy.get('#container--searchResults a.has-text-weight-bold')
@@ -42,7 +49,10 @@ describe('Burial Site Search', () => {
 
         cy.wrap($link).click()
 
-        cy.location('pathname').should('include', '/burialSites/')
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+          'include',
+          '/burialSites/'
+        )
 
         cy.log('Check accessibility on the burial site view page')
 
@@ -55,18 +65,22 @@ describe('Burial Site Search', () => {
 
 describe('Burial Site Map', () => {
   let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
 
   beforeEach(() => {
     logout()
     login(testView)
-    ;({ ajaxDelayMillis } = getDelayMillis())
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)
 
   it('Has no detectable accessibility issues', () => {
     cy.visit('/burialSites/map')
-    cy.location('pathname').should('equal', '/burialSites/map')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/burialSites/map'
+    )
     cy.wait(ajaxDelayMillis)
 
     cy.injectAxe()
@@ -77,7 +91,10 @@ describe('Burial Site Map', () => {
 
   it('Pages through cemeteries on the map', () => {
     cy.visit('/burialSites/map')
-    cy.location('pathname').should('equal', '/burialSites/map')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/burialSites/map'
+    )
     cy.wait(ajaxDelayMillis)
 
     cy.get('#filter--cemeteryId').should('exist')

@@ -11,14 +11,18 @@ import {
 
 describe('Admin - Config Table Management', () => {
   let ajaxDelayMillis: number
+  let pageLoadDelayMillis: number
 
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
-    ;({ ajaxDelayMillis } = getDelayMillis())
+    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
 
     cy.visit('/admin/tables')
-    cy.location('pathname').should('equal', '/admin/tables')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/admin/tables'
+    )
   })
 
   afterEach(logout)

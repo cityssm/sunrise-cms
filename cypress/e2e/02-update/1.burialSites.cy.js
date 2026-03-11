@@ -14,7 +14,7 @@ describe('Burial Sites - Update', () => {
     afterEach(logout);
     it('Has a "Create" link on the Burial Site Search', () => {
         cy.visit('/burialSites');
-        cy.location('pathname').should('equal', '/burialSites');
+        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/burialSites');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
