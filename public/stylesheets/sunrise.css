@@ -293,3 +293,12 @@ span.button.is-static {
 .control.has-icons-right .select:has(select:hover) ~ .icon {
   color: var(--bulma-input-icon-hover-color);
 }
+
+/*
+ * Leaflet
+ */
+
+.leaflet-control-attribution a {
+  color: var(--bulma-link-text) !important;
+  text-decoration: underline !important;
+}
