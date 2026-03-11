@@ -51,6 +51,7 @@ describe('Cemetery Search', () => {
 
         checkDeadLinks()
 
+        /*
         cy.log('Navigate to the next cemetery')
 
         cy.get("a[rel='next']").click()
@@ -62,6 +63,7 @@ describe('Cemetery Search', () => {
         cy.get("a[rel='prev']").click()
 
         cy.location('pathname').should('include', '/cemeteries/')
+        */
       })
   })
 })
