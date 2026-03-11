@@ -1,8 +1,8 @@
 import config from '../../../data/config.js'
 import { testAdmin } from '../../../test/_globals.js'
 import type { Fee } from '../../../types/record.types.js'
+import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  checkDeadLinks,
   getDelayMillis,
   logAccessibilityViolations,
   login,

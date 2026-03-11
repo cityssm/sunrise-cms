@@ -1,8 +1,7 @@
-// import { getCachedSettingValue } from '../../../helpers/cache/settings.cache.js'
 import { testUpdate } from '../../../test/_globals.js'
 import type { FuneralHome } from '../../../types/record.types.js'
+import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  checkDeadLinks,
   getDelayMillis,
   logAccessibilityViolations,
   login,

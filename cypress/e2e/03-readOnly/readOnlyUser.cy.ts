@@ -1,6 +1,6 @@
 import { testView } from '../../../test/_globals.js'
+import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  checkDeadLinks,
   logAccessibilityViolations,
   login,
   logout

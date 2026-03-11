@@ -1,6 +1,6 @@
 import { testAdmin } from '../../../test/_globals.js'
+import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  checkDeadLinks,
   getDelayMillis,
   logAccessibilityViolations,
   login,

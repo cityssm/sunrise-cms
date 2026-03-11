@@ -1,6 +1,6 @@
 import { testAdmin } from '../../../test/_globals.js'
+import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  checkDeadLinks,
   logAccessibilityViolations,
   login,
   logout
@@ -19,6 +19,7 @@ describe('Admin - Audit Log Management', () => {
   it('Has no detectable accessibility issues', () => {
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
     checkDeadLinks()
   })
 })

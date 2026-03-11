@@ -1,5 +1,6 @@
 import { testView } from '../../../test/_globals.js';
-import { checkDeadLinks, logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { checkDeadLinks } from '../../support/deadLinks.js';
+import { logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('User Settings', () => {
     beforeEach(() => {
         logout();

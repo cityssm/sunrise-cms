@@ -2,8 +2,8 @@
 
 import { testAdmin } from '../../../test/_globals.js'
 import type { DatabaseUser } from '../../../types/record.types.js'
+import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  checkDeadLinks,
   getDelayMillis,
   logAccessibilityViolations,
   login,
@@ -27,6 +27,7 @@ describe('Admin - User Management', () => {
   it('Has no detectable accessibility issues', () => {
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
     checkDeadLinks()
   })
 

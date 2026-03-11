@@ -2,8 +2,8 @@
 
 import { testUpdate } from '../../../test/_globals.js'
 import type { BurialSite } from '../../../types/record.types.js'
+import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  checkDeadLinks,
   getDelayMillis,
   logAccessibilityViolations,
   login,
@@ -45,6 +45,7 @@ describe('Burial Sites - Update', () => {
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
     checkDeadLinks()
 
     cy.log('Populate the fields')

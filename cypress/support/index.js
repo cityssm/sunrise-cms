@@ -40,15 +40,3 @@ export function logAccessibilityViolations(violations) {
         }
     }
 }
-export function checkDeadLinks() {
-    cy.get('a[href^="https://"]').each(($link) => {
-        const href = $link.attr('href');
-        cy.request({
-            url: href,
-            failOnStatusCode: false,
-            timeout: 10_000
-        })
-            .its('status')
-            .should('be.lessThan', 400);
-    });
-}

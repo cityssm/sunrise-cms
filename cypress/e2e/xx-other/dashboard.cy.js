@@ -1,5 +1,6 @@
 import { testView } from '../../../test/_globals.js';
-import { checkDeadLinks, login, logout } from '../../support/index.js';
+import { checkDeadLinks } from '../../support/deadLinks.js';
+import { login, logout } from '../../support/index.js';
 describe('Dashboard', () => {
     beforeEach(() => {
         logout();

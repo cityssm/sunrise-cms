@@ -8,4 +8,3 @@ export declare function getDelayMillis(): {
 };
 export declare const pdfGenerationDelayMillis = 10000;
 export declare function logAccessibilityViolations(violations: axe.Result[]): void;
-export declare function checkDeadLinks(): void;

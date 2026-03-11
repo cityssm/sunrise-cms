@@ -1,4 +1,5 @@
-import { checkDeadLinks, logAccessibilityViolations, logout } from '../../support/index.js';
+import { checkDeadLinks } from '../../support/deadLinks.js';
+import { logAccessibilityViolations, logout } from '../../support/index.js';
 describe('Login Page', () => {
     beforeEach(logout);
     it('Has no detectable accessibility issues', () => {

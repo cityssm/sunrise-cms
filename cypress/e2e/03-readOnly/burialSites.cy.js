@@ -1,5 +1,6 @@
 import { testView } from '../../../test/_globals.js';
-import { checkDeadLinks, getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { checkDeadLinks } from '../../support/deadLinks.js';
+import { getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
 describe('Burial Site Search', () => {
     let ajaxDelayMillis;
     beforeEach(() => {

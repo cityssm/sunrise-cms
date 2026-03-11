@@ -1,5 +1,5 @@
+import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  checkDeadLinks,
   logAccessibilityViolations,
   logout
 } from '../../support/index.js'
