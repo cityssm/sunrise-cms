@@ -46,9 +46,12 @@ const isFuneralHomeSearch = headTitle === t('contracts:funeralHomeSearch');
   </h2>
   <ul class="menu-list">
     <li>
-      <a class="<%= (isContractSearch ? 'is-active' : '') %>"
+      <a
+        class="<%= (isContractSearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/contracts"
-        title="<%= t('contracts:contractSearch') %>">
+        title="<%= t('contracts:contractSearch') %>"
+        rel="search"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-file-contract"></i></span>
@@ -58,9 +61,12 @@ const isFuneralHomeSearch = headTitle === t('contracts:funeralHomeSearch');
       </a>
     </li>
     <li>
-      <a class="<%= (isFuneralHomeSearch ? 'is-active' : '') %>"
+      <a
+        class="<%= (isFuneralHomeSearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/funeralHomes"
-        title="<%= t('contracts:funeralHomeSearch') %>">
+        title="<%= t('contracts:funeralHomeSearch') %>"
+        rel="search"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-place-of-worship"></i></span>
@@ -117,7 +123,7 @@ const isFuneralHomeSearch = headTitle === t('contracts:funeralHomeSearch');
       <a
         href="https://cityssm.github.io/sunrise-cms/docs/contracts.html"
         title="Help Documentation"
-        rel="noopener noreferrer"
+        rel="help noopener noreferrer"
         target="_blank"
       >
         <div class="columns is-mobile is-1">

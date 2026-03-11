@@ -49,7 +49,9 @@ const isBurialSiteSearch = headTitle === t('cemeteries:burialSiteSearch');
       <a
         class="<%= (isCemeterySearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/cemeteries"
-        title="<%= t('cemeteries:cemeterySearch') %>">
+        title="<%= t('cemeteries:cemeterySearch') %>"
+        rel="search"
+      >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-regular fa-map"></i></span>
@@ -63,6 +65,7 @@ const isBurialSiteSearch = headTitle === t('cemeteries:burialSiteSearch');
         class="<%= (isBurialSiteSearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/burialSites"
         title="<%= t('cemeteries:burialSiteSearch') %>"
+        rel="search"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
@@ -160,7 +163,7 @@ const isBurialSiteSearch = headTitle === t('cemeteries:burialSiteSearch');
       <a 
         href="https://cityssm.github.io/sunrise-cms/docs/cemeteries.html"
         title="Help Documentation"
-        rel="noopener noreferrer"
+        rel="help noopener noreferrer"
         target="_blank"
       >
         <div class="columns is-mobile is-1">
