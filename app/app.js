@@ -98,13 +98,6 @@ if (!configFunctions.getConfigProperty('reverseProxy.disableRateLimit')) {
 /*
  * Static content
  */
-app.use(`${urlPrefix}/public-internal`, (request, response, next) => {
-    if (hasSession(request)) {
-        next();
-        return;
-    }
-    response.sendStatus(403);
-}, express.static(path.join(configFunctions.getConfigProperty('settings.customizationsPath'), 'public-internal')));
 app
     .use(urlPrefix, express.static('public'))
     .use(`${urlPrefix}/locales`, express.static('locales'))
@@ -149,6 +142,17 @@ const sessionCheckHandler = (request, response, next) => {
     const redirectUrl = getSafeRedirectUrl(request.originalUrl);
     response.redirect(`${urlPrefix}/login?redirect=${encodeURIComponent(redirectUrl)}`);
 };
+/*
+ * Public Internal
+ */
+// eslint-disable-next-line sonarjs/no-session-cookies-on-static-assets -- Static content that should only be available to logged in users. The session cookie is used to determine if the user is logged in.
+app.use(`${urlPrefix}/public-internal`, (request, response, next) => {
+    if (hasSession(request)) {
+        next();
+        return;
+    }
+    response.sendStatus(403);
+}, express.static(path.join(configFunctions.getConfigProperty('settings.customizationsPath'), 'public-internal'), {}));
 /*
  * Locals
  */
