@@ -1,6 +1,7 @@
 /* eslint-disable max-nested-callbacks */
 import { testUpdate } from '../../../test/_globals.js';
 import { checkDeadLinks, getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
+const burialSiteNameSegment3Length = 4;
 describe('Burial Sites - Update', () => {
     let ajaxDelayMillis;
     let pageLoadDelayMillis;
@@ -53,8 +54,9 @@ describe('Burial Sites - Update', () => {
             }
             cy.get("input[name='burialSiteNameSegment3']")
                 .clear()
-                // eslint-disable-next-line sonarjs/pseudo-random
-                .type((Math.random() * 999).toFixed(0));
+                .type(Math.floor(Date.now() / 1000)
+                .toString()
+                .slice(-burialSiteNameSegment3Length));
             // Fill in capacities
             if (burialSiteData.bodyCapacity !== null &&
                 burialSiteData.bodyCapacity !== undefined) {
