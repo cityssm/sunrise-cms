@@ -50,4 +50,16 @@ describe('Burial Site Map', () => {
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
     });
+    it('Pages through cemeteries on the map', () => {
+        cy.visit('/burialSites/map');
+        cy.location('pathname').should('equal', '/burialSites/map');
+        cy.wait(ajaxDelayMillis);
+        cy.get('#filter--cemeteryId').should('exist');
+        cy.get('#filter--cemeteryId option').its('length').should('be.gte', 1);
+        cy.get('#filter--cemeteryId option').each(($option) => {
+            cy.log(`Check cemetery filter option: ${$option.text()}`);
+            cy.get('#filter--cemeteryId').select($option.val());
+            cy.wait(ajaxDelayMillis);
+        });
+    });
 });

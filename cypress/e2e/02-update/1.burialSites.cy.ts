@@ -47,62 +47,80 @@ describe('Burial Sites - Update', () => {
 
     cy.log('Populate the fields')
 
-    cy.fixture('burialSite.json').then((burialSiteData: BurialSite) => {
-      // Select the first available cemetery
-      cy.get("select[name='cemeteryId'] option")
-        .eq(1)
-        .then(($option) => {
-          cy.get("select[name='cemeteryId']").select($option.val() as string)
-        })
+    cy.fixture('burialSite.json').then(
+      (burialSiteData: Partial<BurialSite>) => {
+        // Select the first available cemetery
+        cy.get("select[name='cemeteryId'] option")
+          .eq(1)
+          .then(($option) => {
+            cy.get("select[name='cemeteryId']").select($option.val() as string)
+          })
 
-      // Select the first available burial site type
-      cy.get("select[name='burialSiteTypeId'] option")
-        .eq(1)
-        .then(($option) => {
-          cy.get("select[name='burialSiteTypeId']").select(
-            $option.val() as string
-          )
-        })
+        // Select the first available burial site type
+        cy.get("select[name='burialSiteTypeId'] option")
+          .eq(1)
+          .then(($option) => {
+            cy.get("select[name='burialSiteTypeId']").select(
+              $option.val() as string
+            )
+          })
 
-      // Fill in burial site name segments
-      if (burialSiteData.burialSiteNameSegment1) {
-        cy.get("input[name='burialSiteNameSegment1']")
+        // Fill in burial site name segments
+        if (burialSiteData.burialSiteNameSegment1 !== undefined) {
+          cy.get("input[name='burialSiteNameSegment1']")
+            .clear()
+            .type(burialSiteData.burialSiteNameSegment1)
+        }
+
+        if (burialSiteData.burialSiteNameSegment2 !== undefined) {
+          cy.get("input[name='burialSiteNameSegment2']")
+            .clear()
+            .type(burialSiteData.burialSiteNameSegment2)
+        }
+
+        cy.get("input[name='burialSiteNameSegment3']")
           .clear()
-          .type(burialSiteData.burialSiteNameSegment1)
-      }
+          // eslint-disable-next-line sonarjs/pseudo-random
+          .type((Math.random() * 999).toFixed(0))
 
-      if (burialSiteData.burialSiteNameSegment2) {
-        cy.get("input[name='burialSiteNameSegment2']")
-          .clear()
-          .type(burialSiteData.burialSiteNameSegment2)
-      }
+        // Fill in capacities
+        if (
+          burialSiteData.bodyCapacity !== null &&
+          burialSiteData.bodyCapacity !== undefined
+        ) {
+          cy.get("input[name='bodyCapacity']")
+            .clear()
+            .type(burialSiteData.bodyCapacity.toString())
+        }
 
-      cy.get("input[name='burialSiteNameSegment3']")
-        .clear()
-        // eslint-disable-next-line sonarjs/pseudo-random
-        .type((Math.random() * 999).toFixed(0))
+        if (
+          burialSiteData.crematedCapacity !== null &&
+          burialSiteData.crematedCapacity !== undefined
+        ) {
+          cy.get("input[name='crematedCapacity']")
+            .clear()
+            .type(burialSiteData.crematedCapacity.toString())
+        }
 
-      // Fill in capacities
-      if (
-        burialSiteData.bodyCapacity !== null &&
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        burialSiteData.bodyCapacity !== undefined
-      ) {
-        cy.get("input[name='bodyCapacity']")
-          .clear()
-          .type(burialSiteData.bodyCapacity.toString())
-      }
+        if (
+          burialSiteData.burialSiteLatitude !== null &&
+          burialSiteData.burialSiteLatitude !== undefined
+        ) {
+          cy.get("input[name='burialSiteLatitude']")
+            .clear()
+            .type(burialSiteData.burialSiteLatitude.toString())
+        }
 
-      if (
-        burialSiteData.crematedCapacity !== null &&
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        burialSiteData.crematedCapacity !== undefined
-      ) {
-        cy.get("input[name='crematedCapacity']")
-          .clear()
-          .type(burialSiteData.crematedCapacity.toString())
+        if (
+          burialSiteData.burialSiteLongitude !== null &&
+          burialSiteData.burialSiteLongitude !== undefined
+        ) {
+          cy.get("input[name='burialSiteLongitude']")
+            .clear()
+            .type(burialSiteData.burialSiteLongitude.toString())
+        }
       }
-    })
+    )
 
     cy.log('Submit the form')
 
@@ -113,44 +131,64 @@ describe('Burial Sites - Update', () => {
       .should('not.contain', '/new')
       .should('contain', '/edit')
 
-    cy.fixture('burialSite.json').then((burialSiteData: BurialSite) => {
-      // Verify the form values are persisted
-      if (burialSiteData.burialSiteNameSegment1) {
-        cy.get("input[name='burialSiteNameSegment1']").should(
-          'have.value',
-          burialSiteData.burialSiteNameSegment1
-        )
-      }
+    cy.fixture('burialSite.json').then(
+      (burialSiteData: Partial<BurialSite>) => {
+        // Verify the form values are persisted
+        if (burialSiteData.burialSiteNameSegment1 !== undefined) {
+          cy.get("input[name='burialSiteNameSegment1']").should(
+            'have.value',
+            burialSiteData.burialSiteNameSegment1
+          )
+        }
 
-      if (burialSiteData.burialSiteNameSegment2) {
-        cy.get("input[name='burialSiteNameSegment2']").should(
-          'have.value',
-          burialSiteData.burialSiteNameSegment2
-        )
-      }
+        if (burialSiteData.burialSiteNameSegment2 !== undefined) {
+          cy.get("input[name='burialSiteNameSegment2']").should(
+            'have.value',
+            burialSiteData.burialSiteNameSegment2
+          )
+        }
 
-      if (
-        burialSiteData.bodyCapacity !== null &&
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        burialSiteData.bodyCapacity !== undefined
-      ) {
-        cy.get("input[name='bodyCapacity']").should(
-          'have.value',
-          burialSiteData.bodyCapacity.toString()
-        )
-      }
+        if (
+          burialSiteData.bodyCapacity !== null &&
+          burialSiteData.bodyCapacity !== undefined
+        ) {
+          cy.get("input[name='bodyCapacity']").should(
+            'have.value',
+            burialSiteData.bodyCapacity.toString()
+          )
+        }
 
-      if (
-        burialSiteData.crematedCapacity !== null &&
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        burialSiteData.crematedCapacity !== undefined
-      ) {
-        cy.get("input[name='crematedCapacity']").should(
-          'have.value',
-          burialSiteData.crematedCapacity.toString()
-        )
+        if (
+          burialSiteData.crematedCapacity !== null &&
+          burialSiteData.crematedCapacity !== undefined
+        ) {
+          cy.get("input[name='crematedCapacity']").should(
+            'have.value',
+            burialSiteData.crematedCapacity.toString()
+          )
+        }
+
+        if (
+          burialSiteData.burialSiteLatitude !== null &&
+          burialSiteData.burialSiteLatitude !== undefined
+        ) {
+          cy.get("input[name='burialSiteLatitude']").should(
+            'have.value',
+            burialSiteData.burialSiteLatitude.toString()
+          )
+        }
+
+        if (
+          burialSiteData.burialSiteLongitude !== null &&
+          burialSiteData.burialSiteLongitude !== undefined
+        ) {
+          cy.get("input[name='burialSiteLongitude']").should(
+            'have.value',
+            burialSiteData.burialSiteLongitude.toString()
+          )
+        }
       }
-    })
+    )
 
     cy.log('Open the Audit Log modal and verify at least one entry')
 
