@@ -20,7 +20,6 @@ export function getDelayMillis() {
     let pageLoadDelayMillis = 1200;
     cy.env(['useLongerTimeout']).then(({ useLongerTimeouts }) => {
         if (useLongerTimeouts) {
-            // eslint-disable-next-line no-console
             cy.log('Using longer timeouts for Cypress tests due to CYPRESS_USE_LONGER_TIMEOUTS environment variable being set to true');
             ajaxDelayMillis = 1500;
             pageLoadDelayMillis = 2000;
