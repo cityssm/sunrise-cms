@@ -9,7 +9,7 @@ import {
 
 describe('Reports', () => {
   let ajaxDelayMillis: number
-  
+
   beforeEach(() => {
     logout()
     login(testView)
