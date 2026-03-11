@@ -19,11 +19,15 @@ function runCypress(browser, done) {
     if ((process.env.CYPRESS_USE_LONGER_TIMEOUTS ?? '') === 'true') {
         cypressCommand += ' --env useLongerTimeouts=true';
     }
-    if ((process.env.CYPRESS_RECORD_KEY ?? '') !== '' && process.version.startsWith(versionToRecord)) {
+    if ((process.env.CYPRESS_RECORD_KEY ?? '') !== '' &&
+        process.version.startsWith(versionToRecord)) {
         cypressCommand += ` --tag "${browser},${process.version},${process.platform}" --record`;
     }
     // eslint-disable-next-line security/detect-child-process, sonarjs/os-command
-    const childProcess = exec(cypressCommand, { timeout: cypressTimeoutMillis });
+    const childProcess = exec(cypressCommand, {
+        env: process.env,
+        timeout: cypressTimeoutMillis
+    });
     childProcess.stdout?.on('data', (data) => {
         console.log(data);
     });
