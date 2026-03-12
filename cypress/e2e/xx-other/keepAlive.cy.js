@@ -5,4 +5,3 @@ describe('Keep Alive', () => {
         });
     });
 });
-export {};
