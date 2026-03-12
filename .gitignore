@@ -36,7 +36,7 @@ temp/*.csv
 megalinter-reports/
 temp_build/
 
-tsconfig.tsbuildinfo
+.tsbuildinfo
 
 # Jetbrains IDEs
 .idea/
