@@ -25,10 +25,14 @@ jobs:
         id: installCi
         continue-on-error: true
         run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
 
       - name: Install Application (Install)
         if: steps.installCi.outcome == 'failure'
         run: npm install
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
 
       - name: Run EditorConfig Check
         if: ${{ (success() || failure()) }}
