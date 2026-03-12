@@ -7,7 +7,7 @@ export default defineConfig({
         allowCypressEnv: false,
         supportFile: false
     },
-    env: {
+    expose: {
         useLongerTimeouts: process.env.CYPRESS_USE_LONGER_TIMEOUTS === 'true'
     }
 });

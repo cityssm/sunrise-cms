@@ -17,7 +17,7 @@ function runCypress(browser, done) {
     }
     let cypressCommand = `cypress run --config-file cypress.config.js --browser ${browser}`;
     if ((process.env.CYPRESS_USE_LONGER_TIMEOUTS ?? '') === 'true') {
-        cypressCommand += ' --env useLongerTimeouts=true';
+        cypressCommand += ' --expose useLongerTimeouts=true';
     }
     if ((process.env.CYPRESS_RECORD_KEY ?? '') !== '' &&
         process.version.startsWith(versionToRecord)) {
@@ -43,7 +43,7 @@ function runCypress(browser, done) {
     });
 }
 await describe('sunrise-cms', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises, @typescript-eslint/strict-void-return
+    // eslint-disable-next-line @typescript-eslint/strict-void-return
     const httpServer = http.createServer(app);
     let serverStarted = false;
     before((_context, done) => {

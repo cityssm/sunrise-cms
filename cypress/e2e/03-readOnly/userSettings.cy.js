@@ -1,12 +1,10 @@
 import { testView } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
-import { getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { logAccessibilityViolations, login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('User Settings', () => {
-    let pageLoadDelayMillis;
     beforeEach(() => {
         logout();
         login(testView);
-        ({ pageLoadDelayMillis } = getDelayMillis());
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {

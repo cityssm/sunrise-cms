@@ -259,8 +259,8 @@ declare const exports: {
             title: i18next.t('admin:auditLogPurge'),
 
             message: i18next.t('admin:auditLogPurgeSuccess', {
-              count: responseJSON.purgedCount,
-              age: ageLabel
+              age: ageLabel,
+              count: responseJSON.purgedCount
             })
           })
 

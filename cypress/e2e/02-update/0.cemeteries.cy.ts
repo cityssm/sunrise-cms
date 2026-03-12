@@ -2,27 +2,27 @@ import { testUpdate } from '../../../test/_globals.js'
 import type { Cemetery } from '../../../types/record.types.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  getDelayMillis,
+  ajaxDelayMillis,
   logAccessibilityViolations,
   login,
-  logout
+  logout,
+  pageLoadDelayMillis
 } from '../../support/index.js'
 
 describe('Cemeteries - Update', () => {
-  let ajaxDelayMillis: number
-  let pageLoadDelayMillis: number
-
   beforeEach('Loads page', () => {
     logout()
     login(testUpdate)
-    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)
 
   it('Has a "Create" link on the Cemetery Search', () => {
     cy.visit('/cemeteries')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/cemeteries')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/cemeteries'
+    )
     cy.get("a[href$='/cemeteries/new']").should('exist')
   })
 

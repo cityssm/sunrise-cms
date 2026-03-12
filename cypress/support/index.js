@@ -15,21 +15,8 @@ export function login(userName) {
     // Logged in pages have a navbar
     cy.get('.navbar').should('have.length', 1);
 }
-export function getDelayMillis() {
-    let ajaxDelayMillis = 800;
-    let pageLoadDelayMillis = 1200;
-    cy.env(['useLongerTimeouts']).then(({ useLongerTimeouts }) => {
-        if (useLongerTimeouts) {
-            cy.log('Using longer timeouts for Cypress tests due to CYPRESS_USE_LONGER_TIMEOUTS environment variable being set to true');
-            ajaxDelayMillis = 1500;
-            pageLoadDelayMillis = 2000;
-        }
-    });
-    return {
-        ajaxDelayMillis,
-        pageLoadDelayMillis
-    };
-}
+export const ajaxDelayMillis = Cypress.expose('useLongerTimeouts') === true ? 1500 : 800;
+export const pageLoadDelayMillis = Cypress.expose('useLongerTimeouts') === true ? 2000 : 1200;
 export const pdfGenerationDelayMillis = 10_000;
 export function logAccessibilityViolations(violations) {
     if (violations.length > 0) {

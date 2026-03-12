@@ -3,20 +3,17 @@
 import { testAdmin } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  getDelayMillis,
+  ajaxDelayMillis,
   logAccessibilityViolations,
   login,
-  logout
+  logout,
+  pageLoadDelayMillis
 } from '../../support/index.js'
 
 describe('Admin - Config Table Management', () => {
-  let ajaxDelayMillis: number
-  let pageLoadDelayMillis: number
-
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
-    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
 
     cy.visit('/admin/tables')
     cy.location('pathname', { timeout: pageLoadDelayMillis }).should(

@@ -1,12 +1,10 @@
 import { testUpdate } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
-import { getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { logAccessibilityViolations, login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Update User', () => {
-    let pageLoadDelayMillis;
     beforeEach('Loads page', () => {
         logout();
         login(testUpdate);
-        ({ pageLoadDelayMillis } = getDelayMillis());
     });
     afterEach(logout);
     it('Has an Update User dashboard', () => {

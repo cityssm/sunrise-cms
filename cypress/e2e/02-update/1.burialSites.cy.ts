@@ -4,29 +4,29 @@ import { testUpdate } from '../../../test/_globals.js'
 import type { BurialSite } from '../../../types/record.types.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  getDelayMillis,
+  ajaxDelayMillis,
   logAccessibilityViolations,
   login,
-  logout
+  logout,
+  pageLoadDelayMillis
 } from '../../support/index.js'
 
 const burialSiteNameSegment3Length = 4
 
 describe('Burial Sites - Update', () => {
-  let ajaxDelayMillis: number
-  let pageLoadDelayMillis: number
-
   beforeEach('Loads page', () => {
     logout()
     login(testUpdate)
-    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)
 
   it('Has a "Create" link on the Burial Site Search', () => {
     cy.visit('/burialSites')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/burialSites')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/burialSites'
+    )
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)

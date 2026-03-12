@@ -27,7 +27,7 @@ export default async function handler(
     return
   }
 
-  if (workOrder.workOrderCloseDate) {
+  if (workOrder.workOrderCloseDate !== null) {
     response.redirect(
       `${getConfigProperty(
         'reverseProxy.urlPrefix'
@@ -47,6 +47,7 @@ export default async function handler(
   response.render('workOrders/edit', {
     headTitle: i18next.t('workOrders:workOrderTitle', {
       number: workOrder.workOrderNumber,
+
       lng: response.locals.lng
     }),
 

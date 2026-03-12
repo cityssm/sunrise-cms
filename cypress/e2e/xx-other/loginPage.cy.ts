@@ -1,16 +1,13 @@
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  getDelayMillis,
   logAccessibilityViolations,
-  logout
+  logout,
+  pageLoadDelayMillis
 } from '../../support/index.js'
 
 describe('Login Page', () => {
-  let pageLoadDelayMillis: number
-
   beforeEach(() => {
     logout()
-    ;({ pageLoadDelayMillis } = getDelayMillis())
   })
 
   it('Has no detectable accessibility issues', () => {

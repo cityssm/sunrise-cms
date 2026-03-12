@@ -1,20 +1,17 @@
 import { testView } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  getDelayMillis,
+  ajaxDelayMillis,
   logAccessibilityViolations,
   login,
-  logout
+  logout,
+  pageLoadDelayMillis
 } from '../../support/index.js'
 
 describe('Cemetery Search', () => {
-  let ajaxDelayMillis: number
-  let pageLoadDelayMillis: number
-
   beforeEach(() => {
     logout()
     login(testView)
-    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)

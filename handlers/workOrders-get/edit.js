@@ -15,7 +15,7 @@ export default async function handler(request, response) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/workOrders/?error=workOrderIdNotFound`);
         return;
     }
-    if (workOrder.workOrderCloseDate) {
+    if (workOrder.workOrderCloseDate !== null) {
         response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/workOrders/${workOrder.workOrderId.toString()}/?error=workOrderIsClosed`);
         return;
     }

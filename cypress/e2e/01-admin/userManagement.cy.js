@@ -1,14 +1,11 @@
 /* eslint-disable max-nested-callbacks */
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
-import { getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, logAccessibilityViolations, login, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Admin - User Management', () => {
-    let ajaxDelayMillis;
-    let pageLoadDelayMillis;
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
-        ({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis());
         cy.visit('/admin/users');
         cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/admin/users');
     });

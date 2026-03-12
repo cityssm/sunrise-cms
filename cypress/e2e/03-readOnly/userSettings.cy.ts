@@ -1,19 +1,16 @@
 import { testView } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  getDelayMillis,
   logAccessibilityViolations,
   login,
-  logout
+  logout,
+  pageLoadDelayMillis
 } from '../../support/index.js'
 
 describe('User Settings', () => {
-  let pageLoadDelayMillis: number
-
   beforeEach(() => {
     logout()
     login(testView)
-    ;({ pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)

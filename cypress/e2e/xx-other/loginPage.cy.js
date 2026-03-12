@@ -1,10 +1,8 @@
 import { checkDeadLinks } from '../../support/deadLinks.js';
-import { getDelayMillis, logAccessibilityViolations, logout } from '../../support/index.js';
+import { logAccessibilityViolations, logout, pageLoadDelayMillis } from '../../support/index.js';
 describe('Login Page', () => {
-    let pageLoadDelayMillis;
     beforeEach(() => {
         logout();
-        ({ pageLoadDelayMillis } = getDelayMillis());
     });
     it('Has no detectable accessibility issues', () => {
         cy.injectAxe();

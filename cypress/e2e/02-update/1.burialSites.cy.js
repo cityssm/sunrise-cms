@@ -1,15 +1,12 @@
 /* eslint-disable max-nested-callbacks */
 import { testUpdate } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
-import { getDelayMillis, logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, logAccessibilityViolations, login, logout, pageLoadDelayMillis } from '../../support/index.js';
 const burialSiteNameSegment3Length = 4;
 describe('Burial Sites - Update', () => {
-    let ajaxDelayMillis;
-    let pageLoadDelayMillis;
     beforeEach('Loads page', () => {
         logout();
         login(testUpdate);
-        ({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis());
     });
     afterEach(logout);
     it('Has a "Create" link on the Burial Site Search', () => {

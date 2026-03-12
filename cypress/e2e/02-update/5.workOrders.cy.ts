@@ -1,34 +1,37 @@
 import { testUpdate } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  getDelayMillis,
+  ajaxDelayMillis,
   logAccessibilityViolations,
   login,
   logout,
+  pageLoadDelayMillis,
   pdfGenerationDelayMillis
 } from '../../support/index.js'
 
 describe('Work Orders - Update', () => {
-  let ajaxDelayMillis: number
-  let pageLoadDelayMillis: number
-
   beforeEach(() => {
     logout()
     login(testUpdate)
-    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)
 
   it('Has a "Create" link on the Work Order Search', () => {
     cy.visit('/workOrders')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/workOrders')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/workOrders'
+    )
     cy.get("a[href$='/workOrders/new']").should('exist')
   })
 
   it('Creates a New Work Order', () => {
     cy.visit('/workOrders/new')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/workOrders/new')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/workOrders/new'
+    )
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)

@@ -2,27 +2,27 @@ import { testUpdate } from '../../../test/_globals.js'
 import type { FuneralHome } from '../../../types/record.types.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  getDelayMillis,
+  ajaxDelayMillis,
   logAccessibilityViolations,
   login,
-  logout
+  logout,
+  pageLoadDelayMillis
 } from '../../support/index.js'
 
 describe('Funeral Homes - Update', () => {
-  let ajaxDelayMillis: number
-  let pageLoadDelayMillis: number
-
   beforeEach('Loads page', () => {
     logout()
     login(testUpdate)
-    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)
 
   it('Has a "Create" link on the Funeral Home Search', () => {
     cy.visit('/funeralHomes')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/funeralHomes')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/funeralHomes'
+    )
     cy.get("a[href$='/funeralHomes/new']").should('exist')
   })
 

@@ -2,23 +2,20 @@ import { testAdmin } from '../../../test/_globals.js'
 import type { BurialSiteType } from '../../../types/record.types.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  getDelayMillis,
+  ajaxDelayMillis,
   logAccessibilityViolations,
   login,
-  logout
+  logout,
+  pageLoadDelayMillis
 } from '../../support/index.js'
 
 describe('Admin - Burial Site Type Management', () => {
   const burialSiteTypeTitleSelector =
     '.container--burialSiteType .panel-heading .title'
 
-  let ajaxDelayMillis: number
-  let pageLoadDelayMillis: number
-
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
-    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
 
     cy.visit('/admin/burialSiteTypes')
     cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
