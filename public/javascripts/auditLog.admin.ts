@@ -298,8 +298,7 @@ declare const exports: {
 
         const age = ageSelectElement.value
         const ageLabel =
-          ageSelectElement.options[ageSelectElement.selectedIndex]
-            .textContent ?? ''
+          ageSelectElement.options[ageSelectElement.selectedIndex].textContent
 
         closeModalFunction?.()
 

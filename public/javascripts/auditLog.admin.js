@@ -210,8 +210,7 @@
             submitEvent.preventDefault();
             const ageSelectElement = submitEvent.currentTarget.querySelector('#purge--age');
             const age = ageSelectElement.value;
-            const ageLabel = ageSelectElement.options[ageSelectElement.selectedIndex]
-                .textContent ?? '';
+            const ageLabel = ageSelectElement.options[ageSelectElement.selectedIndex].textContent;
             closeModalFunction?.();
             doPurge(age, ageLabel);
         }
