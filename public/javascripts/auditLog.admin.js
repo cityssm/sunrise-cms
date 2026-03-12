@@ -48,14 +48,14 @@
     }
     function buildValueCell(rawValue) {
         if (rawValue === null || rawValue === 'null') {
-            return /* html */ '<em class="has-text-grey-darker">null</em>';
+            return '<em class="has-text-grey-darker">null</em>';
         }
         const escaped = cityssm.escapeHTML(rawValue);
         if (rawValue.length <= maxValueLength) {
-            return /* html */ `<code style="word-break:break-all">${escaped}</code>`;
+            return `<code style="word-break:break-all">${escaped}</code>`;
         }
         const truncated = cityssm.escapeHTML(truncateValue(rawValue));
-        return /* html */ `
+        return `
       <code title="${escaped}" style="cursor:help;word-break:break-all">
         ${truncated}
       </code>
@@ -64,7 +64,7 @@
     function renderAuditLog(responseJSON) {
         const { auditLogEntries, count, offset } = responseJSON;
         if (auditLogEntries.length === 0) {
-            auditLogContainerElement.innerHTML = /* html */ `
+            auditLogContainerElement.innerHTML = `
         <p class="has-text-grey">
           ${cityssm.escapeHTML(i18next.t('admin:auditLogNoEntries'))}
         </p>
@@ -77,7 +77,7 @@
             const dateString = logDate.toLocaleDateString();
             const timeString = logDate.toLocaleTimeString();
             const recordUrl = getRecordUrl(entry.mainRecordType, entry.mainRecordId);
-            return /* html */ `
+            return `
           <tr class="${getUpdateTypeColorClass(entry.updateType)}">
             <td>
               ${cityssm.escapeHTML(dateString)}<br />
@@ -87,7 +87,7 @@
               ${cityssm.escapeHTML(entry.mainRecordType)}<br />
               ${recordUrl === undefined
                 ? `<span class="is-size-7">${cityssm.escapeHTML(entry.mainRecordId)}</span>`
-                : /* html */ `
+                : `
                     <a
                       class="has-text-black has-text-weight-semibold is-size-7"
                       href="${cityssm.escapeHTML(recordUrl)}"
@@ -102,7 +102,7 @@
               ${cityssm.escapeHTML(entry.updateTable)}<br />
               ${entry.recordIndex === null
                 ? ''
-                : /* html */ `
+                : `
                     <span class="is-size-7">
                       ${cityssm.escapeHTML(entry.recordIndex)}
                     </span>
@@ -120,8 +120,7 @@
         `;
         })
             .join('');
-        // eslint-disable-next-line no-unsanitized/property
-        auditLogContainerElement.innerHTML = /* html */ `
+        auditLogContainerElement.innerHTML = `
       <div class="table-container">
         <table class="table is-fullwidth is-striped is-hoverable">
           <thead>

@@ -2,9 +2,6 @@
     const sunrise = exports.sunrise;
     const cemeteryId = document.querySelector('#cemetery--cemeteryId').value;
     const isCreate = cemeteryId === '';
-    /*
-     * Cemetery Map
-     */
     document
         .querySelector('#button--selectCoordinate')
         ?.addEventListener('click', (clickEvent) => {
@@ -17,9 +14,6 @@
             }
         });
     });
-    /*
-     * Cemetery Form
-     */
     const cemeteryForm = document.querySelector('#form--cemetery');
     function setUnsavedChanges() {
         sunrise.setUnsavedChanges();
@@ -92,9 +86,6 @@
             }
         });
     });
-    /*
-     * Directions of Arrival
-     */
     function toggleDirectionOfArrivalDescription(clickEvent) {
         const checkboxElement = clickEvent.currentTarget;
         const descriptionElement = document.querySelector(`#cemetery--directionOfArrivalDescription_${checkboxElement.value}`);
@@ -104,13 +95,10 @@
         }
         else {
             descriptionElement.setAttribute('disabled', 'disabled');
-            // descriptionElement.value = ''
         }
         setUnsavedChanges();
     }
-    const directionOfArrivalCheckboxElements = 
-    // eslint-disable-next-line no-secrets/no-secrets
-    document.querySelectorAll('input[name^="directionOfArrival_"]');
+    const directionOfArrivalCheckboxElements = document.querySelectorAll('input[name^="directionOfArrival_"]');
     for (const checkboxElement of directionOfArrivalCheckboxElements) {
         checkboxElement.addEventListener('change', toggleDirectionOfArrivalDescription);
     }

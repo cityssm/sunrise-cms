@@ -1,4 +1,3 @@
-/* eslint-disable no-secrets/no-secrets */
 (() => {
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
@@ -75,7 +74,7 @@
                     const milestoneElement = document.createElement('div');
                     milestoneElement.className =
                         'panel-block is-block has-background-grey-lighter';
-                    milestoneElement.innerHTML = /* html */ `
+                    milestoneElement.innerHTML = `
               <div class="columns">
                 <div class="column is-narrow">
                   <input

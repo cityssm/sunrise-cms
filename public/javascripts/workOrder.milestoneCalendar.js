@@ -11,7 +11,7 @@
         const tableElement = document.createElement('table');
         tableElement.className =
             'table is-fullwidth is-bordered is-narrow is-fixed is-size-7';
-        tableElement.innerHTML = /* html */ `
+        tableElement.innerHTML = `
       <thead>
         <tr class="is-info">
           <th><abbr title="Sunday">Sun</abbr></th>
@@ -40,8 +40,7 @@
             const dateCell = document.createElement('td');
             dateCell.dataset.dateString = cityssm.dateToString(calendarDate);
             dateCell.style.height = '3rem';
-            // eslint-disable-next-line no-unsanitized/property
-            dateCell.innerHTML = /* html */ `
+            dateCell.innerHTML = `
         <a href="${sunrise.urlPrefix}/workOrders/workday/?workdayDateString=${cityssm.dateToString(calendarDate)}">
           ${calendarDate.getDate().toString()}
         </a>
@@ -58,7 +57,6 @@
         }
         if (calendarDate.getDay() !== 0) {
             const finalRow = tableBodyElement.querySelector('tr:last-child');
-            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             while (finalRow.children.length < 7) {
                 const emptyCell = document.createElement('td');
                 emptyCell.className = 'has-background-white-ter';
@@ -75,8 +73,7 @@
         workOrderElement.dataset.isComplete =
             workOrder.workOrderCloseDate === null ? '0' : '1';
         workOrderElement.href = sunrise.getWorkOrderUrl(workOrder.workOrderId);
-        // eslint-disable-next-line no-unsanitized/property
-        workOrderElement.innerHTML = /* html */ `
+        workOrderElement.innerHTML = `
       <div class="columns m-0 is-gapless is-mobile">
         <div class="column has-text-weight-semibold">
           #${cityssm.escapeHTML(workOrder.workOrderNumber ?? '')}
@@ -90,7 +87,6 @@
         </div>
       </div>
     `;
-        // Add burial sites and interred names
         const burialSiteNames = new Set();
         const deceasedNames = new Set();
         for (const burialSite of workOrder.workOrderBurialSites ?? []) {
@@ -106,8 +102,7 @@
             if (burialSiteName === '') {
                 continue;
             }
-            workOrderElement.insertAdjacentHTML('beforeend', 
-            /* html */ `
+            workOrderElement.insertAdjacentHTML('beforeend', `
           <div class="columns m-0 is-gapless is-mobile">
             <div class="column is-narrow">
               <span class="icon is-small">
@@ -124,8 +119,7 @@
             if (deceasedName === '') {
                 continue;
             }
-            workOrderElement.insertAdjacentHTML('beforeend', 
-            /* html */ `
+            workOrderElement.insertAdjacentHTML('beforeend', `
           <div class="columns m-0 is-gapless is-mobile">
             <div class="column is-narrow">
               <span class="icon is-small">
@@ -143,12 +137,11 @@
     function renderMilestones(workOrderMilestones) {
         milestoneCalendarContainerElement.innerHTML = '';
         if (workOrderMilestones.length === 0) {
-            milestoneCalendarContainerElement.innerHTML = /* html */ `
+            milestoneCalendarContainerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">No Milestones Found</p>
         </div>
       `;
-            // return
         }
         let dateString = workOrderMilestones[0]?.workOrderMilestoneDateString;
         if (dateString === undefined) {
@@ -158,7 +151,6 @@
         }
         renderBlankCalendar(dateString);
         const currentDateString = cityssm.dateToString(new Date());
-        // Render the milestones
         for (const workOrderMilestone of workOrderMilestones) {
             const milestoneDate = cityssm.dateStringToDate(workOrderMilestone.workOrderMilestoneDateString ?? '');
             const calendarDateCell = milestoneCalendarContainerElement.querySelector(`td[data-date-string="${cityssm.dateToString(milestoneDate)}"]`);
@@ -167,9 +159,7 @@
                 workOrderElement = buildWorkOrderElement(workOrderMilestone);
                 calendarDateCell.append(workOrderElement);
             }
-            // eslint-disable-next-line no-unsanitized/method
-            workOrderElement.insertAdjacentHTML('beforeend', 
-            /* html */ `
+            workOrderElement.insertAdjacentHTML('beforeend', `
           <div
             class="columns m-0 is-gapless is-mobile container--workOrderMilestone"
             data-is-complete="${workOrderMilestone.workOrderMilestoneCompletionDate === null ? '0' : '1'}"
@@ -187,8 +177,7 @@
           </div>
         `);
             if (workOrderMilestone.workOrderMilestoneTime !== null) {
-                workOrderElement.insertAdjacentHTML('beforeend', 
-                /* html */ `
+                workOrderElement.insertAdjacentHTML('beforeend', `
             <p class="is-italic has-text-right">
               ${cityssm.escapeHTML(workOrderMilestone.workOrderMilestoneTimePeriodString ?? '')}
             </p>
@@ -216,7 +205,6 @@
         ?.addEventListener('click', () => {
         const currentMonth = workOrderMilestoneMonthElement.value;
         if (currentMonth === '1') {
-            // Ensure the previous year is available
             const previousYear = Number(workOrderMilestoneYearElement.value) - 1;
             if (document.querySelector(`option[value="${previousYear}"]`) === null) {
                 const newOption = document.createElement('option');
@@ -237,7 +225,6 @@
         ?.addEventListener('click', () => {
         const currentMonth = workOrderMilestoneMonthElement.value;
         if (currentMonth === '12') {
-            // Ensure the next year is available
             const nextYear = Number(workOrderMilestoneYearElement.value) + 1;
             if (document.querySelector(`option[value="${nextYear}"]`) === null) {
                 const newOption = document.createElement('option');

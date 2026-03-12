@@ -1,7 +1,4 @@
 (() => {
-    /*
-     * Map
-     */
     const sunrise = exports.sunrise;
     const mapContainerElement = document.querySelector('#burialSite--leaflet');
     if (mapContainerElement !== null) {
@@ -18,16 +15,10 @@
         }).addTo(map);
         new L.Marker(mapCoordinates).addTo(map);
     }
-    /*
-     * Image
-     */
     const svgContainerElement = document.querySelector('#burialSite--cemeterySvg');
     if (svgContainerElement !== null) {
         sunrise.highlightMap(svgContainerElement, svgContainerElement.dataset.cemeterySvgId ?? '', 'success');
     }
-    /*
-     * Contracts
-     */
     document
         .querySelector('#burialSite--contractsToggle')
         ?.addEventListener('click', () => {
@@ -36,9 +27,6 @@
             tableRowElement.classList.toggle('is-hidden');
         }
     });
-    /*
-     * Restore Deleted
-     */
     document
         .querySelector('button.is-restore-burial-site-button')
         ?.addEventListener('click', (clickEvent) => {

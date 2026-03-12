@@ -1,9 +1,7 @@
-/* eslint-disable max-lines */
 (() => {
     const sunrise = exports.sunrise;
     const burialSiteId = document.querySelector('#burialSite--burialSiteId').value;
     const isCreate = burialSiteId === '';
-    // Main form
     let refreshAfterSave = isCreate;
     function setUnsavedChanges() {
         sunrise.setUnsavedChanges();
@@ -79,7 +77,6 @@
             }
         });
     });
-    // Cemetery
     const cemeteryKeySpanElement = document.querySelector('#burialSite--cemeteryKey');
     if (cemeteryKeySpanElement !== null) {
         document
@@ -90,7 +87,6 @@
             cemeteryKeySpanElement.innerHTML = cityssm.escapeHTML(cemeteryKey);
         });
     }
-    // Burial Site Type
     const burialSiteTypeIdElement = document.querySelector('#burialSite--burialSiteTypeId');
     function updateCapacities() {
         const bodyCapacityMax = burialSiteTypeIdElement.selectedOptions[0].dataset.bodyCapacityMax;
@@ -118,7 +114,7 @@
         const burialSiteFieldsContainerElement = document.querySelector('#container--burialSiteFields');
         burialSiteTypeIdElement.addEventListener('change', () => {
             if (burialSiteTypeIdElement.value === '') {
-                burialSiteFieldsContainerElement.innerHTML = /* html */ `
+                burialSiteFieldsContainerElement.innerHTML = `
           <div class="message is-info">
             <p class="message-body">Select the burial site type to load the available fields.</p>
           </div>
@@ -129,7 +125,7 @@
                 burialSiteTypeId: burialSiteTypeIdElement.value
             }, (responseJSON) => {
                 if (responseJSON.burialSiteTypeFields.length === 0) {
-                    burialSiteFieldsContainerElement.innerHTML = /* html */ `
+                    burialSiteFieldsContainerElement.innerHTML = `
               <div class="message is-info">
                 <p class="message-body">
                   There are no additional fields for this burial site type.
@@ -146,7 +142,7 @@
                     const fieldId = `burialSite--${fieldName}`;
                     const fieldElement = document.createElement('div');
                     fieldElement.className = 'field';
-                    fieldElement.innerHTML = /* html */ `
+                    fieldElement.innerHTML = `
               <label class="label" for="${cityssm.escapeHTML(fieldId)}"></label>
               <div class="control"></div>
             `;
@@ -166,9 +162,8 @@
                         fieldElement.querySelector('.control')?.append(inputElement);
                     }
                     else {
-                        // eslint-disable-next-line no-unsanitized/property
                         ;
-                        fieldElement.querySelector('.control').innerHTML = /* html */ `
+                        fieldElement.querySelector('.control').innerHTML = `
                 <div class="select is-fullwidth">
                   <select id="${fieldId}" name="${fieldName}">
                     <option value="">(Not Set)</option>
@@ -187,9 +182,7 @@
                     }
                     burialSiteFieldsContainerElement.append(fieldElement);
                 }
-                burialSiteFieldsContainerElement.insertAdjacentHTML('beforeend', 
-                // eslint-disable-next-line no-secrets/no-secrets
-                /* html */ `
+                burialSiteFieldsContainerElement.insertAdjacentHTML('beforeend', `
               <input name="burialSiteTypeFieldIds" type="hidden"
                 value="${cityssm.escapeHTML(burialSiteTypeFieldIds.slice(1))}" />
             `);
@@ -223,7 +216,6 @@
         });
     }
     burialSiteTypeIdElement.addEventListener('change', updateCapacities);
-    // Leaflet Map
     document
         .querySelector('#button--selectCoordinate')
         ?.addEventListener('click', (clickEvent) => {
@@ -236,7 +228,6 @@
             }
         });
     });
-    // Comments
     let burialSiteComments = exports.burialSiteComments;
     delete exports.burialSiteComments;
     function openEditBurialSiteComment(clickEvent) {
@@ -277,7 +268,6 @@
                     burialSiteComment.commentDateString ?? '';
                 const currentDateString = cityssm.dateToString(new Date());
                 commentDateStringElement.max =
-                    // eslint-disable-next-line unicorn/prefer-math-min-max
                     (burialSiteComment.commentDateString ?? '') <= currentDateString
                         ? currentDateString
                         : (burialSiteComment.commentDateString ?? '');
@@ -329,7 +319,7 @@
     function renderBurialSiteComments() {
         const containerElement = document.querySelector('#container--burialSiteComments');
         if (burialSiteComments.length === 0) {
-            containerElement.innerHTML = /* html */ `
+            containerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no comments to display.</p>
         </div>
@@ -338,7 +328,7 @@
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = /* html */ `
+        tableElement.innerHTML = `
       <thead>
         <tr>
           <th>Author</th>
@@ -353,7 +343,7 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.burialSiteCommentId =
                 burialSiteComment.burialSiteCommentId?.toString();
-            tableRowElement.innerHTML = /* html */ `
+            tableRowElement.innerHTML = `
         <td>
           ${cityssm.escapeHTML(burialSiteComment.recordCreate_userName ?? '')}
         </td>
@@ -428,9 +418,6 @@
             ?.addEventListener('click', openAddCommentModal);
         renderBurialSiteComments();
     }
-    /*
-     * Contracts
-     */
     document
         .querySelector('#burialSite--contractsToggle')
         ?.addEventListener('click', () => {

@@ -1,8 +1,5 @@
 (() => {
     const sunrise = exports.sunrise;
-    /*
-     * Filter Settings
-     */
     const settingsFilterElement = document.querySelector('#settingsFilter');
     const settingsTableBodyElement = document.querySelector('#settingsTableBody');
     function applySettingsFilter() {
@@ -14,9 +11,6 @@
     }
     settingsFilterElement.addEventListener('input', applySettingsFilter);
     applySettingsFilter();
-    /*
-     * Update Settings
-     */
     function highlightChangedSettings(changeEvent) {
         const inputElement = changeEvent.currentTarget;
         inputElement.classList.add('has-background-warning-light');

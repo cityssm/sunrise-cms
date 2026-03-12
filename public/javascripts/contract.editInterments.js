@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 (() => {
     const contractId = document.querySelector('#contract--contractId').value;
     let contractInterments = exports.contractInterments;
@@ -31,7 +30,6 @@
             const birthDate = new Date(birthDateStringElement.value);
             const deathDate = new Date(deathDateStringElement.value);
             const ageInDays = Math.floor((deathDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
-            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             const ageInYears = Math.floor(ageInDays / 365.25);
             if (ageInYears > 0) {
                 deathAgeElement.value = ageInYears.toString();
@@ -70,7 +68,6 @@
             });
         }
         cityssm.openHtmlModal('contract-editInterment', {
-            // eslint-disable-next-line complexity
             onshow(modalElement) {
                 modalElement
                     .querySelector('#contractIntermentEdit--contractId')
@@ -207,11 +204,10 @@
             }
         });
     }
-    // eslint-disable-next-line complexity
     function renderContractInterments() {
         const containerElement = document.querySelector('#container--contractInterments');
         if (contractInterments.length === 0) {
-            containerElement.innerHTML = /* html */ `
+            containerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no interments associated with this record.</p>
         </div>
@@ -220,7 +216,7 @@
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = /* html */ `
+        tableElement.innerHTML = `
       <thead>
         <tr>
           <th>Name</th>
@@ -234,8 +230,7 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.intermentNumber =
                 interment.intermentNumber?.toString();
-            // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = /* html */ `
+            tableRowElement.innerHTML = `
         <td>
           ${cityssm.escapeHTML(interment.deceasedName)}<br />
           <span class="is-size-7">

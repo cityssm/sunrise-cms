@@ -23,14 +23,14 @@
     }
     function buildValueCell(rawValue) {
         if (rawValue === null || rawValue === 'null') {
-            return /* html */ '<em class="has-text-grey-darker">null</em>';
+            return '<em class="has-text-grey-darker">null</em>';
         }
         const escaped = cityssm.escapeHTML(rawValue);
         if (rawValue.length <= maxValueLength) {
-            return /* html */ `<code style="word-break:break-all">${escaped}</code>`;
+            return `<code style="word-break:break-all">${escaped}</code>`;
         }
         const truncated = cityssm.escapeHTML(truncateValue(rawValue));
-        return /* html */ `
+        return `
       <code title="${escaped}" style="cursor:help;word-break:break-all">
         ${truncated}
       </code>
@@ -38,7 +38,7 @@
     }
     function renderRecordAuditLog(auditLogContainerElement, auditLogUrl, currentOffset, responseJSON) {
         if (!responseJSON.success) {
-            auditLogContainerElement.innerHTML = /* html */ `
+            auditLogContainerElement.innerHTML = `
         <p class="has-text-danger">
           ${cityssm.escapeHTML(responseJSON.message)}
         </p>
@@ -47,7 +47,7 @@
         }
         const { auditLogEntries, count, offset } = responseJSON;
         if (auditLogEntries.length === 0) {
-            auditLogContainerElement.innerHTML = /* html */ `
+            auditLogContainerElement.innerHTML = `
         <p class="has-text-grey">
           ${cityssm.escapeHTML(i18next.t('admin:auditLogNoEntries'))}
         </p>
@@ -59,7 +59,7 @@
             const logDate = new Date(entry.logMillis);
             const dateString = logDate.toLocaleDateString();
             const timeString = logDate.toLocaleTimeString();
-            return /* html */ `
+            return `
           <tr class="${getUpdateTypeColorClass(entry.updateType)}">
             <td>
               ${cityssm.escapeHTML(dateString)}<br />
@@ -69,7 +69,7 @@
               ${cityssm.escapeHTML(entry.updateTable)}<br />
               ${entry.recordIndex === null
                 ? ''
-                : /* html */ `
+                : `
                     <span class="is-size-7">
                       ${cityssm.escapeHTML(entry.recordIndex)}
                     </span>
@@ -87,8 +87,7 @@
         `;
         })
             .join('');
-        // eslint-disable-next-line no-unsanitized/property
-        auditLogContainerElement.innerHTML = /* html */ `
+        auditLogContainerElement.innerHTML = `
       <div class="table-container">
         <table class="table is-fullwidth is-striped is-hoverable">
           <thead>
@@ -140,7 +139,6 @@
     function openRecordAuditLogModal(options) {
         cityssm.openHtmlModal('record-auditLog', {
             onshow(modalElement) {
-                // Store record type and id for pagination
                 const typeInput = document.createElement('input');
                 typeInput.type = 'hidden';
                 typeInput.id = 'recordAuditLog--mainRecordType';
@@ -156,7 +154,6 @@
                 urlInput.id = 'recordAuditLog--auditLogUrl';
                 urlInput.value = options.auditLogUrl;
                 modalElement.append(urlInput);
-                // Display record creation info
                 const createInfoElement = modalElement.querySelector('#recordAuditLog--createInfo');
                 if (createInfoElement !== null) {
                     if (options.recordCreateUser && options.recordCreateMillis) {
@@ -170,7 +167,6 @@
                         createInfoElement.textContent = '—';
                     }
                 }
-                // Display record update info
                 const updateInfoElement = modalElement.querySelector('#recordAuditLog--updateInfo');
                 if (updateInfoElement !== null) {
                     if (options.recordUpdateUser && options.recordUpdateMillis) {
@@ -198,7 +194,6 @@
             }
         });
     }
-    // Initialize audit log buttons
     const auditLogButtons = document.querySelectorAll('.is-view-audit-log-button');
     for (const button of auditLogButtons) {
         button.addEventListener('click', (clickEvent) => {

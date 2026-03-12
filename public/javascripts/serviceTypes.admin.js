@@ -88,7 +88,7 @@
     function renderServiceTypes() {
         const containerElement = document.querySelector('#container--serviceTypes');
         if (serviceTypes.length === 0) {
-            containerElement.innerHTML = /* html */ `
+            containerElement.innerHTML = `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
@@ -104,8 +104,7 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.serviceTypeId =
                 serviceType.serviceTypeId.toString();
-            // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = /* html */ `
+            tableRowElement.innerHTML = `
         <td>
           <form>
             <input name="serviceTypeId" type="hidden" value="${serviceType.serviceTypeId.toString()}" />

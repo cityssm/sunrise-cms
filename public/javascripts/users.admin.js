@@ -19,7 +19,6 @@
                         userName
                     }, (responseJSON) => {
                         if (responseJSON.success) {
-                            // Update the users list with the new data from the server
                             renderUsers(responseJSON.users);
                             bulmaJS.alert({
                                 contextualColorName: 'success',
@@ -66,8 +65,7 @@
     function buildUserRowElement(user) {
         const rowElement = document.createElement('tr');
         rowElement.dataset.userName = user.userName;
-        // eslint-disable-next-line no-unsanitized/property
-        rowElement.innerHTML = /* html */ `
+        rowElement.innerHTML = `
       <th>${cityssm.escapeHTML(user.userName)}</th>
       <td class="has-text-centered">
         <button
@@ -138,7 +136,7 @@
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = /* html */ `
+        tableElement.innerHTML = `
       <thead>
         <tr>
           <th>${cityssm.escapeHTML(i18next.t('admin:userName'))}</th>
@@ -158,11 +156,9 @@
             const rowElement = buildUserRowElement(user);
             tableElement.querySelector('tbody')?.append(rowElement);
         }
-        // Add event listeners for permission toggles
         for (const button of tableElement.querySelectorAll('.permission-toggle')) {
             button.addEventListener('click', toggleUserPermission);
         }
-        // Add event listeners for delete buttons
         for (const button of tableElement.querySelectorAll('.delete-user')) {
             button.addEventListener('click', deleteUser);
         }

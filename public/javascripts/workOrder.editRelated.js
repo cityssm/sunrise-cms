@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 (() => {
     const sunrise = exports.sunrise;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
@@ -95,10 +94,9 @@
         else if (contract.contractIsActive) {
             contractIcon = '<i class="fa-solid fa-play" title="Current Contract"></i>';
         }
-        // eslint-disable-next-line no-unsanitized/property
-        rowElement.innerHTML = /* html */ `
+        rowElement.innerHTML = `
       ${exports.contractEndDateIsAvailable
-            ? /* html */ `
+            ? `
             <td class="is-width-1 has-text-centered">
               ${contractIcon}
             </td>
@@ -115,14 +113,12 @@
             rowElement.insertAdjacentHTML('beforeend', '<td><span class="has-text-grey">(No Burial Site)</span></td>');
         }
         else {
-            // eslint-disable-next-line no-unsanitized/method
-            rowElement.insertAdjacentHTML('beforeend', 
-            /* html */ `
+            rowElement.insertAdjacentHTML('beforeend', `
           <td>
             ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
             ${hasBurialSiteRecord
                 ? ''
-                : /* html */ `
+                : `
                   <button
                     class="button is-small is-light is-success button--addBurialSite"
                     data-burial-site-id="${contract.burialSiteId.toString()}"
@@ -137,7 +133,7 @@
         }
         let contactsHtml = '';
         for (const interment of contract.contractInterments ?? []) {
-            contactsHtml += /* html */ `
+            contactsHtml += `
         <li title="Recipient">
           <span class="fa-li">
             <i class="fa-solid fa-user" aria-label="Recipient"></i>
@@ -147,7 +143,7 @@
       `;
         }
         if (contract.purchaserName !== '') {
-            contactsHtml += /* html */ `
+            contactsHtml += `
         <li title="Purchaser">
           <span class="fa-li">
             <i class="fa-solid fa-hand-holding-dollar" aria-label="Purchaser"></i>
@@ -157,7 +153,7 @@
       `;
         }
         if (contract.funeralHomeName !== null) {
-            contactsHtml += /* html */ `
+            contactsHtml += `
         <li title="Funeral Home">
           <span class="fa-li">
             <i class="fa-solid fa-place-of-worship" aria-label="Funeral Home"></i>
@@ -166,18 +162,14 @@
         </li>
       `;
         }
-        // eslint-disable-next-line no-unsanitized/method
-        rowElement.insertAdjacentHTML('beforeend', 
-        /* html */ `
+        rowElement.insertAdjacentHTML('beforeend', `
         <td>
           ${contract.contractStartDateString}
         </td>
         ${exports.contractEndDateIsAvailable
-            ? /* html */ `
+            ? `
               <td>
-                ${
-            // eslint-disable-next-line sonarjs/no-nested-conditional
-            contract.contractEndDate === null ||
+                ${contract.contractEndDate === null ||
                 contract.contractEndDate === undefined
                 ? '<span class="has-text-grey">(No End Date)</span>'
                 : contract.contractEndDateString}
@@ -211,15 +203,14 @@
         const contractsContainerElement = document.querySelector('#container--contracts');
         document.querySelector(".tabs a[href='#relatedTab--contracts'] .tag").textContent = workOrderContracts.length.toString();
         if (workOrderContracts.length === 0) {
-            contractsContainerElement.innerHTML = /* html */ `
+            contractsContainerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no contracts associated with this work order.</p>
         </div>
       `;
             return;
         }
-        // eslint-disable-next-line no-unsanitized/property
-        contractsContainerElement.innerHTML = /* html */ `
+        contractsContainerElement.innerHTML = `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -291,8 +282,7 @@
                     burialSiteStatusElement.value =
                         burialSite.burialSiteStatusId.toString();
                 }
-                modalElement.querySelector('form')?.insertAdjacentHTML('beforeend', 
-                /* html */ `
+                modalElement.querySelector('form')?.insertAdjacentHTML('beforeend', `
             <input
               name="workOrderId"
               type="hidden"
@@ -346,14 +336,14 @@
         const burialSitesContainerElement = document.querySelector('#container--burialSites');
         document.querySelector(".tabs a[href='#relatedTab--burialSites'] .tag").textContent = workOrderBurialSites.length.toString();
         if (workOrderBurialSites.length === 0) {
-            burialSitesContainerElement.innerHTML = /* html */ `
+            burialSitesContainerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no burial sites associated with this work order.</p>
         </div>
       `;
             return;
         }
-        burialSitesContainerElement.innerHTML = /* html */ `
+        burialSitesContainerElement.innerHTML = `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -371,8 +361,7 @@
             const rowElement = document.createElement('tr');
             rowElement.className = 'container--burialSite';
             rowElement.dataset.burialSiteId = burialSite.burialSiteId.toString();
-            // eslint-disable-next-line no-unsanitized/property
-            rowElement.innerHTML = /* html */ `
+            rowElement.innerHTML = `
         <td>
           <a class="has-text-weight-bold" href="${sunrise.getBurialSiteUrl(burialSite.burialSiteId)}">
             ${cityssm.escapeHTML(burialSite.burialSiteName)}
@@ -442,15 +431,14 @@
                 sunrise.getLoadingParagraphHTML('Searching...');
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doSearchContracts`, searchFormElement, (responseJSON) => {
                 if (responseJSON.contracts.length === 0) {
-                    searchResultsContainerElement.innerHTML = /* html */ `
+                    searchResultsContainerElement.innerHTML = `
                 <div class="message is-info">
                   <p class="message-body">There are no records that meet the search criteria.</p>
                 </div>
               `;
                     return;
                 }
-                // eslint-disable-next-line no-unsanitized/property
-                searchResultsContainerElement.innerHTML = /* html */ `
+                searchResultsContainerElement.innerHTML = `
               <table class="table is-fullwidth is-striped is-hoverable">
                 <thead>
                   <tr>
@@ -469,7 +457,7 @@
                     const rowElement = document.createElement('tr');
                     rowElement.className = 'container--contract';
                     rowElement.dataset.contractId = contract.contractId.toString();
-                    rowElement.innerHTML = /* html */ `
+                    rowElement.innerHTML = `
                 <td class="has-text-centered">
                   <button class="button is-small is-success button--addContract" type="button" title="Add">
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>
@@ -484,8 +472,7 @@
                         rowElement.insertAdjacentHTML('beforeend', '<td><span class="has-text-grey">(No Burial Site)</span></td>');
                     }
                     else {
-                        rowElement.insertAdjacentHTML('beforeend', 
-                        /* html */ `
+                        rowElement.insertAdjacentHTML('beforeend', `
                     <td>
                       ${cityssm.escapeHTML(contract.burialSiteName ?? '')}
                     </td>
@@ -493,28 +480,23 @@
                     }
                     const intermentCount = contract.contractInterments?.length ?? 0;
                     const intermentsHtml = intermentCount === 0
-                        ? /* html */ `
+                        ? `
                     <span class="has-text-grey">
                       (No Recipients)
                     </span>
                   `
                         : cityssm.escapeHTML(contract.contractInterments?.[0].deceasedName ?? '') +
-                            // eslint-disable-next-line sonarjs/no-nested-conditional
                             (intermentCount > 1
                                 ? ` plus ${(intermentCount - 1).toString()}`
                                 : '');
-                    // eslint-disable-next-line no-unsanitized/method
-                    rowElement.insertAdjacentHTML('beforeend', 
-                    /* html */ `
+                    rowElement.insertAdjacentHTML('beforeend', `
                   <td>
                     ${contract.contractStartDateString}
                   </td>
                   ${exports.contractEndDateIsAvailable
-                        ? /* html */ `
+                        ? `
                         <td>
-                          ${
-                        // eslint-disable-next-line sonarjs/no-nested-conditional
-                        contract.contractEndDate === null ||
+                          ${contract.contractEndDate === null ||
                             contract.contractEndDate === undefined
                             ? '<span class="has-text-grey">(No End Date)</span>'
                             : contract.contractEndDateString}
@@ -576,14 +558,14 @@
                 sunrise.getLoadingParagraphHTML('Searching...');
             cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, searchFormElement, (responseJSON) => {
                 if (responseJSON.burialSites.length === 0) {
-                    searchResultsContainerElement.innerHTML = /* html */ `
+                    searchResultsContainerElement.innerHTML = `
                 <div class="message is-info">
                   <p class="message-body">There are no records that meet the search criteria.</p>
                 </div>
               `;
                     return;
                 }
-                searchResultsContainerElement.innerHTML = /* html */ `
+                searchResultsContainerElement.innerHTML = `
               <table class="table is-fullwidth is-striped is-hoverable">
                 <thead>
                   <tr>
@@ -602,7 +584,7 @@
                     rowElement.className = 'container--burialSite';
                     rowElement.dataset.burialSiteId =
                         burialSite.burialSiteId.toString();
-                    rowElement.innerHTML = /* html */ `
+                    rowElement.innerHTML = `
                 <td class="has-text-centered">
                   <button class="button is-small is-success button--addBurialSite" type="button" title="Add">
                     <span class="icon is-small"><i class="fa-solid fa-plus"></i></span>

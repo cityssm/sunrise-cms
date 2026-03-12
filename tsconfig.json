@@ -8,12 +8,16 @@
     "tsBuildInfoFile": ".tsbuildinfo",
 
     "isolatedModules": true,
+
     "declaration": false,
+    "removeComments": false,
+
     "allowUnreachableCode": false,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true,
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "esModuleInterop": true,
 
     "strictNullChecks": true,
     "noImplicitAny": false

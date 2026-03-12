@@ -100,15 +100,14 @@
     function renderContractServiceTypes() {
         const containerElement = document.querySelector('#container--contractServiceTypes');
         if (contractServiceTypes.length === 0) {
-            containerElement.innerHTML = /* html */ `
+            containerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no service types associated with this contract.</p>
         </div>
       `;
             return;
         }
-        /* eslint-disable html/require-closing-tags */
-        let tableHTML = /* html */ `
+        let tableHTML = `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -119,9 +118,8 @@
         </thead>
         <tbody>
     `;
-        /* eslint-enable html/require-closing-tags */
         for (const contractServiceType of contractServiceTypes) {
-            tableHTML += /* html */ `
+            tableHTML += `
         <tr data-service-type-id="${contractServiceType.serviceTypeId.toString()}">
           <td>${cityssm.escapeHTML(contractServiceType.serviceType)}</td>
           <td>
@@ -148,11 +146,10 @@
         </tr>
       `;
         }
-        tableHTML += /* html */ `
+        tableHTML += `
         </tbody>
       </table>
     `;
-        // eslint-disable-next-line no-unsanitized/property
         containerElement.innerHTML = tableHTML;
         const editButtons = containerElement.querySelectorAll('.button--editServiceType');
         for (const editButton of editButtons) {
@@ -164,7 +161,6 @@
         }
     }
     function openAddServiceType() {
-        // Get service types not already added
         const availableServiceTypes = serviceTypes.filter((serviceType) => !contractServiceTypes.some((contractServiceType) => contractServiceType.serviceTypeId === serviceType.serviceTypeId));
         if (availableServiceTypes.length === 0) {
             bulmaJS.alert({

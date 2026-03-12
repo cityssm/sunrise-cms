@@ -1,11 +1,7 @@
-/* eslint-disable max-lines */
 (() => {
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
     const isCreate = contractId === '';
-    /*
-     * Main form
-     */
     let refreshAfterSave = isCreate;
     function setUnsavedChanges() {
         sunrise.setUnsavedChanges();
@@ -109,13 +105,12 @@
             }
         });
     });
-    // Contract Type
     const contractTypeIdElement = document.querySelector('#contract--contractTypeId');
     if (isCreate) {
         const contractFieldsContainerElement = document.querySelector('#container--contractFields');
         contractTypeIdElement.addEventListener('change', () => {
             if (contractTypeIdElement.value === '') {
-                contractFieldsContainerElement.innerHTML = /* html */ `
+                contractFieldsContainerElement.innerHTML = `
           <div class="message is-info">
             <p class="message-body">Select the contract type to load the available fields.</p>
           </div>
@@ -126,7 +121,7 @@
                 contractTypeId: contractTypeIdElement.value
             }, (responseJSON) => {
                 if (responseJSON.contractTypeFields.length === 0) {
-                    contractFieldsContainerElement.innerHTML = /* html */ `
+                    contractFieldsContainerElement.innerHTML = `
               <div class="message is-info">
                 <p class="message-body">There are no additional fields for this contract type.</p>
               </div>
@@ -141,7 +136,7 @@
                     const fieldId = `contract--${fieldName}`;
                     const fieldElement = document.createElement('div');
                     fieldElement.className = 'field';
-                    fieldElement.innerHTML = /* html */ `
+                    fieldElement.innerHTML = `
               <label class="label" for="${cityssm.escapeHTML(fieldId)}"></label>
               <div class="control"></div>
             `;
@@ -149,7 +144,7 @@
                     if (contractTypeField.fieldType === 'select' ||
                         (contractTypeField.fieldValues ?? '') !== '') {
                         ;
-                        fieldElement.querySelector('.control').innerHTML = /* html */ `
+                        fieldElement.querySelector('.control').innerHTML = `
                 <div class="select is-fullwidth">
                   <select id="${cityssm.escapeHTML(fieldId)}" name="${cityssm.escapeHTML(fieldName)}">
                     <option value="">(Not Set)</option>
@@ -183,9 +178,7 @@
                     }
                     contractFieldsContainerElement.append(fieldElement);
                 }
-                contractFieldsContainerElement.insertAdjacentHTML('beforeend', 
-                // eslint-disable-next-line no-secrets/no-secrets
-                /* html */ `
+                contractFieldsContainerElement.insertAdjacentHTML('beforeend', `
               <input
                 name="contractTypeFieldIds"
                 type="hidden"
@@ -219,7 +212,6 @@
             }
         });
     }
-    // Burial Site Selector
     const burialSiteIdElement = document.querySelector('#contract--burialSiteId');
     const burialSiteNameElement = document.querySelector('#contract--burialSiteName');
     const directionOfArrivalElement = document.querySelector('#contract--directionOfArrival');
@@ -233,7 +225,6 @@
             directionOfArrivalElement.innerHTML =
                 '<option value="">(No Direction)</option>';
             for (const direction of exports.directionsOfArrival) {
-                /* eslint-disable security/detect-object-injection */
                 if (responseJSON.directionsOfArrival[direction] !== undefined) {
                     const optionElement = document.createElement('option');
                     optionElement.value = direction;
@@ -247,7 +238,6 @@
                     }
                     directionOfArrivalElement.append(optionElement);
                 }
-                /* eslint-enable security/detect-object-injection */
             }
         });
     }
@@ -275,7 +265,7 @@
                 sunrise.getLoadingParagraphHTML('Searching...');
             cityssm.postJSON(`${sunrise.urlPrefix}/burialSites/doSearchBurialSites`, burialSiteSelectFormElement, (responseJSON) => {
                 if (responseJSON.count === 0) {
-                    burialSiteSelectResultsElement.innerHTML = /* html */ `
+                    burialSiteSelectResultsElement.innerHTML = `
               <div class="message is-info">
                 <p class="message-body">No results.</p>
               </div>
@@ -291,8 +281,7 @@
                     panelBlockElement.dataset.burialSiteId =
                         burialSite.burialSiteId.toString();
                     panelBlockElement.dataset.burialSiteName = burialSite.burialSiteName;
-                    // eslint-disable-next-line no-unsanitized/property
-                    panelBlockElement.innerHTML = /* html */ `
+                    panelBlockElement.innerHTML = `
               <div class="columns">
                 <div class="column">
                   ${cityssm.escapeHTML(burialSite.burialSiteName)}<br />
@@ -337,7 +326,6 @@
                 bulmaJS.toggleHtmlClipped();
                 burialSiteSelectCloseModalFunction = closeModalFunction;
                 bulmaJS.init(modalElement);
-                // Search Tab
                 const burialSiteNameFilterElement = modalElement.querySelector('#burialSiteSelect--burialSiteName');
                 if (document.querySelector('#contract--burialSiteId').value !== '') {
                     burialSiteNameFilterElement.value = currentBurialSiteName;
@@ -355,9 +343,6 @@
                     submitEvent.preventDefault();
                 });
                 searchBurialSites();
-                /*
-                 * New Burial Site Tab
-                 */
                 const burialSiteNameSegmentsFieldElement = document.querySelector('#template--burialSiteNameSegments > div.field').cloneNode(true);
                 burialSiteNameSegmentsFieldElement
                     .querySelector('input[name="burialSiteNameSegment1"]')
@@ -425,7 +410,6 @@
             setUnsavedChanges();
         }
     });
-    // Start Date
     const endDateElement = document.querySelector('#contract--contractEndDateString');
     if (endDateElement !== null) {
         document
@@ -436,9 +420,6 @@
         sunrise.initializeMinDateUpdate(document.querySelector('#contract--contractStartDateString'), endDateElement);
     }
     sunrise.initializeUnlockFieldButtons(formElement);
-    /*
-     * Services
-     */
     document
         .querySelector('#panelToggle--services')
         ?.addEventListener('click', (clickEvent) => {
@@ -461,15 +442,12 @@
     }
     const funeralHomeSelect = document.querySelector('#contract--funeralHomeId');
     const funeralDirectorDatalist = document.querySelector('#datalist--funeralDirectors');
-    // Handle funeral home selection change
     funeralHomeSelect?.addEventListener('change', (event) => {
         const funeralHomeId = event.currentTarget.value;
-        // Clear existing suggestions
         funeralDirectorDatalist?.replaceChildren();
         if (funeralHomeId === '') {
             return;
         }
-        // Make AJAX request to get suggestions
         cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doGetFuneralDirectors`, {
             funeralHomeId
         }, (rawResponseJSON) => {
@@ -481,9 +459,6 @@
             }
         });
     });
-    /*
-     * Deceased
-     */
     if (isCreate) {
         document
             .querySelector('#button--copyFromPurchaser')
@@ -508,7 +483,6 @@
         sunrise.initializeMinDateUpdate(birthDateStringElement, deathDateStringElement);
         sunrise.initializeMinDateUpdate(deathDateStringElement, document.querySelector('#contract--funeralDateString'));
         const calculateDeathAgeButtonElement = document.querySelector('#button--calculateDeathAge');
-        // Avoid potential hoisting issues
         const toggleDeathAgeCalculatorButton = () => {
             if (birthDateStringElement.value === '' ||
                 deathDateStringElement.value === '') {

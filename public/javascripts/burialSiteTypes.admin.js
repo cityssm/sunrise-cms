@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 (() => {
     const sunrise = exports.sunrise;
     const containerElement = document.querySelector('#container--burialSiteTypes');
@@ -15,7 +14,6 @@
         else {
             expandedBurialSiteTypes.add(burialSiteTypeId);
         }
-        // eslint-disable-next-line no-unsanitized/property
         toggleButtonElement.innerHTML = expandedBurialSiteTypes.has(burialSiteTypeId)
             ? '<span class="icon"><i class="fa-solid fa-minus"></i></span>'
             : '<span class="icon"><i class="fa-solid fa-plus"></i></span>';
@@ -121,7 +119,7 @@
         const burialSiteTypeId = buttonElement.closest('.container--burialSiteType').dataset.burialSiteTypeId;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveBurialSiteTypeUp'
-            : // eslint-disable-next-line no-secrets/no-secrets
+            :
                 'doMoveBurialSiteTypeDown'}`, {
             burialSiteTypeId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
@@ -245,7 +243,7 @@
         const burialSiteTypeFieldId = buttonElement.closest('.container--burialSiteTypeField').dataset.burialSiteTypeFieldId;
         cityssm.postJSON(`${sunrise.urlPrefix}/admin/${buttonElement.dataset.direction === 'up'
             ? 'doMoveBurialSiteTypeFieldUp'
-            : // eslint-disable-next-line no-secrets/no-secrets
+            :
                 'doMoveBurialSiteTypeFieldDown'}`, {
             burialSiteTypeFieldId,
             moveToEnd: clickEvent.shiftKey ? '1' : '0'
@@ -253,9 +251,7 @@
     }
     function renderBurialSiteTypeFields(panelElement, burialSiteTypeId, burialSiteTypeFields) {
         if (burialSiteTypeFields.length === 0) {
-            // eslint-disable-next-line no-unsanitized/method
-            panelElement.insertAdjacentHTML('beforeend', 
-            /* html */ `
+            panelElement.insertAdjacentHTML('beforeend', `
           <div class="panel-block is-block
             ${expandedBurialSiteTypes.has(burialSiteTypeId) ? '' : ' is-hidden'}">
             <div class="message is-info">
@@ -274,7 +270,7 @@
                 }
                 panelBlockElement.dataset.burialSiteTypeFieldId =
                     burialSiteTypeField.burialSiteTypeFieldId.toString();
-                panelBlockElement.innerHTML = /* html */ `
+                panelBlockElement.innerHTML = `
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
@@ -288,9 +284,7 @@
             </div>
             <div class="level-right is-hidden-print">
               <div class="level-item">
-                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveBurialSiteTypeFieldUp', 
-                // eslint-disable-next-line no-secrets/no-secrets
-                'button--moveBurialSiteTypeFieldDown')}
+                ${sunrise.getMoveUpDownButtonFieldHTML('button--moveBurialSiteTypeFieldUp', 'button--moveBurialSiteTypeFieldDown')}
               </div>
             </div>
           </div>
@@ -307,8 +301,7 @@
     function renderBurialSiteTypes() {
         containerElement.innerHTML = '';
         if (burialSiteTypes.length === 0) {
-            containerElement.insertAdjacentHTML('afterbegin', 
-            /* html */ `
+            containerElement.insertAdjacentHTML('afterbegin', `
           <div class="message is-warning">
             <p class="message-body">There are no active burial site types.</p>
           </div>
@@ -320,9 +313,6 @@
             burialSiteTypeContainer.className = 'panel container--burialSiteType';
             burialSiteTypeContainer.dataset.burialSiteTypeId =
                 burialSiteType.burialSiteTypeId.toString();
-            /*
-             * Body Capacity Tag
-             */
             let bodyCapacityMax = burialSiteType.bodyCapacityMax?.toString() ?? 'unlimited';
             if (bodyCapacityMax === '0') {
                 bodyCapacityMax = 'none';
@@ -334,7 +324,7 @@
             else if (bodyCapacityMax === 'unlimited') {
                 bodyCapacityTagClass = 'is-success';
             }
-            const bodiesTagHtml = /* html */ `
+            const bodiesTagHtml = `
         <div class="control">
           <div class="tags has-addons">
             <span class="tag is-dark">Bodies</span>
@@ -344,9 +334,6 @@
           </div>
         </div>
       `;
-            /*
-             * Cremains Capacity Tag
-             */
             let crematedCapacityMax = burialSiteType.crematedCapacityMax?.toString() ?? 'unlimited';
             if (crematedCapacityMax === '0') {
                 crematedCapacityMax = 'none';
@@ -358,7 +345,7 @@
             else if (crematedCapacityMax === 'unlimited') {
                 crematedCapacityTagClass = 'is-success';
             }
-            const crematedTagHtml = /* html */ `
+            const crematedTagHtml = `
         <div class="control">
           <div class="tags has-addons">
             <span class="tag is-dark">Cremains</span>
@@ -368,8 +355,7 @@
           </div>
         </div>
       `;
-            // eslint-disable-next-line no-unsanitized/property
-            burialSiteTypeContainer.innerHTML = /* html */ `
+            burialSiteTypeContainer.innerHTML = `
         <div class="panel-heading">
           <div class="columns is-vcentered">
             <div class="column is-narrow">

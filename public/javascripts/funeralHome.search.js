@@ -47,8 +47,7 @@
                 continue;
             }
             searchResultCount += 1;
-            searchResultsTbodyElement.insertAdjacentHTML('beforeend', 
-            /* html */ `
+            searchResultsTbodyElement.insertAdjacentHTML('beforeend', `
           <tr>
             <td>
               <a class="has-text-weight-bold" href="${sunrise.getFuneralHomeUrl(funeralHome.funeralHomeId)}">
@@ -71,7 +70,7 @@
         }
         searchResultsContainerElement.innerHTML = '';
         if (searchResultCount === 0) {
-            searchResultsContainerElement.innerHTML = /* html */ `
+            searchResultsContainerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">${cityssm.escapeHTML(i18next.t('common:noResults'))}</p>
         </div>
@@ -81,7 +80,7 @@
             const searchResultsTableElement = document.createElement('table');
             searchResultsTableElement.className =
                 'table is-fullwidth is-striped is-hoverable has-sticky-header';
-            searchResultsTableElement.innerHTML = /* html */ `
+            searchResultsTableElement.innerHTML = `
         <thead>
           <tr>
             <th>${cityssm.escapeHTML(i18next.t('contracts:funeralHome'))}</th>

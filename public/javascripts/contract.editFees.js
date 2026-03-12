@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 (() => {
     const sunrise = exports.sunrise;
     const contractId = document.querySelector('#contract--contractId').value;
@@ -86,10 +85,9 @@
             }
         });
     }
-    // eslint-disable-next-line complexity
     function renderContractFees() {
         if (contractFees.length === 0) {
-            contractFeesContainerElement.innerHTML = /* html */ `
+            contractFeesContainerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no fees associated with this contract.</p>
         </div>
@@ -97,7 +95,7 @@
             renderContractTransactions();
             return;
         }
-        contractFeesContainerElement.innerHTML = /* html */ `
+        contractFeesContainerElement.innerHTML = `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -138,15 +136,14 @@
             tableRowElement.dataset.feeId = contractFee.feeId.toString();
             tableRowElement.dataset.includeQuantity =
                 (contractFee.includeQuantity ?? false) ? '1' : '0';
-            // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = /* html */ `
+            tableRowElement.innerHTML = `
         <td colspan="${contractFee.quantity === 1 ? '5' : '1'}">
           ${cityssm.escapeHTML(contractFee.feeName ?? '')}<br />
           <span class="tag">${cityssm.escapeHTML(contractFee.feeCategory ?? '')}</span>
         </td>
         ${contractFee.quantity === 1
                 ? ''
-                : /*html */ `
+                : `
               <td class="has-text-right">
                 $${contractFee.feeAmount?.toFixed(2)}
               </td>
@@ -160,7 +157,7 @@
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
             ${(contractFee.includeQuantity ?? false)
-                ? /* html */ `
+                ? `
                   <button class="button is-primary button--editQuantity">
                     <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
                     <span>Edit</span>
@@ -295,7 +292,7 @@
                 categoryContainerElement.className = 'container--feeCategory';
                 categoryContainerElement.dataset.feeCategoryId =
                     feeCategory.feeCategoryId.toString();
-                categoryContainerElement.innerHTML = /* html */ `
+                categoryContainerElement.innerHTML = `
           <div class="columns is-vcentered">
             <div class="column">
               <h4 class="title is-5">
@@ -308,8 +305,7 @@
                 if (feeCategory.isGroupedFee) {
                     categoryContainerElement
                         .querySelector('.columns')
-                        ?.insertAdjacentHTML('beforeend', 
-                    /* html */ `
+                        ?.insertAdjacentHTML('beforeend', `
                 <div class="column is-narrow has-text-right">
                   <button
                     class="button is-small is-success"
@@ -327,7 +323,6 @@
                 }
                 let hasFees = false;
                 for (const fee of feeCategory.fees) {
-                    // Don't include already applied fees that limit quantity
                     if (contractFeesContainerElement.querySelector(`.container--contractFee[data-fee-id='${fee.feeId}'][data-include-quantity='0']`) !== null) {
                         continue;
                     }
@@ -348,8 +343,7 @@
                     panelBlockElement.dataset.feeId = fee.feeId.toString();
                     panelBlockElement.dataset.feeCategoryId =
                         feeCategory.feeCategoryId.toString();
-                    // eslint-disable-next-line no-unsanitized/property
-                    panelBlockElement.innerHTML = /* html */ `
+                    panelBlockElement.innerHTML = `
             <strong>${cityssm.escapeHTML(fee.feeName ?? '')}</strong><br />
             <small>
               ${cityssm
@@ -488,15 +482,14 @@
     }
     function renderContractTransactions() {
         if (contractTransactions.length === 0) {
-            // eslint-disable-next-line no-unsanitized/property
-            contractTransactionsContainerElement.innerHTML = /* html */ `
+            contractTransactionsContainerElement.innerHTML = `
         <div class="message ${contractFees.length === 0 ? 'is-info' : 'is-warning'}">
           <p class="message-body">There are no transactions associated with this contract.</p>
         </div>
       `;
             return;
         }
-        contractTransactionsContainerElement.innerHTML = /* html */ `
+        contractTransactionsContainerElement.innerHTML = `
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
@@ -546,8 +539,7 @@
                 }
                 externalReceiptNumberHTML += '<br />';
             }
-            // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = /* html */ `
+            tableRowElement.innerHTML = `
         <td>
           ${cityssm.escapeHTML(contractTransaction.transactionDateString ?? '')}
           ${(contractTransaction.isInvoiced ?? 0) === 0
@@ -588,9 +580,7 @@
         if (feeGrandTotal.toFixed(2) !== transactionGrandTotal.toFixed(2)) {
             const difference = feeGrandTotal - transactionGrandTotal;
             const differenceClassName = difference < 0 ? 'is-danger' : 'is-warning';
-            // eslint-disable-next-line no-unsanitized/method
-            contractTransactionsContainerElement.insertAdjacentHTML('afterbegin', 
-            /* html */ `
+            contractTransactionsContainerElement.insertAdjacentHTML('afterbegin', `
           <div class="message ${differenceClassName}">
             <div class="message-body">
               <div class="level">
@@ -632,7 +622,6 @@
                 }
             });
         }
-        // eslint-disable-next-line @typescript-eslint/naming-convention
         function dynamicsGP_refreshExternalReceiptNumberIcon() {
             const externalReceiptNumber = externalReceiptNumberElement.value;
             const iconElement = externalReceiptNumberElement

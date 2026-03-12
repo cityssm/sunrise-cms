@@ -13,7 +13,7 @@
         let recordUrl = '';
         switch (logEntry.recordType) {
             case 'burialSite': {
-                recordTypeHTML = /* html */ `
+                recordTypeHTML = `
           <span title="Burial Site">
             <i class="fa-solid fa-2x fa-map-pin"></i>
           </span>
@@ -22,7 +22,7 @@
                 break;
             }
             case 'burialSiteComment': {
-                recordTypeHTML = /* html */ `
+                recordTypeHTML = `
           <span title="Burial Site Comment">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-map-pin" data-fa-transform="left-4"></i>
@@ -34,7 +34,7 @@
                 break;
             }
             case 'comments': {
-                recordTypeHTML = /* html */ `
+                recordTypeHTML = `
           <span title="Comment">
             <i class="fa-solid fa-2x fa-comments"></i>
           </span>
@@ -43,7 +43,7 @@
                 break;
             }
             case 'contract': {
-                recordTypeHTML = /* html */ `
+                recordTypeHTML = `
           <span title="Contract">
             <i class="fa-solid fa-2x fa-file-contract"></i>
           </span>
@@ -52,7 +52,7 @@
                 break;
             }
             case 'contractComment': {
-                recordTypeHTML = /* html */ `
+                recordTypeHTML = `
           <span title="Contract Comment">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-file-contract"></i>
@@ -64,7 +64,7 @@
                 break;
             }
             case 'contractFee': {
-                recordTypeHTML = /* html */ `
+                recordTypeHTML = `
           <span title="Contract Fee">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-file-contract"></i>
@@ -76,7 +76,7 @@
                 break;
             }
             case 'contractTransactions': {
-                recordTypeHTML = /* html */ `
+                recordTypeHTML = `
           <span title="Contract Transaction">
             <i class="fa-solid fa-2x fa-money-bill-1"></i>
           </span>
@@ -85,7 +85,7 @@
                 break;
             }
             case 'workOrder': {
-                recordTypeHTML = /* html */ `
+                recordTypeHTML = `
           <span title="Work Order">
             <i class="fa-solid fa-2x fa-hard-hat"></i>
           </span>
@@ -94,7 +94,7 @@
                 break;
             }
             case 'workOrderComment': {
-                recordTypeHTML = /* html */ `
+                recordTypeHTML = `
           <span title="Work Order Comment">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-hard-hat"></i>
@@ -106,7 +106,7 @@
                 break;
             }
             case 'workOrderMilestone': {
-                recordTypeHTML = /* html */ `
+                recordTypeHTML = `
           <span title="Work Order Milestone">
             <span class="fa-layers fa-2x fa-fw">
               <i class="fa-solid fa-hard-hat"></i>
@@ -117,8 +117,6 @@
                 recordUrl = sunrise.getWorkOrderUrl(logEntry.recordId);
                 break;
             }
-            // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
-            // no default
         }
         return { recordTypeHTML, recordUrl };
     }
@@ -129,8 +127,7 @@
             const { recordTypeHTML, recordUrl } = getRecordSpecificElements(logEntry);
             const logEntryUpdateDate = new Date(logEntry.recordUpdate_timeMillis);
             const logEntryCreateDate = new Date(logEntry.recordCreate_timeMillis);
-            // eslint-disable-next-line no-unsanitized/property
-            rowElement.innerHTML = /* html */ `
+            rowElement.innerHTML = `
         <td class="has-text-centered">${recordTypeHTML}</td>
         <td>
           <a href="${recordUrl}" title="Open Record" target="_blank">${logEntry.displayRecordId}</a>
@@ -168,7 +165,6 @@
     }
     function getUpdateLog() {
         loadingElement.classList.remove('is-hidden');
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         const currentLimit = Math.min(Number.parseInt(limitElement.value, 10), 100);
         cityssm.postJSON(`${sunrise.urlPrefix}/dashboard/doGetRecordUpdateLog`, {
             limit: currentLimit,
@@ -199,7 +195,6 @@
         updateLogTableElement.querySelector('tbody')?.replaceChildren();
         getUpdateLog();
     });
-    // Add sorting functionality
     function addSortClickHandler(headerElement, sortColumn) {
         headerElement.style.cursor = 'pointer';
         headerElement.classList.add('is-clickable');
@@ -215,7 +210,6 @@
             loadMoreButtonElement.classList.add('is-hidden');
             updateLogTableElement.querySelector('tbody')?.replaceChildren();
             getUpdateLog();
-            // Update sort indicators
             for (const th of document.querySelectorAll('#table--updateLog th[data-sort]')) {
                 th.classList.remove('has-background-primary-light');
                 const iconContainerElement = th.querySelector('.icon');
@@ -226,8 +220,7 @@
             headerElement.classList.add('has-background-primary-light');
             const iconContainerElement = headerElement.querySelector('.icon');
             if (iconContainerElement !== null) {
-                // eslint-disable-next-line no-unsanitized/property
-                iconContainerElement.innerHTML = /* html */ `
+                iconContainerElement.innerHTML = `
           <i class="fa-solid fa-sort-${sortDirection === 'desc' ? 'down' : 'up'}"></i>
         `;
             }

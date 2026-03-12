@@ -4,7 +4,7 @@
     const attachmentsContainerElement = document.querySelector('#container--contractAttachments');
     function renderAttachments(attachments) {
         if (attachments.length === 0) {
-            attachmentsContainerElement.innerHTML = /* html */ `
+            attachmentsContainerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">No attachments have been uploaded.</p>
         </div>
@@ -13,7 +13,7 @@
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-striped is-hoverable is-fullwidth';
-        tableElement.innerHTML = /* html */ `
+        tableElement.innerHTML = `
       <thead>
         <tr>
           <th>Title</th>
@@ -28,8 +28,7 @@
             const contractAttachmentId = attachment.contractAttachmentId.toString();
             const attachmentDate = new Date(attachment.recordCreate_timeMillis ?? 0);
             const rowElement = document.createElement('tr');
-            // eslint-disable-next-line no-unsanitized/property
-            rowElement.innerHTML = /* html */ `
+            rowElement.innerHTML = `
         <td>
           <a
             class="has-text-weight-bold"
@@ -73,7 +72,6 @@
           </div>
         </td>
       `;
-            // Add event listeners for the buttons
             const editButton = rowElement.querySelector('[data-cy="edit-attachment"]');
             const deleteButton = rowElement.querySelector('[data-cy="delete-attachment"]');
             editButton.addEventListener('click', () => {
@@ -87,9 +85,6 @@
         attachmentsContainerElement.replaceChildren(tableElement);
     }
     renderAttachments(exports.contractAttachments);
-    /*
-     * Attachment Upload
-     */
     document
         .querySelector('#button--uploadAttachment')
         ?.addEventListener('click', (clickEvent) => {
@@ -101,7 +96,6 @@
             submitEvent.preventDefault();
             const formData = new FormData(uploadFormElement);
             formData.set('contractId', contractId);
-            // Disable submit button and show loading
             const submitButton = uploadModalElement.querySelector('button[type="submit"]');
             const originalText = submitButton.querySelector('span:last-child').textContent;
             submitButton.disabled = true;
@@ -115,7 +109,6 @@
                         ?.getAttribute('content') ?? ''
                 }
             })
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 .then(async (response) => await response.json())
                 .then((responseJSON) => {
                 if (responseJSON.success) {
@@ -124,7 +117,6 @@
                         contextualColorName: 'success',
                         message: 'Attachment uploaded successfully.'
                     });
-                    // Refresh the page to show the new attachment
                     renderAttachments(responseJSON.contractAttachments);
                 }
                 else {
@@ -143,7 +135,6 @@
                 });
             })
                 .finally(() => {
-                // Re-enable submit button
                 submitButton.disabled = false;
                 submitButton.querySelector('span:last-child').textContent = originalText;
             });
@@ -161,12 +152,10 @@
                 uploadCloseModalFunction = closeModalFunction;
                 uploadFormElement = modalElement.querySelector('#form--contractAttachmentUpload');
                 uploadFormElement.addEventListener('submit', uploadAttachment);
-                // Focus on file input
                 const fileInputElement = modalElement.querySelector('#contractAttachmentUpload--file');
                 fileInputElement.focus();
                 fileInputElement.addEventListener('change', () => {
                     const fileSize = fileInputElement.files?.[0]?.size ?? 0;
-                    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
                     if (fileSize > exports.maxAttachmentFileSize * 1024 * 1024) {
                         bulmaJS.alert({
                             contextualColorName: 'danger',
@@ -181,9 +170,6 @@
             }
         });
     });
-    /*
-     * Edit Attachment
-     */
     function openEditAttachmentModal(attachment) {
         let editFormElement;
         let editCloseModalFunction;
@@ -196,7 +182,6 @@
                         contextualColorName: 'success',
                         message: 'Attachment updated successfully.'
                     });
-                    // Refresh the attachments display
                     renderAttachments(responseJSON.contractAttachments);
                 }
                 else {
@@ -210,7 +195,6 @@
         }
         cityssm.openHtmlModal('contract-editAttachment', {
             onshow(modalElement) {
-                // Set the attachment ID
                 modalElement
                     .querySelector('#contractAttachmentEdit--contractAttachmentId')
                     ?.setAttribute('value', String(attachment.contractAttachmentId));
@@ -222,7 +206,6 @@
                 editCloseModalFunction = closeModalFunction;
                 editFormElement = modalElement.querySelector('#form--contractAttachmentEdit');
                 editFormElement.addEventListener('submit', editAttachment);
-                // Focus on title input
                 const titleInputElement = modalElement.querySelector('#contractAttachmentEdit--attachmentTitle');
                 titleInputElement.focus();
                 titleInputElement.select();
@@ -232,9 +215,6 @@
             }
         });
     }
-    /*
-     * Delete Attachment
-     */
     function deleteAttachment(contractAttachmentId) {
         function doDelete() {
             cityssm.postJSON(`${sunrise.urlPrefix}/contracts/doDeleteContractAttachment`, {
@@ -245,7 +225,6 @@
                         contextualColorName: 'success',
                         message: 'Attachment deleted successfully.'
                     });
-                    // Refresh the attachments display
                     renderAttachments(responseJSON.contractAttachments);
                 }
                 else {

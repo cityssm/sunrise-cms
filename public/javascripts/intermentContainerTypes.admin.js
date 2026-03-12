@@ -85,7 +85,7 @@
     function renderIntermentContainerTypes() {
         const containerElement = document.querySelector('#container--intermentContainerTypes');
         if (intermentContainerTypes.length === 0) {
-            containerElement.innerHTML = /* html */ `
+            containerElement.innerHTML = `
         <tr>
           <td colspan="2">
             <div class="message is-warning">
@@ -102,8 +102,7 @@
             tableRowElement.dataset.intermentContainerTypeId =
                 intermentContainerType.intermentContainerTypeId.toString();
             const formId = `form--updateIntermentContainerType_${intermentContainerType.intermentContainerTypeId.toString()}`;
-            // eslint-disable-next-line no-unsanitized/property
-            tableRowElement.innerHTML = /* html */ `
+            tableRowElement.innerHTML = `
         <td>
           <form id="${formId}">
             <input name="intermentContainerTypeId" type="hidden"

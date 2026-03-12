@@ -40,7 +40,7 @@
     function renderRelatedContracts() {
         relatedContractsContainer.innerHTML = '';
         if (relatedContracts.length === 0) {
-            relatedContractsContainer.innerHTML = /* html */ `
+            relatedContractsContainer.innerHTML = `
         <div class="message is-info">
           <div class="message-body">
             There are no contracts related to this contract.
@@ -52,8 +52,7 @@
         const contractsTableElement = document.createElement('table');
         contractsTableElement.className =
             'table is-striped is-fullwidth is-hoverable';
-        // eslint-disable-next-line no-unsanitized/property
-        contractsTableElement.innerHTML = /* html */ `
+        contractsTableElement.innerHTML = `
       <thead>
         <tr>
           <th>${i18next.t('contracts:contractType')}</th>
@@ -79,8 +78,7 @@
             const contractRowElement = document.createElement('tr');
             contractRowElement.dataset.contractId =
                 relatedContract.contractId.toString();
-            // eslint-disable-next-line no-unsanitized/property
-            contractRowElement.innerHTML = /* html */ `
+            contractRowElement.innerHTML = `
         <td>
           <a class="has-text-weight-bold"
             href="${sunrise.getContractUrl(relatedContract.contractId)}">
@@ -90,11 +88,9 @@
         </td>
         <td>${relatedContract.contractStartDateString}</td>
         ${exports.contractEndDateIsAvailable
-                ? /* html */ `
+                ? `
               <td>
-                ${
-                // eslint-disable-next-line sonarjs/no-nested-conditional
-                relatedContract.contractEndDate
+                ${relatedContract.contractEndDate
                     ? relatedContract.contractEndDateString
                     : '<span class="has-text-grey">(No End Date)</span>'}
               </td>
@@ -170,8 +166,7 @@
                     const anchorElement = document.createElement('a');
                     anchorElement.className = 'panel-block is-block is-size-7';
                     anchorElement.dataset.contractId = contract.contractId.toString();
-                    // eslint-disable-next-line no-unsanitized/property
-                    anchorElement.innerHTML = /* html */ `
+                    anchorElement.innerHTML = `
                 <div class="columns">
                   <div class="column is-narrow">
                     <i class="fa-solid fa-plus"></i>

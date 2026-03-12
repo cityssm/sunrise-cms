@@ -36,7 +36,6 @@
                     workOrderComment.commentDateString ?? '';
                 const currentDateString = cityssm.dateToString(new Date());
                 workOrderCommentDateStringElement.max =
-                    // eslint-disable-next-line unicorn/prefer-math-min-max
                     (workOrderComment.commentDateString ?? '') <= currentDateString
                         ? currentDateString
                         : (workOrderComment.commentDateString ?? '');
@@ -88,7 +87,7 @@
     function renderWorkOrderComments() {
         const containerElement = document.querySelector('#container--workOrderComments');
         if (workOrderComments.length === 0) {
-            containerElement.innerHTML = /* html */ `
+            containerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no comments to display.</p>
         </div>
@@ -97,7 +96,7 @@
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = /* html */ `
+        tableElement.innerHTML = `
       <thead>
         <tr>
           <th>Author</th>
@@ -112,7 +111,7 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.workOrderCommentId =
                 workOrderComment.workOrderCommentId?.toString();
-            tableRowElement.innerHTML = /* html */ `
+            tableRowElement.innerHTML = `
         <td>
           ${cityssm.escapeHTML(workOrderComment.recordCreate_userName ?? '')}
         </td>

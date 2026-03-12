@@ -42,7 +42,6 @@
                     contractComment.commentDateString;
                 const currentDateString = cityssm.dateToString(new Date());
                 contractCommentDateStringElement.max =
-                    // eslint-disable-next-line unicorn/prefer-math-min-max
                     contractComment.commentDateString <= currentDateString
                         ? currentDateString
                         : contractComment.commentDateString;
@@ -94,7 +93,7 @@
     function renderContractComments() {
         const containerElement = document.querySelector('#container--contractComments');
         if (contractComments.length === 0) {
-            containerElement.innerHTML = /* html */ `
+            containerElement.innerHTML = `
         <div class="message is-info">
           <p class="message-body">There are no comments associated with this record.</p>
         </div>
@@ -103,7 +102,7 @@
         }
         const tableElement = document.createElement('table');
         tableElement.className = 'table is-fullwidth is-striped is-hoverable';
-        tableElement.innerHTML = /* html */ `
+        tableElement.innerHTML = `
       <thead>
         <tr>
           <th>Author</th>
@@ -118,7 +117,7 @@
             const tableRowElement = document.createElement('tr');
             tableRowElement.dataset.contractCommentId =
                 contractComment.contractCommentId.toString();
-            tableRowElement.innerHTML = /* html */ `
+            tableRowElement.innerHTML = `
         <td>${cityssm.escapeHTML(contractComment.recordCreate_userName ?? '')}</td>
         <td>
           ${cityssm.escapeHTML(contractComment.commentDateString)}

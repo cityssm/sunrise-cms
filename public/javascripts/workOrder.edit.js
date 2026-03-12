@@ -1,9 +1,7 @@
-/* eslint-disable max-lines */
 (() => {
     const sunrise = exports.sunrise;
     const workOrderId = document.querySelector('#workOrderEdit--workOrderId').value;
     const isCreate = workOrderId === '';
-    // eslint-disable-next-line require-unicode-regexp
     if (!isCreate && !/^\d+$/.test(workOrderId)) {
         globalThis.location.href = `${sunrise.urlPrefix}/workOrders`;
     }
@@ -48,9 +46,6 @@
     for (const inputElement of inputElements) {
         inputElement.addEventListener('change', setUnsavedChanges);
     }
-    /*
-     * Work Order Options
-     */
     function doClose() {
         cityssm.postJSON(`${sunrise.urlPrefix}/workOrders/doCloseWorkOrder`, {
             workOrderId
@@ -124,19 +119,14 @@
             }
         });
     });
-    /*
-     * Milestones
-     */
     function clearPanelBlockElements(panelElement) {
         for (const panelBlockElement of panelElement.querySelectorAll('.panel-block')) {
             panelBlockElement.remove();
         }
     }
     function refreshConflictingMilestones(workOrderMilestoneDateString, targetPanelElement) {
-        // Clear panel-block elements
         clearPanelBlockElements(targetPanelElement);
-        targetPanelElement.insertAdjacentHTML('beforeend', 
-        /* html */ `
+        targetPanelElement.insertAdjacentHTML('beforeend', `
         <div class="panel-block is-block">
           ${sunrise.getLoadingParagraphHTML('Loading conflicting milestones...')}
         </div>
@@ -148,8 +138,7 @@
             const conflictingWorkOrderMilestones = responseJSON.workOrderMilestones.filter((possibleMilestone) => possibleMilestone.workOrderId.toString() !== workOrderId);
             clearPanelBlockElements(targetPanelElement);
             for (const milestone of conflictingWorkOrderMilestones) {
-                targetPanelElement.insertAdjacentHTML('beforeend', 
-                /* html */ `
+                targetPanelElement.insertAdjacentHTML('beforeend', `
               <div class="panel-block is-block">
                 <div class="columns">
                   <div class="column is-5">
@@ -167,8 +156,7 @@
             `);
             }
             if (conflictingWorkOrderMilestones.length === 0) {
-                targetPanelElement.insertAdjacentHTML('beforeend', 
-                /* html */ `
+                targetPanelElement.insertAdjacentHTML('beforeend', `
               <div class="panel-block is-block">
                 <div class="message is-info">
                   <p class="message-body">
@@ -379,18 +367,17 @@
         }
         panelBlockElement.dataset.workOrderMilestoneId =
             milestone.workOrderMilestoneId.toString();
-        // eslint-disable-next-line no-unsanitized/property
-        panelBlockElement.innerHTML = /* html */ `
+        panelBlockElement.innerHTML = `
       <div class="columns is-mobile">
         <div class="column is-narrow">
           ${milestone.workOrderMilestoneCompletionDate === null ||
             milestone.workOrderMilestoneCompletionDate === undefined
-            ? /* html */ `
+            ? `
                 <button class="button button--completeMilestone" type="button" title="Incomplete">
                   <span class="icon is-small"><i class="fa-regular fa-square"></i></span>
                 </button>
               `
-            : /* html */ `
+            : `
                 <span
                   class="button is-static"
                   title="Completed ${cityssm.escapeHTML(milestone.workOrderMilestoneCompletionDateString ?? '')}"
@@ -403,7 +390,7 @@
           ${milestone.workOrderMilestoneTypeId === null ||
             milestone.workOrderMilestoneTypeId === undefined
             ? ''
-            : /* html */ `
+            : `
                 <strong>
                   ${cityssm.escapeHTML(milestone.workOrderMilestoneType ?? '')}
                 </strong><br />
@@ -428,13 +415,13 @@
             <div class="dropdown-menu">
               <div class="dropdown-content">
                 ${milestone.workOrderMilestoneCompletionDate
-            ? /* html */ `
+            ? `
                       <a class="dropdown-item button--reopenMilestone" href="#">
                         <span class="icon"><i class="fa-solid fa-times"></i></span>
                         <span>Reopen Milestone</span>
                       </a>
                     `
-            : /* html */ `
+            : `
                       <a class="dropdown-item button--editMilestone" href="#">
                         <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
                         <span>Edit Milestone</span>
@@ -466,7 +453,6 @@
         return panelBlockElement;
     }
     function renderMilestones() {
-        // Clear milestones panel
         const milestonesPanelElement = document.querySelector('#panel--milestones');
         const panelBlockElementsToDelete = milestonesPanelElement.querySelectorAll('.panel-block');
         for (const panelBlockToDelete of panelBlockElementsToDelete) {
@@ -477,8 +463,7 @@
             milestonesPanelElement.append(panelBlockElement);
         }
         if (workOrderMilestones.length === 0) {
-            milestonesPanelElement.insertAdjacentHTML('beforeend', 
-            /* html */ `
+            milestonesPanelElement.insertAdjacentHTML('beforeend', `
           <div class="panel-block is-block">
             <div class="message is-info">
               <p class="message-body">There are no milestones on this work order.</p>
