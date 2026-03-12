@@ -29,10 +29,6 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: 'npm'
 
-      - name: Preinstall Puppeteer Browser
-        continue-on-error: true
-        run: npx puppeteer install chrome
-
       - name: Install Global Dependencies
         run: npm install -g c8 cypress@15
 
@@ -40,10 +36,18 @@ jobs:
         id: installCi
         continue-on-error: true
         run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
 
       - name: Install Application (Install)
         if: steps.installCi.outcome == 'failure'
         run: npm install
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+
+      - name: Install Puppeteer Browser
+        continue-on-error: true
+        run: node node_modules/puppeteer/install.mjs
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
@@ -95,11 +99,6 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: 'npm'
 
-      - name: Preinstall Puppeteer Browser
-        continue-on-error: true
-        run: npx puppeteer install chrome
-
-
       - name: Install Global Dependencies
         run: npm install -g c8 cypress@15
 
@@ -107,10 +106,18 @@ jobs:
         id: installCi
         continue-on-error: true
         run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
 
       - name: Install Application (Install)
         if: steps.installCi.outcome == 'failure'
         run: npm install
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+
+      - name: Install Puppeteer Browser
+        continue-on-error: true
+        run: node node_modules/puppeteer/install.mjs
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
@@ -149,10 +156,6 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: 'npm'
 
-      #- name: Preinstall Puppeteer Browser
-      #  continue-on-error: true
-      #  run: npx puppeteer install chrome
-
       - name: Install Global Dependencies
         run: npm install -g c8 cypress@15
 
@@ -160,10 +163,18 @@ jobs:
         id: installCi
         continue-on-error: true
         run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
 
       - name: Install Application (Install)
         if: steps.installCi.outcome == 'failure'
         run: npm install
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+
+      - name: Install Puppeteer Browser
+        continue-on-error: true
+        run: node node_modules/puppeteer/install.mjs
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
