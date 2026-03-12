@@ -33,6 +33,7 @@ import dataLists from '../helpers/dataLists.js'
 import { i18next } from '../helpers/i18n.helpers.js'
 import * as printFunctions from '../helpers/print.helpers.js'
 import { getCsrfSecret } from '../helpers/settings.helpers.js'
+import packageJson from '../package.json' with { type: 'json' }
 import routerAdmin from '../routes/admin.js'
 import routerApi from '../routes/api.js'
 import routerBurialSites from '../routes/burialSites.js'
@@ -44,7 +45,8 @@ import routerLogin from '../routes/login.js'
 import routerPrint from '../routes/print.js'
 import routerReports from '../routes/reports.js'
 import routerWorkOrders from '../routes/workOrders.js'
-import { version } from '../version.js'
+
+export const version = packageJson.version
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`

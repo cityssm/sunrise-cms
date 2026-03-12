@@ -16,8 +16,8 @@ import {
   sendShutdownNotification,
   sendStartupNotification
 } from './integrations/ntfy/helpers.js'
+import packageJson from './package.json' with { type: 'json' }
 import type { WorkerMessage } from './types/application.types.js'
-import version from './version.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:index`)
 
@@ -37,7 +37,7 @@ function initializeCluster(): void {
 
   debug(`Primary pid:   ${process.pid}`)
   debug(`Primary title: ${process.title}`)
-  debug(`Version:       ${version}`)
+  debug(`Version:       ${packageJson.version}`)
   debug(`Launching ${processCount} processes`)
 
   /*

@@ -10,7 +10,7 @@ import { initializeDatabase } from './database/initializeDatabase.js';
 import { DEBUG_NAMESPACE } from './debug.config.js';
 import { getConfigProperty } from './helpers/config.helpers.js';
 import { ntfyIsEnabled, sendShutdownNotification, sendStartupNotification } from './integrations/ntfy/helpers.js';
-import version from './version.js';
+import packageJson from './package.json' with { type: 'json' };
 const debug = Debug(`${DEBUG_NAMESPACE}:index`);
 let doShutdown = false;
 function initializeCluster() {
@@ -20,7 +20,7 @@ function initializeCluster() {
     process.title = `${applicationName} (Primary)`;
     debug(`Primary pid:   ${process.pid}`);
     debug(`Primary title: ${process.title}`);
-    debug(`Version:       ${version}`);
+    debug(`Version:       ${packageJson.version}`);
     debug(`Launching ${processCount} processes`);
     /*
      * Set up the cluster
