@@ -31,7 +31,7 @@ import { userHasConsignoCloudAccess } from '../../integrations/consignoCloud/hel
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:contracts:edit`)
 
 export default async function handler(
-  request: Request,
+  request: Request<{ contractId: string }>,
   response: Response
 ): Promise<void> {
   let database: sqlite.Database | undefined

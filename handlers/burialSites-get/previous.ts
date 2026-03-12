@@ -3,7 +3,10 @@ import type { Request, Response } from 'express'
 import { getPreviousBurialSiteId } from '../../helpers/burialSites.helpers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 
-export default function handler(request: Request, response: Response): void {
+export default function handler(
+  request: Request<{ burialSiteId: string }>,
+  response: Response
+): void {
   const burialSiteId = Number.parseInt(request.params.burialSiteId, 10)
 
   const previousBurialSiteId = getPreviousBurialSiteId(burialSiteId)

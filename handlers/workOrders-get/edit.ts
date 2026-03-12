@@ -9,7 +9,7 @@ import { i18next } from '../../helpers/i18n.helpers.js'
 import { getWorkOrderWorkDayRanges } from '../../helpers/settings.helpers.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<{ workOrderId: string }>,
   response: Response
 ): Promise<void> {
   const workOrder = await getWorkOrder(request.params.workOrderId, {

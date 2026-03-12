@@ -6,7 +6,7 @@ import { getConfigProperty } from '../../helpers/config.helpers.js'
 import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default async function handler(
-  request: Request,
+  request: Request<{ contractId: string }>,
   response: Response
 ): Promise<void> {
   const contract = await getContract(request.params.contractId)
