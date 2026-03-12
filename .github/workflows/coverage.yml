@@ -95,6 +95,11 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: 'npm'
 
+      - name: Preinstall Puppeteer Browser
+        continue-on-error: true
+        run: npx puppeteer install chrome
+
+
       - name: Install Global Dependencies
         run: npm install -g c8 cypress@15
 
@@ -143,6 +148,10 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: 'npm'
+
+      #- name: Preinstall Puppeteer Browser
+      #  continue-on-error: true
+      #  run: npx puppeteer install chrome
 
       - name: Install Global Dependencies
         run: npm install -g c8 cypress@15
