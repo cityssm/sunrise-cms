@@ -91,7 +91,6 @@ declare const exports: {
   }
 
   function renderWorkOrders(responseJSON: DoSearchWorkOrdersResponse): void {
-
     if (responseJSON.workOrders.length === 0) {
       searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
@@ -130,10 +129,10 @@ declare const exports: {
                       : /* html */ `
                         <span class="tag" title="Progress">
                           ${(
-                            workOrder.workOrderMilestoneCompletionCount ?? ''
+                            workOrder.workOrderMilestoneCompletionCount ?? 0
                           ).toString()}
                           /
-                          ${(workOrder.workOrderMilestoneCount ?? '').toString()}
+                          ${(workOrder.workOrderMilestoneCount ?? 0).toString()}
                         </span>
                       `
                   }

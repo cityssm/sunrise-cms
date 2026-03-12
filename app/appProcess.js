@@ -14,15 +14,13 @@ function onError(error) {
         case 'EACCES': {
             debug('Requires elevated privileges');
             gracefulExit(1);
-            // break;
+            break;
         }
-        // eslint-disable-next-line no-fallthrough
         case 'EADDRINUSE': {
             debug('Port is already in use.');
             gracefulExit(1);
-            // break;
+            break;
         }
-        // eslint-disable-next-line no-fallthrough
         default: {
             throw error;
         }

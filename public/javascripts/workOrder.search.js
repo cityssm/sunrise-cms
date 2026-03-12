@@ -80,9 +80,9 @@
                 ? ''
                 : `
                         <span class="tag" title="Progress">
-                          ${(workOrder.workOrderMilestoneCompletionCount ?? '').toString()}
+                          ${(workOrder.workOrderMilestoneCompletionCount ?? 0).toString()}
                           /
-                          ${(workOrder.workOrderMilestoneCount ?? '').toString()}
+                          ${(workOrder.workOrderMilestoneCount ?? 0).toString()}
                         </span>
                       `}
                 </div>
