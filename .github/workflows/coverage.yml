@@ -100,7 +100,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Global Dependencies
-        run: npm install -g c8 cypress@15
+        run: npm install -g cypress@15
 
       - name: Install Application (CI)
         id: installCi
@@ -121,6 +121,11 @@ jobs:
 
       - name: Copy Test Config
         run: cp ./data/testing.config.js ./data/config.js
+
+      - name: Verify Cypress
+        run: cypress verify
+        env:
+          CYPRESS_VERIFY_TIMEOUT: 600000
 
       - name: Run Test
         run: npm run test
