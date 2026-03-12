@@ -9,7 +9,7 @@ on:
 permissions: read-all
 
 jobs:
-  Ubuntu:
+  Ubuntu-Coverage:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -80,7 +80,7 @@ jobs:
             cypress/videos/**/*.mp4
           if-no-files-found: ignore
 
-  Windows:
+  Windows-Test:
     runs-on: windows-2025
     strategy:
       fail-fast: false
@@ -142,15 +142,13 @@ jobs:
             cypress/videos/**/*.mp4
           if-no-files-found: ignore
 
-  Mac:
+  Mac-StartupTest:
     runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
-        node: [22, 24]
-    env:
-      CYPRESS_USE_LONGER_TIMEOUTS: 'true'
-  
+        node: [24]
+
     name: MacOS - Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v6
@@ -183,6 +181,4 @@ jobs:
   
       - name: Run Startup Test
         run: npm run test:startup
-        env:
-          CYPRESS_USE_LONGER_TIMEOUTS: 'true'
   
