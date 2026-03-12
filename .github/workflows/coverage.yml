@@ -137,59 +137,47 @@ jobs:
             cypress/videos/**/*.mp4
           if-no-files-found: ignore
 
-  #Mac:
-  #  runs-on: macos-latest
-  #  strategy:
-  #    fail-fast: false
-  #    matrix:
-  #      node: [22, 24]
-  #  env:
-  #    CYPRESS_USE_LONGER_TIMEOUTS: 'true'
-  #
-  #  name: MacOS - Node ${{ matrix.node }}
-  #  steps:
-  #    - uses: actions/checkout@v6
-  #
-  #    - name: Setup Node
-  #      uses: actions/setup-node@v6
-  #      with:
-  #        node-version: ${{ matrix.node }}
-  #        cache: 'npm'
-  #
-  #     - name: Install Global Dependencies
-  #       run: npm install -g c8 cypress@15
-  #
-  #     - name: Install Application (CI)
-  #       id: installCi
-  #       continue-on-error: true
-  #      run: npm ci
-  #      env:
-  #        PUPPETEER_SKIP_DOWNLOAD: 'true'
-  #
-  #    - name: Install Application (Install)
-  #      if: steps.installCi.outcome == 'failure'
-  #      run: npm install
-  #      env:
-  #        PUPPETEER_SKIP_DOWNLOAD: 'true'
-  #
-  #    - name: Install Puppeteer Browser
-  #      continue-on-error: true
-  #      run: node node_modules/puppeteer/install.mjs
-  #
-  #    - name: Copy Test Config
-  #      run: cp ./data/testing.config.js ./data/config.js
-  #
-  #    - name: Run Test
-  #      run: npm run test
-  #      env:
-  #        CYPRESS_USE_LONGER_TIMEOUTS: 'true'
-  #
-  #    - name: Archive Cypress error screenshots
-  #      if: ${{ (success() || failure()) }}
-  #      uses: actions/upload-artifact@v6
-  #      with:
-  #        name: cypress-output-macos-node-${{ matrix.node }}
-  #        path: |
-  #          cypress/screenshots/**/*.png
-  #          cypress/videos/**/*.mp4
-  #        if-no-files-found: ignore
+  Mac:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+    env:
+      CYPRESS_USE_LONGER_TIMEOUTS: 'true'
+  
+    name: MacOS - Node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v6
+  
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+
+      - name: Install Application (CI)
+        id: installCi
+        continue-on-error: true
+        run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+  
+      - name: Install Application (Install)
+        if: steps.installCi.outcome == 'failure'
+        run: npm install
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+  
+      - name: Install Puppeteer Browser
+        continue-on-error: true
+        run: node node_modules/puppeteer/install.mjs
+  
+      - name: Copy Test Config
+        run: cp ./data/testing.config.js ./data/config.js
+  
+      - name: Run Startup Test
+        run: npm run test:startup
+        env:
+          CYPRESS_USE_LONGER_TIMEOUTS: 'true'
+  
