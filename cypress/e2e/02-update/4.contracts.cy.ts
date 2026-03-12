@@ -2,27 +2,27 @@ import { testUpdate } from '../../../test/_globals.js'
 import type { Contract } from '../../../types/record.types.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  getDelayMillis,
+  ajaxDelayMillis,
   logAccessibilityViolations,
   login,
-  logout
+  logout,
+  pageLoadDelayMillis
 } from '../../support/index.js'
 
 describe('Contracts - Update', () => {
-  let ajaxDelayMillis: number
-  let pageLoadDelayMillis: number
-
   beforeEach(() => {
     logout()
     login(testUpdate)
-    ;({ ajaxDelayMillis, pageLoadDelayMillis } = getDelayMillis())
   })
 
   afterEach(logout)
 
   it('Has a "Create" link on the Contract Search', () => {
     cy.visit('/contracts')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/contracts')
+    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      'equal',
+      '/contracts'
+    )
     cy.get("a[href$='/contracts/new']").should('exist')
   })
 
