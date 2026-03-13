@@ -1,13 +1,15 @@
 import { testUpdate } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  ajaxDelayMillis,
   logAccessibilityViolations,
   login,
-  logout,
+  logout
+} from '../../support/index.js'
+import {
+  ajaxDelayMillis,
   pageLoadDelayMillis,
   pdfGenerationDelayMillis
-} from '../../support/index.js'
+} from '../../support/timeouts.js'
 
 describe('Work Orders - Update', () => {
   beforeEach(() => {

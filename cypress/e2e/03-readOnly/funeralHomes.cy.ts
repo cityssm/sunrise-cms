@@ -1,12 +1,11 @@
 import { testView } from '../../../test/_globals.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  ajaxDelayMillis,
   logAccessibilityViolations,
   login,
-  logout,
-  pageLoadDelayMillis
+  logout
 } from '../../support/index.js'
+import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
 
 describe('Funeral Home Search', () => {
   beforeEach(() => {

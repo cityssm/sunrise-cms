@@ -1,6 +1,7 @@
 import { testUpdate } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
-import { ajaxDelayMillis, logAccessibilityViolations, login, logout, pageLoadDelayMillis, pdfGenerationDelayMillis } from '../../support/index.js';
+import { logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, pageLoadDelayMillis, pdfGenerationDelayMillis } from '../../support/timeouts.js';
 describe('Work Orders - Update', () => {
     beforeEach(() => {
         logout();

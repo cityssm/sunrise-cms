@@ -3,9 +3,9 @@ import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
   logAccessibilityViolations,
   login,
-  logout,
-  pageLoadDelayMillis
+  logout
 } from '../../support/index.js'
+import { pageLoadDelayMillis } from '../../support/timeouts.js'
 
 describe('Work Order iCalendar Integration', () => {
   beforeEach(() => {

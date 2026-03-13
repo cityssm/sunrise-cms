@@ -1,7 +1,8 @@
 /* eslint-disable max-nested-callbacks */
 import { testUpdate } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
-import { ajaxDelayMillis, logAccessibilityViolations, login, logout, pageLoadDelayMillis } from '../../support/index.js';
+import { logAccessibilityViolations, login, logout } from '../../support/index.js';
+import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js';
 const burialSiteNameSegment3Length = 4;
 describe('Burial Sites - Update', () => {
     beforeEach('Loads page', () => {

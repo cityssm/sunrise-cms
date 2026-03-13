@@ -1,9 +1,6 @@
 import { checkDeadLinks } from '../../support/deadLinks.js'
-import {
-  logAccessibilityViolations,
-  logout,
-  pageLoadDelayMillis
-} from '../../support/index.js'
+import { logAccessibilityViolations, logout } from '../../support/index.js'
+import { pageLoadDelayMillis } from '../../support/timeouts.js'
 
 describe('Login Page', () => {
   beforeEach(() => {

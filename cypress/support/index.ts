@@ -1,6 +1,8 @@
 import type axe from 'axe-core'
 import 'cypress-axe'
 
+import { pageLoadDelayMillis } from './timeouts.js'
+
 export function logout(): void {
   cy.visit('/logout')
 
@@ -19,19 +21,14 @@ export function login(userName: string): void {
 
   cy.get('form').submit()
 
-  cy.location('pathname').should('not.contain', '/login')
+  cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    'not.contain',
+    '/login'
+  )
 
   // Logged in pages have a navbar
   cy.get('.navbar').should('have.length', 1)
 }
-
-export const ajaxDelayMillis =
-  Cypress.expose('useLongerTimeouts') === true ? 1500 : 800
-
-export const pageLoadDelayMillis =
-  Cypress.expose('useLongerTimeouts') === true ? 2000 : 1200
-
-export const pdfGenerationDelayMillis = 10_000
 
 export function logAccessibilityViolations(violations: axe.Result[]): void {
   if (violations.length > 0) {

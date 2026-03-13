@@ -2,12 +2,11 @@ import { testAdmin } from '../../../test/_globals.js'
 import type { BurialSiteType } from '../../../types/record.types.js'
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import {
-  ajaxDelayMillis,
   logAccessibilityViolations,
   login,
-  logout,
-  pageLoadDelayMillis
+  logout
 } from '../../support/index.js'
+import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
 
 describe('Admin - Burial Site Type Management', () => {
   const burialSiteTypeTitleSelector =

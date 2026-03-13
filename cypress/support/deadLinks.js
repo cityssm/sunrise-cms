@@ -1,3 +1,4 @@
+import { externalPageLoadMillis } from "./timeouts.js";
 // Initialize with links to ignore because they are on almost every page
 const testedLinks = new Set([
     'https://cityssm.github.io/sunrise-cms',
@@ -20,7 +21,7 @@ export function checkDeadLinks() {
         cy.request({
             url: href,
             failOnStatusCode: false,
-            timeout: 10_000
+            timeout: externalPageLoadMillis
         })
             .its('status')
             .should('be.lessThan', 400);
