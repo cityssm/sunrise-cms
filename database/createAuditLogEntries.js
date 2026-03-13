@@ -13,7 +13,7 @@ const propertiesToExclude = new Set([
  * including its ID, type, and the table being updated.
  * @param record.updateTable - The name of the table being updated.
  * @param record.recordIndex - The index of the record being updated, if applicable.
- * @param record.mainRecordType - The type of the main record being updated.
+ * @param record.mainRecordType - The main record type being updated.
  * @param record.mainRecordId - The ID of the main record being updated.
  * @param differences - An array of Difference objects representing the changes made to the record.
  * If the list is empty, nothing will be logged.

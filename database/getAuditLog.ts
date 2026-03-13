@@ -29,8 +29,8 @@ export default function getAuditLog(
   filters: {
     logDateFrom?: '' | DateString
     logDateTo?: '' | DateString
-    mainRecordType?: AuditLogMainRecordType
     mainRecordId?: number | string
+    mainRecordType?: AuditLogMainRecordType
     updateUserName?: string
   },
   options?: {
