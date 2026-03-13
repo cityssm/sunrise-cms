@@ -6,8 +6,28 @@ const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 export default function addContractServiceType(addForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
-    try {
-        const result = database
+    let insertResult;
+    const existingRecord = database
+        .prepare(/* sql */ `
+      SELECT
+        recordDelete_timeMillis
+      FROM
+        ContractServiceTypes
+      WHERE
+        contractId = ?
+        AND serviceTypeId = ?
+    `)
+        .get(addForm.contractId, addForm.serviceTypeId);
+    if (existingRecord !== undefined &&
+        existingRecord.recordDelete_timeMillis === undefined) {
+        if (connectedDatabase === undefined) {
+            database.close();
+        }
+        return false;
+    }
+    // eslint-disable-next-line unicorn/prefer-ternary
+    if (existingRecord === undefined) {
+        insertResult = database
             .prepare(/* sql */ `
         INSERT INTO
           ContractServiceTypes (
@@ -23,41 +43,51 @@ export default function addContractServiceType(addForm, user, connectedDatabase)
           (?, ?, ?, ?, ?, ?, ?)
       `)
             .run(addForm.contractId, addForm.serviceTypeId, addForm.contractServiceDetails ?? '', user.userName, rightNowMillis, user.userName, rightNowMillis);
-        if (result.changes > 0 && auditLogIsEnabled) {
-            const recordAfter = database
-                .prepare(/* sql */ `
-          SELECT
-            *
-          FROM
-            ContractServiceTypes
-          WHERE
-            contractId = ?
-            AND serviceTypeId = ?
-        `)
-                .get(addForm.contractId, addForm.serviceTypeId);
-            createAuditLogEntries({
-                mainRecordId: addForm.contractId,
-                mainRecordType: 'contract',
-                recordIndex: addForm.serviceTypeId,
-                updateTable: 'ContractServiceTypes'
-            }, [
-                {
-                    property: '*',
-                    type: 'created',
-                    from: undefined,
-                    to: recordAfter
-                }
-            ], user, database);
-        }
-        if (connectedDatabase === undefined) {
-            database.close();
-        }
-        return result.changes > 0;
     }
-    catch {
-        if (connectedDatabase === undefined) {
-            database.close();
-        }
-        return false;
+    else {
+        insertResult = database
+            .prepare(/* sql */ `
+        UPDATE ContractServiceTypes
+        SET
+          contractServiceDetails = ?,
+          recordDelete_userName = NULL,
+          recordDelete_timeMillis = NULL,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
+        WHERE
+          contractId = ?
+          AND serviceTypeId = ?
+      `)
+            .run(addForm.contractServiceDetails ?? '', user.userName, rightNowMillis, addForm.contractId, addForm.serviceTypeId);
     }
+    if (insertResult.changes > 0 && auditLogIsEnabled) {
+        const recordAfter = database
+            .prepare(/* sql */ `
+        SELECT
+          *
+        FROM
+          ContractServiceTypes
+        WHERE
+          contractId = ?
+          AND serviceTypeId = ?
+      `)
+            .get(addForm.contractId, addForm.serviceTypeId);
+        createAuditLogEntries({
+            mainRecordId: addForm.contractId,
+            mainRecordType: 'contract',
+            recordIndex: addForm.serviceTypeId,
+            updateTable: 'ContractServiceTypes'
+        }, [
+            {
+                property: '*',
+                type: 'created',
+                from: undefined,
+                to: recordAfter
+            }
+        ], user, database);
+    }
+    if (connectedDatabase === undefined) {
+        database.close();
+    }
+    return insertResult.changes > 0;
 }

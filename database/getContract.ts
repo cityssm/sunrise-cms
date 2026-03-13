@@ -168,3 +168,4 @@ export default async function getContract(
 
   return contract
 }
+

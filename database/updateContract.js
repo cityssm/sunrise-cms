@@ -1,28 +1,14 @@
 import getObjectDifference from '@cityssm/object-difference';
 import { dateStringToInteger, timeStringToInteger } from '@cityssm/utils-datetime';
 import sqlite from 'better-sqlite3';
-import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import deleteContractField from './deleteContractField.js';
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
-// eslint-disable-next-line complexity
+import { getAuditableContractFieldRecords, getAuditableContractRecord } from './getAuditableRecord.js';
 export default function updateContract(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
-    const recordBefore = auditLogIsEnabled
-        ? database
-            .prepare(/* sql */ `
-          SELECT
-            *
-          FROM
-            Contracts
-          WHERE
-            contractId = ?
-            AND recordDelete_timeMillis IS NULL
-        `)
-            .get(updateForm.contractId)
-        : undefined;
+    const recordBefore = getAuditableContractRecord(updateForm.contractId, database);
     const result = database
         .prepare(/* sql */ `
       UPDATE Contracts
@@ -63,6 +49,7 @@ export default function updateContract(updateForm, user, connectedDatabase) {
         : updateForm.committalTypeId, updateForm.purchaserName ?? '', updateForm.purchaserAddress1 ?? '', updateForm.purchaserAddress2 ?? '', updateForm.purchaserCity ?? '', updateForm.purchaserProvince ?? '', updateForm.purchaserPostalCode ?? '', updateForm.purchaserPhoneNumber ?? '', updateForm.purchaserEmail ?? '', updateForm.purchaserRelationship ?? '', user.userName, Date.now(), updateForm.contractId);
     if (result.changes > 0) {
         const contractTypeFieldIds = (updateForm.contractTypeFieldIds ?? '').split(',');
+        const fieldsBefore = getAuditableContractFieldRecords(updateForm.contractId, database);
         for (const contractTypeFieldId of contractTypeFieldIds) {
             const fieldValue = updateForm[`fieldValue_${contractTypeFieldId}`];
             (fieldValue ?? '') === ''
@@ -73,26 +60,20 @@ export default function updateContract(updateForm, user, connectedDatabase) {
                     fieldValue
                 }, user, database);
         }
-        if (auditLogIsEnabled) {
-            const recordAfter = database
-                .prepare(/* sql */ `
-          SELECT
-            *
-          FROM
-            Contracts
-          WHERE
-            contractId = ?
-        `)
-                .get(updateForm.contractId);
-            const differences = getObjectDifference(recordBefore, recordAfter);
-            if (differences.length > 0) {
-                createAuditLogEntries({
-                    mainRecordId: updateForm.contractId,
-                    mainRecordType: 'contract',
-                    updateTable: 'Contracts'
-                }, differences, user, database);
-            }
-        }
+        const fieldsAfter = getAuditableContractFieldRecords(updateForm.contractId, database);
+        const fieldDifferences = getObjectDifference(fieldsBefore, fieldsAfter);
+        createAuditLogEntries({
+            mainRecordId: updateForm.contractId,
+            mainRecordType: 'contract',
+            updateTable: 'ContractFields'
+        }, fieldDifferences, user, database);
+        const recordAfter = getAuditableContractRecord(updateForm.contractId, database);
+        const differences = getObjectDifference(recordBefore, recordAfter);
+        createAuditLogEntries({
+            mainRecordId: updateForm.contractId,
+            mainRecordType: 'contract',
+            updateTable: 'Contracts'
+        }, differences, user, database);
     }
     if (connectedDatabase === undefined) {
         database.close();

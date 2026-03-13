@@ -7,14 +7,15 @@ import {
 } from '@cityssm/utils-datetime'
 import sqlite from 'better-sqlite3'
 
-import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 import addOrUpdateContractField from './addOrUpdateContractField.js'
 import createAuditLogEntries from './createAuditLogEntries.js'
 import deleteContractField from './deleteContractField.js'
-
-const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
+import {
+  getAuditableContractFieldRecords,
+  getAuditableContractRecord
+} from './getAuditableRecord.js'
 
 export interface UpdateContractForm {
   contractId: number | string
@@ -49,7 +50,6 @@ export interface UpdateContractForm {
   contractTypeFieldIds?: string
 }
 
-// eslint-disable-next-line complexity
 export default function updateContract(
   updateForm: UpdateContractForm,
   user: User,
@@ -57,19 +57,10 @@ export default function updateContract(
 ): boolean {
   const database = connectedDatabase ?? sqlite(sunriseDB)
 
-  const recordBefore = auditLogIsEnabled
-    ? database
-        .prepare(/* sql */ `
-          SELECT
-            *
-          FROM
-            Contracts
-          WHERE
-            contractId = ?
-            AND recordDelete_timeMillis IS NULL
-        `)
-        .get(updateForm.contractId)
-    : undefined
+  const recordBefore = getAuditableContractRecord(
+    updateForm.contractId,
+    database
+  )
 
   const result = database
     .prepare(/* sql */ `
@@ -103,22 +94,27 @@ export default function updateContract(
     .run(
       updateForm.contractTypeId,
       updateForm.burialSiteId === '' ? undefined : updateForm.burialSiteId,
+
       dateStringToInteger(updateForm.contractStartDateString),
       updateForm.contractEndDateString === ''
         ? undefined
         : dateStringToInteger(updateForm.contractEndDateString),
+
       updateForm.funeralHomeId === '' ? undefined : updateForm.funeralHomeId,
       updateForm.funeralDirectorName,
+
       updateForm.funeralDateString === ''
         ? undefined
         : dateStringToInteger(updateForm.funeralDateString),
       updateForm.funeralTimeString === ''
         ? undefined
         : timeStringToInteger(updateForm.funeralTimeString),
+
       updateForm.directionOfArrival ?? '',
       updateForm.committalTypeId === ''
         ? undefined
         : updateForm.committalTypeId,
+
       updateForm.purchaserName ?? '',
       updateForm.purchaserAddress1 ?? '',
       updateForm.purchaserAddress2 ?? '',
@@ -128,6 +124,7 @@ export default function updateContract(
       updateForm.purchaserPhoneNumber ?? '',
       updateForm.purchaserEmail ?? '',
       updateForm.purchaserRelationship ?? '',
+
       user.userName,
       Date.now(),
       updateForm.contractId
@@ -136,6 +133,11 @@ export default function updateContract(
   if (result.changes > 0) {
     const contractTypeFieldIds = (updateForm.contractTypeFieldIds ?? '').split(
       ','
+    )
+
+    const fieldsBefore = getAuditableContractFieldRecords(
+      updateForm.contractId,
+      database
     )
 
     for (const contractTypeFieldId of contractTypeFieldIds) {
@@ -162,33 +164,41 @@ export default function updateContract(
           )
     }
 
-    if (auditLogIsEnabled) {
-      const recordAfter = database
-        .prepare(/* sql */ `
-          SELECT
-            *
-          FROM
-            Contracts
-          WHERE
-            contractId = ?
-        `)
-        .get(updateForm.contractId)
+    const fieldsAfter = getAuditableContractFieldRecords(
+      updateForm.contractId,
+      database
+    )
 
-      const differences = getObjectDifference(recordBefore, recordAfter)
+    const fieldDifferences = getObjectDifference(fieldsBefore, fieldsAfter)
 
-      if (differences.length > 0) {
-        createAuditLogEntries(
-          {
-            mainRecordId: updateForm.contractId,
-            mainRecordType: 'contract',
-            updateTable: 'Contracts'
-          },
-          differences,
-          user,
-          database
-        )
-      }
-    }
+    createAuditLogEntries(
+      {
+        mainRecordId: updateForm.contractId,
+        mainRecordType: 'contract',
+        updateTable: 'ContractFields'
+      },
+      fieldDifferences,
+      user,
+      database
+    )
+
+    const recordAfter = getAuditableContractRecord(
+      updateForm.contractId,
+      database
+    )
+
+    const differences = getObjectDifference(recordBefore, recordAfter)
+
+    createAuditLogEntries(
+      {
+        mainRecordId: updateForm.contractId,
+        mainRecordType: 'contract',
+        updateTable: 'Contracts'
+      },
+      differences,
+      user,
+      database
+    )
   }
 
   if (connectedDatabase === undefined) {

@@ -8,6 +8,7 @@ import addContractInterment from './addContractInterment.js';
 import addFuneralHome from './addFuneralHome.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
+import { getAuditableContractRecord } from './getAuditableRecord.js';
 import getNextContractNumber from './getNextContractNumber.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:addContract`);
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
@@ -119,16 +120,7 @@ export default function addContract(addForm, user, connectedDatabase) {
             addContractInterment({ ...addForm, contractId }, user, database);
         }
         if (auditLogIsEnabled) {
-            const recordAfter = database
-                .prepare(/* sql */ `
-          SELECT
-            *
-          FROM
-            Contracts
-          WHERE
-            contractId = ?
-        `)
-                .get(contractId);
+            const recordAfter = getAuditableContractRecord(contractId, database);
             createAuditLogEntries({
                 mainRecordId: contractId,
                 mainRecordType: 'contract',
