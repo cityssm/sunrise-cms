@@ -7,7 +7,6 @@
   style="background-image:url('<%= backgroundImageUrl %>')"
   lang="<%= lng || 'en' %>"
 >
-
   <head>
     <title>
       <%= t('login:title') %>:
@@ -29,8 +28,10 @@
         <main class="box mx-3 my-3 py-5">
           <div class="columns is-vcentered">
             <div class="column has-text-centered">
-              <img src="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>"
-                alt="" style="max-height:400px" />
+              <img
+                src="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>"
+                alt="" style="max-height:400px"
+              />
             </div>
             <div class="column">
               <h1 class="title is-3 has-text-centered">
