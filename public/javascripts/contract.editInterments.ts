@@ -454,12 +454,12 @@ declare const exports: {
           </div>
         </td>
         <td class="is-hidden-print has-text-right">
-          <button class="button is-small is-info button--edit mb-1" type="button" title="Edit Interment">
+          <button class="button is-small is-info is-light button--edit mb-1" type="button" title="Edit Interment">
             <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
             <span>Edit</span>
           </button>
           <br />
-          <button class="button is-small is-danger button--delete" type="button" title="Remove Interment">
+          <button class="button is-small is-danger is-light button--delete" type="button" title="Remove Interment">
             <span class="icon"><i class="fa-solid fa-trash"></i></span>
           </button>
         </td>

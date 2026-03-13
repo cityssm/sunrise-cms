@@ -262,7 +262,7 @@ declare const exports: {
             ${
               (contractFee.includeQuantity ?? false)
                 ? /* html */ `
-                  <button class="button is-primary button--editQuantity">
+                  <button class="button is-info is-light button--editQuantity">
                     <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
                     <span>Edit</span>
                   </button>
@@ -862,7 +862,7 @@ declare const exports: {
         </td>
         <td class="is-hidden-print">
           <div class="buttons are-small is-flex-wrap-nowrap is-justify-content-end">
-            <button class="button is-primary button--edit" type="button" title="Edit Transaction">
+            <button class="button is-info is-light button--edit" type="button" title="Edit Transaction">
               <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
             </button>
             <button class="button is-danger is-light button--delete" type="button" title="Delete Transaction">

@@ -182,7 +182,12 @@
                     renderContractServiceTypes();
                     bulmaJS.alert({
                         contextualColorName: 'success',
-                        message: 'Service Type Added Successfully'
+                        message: 'Service Type Added Successfully',
+                        okButton: {
+                            callbackFunction() {
+                                openAddServiceType();
+                            }
+                        }
                     });
                 }
                 else {
@@ -211,8 +216,9 @@
                 addFormElement = modalElement.querySelector('form');
                 addFormElement.addEventListener('submit', addContractServiceType);
             },
-            onshown(_modalElement, closeModalFunction) {
+            onshown(modalElement, closeModalFunction) {
                 addCloseModalFunction = closeModalFunction;
+                modalElement.querySelector('#contractServiceTypeAdd--serviceTypeId').focus();
             },
             onremoved() {
                 addFormElement = undefined;

@@ -214,7 +214,7 @@ declare const exports: {
         <td>${cityssm.escapeHTML(contractComment.comment)}</td>
         <td class="is-hidden-print">
           <div class="buttons are-small is-justify-content-end">
-            <button class="button is-primary button--edit" type="button">
+            <button class="button is-info is-light button--edit" type="button">
               <span class="icon is-small"><i class="fa-solid fa-pencil-alt"></i></span>
               <span>Edit</span>
             </button>
