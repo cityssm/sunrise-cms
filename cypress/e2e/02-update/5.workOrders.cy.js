@@ -1,7 +1,7 @@
 import { testUpdate } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis, pdfGenerationDelayMillis } from '../../support/timeouts.js';
+import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis, pdfGenerationDelayMillis } from '../../support/timeouts.js';
 describe('Work Orders - Update', () => {
     beforeEach(() => {
         logout();
@@ -20,7 +20,10 @@ describe('Work Orders - Update', () => {
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
         cy.log('Submit the form using defaults');
-        cy.get('#form--workOrderEdit').submit();
+        cy.get('#form--workOrderEdit')
+            .submit()
+            .wait(ajaxTimeoutMillis)
+            .wait(minimumNavigationDelayMillis);
         cy.location('pathname', { timeout: pageLoadTimeoutMillis })
             .should('not.contain', '/new')
             .should('contain', '/edit');

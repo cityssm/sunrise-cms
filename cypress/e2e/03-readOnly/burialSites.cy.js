@@ -21,7 +21,7 @@ describe('Burial Site Search', () => {
             .then(($link) => {
             const href = $link.attr('href');
             expect(href).to.include('/burialSites/');
-            cy.wrap($link).click();
+            cy.wrap($link).click().wait(minimumNavigationDelayMillis);
             cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('include', '/burialSites/');
             cy.log('Check accessibility on the burial site view page');
             cy.injectAxe();

@@ -21,7 +21,7 @@ describe('Work Order Search', () => {
             .then(($link) => {
             const href = $link.attr('href');
             expect(href).to.include('/workOrders/');
-            cy.wrap($link).click();
+            cy.wrap($link).click().wait(minimumNavigationDelayMillis);
             cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('include', '/workOrders/');
             cy.log('Check accessibility on the work order view page');
             cy.injectAxe();

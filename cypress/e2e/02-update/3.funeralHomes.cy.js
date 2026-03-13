@@ -1,7 +1,7 @@
 import { testUpdate } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
+import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Funeral Homes - Update', () => {
     beforeEach('Loads page', () => {
         logout();
@@ -51,7 +51,10 @@ describe('Funeral Homes - Update', () => {
         )
         */
         cy.log('Submit the form');
-        cy.get('#form--funeralHome').submit();
+        cy.get('#form--funeralHome')
+            .submit()
+            .wait(ajaxTimeoutMillis)
+            .wait(minimumNavigationDelayMillis);
         cy.location('pathname', { timeout: pageLoadTimeoutMillis })
             .should('not.contain', '/new')
             .should('contain', '/edit');

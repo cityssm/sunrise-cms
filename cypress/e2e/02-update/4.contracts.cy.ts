@@ -6,7 +6,11 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
+import {
+  ajaxTimeoutMillis,
+  minimumNavigationDelayMillis,
+  pageLoadTimeoutMillis
+} from '../../support/timeouts.js'
 
 describe('Contracts - Update', () => {
   beforeEach(() => {
@@ -89,7 +93,10 @@ describe('Contracts - Update', () => {
 
     cy.log('Submit the form')
 
-    cy.get('#form--contract').submit()
+    cy.get('#form--contract')
+      .submit()
+      .wait(ajaxTimeoutMillis)
+      .wait(minimumNavigationDelayMillis)
 
     cy.location('pathname', { timeout: pageLoadTimeoutMillis })
       .should('not.contain', '/new')

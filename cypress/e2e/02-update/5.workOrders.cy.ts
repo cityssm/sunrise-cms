@@ -7,6 +7,7 @@ import {
 } from '../../support/index.js'
 import {
   ajaxTimeoutMillis,
+  minimumNavigationDelayMillis,
   pageLoadTimeoutMillis,
   pdfGenerationDelayMillis
 } from '../../support/timeouts.js'
@@ -42,7 +43,10 @@ describe('Work Orders - Update', () => {
 
     cy.log('Submit the form using defaults')
 
-    cy.get('#form--workOrderEdit').submit()
+    cy.get('#form--workOrderEdit')
+      .submit()
+      .wait(ajaxTimeoutMillis)
+      .wait(minimumNavigationDelayMillis)
 
     cy.location('pathname', { timeout: pageLoadTimeoutMillis })
       .should('not.contain', '/new')

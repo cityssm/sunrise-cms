@@ -1,7 +1,7 @@
 import { testView } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
+import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Contract Search', () => {
     beforeEach(() => {
         logout();
@@ -47,7 +47,7 @@ describe('Contract Search', () => {
             .then(($link) => {
             const href = $link.attr('href');
             expect(href).to.include('/contracts/');
-            cy.wrap($link).click();
+            cy.wrap($link).click().wait(minimumNavigationDelayMillis);
             cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('include', '/contracts/');
             cy.log('Check accessibility on the contract view page');
             cy.injectAxe();

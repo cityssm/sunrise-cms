@@ -1,7 +1,7 @@
 import { testView } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
+import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Cemetery Search', () => {
     beforeEach(() => {
         logout();
@@ -21,7 +21,7 @@ describe('Cemetery Search', () => {
             .then(($link) => {
             const href = $link.attr('href');
             expect(href).to.include('/cemeteries/');
-            cy.wrap($link).click();
+            cy.wrap($link).click().wait(minimumNavigationDelayMillis);
             cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('include', '/cemeteries/');
             cy.log('Check accessibility on the cemetery view page');
             cy.injectAxe();

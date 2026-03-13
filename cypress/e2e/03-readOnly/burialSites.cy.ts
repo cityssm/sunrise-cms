@@ -42,7 +42,7 @@ describe('Burial Site Search', () => {
         const href = $link.attr('href')
         expect(href).to.include('/burialSites/')
 
-        cy.wrap($link).click()
+        cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
           'include',

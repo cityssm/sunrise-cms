@@ -5,7 +5,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
+import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Contract Search', () => {
   beforeEach(() => {
@@ -71,7 +71,7 @@ describe('Contract Search', () => {
         const href = $link.attr('href')
         expect(href).to.include('/contracts/')
 
-        cy.wrap($link).click()
+        cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
           'include',

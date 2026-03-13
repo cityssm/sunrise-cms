@@ -35,7 +35,7 @@ describe('Work Order Search', () => {
         const href = $link.attr('href')
         expect(href).to.include('/workOrders/')
 
-        cy.wrap($link).click()
+        cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
         cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
           'include',

@@ -8,7 +8,11 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
+import {
+  ajaxTimeoutMillis,
+  minimumNavigationDelayMillis,
+  pageLoadTimeoutMillis
+} from '../../support/timeouts.js'
 
 const burialSiteNameSegment3Length = 4
 
@@ -130,7 +134,10 @@ describe('Burial Sites - Update', () => {
 
     cy.log('Submit the form')
 
-    cy.get('#form--burialSite').submit()
+    cy.get('#form--burialSite')
+      .submit()
+      .wait(ajaxTimeoutMillis)
+      .wait(minimumNavigationDelayMillis)
 
     cy.location('pathname', { timeout: pageLoadTimeoutMillis })
       .should('not.contain', '/new')
