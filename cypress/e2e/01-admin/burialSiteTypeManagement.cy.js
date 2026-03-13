@@ -1,14 +1,14 @@
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js';
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Admin - Burial Site Type Management', () => {
     const burialSiteTypeTitleSelector = '.container--burialSiteType .panel-heading .title';
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
-        cy.visit('/admin/burialSiteTypes');
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/admin/burialSiteTypes');
+        cy.visit('/admin/burialSiteTypes', { timeout: pageLoadTimeoutMillis });
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/admin/burialSiteTypes');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
@@ -30,8 +30,9 @@ describe('Admin - Burial Site Type Management', () => {
                 .clear()
                 .type(burialSiteType.crematedCapacityMax?.toString() ?? '');
             cy.get(".modal button[type='submit']").click();
-            cy.wait(ajaxDelayMillis);
-            cy.get(burialSiteTypeTitleSelector).should('contain.text', burialSiteType.burialSiteType);
+            cy.get(burialSiteTypeTitleSelector, {
+                timeout: ajaxTimeoutMillis
+            }).should('contain.text', burialSiteType.burialSiteType);
         });
     });
     it('Updates a burial site type', () => {
@@ -50,9 +51,10 @@ describe('Admin - Burial Site Type Management', () => {
             const updatedName = `${burialSiteType.burialSiteType} Updated`;
             cy.get(".modal input[name='burialSiteType']").clear().type(updatedName);
             cy.get(".modal button[type='submit']").click();
-            cy.wait(ajaxDelayMillis);
             // Verify the burial site type is updated
-            cy.get(burialSiteTypeTitleSelector).should('contain.text', updatedName);
+            cy.get(burialSiteTypeTitleSelector, {
+                timeout: ajaxTimeoutMillis
+            }).should('contain.text', updatedName);
         });
     });
     it('Removes a burial site type', () => {
@@ -67,9 +69,10 @@ describe('Admin - Burial Site Type Management', () => {
             // Confirm the deletion in the modal
             cy.get('.modal').should('be.visible');
             cy.get('.modal').contains('Yes, Delete Burial Site Type').click();
-            cy.wait(ajaxDelayMillis);
             // Verify the burial site type is removed
-            cy.get(burialSiteTypeTitleSelector).should('not.contain.text', nameToDelete);
+            cy.get(burialSiteTypeTitleSelector, {
+                timeout: ajaxTimeoutMillis
+            }).should('not.contain.text', nameToDelete);
         });
     });
 });

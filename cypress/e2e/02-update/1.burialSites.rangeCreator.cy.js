@@ -1,13 +1,13 @@
 import { testUpdate } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { pageLoadDelayMillis } from '../../support/timeouts.js';
+import { pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Burial Sites - Range Creator', () => {
     beforeEach('Loads page', () => {
         logout();
         login(testUpdate);
-        cy.visit('/burialSites/creator');
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/burialSites/creator');
+        cy.visit('/burialSites/creator', { timeout: pageLoadTimeoutMillis });
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/burialSites/creator');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {

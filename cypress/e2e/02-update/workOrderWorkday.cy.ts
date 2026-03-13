@@ -5,7 +5,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Work Orders - Workday Report', () => {
   beforeEach(() => {
@@ -19,8 +19,8 @@ describe('Work Orders - Workday Report', () => {
   const dateSpanSelector = '#workdayDateStringSpan'
 
   it('Should page between days', () => {
-    cy.visit(workdayUrl)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit(workdayUrl, { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       workdayUrl
     )
@@ -37,20 +37,23 @@ describe('Work Orders - Workday Report', () => {
     cy.get('@initialDateString').then((initialDateString) => {
       // Click the next day button
       cy.get('#button--workdayNextDay').click()
-      cy.wait(ajaxDelayMillis)
 
-      cy.get(dateSpanSelector)
+      cy.get(dateSpanSelector, {
+        timeout: ajaxTimeoutMillis
+      })
         .invoke('text')
         .should('not.equal', initialDateString)
 
       // Click the previous day button twice to go before the initial date
       cy.get('#button--workdayPreviousDay').click()
-      cy.wait(ajaxDelayMillis)
-      cy.get('#button--workdayPreviousDay').click()
-      cy.wait(ajaxDelayMillis)
+      cy.get('#button--workdayPreviousDay', {
+        timeout: ajaxTimeoutMillis
+      }).click()
 
       // Verify we're on a different date than the initial
-      cy.get(dateSpanSelector)
+      cy.get(dateSpanSelector, {
+        timeout: ajaxTimeoutMillis
+      })
         .invoke('text')
         .should('not.equal', initialDateString)
     })

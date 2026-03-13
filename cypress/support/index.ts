@@ -1,16 +1,16 @@
 import type axe from 'axe-core'
 import 'cypress-axe'
 
-import { pageLoadDelayMillis } from './timeouts.js'
+import { pageLoadTimeoutMillis } from './timeouts.js'
 
 export function logout(): void {
-  cy.visit('/logout')
+  cy.visit('/logout', { timeout: pageLoadTimeoutMillis })
 
   cy.clearCookies()
 }
 
 export function login(userName: string): void {
-  cy.visit('/login')
+  cy.visit('/login', { timeout: pageLoadTimeoutMillis })
 
   cy.get('.message').contains('Testing', {
     matchCase: false
@@ -21,7 +21,7 @@ export function login(userName: string): void {
 
   cy.get('form').submit()
 
-  cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+  cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
     'not.contain',
     '/login'
   )

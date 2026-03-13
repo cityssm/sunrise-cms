@@ -5,7 +5,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Cemetery Search', () => {
   beforeEach(() => {
@@ -16,12 +16,11 @@ describe('Cemetery Search', () => {
   afterEach(logout)
 
   it('Can view a cemetery from the search results', () => {
-    cy.visit('/cemeteries')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/cemeteries', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/cemeteries'
     )
-    cy.wait(ajaxDelayMillis)
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -29,7 +28,7 @@ describe('Cemetery Search', () => {
     checkDeadLinks()
 
     cy.get('#container--searchResults a.has-text-weight-bold', {
-      timeout: ajaxDelayMillis
+      timeout: ajaxTimeoutMillis
     })
       .first()
       .then(($link) => {
@@ -38,7 +37,7 @@ describe('Cemetery Search', () => {
 
         cy.wrap($link).click()
 
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
           'include',
           '/cemeteries/'
         )

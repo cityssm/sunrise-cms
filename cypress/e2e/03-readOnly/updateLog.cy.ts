@@ -5,7 +5,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import { pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Update Log', () => {
   beforeEach(() => {
@@ -16,12 +16,12 @@ describe('Update Log', () => {
   afterEach(logout)
 
   it('Has no detectable accessibility issues', () => {
-    cy.visit('/dashboard/updateLog')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/dashboard/updateLog', { timeout: pageLoadTimeoutMillis })
+
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/dashboard/updateLog'
     )
-    cy.wait(ajaxDelayMillis)
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)

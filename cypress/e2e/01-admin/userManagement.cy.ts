@@ -8,15 +8,15 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Admin - User Management', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
 
-    cy.visit('/admin/users')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/admin/users', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/admin/users'
     )
@@ -44,10 +44,10 @@ describe('Admin - User Management', () => {
 
       cy.get(".modal button[type='submit']").click()
 
-      cy.wait(ajaxDelayMillis)
-
       // Verify the user appears in the table
-      cy.get('table tbody tr').should('contain.text', user.userName)
+      cy.get('table tbody tr', {
+        timeout: ajaxTimeoutMillis
+      }).should('contain.text', user.userName)
     })
   })
 
@@ -61,10 +61,10 @@ describe('Admin - User Management', () => {
           // Toggle the isAdmin permission
           cy.get('button[data-permission="isAdmin"]').click()
 
-          cy.wait(ajaxDelayMillis)
-
           // Verify the button changed to active state
-          cy.get('button[data-permission="isAdmin"]').should(
+          cy.get('button[data-permission="isAdmin"]', {
+            timeout: ajaxTimeoutMillis
+          }).should(
             'have.class',
             'is-success'
           )
@@ -86,10 +86,10 @@ describe('Admin - User Management', () => {
 
       cy.get('.modal button[data-cy="ok"]').contains('Delete').click()
 
-      cy.wait(ajaxDelayMillis)
-
       // Verify the user is removed
-      cy.get('#container--users').should('not.contain.text', user.userName)
+      cy.get('#container--users', {
+        timeout: ajaxTimeoutMillis
+      }).should('not.contain.text', user.userName)
     })
   })
 })

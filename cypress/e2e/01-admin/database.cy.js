@@ -1,13 +1,13 @@
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js';
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Admin - Database Maintenance', () => {
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
-        cy.visit('/admin/database');
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/admin/database');
+        cy.visit('/admin/database', { timeout: pageLoadTimeoutMillis });
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/admin/database');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
@@ -19,8 +19,9 @@ describe('Admin - Database Maintenance', () => {
         cy.get("button[data-cy='backup']").click();
         cy.get('.modal').should('be.visible').should('contain.text', 'Backup');
         cy.get(".modal button[data-cy='ok']").click();
-        cy.wait(ajaxDelayMillis);
-        cy.get('.modal')
+        cy.get('.modal', {
+            timeout: ajaxTimeoutMillis
+        })
             .should('contain.text', 'Backed Up')
             .should('contain.text', 'Success');
         cy.get(".modal button[data-cy='ok']").click();
@@ -29,8 +30,9 @@ describe('Admin - Database Maintenance', () => {
         cy.get("button[data-cy='cleanup']").click();
         cy.get('.modal').should('be.visible').should('contain.text', 'Cleanup');
         cy.get(".modal button[data-cy='ok']").click();
-        cy.wait(ajaxDelayMillis);
-        cy.get('.modal')
+        cy.get('.modal', {
+            timeout: ajaxTimeoutMillis
+        })
             .should('contain.text', 'Cleaned Up')
             .should('contain.text', 'Success');
         cy.get(".modal button[data-cy='ok']").click();

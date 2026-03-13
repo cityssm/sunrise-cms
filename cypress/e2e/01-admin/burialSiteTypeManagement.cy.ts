@@ -6,7 +6,10 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import {
+  ajaxTimeoutMillis,
+  pageLoadTimeoutMillis
+} from '../../support/timeouts.js'
 
 describe('Admin - Burial Site Type Management', () => {
   const burialSiteTypeTitleSelector =
@@ -16,8 +19,9 @@ describe('Admin - Burial Site Type Management', () => {
     logout()
     login(testAdmin)
 
-    cy.visit('/admin/burialSiteTypes')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/admin/burialSiteTypes', { timeout: pageLoadTimeoutMillis })
+
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/admin/burialSiteTypes'
     )
@@ -55,12 +59,9 @@ describe('Admin - Burial Site Type Management', () => {
 
       cy.get(".modal button[type='submit']").click()
 
-      cy.wait(ajaxDelayMillis)
-
-      cy.get(burialSiteTypeTitleSelector).should(
-        'contain.text',
-        burialSiteType.burialSiteType
-      )
+      cy.get(burialSiteTypeTitleSelector, {
+        timeout: ajaxTimeoutMillis
+      }).should('contain.text', burialSiteType.burialSiteType)
     })
   })
 
@@ -86,10 +87,10 @@ describe('Admin - Burial Site Type Management', () => {
 
       cy.get(".modal button[type='submit']").click()
 
-      cy.wait(ajaxDelayMillis)
-
       // Verify the burial site type is updated
-      cy.get(burialSiteTypeTitleSelector).should('contain.text', updatedName)
+      cy.get(burialSiteTypeTitleSelector, {
+        timeout: ajaxTimeoutMillis
+      }).should('contain.text', updatedName)
     })
   })
 
@@ -109,13 +110,10 @@ describe('Admin - Burial Site Type Management', () => {
 
       cy.get('.modal').contains('Yes, Delete Burial Site Type').click()
 
-      cy.wait(ajaxDelayMillis)
-
       // Verify the burial site type is removed
-      cy.get(burialSiteTypeTitleSelector).should(
-        'not.contain.text',
-        nameToDelete
-      )
+      cy.get(burialSiteTypeTitleSelector, {
+        timeout: ajaxTimeoutMillis
+      }).should('not.contain.text', nameToDelete)
     })
   })
 })

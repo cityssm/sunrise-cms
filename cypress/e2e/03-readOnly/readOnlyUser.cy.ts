@@ -5,7 +5,10 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { pageLoadDelayMillis } from '../../support/timeouts.js'
+import {
+  minimumNavigationDelayMillis,
+  pageLoadTimeoutMillis
+} from '../../support/timeouts.js'
 
 describe('Read Only User', () => {
   beforeEach(() => {
@@ -16,7 +19,7 @@ describe('Read Only User', () => {
   afterEach(logout)
 
   it('Has a Read Only User dashboard', () => {
-    cy.visit('/dashboard')
+    cy.visit('/dashboard', { timeout: pageLoadTimeoutMillis })
 
     cy.log('Has no detectable accessibility issues')
 
@@ -37,21 +40,19 @@ describe('Read Only User', () => {
   // Cemeteries
 
   it('Has no link to create cemeteries on Cemetery Search', () => {
-    cy.visit('/cemeteries')
+    cy.visit('/cemeteries', { timeout: pageLoadTimeoutMillis })
     cy.get("a[href*='/new']").should('not.exist')
   })
 
   it('Redirects to Dashboard when attempting to create or update a cemetery', () => {
-    cy.visit('/cemeteries/new')
-    cy.wait(200)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/cemeteries/new', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
       'not.contain',
       'new'
     )
 
-    cy.visit('/cemeteries/1/edit')
-    cy.wait(200)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/cemeteries/1/edit', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
       'not.contain',
       'edit'
     )
@@ -60,7 +61,7 @@ describe('Read Only User', () => {
   // Burial Sites
 
   it('Has no link to create burial sites on Burial Site Search', () => {
-    cy.visit('/burialSites')
+    cy.visit('/burialSites', { timeout: pageLoadTimeoutMillis })
 
     cy.get("a[href*='/new']").should('not.exist')
     cy.get("a[href*='/creator']").should('not.exist')
@@ -68,30 +69,27 @@ describe('Read Only User', () => {
   })
 
   it('Redirects to Dashboard when attempting to create or update a burial site', () => {
-    cy.visit('/burialSites/new')
-    cy.wait(200)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/burialSites/new', { timeout: pageLoadTimeoutMillis })
+
+    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
       'not.contain',
       'new'
     )
 
-    cy.visit('/burialSites/1/edit')
-    cy.wait(200)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/burialSites/1/edit', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
       'not.contain',
       'edit'
     )
 
-    cy.visit('/burialSites/creator')
-    cy.wait(200)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/burialSites/creator', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
       'not.contain',
       'creator'
     )
 
-    cy.visit('/burialSites/gpsCapture')
-    cy.wait(200)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/burialSites/gpsCapture', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
       'not.contain',
       'gpsCapture'
     )
@@ -100,21 +98,19 @@ describe('Read Only User', () => {
   // Contracts
 
   it('Has no link to create contracts on Contract Search', () => {
-    cy.visit('/contracts')
+    cy.visit('/contracts', { timeout: pageLoadTimeoutMillis })
     cy.get("a[href*='/new']").should('not.exist')
   })
 
   it('Redirects to Dashboard when attempting to create or update a contract', () => {
-    cy.visit('/contracts/new')
-    cy.wait(200)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/contracts/new', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
       'not.contain',
       'new'
     )
 
-    cy.visit('/contracts/1/edit')
-    cy.wait(200)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/contracts/1/edit', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
       'not.contain',
       'edit'
     )
@@ -123,21 +119,19 @@ describe('Read Only User', () => {
   // Work Orders
 
   it('Has no link to create work orders on Work Order Search', () => {
-    cy.visit('/workOrders')
+    cy.visit('/workOrders', { timeout: pageLoadTimeoutMillis })
     cy.get("a[href*='/new']").should('not.exist')
   })
 
   it('Redirects to Dashboard when attempting to create a work order', () => {
-    cy.visit('/workOrders/new')
-    cy.wait(200)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/workOrders/new', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
       'not.contain',
       'new'
     )
 
-    cy.visit('/workOrders/1/edit')
-    cy.wait(200)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/workOrders/1/edit', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
       'not.contain',
       'edit'
     )
@@ -156,9 +150,8 @@ describe('Read Only User', () => {
     ]
 
     for (const adminPath of adminPaths) {
-      cy.visit(adminPath)
-      cy.wait(200)
-      cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+      cy.visit(adminPath, { timeout: pageLoadTimeoutMillis })
+      cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
         'not.contain',
         '/admin'
       )
@@ -166,9 +159,8 @@ describe('Read Only User', () => {
   })
 
   it('Redirects to Dashboard when attempting to access the login page while authenticated', () => {
-    cy.visit('/login')
-    cy.wait(200)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/login', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
       'not.contain',
       '/login'
     )

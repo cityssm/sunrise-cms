@@ -1,6 +1,6 @@
 import { checkDeadLinks } from '../../support/deadLinks.js'
 import { logAccessibilityViolations, logout } from '../../support/index.js'
-import { pageLoadDelayMillis } from '../../support/timeouts.js'
+import { minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Login Page', () => {
   beforeEach(() => {
@@ -36,9 +36,9 @@ describe('Login Page', () => {
   })
 
   it('Redirects to login when attempting to access dashboard', () => {
-    cy.visit('/dashboard')
-    cy.wait(200)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/dashboard', { timeout: pageLoadTimeoutMillis })
+
+    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
       'contain',
       '/login'
     )
@@ -52,7 +52,7 @@ describe('Login Page', () => {
 
     cy.get('form').submit()
 
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'contain',
       '/login'
     )

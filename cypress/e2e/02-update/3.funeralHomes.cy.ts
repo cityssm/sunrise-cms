@@ -6,7 +6,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Funeral Homes - Update', () => {
   beforeEach('Loads page', () => {
@@ -17,8 +17,8 @@ describe('Funeral Homes - Update', () => {
   afterEach(logout)
 
   it('Has a "Create" link on the Funeral Home Search', () => {
-    cy.visit('/funeralHomes')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/funeralHomes', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/funeralHomes'
     )
@@ -26,7 +26,7 @@ describe('Funeral Homes - Update', () => {
   })
 
   it('Creates a new funeral home', () => {
-    cy.visit('/funeralHomes/new')
+    cy.visit('/funeralHomes/new', { timeout: pageLoadTimeoutMillis })
 
     cy.log('Check the accessibility')
 
@@ -77,8 +77,7 @@ describe('Funeral Homes - Update', () => {
 
     cy.get('#form--funeralHome').submit()
 
-    cy.wait(pageLoadDelayMillis)
-      .location('pathname')
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis })
       .should('not.contain', '/new')
       .should('contain', '/edit')
 
@@ -129,9 +128,9 @@ describe('Funeral Homes - Update', () => {
 
     cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click()
 
-    cy.wait(ajaxDelayMillis)
-
-    cy.get('#modal--recordAuditLog').should('be.visible')
+    cy.get('#modal--recordAuditLog', {
+      timeout: ajaxTimeoutMillis
+    }).should('be.visible')
 
     cy.get('#container--recordAuditLog tbody tr').should(
       'have.length.at.least',

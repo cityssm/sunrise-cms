@@ -1,18 +1,18 @@
 import 'cypress-axe';
-import { pageLoadDelayMillis } from './timeouts.js';
+import { pageLoadTimeoutMillis } from './timeouts.js';
 export function logout() {
-    cy.visit('/logout');
+    cy.visit('/logout', { timeout: pageLoadTimeoutMillis });
     cy.clearCookies();
 }
 export function login(userName) {
-    cy.visit('/login');
+    cy.visit('/login', { timeout: pageLoadTimeoutMillis });
     cy.get('.message').contains('Testing', {
         matchCase: false
     });
     cy.get("form [name='userName']").type(userName);
     cy.get("form [name='password']").type(userName);
     cy.get('form').submit();
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should('not.contain', '/login');
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('not.contain', '/login');
     // Logged in pages have a navbar
     cy.get('.navbar').should('have.length', 1);
 }

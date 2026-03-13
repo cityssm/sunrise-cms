@@ -6,7 +6,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Admin - Contract Type Management', () => {
   const contractTypeTitleSelector =
@@ -16,8 +16,9 @@ describe('Admin - Contract Type Management', () => {
     logout()
     login(testAdmin)
 
-    cy.visit('/admin/contractTypes')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/admin/contractTypes', { timeout: pageLoadTimeoutMillis })
+
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/admin/contractTypes'
     )
@@ -45,9 +46,9 @@ describe('Admin - Contract Type Management', () => {
 
       cy.get(".modal button[type='submit']").click()
 
-      cy.wait(ajaxDelayMillis)
-
-      cy.get(contractTypeTitleSelector).should(
+      cy.get(contractTypeTitleSelector, {
+        timeout: ajaxTimeoutMillis
+      }).should(
         'contain.text',
         contractType.contractType
       )
@@ -76,10 +77,10 @@ describe('Admin - Contract Type Management', () => {
 
       cy.get(".modal button[type='submit']").click()
 
-      cy.wait(ajaxDelayMillis)
-
       // Verify the contract type is updated
-      cy.get(contractTypeTitleSelector).should('contain.text', updatedName)
+      cy.get(contractTypeTitleSelector, {
+        timeout: ajaxTimeoutMillis
+      }).should('contain.text', updatedName)
 
       // Update the fixture to use updated name for delete test
       contractType.contractType = updatedName
@@ -102,10 +103,10 @@ describe('Admin - Contract Type Management', () => {
 
       cy.get('.modal').contains('Yes, Delete Contract Type').click()
 
-      cy.wait(ajaxDelayMillis)
-
       // Verify the contract type is removed
-      cy.get(contractTypeTitleSelector).should('not.contain.text', nameToDelete)
+      cy.get(contractTypeTitleSelector, {
+        timeout: ajaxTimeoutMillis
+      }).should('not.contain.text', nameToDelete)
     })
   })
 })

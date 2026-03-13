@@ -5,7 +5,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Work Order Search', () => {
   beforeEach(() => {
@@ -16,12 +16,11 @@ describe('Work Order Search', () => {
   afterEach(logout)
 
   it('Can view a work order from the search results', () => {
-    cy.visit('/workOrders')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/workOrders', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/workOrders'
     )
-    cy.wait(ajaxDelayMillis)
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -29,7 +28,7 @@ describe('Work Order Search', () => {
     checkDeadLinks()
 
     cy.get('#container--searchResults a.has-text-weight-bold', {
-      timeout: ajaxDelayMillis
+      timeout: ajaxTimeoutMillis
     })
       .first()
       .then(($link) => {
@@ -38,7 +37,7 @@ describe('Work Order Search', () => {
 
         cy.wrap($link).click()
 
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
           'include',
           '/workOrders/'
         )

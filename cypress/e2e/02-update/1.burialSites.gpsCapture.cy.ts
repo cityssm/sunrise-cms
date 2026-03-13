@@ -5,15 +5,15 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { pageLoadDelayMillis } from '../../support/timeouts.js'
+import { pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Burial Sites - GPS Capture', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testUpdate)
 
-    cy.visit('/burialSites/gpsCapture')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/burialSites/gpsCapture', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/burialSites/gpsCapture'
     )

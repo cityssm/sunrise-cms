@@ -1,7 +1,7 @@
 import { testView } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js';
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Cemetery Search', () => {
     beforeEach(() => {
         logout();
@@ -9,21 +9,20 @@ describe('Cemetery Search', () => {
     });
     afterEach(logout);
     it('Can view a cemetery from the search results', () => {
-        cy.visit('/cemeteries');
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/cemeteries');
-        cy.wait(ajaxDelayMillis);
+        cy.visit('/cemeteries', { timeout: pageLoadTimeoutMillis });
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/cemeteries');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
         checkDeadLinks();
         cy.get('#container--searchResults a.has-text-weight-bold', {
-            timeout: ajaxDelayMillis
+            timeout: ajaxTimeoutMillis
         })
             .first()
             .then(($link) => {
             const href = $link.attr('href');
             expect(href).to.include('/cemeteries/');
             cy.wrap($link).click();
-            cy.location('pathname', { timeout: pageLoadDelayMillis }).should('include', '/cemeteries/');
+            cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('include', '/cemeteries/');
             cy.log('Check accessibility on the cemetery view page');
             cy.injectAxe();
             cy.checkA11y(undefined, undefined, logAccessibilityViolations);

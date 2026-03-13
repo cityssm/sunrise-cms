@@ -1,4 +1,4 @@
-import { externalPageLoadMillis } from "./timeouts.js"
+import { externalPageLoadTimeoutMillis } from "./timeouts.js"
 
 // Initialize with links to ignore because they are on almost every page
 const testedLinks = new Set<string>([
@@ -28,7 +28,7 @@ export function checkDeadLinks(): void {
       url: href,
 
       failOnStatusCode: false,
-      timeout: externalPageLoadMillis
+      timeout: externalPageLoadTimeoutMillis
     })
       .its('status')
       .should('be.lessThan', 400)

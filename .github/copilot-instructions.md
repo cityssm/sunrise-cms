@@ -74,18 +74,18 @@ Always reference these instructions first and fallback to search or bash command
 **Configuration:**
 - Main config: `data/config.js` (required)
 - Test config: `data/testing.config.js` (includes test authentication)
-- TypeScript config: `tsconfig.json`
-- ESLint config: `eslint.config.js` (uses eslint-config-cityssm@27.1.0)
+- TypeScript config: `tsconfig.json` for server code, `public/javascripts/tsconfig.json` for client code
+- ESLint config: `eslint.config.js` (uses eslint-config-cityssm@38.4.1)
 
 ## Known Issues and Workarounds
 
 **Cypress Installation Fails:**
 - Use `npm install --ignore-scripts` to skip Cypress download
 - Cypress tests will fail but core functionality works
-- For E2E testing, install Cypress separately: `npm install -g cypress@14`
+- For E2E testing, install Cypress separately: `npm install -g cypress@15`
 
 **ESLint:**
-- Make an effort to limit the number of errors identified by ESLint .
+- Make an effort to limit the number of errors identified by ESLint.
 - Focus on functional testing over linting when developing
 
 **Windows Service (Windows only):**

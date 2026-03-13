@@ -7,15 +7,16 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Admin - Fee Management', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
 
-    cy.visit('/admin/fees')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/admin/fees', { timeout: pageLoadTimeoutMillis })
+
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/admin/fees'
     )
@@ -43,9 +44,9 @@ describe('Admin - Fee Management', () => {
 
       cy.get(".modal button[type='submit']").click()
 
-      cy.wait(ajaxDelayMillis)
-
-      cy.get('.container--feeCategory .panel-heading .title').should(
+      cy.get('.container--feeCategory .panel-heading .title', {
+        timeout: ajaxTimeoutMillis
+      }).should(
         'contain.text',
         fee.feeCategory
       )
@@ -87,9 +88,9 @@ describe('Admin - Fee Management', () => {
 
       cy.get(".modal button[type='submit']").click()
 
-      cy.wait(ajaxDelayMillis)
-
-      cy.get('.container--fee a').should('contain.text', fee.feeName)
+      cy.get('.container--fee a', {
+        timeout: ajaxTimeoutMillis
+      }).should('contain.text', fee.feeName)
     })
   })
 })

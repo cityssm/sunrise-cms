@@ -6,7 +6,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Contracts - Update', () => {
   beforeEach(() => {
@@ -17,8 +17,8 @@ describe('Contracts - Update', () => {
   afterEach(logout)
 
   it('Has a "Create" link on the Contract Search', () => {
-    cy.visit('/contracts')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/contracts', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/contracts'
     )
@@ -26,7 +26,7 @@ describe('Contracts - Update', () => {
   })
 
   it('Creates a New Contract', () => {
-    cy.visit('/contracts/new')
+    cy.visit('/contracts/new', { timeout: pageLoadTimeoutMillis })
 
     cy.log('Check the accessibility')
 
@@ -91,8 +91,7 @@ describe('Contracts - Update', () => {
 
     cy.get('#form--contract').submit()
 
-    cy.wait(pageLoadDelayMillis)
-      .location('pathname')
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis })
       .should('not.contain', '/new')
       .should('contain', '/edit')
 
@@ -151,9 +150,9 @@ describe('Contracts - Update', () => {
 
     cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click()
 
-    cy.wait(ajaxDelayMillis)
-
-    cy.get('#modal--recordAuditLog').should('be.visible')
+    cy.get('#modal--recordAuditLog', {
+      timeout: ajaxTimeoutMillis
+    }).should('be.visible')
 
     cy.get('#container--recordAuditLog tbody tr').should(
       'have.length.at.least',

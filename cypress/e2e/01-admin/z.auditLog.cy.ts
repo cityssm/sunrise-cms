@@ -5,15 +5,15 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { pageLoadDelayMillis } from '../../support/timeouts.js'
+import { pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Admin - Audit Log Management', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
 
-    cy.visit('/admin/auditLog')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/admin/auditLog', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/admin/auditLog'
     )

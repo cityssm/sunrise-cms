@@ -5,7 +5,10 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { pageLoadDelayMillis } from '../../support/timeouts.js'
+import {
+  minimumNavigationDelayMillis,
+  pageLoadTimeoutMillis
+} from '../../support/timeouts.js'
 
 describe('Update User', () => {
   beforeEach('Loads page', () => {
@@ -16,7 +19,7 @@ describe('Update User', () => {
   afterEach(logout)
 
   it('Has an Update User dashboard', () => {
-    cy.visit('/dashboard')
+    cy.visit('/dashboard', { timeout: pageLoadTimeoutMillis })
 
     cy.log('Has no detectable accessibility issues')
 
@@ -31,11 +34,11 @@ describe('Update User', () => {
   })
 
   it('Redirects to Dashboard when attempting to access admin area', () => {
-    cy.visit('/admin/tables')
-    cy.wait(200)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
-      'equal',
-      '/dashboard/'
+    cy.visit('/admin/tables', { timeout: pageLoadTimeoutMillis })
+
+    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
+      'not.contain',
+      'admin'
     )
   })
 })

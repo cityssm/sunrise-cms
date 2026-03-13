@@ -5,7 +5,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Work Order Milestone Calendar', () => {
   beforeEach(() => {
@@ -20,12 +20,11 @@ describe('Work Order Milestone Calendar', () => {
   const yearSelector = '#searchFilter--workOrderMilestoneYear'
 
   it('Has no detectable accessibility issues', () => {
-    cy.visit(milestoneCalendarUrl)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       milestoneCalendarUrl
     )
-    cy.wait(ajaxDelayMillis)
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -34,12 +33,11 @@ describe('Work Order Milestone Calendar', () => {
   })
 
   it('Should page to next month', () => {
-    cy.visit(milestoneCalendarUrl)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       milestoneCalendarUrl
     )
-    cy.wait(ajaxDelayMillis)
 
     // Store the initial month and year
     const state = { initialMonth: '', initialYear: '' }
@@ -58,10 +56,11 @@ describe('Work Order Milestone Calendar', () => {
 
     // Click the next month button
     cy.get('#button--nextMonth').click()
-    cy.wait(ajaxDelayMillis)
 
     // Verify the month or year has changed
-    cy.get(`${monthSelector} option:selected`)
+    cy.get(`${monthSelector} option:selected`, {
+      timeout: ajaxTimeoutMillis
+    })
       .invoke('text')
       .then((nextMonth) => {
         cy.get(`${yearSelector} option:selected`)
@@ -76,12 +75,11 @@ describe('Work Order Milestone Calendar', () => {
   })
 
   it('Should page to previous month', () => {
-    cy.visit(milestoneCalendarUrl)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       milestoneCalendarUrl
     )
-    cy.wait(ajaxDelayMillis)
 
     // Store the initial month and year
     const state = { initialMonth: '', initialYear: '' }
@@ -100,10 +98,11 @@ describe('Work Order Milestone Calendar', () => {
 
     // Click the previous month button
     cy.get('#button--previousMonth').click()
-    cy.wait(ajaxDelayMillis)
 
     // Verify the month or year has changed
-    cy.get(`${monthSelector} option:selected`)
+    cy.get(`${monthSelector} option:selected`, {
+      timeout: ajaxTimeoutMillis
+    })
       .invoke('text')
       .then((previousMonth) => {
         cy.get(`${yearSelector} option:selected`)
@@ -118,15 +117,16 @@ describe('Work Order Milestone Calendar', () => {
   })
 
   it('Should navigate to workday view from calendar date link', () => {
-    cy.visit(milestoneCalendarUrl)
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit(milestoneCalendarUrl, { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       milestoneCalendarUrl
     )
-    cy.wait(ajaxDelayMillis)
 
     // Find a calendar date link and click it
-    cy.get('#container--milestoneCalendar td[data-date-string] a')
+    cy.get('#container--milestoneCalendar td[data-date-string] a', {
+      timeout: ajaxTimeoutMillis
+    })
       .first()
       .then(($link) => {
         // Get the href to verify it contains the workday path
@@ -141,7 +141,7 @@ describe('Work Order Milestone Calendar', () => {
         cy.wrap($link).click()
 
         // Verify we navigated to the workday page
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
           'include',
           '/workOrders/workday'
         )

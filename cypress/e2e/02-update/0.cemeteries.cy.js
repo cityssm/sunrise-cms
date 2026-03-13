@@ -1,7 +1,7 @@
 import { testUpdate } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js';
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Cemeteries - Update', () => {
     beforeEach('Loads page', () => {
         logout();
@@ -9,12 +9,13 @@ describe('Cemeteries - Update', () => {
     });
     afterEach(logout);
     it('Has a "Create" link on the Cemetery Search', () => {
-        cy.visit('/cemeteries');
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/cemeteries');
+        cy.visit('/cemeteries', { timeout: pageLoadTimeoutMillis });
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/cemeteries');
         cy.get("a[href$='/cemeteries/new']").should('exist');
     });
     it('Creates a new cemetery', () => {
         cy.visit('/cemeteries/new', {
+            timeout: pageLoadTimeoutMillis,
             retryOnStatusCodeFailure: true
         });
         cy.log('Check the accessibility');
@@ -63,8 +64,7 @@ describe('Cemeteries - Update', () => {
         */
         cy.log('Submit the form');
         cy.get('#form--cemetery').submit();
-        cy.wait(pageLoadDelayMillis)
-            .location('pathname')
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis })
             .should('not.contain', '/new')
             .should('contain', '/edit');
         cy.fixture('cemetery.json').then((cemeteryData) => {
@@ -98,8 +98,9 @@ describe('Cemeteries - Update', () => {
         cy.log('Open the Audit Log modal and verify at least one entry');
         cy.get(moreOptionsSelector).find('.dropdown-trigger button').click();
         cy.get(moreOptionsSelector).find('.is-view-audit-log-button').click();
-        cy.wait(ajaxDelayMillis);
-        cy.get('#modal--recordAuditLog').should('be.visible');
+        cy.get('#modal--recordAuditLog', {
+            timeout: ajaxTimeoutMillis
+        }).should('be.visible');
         cy.get('#container--recordAuditLog tbody tr').should('have.length.at.least', 1);
         cy.get('#modal--recordAuditLog .is-close-modal-button').first().click();
     });

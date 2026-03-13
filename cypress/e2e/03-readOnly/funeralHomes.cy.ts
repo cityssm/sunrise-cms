@@ -5,7 +5,7 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Funeral Home Search', () => {
   beforeEach(() => {
@@ -16,12 +16,11 @@ describe('Funeral Home Search', () => {
   afterEach(logout)
 
   it('Can view a funeral home from the search results', () => {
-    cy.visit('/funeralHomes')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/funeralHomes', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/funeralHomes'
     )
-    cy.wait(ajaxDelayMillis)
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -29,7 +28,7 @@ describe('Funeral Home Search', () => {
     checkDeadLinks()
 
     cy.get('#container--searchResults a.has-text-weight-bold', {
-      timeout: ajaxDelayMillis
+      timeout: ajaxTimeoutMillis
     })
       .first()
       .then(($link) => {
@@ -38,7 +37,7 @@ describe('Funeral Home Search', () => {
 
         cy.wrap($link).click()
 
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
           'include',
           '/funeralHomes/'
         )

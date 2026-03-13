@@ -5,7 +5,11 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import {
+  ajaxTimeoutMillis,
+  minimumNavigationDelayMillis,
+  pageLoadTimeoutMillis
+} from '../../support/timeouts.js'
 
 describe('Burial Site Search', () => {
   beforeEach(() => {
@@ -16,12 +20,14 @@ describe('Burial Site Search', () => {
   afterEach(logout)
 
   it('Can view a burial site from the search results', () => {
-    cy.visit('/burialSites')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/burialSites', { timeout: pageLoadTimeoutMillis }).wait(
+      minimumNavigationDelayMillis
+    )
+
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/burialSites'
     )
-    cy.wait(ajaxDelayMillis)
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -29,7 +35,7 @@ describe('Burial Site Search', () => {
     checkDeadLinks()
 
     cy.get('#container--searchResults a.has-text-weight-bold', {
-      timeout: ajaxDelayMillis
+      timeout: ajaxTimeoutMillis
     })
       .first()
       .then(($link) => {
@@ -38,7 +44,7 @@ describe('Burial Site Search', () => {
 
         cy.wrap($link).click()
 
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
           'include',
           '/burialSites/'
         )
@@ -61,12 +67,11 @@ describe('Burial Site Map', () => {
   afterEach(logout)
 
   it('Has no detectable accessibility issues', () => {
-    cy.visit('/burialSites/map')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/burialSites/map', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/burialSites/map'
     )
-    cy.wait(ajaxDelayMillis)
 
     cy.injectAxe()
     cy.checkA11y(undefined, undefined, logAccessibilityViolations)
@@ -75,22 +80,24 @@ describe('Burial Site Map', () => {
   })
 
   it('Pages through cemeteries on the map', () => {
-    cy.visit('/burialSites/map')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/burialSites/map', { timeout: pageLoadTimeoutMillis })
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/burialSites/map'
     )
-    cy.wait(ajaxDelayMillis)
 
-    cy.get('#filter--cemeteryId').should('exist')
+    cy.get('#filter--cemeteryId', {
+      timeout: ajaxTimeoutMillis
+    }).should('exist')
 
     cy.get('#filter--cemeteryId option').its('length').should('be.gte', 1)
 
     cy.get('#filter--cemeteryId option').each(($option) => {
       cy.log(`Check cemetery filter option: ${$option.text()}`)
 
-      cy.get('#filter--cemeteryId').select($option.val() as string)
-      cy.wait(ajaxDelayMillis)
+      cy.get('#filter--cemeteryId', {
+        timeout: ajaxTimeoutMillis
+      }).select($option.val() as string)
     })
   })
 })

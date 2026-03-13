@@ -2,13 +2,13 @@
 import { testAdmin } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js';
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Admin - Config Table Management', () => {
     beforeEach('Loads page', () => {
         logout();
         login(testAdmin);
-        cy.visit('/admin/tables');
-        cy.location('pathname', { timeout: pageLoadDelayMillis }).should('equal', '/admin/tables');
+        cy.visit('/admin/tables', { timeout: pageLoadTimeoutMillis });
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('equal', '/admin/tables');
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
@@ -32,8 +32,9 @@ describe('Admin - Config Table Management', () => {
             cy.fixture('configTables.json').then((configTables) => {
                 cy.get('#form--addWorkOrderType input[name="workOrderType"]').type(configTables.workOrderType);
                 cy.get('#form--addWorkOrderType button[type="submit"]').click();
-                cy.wait(ajaxDelayMillis);
-                cy.get(firstWorkOrderTypeInputSelector).should('have.value', configTables.workOrderType);
+                cy.get(firstWorkOrderTypeInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.workOrderType);
             });
         });
         it('Updates a work order type', () => {
@@ -46,9 +47,10 @@ describe('Admin - Config Table Management', () => {
                     .parents('tr')
                     .find('button[type="submit"]')
                     .click();
-                cy.wait(ajaxDelayMillis);
                 // Verify update was successful by checking for updated text
-                cy.get(firstWorkOrderTypeInputSelector).should('have.value', configTables.workOrderTypeUpdated);
+                cy.get(firstWorkOrderTypeInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.workOrderTypeUpdated);
             });
         });
         it('Deletes a work order type', () => {
@@ -64,8 +66,10 @@ describe('Admin - Config Table Management', () => {
                 cy.get('.modal button[data-cy="ok"]')
                     .contains('Delete Work Order Type')
                     .click();
-                cy.wait(ajaxDelayMillis);
-                cy.get('.modal button[data-cy="ok"]').click();
+                // Clear success message
+                cy.get('.modal button[data-cy="ok"]', {
+                    timeout: ajaxTimeoutMillis
+                }).click();
                 // Verify the work order type was deleted
                 cy.get(firstWorkOrderTypeInputSelector).should('not.have.value', configTables.workOrderTypeUpdated);
             });
@@ -84,8 +88,9 @@ describe('Admin - Config Table Management', () => {
             cy.fixture('configTables.json').then((configTables) => {
                 cy.get('#form--addWorkOrderMilestoneType input[name="workOrderMilestoneType"]').type(configTables.workOrderMilestoneType);
                 cy.get('#form--addWorkOrderMilestoneType button[type="submit"]').click();
-                cy.wait(ajaxDelayMillis);
-                cy.get(firstWorkOrderMilestoneTypeInputSelector).should('have.value', configTables.workOrderMilestoneType);
+                cy.get(firstWorkOrderMilestoneTypeInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.workOrderMilestoneType);
             });
         });
         it('Updates a work order milestone type', () => {
@@ -98,9 +103,10 @@ describe('Admin - Config Table Management', () => {
                     .parents('tr')
                     .find('button[type="submit"]')
                     .click();
-                cy.wait(ajaxDelayMillis);
                 // Verify update was successful by checking for updated text
-                cy.get(firstWorkOrderMilestoneTypeInputSelector).should('have.value', configTables.workOrderMilestoneTypeUpdated);
+                cy.get(firstWorkOrderMilestoneTypeInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.workOrderMilestoneTypeUpdated);
             });
         });
         it('Deletes a work order milestone type', () => {
@@ -116,8 +122,10 @@ describe('Admin - Config Table Management', () => {
                 cy.get('.modal button[data-cy="ok"]')
                     .contains('Delete Work Order Milestone Type')
                     .click();
-                cy.wait(ajaxDelayMillis);
-                cy.get('.modal button[data-cy="ok"]').click();
+                // Clear success message
+                cy.get('.modal button[data-cy="ok"]', {
+                    timeout: ajaxTimeoutMillis
+                }).click();
                 // Verify the work order milestone type was deleted
                 cy.get(firstWorkOrderMilestoneTypeInputSelector).should('not.have.value', configTables.workOrderMilestoneTypeUpdated);
             });
@@ -136,8 +144,9 @@ describe('Admin - Config Table Management', () => {
             cy.fixture('configTables.json').then((configTables) => {
                 cy.get('#form--addBurialSiteStatus input[name="burialSiteStatus"]').type(configTables.burialSiteStatus);
                 cy.get('#form--addBurialSiteStatus button[type="submit"]').click();
-                cy.wait(ajaxDelayMillis);
-                cy.get(firstBurialSiteStatusInputSelector).should('have.value', configTables.burialSiteStatus);
+                cy.get(firstBurialSiteStatusInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.burialSiteStatus);
             });
         });
         it('Updates a burial site status', () => {
@@ -149,8 +158,9 @@ describe('Admin - Config Table Management', () => {
                     .parents('tr')
                     .find('button[type="submit"]')
                     .click();
-                cy.wait(ajaxDelayMillis);
-                cy.get(firstBurialSiteStatusInputSelector).should('have.value', configTables.burialSiteStatusUpdated);
+                cy.get(firstBurialSiteStatusInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.burialSiteStatusUpdated);
             });
         });
         it('Deletes a burial site status', () => {
@@ -162,8 +172,9 @@ describe('Admin - Config Table Management', () => {
                     .click();
                 cy.get('.modal').should('be.visible');
                 cy.get('.modal button[data-cy="ok"]').contains('Delete Status').click();
-                cy.wait(ajaxDelayMillis);
-                cy.get('.modal button[data-cy="ok"]').click();
+                cy.get('.modal button[data-cy="ok"]', {
+                    timeout: ajaxTimeoutMillis
+                }).click();
                 cy.get(firstBurialSiteStatusInputSelector).should('not.have.value', configTables.burialSiteStatusUpdated);
             });
         });
@@ -181,8 +192,9 @@ describe('Admin - Config Table Management', () => {
             cy.fixture('configTables.json').then((configTables) => {
                 cy.get('#form--addCommittalType input[name="committalType"]').type(configTables.committalType);
                 cy.get('#form--addCommittalType button[type="submit"]').click();
-                cy.wait(ajaxDelayMillis);
-                cy.get(firstCommittalTypeInputSelector).should('have.value', configTables.committalType);
+                cy.get(firstCommittalTypeInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.committalType);
             });
         });
         it('Updates a committal type', () => {
@@ -194,8 +206,9 @@ describe('Admin - Config Table Management', () => {
                     .parents('tr')
                     .find('button[type="submit"]')
                     .click();
-                cy.wait(ajaxDelayMillis);
-                cy.get(firstCommittalTypeInputSelector).should('have.value', configTables.committalTypeUpdated);
+                cy.get(firstCommittalTypeInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.committalTypeUpdated);
             });
         });
         it('Deletes a committal type', () => {
@@ -207,8 +220,9 @@ describe('Admin - Config Table Management', () => {
                     .click();
                 cy.get('.modal').should('be.visible');
                 cy.get('.modal button[data-cy="ok"]').contains('Delete Type').click();
-                cy.wait(ajaxDelayMillis);
-                cy.get('.modal button[data-cy="ok"]').click();
+                cy.get('.modal button[data-cy="ok"]', {
+                    timeout: ajaxTimeoutMillis
+                }).click();
                 cy.get(firstCommittalTypeInputSelector).should('not.have.value', configTables.committalTypeUpdated);
             });
         });
@@ -226,8 +240,9 @@ describe('Admin - Config Table Management', () => {
             cy.fixture('configTables.json').then((configTables) => {
                 cy.get('#form--addIntermentContainerType input[name="intermentContainerType"]').type(configTables.intermentContainerType);
                 cy.get('button[form="form--addIntermentContainerType"][type="submit"]').click();
-                cy.wait(ajaxDelayMillis);
-                cy.get(firstIntermentContainerTypeInputSelector).should('have.value', configTables.intermentContainerType);
+                cy.get(firstIntermentContainerTypeInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.intermentContainerType);
             });
         });
         it('Updates an interment container type', () => {
@@ -239,8 +254,9 @@ describe('Admin - Config Table Management', () => {
                     .parents('tr')
                     .find('button[type="submit"]')
                     .click();
-                cy.wait(ajaxDelayMillis);
-                cy.get(firstIntermentContainerTypeInputSelector).should('have.value', configTables.intermentContainerTypeUpdated);
+                cy.get(firstIntermentContainerTypeInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.intermentContainerTypeUpdated);
             });
         });
         it('Deletes an interment container type', () => {
@@ -252,8 +268,9 @@ describe('Admin - Config Table Management', () => {
                     .click();
                 cy.get('.modal').should('be.visible');
                 cy.get('.modal button[data-cy="ok"]').contains('Delete Type').click();
-                cy.wait(ajaxDelayMillis);
-                cy.get('.modal button[data-cy="ok"]').click();
+                cy.get('.modal button[data-cy="ok"]', {
+                    timeout: ajaxTimeoutMillis
+                }).click();
                 cy.get(firstIntermentContainerTypeInputSelector).should('not.have.value', configTables.intermentContainerTypeUpdated);
             });
         });
@@ -271,8 +288,9 @@ describe('Admin - Config Table Management', () => {
             cy.fixture('configTables.json').then((configTables) => {
                 cy.get('#form--addServiceType input[name="serviceType"]').type(configTables.serviceType);
                 cy.get('#form--addServiceType button[type="submit"]').click();
-                cy.wait(ajaxDelayMillis);
-                cy.get(firstServiceTypeInputSelector).should('have.value', configTables.serviceType);
+                cy.get(firstServiceTypeInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.serviceType);
             });
         });
         it('Updates a service type', () => {
@@ -284,8 +302,9 @@ describe('Admin - Config Table Management', () => {
                     .parents('tr')
                     .find('button[type="submit"]')
                     .click();
-                cy.wait(ajaxDelayMillis);
-                cy.get(firstServiceTypeInputSelector).should('have.value', configTables.serviceTypeUpdated);
+                cy.get(firstServiceTypeInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.serviceTypeUpdated);
             });
         });
         it('Deletes a service type', () => {
@@ -297,8 +316,9 @@ describe('Admin - Config Table Management', () => {
                     .click();
                 cy.get('.modal').should('be.visible');
                 cy.get('.modal button[data-cy="ok"]').contains('Delete Type').click();
-                cy.wait(ajaxDelayMillis);
-                cy.get('.modal button[data-cy="ok"]').click();
+                cy.get('.modal button[data-cy="ok"]', {
+                    timeout: ajaxTimeoutMillis
+                }).click();
                 cy.get(firstServiceTypeInputSelector).should('not.have.value', configTables.serviceTypeUpdated);
             });
         });
@@ -316,8 +336,9 @@ describe('Admin - Config Table Management', () => {
             cy.fixture('configTables.json').then((configTables) => {
                 cy.get('#form--addIntermentDepth input[name="intermentDepth"]').type(configTables.intermentDepth);
                 cy.get('#form--addIntermentDepth button[type="submit"]').click();
-                cy.wait(ajaxDelayMillis);
-                cy.get(firstIntermentDepthInputSelector).should('have.value', configTables.intermentDepth);
+                cy.get(firstIntermentDepthInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.intermentDepth);
             });
         });
         it('Updates an interment depth', () => {
@@ -329,8 +350,9 @@ describe('Admin - Config Table Management', () => {
                     .parents('tr')
                     .find('button[type="submit"]')
                     .click();
-                cy.wait(ajaxDelayMillis);
-                cy.get(firstIntermentDepthInputSelector).should('have.value', configTables.intermentDepthUpdated);
+                cy.get(firstIntermentDepthInputSelector, {
+                    timeout: ajaxTimeoutMillis
+                }).should('have.value', configTables.intermentDepthUpdated);
             });
         });
         it('Deletes an interment depth', () => {
@@ -342,8 +364,9 @@ describe('Admin - Config Table Management', () => {
                     .click();
                 cy.get('.modal').should('be.visible');
                 cy.get('.modal button[data-cy="ok"]').contains('Delete Depth').click();
-                cy.wait(ajaxDelayMillis);
-                cy.get('.modal button[data-cy="ok"]').click();
+                cy.get('.modal button[data-cy="ok"]', {
+                    timeout: ajaxTimeoutMillis
+                }).click();
                 cy.get(firstIntermentDepthInputSelector).should('not.have.value', configTables.intermentDepthUpdated);
             });
         });

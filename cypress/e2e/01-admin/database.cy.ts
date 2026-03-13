@@ -5,15 +5,16 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
 
 describe('Admin - Database Maintenance', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
 
-    cy.visit('/admin/database')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/admin/database', { timeout: pageLoadTimeoutMillis })
+
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/admin/database'
     )
@@ -35,9 +36,9 @@ describe('Admin - Database Maintenance', () => {
 
     cy.get(".modal button[data-cy='ok']").click()
 
-    cy.wait(ajaxDelayMillis)
-
-    cy.get('.modal')
+    cy.get('.modal', {
+      timeout: ajaxTimeoutMillis
+    })
       .should('contain.text', 'Backed Up')
       .should('contain.text', 'Success')
 
@@ -51,9 +52,9 @@ describe('Admin - Database Maintenance', () => {
 
     cy.get(".modal button[data-cy='ok']").click()
 
-    cy.wait(ajaxDelayMillis)
-
-    cy.get('.modal')
+    cy.get('.modal', {
+      timeout: ajaxTimeoutMillis
+    })
       .should('contain.text', 'Cleaned Up')
       .should('contain.text', 'Success')
 

@@ -7,15 +7,19 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxDelayMillis, pageLoadDelayMillis } from '../../support/timeouts.js'
+import {
+  ajaxTimeoutMillis,
+  pageLoadTimeoutMillis
+} from '../../support/timeouts.js'
 
 describe('Admin - Config Table Management', () => {
   beforeEach('Loads page', () => {
     logout()
     login(testAdmin)
 
-    cy.visit('/admin/tables')
-    cy.location('pathname', { timeout: pageLoadDelayMillis }).should(
+    cy.visit('/admin/tables', { timeout: pageLoadTimeoutMillis })
+
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/admin/tables'
     )
@@ -54,12 +58,9 @@ describe('Admin - Config Table Management', () => {
 
         cy.get('#form--addWorkOrderType button[type="submit"]').click()
 
-        cy.wait(ajaxDelayMillis)
-
-        cy.get(firstWorkOrderTypeInputSelector).should(
-          'have.value',
-          configTables.workOrderType
-        )
+        cy.get(firstWorkOrderTypeInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should('have.value', configTables.workOrderType)
       })
     })
 
@@ -74,13 +75,10 @@ describe('Admin - Config Table Management', () => {
           .find('button[type="submit"]')
           .click()
 
-        cy.wait(ajaxDelayMillis)
-
         // Verify update was successful by checking for updated text
-        cy.get(firstWorkOrderTypeInputSelector).should(
-          'have.value',
-          configTables.workOrderTypeUpdated
-        )
+        cy.get(firstWorkOrderTypeInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should('have.value', configTables.workOrderTypeUpdated)
       })
     })
 
@@ -99,8 +97,10 @@ describe('Admin - Config Table Management', () => {
           .contains('Delete Work Order Type')
           .click()
 
-        cy.wait(ajaxDelayMillis)
-        cy.get('.modal button[data-cy="ok"]').click()
+        // Clear success message
+        cy.get('.modal button[data-cy="ok"]', {
+          timeout: ajaxTimeoutMillis
+        }).click()
 
         // Verify the work order type was deleted
         cy.get(firstWorkOrderTypeInputSelector).should(
@@ -131,12 +131,9 @@ describe('Admin - Config Table Management', () => {
 
         cy.get('#form--addWorkOrderMilestoneType button[type="submit"]').click()
 
-        cy.wait(ajaxDelayMillis)
-
-        cy.get(firstWorkOrderMilestoneTypeInputSelector).should(
-          'have.value',
-          configTables.workOrderMilestoneType
-        )
+        cy.get(firstWorkOrderMilestoneTypeInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should('have.value', configTables.workOrderMilestoneType)
       })
     })
 
@@ -151,13 +148,10 @@ describe('Admin - Config Table Management', () => {
           .find('button[type="submit"]')
           .click()
 
-        cy.wait(ajaxDelayMillis)
-
         // Verify update was successful by checking for updated text
-        cy.get(firstWorkOrderMilestoneTypeInputSelector).should(
-          'have.value',
-          configTables.workOrderMilestoneTypeUpdated
-        )
+        cy.get(firstWorkOrderMilestoneTypeInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should('have.value', configTables.workOrderMilestoneTypeUpdated)
       })
     })
 
@@ -176,8 +170,10 @@ describe('Admin - Config Table Management', () => {
           .contains('Delete Work Order Milestone Type')
           .click()
 
-        cy.wait(ajaxDelayMillis)
-        cy.get('.modal button[data-cy="ok"]').click()
+        // Clear success message
+        cy.get('.modal button[data-cy="ok"]', {
+          timeout: ajaxTimeoutMillis
+        }).click()
 
         // Verify the work order milestone type was deleted
         cy.get(firstWorkOrderMilestoneTypeInputSelector).should(
@@ -208,9 +204,9 @@ describe('Admin - Config Table Management', () => {
 
         cy.get('#form--addBurialSiteStatus button[type="submit"]').click()
 
-        cy.wait(ajaxDelayMillis)
-
-        cy.get(firstBurialSiteStatusInputSelector).should(
+        cy.get(firstBurialSiteStatusInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should(
           'have.value',
           configTables.burialSiteStatus
         )
@@ -227,9 +223,9 @@ describe('Admin - Config Table Management', () => {
           .find('button[type="submit"]')
           .click()
 
-        cy.wait(ajaxDelayMillis)
-
-        cy.get(firstBurialSiteStatusInputSelector).should(
+        cy.get(firstBurialSiteStatusInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should(
           'have.value',
           configTables.burialSiteStatusUpdated
         )
@@ -247,8 +243,9 @@ describe('Admin - Config Table Management', () => {
         cy.get('.modal').should('be.visible')
         cy.get('.modal button[data-cy="ok"]').contains('Delete Status').click()
 
-        cy.wait(ajaxDelayMillis)
-        cy.get('.modal button[data-cy="ok"]').click()
+        cy.get('.modal button[data-cy="ok"]', {
+          timeout: ajaxTimeoutMillis
+        }).click()
 
         cy.get(firstBurialSiteStatusInputSelector).should(
           'not.have.value',
@@ -278,9 +275,9 @@ describe('Admin - Config Table Management', () => {
 
         cy.get('#form--addCommittalType button[type="submit"]').click()
 
-        cy.wait(ajaxDelayMillis)
-
-        cy.get(firstCommittalTypeInputSelector).should(
+        cy.get(firstCommittalTypeInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should(
           'have.value',
           configTables.committalType
         )
@@ -297,9 +294,9 @@ describe('Admin - Config Table Management', () => {
           .find('button[type="submit"]')
           .click()
 
-        cy.wait(ajaxDelayMillis)
-
-        cy.get(firstCommittalTypeInputSelector).should(
+        cy.get(firstCommittalTypeInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should(
           'have.value',
           configTables.committalTypeUpdated
         )
@@ -317,8 +314,9 @@ describe('Admin - Config Table Management', () => {
         cy.get('.modal').should('be.visible')
         cy.get('.modal button[data-cy="ok"]').contains('Delete Type').click()
 
-        cy.wait(ajaxDelayMillis)
-        cy.get('.modal button[data-cy="ok"]').click()
+        cy.get('.modal button[data-cy="ok"]', {
+          timeout: ajaxTimeoutMillis
+        }).click()
 
         cy.get(firstCommittalTypeInputSelector).should(
           'not.have.value',
@@ -350,9 +348,9 @@ describe('Admin - Config Table Management', () => {
           'button[form="form--addIntermentContainerType"][type="submit"]'
         ).click()
 
-        cy.wait(ajaxDelayMillis)
-
-        cy.get(firstIntermentContainerTypeInputSelector).should(
+        cy.get(firstIntermentContainerTypeInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should(
           'have.value',
           configTables.intermentContainerType
         )
@@ -369,9 +367,9 @@ describe('Admin - Config Table Management', () => {
           .find('button[type="submit"]')
           .click()
 
-        cy.wait(ajaxDelayMillis)
-
-        cy.get(firstIntermentContainerTypeInputSelector).should(
+        cy.get(firstIntermentContainerTypeInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should(
           'have.value',
           configTables.intermentContainerTypeUpdated
         )
@@ -389,8 +387,9 @@ describe('Admin - Config Table Management', () => {
         cy.get('.modal').should('be.visible')
         cy.get('.modal button[data-cy="ok"]').contains('Delete Type').click()
 
-        cy.wait(ajaxDelayMillis)
-        cy.get('.modal button[data-cy="ok"]').click()
+        cy.get('.modal button[data-cy="ok"]', {
+          timeout: ajaxTimeoutMillis
+        }).click()
 
         cy.get(firstIntermentContainerTypeInputSelector).should(
           'not.have.value',
@@ -420,9 +419,9 @@ describe('Admin - Config Table Management', () => {
 
         cy.get('#form--addServiceType button[type="submit"]').click()
 
-        cy.wait(ajaxDelayMillis)
-
-        cy.get(firstServiceTypeInputSelector).should(
+        cy.get(firstServiceTypeInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should(
           'have.value',
           configTables.serviceType
         )
@@ -439,9 +438,9 @@ describe('Admin - Config Table Management', () => {
           .find('button[type="submit"]')
           .click()
 
-        cy.wait(ajaxDelayMillis)
-
-        cy.get(firstServiceTypeInputSelector).should(
+        cy.get(firstServiceTypeInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should(
           'have.value',
           configTables.serviceTypeUpdated
         )
@@ -459,8 +458,9 @@ describe('Admin - Config Table Management', () => {
         cy.get('.modal').should('be.visible')
         cy.get('.modal button[data-cy="ok"]').contains('Delete Type').click()
 
-        cy.wait(ajaxDelayMillis)
-        cy.get('.modal button[data-cy="ok"]').click()
+        cy.get('.modal button[data-cy="ok"]', {
+          timeout: ajaxTimeoutMillis
+        }).click()
 
         cy.get(firstServiceTypeInputSelector).should(
           'not.have.value',
@@ -490,9 +490,9 @@ describe('Admin - Config Table Management', () => {
 
         cy.get('#form--addIntermentDepth button[type="submit"]').click()
 
-        cy.wait(ajaxDelayMillis)
-
-        cy.get(firstIntermentDepthInputSelector).should(
+        cy.get(firstIntermentDepthInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should(
           'have.value',
           configTables.intermentDepth
         )
@@ -509,9 +509,9 @@ describe('Admin - Config Table Management', () => {
           .find('button[type="submit"]')
           .click()
 
-        cy.wait(ajaxDelayMillis)
-
-        cy.get(firstIntermentDepthInputSelector).should(
+        cy.get(firstIntermentDepthInputSelector, {
+          timeout: ajaxTimeoutMillis
+        }).should(
           'have.value',
           configTables.intermentDepthUpdated
         )
@@ -529,8 +529,9 @@ describe('Admin - Config Table Management', () => {
         cy.get('.modal').should('be.visible')
         cy.get('.modal button[data-cy="ok"]').contains('Delete Depth').click()
 
-        cy.wait(ajaxDelayMillis)
-        cy.get('.modal button[data-cy="ok"]').click()
+        cy.get('.modal button[data-cy="ok"]', {
+          timeout: ajaxTimeoutMillis
+        }).click()
 
         cy.get(firstIntermentDepthInputSelector).should(
           'not.have.value',
