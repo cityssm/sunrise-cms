@@ -65,7 +65,16 @@
         for (const workOrder of responseJSON.workOrders) {
             const relatedHTML = buildRelatedLiHTML(workOrder);
             resultsTbodyElement.insertAdjacentHTML('beforeend', `
-          <tr class="avoid-page-break ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0 ? 'has-background-warning-light' : ''}">
+          <tr class="avoid-page-break">
+            <td class="has-text-centered">
+              ${(workOrder.workOrderMilestoneOverdueCount ?? 0) > 0
+                ? `
+                    <span class="icon is-small has-text-warning-light" title="${workOrder.workOrderMilestoneOverdueCount} Overdue Milestones">
+                      <i class="fa-solid fa-triangle-exclamation" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i>
+                    </span>
+                  `
+                : ''}
+            </td>
             <td>
               <div class="columns is-mobile is-vcentered mb-0">
                 <div class="column pb-0">
@@ -140,6 +149,7 @@
       <table class="table is-fullwidth is-striped is-hoverable has-sticky-header">
         <thead>
           <tr>
+            <th class="has-width-1"><span class="is-sr-only">Status</span></th>
             <th>Work Order</th>
             <th>Related</th>
             <th>Date</th>

@@ -131,7 +131,12 @@ declare const exports: {
                   cemetery.cemeteryName === ''
                     ? /* html */ `
                       (${cityssm.escapeHTML(i18next.t('cemeteries:noName'))})
-                      <span class="icon is-small has-text-danger">
+                      <span
+                        class="icon is-small has-text-danger-light"
+                        data-fa-glow="10"
+                        title="${i18next.t('cemeteries:noName')}"
+                        style="--fa-glow-color:var(--bulma-danger-dark)"
+                      >
                         <i class="fa-solid fa-exclamation-triangle"></i>
                       </span>
                     `

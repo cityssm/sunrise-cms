@@ -14,7 +14,7 @@
     <% if (!isCreate) { %>
     <li>
       <a href="<%= urlPrefix %>/contracts/<%= contract.contractId %>">
-        Contract #<%= contract.contractNumber %>: <%= contract.burialSiteName || ('(' + t('contracts:noBurialSite') + ')') %>
+        Contract #<%= contract.contractNumber %><% if (contract.burialSiteName) { %>: <%= contract.burialSiteName %><% } %>
       </a>
     </li>
     <% } %>
@@ -43,8 +43,7 @@
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column has-text-weight-bold">
     <% if (!isCreate) { %>
-      Contract #<%= contract.contractNumber %>:
-      <%= contract.burialSiteName || ('(' + t('contracts:noBurialSite') + ')') %>
+      Contract #<%= contract.contractNumber %><% if (contract.burialSiteName) { %>: <%= contract.burialSiteName %><% } %>
     <% } %>
   </div>
   <div class="column is-narrow has-text-right">

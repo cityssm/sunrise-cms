@@ -13,8 +13,7 @@
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        Contract #<%= contract.contractNumber %>:
-        <%= contract.burialSiteName ?? ('(' + t('contracts:noBurialSite') + ')') %>
+        Contract #<%= contract.contractNumber %><% if (contract.burialSiteName) { %>: <%= contract.burialSiteName %><% } %>
       </a>
     </li>
   </ul>
@@ -24,8 +23,7 @@
   <div class="column">
     <h1 class="title is-1">
       Contract
-      #<%= contract.contractNumber %>:
-      <span class="is-nowrap"><%= contract.burialSiteName || ('(' + t('contracts:noBurialSite') + ')') %></span>
+      #<%= contract.contractNumber %><% if (contract.burialSiteName) { %>: <small class="is-nowrap"><%= contract.burialSiteName %></small><% } %>
     </h1>
   </div>
   <% if (contract.contractEndDate) { %>
@@ -52,8 +50,7 @@
 <div class="columns is-vcentered is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column">
     <span class="has-text-weight-bold">
-      Contract #<%= contract.contractNumber %>:
-      <%= contract.burialSiteName ?? ('(' + t('contracts:noBurialSite') + ')') %>
+      Contract #<%= contract.contractNumber %><% if (contract.burialSiteName) { %>: <%= contract.burialSiteName %><% } %>
     </span>
   </div>
   <div class="column is-narrow has-text-right">
@@ -169,6 +166,7 @@
           <span class="has-text-grey">(<%= t('contracts:noBurialSite') %>)</span>
           <% } %>
         </p>
+        <% if (contract.burialSiteId) { %>
         <p>
           <strong>Cemetery</strong><br />
           <% if (contract.cemeteryId) { %>
@@ -177,6 +175,7 @@
           <span class="has-text-grey">(<%= t('contracts:noCemetery') %>)</span>
           <% } %>
         </p>
+        <% } %>
       </div>
       <div class="column">
         <p class="mb-2">

@@ -158,6 +158,15 @@ export const simpleReports = new Map<
     `
   ],
   [
+    'contractServiceTypes-all',
+    /* sql */ `
+      SELECT
+        *
+      FROM
+        ContractServiceTypes
+    `
+  ],
+  [
     'contractTransactions-all',
     /* sql */ `
       SELECT
@@ -166,7 +175,6 @@ export const simpleReports = new Map<
         ContractTransactions
     `
   ],
-
   [
     'contractTypeFields-all',
     /* sql */ `
@@ -245,6 +253,24 @@ export const simpleReports = new Map<
         *
       FROM
         IntermentContainerTypes
+    `
+  ],
+  [
+    'intermentDepths-all',
+    /* sql */ `
+      SELECT
+        *
+      FROM
+        IntermentDepths
+    `
+  ],
+  [
+    'serviceTypes-all',
+    /* sql */ `
+      SELECT
+        *
+      FROM
+        ServiceTypes
     `
   ],
   [
