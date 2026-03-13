@@ -5,7 +5,11 @@ import {
   login,
   logout
 } from '../../support/index.js'
-import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js'
+import {
+  ajaxTimeoutMillis,
+  minimumNavigationDelayMillis,
+  pageLoadTimeoutMillis
+} from '../../support/timeouts.js'
 
 describe('Work Order Search', () => {
   beforeEach(() => {
@@ -46,7 +50,7 @@ describe('Work Order Search', () => {
 
         cy.injectAxe()
         cy.checkA11y(undefined, undefined, logAccessibilityViolations)
-        
+
         checkDeadLinks()
       })
   })
