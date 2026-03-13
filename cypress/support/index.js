@@ -2,7 +2,12 @@ import 'cypress-axe';
 import { pageLoadTimeoutMillis } from './timeouts.js';
 export function logout() {
     // Logout redirects to the login page, which can take double time
-    cy.visit('/logout', { timeout: pageLoadTimeoutMillis * 2 });
+    cy.visit('/logout', {
+        timeout: pageLoadTimeoutMillis * 2,
+        failOnStatusCode: false,
+        retryOnNetworkFailure: false,
+        retryOnStatusCodeFailure: false
+    });
     cy.clearCookies();
 }
 export function login(userName) {
