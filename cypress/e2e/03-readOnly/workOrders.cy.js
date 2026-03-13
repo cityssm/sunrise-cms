@@ -1,7 +1,7 @@
 import { testView } from '../../../test/_globals.js';
 import { checkDeadLinks } from '../../support/deadLinks.js';
 import { logAccessibilityViolations, login, logout } from '../../support/index.js';
-import { ajaxTimeoutMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
+import { ajaxTimeoutMillis, minimumNavigationDelayMillis, pageLoadTimeoutMillis } from '../../support/timeouts.js';
 describe('Work Order Search', () => {
     beforeEach(() => {
         logout();
