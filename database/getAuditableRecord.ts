@@ -2,16 +2,24 @@ import type sqlite from 'better-sqlite3'
 
 import { getConfigProperty } from '../helpers/config.helpers.js'
 
-type RecordTableName = 'ContractFields' | 'Contracts'
+type RecordTableName =
+  | 'BurialSiteStatuses'
+  | 'ContractFields'
+  | 'Contracts'
+  | 'WorkOrderMilestoneTypes'
+  | 'WorkOrderTypes'
 
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled')
 
 const recordId: Record<RecordTableName, string> = {
+  BurialSiteStatuses: 'burialSiteStatusId',
   ContractFields: 'contractId',
-  Contracts: 'contractId'
+  Contracts: 'contractId',
+  WorkOrderMilestoneTypes: 'workOrderMilestoneTypeId',
+  WorkOrderTypes: 'workOrderTypeId'
 }
 
-function getAuditableRecord(
+export function getAuditableRecord(
   tableName: RecordTableName,
   recordIdValue: number | string,
   connectedDatabase: sqlite.Database

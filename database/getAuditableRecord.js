@@ -1,10 +1,13 @@
 import { getConfigProperty } from '../helpers/config.helpers.js';
 const auditLogIsEnabled = getConfigProperty('settings.auditLog.enabled');
 const recordId = {
+    BurialSiteStatuses: 'burialSiteStatusId',
     ContractFields: 'contractId',
-    Contracts: 'contractId'
+    Contracts: 'contractId',
+    WorkOrderMilestoneTypes: 'workOrderMilestoneTypeId',
+    WorkOrderTypes: 'workOrderTypeId'
 };
-function getAuditableRecord(tableName, recordIdValue, connectedDatabase) {
+export function getAuditableRecord(tableName, recordIdValue, connectedDatabase) {
     return auditLogIsEnabled
         ? connectedDatabase
             .prepare(/* sql */ `
