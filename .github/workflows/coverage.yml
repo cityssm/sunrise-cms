@@ -70,12 +70,13 @@ jobs:
           chmod +x codecov
           ./codecov -t ${CODECOV_TOKEN}
 
-      - name: Archive Cypress error screenshots
+      - name: Archive Cypress downloads and error screenshots
         if: ${{ (success() || failure()) }}
         uses: actions/upload-artifact@v6
         with:
           name: cypress-output-ubuntu-node-${{ matrix.node }}
           path: |
+            cypress/downloads/*
             cypress/screenshots/**/*.png
             cypress/videos/**/*.mp4
           if-no-files-found: ignore
@@ -132,12 +133,13 @@ jobs:
         env:
           CYPRESS_USE_LONGER_TIMEOUTS: 'true'
 
-      - name: Archive Cypress error screenshots
+      - name: Archive Cypress downloads and error screenshots
         if: ${{ (success() || failure()) }}
         uses: actions/upload-artifact@v6
         with:
           name: cypress-output-windows-node-${{ matrix.node }}
           path: |
+            cypress/downloads/*
             cypress/screenshots/**/*.png
             cypress/videos/**/*.mp4
           if-no-files-found: ignore
