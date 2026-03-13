@@ -120,7 +120,7 @@ declare const exports: {
         const recordUrl = getRecordUrl(entry.mainRecordType, entry.mainRecordId)
 
         return /* html */ `
-          <tr class="${getUpdateTypeColorClass(entry.updateType)}">
+          <tr class="is-size-7 ${getUpdateTypeColorClass(entry.updateType)}">
             <td>
               ${cityssm.escapeHTML(dateString)}<br />
               <span class="is-size-7">${cityssm.escapeHTML(timeString)}</span>
@@ -157,8 +157,8 @@ declare const exports: {
             <td>
               ${cityssm.escapeHTML(entry.updateField)}
             </td>
-            <td style="max-width:200px">${buildValueCell(entry.fromValue)}</td>
-            <td style="max-width:200px">${buildValueCell(entry.toValue)}</td>
+            <td style="max-width:400px">${buildValueCell(entry.fromValue)}</td>
+            <td style="max-width:400px">${buildValueCell(entry.toValue)}</td>
             <td class="is-nowrap">
               ${cityssm.escapeHTML(entry.updateUserName)}
             </td>
