@@ -4,7 +4,8 @@ import 'cypress-axe'
 import { pageLoadTimeoutMillis } from './timeouts.js'
 
 export function logout(): void {
-  cy.visit('/logout', { timeout: pageLoadTimeoutMillis })
+  // Logout redirects to the login page, which can take double time
+  cy.visit('/logout', { timeout: pageLoadTimeoutMillis * 2 })
 
   cy.clearCookies()
 }

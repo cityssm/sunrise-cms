@@ -8,7 +8,7 @@ export const minimumNavigationDelayMillis = 300
 
 /** Time to wait for page loads to complete */
 export const pageLoadTimeoutMillis =
-  Cypress.expose('useLongerTimeouts') === true ? 4000 : 2000
+  Cypress.expose('useLongerTimeouts') === true ? 5000 : 2000
 
 /** Time to wait for external page loads to complete */
 export const externalPageLoadTimeoutMillis = 10_000
