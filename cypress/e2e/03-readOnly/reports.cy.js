@@ -6,7 +6,6 @@ describe('Reports', () => {
     beforeEach(() => {
         logout();
         login(testView);
-        cy.visit('/reports', { timeout: pageLoadTimeoutMillis });
     });
     afterEach(logout);
     it('Has no detectable accessibility issues', () => {
@@ -17,6 +16,7 @@ describe('Reports', () => {
         checkDeadLinks();
     });
     it('Exports all reports without parameters', () => {
+        cy.visit('/reports', { timeout: pageLoadTimeoutMillis });
         cy.get("a:not(.is-hidden)[download][href*='/reports/']").each(($reportLink) => {
             cy.wrap($reportLink).click({
                 force: true,
@@ -25,6 +25,10 @@ describe('Reports', () => {
         });
     });
     it('Exports all reports with parameters', () => {
+        cy.visit('/reports', {
+            retryOnNetworkFailure: true,
+            timeout: pageLoadTimeoutMillis
+        });
         cy.get("form[action*='/reports/']").each(($reportLink) => {
             cy.wrap($reportLink)
                 .invoke('attr', 'target', '_blank')
