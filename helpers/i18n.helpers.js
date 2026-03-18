@@ -14,23 +14,18 @@ await i18next
     .init({
     showSupportNotice: false, //hide the funding message
     fallbackLng: 'en',
-    supportedLngs: ['en', 'de'],
     preload: ['en', 'de'],
-    ns: [
-        'app',
-        'admin',
-        'login',
-        'errors'
-    ],
+    supportedLngs: ['en', 'de'],
     defaultNS: 'app',
+    ns: ['app', 'admin', 'login', 'errors'],
     backend: {
         loadPath: path.join(localesPath, '{{lng}}', '{{ns}}.json')
     },
     detection: {
+        caches: ['cookie'],
         order: ['querystring', 'cookie', 'header'],
-        lookupQuerystring: 'lng',
         lookupCookie: 'i18next',
-        caches: ['cookie']
+        lookupQuerystring: 'lng'
     },
     interpolation: {
         escapeValue: false

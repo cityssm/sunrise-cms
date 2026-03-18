@@ -34,10 +34,14 @@ describe('Work Order Search', () => {
     cy.get('#container--searchResults a.has-text-weight-bold', {
       timeout: ajaxTimeoutMillis
     })
+      .should('have.length.greaterThan', 0)
       .first()
       .then(($link) => {
         const href = $link.attr('href')
-        expect(href).to.include('/workOrders/')
+
+        expect(href, 'link has an href attribute')
+          .to.be.a('string')
+          .and.to.include('/workOrders/')
 
         cy.wrap($link).click().wait(minimumNavigationDelayMillis)
 
