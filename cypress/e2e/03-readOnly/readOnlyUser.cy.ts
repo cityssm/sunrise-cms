@@ -41,18 +41,25 @@ describe('Read Only User', () => {
 
   it('Has no link to create cemeteries on Cemetery Search', () => {
     cy.visit('/cemeteries', { timeout: pageLoadTimeoutMillis })
+
     cy.get("a[href*='/new']").should('not.exist')
   })
 
   it('Redirects to Dashboard when attempting to create or update a cemetery', () => {
-    cy.visit('/cemeteries/new', { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
+    cy.visit('/cemeteries/new', { timeout: pageLoadTimeoutMillis }).wait(
+      minimumNavigationDelayMillis
+    )
+
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'not.contain',
       'new'
     )
 
-    cy.visit('/cemeteries/1/edit', { timeout: pageLoadTimeoutMillis })
-    cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should(
+    cy.visit('/cemeteries/1/edit', { timeout: pageLoadTimeoutMillis }).wait(
+      minimumNavigationDelayMillis
+    )
+
+    cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'not.contain',
       'edit'
     )

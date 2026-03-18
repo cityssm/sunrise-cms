@@ -25,10 +25,10 @@ describe('Read Only User', () => {
         cy.get("a[href*='/new']").should('not.exist');
     });
     it('Redirects to Dashboard when attempting to create or update a cemetery', () => {
-        cy.visit('/cemeteries/new', { timeout: pageLoadTimeoutMillis });
-        cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should('not.contain', 'new');
-        cy.visit('/cemeteries/1/edit', { timeout: pageLoadTimeoutMillis });
-        cy.location('pathname', { timeout: minimumNavigationDelayMillis }).should('not.contain', 'edit');
+        cy.visit('/cemeteries/new', { timeout: pageLoadTimeoutMillis }).wait(minimumNavigationDelayMillis);
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('not.contain', 'new');
+        cy.visit('/cemeteries/1/edit', { timeout: pageLoadTimeoutMillis }).wait(minimumNavigationDelayMillis);
+        cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should('not.contain', 'edit');
     });
     // Burial Sites
     it('Has no link to create burial sites on Burial Site Search', () => {

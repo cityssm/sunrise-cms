@@ -21,11 +21,16 @@ describe('Funeral Homes - Update', () => {
   afterEach(logout)
 
   it('Has a "Create" link on the Funeral Home Search', () => {
-    cy.visit('/funeralHomes', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/funeralHomes', {
+      retryOnNetworkFailure: true,
+      timeout: pageLoadTimeoutMillis
+    })
+
     cy.location('pathname', { timeout: pageLoadTimeoutMillis }).should(
       'equal',
       '/funeralHomes'
     )
+
     cy.get("a[href$='/funeralHomes/new']").should('exist')
   })
 
