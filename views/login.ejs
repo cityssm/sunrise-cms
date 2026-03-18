@@ -30,7 +30,8 @@
             <div class="column has-text-centered">
               <img
                 src="<%= urlPrefix + configFunctions.getConfigProperty('application.logoUrl') %>"
-                alt="" style="max-height:400px"
+                alt="<%= t('logo') %>"
+                style="max-height:400px"
               />
             </div>
             <div class="column">
@@ -137,7 +138,9 @@
     <script>
       try {
         window.localStorage.clear();
-      } catch (e) { }
+      } catch (e) {
+        // Ignore
+      }
     </script>
   </body>
 
