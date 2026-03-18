@@ -7,24 +7,30 @@ const recordId = {
     WorkOrderMilestoneTypes: 'workOrderMilestoneTypeId',
     WorkOrderTypes: 'workOrderTypeId'
 };
-export function getAuditableRecord(tableName, recordIdValue, connectedDatabase) {
+export function getAuditableRecords(tableName, recordIdValue, connectedDatabase) {
+    const idColumn = recordId[tableName];
+    if (idColumn === undefined) {
+        throw new Error('Invalid table name for auditable record lookup.');
+    }
     return auditLogIsEnabled
         ? connectedDatabase
-            .prepare(/* sql */ `
+            .prepare(`
           SELECT
             *
           FROM
             ${tableName}
           WHERE
-            ${recordId[tableName]} = ?
+            ${idColumn} = ?
             AND recordDelete_timeMillis IS NULL
         `)
-            .get(recordIdValue)
+            .all(recordIdValue)
         : undefined;
 }
 export function getAuditableContractRecord(contractId, connectedDatabase) {
-    return getAuditableRecord('Contracts', contractId, connectedDatabase);
+    const records = getAuditableRecords('Contracts', contractId, connectedDatabase);
+    return records === undefined || records.length === 0 ? undefined : records[0];
 }
 export function getAuditableContractFieldRecords(contractId, connectedDatabase) {
-    return getAuditableRecord('ContractFields', contractId, connectedDatabase);
+    const records = getAuditableRecords('ContractFields', contractId, connectedDatabase);
+    return records === undefined || records.length === 0 ? undefined : records;
 }

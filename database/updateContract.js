@@ -5,12 +5,12 @@ import { sunriseDB } from '../helpers/database.helpers.js';
 import addOrUpdateContractField from './addOrUpdateContractField.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
 import deleteContractField from './deleteContractField.js';
-import { getAuditableContractFieldRecords, getAuditableContractRecord } from './getAuditableRecord.js';
+import { getAuditableContractFieldRecords, getAuditableContractRecord } from './getAuditableRecords.js';
 export default function updateContract(updateForm, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const recordBefore = getAuditableContractRecord(updateForm.contractId, database);
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       UPDATE Contracts
       SET
         contractTypeId = ?,

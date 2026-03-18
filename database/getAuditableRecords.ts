@@ -19,11 +19,17 @@ const recordId: Record<RecordTableName, string> = {
   WorkOrderTypes: 'workOrderTypeId'
 }
 
-export function getAuditableRecord(
+export function getAuditableRecords(
   tableName: RecordTableName,
   recordIdValue: number | string,
   connectedDatabase: sqlite.Database
-): unknown {
+): unknown[] | undefined {
+  const idColumn = recordId[tableName] as string | undefined
+
+  if (idColumn === undefined) {
+    throw new Error('Invalid table name for auditable record lookup.')
+  }
+
   return auditLogIsEnabled
     ? connectedDatabase
         .prepare(/* sql */ `
@@ -32,10 +38,10 @@ export function getAuditableRecord(
           FROM
             ${tableName}
           WHERE
-            ${recordId[tableName]} = ?
+            ${idColumn} = ?
             AND recordDelete_timeMillis IS NULL
         `)
-        .get(recordIdValue)
+        .all(recordIdValue)
     : undefined
 }
 
@@ -43,12 +49,24 @@ export function getAuditableContractRecord(
   contractId: number | string,
   connectedDatabase: sqlite.Database
 ): unknown {
-  return getAuditableRecord('Contracts', contractId, connectedDatabase)
+  const records = getAuditableRecords(
+    'Contracts',
+    contractId,
+    connectedDatabase
+  )
+
+  return records === undefined || records.length === 0 ? undefined : records[0]
 }
 
 export function getAuditableContractFieldRecords(
   contractId: number | string,
   connectedDatabase: sqlite.Database
-): unknown {
-  return getAuditableRecord('ContractFields', contractId, connectedDatabase)
+): unknown[] | undefined {
+  const records = getAuditableRecords(
+    'ContractFields',
+    contractId,
+    connectedDatabase
+  )
+
+  return records === undefined || records.length === 0 ? undefined : records
 }

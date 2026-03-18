@@ -5,7 +5,7 @@ import { getConfigProperty } from '../helpers/config.helpers.js'
 import { sunriseDB } from '../helpers/database.helpers.js'
 
 import createAuditLogEntries from './createAuditLogEntries.js'
-import { getAuditableRecord } from './getAuditableRecord.js'
+import { getAuditableRecords } from './getAuditableRecords.js'
 
 type RecordTable =
   | 'BurialSiteStatuses'
@@ -90,7 +90,7 @@ function addRecord(
     const auditInfo = recordAuditInfo.get(record.recordTable)
 
     if (auditInfo !== undefined) {
-      const recordAfter = getAuditableRecord(record.recordTable, recordId, database)
+      const recordAfter = getAuditableRecords(record.recordTable, recordId, database)
 
       createAuditLogEntries(
         {

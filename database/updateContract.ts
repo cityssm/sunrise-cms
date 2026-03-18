@@ -15,7 +15,7 @@ import deleteContractField from './deleteContractField.js'
 import {
   getAuditableContractFieldRecords,
   getAuditableContractRecord
-} from './getAuditableRecord.js'
+} from './getAuditableRecords.js'
 
 export interface UpdateContractForm {
   contractId: number | string

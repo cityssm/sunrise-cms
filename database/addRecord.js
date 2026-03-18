@@ -3,7 +3,7 @@ import { clearCacheByTableName } from '../helpers/cache.helpers.js';
 import { getConfigProperty } from '../helpers/config.helpers.js';
 import { sunriseDB } from '../helpers/database.helpers.js';
 import createAuditLogEntries from './createAuditLogEntries.js';
-import { getAuditableRecord } from './getAuditableRecord.js';
+import { getAuditableRecords } from './getAuditableRecords.js';
 const recordNameColumns = new Map([
     ['BurialSiteStatuses', 'burialSiteStatus'],
     ['WorkOrderMilestoneTypes', 'workOrderMilestoneType'],
@@ -31,7 +31,7 @@ function addRecord(record, user, connectedDatabase) {
     const database = connectedDatabase ?? sqlite(sunriseDB);
     const rightNowMillis = Date.now();
     const result = database
-        .prepare(/* sql */ `
+        .prepare(`
       INSERT INTO
         ${record.recordTable} (
           ${recordNameColumns.get(record.recordTable)},
@@ -49,7 +49,7 @@ function addRecord(record, user, connectedDatabase) {
     if (auditLogIsEnabled) {
         const auditInfo = recordAuditInfo.get(record.recordTable);
         if (auditInfo !== undefined) {
-            const recordAfter = getAuditableRecord(record.recordTable, recordId, database);
+            const recordAfter = getAuditableRecords(record.recordTable, recordId, database);
             createAuditLogEntries({
                 mainRecordId: recordId,
                 mainRecordType: auditInfo.mainRecordType,
