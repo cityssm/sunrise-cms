@@ -2,16 +2,16 @@
 
 <nav class="breadcrumb">
   <ul>
-    <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
+    <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
     <li>
       <a href="<%= urlPrefix %>/workOrders">
         <span class="icon is-small"><i class="fa-solid fa-hard-hat"></i></span>
-        <span><%= t('workOrders:workOrders') %></span>
+        <span><%= t('workOrders') %></span>
       </a>
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        <%= t('workOrders:milestoneCalendar') %>
+        <%= t('workOrders.milestoneCalendar') %>
       </a>
     </li>
   </ul>
@@ -20,7 +20,7 @@
 <div class="columns is-vcentered">
   <div class="column">
     <h1 class="title is-1">
-      <%= t('workOrders:milestoneCalendar') %>
+      <%= t('workOrders.milestoneCalendar') %>
     </h1>
   </div>
   <div class="column is-narrow has-text-right">

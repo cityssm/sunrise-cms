@@ -23,7 +23,7 @@ export default function handler(request, response) {
     const burialSiteTypes = getCachedBurialSiteTypes();
     const burialSiteStatuses = getCachedBurialSiteStatuses();
     response.render('burialSites/search', {
-        headTitle: i18next.t('cemeteries:burialSiteSearch', { lng: response.locals.lng }),
+        headTitle: i18next.t('cemeteries.burialSiteSearch', { lng: response.locals.lng }),
         burialSiteStatuses,
         burialSiteTypes,
         cemeteries,

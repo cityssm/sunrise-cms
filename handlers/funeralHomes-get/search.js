@@ -19,7 +19,7 @@ export default function handler(request, response) {
     }
     const funeralHomes = getFuneralHomes();
     response.render('funeralHomes/search', {
-        headTitle: i18next.t('contracts:funeralHomeSearch', { lng: response.locals.lng }),
+        headTitle: i18next.t('contracts.funeralHomeSearch', { lng: response.locals.lng }),
         funeralHomes,
         error
     });

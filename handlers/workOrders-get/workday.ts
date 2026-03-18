@@ -5,7 +5,7 @@ import { i18next } from '../../helpers/i18n.helpers.js'
 
 export default function handler(request: Request, response: Response): void {
   response.render('workOrders/workday', {
-    headTitle: i18next.t('workOrders:workdayReport', {
+    headTitle: i18next.t('workOrders.workdayReport', {
       lng: response.locals.lng
     }),
     workdayDateString:

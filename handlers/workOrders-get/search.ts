@@ -28,7 +28,7 @@ export default function handler(
   const workOrderTypes = getCachedWorkOrderTypes()
 
   response.render('workOrders/search', {
-    headTitle: i18next.t('workOrders:workOrderSearch', { lng: response.locals.lng }),
+    headTitle: i18next.t('workOrders.workOrderSearch', { lng: response.locals.lng }),
 
     cemeteries,
     funeralHomes,

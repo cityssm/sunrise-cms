@@ -7,11 +7,11 @@
   <div class="column">
     <nav class="breadcrumb">
       <ul>
-        <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-solid fa-map-pin"></i></span>
-            <span><%= t('cemeteries:burialSites') %></span>
+            <span><%= t('cemeteries.burialSites') %></span>
           </a>
         </li>
       </ul>
@@ -87,7 +87,7 @@
                       <option value="<%= burialSiteType.burialSiteTypeId %>"
                         _<%= (burialSiteType.burialSiteTypeId.toString() === burialSiteTypeId) ? " selected" : "" %>
                       >
-                        <%= burialSiteType.burialSiteType || ('(' + t('cemeteries:noName') + ')') %>
+                        <%= burialSiteType.burialSiteType || ('(' + t('cemeteries.noName') + ')') %>
                       </option>
                     <% } %>
                   </select>
@@ -112,7 +112,7 @@
                       value="<%= cemetery.cemeteryId %>"
                       _<%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>
                     >
-                      <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
+                      <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
                     </option>
                     <% } %>
                   </select>

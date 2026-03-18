@@ -7,7 +7,7 @@ export default function handler(request, response) {
     const burialSiteTypes = getCachedBurialSiteTypes();
     const burialSiteStatuses = getCachedBurialSiteStatuses();
     response.render('burialSites/gpsCapture', {
-        headTitle: i18next.t('cemeteries:gpsCoordinateCapture', { lng: response.locals.lng }),
+        headTitle: i18next.t('cemeteries.gpsCoordinateCapture', { lng: response.locals.lng }),
         burialSiteStatuses,
         burialSiteTypes,
         cemeteries,

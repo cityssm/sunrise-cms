@@ -2,16 +2,16 @@
 
 <nav class="breadcrumb">
   <ul>
-    <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
+    <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
     <li>
       <a href="<%= urlPrefix %>/workOrders">
         <span class="icon is-small"><i class="fa-solid fa-hard-hat"></i></span>
-        <span><%= t('workOrders:workOrders') %></span>
+        <span><%= t('workOrders') %></span>
       </a>
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        Work Order #<%= workOrder.workOrderNumber || ('(' + t('workOrders:noNumber') + ')') %>
+        Work Order #<%= workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') %>
       </a>
     </li>
   </ul>
@@ -22,7 +22,7 @@
     <div class="level-item">
       <h1 class="title is-1">
         Work Order
-        #<%= workOrder.workOrderNumber || ('(' + t('workOrders:noNumber') + ')') %>
+        #<%= workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') %>
       </h1>
     </div>
   </div>
@@ -44,7 +44,7 @@
   <div class="column">
     <span class="has-text-weight-bold">
       Work Order
-      #<%= workOrder.workOrderNumber || ('(' + t('workOrders:noNumber') + ')') %>
+      #<%= workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') %>
     </span>
   </div>
   <div class="column is-narrow has-text-right">
@@ -185,7 +185,7 @@
               <% if (workOrder.workOrderDescription) { %>
                 <%= workOrder.workOrderDescription %>
               <% } else { %>
-                <span class="has-text-grey">(<%= t('workOrders:noDescription') %>)</span>
+                <span class="has-text-grey">(<%= t('workOrders.noDescription') %>)</span>
               <% } %>
             </p>
           </div>
@@ -282,7 +282,7 @@
                     <% if (contract.burialSiteId) { %>
                       <%= contract.burialSiteName %>
                     <% } else { %>
-                      <span class="has-text-grey">(<%= t('contracts:noBurialSite') %>)</span>
+                      <span class="has-text-grey">(<%= t('contracts.noBurialSite') %>)</span>
                     <% } %>
                   </td>
                   <td><%= contract.contractStartDateString %></td>
@@ -291,7 +291,7 @@
                     <% if (contract.contractEndDate) { %>
                       <%= contract.contractEndDateString %>
                     <% } else { %>
-                      <span class="has-text-grey">(<%= t('workOrders:noEndDate') %>)</span>
+                      <span class="has-text-grey">(<%= t('workOrders.noEndDate') %>)</span>
                     <% } %>
                   </td>
                   <% } %>
@@ -400,7 +400,7 @@
           <% if (contract.funeralDate !== null && contract.funeralDate >= workOrder.workOrderOpenDate && (workOrder.workOrderCloseDate === null || workOrder.workOrderCloseDate >= contract.funeralDate)) { %>
             <% hasContractMilestones = true; %>
             <div class="panel-block is-block">
-              <strong><%= t('contracts:serviceDate') %></strong><br />
+              <strong><%= t('contracts.serviceDate') %></strong><br />
               <%= contract.funeralDateString %>
               <% if (contract.funeralTime !== null && contract.funeralTime !== 0) { %>
                 <%= contract.funeralTimePeriodString %>
@@ -481,7 +481,7 @@
                 <strong><%= milestone.workOrderMilestoneType %></strong><br />
               <% } %>
               <% if (milestone.workOrderMilestoneDate === 0) { %>
-                <span class="has-text-grey">(<%= t('workOrders:noSetDate') %>)</span>
+                <span class="has-text-grey">(<%= t('workOrders.noSetDate') %>)</span>
               <% } else { %>
                 <%= milestone.workOrderMilestoneDateString %>
               <% } %>

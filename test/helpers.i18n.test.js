@@ -22,18 +22,18 @@ await describe('helpers.i18n', async () => {
     });
     await describe('i18next translation', async () => {
         await it('can translate a key in English', () => {
-            const translated = i18next.t('common:help', { lng: 'en' });
+            const translated = i18next.t('help', { lng: 'en' });
             assert.ok(translated, 'Translation should return a non-empty string');
             assert.strictEqual(typeof translated, 'string', 'Translation should return a string');
         });
         await it('can translate a key in German', () => {
-            const translated = i18next.t('common:help', { lng: 'de' });
+            const translated = i18next.t('help', { lng: 'de' });
             assert.ok(translated, 'Translation should return a non-empty string');
             assert.strictEqual(typeof translated, 'string', 'Translation should return a string');
         });
         await it('can use fallback language when translation is missing', () => {
             // If a translation doesn't exist in DE, it should fall back to EN
-            const translated = i18next.t('common:help', { lng: 'de' });
+            const translated = i18next.t('help', { lng: 'de' });
             assert.ok(translated, 'Should return a translation using fallback if needed');
         });
     });

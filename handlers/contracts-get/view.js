@@ -10,7 +10,7 @@ export default async function handler(request, response) {
     }
     const contractTypePrints = getCachedContractTypePrintsById(contract.contractTypeId);
     response.render('contracts/view', {
-        headTitle: i18next.t('contracts:contractTitle', {
+        headTitle: i18next.t('contracts.contractTitle', {
             id: contract.contractId.toString(),
             lng: response.locals.lng
         }),

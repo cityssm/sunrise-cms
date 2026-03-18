@@ -82,7 +82,7 @@ export default async function handler(
         : getBurialSiteDirectionsOfArrival(contract.burialSiteId, database)
 
     response.render('contracts/edit', {
-      headTitle: i18next.t('contracts:createNewContract', {
+      headTitle: i18next.t('contracts.createNewContract', {
         lng: response.locals.lng
       }),
 

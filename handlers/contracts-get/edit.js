@@ -65,7 +65,7 @@ export default async function handler(request, response) {
             ? getCachedWorkOrderMilestoneTypes()
             : [];
         response.render('contracts/edit', {
-            headTitle: i18next.t('contracts:contractUpdate', {
+            headTitle: i18next.t('contracts.contractUpdate', {
                 lng: response.locals.lng
             }),
             contract,

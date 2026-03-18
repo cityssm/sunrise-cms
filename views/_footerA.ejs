@@ -40,7 +40,8 @@
     showSupportNotice: false,
     fallbackLng: 'en',
     supportedLngs: ['en', 'de'],
-    ns: ['admin', 'cemeteries', 'common', 'contracts', 'workOrders', 'login', 'dashboard', 'errors'],
+    defaultNS: 'app',
+    ns: ['app', 'admin', 'login', 'errors'],
     backend: {
       loadPath: "<%= urlPrefix %>/locales/{{lng}}/{{ns}}.json"
     }

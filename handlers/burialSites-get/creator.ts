@@ -11,7 +11,7 @@ export default function handler(request: Request, response: Response): void {
   const burialSiteStatuses = getCachedBurialSiteStatuses()
 
   response.render('burialSites/creator', {
-    headTitle: i18next.t('cemeteries:burialSiteRangeCreator', { lng: response.locals.lng }),
+    headTitle: i18next.t('cemeteries.burialSiteRangeCreator', { lng: response.locals.lng }),
 
     burialSiteStatuses,
     burialSiteTypes,

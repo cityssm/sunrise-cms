@@ -2,28 +2,28 @@
 
 <nav class="breadcrumb">
   <ul>
-    <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
+    <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
     <li class="is-active">
       <a href="#" aria-current="page">
         <span class="icon is-small"><i class="fa-solid fa-cog"></i></span>
-        <span><%= t('dashboard:userSettings') %></span>
+        <span><%= t('dashboard.userSettings') %></span>
       </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-  <%= t('dashboard:userSettings') %>
+  <%= t('dashboard.userSettings') %>
 </h1>
 
 <div class="columns">
   <div class="column">
     <div class="panel">
-      <h2 class="panel-heading"><%= t('dashboard:userSettingsLanguage') %></h2>
+      <h2 class="panel-heading"><%= t('dashboard.userSettingsLanguage') %></h2>
       <div class="panel-block is-block">
         <div class="columns">
           <div class="column">
-            <p class="title is-6"><%= t('dashboard:preferredLanguages') %></p>
+            <p class="title is-6"><%= t('dashboard.preferredLanguages') %></p>
             <a class="button is-fullwidth<% if (lng === 'en') { %> is-primary<% } %>"
               href="?lng=en">
               <span class="icon is-small">
@@ -35,7 +35,7 @@
           <div class="column">
             <div class="message is-warning">
               <div class="message-body is-size-7">
-                <p><%= t('dashboard:incompleteLanguages') %></p>
+                <p><%= t('dashboard.incompleteLanguages') %></p>
               </div>
             </div>
             <a class="button is-fullwidth<% if (lng === 'de') { %> is-primary<% } %>"
@@ -52,12 +52,12 @@
   </div>
   <div class="column">
     <div class="panel">
-      <h2 class="panel-heading"><%= t('dashboard:userSettingsApiKeyReset') %></h2>
+      <h2 class="panel-heading"><%= t('dashboard.userSettingsApiKeyReset') %></h2>
       <div class="panel-block is-block">
         <div class="message is-warning">
           <div class="message-body is-size-7">
-            <p><%= t('dashboard:userSettingsApiKeyDescription1') %></p>
-            <p><%= t('dashboard:userSettingsApiKeyDescription2') %></p>
+            <p><%= t('dashboard.userSettingsApiKeyDescription1') %></p>
+            <p><%= t('dashboard.userSettingsApiKeyDescription2') %></p>
           </div>
         </div>
         <div class="has-text-right">
@@ -65,7 +65,7 @@
             <span class="icon is-small">
               <i class="fa-solid fa-rotate"></i>
             </span>
-            <span><%= t('dashboard:userSettingsResetApiKey') %></span>
+            <span><%= t('dashboard.userSettingsResetApiKey') %></span>
           </button>
         </div>
       </div>
@@ -91,14 +91,14 @@
                 <span class="icon">
                   <i class="fa-solid fa-check"></i>
                 </span>
-                <span><%= t('common:enabled') %></span>
+                <span><%= t('enabled') %></span>
               </span>
               <% } else { %>
               <span class="tag is-danger">
                 <span class="icon">
                   <i class="fa-solid fa-times"></i>
                 </span>
-                <span><%= t('common:disabled') %></span>
+                <span><%= t('disabled') %></span>
               </span>
               <% } %>
             </div>
@@ -109,7 +109,7 @@
         <div class="message is-info is-small">
           <div class="message-body">
             <p>
-              <%- t('dashboard:userSettingsConsignoCloudDescription', {
+              <%- t('dashboard.userSettingsConsignoCloudDescription', {
                 consignoCloudLink: '<a href="https://consignocloud.com/" rel="noopener noreferrer" target="_blank">ConsignO Cloud</a>'
               }) %>
             </p>
@@ -121,7 +121,7 @@
             <div class="columns is-desktop">
               <div class="column">
                 <div class="field">
-                  <label class="label" for="consignoCloud--userName"><%= t('dashboard:userSettingsConsignoCloudUserName') %></label>
+                  <label class="label" for="consignoCloud--userName"><%= t('dashboard.userSettingsConsignoCloudUserName') %></label>
                   <div class="control">
                     <input
                       class="input"
@@ -133,13 +133,13 @@
                     />
                   </div>
                   <p class="help">
-                    <%= t('dashboard:userSettingsConsignoCloudUserNameHelp') %>
+                    <%= t('dashboard.userSettingsConsignoCloudUserNameHelp') %>
                   </p>
                 </div>
               </div>
               <div class="column">
                 <div class="field">
-                  <label class="label" for="consignoCloud--thirdPartyApplicationPassword"><%= t('dashboard:userSettingsConsignoCloudPassword') %></label>
+                  <label class="label" for="consignoCloud--thirdPartyApplicationPassword"><%= t('dashboard.userSettingsConsignoCloudPassword') %></label>
                   <div class="control">
                     <input
                       class="input"
@@ -147,12 +147,12 @@
                       name="thirdPartyApplicationPassword"
                       type="text"
                       value=""
-                      placeholder="(<%= t('dashboard:userSettingsConsignoCloudPasswordUnchanged') %>)"
+                      placeholder="(<%= t('dashboard.userSettingsConsignoCloudPasswordUnchanged') %>)"
                       autocomplete="off"
                     />
                   </div>
                   <p class="help">
-                    <%= t('dashboard:userSettingsConsignoCloudPasswordHelp') %>
+                    <%= t('dashboard.userSettingsConsignoCloudPasswordHelp') %>
                   </p>
                 </div>
               </div>
@@ -162,7 +162,7 @@
                 <span class="icon is-small">
                   <i class="fa-solid fa-save"></i>
                 </span>
-                <span><%= t('dashboard:userSettingsConsignoCloudSave') %></span>
+                <span><%= t('dashboard.userSettingsConsignoCloudSave') %></span>
               </button>
             </p>
           </form>
@@ -178,7 +178,7 @@
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="has-text-weight-bold"><%= t('dashboard:userSettingsNtfyNotifications') %></h2>
+              <h2 class="has-text-weight-bold"><%= t('dashboard.userSettingsNtfyNotifications') %></h2>
             </div>
           </div>
           <div class="level-right">
@@ -188,14 +188,14 @@
                 <span class="icon">
                   <i class="fa-solid fa-check"></i>
                 </span>
-                <span><%= t('common:enabled') %></span>
+                <span><%= t('enabled') %></span>
               </span>
               <% } else { %>
               <span class="tag is-danger">
                 <span class="icon">
                   <i class="fa-solid fa-times"></i>
                 </span>
-                <span><%= t('common:disabled') %></span>
+                <span><%= t('disabled') %></span>
               </span>
               <% } %>
             </div>
@@ -206,7 +206,7 @@
         <div class="message is-info is-small">
           <div class="message-body">
             <p>
-              <%- t('dashboard:userSettingsNtfyDescription', {
+              <%- t('dashboard.userSettingsNtfyDescription', {
                 ntfyLink: '<a href="https://ntfy.sh/" rel="noopener noreferrer" target="_blank">NTFY</a>'
               }) %>
             </p>
@@ -215,15 +215,15 @@
         <% if (hasNtfyEnabled) { %>
         <div class="content">
           <p class="has-text-centered">
-            <strong><%= t('dashboard:userSettingsNtfyServer') %></strong><br />
-            <%= configFunctions.getConfigProperty("integrations.ntfy.server") || t('dashboard:userSettingsNtfyDefaultServer') %>
+            <strong><%= t('dashboard.userSettingsNtfyServer') %></strong><br />
+            <%= configFunctions.getConfigProperty("integrations.ntfy.server") || t('dashboard.userSettingsNtfyDefaultServer') %>
           </p>
 
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
-                <th><%= t('dashboard:userSettingsNtfyEvent') %></th>
-                <th><%= t('dashboard:userSettingsNtfyTopic') %></th>
+                <th><%= t('dashboard.userSettingsNtfyEvent') %></th>
+                <th><%= t('dashboard.userSettingsNtfyTopic') %></th>
               </tr>
             </thead>
             <tbody>

@@ -11,7 +11,7 @@ export default function handler(_request, response) {
         funeralHomePhoneNumber: ''
     };
     response.render('funeralHomes/edit', {
-        headTitle: i18next.t('contracts:createNewFuneralHome', {
+        headTitle: i18next.t('contracts.createNewFuneralHome', {
             lng: response.locals.lng
         }),
         funeralHome,

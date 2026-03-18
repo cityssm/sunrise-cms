@@ -16,7 +16,7 @@ export default function handler(request: Request, response: Response): void {
   const workOrderTypes = getCachedWorkOrderTypes()
 
   response.render('workOrders/edit', {
-    headTitle: i18next.t('workOrders:newWorkOrder', {
+    headTitle: i18next.t('workOrders.newWorkOrder', {
       lng: response.locals.lng
     }),
 

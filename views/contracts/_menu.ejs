@@ -1,21 +1,21 @@
 <%
-const isContractSearch = headTitle === t('contracts:contractSearch');
-const isFuneralHomeSearch = headTitle === t('contracts:funeralHomeSearch');
+const isContractSearch = headTitle === t('contracts.contractSearch');
+const isFuneralHomeSearch = headTitle === t('contracts.funeralHomeSearch');
 %>
-<aside class="menu" aria-label="<%= t('contracts:contracts') %>">
+<aside class="menu" aria-label="<%= t('contracts') %>">
   <% if (isContractSearch && user.userProperties.canUpdateContracts) { %>
   <ul class="menu-list">
     <li>
       <a
         href="<%= urlPrefix %>/contracts/new"
-        title="<%= t('contracts:createNewContract') %>"
+        title="<%= t('contracts.createNewContract') %>"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-plus-circle has-text-success-light" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i></span>
           </div>
           <div class="column is-hidden-touch has-text-weight-semibold">
-            <%= t('contracts:createNewContract') %>
+            <%= t('contracts.createNewContract') %>
           </div>
         </div>
       </a>
@@ -27,14 +27,14 @@ const isFuneralHomeSearch = headTitle === t('contracts:funeralHomeSearch');
     <li>
       <a
         href="<%= urlPrefix %>/funeralHomes/new"
-        title="<%= t('contracts:createNewFuneralHome') %>"
+        title="<%= t('contracts.createNewFuneralHome') %>"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-plus-circle has-text-success-light" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i></span>
           </div>
           <div class="column is-hidden-touch has-text-weight-semibold">
-            <%= t('contracts:createNewFuneralHome') %>
+            <%= t('contracts.createNewFuneralHome') %>
           </div>
         </div>
       </a>
@@ -42,21 +42,21 @@ const isFuneralHomeSearch = headTitle === t('contracts:funeralHomeSearch');
   </ul>
   <% } %>
   <h2 class="menu-label is-hidden-touch">
-    <%= t('contracts:contracts') %>
+    <%= t('contracts') %>
   </h2>
   <ul class="menu-list">
     <li>
       <a
         class="<%= (isContractSearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/contracts"
-        title="<%= t('contracts:contractSearch') %>"
+        title="<%= t('contracts.contractSearch') %>"
         rel="search"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-file-contract"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('contracts:contractSearch') %></div>
+          <div class="column is-hidden-touch"><%= t('contracts.contractSearch') %></div>
         </div>
       </a>
     </li>
@@ -64,14 +64,14 @@ const isFuneralHomeSearch = headTitle === t('contracts:funeralHomeSearch');
       <a
         class="<%= (isFuneralHomeSearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/funeralHomes"
-        title="<%= t('contracts:funeralHomeSearch') %>"
+        title="<%= t('contracts.funeralHomeSearch') %>"
         rel="search"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-place-of-worship"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('contracts:funeralHomeSearch') %></div>
+          <div class="column is-hidden-touch"><%= t('contracts.funeralHomeSearch') %></div>
         </div>
       </a>
     </li>
@@ -88,7 +88,7 @@ const isFuneralHomeSearch = headTitle === t('contracts:funeralHomeSearch');
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-gear"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('contracts:contractTypes') %></div>
+          <div class="column is-hidden-touch"><%= t('contracts.contractTypes') %></div>
         </div>
       </a>
     </li>
@@ -99,23 +99,23 @@ const isFuneralHomeSearch = headTitle === t('contracts:funeralHomeSearch');
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-gear"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('contracts:fees') %></div>
+          <div class="column is-hidden-touch"><%= t('contracts.fees') %></div>
         </div>
       </a>
     </li>
   </ul>
   <% } %>
   <h2 class="menu-label is-hidden-touch">
-    <%= t('dashboard:reports') %>
+    <%= t('dashboard.reports') %>
   </h2>
   <ul class="menu-list">
     <li>
-      <a href="<%= urlPrefix %>/reports/?tab=contracts" title="<%= t('contracts:contractReports') %>">
+      <a href="<%= urlPrefix %>/reports/?tab=contracts" title="<%= t('contracts.contractReports') %>">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-file"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('contracts:contractReports') %></div>
+          <div class="column is-hidden-touch"><%= t('contracts.contractReports') %></div>
         </div>
       </a>
     </li>
@@ -130,7 +130,7 @@ const isFuneralHomeSearch = headTitle === t('contracts:funeralHomeSearch');
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-circle-question"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('common:help') %></div>
+          <div class="column is-hidden-touch"><%= t('help') %></div>
         </div>
       </a>
     </li>

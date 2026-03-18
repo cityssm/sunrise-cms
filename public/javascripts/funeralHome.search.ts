@@ -58,7 +58,7 @@ declare const exports: {
 
   function renderResults(): void {
     searchResultsContainerElement.innerHTML = sunrise.getLoadingParagraphHTML(
-      i18next.t('common:loading')
+      i18next.t('loading')
     )
 
     let searchResultCount = 0
@@ -127,7 +127,7 @@ declare const exports: {
     if (searchResultCount === 0) {
       searchResultsContainerElement.innerHTML = /* html */ `
         <div class="message is-info">
-          <p class="message-body">${cityssm.escapeHTML(i18next.t('common:noResults'))}</p>
+          <p class="message-body">${cityssm.escapeHTML(i18next.t('noResults'))}</p>
         </div>
       `
     } else {
@@ -139,10 +139,10 @@ declare const exports: {
       searchResultsTableElement.innerHTML = /* html */ `
         <thead>
           <tr>
-            <th>${cityssm.escapeHTML(i18next.t('contracts:funeralHome'))}</th>
-            <th>${cityssm.escapeHTML(i18next.t('common:address'))}</th>
-            <th>${cityssm.escapeHTML(i18next.t('common:phoneNumber'))}</th>
-            <th class="has-text-right">${cityssm.escapeHTML(i18next.t('contracts:upcomingServices'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('contracts.funeralHome'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('address'))}</th>
+            <th>${cityssm.escapeHTML(i18next.t('phoneNumber'))}</th>
+            <th class="has-text-right">${cityssm.escapeHTML(i18next.t('contracts.upcomingServices'))}</th>
           </tr>
         </thead>
       `

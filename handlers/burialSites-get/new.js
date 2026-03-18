@@ -36,7 +36,7 @@ export default async function handler(request, response) {
     const burialSiteTypes = getCachedBurialSiteTypes();
     const burialSiteStatuses = getCachedBurialSiteStatuses();
     response.render('burialSites/edit', {
-        headTitle: i18next.t('cemeteries:createBurialSite', {
+        headTitle: i18next.t('cemeteries.createBurialSite', {
             lng: response.locals.lng
         }),
         burialSite,

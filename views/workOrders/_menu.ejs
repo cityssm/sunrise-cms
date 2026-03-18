@@ -1,77 +1,77 @@
-<% const isWorkOrderSearch = headTitle === t('workOrders:workOrderSearch'); %>
-<aside class="menu" aria-label="<%= t('workOrders:workOrders') %>">
+<% const isWorkOrderSearch = headTitle === t('workOrders.workOrderSearch'); %>
+<aside class="menu" aria-label="<%= t('workOrders') %>">
   <% if (isWorkOrderSearch && user.userProperties.canUpdateWorkOrders) { %>
   <ul class="menu-list">
     <li>
       <a
         href="<%= urlPrefix %>/workOrders/new"
-        title="<%= t('workOrders:createNewWorkOrder') %>"
+        title="<%= t('workOrders.createNewWorkOrder') %>"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-plus-circle has-text-success-light" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i></span>
           </div>
           <div class="column is-hidden-touch has-text-weight-semibold">
-            <%= t('workOrders:createNewWorkOrder') %>
+            <%= t('workOrders.createNewWorkOrder') %>
           </div>
         </div>
       </a>
     </li>
   </ul>
   <% } %>
-  <h2 class="menu-label is-hidden-touch"><%= t('workOrders:workOrders') %></h2>
+  <h2 class="menu-label is-hidden-touch"><%= t('workOrders') %></h2>
   <ul class="menu-list">
     <li>
       <a
         class="<%= (isWorkOrderSearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/workOrders"
-        title="<%= t('workOrders:workOrderSearch') %>"
+        title="<%= t('workOrders.workOrderSearch') %>"
         rel="search"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-hard-hat"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('workOrders:workOrderSearch') %></div>
+          <div class="column is-hidden-touch"><%= t('workOrders.workOrderSearch') %></div>
         </div>
       </a>
     </li>
     <li>
       <a
-        class="<%= (headTitle === t('workOrders:workdayReport') ? 'is-active' : '') %>"
+        class="<%= (headTitle === t('workOrders.workdayReport') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/workOrders/workday"
-        title="<%= t('workOrders:workdayReport') %>"
+        title="<%= t('workOrders.workdayReport') %>"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-calendar-check"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('workOrders:workdayReport') %></div>
+          <div class="column is-hidden-touch"><%= t('workOrders.workdayReport') %></div>
         </div>
       </a>
     </li>
     <li>
       <a
-        class="<%= (headTitle === t('workOrders:milestoneCalendar') ? 'is-active' : '') %>"
+        class="<%= (headTitle === t('workOrders.milestoneCalendar') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/workOrders/milestoneCalendar"
-        title="<%= t('workOrders:milestoneCalendar') %>"
+        title="<%= t('workOrders.milestoneCalendar') %>"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-calendar"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('workOrders:milestoneCalendar') %></div>
+          <div class="column is-hidden-touch"><%= t('workOrders.milestoneCalendar') %></div>
         </div>
       </a>
     </li>
   </ul>
-  <h2 class="menu-label is-hidden-touch"><%= t('dashboard:reports') %></h2>
+  <h2 class="menu-label is-hidden-touch"><%= t('dashboard.reports') %></h2>
   <ul class="menu-list">
     <li>
       <a
-        class="<%= (headTitle === t('workOrders:icalIntegration') ? 'is-active' : '') %>"
+        class="<%= (headTitle === t('workOrders.icalIntegration') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/workOrders/ical"
-        title="<%= t('workOrders:icalIntegration') %>"
+        title="<%= t('workOrders.icalIntegration') %>"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
@@ -79,20 +79,20 @@
               <i class="fa-solid fa-envelope-open-text"></i>
             </span>
           </div>
-          <div class="column is-hidden-touch"><%= t('workOrders:icalIntegration') %></div>
+          <div class="column is-hidden-touch"><%= t('workOrders.icalIntegration') %></div>
         </div>
       </a>
     </li>
     <li>
       <a
         href="<%= urlPrefix %>/reports/?tab=workOrders"
-        title="<%= t('workOrders:workOrderReports') %>"
+        title="<%= t('workOrders.workOrderReports') %>"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-file"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('workOrders:workOrderReports') %></div>
+          <div class="column is-hidden-touch"><%= t('workOrders.workOrderReports') %></div>
         </div>
       </a>
     </li>
@@ -109,7 +109,7 @@
               <i class="fa-solid fa-circle-question"></i>
             </span>
           </div>
-          <div class="column is-hidden-touch"><%= t('common:help') %></div>
+          <div class="column is-hidden-touch"><%= t('help') %></div>
         </div>
       </a>
     </li>

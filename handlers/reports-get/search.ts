@@ -19,7 +19,7 @@ export default function handler(
   const burialSiteStatuses = getCachedBurialSiteStatuses()
 
   response.render('report-search', {
-    headTitle: i18next.t('dashboard:reports', { lng: response.locals.lng }),
+    headTitle: i18next.t('dashboard.reports', { lng: response.locals.lng }),
     reportTab,
 
     burialSiteStatuses,

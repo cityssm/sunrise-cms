@@ -55,10 +55,10 @@
         contractsTableElement.innerHTML = `
       <thead>
         <tr>
-          <th>${i18next.t('contracts:contractType')}</th>
-          <th>${i18next.t('contracts:contractDate')}</th>
-          ${exports.contractEndDateIsAvailable ? `<th>${i18next.t('contracts:endDate')}</th>` : ''}
-          <th>${i18next.t('contracts:recipients')}</th>
+          <th>${i18next.t('contracts.contractType')}</th>
+          <th>${i18next.t('contracts.contractDate')}</th>
+          ${exports.contractEndDateIsAvailable ? `<th>${i18next.t('contracts.endDate')}</th>` : ''}
+          <th>${i18next.t('contracts.recipients')}</th>
           <th></th>
         </tr>
       </thead>

@@ -173,7 +173,7 @@ declare const exports: {
         <table class="table is-fullwidth is-striped is-hoverable">
           <thead>
             <tr>
-              <th>${cityssm.escapeHTML(i18next.t('common:time'))}</th>
+              <th>${cityssm.escapeHTML(i18next.t('time'))}</th>
               <th>${cityssm.escapeHTML(i18next.t('admin:mainRecordType'))}</th>
               <th>
                 ${cityssm.escapeHTML(i18next.t('admin:auditLogTable'))}
@@ -268,7 +268,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: i18next.t('common:error'),
+            title: i18next.t('error'),
 
             message: responseJSON.message
           })

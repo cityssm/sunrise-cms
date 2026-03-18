@@ -24,7 +24,7 @@ export default async function handler(request, response) {
     const burialSiteStatuses = getCachedBurialSiteStatuses();
     const workOrderWorkDayRanges = getWorkOrderWorkDayRanges();
     response.render('workOrders/edit', {
-        headTitle: i18next.t('workOrders:workOrderTitle', {
+        headTitle: i18next.t('workOrders.workOrderTitle', {
             number: workOrder.workOrderNumber,
             lng: response.locals.lng
         }),

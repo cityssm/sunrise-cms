@@ -43,7 +43,7 @@ declare const exports: {
 
       okButton: {
         contextualColorName: 'warning',
-        text: i18next.t('common:delete'),
+        text: i18next.t('delete'),
 
         callbackFunction() {
           cityssm.postJSON(
@@ -63,7 +63,7 @@ declare const exports: {
               } else {
                 bulmaJS.alert({
                   contextualColorName: 'danger',
-                  title: i18next.t('common:error'),
+                  title: i18next.t('error'),
 
                   message: responseJSON.message
                 })
@@ -96,7 +96,7 @@ declare const exports: {
         } else {
           bulmaJS.alert({
             contextualColorName: 'danger',
-            title: i18next.t('common:error'),
+            title: i18next.t('error'),
 
             message: responseJSON.message
           })
@@ -122,7 +122,7 @@ declare const exports: {
           data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Active Status"
         >
-          ${cityssm.escapeHTML(user.isActive ? i18next.t('common:yes') : i18next.t('common:no'))}
+          ${cityssm.escapeHTML(user.isActive ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -132,7 +132,7 @@ declare const exports: {
           data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Can Update Cemeteries"
         >
-          ${cityssm.escapeHTML(user.canUpdateCemeteries ? i18next.t('common:yes') : i18next.t('common:no'))}
+          ${cityssm.escapeHTML(user.canUpdateCemeteries ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -142,7 +142,7 @@ declare const exports: {
           data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Can Update Contracts"
         >
-          ${cityssm.escapeHTML(user.canUpdateContracts ? i18next.t('common:yes') : i18next.t('common:no'))}
+          ${cityssm.escapeHTML(user.canUpdateContracts ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -152,7 +152,7 @@ declare const exports: {
           data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Can Update Work Orders"
         >
-          ${cityssm.escapeHTML(user.canUpdateWorkOrders ? i18next.t('common:yes') : i18next.t('common:no'))}
+          ${cityssm.escapeHTML(user.canUpdateWorkOrders ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -162,7 +162,7 @@ declare const exports: {
           data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="Toggle Is Admin"
         >
-          ${cityssm.escapeHTML(user.isAdmin ? i18next.t('common:yes') : i18next.t('common:no'))}
+          ${cityssm.escapeHTML(user.isAdmin ? i18next.t('yes') : i18next.t('no'))}
         </button>
       </td>
       <td class="has-text-centered">
@@ -171,7 +171,7 @@ declare const exports: {
           data-user-name="${cityssm.escapeHTML(user.userName)}"
           title="${cityssm.escapeHTML(i18next.t('admin:deleteUser'))}"
         >
-          ${cityssm.escapeHTML(i18next.t('common:delete'))}
+          ${cityssm.escapeHTML(i18next.t('delete'))}
         </button>
       </td>
     `
@@ -243,7 +243,7 @@ declare const exports: {
               contextualColorName: 'danger',
               title: 'Error Adding User',
 
-              message: i18next.t('common:tryAgain')
+              message: i18next.t('tryAgain')
             })
           }
         }

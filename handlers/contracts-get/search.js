@@ -27,7 +27,7 @@ export default function handler(request, response) {
     const funeralHomes = getFuneralHomes();
     const serviceTypes = getCachedServiceTypes();
     response.render('contracts/search', {
-        headTitle: i18next.t('contracts:contractSearch', { lng: response.locals.lng }),
+        headTitle: i18next.t('contracts.contractSearch', { lng: response.locals.lng }),
         cemeteryId: request.query.cemeteryId,
         contractNumber: request.query.contractNumber ?? '',
         deceasedName: request.query.deceasedName ?? '',

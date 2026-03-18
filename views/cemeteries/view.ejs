@@ -2,23 +2,23 @@
 
 <nav class="breadcrumb">
   <ul>
-    <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
+    <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
     <li>
       <a href="<%= urlPrefix %>/cemeteries">
         <span class="icon is-small"><i class="fa-regular fa-map"></i></span>
-        <span><%= t('cemeteries:cemeteries') %></span>
+        <span><%= t('cemeteries') %></span>
       </a>
     </li>
     <li class="is-active">
       <a href="#" aria-current="page">
-        <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
+        <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
       </a>
     </li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-  <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
+  <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
   <% if (cemetery.cemeteryKey !== '') { %>
   <span class="tag is-large"><%= cemetery.cemeteryKey %></span>
   <% } %>
@@ -28,7 +28,7 @@
 <div class="columns is-vcentered p-0 is-fixed-bottom has-background-white has-shadow is-hidden-print">
   <div class="column">
     <span class="has-text-weight-bold">
-      <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
+      <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
     </span>
   </div>
   <div class="column is-narrow has-text-right">
@@ -36,19 +36,19 @@
       <a
         class="button is-info"
         href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>/previous"
-        title="<%= t('cemeteries:previousCemetery') %>"
+        title="<%= t('cemeteries.previousCemetery') %>"
         rel="prev"
       >
         <span class="icon m-0"><i class="fa-solid fa-arrow-left"></i></span>
-        <span class="is-sr-only"><%= t('cemeteries:previousCemetery') %></span>
+        <span class="is-sr-only"><%= t('cemeteries.previousCemetery') %></span>
       </a>
       <a
         class="button is-info"
         href="<%= urlPrefix %>/cemeteries/<%= cemetery.cemeteryId %>/next"
-        title="<%= t('common:next') %>"
+        title="<%= t('next') %>"
         rel="next"
       >
-        <span><%= t('common:next') %></span>
+        <span><%= t('next') %></span>
         <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
       </a>
       <% if (user.userProperties.canUpdateCemeteries) { %>
@@ -60,8 +60,8 @@
             >
               <span class="icon"><i class="fa-solid fa-pencil-alt"></i></span>
               <span>
-                <%= t('common:edit') %>
-                <span class="is-hidden-mobile"><%= t('cemeteries:cemetery') %></span>
+                <%= t('edit') %>
+                <span class="is-hidden-mobile"><%= t('cemetery') %></span>
               </span>
             </a>
           </div>
@@ -107,12 +107,12 @@
       <div class="column">
         <% if (cemetery.cemeteryDescription && cemetery.cemeteryDescription !== "") { %>
         <p class="mb-2">
-          <strong><%= t('common:description') %></strong><br />
+          <strong><%= t('description') %></strong><br />
           <%= cemetery.cemeteryDescription %>
         </p>
         <% } %>
         <p class="mb-2">
-          <strong><%= t('common:address') %></strong><br />
+          <strong><%= t('address') %></strong><br />
           <% if (cemetery.cemeteryAddress1 !== "") { %>
           <%= cemetery.cemeteryAddress1 %><br />
           <% } %>
@@ -124,28 +124,28 @@
         </p>
         <% if (cemetery.cemeteryPhoneNumber !== "") { %>
         <p>
-          <strong><%= t('common:phoneNumber') %></strong><br />
+          <strong><%= t('phoneNumber') %></strong><br />
           <%= cemetery.cemeteryPhoneNumber %>
         </p>
         <% } %>
       </div>
       <% if (cemetery.parentCemeteryId !== null) { %>
       <div class="column">
-        <strong><%= t('cemeteries:parentCemetery') %></strong><br />
+        <strong><%= t('cemeteries.parentCemetery') %></strong><br />
         <a href="<%= urlPrefix %>/cemeteries/<%= cemetery.parentCemeteryId %>">
           <span class="icon"><i class="fa-regular fa-map"></i></span>
-          <%= (cemetery.parentCemeteryName ?? '') === '' ? ('(' + t('cemeteries:noName') + ')') : cemetery.parentCemeteryName %>
+          <%= (cemetery.parentCemeteryName ?? '') === '' ? ('(' + t('cemeteries.noName') + ')') : cemetery.parentCemeteryName %>
         </a>
       </div>
       <% } else if (cemetery.childCemeteries.length > 0) { %>
       <div class="column">
-        <strong><%= t('cemeteries:childCemeteries') %></strong><br />
+        <strong><%= t('cemeteries.childCemeteries') %></strong><br />
         <ul>
           <% for (const childCemetery of cemetery.childCemeteries) { %>
           <li>
             <a href="<%= urlPrefix %>/cemeteries/<%= childCemetery.cemeteryId %>">
               <span class="icon"><i class="fa-regular fa-map"></i></span>
-              <%= (childCemetery.cemeteryName ?? '') === '' ? ('(' + t('cemeteries:noName') + ')') : childCemetery.cemeteryName %>
+              <%= (childCemetery.cemeteryName ?? '') === '' ? ('(' + t('cemeteries.noName') + ')') : childCemetery.cemeteryName %>
             </a>
           </li>
           <% } %>
@@ -163,16 +163,16 @@
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="title is-5 has-text-weight-bold has-text-white"><%= t('cemeteries:geographicLocation') %></h2>
+              <h2 class="title is-5 has-text-weight-bold has-text-white"><%= t('cemeteries.geographicLocation') %></h2>
             </div>
           </div>
           <div class="level-right">
             <div class="level-item">
-              <a class="button is-small is-light" href="<%= urlPrefix %>/burialSites/map?cemeteryId=<%= cemetery.cemeteryId %>" title="<%= t('cemeteries:burialSiteMap') %>">
+              <a class="button is-small is-light" href="<%= urlPrefix %>/burialSites/map?cemeteryId=<%= cemetery.cemeteryId %>" title="<%= t('cemeteries.burialSiteMap') %>">
                 <span class="icon">
                   <i class="fa-solid fa-map-location-dot"></i>
                 </span>
-                <span><%= t('cemeteries:burialSiteMap') %></span>
+                <span><%= t('cemeteries.burialSiteMap') %></span>
               </a>
             </div>
           </div>
@@ -216,7 +216,7 @@
         <div class="level is-mobile">
           <div class="level-left">
             <div class="level-item">
-              <h2 class="title is-5 has-text-weight-bold has-text-white"><%= t('cemeteries:image') %></h2>
+              <h2 class="title is-5 has-text-weight-bold has-text-white"><%= t('cemeteries.image') %></h2>
             </div>
           </div>
           <div class="level-right">
@@ -232,7 +232,7 @@
         <a
           class="image"
           href="<%= imageURL %>"
-          title="<%= t('cemeteries:image') %>"
+          title="<%= t('cemeteries.image') %>"
           target="_blank"
         >
           <%- include('../../' + configFunctions.getConfigProperty('settings.customizationsPath') + '/public-internal/images/cemeteries/' + cemetery.cemeterySvg); -%>

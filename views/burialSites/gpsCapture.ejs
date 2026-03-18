@@ -7,12 +7,12 @@
   <div class="column">
     <nav class="breadcrumb">
       <ul>
-        <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
-        <li><a href="<%= urlPrefix %>/burialSites"><%= t('cemeteries:burialSites') %></a></li>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
+        <li><a href="<%= urlPrefix %>/burialSites"><%= t('cemeteries.burialSites') %></a></li>
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-solid fa-crosshairs"></i></span>
-            <span><%= t('cemeteries:gpsCoordinateCapture') %></span>
+            <span><%= t('cemeteries.gpsCoordinateCapture') %></span>
           </a>
         </li>
       </ul>
@@ -21,7 +21,7 @@
     <div class="columns is-vcentered is-mobile">
       <div class="column">
         <h1 class="title is-1">
-          <%= t('cemeteries:gpsCoordinateCapture') %>
+          <%= t('cemeteries.gpsCoordinateCapture') %>
         </h1>
         <p class="subtitle">
           Capture latitude and longitude coordinates using your device's GPS
@@ -50,7 +50,7 @@
                     <option value="">Select Cemetery...</option>
                     <% for (const cemetery of cemeteries) { %>
                     <option value="<%= cemetery.cemeteryId %>" <%= (cemetery.cemeteryId.toString() === cemeteryId) ? " selected" : "" %>>
-                      <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
+                      <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
                     </option>
                     <% } %>
                   </select>

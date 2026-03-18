@@ -7,13 +7,13 @@
   <div class="column">
     <nav class="breadcrumb">
       <ul>
-        <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small">
               <i class="fa-solid fa-file-contract"></i>
             </span>
-            <span><%= t('contracts:contracts') %></span>
+            <span><%= t('contracts') %></span>
           </a>
         </li>
       </ul>
@@ -187,7 +187,7 @@
                     value="<%= cemetery.cemeteryId %>"
                     _<%= (cemetery.cemeteryId.toString() === cemeteryId) ? ' selected' : '' %>
                   >
-                    <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
+                    <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
                   </option>
                   <% } %>
                 </select>

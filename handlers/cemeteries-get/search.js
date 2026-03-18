@@ -19,7 +19,7 @@ export default function handler(request, response) {
     }
     const cemeteries = getCemeteries();
     response.render('cemeteries/search', {
-        headTitle: i18next.t('cemeteries:cemeterySearch', { lng: response.locals.lng }),
+        headTitle: i18next.t('cemeteries.cemeterySearch', { lng: response.locals.lng }),
         cemeteries,
         error
     });

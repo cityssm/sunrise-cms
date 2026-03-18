@@ -12,7 +12,7 @@ export default async function handler(request, response) {
         return;
     }
     response.render('workOrders/view', {
-        headTitle: i18next.t('workOrders:workOrderTitle', {
+        headTitle: i18next.t('workOrders.workOrderTitle', {
             number: workOrder.workOrderNumber,
             lng: response.locals.lng
         }),

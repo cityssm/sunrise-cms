@@ -5,7 +5,7 @@
   <div class="column is-narrow">
     <aside class="menu">
       <h2 class="menu-label is-hidden-touch">
-        <%= t('dashboard:reports') %>
+        <%= t('dashboard.reports') %>
       </h2>
       <ul class="menu-list">
         <li>
@@ -89,11 +89,11 @@
   <div class="column">
     <nav class="breadcrumb">
       <ul>
-        <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
+        <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
         <li class="is-active">
           <a href="#" aria-current="page">
             <span class="icon is-small"><i class="fa-regular fa-file"></i></span>
-            <span><%= t('dashboard:reports') %></span>
+            <span><%= t('dashboard.reports') %></span>
           </a>
         </li>
       </ul>
@@ -169,7 +169,7 @@
                     <select id="contracts-current-byCemeteryId--cemeteryId" name="cemeteryId">
                       <% for (const cemetery of cemeteries) { %>
                       <option value="<%= cemetery.cemeteryId %>">
-                        <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
+                        <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
                       </option>
                       <% } %>
                     </select>
@@ -284,7 +284,7 @@
                     <select id="burialSites-byCemeteryId--cemeteryId" name="cemeteryId">
                       <% for (const cemetery of cemeteries) { %>
                       <option value="<%= cemetery.cemeteryId %>">
-                        <%= cemetery.cemeteryName || ('(' + t('cemeteries:noName') + ')') %>
+                        <%= cemetery.cemeteryName || ('(' + t('cemeteries.noName') + ')') %>
                       </option>
                       <% } %>
                     </select>

@@ -1,23 +1,23 @@
 <%- include('../_header'); -%>
 <nav class="breadcrumb">
   <ul>
-    <li><a href="<%= urlPrefix %>/dashboard"><%= t('common:home') %></a></li>
+    <li><a href="<%= urlPrefix %>/dashboard"><%= t('home') %></a></li>
     <li>
       <a href="<%= urlPrefix %>/workOrders">
         <span class="icon is-small"><i class="fa-solid fa-hard-hat"></i></span>
-        <span><%= t('workOrders:workOrders') %></span>
+        <span><%= t('workOrders') %></span>
       </a>
     </li>
     <% if (isCreate) { %>
       <li class="is-active">
         <a href="#" aria-current="page">
-          <%= t('workOrders:createNewWorkOrder') %>
+          <%= t('workOrders.createNewWorkOrder') %>
         </a>
       </li>
     <% } else { %>
       <li>
         <a href="<%= urlPrefix %>/workOrders/<%= workOrder.workOrderId %>">
-          Work Order #<%= workOrder.workOrderNumber || ('(' + t('workOrders:noNumber') + ')') %>
+          Work Order #<%= workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') %>
         </a>
       </li>
       <li class="is-active">
@@ -31,11 +31,11 @@
 
 <% if (isCreate) { %>
   <h1 class="title is-1">
-    <%= t('workOrders:createNewWorkOrder') %>
+    <%= t('workOrders.createNewWorkOrder') %>
   </h1>
 <% } else { %>
   <h1 class="title is-1">
-    Work Order #<%= workOrder.workOrderNumber || ('(' + t('workOrders:noNumber') + ')') %>
+    Work Order #<%= workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') %>
   </h1>
 <% } %>
 
@@ -44,7 +44,7 @@
     <% if (!isCreate) { %>
       <span class="has-text-weight-bold">
         Work Order
-        #<%= workOrder.workOrderNumber || ('(' + t('workOrders:noNumber') + ')') %>
+        #<%= workOrder.workOrderNumber || ('(' + t('workOrders.noNumber') + ')') %>
       </span>
     <% } %>
   </div>

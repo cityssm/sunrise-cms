@@ -6,9 +6,9 @@
 
 <% if (error !== undefined) { %>
 <div class="notification is-danger is-light">
-  <button class="delete" aria-label="<%= t('common:delete') %>"></button>
+  <button class="delete" aria-label="<%= t('delete') %>"></button>
   <p>
-    <strong><%= t('dashboard:error') %></strong><br />
+    <strong><%= t('dashboard.error') %></strong><br />
     <%= error %>
   </p>
 </div>
@@ -26,10 +26,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  <%= t('contracts:contracts') %>
+                  <%= t('contracts') %>
                 </h2>
                 <p>
-                  <%= t('contracts:contractsDescription') %>
+                  <%= t('contracts.contractsDescription') %>
                 </p>
               </div>
             </div>
@@ -40,14 +40,14 @@
               <span class="icon">
                 <i class="fa-solid fa-plus"></i>
               </span>
-              <span><%= t('contracts:newContract') %></span>
+              <span><%= t('contracts.newContract') %></span>
             </a>
             <% } %>
             <a class="button is-fullwidth is-link is-light" href="<%= urlPrefix %>/funeralHomes">
               <span class="icon">
                 <i class="fa-solid fa-place-of-worship"></i>
               </span>
-              <span><%= t('contracts:funeralHomes') %></span>
+              <span><%= t('contracts.funeralHomes') %></span>
             </a>
           </div>
         </div>
@@ -61,10 +61,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  <%= t('workOrders:workOrders') %>
+                  <%= t('workOrders') %>
                 </h2>
                 <p>
-                  <%= t('workOrders:workOrdersDescription') %>
+                  <%= t('workOrders.workOrdersDescription') %>
                 </p>
               </div>
             </div>
@@ -75,14 +75,14 @@
               <span class="icon">
                 <i class="fa-solid fa-plus"></i>
               </span>
-              <span><%= t('workOrders:newWorkOrder') %></span>
+              <span><%= t('workOrders.newWorkOrder') %></span>
             </a>
             <% } %>
             <a class="button is-fullwidth is-link is-light" href="<%= urlPrefix %>/workOrders/workday">
               <span class="icon">
                 <i class="fa-solid fa-calendar-check"></i>
               </span>
-              <span><%= t('workOrders:workdayReport') %></span>
+              <span><%= t('workOrders.workdayReport') %></span>
             </a>
           </div>
         </div>
@@ -98,10 +98,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  <%= t('cemeteries:burialSites') %>
+                  <%= t('cemeteries.burialSites') %>
                 </h2>
                 <p>
-                  <%= t('cemeteries:burialSitesDescription') %>
+                  <%= t('cemeteries.burialSitesDescription') %>
                 </p>
               </div>
             </div>
@@ -112,13 +112,13 @@
               <span class="icon">
                 <i class="fa-solid fa-plus"></i>
               </span>
-              <span><%= t('cemeteries:newBurialSite') %></span>
+              <span><%= t('cemeteries.newBurialSite') %></span>
             </a>
             <a class="button is-fullwidth is-link is-light mt-2" href="<%= urlPrefix %>/burialSites/map">
               <span class="icon">
                 <i class="fa-solid fa-map-location-dot"></i>
               </span>
-              <span><%= t('cemeteries:burialSiteMap') %></span>
+              <span><%= t('cemeteries.burialSiteMap') %></span>
             </a>
           </div>
           <% } %>
@@ -133,10 +133,10 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  <%= t('cemeteries:cemeteries') %>
+                  <%= t('cemeteries') %>
                 </h2>
                 <p>
-                  <%= t('cemeteries:cemeteriesDescription') %>
+                  <%= t('cemeteries.cemeteriesDescription') %>
                 </p>
               </div>
             </div>
@@ -147,7 +147,7 @@
               <span class="icon">
                 <i class="fa-solid fa-plus"></i>
               </span>
-              <span><%= t('cemeteries:newCemetery') %></span>
+              <span><%= t('cemeteries.newCemetery') %></span>
             </a>
           </div>
           <% } %>
@@ -164,9 +164,9 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  <%= t('dashboard:reportLibrary') %>
+                  <%= t('dashboard.reportLibrary') %>
                 </h2>
-                <p><%= t('dashboard:reportLibraryDescription') %></p>
+                <p><%= t('dashboard.reportLibraryDescription') %></p>
               </div>
             </div>
           </a>
@@ -175,7 +175,7 @@
               <span class="icon">
                 <i class="fa-solid fa-scroll"></i>
               </span>
-              <span><%= t('dashboard:updateLog') %></span>
+              <span><%= t('dashboard.updateLog') %></span>
             </a>
           </div>
         </div>
@@ -194,9 +194,9 @@
               </div>
               <div class="media-content">
                 <h2 class="title is-4 mb-0 has-text-link">
-                  <%= t('dashboard:helpDocumentation') %>
+                  <%= t('dashboard.helpDocumentation') %>
                 </h2>
-                <p><%= t('dashboard:helpDescription', { applicationName: configFunctions.getConfigProperty("application.applicationName") }) %></p>
+                <p><%= t('dashboard.helpDescription', { applicationName: configFunctions.getConfigProperty("application.applicationName") }) %></p>
               </div>
             </div>
           </a>

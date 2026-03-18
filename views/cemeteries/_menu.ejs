@@ -1,21 +1,21 @@
 <%
-const isCemeterySearch = headTitle === t('cemeteries:cemeterySearch');
-const isBurialSiteSearch = headTitle === t('cemeteries:burialSiteSearch');
+const isCemeterySearch = headTitle === t('cemeteries.cemeterySearch');
+const isBurialSiteSearch = headTitle === t('cemeteries.burialSiteSearch');
 %>
-<aside class="menu" aria-label="<%= t('cemeteries:cemeteries') %>">
+<aside class="menu" aria-label="<%= t('cemeteries') %>">
   <% if (isCemeterySearch && user.userProperties.canUpdateCemeteries) { %>
   <ul class="menu-list">
     <li>
       <a
         href="<%= urlPrefix %>/cemeteries/new"
-        title="<%= t('cemeteries:createNewCemetery') %>"
+        title="<%= t('cemeteries.createNewCemetery') %>"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-plus-circle has-text-success-light" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i></span>
           </div>
           <div class="column is-hidden-touch has-text-weight-semibold">
-            <%= t('cemeteries:createNewCemetery') %>
+            <%= t('cemeteries.createNewCemetery') %>
           </div>
         </div>
       </a>
@@ -27,14 +27,14 @@ const isBurialSiteSearch = headTitle === t('cemeteries:burialSiteSearch');
     <li>
       <a
         href="<%= urlPrefix %>/burialSites/new"
-        title="<%= t('cemeteries:createBurialSite') %>"
+        title="<%= t('cemeteries.createBurialSite') %>"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-plus-circle has-text-success-light" data-fa-glow="10" style="--fa-glow-color:var(--bulma-text)"></i></span>
           </div>
           <div class="column is-hidden-touch has-text-weight-semibold">
-            <%= t('cemeteries:createBurialSite') %>
+            <%= t('cemeteries.createBurialSite') %>
           </div>
         </div>
       </a>
@@ -42,21 +42,21 @@ const isBurialSiteSearch = headTitle === t('cemeteries:burialSiteSearch');
   </ul>
   <% } %>
   <h2 class="menu-label is-hidden-touch">
-    <%= t('cemeteries:cemeteries') %>
+    <%= t('cemeteries') %>
   </h2>
   <ul class="menu-list">
     <li>
       <a
         class="<%= (isCemeterySearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/cemeteries"
-        title="<%= t('cemeteries:cemeterySearch') %>"
+        title="<%= t('cemeteries.cemeterySearch') %>"
         rel="search"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-regular fa-map"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('cemeteries:cemeterySearch') %></div>
+          <div class="column is-hidden-touch"><%= t('cemeteries.cemeterySearch') %></div>
         </div>
       </a>
     </li>
@@ -64,62 +64,62 @@ const isBurialSiteSearch = headTitle === t('cemeteries:burialSiteSearch');
       <a
         class="<%= (isBurialSiteSearch ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/burialSites"
-        title="<%= t('cemeteries:burialSiteSearch') %>"
+        title="<%= t('cemeteries.burialSiteSearch') %>"
         rel="search"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-map-pin"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('cemeteries:burialSiteSearch') %></div>
+          <div class="column is-hidden-touch"><%= t('cemeteries.burialSiteSearch') %></div>
         </div>
       </a>
     </li>
     <li>
       <a
-        class="<%= (headTitle === t('cemeteries:burialSiteMap') ? 'is-active' : '') %>"
+        class="<%= (headTitle === t('cemeteries.burialSiteMap') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/burialSites/map"
-        title="<%= t('cemeteries:burialSiteMap') %>"
+        title="<%= t('cemeteries.burialSiteMap') %>"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-map-location-dot"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('cemeteries:burialSiteMap') %></div>
+          <div class="column is-hidden-touch"><%= t('cemeteries.burialSiteMap') %></div>
         </div>
       </a>
     </li>
   </ul>
   <% if (user.userProperties.canUpdateCemeteries) { %>
   <h2 class="menu-label is-hidden-touch">
-    <%= t('cemeteries:creatorTools') %>
+    <%= t('cemeteries.creatorTools') %>
   </h2>
   <ul class="menu-list">
     <li>
       <a
-        class="<%= (headTitle === t('cemeteries:burialSiteRangeCreator') ? 'is-active' : '') %>"
+        class="<%= (headTitle === t('cemeteries.burialSiteRangeCreator') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/burialSites/creator"
-        title="<%= t('cemeteries:burialSiteRangeCreator') %>"
+        title="<%= t('cemeteries.burialSiteRangeCreator') %>"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-folder-plus"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('cemeteries:burialSiteRangeCreator') %></div>
+          <div class="column is-hidden-touch"><%= t('cemeteries.burialSiteRangeCreator') %></div>
         </div>
       </a>
     </li>
     <li>
       <a
-        class="<%= (headTitle === t('cemeteries:gpsCoordinateCapture') ? 'is-active' : '') %>"
+        class="<%= (headTitle === t('cemeteries.gpsCoordinateCapture') ? 'is-active' : '') %>"
         href="<%= urlPrefix %>/burialSites/gpsCapture"
-        title="<%= t('cemeteries:gpsCoordinateCapture') %>"
+        title="<%= t('cemeteries.gpsCoordinateCapture') %>"
       >
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-crosshairs"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('cemeteries:gpsCoordinateCapture') %></div>
+          <div class="column is-hidden-touch"><%= t('cemeteries.gpsCoordinateCapture') %></div>
         </div>
       </a>
     </li>
@@ -139,23 +139,23 @@ const isBurialSiteSearch = headTitle === t('cemeteries:burialSiteSearch');
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-gear"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('cemeteries:burialSiteTypes') %></div>
+          <div class="column is-hidden-touch"><%= t('cemeteries.burialSiteTypes') %></div>
         </div>
       </a>
     </li>
   </ul>
   <% } %>
   <h2 class="menu-label is-hidden-touch">
-    <%= t('dashboard:reports') %>
+    <%= t('dashboard.reports') %>
   </h2>
   <ul class="menu-list">
     <li>
-      <a href="<%= urlPrefix %>/reports/?tab=cemeteries" title="<%= t('cemeteries:cemeteryReports') %>">
+      <a href="<%= urlPrefix %>/reports/?tab=cemeteries" title="<%= t('cemeteries.cemeteryReports') %>">
         <div class="columns is-mobile is-1">
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-file"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('cemeteries:cemeteryReports') %></div>
+          <div class="column is-hidden-touch"><%= t('cemeteries.cemeteryReports') %></div>
         </div>
       </a>
     </li>
@@ -170,7 +170,7 @@ const isBurialSiteSearch = headTitle === t('cemeteries:burialSiteSearch');
           <div class="column is-narrow">
             <span class="icon"><i class="fa-solid fa-circle-question"></i></span>
           </div>
-          <div class="column is-hidden-touch"><%= t('common:help') %></div>
+          <div class="column is-hidden-touch"><%= t('help') %></div>
         </div>
       </a>
     </li>
