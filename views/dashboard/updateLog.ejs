@@ -12,7 +12,25 @@
   </ul>
 </nav>
 
-<h1 class="title is-1">Update Log</h1>
+<div class="columns is-vcentered is-mobile">
+  <div class="column">
+    <h1 class="title is-1"><%= t('dashboard.updateLog') %></h1>
+  </div>
+  <% if (user.userProperties.isAdmin) { %>
+  <div class="column is-narrow">
+    <a
+      class="button is-small is-link is-light"
+      href="<%= urlPrefix %>/admin/auditLog"
+    >
+      <span class="icon is-small"><i class="fa-solid fa-gear"></i></span>
+      <span><%= t('admin:auditLog') %></span>
+    </a>
+  </div>
+  <% } %>
+</div>
+</div>
+
+
 
 <div class="box">
   <div class="columns">
