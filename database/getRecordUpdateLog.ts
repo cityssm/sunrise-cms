@@ -68,7 +68,7 @@ export default function getRecordUpdateLog(
           WHEN r.recordCreate_timeMillis = r.recordUpdate_timeMillis THEN 'create'
           ELSE 'update'
         END AS updateType,
-        r.contractId AS displayRecordId,
+        r.contractNumber AS displayRecordId,
         r.contractId AS recordId,
         coalesce(t.contractType, 'Contract') AS recordDescription,
         r.recordUpdate_timeMillis,
@@ -96,7 +96,7 @@ export default function getRecordUpdateLog(
           WHEN r.recordCreate_timeMillis = r.recordUpdate_timeMillis THEN 'create'
           ELSE 'update'
         END AS updateType,
-        r.contractId AS displayRecordId,
+        c.contractNumber AS displayRecordId,
         r.contractId AS recordId,
         CASE
           WHEN r.transactionNote IS NOT NULL
@@ -109,6 +109,7 @@ export default function getRecordUpdateLog(
         r.recordCreate_userName
       FROM
         ContractTransactions r
+        LEFT JOIN Contracts c ON r.contractId = c.contractId
       WHERE
         r.recordDelete_timeMillis IS NULL
         AND r.recordUpdate_timeMillis >= @minimumMillis
@@ -218,7 +219,7 @@ export default function getRecordUpdateLog(
           WHEN r.recordCreate_timeMillis = r.recordUpdate_timeMillis THEN 'create'
           ELSE 'update'
         END AS updateType,
-        r.contractId AS displayRecordId,
+        c.contractNumber AS displayRecordId,
         r.contractId AS recordId,
         'Contract Fee: ' || coalesce(f.feeName, 'Unknown Fee') || ' ($' || printf('%.2f', r.feeAmount) || ')' AS recordDescription,
         r.recordUpdate_timeMillis,
@@ -228,6 +229,7 @@ export default function getRecordUpdateLog(
       FROM
         ContractFees r
         LEFT JOIN Fees f ON r.feeId = f.feeId
+        LEFT JOIN Contracts c ON r.contractId = c.contractId
       WHERE
         r.recordDelete_timeMillis IS NULL
         AND r.recordUpdate_timeMillis >= @minimumMillis
@@ -247,7 +249,7 @@ export default function getRecordUpdateLog(
           WHEN r.recordCreate_timeMillis = r.recordUpdate_timeMillis THEN 'create'
           ELSE 'update'
         END AS updateType,
-        r.contractId AS displayRecordId,
+        c.contractNumber AS displayRecordId,
         r.contractId AS recordId,
         'Contract Comment: ' || substr(r.comment, 1, 100) || CASE
           WHEN length(r.comment) > 100 THEN '...'
@@ -259,6 +261,7 @@ export default function getRecordUpdateLog(
         r.recordCreate_userName
       FROM
         ContractComments r
+        LEFT JOIN Contracts c ON r.contractId = c.contractId
       WHERE
         r.recordDelete_timeMillis IS NULL
         AND r.recordUpdate_timeMillis >= @minimumMillis
