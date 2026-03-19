@@ -58,18 +58,22 @@ describe('Burial Sites - Update', () => {
       (burialSiteData: Partial<BurialSite>) => {
         // Select the first available cemetery
         cy.get("select[name='cemeteryId'] option")
+          .should('have.length.at.least', 2)
           .eq(1)
-          .then(($option) => {
-            const cemeteryId = $option.val() as string
-            cy.get("select[name='cemeteryId']").select(cemeteryId)
+          .invoke('val')
+          .then((cemeteryId) => {
+            cy.get("select[name='cemeteryId']").select(cemeteryId as string)
           })
 
         // Select the first available burial site type
         cy.get("select[name='burialSiteTypeId'] option")
+          .should('have.length.at.least', 2)
           .eq(1)
-          .then(($option) => {
-            const burialSiteTypeId = $option.val() as string
-            cy.get("select[name='burialSiteTypeId']").select(burialSiteTypeId)
+          .invoke('val')
+          .then((burialSiteTypeId) => {
+            cy.get("select[name='burialSiteTypeId']").select(
+              burialSiteTypeId as string
+            )
           })
 
         // Fill in burial site name segments

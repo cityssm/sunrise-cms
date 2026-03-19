@@ -31,16 +31,18 @@ describe('Burial Sites - Update', () => {
         cy.fixture('burialSite.json').then((burialSiteData) => {
             // Select the first available cemetery
             cy.get("select[name='cemeteryId'] option")
+                .should('have.length.at.least', 2)
                 .eq(1)
-                .then(($option) => {
-                const cemeteryId = $option.val();
+                .invoke('val')
+                .then((cemeteryId) => {
                 cy.get("select[name='cemeteryId']").select(cemeteryId);
             });
             // Select the first available burial site type
             cy.get("select[name='burialSiteTypeId'] option")
+                .should('have.length.at.least', 2)
                 .eq(1)
-                .then(($option) => {
-                const burialSiteTypeId = $option.val();
+                .invoke('val')
+                .then((burialSiteTypeId) => {
                 cy.get("select[name='burialSiteTypeId']").select(burialSiteTypeId);
             });
             // Fill in burial site name segments

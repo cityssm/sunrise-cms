@@ -15,8 +15,8 @@ describe('Cemeteries - Update', () => {
     });
     it('Creates a new cemetery', () => {
         cy.visit('/cemeteries/new', {
+            retryOnStatusCodeFailure: true,
             timeout: pageLoadTimeoutMillis,
-            retryOnStatusCodeFailure: true
         });
         cy.log('Check the accessibility');
         cy.injectAxe();

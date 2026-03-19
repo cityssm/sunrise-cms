@@ -14,7 +14,10 @@ describe('Contracts - Update', () => {
         cy.get("a[href$='/contracts/new']").should('exist');
     });
     it('Creates a New Contract', () => {
-        cy.visit('/contracts/new', { timeout: pageLoadTimeoutMillis });
+        cy.visit('/contracts/new', {
+            retryOnNetworkFailure: true,
+            timeout: pageLoadTimeoutMillis
+        }).wait(minimumNavigationDelayMillis);
         cy.log('Check the accessibility');
         cy.injectAxe();
         cy.checkA11y(undefined, undefined, logAccessibilityViolations);
@@ -22,6 +25,7 @@ describe('Contracts - Update', () => {
         cy.log('Populate the fields');
         // Select the first available contract type
         cy.get("select[name='contractTypeId'] option")
+            .should('have.length.at.least', 2)
             .eq(1)
             .invoke('val')
             .then((contractTypeId) => {

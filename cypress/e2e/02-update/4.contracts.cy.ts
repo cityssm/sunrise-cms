@@ -30,7 +30,10 @@ describe('Contracts - Update', () => {
   })
 
   it('Creates a New Contract', () => {
-    cy.visit('/contracts/new', { timeout: pageLoadTimeoutMillis })
+    cy.visit('/contracts/new', {
+      retryOnNetworkFailure: true,
+      timeout: pageLoadTimeoutMillis
+    }).wait(minimumNavigationDelayMillis)
 
     cy.log('Check the accessibility')
 
@@ -43,6 +46,7 @@ describe('Contracts - Update', () => {
 
     // Select the first available contract type
     cy.get("select[name='contractTypeId'] option")
+      .should('have.length.at.least', 2)
       .eq(1)
       .invoke('val')
       .then((contractTypeId) => {
