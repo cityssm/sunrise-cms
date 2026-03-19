@@ -206,7 +206,7 @@ declare const exports: {
           ${cityssm.escapeHTML(
             workOrderComment.commentTime === 0
               ? ''
-              : (workOrderComment.commentTimePeriodString ?? '')
+              : ` ${workOrderComment.commentTimePeriodString ?? ''}`
           )}
         </td>
         <td>

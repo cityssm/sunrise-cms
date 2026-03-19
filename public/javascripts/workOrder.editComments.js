@@ -119,7 +119,7 @@
           ${cityssm.escapeHTML(workOrderComment.commentDateString ?? '')}
           ${cityssm.escapeHTML(workOrderComment.commentTime === 0
                 ? ''
-                : (workOrderComment.commentTimePeriodString ?? ''))}
+                : ` ${workOrderComment.commentTimePeriodString ?? ''}`)}
         </td>
         <td>
           ${cityssm.escapeHTML(workOrderComment.comment ?? '')}
